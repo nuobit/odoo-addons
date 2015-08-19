@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #/#############################################################################
 #
-#   NuoBiT
-#   Copyright (C) 2015 NuoNiT(<http://www.nuobit.com>).
+#   Odoo, Open Source Management Solution
+#   Copyright (C) 2015 NuoBiT Solutions, S.L. (<http://www.nuobit.com>).
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU Affero General Public License as
