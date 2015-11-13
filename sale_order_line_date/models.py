@@ -25,7 +25,6 @@ class sale_order_line_date(models.Model):
     _inherit = 'sale.order.line'
     
     order_date = fields.Datetime(string='Order date', related='order_id.date_order', store=False)
-    #order_name = fields.Char(string='Order name', related='order_id.name', store=False)
     
 
     
