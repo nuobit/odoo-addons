@@ -40,9 +40,8 @@ class PaymentTransaction(models.Model):
         tx_find_method_name = '_%s_form_get_tx_from_data' % acquirer_name
         if hasattr(self, tx_find_method_name):
             tx = getattr(self, tx_find_method_name)(cr, uid, data, context=context)
-
         if tx and tx.state == 'done' and tx.sale_order_id and tx.sale_order_id.state in ['draft', 'sent']:
-            tx.sale_order_id.action_button_confirm(context=dict(context, send_email=True))
+            self.pool['sale.order'].action_button_confirm(cr, SUPERUSER_ID, [tx.sale_order_id.id], context=dict(context, send_email=True))
             tx.sale_order_id.picking_ids.action_assign()
         elif tx and tx.state in ['cancel', 'error'] and tx.sale_order_id and tx.sale_order_id.state in ['draft']:
             tx.sale_order_id.action_cancel()
