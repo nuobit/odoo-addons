@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="website_policies_show" inherit_id="website_sale.product" active="True" customize_show="True"
+                  name="DT cutomizations">
+            <xpath expr="//section//div//p[@class='text-muted' and contains(text(), '30-day money-back guarantee')]"
+                   position="replace">
+                <p class="text-muted">Buy now, get in 2 days</p>
+            </xpath>
+            <xpath expr="//section//div//div[@class='col-sm-7 col-md-7 col-lg-7']" position="attributes">
+                <attribute name="class">col-sm-6 col-md-6 col-lg-6</attribute>
+            </xpath>
+            <xpath expr="//section//div//div[@class='col-sm-5 col-md-5 col-lg-4 col-lg-offset-1']"
+                   position="attributes">
+                <attribute name="class">col-sm-4 col-md-4 col-lg-3 col-lg-offset-1</attribute>
+            </xpath>
+            <xpath expr="//div[@id='product_full_description']" position="replace"/>
+            <xpath expr="//section//div//span[@itemprop='image']" position="after">
+                <div itemprop="description" t-field="product.website_description" class="oe_structure mt32 mb16"
+                     id="product_full_description"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>
