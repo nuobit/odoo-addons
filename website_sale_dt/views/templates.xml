@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <template id="website_policies_show" inherit_id="website_sale.product" active="True" customize_show="True"
-                  name="DT cutomizations">
+        <template id="website_sale_dt_product" inherit_id="website_sale.product" priority="5" active="True" customize_show="True"
+                  name="DT product cutomizations">
             <xpath expr="//section//div//p[@class='text-muted' and contains(text(), '30-day money-back guarantee')]"
                    position="replace">
                 <p class="text-muted">Buy now, get in 2 days</p>
@@ -12,12 +12,25 @@
             </xpath>
             <xpath expr="//section//div//div[@class='col-sm-5 col-md-5 col-lg-4 col-lg-offset-1']"
                    position="attributes">
-                <attribute name="class">col-sm-4 col-md-4 col-lg-3 col-lg-offset-1</attribute>
+                <attribute name="class">col-sm-6 col-md-6 col-lg-5 col-lg-offset-1</attribute>
+                <!--attribute name="class">col-sm-4 col-md-4 col-lg-4</attribute-->
             </xpath>
             <xpath expr="//div[@id='product_full_description']" position="replace"/>
             <xpath expr="//section//div//span[@itemprop='image']" position="after">
                 <div itemprop="description" t-field="product.website_description" class="oe_structure mt32 mb16"
                      id="product_full_description"/>
+            </xpath>
+        </template>
+        
+        <template id="website_sale_dt_cart" inherit_id="website_sale.cart" priority="5" active="True" customize_show="True" name="DT cart cutomizations">
+            <xpath expr="//div[@id='right_column']" position="replace">
+                <div class="col-lg-3 col-lg-offset-1 col-sm-3 col-md-3 text-muted" id="right_column">
+                    <h4>Secure Payment</h4>
+                    <ul class="list-unstyled mb32">
+                        <li>☑ 256 bit encryption</li>
+                        <li>☑ Processed by Redsys</li>
+                    </ul>
+                </div>
             </xpath>
         </template>
     </data>
