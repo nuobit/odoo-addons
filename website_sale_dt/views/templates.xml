@@ -3,28 +3,79 @@
     <data>
         <template id="website_sale_dt_product" inherit_id="website_sale.product" priority="5" active="True" customize_show="True"
                   name="DT product cutomizations">
+                  
             <xpath expr="//section//div//p[@class='text-muted' and contains(text(), '30-day money-back guarantee')]"
                    position="replace">
-                <p class="text-muted">Buy now, get in 2 days</p>
+                <!--p class="text-muted">Buy now, get in 2 days</p-->
             </xpath>
+            
             <xpath expr="//section//div//div[@class='col-sm-7 col-md-7 col-lg-7']" position="attributes">
-                <attribute name="class">col-sm-6 col-md-6 col-lg-6</attribute>
+                <attribute name="class">col-sm-6 col-md-6 col-lg-6 mt32</attribute>
             </xpath>
+            
             <xpath expr="//section//div//div[@class='col-sm-5 col-md-5 col-lg-4 col-lg-offset-1']"
                    position="attributes">
                 <attribute name="class">col-sm-6 col-md-6 col-lg-5 col-lg-offset-1</attribute>
-                <!--attribute name="class">col-sm-4 col-md-4 col-lg-4</attribute-->
             </xpath>
+            
             <xpath expr="//div[@id='product_full_description']" position="replace"/>
             <xpath expr="//section//div//span[@itemprop='image']" position="after">
                 <div itemprop="description" t-field="product.website_description" class="oe_structure mt32 mb16"
                      id="product_full_description"/>
+            </xpath>
+            
+            <!--xpath expr="//section//div[p[@t-field='product.description_sale']]/following-sibling::hr" position="replace"/-->
+
+            <xpath expr="//section//div[p[@t-field='product.description_sale']]" position="replace">
+                <div>
+                    <p t-field="product.description_sale" t-attf-class="text-muted{{' hidden' if not product.description_sale else ''}}"/>
+                </div>
+            </xpath>          
+            
+            <xpath expr="//section//div[p[@t-field='product.description_sale']]" position="after">
+                <hr t-if="sum([(1 if len(l.value_ids)==1 else 0) for l in product.attribute_line_ids])"/>
+                <p class="text-muted">
+                    <t t-foreach="product.attribute_line_ids" t-as="variant_id">
+                        <t t-if="len(variant_id.value_ids)==1">
+                            <strong t-field="variant_id.attribute_id"/>: <span t-field="variant_id.value_ids[0].name"/>
+                            <br/>
+                        </t>
+                    </t>
+                </p>
+            </xpath> 
+
+            <xpath expr="//section[@id='product_detail']" position="inside">
+                <div class="row" t-if="product.alternative_product_ids">
+                    <div class="col-md-12">
+                        <div class="container" >
+                            <h3>Suggested alternatives:</h3>
+                            <div class="row mt16" style="">
+                                <t t-foreach="product.alternative_product_ids" t-as="product">
+                                    <div class="col-md-2 thumbnail" style="width: 170px; height:130px; float:left; display:inline; margin-right: 10px;">
+                                        <div class="mt16 text-center">
+                                            <span t-field="product.image_small" t-field-options="{&quot;widget&quot;: &quot;image&quot;, &quot;class&quot;: &quot;img-rounded shadow&quot; }"/>
+                                            <h5>
+                                                <a t-attf-href="/shop/product/#{ slug(product) }" style="display: block">
+                                                    <span t-field="product.name" style="display: block"/>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </template>
         
         <template id="website_sale_dt_cart" inherit_id="website_sale.cart" priority="5" active="True" customize_show="True" name="DT cart cutomizations">
             <xpath expr="//div[@id='right_column']" position="replace">
                 <div class="col-lg-3 col-lg-offset-1 col-sm-3 col-md-3 text-muted" id="right_column">
+                    <h4>Policies</h4>
+                    <ul class="list-unstyled mb32">
+                      <li>☑ Delivery time 48h</li>
+                    </ul>
                     <h4>Secure Payment</h4>
                     <ul class="list-unstyled mb32">
                         <li>☑ 256 bit encryption</li>
@@ -35,48 +86,73 @@
         </template>
         
          <template id="website_sale_dt_products" inherit_id="website_sale.products" priority="5" active="True" customize_show="True" name="DT products cutomizations">
-            <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']" position="after">
-                <form class="js_attributes" method="get">
-                    <input type="hidden" name="search" t-att-value="search"/>
-                    <ul class="nav nav-pills mt8 mb16">
-                        <t t-foreach="attributes" t-as="a">
-                            <t t-if="a.type != 'hidden'">
-                                <li t-if="a.value_ids and len(a.value_ids) &gt; 1">
-                                    <div>
-                                        <strong t-field="a.name"/>
-                                    </div>
-                                    <t t-if="a.type == 'select'">
-                                        <select class="form-control" name="attrib">
-                                            <option value=""/>
-                                            <t t-foreach="a.value_ids" t-as="v">
-                                                <option t-att-value="'%s-%s' % (a.id,v.id)" t-esc="v.name" t-att-selected="'selected' if v.id in attrib_set else ''"/>
-                                            </t>
-                                        </select>
-                                    </t>
-                                    <t t-if="a.type == 'radio'">
-                                        <ul class="nav nav-pills nav-stacked">
-                                            <t t-foreach="a.value_ids" t-as="v">
-                                                <li t-att-class="'active' if v.id in attrib_set else ''">
-                                                    <label style="margin: 0 20px;">
-                                                        <input type="checkbox" name="attrib" t-att-value="'%s-%s' % (a.id,v.id)" t-att-checked="'checked' if v.id in attrib_set else ''"/>
-                                                        <span style="font-weight: normal" t-field="v.name"/>
-                                                    </label>
-                                                </li>
-                                            </t>
-                                        </ul>
-                                    </t>
-                                    <t t-if="a.type == 'color'">
-                                        <t t-foreach="a.value_ids" t-as="v">
-                                            <label t-attf-style="background-color:#{v.color or v.name}" t-attf-class="css_attribute_color #{'active' if v.id in attrib_set else ''}">
-                                                <input type="checkbox" name="attrib" t-att-value="'%s-%s' % (a.id,v.id)" t-att-checked="'checked' if v.id in attrib_set else ''" t-att-title="v.name"/>
-                                            </label>
+         
+            <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']" position="before">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs mt16">
+                            <li t-att-class=" '' if category else 'active' "><a t-att-href="keep('/shop',category=0)">All Products</a></li>
+                            <t t-foreach="categories" t-as="c">
+                                <t t-call="website_sale.categories_recursive"/>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+            </xpath>
+         
+            <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']//div//t[@t-call='website_sale.search']" position="replace"/>
+            <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']" position="before">
+                <div class="row">
+                    <div class="col-sm-offset-3 col-sm-6">
+                        <t t-call="website_sale.search"><t t-set="search_class">pagination form-inline</t></t>
+                    </div>
+                </div>
+            </xpath>
+             
+            <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']" position="before">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <form class="js_attributes" method="get">
+                                    <input type="hidden" name="search" t-att-value="search"/>
+                                    <t t-foreach="attributes" t-as="a">
+                                        <t t-if="a.type != 'hidden'">
+                                            <div class="col-xs-6 col-sm-3 col-md-2">
+                                                <div><strong t-field="a.name"/></div>
+                                                <t t-if="a.type == 'select'">
+                                                    <select class="form-control" name="attrib" t-attf-id="attrib_{{ a.id }}">
+                                                        <option value=""/>
+                                                        <t t-foreach="a.value_ids" t-as="v">
+                                                            <option t-att-value="'%s-%s' % (a.id,v.id)" t-esc="v.name" t-att-selected="'selected' if v.id in attrib_set else ''"/>
+                                                        </t>
+                                                    </select>
+                                                </t>
+                                                <t t-if="a.type == 'radio'">
+                                                    <t t-foreach="a.value_ids" t-as="v">
+                                                        <li t-att-class="'active' if v.id in attrib_set else ''">
+                                                            <label style="margin: 0 20px;">
+                                                                <input type="checkbox" name="attrib" t-att-value="'%s-%s' % (a.id,v.id)" t-att-checked="'checked' if v.id in attrib_set else ''"/>
+                                                                <span style="font-weight: normal" t-field="v.name"/>
+                                                            </label>
+                                                        </li>
+                                                    </t>
+                                                </t>
+                                                <t t-if="a.type == 'color'">
+                                                    <t t-foreach="a.value_ids" t-as="v">
+                                                        <label t-attf-style="background-color:#{v.color or v.name}" t-attf-class="css_attribute_color #{'active' if v.id in attrib_set else ''}">
+                                                            <input type="checkbox" name="attrib" t-att-value="'%s-%s' % (a.id,v.id)" t-att-checked="'checked' if v.id in attrib_set else ''" t-att-title="v.name"/>
+                                                        </label>
+                                                    </t>
+                                                </t>
+                                            </div>
                                         </t>
                                     </t>
-                                </li>
-                            </t>
-                        </t>
-                    </ul>
-                </form>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </template>
     </data>
