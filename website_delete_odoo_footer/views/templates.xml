@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="website_remove_footer_odoo" inherit_id="website.layout" priority="16" active="True" customize_show="True"
+                  name="Remove footer powered by Odoo">
+                  
+            <xpath expr="//footer//div[@class='pull-right']" position="replace">
+                <!--div class="container mt16 mb8">
+                    <div class="pull-right" t-ignore="true" t-if="not editable">
+                Powered by <a class="label label-danger" href="http://www.odoo.com/page/website-builder">Odoo</a>,
+                the #1 <a href="http://www.odoo.com/page/e-commerce">Open Source eCommerce</a>.
+                    </div>
+                    <div class="pull-left text-muted">
+                Copyright &amp;copy; <span t-field="res_company.name">Company name</span>
+                    </div>
+                </div-->
+            </xpath>
+        </template>
+    </data>
+</openerp>
