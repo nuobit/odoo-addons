@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="website_sale_show_reference_product" inherit_id="website_sale.products_item" priority="5"
+                  active="True" customize_show="True"
+                  name="Product internal reference">
+            <xpath expr="//div[@class='product_price']" position="before">
+                <t t-set="references"
+                   t-value="[x.default_code for x in product.product_variant_ids.filtered(lambda x: x.default_code)]"/>
+                <t t-if="references!=[]">
+                    <div class="text-muted" contenteditable="false">
+                        <h5>
+                            <span>Reference:</span>
+                            <span itemprop="reference" t-esc="', '.join(references)"/>
+                        </h5>
+                    </div>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</openerp>
