@@ -19,6 +19,8 @@ msgstr ""
 msgid "Reference:"
 msgstr "Referència:"
 
+#. module: website_show_defaultcode
+#: view:website:website_sale.products_item
 msgid "References:"
 msgstr "Referències:"
 
