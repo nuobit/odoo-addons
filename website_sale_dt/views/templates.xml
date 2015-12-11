@@ -67,6 +67,26 @@
                     </div>
                 </div>
             </xpath>
+
+            <xpath expr="//t[@t-placeholder='select']" position="replace">
+                <strong class="text-muted" t-if="len(product.product_variant_ids) > 1">References:</strong>
+                <t t-foreach="product.product_variant_ids" t-as="variant_id">
+                    <label label-default="label-default"
+                           t-attf-class="radio {{'hidden' if len(product.product_variant_ids) == 1 and not variant_id.default_code else ''}}">
+                        <input type="radio" name="product_id"
+                               t-attf-class="js_product_change {{'hidden' if len(product.product_variant_ids) == 1 else ''}}"
+                               t-att-checked="'checked' if variant_id_index == 0 else ''" t-att-value="variant_id.id"
+                               t-att-data-lst_price="variant_id.lst_price" t-att-data-price="variant_id.price"/>
+                        <span class="text-muted" t-if="len(product.product_variant_ids) == 1">Reference:</span>
+                        <span class="text-muted" t-esc="variant_id.default_code"/>
+                        <span class="badge" t-if="variant_id.price_extra">
+                            <t t-esc="variant_id.price_extra &gt; 0 and '+' or ''"/>
+                            <span t-field="variant_id.price_extra" style="white-space: nowrap;"
+                                  t-field-options="{                 &quot;widget&quot;: &quot;monetary&quot;,                 &quot;from_currency&quot;: &quot;product.company_id.currency_id&quot;,                 &quot;display_currency&quot;: &quot;user_id.partner_id.property_product_pricelist.currency_id&quot;               }"/>
+                        </span>
+                    </label>
+                </t>
+            </xpath>
         </template>
         
         <template id="website_sale_dt_cart" inherit_id="website_sale.cart" priority="5" active="True" customize_show="True" name="DT cart cutomizations">
