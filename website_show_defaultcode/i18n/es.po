@@ -19,3 +19,6 @@ msgstr ""
 msgid "Reference:"
 msgstr "Referencia:"
 
+msgid "References:"
+msgstr "Referencias:"
+

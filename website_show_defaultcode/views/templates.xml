@@ -10,7 +10,8 @@
                 <t t-if="references!=[]">
                     <div class="text-muted" contenteditable="false">
                         <h5>
-                            <span>Reference:</span>
+                            <span t-if="len(references)==1">Reference:</span>
+                            <span t-if="len(references)>1">References:</span>
                             <span itemprop="reference" t-esc="', '.join(references)"/>
                         </h5>
                     </div>
