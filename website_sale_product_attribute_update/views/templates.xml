@@ -29,7 +29,7 @@
                                t-att-data-lst_price="variant_id.lst_price" t-att-data-price="variant_id.price"
                                t-att-data-attribs="json.dumps(attribs)"/>
                         <span class="text-muted" t-if="len(product.product_variant_ids) == 1">Reference:</span>
-                        <span class="text-muted" t-esc="variant_id.default_code"/>
+                        <span t-esc="variant_id.default_code"/>
                         <span class="badge" t-if="variant_id.price_extra">
                             <t t-esc="variant_id.price_extra &gt; 0 and '+' or ''"/>
                             <span t-field="variant_id.price_extra" style="white-space: nowrap;"
