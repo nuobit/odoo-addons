@@ -21,15 +21,16 @@
 
 {
     'name': 'Delete "using <a ...>Odoo</a>" footer in email followers',
-    'version': '8.0.1.0',
-    'author': 'Eric Antones',
     'description': '''
 This modules removes "using <a ...>Odoo</a>" from the the footer in email \
 followers.
     ''',
+    'version': '0.1',
+    'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'category': 'Social Network',
     'depends': ['mail'],
     'data': [
         ],
     'installable': True
 }
+

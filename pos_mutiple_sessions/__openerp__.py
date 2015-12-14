@@ -28,14 +28,9 @@
        Allow more than one active POS session with the same responsible
     """,
 
-    'author': "Eric Antones",
-    #'website': "http://www.yourcompany.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
-    # for the full list
+    'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'category': 'Point of Sale',
-    'version': '8.0.1.0',
+    'version': '0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['point_of_sale'],
