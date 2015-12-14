@@ -3,14 +3,12 @@ $(document).ready(function () {
     function update_product_attributes(event_source) {
         var attribs_str = $(event_source).data('attribs');
         if (attribs_str != undefined) {
-            var attribs_l = attribs_str.split(',');
             var $attrib = $('#attributes');
             $attrib.empty();
-            $.each(attribs_l, function (index, value) {
-                var attrib_t = value.split('-');
-                $attrib.append($("<strong>").text(attrib_t[0]));
+            $.each(attribs_str, function (index, value) {
+                $attrib.append($("<strong>").text(value[0]));
                 $attrib.append(": ");
-                $attrib.append($("<span>").text(attrib_t[1]));
+                $attrib.append($("<span>").text(value[1]));
                 $attrib.append($("<br>"));
             });
         }

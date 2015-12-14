@@ -19,7 +19,7 @@
                     <t t-foreach="variant_id.attribute_value_ids.sorted(lambda x: x.attribute_id.sequence)"
                        t-as="att_val_id">
                         <t t-set="attribs"
-                           t-value="attribs + [att_val_id.attribute_id.name.replace('-','--').replace(',',',,') + '-' + att_val_id.name.replace('-','--').replace(',',',,')]"/>
+                           t-value="attribs + [(att_val_id.attribute_id.name, att_val_id.name)]"/>
                     </t>
                     <label label-default="label-default"
                            t-attf-class="radio {{'hidden' if len(product.product_variant_ids) == 1 and not variant_id.default_code else ''}}">
@@ -27,7 +27,7 @@
                                t-attf-class="js_product_change {{'hidden' if len(product.product_variant_ids) == 1 else ''}}"
                                t-att-checked="'checked' if variant_id_index == 0 else ''" t-att-value="variant_id.id"
                                t-att-data-lst_price="variant_id.lst_price" t-att-data-price="variant_id.price"
-                               t-att-data-attribs="','.join(attribs)"/>
+                               t-att-data-attribs="json.dumps(attribs)"/>
                         <span class="text-muted" t-if="len(product.product_variant_ids) == 1">Reference:</span>
                         <span class="text-muted" t-esc="variant_id.default_code"/>
                         <span class="badge" t-if="variant_id.price_extra">
