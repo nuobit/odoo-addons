@@ -29,6 +29,7 @@
     """,
 
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
+    'license': 'AGPL-3',
     'category': 'Point of Sale',
     'version': '0.1',
 
