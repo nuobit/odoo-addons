@@ -8,17 +8,17 @@ openerp.event_custom_calendar = function (instance) {
             if (color) {
                 res.className = res.className.replace(/calendar_color_[0-9]+/g, "calendar_color_" + color);
                 res.title = res.title.replace(new RegExp(' \\['+color+'\\]$'), '');
-
-                var title0 = res.title.split(",");
-                var title9 = [];
-                _.each(title0, function(value, key) {
-                    if (value.trim().length!=0) {
-                        title9.push(value.trim());
-                    }
-
-                });
-                res.title = title9.join(", ");
             }
+
+            var title0 = res.title.split(",");
+            var title9 = [];
+            _.each(title0, function(value, key) {
+                if (value.trim().length!=0) {
+                    title9.push(value.trim());
+                }
+
+            });
+            res.title = title9.join(", ");
 
             return res;
         },
