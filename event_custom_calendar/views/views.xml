@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_event_type_inherit" model="ir.ui.view">
+            <field name="name">view.event.type.inherit</field>
+            <field name="model">event.type</field>
+            <field name="inherit_id" ref="event.view_event_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="color"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_event_calendar_inherit" model="ir.ui.view">
+            <field name="name">view.event.calendar.inherit</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_calendar"/>
+            <field name="arch" type="xml">
+                <xpath expr="." position="replace">
+                    <calendar color="type" date_start="date_begin" date_stop="date_end" string="Event Organization">
+                        <!--field name="name"/>
+                        <field name="type"/-->
+
+                          <field name="organizer_id"/>
+  <field name="name"/>
+    <field name="user_id"/>
+
+                    </calendar>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
