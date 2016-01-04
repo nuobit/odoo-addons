@@ -1,0 +1,64 @@
+.oe_leftbar .hide-left-menu{
+    height: 100px;
+    width: 13px;
+    top:42%;
+    font-size: 24px;
+    padding: 0px;
+    margin-left: 220px;
+    z-index: 1;
+    position: absolute;
+    border-width:1px 1px 1px 0px;
+    border-color:#AEB9BD;
+    border-style:solid;
+    border-radius: 0px 10px 10px 0px;
+    background-color:  #F0EEEE;
+    
+}
+.openerp_webclient_container .oe_leftbar button:focus {
+    outline: none;
+    border-width:1px 1px 1px 0px;
+    border-color:#AEB9BD;
+    border-style:solid;
+    border-radius: 0px 10px 10px 0px;
+    background-color: #E8EBEF;
+    box-shadow: none;
+}
+.oe_leftbar .hide-left-menu .arrow-image, .oe_im .oe_im_users .hide-pane div.arrow-img{
+    height: 25px;
+    width: 13px;
+    top: 50%;
+    padding: 0px;
+    margin-left: -5px
+    border: none;
+    position:static;
+    background: url(/sync_leftbar/static/src/img/wantclose.png) scroll center 0% no-repeat;
+}
+.openerp_webclient_container .hide-left-menu:hover, .oe_im .oe_im_users .hide-pane:hover{
+    background: #CCC;
+}
+.oe_leftbar .hide-left-menu:hover div, .oe_im .oe_im_users .hide-pane:hover div{
+    background-position:center 51%;
+}
+.openerp_webclient_container .oe_leftbar{
+    height: 100%;
+    z-index: 999;
+}
+.hide-pane{
+    height: 100px;
+    width: 14px;
+    top:40%;
+    font-size: 24px;
+    padding: 0px;
+    margin-left: -14px;
+    z-index: 0;
+    position: absolute;
+    border-width:1px 0px 1px 1px;
+    border-color:#AEB9BD;
+    border-style:solid;
+    border-radius: 10px 0px 0px 10px;
+    background-color: #E8EBEF;
+}
+.oe_im .oe_im_users button.hide-pane:focus {
+    outline:0;
+}
+

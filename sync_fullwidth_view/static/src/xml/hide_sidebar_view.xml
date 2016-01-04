@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xml:space="preserve">
+	 <t t-extend="im_chat.InstantMessaging">
+	 	<t t-jquery=".oe_im_users" t-operation="replace">
+			<div class="oe_im_users">
+			    <button class="hide-pane" id="hidepane" type="button"> 
+			    	<div class="arrow-img"></div>
+			     </button>
+			</div> 
+		</t>
+	</t>
+</template>
