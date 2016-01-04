@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="ems_calendar_js" inherit_id="web.assets_backend"
+                  name="EMS calendar">
+            <xpath expr="." position="inside">
+                <script type="text/javascript"
+                        src="/ems/static/src/js/ems_calendar.js"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>

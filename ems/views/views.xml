@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- top level menu: no parent -->
+        <menuitem id="main_ems_menu" name="EMS"/>
+
+        <!-- A first level in the left side menu is needed
+             before using action= attribute -->
+        <menuitem id="session_menu" name="EMS"
+                  parent="main_ems_menu"/>
+
+
+        <record model="ir.actions.act_window" id="action_list_sessions">
+            <field name="name">Sessions</field>
+            <field name="res_model">ems.session</field>
+            <field name="view_mode">calendar,tree,form</field>
+        </record>
+
+        <!-- the following menuitem should appear *after*
+             its parent ems_menu and *after* its
+             action action_list_sessions -->
+        <menuitem id="menu_ems" parent="session_menu" name="Sessions" sequence="10"
+                  action="action_list_sessions"/>
+
+        <!-- Session Tree view -->
+        <record model="ir.ui.view" id="view_ems_session_tree">
+            <field name="name">Sessions</field>
+            <field name="model">ems.session</field>
+            <field name="arch" type="xml">
+                <tree string="Sessions">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Session Form view -->
+        <record model="ir.ui.view" id="view_ems_session_form">
+            <field name="name">Sessions</field>
+            <field name="model">ems.session</field>
+            <field name="arch" type="xml">
+                <form string="Sessions">
+                    <header>
+                        <button string="Confirm Session" name="button_confirm" states="draft" type="object"
+                                class="oe_highlight" groups="base.group_user"/>
+                        <button string="Finish Session" name="button_done" states="confirm" type="object"
+                                class="oe_highlight" groups="base.group_user"/>
+                        <button string="Set To Draft" name="button_draft" states="cancel,done" type="object"
+                                groups="base.group_user"/>
+                        <button string="Cancel Session" name="button_cancel" states="draft,confirm" type="object"
+                                groups="base.group_user"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group name="main_field_group">
+                            <group>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                 <field name="customer_id"/>
+                                 <field name="trainer_id"/>
+                            </group>
+                            <group>
+                                <field name="type"/>
+                                <field name="date_begin"/>
+                                <field name="date_end"/>
+                                <field name="date_tz"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string='Session Details' groups="base.group_no_one">
+                                <group colspan="4">
+                                    <field name="weight"/>
+                                </group>
+                            </page>
+                            <page string="Description">
+                                <field name="description" nolabel="1" placeholder="Session Description..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <!--div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div-->
+                </form>
+            </field>
+        </record>
+
+        <!-- Session Calendar view -->
+        <record id="view_ems_session_calendar" model="ir.ui.view">
+            <field name="name">ems.session.calendar</field>
+            <field name="model">ems.session</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <calendar color="type" date_start="date_begin" date_stop="date_end" string="Session Organization">
+                    <field name="customer_id"/>
+                    <field name="name"/>
+                    <field name="trainer_id"/>
+                </calendar>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>
