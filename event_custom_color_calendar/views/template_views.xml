@@ -5,7 +5,7 @@
                   name="Event custom calendar">
             <xpath expr="." position="inside">
                 <script type="text/javascript"
-                        src="/event_custom_calendar/static/src/js/event_custom_calendar.js"/>
+                        src="/event_custom_calendar/static/src/js/event_custom_color_calendar.js"/>
             </xpath>
         </template>
     </data>

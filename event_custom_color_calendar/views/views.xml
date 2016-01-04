@@ -19,13 +19,9 @@
             <field name="arch" type="xml">
                 <xpath expr="." position="replace">
                     <calendar color="type" date_start="date_begin" date_stop="date_end" string="Event Organization">
-                        <!--field name="name"/>
-                        <field name="type"/-->
-
-                          <field name="organizer_id"/>
-  <field name="name"/>
-    <field name="user_id"/>
-
+                        <field name="organizer_id"/>
+                        <field name="name"/>
+                        <field name="user_id"/>
                     </calendar>
                 </xpath>
             </field>

@@ -19,9 +19,16 @@
 #
 #/#############################################################################
 
-from openerp import api, models, fields, SUPERUSER_ID
-from openerp.api import Environment
 
+
+from datetime import timedelta
+
+import pytz
+
+from openerp import models, fields, api, _
+from openerp.exceptions import AccessError, Warning
+
+from openerp.api import Environment
 
 
 import logging
@@ -66,6 +73,4 @@ class event_type(models.Model):
             result.append((etype.id, '%s%s' % (etype.name, ' [%s]' % etype.color if etype.color else '')))
 
         return result
-
-
 

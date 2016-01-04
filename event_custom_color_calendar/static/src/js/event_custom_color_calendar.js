@@ -1,4 +1,4 @@
-openerp.event_custom_calendar = function (instance) {
+openerp.event_custom_color_calendar = function (instance) {
     instance.web_calendar.CalendarView = instance.web_calendar.CalendarView.extend({
         event_data_transform: function (event) {
             var res = this._super.apply(this, arguments);

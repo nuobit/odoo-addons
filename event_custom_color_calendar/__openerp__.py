@@ -20,7 +20,7 @@
 #/#############################################################################
 
 {
-    'name': "Event custom calendar",
+    'name': "Event custom color calendar",
     'version': '0.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
@@ -29,7 +29,7 @@
     'depends': ['event'],
     'data': [
         'views/views.xml',
-        'views/views2.xml',
+        'views/template_views.xml',
         ],
     'installable': True,
 }
