@@ -28,7 +28,6 @@ import pytz
 from openerp import models, fields, api, _
 from openerp.exceptions import AccessError, Warning
 
-from openerp.api import Environment
 
 
 import logging
@@ -88,7 +87,7 @@ class ems_session(models.Model):
 
     name = fields.Char(string='Session Name', translate=True, required=True,
         readonly=False, states={'done': [('readonly', True)]})
-    description = fields.Text(string='Description', translate=True,
+    description = fields.Text(string='Description', #translate=True,
         readonly=False, states={'done': [('readonly', True)]})
 
     weight = fields.Float(string='Weight', digits=(5,2),
@@ -119,6 +118,10 @@ class ems_session(models.Model):
 
     date_begin_located = fields.Datetime(string='Start Date Located', compute='_compute_date_begin_tz')
     date_end_located = fields.Datetime(string='End Date Located', compute='_compute_date_end_tz')
+
+
+    order_id = fields.Many2one('pos.order',
+        string="Order") #, required=True)
 
     state = fields.Selection([
             ('draft', 'Unconfirmed'),
@@ -200,3 +203,54 @@ class ems_session(models.Model):
     def button_confirm(self):
         """ Confirm Event and send confirmation email to all register peoples """
         self.confirm_event()
+
+
+
+class res_users(models.Model):
+    _inherit = 'res.users'
+
+    trainer = fields.Boolean(help="Check this box if this user is a trainer.")
+
+class res_partner(models.Model):
+    _inherit = 'res.partner'
+
+    ems_type = fields.Selection(selection=[('customer', 'Customer'), ('prospect', 'Prospect')],
+                                help="Select customer type")
+
+
+
+############ WIZARD #############
+
+class Wizard(models.TransientModel):
+    _name = 'ems.wizard'
+
+    def _default_session(self):
+        return self.env['ems.session'].browse(self._context.get('active_id'))
+
+    session_id = fields.Many2one('ems.session',
+        string="Session", required=True, default=_default_session)
+    #attendee_ids = fields.Many2many('res.partner', string="Attendees")
+
+    count = fields.Integer(string='Number of sessions', default=10, required=True)
+
+    @api.multi
+    def subscribe(self):
+        s = self.session_id
+        date_begin = fields.Datetime.from_string(s.date_begin)
+        date_end = fields.Datetime.from_string(s.date_end)
+        for i in range(self.count):
+
+
+            days = 7*(i+1)
+            date_begin9 = date_begin + timedelta(days=days)
+            date_end9 = date_end + timedelta(days=days)
+
+            g = self.env['ems.session'].search_count([('date_begin','<=',fields.Date.to_string(date_begin9)),
+                                                      ('date_end','>=', fields.Date.to_string(date_end9))])
+            raise Warning(g)
+
+            self.env['ems.session'].create({'name': '%s%i' % (s.name, days), 'type': s.type.id,
+                                                'date_begin': fields.Datetime.to_string(date_begin9),
+                                                'date_end': fields.Datetime.to_string(date_end9)})
+
+

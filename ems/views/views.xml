@@ -10,10 +10,12 @@
                   parent="main_ems_menu"/>
 
 
+        <!--  EMS/SESSIONSTYPE OF SESSION -->
         <record model="ir.actions.act_window" id="action_list_sessions">
             <field name="name">Sessions</field>
             <field name="res_model">ems.session</field>
             <field name="view_mode">calendar,tree,form</field>
+            <!--field name="context">{"search_default_upcoming":1}</field-->
         </record>
 
         <!-- the following menuitem should appear *after*
@@ -62,8 +64,9 @@
                         <group name="main_field_group">
                             <group>
                                 <field name="company_id" groups="base.group_multi_company"/>
-                                 <field name="customer_id"/>
-                                 <field name="trainer_id"/>
+                                <field name="customer_id" domain="[('ems_type','=','customer')]"/>
+                                <field name="trainer_id" domain="[('trainer','=',True)]"/>
+                                <field name="order_id" domain="[('partner_id','=','customer_id')]"/>
                             </group>
                             <group>
                                 <field name="type"/>
@@ -104,6 +107,102 @@
                 </calendar>
             </field>
         </record>
+
+        <!-- Session Search view -->
+        <record model="ir.ui.view" id="ems_session_search_view">
+            <field name="name">ems.session.search</field>
+            <field name="model">ems.session</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="My Sessions" help="My Sessions" domain="[('trainer_id','=',uid)]"/>
+                    <separator/>
+                    <filter string="Upcoming" name="upcoming"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
+                            help="Upcoming sessions from today"/>
+                    <separator/>
+                    <filter string="Unconfirmed" name="draft" domain="[('state','=','draft')]"
+                            help="Events in New state"/>
+                    <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
+                    <field name="customer_id"/>
+                    <field name="trainer_id"/>
+                    <field name="description"/>
+                    <field name="type"/>
+                    <field name="name"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Session Type" context="{'group_by':'type'}"/>
+                        <filter string="Status" context="{'group_by':'state'}"/>
+                        <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <!-- EMS/CONFIGURATION/TYPE OF SESSION -->
+        <record model="ir.ui.view" id="view_ems_session_type_form">
+            <field name="name">Session type</field>
+            <field name="model">ems.session.type</field>
+            <field name="arch" type="xml">
+                <form string="Event Type">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="color"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_ems_session_type_tree">
+            <field name="name">Session type</field>
+            <field name="model">ems.session.type</field>
+            <field name="arch" type="xml">
+                <tree string="Event Type">
+                    <field name="name"/>
+                    <field name="color"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_session_type">
+            <field name="name">Types of Sessions</field>
+            <field name="res_model">ems.session.type</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem name="Configuration" id="menu_ems_config_root" parent="main_ems_menu" sequence="30"/>
+        <!--menuitem name="Sessions" id="session_configuration" parent="menu_ems_config_root"/-->
+        <menuitem name="Types of Sessions" id="menu_session_type" action="action_session_type" parent="menu_ems_config_root" groups="base.group_no_one"/>
+
+
+        <!-- Creem el wizard form -->
+        <record model="ir.ui.view" id="wizard_form_view">
+            <field name="name">wizard.form</field>
+            <field name="model">ems.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Attendees">
+                    <group>
+                        <field name="session_id"/>
+                        <field name="count"/>
+                    </group>
+                    <footer>
+                        <button name="subscribe" type="object"
+                                string="Subscribe" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
+        <act_window id="launch_session_wizard"
+                    name="Add Attendees"
+                    src_model="ems.session"
+                    res_model="ems.wizard"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/>
+
 
 
     </data>

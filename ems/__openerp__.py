@@ -26,10 +26,11 @@
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
-    'depends': ['base', 'base_setup'],
+    'depends': ['base', 'base_setup', 'web_calendar', 'point_of_sale'],
     'data': [
         'views/views.xml',
         'views/template_views.xml',
+        'views/inherit_views.xml',
         ],
     'installable': True,
 }
