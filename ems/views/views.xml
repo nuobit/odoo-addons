@@ -179,7 +179,7 @@
             <field name="name">wizard.form</field>
             <field name="model">ems.wizard</field>
             <field name="arch" type="xml">
-                <form string="Add Attendees">
+                <form string="Generate sessions">
                     <group>
                         <field name="session_id"/>
                         <field name="count"/>
