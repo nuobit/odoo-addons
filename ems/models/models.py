@@ -234,23 +234,22 @@ class Wizard(models.TransientModel):
     count = fields.Integer(string='Number of sessions', default=10, required=True)
 
     @api.multi
-    def subscribe(self):
+    def generate(self):
         s = self.session_id
         date_begin = fields.Datetime.from_string(s.date_begin)
         date_end = fields.Datetime.from_string(s.date_end)
-        for i in range(self.count):
-
-
+        for i in range(self.count-1):
             days = 7*(i+1)
             date_begin9 = date_begin + timedelta(days=days)
             date_end9 = date_end + timedelta(days=days)
 
-            g = self.env['ems.session'].search_count([('date_begin','<=',fields.Date.to_string(date_begin9)),
-                                                      ('date_end','>=', fields.Date.to_string(date_end9))])
-            raise Warning(g)
+            #g = self.env['ems.session'].search_count([('date_begin','<=',fields.Date.to_string(date_begin9)),
+            #                                          ('date_end','>=', fields.Date.to_string(date_end9))])
+            #raise Warning(g)
 
             self.env['ems.session'].create({'name': '%s%i' % (s.name, days), 'type': s.type.id,
                                                 'date_begin': fields.Datetime.to_string(date_begin9),
                                                 'date_end': fields.Datetime.to_string(date_end9)})
+
 
 
