@@ -4,7 +4,7 @@ openerp.ems = function (instance) {
             var res = this._super.apply(this, arguments);
 
             var match = /^.+?(?: \[([0-9]+)\])?$/g;
-            var color = match.exec(event.type[1])[1];
+            var color = match.exec(event.service_id[1])[1];
             if (color) {
                 res.className = res.className.replace(/calendar_color_[0-9]+/g, "calendar_color_" + color);
                 res.title = res.title.replace(new RegExp(' \\['+color+'\\]$'), '');

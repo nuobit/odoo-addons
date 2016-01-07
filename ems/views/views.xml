@@ -10,7 +10,7 @@
                   parent="main_ems_menu"/>
 
 
-        <!--  EMS/SESSIONSTYPE OF SESSION -->
+        <!--  EMS/SESSIONS -->
         <record model="ir.actions.act_window" id="action_list_sessions">
             <field name="name">Sessions</field>
             <field name="res_model">ems.session</field>
@@ -31,7 +31,7 @@
             <field name="arch" type="xml">
                 <tree string="Sessions">
                     <field name="name"/>
-                    <field name="type"/>
+                    <field name="service_id"/>
                     <field name="state" invisible="1"/>
                 </tree>
             </field>
@@ -62,17 +62,22 @@
                             </h1>
                         </div>
                         <group name="main_field_group">
-                            <group>
-                                <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="customer_id" domain="[('ems_type','=','customer')]"/>
-                                <field name="trainer_id" domain="[('trainer','=',True)]"/>
-                                <field name="order_id" domain="[('partner_id','=','customer_id')]"/>
+                            <group colspan="4">
+                                <field name="service_id"/>
+                                <field name="resource_id"/>
+                                <field name="ubication_id"/>
                             </group>
                             <group>
-                                <field name="type"/>
-                                <field name="date_begin"/>
-                                <field name="date_end"/>
-                                <field name="date_tz"/>
+                                <group>
+                                    <field name="customer_id" domain="[('ems_type','=','customer')]"/>
+                                    <field name="trainer_id" domain="[('trainer','=',True)]"/>
+
+                                </group>
+                                <group>
+                                    <field name="date_begin"/>
+                                    <field name="date_end"/>
+                                    <field name="date_tz"/>
+                                </group>
                             </group>
                         </group>
                         <notebook>
@@ -100,7 +105,7 @@
             <field name="model">ems.session</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="type" date_start="date_begin" date_stop="date_end" string="Session Organization">
+                <calendar color="service_id" date_start="date_begin" date_stop="date_end" string="Session Organization">
                     <field name="customer_id"/>
                     <field name="name"/>
                     <field name="trainer_id"/>
@@ -126,11 +131,12 @@
                     <field name="customer_id"/>
                     <field name="trainer_id"/>
                     <field name="description"/>
-                    <field name="type"/>
+                    <field name="service_id"/>
+                    <field name="resource_id"/>
                     <field name="name"/>
                     <group expand="0" string="Group By">
                         <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
-                        <filter string="Session Type" context="{'group_by':'type'}"/>
+                        <filter string="Service" context="{'group_by':'service_id'}"/>
                         <filter string="Status" context="{'group_by':'state'}"/>
                         <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
                     </group>
@@ -138,40 +144,126 @@
             </field>
         </record>
 
+        <menuitem name="Configuration" id="menu_ems_config_root" parent="main_ems_menu" sequence="30"/>
 
-        <!-- EMS/CONFIGURATION/TYPE OF SESSION -->
-        <record model="ir.ui.view" id="view_ems_session_type_form">
-            <field name="name">Session type</field>
-            <field name="model">ems.session.type</field>
+        <!-- EMS/CONFIGURATION/Service -->
+        <record model="ir.ui.view" id="view_ems_service_form">
+            <field name="name">Service</field>
+            <field name="model">ems.service</field>
             <field name="arch" type="xml">
-                <form string="Event Type">
+                <form string="Service">
                     <group col="4">
                         <field name="name"/>
                         <field name="color"/>
                     </group>
+                    <group col="2">
+                        <field name="description"/>
+
+                    </group>
+                    <!--label for="resource_ids"/>
+                    <field name="resource_ids"/-->
+
+                    <field name="resource_ids">
+                        <tree string="Printing order" editable="botttom">
+                            <field name="sequence" widget="handle"/>
+                             <field name="resource_id"/>
+                        </tree>
+                    </field>
+
                 </form>
             </field>
         </record>
 
-        <record model="ir.ui.view" id="view_ems_session_type_tree">
-            <field name="name">Session type</field>
-            <field name="model">ems.session.type</field>
+        <record model="ir.ui.view" id="view_ems_service_tree">
+            <field name="name">Service</field>
+            <field name="model">ems.service</field>
             <field name="arch" type="xml">
-                <tree string="Event Type">
+                <tree string="Service">
                     <field name="name"/>
                     <field name="color"/>
                 </tree>
             </field>
         </record>
 
-        <record model="ir.actions.act_window" id="action_session_type">
-            <field name="name">Types of Sessions</field>
-            <field name="res_model">ems.session.type</field>
+        <record model="ir.actions.act_window" id="action_service">
+            <field name="name">Service</field>
+            <field name="res_model">ems.service</field>
             <field name="view_type">form</field>
         </record>
-        <menuitem name="Configuration" id="menu_ems_config_root" parent="main_ems_menu" sequence="30"/>
-        <!--menuitem name="Sessions" id="session_configuration" parent="menu_ems_config_root"/-->
-        <menuitem name="Types of Sessions" id="menu_session_type" action="action_session_type" parent="menu_ems_config_root" groups="base.group_no_one"/>
+
+        <menuitem name="Services" id="menu_service" action="action_service" parent="menu_ems_config_root"
+                  groups="base.group_no_one"/>
+
+
+        <!-- EMS/CONFIGURATION/Resource -->
+        <record model="ir.ui.view" id="view_ems_resource_form">
+            <field name="name">Resource</field>
+            <field name="model">ems.resource</field>
+            <field name="arch" type="xml">
+                <form string="Resource">
+                    <group col="4">
+                        <field name="name"/>
+                    </group>
+                    <group col="2">
+                        <field name="description"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_ems_resource_tree">
+            <field name="name">Resource</field>
+            <field name="model">ems.resource</field>
+            <field name="arch" type="xml">
+                <tree string="Resource">
+                    <field name="name"/>
+                    <!--field name="description"/-->
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_resource">
+            <field name="name">Resource</field>
+            <field name="res_model">ems.resource</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem name="Resources" id="menu_resource" action="action_resource" parent="menu_ems_config_root"
+                  groups="base.group_no_one"/>
+
+        <!-- EMS/CONFIGURATION/Ubication -->
+        <record model="ir.ui.view" id="view_ems_ubication_form">
+            <field name="name">Ubication</field>
+            <field name="model">ems.ubication</field>
+            <field name="arch" type="xml">
+                <form string="Ubication">
+                    <group col="4">
+                        <field name="name"/>
+                    </group>
+                    <group col="2">
+                        <field name="description"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_ems_ubication_tree">
+            <field name="name">Ubication</field>
+            <field name="model">ems.ubication</field>
+            <field name="arch" type="xml">
+                <tree string="Ubication">
+                    <field name="name"/>
+                    <!--field name="description"/-->
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_ubication">
+            <field name="name">Ubication</field>
+            <field name="res_model">ems.ubication</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem name="Ubications" id="menu_ubication" action="action_ubication" parent="menu_ems_config_root"
+                  groups="base.group_no_one"/>
 
 
         <!-- Creem el wizard form -->
@@ -202,7 +294,6 @@
                     view_mode="form"
                     target="new"
                     key2="client_action_multi"/>
-
 
 
     </data>

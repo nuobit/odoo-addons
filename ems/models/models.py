@@ -36,57 +36,15 @@ _logger = logging.getLogger(__name__)
 
 
 
-
-class ems_session_type(models.Model):
-    """ Session Type """
-    _name = 'ems.session.type'
-    _description = 'Session Type'
-
-    name = fields.Char(string='Session Type', required=True)
-    color = fields.Selection(selection=[(1,  'Brown'),
-                                        (2,  'Brown-Red'),
-                                        (3,  'Red'),
-                                        (4,  'Light Red'),
-                                        (5,  'Orange'),
-                                        (6,  'Light Orange'),
-                                        (8,  'Green 1'),
-                                        (7,  'Light Green 1'),
-                                        (9,  'Green 2'),
-                                        (10, 'Light Green 2'),
-                                        (11, 'Yellow'),
-                                        (12, 'Yellow-Orange'),
-                                        (13, 'Light Blue-Green'),
-                                        (14, 'Cyan'),
-                                        (15, 'Light Blue'),
-                                        (16, 'Blue'),
-                                        (17, 'Blue-Purple'),
-                                        (18, 'Light Purple'),
-                                        (23, 'Purple'),
-                                        (24, 'Dark Purple'),
-                                        (22, 'Pink'),
-                                        (19, 'Grey'),
-                                        (20, 'Grey-Light Red'),
-                                        (21, 'Grey-Red'),
-                                        ], string="Color")
-
-    @api.multi
-    def name_get(self):
-        result = []
-        for etype in self:
-            result.append((etype.id, '%s%s' % (etype.name, ' [%s]' % etype.color if etype.color else '')))
-
-        return result
-
-
-
 class ems_session(models.Model):
     """Session"""
     _name = 'ems.session'
     _description = 'Session'
     _order = 'date_begin'
 
-    name = fields.Char(string='Session Name', translate=True, required=True,
+    name = fields.Char(string='Session Number', required=True,
         readonly=False, states={'done': [('readonly', True)]})
+
     description = fields.Text(string='Description', #translate=True,
         readonly=False, states={'done': [('readonly', True)]})
 
@@ -105,8 +63,15 @@ class ems_session(models.Model):
         #default=lambda self: self.env.user.company_id.partner_id
         )
 
-    type = fields.Many2one('ems.session.type', string='Type of Session',
+    service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False, states={'done': [('readonly', True)]})
+
+    resource_id = fields.Many2one('ems.resource', string='Resource',
+        required=True, readonly=False, states={'done': [('readonly', True)]})
+
+    ubication_id = fields.Many2one('ems.ubication', string='Ubication',
+        required=True, readonly=False, states={'done': [('readonly', True)]})
+
 
     date_begin = fields.Datetime(string='Start Date', required=True,
         readonly=True, states={'draft': [('readonly', False)]})
@@ -120,8 +85,8 @@ class ems_session(models.Model):
     date_end_located = fields.Datetime(string='End Date Located', compute='_compute_date_end_tz')
 
 
-    order_id = fields.Many2one('pos.order',
-        string="Order") #, required=True)
+    #order_id = fields.Many2one('pos.order',
+    #    string="Order") #, required=True)
 
     state = fields.Selection([
             ('draft', 'Unconfirmed'),
@@ -131,6 +96,17 @@ class ems_session(models.Model):
         ], string='Status', default='draft', readonly=True, required=True, copy=False,
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
 
+    @api.model
+    def create(self, vals):
+        session =  super(ems_session, self).create(vals)
+        return session
+
+
+    @api.model
+    def _next_session(self):
+        pass
+        return "kk"
+        #return [(x, x) for x in pytz.all_timezones]
 
     @api.model
     def _tz_get(self):
@@ -205,6 +181,101 @@ class ems_session(models.Model):
         self.confirm_event()
 
 
+class ems_ubication(models.Model):
+    """ Session Type """
+    _name = 'ems.ubication'
+    _description = 'Ubication'
+
+    name = fields.Char(string='Name', required=True)
+    description = fields.Text(string='Description')
+
+
+
+class ems_service(models.Model):
+    """ Session Type """
+    _name = 'ems.service'
+    _description = 'Service'
+
+    name = fields.Char(string='Name', required=True)
+    description = fields.Text(string='Description')
+    color = fields.Selection(selection=[(1,  'Brown'),
+                                        (2,  'Brown-Red'),
+                                        (3,  'Red'),
+                                        (4,  'Light Red'),
+                                        (5,  'Orange'),
+                                        (6,  'Light Orange'),
+                                        (8,  'Green 1'),
+                                        (7,  'Light Green 1'),
+                                        (9,  'Green 2'),
+                                        (10, 'Light Green 2'),
+                                        (11, 'Yellow'),
+                                        (12, 'Yellow-Orange'),
+                                        (13, 'Light Blue-Green'),
+                                        (14, 'Cyan'),
+                                        (15, 'Light Blue'),
+                                        (16, 'Blue'),
+                                        (17, 'Blue-Purple'),
+                                        (18, 'Light Purple'),
+                                        (23, 'Purple'),
+                                        (24, 'Dark Purple'),
+                                        (22, 'Pink'),
+                                        (19, 'Grey'),
+                                        (20, 'Grey-Light Red'),
+                                        (21, 'Grey-Red'),
+                                        ], string="Color")
+
+    #resource_ids = fields.Many2many('ems.resource', 'ems_service_resource_rel', 'resource_id', 'service_id', string="Resources")
+    resource_ids = fields.One2many('ems.service.resource.rel', 'service_id')
+
+    @api.multi
+    def name_get(self):
+        result = []
+        for service in self:
+            result.append((service.id, '%s%s' % (service.name, ' [%s]' % service.color if service.color else '')))
+
+        return result
+
+
+
+
+
+class ems_resource(models.Model):
+    """Resources"""
+    _name = 'ems.resource'
+    _description = 'Resource'
+
+    name = fields.Char(string='Resource name', required=True,
+        readonly=False)
+
+    description = fields.Text(string='Description',
+        readonly=False)
+
+
+class ems_service_resource(models.Model):
+    """ Session Type """
+    _name = 'ems.service.resource.rel'
+    _description = 'Service-Resource relation'
+    _order = 'sequence'
+
+    service_id = fields.Many2one('ems.service')
+    resource_id = fields.Many2one('ems.resource')
+
+    sequence = fields.Integer('sequence', help="Sequence for the handle.")
+
+
+    _sql_constraints = [
+        ('rel_uniq', 'unique(resource_id, service_id)', 'Duplicated resources'),
+    ]
+
+
+
+
+
+
+
+
+##### Inhrits ##########33
+
 
 class res_users(models.Model):
     _inherit = 'res.users'
@@ -247,7 +318,7 @@ class Wizard(models.TransientModel):
             #                                          ('date_end','>=', fields.Date.to_string(date_end9))])
             #raise Warning(g)
 
-            self.env['ems.session'].create({'name': '%s%i' % (s.name, days), 'type': s.type.id,
+            self.env['ems.session'].create({'name': '%s%i' % (s.name, days), 'service': s.service_id.id,
                                                 'date_begin': fields.Datetime.to_string(date_begin9),
                                                 'date_end': fields.Datetime.to_string(date_end9)})
 
