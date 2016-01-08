@@ -35,6 +35,18 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class ems_center(models.Model):
+    """Session"""
+    _name = 'ems.center'
+    _description = 'Center'
+
+    name = fields.Char(string='Center name', required=True,
+        readonly=False)
+
+    description = fields.Text(string='Description',
+        readonly=False)
+
+
 
 class ems_session(models.Model):
     """Session"""
@@ -55,6 +67,10 @@ class ems_session(models.Model):
     company_id = fields.Many2one('res.company', string='Company', change_default=True,
         default=lambda self: self.env['res.company']._company_default_get('ems.session'),
         required=False, readonly=False, states={'done': [('readonly', True)]})
+
+    center_id = fields.Many2one('ems.center', string='Center', change_default=True,
+        required=True, readonly=False)
+
     trainer_id = fields.Many2one('res.users', string='Trainer',
         #default=lambda self: self.env.user,
         readonly=False, states={'done': [('readonly', True)]})
@@ -66,10 +82,10 @@ class ems_session(models.Model):
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False, states={'done': [('readonly', True)]})
 
-    resource_id = fields.Many2one('ems.resource', string='Resource',
+    resource_ids = fields.Many2many('ems.resource', string='Resources',
         required=True, readonly=False, states={'done': [('readonly', True)]})
 
-    ubication_id = fields.Many2one('ems.ubication', string='Ubication',
+    room_id = fields.Many2one('ems.room', string='Room',
         required=True, readonly=False, states={'done': [('readonly', True)]})
 
 
@@ -139,6 +155,49 @@ class ems_session(models.Model):
             self.date_end = fields.Datetime.to_string(date_begin + timedelta(hours=1))
 
 
+    #@api.model
+    @api.onchange('center_id', 'service_id', 'date_begin', 'date_end')
+    def _onchange_session(self):
+        if not self.center_id or not self.service_id or not self.date_begin or not self.date_end:
+            return
+        trobat = False
+        for s in self.service_id.room_ids.sorted(lambda x: x.sequence).filtered(lambda x: x.room_id.center_id==self.center_id):
+            sessions = self.env['ems.session'].search([
+                ('center_id', '=', s.room_id.center_id.id),
+                ('room_id', '=', s.room_id.id),
+                ('date_begin','<',self.date_end),
+                ('date_end','>',self.date_begin),
+
+            ])
+            if len(sessions)!=0:
+                continue
+                #raise Warning('ja hi ha altres sessions en a sala %s en aquest horari %s - %s -> %i' % (self.room_id, self.date_begin, self.date_end, sessions))
+
+            t = self.env['ems.session'].search([
+                    ('center_id', '=', s.room_id.center_id.id),
+                    ('date_begin','<',self.date_end),
+                    ('date_end','>',self.date_begin),
+                ])
+            usats = False
+            for r in s.resource_ids:
+                for j in t:
+                    if r in j.resource_ids:
+                        usats=True
+                        break
+                if usats:
+                    break
+            if usats:
+                continue
+
+            self.room_id=s.room_id
+            self.resource_ids=s.resource_ids
+            trobat = True
+            break
+
+        if not trobat:
+            raise Warning('No sha trobat cap coombinacio possible, no es pot realitzar la sessio en les datres, servei i cenr escollit')
+
+
 
     @api.multi
     @api.depends('name', 'date_begin', 'date_end')
@@ -181,13 +240,18 @@ class ems_session(models.Model):
         self.confirm_event()
 
 
-class ems_ubication(models.Model):
-    """ Session Type """
-    _name = 'ems.ubication'
-    _description = 'Ubication'
+class ems_room(models.Model):
+    """ Room """
+    _name = 'ems.room'
+    _description = 'Room'
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
+
+    center_id = fields.Many2one('ems.center', string='Center',
+        required=True, readonly=False)
+
+    service_ids = fields.One2many('ems.room.service.rel', 'room_id', string="Services")
 
 
 
@@ -225,7 +289,8 @@ class ems_service(models.Model):
                                         ], string="Color")
 
     #resource_ids = fields.Many2many('ems.resource', 'ems_service_resource_rel', 'resource_id', 'service_id', string="Resources")
-    resource_ids = fields.One2many('ems.service.resource.rel', 'service_id')
+    #resource_ids = fields.One2many('ems.service.resource.rel', 'service_id')
+    room_ids = fields.One2many('ems.room.service.rel', 'service_id', string="Rooms")
 
     @api.multi
     def name_get(self):
@@ -236,7 +301,34 @@ class ems_service(models.Model):
         return result
 
 
+class ems_room_service(models.Model):
+    """ Session Type """
+    _name = 'ems.room.service.rel'
+    _description = 'Room-Service relation'
+    _order = 'sequence'
 
+    room_id = fields.Many2one('ems.room', string="Room")
+    service_id = fields.Many2one('ems.service', string="Service")
+
+    resource_ids = fields.Many2many('ems.resource', string='Resources',
+        required=True, readonly=False)
+
+    sequence = fields.Integer('sequence', help="Sequence for the handle.", default=1)
+
+    '''
+    _sql_constraints = [
+        ('rel_uniq', 'unique(room_id, service_id)', 'Duplicated room'),
+        ('seq_uniq', 'unique(service_id, sequence)', 'Duplicated sequence'),
+    ]
+    '''
+
+
+    @api.model
+    def create(self, vals):
+        emssr =  super(ems_room_service, self).create(vals)
+
+        #self.env['ems.service.resource.rel'].search([('service_id','=',emssr.service_id)])
+        return emssr
 
 
 class ems_resource(models.Model):
@@ -247,28 +339,11 @@ class ems_resource(models.Model):
     name = fields.Char(string='Resource name', required=True,
         readonly=False)
 
+    center_id = fields.Many2one('ems.center', string='Center', change_default=True,
+        required=True, readonly=False)
+
     description = fields.Text(string='Description',
         readonly=False)
-
-
-class ems_service_resource(models.Model):
-    """ Session Type """
-    _name = 'ems.service.resource.rel'
-    _description = 'Service-Resource relation'
-    _order = 'sequence'
-
-    service_id = fields.Many2one('ems.service')
-    resource_id = fields.Many2one('ems.resource')
-
-    sequence = fields.Integer('sequence', help="Sequence for the handle.")
-
-
-    _sql_constraints = [
-        ('rel_uniq', 'unique(resource_id, service_id)', 'Duplicated resources'),
-    ]
-
-
-
 
 
 

@@ -62,10 +62,11 @@
                             </h1>
                         </div>
                         <group name="main_field_group">
-                            <group colspan="4">
+                            <group colspan="2">
+                                <field name="center_id"/>
                                 <field name="service_id"/>
-                                <field name="resource_id"/>
-                                <field name="ubication_id"/>
+                                <field name="room_id"/>
+                                <field name="resource_ids" string="Resources" widget="many2many_tags"/>
                             </group>
                             <group>
                                 <group>
@@ -132,7 +133,8 @@
                     <field name="trainer_id"/>
                     <field name="description"/>
                     <field name="service_id"/>
-                    <field name="resource_id"/>
+                    <field name="resource_ids"/>
+                    <field name="room_id"/>
                     <field name="name"/>
                     <group expand="0" string="Group By">
                         <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
@@ -146,6 +148,42 @@
 
         <menuitem name="Configuration" id="menu_ems_config_root" parent="main_ems_menu" sequence="30"/>
 
+
+        <!-- EMS/CONFIGURATION/Center -->
+        <record model="ir.ui.view" id="view_ems_center_form">
+            <field name="name">Center</field>
+            <field name="model">ems.center</field>
+            <field name="arch" type="xml">
+                <form string="Center">
+                    <group col="4">
+                        <field name="name"/>
+                    </group>
+                    <group col="2">
+                        <field name="description"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_ems_enter_tree">
+            <field name="name">Center</field>
+            <field name="model">ems.center</field>
+            <field name="arch" type="xml">
+                <tree string="Center">
+                    <field name="name"/>
+                    <!--field name="description"/-->
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_center">
+            <field name="name">Center</field>
+            <field name="res_model">ems.center</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem name="Centers" id="menu_center" action="action_center" parent="menu_ems_config_root"
+                  groups="base.group_no_one"/>
+
         <!-- EMS/CONFIGURATION/Service -->
         <record model="ir.ui.view" id="view_ems_service_form">
             <field name="name">Service</field>
@@ -158,15 +196,12 @@
                     </group>
                     <group col="2">
                         <field name="description"/>
-
                     </group>
-                    <!--label for="resource_ids"/>
-                    <field name="resource_ids"/-->
-
-                    <field name="resource_ids">
+                    <field name="room_ids">
                         <tree string="Printing order" editable="botttom">
                             <field name="sequence" widget="handle"/>
-                             <field name="resource_id"/>
+                            <field name="room_id"/>
+                            <field name="resource_ids" widget="many2many_tags"/>
                         </tree>
                     </field>
 
@@ -194,6 +229,68 @@
         <menuitem name="Services" id="menu_service" action="action_service" parent="menu_ems_config_root"
                   groups="base.group_no_one"/>
 
+        <!-- EMS/CONFIGURATION/Room -->
+        <record model="ir.ui.view" id="view_ems_room_form">
+            <field name="name">Room</field>
+            <field name="model">ems.room</field>
+            <field name="arch" type="xml">
+                <form string="Room">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="center_id"/>
+                    </group>
+                    <group col="2">
+                        <field name="description"/>
+                    </group>
+                    <group col="2">
+                        <field name="service_ids">
+                            <tree string="Printing order"> <!-- editable="botttom"-->
+                                <field name="sequence" widget="handle"/>
+                                <field name="service_id"/>
+                                <field name="resource_ids" widget="many2many_tags"/>
+                            </tree>
+                        </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_ems_room_tree">
+            <field name="name">Room</field>
+            <field name="model">ems.room</field>
+            <field name="arch" type="xml">
+                <tree string="Room">
+                    <field name="name"/>
+                    <!--field name="description"/-->
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_room">
+            <field name="name">Room</field>
+            <field name="res_model">ems.room</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem name="Rooms" id="menu_room" action="action_room" parent="menu_ems_config_root"
+                  groups="base.group_no_one"/>
+
+
+        <!-- EMS/CONFIGURATION/Room_Service -->
+        <record model="ir.ui.view" id="view_ems_room_service_form">
+            <field name="name">Room Service</field>
+            <field name="model">ems.room.service.rel</field>
+            <field name="arch" type="xml">
+                <form string="Room Service">
+                    <group>
+                        <field name="sequence" invisible="1"/>
+                        <field name="service_id"/>
+                    </group>
+                    <group col="4">
+                        <field name="resource_ids" widget="many2many"/>
+                    </group>
+                </form>
+            </field>
+        </record>
 
         <!-- EMS/CONFIGURATION/Resource -->
         <record model="ir.ui.view" id="view_ems_resource_form">
@@ -203,6 +300,7 @@
                 <form string="Resource">
                     <group col="4">
                         <field name="name"/>
+                        <field name="center_id"/>
                     </group>
                     <group col="2">
                         <field name="description"/>
@@ -228,41 +326,6 @@
             <field name="view_type">form</field>
         </record>
         <menuitem name="Resources" id="menu_resource" action="action_resource" parent="menu_ems_config_root"
-                  groups="base.group_no_one"/>
-
-        <!-- EMS/CONFIGURATION/Ubication -->
-        <record model="ir.ui.view" id="view_ems_ubication_form">
-            <field name="name">Ubication</field>
-            <field name="model">ems.ubication</field>
-            <field name="arch" type="xml">
-                <form string="Ubication">
-                    <group col="4">
-                        <field name="name"/>
-                    </group>
-                    <group col="2">
-                        <field name="description"/>
-                    </group>
-                </form>
-            </field>
-        </record>
-
-        <record model="ir.ui.view" id="view_ems_ubication_tree">
-            <field name="name">Ubication</field>
-            <field name="model">ems.ubication</field>
-            <field name="arch" type="xml">
-                <tree string="Ubication">
-                    <field name="name"/>
-                    <!--field name="description"/-->
-                </tree>
-            </field>
-        </record>
-
-        <record model="ir.actions.act_window" id="action_ubication">
-            <field name="name">Ubication</field>
-            <field name="res_model">ems.ubication</field>
-            <field name="view_type">form</field>
-        </record>
-        <menuitem name="Ubications" id="menu_ubication" action="action_ubication" parent="menu_ems_config_root"
                   groups="base.group_no_one"/>
 
 
