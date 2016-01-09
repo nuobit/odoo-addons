@@ -82,11 +82,11 @@ class ems_session(models.Model):
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False, states={'done': [('readonly', True)]})
 
-    resource_ids = fields.Many2many('ems.resource', string='Resources',
-        required=True, readonly=False, states={'done': [('readonly', True)]})
-
     room_id = fields.Many2one('ems.room', string='Room',
-        required=True, readonly=False, states={'done': [('readonly', True)]})
+        required=False, readonly=False, states={'done': [('readonly', True)]})
+
+    resource_ids = fields.Many2many('ems.resource', string='Resources',
+        required=False, readonly=False, states={'done': [('readonly', True)]})
 
 
     date_begin = fields.Datetime(string='Start Date', required=True,
@@ -154,14 +154,26 @@ class ems_session(models.Model):
             date_begin = fields.Datetime.from_string(self.date_begin)
             self.date_end = fields.Datetime.to_string(date_begin + timedelta(hours=1))
 
+    @api.onchange('center_id')
+    def onchange_centre(self):
+        service_ids = self.env['ems.room.service.rel'].search([('room_id.center_id','=',self.center_id.id)]).mapped('service_id.id')
 
-    #@api.model
-    @api.onchange('center_id', 'service_id', 'date_begin', 'date_end')
-    def _onchange_session(self):
-        if not self.center_id or not self.service_id or not self.date_begin or not self.date_end:
-            return
-        trobat = False
-        for s in self.service_id.room_ids.sorted(lambda x: x.sequence).filtered(lambda x: x.room_id.center_id==self.center_id):
+        self.service_id = False
+        self.room_id = False
+        self.resource_ids = False
+
+        res = dict(domain={'service_id': [('id', 'in', service_ids)]})
+
+        return res
+
+
+    @api.onchange('service_id', 'date_begin', 'date_end')
+    def onchange_service(self):
+        domains = {}
+        ids = []
+        ids2 = []
+        ids22 = []
+        for s in self.service_id.room_ids.filtered(lambda x: x.room_id.center_id==self.center_id).sorted(lambda x: x.sequence):
             sessions = self.env['ems.session'].search([
                 ('center_id', '=', s.room_id.center_id.id),
                 ('room_id', '=', s.room_id.id),
@@ -169,15 +181,15 @@ class ems_session(models.Model):
                 ('date_end','>',self.date_begin),
 
             ])
-            if len(sessions)!=0:
-                continue
-                #raise Warning('ja hi ha altres sessions en a sala %s en aquest horari %s - %s -> %i' % (self.room_id, self.date_begin, self.date_end, sessions))
+            if len(sessions)==0:
+                ids.append(s.room_id.id)
 
             t = self.env['ems.session'].search([
                     ('center_id', '=', s.room_id.center_id.id),
                     ('date_begin','<',self.date_end),
                     ('date_end','>',self.date_begin),
                 ])
+
             usats = False
             for r in s.resource_ids:
                 for j in t:
@@ -186,17 +198,26 @@ class ems_session(models.Model):
                         break
                 if usats:
                     break
-            if usats:
-                continue
+            if not usats:
+                ids2.append(s.resource_ids)
+                ids22+=s.resource_ids.mapped('id')
 
-            self.room_id=s.room_id
-            self.resource_ids=s.resource_ids
-            trobat = True
-            break
+        domains.update({'room_id': [('id', 'in', ids)]})
+        if ids!=[]:
+            self.room_id = ids[0]
+        else:
+            self.room_id = False
 
-        if not trobat:
-            raise Warning('No sha trobat cap coombinacio possible, no es pot realitzar la sessio en les datres, servei i cenr escollit')
+        domains.update({'resource_ids': [('id', 'in', ids22)]})
+        if ids2!=[]:
+            self.resource_ids = ids2[0]
+        else:
+            self.resource_ids = False
 
+        if len(domains)!=0:
+            res = dict(domain=domains)
+
+        return res
 
 
     @api.multi

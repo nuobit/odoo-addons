@@ -63,10 +63,10 @@
                         </div>
                         <group name="main_field_group">
                             <group colspan="2">
-                                <field name="center_id"/>
-                                <field name="service_id"/>
-                                <field name="room_id"/>
-                                <field name="resource_ids" string="Resources" widget="many2many_tags"/>
+                                <field name="center_id" options="{'no_create': True}"/>
+                                <field name="service_id" options="{'no_create': True}"/>
+                                <field name="room_id" options="{'no_create': True}"/>
+                                <field name="resource_ids" string="Resources" widget="many2many_tags" options="{'no_create': True}"/>
                             </group>
                             <group>
                                 <group>
