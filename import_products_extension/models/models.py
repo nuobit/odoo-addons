@@ -33,7 +33,7 @@ import unicodedata
 import string
 
 from openerp import models, fields, api, _
-from openerp.exceptions import AccessError, Warning
+from openerp.exceptions import AccessError, Warning, ValidationError
 
 
 
@@ -59,23 +59,47 @@ class import_header(models.Model):
     quotechar = fields.Char(string='Quotechar', required=True,
         readonly=False, default='"')
 
-    strip_fields = fields.Boolean(string='Strip values', required=True,
+    strip_fields = fields.Boolean(string='Strip values', #required=True,
         readonly=False, default=True)
 
-    update_name = fields.Boolean(string='Update Name', required=True,
+
+    update_name = fields.Boolean(string='Update Name', #required=True,
         readonly=False, default=False)
 
-    update_category = fields.Boolean(string='Update Category', required=True,
+    update_ean13 = fields.Boolean(string='Update EAN', #required=True,
         readonly=False, default=False)
 
-    update_ean = fields.Boolean(string='Update EAN', required=True,
+    update_saleprice = fields.Boolean(string='Update Sale Price', #required=True,
         readonly=False, default=False)
 
-    update_saleprice = fields.Boolean(string='Update Sale Price', required=True,
-        readonly=False, default=False)
-
-    update_purchaseprice = fields.Boolean(string='Update Puechase Price', required=True,
+    update_purchaseprice = fields.Boolean(string='Update Purchase Price', #required=True,
         readonly=False, default=True)
+
+    update_category = fields.Boolean(string='Update Category', #required=True,
+        readonly=False, default=False)
+
+
+    create_product = fields.Boolean(string='Create Product if not exists', #required=True,
+        readonly=False, default=False)
+
+    create_category = fields.Boolean(string='Create Category if not exists', #required=True,
+        readonly=False, default=False)
+
+    create_supplier = fields.Boolean(string='Create Suppiler Info',
+        help="Create Supplier Info eventhough purchase price is not defined",
+        #required=True,
+        readonly=False, default=False)
+
+
+    sale_delay = fields.Float(string='Customer Lead Time', required=True,
+        readonly=False, default=0)
+
+    purchase_delay = fields.Float(string='Delivery Lead Time', required=True,
+        readonly=False, default=0)
+
+    product_type = fields.Selection([('product', 'Stockable Product'), ('consu', 'Consumable'), ('service', 'Service')],
+        'Product Type', required=True, default='product',
+        help="Consumable: Will not imply stock management for this product. \nStockable product: Will imply stock management for this product.")
 
     description = fields.Text(string='Description',
         readonly=False)
@@ -101,12 +125,13 @@ class import_header(models.Model):
         txt = re.sub(r'\n*$','' ,txt,flags=re.DOTALL)
 
         for i, line in enumerate(txt.split('\n')):
-            field_values = self._split_line(line)
+            field_values = [x.strip() if self.strip_fields else x for x in self._split_line(line)]
             if i==0:
-                header = [x.strip() if self.strip_fields else x for x in field_values]
+                header = field_values
             else:
                 if len(header)!=len(field_values):
                     raise Warning("Differnet field number i line %i" % i+1)
+                field_values = [x if x!='' else None for x in field_values]
                 fields = dict(zip(header, field_values))
                 fields.update(header_id=self.id)
                 self.env['epe.line'].create(fields)
@@ -114,6 +139,7 @@ class import_header(models.Model):
 
     def _check_float_format(self, r):
         v = None
+
         if re.search('^[0-9]+$', r) is not None:
             v = r
         if re.search('^[0-9]+,[0-9]+$', r) is not None:
@@ -134,52 +160,158 @@ class import_header(models.Model):
     @api.multi
     def update(self):
         for line in self.line_ids:
-            upd = {}
-            # test if arady exists another product with the same internal refernee
+            # check if product exists (defualt_code)
+            if not line.default_code:
+                line.status='error'
+                line.observations="Internal reference cannot be null"
+                continue
+
+            product = {}
             pp = self.env['product.product'].search([('default_code','=', line.default_code)])
             if len(pp)>1:
                 line.status='error'
-                line.observations="There's more than one product with th same internart refencce"
+                line.observations="There's more than one product with the same internal reference"
                 continue
-            elif len(pp)==1:
-                line.status='updated'
             else:
-                line.status='created'
+                product['status'] = 'update' if len(pp)==1 else 'create'
 
-            # test if category exists
-            if self.update_category:
-                nc = []
-                for cat in self.env['product.category'].search([]):
-                    if self._slugify(cat.name)==self._slugify(line.category):
-                        nc.append(cat)
-                if len(nc)==0:
-                    line.observations='Category did not exists, it was created'
-
-                elif len(nc)==1:
-                    if self._slugify(nc[0].name)!=self._slugify(line.category):
-                        line.observations = "Used category %s instead of %s" % (nc[0].name, line.category)
-                    line.category = nc[0].name
-                    upd.update({'categ_id': nc[0].id})
-                else:
+            # check pricelist_sale
+            if line.pricelist_sale:
+                price = self._check_float_format(line.pricelist_sale)
+                if price is None:
                     line.status='error'
-                    line.observations="There's more than one category wity the same slug %s" % nc
+                    line.observations='Unknown float format'
                     continue
+                else:
+                    line.pricelist_sale = price
 
-            pl = self._check_float_format(line.pricelist_sale)
-            if pl is None:
-                line.status='error'
-                line.observations='Unknown float format'
-                continue
-            else:
-               line.pricelist_sale = pl
+            # check purchase priceist
+            if line.pricelist_purchase:
+                price = self._check_float_format(line.pricelist_purchase)
+                if price is None:
+                    line.status='error'
+                    line.observations='Unknown float format'
+                    continue
+                else:
+                    line.pricelist_purchase = price
 
-            pl = self._check_float_format(line.pricelist_purchase)
-            if pl is None:
-                line.status='error'
-                line.observations='Unknown float format'
-                continue
+            cat, cat_status = None, None
+            nc = []
+            for cat in self.env['product.category'].search([]):
+                if self._slugify(cat.name)==self._slugify(line.category):
+                    nc.append(cat)
+            if len(nc)==0:
+                line.observations='Category did not exist, it was created'
+                cat_status = 'create'
+            elif len(nc)==1:
+                if self._slugify(nc[0].name)!=self._slugify(line.category):
+                    line.observations = "Used category %s instead of %s" % (nc[0].name, line.category)
+                    line.category = nc[0].name
+                cat_status = 'exists'
+                cat = nc[0]
             else:
-               line.pricelist_purchase = pl
+                line.status='error'
+                line.observations="There's more than one category wity the same slug %s" % nc
+                continue
+
+            product['data'] = {'sale_delay': self.sale_delay, 'type': self.product_type}
+
+            # defultt_code, name, ean13 , pricelist_sale
+            if product['status'] == 'update':
+                product['object'] = pp
+                if self.update_name:
+                    if line.name:
+                        product['data'].update({'name': line.name })
+                if self.update_ean13:
+                    if line.ean13:
+                        product['data'].update({'ean13': line.ean13 })
+                if self.update_saleprice:
+                    if line.pricelist_sale:
+                        product['data'].update({'lst_price': float(line.pricelist_sale) })
+                if self.update_purchaseprice:
+                    if line.pricelist_purchase:
+                        if not self.supplier_id.id:
+                            line.status='error'
+                            line.observations='If thers a purchase pricelist it must be a supplier'
+                            continue
+                        else:
+                            suppinfo = pp.seller_ids.filtered(lambda x: x.name==self.supplier_id)
+                            if len(suppinfo)>1:
+                                line.status='error'
+                                line.observations='There is more then one supplier difined'
+                                continue
+                            elif len(suppinfo)==0:
+                                product['data'].update({'seller_ids': [(0,_, {'name': self.supplier_id, 'delay': self.purchase_delay,
+                                                                          'pricelist_ids': [(0,_,{'min_quantity': 0,
+                                                                                                  'price': float(line.pricelist_purchase)})]})]})
+                            else:
+                                plist = suppinfo.pricelist_ids
+                                if len(plist)>1:
+                                    plist0 = plist.filtered(lambda x: x.min_quantity==0)
+                                    line.status='error'
+                                    if len(plist0)==0:
+                                        line.observations='There is more than one purchase plristlit and none is 0'
+                                    elif len(plist0)==1:
+                                        line.observations='There is more than one purchase plristlit and one is 0'
+                                    else:
+                                        line.observations='There is more than one purchase plristlit and theres more than one  0'
+                                    continue
+                                elif len(plist)==0:
+                                    product['data'].update({'seller_ids': [(1, suppinfo.id, {
+                                                                          'pricelist_ids': [(0,_,{'min_quantity': 0,
+                                                                                                  'price': float(line.pricelist_purchase)})]})]})
+                                else:
+                                    product['data'].update({'seller_ids': [(1, suppinfo.id, {
+                                                                          'pricelist_ids': [(1, plist.id, {'price': float(line.pricelist_purchase)})]})]})
+                if self.update_category:
+                    if cat_status == 'exists':
+                        product['data'].update({'categ_id': cat.id})
+                    else:
+                        product['category']={'status': 'create', 'data': {'name': line.category}}
+            else:
+                if not self.create_product:
+                    continue
+                product['data'].update({'default_code': line.default_code })
+                if not line.name:
+                    line.status='error'
+                    line.observations='Desciption cannot be null'
+                    continue
+                else:
+                    product['data'].update({'name': line.name})
+                if line.ean13:
+                    product['data'].update({'ean13':line.ean13})
+
+                if cat_status == 'exists':
+                    product['data'].update({'categ_id': cat.id})
+                else:
+                    product['category']={'status': 'create', 'data': {'name': line.category}}
+
+                if not line.pricelist_purchase:
+                    if self.supplier_id.id:
+                        if self.create_supplier:
+                            product['data'].update({'seller_ids': [(0,_, {'name': self.supplier_id, 'delay': self.purchase_delay })]})
+                else:
+                    if not self.supplier_id.id:
+                        line.status='error'
+                        line.observations='If thers a purchase pricelist it must be a supplier'
+                        continue
+                    else:
+                        product['data'].update({'seller_ids': [(0,_, {'name': self.supplier_id, 'delay': self.purchase_delay,
+                                                                      'pricelist_ids': [(0,_,{'min_quantity': 0,
+                                                                                'price': float(line.pricelist_purchase)})]})]})
+            ## desem
+            if product.get('category') is not None:
+                if product['category']['status']=='create':
+                    cat = self.env['product.category'].create(product['category']['data'])
+                    product['data'].update({'categ_id': cat.id})
+
+            if product['status']=='update':
+                product['object'].write(product['data'])
+            else:
+                self.env['product.product'].create(product['data'])
+
+            line.status = 'ok'
+
 
 
 

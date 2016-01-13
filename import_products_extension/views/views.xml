@@ -56,9 +56,19 @@
                         <group name="main_field_group3" col="4">
                             <field name="update_name"/>
                             <field name="update_category"/>
-                            <field name="update_ean"/>
+                            <field name="update_ean13"/>
                             <field name="update_saleprice"/>
                             <field name="update_purchaseprice"/>
+                        </group>
+                        <group name="main_field_group13" col="4">
+                            <field name="create_product"/>
+                            <field name="create_category"/>
+                            <field name="create_supplier"/>
+                        </group>
+                        <group name="main_field_group139" col="4">
+                            <field name="product_type"/>
+                            <field name="sale_delay"/>
+                            <field name="purchase_delay"/>
                         </group>
                         <group name="main_field_group4">
                             <field name="datas" filename="datas_fname"/>
