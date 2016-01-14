@@ -1,0 +1,511 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* import_products_extension
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-14 13:06+0000\n"
+"PO-Revision-Date: 2016-01-14 13:06+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:308
+#, python-format
+msgid " and just one has quantity=0"
+msgstr " y sólo una tiene cantidad=0"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:310
+#, python-format
+msgid " and more than one has quantity=0"
+msgstr " y más de una tiene cantidad=0"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:306
+#, python-format
+msgid " and none has quantity=0"
+msgstr " y ninguna tiene cantidad=0"
+
+#. module: import_products_extension
+#: field:epe.line,category:0
+msgid "Category"
+msgstr "Categoría"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:247
+#, python-format
+msgid "Category did not exist, it was created"
+msgstr "La Categoría no existe, has sido creada"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:361
+#, python-format
+msgid "Category did not exist. Enable \"Create Category\" on create options to create it"
+msgstr "La Categoría no existe. Activa \"Crear Categoría\" en las opciones de creación"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:329
+#, python-format
+msgid "Category did not exist. Enable \"Create Category\" on update options to create it"
+msgstr "La Categoría no existe. Activa \"Crear Categoría\" en las opciones de actualización"
+
+#. module: import_products_extension
+#: selection:epe.header,product_type:0
+msgid "Consumable"
+msgstr "Consumible"
+
+#. module: import_products_extension
+#: help:epe.header,product_type:0
+msgid "Consumable: Will not imply stock management for this product. \n"
+"Stockable product: Will imply stock management for this product."
+msgstr "Consumable: Will not imply stock management for this product. \n"
+"Stockable product: Will imply stock management for this product."
+
+#. module: import_products_extension
+#: field:epe.header,create_category_oncreate:0
+#: field:epe.header,create_category_onupdate:0
+msgid "Create Category"
+msgstr "Crear Categoría"
+
+#. module: import_products_extension
+#: help:epe.header,create_category_oncreate:0
+msgid "Create Category if not exists"
+msgstr "Crear Categoría si no existe"
+
+#. module: import_products_extension
+#: field:epe.header,create_product:0
+msgid "Create Product"
+msgstr "Crear Producto"
+
+#. module: import_products_extension
+#: help:epe.header,create_product:0
+msgid "Create Product if not exists"
+msgstr "Crear Producto si no existe"
+
+#. module: import_products_extension
+#: help:epe.header,create_supplier:0
+msgid "Create Supplier Info although Purchase Pricelist is null"
+msgstr "Crear Información del Proveedor aunque el Precio de Compra sea nulo"
+
+#. module: import_products_extension
+#: field:epe.header,create_supplier:0
+msgid "Create always Supplier Info"
+msgstr "Crear siempre la Información del Proveedor"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Create defaults"
+msgstr "Valores de Creación"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Create options"
+msgstr "Opciones de Creación"
+
+#. module: import_products_extension
+#: field:epe.header,create_uid:0
+#: field:epe.line,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: import_products_extension
+#: field:epe.header,create_date:0
+#: field:epe.line,create_date:0
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:252
+#, python-format
+msgid "Current language '%s' does not have that Category but other languages do: '%s'"
+msgstr "El idioma actual '%s' no tiene traducción para esta Categoría pero otros idiomas si: '%s'"
+
+#. module: import_products_extension
+#: field:epe.header,sale_delay:0
+msgid "Customer Lead Time"
+msgstr "Tiempo de entrega de proveedor"
+
+#. module: import_products_extension
+#: field:epe.header,date_import:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: import_products_extension
+#: field:epe.header,delimiter:0
+msgid "Delimitar"
+msgstr "Delimitador"
+
+#. module: import_products_extension
+#: field:epe.header,purchase_delay:0
+msgid "Delivery Lead Time"
+msgstr "Plazo de entrega del cliente"
+
+#. module: import_products_extension
+#: field:epe.header,show_status:0
+msgid "Show Status"
+msgstr "Mostrar estado"
+
+
+#. module: import_products_extension
+#: field:epe.header,name:0
+#: field:epe.line,name:0
+msgid "Description"
+msgstr "Descripción"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:340
+#, python-format
+msgid "Description cannot be null"
+msgstr "La Descripción no puede ser nula"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:476
+#: selection:epe.line,status:0
+#: selection:epe.header,show_status:0
+#, python-format
+msgid "Done"
+msgstr "Hecho"
+
+#. module: import_products_extension
+#: field:epe.line,ean13:0
+msgid "EAN"
+msgstr "EAN"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:476
+#: selection:epe.line,status:0
+#: selection:epe.header,show_status:0
+#, python-format
+msgid "Error"
+msgstr "Error"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:245
+#, python-format
+msgid "Exists an english source with the Category but explicit english language is not defined"
+msgstr "Existe una base de traducción en inglés de la Categoría pero la definición explícita par idioma inglés no está definida"
+
+#. module: import_products_extension
+#: field:epe.header,datas:0
+msgid "File"
+msgstr "Fichero"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "File format"
+msgstr "Formato del fichero"
+
+#. module: import_products_extension
+#: field:epe.header,datas_fname:0
+msgid "Filename"
+msgstr "Nombre del fichero"
+
+#. module: import_products_extension
+#: model:ir.model,name:import_products_extension.model_epe_header
+msgid "Header"
+msgstr "Cabecera"
+
+#. module: import_products_extension
+#: field:epe.line,header_id:0
+msgid "Header id"
+msgstr "Id de cabecera"
+
+#. module: import_products_extension
+#: field:epe.header,id:0
+#: field:epe.line,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: import_products_extension
+#: help:epe.header,create_category_onupdate:0
+msgid "If 'Update Category' is selected create Category if not exists. If 'Update Category' is not selected it has no effect"
+msgstr "Si 'Actualizar Categoría' está seleccionado, creara la Categoría si no existe. Si 'Actualizar Categoría' no está seleccionada esta opción no tiene efecto"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:287
+#: code:addons/import_products_extension/models/models.py:371
+#, python-format
+msgid "If there is a Purchase Pricelist the Supplier cannot be null"
+msgstr "Si el Precio de Compra no es nulo es obligatori seleccionar el Proveedor"
+
+#. module: import_products_extension
+#: model:ir.model,name:import_products_extension.model_epe_line
+msgid "Import Lines"
+msgstr "Lineas de importación"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+#: view:epe.header:import_products_extension.view_epe_header_tree
+#: model:ir.actions.act_window,name:import_products_extension.action_imports
+#: model:ir.ui.menu,name:import_products_extension.epe_menu_imports
+msgid "Imports"
+msgstr "Importaciones"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:143
+#, python-format
+msgid "Incorrect field number in line %i"
+msgstr "Número de campos incorrectos en la linea %i"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:278
+#: code:addons/import_products_extension/models/models.py:349
+#, python-format
+msgid "Invalid \"EAN13 Barcode\""
+msgstr "\"EAN13 Barcode\" incorrecto"
+
+#. module: import_products_extension
+#: field:epe.header,write_uid:0
+#: field:epe.line,write_uid:0
+msgid "Last Updated by"
+msgstr "Modificado por"
+
+#. module: import_products_extension
+#: field:epe.header,write_date:0
+#: field:epe.line,write_date:0
+msgid "Last Updated on"
+msgstr "Modificado el"
+
+#. module: import_products_extension
+#: field:epe.header,line_ids:0
+msgid "Line ids"
+msgstr "Line ids"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Load file"
+msgstr "Cargar fichero"
+
+#. module: import_products_extension
+#: field:epe.line,observations:0
+msgid "Observations"
+msgstr "Observaciones"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:476
+#: selection:epe.line,status:0
+#: selection:epe.header,show_status:0
+#, python-format
+msgid "Pending"
+msgstr "Pendiente"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Product"
+msgstr "Producto"
+
+#. module: import_products_extension
+#: field:epe.header,product_type:0
+msgid "Product Type"
+msgstr "Tipo de producto"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:334
+#, python-format
+msgid "Product does not exist. Enable 'Create Product' to create it"
+msgstr "El producto no existe. Activa 'Crear producto' para crearlo"
+
+#. module: import_products_extension
+#: field:epe.line,pricelist_purchase:0
+msgid "Purchase Pricelist"
+msgstr "Precio de Compra"
+
+#. module: import_products_extension
+#: field:epe.header,quotechar:0
+msgid "Quotechar"
+msgstr "Carácter de texto"
+
+#. module: import_products_extension
+#: field:epe.line,default_code:0
+msgid "Reference"
+msgstr "Referencia"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:182
+#, python-format
+msgid "Reference cannot be null"
+msgstr "La Referancia no puede ser nula"
+
+#. module: import_products_extension
+#: help:epe.header,strip_fields:0
+msgid "Remove trail and leading spaces of each field"
+msgstr "Elimina nos espacios traseros y delanteros de cada campo"
+
+#. module: import_products_extension
+#: field:epe.line,pricelist_sale:0
+msgid "Sale Pricelist"
+msgstr "Precio de Venta"
+
+#. module: import_products_extension
+#: selection:epe.header,product_type:0
+msgid "Service"
+msgstr "Servicio"
+
+#. module: import_products_extension
+#: field:epe.line,status:0
+msgid "Status"
+msgstr "Estado"
+
+#. module: import_products_extension
+#: selection:epe.header,product_type:0
+msgid "Stockable Product"
+msgstr "Estocable"
+
+#. module: import_products_extension
+#: field:epe.header,strip_fields:0
+msgid "Strip values"
+msgstr "Recortar valores"
+
+#. module: import_products_extension
+#: field:epe.header,supplier_id:0
+msgid "Supplier"
+msgstr "Proveedor"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Supplier info"
+msgstr "Información de Proveedor"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:236
+#, python-format
+msgid "There's more than one translation sources with different source"
+msgstr "Existe más de una traducción para el mismo recurso con base de traducción distinta"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:304
+#, python-format
+msgid "There is more than one Purchase Pricelist"
+msgstr "Se ha encontrado más de un Precio de Compra en la Información del Proveedor"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:293
+#, python-format
+msgid "There is more then one Supplier defined"
+msgstr "El proveedor aparece más de una vez en la lista de proveedores del producto"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:262
+#, python-format
+msgid "There's more than one category with the same slug %s"
+msgstr "Hay más de una Categoría con el mismo slug %s"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:189
+#, python-format
+msgid "There's more than one product with the same Reference"
+msgstr "Hay más de un Producto con la misma Referencia"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:437
+#, python-format
+msgid "Nothing changed. Data already updated"
+msgstr "No se ha cambiado nada. Los datos ya estaban actualizados"
+
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:199
+#: code:addons/import_products_extension/models/models.py:209
+#, python-format
+msgid "Unknown float format"
+msgstr "Format numérico incorrecto"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Update"
+msgstr "Actualizar"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Remove done"
+msgstr "Eliminar hechos"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Clear grid"
+msgstr "Limpiar datos"
+
+#. module: import_products_extension
+#: field:epe.header,update_category:0
+msgid "Update Category"
+msgstr "Actualizar Categoría"
+
+#. module: import_products_extension
+#: help:epe.header,update_category:0
+msgid "Update Category if exists"
+msgstr "Actualiza la Categoría si existe"
+
+#. module: import_products_extension
+#: field:epe.header,update_name:0
+msgid "Update Description"
+msgstr "Actualizar Descripción"
+
+#. module: import_products_extension
+#: help:epe.header,update_name:0
+msgid "Update Description when importing data"
+msgstr "Actualiza la Decsripción al cargar los datos"
+
+#. module: import_products_extension
+#: field:epe.header,update_ean13:0
+msgid "Update EAN"
+msgstr "Actualizar EAN"
+
+#. module: import_products_extension
+#: help:epe.header,update_ean13:0
+msgid "Update EAN 13 when importing data"
+msgstr "Actualiza EAN 13 al cargar los datos"
+
+#. module: import_products_extension
+#: field:epe.header,update_purchaseprice:0
+msgid "Update Purchase Price"
+msgstr "Actualizar Precio de Compra"
+
+#. module: import_products_extension
+#: help:epe.header,update_purchaseprice:0
+msgid "Update Purchase Pricelist when importing data"
+msgstr "Actualiza el precio de compra al cargar los datos"
+
+#. module: import_products_extension
+#: field:epe.header,update_saleprice:0
+msgid "Update Sale Price"
+msgstr "Actualizar Precio de Venta"
+
+#. module: import_products_extension
+#: help:epe.header,update_saleprice:0
+msgid "Update Sale Pricelist when importing data"
+msgstr "Actualiza el precio de venta al cargar los datos"
+
+#. module: import_products_extension
+#: view:epe.header:import_products_extension.view_epe_header_form
+msgid "Update options"
+msgstr "Opciones de Actualización"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:256
+#, python-format
+msgid "Used category %s instead of %s"
+msgstr "Se ha utilizado la category %s en lugar de %s"
+
+
+#. module: import_products_extension
+#: field:epe.header,round_numeric_fields:0
+msgid "Round"
+msgstr "Redondear"
+
+#. module: import_products_extension
+#: help:epe.header,round_numeric_fields:0
+msgid "Round numeric values to this number of decimals. -1 or any negative number to not round at all"
+msgstr "Redondea los valores numéricos al número de decimales indicado aquí. -1 o cualquier número negativo si no se desa redondear"
+
+
+
+
+
+

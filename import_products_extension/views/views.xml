@@ -25,7 +25,8 @@
             <field name="arch" type="xml">
                 <tree string="Imports">
                     <field name="name"/>
-                    <field name="description"/>
+                    <field name="date_import"/>
+                    <field name="supplier_id"/>
                 </tree>
             </field>
         </record>
@@ -38,52 +39,76 @@
                 <form string="Imports">
 
                     <sheet>
-                        <div class="oe_title">
+                        <!--div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
                             <h1>
                                 <field name="name"/>
                             </h1>
-                        </div>
+                        </div-->
                         <group name="main_field_group1" col="4">
-                             <field name="supplier_id"/>
-                             <field name="date_import"/>
+                            <field name="supplier_id"/>
+                            <field name="date_import"/>
                         </group>
-                        <group name="main_field_group2" col="4">
-                            <field name="delimiter"/>
-                            <field name="quotechar"/>
-                            <field name="strip_fields"/>
+                        <group name="main_field_group116">
+                            <field name="name"/>
                         </group>
-                        <group name="main_field_group3" col="4">
-                            <field name="update_name"/>
-                            <field name="update_category"/>
-                            <field name="update_ean13"/>
-                            <field name="update_saleprice"/>
-                            <field name="update_purchaseprice"/>
-                        </group>
-                        <group name="main_field_group13" col="4">
-                            <field name="create_product"/>
-                            <field name="create_category"/>
-                            <field name="create_supplier"/>
-                        </group>
-                        <group name="main_field_group139" col="4">
-                            <field name="product_type"/>
-                            <field name="sale_delay"/>
-                            <field name="purchase_delay"/>
-                        </group>
-                        <group name="main_field_group4">
+
+                        <group name="main_field_group4" col="4">
                             <field name="datas" filename="datas_fname"/>
+                            <button name="load_file" string="Load file" type="object"
+                                    class="oe_highlight oe_edit_only" attrs="{'invisible':[('datas', '=', False)]}"/>
                             <field name="datas_fname" invisible="1"/>
                         </group>
-                         <group name="main_field_group5" col="8">
-                            <button name="import_file" string="Import filer" type="object" class="oe_highlight"/>
-                            <button name="update" string="Update" type="object" class="oe_highlight"/>
+                        <group name="main_field_group5" col="4">
+                            <button name="update" string="Update" type="object" class="oe_highlight oe_edit_only"/>
                         </group>
-                        <group name="main_field_group6">
-                            <field name="description" nolabel="1" placeholder="Import Description..."/>
+
+                        <notebook>
+                            <page string="Update options">
+                                <group name="main_field_group3" col="4">
+                                    <field name="update_purchaseprice"/>
+                                    <field name="update_saleprice"/>
+                                    <field name="update_name"/>
+                                    <field name="update_ean13"/>
+                                    <field name="update_category"/>
+                                    <field name="create_category_onupdate"
+                                           attrs="{'invisible':[('update_category', '=', False)]}"/>
+                                </group>
+                            </page>
+                            <page string="Create options">
+                                <group name="main_field_group13" col="4">
+                                    <field name="create_product"/>
+                                    <field name="create_supplier"/>
+                                    <field name="create_category_oncreate"/>
+                                </group>
+                            </page>
+
+                            <page string="Create defaults">
+                                <group string="Product" name="main_field_group139" col="4">
+                                    <field name="product_type"/>
+                                    <field name="sale_delay"/>
+                                </group>
+                                <group string="Supplier info" name="main_field_group139" col="4">
+                                    <field name="purchase_delay"/>
+                                </group>
+                            </page>
+                            <page string="File format">
+                                <group name="main_field_group2" col="4">
+                                    <field name="delimiter"/>
+                                    <field name="quotechar"/>
+                                    <field name="strip_fields"/>
+                                    <field name="round_numeric_fields"/>
+                                </group>
+                            </page>
+
+                        </notebook>
+                        <group>
+                            <button name="remove_done" string="Remove done" type="object"
+                                    class="oe_highlight oe_edit_only"/>
                         </group>
                         <group>
                             <field name="line_ids" nolabel="1">
-                                <tree>
+                                <tree editable="botttom">
                                     <field name="default_code"/>
                                     <field name="name"/>
                                     <field name="category"/>
@@ -101,6 +126,51 @@
             </field>
         </record>
 
+        <!-- Session Search view -->
+        <record model="ir.ui.view" id="epe_line_search_view">
+            <field name="name">epe.line.search</field>
+            <field name="model">epe.line</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="done" string="Done" help="My Sessions" domain="[('status','=','done')]"/>
+                    <!--separator/>
+                    <filter string="Upcoming" name="upcoming"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
+                            help="Upcoming sessions from today"/>
+                    <separator/>
+                    <filter string="Unconfirmed" name="draft" domain="[('state','=','draft')]"
+                            help="Events in New state"/>
+                    <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
+                    <field name="customer_id"/>
+                    <field name="trainer_id"/>
+                    <field name="description"/>
+                    <field name="service_id"/>
+                    <field name="resource_ids"/>
+                    <field name="room_id"/>
+                    <field name="name"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Service" context="{'group_by':'service_id'}"/>
+                        <filter string="Status" context="{'group_by':'state'}"/>
+                        <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
+                    </group-->
+                </search>
+            </field>
+        </record>
+
+
+        <!-- lines Form view -->
+        <!--record model="ir.ui.view" id="view_epe_header_form">
+            <field name="name">Imports</field>
+            <field name="model">epe.header</field>
+            <field name="arch" type="xml">
+                <form string="Import Lines">
+                    <sheet>
+
+                    </sheet>
+                </form>
+            </field>
+        </record-->
 
     </data>
 </openerp>
