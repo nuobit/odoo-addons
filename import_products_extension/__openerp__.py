@@ -28,7 +28,7 @@
     'website': 'https://www.nuobit.com',
     'depends': ['product'],
     'data': [
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/template_views.xml',
         'views/inherit_views.xml',
