@@ -69,6 +69,27 @@ msgstr "Consumable: Will not imply stock management for this product. \n"
 "Stockable product: Will imply stock management for this product."
 
 #. module: import_products_extension
+#: selection:epe.header,cost_method:0
+msgid "Standard Price"
+msgstr "Precio estándar"
+
+#. module: import_products_extension
+#: selection:epe.header,cost_method:0
+msgid "Average Price"
+msgstr "Precio medio"
+
+#. module: import_products_extension
+#: selection:epe.header,cost_method:0
+msgid "Real Price"
+msgstr "Precio real"
+
+#. module: import_products_extension
+#: help:epe.header,cost_method:0
+msgid "Standard Price: The cost price is manually updated at the end of a specific period (usually every year).\nAverage Price: The cost price is recomputed at each incoming shipment and used for the product valuation.\nReal Price: The cost price displayed is the price of the last outgoing product (will be use in case of inventory loss for example)."
+msgstr "Standard Price: The cost price is manually updated at the end of a specific period (usually every year).\nAverage Price: The cost price is recomputed at each incoming shipment and used for the product valuation.\nReal Price: The cost price displayed is the price of the last outgoing product (will be use in case of inventory loss for example)."
+
+
+#. module: import_products_extension
 #: field:epe.header,create_category_oncreate:0
 #: field:epe.header,create_category_onupdate:0
 msgid "Create Category"
@@ -305,6 +326,12 @@ msgstr "Producto"
 #: field:epe.header,product_type:0
 msgid "Product Type"
 msgstr "Tipo de producto"
+
+#. module: import_products_extension
+#: field:epe.header,cost_method:0
+msgid "Costing Method"
+msgstr "Método de coste"
+
 
 #. module: import_products_extension
 #: code:addons/import_products_extension/models/models.py:334

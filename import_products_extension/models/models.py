@@ -120,6 +120,11 @@ class import_header(models.Model):
         'Product Type', required=True, default='product',
         help="Consumable: Will not imply stock management for this product. \nStockable product: Will imply stock management for this product.")
 
+    cost_method = fields.Selection(type='selection', selection=[('standard', 'Standard Price'), ('average', 'Average Price'), ('real', 'Real Price')],
+            help="Standard Price: The cost price is manually updated at the end of a specific period (usually every year).\nAverage Price: The cost price is recomputed at each incoming shipment and used for the product valuation.\nReal Price: The cost price displayed is the price of the last outgoing product (will be use in case of inventory loss for example).",
+            string="Costing Method", required=True, copy=True, default='average')
+
+
     datas = fields.Binary('File')
     datas_fname = fields.Char(string='Filename')
 
@@ -186,6 +191,8 @@ class import_header(models.Model):
             f = decimal.Decimal(f.quantize(decimal.Decimal('0.%s1' % '0'* (self.round_numeric_fields-1)), rounding=decimal.ROUND_HALF_EVEN))
         if ret_type=='text':
             f=str(f)
+        elif ret_type=='float':
+            float(f)
         return f
 
     def _float2decimal(self, d):
@@ -193,6 +200,9 @@ class import_header(models.Model):
 
     def _slugify(self, r):
         return ''.join(x for x in unicodedata.normalize('NFKD', r) if x in string.ascii_letters).lower()
+
+    def _equal(self, a, b):
+        pass
 
 
     def _get_cat(self, line):
@@ -268,7 +278,10 @@ class import_header(models.Model):
         n = len(self.line_ids)
         pco = None
         for i, line in enumerate(self.line_ids):
-            pc = float(i)/(float(n)-1)*100.0
+            if n!=1:
+                pc = float(i)/(float(n)-1)*100.0
+            else:
+                pc = 100.0
             if int(pc)!=pco:
                 #if (int(pc) % 10) == 0:
                 _logger.info('Import progress %.2f%%' % pc)
@@ -337,7 +350,7 @@ class import_header(models.Model):
                     if line.pricelist_sale:
                         pricelist_sale = self._format_decimal(line.pricelist_sale)
                         if self._float2decimal(pp.lst_price)!=pricelist_sale:
-                            product['data'].update({'lst_price': pricelist_sale })
+                            product['data'].update({'lst_price': float(pricelist_sale) })
                 if self.update_purchaseprice:
                     if line.pricelist_purchase:
                         if not self.supplier_id.id:
@@ -353,7 +366,7 @@ class import_header(models.Model):
                             elif len(suppinfo)==0:
                                 product['data'].update({'seller_ids': [(0,_, {'name': self.supplier_id.id, 'delay': self.purchase_delay,
                                                                           'pricelist_ids': [(0,_,{'min_quantity': 0,
-                                                                                                  'price': self._format_decimal(line.pricelist_purchase)})]})]})
+                                                                                                  'price': float(self._format_decimal(line.pricelist_purchase))})]})]})
                             else:
                                 plist = suppinfo.pricelist_ids
                                 if len(plist)>1:
@@ -370,13 +383,13 @@ class import_header(models.Model):
                                 elif len(plist)==0:
                                     product['data'].update({'seller_ids': [(1, suppinfo.id, {
                                                                           'pricelist_ids': [(0,_,{'min_quantity': 0,
-                                                                                                  'price': self._format_decimal(line.pricelist_purchase)})]})]})
+                                                                                                  'price': float(self._format_decimal(line.pricelist_purchase))})]})]})
                                 else:
                                     pricelist_purchase = self._format_decimal(line.pricelist_purchase)
                                     old_pricelist_purchase = self._float2decimal(pp.seller_ids.filtered(lambda x: x.id==suppinfo.id).mapped('pricelist_ids').filtered(lambda x: x.id==plist.id).price)
                                     if pricelist_purchase!=old_pricelist_purchase:
                                         product['data'].update({'seller_ids': [(1, suppinfo.id, {
-                                                                          'pricelist_ids': [(1, plist.id, {'price': pricelist_purchase})]})]})
+                                                                          'pricelist_ids': [(1, plist.id, {'price': float(pricelist_purchase)})]})]})
                 if self.update_category:
                     status, cat, cat_status, cat_msg = self._get_cat(line)
                     if status=='error':
@@ -399,7 +412,8 @@ class import_header(models.Model):
                     line.observations = _("Product does not exist. Enable 'Create Product' to create it")
                     continue
                 product['data'].update({'default_code': line.default_code,
-                                        'sale_delay': self.sale_delay, 'type': self.product_type})
+                                        'sale_delay': self.sale_delay, 'type': self.product_type,
+                                        'cost_method': self.cost_method })
                 if not line.name:
                     line.status='error'
                     line.observations=_('Description cannot be null')
@@ -432,7 +446,7 @@ class import_header(models.Model):
                 if not line.pricelist_sale:
                     product['data'].update({'lst_price': 0 })
                 else:
-                    product['data'].update({'lst_price': self._format_decimal(line.pricelist_sale) })
+                    product['data'].update({'lst_price': float(self._format_decimal(line.pricelist_sale)) })
 
                 if not line.pricelist_purchase:
                     if self.supplier_id.id:
@@ -446,7 +460,7 @@ class import_header(models.Model):
                     else:
                         product['data'].update({'seller_ids': [(0,_, {'name': self.supplier_id.id, 'delay': self.purchase_delay,
                                                                       'pricelist_ids': [(0,_,{'min_quantity': 0,
-                                                                                'price': self._format_decimal(line.pricelist_purchase)})]})]})
+                                                                                'price': float(self._format_decimal(line.pricelist_purchase))})]})]})
             ## save data
             cat = None
             if product.get('category') is not None:
