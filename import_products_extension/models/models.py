@@ -265,7 +265,15 @@ class import_header(models.Model):
 
     @api.multi
     def update(self):
-        for line in self.line_ids:
+        n = len(self.line_ids)
+        pco = None
+        for i, line in enumerate(self.line_ids):
+            pc = float(i)/(float(n)-1)*100.0
+            if int(pc)!=pco:
+                #if (int(pc) % 10) == 0:
+                _logger.info('Import progress %.2f%%' % pc)
+            pco = int(pc)
+
             if line.status=='done':
                 continue
 
