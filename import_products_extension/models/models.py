@@ -210,8 +210,6 @@ class import_header(models.Model):
 
 
 
-
-
     def _get_cat(self, line):
         status = None
         cat, cat_status, cat_msg = None, None, False
@@ -221,7 +219,7 @@ class import_header(models.Model):
                 nc.append(cat)
         if len(nc)==0:
             cat_langs = self.env['ir.translation'].search([('lang','!=', self._context['lang']),
-                ('res_id','=', cat.id),('name', '=', 'product.category,name')])
+                ('name', '=', 'product.category,name')])
             nl = []
             nls = []
             has_en_us = False
@@ -252,9 +250,9 @@ class import_header(models.Model):
                 cat_msg=_('Category did not exist, it was created')
                 cat_status = 'create'
             else:
-                nll = [x.lang for x in nl]
+                nll = ','.join(["%s: %s" % (x.lang, x.value) for x in nl])
                 line.status='error'
-                line.observations=_("Current language '%s' does not have that Category but other languages do: '%s'") % (self._context['lang'], nll )
+                line.observations=_("Current language '%s' does not have that Category but other languages do: [%s]") % (self._context['lang'], nll )
                 status = 'error'
                 #continue
         elif len(nc)==1:
