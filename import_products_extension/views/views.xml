@@ -59,10 +59,6 @@
                                     class="oe_highlight oe_edit_only" attrs="{'invisible':[('datas', '=', False)]}"/>
                             <field name="datas_fname" invisible="1"/>
                         </group>
-                        <group name="main_field_group5" col="4">
-                            <button name="update" string="Update" type="object" class="oe_highlight oe_edit_only"/>
-                        </group>
-
                         <notebook>
                             <page string="Update options">
                                 <group name="main_field_group3" col="4">
@@ -78,8 +74,9 @@
                             <page string="Create options">
                                 <group name="main_field_group13" col="4">
                                     <field name="create_product"/>
-                                    <field name="create_supplier"/>
                                     <field name="create_category_oncreate"/>
+                                    <field name="create_always_supplier"/>
+                                    <field name="create_without_supplier"/>
                                 </group>
                             </page>
 
@@ -87,6 +84,7 @@
                                 <group string="Product" name="main_field_group139" col="4">
                                     <field name="product_type"/>
                                     <field name="cost_method"/>
+                                    <field name="lst_price"/>
                                     <field name="sale_delay"/>
                                 </group>
                                 <group string="Supplier info" name="main_field_group139" col="4">
@@ -104,6 +102,7 @@
 
                         </notebook>
                         <group>
+                            <button name="update" string="Update" type="object" class="oe_highlight oe_edit_only"/>
                             <button name="remove_done" string="Remove done" type="object"
                                     class="oe_highlight oe_edit_only"/>
                         </group>

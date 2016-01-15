@@ -111,14 +111,24 @@ msgid "Create Product if not exists"
 msgstr "Crear Producto si no existe"
 
 #. module: import_products_extension
-#: help:epe.header,create_supplier:0
+#: help:epe.header,create_always_supplier:0
 msgid "Create Supplier Info although Purchase Pricelist is null"
 msgstr "Crear Información del Proveedor aunque el Precio de Compra sea nulo"
 
 #. module: import_products_extension
-#: field:epe.header,create_supplier:0
+#: field:epe.header,create_always_supplier:0
 msgid "Create always Supplier Info"
 msgstr "Crear siempre la Información del Proveedor"
+
+#. module: import_products_extension
+#: field:epe.header,create_without_supplier:0
+msgid "Create without Supplier Info"
+msgstr "Crear sin la Información del Proveedor"
+
+#. module: import_products_extension
+#: help:epe.header,create_without_supplier:0
+msgid "Allows to create a Product without Supplier Info and without Purchase Pricelist"
+msgstr "Permite la creación del producto sin la Información del Proveedor y sin Precio de Compra"
 
 #. module: import_products_extension
 #: view:epe.header:import_products_extension.view_epe_header_form
@@ -169,6 +179,11 @@ msgid "Delivery Lead Time"
 msgstr "Plazo de entrega del cliente"
 
 #. module: import_products_extension
+#: field:epe.header,lst_price:0
+msgid "Sale Price"
+msgstr "Precio de Venta"
+
+#. module: import_products_extension
 #: field:epe.header,show_status:0
 msgid "Show Status"
 msgstr "Mostrar estado"
@@ -185,6 +200,14 @@ msgstr "Descripción"
 #, python-format
 msgid "Description cannot be null"
 msgstr "La Descripción no puede ser nula"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:340
+#, python-format
+msgid "Category cannot be null"
+msgstr "La Categoría no puede ser nula"
+
+
 
 #. module: import_products_extension
 #: code:addons/import_products_extension/models/models.py:476
@@ -256,6 +279,23 @@ msgstr "Si 'Actualizar Categoría' está seleccionado, creara la Categoría si n
 msgid "If there is a Purchase Pricelist the Supplier cannot be null"
 msgstr "Si el Precio de Compra no es nulo es obligatori seleccionar el Proveedor"
 
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:287
+#: code:addons/import_products_extension/models/models.py:371
+#, python-format
+msgid "There is no Purchase Pricelist. Enable 'Create always Supplier Info' to force the creation of a product with Supplier and without Purchase Pricelist"
+msgstr "El Precio de Compra es nulo. Activa 'Crear siempre Información de Proveedor' para forzar la creación del producto sólo con la Información de Proveedor y sin Precio de Compra"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:287
+#: code:addons/import_products_extension/models/models.py:371
+#, python-format
+msgid "There is no Purchase Pricelist and there is no Supplier selected. Enable 'Create without Supplier Info' to force the creation of a product without Supplier and Purchase Pricelist"
+msgstr "El Precio de Compra es nulo y no se ha seleccionado Proveedor. Activa 'Crear sin la Información del Proveedor' para forzar la creación del producto sin Proveedor ni Precio de Compra"
+
+
+
 #. module: import_products_extension
 #: model:ir.model,name:import_products_extension.model_epe_line
 msgid "Import Lines"
@@ -281,6 +321,31 @@ msgstr "Número de campos incorrectos en la linea %i"
 #, python-format
 msgid "Invalid \"EAN13 Barcode\""
 msgstr "\"EAN13 Barcode\" incorrecto"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:278
+#: code:addons/import_products_extension/models/models.py:349
+#, python-format
+msgid "\"EAN13 Barcode\" cannot be null"
+msgstr "\"EAN13 Barcode\" no puede ser nulo"
+
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:278
+#: code:addons/import_products_extension/models/models.py:349
+#, python-format
+msgid "Purchase Price cannot be null"
+msgstr "El Precio de Compra no puede ser nulo"
+
+#. module: import_products_extension
+#: code:addons/import_products_extension/models/models.py:278
+#: code:addons/import_products_extension/models/models.py:349
+#, python-format
+msgid "Sale Price cannot be null"
+msgstr "El Precio de Venta no puede ser nulo"
+
+
+
 
 #. module: import_products_extension
 #: field:epe.header,write_uid:0
@@ -403,8 +468,8 @@ msgstr "Información de Proveedor"
 #. module: import_products_extension
 #: code:addons/import_products_extension/models/models.py:236
 #, python-format
-msgid "There's more than one translation sources with different source"
-msgstr "Existe más de una traducción para el mismo recurso con base de traducción distinta"
+msgid "There's more than one translation sources with different source id: %i, src0: '%s', src1: %s"
+msgstr "Existe más de una traducción para el mismo recurso con base de traducción distinta source id: %i, src0: '%s', src1: %s"
 
 #. module: import_products_extension
 #: code:addons/import_products_extension/models/models.py:304

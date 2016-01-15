@@ -69,7 +69,7 @@ class import_header(models.Model):
 
     round_numeric_fields = fields.Integer(string='Round',
         help="Round numeric values to this number of decimals. -1 or any negative number to not round at all",
-        readonly=False, default=2)
+        readonly=False, required=True, default=2)
 
 
     update_name = fields.Boolean(string='Update Description',
@@ -105,8 +105,12 @@ class import_header(models.Model):
         help="Create Category if not exists",
         readonly=False, default=False)
 
-    create_supplier = fields.Boolean(string='Create always Supplier Info',
+    create_always_supplier = fields.Boolean(string='Create always Supplier Info',
         help="Create Supplier Info although Purchase Pricelist is null",
+        readonly=False, default=False)
+
+    create_without_supplier = fields.Boolean(string='Create without Supplier Info',
+        help="Allows to create a Product without Supplier Info and without Purchase Pricelist",
         readonly=False, default=False)
 
 
@@ -123,6 +127,9 @@ class import_header(models.Model):
     cost_method = fields.Selection(type='selection', selection=[('standard', 'Standard Price'), ('average', 'Average Price'), ('real', 'Real Price')],
             help="Standard Price: The cost price is manually updated at the end of a specific period (usually every year).\nAverage Price: The cost price is recomputed at each incoming shipment and used for the product valuation.\nReal Price: The cost price displayed is the price of the last outgoing product (will be use in case of inventory loss for example).",
             string="Costing Method", required=True, copy=True, default='average')
+
+    lst_price = fields.Float(string='Sale Price',
+        readonly=False, required=True, default=0)
 
 
     datas = fields.Binary('File')
@@ -210,63 +217,56 @@ class import_header(models.Model):
 
 
 
-    def _get_cat(self, line):
+    def _get_cat(self, category):
         status = None
-        cat, cat_status, cat_msg = None, None, False
+        cat, msg = None, False
         nc = []
         for cat in self.env['product.category'].search([]):
-            if self._slugify(cat.name)==self._slugify(line.category):
+            if self._slugify(cat.name)==self._slugify(category):
                 nc.append(cat)
         if len(nc)==0:
             cat_langs = self.env['ir.translation'].search([('lang','!=', self._context['lang']),
                 ('name', '=', 'product.category,name')])
-            nl = []
-            nls = []
-            has_en_us = False
-            for cl in cat_langs:
-                if cl.lang=='en_US':
-                    has_en_us = True
-                if self._slugify(cl.value)==self._slugify(line.category):
-                    nl.append(cl)
-                nls.append(cl.src)
 
-            src = None
-            snls = list(set(nls))
-            if len(snls)>1:
-                line.status='error'
-                line.observations=_("There's more than one translation sources with different source")
-                status = 'error'
-                #continue
-            elif len(snls)==1:
-                src = snls[0]
+            nl = []
+            src_d = {}
+            for cl in cat_langs:
+                if self._slugify(cl.value)==self._slugify(category):
+                    nl.append(cl)
+
+                if cl.res_id not in src_d:
+                    src_d[cl.res_id]=[cl.src, cl.lang=='en_US']
+                else:
+                    if src_d[cl.res_id][0]!=cl.src:
+                        status='error'
+                        msg=_("There's more than one translation sources with different source id: %i, src0: '%s', src1: %s" % (cl.res_id, src_d[cl.res_id], cl.src))
+                    else:
+                        src_d[cl.res_id][1]|=(cl.lang=='en_US')
 
             if len(nl)==0:
-                if src is not None and not has_en_us:
-                    if self._slugify(src)==self._slugify(line.category):
-                        line.status='error'
-                        line.observations=_("Exists an english source with the Category but explicit english language is not defined")
-                        status = 'error'
-                        #continue
-                cat_msg=_('Category did not exist, it was created')
-                cat_status = 'create'
+                nls = set(map(lambda x: x[0], filter(lambda x: not x[1], src_d.values())))
+                for src in nls:
+                    if self._slugify(src)==self._slugify(category):
+                        status='error'
+                        msg =_("Exists an english source with the Category but explicit english language is not defined")
+
+                msg=_('Category did not exist, it was created')
+                status = 'create'
             else:
                 nll = ','.join(["%s: %s" % (x.lang, x.value) for x in nl])
-                line.status='error'
-                line.observations=_("Current language '%s' does not have that Category but other languages do: [%s]") % (self._context['lang'], nll )
-                status = 'error'
-                #continue
+                status='error'
+                msg=_("Current language '%s' does not have that Category but other languages do: [%s]") % (self._context['lang'], nll )
+
         elif len(nc)==1:
-            if self._slugify(nc[0].name)!=self._slugify(line.category):
-                cat_msg = _("Used category %s instead of %s") % (nc[0].name, line.category)
-                line.category = nc[0].name
-            cat_status = 'exists'
+            if self._slugify(nc[0].name)!=self._slugify(category):
+                msg = _("Used category %s instead of %s") % (nc[0].name, category)
+            status = 'exists'
             cat = nc[0]
         else:
-            line.status='error'
-            line.observations=_("There's more than one category with the same slug %s") % nc
             status = 'error'
+            msg=_("There's more than one category with the same slug %s") % nc
 
-        return status, cat, cat_status, cat_msg
+        return status, cat, msg
 
 
     @api.onchange('show_status')
@@ -289,7 +289,7 @@ class import_header(models.Model):
                 pc = 100.0
             if int(pc)!=pco:
                 #if (int(pc) % 10) == 0:
-                _logger.info('Import progress %.2f%%' % pc)
+                _logger.info('Import progress %.2f%% (%i/%i)' % (pc, i+1, n))
             pco = int(pc)
 
             if line.status=='done':
@@ -337,11 +337,42 @@ class import_header(models.Model):
             product['data'] = {}
             if product['status'] == 'update':
                 product['object'] = pp
+
                 if self.update_name:
                     if line.name:
                         if pp.name!=pp.name:
                             product['data'].update({'name': line.name })
-                    # TODO: Update name on every language
+                        # TODO: Update name on every language
+                    else:
+                        line.status='error'
+                        line.observations=_('Description cannot be null')
+                        continue
+
+                if self.update_category:
+                    if line.category:
+                        status, cat, msg = self._get_cat(line.category)
+                        if status=='error':
+                            line.status = status
+                            line.observations = msg
+                            continue
+                        if status == 'exists':
+                            line.category = cat.name
+                            if pp.categ_id!=cat.id:
+                                product['data'].update({'categ_id': cat.id})
+                                line.observations = msg
+                        else:
+                            if self.create_category_onupdate:
+                                product['category']={'status': 'create', 'data': {'name': line.category}}
+                                line.observations = msg
+                            else:
+                                line.status = 'error'
+                                line.observations=_('Category did not exist. Enable "Create Category" on update options to create it')
+                                continue
+                    else:
+                        line.status='error'
+                        line.observations=_('Category cannot be null')
+                        continue
+
                 if self.update_ean13:
                     if line.ean13:
                         if pp.ean13!=line.ean13:
@@ -351,11 +382,22 @@ class import_header(models.Model):
                                 line.status='error'
                                 line.observations=_('Invalid "EAN13 Barcode"')
                                 continue
+                    else:
+                        line.status='error'
+                        line.observations=_('"EAN13 Barcode" cannot be null')
+                        continue
+
                 if self.update_saleprice:
                     if line.pricelist_sale:
                         pricelist_sale = float(line.pricelist_sale)
-                        if self._equal(pp.lst_price, pricelist_sale):
+                        if not self._equal(pp.lst_price, pricelist_sale):
                             product['data'].update({'lst_price': pricelist_sale })
+                    else:
+                        line.status='error'
+                        line.observations=_('Sale Price cannot be null')
+                        continue
+
+
                 if self.update_purchaseprice:
                     if line.pricelist_purchase:
                         if not self.supplier_id.id:
@@ -392,39 +434,54 @@ class import_header(models.Model):
                                 else:
                                     pricelist_purchase = float(line.pricelist_purchase)
                                     old_pricelist_purchase = pp.seller_ids.filtered(lambda x: x.id==suppinfo.id).mapped('pricelist_ids').filtered(lambda x: x.id==plist.id).price
-                                    if self._equal(old_pricelist_purchase, pricelist_purchase):
+                                    if not self._equal(old_pricelist_purchase, pricelist_purchase):
                                         product['data'].update({'seller_ids': [(1, suppinfo.id, {
                                                                           'pricelist_ids': [(1, plist.id, {'price': pricelist_purchase})]})]})
-                if self.update_category:
-                    status, cat, cat_status, cat_msg = self._get_cat(line)
-                    if status=='error':
-                        continue
-                    if cat_status == 'exists':
-                        if pp.categ_id!=cat.id:
-                            product['data'].update({'categ_id': cat.id})
-                            line.observations = cat_msg
                     else:
-                        if self.create_category_onupdate:
-                            product['category']={'status': 'create', 'data': {'name': line.category}}
-                            line.observations = cat_msg
-                        else:
-                            line.status = 'error'
-                            line.observations=_('Category did not exist. Enable "Create Category" on update options to create it')
-                            continue
-            else:
+                        line.status='error'
+                        line.observations=_('Purchase Price cannot be null')
+                        continue
+
+            else: #### Create product
                 if not self.create_product:
                     line.status = 'pending'
                     line.observations = _("Product does not exist. Enable 'Create Product' to create it")
                     continue
+
                 product['data'].update({'default_code': line.default_code,
                                         'sale_delay': self.sale_delay, 'type': self.product_type,
                                         'cost_method': self.cost_method })
-                if not line.name:
+
+                if line.name:
+                    product['data'].update({'name': line.name})
+                else:
                     line.status='error'
                     line.observations=_('Description cannot be null')
                     continue
+
+                if line.category:
+                    status, cat, msg = self._get_cat(line.category)
+                    if status=='error':
+                        line.status = status
+                        line.observations = msg
+                        continue
+                    if status == 'exists':
+                        line.category = cat.name
+                        product['data'].update({'categ_id': cat.id})
+                        line.observations = msg
+                    else:
+                        if self.create_category_oncreate:
+                            product['category']={'status': 'create', 'data': {'name': line.category}}
+                            line.observations = msg
+                        else:
+                            line.status = 'error'
+                            line.observations=_('Category did not exist. Enable "Create Category" on create options to create it')
+                            continue
                 else:
-                    product['data'].update({'name': line.name})
+                    line.status='error'
+                    line.observations=_('Category cannot be null')
+                    continue
+
                 if line.ean13:
                     if check_ean(line.ean13):
                         product['data'].update({'ean13': line.ean13 })
@@ -433,39 +490,36 @@ class import_header(models.Model):
                         line.observations=_('Invalid "EAN13 Barcode"')
                         continue
 
-                status, cat, cat_status, cat_msg = self._get_cat(line)
-                if status=='error':
-                    continue
-                if cat_status == 'exists':
-                    product['data'].update({'categ_id': cat.id})
-                    line.observations = cat_msg
-                else:
-                    if self.create_category_oncreate:
-                        product['category']={'status': 'create', 'data': {'name': line.category}}
-                        line.observations = cat_msg
-                    else:
-                        line.status = 'error'
-                        line.observations=_('Category did not exist. Enable "Create Category" on create options to create it')
-                        continue
-
-                if not line.pricelist_sale:
-                    product['data'].update({'lst_price': 0 })
-                else:
+                if line.pricelist_sale:
                     product['data'].update({'lst_price': float(line.pricelist_sale) })
-
-                if not line.pricelist_purchase:
-                    if self.supplier_id.id:
-                        if self.create_supplier:
-                            product['data'].update({'seller_ids': [(0,_, {'name': self.supplier_id.id, 'delay': self.purchase_delay })]})
                 else:
+                    product['data'].update({'lst_price': self.lst_price })
+
+                if line.pricelist_purchase:
                     if not self.supplier_id.id:
                         line.status='error'
                         line.observations=_('If there is a Purchase Pricelist the Supplier cannot be null')
                         continue
                     else:
-                        product['data'].update({'seller_ids': [(0,_, {'name': self.supplier_id.id, 'delay': self.purchase_delay,
-                                                                      'pricelist_ids': [(0,_,{'min_quantity': 0,
-                                                                                'price': float(line.pricelist_purchase)})]})]})
+                        product['data'].update({'seller_ids': [(0, _, {'name': self.supplier_id.id, 'delay': self.purchase_delay,
+                                                                      'pricelist_ids': [(0, _, {'min_quantity': 0,
+                                                                                              'price': float(line.pricelist_purchase)})]})]})
+                else:
+                    if self.supplier_id.id:
+                        if self.create_always_supplier:
+                            product['data'].update({'seller_ids': [(0, _, {'name': self.supplier_id.id, 'delay': self.purchase_delay })]})
+                        else:
+                            line.status='error'
+                            line.observations=_("There is no Purchase Pricelist. Enable 'Create always Supplier Info' to force the creation of a product with Supplier and without Purchase Pricelist")
+                            continue
+                    else:
+                        if not self.create_without_supplier:
+                            line.status='error'
+                            line.observations=_("There is no Purchase Pricelist and there is no Supplier selected. Enable 'Create without Supplier Info' to force the creation of a product without Supplier and Purchase Pricelist")
+                            continue
+
+
+
             ## save data
             cat = None
             if product.get('category') is not None:
