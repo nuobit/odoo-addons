@@ -4,26 +4,26 @@
 
 
         <!--  HEADER -->
-        <record model="ir.actions.act_window" id="action_imports">
-            <field name="name">Imports</field>
+        <record model="ir.actions.act_window" id="action_import_products">
+            <field name="name">Import Products</field>
             <field name="res_model">epe.header</field>
             <field name="view_mode">tree,form</field>
             <!--field name="context">{"search_default_upcoming":1}</field-->
         </record>
 
         <menuitem
-                action="action_imports"
-                id="epe_menu_imports"
+                action="action_import_products"
+                id="epe_menu_import_products"
                 parent="base.menu_product"
                 sequence="40"/>
 
 
         <!-- header Tree view -->
         <record model="ir.ui.view" id="view_epe_header_tree">
-            <field name="name">Imports</field>
+            <field name="name">Import Products</field>
             <field name="model">epe.header</field>
             <field name="arch" type="xml">
-                <tree string="Imports">
+                <tree string="Import Products">
                     <field name="name"/>
                     <field name="date_import"/>
                     <field name="supplier_id"/>
@@ -33,10 +33,10 @@
 
         <!-- header Form view -->
         <record model="ir.ui.view" id="view_epe_header_form">
-            <field name="name">Imports</field>
+            <field name="name">Import Products</field>
             <field name="model">epe.header</field>
             <field name="arch" type="xml">
-                <form string="Imports">
+                <form string="Import Products">
 
                     <sheet>
                         <!--div class="oe_title">
@@ -161,7 +161,7 @@
 
         <!-- lines Form view -->
         <!--record model="ir.ui.view" id="view_epe_header_form">
-            <field name="name">Imports</field>
+            <field name="name">Import Lines</field>
             <field name="model">epe.header</field>
             <field name="arch" type="xml">
                 <form string="Import Lines">

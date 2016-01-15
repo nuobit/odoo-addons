@@ -243,10 +243,10 @@ msgstr "Lineas de importación"
 #. module: import_products_extension
 #: view:epe.header:import_products_extension.view_epe_header_form
 #: view:epe.header:import_products_extension.view_epe_header_tree
-#: model:ir.actions.act_window,name:import_products_extension.action_imports
-#: model:ir.ui.menu,name:import_products_extension.epe_menu_imports
-msgid "Imports"
-msgstr "Importaciones"
+#: model:ir.actions.act_window,name:import_products_extension.action_import_products
+#: model:ir.ui.menu,name:import_products_extension.epe_menu_import_products
+msgid "Import Products"
+msgstr "Importar Productos"
 
 #. module: import_products_extension
 #: code:addons/import_products_extension/models/models.py:143
