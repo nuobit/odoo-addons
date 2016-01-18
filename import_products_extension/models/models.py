@@ -46,6 +46,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+
 class import_header(models.Model):
     """Session"""
     _name = 'epe.header'
@@ -132,11 +133,33 @@ class import_header(models.Model):
         readonly=False, required=True, default=0)
 
 
+
+    map1_default_code = fields.Many2one('epe.header.field', string='Reference')
+    map2_name = fields.Many2one('epe.header.field', string='Description')
+    map3_category = fields.Many2one('epe.header.field', string='Category')
+    map4_ean13 = fields.Many2one('epe.header.field', string='EAN')
+    map5_pricelist_sale = fields.Many2one('epe.header.field', string='Sale Pricelist')
+    map6_pricelist_purchase = fields.Many2one('epe.header.field', string='Purchase Pricelist')
+
+    field_ids = fields.One2many('epe.header.field', 'header_id')
+
+
     datas = fields.Binary('File')
     datas_fname = fields.Char(string='Filename')
 
     line_ids = fields.One2many('epe.line','header_id')
 
+
+    def _get_map_fields(self):
+        # obtenim els cmaps de mapping
+        mapi = []
+        for f in self.fields_get().keys():
+            m = re.match('map([0-9]+)_(.+)$', f)
+            if m is not None:
+                mapi.append((f, m.group(2), int(m.group(1)), self[f] ))
+        mapi.sort(key=lambda x: x[2])
+
+        return mapi
 
 
     def _split_line(self, line):
@@ -147,13 +170,47 @@ class import_header(models.Model):
 
 
     @api.multi
-    def load_file(self):
+    def load_header(self):
+        #esborem totes le linies
+        self.line_ids.unlink()
+
+        # esborrem les dades dels desplegables
+        #self.env['epe.header.field'].search([('header_id', '=', self.id)]).unlink()
+        self.field_ids.unlink()
+
+        txt = base64.decodestring(self.datas)
+        # remove lasts newlines
+        txt = re.sub(r'\n*$','' ,txt,flags=re.DOTALL)
+
+        # read the file headers
+        for i, line in enumerate(txt.split('\n')):
+            field_values = [x.strip() if self.strip_fields else x for x in self._split_line(line)]
+            if i==0:
+                header = field_values
+
+        # populate field combox sorted by position
+        mapi = self._get_map_fields()
+        for f in header:
+            ehf = self.env['epe.header.field'].create({'header_id': self.id, 'name': f })
+            #ehf = self.field_ids.create({'name': f, 'header_id': self.id})
+            if mapi!=[]:
+                fc, ff, _, _ = mapi.pop(0)
+                self[fc] = ehf
+
+
+
+    @api.multi
+    def load_data(self):
+        #esborem totes le linies
         self.line_ids.unlink()
 
         txt = base64.decodestring(self.datas)
         # remove lasts newlines
         txt = re.sub(r'\n*$','' ,txt,flags=re.DOTALL)
 
+        mapi = dict(map(lambda x: (x[1], x[3].name), self._get_map_fields()))
+
+       # read the file headers
         for i, line in enumerate(txt.split('\n')):
             field_values = [x.strip() if self.strip_fields else x for x in self._split_line(line)]
             if i==0:
@@ -162,9 +219,14 @@ class import_header(models.Model):
                 if len(header)!=len(field_values):
                     raise Warning(_("Incorrect field number in line %i") % i+1)
                 field_values = [x if x!='' else None for x in field_values]
-                fields = dict(zip(header, field_values))
-                fields.update(header_id=self.id)
+                fields_file = dict(zip(header, field_values))
+                fields = {'header_id': self.id}
+                for k, v in mapi.items():
+                    if v:
+                        fields[k]=fields_file[v]
                 self.env['epe.line'].create(fields)
+                #self.line_ids.create(fields)
+
 
     @api.multi
     def clear(self):
@@ -172,9 +234,13 @@ class import_header(models.Model):
 
     @api.multi
     def remove_done(self):
-        for line in self.line_ids:
-            if line.status == 'done':
-                line.unlink()
+        self.line.search([('status', '=', 'done')]).unlink()
+        #for line in self.line_ids:
+        #    if line.status == 'done':
+        #        line.unlink()
+
+
+
 
     def _check_float_format(self, r):
         v = None
@@ -269,6 +335,7 @@ class import_header(models.Model):
         return status, cat, msg
 
 
+    '''
     @api.onchange('show_status')
     #@api.multi
     def onchange_status(self):
@@ -276,7 +343,7 @@ class import_header(models.Model):
         res = {'line_ids': [('id', 'in', fs1)]}
 
         return dict(domain=res)
-
+    '''
 
     @api.multi
     def update(self):
@@ -600,7 +667,15 @@ class import_header(models.Model):
         return True
     '''
 
+class import_header_field(models.Model):
+    """Session"""
+    _name = 'epe.header.field'
+    _description = 'Import Field'
 
+    name = fields.Char(string='Description', required=True,
+        readonly=False)
+
+    header_id = fields.Many2one('epe.header', required=True, ondelete="cascade")
 
 class import_lines(models.Model):
     """Session"""
@@ -626,4 +701,8 @@ class import_lines(models.Model):
     status = fields.Selection([('done',_('Done')),('error',_('Error')), ('pending', _('Pending'))], string="Status")
     observations = fields.Text(string='Observations',
         readonly=True)
+
+
+
+
 

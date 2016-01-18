@@ -55,11 +55,24 @@
 
                         <group name="main_field_group4" col="4">
                             <field name="datas" filename="datas_fname"/>
-                            <button name="load_file" string="Load file" type="object"
+                            <button name="load_header" string="Load header" type="object"
                                     class="oe_highlight oe_edit_only" attrs="{'invisible':[('datas', '=', False)]}"/>
                             <field name="datas_fname" invisible="1"/>
                         </group>
                         <notebook>
+                            <page string="Mapping fields">
+                                <group name="main_field_group223" col="4">
+                                    <field name="map1_default_code" domain="[('header_id', '=', active_id)]" options="{'no_create': True, 'no_open' : True}"/>
+                                    <field name="map2_name" domain="[('header_id', '=', active_id)]" options="{'no_create': True, 'no_open' : True}"/>
+                                    <field name="map3_category" domain="[('header_id', '=', active_id)]" options="{'no_create': True, 'no_open' : True}"/>
+                                    <field name="map4_ean13" domain="[('header_id', '=', active_id)]" options="{'no_create': True, 'no_open' : True}"/>
+                                    <field name="map5_pricelist_sale" domain="[('header_id', '=', active_id)]" options="{'no_create': True, 'no_open' : True}"/>
+                                    <field name="map6_pricelist_purchase" domain="[('header_id', '=', active_id)]" options="{'no_create': True, 'no_open' : True}"/>
+                                </group>
+                                <group>
+                                    <button name="load_data" string="Load Data" type="object"/>
+                                </group>
+                            </page>
                             <page string="Update options">
                                 <group name="main_field_group3" col="4">
                                     <field name="update_purchaseprice"/>
