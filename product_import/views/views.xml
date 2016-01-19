@@ -122,6 +122,7 @@
                                     <field name="quotechar"/>
                                     <field name="strip_fields"/>
                                     <field name="round_numeric_fields"/>
+                                    <field name="encoding"/>
                                 </group>
                             </page>
 

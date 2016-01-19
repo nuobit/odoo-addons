@@ -396,6 +396,11 @@ msgid "Quotechar"
 msgstr "Carácter de texto"
 
 #. module: product_import
+#: field:epe.header,encoding:0
+msgid "Encoding"
+msgstr "Codificación"
+
+#. module: product_import
 #: selection:epe.header,cost_method:0
 msgid "Real Price"
 msgstr "Precio real"

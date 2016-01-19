@@ -64,6 +64,10 @@ class import_header(models.Model):
     quotechar = fields.Char(string='Quotechar', required=True,
         readonly=False, default='"')
 
+    encoding = fields.Char(string='Encoding', required=True,
+        readonly=False, default='utf8')
+
+
     strip_fields = fields.Boolean(string='Strip values',
         help="Remove trail and leading spaces of each field",
         readonly=False, default=True)
@@ -225,7 +229,7 @@ class import_header(models.Model):
 
         # read the file headers
         for i, line in enumerate(txt.split('\n')):
-            field_values = [x.strip() if self.strip_fields else x for x in self._split_line(line)]
+            field_values = [x.decode(self.encoding).strip() if self.strip_fields else x.decode(self.encoding) for x in self._split_line(line)]
             if i==0:
                 header = field_values
             else:
