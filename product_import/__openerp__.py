@@ -20,7 +20,7 @@
 #/#############################################################################
 
 {
-    'name': "Import Product Extension",
+    'name': "Product Import",
     'version': '0.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
@@ -30,8 +30,6 @@
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
-        'views/template_views.xml',
-        'views/inherit_views.xml',
         ],
     'installable': True,
 }

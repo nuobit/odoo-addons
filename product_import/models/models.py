@@ -144,10 +144,19 @@ class import_header(models.Model):
     field_ids = fields.One2many('epe.header.field', 'header_id')
 
 
-    datas = fields.Binary('File')
+    datas = fields.Binary('File', help="CSV file")
     datas_fname = fields.Char(string='Filename')
 
     line_ids = fields.One2many('epe.line','header_id')
+
+
+    state = fields.Selection([
+            ('headers', 'Load header'),
+            ('data', 'Load data'),
+            ('update', 'Update'),
+            #('done', 'Done')
+        ], string='Status', default='headers', readonly=True, required=True, copy=False)
+
 
 
     def _get_map_fields(self):
@@ -171,6 +180,9 @@ class import_header(models.Model):
 
     @api.multi
     def load_header(self):
+        if not self.datas:
+            return
+
         #esborem totes le linies
         self.line_ids.unlink()
 
@@ -192,10 +204,11 @@ class import_header(models.Model):
         mapi = self._get_map_fields()
         for f in header:
             ehf = self.env['epe.header.field'].create({'header_id': self.id, 'name': f })
-            #ehf = self.field_ids.create({'name': f, 'header_id': self.id})
             if mapi!=[]:
                 fc, ff, _, _ = mapi.pop(0)
                 self[fc] = ehf
+
+        self.state = 'data'
 
 
 
@@ -210,7 +223,7 @@ class import_header(models.Model):
 
         mapi = dict(map(lambda x: (x[1], x[3].name), self._get_map_fields()))
 
-       # read the file headers
+        # read the file headers
         for i, line in enumerate(txt.split('\n')):
             field_values = [x.strip() if self.strip_fields else x for x in self._split_line(line)]
             if i==0:
@@ -225,7 +238,8 @@ class import_header(models.Model):
                     if v:
                         fields[k]=fields_file[v]
                 self.env['epe.line'].create(fields)
-                #self.line_ids.create(fields)
+
+        self.state = 'update'
 
 
     @api.multi
@@ -234,10 +248,7 @@ class import_header(models.Model):
 
     @api.multi
     def remove_done(self):
-        self.line.search([('status', '=', 'done')]).unlink()
-        #for line in self.line_ids:
-        #    if line.status == 'done':
-        #        line.unlink()
+        self.line_ids.search([('status', '=', 'done')]).unlink()
 
 
 
@@ -334,16 +345,6 @@ class import_header(models.Model):
 
         return status, cat, msg
 
-
-    '''
-    @api.onchange('show_status')
-    #@api.multi
-    def onchange_status(self):
-        fs1 = self.line_ids.filtered(lambda x: x.status==self.show_status).mapped('id')
-        res = {'line_ids': [('id', 'in', fs1)]}
-
-        return dict(domain=res)
-    '''
 
     @api.multi
     def update(self):
@@ -607,6 +608,43 @@ class import_header(models.Model):
 
 
 
+class import_header_field(models.Model):
+    """Session"""
+    _name = 'epe.header.field'
+    _description = 'Import Field'
+
+    name = fields.Char(string='Description', required=True,
+        readonly=False)
+
+    header_id = fields.Many2one('epe.header', required=True, ondelete="cascade")
+
+class import_lines(models.Model):
+    """Session"""
+    _name = 'epe.line'
+    _description = 'Import Lines'
+
+    default_code = fields.Char(string='Reference', required=True)
+
+    name = fields.Char(string='Description', required=False,
+        readonly=False)
+
+    category = fields.Char(string='Category', required=False,
+        readonly=False)
+
+    ean13 = fields.Char(string='EAN', required=False,
+        readonly=False)
+
+    pricelist_sale = fields.Char(string="Sale Pricelist", required=False)
+    pricelist_purchase = fields.Char(string="Purchase Pricelist", required=False)
+
+    header_id = fields.Many2one('epe.header', required=True, ondelete="cascade")
+
+    status = fields.Selection([('done',_('Done')),('error',_('Error')), ('pending', _('Pending'))], string="Status")
+    observations = fields.Text(string='Observations',
+        readonly=True)
+
+
+
 
 
 
@@ -666,43 +704,3 @@ class import_header(models.Model):
             self._file_delete(cr, uid, fname_to_delete)
         return True
     '''
-
-class import_header_field(models.Model):
-    """Session"""
-    _name = 'epe.header.field'
-    _description = 'Import Field'
-
-    name = fields.Char(string='Description', required=True,
-        readonly=False)
-
-    header_id = fields.Many2one('epe.header', required=True, ondelete="cascade")
-
-class import_lines(models.Model):
-    """Session"""
-    _name = 'epe.line'
-    _description = 'Import Lines'
-
-    default_code = fields.Char(string='Reference', required=True)
-
-    name = fields.Char(string='Description', required=False,
-        readonly=False)
-
-    category = fields.Char(string='Category', required=False,
-        readonly=False)
-
-    ean13 = fields.Char(string='EAN', required=False,
-        readonly=False)
-
-    pricelist_sale = fields.Char(string="Sale Pricelist", required=False)
-    pricelist_purchase = fields.Char(string="Purchase Pricelist", required=False)
-
-    header_id = fields.Many2one('epe.header', required=True, ondelete="cascade")
-
-    status = fields.Selection([('done',_('Done')),('error',_('Error')), ('pending', _('Pending'))], string="Status")
-    observations = fields.Text(string='Observations',
-        readonly=True)
-
-
-
-
-

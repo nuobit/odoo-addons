@@ -3,4 +3,6 @@ access_import_products_extension_header_employee,import products header employee
 access_import_products_extension_header_sale_manager,import products header employee manager,model_epe_header,base.group_sale_manager,1,1,1,1
 access_import_products_extension_line_employee,import products line employee,model_epe_line,base.group_user,0,0,0,0
 access_import_products_extension_line_sale_manager,import products line employee manager,model_epe_line,base.group_sale_manager,1,1,1,1
+access_import_products_extension_header_field_employee,import products header fields employee,model_epe_header_field,base.group_user,0,0,0,0
+access_import_products_extension_header_field_manager,import products header fields employee manager,model_epe_header_field,base.group_sale_manager,1,1,1,1
 
