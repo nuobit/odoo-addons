@@ -147,6 +147,7 @@ class import_header(models.Model):
 
     field_ids = fields.One2many('epe.header.field', 'header_id')
 
+    progress = fields.Float(string="progress", readonly=True, required=False, default=0)
 
     datas = fields.Binary('File', help="CSV file")
     datas_fname = fields.Char(string='Filename')
@@ -180,7 +181,6 @@ class import_header(models.Model):
         for line in csv.reader([line],delimiter=self.delimiter.encode(), quotechar=self.quotechar.encode()):
             line9.append(line)
         return line9[0]
-
 
     @api.multi
     def load_header(self):
@@ -355,14 +355,16 @@ class import_header(models.Model):
         n = len(self.line_ids)
         pco = None
         for i, line in enumerate(self.line_ids):
+            import time
+            time.sleep(5)
             if n!=1:
-                pc = float(i)/(float(n)-1)*100.0
+                self.progress = float(i)/(float(n)-1)*100.0
             else:
-                pc = 100.0
-            if int(pc)!=pco:
+                self.progress = 100.0
+            if int(self.progress)!=pco:
                 #if (int(pc) % 10) == 0:
-                _logger.info('Import progress %.2f%% (%i/%i)' % (pc, i+1, n))
-            pco = int(pc)
+                _logger.info('Import progress %.2f%% (%i/%i)' % (self.progress, i+1, n))
+            pco = int(self.progress)
 
             if line.status=='done':
                 continue

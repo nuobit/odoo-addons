@@ -82,8 +82,13 @@
                             <group>
                                 <button name="load_data" states='data,update' string="Load Data" type="object"
                                         class="oe_highlight oe_edit_only"/>
+
                             </group>
                         </group>
+                        <group>
+                            <field name="progress" widget="progressbar"/>
+                        </group>
+
                         <notebook>
                             <page string="Update options">
                                 <group name="main_field_group3" col="4">
