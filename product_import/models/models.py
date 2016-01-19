@@ -226,7 +226,7 @@ class import_header(models.Model):
 
     @api.multi
     def load_data(self):
-        fl = map(lambda x: x[3].id, self._get_map_fields())
+        fl = filter(lambda x: x, map(lambda x: x[3].id, self._get_map_fields()))
         if len(fl)!=len(set(fl)):
             raise Warning(_("Some file headers are mapped more than once"))
 
