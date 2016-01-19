@@ -89,9 +89,9 @@ msgstr "Consumable"
 #. module: product_import
 #: help:epe.header,product_type:0
 msgid "Consumable: Will not imply stock management for this product. \n"
-"Stockable product: Will imply stock management for this product."
+"Stockable product: Will imply stock management for this product"
 msgstr "Consumable: Will not imply stock management for this product. \n"
-"Stockable product: Will imply stock management for this product."
+"Stockable product: Will imply stock management for this product"
 
 #. module: product_import
 #: field:epe.header,cost_method:0
