@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-19 10:29+0000\n"
-"PO-Revision-Date: 2016-01-19 10:29+0000\n"
+"POT-Creation-Date: 2016-01-19 15:44+0000\n"
+"PO-Revision-Date: 2016-01-19 15:44+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -12,25 +12,25 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:494
+#: code:addons/product_import/models/models.py:518
 #, python-format
 msgid " and just one has quantity=0"
 msgstr " y sólo una tiene cantidad=0"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:496
+#: code:addons/product_import/models/models.py:520
 #, python-format
 msgid " and more than one has quantity=0"
 msgstr " y más de una tiene cantidad=0"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:492
+#: code:addons/product_import/models/models.py:516
 #, python-format
 msgid " and none has quantity=0"
 msgstr " y ninguna tiene cantidad=0"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:455
+#: code:addons/product_import/models/models.py:479
 #, python-format
 msgid "\"EAN13 Barcode\" cannot be null"
 msgstr "\"EAN13 Barcode\" no puede ser nulo"
@@ -57,26 +57,26 @@ msgid "Category"
 msgstr "Categoría"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:441
-#: code:addons/product_import/models/models.py:550
+#: code:addons/product_import/models/models.py:465
+#: code:addons/product_import/models/models.py:574
 #, python-format
 msgid "Category cannot be null"
 msgstr "La Categoría no puede ser nula"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:330
+#: code:addons/product_import/models/models.py:348
 #, python-format
 msgid "Category did not exist, it was created"
 msgstr "La Categoría no existe, has sido creada"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:546
+#: code:addons/product_import/models/models.py:570
 #, python-format
 msgid "Category did not exist. Enable \"Create Category\" on create options to create it"
 msgstr "La Categoría no existe. Activa \"Crear Categoría\" en las opciones de creación"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:437
+#: code:addons/product_import/models/models.py:461
 #, python-format
 msgid "Category did not exist. Enable \"Create Category\" on update options to create it"
 msgstr "La Categoría no existe. Activa \"Crear Categoría\" en las opciones de actualización"
@@ -159,7 +159,7 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:335
+#: code:addons/product_import/models/models.py:353
 #, python-format
 msgid "Current language '%s' does not have that Category but other languages do: [%s]"
 msgstr "El idioma actual '%s' no tiene la Categoría pero otros idiomas si: [%s]"
@@ -193,14 +193,14 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:416
-#: code:addons/product_import/models/models.py:527
+#: code:addons/product_import/models/models.py:440
+#: code:addons/product_import/models/models.py:551
 #, python-format
 msgid "Description cannot be null"
 msgstr "La Descripción no puede ser nula"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:642
+#: code:addons/product_import/models/models.py:666
 #: selection:epe.line,status:0
 #, python-format
 msgid "Done"
@@ -213,14 +213,19 @@ msgid "EAN"
 msgstr "EAN"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:642
+#: field:epe.header,encoding:0
+msgid "Encoding"
+msgstr "Codificación"
+
+#. module: product_import
+#: code:addons/product_import/models/models.py:666
 #: selection:epe.line,status:0
 #, python-format
 msgid "Error"
 msgstr "Error"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:328
+#: code:addons/product_import/models/models.py:346
 #, python-format
 msgid "Exists an english source with the Category but explicit english language is not defined"
 msgstr "Existe una base de traducción en inglés de la Categoría pero la definición explícita par idioma inglés no está definida"
@@ -237,8 +242,8 @@ msgstr "Fichero"
 
 #. module: product_import
 #: view:epe.header:product_import.view_epe_header_form
-msgid "File format"
-msgstr "Formato del fichero"
+msgid "File options"
+msgstr "File options"
 
 #. module: product_import
 #: field:epe.header,datas_fname:0
@@ -269,8 +274,8 @@ msgid "If 'Update Category' is selected create Category if not exists. If 'Updat
 msgstr "Si 'Actualizar Categoría' está seleccionado, creara la Categoría si no existe. Si 'Actualizar Categoría' no está seleccionada esta opción no tiene efecto"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:473
-#: code:addons/product_import/models/models.py:569
+#: code:addons/product_import/models/models.py:497
+#: code:addons/product_import/models/models.py:593
 #, python-format
 msgid "If there is a Purchase Pricelist the Supplier cannot be null"
 msgstr "Si el Precio de Compra no es nulo es obligatori seleccionar el Proveedor"
@@ -289,21 +294,21 @@ msgstr "Lineas de importación"
 #: view:epe.header:product_import.view_epe_header_form
 #: view:epe.header:product_import.view_epe_header_tree
 #: model:ir.actions.act_window,name:product_import.action_import_products
-#: model:ir.ui.menu,name:product_import.epe_menu_sale_import_products
 #: model:ir.ui.menu,name:product_import.epe_menu_puchase_import_products
+#: model:ir.ui.menu,name:product_import.epe_menu_sale_import_products
 #: model:ir.ui.menu,name:product_import.epe_menu_stock_import_products
 msgid "Import Products"
 msgstr "Importar Productos"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:233
+#: code:addons/product_import/models/models.py:251
 #, python-format
 msgid "Incorrect field number in line %i"
 msgstr "Número de campos incorrectos en la linea %i"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:451
-#: code:addons/product_import/models/models.py:558
+#: code:addons/product_import/models/models.py:475
+#: code:addons/product_import/models/models.py:582
 #, python-format
 msgid "Invalid \"EAN13 Barcode\""
 msgstr "\"EAN13 Barcode\" incorrecto"
@@ -341,11 +346,11 @@ msgstr "Cargar cabecera"
 
 #. module: product_import
 #: view:epe.header:product_import.view_epe_header_form
-msgid "Mapping fields"
+msgid "Field mapping"
 msgstr "Mapeo de campos"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:602
+#: code:addons/product_import/models/models.py:626
 #, python-format
 msgid "Nothing changed. Data already updated"
 msgstr "No se ha cambiado nada. Los datos ya estaban actualizados"
@@ -356,7 +361,12 @@ msgid "Observations"
 msgstr "Observaciones"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:642
+#: view:epe.header:product_import.view_epe_header_form
+msgid "Other options"
+msgstr "Otras opciones"
+
+#. module: product_import
+#: code:addons/product_import/models/models.py:666
 #: selection:epe.line,status:0
 #, python-format
 msgid "Pending"
@@ -373,13 +383,18 @@ msgid "Product Type"
 msgstr "Tipo de producto"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:516
+#: code:addons/product_import/models/models.py:540
 #, python-format
 msgid "Product does not exist. Enable 'Create Product' to create it"
 msgstr "El producto no existe. Activa 'Crear producto' para crearlo"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:510
+#: field:epe.header,progress:0
+msgid "Progress"
+msgstr "Progreso"
+
+#. module: product_import
+#: code:addons/product_import/models/models.py:534
 #, python-format
 msgid "Purchase Price cannot be null"
 msgstr "El Precio de Compra no puede ser nulo"
@@ -396,11 +411,6 @@ msgid "Quotechar"
 msgstr "Carácter de texto"
 
 #. module: product_import
-#: field:epe.header,encoding:0
-msgid "Encoding"
-msgstr "Codificación"
-
-#. module: product_import
 #: selection:epe.header,cost_method:0
 msgid "Real Price"
 msgstr "Precio real"
@@ -412,7 +422,7 @@ msgid "Reference"
 msgstr "Referencia"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:372
+#: code:addons/product_import/models/models.py:396
 #, python-format
 msgid "Reference cannot be null"
 msgstr "La Referencia no puede ser nula"
@@ -443,7 +453,7 @@ msgid "Sale Price"
 msgstr "Precio de Venta"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:465
+#: code:addons/product_import/models/models.py:489
 #, python-format
 msgid "Sale Price cannot be null"
 msgstr "El Precio de Venta no puede ser nulo"
@@ -458,6 +468,12 @@ msgstr "Precio de Venta"
 #: selection:epe.header,product_type:0
 msgid "Service"
 msgstr "Servicio"
+
+#. module: product_import
+#: code:addons/product_import/models/models.py:231
+#, python-format
+msgid "Some file headers are mapped more than once"
+msgstr "Se han encontrado cabeceras mapeadas más de una vez"
 
 #. module: product_import
 #: selection:epe.header,cost_method:0
@@ -500,50 +516,65 @@ msgid "Supplier info"
 msgstr "Información de Proveedor"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:490
+#: view:epe.header:product_import.view_epe_header_form
+msgid "System options"
+msgstr "Opciones de sistema"
+
+#. module: product_import
+#: code:addons/product_import/models/models.py:514
 #, python-format
 msgid "There is more than one Purchase Pricelist"
 msgstr "Se ha encontrado más de un Precio de Compra en la Información del Proveedor"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:479
+#: code:addons/product_import/models/models.py:503
 #, python-format
 msgid "There is more then one Supplier defined"
 msgstr "El proveedor aparece más de una vez en la lista de proveedores del producto"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:586
+#: code:addons/product_import/models/models.py:610
 #, python-format
 msgid "There is no Purchase Pricelist and there is no Supplier selected. Enable 'Create without Supplier Info' to force the creation of a product without Supplier and Purchase Pricelist"
 msgstr "El Precio de Compra es nulo y no se ha seleccionado Proveedor. Activa 'Crear sin la Información del Proveedor' para forzar la creación del producto sin Proveedor ni Precio de Compra"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:581
+#: code:addons/product_import/models/models.py:605
 #, python-format
 msgid "There is no Purchase Pricelist. Enable 'Create always Supplier Info' to force the creation of a product with Supplier and without Purchase Pricelist"
 msgstr "El Precio de Compra es nulo. Activa 'Crear siempre Información de Proveedor' para forzar la creación del producto sólo con la Información de Proveedor y sin Precio de Compra"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:344
+#: code:addons/product_import/models/models.py:362
 #, python-format
 msgid "There's more than one category with the same slug %s"
 msgstr "Hay más de una Categoría con el mismo slug %s"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:379
+#: code:addons/product_import/models/models.py:403
 #, python-format
 msgid "There's more than one product with the same Reference"
 msgstr "Hay más de un Producto con la misma Referencia"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:319
+#: code:addons/product_import/models/models.py:337
 #, python-format
 msgid "There's more than one translation sources with different source id: %i, src0: '%s', src1: %s"
 msgstr "Existe más de una traducción para el mismo recurso con base de traducción distinta source id: %i, src0: '%s', src1: %s"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:389
-#: code:addons/product_import/models/models.py:399
+#: field:epe.header,timeout:0
+msgid "Timeout"
+msgstr "Timeout"
+
+#. module: product_import
+#: help:epe.header,timeout:0
+msgid "Timeout in second to avoid webserver real timeout failure"
+msgstr "Timeout in second to avoid webserver real timeout failure"
+
+#. module: product_import
+#: code:addons/product_import/models/models.py:413
+#: code:addons/product_import/models/models.py:423
 #, python-format
 msgid "Unknown float format"
 msgstr "Format numérico incorrecto"
@@ -610,7 +641,7 @@ msgid "Update options"
 msgstr "Opciones de Actualización"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:339
+#: code:addons/product_import/models/models.py:357
 #, python-format
 msgid "Used category %s instead of %s"
 msgstr "Se ha utilizado la category %s en lugar de %s"

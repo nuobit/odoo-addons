@@ -34,6 +34,8 @@ import string
 
 import decimal
 
+from datetime import datetime
+
 from openerp import models, fields, api, _
 from openerp.exceptions import AccessError, Warning, ValidationError
 
@@ -67,7 +69,6 @@ class import_header(models.Model):
     encoding = fields.Char(string='Encoding', required=True,
         readonly=False, default='utf8')
 
-
     strip_fields = fields.Boolean(string='Strip values',
         help="Remove trail and leading spaces of each field",
         readonly=False, default=True)
@@ -75,6 +76,9 @@ class import_header(models.Model):
     round_numeric_fields = fields.Integer(string='Round',
         help="Round numeric values to this number of decimals. -1 or any negative number to not round at all",
         readonly=False, required=True, default=2)
+
+    timeout = fields.Integer(string="Timeout", help="Timeout in second to avoid webserver real timeout failure",
+        readonly=False, required=True, default=270)
 
 
     update_name = fields.Boolean(string='Update Description',
@@ -147,13 +151,15 @@ class import_header(models.Model):
 
     field_ids = fields.One2many('epe.header.field', 'header_id')
 
-    progress = fields.Float(string="progress", readonly=True, required=False, default=0)
 
     datas = fields.Binary('File', help="CSV file")
     datas_fname = fields.Char(string='Filename')
 
     line_ids = fields.One2many('epe.line','header_id')
 
+
+    progress = fields.Float(string='Progress',
+        readonly=True, required=False, default=0)
 
     state = fields.Selection([
             ('headers', 'Load header'),
@@ -187,6 +193,8 @@ class import_header(models.Model):
         if not self.datas:
             return
 
+        self.progress = 0
+
         #esborem totes le linies
         self.line_ids.unlink()
 
@@ -218,6 +226,12 @@ class import_header(models.Model):
 
     @api.multi
     def load_data(self):
+        fl = map(lambda x: x[3].id, self._get_map_fields())
+        if len(fl)!=len(set(fl)):
+            raise Warning(_("Some file headers are mapped more than once"))
+
+        self.progress = 0
+
         #esborem totes le linies
         self.line_ids.unlink()
 
@@ -354,9 +368,13 @@ class import_header(models.Model):
     def update(self):
         n = len(self.line_ids)
         pco = None
+        t0 = datetime.now()
         for i, line in enumerate(self.line_ids):
-            import time
-            time.sleep(5)
+            tdiff = datetime.now() - t0
+            if tdiff.seconds>=self.timeout:
+                #raise Warning(_("Timeout exceded.\nThis is not an error, it's just a warning to avoid real timeout webserver failure.\n%i rows  has been processed so far. Please Click on 'Update' to continue processing." % i))
+                return
+
             if n!=1:
                 self.progress = float(i)/(float(n)-1)*100.0
             else:
