@@ -277,7 +277,7 @@ class ImportHeader(models.Model):
         for f in header:
             ehf = self.env['epe.header.field'].create({'header_id': self.id,
                                                        'name': f})
-            if not mapi:
+            if mapi:
                 fc, ff, _, _ = mapi.pop(0)
                 self[fc] = ehf
 
