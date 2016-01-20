@@ -43,28 +43,22 @@
                     <header>
                         <field name="state" widget="statusbar"/> <!-- statusbar_visible="draft,confirm,done"/-->
                     </header>
-
                     <sheet>
-                        <!--div class="oe_title">
-                            <label for="name" class="oe_edit_only"/>
-                            <h1>
-                                <field name="name"/>
-                            </h1>
-                        </div-->
                         <group name="main_field_group1" col="4">
-                            <field name="supplier_id"/>
+                            <field name="name"/>
                             <field name="date_import"/>
                         </group>
-                        <group name="main_field_group116">
-                            <field name="name"/>
-                        </group>
-
                         <group name="main_field_group4" col="4">
                             <field name="datas" filename="datas_fname"/>
                             <button name="load_header" string="Load header" type="object"
                                     class="oe_highlight oe_edit_only" attrs="{'invisible':[('datas', '=', False)]}"
                                     states='headers,update'/>
                             <field name="datas_fname" invisible="1"/>
+                        </group>
+                        <separator/>
+                        <group name="main_field_group116" col="4">
+                            <field name="supplier_id" class="oe_inline"/>
+
                         </group>
                         <group string="Field mapping" name="main_field_group223" col="4">
                             <field name="map1_default_code" domain="[('header_id', '=', active_id)]"
@@ -82,7 +76,6 @@
                             <group>
                                 <button name="load_data" states='data,update' string="Load data" type="object"
                                         class="oe_highlight oe_edit_only"/>
-
                             </group>
                         </group>
 
@@ -141,7 +134,8 @@
                                     class="oe_highlight oe_edit_only oe_right" states='update'/>
                         </group>
                         <group>
-                             <field name="progress" widget="progressbar" nolabel="1" states='update' class="oe_highlight oe_edit_only"/>
+                            <field name="progress" widget="progressbar" nolabel="1" states='update'
+                                   class="oe_highlight oe_edit_only"/>
                         </group>
                         <group>
                             <field name="line_ids" nolabel="1">
