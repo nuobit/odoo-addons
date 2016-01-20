@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#/#############################################################################
+# /############################################################################
 #
 #   Odoo, Open Source Management Solution
 #   Copyright (C) 2015 NuoBiT Solutions, S.L. (<http://www.nuobit.com>).
@@ -17,7 +17,7 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#/#############################################################################
+# /############################################################################
 
 
 import base64
@@ -40,7 +40,40 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class import_header(models.Model):
+def check_float_format(r):
+    v = None
+
+    if re.search('^[0-9]+$', r) is not None:
+        v = r
+    if re.search('^[0-9]+,[0-9]+$', r) is not None:
+        v = r.replace(',', '.')
+    elif re.search('^[0-9]+\.[0-9]+$', r) is not None:
+        v = r
+    elif re.search('^[0-9]+\.[0-9]+,[0-9]+$', r) is not None:
+        v = r.replace('.', '').replace(',', '.')
+    elif re.search('^[0-9]+,[0-9]+\.[0-9]+$', r) is not None:
+        v = r.replace(',', '')
+
+    return v
+
+
+def float2decimal(d):
+    return decimal.Decimal(d).quantize(decimal.Decimal('0.00000000001'))
+
+
+def equal(a, b):
+    # a, b: str represenitng decimal
+    a0 = float2decimal(a)
+    b0 = float2decimal(b)
+    return a0 == b0
+
+
+def slugify(r):
+    return ''.join(x for x in unicodedata.normalize('NFKD', r)
+                   if x in string.ascii_letters).lower()
+
+
+class ImportHeader(models.Model):
     """Session"""
     _name = 'epe.header'
     _description = 'Header'
@@ -224,7 +257,7 @@ class import_header(models.Model):
 
         self.progress = 0
 
-        #esborem totes le linies
+        # esborem totes les linies
         self.line_ids.unlink()
 
         # esborrem les dades dels desplegables
@@ -235,18 +268,16 @@ class import_header(models.Model):
         txt = re.sub(r'\n*$', '', txt, flags=re.DOTALL)
 
         # read the file headers
-        for i, line in enumerate(txt.split('\n')):
-            field_values = [x.strip() if self.strip_fields else x
-                            for x in self._split_line(line)]
-            if i == 0:
-                header = field_values
+        first_line = txt.split('\n')[0]
+        header = [x.strip() if self.strip_fields else x
+                  for x in self._split_line(first_line)]
 
         # populate field combox sorted by position
         mapi = self._get_map_fields()
         for f in header:
             ehf = self.env['epe.header.field'].create({'header_id': self.id,
                                                        'name': f})
-            if mapi != []:
+            if not mapi:
                 fc, ff, _, _ = mapi.pop(0)
                 self[fc] = ehf
 
@@ -254,21 +285,21 @@ class import_header(models.Model):
 
     @api.multi
     def load_data(self):
-        fl = filter(lambda x: x, map(lambda x: x[3].id,
-                                     self._get_map_fields()))
+        fl = filter(lambda z: z is not False,
+                    map(lambda y: y[3].id, self._get_map_fields()))
         if len(fl) != len(set(fl)):
             raise Warning(_("Some file headers are mapped more than once"))
 
         self.progress = 0
 
-        #esborem totes le linies
+        # delete all lines
         self.line_ids.unlink()
 
         txt = base64.decodestring(self.datas)
         # remove lasts newlines
         txt = re.sub(r'\n*$', '', txt, flags=re.DOTALL)
 
-        mapi = dict(map(lambda x: (x[1], x[3].name), self._get_map_fields()))
+        mapi = dict(map(lambda z: (z[1], z[3].name), self._get_map_fields()))
 
         # read the file headers
         for i, line in enumerate(txt.split('\n')):
@@ -298,22 +329,6 @@ class import_header(models.Model):
     def remove_done(self):
         self.line_ids.search([('status', '=', 'done')]).unlink()
 
-    def _check_float_format(self, r):
-        v = None
-
-        if re.search('^[0-9]+$', r) is not None:
-            v = r
-        if re.search('^[0-9]+,[0-9]+$', r) is not None:
-            v = r.replace(',', '.')
-        elif re.search('^[0-9]+\.[0-9]+$', r) is not None:
-            v = r
-        elif re.search('^[0-9]+\.[0-9]+,[0-9]+$', r) is not None:
-            v = r.replace('.', '').replace(',', '.')
-        elif re.search('^[0-9]+,[0-9]+\.[0-9]+$', r) is not None:
-            v = r.replace(',', '')
-
-        return v
-
     def _format_decimal(self, d, ret_type='float'):
         f = decimal.Decimal(d)
         if self.round_numeric_fields:
@@ -326,25 +341,12 @@ class import_header(models.Model):
             float(f)
         return f
 
-    def _float2decimal(self, d):
-        return decimal.Decimal(d).quantize(decimal.Decimal('0.00000000001'))
-
-    def _equal(self, a, b):
-        # a, b: str represenitng decimal
-        a0 = self._float2decimal(a)
-        b0 = self._float2decimal(b)
-        return a0 == b0
-
-    def _slugify(self, r):
-        return ''.join(x for x in unicodedata.normalize('NFKD', r)
-                       if x in string.ascii_letters).lower()
-
     def _get_cat(self, category):
         status = None
         cat, msg = None, False
         nc = []
         for cat in self.env['product.category'].search([]):
-            if self._slugify(cat.name) == self._slugify(category):
+            if slugify(cat.name) == slugify(category):
                 nc.append(cat)
         if len(nc) == 0:
             cat_langs = self.env['ir.translation'].search(
@@ -354,7 +356,7 @@ class import_header(models.Model):
             nl = []
             src_d = {}
             for cl in cat_langs:
-                if self._slugify(cl.value) == self._slugify(category):
+                if slugify(cl.value) == slugify(category):
                     nl.append(cl)
 
                 if cl.res_id not in src_d:
@@ -370,10 +372,10 @@ class import_header(models.Model):
                         src_d[cl.res_id][1] |= (cl.lang == 'en_US')
 
             if len(nl) == 0:
-                nls = set(map(lambda x: x[0], filter(lambda x: not x[1],
-                                                     src_d.values())))
+                nls = set(map(lambda z: z[0],
+                              filter(lambda y: not y[1], src_d.values())))
                 for src in nls:
-                    if self._slugify(src) == self._slugify(category):
+                    if slugify(src) == slugify(category):
                         status = 'error'
                         msg = _("Exists an english source with the Category "
                                 "but explicit english language is not defined")
@@ -388,7 +390,7 @@ class import_header(models.Model):
                     self._context['lang'], nll)
 
         elif len(nc) == 1:
-            if self._slugify(nc[0].name) != self._slugify(category):
+            if slugify(nc[0].name) != slugify(category):
                 msg = _("Used category %s instead of %s") % (nc[0].name,
                                                              category)
             status = 'exists'
@@ -415,7 +417,6 @@ class import_header(models.Model):
             else:
                 self.progress = 100.0
             if int(self.progress) != pco:
-                #if (int(pc) % 10) == 0:
                 _logger.info('Import progress %.2f%% (%i/%i)' % (self.progress,
                                                                  i+1, n))
             pco = int(self.progress)
@@ -445,7 +446,7 @@ class import_header(models.Model):
 
             # check pricelist_sale
             if line.pricelist_sale:
-                price = self._check_float_format(line.pricelist_sale)
+                price = check_float_format(line.pricelist_sale)
                 if price is None:
                     line.status = 'error'
                     line.observations = _('Unknown float format')
@@ -456,7 +457,7 @@ class import_header(models.Model):
 
             # check purchase priceist
             if line.pricelist_purchase:
-                price = self._check_float_format(line.pricelist_purchase)
+                price = check_float_format(line.pricelist_purchase)
                 if price is None:
                     line.status = 'error'
                     line.observations = _('Unknown float format')
@@ -465,7 +466,7 @@ class import_header(models.Model):
                     line.pricelist_purchase = self._format_decimal(
                         price, ret_type='text')
 
-            ## populate data
+            # populate data
             product['data'] = {}
             if product['status'] == 'update':
                 product['object'] = pp
@@ -526,10 +527,10 @@ class import_header(models.Model):
 
                 if self.update_saleprice:
                     if line.pricelist_sale:
-                        pricelist_sale = float(line.pricelist_sale)
-                        if not self._equal(pp.lst_price, pricelist_sale):
+                        price = float(line.pricelist_sale)
+                        if not equal(pp.lst_price, price):
                             product['data'].update(
-                                {'lst_price': pricelist_sale})
+                                {'lst_price': price})
                     else:
                         line.status = 'error'
                         line.observations = _('Sale Price cannot be null')
@@ -591,12 +592,17 @@ class import_header(models.Model):
                                                 )]}
                                             )]})
                                 else:
-                                    pricelist_purchase = float(
-                                        line.pricelist_purchase)
-                                    old_pricelist_purchase = pp.seller_ids.filtered(lambda x: x.id == suppinfo.id).mapped('pricelist_ids').filtered(lambda x: x.id == plist.id).price
-                                    if not self._equal(old_pricelist_purchase, pricelist_purchase):
-                                        product['data'].update({'seller_ids': [(1, suppinfo.id, {
-                                                                        'pricelist_ids': [(1, plist.id, {'price': pricelist_purchase})]})]})
+                                    price = float(line.pricelist_purchase)
+                                    old_price = pp.seller_ids.filtered(
+                                        lambda x: x.id == suppinfo.id
+                                        ).mapped('pricelist_ids').filtered(
+                                        lambda x: x.id == plist.id).price
+                                    if not equal(old_price, price):
+                                        product['data'].update({
+                                            'seller_ids': [(1, suppinfo.id, {
+                                                'pricelist_ids': [
+                                                    (1, plist.id,
+                                                     {'price': price})]})]})
                     else:
                         line.status = 'error'
                         line.observations = _('Purchase Price cannot be null')
@@ -672,25 +678,38 @@ class import_header(models.Model):
                             'cannot be null')
                         continue
                     else:
-                        product['data'].update({'seller_ids': [(0, _, {'name': self.supplier_id.id, 'delay': self.purchase_delay,
-                                                                      'pricelist_ids': [(0, _, {'min_quantity': 0,
-                                                                                              'price': float(line.pricelist_purchase)})]})]})
+                        product['data'].update({'seller_ids': [(0, _, {
+                            'name': self.supplier_id.id,
+                            'delay': self.purchase_delay,
+                            'pricelist_ids': [(0, _, {
+                                'min_quantity': 0,
+                                'price': float(line.pricelist_purchase)})]})]})
                 else:
                     if self.supplier_id.id:
                         if self.create_always_supplier:
-                            product['data'].update({'seller_ids': [(0, _, {'name': self.supplier_id.id, 'delay': self.purchase_delay})]})
+                            product['data'].update({'seller_ids': [(0, _, {
+                                'name': self.supplier_id.id,
+                                'delay': self.purchase_delay})]})
                         else:
                             line.status = 'error'
-                            line.observations = _("There is no Purchase Pricelist. Enable 'Create always Supplier Info' to force the creation of a product with Supplier and without Purchase Pricelist")
+                            line.observations = _(
+                                "There is no Purchase Pricelist. Enable "
+                                "'Create always Supplier Info' to force the "
+                                "creation of a product with Supplier and "
+                                "without Purchase Pricelist")
                             continue
                     else:
                         if not self.create_without_supplier:
                             line.status = 'error'
-                            line.observations = _("There is no Purchase Pricelist and there is no Supplier selected. Enable 'Create without Supplier Info' to force the creation of a product without Supplier and Purchase Pricelist")
+                            line.observations = _(
+                                "There is no Purchase Pricelist and there is "
+                                "no Supplier selected. Enable 'Create without "
+                                "Supplier Info' to force the creation of a "
+                                "product without Supplier and "
+                                "Purchase Pricelist")
                             continue
 
-            ## save data
-            cat = None
+            # save data
             if product.get('category') is not None:
                 if product['category']['status'] == 'create':
                     cat = self.env['product.category'].create(
@@ -709,7 +728,7 @@ class import_header(models.Model):
             line.status = 'done'
 
 
-class import_header_field(models.Model):
+class ImportHeaderField(models.Model):
     """Session"""
     _name = 'epe.header.field'
     _description = 'Import Field'
@@ -721,7 +740,7 @@ class import_header_field(models.Model):
         comodel_name='epe.header', required=True, ondelete="cascade")
 
 
-class import_lines(models.Model):
+class ImportLines(models.Model):
     """Session"""
     _name = 'epe.line'
     _description = 'Import Lines'
