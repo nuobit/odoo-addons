@@ -176,7 +176,7 @@ msgstr "Date"
 
 #. module: product_import
 #: field:epe.header,delimiter:0
-msgid "Delimitar"
+msgid "Delimiter"
 msgstr "Delimitar"
 
 #. module: product_import

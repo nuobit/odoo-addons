@@ -55,11 +55,6 @@
                                     states='headers,update'/>
                             <field name="datas_fname" invisible="1"/>
                         </group>
-                        <separator/>
-                        <group name="main_field_group116" col="4">
-                            <field name="supplier_id" class="oe_inline"/>
-
-                        </group>
                         <group string="Field mapping" name="main_field_group223" col="4">
                             <field name="map1_default_code" domain="[('header_id', '=', active_id)]"
                                    options="{'no_create': True, 'no_open' : True}"/>
@@ -78,10 +73,14 @@
                                         class="oe_highlight oe_edit_only"/>
                             </group>
                         </group>
+                        <separator/>
+                        <group name="main_field_group116" col="4">
+                            <field name="supplier_id" class="oe_inline"/>
 
+                        </group>
                         <notebook>
                             <page string="Update options">
-                                <group name="main_field_group3" col="4">
+                                <group name="main_field_group3" col="4" colspan="2">
                                     <field name="update_purchaseprice"/>
                                     <field name="update_saleprice"/>
                                     <field name="update_name"/>
@@ -94,9 +93,9 @@
                             <page string="Create options">
                                 <group name="main_field_group13" col="4">
                                     <field name="create_product"/>
-                                    <field name="create_category_oncreate"/>
-                                    <field name="create_always_supplier"/>
-                                    <field name="create_without_supplier"/>
+                                    <field name="create_category_oncreate" attrs="{'invisible':[('create_product', '=', False)]}"/>
+                                    <field name="create_always_supplier" attrs="{'invisible':[('create_product', '=', False)]}"/>
+                                    <field name="create_without_supplier" attrs="{'invisible':[('create_product', '=', False)]}"/>
                                 </group>
                             </page>
 

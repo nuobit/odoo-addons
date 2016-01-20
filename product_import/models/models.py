@@ -91,7 +91,7 @@ class ImportHeader(models.Model):
         domain=[('supplier', '=', True)])
 
     delimiter = fields.Char(
-        string='Delimitar', required=True,
+        string='Delimiter', required=True,
         readonly=False, default=',')
 
     quotechar = fields.Char(
