@@ -342,6 +342,7 @@ class ImportHeader(models.Model):
         return f
 
     def _get_cat(self, category):
+        # TODO: Refactor to satisfy PEP C901
         status = None
         cat, msg = None, False
         nc = []
@@ -404,6 +405,7 @@ class ImportHeader(models.Model):
 
     @api.multi
     def update(self):
+        # TODO: Refactor to satisfy PEP C901
         n = len(self.line_ids)
         pco = None
         t0 = datetime.now()
