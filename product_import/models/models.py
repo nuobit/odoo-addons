@@ -612,7 +612,7 @@ class ImportHeader(models.Model):
 
             else:  # Create product
                 if not self.create_product:
-                    line.status = 'pending'
+                    line.status = 'error'
                     line.observations = _(
                         "Product does not exist. Enable 'Create Product' "
                         "to create it")
@@ -768,8 +768,8 @@ class ImportLines(models.Model):
         comodel_name='epe.header', required=True, ondelete="cascade")
 
     status = fields.Selection(
-        selection=[('done', _('Done')), ('error', _('Error')),
-                   ('pending', _('Pending'))], string="Status")
+        selection=[('done', _('Done')),
+                   ('error', _('Error'))], string="Status")
 
     observations = fields.Text(
         string='Observations', readonly=True)
