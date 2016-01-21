@@ -6,7 +6,7 @@
 
         <!-- A first level in the left side menu is needed
              before using action= attribute -->
-        <menuitem id="session_menu" name="EMS"
+        <menuitem id="ems_menu" name="EMS"
                   parent="main_ems_menu"/>
 
 
@@ -21,7 +21,7 @@
         <!-- the following menuitem should appear *after*
              its parent ems_menu and *after* its
              action action_list_sessions -->
-        <menuitem id="menu_ems" parent="session_menu" name="Sessions" sequence="10"
+        <menuitem id="menu_ems_session" parent="ems_menu" name="Sessions" sequence="10"
                   action="action_list_sessions"/>
 
         <!-- Session Tree view -->
@@ -66,13 +66,13 @@
                                 <field name="center_id" options="{'no_create': True}"/>
                                 <field name="service_id" options="{'no_create': True}"/>
                                 <field name="room_id" options="{'no_create': True}"/>
-                                <field name="resource_ids" string="Resources" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="resource_ids" string="Resources" widget="many2many_tags"
+                                       options="{'no_create': True}"/>
                             </group>
                             <group>
                                 <group>
                                     <field name="customer_id" domain="[('ems_type','=','customer')]"/>
                                     <field name="trainer_id" domain="[('trainer','=',True)]"/>
-
                                 </group>
                                 <group>
                                     <field name="date_begin"/>
@@ -146,10 +146,130 @@
             </field>
         </record>
 
+
+        <!-- ########################## EMS/TIMETABLE ########################## -->
+        <record model="ir.actions.act_window" id="action_list_timetable">
+            <field name="name">Timetable</field>
+            <field name="res_model">ems.timetable</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <!--field name="context">{"search_default_upcoming":1}</field-->
+        </record>
+
+        <!-- the following menuitem should appear *after*
+             its parent ems_menu and *after* its
+             action action_list_sessions -->
+        <menuitem id="menu_ems_timetable" parent="ems_menu" name="Timetable" sequence="20"
+                  action="action_list_timetable"/>
+
+        <!-- TIMETABLE Tree view -->
+        <record model="ir.ui.view" id="view_ems_timetable_tree">
+            <field name="name">Timetable</field>
+            <field name="model">ems.timetable</field>
+            <field name="arch" type="xml">
+                <tree string="Timetable">
+                    <field name="center_id"/>
+                    <field name="day"/>
+                    <field name="ini_time"/>
+                    <field name="end_time"/>
+                    <field name="trainer_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- TIMETABLE Form view -->
+        <record model="ir.ui.view" id="view_ems_timetable_form">
+            <field name="name">Timetable</field>
+            <field name="model">ems.timetable</field>
+            <field name="arch" type="xml">
+                <form string="Timetable">
+                    <header>
+                    </header>
+                    <sheet>
+                        <!--div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div-->
+                        <group col="4" colspan="2">
+                            <field name="center_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="day" options="{'no_create': True}"/>
+                            <newline/>
+                            <field name="ini_time"/>
+                            <field name="end_time"/>
+
+                            <!--field name="end_time" string="Resources" widget="many2many_tags" options="{'no_create': True}"/-->
+                        </group>
+                        <group>
+                            <field name="trainer_ids" nolabel="1">
+                                <tree editable="botttom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="trainer_id" domain="[('trainer','=',True)]" options="{'no_create': True}"/>
+                                </tree>
+                            </field>
+                        </group>
+
+
+                    </sheet>
+                    <!--div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div-->
+                </form>
+            </field>
+        </record>
+
+        <!-- TIMETABLE Calendar view -->
+        <!--record id="view_ems_session_calendar" model="ir.ui.view">
+            <field name="name">ems.session.calendar</field>
+            <field name="model">ems.session</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <calendar color="service_id" date_start="date_begin" date_stop="date_end" string="Session Organization">
+                    <field name="customer_id"/>
+                    <field name="name"/>
+                    <field name="trainer_id"/>
+                </calendar>
+            </field>
+        </record-->
+
+        <!-- TIMETABLE Search view -->
+        <!--record model="ir.ui.view" id="ems_session_search_view">
+            <field name="name">ems.session.search</field>
+            <field name="model">ems.session</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="My Sessions" help="My Sessions" domain="[('trainer_id','=',uid)]"/>
+                    <separator/>
+                    <filter string="Upcoming" name="upcoming"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
+                            help="Upcoming sessions from today"/>
+                    <separator/>
+                    <filter string="Unconfirmed" name="draft" domain="[('state','=','draft')]"
+                            help="Events in New state"/>
+                    <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
+                    <field name="customer_id"/>
+                    <field name="trainer_id"/>
+                    <field name="description"/>
+                    <field name="service_id"/>
+                    <field name="resource_ids"/>
+                    <field name="room_id"/>
+                    <field name="name"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Service" context="{'group_by':'service_id'}"/>
+                        <filter string="Status" context="{'group_by':'state'}"/>
+                        <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
+                    </group>
+                </search>
+            </field>
+        </record-->
+
+
         <menuitem name="Configuration" id="menu_ems_config_root" parent="main_ems_menu" sequence="30"/>
 
 
-        <!-- EMS/CONFIGURATION/Center -->
+        <!-- ########################## EMS/CONFIGURATION/Center ########################## -->
         <record model="ir.ui.view" id="view_ems_center_form">
             <field name="name">Center</field>
             <field name="model">ems.center</field>

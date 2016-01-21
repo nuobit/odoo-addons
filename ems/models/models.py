@@ -26,13 +26,40 @@ from datetime import timedelta
 import pytz
 
 from openerp import models, fields, api, _
-from openerp.exceptions import AccessError, Warning
+from openerp.exceptions import AccessError, Warning, ValidationError
 
+import re
 
 
 import logging
 
 _logger = logging.getLogger(__name__)
+
+
+
+
+def timestr2int(tstr):
+    m = re.match("^([0-9]{2}):([0-9]{2})", tstr)
+    if m is None:
+        raise ValidationError(_("Incorrect hour format"))
+
+    hour, minu = m.groups()
+    if int(hour)>23:
+        raise ValidationError(_("The hour has to be between 0 and 23"))
+
+    if int(minu)>59:
+        raise ValidationError(_("Minutes has to be between 0 and 23"))
+
+    return int(hour)*100+int(minu)
+
+def int2timestr(tint):
+    t = tint/100.0
+    hour = int(t)
+    min = (tint-t)*100
+
+    return "%02d:%02d" % (hour, min)
+
+
 
 
 class ems_center(models.Model):
@@ -365,6 +392,95 @@ class ems_resource(models.Model):
 
     description = fields.Text(string='Description',
         readonly=False)
+
+
+
+class ems_timetable(models.Model):
+    """Session"""
+    _name = 'ems.timetable'
+    _description = 'Timetable'
+    _order = 'center_id,day,itime'
+
+    #name = fields.Char(string='Name', required=True,
+    #    readonly=False)
+
+    center_id = fields.Many2one('ems.center', string='Center',
+        required=True, readonly=False)
+
+    day = fields.Selection(selection=[('1', _('Monday')), ('2', _('Tuesday')), ('3', _('Wednesday')),
+                                      ('4', _('Thursday')), ('5', _('Friday')), ('6', _('Saturday')),
+                                      ('7', _('Sunday'))], required=True, readonly=False)
+    ini_time = fields.Char(string='Initial time', size=5, required=True,
+        #default=lambda self: self.env.user,
+        readonly=False, default="00:00")
+
+    end_time = fields.Char(string='End time', size=5, required=True,
+        #default=lambda self: self.env.user,
+        readonly=False, default="01:00")
+
+    itime = fields.Integer(readonly=True)
+    etime = fields.Integer(readonly=True)
+
+
+    trainer_ids = fields.One2many('ems.timetable.trainer', 'timetable_id', required=True,
+        #default=lambda self: self.env.user,
+        readonly=False)
+
+
+    @api.depends('ini_time', 'end_time')
+    def _calc_inttime(self):
+        self.itime = timestr2int(self.ini_time)
+        self.etime = timestr2int(self.end_time)
+
+    @api.constrains('ini_time', 'end_time')
+    def _check_times(self):
+        if self.itime>self.etime:
+            raise ValidationError(_("The initial time cannot be greater than end time"))
+
+    @api.onchange('ini_time', 'end_time')
+    def onchange_times_ems(self):
+        self._check_times()
+
+
+    def _check_overlap(self, other):
+        b = timestr2int(other.ini_time)<timestr2int(self.end_time) and \
+                        timestr2int(other.end_time)>timestr2int(self.ini_time)
+
+        return b
+
+
+    @api.constrains('trainer_ids', 'center_id', 'day', 'ini_time', 'end_time')
+    def _check_trainer_id_ems(self):
+        # serach for other timetables of the same day and same hours
+        other_tts = self.env['ems.timetable'].search([('id', '!=', self.id),
+                                                      ('center_id','=', self.center_id.id),
+                                                      ('day','=', self.day)
+                                                    ])
+        for tt in other_tts:
+            if self._check_overlap(tt):
+                for trainer in self.trainer_ids:
+                    for tt_trainer in tt.trainer_ids:
+                        if tt_trainer.trainer_id.id==trainer.trainer_id.id:
+                            raise ValidationError(_("The trainer %s already has a timetable") % trainer.timetable_id)
+
+
+
+
+class ems_timetable_trainer(models.Model):
+    """Session"""
+    _name = 'ems.timetable.trainer'
+    _description = 'Timetable Trainer'
+    _order = 'sequence'
+
+    #name = fields.Char(string='Name', required=True,
+    #    readonly=False)
+
+    sequence = fields.Integer('sequence', help="Sequence for the handle.", default=1)
+
+    trainer_id = fields.Many2one('res.users', string='Trainer', domain=[('trainer', '=', True)],
+        readonly=False)
+
+    timetable_id = fields.Many2one('ems.timetable', string='Timetable Trainer', readonly=False)
 
 
 
