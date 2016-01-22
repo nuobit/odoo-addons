@@ -3,7 +3,7 @@
     <data>
 
         <!--  Users inherited form -->
-        <record id="view_ems_users_info_form" model="ir.ui.view">
+        <!--record id="view_ems_users_info_form" model="ir.ui.view">
             <field name="name">res.users.ems.info.inherit</field>
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_form"/>
@@ -15,7 +15,7 @@
                     </page>
                 </xpath>
             </field>
-        </record>
+        </record-->
 
         <!--  Prtner inherited form -->
         <record id="view_ems_partner_info_form" model="ir.ui.view">

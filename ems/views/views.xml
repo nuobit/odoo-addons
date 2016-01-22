@@ -72,12 +72,11 @@
                             <group>
                                 <group>
                                     <field name="customer_id" domain="[('ems_type','=','customer')]"/>
-                                    <field name="trainer_id" domain="[('trainer','=',True)]"/>
+                                    <field name="trainer_id"/>
                                 </group>
                                 <group>
                                     <field name="date_begin"/>
                                     <field name="date_end"/>
-                                    <field name="date_tz"/>
                                 </group>
                             </group>
                         </group>
@@ -106,7 +105,7 @@
             <field name="model">ems.session</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="service_id" date_start="date_begin" date_stop="date_end" string="Session Organization">
+                <calendar color="color" date_start="date_begin" date_stop="date_end" string="Session Organization">
                     <field name="customer_id"/>
                     <field name="name"/>
                     <field name="trainer_id"/>
@@ -185,12 +184,6 @@
                     <header>
                     </header>
                     <sheet>
-                        <!--div class="oe_title">
-                            <label for="name" class="oe_edit_only"/>
-                            <h1>
-                                <field name="name"/>
-                            </h1>
-                        </div-->
                         <group col="4" colspan="2">
                             <field name="center_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="day" options="{'no_create': True}"/>
@@ -204,7 +197,7 @@
                             <field name="trainer_ids" nolabel="1">
                                 <tree editable="botttom">
                                     <field name="sequence" widget="handle"/>
-                                    <field name="trainer_id" domain="[('trainer','=',True)]" options="{'no_create': True}"/>
+                                    <field name="trainer_id" options="{'no_quick_create': True}"/>
                                 </tree>
                             </field>
                         </group>
@@ -265,6 +258,230 @@
             </field>
         </record-->
 
+
+        <!-- ########################## EMS/TRAINER ########################## -->
+        <record model="ir.actions.act_window" id="action_list_trainer">
+            <field name="name">Trainer</field>
+            <field name="res_model">ems.trainer</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- the following menuitem should appear *after*
+             its parent ems_menu and *after* its
+             action action_list_sessions -->
+        <menuitem id="menu_ems_trainer" parent="ems_menu" name="Trainer" sequence="30"
+                  action="action_list_trainer"/>
+
+        <!-- TRAINER Tree view -->
+        <record model="ir.ui.view" id="view_ems_trainer_tree">
+            <field name="name">Trainer</field>
+            <field name="model">ems.trainer</field>
+            <field name="arch" type="xml">
+                <tree string="Trainer">
+                    <field name="user_id"/>
+                    <field name="timetable_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- TRAINER Form view -->
+        <record model="ir.ui.view" id="view_ems_trainer_form">
+            <field name="name">Trainer</field>
+            <field name="model">ems.trainer</field>
+            <field name="arch" type="xml">
+                <form string="Trainer">
+                    <header>
+                    </header>
+                    <sheet>
+                        <group col="4" colspan="2">
+                            <field name="user_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="color"/>
+                            <newline/>
+                            <field name="description"/>
+                        </group>
+                        <group string="Absences">
+                            <field name="absence_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="center_id"/>
+                                    <field name="ini_date"/>
+                                    <field name="end_date"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Timetables">
+                            <field name="timetable_ids" nolabel="1" attrs="{'readonly':True}">
+                                <tree default_order="center_id, day, ini_time"> <!-- create="0" delete="0" edit="0"-->
+                                    <field name="center_id"/>
+                                    <field name="day"/>
+                                    <field name="ini_time"/>
+                                    <field name="end_time"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Upcoming sessions">
+                            <field name="session_ids" nolabel="1" attrs="{'readonly':True}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="center_id"/>
+                                    <field name="service_id"/>
+                                    <field name="room_id"/>
+                                    <field name="customer_id"/>
+                                    <field name="date_begin"/>
+                                    <field name="date_end"/>
+                                </tree>
+                            </field>
+                        </group>
+
+
+                    </sheet>
+                    <!--div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div-->
+                </form>
+            </field>
+        </record>
+
+        <!-- TRAINER Calendar view -->
+        <!--record id="view_ems_session_calendar" model="ir.ui.view">
+            <field name="name">ems.session.calendar</field>
+            <field name="model">ems.session</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <calendar color="service_id" date_start="date_begin" date_stop="date_end" string="Session Organization">
+                    <field name="customer_id"/>
+                    <field name="name"/>
+                    <field name="trainer_id"/>
+                </calendar>
+            </field>
+        </record-->
+
+        <!-- TRAINER Search view -->
+        <!--record model="ir.ui.view" id="ems_session_search_view">
+            <field name="name">ems.session.search</field>
+            <field name="model">ems.session</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="My Sessions" help="My Sessions" domain="[('trainer_id','=',uid)]"/>
+                    <separator/>
+                    <filter string="Upcoming" name="upcoming"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
+                            help="Upcoming sessions from today"/>
+                    <separator/>
+                    <filter string="Unconfirmed" name="draft" domain="[('state','=','draft')]"
+                            help="Events in New state"/>
+                    <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
+                    <field name="customer_id"/>
+                    <field name="trainer_id"/>
+                    <field name="description"/>
+                    <field name="service_id"/>
+                    <field name="resource_ids"/>
+                    <field name="room_id"/>
+                    <field name="name"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Service" context="{'group_by':'service_id'}"/>
+                        <filter string="Status" context="{'group_by':'state'}"/>
+                        <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
+                    </group>
+                </search>
+            </field>
+        </record-->
+
+        <!-- ########################## EMS/TRAINER AVAILABILITY ########################## -->
+        <record model="ir.actions.act_window" id="action_list_timetable_trainer">
+            <field name="name">Trainer availability</field>
+            <field name="res_model">ems.timetable.trainer</field>
+            <field name="view_mode">calendar,tree,form</field>
+        </record>
+
+        <!-- the following menuitem should appear *after*
+             its parent ems_menu and *after* its
+             action action_list_sessions -->
+        <menuitem id="menu_ems_timetable_trainer" parent="ems_menu" name="Trainer availability" sequence="40"
+                  action="action_list_timetable_trainer"/>
+
+        <!-- TRAINER AVAILABILITY Tree view -->
+        <record model="ir.ui.view" id="view_ems_timetable_trainer_tree">
+            <field name="name">Trainer availability</field>
+            <field name="model">ems.timetable.trainer</field>
+            <field name="arch" type="xml">
+                <tree string="Trainer availability">
+                    <field name="timetable_id"/>
+                    <field name="trainer_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- TRAINER AVAILABILITY Form view -->
+        <record model="ir.ui.view" id="view_ems_timetable_trainer_form">
+            <field name="name">Trainer availability</field>
+            <field name="model">ems.timetable.trainer</field>
+            <field name="arch" type="xml">
+                <form string="Trainer availability">
+                    <header>
+                    </header>
+                    <sheet>
+                        <group col="4" colspan="2">
+                            <field name="timetable_id" options="{'no_create': True}"/>
+                            <field name="trainer_id" options="{'no_create': True}"/>
+                            <newline/>
+                            <field name="date_begin"/>
+                            <field name="date_end"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- TRAINER AVAILABILITY Calendar view -->
+        <record id="view_ems_timetable_trainer_calendar" model="ir.ui.view">
+            <field name="name">Trainer availability</field>
+            <field name="model">ems.timetable.trainer</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <calendar color="color" date_start="date_begin" date_stop="date_end" string="Trainer availability" mode="week">
+                    <field name="center_id"/>
+                    <field name="trainer_id"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- TRAINER AVAILABILITY Search view -->
+        <!--record model="ir.ui.view" id="ems_session_search_view">
+            <field name="name">ems.session.search</field>
+            <field name="model">ems.session</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="My Sessions" help="My Sessions" domain="[('trainer_id','=',uid)]"/>
+                    <separator/>
+                    <filter string="Upcoming" name="upcoming"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
+                            help="Upcoming sessions from today"/>
+                    <separator/>
+                    <filter string="Unconfirmed" name="draft" domain="[('state','=','draft')]"
+                            help="Events in New state"/>
+                    <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
+                    <field name="customer_id"/>
+                    <field name="trainer_id"/>
+                    <field name="description"/>
+                    <field name="service_id"/>
+                    <field name="resource_ids"/>
+                    <field name="room_id"/>
+                    <field name="name"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Service" context="{'group_by':'service_id'}"/>
+                        <filter string="Status" context="{'group_by':'state'}"/>
+                        <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
+                    </group>
+                </search>
+            </field>
+        </record-->
+
+
+
+        <!-- ########################## EMS/CONFIGURATION ########################## -->
 
         <menuitem name="Configuration" id="menu_ems_config_root" parent="main_ems_menu" sequence="30"/>
 

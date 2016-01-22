@@ -3,8 +3,11 @@ openerp.ems = function (instance) {
         event_data_transform: function (event) {
             var res = this._super.apply(this, arguments);
 
-            var match = /^.+?(?: \[([0-9]+)\])?$/g;
-            var color = match.exec(event.service_id[1])[1];
+            //var match = /^.+?(?: \[([0-9]+)\])?$/g;
+            //var color = match.exec(event.color[1])[1];
+            var color = event.color;
+
+            //self.get_color(event.id)
             if (color) {
                 res.className = res.className.replace(/calendar_color_[0-9]+/g, "calendar_color_" + color);
                 res.title = res.title.replace(new RegExp(' \\['+color+'\\]$'), '');
@@ -71,10 +74,12 @@ openerp.ems = function (instance) {
                                     val = e[self.color_field];
                                 }
                                 if (!self.all_filters[key]) {
-                                    var pattern = /^(.+?)(?: \[([0-9]+)\])?$/g;
-                                    var match = pattern.exec(val[1]);
-                                    var label = match[1];
-                                    var color = match[2];
+                                    //var pattern = /^(.+?)(?: \[([0-9]+)\])?$/g;
+                                    //var match = pattern.exec(val[1]);
+                                    //var label = match[1];
+                                    //var color = match[2];
+                                    var label = val[1];
+                                    /var color = val[0];
                                     if (!color) {
                                         color = self.get_color(key);
                                     }

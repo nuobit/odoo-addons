@@ -21,7 +21,7 @@
 
 
 
-from datetime import timedelta
+import datetime
 
 import pytz
 
@@ -52,15 +52,52 @@ def timestr2int(tstr):
 
     return int(hour)*100+int(minu)
 
-def int2timestr(tint):
+def int2tuple(tint):
     t = tint/100.0
     hour = int(t)
-    min = (tint-t)*100
+    min = tint-hour*100
+
+    return (hour, min)
+
+def int2timestr(tint):
+    hour, min = int2tuple(tint)
 
     return "%02d:%02d" % (hour, min)
 
+def timestr2tuple(tstr):
+    return int2tuple(timestr2int(tstr))
 
 
+CALENDAR_COLORS = [ (1,  'Brown'),
+                    (2,  'Brown-Red'),
+                    (3,  'Red'),
+                    (4,  'Light Red'),
+                    (5,  'Orange'),
+                    (6,  'Light Orange'),
+                    (8,  'Green 1'),
+                    (7,  'Light Green 1'),
+                    (9,  'Green 2'),
+                    (10, 'Light Green 2'),
+                    (11, 'Yellow'),
+                    (12, 'Yellow-Orange'),
+                    (13, 'Light Blue-Green'),
+                    (14, 'Cyan'),
+                    (15, 'Light Blue'),
+                    (16, 'Blue'),
+                    (17, 'Blue-Purple'),
+                    (18, 'Light Purple'),
+                    (23, 'Purple'),
+                    (24, 'Dark Purple'),
+                    (22, 'Pink'),
+                    (19, 'Grey'),
+                    (20, 'Grey-Light Red'),
+                    (21, 'Grey-Red'),
+                    ]
+
+
+DAYS_OF_WEEK = [(1, _('Monday')), (2, _('Tuesday')), (3, _('Wednesday')),
+                                      (4, _('Thursday')), (5, _('Friday')), (6, _('Saturday')),
+                                      (7, _('Sunday'))]
 
 class ems_center(models.Model):
     """Session"""
@@ -82,51 +119,44 @@ class ems_session(models.Model):
     _order = 'date_begin'
 
     name = fields.Char(string='Session Number', required=True,
-        readonly=False, states={'done': [('readonly', True)]})
+        readonly=False)
 
     description = fields.Text(string='Description', #translate=True,
-        readonly=False, states={'done': [('readonly', True)]})
+        readonly=False)
 
     weight = fields.Float(string='Weight', digits=(5,2),
-        readonly=False, states={'done': [('readonly', True)]})
+        readonly=False)
 
 
     company_id = fields.Many2one('res.company', string='Company', change_default=True,
         default=lambda self: self.env['res.company']._company_default_get('ems.session'),
-        required=False, readonly=False, states={'done': [('readonly', True)]})
+        required=False, readonly=False)
 
     center_id = fields.Many2one('ems.center', string='Center', change_default=True,
         required=True, readonly=False)
 
-    trainer_id = fields.Many2one('res.users', string='Trainer',
+    trainer_id = fields.Many2one('ems.trainer', string='Trainer',
         #default=lambda self: self.env.user,
-        readonly=False, states={'done': [('readonly', True)]})
+        readonly=False)
 
-    customer_id = fields.Many2one('res.partner', string='Customer',
-        #default=lambda self: self.env.user.company_id.partner_id
-        )
+    customer_id = fields.Many2one('res.partner', string='Customer')
 
     service_id = fields.Many2one('ems.service', string='Service',
-        required=True, readonly=False, states={'done': [('readonly', True)]})
+        required=True, readonly=False)
 
     room_id = fields.Many2one('ems.room', string='Room',
-        required=False, readonly=False, states={'done': [('readonly', True)]})
+        required=False, readonly=False)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
-        required=False, readonly=False, states={'done': [('readonly', True)]})
+        required=False, readonly=False)
 
 
     date_begin = fields.Datetime(string='Start Date', required=True,
-        readonly=True, states={'draft': [('readonly', False)]})
+        readonly=False)
     date_end = fields.Datetime(string='End Date', required=True,
-        readonly=True, states={'draft': [('readonly', False)]})
+        readonly=False)
 
-    date_tz = fields.Selection('_tz_get', string='Timezone',
-                        default=lambda self: self._context.get('tz', 'UTC'))
-
-    date_begin_located = fields.Datetime(string='Start Date Located', compute='_compute_date_begin_tz')
-    date_end_located = fields.Datetime(string='End Date Located', compute='_compute_date_end_tz')
-
+    color = fields.Selection(related="service_id.color", store=False)
 
     #order_id = fields.Many2one('pos.order',
     #    string="Order") #, required=True)
@@ -151,35 +181,11 @@ class ems_session(models.Model):
         return "kk"
         #return [(x, x) for x in pytz.all_timezones]
 
-    @api.model
-    def _tz_get(self):
-        return [(x, x) for x in pytz.all_timezones]
-
-    @api.one
-    @api.depends('date_tz', 'date_begin')
-    def _compute_date_begin_tz(self):
-        if self.date_begin:
-            self_in_tz = self.with_context(tz=(self.date_tz or 'UTC'))
-            date_begin = fields.Datetime.from_string(self.date_begin)
-            self.date_begin_located = fields.Datetime.to_string(fields.Datetime.context_timestamp(self_in_tz, date_begin))
-
-
-    @api.one
-    @api.depends('date_tz', 'date_end')
-    def _compute_date_end_tz(self):
-        if self.date_end:
-            self_in_tz = self.with_context(tz=(self.date_tz or 'UTC'))
-            date_end = fields.Datetime.from_string(self.date_end)
-            self.date_end_located = fields.Datetime.to_string(fields.Datetime.context_timestamp(self_in_tz, date_end))
-        else:
-            self.date_end_located = False
-
-
     @api.onchange('date_begin')
     def _onchange_date_begin(self):
         if self.date_begin and not self.date_end:
             date_begin = fields.Datetime.from_string(self.date_begin)
-            self.date_end = fields.Datetime.to_string(date_begin + timedelta(hours=1))
+            self.date_end = fields.Datetime.to_string(date_begin + datetime.timedelta(hours=1))
 
     @api.onchange('center_id')
     def onchange_centre(self):
@@ -310,36 +316,13 @@ class ems_service(models.Model):
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
-    color = fields.Selection(selection=[(1,  'Brown'),
-                                        (2,  'Brown-Red'),
-                                        (3,  'Red'),
-                                        (4,  'Light Red'),
-                                        (5,  'Orange'),
-                                        (6,  'Light Orange'),
-                                        (8,  'Green 1'),
-                                        (7,  'Light Green 1'),
-                                        (9,  'Green 2'),
-                                        (10, 'Light Green 2'),
-                                        (11, 'Yellow'),
-                                        (12, 'Yellow-Orange'),
-                                        (13, 'Light Blue-Green'),
-                                        (14, 'Cyan'),
-                                        (15, 'Light Blue'),
-                                        (16, 'Blue'),
-                                        (17, 'Blue-Purple'),
-                                        (18, 'Light Purple'),
-                                        (23, 'Purple'),
-                                        (24, 'Dark Purple'),
-                                        (22, 'Pink'),
-                                        (19, 'Grey'),
-                                        (20, 'Grey-Light Red'),
-                                        (21, 'Grey-Red'),
-                                        ], string="Color")
+    color = fields.Selection(selection=CALENDAR_COLORS, string="Color")
 
     #resource_ids = fields.Many2many('ems.resource', 'ems_service_resource_rel', 'resource_id', 'service_id', string="Resources")
     #resource_ids = fields.One2many('ems.service.resource.rel', 'service_id')
     room_ids = fields.One2many('ems.room.service.rel', 'service_id', string="Rooms")
 
+    '''
     @api.multi
     def name_get(self):
         result = []
@@ -347,7 +330,7 @@ class ems_service(models.Model):
             result.append((service.id, '%s%s' % (service.name, ' [%s]' % service.color if service.color else '')))
 
         return result
-
+    '''
 
 class ems_room_service(models.Model):
     """ Session Type """
@@ -355,8 +338,9 @@ class ems_room_service(models.Model):
     _description = 'Room-Service relation'
     _order = 'sequence'
 
-    room_id = fields.Many2one('ems.room', string="Room")
     service_id = fields.Many2one('ems.service', string="Service")
+
+    room_id = fields.Many2one('ems.room', string="Room", required=True)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
         required=True, readonly=False)
@@ -399,7 +383,7 @@ class ems_timetable(models.Model):
     """Session"""
     _name = 'ems.timetable'
     _description = 'Timetable'
-    _order = 'center_id,day,itime'
+    _order = 'center_id,day,ini_time'
 
     #name = fields.Char(string='Name', required=True,
     #    readonly=False)
@@ -407,9 +391,7 @@ class ems_timetable(models.Model):
     center_id = fields.Many2one('ems.center', string='Center',
         required=True, readonly=False)
 
-    day = fields.Selection(selection=[('1', _('Monday')), ('2', _('Tuesday')), ('3', _('Wednesday')),
-                                      ('4', _('Thursday')), ('5', _('Friday')), ('6', _('Saturday')),
-                                      ('7', _('Sunday'))], required=True, readonly=False)
+    day = fields.Selection(selection=DAYS_OF_WEEK, required=True, readonly=False)
     ini_time = fields.Char(string='Initial time', size=5, required=True,
         #default=lambda self: self.env.user,
         readonly=False, default="00:00")
@@ -418,13 +400,14 @@ class ems_timetable(models.Model):
         #default=lambda self: self.env.user,
         readonly=False, default="01:00")
 
-    itime = fields.Integer(readonly=True)
-    etime = fields.Integer(readonly=True)
+    itime = fields.Integer(readonly=True, compute="_calc_inttime")
+    etime = fields.Integer(readonly=True, compute="_calc_inttime")
 
 
     trainer_ids = fields.One2many('ems.timetable.trainer', 'timetable_id', required=True,
         #default=lambda self: self.env.user,
         readonly=False)
+
 
 
     @api.depends('ini_time', 'end_time')
@@ -461,9 +444,16 @@ class ems_timetable(models.Model):
                 for trainer in self.trainer_ids:
                     for tt_trainer in tt.trainer_ids:
                         if tt_trainer.trainer_id.id==trainer.trainer_id.id:
-                            raise ValidationError(_("The trainer %s already has a timetable") % trainer.timetable_id)
+                            raise ValidationError(_("Overlap detected: The trainer %s already has a timetable at %s on %s from %s to %s") %
+                                                  (trainer.trainer_id.user_id.name, self.center_id.name,
+                                                   dict(DAYS_OF_WEEK)[self.day], tt.ini_time, tt.end_time))
+    @api.multi
+    def name_get(self):
+        res = []
+        for tt in self:
+            res.append((tt.id, "%s - %s (%s - %s)" % (tt.center_id.name, dict(DAYS_OF_WEEK)[tt.day], tt.ini_time, tt.end_time)))
 
-
+        return res
 
 
 class ems_timetable_trainer(models.Model):
@@ -472,27 +462,113 @@ class ems_timetable_trainer(models.Model):
     _description = 'Timetable Trainer'
     _order = 'sequence'
 
-    #name = fields.Char(string='Name', required=True,
-    #    readonly=False)
+    sequence = fields.Integer('Priority', help="Sequence for the handle.", default=1)
 
-    sequence = fields.Integer('sequence', help="Sequence for the handle.", default=1)
+    timetable_id = fields.Many2one('ems.timetable', string='Timetable', readonly=False)
 
-    trainer_id = fields.Many2one('res.users', string='Trainer', domain=[('trainer', '=', True)],
+    trainer_id = fields.Many2one('ems.trainer', string='Trainer', readonly=False)
+
+
+    center_id = fields.Many2one(related='timetable_id.center_id', store=False)
+    day = fields.Selection(related='timetable_id.day', store=False)
+    ini_time = fields.Char(related='timetable_id.ini_time', store=False)
+    end_time = fields.Char(related='timetable_id.end_time', store=False)
+
+    color = fields.Selection(related="trainer_id.color", store=False)
+    date_begin = fields.Datetime(compute='_calc_date_begin')
+    date_end = fields.Datetime(compute='_calc_date_end')
+
+    def calc_time2date(self, timestr):
+        hour, min = timestr2tuple(timestr)
+        dt = fields.Datetime.context_timestamp(self, fields.datetime.now()) #datetime.datetime(2016,1,17,23,0,0)
+        d = datetime.date(dt.year, dt.month, dt.day)
+        d_mon = d - datetime.timedelta(days=d.isoweekday()-1)
+        da = d_mon + datetime.timedelta(days=self.day-1)
+        de = datetime.datetime.combine(da, datetime.time(hour, min, 0))
+
+        return de - dt.utcoffset()
+
+
+
+    @api.depends('date_begin')
+    def _calc_date_begin(self):
+        self.date_begin = self.calc_time2date(self.ini_time)
+
+    @api.depends('date_end')
+    def _calc_date_end(self):
+        self.date_end = self.calc_time2date(self.end_time)
+
+
+
+
+
+class ems_trainer(models.Model):
+    """Session"""
+    _name = 'ems.trainer'
+    _description = 'Trainer'
+    #_order = 'sequence'
+
+    user_id = fields.Many2one('res.users', string='User', readonly=False)
+
+    color = fields.Selection(selection=CALENDAR_COLORS, string="Color")
+
+    description = fields.Text(string='Description', required=False)
+
+    timetable_ids = fields.One2many('ems.timetable.trainer', 'trainer_id', required=True,
         readonly=False)
 
-    timetable_id = fields.Many2one('ems.timetable', string='Timetable Trainer', readonly=False)
+    absence_ids = fields.One2many('ems.trainer.absence', 'trainer_id', readonly=False)
 
+    session_ids = fields.One2many('ems.session', 'trainer_id', readonly=False,
+                                  domain=[('date_begin','>=', fields.Datetime.to_string(datetime.datetime.combine(fields.Datetime.from_string(fields.Datetime.now()), datetime.time(0,0,0))))])
+
+    _sql_constraints = [('user_id_unique', 'unique(user_id)',_("Trainer already exists"))]
+
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for tr in self:
+            res.append((tr.id, tr.user_id.name))
+        return res
+
+
+class ems_trainer_absence(models.Model):
+    """Session"""
+    _name = 'ems.trainer.absence'
+    _description = 'Trainer Absence'
+    _order = 'trainer_id,center_id,ini_date'
+
+    trainer_id = fields.Many2one('ems.trainer', string='Trainer', required=True, readonly=False)
+
+    center_id = fields.Many2one('ems.center', string='Center',
+        required=True, readonly=False)
+
+    ini_date = fields.Datetime(string='Initial Date', required=True)
+    end_date = fields.Datetime(string='Initial Date', required=True)
+
+    reason = fields.Text(string='Reason', required=False)
+
+    '''
+    @api.multi
+    def name_get(self):
+        res = []
+        for tr in self:
+            res.append((tr.id, tr.user_id.name))
+        return res
+    '''
 
 
 
 
 ##### Inhrits ##########33
 
-
+'''
 class res_users(models.Model):
     _inherit = 'res.users'
 
     trainer = fields.Boolean(help="Check this box if this user is a trainer.")
+'''
 
 class res_partner(models.Model):
     _inherit = 'res.partner'
@@ -523,8 +599,8 @@ class Wizard(models.TransientModel):
         date_end = fields.Datetime.from_string(s.date_end)
         for i in range(self.count-1):
             days = 7*(i+1)
-            date_begin9 = date_begin + timedelta(days=days)
-            date_end9 = date_end + timedelta(days=days)
+            date_begin9 = date_begin + datetime.timedelta(days=days)
+            date_end9 = date_end + datetime.timedelta(days=days)
 
             #g = self.env['ems.session'].search_count([('date_begin','<=',fields.Date.to_string(date_begin9)),
             #                                          ('date_end','>=', fields.Date.to_string(date_end9))])
