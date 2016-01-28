@@ -16,7 +16,7 @@ msgstr ""
 #: view:stock.picking:stock_picking_partner_ref.view_stock_picking_tree_inherit
 #: field:stock.picking,partner_ref:0
 msgid "Partner Reference"
-msgstr "Referencia"
+msgstr "Referencia Proveedor"
 
 #. module: stock_picking_partner_ref
 #: model:ir.model,name:stock_picking_partner_ref.model_stock_picking
