@@ -79,7 +79,7 @@ openerp.ems = function (instance) {
                                     //var label = match[1];
                                     //var color = match[2];
                                     var label = val[1];
-                                    /var color = val[0];
+                                    var color = val[0];
                                     if (!color) {
                                         color = self.get_color(key);
                                     }
