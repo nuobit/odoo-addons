@@ -156,6 +156,7 @@ class ems_session(models.Model):
     date_end = fields.Datetime(string='End Date', required=True,
         readonly=False)
 
+    #color = fields.Selection(related="service_id.color", store=False)
     color = fields.Selection(related="service_id.color", store=False)
 
     #order_id = fields.Many2one('pos.order',
@@ -343,7 +344,7 @@ class ems_room_service(models.Model):
     room_id = fields.Many2one('ems.room', string="Room", required=True)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
-        required=True, readonly=False)
+        required=False, readonly=False)
 
     sequence = fields.Integer('sequence', help="Sequence for the handle.", default=1)
 
