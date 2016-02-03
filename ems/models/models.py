@@ -425,15 +425,6 @@ class ems_timetable(models.Model):
         self.itime = timestr2int(self.ini_time)
         self.etime = timestr2int(self.end_time)
 
-    @api.constrains('ini_time', 'end_time')
-    def _check_times(self):
-        if self.itime>self.etime:
-            raise ValidationError(_("The initial time cannot be greater than end time"))
-
-    @api.onchange('ini_time', 'end_time')
-    def onchange_times_ems(self):
-        self._check_times()
-
 
     def _check_overlap(self, other):
         b = timestr2int(other.ini_time)<timestr2int(self.end_time) and \
@@ -442,7 +433,7 @@ class ems_timetable(models.Model):
         return b
 
     @api.constrains('responsible_ids', 'center_id', 'day', 'ini_time', 'end_time')
-    def _check_responsible_id_ems(self):
+    def _check_timetable(self):
         # serach for other timetables of the same day and same hours
         other_tts = self.env['ems.timetable'].search([('id', '!=', self.id),
                                                       ('center_id','=', self.center_id.id),
@@ -458,6 +449,14 @@ class ems_timetable(models.Model):
                                                    dict(DAYS_OF_WEEK)[self.day], tt.ini_time, tt.end_time))
         
 
+    @api.constrains('ini_time', 'end_time')
+    def _check_times(self):
+        if self.itime>self.etime:
+            raise ValidationError(_("The initial time cannot be greater than end time"))
+
+    @api.onchange('ini_time', 'end_time')
+    def onchange_times_ems(self):
+        self._check_times()
 
     @api.multi
     def name_get(self):
