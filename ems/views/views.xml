@@ -65,14 +65,14 @@
                             <group colspan="2">
                                 <field name="center_id" options="{'no_create': True}"/>
                                 <field name="service_id" options="{'no_create': True}"/>
-                                <field name="room_id" options="{'no_create': True}"/>
+                                <field name="ubication_id" options="{'no_create': True}"/>
                                 <field name="resource_ids" string="Resources" widget="many2many_tags"
                                        options="{'no_create': True}"/>
                             </group>
                             <group>
                                 <group>
                                     <field name="customer_id" domain="[('ems_type','=','customer')]"/>
-                                    <field name="trainer_id"/>
+                                    <field name="responsible_id"/>
                                 </group>
                                 <group>
                                     <field name="date_begin"/>
@@ -105,10 +105,10 @@
             <field name="model">ems.session</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="color" date_start="date_begin" date_stop="date_end" string="Session Organization">
+                <calendar color="color_rel" date_start="date_begin" date_stop="date_end" string="Session Organization">
                     <field name="customer_id"/>
                     <field name="name"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                     <field name="service_id" invisible="1"/>
                 </calendar>
             </field>
@@ -120,7 +120,7 @@
             <field name="model">ems.session</field>
             <field name="arch" type="xml">
                 <search>
-                    <filter string="My Sessions" help="My Sessions" domain="[('trainer_id','=',uid)]"/>
+                    <filter string="My Sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
                     <separator/>
                     <filter string="Upcoming" name="upcoming"
                             domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
@@ -130,14 +130,14 @@
                             help="Events in New state"/>
                     <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
                     <field name="customer_id"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                     <field name="description"/>
                     <field name="service_id"/>
                     <field name="resource_ids"/>
-                    <field name="room_id"/>
+                    <field name="ubication_id"/>
                     <field name="name"/>
                     <group expand="0" string="Group By">
-                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Responsible" context="{'group_by': 'responsible_id'}"/>
                         <filter string="Service" context="{'group_by':'service_id'}"/>
                         <filter string="Status" context="{'group_by':'state'}"/>
                         <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
@@ -171,7 +171,7 @@
                     <field name="day"/>
                     <field name="ini_time"/>
                     <field name="end_time"/>
-                    <field name="trainer_ids"/>
+                    <field name="responsibles"/>
                 </tree>
             </field>
         </record>
@@ -191,14 +191,13 @@
                             <newline/>
                             <field name="ini_time"/>
                             <field name="end_time"/>
-
                             <!--field name="end_time" string="Resources" widget="many2many_tags" options="{'no_create': True}"/-->
                         </group>
                         <group>
-                            <field name="trainer_ids" nolabel="1">
+                            <field name="responsible_ids" nolabel="1">
                                 <tree editable="botttom">
                                     <field name="sequence" widget="handle"/>
-                                    <field name="trainer_id" options="{'no_quick_create': True}"/>
+                                    <field name="responsible_id" options="{'no_quick_create': True}"/>
                                 </tree>
                             </field>
                         </group>
@@ -222,7 +221,7 @@
                 <calendar color="service_id" date_start="date_begin" date_stop="date_end" string="Session Organization">
                     <field name="customer_id"/>
                     <field name="name"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                 </calendar>
             </field>
         </record-->
@@ -233,7 +232,7 @@
             <field name="model">ems.session</field>
             <field name="arch" type="xml">
                 <search>
-                    <filter string="My Sessions" help="My Sessions" domain="[('trainer_id','=',uid)]"/>
+                    <filter string="My Sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
                     <separator/>
                     <filter string="Upcoming" name="upcoming"
                             domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
@@ -243,14 +242,14 @@
                             help="Events in New state"/>
                     <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
                     <field name="customer_id"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                     <field name="description"/>
                     <field name="service_id"/>
                     <field name="resource_ids"/>
-                    <field name="room_id"/>
+                    <field name="ubication_id"/>
                     <field name="name"/>
                     <group expand="0" string="Group By">
-                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Responsible_id" context="{'group_by': 'responsible_id'}"/>
                         <filter string="Service" context="{'group_by':'service_id'}"/>
                         <filter string="Status" context="{'group_by':'state'}"/>
                         <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
@@ -260,37 +259,37 @@
         </record-->
 
 
-        <!-- ########################## EMS/TRAINER ########################## -->
-        <record model="ir.actions.act_window" id="action_list_trainer">
-            <field name="name">Trainer</field>
-            <field name="res_model">ems.trainer</field>
+        <!-- ########################## EMS/RESPONSIBLE ########################## -->
+        <record model="ir.actions.act_window" id="action_list_responsible">
+            <field name="name">Responsible</field>
+            <field name="res_model">ems.responsible</field>
             <field name="view_mode">tree,form</field>
         </record>
 
         <!-- the following menuitem should appear *after*
              its parent ems_menu and *after* its
              action action_list_sessions -->
-        <menuitem id="menu_ems_trainer" parent="ems_menu" name="Trainer" sequence="30"
-                  action="action_list_trainer"/>
+        <menuitem id="menu_ems_responsible" parent="ems_menu" name="Responsibles" sequence="30"
+                  action="action_list_responsible"/>
 
-        <!-- TRAINER Tree view -->
-        <record model="ir.ui.view" id="view_ems_trainer_tree">
-            <field name="name">Trainer</field>
-            <field name="model">ems.trainer</field>
+        <!-- RESPONSIBLE Tree view -->
+        <record model="ir.ui.view" id="view_ems_responsible_tree">
+            <field name="name">Responsible</field>
+            <field name="model">ems.responsible</field>
             <field name="arch" type="xml">
-                <tree string="Trainer">
+                <tree string="Responsible">
                     <field name="user_id"/>
                     <field name="timetable_ids"/>
                 </tree>
             </field>
         </record>
 
-        <!-- TRAINER Form view -->
-        <record model="ir.ui.view" id="view_ems_trainer_form">
-            <field name="name">Trainer</field>
-            <field name="model">ems.trainer</field>
+        <!-- RESPONSIBLE Form view -->
+        <record model="ir.ui.view" id="view_ems_responsible_form">
+            <field name="name">Responsible</field>
+            <field name="model">ems.responsible</field>
             <field name="arch" type="xml">
-                <form string="Trainer">
+                <form string="Responsible">
                     <header>
                     </header>
                     <sheet>
@@ -306,6 +305,7 @@
                                     <field name="center_id"/>
                                     <field name="ini_date"/>
                                     <field name="end_date"/>
+                                    <field name="reason"/>
                                 </tree>
                             </field>
                         </group>
@@ -325,7 +325,7 @@
                                     <field name="name"/>
                                     <field name="center_id"/>
                                     <field name="service_id"/>
-                                    <field name="room_id"/>
+                                    <field name="ubication_id"/>
                                     <field name="customer_id"/>
                                     <field name="date_begin"/>
                                     <field name="date_end"/>
@@ -343,7 +343,7 @@
             </field>
         </record>
 
-        <!-- TRAINER Calendar view -->
+        <!-- RESPONSIBLE Calendar view -->
         <!--record id="view_ems_session_calendar" model="ir.ui.view">
             <field name="name">ems.session.calendar</field>
             <field name="model">ems.session</field>
@@ -352,18 +352,18 @@
                 <calendar color="service_id" date_start="date_begin" date_stop="date_end" string="Session Organization">
                     <field name="customer_id"/>
                     <field name="name"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                 </calendar>
             </field>
         </record-->
 
-        <!-- TRAINER Search view -->
+        <!-- RESPONSIBLE Search view -->
         <!--record model="ir.ui.view" id="ems_session_search_view">
             <field name="name">ems.session.search</field>
             <field name="model">ems.session</field>
             <field name="arch" type="xml">
                 <search>
-                    <filter string="My Sessions" help="My Sessions" domain="[('trainer_id','=',uid)]"/>
+                    <filter string="My Sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
                     <separator/>
                     <filter string="Upcoming" name="upcoming"
                             domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
@@ -373,14 +373,14 @@
                             help="Events in New state"/>
                     <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
                     <field name="customer_id"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                     <field name="description"/>
                     <field name="service_id"/>
                     <field name="resource_ids"/>
-                    <field name="room_id"/>
+                    <field name="ubication_id"/>
                     <field name="name"/>
                     <group expand="0" string="Group By">
-                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Responsible" context="{'group_by': 'responsible_id'}"/>
                         <filter string="Service" context="{'group_by':'service_id'}"/>
                         <filter string="Status" context="{'group_by':'state'}"/>
                         <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
@@ -389,43 +389,43 @@
             </field>
         </record-->
 
-        <!-- ########################## EMS/TRAINER AVAILABILITY ########################## -->
-        <record model="ir.actions.act_window" id="action_list_timetable_trainer">
-            <field name="name">Trainer availability</field>
-            <field name="res_model">ems.timetable.trainer</field>
+        <!-- ########################## EMS/RESPONSIBLE AVAILABILITY ########################## -->
+        <record model="ir.actions.act_window" id="action_list_timetable_responsible">
+            <field name="name">Responsible availability</field>
+            <field name="res_model">ems.timetable.responsible</field>
             <field name="view_mode">calendar,tree,form</field>
         </record>
 
         <!-- the following menuitem should appear *after*
              its parent ems_menu and *after* its
              action action_list_sessions -->
-        <menuitem id="menu_ems_timetable_trainer" parent="ems_menu" name="Trainer availability" sequence="40"
-                  action="action_list_timetable_trainer"/>
+        <menuitem id="menu_ems_timetable_responsible" parent="ems_menu" name="Responsible availability" sequence="40"
+                  action="action_list_timetable_responsible"/>
 
-        <!-- TRAINER AVAILABILITY Tree view -->
-        <record model="ir.ui.view" id="view_ems_timetable_trainer_tree">
-            <field name="name">Trainer availability</field>
-            <field name="model">ems.timetable.trainer</field>
+        <!-- RESPONSIBLE AVAILABILITY Tree view -->
+        <record model="ir.ui.view" id="view_ems_timetable_responsible_tree">
+            <field name="name">Responsible availability</field>
+            <field name="model">ems.timetable.responsible</field>
             <field name="arch" type="xml">
-                <tree string="Trainer availability">
+                <tree string="Responsible availability">
                     <field name="timetable_id"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                 </tree>
             </field>
         </record>
 
-        <!-- TRAINER AVAILABILITY Form view -->
-        <record model="ir.ui.view" id="view_ems_timetable_trainer_form">
-            <field name="name">Trainer availability</field>
-            <field name="model">ems.timetable.trainer</field>
+        <!-- RESPONSIBLE AVAILABILITY Form view -->
+        <record model="ir.ui.view" id="view_ems_timetable_responsible_form">
+            <field name="name">Responsible availability</field>
+            <field name="model">ems.timetable.responsible</field>
             <field name="arch" type="xml">
-                <form string="Trainer availability">
+                <form string="Responsible availability">
                     <header>
                     </header>
                     <sheet>
                         <group col="4" colspan="2">
                             <field name="timetable_id" options="{'no_create': True}"/>
-                            <field name="trainer_id" options="{'no_create': True}"/>
+                            <field name="responsible_id" options="{'no_create': True}"/>
                             <newline/>
                             <field name="date_begin"/>
                             <field name="date_end"/>
@@ -435,26 +435,26 @@
             </field>
         </record>
 
-        <!-- TRAINER AVAILABILITY Calendar view -->
-        <record id="view_ems_timetable_trainer_calendar" model="ir.ui.view">
-            <field name="name">Trainer availability</field>
-            <field name="model">ems.timetable.trainer</field>
+        <!-- RESPONSIBLE AVAILABILITY Calendar view -->
+        <record id="view_ems_timetable_responsible_calendar" model="ir.ui.view">
+            <field name="name">Responsible availability</field>
+            <field name="model">ems.timetable.responsible</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="color" date_start="date_begin" date_stop="date_end" string="Trainer availability" mode="week">
+                <calendar color="color_rel" date_start="date_begin" date_stop="date_end" string="Responsible availability" mode="week">
                     <field name="center_id"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                 </calendar>
             </field>
         </record>
 
-        <!-- TRAINER AVAILABILITY Search view -->
+        <!-- RESPONSIBLE AVAILABILITY Search view -->
         <!--record model="ir.ui.view" id="ems_session_search_view">
             <field name="name">ems.session.search</field>
             <field name="model">ems.session</field>
             <field name="arch" type="xml">
                 <search>
-                    <filter string="My Sessions" help="My Sessions" domain="[('trainer_id','=',uid)]"/>
+                    <filter string="My Sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
                     <separator/>
                     <filter string="Upcoming" name="upcoming"
                             domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
@@ -464,14 +464,14 @@
                             help="Events in New state"/>
                     <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
                     <field name="customer_id"/>
-                    <field name="trainer_id"/>
+                    <field name="responsible_id"/>
                     <field name="description"/>
                     <field name="service_id"/>
                     <field name="resource_ids"/>
-                    <field name="room_id"/>
+                    <field name="ubication_id"/>
                     <field name="name"/>
                     <group expand="0" string="Group By">
-                        <filter string="Trainer" context="{'group_by': 'trainer_id'}"/>
+                        <filter string="Responsible" context="{'group_by': 'responsible_id'}"/>
                         <filter string="Service" context="{'group_by':'service_id'}"/>
                         <filter string="Status" context="{'group_by':'state'}"/>
                         <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
@@ -535,11 +535,11 @@
                     <group col="2">
                         <field name="description"/>
                     </group>
-                    <field name="room_ids">
+                    <field name="ubication_ids">
                         <tree string="Printing order" editable="botttom">
                             <field name="sequence" widget="handle"/>
-                            <field name="room_id"/>
-                            <field name="resource_ids" widget="many2many_tags"/>
+                            <field name="ubication_id" options="{'no_quick_create': True}"/>
+                            <field name="resource_ids" widget="many2many_tags" options="{'no_quick_create': True}"/>
                         </tree>
                     </field>
 
@@ -567,12 +567,12 @@
         <menuitem name="Services" id="menu_service" action="action_service" parent="menu_ems_config_root"
                   groups="base.group_no_one"/>
 
-        <!-- EMS/CONFIGURATION/Room -->
-        <record model="ir.ui.view" id="view_ems_room_form">
-            <field name="name">Room</field>
-            <field name="model">ems.room</field>
+        <!-- EMS/CONFIGURATION/Ubication -->
+        <record model="ir.ui.view" id="view_ems_ubication_form">
+            <field name="name">Ubication</field>
+            <field name="model">ems.ubication</field>
             <field name="arch" type="xml">
-                <form string="Room">
+                <form string="Ubication">
                     <group col="4">
                         <field name="name"/>
                         <field name="center_id"/>
@@ -593,32 +593,32 @@
             </field>
         </record>
 
-        <record model="ir.ui.view" id="view_ems_room_tree">
-            <field name="name">Room</field>
-            <field name="model">ems.room</field>
+        <record model="ir.ui.view" id="view_ems_ubication_tree">
+            <field name="name">Ubication</field>
+            <field name="model">ems.ubication</field>
             <field name="arch" type="xml">
-                <tree string="Room">
+                <tree string="Ubication">
                     <field name="name"/>
                     <!--field name="description"/-->
                 </tree>
             </field>
         </record>
 
-        <record model="ir.actions.act_window" id="action_room">
-            <field name="name">Room</field>
-            <field name="res_model">ems.room</field>
+        <record model="ir.actions.act_window" id="action_ubication">
+            <field name="name">Ubication</field>
+            <field name="res_model">ems.ubication</field>
             <field name="view_type">form</field>
         </record>
-        <menuitem name="Rooms" id="menu_room" action="action_room" parent="menu_ems_config_root"
+        <menuitem name="Ubications" id="menu_ubication" action="action_ubication" parent="menu_ems_config_root"
                   groups="base.group_no_one"/>
 
 
-        <!-- EMS/CONFIGURATION/Room_Service -->
-        <record model="ir.ui.view" id="view_ems_room_service_form">
-            <field name="name">Room Service</field>
-            <field name="model">ems.room.service.rel</field>
+        <!-- EMS/CONFIGURATION/Ubication_Service -->
+        <record model="ir.ui.view" id="view_ems_ubication_service_form">
+            <field name="name">Ubication Service</field>
+            <field name="model">ems.ubication.service.rel</field>
             <field name="arch" type="xml">
-                <form string="Room Service">
+                <form string="Ubication Service">
                     <group>
                         <field name="sequence" invisible="1"/>
                         <field name="service_id"/>

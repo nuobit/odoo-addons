@@ -135,7 +135,7 @@ class ems_session(models.Model):
     center_id = fields.Many2one('ems.center', string='Center', change_default=True,
         required=True, readonly=False)
 
-    trainer_id = fields.Many2one('ems.trainer', string='Trainer',
+    responsible_id = fields.Many2one('ems.responsible', string='Responsible',
         #default=lambda self: self.env.user,
         readonly=False)
 
@@ -144,7 +144,7 @@ class ems_session(models.Model):
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
 
-    room_id = fields.Many2one('ems.room', string='Room',
+    ubication_id = fields.Many2one('ems.ubication', string='Ubication',
         required=False, readonly=False)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
@@ -156,8 +156,7 @@ class ems_session(models.Model):
     date_end = fields.Datetime(string='End Date', required=True,
         readonly=False)
 
-    #color = fields.Selection(related="service_id.color", store=False)
-    color = fields.Selection(related="service_id.color", store=False)
+    color_rel = fields.Selection(related="service_id.color", store=False)
 
     #order_id = fields.Many2one('pos.order',
     #    string="Order") #, required=True)
@@ -190,10 +189,10 @@ class ems_session(models.Model):
 
     @api.onchange('center_id')
     def onchange_centre(self):
-        service_ids = self.env['ems.room.service.rel'].search([('room_id.center_id','=',self.center_id.id)]).mapped('service_id.id')
+        service_ids = self.env['ems.ubication.service.rel'].search([('ubication_id.center_id','=',self.center_id.id)]).mapped('service_id.id')
 
         self.service_id = False
-        self.room_id = False
+        self.ubication_id = False
         self.resource_ids = False
 
         res = dict(domain={'service_id': [('id', 'in', service_ids)]})
@@ -207,19 +206,19 @@ class ems_session(models.Model):
         ids = []
         ids2 = []
         ids22 = []
-        for s in self.service_id.room_ids.filtered(lambda x: x.room_id.center_id==self.center_id).sorted(lambda x: x.sequence):
+        for s in self.service_id.ubication_ids.filtered(lambda x: x.ubication_id.center_id==self.center_id).sorted(lambda x: x.sequence):
             sessions = self.env['ems.session'].search([
-                ('center_id', '=', s.room_id.center_id.id),
-                ('room_id', '=', s.room_id.id),
+                ('center_id', '=', s.ubication_id.center_id.id),
+                ('ubication_id', '=', s.ubication_id.id),
                 ('date_begin','<',self.date_end),
                 ('date_end','>',self.date_begin),
 
             ])
             if len(sessions)==0:
-                ids.append(s.room_id.id)
+                ids.append(s.ubication_id.id)
 
             t = self.env['ems.session'].search([
-                    ('center_id', '=', s.room_id.center_id.id),
+                    ('center_id', '=', s.ubication_id.center_id.id),
                     ('date_begin','<',self.date_end),
                     ('date_end','>',self.date_begin),
                 ])
@@ -236,11 +235,11 @@ class ems_session(models.Model):
                 ids2.append(s.resource_ids)
                 ids22+=s.resource_ids.mapped('id')
 
-        domains.update({'room_id': [('id', 'in', ids)]})
+        domains.update({'ubication_id': [('id', 'in', ids)]})
         if ids!=[]:
-            self.room_id = ids[0]
+            self.ubication_id = ids[0]
         else:
-            self.room_id = False
+            self.ubication_id = False
 
         domains.update({'resource_ids': [('id', 'in', ids22)]})
         if ids2!=[]:
@@ -295,10 +294,10 @@ class ems_session(models.Model):
         self.confirm_event()
 
 
-class ems_room(models.Model):
-    """ Room """
-    _name = 'ems.room'
-    _description = 'Room'
+class ems_ubication(models.Model):
+    """ Ubication """
+    _name = 'ems.ubication'
+    _description = 'Ubication'
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
@@ -306,7 +305,7 @@ class ems_room(models.Model):
     center_id = fields.Many2one('ems.center', string='Center',
         required=True, readonly=False)
 
-    service_ids = fields.One2many('ems.room.service.rel', 'room_id', string="Services")
+    service_ids = fields.One2many('ems.ubication.service.rel', 'ubication_id', string="Services")
 
 
 
@@ -321,7 +320,7 @@ class ems_service(models.Model):
 
     #resource_ids = fields.Many2many('ems.resource', 'ems_service_resource_rel', 'resource_id', 'service_id', string="Resources")
     #resource_ids = fields.One2many('ems.service.resource.rel', 'service_id')
-    room_ids = fields.One2many('ems.room.service.rel', 'service_id', string="Rooms")
+    ubication_ids = fields.One2many('ems.ubication.service.rel', 'service_id', string="Ubications")
 
     '''
     @api.multi
@@ -333,15 +332,15 @@ class ems_service(models.Model):
         return result
     '''
 
-class ems_room_service(models.Model):
+class ems_ubication_service(models.Model):
     """ Session Type """
-    _name = 'ems.room.service.rel'
-    _description = 'Room-Service relation'
+    _name = 'ems.ubication.service.rel'
+    _description = 'Ubication-Service relation'
     _order = 'sequence'
 
     service_id = fields.Many2one('ems.service', string="Service")
 
-    room_id = fields.Many2one('ems.room', string="Room", required=True)
+    ubication_id = fields.Many2one('ems.ubication', string="Ubication", required=True)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
         required=False, readonly=False)
@@ -350,7 +349,7 @@ class ems_room_service(models.Model):
 
     '''
     _sql_constraints = [
-        ('rel_uniq', 'unique(room_id, service_id)', 'Duplicated room'),
+        ('rel_uniq', 'unique(ubication_id, service_id)', 'Duplicated ubication'),
         ('seq_uniq', 'unique(service_id, sequence)', 'Duplicated sequence'),
     ]
     '''
@@ -358,7 +357,7 @@ class ems_room_service(models.Model):
 
     @api.model
     def create(self, vals):
-        emssr =  super(ems_room_service, self).create(vals)
+        emssr =  super(ems_ubication_service, self).create(vals)
 
         #self.env['ems.service.resource.rel'].search([('service_id','=',emssr.service_id)])
         return emssr
@@ -405,9 +404,19 @@ class ems_timetable(models.Model):
     etime = fields.Integer(readonly=True, compute="_calc_inttime")
 
 
-    trainer_ids = fields.One2many('ems.timetable.trainer', 'timetable_id', required=True,
+    responsible_ids = fields.One2many('ems.timetable.responsible', 'timetable_id', #required=True,
         #default=lambda self: self.env.user,
         readonly=False)
+
+    responsibles = fields.Char(compute='_calc_responsible_list', store=False, readonly=True)
+
+    @api.depends('responsible_ids')
+    def _calc_responsible_list(self):
+        for tt in self:
+            f = []
+            for r in tt.responsible_ids:
+                f.append(r.responsible_id.user_id.name)
+            tt.responsibles = ', '.join(f)
 
 
 
@@ -432,9 +441,8 @@ class ems_timetable(models.Model):
 
         return b
 
-
-    @api.constrains('trainer_ids', 'center_id', 'day', 'ini_time', 'end_time')
-    def _check_trainer_id_ems(self):
+    @api.constrains('responsible_ids', 'center_id', 'day', 'ini_time', 'end_time')
+    def _check_responsible_id_ems(self):
         # serach for other timetables of the same day and same hours
         other_tts = self.env['ems.timetable'].search([('id', '!=', self.id),
                                                       ('center_id','=', self.center_id.id),
@@ -442,12 +450,15 @@ class ems_timetable(models.Model):
                                                     ])
         for tt in other_tts:
             if self._check_overlap(tt):
-                for trainer in self.trainer_ids:
-                    for tt_trainer in tt.trainer_ids:
-                        if tt_trainer.trainer_id.id==trainer.trainer_id.id:
-                            raise ValidationError(_("Overlap detected: The trainer %s already has a timetable at %s on %s from %s to %s") %
-                                                  (trainer.trainer_id.user_id.name, self.center_id.name,
+                for responsible in self.responsible_ids:
+                    for tt_responsible in tt.responsible_ids:
+                        if tt_responsible.responsible_id.id == responsible.responsible_id.id:
+                            raise ValidationError(_("Overlap detected: The responsible %s already has a timetable at %s on %s from %s to %s") %
+                                                  (responsible.responsible_id.user_id.name, self.center_id.name,
                                                    dict(DAYS_OF_WEEK)[self.day], tt.ini_time, tt.end_time))
+        
+
+
     @api.multi
     def name_get(self):
         res = []
@@ -457,17 +468,17 @@ class ems_timetable(models.Model):
         return res
 
 
-class ems_timetable_trainer(models.Model):
+class ems_timetable_responsible(models.Model):
     """Session"""
-    _name = 'ems.timetable.trainer'
-    _description = 'Timetable Trainer'
+    _name = 'ems.timetable.responsible'
+    _description = 'Timetable Responsible'
     _order = 'sequence'
 
     sequence = fields.Integer('Priority', help="Sequence for the handle.", default=1)
 
-    timetable_id = fields.Many2one('ems.timetable', string='Timetable', readonly=False)
+    timetable_id = fields.Many2one('ems.timetable', string='Timetable', required=True, readonly=False)
 
-    trainer_id = fields.Many2one('ems.trainer', string='Trainer', readonly=False)
+    responsible_id = fields.Many2one('ems.responsible', string='Responsible', required=True, readonly=False)
 
 
     center_id = fields.Many2one(related='timetable_id.center_id', store=False)
@@ -475,7 +486,7 @@ class ems_timetable_trainer(models.Model):
     ini_time = fields.Char(related='timetable_id.ini_time', store=False)
     end_time = fields.Char(related='timetable_id.end_time', store=False)
 
-    color = fields.Selection(related="trainer_id.color", store=False)
+    color_rel = fields.Selection(related="responsible_id.color", store=False)
     date_begin = fields.Datetime(compute='_calc_date_begin')
     date_end = fields.Datetime(compute='_calc_date_end')
 
@@ -489,8 +500,6 @@ class ems_timetable_trainer(models.Model):
 
         return de - dt.utcoffset()
 
-
-
     @api.depends('date_begin')
     def _calc_date_begin(self):
         self.date_begin = self.calc_time2date(self.ini_time)
@@ -502,11 +511,10 @@ class ems_timetable_trainer(models.Model):
 
 
 
-
-class ems_trainer(models.Model):
+class ems_responsible(models.Model):
     """Session"""
-    _name = 'ems.trainer'
-    _description = 'Trainer'
+    _name = 'ems.responsible'
+    _description = 'Responsible'
     #_order = 'sequence'
 
     user_id = fields.Many2one('res.users', string='User', readonly=False)
@@ -515,15 +523,15 @@ class ems_trainer(models.Model):
 
     description = fields.Text(string='Description', required=False)
 
-    timetable_ids = fields.One2many('ems.timetable.trainer', 'trainer_id', required=True,
+    timetable_ids = fields.One2many('ems.timetable.responsible', 'responsible_id', required=True,
         readonly=False)
 
-    absence_ids = fields.One2many('ems.trainer.absence', 'trainer_id', readonly=False)
+    absence_ids = fields.One2many('ems.responsible.absence', 'responsible_id', readonly=False)
 
-    session_ids = fields.One2many('ems.session', 'trainer_id', readonly=False,
+    session_ids = fields.One2many('ems.session', 'responsible_id', readonly=False,
                                   domain=[('date_begin','>=', fields.Datetime.to_string(datetime.datetime.combine(fields.Datetime.from_string(fields.Datetime.now()), datetime.time(0,0,0))))])
 
-    _sql_constraints = [('user_id_unique', 'unique(user_id)',_("Trainer already exists"))]
+    _sql_constraints = [('user_id_unique', 'unique(user_id)',_("Responsible already exists"))]
 
 
     @api.multi
@@ -534,19 +542,19 @@ class ems_trainer(models.Model):
         return res
 
 
-class ems_trainer_absence(models.Model):
+class ems_responsible_absence(models.Model):
     """Session"""
-    _name = 'ems.trainer.absence'
-    _description = 'Trainer Absence'
-    _order = 'trainer_id,center_id,ini_date'
+    _name = 'ems.responsible.absence'
+    _description = 'Responsible Absence'
+    _order = 'responsible_id,center_id,ini_date'
 
-    trainer_id = fields.Many2one('ems.trainer', string='Trainer', required=True, readonly=False)
+    responsible_id = fields.Many2one('ems.responsible', string='Responsible', required=True, readonly=False)
 
     center_id = fields.Many2one('ems.center', string='Center',
         required=True, readonly=False)
 
     ini_date = fields.Datetime(string='Initial Date', required=True)
-    end_date = fields.Datetime(string='Initial Date', required=True)
+    end_date = fields.Datetime(string='End Date', required=True)
 
     reason = fields.Text(string='Reason', required=False)
 
@@ -568,7 +576,7 @@ class ems_trainer_absence(models.Model):
 class res_users(models.Model):
     _inherit = 'res.users'
 
-    trainer = fields.Boolean(help="Check this box if this user is a trainer.")
+    responsible = fields.Boolean(help="Check this box if this user is a responsible.")
 '''
 
 class res_partner(models.Model):

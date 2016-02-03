@@ -89,16 +89,18 @@ openerp.ems = function (instance) {
                     the_title = res_computed_text;
                 }
                 else {
-                    var res_text= [];
-                    _.each(this.invisible_fields, function(fieldname) {
-                        delete temp_ret[fieldname]
+                    _.each(this.fields_view.arch.children, function(o) {
+                        if (o.attrs.invisible === "1") {
+                             delete temp_ret[o.attrs.name]
+                        }
                     });
 
+                    var res_text= [];
                     _.each(temp_ret, function(val,key) {
                         if( typeof(val) == 'boolean' && val == false ) { }
                         else {
                             if (!isNullOrUndef(val)) {
-                                res_text.push(val)
+                                res_text.push(val);
                             }
                         };
                     });
@@ -161,8 +163,13 @@ openerp.ems = function (instance) {
                     if (typeof color_key === "object") {
                         color_key = color_key[0];
                     }
-                    //r.className = 'cal_opacity calendar_color_'+ this.get_color(color_key);
-                    r.className = 'cal_opacity calendar_color_'+ evt.color;
+                    var color;
+                    if (!isNullOrUndef(self.fields[this.color_field].related)) {
+                        color = evt[this.color_field];
+                    } else {
+                        color = this.get_color(color_key);
+                    }
+                    r.className = 'cal_opacity calendar_color_'+ color;
                 }
             }
             else  { // if form all, get color -1
@@ -220,8 +227,13 @@ openerp.ems = function (instance) {
                                 if (!self.all_filters[key]) {
                                     var label, color;
                                     if (!isNullOrUndef(color_field.related)) {
-                                        label = e[color_field.related[0]][1];
-                                        color = val[0];
+                                        var rel_field = e[color_field.related[0]];
+                                        label = rel_field[1];
+                                        if (isNullOrUndef(val)) {
+                                            color = self.get_color(rel_field[0])
+                                        } else {
+                                             color = val[0];
+                                        }
                                     } else {
                                         label = val[1]
                                         color = self.get_color(key);
@@ -295,152 +307,6 @@ openerp.ems = function (instance) {
                 }
             };
             this.$calendar.fullCalendar('addEventSource', this.event_source);
-        },
-
-        view_loading: function (fv) {
-            /* xml view calendar options */
-            var attrs = fv.arch.attrs,
-                self = this;
-            this.fields_view = fv;
-            this.$calendar = this.$el.find(".oe_calendar_widget");
-
-            this.info_fields = [];
-            this.invisible_fields = [];
-
-            /* buttons */
-            this.$buttons = $(QWeb.render("CalendarView.buttons", {'widget': this}));
-            if (this.options.$buttons) {
-                this.$buttons.appendTo(this.options.$buttons);
-            } else {
-                this.$el.find('.oe_calendar_buttons').replaceWith(this.$buttons);
-            }
-
-            this.$buttons.on('click', 'button.oe_calendar_button_new', function () {
-                self.dataset.index = null;
-                self.do_switch_view('form');
-            });
-
-            if (!attrs.date_start) {
-                throw new Error(_t("Calendar view has not defined 'date_start' attribute."));
-            }
-
-            this.$el.addClass(attrs['class']);
-
-            this.name = fv.name || attrs.string;
-            this.view_id = fv.view_id;
-
-            this.mode = attrs.mode;                 // one of month, week or day
-            this.date_start = attrs.date_start;     // Field name of starting date field
-            this.date_delay = attrs.date_delay;     // duration
-            this.date_stop = attrs.date_stop;
-            this.all_day = attrs.all_day;
-            this.how_display_event = '';
-            this.attendee_people = attrs.attendee;
-
-            if (!isNullOrUndef(attrs.quick_create_instance)) {
-                self.quick_create_instance = 'instance.' + attrs.quick_create_instance;
-            }
-
-            //if quick_add = False, we don't allow quick_add
-            //if quick_add = not specified in view, we use the default quick_create_instance
-            //if quick_add = is NOT False and IS specified in view, we this one for quick_create_instance'
-
-            this.quick_add_pop = (isNullOrUndef(attrs.quick_add) || _.str.toBoolElse(attrs.quick_add, true));
-            if (this.quick_add_pop && !isNullOrUndef(attrs.quick_add)) {
-                self.quick_create_instance = 'instance.' + attrs.quick_add;
-            }
-            // The display format which will be used to display the event where fields are between "[" and "]"
-            if (!isNullOrUndef(attrs.display)) {
-                this.how_display_event = attrs.display; // String with [FIELD]
-            }
-
-            // If this field is set ot true, we don't open the event in form view, but in a popup with the view_id passed by this parameter
-            if (isNullOrUndef(attrs.event_open_popup) || !_.str.toBoolElse(attrs.event_open_popup, true)) {
-                this.open_popup_action = false;
-            } else {
-                this.open_popup_action = attrs.event_open_popup;
-            }
-            // If this field is set to true, we will use the calendar_friends model as filter and not the color field.
-            this.useContacts = (!isNullOrUndef(attrs.use_contacts) && _.str.toBool(attrs.use_contacts)) && (!isNullOrUndef(self.options.$sidebar));
-
-            // If this field is set ot true, we don't add itself as an attendee when we use attendee_people to add each attendee icon on an event
-            // The color is the color of the attendee, so don't need to show again that it will be present
-            this.colorIsAttendee = (!(isNullOrUndef(attrs.color_is_attendee) || !_.str.toBoolElse(attrs.color_is_attendee, true))) && (!isNullOrUndef(self.options.$sidebar));
-
-            // if we have not sidebar, (eg: Dashboard), we don't use the filter "coworkers"
-            if (isNullOrUndef(self.options.$sidebar)) {
-                this.useContacts = false;
-                this.colorIsAttendee = false;
-                this.attendee_people = undefined;
-            }
-
-/*
-            Will be more logic to do it in futur, but see below to stay Retro-compatible
-
-            if (isNull(attrs.avatar_model)) {
-                this.avatar_model = 'res.partner';
-            }
-            else {
-                if (attrs.avatar_model == 'False') {
-                    this.avatar_model = null;
-                }
-                else {
-                    this.avatar_model = attrs.avatar_model;
-                }
-            }
-*/
-            if (isNullOrUndef(attrs.avatar_model)) {
-                this.avatar_model = null;
-            } else {
-                this.avatar_model = attrs.avatar_model;
-            }
-
-            if (isNullOrUndef(attrs.avatar_title)) {
-                this.avatar_title = this.avatar_model;
-            } else {
-                this.avatar_title = attrs.avatar_title;
-            }
-
-            if (isNullOrUndef(attrs.avatar_filter)) {
-                this.avatar_filter = this.avatar_model;
-            } else {
-                this.avatar_filter = attrs.avatar_filter;
-            }
-
-            this.color_field = attrs.color;
-
-            if (this.color_field && this.selected_filters.length === 0) {
-                var default_filter;
-                if ((default_filter = this.dataset.context['calendar_default_' + this.color_field])) {
-                    this.selected_filters.push(default_filter + '');
-                }
-            }
-
-            this.fields = fv.fields;
-
-            for (var fld = 0; fld < fv.arch.children.length; fld++) {
-                this.info_fields.push(fv.arch.children[fld].attrs.name);
-                if (fv.arch.children[fld].attrs.invisible==1) {
-                    this.invisible_fields.push(fv.arch.children[fld].attrs.name);
-                }
-            }
-
-            var edit_check = new instance.web.Model(this.dataset.model)
-                .call("check_access_rights", ["write", false])
-                .then(function (write_right) {
-                    self.write_right = write_right;
-                });
-            var init = new instance.web.Model(this.dataset.model)
-                .call("check_access_rights", ["create", false])
-                .then(function (create_right) {
-                    self.create_right = create_right;
-                    self.init_calendar().then(function() {
-                        $(window).trigger('resize');
-                        self.trigger('calendar_view_loaded', fv);
-                        self.ready.resolve();
-                    });
-                });
-            return $.when(edit_check, init);
         }
     });
 };
