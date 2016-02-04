@@ -400,11 +400,8 @@ class ems_timetable(models.Model):
         #default=lambda self: self.env.user,
         readonly=False, default="01:00")
 
-    itime = fields.Integer(readonly=True, compute="_calc_inttime")
-    etime = fields.Integer(readonly=True, compute="_calc_inttime")
 
-
-    responsible_ids = fields.One2many('ems.timetable.responsible', 'timetable_id', #required=True,
+    responsible_ids = fields.One2many('ems.timetable.responsible', 'timetable_id', required=True,
         #default=lambda self: self.env.user,
         readonly=False)
 
@@ -420,25 +417,33 @@ class ems_timetable(models.Model):
 
 
 
-    @api.depends('ini_time', 'end_time')
-    def _calc_inttime(self):
-        self.itime = timestr2int(self.ini_time)
-        self.etime = timestr2int(self.end_time)
-
-
     def _check_overlap(self, other):
-        b = timestr2int(other.ini_time)<timestr2int(self.end_time) and \
-                        timestr2int(other.end_time)>timestr2int(self.ini_time)
+        b = self.ini_time<self.end_time and other.end_time>self.ini_time
 
         return b
 
     @api.constrains('responsible_ids', 'center_id', 'day', 'ini_time', 'end_time')
     def _check_timetable(self):
         # serach for other timetables of the same day and same hours
-        other_tts = self.env['ems.timetable'].search([('id', '!=', self.id),
-                                                      ('center_id','=', self.center_id.id),
-                                                      ('day','=', self.day)
-                                                    ])
+        other_tts = self.env['ems.timetable'].search([  ('id', '!=', self.id),
+                                                        ('center_id','=', self.center_id.id),
+                                                        ('day','=', self.day),
+                                                        ('end_time','>', self.ini_time),
+                                                        ('ini_time','<', self.end_time)
+                                                        ])
+        msg = []
+        for tt in other_tts:
+            msg.append(tt.name_get()[0][1])
+
+        if msg:
+            raise ValidationError(_("Overlaps detected:\n%s") % '\n'.join(msg))
+
+        # check if responsibles is not null
+        if not self.responsible_ids:
+            raise ValidationError(_("The timetable must have at least 1 responsible"))
+
+
+        '''
         for tt in other_tts:
             if self._check_overlap(tt):
                 for responsible in self.responsible_ids:
@@ -447,11 +452,15 @@ class ems_timetable(models.Model):
                             raise ValidationError(_("Overlap detected: The responsible %s already has a timetable at %s on %s from %s to %s") %
                                                   (responsible.responsible_id.user_id.name, self.center_id.name,
                                                    dict(DAYS_OF_WEEK)[self.day], tt.ini_time, tt.end_time))
-        
+        '''
 
     @api.constrains('ini_time', 'end_time')
     def _check_times(self):
-        if self.itime>self.etime:
+        # check tie format
+        timestr2int(self.ini_time)
+        timestr2int(self.end_time)
+        # check order
+        if self.ini_time>self.end_time:
             raise ValidationError(_("The initial time cannot be greater than end time"))
 
     @api.onchange('ini_time', 'end_time')
