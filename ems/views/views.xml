@@ -167,11 +167,13 @@
             <field name="model">ems.timetable</field>
             <field name="arch" type="xml">
                 <tree string="Timetable">
+                    <field name="overlap_key"/>
+                    <field name="sequence"/>
                     <field name="center_id"/>
                     <field name="day"/>
-                    <field name="ini_time"/>
-                    <field name="end_time"/>
-                    <field name="responsibles"/>
+                    <field name="time_begin"/>
+                    <field name="time_end"/>
+                    <field name="responsible_id"/>
                 </tree>
             </field>
         </record>
@@ -186,23 +188,19 @@
                     </header>
                     <sheet>
                         <group col="4" colspan="2">
+                            <field name="overlap_key"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group col="4" colspan="2">
                             <field name="center_id" options="{'no_create': True, 'no_open': True}"/>
+                            <newline/>
+                            <field name="responsible_id" options="{'no_quick_create': True}"/>
+                            <newline/>
                             <field name="day" options="{'no_create': True}"/>
                             <newline/>
-                            <field name="ini_time"/>
-                            <field name="end_time"/>
-                            <!--field name="end_time" string="Resources" widget="many2many_tags" options="{'no_create': True}"/-->
+                            <field name="time_begin"/>
+                            <field name="time_end"/>
                         </group>
-                        <group>
-                            <field name="responsible_ids" nolabel="1">
-                                <tree editable="botttom">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="responsible_id" options="{'no_quick_create': True}"/>
-                                </tree>
-                            </field>
-                        </group>
-
-
                     </sheet>
                     <!--div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
@@ -213,18 +211,17 @@
         </record>
 
         <!-- TIMETABLE Calendar view -->
-        <!--record id="view_ems_session_calendar" model="ir.ui.view">
-            <field name="name">ems.session.calendar</field>
-            <field name="model">ems.session</field>
+        <record id="view_ems_timetable_calendar" model="ir.ui.view">
+            <field name="name">Timetable</field>
+            <field name="model">ems.timetable</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="service_id" date_start="date_begin" date_stop="date_end" string="Session Organization">
-                    <field name="customer_id"/>
-                    <field name="name"/>
+                <calendar color="color_rel" date_start="date_begin" date_stop="date_end" string="Responsible availability" mode="week">
+                    <field name="center_id"/>
                     <field name="responsible_id"/>
                 </calendar>
             </field>
-        </record-->
+        </record>
 
         <!-- TIMETABLE Search view -->
         <!--record model="ir.ui.view" id="ems_session_search_view">
@@ -311,11 +308,11 @@
                         </group>
                         <group string="Timetables">
                             <field name="timetable_ids" nolabel="1" attrs="{'readonly':True}">
-                                <tree default_order="center_id, day, ini_time"> <!-- create="0" delete="0" edit="0"-->
+                                <tree default_order="center_id, day, time_begin"> <!-- create="0" delete="0" edit="0"-->
                                     <field name="center_id"/>
                                     <field name="day"/>
-                                    <field name="ini_time"/>
-                                    <field name="end_time"/>
+                                    <field name="time_begin"/>
+                                    <field name="time_end"/>
                                 </tree>
                             </field>
                         </group>
@@ -358,97 +355,6 @@
         </record-->
 
         <!-- RESPONSIBLE Search view -->
-        <!--record model="ir.ui.view" id="ems_session_search_view">
-            <field name="name">ems.session.search</field>
-            <field name="model">ems.session</field>
-            <field name="arch" type="xml">
-                <search>
-                    <filter string="My Sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
-                    <separator/>
-                    <filter string="Upcoming" name="upcoming"
-                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
-                            help="Upcoming sessions from today"/>
-                    <separator/>
-                    <filter string="Unconfirmed" name="draft" domain="[('state','=','draft')]"
-                            help="Events in New state"/>
-                    <filter string="Confirmed" domain="[('state','=','confirm')]" help="Confirmed events"/>
-                    <field name="customer_id"/>
-                    <field name="responsible_id"/>
-                    <field name="description"/>
-                    <field name="service_id"/>
-                    <field name="resource_ids"/>
-                    <field name="ubication_id"/>
-                    <field name="name"/>
-                    <group expand="0" string="Group By">
-                        <filter string="Responsible" context="{'group_by': 'responsible_id'}"/>
-                        <filter string="Service" context="{'group_by':'service_id'}"/>
-                        <filter string="Status" context="{'group_by':'state'}"/>
-                        <filter string="Start Month" domain="[]" context="{'group_by':'date_begin'}"/>
-                    </group>
-                </search>
-            </field>
-        </record-->
-
-        <!-- ########################## EMS/RESPONSIBLE AVAILABILITY ########################## -->
-        <record model="ir.actions.act_window" id="action_list_timetable_responsible">
-            <field name="name">Responsible availability</field>
-            <field name="res_model">ems.timetable.responsible</field>
-            <field name="view_mode">calendar,tree,form</field>
-        </record>
-
-        <!-- the following menuitem should appear *after*
-             its parent ems_menu and *after* its
-             action action_list_sessions -->
-        <menuitem id="menu_ems_timetable_responsible" parent="ems_menu" name="Responsible availability" sequence="40"
-                  action="action_list_timetable_responsible"/>
-
-        <!-- RESPONSIBLE AVAILABILITY Tree view -->
-        <record model="ir.ui.view" id="view_ems_timetable_responsible_tree">
-            <field name="name">Responsible availability</field>
-            <field name="model">ems.timetable.responsible</field>
-            <field name="arch" type="xml">
-                <tree string="Responsible availability">
-                    <field name="timetable_id"/>
-                    <field name="responsible_id"/>
-                </tree>
-            </field>
-        </record>
-
-        <!-- RESPONSIBLE AVAILABILITY Form view -->
-        <record model="ir.ui.view" id="view_ems_timetable_responsible_form">
-            <field name="name">Responsible availability</field>
-            <field name="model">ems.timetable.responsible</field>
-            <field name="arch" type="xml">
-                <form string="Responsible availability">
-                    <header>
-                    </header>
-                    <sheet>
-                        <group col="4" colspan="2">
-                            <field name="timetable_id" options="{'no_create': True}"/>
-                            <field name="responsible_id" options="{'no_create': True}"/>
-                            <newline/>
-                            <field name="date_begin"/>
-                            <field name="date_end"/>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-
-        <!-- RESPONSIBLE AVAILABILITY Calendar view -->
-        <record id="view_ems_timetable_responsible_calendar" model="ir.ui.view">
-            <field name="name">Responsible availability</field>
-            <field name="model">ems.timetable.responsible</field>
-            <field eval="2" name="priority"/>
-            <field name="arch" type="xml">
-                <calendar color="color_rel" date_start="date_begin" date_stop="date_end" string="Responsible availability" mode="week">
-                    <field name="center_id"/>
-                    <field name="responsible_id"/>
-                </calendar>
-            </field>
-        </record>
-
-        <!-- RESPONSIBLE AVAILABILITY Search view -->
         <!--record model="ir.ui.view" id="ems_session_search_view">
             <field name="name">ems.session.search</field>
             <field name="model">ems.session</field>

@@ -30,6 +30,7 @@ from openerp.exceptions import AccessError, Warning, ValidationError
 
 import re
 
+import hashlib
 
 import logging
 
@@ -58,6 +59,9 @@ def int2tuple(tint):
     min = tint-hour*100
 
     return (hour, min)
+
+def tuple2timestr(t):
+    return "%02d:%02d" % t
 
 def int2timestr(tint):
     hour, min = int2tuple(tint)
@@ -158,8 +162,6 @@ class ems_session(models.Model):
 
     color_rel = fields.Selection(related="service_id.color", store=False)
 
-    #order_id = fields.Many2one('pos.order',
-    #    string="Order") #, required=True)
 
     state = fields.Selection([
             ('draft', 'Unconfirmed'),
@@ -345,7 +347,7 @@ class ems_ubication_service(models.Model):
     resource_ids = fields.Many2many('ems.resource', string='Resources',
         required=False, readonly=False)
 
-    sequence = fields.Integer('sequence', help="Sequence for the handle.", default=1)
+    sequence = fields.Integer('Sequence', help="Sequence for the handle.", default=1)
 
     '''
     _sql_constraints = [
@@ -383,53 +385,64 @@ class ems_timetable(models.Model):
     """Session"""
     _name = 'ems.timetable'
     _description = 'Timetable'
-    _order = 'center_id,day,ini_time'
-
-    #name = fields.Char(string='Name', required=True,
-    #    readonly=False)
+    _order = 'center_id,day,time_begin,time_end desc'
 
     center_id = fields.Many2one('ems.center', string='Center',
         required=True, readonly=False)
 
     day = fields.Selection(selection=DAYS_OF_WEEK, required=True, readonly=False)
-    ini_time = fields.Char(string='Initial time', size=5, required=True,
+    time_begin = fields.Char(string='Initial time', size=5, required=True,
         #default=lambda self: self.env.user,
         readonly=False, default="00:00")
 
-    end_time = fields.Char(string='End time', size=5, required=True,
+    time_end = fields.Char(string='End time', size=5, required=True,
         #default=lambda self: self.env.user,
         readonly=False, default="01:00")
 
 
-    responsible_ids = fields.One2many('ems.timetable.responsible', 'timetable_id', required=True,
-        #default=lambda self: self.env.user,
-        readonly=False)
+    responsible_id = fields.Many2one('ems.responsible', required=True, readonly=False)
 
-    responsibles = fields.Char(compute='_calc_responsible_list', store=False, readonly=True)
+    overlap_key = fields.Char(compute='_calc_overlap_key', store=False)
 
-    @api.depends('responsible_ids')
-    def _calc_responsible_list(self):
-        for tt in self:
-            f = []
-            for r in tt.responsible_ids:
-                f.append(r.responsible_id.user_id.name)
-            tt.responsibles = ', '.join(f)
+    color_rel = fields.Selection(related="responsible_id.color", store=False)
+
+    date_begin = fields.Datetime(compute='_compute_date_begin', inverse="_inverse_date_begin")
+    date_end = fields.Datetime(compute='_compute_date_end',  inverse="_inverse_date_end")
+
+    sequence = fields.Integer('Sequence', help="Sequence for the handle.")
+
+    @api.depends('responsible_id', 'center_id', 'day', 'time_begin', 'time_end')
+    def _calc_overlap_key(self):
+        for self1 in self:
+            # serach for other timetables of the same day and same hours
+            other_tts = self.env['ems.timetable'].search([  ('center_id','=', self1.center_id.id),
+                                                            ('day','=', self1.day),
+                                                            ('time_end','>', self1.time_begin),
+                                                            ('time_begin','<', self1.time_end)
+                                                            ])
+
+            hl = []
+            for tt in other_tts:
+                hl.append(tt.id)
+
+            self1.overlap_key = hashlib.sha256(','.join(['%i' % x for x in sorted(hl)])).hexdigest()[-6:]
 
 
 
     def _check_overlap(self, other):
-        b = self.ini_time<self.end_time and other.end_time>self.ini_time
+        b = self.time_begin<self.time_end and other.time_end>self.time_begin
 
         return b
 
-    @api.constrains('responsible_ids', 'center_id', 'day', 'ini_time', 'end_time')
+    @api.constrains('responsible_id', 'center_id', 'day', 'time_begin', 'time_end')
     def _check_timetable(self):
         # serach for other timetables of the same day and same hours
         other_tts = self.env['ems.timetable'].search([  ('id', '!=', self.id),
                                                         ('center_id','=', self.center_id.id),
                                                         ('day','=', self.day),
-                                                        ('end_time','>', self.ini_time),
-                                                        ('ini_time','<', self.end_time)
+                                                        ('time_end','>', self.time_begin),
+                                                        ('time_begin','<', self.time_end),
+                                                        ('responsible_id','=', self.responsible_id.id)
                                                         ])
         msg = []
         for tt in other_tts:
@@ -438,65 +451,21 @@ class ems_timetable(models.Model):
         if msg:
             raise ValidationError(_("Overlaps detected:\n%s") % '\n'.join(msg))
 
-        # check if responsibles is not null
-        if not self.responsible_ids:
-            raise ValidationError(_("The timetable must have at least 1 responsible"))
 
 
-        '''
-        for tt in other_tts:
-            if self._check_overlap(tt):
-                for responsible in self.responsible_ids:
-                    for tt_responsible in tt.responsible_ids:
-                        if tt_responsible.responsible_id.id == responsible.responsible_id.id:
-                            raise ValidationError(_("Overlap detected: The responsible %s already has a timetable at %s on %s from %s to %s") %
-                                                  (responsible.responsible_id.user_id.name, self.center_id.name,
-                                                   dict(DAYS_OF_WEEK)[self.day], tt.ini_time, tt.end_time))
-        '''
-
-    @api.constrains('ini_time', 'end_time')
+    @api.constrains('time_begin', 'time_end')
     def _check_times(self):
         # check tie format
-        timestr2int(self.ini_time)
-        timestr2int(self.end_time)
+        timestr2int(self.time_begin)
+        timestr2int(self.time_end)
         # check order
-        if self.ini_time>self.end_time:
+        if self.time_begin>self.time_end:
             raise ValidationError(_("The initial time cannot be greater than end time"))
 
-    @api.onchange('ini_time', 'end_time')
+    @api.onchange('time_begin', 'time_end')
     def onchange_times_ems(self):
         self._check_times()
 
-    @api.multi
-    def name_get(self):
-        res = []
-        for tt in self:
-            res.append((tt.id, "%s - %s (%s - %s)" % (tt.center_id.name, dict(DAYS_OF_WEEK)[tt.day], tt.ini_time, tt.end_time)))
-
-        return res
-
-
-class ems_timetable_responsible(models.Model):
-    """Session"""
-    _name = 'ems.timetable.responsible'
-    _description = 'Timetable Responsible'
-    _order = 'sequence'
-
-    sequence = fields.Integer('Priority', help="Sequence for the handle.", default=1)
-
-    timetable_id = fields.Many2one('ems.timetable', string='Timetable', required=True, readonly=False)
-
-    responsible_id = fields.Many2one('ems.responsible', string='Responsible', required=True, readonly=False)
-
-
-    center_id = fields.Many2one(related='timetable_id.center_id', store=False)
-    day = fields.Selection(related='timetable_id.day', store=False)
-    ini_time = fields.Char(related='timetable_id.ini_time', store=False)
-    end_time = fields.Char(related='timetable_id.end_time', store=False)
-
-    color_rel = fields.Selection(related="responsible_id.color", store=False)
-    date_begin = fields.Datetime(compute='_calc_date_begin')
-    date_end = fields.Datetime(compute='_calc_date_end')
 
     def calc_time2date(self, timestr):
         hour, min = timestr2tuple(timestr)
@@ -508,16 +477,34 @@ class ems_timetable_responsible(models.Model):
 
         return de - dt.utcoffset()
 
-    @api.depends('date_begin')
-    def _calc_date_begin(self):
-        self.date_begin = self.calc_time2date(self.ini_time)
-
-    @api.depends('date_end')
-    def _calc_date_end(self):
-        self.date_end = self.calc_time2date(self.end_time)
+    @api.depends('time_begin')
+    def _compute_date_begin(self):
+        for rec in self:
+            rec.date_begin = rec.calc_time2date(rec.time_begin)
 
 
+    def _inverse_date_begin(self):
+        a = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
+        self.time_begin = tuple2timestr((a.hour, a.minute))
 
+
+
+    @api.depends('time_end')
+    def _compute_date_end(self):
+        for rec in self:
+            rec.date_end = rec.calc_time2date(rec.time_end)
+
+    def _inverse_date_end(self):
+        a = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_end))
+        self.time_end = tuple2timestr((a.hour, a.minute))
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for tt in self:
+            res.append((tt.id, "%s - %s (%s - %s)" % (tt.center_id.name, dict(DAYS_OF_WEEK)[tt.day], tt.time_begin, tt.time_end)))
+
+        return res
 
 class ems_responsible(models.Model):
     """Session"""
@@ -531,7 +518,7 @@ class ems_responsible(models.Model):
 
     description = fields.Text(string='Description', required=False)
 
-    timetable_ids = fields.One2many('ems.timetable.responsible', 'responsible_id', required=True,
+    timetable_ids = fields.One2many('ems.timetable', 'responsible_id', required=True,
         readonly=False)
 
     absence_ids = fields.One2many('ems.responsible.absence', 'responsible_id', readonly=False)
