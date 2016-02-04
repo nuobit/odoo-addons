@@ -402,7 +402,6 @@ class ems_timetable(models.Model):
 
     responsible_id = fields.Many2one('ems.responsible', required=True, readonly=False)
 
-    overlap_key = fields.Char(compute='_calc_overlap_key', store=False)
 
     color_rel = fields.Selection(related="responsible_id.color", store=False)
 
@@ -411,6 +410,7 @@ class ems_timetable(models.Model):
 
     sequence = fields.Integer('Sequence', help="Sequence for the handle.")
 
+    '''
     @api.depends('responsible_id', 'center_id', 'day', 'time_begin', 'time_end')
     def _calc_overlap_key(self):
         for self1 in self:
@@ -426,7 +426,7 @@ class ems_timetable(models.Model):
                 hl.append(tt.id)
 
             self1.overlap_key = hashlib.sha256(','.join(['%i' % x for x in sorted(hl)])).hexdigest()[-6:]
-
+    '''
 
 
     def _check_overlap(self, other):

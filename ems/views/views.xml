@@ -167,7 +167,6 @@
             <field name="model">ems.timetable</field>
             <field name="arch" type="xml">
                 <tree string="Timetable">
-                    <field name="overlap_key"/>
                     <field name="sequence"/>
                     <field name="center_id"/>
                     <field name="day"/>
@@ -188,10 +187,6 @@
                     </header>
                     <sheet>
                         <group col="4" colspan="2">
-                            <field name="overlap_key"/>
-                            <field name="sequence"/>
-                        </group>
-                        <group col="4" colspan="2">
                             <field name="center_id" options="{'no_create': True, 'no_open': True}"/>
                             <newline/>
                             <field name="responsible_id" options="{'no_quick_create': True}"/>
@@ -200,6 +195,9 @@
                             <newline/>
                             <field name="time_begin"/>
                             <field name="time_end"/>
+                        </group>
+                         <group col="4" colspan="2">
+                            <field name="sequence"/>
                         </group>
                     </sheet>
                     <!--div class="oe_chatter">
