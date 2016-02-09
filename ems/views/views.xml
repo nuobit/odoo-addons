@@ -100,7 +100,7 @@
         </record>
 
         <!-- Session Calendar view -->
-        <record id="view_ems_session_calendar" model="ir.ui.view">
+        <!--record id="view_ems_session_calendar" model="ir.ui.view">
             <field name="name">ems.session.calendar</field>
             <field name="model">ems.session</field>
             <field eval="2" name="priority"/>
@@ -112,7 +112,7 @@
                     <field name="service_id" invisible="1"/>
                 </calendar>
             </field>
-        </record>
+        </record-->
 
         <!-- Session Search view -->
         <record model="ir.ui.view" id="ems_session_search_view">
@@ -147,6 +147,45 @@
         </record>
 
 
+        <!-- ########################## TIMETABLE Wizard ########################## -->
+        <!-- Creem el TIMETABLE wizard form -->
+        <record model="ir.ui.view" id="wizard_timetable_form_view">
+            <field name="name">wizard.timetable.form</field>
+            <field name="model">ems.timetable.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Set priorities">
+                    <group>
+                        <field name="timetable_ids" nolabel="1">
+                            <tree> <!-- create="0" delete="0" edit="1" editable="bottom"-->
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="center_id"/>
+                                    <field name="day" readonly="1"/>
+                                    <!--field name="time_begin" readonly="1"/>
+                                    <field name="time_end" readonly="1"/-->
+                                    <field name="responsible_id" readonly="1"/>
+                                </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <!--button name="save" type="object"
+                                string="Save" class="oe_highlight"/>
+                        or-->
+                        <button special="cancel" string="Close"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
+        <act_window id="launch_timetable_wizard"
+                    name="Set priorities"
+                    src_model="ems.timetable"
+                    res_model="ems.timetable.wizard"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/>
+
+
         <!-- ########################## EMS/TIMETABLE ########################## -->
         <record model="ir.actions.act_window" id="action_list_timetable">
             <field name="name">Timetable</field>
@@ -169,9 +208,15 @@
                 <tree string="Timetable">
                     <field name="sequence"/>
                     <field name="center_id"/>
-                    <field name="day"/>
-                    <field name="time_begin"/>
-                    <field name="time_end"/>
+                    <field name="tz"/>
+                    <field name="type"/>
+                    <field name="day" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+                    <field name="time_begin" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+                    <field name="time_end" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+
+                    <field name="date_begin_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+                    <field name="date_end_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+
                     <field name="responsible_id"/>
                 </tree>
             </field>
@@ -184,21 +229,37 @@
             <field name="arch" type="xml">
                 <form string="Timetable">
                     <header>
+                         <button name="%(launch_timetable_wizard)d" string="Set priorities" type="action" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <group col="4" colspan="2">
                             <field name="center_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="tz"/>
                             <newline/>
                             <field name="responsible_id" options="{'no_quick_create': True}"/>
                             <newline/>
-                            <field name="day" options="{'no_create': True}"/>
+                            <field name="type" widget="radio"/>
+                        </group>
+                        <group col="4" colspan="2" attrs="{'invisible':[('type', '!=', 'weekday')]}">
+                            <field name="day" options="{'no_create': True}" attrs="{'required':[('type', '=', 'weekday')]}"/>
+                             <newline/>
+                            <field name="time_begin" string="Initial time" attrs="{'required':[('type', '=', 'weekday')]}"/>
+                            <field name="time_end" string="End time" attrs="{'required':[('type', '=', 'weekday')]}"/>
+                        <newline/>
+                        </group>
+                        <group col="4" colspan="2" attrs="{'invisible':[('type', '!=', 'yearday')]}">
+                            <field name="date_begin_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
+                            <field name="date_end_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
                             <newline/>
-                            <field name="time_begin"/>
-                            <field name="time_end"/>
+                            <field name="date_begin_year_loc" attrs="{'required':[('type', '=', 'yearday')]}"/>
+                            <!--field name="date_end_year_user" attrs="{'required':[('type', '=', 'yearday')]}"/-->
                         </group>
-                         <group col="4" colspan="2">
+                         <!--field name="date_begin"/>
+                         <field name="date_end"/-->
+
+                         <!--group col="4" colspan="2">
                             <field name="sequence"/>
-                        </group>
+                        </group-->
                     </sheet>
                     <!--div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
@@ -252,6 +313,8 @@
                 </search>
             </field>
         </record-->
+
+
 
 
         <!-- ########################## EMS/RESPONSIBLE ########################## -->
@@ -339,7 +402,7 @@
         </record>
 
         <!-- RESPONSIBLE Calendar view -->
-        <!--record id="view_ems_session_calendar" model="ir.ui.view">
+        <record id="view_ems_session_calendar" model="ir.ui.view">
             <field name="name">ems.session.calendar</field>
             <field name="model">ems.session</field>
             <field eval="2" name="priority"/>
@@ -350,7 +413,7 @@
                     <field name="responsible_id"/>
                 </calendar>
             </field>
-        </record-->
+        </record>
 
         <!-- RESPONSIBLE Search view -->
         <!--record model="ir.ui.view" id="ems_session_search_view">
@@ -399,6 +462,7 @@
                 <form string="Center">
                     <group col="4">
                         <field name="name"/>
+                        <field name="tz"/>
                     </group>
                     <group col="2">
                         <field name="description"/>
@@ -413,6 +477,7 @@
             <field name="arch" type="xml">
                 <tree string="Center">
                     <field name="name"/>
+                     <field name="tz"/>
                     <!--field name="description"/-->
                 </tree>
             </field>
@@ -571,10 +636,10 @@
                   groups="base.group_no_one"/>
 
 
-        <!-- Creem el wizard form -->
-        <record model="ir.ui.view" id="wizard_form_view">
-            <field name="name">wizard.form</field>
-            <field name="model">ems.wizard</field>
+        <!-- Creem el SESSION wizard form -->
+        <record model="ir.ui.view" id="wizard_session_form_view">
+            <field name="name">wizard.session.form</field>
+            <field name="model">ems.session.wizard</field>
             <field name="arch" type="xml">
                 <form string="Generate sessions">
                     <group>
@@ -595,10 +660,13 @@
         <act_window id="launch_session_wizard"
                     name="Generate sessions"
                     src_model="ems.session"
-                    res_model="ems.wizard"
+                    res_model="ems.session.wizard"
                     view_mode="form"
                     target="new"
                     key2="client_action_multi"/>
+
+
+
 
 
     </data>
