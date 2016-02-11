@@ -249,10 +249,16 @@
                         </group>
                         <group col="4" colspan="2" attrs="{'invisible':[('type', '!=', 'yearday')]}">
                             <field name="date_begin_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
-                            <field name="date_end_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
                             <newline/>
-                            <field name="date_begin_year_loc" attrs="{'required':[('type', '=', 'yearday')]}"/>
+                            <field name="date1" attrs="{'required':[('type', '=', 'yearday')]}"/>
+                            <field name="date_end_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
+
+                            <newline/>
+                            <field name="date_begin_year_tz" attrs="{'required':[('type', '=', 'yearday')]}"/>
+                             <newline/>
+                            <field name="date2" attrs="{'required':[('type', '=', 'yearday')]}"/>
                             <!--field name="date_end_year_user" attrs="{'required':[('type', '=', 'yearday')]}"/-->
+
                         </group>
                          <!--field name="date_begin"/>
                          <field name="date_end"/-->

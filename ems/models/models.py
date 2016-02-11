@@ -28,6 +28,8 @@ import pytz
 from openerp import models, fields, api, _
 from openerp.exceptions import AccessError, Warning, ValidationError
 
+from openerp.tools.misc import detect_server_timezone
+
 import re
 
 import hashlib
@@ -515,8 +517,11 @@ class ems_timetable(models.Model):
     date_begin_year = fields.Datetime(string="Initial Date")
     date_end_year = fields.Datetime(string="End Date")
 
-    date_begin_year_loc = fields.Datetime(compute="_compute_date_begin_year_loc") #, inverse="_inverse_date_begin_year_loc")
+    date_begin_year_tz = fields.Datetime(compute="_compute_date_begin_year_tz", inverse="_inverse_date_begin_year_tz") #, readonly=False)
     #date_end_year_tz = fields.Datetime(compute="_compute_date_end_year_tz", inverse="_inverse_date_end_year_user")
+
+    date1 = fields.Char('date1', compute="_date1")
+    date2 = fields.Char('date2', compute="_date2")
 
 
     date_begin = fields.Datetime(compute='_compute_date_begin', inverse="_inverse_date_begin")
@@ -532,16 +537,18 @@ class ems_timetable(models.Model):
 
     @api.depends('time_begin', 'date_begin_year')
     def _compute_date_begin(self):
+        return
         for rec in self:
             if rec.type == 'weekday':
                 rec.date_begin = daytime_loc2datetime_utc(rec.day, rec.time_begin, rec.tz)
             else:
-                #dt_loc_user = fields.Datetime.context_timestamp(rec, fields.Datetime.from_string(rec.date_begin_year))
-                #dt_loc_center = dt_loc_user.replace(tzinfo=pytz.timezone(rec.tz))
-                #rec.date_begin = dt_loc_center.astimezone(pytz.utc)
-                rec.date_begin = rec.date_begin_year
+                dt_loc_user = fields.Datetime.context_timestamp(rec, fields.Datetime.from_string(rec.date_begin_year))
+                dt_loc_center = dt_loc_user.replace(tzinfo=pytz.timezone(rec.tz))
+                rec.date_begin = dt_loc_center.astimezone(pytz.utc)
+                #rec.date_begin = rec.date_begin_year
 
     def _inverse_date_begin(self):
+        return
         if self.type == 'weekday':
             date_begin = pytz.utc.localize(fields.Datetime.from_string(self.date_begin))
             self.day, self.time_begin = datetime_utc2daytime_loc(date_begin, self.tz)
@@ -553,6 +560,7 @@ class ems_timetable(models.Model):
 
     @api.depends('time_end', 'date_end_year')
     def _compute_date_end(self):
+        return
         for rec in self:
             if rec.type == 'weekday':
                 rec.date_end = daytime_loc2datetime_utc(rec.day, rec.time_end, rec.tz)
@@ -564,6 +572,7 @@ class ems_timetable(models.Model):
 
 
     def _inverse_date_end(self):
+        return
         if self.type == 'weekday':
             date_end = pytz.utc.localize(fields.Datetime.from_string(self.date_end))
             self.day, self.time_end = datetime_utc2daytime_loc(date_end, self.tz)
@@ -585,22 +594,39 @@ class ems_timetable(models.Model):
 
     @api.one
     @api.depends('tz', 'date_begin_year')
-    def _compute_date_begin_year_loc(self):
-        self_in_tz = self.with_context(tz=self.tz)
-        date_begin = fields.Datetime.from_string(self.date_begin_year)
-        self.date_begin_year_loc = fields.Datetime.to_string(fields.Datetime.context_timestamp(self_in_tz, date_begin))
-        #file("/etc/timezone").read().strip()
+    def _compute_date_begin_year_tz(self):
+        date_begin_year_utc_custom = pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year))
+        date_begin_year_tz_custom = date_begin_year_utc_custom.astimezone(pytz.timezone(self.tz))
+
+        datetime_begin_tz_user = pytz.timezone(self._context.get('tz')).localize(date_begin_year_tz_custom.replace(tzinfo=None))
+
+        self.date_begin_year_tz = datetime_begin_tz_user.astimezone(pytz.utc)
+
+
+    def _inverse_date_begin_year_tz(self):
+        date_begin_year_utc_user = pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year_tz))
+        date_begin_year_tz_user = date_begin_year_utc_user.astimezone(pytz.timezone(self._context.get('tz')))
+
+        datetime_begin_tz_custom = pytz.timezone(self.tz).localize(date_begin_year_tz_user.replace(tzinfo=None))
+
+        datetime_begin_utc_custom = datetime_begin_tz_custom.astimezone(pytz.utc)
+
+        self.date_begin_year = datetime_begin_utc_custom
+
+
+
+    @api.one
+    @api.depends('date_begin_year')
+    def _date1(self):
+        self.date1 = self.date_begin_year
+
+    @api.one
+    @api.depends('date_begin_year_tz')
+    def _date2(self):
+        self.date2 = self.date_begin_year_tz
+
 
     '''
-    def _inverse_date_begin_year_loc(self):
-        self_in_tz = self.with_context(tz=self.tz)
-        date_begin = fields.Datetime.from_string(self.date_begin_year_loc)
-        self.date_begin_year = fields.Datetime.to_string(fields.Datetime.context_timestamp(self_in_tz, date_begin))
-    '''
-
-
-
-
     @api.one
     @api.depends('tz', 'date_end_year')
     def _compute_date_end_tz(self):
@@ -610,6 +636,7 @@ class ems_timetable(models.Model):
             self.date_end_located = fields.Datetime.to_string(fields.Datetime.context_timestamp(self_in_tz, date_end))
         else:
             self.date_end_located = False
+    '''
 
 
 
