@@ -214,8 +214,8 @@
                     <field name="time_begin" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
                     <field name="time_end" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
 
-                    <field name="date_begin_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
-                    <field name="date_end_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+                    <field name="date_begin_year_tz" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+                    <field name="date_end_year_tz" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
 
                     <field name="responsible_id"/>
                 </tree>
@@ -248,24 +248,14 @@
                         <newline/>
                         </group>
                         <group col="4" colspan="2" attrs="{'invisible':[('type', '!=', 'yearday')]}">
-                            <field name="date_begin_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
-                            <newline/>
-                            <field name="date1" attrs="{'required':[('type', '=', 'yearday')]}"/>
-                            <field name="date_end_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
-
-                            <newline/>
                             <field name="date_begin_year_tz" attrs="{'required':[('type', '=', 'yearday')]}"/>
-                             <newline/>
-                            <field name="date2" attrs="{'required':[('type', '=', 'yearday')]}"/>
-                            <!--field name="date_end_year_user" attrs="{'required':[('type', '=', 'yearday')]}"/-->
-
+                            <field name="date_end_year_tz" attrs="{'required':[('type', '=', 'yearday')]}"/>
                         </group>
-                         <!--field name="date_begin"/>
-                         <field name="date_end"/-->
+                        <group>
+                            <field name="date_begin"/>
+                            <field name="date_end"/>
+                        </group>
 
-                         <!--group col="4" colspan="2">
-                            <field name="sequence"/>
-                        </group-->
                     </sheet>
                     <!--div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>

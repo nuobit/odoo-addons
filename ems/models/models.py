@@ -130,7 +130,7 @@ def datetime_utc2daytime_loc(dt, tz):
 
     return dt_loc.isoweekday(), tuple2timestr((dt_loc.hour, dt_loc.minute))
 
-
+'''
 def tzuser2custom(dt, tzu, tzc):
     # dt: user datetime in utc
     # tzu: user tz
@@ -152,6 +152,31 @@ def tzcustom2user(dt, tzc, tzu):
     dt_loc_user = dt_loc_custom.replace(tzinfo=pytz.timezone(tzu))
 
     return dt_loc_user.astimezone(pytz.utc)
+'''
+
+
+def datetime_tz_custom2user(dt, tzc, tzu):
+    # inverse of _datetime_tz_user2custom
+    dt_utc_custom = dt #pytz.utc.localize(fields.Datetime.from_string(dt))
+    dt_tz_custom = dt_utc_custom.astimezone(pytz.timezone(tzc))
+    dt_tz_user = pytz.timezone(tzu).localize(dt_tz_custom.replace(tzinfo=None))
+    dt_utc_user = dt_tz_user.astimezone(pytz.utc)
+
+    return dt_utc_user
+
+def datetime_tz_user2custom(dt, tzu, tzc):
+    # * convert dt to custom timezone (tzc) assuming dt is in utc
+    # and it been informed with user timezne tzu in gui
+    # * gui autoamtically converts the user input to utc assuming the user
+    # is entering the dt in user tz (tzu) so the uutc genrated is not representing the custom tz informes
+    # * this method converts that dt in utc entered using user tz, to dt in utc
+    #   as if it was enterd with custom timezone (tzc)
+    dt_utc_user = dt #pytz.utc.localize(fields.Datetime.from_string(dt))
+    dt_tz_user = dt_utc_user.astimezone(pytz.timezone(tzu))
+    dt_tz_custom = pytz.timezone(tzc).localize(dt_tz_user.replace(tzinfo=None))
+    dt_utc_custom = dt_tz_custom.astimezone(pytz.utc)
+
+    return dt_utc_custom
 
 
 #dt_loc_user = fields.Datetime.context_timestamp(rec, fields.Datetime.from_string(rec.date_begin_year))
@@ -514,14 +539,12 @@ class ems_timetable(models.Model):
     time_end = fields.Char(string='End time', size=5, required=False, readonly=False, default='01:00')
 
     # yearday UTC time
-    date_begin_year = fields.Datetime(string="Initial Date")
-    date_end_year = fields.Datetime(string="End Date")
+    date_begin_year = fields.Datetime()
+    date_end_year = fields.Datetime()
 
-    date_begin_year_tz = fields.Datetime(compute="_compute_date_begin_year_tz", inverse="_inverse_date_begin_year_tz") #, readonly=False)
-    #date_end_year_tz = fields.Datetime(compute="_compute_date_end_year_tz", inverse="_inverse_date_end_year_user")
+    date_begin_year_tz = fields.Datetime(string="Initial Date", compute="_compute_date_begin_year_tz", inverse="_inverse_date_begin_year_tz")
+    date_end_year_tz = fields.Datetime(string="End Date", compute="_compute_date_end_year_tz", inverse="_inverse_date_end_year_tz")
 
-    date1 = fields.Char('date1', compute="_date1")
-    date2 = fields.Char('date2', compute="_date2")
 
 
     date_begin = fields.Datetime(compute='_compute_date_begin', inverse="_inverse_date_begin")
@@ -537,42 +560,32 @@ class ems_timetable(models.Model):
 
     @api.depends('time_begin', 'date_begin_year')
     def _compute_date_begin(self):
-        return
         for rec in self:
-            if rec.type == 'weekday':
-                rec.date_begin = daytime_loc2datetime_utc(rec.day, rec.time_begin, rec.tz)
-            else:
-                dt_loc_user = fields.Datetime.context_timestamp(rec, fields.Datetime.from_string(rec.date_begin_year))
-                dt_loc_center = dt_loc_user.replace(tzinfo=pytz.timezone(rec.tz))
-                rec.date_begin = dt_loc_center.astimezone(pytz.utc)
-                #rec.date_begin = rec.date_begin_year
+            if rec.tz:
+                if rec.type == 'weekday':
+                    rec.date_begin = daytime_loc2datetime_utc(rec.day, rec.time_begin, rec.tz)
+                else:
+                    rec.date_begin = rec.date_begin_year
 
     def _inverse_date_begin(self):
-        return
         if self.type == 'weekday':
             date_begin = pytz.utc.localize(fields.Datetime.from_string(self.date_begin))
             self.day, self.time_begin = datetime_utc2daytime_loc(date_begin, self.tz)
         else:
-            #AQUI
-
             self.date_begin_year = self.date_begin
 
 
     @api.depends('time_end', 'date_end_year')
     def _compute_date_end(self):
-        return
         for rec in self:
-            if rec.type == 'weekday':
-                rec.date_end = daytime_loc2datetime_utc(rec.day, rec.time_end, rec.tz)
-            else:
-                #dt_loc_user = fields.Datetime.context_timestamp(rec, fields.Datetime.from_string(rec.date_end_year))
-                #dt_loc_center = dt_loc_user.replace(tzinfo=pytz.timezone(rec.tz))
-                #rec.date_end = dt_loc_center.astimezone(pytz.utc)
-                rec.date_end = rec.date_begin_year
+            if rec.tz:
+                if rec.type == 'weekday':
+                    rec.date_end = daytime_loc2datetime_utc(rec.day, rec.time_end, rec.tz)
+                else:
+                    rec.date_end = rec.date_end_year
 
 
     def _inverse_date_end(self):
-        return
         if self.type == 'weekday':
             date_end = pytz.utc.localize(fields.Datetime.from_string(self.date_end))
             self.day, self.time_end = datetime_utc2daytime_loc(date_end, self.tz)
@@ -581,63 +594,32 @@ class ems_timetable(models.Model):
 
 
 
-    """
-    @api.depends('date_begin_year')
-    def _compute_date_begin_year_user(self):
-        for rec in self:
-            rec.date_begin_year_user = tzcustom2user(self.date_begin_year, self.tz, self._context.get('tz'))
-
-    def _inverse_date_begin_year_user(self):
-        self.date_begin_year = tzuser2custom(self.date_begin_year_user, self._context.get('tz'), self.tz)
-    """
-
-
     @api.one
     @api.depends('tz', 'date_begin_year')
     def _compute_date_begin_year_tz(self):
-        date_begin_year_utc_custom = pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year))
-        date_begin_year_tz_custom = date_begin_year_utc_custom.astimezone(pytz.timezone(self.tz))
-
-        datetime_begin_tz_user = pytz.timezone(self._context.get('tz')).localize(date_begin_year_tz_custom.replace(tzinfo=None))
-
-        self.date_begin_year_tz = datetime_begin_tz_user.astimezone(pytz.utc)
+        if self.tz and self.date_begin_year:
+            dt_utc_user = pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year))
+            self.date_begin_year_tz = datetime_tz_custom2user(dt_utc_user, self.tz, self._context.get('tz'))
 
 
     def _inverse_date_begin_year_tz(self):
-        date_begin_year_utc_user = pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year_tz))
-        date_begin_year_tz_user = date_begin_year_utc_user.astimezone(pytz.timezone(self._context.get('tz')))
-
-        datetime_begin_tz_custom = pytz.timezone(self.tz).localize(date_begin_year_tz_user.replace(tzinfo=None))
-
-        datetime_begin_utc_custom = datetime_begin_tz_custom.astimezone(pytz.utc)
-
-        self.date_begin_year = datetime_begin_utc_custom
+        if self.date_begin_year_tz:
+            dt_utc_custom = pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year_tz))
+            self.date_begin_year = datetime_tz_user2custom(dt_utc_custom, self._context.get('tz'), self.tz)
 
 
-
-    @api.one
-    @api.depends('date_begin_year')
-    def _date1(self):
-        self.date1 = self.date_begin_year
-
-    @api.one
-    @api.depends('date_begin_year_tz')
-    def _date2(self):
-        self.date2 = self.date_begin_year_tz
-
-
-    '''
     @api.one
     @api.depends('tz', 'date_end_year')
-    def _compute_date_end_tz(self):
-        if self.date_end:
-            self_in_tz = self.with_context(tz=(self.date_tz or 'UTC'))
-            date_end = fields.Datetime.from_string(self.date_end)
-            self.date_end_located = fields.Datetime.to_string(fields.Datetime.context_timestamp(self_in_tz, date_end))
-        else:
-            self.date_end_located = False
-    '''
+    def _compute_date_end_year_tz(self):
+        if self.tz and self.date_end_year:
+            dt_utc_user = pytz.utc.localize(fields.Datetime.from_string(self.date_end_year))
+            self.date_end_year_tz = datetime_tz_custom2user(dt_utc_user, self.tz, self._context.get('tz'))
 
+
+    def _inverse_date_end_year_tz(self):
+        if self.date_end_year_tz:
+            dt_utc_custom = pytz.utc.localize(fields.Datetime.from_string(self.date_end_year_tz))
+            self.date_end_year = datetime_tz_user2custom(dt_utc_custom, self._context.get('tz'), self.tz)
 
 
 
