@@ -442,6 +442,7 @@ class ImportHeader(models.Model):
                 line.status = 'error'
                 line.observations = _("There's more than one product with the "
                                       "same Reference")
+                # TODO: si hi ha mes duna referencia, mirar actualitzar nomes la que correspon al proveiidor seleccionat
                 continue
             else:
                 product['status'] = 'update' if len(pp) == 1 else 'create'
