@@ -557,7 +557,6 @@ class ems_timetable(models.Model):
     sequence = fields.Integer('Sequence', help="Sequence for the handle.")
 
 
-
     @api.depends('time_begin', 'date_begin_year')
     def _compute_date_begin(self):
         for rec in self:
@@ -624,7 +623,7 @@ class ems_timetable(models.Model):
 
 
 
-    @api.constrains('time_begin', 'time_end')
+    @api.constrains('time_end', 'time_begin')
     def _check_times(self):
         # check tie format
         timestr2int(self.time_begin)
@@ -633,6 +632,9 @@ class ems_timetable(models.Model):
         # check order
         if self.time_begin>=self.time_end:
             raise ValidationError(_("The initial time cannot be greater or equal than end time"))
+
+
+
 
     '''
     @api.constrains('date_begin_year', 'date_end_year')
