@@ -542,9 +542,10 @@ class ems_timetable(models.Model):
     date_begin_year = fields.Datetime()
     date_end_year = fields.Datetime()
 
-    date_begin_year_tz = fields.Datetime(string="Initial Date", compute="_compute_date_begin_year_tz", inverse="_inverse_date_begin_year_tz")
-    date_end_year_tz = fields.Datetime(string="End Date", compute="_compute_date_end_year_tz", inverse="_inverse_date_end_year_tz")
-
+    date_begin_year_tz = fields.Datetime(string="Initial Date",
+                                         compute="_compute_date_begin_year_tz", inverse="_inverse_date_begin_year_tz")
+    date_end_year_tz = fields.Datetime(string="End Date",
+                                       compute="_compute_date_end_year_tz", inverse="_inverse_date_end_year_tz")
 
 
     date_begin = fields.Datetime(compute='_compute_date_begin', inverse="_inverse_date_begin")
@@ -557,6 +558,10 @@ class ems_timetable(models.Model):
     sequence = fields.Integer('Sequence', help="Sequence for the handle.")
 
 
+    def _pepe(self):
+        return fields.datetime.now()
+
+
     @api.depends('time_begin', 'date_begin_year')
     def _compute_date_begin(self):
         for rec in self:
@@ -567,11 +572,12 @@ class ems_timetable(models.Model):
                     rec.date_begin = rec.date_begin_year
 
     def _inverse_date_begin(self):
-        if self.type == 'weekday':
-            date_begin = pytz.utc.localize(fields.Datetime.from_string(self.date_begin))
-            self.day, self.time_begin = datetime_utc2daytime_loc(date_begin, self.tz)
-        else:
-            self.date_begin_year = self.date_begin
+        if self.date_begin:
+            if self.type == 'weekday':
+                date_begin = pytz.utc.localize(fields.Datetime.from_string(self.date_begin))
+                self.day, self.time_begin = datetime_utc2daytime_loc(date_begin, self.tz)
+            else:
+                self.date_begin_year = self.date_begin
 
 
     @api.depends('time_end', 'date_end_year')
@@ -585,11 +591,12 @@ class ems_timetable(models.Model):
 
 
     def _inverse_date_end(self):
-        if self.type == 'weekday':
-            date_end = pytz.utc.localize(fields.Datetime.from_string(self.date_end))
-            self.day, self.time_end = datetime_utc2daytime_loc(date_end, self.tz)
-        else:
-            self.date_end_year = self.date_end
+        if self.date_end:
+            if self.type == 'weekday':
+                date_end = pytz.utc.localize(fields.Datetime.from_string(self.date_end))
+                self.day, self.time_end = datetime_utc2daytime_loc(date_end, self.tz)
+            else:
+                self.date_end_year = self.date_end
 
 
 
@@ -625,14 +632,21 @@ class ems_timetable(models.Model):
 
     @api.constrains('time_end', 'time_begin')
     def _check_times(self):
-        # check tie format
-        timestr2int(self.time_begin)
-        timestr2int(self.time_end)
-
-        # check order
-        if self.time_begin>=self.time_end:
-            raise ValidationError(_("The initial time cannot be greater or equal than end time"))
-
+        # self.env.time_update: workaroun in the calendar view when dragh and drop timetbae
+        # and the end date gos befot begi date, the evakuation of 'time_end' and 'time_begin' is done twice and
+        # sequntiali and not at the same time,then the validation erro is trigeren in the first tie_end and raises
+        # exception before time begin is updated.
+        # in the form view it works correctly
+        if hasattr(self.env, 'time_update') and self.env.time_update:
+            # check tie format
+            timestr2int(self.time_begin)
+            timestr2int(self.time_end)
+            self.env.time_update = False
+            # check order
+            if self.time_begin>=self.time_end:
+                raise ValidationError(_("The initial time cannot be greater or equal than end time"))
+        else:
+            self.env.time_update = True
 
 
 

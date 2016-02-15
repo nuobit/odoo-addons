@@ -251,11 +251,6 @@
                             <field name="date_begin_year_tz" attrs="{'required':[('type', '=', 'yearday')]}"/>
                             <field name="date_end_year_tz" attrs="{'required':[('type', '=', 'yearday')]}"/>
                         </group>
-                        <group>
-                            <field name="date_begin"/>
-                            <field name="date_end"/>
-                        </group>
-
                     </sheet>
                     <!--div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
