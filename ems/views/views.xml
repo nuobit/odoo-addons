@@ -60,24 +60,34 @@
                             <h1>
                                 <field name="name"/>
                             </h1>
+
                         </div>
-                        <group name="main_field_group">
-                            <group colspan="2">
-                                <field name="center_id" options="{'no_create': True}"/>
-                                <field name="service_id" options="{'no_create': True}"/>
-                                <field name="ubication_id" options="{'no_create': True}"/>
-                                <field name="resource_ids" string="Resources" widget="many2many_tags"
-                                       options="{'no_create': True}"/>
+
+                        <group colspan="2" col="4">
+                            <field name="center_id" options="{'no_create': True}"/>
+                            <newline/>
+                        </group>
+
+                        <group colspan="2" col="4">
+                            <field name="customer_id"/> <!-- domain="[('ems_type','=','customer')]"/-->
+                            <newline/>
+                        </group>
+                        <group colspan="2" col="4">
+
+                            <newline/>
+                            <field name="service_id" options="{'no_create': True}"/>
+                            <newline/>
+                            <field name="ubication_id" options="{'no_create': True}"/>
+                            <field name="resource_ids" string="Resources" widget="many2many_tags"
+                                   options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="date_begin"/>
+                                <field name="date_end"/>
                             </group>
                             <group>
-                                <group>
-                                    <field name="customer_id" domain="[('ems_type','=','customer')]"/>
-                                    <field name="responsible_id"/>
-                                </group>
-                                <group>
-                                    <field name="date_begin"/>
-                                    <field name="date_end"/>
-                                </group>
+                                <field name="responsible_id"/>
                             </group>
                         </group>
                         <notebook>
@@ -157,13 +167,18 @@
                     <group>
                         <field name="timetable_ids" nolabel="1">
                             <tree> <!-- create="0" delete="0" edit="1" editable="bottom"-->
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="center_id"/>
-                                    <field name="day" readonly="1"/>
-                                    <!--field name="time_begin" readonly="1"/>
-                                    <field name="time_end" readonly="1"/-->
-                                    <field name="responsible_id" readonly="1"/>
-                                </tree>
+                                <field name="sequence" widget="handle"/>
+                                <field name="center_id"/>
+                                <field name="type"/>
+                                <field name="day" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+                                <field name="time_begin" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+                                <field name="time_end" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+
+                                <field name="date_begin_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+                                <field name="date_end_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+
+                                <field name="responsible_id"/>
+                            </tree>
                         </field>
                     </group>
                     <footer>
@@ -208,16 +223,18 @@
                 <tree string="Timetable">
                     <field name="sequence"/>
                     <field name="center_id"/>
-                    <field name="tz"/>
                     <field name="type"/>
                     <field name="day" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
                     <field name="time_begin" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
                     <field name="time_end" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
 
-                    <field name="date_begin_year_tz" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
-                    <field name="date_end_year_tz" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+                    <field name="date_begin_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+                    <field name="date_end_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
 
                     <field name="responsible_id"/>
+
+                    <!--field name="date_begin"/>
+                    <field name="date_end"/-->
                 </tree>
             </field>
         </record>
@@ -229,27 +246,29 @@
             <field name="arch" type="xml">
                 <form string="Timetable">
                     <header>
-                         <button name="%(launch_timetable_wizard)d" string="Set priorities" type="action" class="oe_highlight"/>
+                        <button name="%(launch_timetable_wizard)d" string="Set priorities" type="action"
+                                class="oe_highlight"/>
                     </header>
                     <sheet>
                         <group col="4" colspan="2">
                             <field name="center_id" options="{'no_create': True, 'no_open': True}"/>
-                            <field name="tz"/>
                             <newline/>
                             <field name="responsible_id" options="{'no_quick_create': True}"/>
                             <newline/>
                             <field name="type" widget="radio"/>
                         </group>
                         <group col="4" colspan="2" attrs="{'invisible':[('type', '!=', 'weekday')]}">
-                            <field name="day" options="{'no_create': True}" attrs="{'required':[('type', '=', 'weekday')]}"/>
-                             <newline/>
-                            <field name="time_begin" string="Initial time" attrs="{'required':[('type', '=', 'weekday')]}"/>
+                            <field name="day" options="{'no_create': True}"
+                                   attrs="{'required':[('type', '=', 'weekday')]}"/>
+                            <newline/>
+                            <field name="time_begin" string="Initial time"
+                                   attrs="{'required':[('type', '=', 'weekday')]}"/>
                             <field name="time_end" string="End time" attrs="{'required':[('type', '=', 'weekday')]}"/>
-                        <newline/>
+                            <newline/>
                         </group>
                         <group col="4" colspan="2" attrs="{'invisible':[('type', '!=', 'yearday')]}">
-                            <field name="date_begin_year_tz" attrs="{'required':[('type', '=', 'yearday')]}"/>
-                            <field name="date_end_year_tz" attrs="{'required':[('type', '=', 'yearday')]}"/>
+                            <field name="date_begin_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
+                            <field name="date_end_year" attrs="{'required':[('type', '=', 'yearday')]}"/>
                         </group>
                     </sheet>
                     <!--div class="oe_chatter">
@@ -266,7 +285,8 @@
             <field name="model">ems.timetable</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="color_rel" date_start="date_begin" date_stop="date_end" string="Responsible availability" mode="week">
+                <calendar color="color_rel" date_start="date_begin" date_stop="date_end"
+                          string="Responsible availability" mode="week">
                     <field name="center_id"/>
                     <field name="responsible_id"/>
                 </calendar>
@@ -304,8 +324,6 @@
                 </search>
             </field>
         </record-->
-
-
 
 
         <!-- ########################## EMS/RESPONSIBLE ########################## -->
@@ -360,11 +378,19 @@
                         </group>
                         <group string="Timetables">
                             <field name="timetable_ids" nolabel="1" attrs="{'readonly':True}">
-                                <tree default_order="center_id, day, time_begin"> <!-- create="0" delete="0" edit="0"-->
+                                <tree default_order="center_id, date_begin"> <!-- create="0" delete="0" edit="0"-->
                                     <field name="center_id"/>
-                                    <field name="day"/>
-                                    <field name="time_begin"/>
-                                    <field name="time_end"/>
+                                    <field name="type" invisible="1"/>
+
+                                    <field name="day" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+                                    <field name="time_begin" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+                                    <field name="time_end" attrs="{'invisible':[('type', '!=', 'weekday')]}"/>
+
+                                    <field name="date_begin_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+                                    <field name="date_end_year" attrs="{'invisible':[('type', '!=', 'yearday')]}"/>
+
+                                    <field name="date_begin" invisible="1"/>
+                                    <field name="date_end" invisible="1"/>
                                 </tree>
                             </field>
                         </group>
@@ -439,7 +465,6 @@
         </record-->
 
 
-
         <!-- ########################## EMS/CONFIGURATION ########################## -->
 
         <menuitem name="Configuration" id="menu_ems_config_root" parent="main_ems_menu" sequence="30"/>
@@ -453,7 +478,6 @@
                 <form string="Center">
                     <group col="4">
                         <field name="name"/>
-                        <field name="tz"/>
                     </group>
                     <group col="2">
                         <field name="description"/>
@@ -468,7 +492,6 @@
             <field name="arch" type="xml">
                 <tree string="Center">
                     <field name="name"/>
-                     <field name="tz"/>
                     <!--field name="description"/-->
                 </tree>
             </field>
@@ -655,9 +678,6 @@
                     view_mode="form"
                     target="new"
                     key2="client_action_multi"/>
-
-
-
 
 
     </data>

@@ -130,6 +130,9 @@ def datetime_utc2daytime_loc(dt, tz):
 
     return dt_loc.isoweekday(), tuple2timestr((dt_loc.hour, dt_loc.minute))
 
+
+
+
 '''
 def tzuser2custom(dt, tzu, tzc):
     # dt: user datetime in utc
@@ -154,7 +157,7 @@ def tzcustom2user(dt, tzc, tzu):
     return dt_loc_user.astimezone(pytz.utc)
 '''
 
-
+'''
 def datetime_tz_custom2user(dt, tzc, tzu):
     # inverse of _datetime_tz_user2custom
     dt_utc_custom = dt #pytz.utc.localize(fields.Datetime.from_string(dt))
@@ -177,7 +180,7 @@ def datetime_tz_user2custom(dt, tzu, tzc):
     dt_utc_custom = dt_tz_custom.astimezone(pytz.utc)
 
     return dt_utc_custom
-
+'''
 
 #dt_loc_user = fields.Datetime.context_timestamp(rec, fields.Datetime.from_string(rec.date_begin_year))
                 #dt_loc_center = dt_loc_user.replace(tzinfo=pytz.timezone(rec.tz))
@@ -240,16 +243,8 @@ class ems_center(models.Model):
     name = fields.Char(string='Center name', required=True,
         readonly=False)
 
-    tz = fields.Selection(string="Timezone", selection='_tz_get', required=True, default=lambda x: x._context.get('tz'))
-
     description = fields.Text(string='Description',
         readonly=False)
-
-
-    @api.model
-    def _tz_get(self):
-        #[(x,x) for x in sorted(pytz.common_timezones)]
-        return [(x, x) for x in pytz.all_timezones]
 
 
 
@@ -274,14 +269,14 @@ class ems_session(models.Model):
         default=lambda self: self.env['res.company']._company_default_get('ems.session'),
         required=False, readonly=False)
 
-    center_id = fields.Many2one('ems.center', string='Center', change_default=True,
+    center_id = fields.Many2one('ems.center', string='Center', default=lambda self: self.env.user.center_id,
         required=True, readonly=False)
 
     responsible_id = fields.Many2one('ems.responsible', string='Responsible',
-        #default=lambda self: self.env.user,
-        readonly=False)
 
-    customer_id = fields.Many2one('res.partner', string='Customer')
+        required=True, readonly=False)
+
+    customer_id = fields.Many2one('res.partner', string='Customer', required=True)
 
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
@@ -293,9 +288,9 @@ class ems_session(models.Model):
         required=False, readonly=False)
 
 
-    date_begin = fields.Datetime(string='Start Date', required=True,
+    date_begin = fields.Datetime(string='Start Date', required=True, default=fields.datetime.now().replace(second=0, microsecond=0),
         readonly=False)
-    date_end = fields.Datetime(string='End Date', required=True,
+    date_end = fields.Datetime(string='End Date', required=True, default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
         readonly=False)
 
     color_rel = fields.Selection(related="service_id.color", store=False)
@@ -309,23 +304,55 @@ class ems_session(models.Model):
         ], string='Status', default='draft', readonly=True, required=True, copy=False,
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
 
+    '''
     @api.model
     def create(self, vals):
         session =  super(ems_session, self).create(vals)
         return session
+    '''
 
 
-    @api.model
-    def _next_session(self):
-        pass
-        return "kk"
-        #return [(x, x) for x in pytz.all_timezones]
-
+    '''
     @api.onchange('date_begin')
     def _onchange_date_begin(self):
         if self.date_begin and not self.date_end:
             date_begin = fields.Datetime.from_string(self.date_begin)
             self.date_end = fields.Datetime.to_string(date_begin + datetime.timedelta(hours=1))
+    '''
+
+    @api.onchange('date_begin', 'date_end')
+    def _onchange_date_begin_end_ems(self):
+        if self.date_begin and self.date_end:
+            date_begin = fields.Datetime.from_string(self.date_begin)
+            self.date_end = fields.Datetime.to_string(date_begin + datetime.timedelta(hours=1))
+
+
+            tts = self.env['ems.timetable'].search([('center_id', '=', self.center_id.id),
+                                              ])
+            tts1 = set()
+            for tt1 in tts:
+                if tt1.type=='yearday':
+                    if pytz.utc.localize(fields.Datetime.from_string(self.date_end)) <= pytz.utc.localize(fields.Datetime.from_string(tt1.date_end)) and \
+                                    pytz.utc.localize(fields.Datetime.from_string(self.date_begin)) >= pytz.utc.localize(fields.Datetime.from_string(tt1.date_begin)):
+                        tts1.add(tt1.id)
+                else:
+                    dt_session_begin = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
+                    dt_session_end = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_end))
+
+                    day = dt_session_begin.isoweekday()
+                    time_begin = tuple2timestr((dt_session_begin.hour, dt_session_begin.minute))
+                    time_end = tuple2timestr((dt_session_end.hour, dt_session_end.minute))
+
+                    if day==tt1.day and time_end <= tt1.time_end and time_begin >= tt1.time_begin:
+                        tts1.add(tt1.id)
+
+            responsible_ids = self.env['ems.timetable'].browse(list(tts1)).sorted(key=lambda x: x.sequence).mapped('responsible_id.id')
+
+            res = dict(domain={'responsible_id': [('id', 'in', responsible_ids)]})
+
+            return res
+
+
 
     @api.onchange('center_id')
     def onchange_centre(self):
@@ -352,7 +379,6 @@ class ems_session(models.Model):
                 ('ubication_id', '=', s.ubication_id.id),
                 ('date_begin','<',self.date_end),
                 ('date_end','>',self.date_begin),
-
             ])
             if len(sessions)==0:
                 ids.append(s.ubication_id.id)
@@ -391,6 +417,9 @@ class ems_session(models.Model):
             res = dict(domain=domains)
 
         return res
+
+
+
 
 
     @api.multi
@@ -443,7 +472,7 @@ class ems_ubication(models.Model):
     description = fields.Text(string='Description')
 
     center_id = fields.Many2one('ems.center', string='Center',
-        required=True, readonly=False)
+        required=True, readonly=False, default=lambda self: self.env.user.center_id)
 
     service_ids = fields.One2many('ems.ubication.service.rel', 'ubication_id', string="Services")
 
@@ -511,7 +540,7 @@ class ems_resource(models.Model):
     name = fields.Char(string='Resource name', required=True,
         readonly=False)
 
-    center_id = fields.Many2one('ems.center', string='Center', change_default=True,
+    center_id = fields.Many2one('ems.center', string='Center', default=lambda self: self.env.user.center_id,
         required=True, readonly=False)
 
     description = fields.Text(string='Description',
@@ -526,10 +555,7 @@ class ems_timetable(models.Model):
     _order = 'center_id,day,time_begin,time_end desc'
 
     center_id = fields.Many2one('ems.center', string='Center',
-        required=True, readonly=False)
-
-    tz = fields.Selection(related='center_id.tz', readonly=True)
-
+        required=True, readonly=False, default=lambda self: self.env.user.center_id)
 
     type = fields.Selection(selection=[('weekday', _('Weekday')), ('yearday', _('Yearday'))], required=True, default='weekday')
 
@@ -539,109 +565,64 @@ class ems_timetable(models.Model):
     time_end = fields.Char(string='End time', size=5, required=False, readonly=False, default='01:00')
 
     # yearday UTC time
-    date_begin_year = fields.Datetime()
-    date_end_year = fields.Datetime()
+    date_begin_year = fields.Datetime(string="Date begin", default=fields.datetime.now().replace(second=0, microsecond=0))
+    date_end_year = fields.Datetime(string="Date end", default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1))
 
-    date_begin_year_tz = fields.Datetime(string="Initial Date",
-                                         compute="_compute_date_begin_year_tz", inverse="_inverse_date_begin_year_tz")
-    date_end_year_tz = fields.Datetime(string="End Date",
-                                       compute="_compute_date_end_year_tz", inverse="_inverse_date_end_year_tz")
+    date_begin = fields.Datetime(compute='_compute_date_begin') #, inverse="_inverse_date_begin")
+    date_end = fields.Datetime(compute='_compute_date_end') #, inverse="_inverse_date_end")
 
-
-    date_begin = fields.Datetime(compute='_compute_date_begin', inverse="_inverse_date_begin")
-    date_end = fields.Datetime(compute='_compute_date_end', inverse="_inverse_date_end")
-
-    responsible_id = fields.Many2one('ems.responsible', required=True, readonly=False)
+    responsible_id = fields.Many2one('ems.responsible', string='Responsible', required=True, readonly=False)
 
     color_rel = fields.Selection(related="responsible_id.color", store=False)
 
     sequence = fields.Integer('Sequence', help="Sequence for the handle.")
 
 
-    def _pepe(self):
-        return fields.datetime.now()
-
-
     @api.depends('time_begin', 'date_begin_year')
     def _compute_date_begin(self):
         for rec in self:
-            if rec.tz:
-                if rec.type == 'weekday':
-                    rec.date_begin = daytime_loc2datetime_utc(rec.day, rec.time_begin, rec.tz)
-                else:
-                    rec.date_begin = rec.date_begin_year
+            if rec.type == 'weekday':
+                rec.date_begin = daytime_loc2datetime_utc(rec.day, rec.time_begin, rec._context.get('tz'))
+            else:
+                rec.date_begin = rec.date_begin_year
 
+    '''
     def _inverse_date_begin(self):
         if self.date_begin:
             if self.type == 'weekday':
                 date_begin = pytz.utc.localize(fields.Datetime.from_string(self.date_begin))
-                self.day, self.time_begin = datetime_utc2daytime_loc(date_begin, self.tz)
+                self.day, self.time_begin = datetime_utc2daytime_loc(date_begin, self._context.get('tz'))
             else:
                 self.date_begin_year = self.date_begin
+    '''
 
 
     @api.depends('time_end', 'date_end_year')
     def _compute_date_end(self):
         for rec in self:
-            if rec.tz:
-                if rec.type == 'weekday':
-                    rec.date_end = daytime_loc2datetime_utc(rec.day, rec.time_end, rec.tz)
-                else:
-                    rec.date_end = rec.date_end_year
+            if rec.type == 'weekday':
+                rec.date_end = daytime_loc2datetime_utc(rec.day, rec.time_end, rec._context.get('tz'))
+            else:
+                rec.date_end = rec.date_end_year
 
-
+    '''
     def _inverse_date_end(self):
         if self.date_end:
             if self.type == 'weekday':
                 date_end = pytz.utc.localize(fields.Datetime.from_string(self.date_end))
-                self.day, self.time_end = datetime_utc2daytime_loc(date_end, self.tz)
+                self.day, self.time_end = datetime_utc2daytime_loc(date_end, self._context.get('tz'))
             else:
                 self.date_end_year = self.date_end
-
-
-
-    @api.one
-    @api.depends('tz', 'date_begin_year')
-    def _compute_date_begin_year_tz(self):
-        if self.tz and self.date_begin_year:
-            dt_utc_user = pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year))
-            self.date_begin_year_tz = datetime_tz_custom2user(dt_utc_user, self.tz, self._context.get('tz'))
-
-
-    def _inverse_date_begin_year_tz(self):
-        if self.date_begin_year_tz:
-            dt_utc_custom = pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year_tz))
-            self.date_begin_year = datetime_tz_user2custom(dt_utc_custom, self._context.get('tz'), self.tz)
-
-
-    @api.one
-    @api.depends('tz', 'date_end_year')
-    def _compute_date_end_year_tz(self):
-        if self.tz and self.date_end_year:
-            dt_utc_user = pytz.utc.localize(fields.Datetime.from_string(self.date_end_year))
-            self.date_end_year_tz = datetime_tz_custom2user(dt_utc_user, self.tz, self._context.get('tz'))
-
-
-    def _inverse_date_end_year_tz(self):
-        if self.date_end_year_tz:
-            dt_utc_custom = pytz.utc.localize(fields.Datetime.from_string(self.date_end_year_tz))
-            self.date_end_year = datetime_tz_user2custom(dt_utc_custom, self._context.get('tz'), self.tz)
-
-
+    '''
 
 
     @api.constrains('time_end', 'time_begin')
     def _check_times(self):
-        # self.env.time_update: workaroun in the calendar view when dragh and drop timetbae
-        # and the end date gos befot begi date, the evakuation of 'time_end' and 'time_begin' is done twice and
-        # sequntiali and not at the same time,then the validation erro is trigeren in the first tie_end and raises
-        # exception before time begin is updated.
-        # in the form view it works correctly
-        if hasattr(self.env, 'time_update') and self.env.time_update:
+        if self.type=='weekday':
+            self.env.time_update = False
             # check tie format
             timestr2int(self.time_begin)
             timestr2int(self.time_end)
-            self.env.time_update = False
             # check order
             if self.time_begin>=self.time_end:
                 raise ValidationError(_("The initial time cannot be greater or equal than end time"))
@@ -650,31 +631,44 @@ class ems_timetable(models.Model):
 
 
 
-    '''
     @api.constrains('date_begin_year', 'date_end_year')
     def _check_dates(self):
-        # check tie format
-        dt_begin_utc =  pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year))
-        dt_end_utc = pytz.utc.localize(fields.Datetime.from_string(self.date_end_year))
-        if dt_end_utc<=dt_begin_utc:
-            raise ValidationError(_("The initial date cannot be greater or equal than end date"))
+        if self.type=='yearday':
+            self.env.date_year_update = False
+            # check tie format
+            dt_begin_utc =  pytz.utc.localize(fields.Datetime.from_string(self.date_begin_year))
+            dt_end_utc = pytz.utc.localize(fields.Datetime.from_string(self.date_end_year))
+            if dt_end_utc<=dt_begin_utc:
+                raise ValidationError(_("The initial date cannot be greater or equal than end date"))
 
-        dt_begin_loc = dt_begin_utc.astimezone(pytz.timezone(self.tz))
-        dt_end_loc = dt_end_utc.astimezone(pytz.timezone(self.tz))
-        if dt_begin_loc.day!=dt_end_loc.day:
-            raise ValidationError(_("The interval has to be aof the same day"))
-    '''
+            dt_begin_loc = dt_begin_utc.astimezone(pytz.timezone(self._context.get('tz')))
+            dt_end_loc = dt_end_utc.astimezone(pytz.timezone(self._context.get('tz')))
+            #if dt_begin_loc.day<dt_end_loc.day:
+            #    self.date_begin_year = dt_begin_utc - datetime.timedelta(days=1)
+
+            if dt_begin_loc.day!=dt_end_loc.day:
+                raise ValidationError(_("The interval has to be of the same day"))
+        else:
+            self.env.date_year_update = True
+
+    @api.constrains('type')
+    def _clear_type_data(self):
+        if self.type=='weekday':
+            self.date_begin_year = False
+            self.date_end_year = False
+        else:
+            self.day = False
+            self.time_begin = False
+            self.time_end = False
 
 
 
 
-    """
-    def _check_overlap(self, other):
-        b = self.time_begin<self.time_end and other.time_end>self.time_begin
 
-        return b
 
-    @api.constrains('responsible_id', 'center_id', 'day', 'time_begin', 'time_end') #, 'date_begin', 'date_end')
+
+
+    @api.constrains('center_id', 'responsible_id', 'type', 'day', 'time_begin', 'time_end', 'date_begin_year', 'date_end_year')
     def _check_timetable(self):
         # serach for other timetables of the same day and same hours
         if self.type=='weekday':
@@ -686,35 +680,33 @@ class ems_timetable(models.Model):
                                                             ('responsible_id','=', self.responsible_id.id)
                                                             ])
         else:
-            pass
-            '''
-
             other_tts = self.env['ems.timetable'].search([  ('id', '!=', self.id),
                                                             ('center_id','=', self.center_id.id),
-                                                            ('day','=', self.day),
-                                                            ('time_end','>', self.time_begin),
-                                                            ('time_begin','<', self.time_end),
+                                                            ('date_end_year','>', self.date_begin_year),
+                                                            ('date_begin_year','<', self.date_end_year),
                                                             ('responsible_id','=', self.responsible_id.id)
                                                             ])
-            '''
+
         msg = []
         for tt in other_tts:
             msg.append(tt.name_get()[0][1])
 
         if msg:
-            raise ValidationError(_("Overlaps detected:\n%s") % '\n'.join(msg))
+            raise ValidationError(_("Overlaps detected for responsible %s:\n%s") % (self.responsible_id.user_id.name, '\n'.join(msg)))
 
 
-    """
+
 
     @api.multi
     def name_get(self):
         res = []
         for tt in self:
             if tt.type=='weekday':
-                name = "%s - %s (%s - %s) [%s]" % (tt.center_id.name, dict(DAYS_OF_WEEK)[tt.day], tt.time_begin, tt.time_end, tt.tz)
+                name = "%s - %s (%s - %s)" % (tt.center_id.name, dict(DAYS_OF_WEEK)[tt.day], tt.time_begin, tt.time_end)
             else:
-                name = "%s (%s - %s) [%s]" % (tt.center_id.name, tt.date_begin_year, tt.date_end_year, tt.tz)
+                name = "%s (%s - %s)" % (tt.center_id.name,
+                                         fields.Datetime.context_timestamp(self, fields.Datetime.from_string(tt.date_begin_year)),
+                                         fields.Datetime.context_timestamp(self, fields.Datetime.from_string(tt.date_end_year)))
             res.append((tt.id, name))
 
         return res
@@ -733,7 +725,12 @@ class ems_responsible(models.Model):
     description = fields.Text(string='Description', required=False)
 
     timetable_ids = fields.One2many('ems.timetable', 'responsible_id', required=True,
-        readonly=False)
+        readonly=False,
+        domain=['|', '&', ('type','=', 'yearday'),
+                ('date_begin_year','>=', fields.Datetime.to_string(datetime.datetime.combine(fields.Datetime.from_string(fields.Datetime.now()), datetime.time(0,0,0)))),
+                ('type', '=', 'weekday')
+                ])
+
 
     absence_ids = fields.One2many('ems.responsible.absence', 'responsible_id', readonly=False)
 
@@ -760,7 +757,7 @@ class ems_responsible_absence(models.Model):
     responsible_id = fields.Many2one('ems.responsible', string='Responsible', required=True, readonly=False)
 
     center_id = fields.Many2one('ems.center', string='Center',
-        required=True, readonly=False)
+        required=True, readonly=False, default=lambda self: self.env.user.center_id)
 
     ini_date = fields.Datetime(string='Initial Date', required=True)
     end_date = fields.Datetime(string='End Date', required=True)
@@ -781,20 +778,21 @@ class ems_responsible_absence(models.Model):
 
 ##### Inhrits ##########33
 
-'''
+
 class res_users(models.Model):
     _inherit = 'res.users'
 
-    responsible = fields.Boolean(help="Check this box if this user is a responsible.")
-'''
+    center_id = fields.Many2one('ems.center', string='Center',
+        required=False, readonly=False)
 
+'''
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
     ems_type = fields.Selection(selection=[('customer', 'Customer'), ('prospect', 'Prospect')],
                                 help="Select customer type")
 
-
+'''
 
 ############ WIZARDS #############
 
@@ -834,30 +832,29 @@ class WizardSession(models.TransientModel):
 class WizardTimetable(models.TransientModel):
     _name = 'ems.timetable.wizard'
 
-    def _default_timetables(self):
+    def _overlapped_timetables(self):
         tt = self.env['ems.timetable'].browse(self._context.get('active_id'))
-        other_tts = self.env['ems.timetable'].search([
-                                                        ('center_id','=', tt.center_id.id),
-                                                        ('day','=', tt.day),
-                                                        ('time_end','>', tt.time_begin),
-                                                        ('time_begin','<', tt.time_end),
-                                                        ]).sorted(key=lambda x: x.sequence)
+
+        other_tts = self.env['ems.timetable'].search([('center_id','=', tt.center_id.id),
+                                                     ]).sorted(key=lambda x: x.sequence)
+
+        tts=set()
+        for tt1 in other_tts:
+            if tt1.type == 'yearday':
+                if tt1.date_begin_year < fields.Datetime.to_string(datetime.datetime.combine(fields.Datetime.from_string(fields.Datetime.now()), datetime.time(0,0,0))):
+                    continue
+
+            if pytz.utc.localize(fields.Datetime.from_string(tt.date_end)) > pytz.utc.localize(fields.Datetime.from_string(tt1.date_begin)) and \
+                                pytz.utc.localize(fields.Datetime.from_string(tt.date_begin)) < pytz.utc.localize(fields.Datetime.from_string(tt1.date_end)):
+                tts.add(tt1.id)
 
 
-
-
-        return other_tts
+        return self.env['ems.timetable'].browse(list(tts)).sorted(key=lambda x: x.sequence)
 
     timetable_ids = fields.Many2many('ems.timetable',
-        string="Timetable", required=True, default=_default_timetables)
+        string="Timetable", required=True, default=_overlapped_timetables)
 
 
-
-
-    @api.multi
-    def save(self):
-        for tt in self.timetable_ids:
-            pass
 
 
 

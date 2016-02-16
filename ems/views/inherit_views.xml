@@ -3,22 +3,23 @@
     <data>
 
         <!--  Users inherited form -->
-        <!--record id="view_ems_users_info_form" model="ir.ui.view">
+        <record id="view_ems_users_info_form" model="ir.ui.view">
             <field name="name">res.users.ems.info.inherit</field>
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
                     <page string="EMS">
-                        <field name="trainer"/>
-                        <label for="trainer"/>
+                        <group colspan="2" col="4">
+                            <field name="center_id"/>
+                        </group>
                     </page>
                 </xpath>
             </field>
-        </record-->
+        </record>
 
         <!--  Prtner inherited form -->
-        <record id="view_ems_partner_info_form" model="ir.ui.view">
+        <!--record id="view_ems_partner_info_form" model="ir.ui.view">
             <field name="name">res.partner.ems.info.inherit</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
@@ -31,7 +32,7 @@
                     </page>
                 </xpath>
             </field>
-        </record>
+        </record-->
 
     </data>
 </openerp>
