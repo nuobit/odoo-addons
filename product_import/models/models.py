@@ -221,7 +221,7 @@ class ImportHeader(models.Model):
         comodel_name='epe.header.field', string='Purchase Pricelist')
 
     field_ids = fields.One2many(
-        comodel_name='epe.header.field', inverse_name='header_id')
+        comodel_name='epe.header.field', inverse_name='header_id', copy=True)
 
     datas = fields.Binary(string='File', help="CSV file")
     datas_fname = fields.Char(string='Filename')
@@ -237,7 +237,7 @@ class ImportHeader(models.Model):
                    ('data', 'Load data'),
                    ('update', 'Update')],
         string='Status', default='headers', readonly=True,
-        required=True, copy=True)
+        required=True)
 
     def _get_map_fields(self):
         # obtenim els cmaps de mapping
