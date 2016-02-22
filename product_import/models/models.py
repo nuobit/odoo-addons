@@ -237,7 +237,7 @@ class ImportHeader(models.Model):
                    ('data', 'Load data'),
                    ('update', 'Update')],
         string='Status', default='headers', readonly=True,
-        required=True, copy=False)
+        required=True, copy=True)
 
     def _get_map_fields(self):
         # obtenim els cmaps de mapping
