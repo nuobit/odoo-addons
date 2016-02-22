@@ -75,6 +75,10 @@
                     <div class="oe_demo oe_picture oe_screenshot">
                         <img src="static/description/9.jpg">
                     </div>
+                    <span>If <i>Disambiguate duplicated</i> is selected the <strong>Supplier</strong> will be used to determine which product to update in case there's more than one product with the same <i>Reference</i>.</span>
+                    <div class="oe_demo oe_picture oe_screenshot">
+                        <img src="static/description/91.jpg">
+                    </div>                 
                 </li>
                 <li>
                     <span>In case the product does not exist you can select if it must be created and how in <strong>Create
