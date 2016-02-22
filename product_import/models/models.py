@@ -227,7 +227,7 @@ class ImportHeader(models.Model):
     datas_fname = fields.Char(string='Filename')
 
     line_ids = fields.One2many(
-        comodel_name='epe.line', inverse_name='header_id')
+        comodel_name='epe.line', inverse_name='header_id', copy=True)
 
     progress = fields.Float(
         string='Progress', readonly=True, required=False, default=0)
