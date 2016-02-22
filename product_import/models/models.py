@@ -143,6 +143,13 @@ class ImportHeader(models.Model):
         help="Update Category if exists",
         readonly=False, default=False)
 
+    disambigute_duplicated_refs = fields.Boolean(
+        string='Disambiguate duplicated',
+        help="Disambiguate duplicated references using supplier. If more than "
+             "one products have the same internal reference, the Supplier "
+             "will be used to determine which one has to be updated",
+        readonly=False, default=True)
+
     create_product = fields.Boolean(
         string='Create Product',
         help="Create Product if not exists",
@@ -439,13 +446,42 @@ class ImportHeader(models.Model):
             pp = self.env['product.product'].search([('default_code', '=',
                                                       line.default_code)])
             if len(pp) > 1:
-                line.status = 'error'
-                line.observations = _("There's more than one product with the "
-                                      "same Reference")
-                # TODO: si hi ha mes duna referencia, mirar actualitzar nomes la que correspon al proveiidor seleccionat
-                continue
-            else:
-                product['status'] = 'update' if len(pp) == 1 else 'create'
+                if self.disambigute_duplicated_refs:
+                    if self.supplier_id.id:
+                        pp1 = pp.filtered(lambda x: self.supplier_id.id in
+                                          x.seller_ids.mapped('name.id'))
+                        if len(pp1) == 1:
+                            pp = pp1
+                        elif len(pp1) == 0:
+                            line.status = 'error'
+                            line.observations = _("There's more than one "
+                                                  "product with the same "
+                                                  "Reference and none of them "
+                                                  "have the Supplier")
+                            continue
+                        else:
+                            line.status = 'error'
+                            line.observations = _("There's more than one "
+                                                  "product with the same "
+                                                  "Reference and the same "
+                                                  "Supplier")
+                            continue
+                    else:
+                        line.status = 'error'
+                        line.observations = _(
+                            "There's more than one product with the same "
+                            "Reference. Select a Supplier to try to narrow "
+                            "the search")
+                        continue
+                else:
+                    line.status = 'error'
+                    line.observations = _("There's more than one product with "
+                                          "the same Reference. Try to enable "
+                                          "Disambiguate duplicated and select "
+                                          "a Supplier")
+                    continue
+
+            product['status'] = 'update' if len(pp) == 1 else 'create'
 
             # check pricelist_sale
             if line.pricelist_sale:
@@ -553,7 +589,7 @@ class ImportHeader(models.Model):
                             if len(suppinfo) > 1:
                                 line.status = 'error'
                                 line.observations = _(
-                                    'There is more then one Supplier defined')
+                                    'The Supplier is defined more than once')
                                 continue
                             elif len(suppinfo) == 0:
                                 product['data'].update(
