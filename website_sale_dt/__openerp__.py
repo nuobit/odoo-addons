@@ -30,6 +30,7 @@
     'depends': ['website_sale', 'website_sale_product_attribute_order'],
     'data': [
         'views/templates.xml',
+        'views/inherit_views.xml'
         ],
     'installable': True,
 }
