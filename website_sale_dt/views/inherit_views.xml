@@ -37,7 +37,28 @@
                 </xpath>
             </field>
         </record>
-        
+
+        <record id="dt_ir_attachment_form" model="ir.ui.view">
+            <field name="name">dt.ir.attachment.form</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="base.view_attachment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//field[@name="type"]' position="before">
+                    <field name="id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="dt_ir_attachment_tree" model="ir.ui.view">
+            <field name="name">dt.ir.attachment.tree</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="document.view_document_file_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr='//field[@name="name"]' position="before">
+                    <field name="id"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>
 
