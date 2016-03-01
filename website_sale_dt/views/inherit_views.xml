@@ -15,6 +15,29 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="view_website_sale_dt_sale_order_form_payment" model="ir.ui.view">
+            <field name="name">website.sale.dt.sale.order.form.payment</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="portal_sale.sale_order_form_payment"/>
+            <field name="arch" type="xml">
+                <xpath expr='//field[@name="portal_payment_options"]' position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_website_sale_dt_invoice_form_payment" model="ir.ui.view">
+            <field name="name">website.sale.dt.invoice.form.payment</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="portal_sale.invoice_form_payment"/>
+            <field name="arch" type="xml">
+                <xpath expr='//field[@name="portal_payment_options"]' position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        
     </data>
 </openerp>
 
