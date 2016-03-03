@@ -24,6 +24,7 @@
                      id="product_full_description"/>
             </xpath>
 
+
             <xpath expr="//section//div[p[@t-field='product.description_sale']]" position="replace">
                 <div>
                     <p t-field="product.description_sale"
@@ -84,12 +85,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <ul class="nav nav-tabs mt16">
-                            <li t-att-class=" '' if category else 'active' ">
-                                <a t-att-href="keep('/shop',category=0)">All Products</a>
-                            </li>
                             <t t-foreach="categories" t-as="c">
                                 <t t-call="website_sale.categories_recursive"/>
                             </t>
+                            <li t-att-class=" '' if category else 'active' ">
+                                <a t-att-href="keep('/shop',category=0)">All Products</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -97,6 +98,8 @@
 
             <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']//div//t[@t-call='website_sale.search']"
                    position="replace"/>
+
+
             <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']" position="before">
                 <div class="row">
                     <div class="col-sm-offset-3 col-sm-6">
@@ -116,7 +119,7 @@
                                     <input type="hidden" name="search" t-att-value="search"/>
                                     <t t-foreach="attributes" t-as="a">
                                         <t t-if="a.type != 'hidden'">
-                                            <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <div class="col-xs-6 col-sm-3 col-md-3">
                                                 <div>
                                                     <strong t-field="a.name"/>
                                                 </div>
@@ -162,6 +165,13 @@
                     </div>
                 </div>
             </xpath>
+
+            <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']" position="attributes">
+                <attribute name="class">hidden</attribute>
+            </xpath>
+
         </template>
+
+
     </data>
 </openerp>
