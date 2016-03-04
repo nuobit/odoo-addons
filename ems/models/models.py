@@ -786,7 +786,7 @@ class ems_responsible_absence(models.Model):
 class ems_source(models.Model):
     _name = 'ems.source'
 
-    name = fields.Char(string='Origin')
+    name = fields.Char(string='Origin', translate=True)
     is_other = fields.Boolean('Other field', default=False)
 
 
