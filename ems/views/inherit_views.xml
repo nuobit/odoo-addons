@@ -29,7 +29,7 @@
 
                         <group colspan="2" col="4">
                             <field name="birth_date"/>
-                            <field name="is_other" invisible="1"/>
+                            <field name="is_detail" invisible="1"/>
                         </group>
                         <group colspan="2" col="4">
                             <group>
@@ -37,7 +37,7 @@
                                 <newline/>
                             </group>
                             <group>
-                                <field name="source_other" attrs="{'invisible':[('is_other', '=', False)]}"/>
+                                <field name="source_detail" attrs="{'invisible':[('is_detail', '=', False)]}"/>
                             </group>
                         </group>
 

@@ -787,7 +787,7 @@ class ems_source(models.Model):
     _name = 'ems.source'
 
     name = fields.Char(string='Origin', translate=True)
-    is_other = fields.Boolean('Other field', default=False)
+    is_detail = fields.Boolean('Detail field', default=False)
 
 
 
@@ -807,8 +807,8 @@ class res_partner(models.Model):
 
     birth_date = fields.Date("Birth date")
     source_id = fields.Many2one('ems.source', string='Origin')
-    is_other = fields.Boolean(related='source_id.is_other')
-    source_other = fields.Char(string='Other')
+    is_detail = fields.Boolean(related='source_id.is_detail')
+    source_detail = fields.Char(string='Detail')
     health_survey = fields.Selection([('notoall', 'No to all'), ('yessevere', 'Yes, severe'),
                                       ('yesminor', 'Yes, minor')],
                                     help="Health survey")

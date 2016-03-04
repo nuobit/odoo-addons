@@ -468,14 +468,14 @@ msgid "Origin"
 msgstr "Origen"
 
 #. module: ems
-#: field:res.partner,source_other:0
-msgid "Other"
-msgstr "Altres"
+#: field:res.partner,source_detail:0
+msgid "Detail"
+msgstr "Detall"
 
 #. module: ems
-#: field:ems.source,is_other:0
-msgid "Other field"
-msgstr "Camp altres"
+#: field:ems.source,is_detail:0
+msgid "Detail field"
+msgstr "Camp detall"
 
 #. module: ems
 #: code:addons/ems/models/models.py:704
