@@ -304,6 +304,12 @@ class ems_session(models.Model):
         ], string='Status', default='draft', readonly=True, required=True, copy=False,
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
 
+
+    @api.onchange('center_id', 'service_id', 'date_begin', 'date_end', 'responsible_id')
+    def _onchange_session(self):
+        pass
+
+
     '''
     @api.model
     def create(self, vals):
@@ -320,11 +326,13 @@ class ems_session(models.Model):
             self.date_end = fields.Datetime.to_string(date_begin + datetime.timedelta(hours=1))
     '''
 
+    '''
     @api.onchange('date_begin', 'date_end')
     def _onchange_date_begin_end_ems(self):
         if self.date_begin and self.date_end:
             date_begin = fields.Datetime.from_string(self.date_begin)
-            self.date_end = fields.Datetime.to_string(date_begin + datetime.timedelta(hours=1))
+            if not self.date_end:
+                self.date_end = fields.Datetime.to_string(date_begin + datetime.timedelta(hours=1))
 
 
             tts = self.env['ems.timetable'].search([('center_id', '=', self.center_id.id),
@@ -370,8 +378,8 @@ class ems_session(models.Model):
     @api.onchange('service_id', 'date_begin', 'date_end')
     def onchange_service(self):
         domains = {}
-        ids = []
-        ids2 = []
+        ids = [] #self.ubication_id.id]
+        ids2 = [] #self.resource_ids]
         ids22 = []
         for s in self.service_id.ubication_ids.filtered(lambda x: x.ubication_id.center_id==self.center_id).sorted(lambda x: x.sequence):
             sessions = self.env['ems.session'].search([
@@ -461,6 +469,7 @@ class ems_session(models.Model):
     def button_confirm(self):
         """ Confirm Event and send confirmation email to all register peoples """
         self.confirm_event()
+    '''
 
 
 class ems_ubication(models.Model):
@@ -774,6 +783,13 @@ class ems_responsible_absence(models.Model):
     '''
 
 
+class ems_source(models.Model):
+    _name = 'ems.source'
+
+    name = fields.Char(string='Origin')
+    is_other = fields.Boolean('Other field', default=False)
+
+
 
 
 ##### Inhrits ##########33
@@ -785,14 +801,21 @@ class res_users(models.Model):
     center_id = fields.Many2one('ems.center', string='Center',
         required=False, readonly=False)
 
-'''
+
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
-    ems_type = fields.Selection(selection=[('customer', 'Customer'), ('prospect', 'Prospect')],
-                                help="Select customer type")
+    birth_date = fields.Date("Birth date")
+    source_id = fields.Many2one('ems.source', string='Origin')
+    is_other = fields.Boolean(related='source_id.is_other')
+    source_other = fields.Char(string='Other')
+    health_survey = fields.Selection([('notoall', 'No to all'), ('yessevere', 'Yes, severe'),
+                                      ('yesminor', 'Yes, minor')],
+                                    help="Health survey")
+    health_spec = fields.Text(string='Health specifications')
+    medical_consent = fields.Boolean(string='Medical consent')
 
-'''
+
 
 ############ WIZARDS #############
 

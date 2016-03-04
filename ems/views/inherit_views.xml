@@ -18,21 +18,45 @@
             </field>
         </record>
 
-        <!--  Prtner inherited form -->
-        <!--record id="view_ems_partner_info_form" model="ir.ui.view">
+        <!--  Partner inherited form -->
+        <record id="view_ems_partner_info_form" model="ir.ui.view">
             <field name="name">res.partner.ems.info.inherit</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
-                    <page string="EMS">
-                         <group col="4">
-                            <field name="ems_type" string="Customer type"/>
+                    <page string="BeFiT">
+
+                        <group colspan="2" col="4">
+                            <field name="birth_date"/>
+                            <field name="is_other" invisible="1"/>
+                        </group>
+                        <group colspan="2" col="4">
+                            <group>
+                                <field name="source_id"/>
+                                <newline/>
+                            </group>
+                            <group>
+                                <field name="source_other" attrs="{'invisible':[('is_other', '=', False)]}"/>
+                            </group>
+                        </group>
+
+                        <group colspan="2" col="4">
+                            <group>
+                                <field name="health_survey"/>
+                                <newline/>
+                            </group>
+                            <group>
+                                <field name="health_spec"
+                                       attrs="{'invisible':[('health_survey', 'not in', ('yessevere','yesminor'))]}"/>
+                                <field name="medical_consent"
+                                       attrs="{'invisible':[('health_survey', 'not in', ('yessevere','yesminor'))]}"/>
+                            </group>
                         </group>
                     </page>
                 </xpath>
             </field>
-        </record-->
+        </record>
 
     </data>
 </openerp>

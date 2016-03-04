@@ -1,0 +1,871 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-04 19:06+0000\n"
+"PO-Revision-Date: 2016-03-04 19:06+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ems
+#: field:ems.responsible,absence_ids:0
+msgid "Absence ids"
+msgstr "Absence ids"
+
+#. module: ems
+#: view:ems.responsible:ems.view_ems_responsible_form
+msgid "Absences"
+msgstr "Absences"
+
+#. module: ems
+#: view:res.partner:ems.view_ems_partner_info_form
+msgid "BeFiT"
+msgstr "BeFiT"
+
+#. module: ems
+#: field:res.partner,birth_date:0
+msgid "Birth date"
+msgstr "Birth date"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Blue"
+msgstr "Blue"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Blue-Purple"
+msgstr "Blue-Purple"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Brown"
+msgstr "Brown"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Brown-Red"
+msgstr "Brown-Red"
+
+#. module: ems
+#: view:ems.session.wizard:ems.wizard_session_form_view
+msgid "Cancel"
+msgstr "Cancel"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Cancel Session"
+msgstr "Cancel Session"
+
+#. module: ems
+#: selection:ems.session,state:0
+msgid "Cancelled"
+msgstr "Cancelled"
+
+#. module: ems
+#: view:ems.center:ems.view_ems_center_form
+#: view:ems.center:ems.view_ems_enter_tree
+#: field:ems.resource,center_id:0
+#: field:ems.responsible.absence,center_id:0
+#: field:ems.session,center_id:0
+#: field:ems.timetable,center_id:0
+#: field:ems.ubication,center_id:0
+#: model:ir.actions.act_window,name:ems.action_center
+#: model:ir.model,name:ems.model_ems_center
+#: field:res.users,center_id:0
+msgid "Center"
+msgstr "Center"
+
+#. module: ems
+#: field:ems.center,name:0
+msgid "Center name"
+msgstr "Center name"
+
+#. module: ems
+#: model:ir.ui.menu,name:ems.menu_center
+msgid "Centers"
+msgstr "Centers"
+
+#. module: ems
+#: view:ems.timetable.wizard:ems.wizard_timetable_form_view
+msgid "Close"
+msgstr "Close"
+
+#. module: ems
+#: field:ems.responsible,color:0
+#: field:ems.service,color:0
+msgid "Color"
+msgstr "Color"
+
+#. module: ems
+#: field:ems.session,company_id:0
+msgid "Company"
+msgstr "Company"
+
+#. module: ems
+#: model:ir.ui.menu,name:ems.menu_ems_config_root
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Confirm Session"
+msgstr "Confirm Session"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+#: selection:ems.session,state:0
+msgid "Confirmed"
+msgstr "Confirmed"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+msgid "Confirmed events"
+msgstr "Confirmed events"
+
+#. module: ems
+#: field:ems.center,create_uid:0
+#: field:ems.resource,create_uid:0
+#: field:ems.responsible,create_uid:0
+#: field:ems.responsible.absence,create_uid:0
+#: field:ems.service,create_uid:0
+#: field:ems.session,create_uid:0
+#: field:ems.session.wizard,create_uid:0
+#: field:ems.source,create_uid:0
+#: field:ems.timetable,create_uid:0
+#: field:ems.timetable.wizard,create_uid:0
+#: field:ems.ubication,create_uid:0
+#: field:ems.ubication.service.rel,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: ems
+#: field:ems.center,create_date:0
+#: field:ems.resource,create_date:0
+#: field:ems.responsible,create_date:0
+#: field:ems.responsible.absence,create_date:0
+#: field:ems.service,create_date:0
+#: field:ems.session,create_date:0
+#: field:ems.session.wizard,create_date:0
+#: field:ems.source,create_date:0
+#: field:ems.timetable,create_date:0
+#: field:ems.timetable.wizard,create_date:0
+#: field:ems.ubication,create_date:0
+#: field:ems.ubication.service.rel,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: ems
+#: field:ems.session,customer_id:0
+msgid "Customer"
+msgstr "Customer"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Cyan"
+msgstr "Cyan"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Dark Purple"
+msgstr "Dark Purple"
+
+#. module: ems
+#: field:ems.timetable,date_begin_year:0
+msgid "Date begin"
+msgstr "Date begin"
+
+#. module: ems
+#: field:ems.timetable,date_end_year:0
+msgid "Date end"
+msgstr "Date end"
+
+#. module: ems
+#: field:ems.timetable,day:0
+msgid "Day"
+msgstr "Day"
+
+#. module: ems
+#: field:ems.center,description:0
+#: field:ems.resource,description:0
+#: field:ems.responsible,description:0
+#: field:ems.service,description:0
+#: view:ems.session:ems.view_ems_session_form
+#: field:ems.session,description:0
+#: field:ems.ubication,description:0
+msgid "Description"
+msgstr "Description"
+
+#. module: ems
+#: selection:ems.session,state:0
+msgid "Done"
+msgstr "Done"
+
+#. module: ems
+#: model:ir.ui.menu,name:ems.ems_menu
+#: model:ir.ui.menu,name:ems.main_ems_menu
+#: view:res.users:ems.view_ems_users_info_form
+msgid "EMS"
+msgstr "EMS"
+
+#. module: ems
+#: field:ems.responsible.absence,end_date:0
+#: field:ems.session,date_end:0
+msgid "End Date"
+msgstr "End Date"
+
+#. module: ems
+#: view:ems.timetable:ems.view_ems_timetable_form
+#: field:ems.timetable,time_end:0
+msgid "End time"
+msgstr "End time"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+msgid "Events in New state"
+msgstr "Events in New state"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Finish Session"
+msgstr "Finish Session"
+
+#. module: ems
+#: code:addons/ems/models/models.py:235
+#: selection:ems.timetable,day:0
+#, python-format
+msgid "Friday"
+msgstr "Friday"
+
+#. module: ems
+#: view:ems.session.wizard:ems.wizard_session_form_view
+msgid "Generate"
+msgstr "Generate"
+
+#. module: ems
+#: view:ems.session.wizard:ems.wizard_session_form_view
+#: model:ir.actions.act_window,name:ems.launch_session_wizard
+msgid "Generate sessions"
+msgstr "Generate sessions"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Green 1"
+msgstr "Green 1"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Green 2"
+msgstr "Green 2"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Grey"
+msgstr "Grey"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Grey-Light Red"
+msgstr "Grey-Light Red"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Grey-Red"
+msgstr "Grey-Red"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+msgid "Group By"
+msgstr "Group By"
+
+#. module: ems
+#: field:res.partner,health_spec:0
+msgid "Health specifications"
+msgstr "Health specifications"
+
+#. module: ems
+#: field:res.partner,health_survey:0
+#: help:res.partner,health_survey:0
+msgid "Health survey"
+msgstr "Health survey"
+
+#. module: ems
+#: field:ems.center,id:0
+#: field:ems.resource,id:0
+#: field:ems.responsible,id:0
+#: field:ems.responsible.absence,id:0
+#: field:ems.service,id:0
+#: field:ems.session,id:0
+#: field:ems.session.wizard,id:0
+#: field:ems.source,id:0
+#: field:ems.timetable,id:0
+#: field:ems.timetable.wizard,id:0
+#: field:ems.ubication,id:0
+#: field:ems.ubication.service.rel,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: ems
+#: help:ems.session,state:0
+msgid "If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'."
+msgstr "If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'."
+
+#. module: ems
+#: code:addons/ems/models/models.py:47
+#, python-format
+msgid "Incorrect hour format"
+msgstr "Incorrect hour format"
+
+#. module: ems
+#: field:ems.responsible.absence,ini_date:0
+msgid "Initial Date"
+msgstr "Initial Date"
+
+#. module: ems
+#: view:ems.timetable:ems.view_ems_timetable_form
+#: field:ems.timetable,time_begin:0
+msgid "Initial time"
+msgstr "Initial time"
+
+#. module: ems
+#: field:ems.center,write_uid:0
+#: field:ems.resource,write_uid:0
+#: field:ems.responsible,write_uid:0
+#: field:ems.responsible.absence,write_uid:0
+#: field:ems.service,write_uid:0
+#: field:ems.session,write_uid:0
+#: field:ems.session.wizard,write_uid:0
+#: field:ems.source,write_uid:0
+#: field:ems.timetable,write_uid:0
+#: field:ems.timetable.wizard,write_uid:0
+#: field:ems.ubication,write_uid:0
+#: field:ems.ubication.service.rel,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: ems
+#: field:ems.center,write_date:0
+#: field:ems.resource,write_date:0
+#: field:ems.responsible,write_date:0
+#: field:ems.responsible.absence,write_date:0
+#: field:ems.service,write_date:0
+#: field:ems.session,write_date:0
+#: field:ems.session.wizard,write_date:0
+#: field:ems.source,write_date:0
+#: field:ems.timetable,write_date:0
+#: field:ems.timetable.wizard,write_date:0
+#: field:ems.ubication,write_date:0
+#: field:ems.ubication.service.rel,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Light Blue"
+msgstr "Light Blue"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Light Blue-Green"
+msgstr "Light Blue-Green"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Light Green 1"
+msgstr "Light Green 1"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Light Green 2"
+msgstr "Light Green 2"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Light Orange"
+msgstr "Light Orange"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Light Purple"
+msgstr "Light Purple"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Light Red"
+msgstr "Light Red"
+
+#. module: ems
+#: field:res.partner,medical_consent:0
+msgid "Medical consent"
+msgstr "Medical consent"
+
+#. module: ems
+#: code:addons/ems/models/models.py:54
+#, python-format
+msgid "Minutes has to be between 0 and 23"
+msgstr "Minutes has to be between 0 and 23"
+
+#. module: ems
+#: code:addons/ems/models/models.py:234
+#: selection:ems.timetable,day:0
+#, python-format
+msgid "Monday"
+msgstr "Monday"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+msgid "My Sessions"
+msgstr "My Sessions"
+
+#. module: ems
+#: field:ems.service,name:0
+#: field:ems.ubication,name:0
+msgid "Name"
+msgstr "Name"
+
+#. module: ems
+#: selection:res.partner,health_survey:0
+msgid "No to all"
+msgstr "No to all"
+
+#. module: ems
+#: field:ems.session.wizard,count:0
+msgid "Number of sessions"
+msgstr "Number of sessions"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Orange"
+msgstr "Orange"
+
+#. module: ems
+#: field:ems.source,name:0
+#: field:res.partner,source_id:0
+msgid "Origin"
+msgstr "Origin"
+
+#. module: ems
+#: field:res.partner,source_other:0
+msgid "Other"
+msgstr "Other"
+
+#. module: ems
+#: field:ems.source,is_other:0
+msgid "Other field"
+msgstr "Other field"
+
+#. module: ems
+#: code:addons/ems/models/models.py:704
+#, python-format
+msgid "Overlaps detected for responsible %s:\n"
+"%s"
+msgstr "Overlaps detected for responsible %s:\n"
+"%s"
+
+#. module: ems
+#: model:ir.model,name:ems.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Pink"
+msgstr "Pink"
+
+#. module: ems
+#: view:ems.service:ems.view_ems_service_form
+#: view:ems.ubication:ems.view_ems_ubication_form
+msgid "Printing order"
+msgstr "Printing order"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Purple"
+msgstr "Purple"
+
+#. module: ems
+#: field:ems.responsible.absence,reason:0
+msgid "Reason"
+msgstr "Reason"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Red"
+msgstr "Red"
+
+#. module: ems
+#: view:ems.resource:ems.view_ems_resource_form
+#: view:ems.resource:ems.view_ems_resource_tree
+#: model:ir.actions.act_window,name:ems.action_resource
+#: model:ir.model,name:ems.model_ems_resource
+msgid "Resource"
+msgstr "Resource"
+
+#. module: ems
+#: field:ems.resource,name:0
+msgid "Resource name"
+msgstr "Resource name"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+#: field:ems.session,resource_ids:0
+#: field:ems.ubication.service.rel,resource_ids:0
+#: model:ir.ui.menu,name:ems.menu_resource
+msgid "Resources"
+msgstr "Recursos"
+
+#. module: ems
+#: view:ems.responsible:ems.view_ems_responsible_form
+#: view:ems.responsible:ems.view_ems_responsible_tree
+#: field:ems.responsible.absence,responsible_id:0
+#: view:ems.session:ems.ems_session_search_view
+#: field:ems.session,responsible_id:0
+#: field:ems.timetable,responsible_id:0
+#: model:ir.actions.act_window,name:ems.action_list_responsible
+#: model:ir.model,name:ems.model_ems_responsible
+msgid "Responsible"
+msgstr "Responsible"
+
+#. module: ems
+#: model:ir.model,name:ems.model_ems_responsible_absence
+msgid "Responsible Absence"
+msgstr "Responsible Absence"
+
+#. module: ems
+#: code:addons/ems/models/models.py:749
+#: sql_constraint:ems.responsible:0
+#, python-format
+msgid "Responsible already exists"
+msgstr "Responsible already exists"
+
+#. module: ems
+#: view:ems.timetable:ems.view_ems_timetable_calendar
+msgid "Responsible availability"
+msgstr "Responsible availability"
+
+#. module: ems
+#: model:ir.ui.menu,name:ems.menu_ems_responsible
+msgid "Responsibles"
+msgstr "Responsibles"
+
+#. module: ems
+#: code:addons/ems/models/models.py:235
+#: selection:ems.timetable,day:0
+#, python-format
+msgid "Saturday"
+msgstr "Saturday"
+
+#. module: ems
+#: field:ems.timetable,sequence:0
+#: field:ems.ubication.service.rel,sequence:0
+msgid "Sequence"
+msgstr "Sequence"
+
+#. module: ems
+#: help:ems.timetable,sequence:0
+#: help:ems.ubication.service.rel,sequence:0
+msgid "Sequence for the handle."
+msgstr "Sequence for the handle."
+
+#. module: ems
+#: view:ems.service:ems.view_ems_service_form
+#: view:ems.service:ems.view_ems_service_tree
+#: view:ems.session:ems.ems_session_search_view
+#: field:ems.session,service_id:0
+#: field:ems.ubication.service.rel,service_id:0
+#: model:ir.actions.act_window,name:ems.action_service
+#: model:ir.model,name:ems.model_ems_service
+msgid "Service"
+msgstr "Service"
+
+#. module: ems
+#: field:ems.ubication,service_ids:0
+#: model:ir.ui.menu,name:ems.menu_service
+msgid "Services"
+msgstr "Services"
+
+#. module: ems
+#: field:ems.session.wizard,session_id:0
+#: model:ir.model,name:ems.model_ems_session
+msgid "Session"
+msgstr "Session"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Session Description..."
+msgstr "Session Description..."
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Session Details"
+msgstr "Session Details"
+
+#. module: ems
+#: field:ems.session,name:0
+msgid "Session Number"
+msgstr "Session Number"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_calendar
+msgid "Session Organization"
+msgstr "Session Organization"
+
+#. module: ems
+#: field:ems.responsible,session_ids:0
+msgid "Session ids"
+msgstr "Session ids"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+#: view:ems.session:ems.view_ems_session_tree
+#: model:ir.actions.act_window,name:ems.action_list_sessions
+#: model:ir.ui.menu,name:ems.menu_ems_session
+msgid "Sessions"
+msgstr "Sesiones"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Set To Draft"
+msgstr "Set To Draft"
+
+#. module: ems
+#: view:ems.timetable:ems.view_ems_timetable_form
+#: view:ems.timetable.wizard:ems.wizard_timetable_form_view
+#: model:ir.actions.act_window,name:ems.launch_timetable_wizard
+msgid "Set priorities"
+msgstr "Set priorities"
+
+#. module: ems
+#: view:ems.source:ems.view_ems_source_form
+#: view:ems.source:ems.view_ems_source_tree
+#: model:ir.actions.act_window,name:ems.action_source
+msgid "Source"
+msgstr "Origen"
+
+#. module: ems
+#: model:ir.ui.menu,name:ems.menu_source
+msgid "Sources"
+msgstr "Sources"
+
+#. module: ems
+#: field:ems.session,date_begin:0
+msgid "Start Date"
+msgstr "Start Date"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+msgid "Start Month"
+msgstr "Start Month"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+#: field:ems.session,state:0
+msgid "Status"
+msgstr "Status"
+
+#. module: ems
+#: code:addons/ems/models/models.py:236
+#: selection:ems.timetable,day:0
+#, python-format
+msgid "Sunday"
+msgstr "Sunday"
+
+#. module: ems
+#: code:addons/ems/models/models.py:51
+#, python-format
+msgid "The hour has to be between 0 and 23"
+msgstr "The hour has to be between 0 and 23"
+
+#. module: ems
+#: code:addons/ems/models/models.py:651
+#, python-format
+msgid "The initial date cannot be greater or equal than end date"
+msgstr "The initial date cannot be greater or equal than end date"
+
+#. module: ems
+#: code:addons/ems/models/models.py:637
+#, python-format
+msgid "The initial time cannot be greater or equal than end time"
+msgstr "The initial time cannot be greater or equal than end time"
+
+#. module: ems
+#: code:addons/ems/models/models.py:659
+#, python-format
+msgid "The interval has to be of the same day"
+msgstr "The interval has to be of the same day"
+
+#. module: ems
+#: code:addons/ems/models/models.py:235
+#: selection:ems.timetable,day:0
+#, python-format
+msgid "Thursday"
+msgstr "Thursday"
+
+#. module: ems
+#: view:ems.timetable:ems.view_ems_timetable_form
+#: view:ems.timetable:ems.view_ems_timetable_tree
+#: field:ems.timetable.wizard,timetable_ids:0
+#: model:ir.actions.act_window,name:ems.action_list_timetable
+#: model:ir.model,name:ems.model_ems_timetable
+#: model:ir.ui.menu,name:ems.menu_ems_timetable
+msgid "Timetable"
+msgstr "Timetable"
+
+#. module: ems
+#: field:ems.responsible,timetable_ids:0
+msgid "Timetable ids"
+msgstr "Timetable ids"
+
+#. module: ems
+#: view:ems.responsible:ems.view_ems_responsible_form
+msgid "Timetables"
+msgstr "Timetables"
+
+#. module: ems
+#: code:addons/ems/models/models.py:234
+#: selection:ems.timetable,day:0
+#, python-format
+msgid "Tuesday"
+msgstr "Tuesday"
+
+#. module: ems
+#: field:ems.timetable,type:0
+msgid "Type"
+msgstr "Type"
+
+#. module: ems
+#: field:ems.session,ubication_id:0
+#: view:ems.ubication:ems.view_ems_ubication_form
+#: view:ems.ubication:ems.view_ems_ubication_tree
+#: field:ems.ubication.service.rel,ubication_id:0
+#: model:ir.actions.act_window,name:ems.action_ubication
+#: model:ir.model,name:ems.model_ems_ubication
+msgid "Ubication"
+msgstr "Ubication"
+
+#. module: ems
+#: view:ems.ubication.service.rel:ems.view_ems_ubication_service_form
+msgid "Ubication Service"
+msgstr "Ubication Service"
+
+#. module: ems
+#: model:ir.model,name:ems.model_ems_ubication_service_rel
+msgid "Ubication-Service relation"
+msgstr "Ubication-Service relation"
+
+#. module: ems
+#: field:ems.service,ubication_ids:0
+#: model:ir.ui.menu,name:ems.menu_ubication
+msgid "Ubications"
+msgstr "Ubications"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+#: selection:ems.session,state:0
+msgid "Unconfirmed"
+msgstr "Unconfirmed"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+msgid "Upcoming"
+msgstr "Upcoming"
+
+#. module: ems
+#: view:ems.responsible:ems.view_ems_responsible_form
+msgid "Upcoming sessions"
+msgstr "Upcoming sessions"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+msgid "Upcoming sessions from today"
+msgstr "Upcoming sessions from today"
+
+#. module: ems
+#: field:ems.responsible,user_id:0
+msgid "User"
+msgstr "User"
+
+#. module: ems
+#: model:ir.model,name:ems.model_res_users
+msgid "Users"
+msgstr "Usuarios"
+
+#. module: ems
+#: code:addons/ems/models/models.py:234
+#: selection:ems.timetable,day:0
+#, python-format
+msgid "Wednesday"
+msgstr "Wednesday"
+
+#. module: ems
+#: code:addons/ems/models/models.py:569
+#: selection:ems.timetable,type:0
+#, python-format
+msgid "Weekday"
+msgstr "Weekday"
+
+#. module: ems
+#: field:ems.session,weight:0
+msgid "Weight"
+msgstr "Weight"
+
+#. module: ems
+#: code:addons/ems/models/models.py:569
+#: selection:ems.timetable,type:0
+#, python-format
+msgid "Yearday"
+msgstr "Yearday"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Yellow"
+msgstr "Yellow"
+
+#. module: ems
+#: selection:ems.responsible,color:0
+#: selection:ems.service,color:0
+msgid "Yellow-Orange"
+msgstr "Yellow-Orange"
+
+#. module: ems
+#: selection:res.partner,health_survey:0
+msgid "Yes, minor"
+msgstr "Yes, minor"
+
+#. module: ems
+#: selection:res.partner,health_survey:0
+msgid "Yes, severe"
+msgstr "Yes, severe"
+
+#. module: ems
+#: view:ems.session.wizard:ems.wizard_session_form_view
+msgid "or"
+msgstr "or"
+
