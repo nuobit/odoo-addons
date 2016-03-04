@@ -31,6 +31,7 @@
         'views/views.xml',
         'views/template_views.xml',
         'views/inherit_views.xml',
+        'security/ir.model.access.csv',
         ],
     'installable': True,
 }
