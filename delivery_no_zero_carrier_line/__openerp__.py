@@ -20,8 +20,8 @@
 #/#############################################################################
 
 {
-    'name': "Remove carrier line when its zero",
-    'description': "Avoid having an order line with a 0 price carrier line",
+    'name': "Remove carrier line if its price is zero",
+    'description': "Avoid having an carrier order line with price zero",
     'version': '0.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',

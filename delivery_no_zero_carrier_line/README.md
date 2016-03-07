@@ -1,4 +1,4 @@
-Remove carrier line when its zero
-=================================
+Remove carrier line if its price is zero
+========================================
 
-* Avoid having an order line with a 0 price carrier line.
+* Avoid having an carrier order line with price zero.
