@@ -20,6 +20,12 @@
 # /############################################################################
 
 
+# TODO: On csv file, ignore rows with separators and all fields blank
+# TODO: Automatic detection of separator used
+# TODO: Handle utf-8 error when importing non utf-8 csv file
+# TODO: Add import file formats: ods, xls, xlsx
+# TODO: Allow export results grid to file
+
 import base64
 import re
 import csv
