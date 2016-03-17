@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_product_relation_employee","product relation employee","model_product_relation","base.group_user",1,0,0,0
+"access_product_relation_sale_manager","product relation sale manager","model_product_relation","base.group_sale_manager",1,1,1,1
