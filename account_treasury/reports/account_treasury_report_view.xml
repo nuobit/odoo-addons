@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <!-- VIEW: search -->
+    <record id="view_account_treasury_report2_search" model="ir.ui.view">
+        <field name="name">account.treasury.report2.search</field>
+        <field name="model">account.treasury.report2</field>
+        <field name="arch" type="xml">
+            <search string="Treasury Analysis2">
+                <field name="fiscalyear_id"/>
+                <field name="period_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+
+                <filter string="Year 2016" name="current_year" domain="[('fiscalyear_id','in',('2016'))]" help="Current year filter"/>
+                <group expand="1" string="Group By">
+                    <filter string="Month" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- VIEW: tree -->
+    <record id="view_account_treasury_report2_tree" model="ir.ui.view">
+        <field name="name">account.treasury.report2.tree</field>
+        <field name="model">account.treasury.report2</field>
+        <field name="arch" type="xml">
+            <tree string="Treasury Analysis2" create="false">
+                <field name="date" invisible="1"/>
+                <field name="fiscalyear_id"/>
+                <field name="period_id"/>
+                <field name="debit"/>
+                <field name="credit"/>
+                <field name="balance"/>
+                <field name="starting_balance"/>
+                <field name="ending_balance"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+           </tree>
+        </field>
+    </record>
+
+    <!-- VIEW: graph -->
+    <record id="view_account_treasury_report2_graph" model="ir.ui.view">
+         <field name="name">account.treasury.report2.graph</field>
+         <field name="model">account.treasury.report2</field>
+         <field name="arch" type="xml">
+             <graph string="Treasury Analysis2" type="pivot">
+                <field name="period_id" type="row"/>
+                <field name="debit" type="measure"/>
+                <field name="credit" type="measure"/>
+                <field name="balance" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+
+    <record id="action_account_treasury_report2_all" model="ir.actions.act_window">
+        <field name="name">Treasury Analysis2</field>
+        <field name="res_model">account.treasury.report2</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,tree,form</field>
+        <field name="search_view_id" ref="view_account_treasury_report2_search"/>
+        <field name="view_id" ref="view_account_treasury_report2_graph"/>
+        <field name="context">{'group_by':[], 'group_by_no_leaf':0}</field>
+        <field name="help">From this view, have an analysis of your treasury. It sums the balance of every accounting entries made on liquidity accounts per period.</field>
+    </record>
+
+    <menuitem action="action_account_treasury_report2_all" id="menu_action_account_treasury_report2_all"
+        parent="account.menu_finance_reporting"
+        groups="account.group_account_manager"
+        sequence="2"/>
+</data>
+</openerp>
