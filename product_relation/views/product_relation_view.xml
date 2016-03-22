@@ -53,6 +53,7 @@
             </field>
         </record>
 
+<<<<<<< HEAD
 
         <record id="product_relation_group_action" model="ir.actions.act_window">
             <field name="name">Product Relation</field>

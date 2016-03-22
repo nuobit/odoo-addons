@@ -20,27 +20,22 @@
 ##############################################################################
 
 {
-    'name': 'Product Relation',
+    'name': 'Invoice uid grouping',
     'version': '0.1',
     'category': 'Generic Modules',
     'description': """
-This module adds relations between products:
-
-- cross-selling
-- up-selling
+    Avoid invoice grouping by user_id in sale orders and create_uid in purchase orders
 
     """,
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
     'license': 'AGPL-3',
-    'depends': ['product', 'sale'],
+    'depends': ['stock_account',
+                'sale_stock',
+                'purchase'
+               ],
     'data': [
-        #'security/ir.model.access.csv',
-        'views/product_relation_view.xml',
-        'views/product_relation_view_inherit.xml',
-        'views/template_views.xml',
-    ],
-        'qweb': ['static/src/xml/*.xml'],
 
+    ],
     'installable': True,
 }

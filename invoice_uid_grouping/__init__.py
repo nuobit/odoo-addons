@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
-#    Copyright 2011-2013 Camptocamp SA
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,28 +19,5 @@
 #
 ##############################################################################
 
-{
-    'name': 'Product Relation',
-    'version': '0.1',
-    'category': 'Generic Modules',
-    'description': """
-This module adds relations between products:
+import models
 
-- cross-selling
-- up-selling
-
-    """,
-    'author': 'NuoBiT Solutions, S.L., Eric Antones',
-    'website': 'https://www.nuobit.com',
-    'license': 'AGPL-3',
-    'depends': ['product', 'sale'],
-    'data': [
-        #'security/ir.model.access.csv',
-        'views/product_relation_view.xml',
-        'views/product_relation_view_inherit.xml',
-        'views/template_views.xml',
-    ],
-        'qweb': ['static/src/xml/*.xml'],
-
-    'installable': True,
-}

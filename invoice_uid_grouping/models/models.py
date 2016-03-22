@@ -18,29 +18,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp import models, fields, api
 
-{
-    'name': 'Product Relation',
-    'version': '0.1',
-    'category': 'Generic Modules',
-    'description': """
-This module adds relations between products:
 
-- cross-selling
-- up-selling
+class stock_move(models.Model):
+    _inherit = "stock.move"
 
-    """,
-    'author': 'NuoBiT Solutions, S.L., Eric Antones',
-    'website': 'https://www.nuobit.com',
-    'license': 'AGPL-3',
-    'depends': ['product', 'sale'],
-    'data': [
-        #'security/ir.model.access.csv',
-        'views/product_relation_view.xml',
-        'views/product_relation_view_inherit.xml',
-        'views/template_views.xml',
-    ],
-        'qweb': ['static/src/xml/*.xml'],
-
-    'installable': True,
-}
+    @api.model
+    def _get_master_data(self, move, company):
+         partner, _, currency = super(stock_move, self)._get_master_data(move, company)
+         return partner, self.env.uid, currency

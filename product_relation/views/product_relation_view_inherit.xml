@@ -2,7 +2,7 @@
 <openerp>
     <data>
 
-<!--record model="ir.ui.view" id="product_product_relation_form">
+        <!--record model="ir.ui.view" id="product_product_relation_form">
             <field name="name">product.normal.form.custom.relation</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
