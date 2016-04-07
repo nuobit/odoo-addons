@@ -38,6 +38,17 @@
             </field>
         </record>
 
+         <record id="view_order_form_acquirer" model="ir.ui.view">
+            <field name="name">website.sale.dt.order.form.acquirer</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="website_sale.view_order_form_acquirer"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_tx_id']" position="attributes">
+                     <attribute name="groups"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="dt_ir_attachment_form" model="ir.ui.view">
             <field name="name">dt.ir.attachment.form</field>
             <field name="model">ir.attachment</field>
