@@ -341,12 +341,13 @@ class ems_session(models.Model):
 
             name_i = int(name_s.name)
 
+            '''
             if name_i != pos:
                 raise Warning(_('Unexpected last session number. Expected %i, found: %i') % (pos, name_i))
 
             if n != pos:
                 raise Warning(_('Unexpected number of sessions. Expected %i, found: %i') % (n, pos))
-
+            '''
             name_i += 1
 
         self.name = "%03d" % name_i
