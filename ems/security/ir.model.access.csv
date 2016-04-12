@@ -1,4 +1,31 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ems_session_sale_manager,ems session sale manager,model_ems_session,base.group_sale_manager,1,1,1,1
+access_ems_session_salesman,ems session salesman,model_ems_session,base.group_sale_salesman,1,1,1,1
+
+access_ems_resource_sale_manager,ems resource sale manager,model_ems_resource,base.group_sale_manager,1,1,1,1
+access_ems_resource_salesman,ems resource salesman,model_ems_resource,base.group_sale_salesman,1,0,0,0
+
+access_ems_center_sale_manager,ems center sale manager,model_ems_center,base.group_sale_manager,1,1,1,1
+access_ems_center_salesman,ems center salesman,model_ems_center,base.group_sale_salesman,1,0,0,0
+
+access_ems_ubication_service_rel_sale_manager,ems ubication_service_rel sale manager,model_ems_ubication_service_rel,base.group_sale_manager,1,1,1,1
+access_ems_ubication_service_rel_salesman,ems ubication_service_rel salesman,model_ems_ubication_service_rel,base.group_sale_salesman,1,0,0,0
+
+access_ems_ubication_sale_manager,ems ubication sale manager,model_ems_ubication,base.group_sale_manager,1,1,1,1
+access_ems_ubication_salesman,ems ubication salesman,model_ems_ubication,base.group_sale_salesman,1,0,0,0
+
+access_ems_service_sale_manager,ems service sale manager,model_ems_service,base.group_sale_manager,1,1,1,1
+access_ems_service_salesman,ems service salesman,model_ems_service,base.group_sale_salesman,1,0,0,0
+
+access_ems_responsible_sale_manager,ems responsible sale manager,model_ems_responsible,base.group_sale_manager,1,1,1,1
+access_ems_responsible_salesman,ems responsible salesman,model_ems_responsible,base.group_sale_salesman,1,0,0,0
+
+access_ems_timetable_sale_manager,ems timetable sale manager,model_ems_timetable,base.group_sale_manager,1,1,1,1
+access_ems_timetable_salesman,ems timetable salesman,model_ems_timetable,base.group_sale_salesman,1,0,0,0
+
+access_ems_responsible_absence_sale_manager,ems responsible_absence sale manager,model_ems_responsible_absence,base.group_sale_manager,1,1,1,1
+access_ems_responsible_absence_salesman,ems responsible_absence salesman,model_ems_responsible_absence,base.group_sale_salesman,1,0,0,0
+
 access_ems_source_sale_manager,ems source sale manager,model_ems_source,base.group_sale_manager,1,1,1,1
-access_ems_source_salesman,ems source salesman,model_ems_source,base.group_sale_salesman,1,1,1,1
+access_ems_source_sale_manager,ems source sale manager,model_ems_source,base.group_sale_manager,1,0,0,0
 

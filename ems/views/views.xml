@@ -255,7 +255,7 @@
                 <form string="Timetable">
                     <header>
                         <button name="%(launch_timetable_wizard)d" string="Set priorities" type="action"
-                                class="oe_highlight"/>
+                                class="oe_highlight" groups="base.group_sale_manager"/>
                     </header>
                     <sheet>
                         <group col="4" colspan="2">
