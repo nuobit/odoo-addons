@@ -34,6 +34,7 @@
                     <field name="service_id"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
+                    <field name="customer_id"/>
                     <field name="responsible_id"/>
                     <field name="state" invisible="1"/>
                 </tree>
@@ -46,7 +47,7 @@
             <field name="model">ems.session</field>
             <field name="arch" type="xml">
                 <form string="Sessions">
-                    <header>
+                    <!--header>
                         <button string="Confirm Session" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
                         <button string="Finish Session" name="button_done" states="confirm" type="object"
@@ -56,15 +57,17 @@
                         <button string="Cancel Session" name="button_cancel" states="draft,confirm" type="object"
                                 groups="base.group_user"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
-                    </header>
+                    </header-->
                     <sheet>
-                        <div class="oe_title">
-                            <label for="name" class="oe_edit_only"/>
+                        <group>
+                        <!--div class="oe_title"-->
+                            <label for="name"/> <!-- class="oe_edit_only"/-->
                             <h1>
                                 <field name="name"/>
                             </h1>
 
-                        </div>
+                        <!--/div-->
+                        </group>
 
                         <group colspan="2" col="4">
                             <field name="center_id" options="{'no_create': True}"/>
@@ -79,7 +82,8 @@
 
                             <newline/>
                             <field name="service_id" options="{'no_create': True}"/>
-                            <newline/>
+                            <field name="duration"/>
+                            <!--newline/-->
                             <field name="ubication_id" options="{'no_create': True}"/>
                             <field name="resource_ids" string="Resources" widget="many2many_tags"
                                    options="{'no_create': True}"/>
@@ -94,11 +98,11 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string='Session Details' groups="base.group_no_one">
+                            <!--page string='Session Details' groups="base.group_no_one">
                                 <group colspan="4">
                                     <field name="weight"/>
                                 </group>
-                            </page>
+                            </page-->
                             <page string="Description">
                                 <field name="description" nolabel="1" placeholder="Session Description..."/>
                             </page>
@@ -113,19 +117,20 @@
         </record>
 
         <!-- Session Calendar view -->
-        <!--record id="view_ems_session_calendar" model="ir.ui.view">
+        <record id="view_ems_session_calendar" model="ir.ui.view">
             <field name="name">ems.session.calendar</field>
             <field name="model">ems.session</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="color_rel" date_start="date_begin" date_stop="date_end" string="Session Organization">
+                <calendar color="color_rel" date_start="date_begin" date_stop="date_end"
+                          string="Session Organization" mode="week">
                     <field name="customer_id"/>
                     <field name="name"/>
                     <field name="responsible_id"/>
                     <field name="service_id" invisible="1"/>
                 </calendar>
             </field>
-        </record-->
+        </record>
 
         <!-- Session Search view -->
         <record model="ir.ui.view" id="ems_session_search_view">
@@ -422,18 +427,19 @@
         </record>
 
         <!-- RESPONSIBLE Calendar view -->
-        <record id="view_ems_session_calendar" model="ir.ui.view">
+        <!--record id="view_ems_session_calendar" model="ir.ui.view">
             <field name="name">ems.session.calendar</field>
             <field name="model">ems.session</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="service_id" date_start="date_begin" date_stop="date_end" string="Session Organization">
+                <calendar color="service_id" date_start="date_begin" date_stop="date_end"
+                          string="Session Organization" mode="week">
                     <field name="customer_id"/>
                     <field name="name"/>
                     <field name="responsible_id"/>
                 </calendar>
             </field>
-        </record>
+        </record-->
 
         <!-- RESPONSIBLE Search view -->
         <!--record model="ir.ui.view" id="ems_session_search_view">
@@ -517,6 +523,7 @@
                     <group col="4">
                         <field name="name"/>
                         <field name="color"/>
+                        <field name="duration"/>
                     </group>
                     <group col="2">
                         <field name="description"/>
@@ -539,6 +546,7 @@
             <field name="arch" type="xml">
                 <tree string="Service">
                     <field name="name"/>
+                    <field name="duration"/>
                     <field name="color"/>
                 </tree>
             </field>
@@ -585,6 +593,7 @@
             <field name="arch" type="xml">
                 <tree string="Ubication">
                     <field name="name"/>
+                    <field name="center_id"/>
                     <!--field name="description"/-->
                 </tree>
             </field>
@@ -639,6 +648,7 @@
             <field name="arch" type="xml">
                 <tree string="Resource">
                     <field name="name"/>
+                    <field name="center_id"/>
                     <!--field name="description"/-->
                 </tree>
             </field>

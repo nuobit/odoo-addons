@@ -256,7 +256,7 @@ class ems_session(models.Model):
     _order = 'date_begin'
 
     name = fields.Char(string='Session Number', required=True,
-        readonly=False)
+        readonly=False, default='000') #lambda self: self._get_default_name())
 
     description = fields.Text(string='Description', #translate=True,
         readonly=False)
@@ -282,15 +282,18 @@ class ems_session(models.Model):
         required=True, readonly=False)
 
     ubication_id = fields.Many2one('ems.ubication', string='Ubication',
-        required=False, readonly=False)
+        required=True, readonly=False)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
         required=False, readonly=False)
 
+    duration = fields.Integer(string='Duration', required=True)
+
 
     date_begin = fields.Datetime(string='Start Date', required=True, default=fields.datetime.now().replace(second=0, microsecond=0),
         readonly=False)
-    date_end = fields.Datetime(string='End Date', required=True, default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
+    date_end = fields.Datetime(string='End Date', required=True,
+        #default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
         readonly=False)
 
     color_rel = fields.Selection(related="service_id.color", store=False)
@@ -305,17 +308,201 @@ class ems_session(models.Model):
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
 
 
-    @api.onchange('center_id', 'service_id', 'date_begin', 'date_end', 'responsible_id')
+
+
+    @api.onchange('center_id', 'customer_id', 'service_id')
     def _onchange_session(self):
-        pass
+        '''
+        sessions = self.env['ems.session'].search([
+                ('center_id', '=', self.center_id.id),
+                ('service_id', '=', self.service_id.id),
+                ('customer_id', '=', self.customer_id.id),
+                ('date_end','>',self.date_end),
+            ])
+        if len(sessions)!=0:
+            raise Warning(_("There's sessions after current one"))
+        '''
+
+
+        sessions = self.env['ems.session'].search([
+                ('center_id', '=', self.center_id.id),
+                ('service_id', '=', self.service_id.id),
+                ('customer_id', '=', self.customer_id.id),
+                ('date_begin','<',self.date_begin),
+            ]).sorted(lambda x: x.date_begin)
+
+        n = len(sessions)
+        if n == 0:
+            name_i = 0
+        else:
+            ls = zip(sessions, range(1, n + 1))
+
+            name_s, pos = ls[-1]
+
+            name_i = int(name_s.name)
+
+            if name_i != pos:
+                raise Warning(_('Unexpected last session number. Expected %i, found: %i') % (pos, name_i))
+
+            if n != pos:
+                raise Warning(_('Unexpected number of sessions. Expected %i, found: %i') % (n, pos))
+
+        self.name = "%03d" % (name_i + 1)
+
+
+    @api.onchange('duration')
+    def _onchange_duration(self):
+        self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.duration)
+
+    @api.onchange('date_begin')
+    def _onchange_date_begin(self):
+        self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.duration)
+        #self.duration = (fields.Datetime.from_string(self.date_end) - fields.Datetime.from_string(self.date_begin)).seconds/60
+        #fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
+
+    @api.onchange('date_end')
+    def _onchange_date_end(self):
+        #self.date_begin = fields.Datetime.from_string(self.date_end) - datetime.timedelta(minutes=self.duration)
+        self.duration = (fields.Datetime.from_string(self.date_end) - fields.Datetime.from_string(self.date_begin)).seconds/60
+        #fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
+
+
+    @api.onchange('center_id')
+    def onchange_centre(self):
+        service_ids = self.env['ems.ubication.service.rel'].search([('ubication_id.center_id','=',self.center_id.id)]).mapped('service_id.id')
+
+
+        self.service_id = False
+        if len(service_ids)==1:
+            self.service_id = service_ids[0]
+        self.ubication_id = False
+        self.resource_ids = False
+
+        res = dict(domain={'service_id': [('id', 'in', service_ids)]})
+
+        return res
+
+    @api.model
+    @api.onchange('service_id')
+    def onchange_service(self):
+        self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.service_id.duration)
+
+        domains = {}
+        ids = [] #self.ubication_id.id]
+        ids2 = [] #self.resource_ids]
+        ids22 = []
+        for s in self.service_id.ubication_ids.filtered(lambda x: x.ubication_id.center_id==self.center_id).sorted(lambda x: x.sequence):
+            ids.append(s.ubication_id.id)
+
+            ids2.append(s.resource_ids)
+            ids22+=s.resource_ids.mapped('id')
+
+        domains.update({'ubication_id': [('id', 'in', ids)]})
+        if ids!=[]:
+            self.ubication_id = ids[0]
+        else:
+            self.ubication_id = False
+
+        domains.update({'resource_ids': [('id', 'in', ids22)]})
+        if ids2!=[]:
+            self.resource_ids = ids2[0]
+        else:
+            self.resource_ids = False
+
+        self.duration=self.service_id.duration
+
+        res = {}
+        if len(domains)!=0:
+            res = dict(domain=domains)
+
+        return res
+
+    @api.constrains('date_begin', 'date_end', 'center_id', #'service_id',
+                    'ubication_id', 'resource_ids',
+                    'responsible_id', 'customer_id' )
+    def _check_session(self):
+        # check dates
+        if self.date_end < self.date_begin:
+            raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
+
+        ### cerquem le sessions que se solapin amb l'actual (excepte lactual que segur que  solapa)
+        ## que se solapin en la mateixa sala
+        sessions = self.env['ems.session'].search([
+                ('id', '!=', self.id),
+                ('center_id', '=', self.center_id.id),
+                ('date_begin','<',self.date_end),
+                ('date_end','>',self.date_begin),
+                ('ubication_id', '=', self.ubication_id.id)
+            ])
+        if len(sessions)!=0: #hi ha solapaments
+            raise ValidationError(_("There's another session in selected ubication"))
+
+
+        ## que se solapin amb algun dels recursos usats en la sessio en curs
+        sessions = self.env['ems.session'].search([
+                ('id', '!=', self.id),
+                ('center_id', '=', self.center_id.id),
+                ('date_begin','<',self.date_end),
+                ('date_end','>',self.date_begin),
+            ])
+        usats = False
+        for r in self.resource_ids:
+            for j in sessions:
+                if r in j.resource_ids:
+                    usats=True
+                    break
+            if usats:
+                break
+        if usats:
+           raise ValidationError(_("There's another session using the same resources"))
+
+        ## que se solapin amb el mateix entrenador
+        sessions = self.env['ems.session'].search([
+                ('id', '!=', self.id),
+                ('center_id', '=', self.center_id.id),
+                ('date_begin','<',self.date_end),
+                ('date_end','>',self.date_begin),
+                ('responsible_id', '=', self.responsible_id.id)
+            ])
+        if len(sessions)!=0: #hi ha solapaments
+            raise ValidationError(_("There's another session with selected responsible"))
+
+        ## que se solapin amb el mateix client
+        sessions = self.env['ems.session'].search([
+                ('id', '!=', self.id),
+                ('center_id', '=', self.center_id.id),
+                ('date_begin','<',self.date_end),
+                ('date_end','>',self.date_begin),
+                ('customer_id', '=', self.customer_id.id)
+            ])
+        if len(sessions)!=0: #hi ha solapaments
+            raise ValidationError(_("There's another session with selected customer"))
 
 
     '''
     @api.model
+    def _get_default_name(self):
+
+        sessions = self.env['ems.session'].search([
+                ('id', '!=', self.id),
+                ('center_id', '=', self.center_id.id),
+                ('date_begin','<',self.date_end),
+                ('date_end','>',self.date_begin),
+                ('ubication_id', '=', self.ubication_id.id)
+            ])
+
+        return "test"
+    '''
+    '''
+    @api.model
     def create(self, vals):
+        vals['name']='kk'
         session =  super(ems_session, self).create(vals)
+
+
         return session
     '''
+
 
 
     '''
@@ -359,77 +546,10 @@ class ems_session(models.Model):
             res = dict(domain={'responsible_id': [('id', 'in', responsible_ids)]})
 
             return res
+    '''
 
 
-
-    @api.onchange('center_id')
-    def onchange_centre(self):
-        service_ids = self.env['ems.ubication.service.rel'].search([('ubication_id.center_id','=',self.center_id.id)]).mapped('service_id.id')
-
-        self.service_id = False
-        self.ubication_id = False
-        self.resource_ids = False
-
-        res = dict(domain={'service_id': [('id', 'in', service_ids)]})
-
-        return res
-
-
-    @api.onchange('service_id', 'date_begin', 'date_end')
-    def onchange_service(self):
-        domains = {}
-        ids = [] #self.ubication_id.id]
-        ids2 = [] #self.resource_ids]
-        ids22 = []
-        for s in self.service_id.ubication_ids.filtered(lambda x: x.ubication_id.center_id==self.center_id).sorted(lambda x: x.sequence):
-            sessions = self.env['ems.session'].search([
-                ('center_id', '=', s.ubication_id.center_id.id),
-                ('ubication_id', '=', s.ubication_id.id),
-                ('date_begin','<',self.date_end),
-                ('date_end','>',self.date_begin),
-            ])
-            if len(sessions)==0:
-                ids.append(s.ubication_id.id)
-
-            t = self.env['ems.session'].search([
-                    ('center_id', '=', s.ubication_id.center_id.id),
-                    ('date_begin','<',self.date_end),
-                    ('date_end','>',self.date_begin),
-                ])
-
-            usats = False
-            for r in s.resource_ids:
-                for j in t:
-                    if r in j.resource_ids:
-                        usats=True
-                        break
-                if usats:
-                    break
-            if not usats:
-                ids2.append(s.resource_ids)
-                ids22+=s.resource_ids.mapped('id')
-
-        domains.update({'ubication_id': [('id', 'in', ids)]})
-        if ids!=[]:
-            self.ubication_id = ids[0]
-        else:
-            self.ubication_id = False
-
-        domains.update({'resource_ids': [('id', 'in', ids22)]})
-        if ids2!=[]:
-            self.resource_ids = ids2[0]
-        else:
-            self.resource_ids = False
-
-        if len(domains)!=0:
-            res = dict(domain=domains)
-
-        return res
-
-
-
-
-
+    '''
     @api.multi
     @api.depends('name', 'date_begin', 'date_end')
     def name_get(self):
@@ -486,19 +606,30 @@ class ems_ubication(models.Model):
     service_ids = fields.One2many('ems.ubication.service.rel', 'ubication_id', string="Services")
 
 
+    @api.multi
+    def name_get(self):
+        result = []
+        for ubi in self:
+            result.append((ubi.id, '%s (%s)' % (ubi.name, ubi.center_id.name)))
+
+        return result
+
+
 
 class ems_service(models.Model):
     """ Session Type """
     _name = 'ems.service'
     _description = 'Service'
 
-    name = fields.Char(string='Name', required=True)
+    name = fields.Char(string='Name', required=True, help="Minutes")
     description = fields.Text(string='Description')
     color = fields.Selection(selection=CALENDAR_COLORS, string="Color", required=True)
 
     #resource_ids = fields.Many2many('ems.resource', 'ems_service_resource_rel', 'resource_id', 'service_id', string="Resources")
     #resource_ids = fields.One2many('ems.service.resource.rel', 'service_id')
     ubication_ids = fields.One2many('ems.ubication.service.rel', 'service_id', string="Ubications")
+
+    duration = fields.Integer(string='Duration', required=True)
 
     '''
     @api.multi
@@ -532,13 +663,14 @@ class ems_ubication_service(models.Model):
     ]
     '''
 
-
+    '''
     @api.model
     def create(self, vals):
         emssr =  super(ems_ubication_service, self).create(vals)
 
         #self.env['ems.service.resource.rel'].search([('service_id','=',emssr.service_id)])
         return emssr
+    '''
 
 
 class ems_resource(models.Model):
@@ -554,6 +686,14 @@ class ems_resource(models.Model):
 
     description = fields.Text(string='Description',
         readonly=False)
+
+    @api.multi
+    def name_get(self):
+        result = []
+        for res in self:
+            result.append((res.id, '%s (%s)' % (res.name, res.center_id.name)))
+
+        return result
 
 
 
