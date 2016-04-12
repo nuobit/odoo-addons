@@ -347,7 +347,9 @@ class ems_session(models.Model):
             if n != pos:
                 raise Warning(_('Unexpected number of sessions. Expected %i, found: %i') % (n, pos))
 
-        self.name = "%03d" % (name_i + 1)
+            name_i += 1
+
+        self.name = "%03d" % name_i
 
 
     @api.onchange('duration')
