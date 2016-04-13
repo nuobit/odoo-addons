@@ -276,7 +276,7 @@ class ems_session(models.Model):
 
         required=True, readonly=False)
 
-    customer_id = fields.Many2one('res.partner', string='Customer', required=True)
+    customer_ids = fields.Many2many('res.partner', string='Customers', required=True)
 
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
@@ -310,7 +310,7 @@ class ems_session(models.Model):
 
 
 
-    @api.onchange('center_id', 'customer_id', 'service_id')
+    @api.onchange('center_id', 'customer_ids', 'service_id')
     def _onchange_session(self):
         '''
         sessions = self.env['ems.session'].search([
@@ -327,7 +327,7 @@ class ems_session(models.Model):
         sessions = self.env['ems.session'].search([
                 ('center_id', '=', self.center_id.id),
                 ('service_id', '=', self.service_id.id),
-                ('customer_id', '=', self.customer_id.id),
+                ('customer_ids', 'in', self.customer_ids.mapped('id')),
                 ('date_begin','<',self.date_begin),
             ]).sorted(lambda x: x.date_begin)
 
@@ -422,7 +422,7 @@ class ems_session(models.Model):
 
     @api.constrains('date_begin', 'date_end', 'center_id', #'service_id',
                     'ubication_id', 'resource_ids',
-                    'responsible_id', 'customer_id' )
+                    'responsible_id', 'customer_ids' )
     def _check_session(self):
         # check dates
         if self.date_end < self.date_begin:
@@ -470,16 +470,23 @@ class ems_session(models.Model):
         if len(sessions)!=0: #hi ha solapaments
             raise ValidationError(_("There's another session with selected responsible"))
 
-        ## que se solapin amb el mateix client
+        ## que se solapin amb el algun client
         sessions = self.env['ems.session'].search([
                 ('id', '!=', self.id),
                 ('center_id', '=', self.center_id.id),
                 ('date_begin','<',self.date_end),
                 ('date_end','>',self.date_begin),
-                ('customer_id', '=', self.customer_id.id)
             ])
-        if len(sessions)!=0: #hi ha solapaments
-            raise ValidationError(_("There's another session with selected customer"))
+        usats = False
+        for r in self.customer_ids:
+            for j in sessions:
+                if r in j.customer_ids:
+                    usats=True
+                    break
+            if usats:
+                break
+        if usats:
+           raise ValidationError(_("There's another session with selected customer"))
 
 
     '''
