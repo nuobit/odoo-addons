@@ -278,6 +278,8 @@ class ems_session(models.Model):
 
     customer_ids = fields.Many2many('res.partner', string='Customers', required=True)
 
+    customers_text = fields.Char(compute='_compute_customers_text')
+
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
 
@@ -308,7 +310,14 @@ class ems_session(models.Model):
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
 
 
+    @api.one
+    @api.depends('customer_ids')
+    def _compute_customers_text(self):
+        res = []
+        for c in self.customer_ids:
+            res.append(c.name)
 
+        self.customers_text = ', '.join(res)
 
     @api.onchange('center_id', 'customer_ids', 'service_id')
     def _onchange_session(self):

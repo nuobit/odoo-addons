@@ -124,7 +124,7 @@
             <field name="arch" type="xml">
                 <calendar color="color_rel" date_start="date_begin" date_stop="date_end"
                           string="Session Organization" mode="week">
-                    <field name="customer_ids"/>
+                    <field name="customers_text"/>
                     <field name="name"/>
                     <field name="responsible_id"/>
                     <field name="service_id" invisible="1"/>
