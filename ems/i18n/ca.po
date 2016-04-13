@@ -90,7 +90,7 @@ msgstr "Nom del centre"
 #. module: ems
 #: model:ir.ui.menu,name:ems.menu_center
 msgid "Centers"
-msgstr "Centers"
+msgstr "Centres"
 
 #. module: ems
 #: view:ems.timetable.wizard:ems.wizard_timetable_form_view
@@ -163,9 +163,9 @@ msgid "Created on"
 msgstr "Creat el"
 
 #. module: ems
-#: field:ems.session,customer_id:0
-msgid "Customer"
-msgstr "Client"
+#: field:ems.session,customer_ids:0
+msgid "Customers"
+msgstr "Clients"
 
 #. module: ems
 #: selection:ems.responsible,color:0
