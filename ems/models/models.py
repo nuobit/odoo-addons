@@ -302,7 +302,7 @@ class ems_session(models.Model):
         #default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
         readonly=False)
 
-    appointment_text = fields.Char(compute='_compute_appointment_text')
+    session_text = fields.Char(compute='_compute_session_text')
 
     state = fields.Selection([
             ('draft', 'Draft'),
@@ -333,19 +333,19 @@ class ems_session(models.Model):
 
     @api.one
     @api.depends('partner_ids', 'responsible_id')
-    def _compute_appointment_text(self):
+    def _compute_session_text(self):
         if self.state in ('confirmed'):
             if self.is_all_center:
-                self.appointment_text = self.service_id.name
+                self.session_text = self.service_id.name
             else:
                 cust_text = []
                 for c in self.partner_ids:
                     num_sessio = ' (%i)' % c.session if self.service_id.is_ems else ''
                     cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
 
-                self.appointment_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
+                self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
         else:
-            self.appointment_text = '#' + self.state.upper() + ('###############\n'*6)[:-1]##################' #False #self.state.upper()
+            self.session_text = '#' + self.state.upper() + ('###############\n'*6)[:-1]##################' #False #self.state.upper()
 
     @api.onchange('ubication_id')
     def _onchange_ubication(self):
@@ -471,7 +471,7 @@ class ems_session(models.Model):
 
 
             if len(sessions)!=0: #hi ha solapaments
-                raise ValidationError(_("There's another appointment in selected ubication"))
+                raise ValidationError(_("There's another session in selected ubication"))
 
             return
 
@@ -482,7 +482,7 @@ class ems_session(models.Model):
                 ('center_id', '=', self.center_id.id),
                 ('date_begin','<',self.date_end),
                 ('date_end','>',self.date_begin)]).filtered(lambda x: x.ubication_id.is_all_center)
-        if len(sessions)==0: #no hi ha solapaments amb un appointment de tipus all_center
+        if len(sessions)==0: #no hi ha solapaments amb una sessio que conte un servei de tipus all_center
              sessions = self.env['ems.session'].search([
                     ('id', '!=', self.id),
                     ('state', '=', 'confirmed'),
@@ -492,7 +492,7 @@ class ems_session(models.Model):
                     ('ubication_id', '=', self.ubication_id.id)
                 ])
         if len(sessions)!=0: #hi ha solapaments
-            raise ValidationError(_("There's another appointment in selected ubication"))
+            raise ValidationError(_("There's another session in selected ubication"))
 
 
         ## que se solapin amb algun dels recursos usats en la sessio en curs
@@ -557,7 +557,7 @@ class ems_session(models.Model):
     def _check_session(self):
         #check state
         if self.state!='draft':
-            raise ValidationError(_('You can only change a draft appointment'))
+            raise ValidationError(_('You can only change a draft session'))
 
         self._check_all()
 

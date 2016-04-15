@@ -32,8 +32,8 @@ msgstr "All center"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
-msgid "Appointments in New state"
-msgstr "Appointments in New state"
+msgid "Sessions in New state"
+msgstr "Sessions in New state"
 
 #. module: ems
 #: view:ems.session:ems.view_ems_session_form
@@ -81,8 +81,8 @@ msgstr "Cancel"
 
 #. module: ems
 #: view:ems.session:ems.view_ems_session_form
-msgid "Cancel Appointment"
-msgstr "Cancel Appointment"
+msgid "Cancel"
+msgstr "Cancel"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
@@ -92,8 +92,8 @@ msgstr "Cancelled"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
-msgid "Cancelled Appointments"
-msgstr "Cancelled Appointments"
+msgid "Cancelled Sessions"
+msgstr "Cancelled Sessions"
 
 #. module: ems
 #: view:ems.center:ems.view_ems_center_form
@@ -157,8 +157,8 @@ msgstr "Configuración"
 
 #. module: ems
 #: view:ems.session:ems.view_ems_session_form
-msgid "Confirm Appointment"
-msgstr "Confirm Appointment"
+msgid "Confirm"
+msgstr "Confirm"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
@@ -168,8 +168,8 @@ msgstr "Confirmed"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
-msgid "Confirmed Appointments"
-msgstr "Confirmed Appointments"
+msgid "Confirmed Sessions"
+msgstr "Confirmed Sessions"
 
 #. module: ems
 #: field:ems.center,create_uid:0
@@ -525,8 +525,8 @@ msgstr "Monday"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
-msgid "My Appointments"
-msgstr "My Appointments"
+msgid "My Sessions"
+msgstr "My Sessions"
 
 #. module: ems
 #: field:ems.responsible,name:0
@@ -621,8 +621,8 @@ msgstr "Rescheduled"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
-msgid "Rescheduled Appointments"
-msgstr "Rescheduled Appointments"
+msgid "Rescheduled Sessions"
+msgstr "Rescheduled Sessions"
 
 #. module: ems
 #: view:ems.resource:ems.view_ems_resource_form
@@ -757,8 +757,8 @@ msgstr "Sesiones"
 
 #. module: ems
 #: view:ems.session:ems.view_ems_session_form
-msgid "Set To Draft"
-msgstr "Set To Draft"
+msgid "Set to Draft"
+msgstr "Set to Draft"
 
 #. module: ems
 #: view:ems.timetable:ems.view_ems_timetable_form
@@ -842,8 +842,8 @@ msgstr "The minimum attendees cannot be less than 0."
 #: code:addons/ems/models/models.py:474
 #: code:addons/ems/models/models.py:495
 #, python-format
-msgid "There's another appointment in selected ubication"
-msgstr "There's another appointment in selected ubication"
+msgid "There's another session in selected ubication"
+msgstr "There's another session in selected ubication"
 
 #. module: ems
 #: code:addons/ems/models/models.py:515
@@ -941,8 +941,8 @@ msgstr "Upcoming"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
-msgid "Upcoming Appointments from today"
-msgstr "Upcoming Appointments from today"
+msgid "Upcoming Sessions from today"
+msgstr "Upcoming Sessions from today"
 
 #. module: ems
 #: view:ems.responsible:ems.view_ems_responsible_form
@@ -1010,8 +1010,8 @@ msgstr "Yes, severe"
 #. module: ems
 #: code:addons/ems/models/models.py:560
 #, python-format
-msgid "You can only change a draft appointment"
-msgstr "You can only change a draft appointment"
+msgid "You can only change a draft session"
+msgstr "You can only change a draft session"
 
 #. module: ems
 #: view:ems.session.wizard:ems.wizard_session_form_view

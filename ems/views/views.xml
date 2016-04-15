@@ -48,15 +48,16 @@
             <field name="arch" type="xml">
                 <form string="Sessions">
                     <header>
-                        <button string="Confirm Appointment" name="button_confirm" states="draft" type="object"
+                        <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
-                        <!--button string="Reschedule Appointment" name="button_reschedule" states="confirmed" type="object"
+                        <!--button string="Reschedule Session" name="button_reschedule" states="confirmed" type="object"
                                 groups="base.group_user"/-->
-                        <button string="Set To Draft" name="button_draft" states="cancelled,confirmed" type="object"
+                        <button string="Set to Draft" name="button_draft" states="cancelled,confirmed" type="object"
                                 groups="base.group_user"/>
-                        <button string="Cancel Appointment" name="button_cancel" states="confirmed" type="object"
+                        <button string="Cancel" name="button_cancel" states="confirmed" type="object"
                                 groups="base.group_user"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,rescheduled,cancelled"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirmed,rescheduled,cancelled"/>
                     </header>
                     <sheet>
                         <group colspan="2" col="4">
@@ -85,8 +86,7 @@
                                        options="{'no_create': True}"/>
                             </group>
                             <group string="Attendees">
-                                <!--field name="customer_ids"
-                                       attrs="{'required':[('is_all_center', '=', False)]}"/!-->
+
                                 <field name="partner_ids" attrs="{'required':[('is_all_center', '=', False)]}"
                                        nolabel="1">
                                     <tree editable="bottom">
@@ -98,6 +98,10 @@
                                     </tree>
                                 </field>
                             </group>
+                        </group>
+                        <group>
+                            <field name="customer_ids"
+                                   attrs="{'required':[('is_all_center', '=', False)]}"/>
                         </group>
                         <notebook>
                             <!--page string='Session Details' groups="base.group_no_one">
@@ -126,7 +130,7 @@
             <field name="arch" type="xml">
                 <calendar color="color_rel" date_start="date_begin" date_stop="date_end"
                           string="Session Organization" mode="week">
-                    <field name="appointment_text"/>
+                    <field name="session_text"/>
                     <!--field name="name"/-->
                     <!--field name="responsible_id"/-->
                     <field name="service_id" invisible="1"/>
@@ -140,20 +144,20 @@
             <field name="model">ems.session</field>
             <field name="arch" type="xml">
                 <search>
-                    <filter string="My Appointments" help="My Appointments" domain="[('responsible_id','=',uid)]"/>
+                    <filter string="My Sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
                     <separator/>
                     <filter string="Upcoming" name="upcoming"
                             domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
-                            help="Upcoming Appointments from today"/>
+                            help="Upcoming Sessions from today"/>
                     <separator/>
                     <filter string="Draft" name="draft" domain="[('state','=','draft')]"
-                            help="Appointments in New state"/>
+                            help="Sessions in New state"/>
                     <filter string="Confirmed" name="confirmed" domain="[('state','=','confirmed')]"
-                            help="Confirmed Appointments"/>
+                            help="Confirmed Sessions"/>
                     <filter string="Cancelled" name="cancelled" domain="[('state','=','cancelled')]"
-                            help="Cancelled Appointments"/>
+                            help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
-                            help="Rescheduled Appointments"/>
+                            help="Rescheduled Sessions"/>
                     <field name="customer_ids"/>
                     <field name="responsible_id"/>
                     <field name="description"/>
