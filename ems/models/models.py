@@ -273,18 +273,22 @@ class ems_session(models.Model):
         required=True, readonly=False)
 
     responsible_id = fields.Many2one('ems.responsible', string='Responsible',
+        required=False, readonly=False)
 
-        required=True, readonly=False)
+    customer_ids = fields.Many2many('res.partner', string='Customers', required=False)
 
-    customer_ids = fields.Many2many('res.partner', string='Customers', required=True)
 
-    customers_text = fields.Char(compute='_compute_customers_text')
+    partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id')
 
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
 
+    color_rel = fields.Selection(related="service_id.color", store=False)
+
     ubication_id = fields.Many2one('ems.ubication', string='Ubication',
         required=True, readonly=False)
+
+    is_all_center = fields.Boolean(related='ubication_id.is_all_center', store=False)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
         required=False, readonly=False)
@@ -298,69 +302,54 @@ class ems_session(models.Model):
         #default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
         readonly=False)
 
-    color_rel = fields.Selection(related="service_id.color", store=False)
-
+    appointment_text = fields.Char(compute='_compute_appointment_text')
 
     state = fields.Selection([
-            ('draft', 'Unconfirmed'),
-            ('cancel', 'Cancelled'),
-            ('confirm', 'Confirmed'),
-            ('done', 'Done')
+            ('draft', 'Draft'),
+            ('cancelled', 'Cancelled'),
+            ('rescheduled', 'Rescheduled'),
+            ('confirmed', 'Confirmed'),
         ], string='Status', default='draft', readonly=True, required=True, copy=False,
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
 
+    @api.one
+    def button_draft(self):
+        self.state = 'draft'
 
     @api.one
-    @api.depends('customer_ids')
-    def _compute_customers_text(self):
-        res = []
-        for c in self.customer_ids:
-            res.append(c.name)
+    def button_cancel(self):
+        self.state = 'cancelled'
 
-        self.customers_text = ', '.join(res)
+    @api.one
+    def button_reschedule(self):
+        self.state = 'rescheduled'
 
-    @api.onchange('center_id', 'customer_ids', 'service_id')
-    def _onchange_session(self):
-        '''
-        sessions = self.env['ems.session'].search([
-                ('center_id', '=', self.center_id.id),
-                ('service_id', '=', self.service_id.id),
-                ('customer_id', '=', self.customer_id.id),
-                ('date_end','>',self.date_end),
-            ])
-        if len(sessions)!=0:
-            raise Warning(_("There's sessions after current one"))
-        '''
+    @api.one
+    def button_confirm(self):
+        """ Confirm Event and send confirmation email to all register peoples """
+        self.state = 'confirmed'
 
 
-        sessions = self.env['ems.session'].search([
-                ('center_id', '=', self.center_id.id),
-                ('service_id', '=', self.service_id.id),
-                ('customer_ids', 'in', self.customer_ids.mapped('id')),
-                ('date_begin','<',self.date_begin),
-            ]).sorted(lambda x: x.date_begin)
 
-        n = len(sessions)
-        if n == 0:
-            name_i = 0
+    @api.one
+    @api.depends('partner_ids', 'responsible_id')
+    def _compute_appointment_text(self):
+        if self.state in ('confirmed'):
+            if self.is_all_center:
+                self.appointment_text = self.service_id.name
+            else:
+                cust_text = []
+                for c in self.partner_ids:
+                    num_sessio = ' (%i)' % c.session if self.service_id.is_ems else ''
+                    cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
+
+                self.appointment_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
         else:
-            ls = zip(sessions, range(1, n + 1))
+            self.appointment_text = '#' + self.state.upper() + ('###############\n'*6)[:-1]##################' #False #self.state.upper()
 
-            name_s, pos = ls[-1]
-
-            name_i = int(name_s.name)
-
-            '''
-            if name_i != pos:
-                raise Warning(_('Unexpected last session number. Expected %i, found: %i') % (pos, name_i))
-
-            if n != pos:
-                raise Warning(_('Unexpected number of sessions. Expected %i, found: %i') % (n, pos))
-            '''
-            name_i += 1
-
-        self.name = "%03d" % name_i
-
+    @api.onchange('ubication_id')
+    def _onchange_ubication(self):
+        self.resource_ids = self.service_id.ubication_ids.filtered(lambda x: x.ubication_id==self.ubication_id).resource_ids
 
     @api.onchange('duration')
     def _onchange_duration(self):
@@ -383,12 +372,13 @@ class ems_session(models.Model):
     def onchange_centre(self):
         service_ids = self.env['ems.ubication.service.rel'].search([('ubication_id.center_id','=',self.center_id.id)]).mapped('service_id.id')
 
-
         self.service_id = False
         if len(service_ids)==1:
             self.service_id = service_ids[0]
         self.ubication_id = False
+        self.responsible_id = False
         self.resource_ids = False
+        self.partner_ids = False
 
         res = dict(domain={'service_id': [('id', 'in', service_ids)]})
 
@@ -397,7 +387,26 @@ class ems_session(models.Model):
     @api.model
     @api.onchange('service_id')
     def onchange_service(self):
+        # actulitzem la data fi
         self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.service_id.duration)
+
+        # actualitzem la sessio de ls customers
+        for pr in self.partner_ids:
+            if not self.service_id.is_ems:
+                pr.session = -1
+            else:
+                sessions = self.env['ems.session'].search([
+                        ('state', '=', 'confirmed'),
+                        ('center_id', '=', self.center_id.id),
+                        ('date_end','<=',self.date_begin)])\
+                    .filtered(lambda x: x.service_id.is_ems)\
+                    .filtered(lambda x: pr.partner_id in x.partner_ids.mapped('partner_id'))\
+                    .sorted(lambda x: x.date_begin)
+                if sessions:
+                    pr.session = sessions[-1].partner_ids.filtered(lambda x: x.partner_id.id == pr.partner_id.id).session + 1
+                else:
+                    pr.session = 0
+
 
         domains = {}
         ids = [] #self.ubication_id.id]
@@ -423,36 +432,73 @@ class ems_session(models.Model):
 
         self.duration=self.service_id.duration
 
+        if self.ubication_id.is_all_center:
+            self.responsible_id = False
+            self.resource_ids = False
+            self.partner_ids = False
+
         res = {}
         if len(domains)!=0:
             res = dict(domain=domains)
 
         return res
 
-    @api.constrains('date_begin', 'date_end', 'center_id', #'service_id',
-                    'ubication_id', 'resource_ids',
-                    'responsible_id', 'customer_ids' )
-    def _check_session(self):
+
+    def _check_all(self):
         # check dates
         if self.date_end < self.date_begin:
             raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
 
+        # check number of atendees
+        if self.service_id.max_attendees>=0 and len(self.partner_ids)>self.service_id.max_attendees:
+            raise ValidationError(_('Too many attendees, maximum of %i') % self.service_id.max_attendees)
+
+        if self.service_id.min_attendees>len(self.partner_ids):
+            raise ValidationError(_('It requieres %i attendees minimum') % self.service_id.min_attendees)
+
+
         ### cerquem le sessions que se solapin amb l'actual (excepte lactual que segur que  solapa)
-        ## que se solapin en la mateixa sala
+        # si la ubicacio actual es de tipus "tot el centre", qualsevol solapament temporal
+        # en el mateix center no permet desar la nova ssessio
+        if self.ubication_id.is_all_center:
+            sessions = self.env['ems.session'].search([
+                    ('id', '!=', self.id),
+                    ('state', '=', 'confirmed'),
+                    ('center_id', '=', self.center_id.id),
+                    ('date_begin','<',self.date_end),
+                    ('date_end','>',self.date_begin),
+                ])
+
+
+            if len(sessions)!=0: #hi ha solapaments
+                raise ValidationError(_("There's another appointment in selected ubication"))
+
+            return
+
+        ## que se solapin en la mateixa sala o en tot si es de tipus all center
         sessions = self.env['ems.session'].search([
                 ('id', '!=', self.id),
+                ('state', '=', 'confirmed'),
                 ('center_id', '=', self.center_id.id),
                 ('date_begin','<',self.date_end),
-                ('date_end','>',self.date_begin),
-                ('ubication_id', '=', self.ubication_id.id)
-            ])
+                ('date_end','>',self.date_begin)]).filtered(lambda x: x.ubication_id.is_all_center)
+        if len(sessions)==0: #no hi ha solapaments amb un appointment de tipus all_center
+             sessions = self.env['ems.session'].search([
+                    ('id', '!=', self.id),
+                    ('state', '=', 'confirmed'),
+                    ('center_id', '=', self.center_id.id),
+                    ('date_begin','<',self.date_end),
+                    ('date_end','>',self.date_begin),
+                    ('ubication_id', '=', self.ubication_id.id)
+                ])
         if len(sessions)!=0: #hi ha solapaments
-            raise ValidationError(_("There's another session in selected ubication"))
+            raise ValidationError(_("There's another appointment in selected ubication"))
 
 
         ## que se solapin amb algun dels recursos usats en la sessio en curs
         sessions = self.env['ems.session'].search([
                 ('id', '!=', self.id),
+                ('state', '=', 'confirmed'),
                 ('center_id', '=', self.center_id.id),
                 ('date_begin','<',self.date_end),
                 ('date_end','>',self.date_begin),
@@ -471,6 +517,7 @@ class ems_session(models.Model):
         ## que se solapin amb el mateix entrenador
         sessions = self.env['ems.session'].search([
                 ('id', '!=', self.id),
+                ('state', '=', 'confirmed'),
                 ('center_id', '=', self.center_id.id),
                 ('date_begin','<',self.date_end),
                 ('date_end','>',self.date_begin),
@@ -482,14 +529,15 @@ class ems_session(models.Model):
         ## que se solapin amb el algun client
         sessions = self.env['ems.session'].search([
                 ('id', '!=', self.id),
+                ('state', '=', 'confirmed'),
                 ('center_id', '=', self.center_id.id),
                 ('date_begin','<',self.date_end),
                 ('date_end','>',self.date_begin),
             ])
         usats = False
-        for r in self.customer_ids:
+        for r in self.partner_ids.mapped('partner_id'):
             for j in sessions:
-                if r in j.customer_ids:
+                if r in j.partner_ids.mapped('partner_id'):
                     usats=True
                     break
             if usats:
@@ -498,117 +546,59 @@ class ems_session(models.Model):
            raise ValidationError(_("There's another session with selected customer"))
 
 
-    '''
-    @api.model
-    def _get_default_name(self):
-
-        sessions = self.env['ems.session'].search([
-                ('id', '!=', self.id),
-                ('center_id', '=', self.center_id.id),
-                ('date_begin','<',self.date_end),
-                ('date_end','>',self.date_begin),
-                ('ubication_id', '=', self.ubication_id.id)
-            ])
-
-        return "test"
-    '''
-    '''
-    @api.model
-    def create(self, vals):
-        vals['name']='kk'
-        session =  super(ems_session, self).create(vals)
+    @api.constrains('state')
+    def check_state(self):
+        self._check_all()
 
 
-        return session
-    '''
+    @api.constrains('date_begin', 'date_end', 'center_id',
+                    'ubication_id', 'resource_ids',
+                    'responsible_id', 'partner_ids')
+    def _check_session(self):
+        #check state
+        if self.state!='draft':
+            raise ValidationError(_('You can only change a draft appointment'))
+
+        self._check_all()
 
 
+class ems_partner(models.Model):
+    """ Ubication """
+    _name = 'ems.partner'
+    _description = 'Partner'
 
-    '''
-    @api.onchange('date_begin')
-    def _onchange_date_begin(self):
-        if self.date_begin and not self.date_end:
-            date_begin = fields.Datetime.from_string(self.date_begin)
-            self.date_end = fields.Datetime.to_string(date_begin + datetime.timedelta(hours=1))
-    '''
+    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
 
-    '''
-    @api.onchange('date_begin', 'date_end')
-    def _onchange_date_begin_end_ems(self):
-        if self.date_begin and self.date_end:
-            date_begin = fields.Datetime.from_string(self.date_begin)
-            if not self.date_end:
-                self.date_end = fields.Datetime.to_string(date_begin + datetime.timedelta(hours=1))
+    session = fields.Integer('Session', required=True, default=-1)
 
+    phone = fields.Char(related='partner_id.phone', readonly=True)
 
-            tts = self.env['ems.timetable'].search([('center_id', '=', self.center_id.id),
-                                              ])
-            tts1 = set()
-            for tt1 in tts:
-                if tt1.type=='yearday':
-                    if pytz.utc.localize(fields.Datetime.from_string(self.date_end)) <= pytz.utc.localize(fields.Datetime.from_string(tt1.date_end)) and \
-                                    pytz.utc.localize(fields.Datetime.from_string(self.date_begin)) >= pytz.utc.localize(fields.Datetime.from_string(tt1.date_begin)):
-                        tts1.add(tt1.id)
+    mobile = fields.Char(related='partner_id.mobile', readonly=True)
+
+    email = fields.Char(related='partner_id.email', readonly=True)
+
+    session_id = fields.Many2one('ems.session')
+
+    _sql_constraints = [('partner_session_unique', 'unique(session_id, partner_id)',_("Partner duplicated"))]
+
+    @api.onchange('partner_id')
+    def onchange_partner(self):
+        if self.partner_id:
+            if not self.session_id.service_id.is_ems:
+                self.session = -1
+            else:
+                ## obtenim les sessions quer contenen el aprnter actualitzat
+                sessions = self.env['ems.session'].search([
+                        ('state', '=', 'confirmed'),
+                        ('center_id', '=', self.session_id.center_id.id),
+                        ('date_end','<=',self.session_id.date_begin)])\
+                    .filtered(lambda x: x.service_id.is_ems)\
+                    .filtered(lambda x: self.partner_id in x.partner_ids.mapped('partner_id'))\
+                    .sorted(lambda x: x.date_begin)
+                if sessions:
+                    self.session = sessions[-1].partner_ids.filtered(lambda x: x.partner_id.id == self.partner_id.id).session + 1
                 else:
-                    dt_session_begin = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
-                    dt_session_end = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_end))
-
-                    day = dt_session_begin.isoweekday()
-                    time_begin = tuple2timestr((dt_session_begin.hour, dt_session_begin.minute))
-                    time_end = tuple2timestr((dt_session_end.hour, dt_session_end.minute))
-
-                    if day==tt1.day and time_end <= tt1.time_end and time_begin >= tt1.time_begin:
-                        tts1.add(tt1.id)
-
-            responsible_ids = self.env['ems.timetable'].browse(list(tts1)).sorted(key=lambda x: x.sequence).mapped('responsible_id.id')
-
-            res = dict(domain={'responsible_id': [('id', 'in', responsible_ids)]})
-
-            return res
-    '''
-
-
-    '''
-    @api.multi
-    @api.depends('name', 'date_begin', 'date_end')
-    def name_get(self):
-        result = []
-        for event in self:
-            date_begin = fields.Datetime.from_string(event.date_begin)
-            date_end = fields.Datetime.from_string(event.date_end)
-            dates = [fields.Date.to_string(fields.Datetime.context_timestamp(event, dt)) for dt in [date_begin, date_end] if dt]
-            dates = sorted(set(dates))
-            result.append((event.id, '%s (%s)' % (event.name, ' - '.join(dates))))
-        return result
-
-
-    @api.one
-    @api.constrains('date_begin', 'date_end')
-    def _check_closing_date(self):
-        if self.date_end < self.date_begin:
-            raise Warning(_('Closing Date cannot be set before Beginning Date.'))
-
-    @api.one
-    def button_draft(self):
-        self.state = 'draft'
-
-    @api.one
-    def button_cancel(self):
-        self.state = 'cancel'
-
-    @api.one
-    def button_done(self):
-        self.state = 'done'
-
-    @api.one
-    def confirm_event(self):
-        self.state = 'confirm'
-
-    @api.one
-    def button_confirm(self):
-        """ Confirm Event and send confirmation email to all register peoples """
-        self.confirm_event()
-    '''
+                    self.session = 0
 
 
 class ems_ubication(models.Model):
@@ -618,6 +608,8 @@ class ems_ubication(models.Model):
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
+
+    is_all_center = fields.Boolean(string="All center", help="Indicates if this ubication represents the whole center", default=False)
 
     center_id = fields.Many2one('ems.center', string='Center',
         required=True, readonly=False, default=lambda self: self.env.user.center_id)
@@ -644,21 +636,30 @@ class ems_service(models.Model):
     description = fields.Text(string='Description')
     color = fields.Selection(selection=CALENDAR_COLORS, string="Color", required=True)
 
-    #resource_ids = fields.Many2many('ems.resource', 'ems_service_resource_rel', 'resource_id', 'service_id', string="Resources")
-    #resource_ids = fields.One2many('ems.service.resource.rel', 'service_id')
     ubication_ids = fields.One2many('ems.ubication.service.rel', 'service_id', string="Ubications")
 
     duration = fields.Integer(string='Duration', required=True)
 
-    '''
-    @api.multi
-    def name_get(self):
-        result = []
-        for service in self:
-            result.append((service.id, '%s%s' % (service.name, ' [%s]' % service.color if service.color else '')))
+    is_ems = fields.Boolean(string='EMS', default=False)
 
-        return result
-    '''
+    min_attendees = fields.Integer(string="Minimum attendees", help="Minimum number of attendees", required=True, default=0)
+    max_attendees = fields.Integer(string="Maximum attendees", help="Maximum number of attendees (-1 for no restriction)", required=True, default=-1)
+
+    _sql_constraints = [('service_color_unique', 'unique(color)',_("Color already used"))]
+
+    @api.constrains('min_attendees', 'max_attendees')
+    def check_attendees(self):
+        if self.max_attendees<0 and self.max_attendees!=-1:
+            self.max_attendees = -1
+
+        if self.min_attendees<0:
+            raise ValidationError(_('The minimum attendees cannot be less than 0.'))
+
+        if self.max_attendees>0:
+            if self.min_attendees>self.max_attendees:
+                raise ValidationError(_('The minimum attendees cannot be greater than the maximum.'))
+
+
 
 class ems_ubication_service(models.Model):
     """ Session Type """
@@ -888,6 +889,8 @@ class ems_responsible(models.Model):
 
     user_id = fields.Many2one('res.users', string='User', readonly=False, required=True)
 
+    name = fields.Char(string="Name")
+
     color = fields.Selection(selection=CALENDAR_COLORS, string="Color", required=True)
 
     description = fields.Text(string='Description', required=False)
@@ -905,14 +908,15 @@ class ems_responsible(models.Model):
     session_ids = fields.One2many('ems.session', 'responsible_id', readonly=False,
                                   domain=[('date_begin','>=', fields.Datetime.to_string(datetime.datetime.combine(fields.Datetime.from_string(fields.Datetime.now()), datetime.time(0,0,0))))])
 
-    _sql_constraints = [('user_id_unique', 'unique(user_id)',_("Responsible already exists"))]
-
+    _sql_constraints = [('user_id_unique', 'unique(user_id)',_("Responsible already exists")),
+                        ('service_color_unique', 'unique(color)',_("Color already used"))]
 
     @api.multi
     def name_get(self):
         res = []
         for tr in self:
-            res.append((tr.id, tr.user_id.name))
+            name = tr.name if tr.name else tr.user_id.name
+            res.append((tr.id, name))
         return res
 
 
