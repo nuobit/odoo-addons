@@ -457,6 +457,10 @@ class ems_session(models.Model):
             raise ValidationError(_('It requieres %i attendees minimum') % self.service_id.min_attendees)
 
 
+        ####
+        if self.state == 'draft':
+            return
+
         ### cerquem le sessions que se solapin amb l'actual (excepte lactual que segur que  solapa)
         # si la ubicacio actual es de tipus "tot el centre", qualsevol solapament temporal
         # en el mateix center no permet desar la nova ssessio
@@ -560,6 +564,15 @@ class ems_session(models.Model):
             raise ValidationError(_('You can only change a draft session'))
 
         self._check_all()
+
+    @api.multi
+    def unlink(self):
+        for rec in self:
+            #Call the parent method to eliminate the records.
+            if rec.state == 'draft':
+                super(ems_session, rec).unlink()
+            else:
+                raise ValidationError(_('You can only delete a draft session'))
 
 
 class ems_partner(models.Model):

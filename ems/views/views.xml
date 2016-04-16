@@ -50,9 +50,9 @@
                     <header>
                         <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
-                        <!--button string="Reschedule Session" name="button_reschedule" states="confirmed" type="object"
-                                groups="base.group_user"/-->
-                        <button string="Set to Draft" name="button_draft" states="cancelled,confirmed" type="object"
+                        <button string="Set to Draft" name="button_draft" states="confirmed" type="object"
+                                groups="base.group_user"/>
+                        <button string="Reschedule" name="button_reschedule" states="confirmed" type="object"
                                 groups="base.group_user"/>
                         <button string="Cancel" name="button_cancel" states="confirmed" type="object"
                                 groups="base.group_user"/>
@@ -62,33 +62,31 @@
                     <sheet>
                         <group colspan="2" col="4">
                             <group>
-                                <field name="center_id" options="{'no_create': True}"/>
+                                <field name="center_id" options="{'no_create': True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
                             <group/>
                         </group>
                         <group colspan="2" col="4">
                             <group>
-                                <field name="service_id" options="{'no_create': True}"/>
-                                <field name="ubication_id" options="{'no_create': True}"/>
+                                <field name="service_id" options="{'no_create': True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="ubication_id" options="{'no_create': True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                                 <field name="is_all_center" invisible="1"/>
                             </group>
                             <group>
-                                <field name="duration"/>
-                                <field name="date_begin"/>
-                                <field name="date_end"/>
+                                <field name="duration" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="date_begin" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="date_end" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
                         </group>
 
                         <group attrs="{'invisible':[('is_all_center', '=', True)]}">
                             <group colspan="2" col="4">
-                                <field name="responsible_id" attrs="{'required':[('is_all_center', '=', False)]}"/>
+                                <field name="responsible_id" attrs="{'required':[('is_all_center', '=', False)], 'readonly':[('state', '!=', 'draft')]}"/>
                                 <field name="resource_ids" string="Resources" widget="many2many_tags"
-                                       options="{'no_create': True}"/>
+                                       options="{'no_create': True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
                             <group string="Attendees">
-
-                                <field name="partner_ids" attrs="{'required':[('is_all_center', '=', False)]}"
-                                       nolabel="1">
+                                <field name="partner_ids" nolabel="1" attrs="{'readonly':[('state', '!=', 'draft')]}">
                                     <tree editable="bottom">
                                         <field name="partner_id"/>
                                         <field name="session"/>

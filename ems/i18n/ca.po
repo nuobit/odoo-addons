@@ -761,6 +761,11 @@ msgid "Set to Draft"
 msgstr "Establir a Esborrany"
 
 #. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Reschedule"
+msgstr "Replanificar"
+
+#. module: ems
 #: view:ems.timetable:ems.view_ems_timetable_form
 #: view:ems.timetable.wizard:ems.wizard_timetable_form_view
 #: model:ir.actions.act_window,name:ems.launch_timetable_wizard
