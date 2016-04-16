@@ -307,6 +307,55 @@ openerp.ems = function (instance) {
                 }
             };
             this.$calendar.fullCalendar('addEventSource', this.event_source);
+        },
+        open_event: function(id, title) {
+            var self = this;
+            if (! this.open_popup_action) {
+                var index = this.dataset.get_id_index(id);
+                this.dataset.index = index;
+                this.do_switch_view('form', null, { mode: "view" });
+                /*
+                if (this.write_right) {
+                    this.do_switch_view('form', null, { mode: "edit" });
+                } else {
+                    this.do_switch_view('form', null, { mode: "view" });
+                }*/
+            }
+            else {
+                var pop = new instance.web.form.FormOpenPopup(this);
+                var id_cast = parseInt(id).toString() == id ? parseInt(id) : id;
+                pop.show_element(this.dataset.model, id_cast, this.dataset.get_context(), {
+                    title: _.str.sprintf(_t("View: %s"),title),
+                    view_id: +this.open_popup_action,
+                    res_id: id_cast,
+                    target: 'new',
+                    readonly:true
+                });
+
+               var form_controller = pop.view_form;
+               form_controller.on("load_record", self, function(){
+                    button_delete = _.str.sprintf("<button class='oe_button oe_bold delme'><span> %s </span></button>",_t("Delete"));
+                    button_edit = _.str.sprintf("<button class='oe_button oe_bold editme oe_highlight'><span> %s </span></button>",_t("Edit Event"));
+
+                    pop.$el.closest(".modal").find(".modal-footer").prepend(button_delete);
+                    pop.$el.closest(".modal").find(".modal-footer").prepend(button_edit);
+
+                    $('.delme').click(
+                        function() {
+                            $('.oe_form_button_cancel').trigger('click');
+                            self.remove_event(id);
+                        }
+                    );
+                    $('.editme').click(
+                        function() {
+                            $('.oe_form_button_cancel').trigger('click');
+                            self.dataset.index = self.dataset.get_id_index(id);
+                            self.do_switch_view('form', null, { mode: "edit" });
+                        }
+                    );
+               });
+            }
+            return false;
         }
     });
 };

@@ -99,10 +99,6 @@
                                 </field>
                             </group>
                         </group>
-                        <group>
-                            <field name="customer_ids"
-                                   attrs="{'required':[('is_all_center', '=', False)]}"/>
-                        </group>
                         <notebook>
                             <!--page string='Session Details' groups="base.group_no_one">
                                 <group colspan="4">
@@ -111,6 +107,12 @@
                             </page-->
                             <page string="Description">
                                 <field name="description" nolabel="1" placeholder="Session Description..."/>
+                            </page>
+                            <page string="tmp">
+                                <group>
+                                    <field name="name"/>
+                                    <field name="customer_ids"/>
+                                </group>
                             </page>
                         </notebook>
                     </sheet>
