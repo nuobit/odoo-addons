@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-15 17:33+0000\n"
-"PO-Revision-Date: 2016-04-15 17:33+0000\n"
+"POT-Creation-Date: 2016-04-17 09:00+0000\n"
+"PO-Revision-Date: 2016-04-17 09:00+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -29,11 +29,6 @@ msgstr "Absences"
 #: field:ems.ubication,is_all_center:0
 msgid "All center"
 msgstr "All center"
-
-#. module: ems
-#: view:ems.session:ems.ems_session_search_view
-msgid "Sessions in New state"
-msgstr "Sessions in New state"
 
 #. module: ems
 #: view:ems.session:ems.view_ems_session_form
@@ -75,12 +70,8 @@ msgid "Brown-Red"
 msgstr "Brown-Red"
 
 #. module: ems
-#: view:ems.session.wizard:ems.wizard_session_form_view
-msgid "Cancel"
-msgstr "Cancel"
-
-#. module: ems
 #: view:ems.session:ems.view_ems_session_form
+#: view:ems.session.wizard:ems.wizard_session_form_view
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -125,7 +116,7 @@ msgid "Close"
 msgstr "Close"
 
 #. module: ems
-#: code:addons/ems/models/models.py:450
+#: code:addons/ems/models/models.py:455
 #, python-format
 msgid "Closing Date cannot be set before Beginning Date"
 msgstr "Closing Date cannot be set before Beginning Date"
@@ -137,8 +128,8 @@ msgid "Color"
 msgstr "Color"
 
 #. module: ems
-#: code:addons/ems/models/models.py:648
-#: code:addons/ems/models/models.py:912
+#: code:addons/ems/models/models.py:677
+#: code:addons/ems/models/models.py:941
 #: sql_constraint:ems.responsible:0
 #: sql_constraint:ems.service:0
 #, python-format
@@ -238,6 +229,13 @@ msgid "Day"
 msgstr "Day"
 
 #. module: ems
+#. openerp-web
+#: code:addons/ems/static/src/js/ems_calendar.js:337
+#, python-format
+msgid "Delete"
+msgstr "Delete"
+
+#. module: ems
 #: field:ems.center,description:0
 #: field:ems.resource,description:0
 #: field:ems.responsible,description:0
@@ -277,6 +275,13 @@ msgstr "Duration"
 #: view:res.users:ems.view_ems_users_info_form
 msgid "EMS"
 msgstr "EMS"
+
+#. module: ems
+#. openerp-web
+#: code:addons/ems/static/src/js/ems_calendar.js:338
+#, python-format
+msgid "Edit Event"
+msgstr "Edit Event"
 
 #. module: ems
 #: field:ems.responsible.absence,end_date:0
@@ -399,7 +404,7 @@ msgid "Initial time"
 msgstr "Initial time"
 
 #. module: ems
-#: code:addons/ems/models/models.py:457
+#: code:addons/ems/models/models.py:462
 #, python-format
 msgid "It requieres %i attendees minimum"
 msgstr "It requieres %i attendees minimum"
@@ -558,7 +563,7 @@ msgid "Origin"
 msgstr "Origin"
 
 #. module: ems
-#: code:addons/ems/models/models.py:864
+#: code:addons/ems/models/models.py:893
 #, python-format
 msgid "Overlaps detected for responsible %s:\n"
 "%s"
@@ -573,7 +578,7 @@ msgid "Partner"
 msgstr "Empresa"
 
 #. module: ems
-#: code:addons/ems/models/models.py:582
+#: code:addons/ems/models/models.py:608
 #: sql_constraint:ems.partner:0
 #, python-format
 msgid "Partner duplicated"
@@ -612,6 +617,11 @@ msgstr "Reason"
 #: selection:ems.service,color:0
 msgid "Red"
 msgstr "Red"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Reschedule"
+msgstr "Reschedule"
 
 #. module: ems
 #: view:ems.session:ems.ems_session_search_view
@@ -663,7 +673,7 @@ msgid "Responsible Absence"
 msgstr "Responsible Absence"
 
 #. module: ems
-#: code:addons/ems/models/models.py:911
+#: code:addons/ems/models/models.py:940
 #: sql_constraint:ems.responsible:0
 #, python-format
 msgid "Responsible already exists"
@@ -756,14 +766,9 @@ msgid "Sessions"
 msgstr "Sesiones"
 
 #. module: ems
-#: view:ems.session:ems.view_ems_session_form
-msgid "Set to Draft"
-msgstr "Set to Draft"
-
-#. module: ems
-#: view:ems.session:ems.view_ems_session_form
-msgid "Reschedule"
-msgstr "Reschedule"
+#: view:ems.session:ems.ems_session_search_view
+msgid "Sessions in New state"
+msgstr "Sessions in New state"
 
 #. module: ems
 #: view:ems.timetable:ems.view_ems_timetable_form
@@ -771,6 +776,11 @@ msgstr "Reschedule"
 #: model:ir.actions.act_window,name:ems.launch_timetable_wizard
 msgid "Set priorities"
 msgstr "Set priorities"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Set to Draft"
+msgstr "Set to Draft"
 
 #. module: ems
 #: view:ems.source:ems.view_ems_source_form
@@ -814,56 +824,56 @@ msgid "The hour has to be between 0 and 23"
 msgstr "The hour has to be between 0 and 23"
 
 #. module: ems
-#: code:addons/ems/models/models.py:811
+#: code:addons/ems/models/models.py:840
 #, python-format
 msgid "The initial date cannot be greater or equal than end date"
 msgstr "The initial date cannot be greater or equal than end date"
 
 #. module: ems
-#: code:addons/ems/models/models.py:797
+#: code:addons/ems/models/models.py:826
 #, python-format
 msgid "The initial time cannot be greater or equal than end time"
 msgstr "The initial time cannot be greater or equal than end time"
 
 #. module: ems
-#: code:addons/ems/models/models.py:819
+#: code:addons/ems/models/models.py:848
 #, python-format
 msgid "The interval has to be of the same day"
 msgstr "The interval has to be of the same day"
 
 #. module: ems
-#: code:addons/ems/models/models.py:660
+#: code:addons/ems/models/models.py:689
 #, python-format
 msgid "The minimum attendees cannot be greater than the maximum."
 msgstr "The minimum attendees cannot be greater than the maximum."
 
 #. module: ems
-#: code:addons/ems/models/models.py:656
+#: code:addons/ems/models/models.py:685
 #, python-format
 msgid "The minimum attendees cannot be less than 0."
 msgstr "The minimum attendees cannot be less than 0."
 
 #. module: ems
-#: code:addons/ems/models/models.py:474
-#: code:addons/ems/models/models.py:495
+#: code:addons/ems/models/models.py:483
+#: code:addons/ems/models/models.py:504
 #, python-format
 msgid "There's another session in selected ubication"
 msgstr "There's another session in selected ubication"
 
 #. module: ems
-#: code:addons/ems/models/models.py:515
+#: code:addons/ems/models/models.py:524
 #, python-format
 msgid "There's another session using the same resources"
 msgstr "There's another session using the same resources"
 
 #. module: ems
-#: code:addons/ems/models/models.py:546
+#: code:addons/ems/models/models.py:555
 #, python-format
 msgid "There's another session with selected customer"
 msgstr "There's another session with selected customer"
 
 #. module: ems
-#: code:addons/ems/models/models.py:527
+#: code:addons/ems/models/models.py:536
 #, python-format
 msgid "There's another session with selected responsible"
 msgstr "There's another session with selected responsible"
@@ -896,7 +906,7 @@ msgid "Timetables"
 msgstr "Timetables"
 
 #. module: ems
-#: code:addons/ems/models/models.py:454
+#: code:addons/ems/models/models.py:459
 #, python-format
 msgid "Too many attendees, maximum of %i"
 msgstr "Too many attendees, maximum of %i"
@@ -965,6 +975,13 @@ msgid "Users"
 msgstr "Usuarios"
 
 #. module: ems
+#. openerp-web
+#: code:addons/ems/static/src/js/ems_calendar.js:328
+#, python-format
+msgid "View: %s"
+msgstr "View: %s"
+
+#. module: ems
 #: code:addons/ems/models/models.py:234
 #: selection:ems.timetable,day:0
 #, python-format
@@ -972,7 +989,7 @@ msgid "Wednesday"
 msgstr "Wednesday"
 
 #. module: ems
-#: code:addons/ems/models/models.py:729
+#: code:addons/ems/models/models.py:758
 #: selection:ems.timetable,type:0
 #, python-format
 msgid "Weekday"
@@ -984,7 +1001,7 @@ msgid "Weight"
 msgstr "Weight"
 
 #. module: ems
-#: code:addons/ems/models/models.py:729
+#: code:addons/ems/models/models.py:758
 #: selection:ems.timetable,type:0
 #, python-format
 msgid "Yearday"
@@ -1013,13 +1030,24 @@ msgid "Yes, severe"
 msgstr "Yes, severe"
 
 #. module: ems
-#: code:addons/ems/models/models.py:560
+#: code:addons/ems/models/models.py:569
 #, python-format
 msgid "You can only change a draft session"
 msgstr "You can only change a draft session"
 
 #. module: ems
+#: code:addons/ems/models/models.py:580
+#, python-format
+msgid "You can only delete a draft session"
+msgstr "You can only delete a draft session"
+
+#. module: ems
 #: view:ems.session.wizard:ems.wizard_session_form_view
 msgid "or"
 msgstr "or"
+
+#. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "tmp"
+msgstr "tmp"
 

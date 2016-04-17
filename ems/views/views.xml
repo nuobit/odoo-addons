@@ -29,14 +29,18 @@
             <field name="name">Sessions</field>
             <field name="model">ems.session</field>
             <field name="arch" type="xml">
-                <tree string="Sessions">
-                    <field name="name"/>
+                <tree string="Sessions"
+                      fonts="bold:state=='confirmed'"
+                      colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';grey:state in ('cancel')">
+                    <field name="center_id"/>
                     <field name="service_id"/>
+                    <field name="ubication_id"/>
+                    <field name="resource_ids"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
-                    <field name="customer_ids"/>
+                    <field name="partner_text"/>
                     <field name="responsible_id"/>
-                    <field name="state" invisible="1"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -158,13 +162,12 @@
                             help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
                             help="Rescheduled Sessions"/>
-                    <field name="customer_ids"/>
+                    <field name="partner_ids"/>
                     <field name="responsible_id"/>
                     <field name="description"/>
                     <field name="service_id"/>
                     <field name="resource_ids"/>
                     <field name="ubication_id"/>
-                    <field name="name"/>
                     <group expand="0" string="Group By">
                         <filter string="Responsible" context="{'group_by': 'responsible_id'}"/>
                         <filter string="Service" context="{'group_by':'service_id'}"/>
@@ -422,7 +425,7 @@
                                     <field name="center_id"/>
                                     <field name="service_id"/>
                                     <field name="ubication_id"/>
-                                    <field name="customer_ids"/>
+                                    <field name="partner_ids"/>
                                     <field name="date_begin"/>
                                     <field name="date_end"/>
                                 </tree>

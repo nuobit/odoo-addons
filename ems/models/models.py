@@ -280,6 +280,8 @@ class ems_session(models.Model):
 
     partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id', copy=True)
 
+    partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True)
+
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
 
@@ -302,7 +304,7 @@ class ems_session(models.Model):
         #default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
         readonly=False)
 
-    session_text = fields.Char(compute='_compute_session_text')
+    session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True)
 
     state = fields.Selection([
             ('draft', 'Draft'),
@@ -333,7 +335,7 @@ class ems_session(models.Model):
 
     @api.one
     @api.depends('partner_ids', 'responsible_id')
-    def _compute_session_text(self):
+    def _compute_auxiliar_text(self):
         if self.state in ('confirmed'):
             if self.is_all_center:
                 self.session_text = self.service_id.name
@@ -344,8 +346,11 @@ class ems_session(models.Model):
                     cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
 
                 self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
+                self.partner_text = '%s' % ', '.join(cust_text)
         else:
             self.session_text = '#%s##############' % self.state.upper()
+            #self.partner_text  =
+
 
     @api.onchange('ubication_id')
     def _onchange_ubication(self):
@@ -620,6 +625,9 @@ class ems_partner(models.Model):
                     self.session = sessions[-1].partner_ids.filtered(lambda x: x.partner_id.id == self.partner_id.id).session + 1
                 else:
                     self.session = 0
+
+
+
 
 
 class ems_ubication(models.Model):
