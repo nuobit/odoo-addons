@@ -156,7 +156,7 @@
                             help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
                             help="Rescheduled Sessions"/>
-                    <field name="partner_ids"/>
+                    <field name="partner_text" string="Attendees"/>
                     <field name="responsible_id"/>
                     <field name="description"/>
                     <field name="service_id"/>

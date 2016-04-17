@@ -277,7 +277,7 @@ class ems_session(models.Model):
 
     partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id', copy=True)
 
-    partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True)
+    partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True, store=True)
 
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
