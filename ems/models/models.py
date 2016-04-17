@@ -345,7 +345,7 @@ class ems_session(models.Model):
 
                 self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
         else:
-            self.session_text = '#' + self.state.upper() + ('###############\n'*6)[:-1]##################' #False #self.state.upper()
+            self.session_text = '#%s##############' % self.state.upper()
 
     @api.onchange('ubication_id')
     def _onchange_ubication(self):
@@ -573,6 +573,14 @@ class ems_session(models.Model):
                 super(ems_session, rec).unlink()
             else:
                 raise ValidationError(_('You can only delete a draft session'))
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for rec in self:
+            res.append((rec.id, rec.session_text))
+
+        return res
 
 
 class ems_partner(models.Model):
