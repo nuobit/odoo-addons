@@ -110,12 +110,6 @@
                             <page string="Description">
                                 <field name="description" nolabel="1" placeholder="Session Description..."/>
                             </page>
-                            <page string="tmp">
-                                <group>
-                                    <field name="name"/>
-                                    <field name="customer_ids"/>
-                                </group>
-                            </page>
                         </notebook>
                     </sheet>
                     <!--div class="oe_chatter">
