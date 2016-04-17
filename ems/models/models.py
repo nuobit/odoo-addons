@@ -255,8 +255,8 @@ class ems_session(models.Model):
     _description = 'Session'
     _order = 'date_begin'
 
-    name = fields.Char(string='Session Number', required=True,
-        readonly=False, default='000') #lambda self: self._get_default_name())
+    name = fields.Char(string='Session Number', required=False,
+        readonly=False)
 
     description = fields.Text(string='Description', #translate=True,
         readonly=False)

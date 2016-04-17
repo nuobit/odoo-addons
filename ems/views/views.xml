@@ -415,11 +415,10 @@
                         <group string="Upcoming sessions">
                             <field name="session_ids" nolabel="1" attrs="{'readonly':True}">
                                 <tree>
-                                    <field name="name"/>
                                     <field name="center_id"/>
                                     <field name="service_id"/>
                                     <field name="ubication_id"/>
-                                    <field name="partner_ids"/>
+                                    <field name="partner_text"/>
                                     <field name="date_begin"/>
                                     <field name="date_end"/>
                                 </tree>
