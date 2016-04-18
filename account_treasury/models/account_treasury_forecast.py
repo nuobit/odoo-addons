@@ -137,8 +137,8 @@ class AccountTreasuryForecast(models.Model):
             state.append("proforma")
         if self.check_open:
             state.append("open")
-        invoice_ids = invoice_obj.search([('date_due', '>', self.start_date),
-                                          ('date_due', '<', self.end_date),
+        invoice_ids = invoice_obj.search([('date_due', '>=', self.start_date),
+                                          ('date_due', '<=', self.end_date),
                                           ('state', 'in', tuple(state))])
         for invoice_o in invoice_ids:
             values = {
