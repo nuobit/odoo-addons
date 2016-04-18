@@ -736,13 +736,13 @@
         </record>
 
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
-        <act_window id="launch_session_wizard"
+        <!--act_window id="launch_session_wizard"
                     name="Generate sessions"
                     src_model="ems.session"
                     res_model="ems.session.wizard"
                     view_mode="form"
                     target="new"
-                    key2="client_action_multi"/>
+                    key2="client_action_multi"/-->
 
 
     </data>
