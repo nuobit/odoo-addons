@@ -317,10 +317,12 @@ class ems_session(models.Model):
 
     @api.one
     def button_cancel(self):
+        raise ValidationError(_("Not implemented yet"))
         self.state = 'cancelled'
 
     @api.one
     def button_reschedule(self):
+        raise ValidationError(_("Not implemented yet"))
         self.state = 'rescheduled'
 
     @api.one
