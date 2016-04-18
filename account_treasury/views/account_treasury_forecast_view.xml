@@ -67,6 +67,9 @@
             <field name="model">account.treasury.forecast</field>
             <field name="arch" type="xml">
                 <form string="Treasury Forecast">
+                    <header>
+                         <button name="print_forecast" string="Print" type="object" class="oe_highlight"/>
+                    </header>
                     <separator string="Account Treasury Forecast" colspan="4"/>
                     <group colspan="4" col="4">
                     <group colspan="4" col="4" >

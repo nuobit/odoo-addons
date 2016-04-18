@@ -73,9 +73,9 @@ class AccountTreasuryForecast(models.Model):
     final_amount = fields.Float(string="Final Amount",
                                 compute="calc_final_amount",
                                 digits_compute=dp.get_precision('Account'))
-    check_draft = fields.Boolean(string="Draft", default=1)
-    check_proforma = fields.Boolean(string="Proforma", default=1)
-    check_open = fields.Boolean(string="Opened", default=1)
+    check_draft = fields.Boolean(string="Draft", default=False)
+    check_proforma = fields.Boolean(string="Proforma", default=False)
+    check_open = fields.Boolean(string="Opened", default=True)
     out_invoice_ids = fields.Many2many(
         comodel_name="account.treasury.forecast.invoice",
         relation="account_treasury_forecast_out_invoice_rel",
@@ -186,6 +186,35 @@ class AccountTreasuryForecast(models.Model):
                 new_line_ids.append(new_line_id)
         return new_line_ids
 
+
+
+    @api.multi
+    def print_forecast(self):
+        return self.env['report'].get_action(self, 'account_treasury.report_accounttreasuryforecast')
+
+    '''
+    @api.multi
+    def print_forecast(self):
+        report_obj = self.env['report']
+        report = report_obj._get_report_from_name('account_treasury.report_accounttreasuryforecast')
+        docargs = {
+            'doc_ids': self._ids,
+            'doc_model': report.model,
+            'docs': self,
+        }
+        return report_obj.render('account_treasury.report_accounttreasuryforecast', docargs)
+
+
+        #report_obj = self.env['report']
+        #report = report_obj._get_report_from_name('account_treasury.report_accounttreasuryforecast_document')
+        #assert len(ids) == 1, 'This option should only be used for a single id at a time'
+        #self.signal_workflow(cr, uid, ids, 'send_rfq')
+
+        #return self.env['report'].get_action(self, 'account_treasury.report_accounttreasuryforecast_document')
+
+        #return report.render('account_treasury.report_accounttreasuryforecast_document', {})
+
+    '''
 
 class AccountTreasuryForecastLine(models.Model):
     _name = 'account.treasury.forecast.line'
