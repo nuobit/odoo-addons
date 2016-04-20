@@ -54,7 +54,7 @@
                     <header>
                         <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
-                        <button string="Set to Draft" name="button_draft" states="confirmed" type="object"
+                        <button string="Set to Draft" name="button_draft" states="confirmed,rescheduled" type="object"
                                 groups="base.group_user"/>
                         <button string="Reschedule" name="button_reschedule" states="confirmed" type="object"
                                 groups="base.group_user"/>
@@ -101,6 +101,9 @@
                                 </field>
                             </group>
                         </group>
+                        <group>
+                            <field name="source_session_id"/>
+                        </group>
                         <notebook>
                             <!--page string='Session Details' groups="base.group_no_one">
                                 <group colspan="4">
@@ -109,6 +112,10 @@
                             </page-->
                             <page string="Description">
                                 <field name="description" nolabel="1" placeholder="Session Description..."/>
+                            </page>
+                            <page string="Description" attrs="{'invisible':[('state', '!=', 'rescheduled')]}">
+                                <field name="reason"/>
+                                <field name="target_session_id"/>
                             </page>
                         </notebook>
                     </sheet>
@@ -722,12 +729,20 @@
             <field name="arch" type="xml">
                 <form string="Generate sessions">
                     <group>
-                        <field name="session_id"/>
-                        <field name="count"/>
+                        <!--field name="session_id" required="1"/-->
+                        <field name="duration" required="1"/>
+                        <field name="date_begin" required="1"/>
+                        <field name="date_end" required="1"/>
+                    </group>
+                    <group>
+                        <field name="confirm"/>
+                        <field name="reason" required="1" widget="text"/>
+
+
                     </group>
                     <footer>
-                        <button name="generate" type="object"
-                                string="Generate" class="oe_highlight"/>
+                        <button name="reschedule" type="object"
+                                string="Reschedule" class="oe_highlight"/>
                         or
                         <button special="cancel" string="Cancel"/>
                     </footer>

@@ -301,6 +301,12 @@ class ems_session(models.Model):
         #default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
         readonly=False)
 
+    reason = fields.Char(string='Reason', required=False)
+
+    source_session_id = fields.Many2one('ems.session')
+
+    target_session_id = fields.Many2one('ems.session')
+
     session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True)
 
     state = fields.Selection([
@@ -320,10 +326,65 @@ class ems_session(models.Model):
         raise ValidationError(_("Not implemented yet"))
         self.state = 'cancelled'
 
-    @api.one
+    @api.multi
     def button_reschedule(self):
-        raise ValidationError(_("Not implemented yet"))
-        self.state = 'rescheduled'
+        partners_s = set(self.partner_ids.mapped('partner_id').mapped('id'))
+
+        sids = []
+        sessions0 = self.env['ems.session'].search([('id', '!=', self.id),
+                                            ('state', '=', 'confirmed'),
+                                            ('center_id', '=', self.center_id.id),
+                                            ('service_id', '=', self.service_id.id),
+                                            ('date_begin', '>', self.date_begin)
+                                           ])
+        for s in sessions0:
+            partners_s0 = set(s.partner_ids.mapped('partner_id').mapped('id'))
+            if partners_s0 == partners_s:
+                sids.append(s.id)
+            else:
+                # si hi ha interseccio entre els conjunts
+                if len(partners_s0 & partners_s)!=0:
+                    raise ValidationError(_("There's future sessions with just a part of the attendees"))
+
+        last_session = self.env['ems.session'].browse(sids).sorted(lambda x: x.date_begin)[-1]
+
+        def get_new_date(datestr_s, datestr_l, days=7):
+            do = fields.Datetime.from_string(datestr_s)
+            do_utc = pytz.utc.localize(do)
+            do_loc = do_utc.astimezone(pytz.timezone('Europe/Madrid'))
+
+            du = fields.Datetime.from_string(datestr_l)
+            du_loc = fields.Datetime.context_timestamp(self, du)
+            diff = do_loc.isoweekday()-du_loc.isoweekday()
+
+            du2_loc = du_loc + datetime.timedelta(days=days+diff)
+            du3_loc = du2_loc.replace(hour=do_loc.hour, minute=do_loc.minute, second=do_loc.second)
+            du3_utc = du3_loc.astimezone(pytz.utc).replace(tzinfo=None)
+
+            return du3_utc
+
+        wizard_id = self.env['ems.session.wizard'].create({
+            'session_id': self.id,
+            'duration': self.duration,
+            'date_begin': get_new_date(self.date_begin, last_session.date_begin, days=7),
+            'date_end': get_new_date(self.date_end, last_session.date_end, days=7),
+        })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name':_("Display Name"),#Name You want to display on wizard
+            'res_model': 'ems.session.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            'res_id': wizard_id.id,
+            'target': 'new',
+            #'context': context,
+        }
+
+
+
 
     @api.one
     def button_confirm(self):
@@ -371,6 +432,7 @@ class ems_session(models.Model):
     @api.onchange('center_id')
     def onchange_centre(self):
         service_ids = self.env['ems.ubication.service.rel'].search([('ubication_id.center_id','=',self.center_id.id)]).mapped('service_id.id')
+        #service_ids = self.env['ems.service'].filt
 
         self.service_id = False
         if len(service_ids)==1:
@@ -1009,18 +1071,61 @@ class res_partner(models.Model):
 class WizardSession(models.TransientModel):
     _name = 'ems.session.wizard'
 
-    def _default_session(self):
-        return self.env['ems.session'].browse(self._context.get('active_id'))
+    session_id = fields.Many2one('ems.session', required=True)
+    duration = fields.Integer(string='Duration', required=True, readonly=True)
 
-    session_id = fields.Many2one('ems.session',
-        string="Session", required=True, default=_default_session)
-    #attendee_ids = fields.Many2many('res.partner', string="Attendees")
+    date_begin = fields.Datetime(string='Start Date', required=True, readonly=False)
+    date_end = fields.Datetime(string='End Date', required=True, readonly=False)
 
-    count = fields.Integer(string='Number of sessions', default=10, required=True)
+    reason = fields.Char(string='Reason', required=False)
+
+    confirm = fields.Boolean(string='Confirm', default=True)
+
+
+    @api.onchange('date_begin')
+    def _onchange_date_begin(self):
+        self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.duration)
+
+    @api.onchange('date_end')
+    def _onchange_date_end(self):
+        self.date_begin = fields.Datetime.from_string(self.date_end) + datetime.timedelta(minutes=-self.duration)
+
+
 
     @api.multi
-    def generate(self):
-        pass
+    def reschedule(self):
+        a = []
+        for p in self.session_id.partner_ids:
+            a.append((0, _, {'partner_id': p.partner_id.id, 'session': 888}))
+
+        b = []
+        for p in self.session_id.resource_ids:
+            b.append((4, p.id, _))
+
+        session9 = self.env['ems.session'].create({
+            'center_id': self.session_id.center_id.id,
+            'service_id': self.session_id.service_id.id,
+            'ubication_id': self.session_id.ubication_id.id,
+            'duration': self.duration,
+            'date_begin': self.date_begin,
+            'date_end': self.date_end,
+            'responsible_id': self.session_id.responsible_id.id,
+            'resource_ids': b,
+            'description': self.session_id.description,
+            'source_session_id': self.session_id.id,
+            'partner_ids': a,
+        })
+
+        self.session_id.reason = self.reason
+        self.session_id.target_session_id = session9
+
+        if self.confirm:
+            session9.button_confirm()
+
+        self.session_id.state = 'rescheduled'
+
+        #session_id = self.env['ems.session'].browse(self._context.get('active_id'))
+
         '''
         s = self.session_id
         date_begin = fields.Datetime.from_string(s.date_begin)
