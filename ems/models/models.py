@@ -362,15 +362,11 @@ class ems_session(models.Model):
     @api.onchange('date_begin')
     def _onchange_date_begin(self):
         self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.duration)
-        #self.duration = (fields.Datetime.from_string(self.date_end) - fields.Datetime.from_string(self.date_begin)).seconds/60
-        #fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
 
     @api.onchange('date_end')
     def _onchange_date_end(self):
-        #self.date_begin = fields.Datetime.from_string(self.date_end) - datetime.timedelta(minutes=self.duration)
-        self.duration = (fields.Datetime.from_string(self.date_end) - fields.Datetime.from_string(self.date_begin)).seconds/60
-        #fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
-
+        diff = fields.Datetime.from_string(self.date_end) - fields.Datetime.from_string(self.date_begin)
+        self.duration = (diff.days*24*60*60 + diff.seconds) / 60
 
     @api.onchange('center_id')
     def onchange_centre(self):
