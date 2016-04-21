@@ -54,7 +54,8 @@
                     <header>
                         <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
-                        <button string="Set to Draft" name="button_draft" states="confirmed,rescheduled" type="object"
+                        <button string="Set to Draft" name="button_draft" states="confirmed,rescheduled,cancelled"
+                                type="object"
                                 groups="base.group_user"/>
                         <button string="Reschedule" name="button_reschedule" states="confirmed" type="object"
                                 groups="base.group_user"/>
@@ -66,14 +67,17 @@
                     <sheet>
                         <group colspan="2" col="4">
                             <group>
-                                <field name="center_id" options="{'no_create': True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="center_id" options="{'no_create': True}"
+                                       attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
                             <group/>
                         </group>
                         <group colspan="2" col="4">
                             <group>
-                                <field name="service_id" options="{'no_create': True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                                <field name="ubication_id" options="{'no_create': True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="service_id" options="{'no_create': True}"
+                                       attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="ubication_id" options="{'no_create': True}"
+                                       attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                                 <field name="is_all_center" invisible="1"/>
                             </group>
                             <group>
@@ -85,7 +89,8 @@
 
                         <group attrs="{'invisible':[('is_all_center', '=', True)]}">
                             <group colspan="2" col="4">
-                                <field name="responsible_id" attrs="{'required':[('is_all_center', '=', False)], 'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="responsible_id"
+                                       attrs="{'required':[('is_all_center', '=', False)], 'readonly':[('state', '!=', 'draft')]}"/>
                                 <field name="resource_ids" string="Resources" widget="many2many_tags"
                                        options="{'no_create': True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
@@ -93,7 +98,8 @@
                                 <field name="partner_ids" nolabel="1" attrs="{'readonly':[('state', '!=', 'draft')]}">
                                     <tree editable="bottom">
                                         <field name="partner_id"/>
-                                        <field name="session"/>
+                                        <field name="session" attrs="{'readonly':[('force_session', '=', False)]}"/>
+                                        <field name="force_session"/>
                                         <field name="phone"/>
                                         <field name="mobile"/>
                                         <field name="email"/>
@@ -102,7 +108,7 @@
                             </group>
                         </group>
                         <group>
-                            <field name="source_session_id"/>
+
                         </group>
                         <notebook>
                             <!--page string='Session Details' groups="base.group_no_one">
@@ -113,9 +119,14 @@
                             <page string="Description">
                                 <field name="description" nolabel="1" placeholder="Session Description..."/>
                             </page>
-                            <page string="Description" attrs="{'invisible':[('state', '!=', 'rescheduled')]}">
-                                <field name="reason"/>
-                                <field name="target_session_id"/>
+                            <page string="Other information">
+                                <group>
+                                    <field name="source_session_id"/>
+                                </group>
+                                <group>
+                                    <field name="target_session_id"/>
+                                    <field name="reason"/>
+                                </group>
                             </page>
                         </notebook>
                     </sheet>
@@ -759,6 +770,24 @@
                     target="new"
                     key2="client_action_multi"/-->
 
+        <!-- Creem el warning wizard -->
+        <record model="ir.ui.view" id="wizard_ems_message_form_view">
+            <field name="name">wizard.ems.message.form</field>
+            <field name="model">ems.message.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Message">
+                    <group>
+                        <field name="message" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="accept" type="object"
+                                string="Accept" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
 
     </data>
 </openerp>

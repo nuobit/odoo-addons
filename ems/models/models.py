@@ -277,7 +277,7 @@ class ems_session(models.Model):
 
     partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id', copy=True)
 
-    partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True, store=True)
+    partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True, store=True, translate=False)
 
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
@@ -303,11 +303,11 @@ class ems_session(models.Model):
 
     reason = fields.Char(string='Reason', required=False)
 
-    source_session_id = fields.Many2one('ems.session')
+    source_session_id = fields.Many2one('ems.session', string="Source session")
 
-    target_session_id = fields.Many2one('ems.session')
+    target_session_id = fields.Many2one('ems.session', string="Target session")
 
-    session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True)
+    session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True, translate=False)
 
     state = fields.Selection([
             ('draft', 'Draft'),
@@ -319,24 +319,39 @@ class ems_session(models.Model):
 
     @api.one
     def button_draft(self):
+
+        if self.state == 'rescheduled':
+            ## enca carreguem la sesio replanificada
+            self.target_session_id.button_draft()
+            self.target_session_id.unlink()
+            self.target_session_id = False
+
+
+
+
+
         self.state = 'draft'
 
     @api.one
     def button_cancel(self):
-        raise ValidationError(_("Not implemented yet"))
+
+
+
+        #raise ValidationError(_("Not implemented yet"))
         self.state = 'cancelled'
 
     @api.multi
     def button_reschedule(self):
-        partners_s = set(self.partner_ids.mapped('partner_id').mapped('id'))
-
-        sids = []
         sessions0 = self.env['ems.session'].search([('id', '!=', self.id),
                                             ('state', '=', 'confirmed'),
                                             ('center_id', '=', self.center_id.id),
-                                            ('service_id', '=', self.service_id.id),
+                                            #('service_id', '=', self.service_id.id),
                                             ('date_begin', '>', self.date_begin)
-                                           ])
+                                           ]).filtered(lambda x: x.service_id.is_ems and
+                                                                 len(set(x.partner_ids.mapped('partner_id.id')) &
+                                                                     set(self.partner_ids.mapped('partner_id.id')))!=0
+                                                     )
+        '''
         for s in sessions0:
             partners_s0 = set(s.partner_ids.mapped('partner_id').mapped('id'))
             if partners_s0 == partners_s:
@@ -347,6 +362,8 @@ class ems_session(models.Model):
                     raise ValidationError(_("There's future sessions with just a part of the attendees"))
 
         last_session = self.env['ems.session'].browse(sids).sorted(lambda x: x.date_begin)[-1]
+        '''
+        last_session = sessions0.sorted(lambda x: x.date_begin)[-1]
 
         def get_new_date(datestr_s, datestr_l, days=7):
             do = fields.Datetime.from_string(datestr_s)
@@ -368,6 +385,7 @@ class ems_session(models.Model):
             'duration': self.duration,
             'date_begin': get_new_date(self.date_begin, last_session.date_begin, days=7),
             'date_end': get_new_date(self.date_end, last_session.date_end, days=7),
+            #'next_session_ids': [(4, s.id, _) for s in sessions0]
         })
 
         return {
@@ -396,20 +414,19 @@ class ems_session(models.Model):
     @api.one
     @api.depends('partner_ids', 'responsible_id')
     def _compute_auxiliar_text(self):
-        if self.state in ('confirmed'):
-            if self.is_all_center:
-                self.session_text = self.service_id.name
-            else:
-                cust_text = []
-                for c in self.partner_ids:
-                    num_sessio = ' (%i)' % c.session if self.service_id.is_ems else ''
-                    cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
-
-                self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
-                self.partner_text = '%s' % ', '.join(cust_text)
+        if self.is_all_center:
+            self.session_text = self.service_id.name
         else:
-            self.session_text = '#%s##############' % self.state.upper()
-            #self.partner_text  =
+            cust_text = []
+            for c in self.partner_ids:
+                num_sessio = ' (%i)' % c.session if self.service_id.is_ems else ''
+                cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
+
+            self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
+            self.partner_text = '%s' % ', '.join(cust_text)
+
+        if self.state not in ('confirmed'):
+            self.session_text = '#%s# %s' % (self.state.upper(), self.session_text)
 
 
     @api.onchange('ubication_id')
@@ -453,6 +470,7 @@ class ems_session(models.Model):
         self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.service_id.duration)
 
         # actualitzem la sessio de ls customers
+        '''
         for pr in self.partner_ids:
             if not self.service_id.is_ems:
                 pr.session = -1
@@ -468,6 +486,7 @@ class ems_session(models.Model):
                     pr.session = sessions[-1].partner_ids.filtered(lambda x: x.partner_id.id == pr.partner_id.id).session + 1
                 else:
                     pr.session = 0
+        '''
 
 
         domains = {}
@@ -511,6 +530,10 @@ class ems_session(models.Model):
         if self.date_end < self.date_begin:
             raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
 
+        ####
+        if self.state == 'draft':
+            return
+
         # check number of atendees
         if self.service_id.max_attendees>=0 and len(self.partner_ids)>self.service_id.max_attendees:
             raise ValidationError(_('Too many attendees, maximum of %i') % self.service_id.max_attendees)
@@ -518,10 +541,17 @@ class ems_session(models.Model):
         if self.service_id.min_attendees>len(self.partner_ids):
             raise ValidationError(_('It requieres %i attendees minimum') % self.service_id.min_attendees)
 
-
-        ####
-        if self.state == 'draft':
-            return
+        # comprovem que la sessio no te cap forces session anteriro
+        for ep in self.partner_ids:
+            if ep.force_session:
+                sessions_ant = self.env['ems.partner'].search([('partner_id','=', ep.partner_id.id)]).\
+                    filtered(lambda x: x.session_id.center_id==self.center_id and
+                                       x.session_id.state in ('cancelled', 'confirmed') and
+                                       x.session_id.service_id.is_ems and
+                                       x.session_id.date_begin<self.date_begin
+                                    )
+                if len(sessions_ant)!=0:
+                    raise ValidationError(_("Only the first session can have a forced session."))
 
         ### cerquem le sessions que se solapin amb l'actual (excepte lactual que segur que  solapa)
         # si la ubicacio actual es de tipus "tot el centre", qualsevol solapament temporal
@@ -632,7 +662,10 @@ class ems_session(models.Model):
         for rec in self:
             #Call the parent method to eliminate the records.
             if rec.state == 'draft':
-                super(ems_session, rec).unlink()
+                if rec.source_session_id:
+                    raise ValidationError(_("This session is linked to session '%s', delete that before.") % rec.source_session_id.name_get()[0][1])
+                else:
+                    super(ems_session, rec).unlink()
             else:
                 raise ValidationError(_('You can only delete a draft session'))
 
@@ -652,7 +685,10 @@ class ems_partner(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
 
-    session = fields.Integer('Session', required=True, default=-1)
+    session = fields.Integer('Session', compute='_compute_session', inverse='_compute_session_inverse', readonly=True, default=-1, store=True)
+
+    force_session = fields.Boolean(string='Force session', default=False)
+    session_forced = fields.Integer('Session', required=False, default=1)
 
     phone = fields.Char(related='partner_id.phone', readonly=True)
 
@@ -664,6 +700,43 @@ class ems_partner(models.Model):
 
     _sql_constraints = [('partner_session_unique', 'unique(session_id, partner_id)',_("Partner duplicated"))]
 
+    @api.one
+    @api.depends('partner_id', 'force_session')
+    def _compute_session(self):
+        if self.session_id.service_id.is_ems:
+            if self.force_session:
+                self.session = self.session_forced
+            else:
+                sessions_ant = self.env['ems.partner'].search([('partner_id','=', self.partner_id.id)]).\
+                    filtered(lambda x: x.session_id.center_id==self.session_id.center_id and
+                                   x.session_id.state in ('cancelled', 'confirmed') and
+                                   x.session_id.service_id.is_ems and
+                                   x.session_id.date_begin<self.session_id.date_begin)
+
+                self.session = len(sessions_ant) + 1
+                tt = sessions_ant.filtered(lambda x: x.force_session)
+                if tt:
+                    self.session += tt.session_forced - 1
+        else:
+            self.session = -1
+
+    @api.one
+    def _compute_session_inverse(self):
+        self.session_forced = self.session
+
+    @api.constrains('force_session')
+    def _check_force_session(self):
+        if self.force_session:
+            sessions_ant = self.env['ems.partner'].search([('partner_id','=', self.partner_id.id)]).\
+                    filtered(lambda x: x.session_id.center_id==self.session_id.center_id and
+                                       x.session_id.state=='confirmed' and
+                                       x.session_id.service_id.is_ems and
+                                       x.session_id.date_begin<self.session_id.date_begin
+                                    )
+            if len(sessions_ant)!=0:
+                raise ValidationError(_("Only the first session can have a forced session."))
+
+    '''
     @api.onchange('partner_id')
     def onchange_partner(self):
         if self.partner_id:
@@ -682,6 +755,7 @@ class ems_partner(models.Model):
                     self.session = sessions[-1].partner_ids.filtered(lambda x: x.partner_id.id == self.partner_id.id).session + 1
                 else:
                     self.session = 0
+    '''
 
 
 
@@ -1079,7 +1153,10 @@ class WizardSession(models.TransientModel):
 
     reason = fields.Char(string='Reason', required=False)
 
-    confirm = fields.Boolean(string='Confirm', default=True)
+    confirm = fields.Boolean(string='Confirm', help='Confirm new session after created', default=True)
+
+
+    #next_session_ids = fields.Many2many('ems.session', required=False)
 
 
     @api.onchange('date_begin')
@@ -1094,14 +1171,24 @@ class WizardSession(models.TransientModel):
 
     @api.multi
     def reschedule(self):
-        a = []
+        '''
+        # desdem els numeros incials coma comptador per verificar la correcio de la numeracio
+        next_s = {}
         for p in self.session_id.partner_ids:
-            a.append((0, _, {'partner_id': p.partner_id.id, 'session': 888}))
+            next_s[p.partner_id.id] = p.session
 
-        b = []
-        for p in self.session_id.resource_ids:
-            b.append((4, p.id, _))
+        # reenumerem les properes sessions
+        for s in self.next_session_ids.sorted(lambda x: x.date_begin):
+            for p in self.session_id.partner_ids:
+                pl = s.partner_ids.filtered(lambda x: x.partner_id==p.partner_id)
+                if len(pl)!=0:
+                    if next_s[p.partner_id.id]!=(pl.session - 1):
+                        raise ValidationError(_("Unexpected sequence of session in session '%s'. Expected: %i, found: %i") % (s.name_get(), next_s[p.partner_id.id]+1, pl.session ))
+                    pl.session -= 1
+                    next_s[p.partner_id.id] += 1
+        '''
 
+        # creem la nova sessio
         session9 = self.env['ems.session'].create({
             'center_id': self.session_id.center_id.id,
             'service_id': self.session_id.service_id.id,
@@ -1110,10 +1197,10 @@ class WizardSession(models.TransientModel):
             'date_begin': self.date_begin,
             'date_end': self.date_end,
             'responsible_id': self.session_id.responsible_id.id,
-            'resource_ids': b,
+            'resource_ids': [(4, p.id, _) for p in self.session_id.resource_ids],
             'description': self.session_id.description,
             'source_session_id': self.session_id.id,
-            'partner_ids': a,
+            'partner_ids': [(0, _, {'partner_id': p.partner_id.id}) for p in self.session_id.partner_ids],
         })
 
         self.session_id.reason = self.reason
@@ -1126,23 +1213,19 @@ class WizardSession(models.TransientModel):
 
         #session_id = self.env['ems.session'].browse(self._context.get('active_id'))
 
-        '''
-        s = self.session_id
-        date_begin = fields.Datetime.from_string(s.date_begin)
-        date_end = fields.Datetime.from_string(s.date_end)
-        for i in range(self.count-1):
-            days = 7*(i+1)
-            date_begin9 = date_begin + datetime.timedelta(days=days)
-            date_end9 = date_end + datetime.timedelta(days=days)
+class WizardMessage(models.TransientModel):
+    _name = 'ems.message.wizard'
 
-            #g = self.env['ems.session'].search_count([('date_begin','<=',fields.Date.to_string(date_begin9)),
-            #                                          ('date_end','>=', fields.Date.to_string(date_end9))])
-            #raise Warning(g)
+    message = fields.Char(string="Message", readonly=True)
 
-            self.env['ems.session'].create({'name': '%s%i' % (s.name, days), 'service': s.service_id.id,
-                                                'date_begin': fields.Datetime.to_string(date_begin9),
-                                                'date_end': fields.Datetime.to_string(date_end9)})
-        '''
+    model_name = fields.Char()
+
+    @api.multi
+    def accept(self):
+        active_id = self.env[self.model_name].browse(self._context.get('active_id'))
+
+        active_id.accept()
+
 
 class WizardTimetable(models.TransientModel):
     _name = 'ems.timetable.wizard'
