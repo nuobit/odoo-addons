@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--template id="report_emssessionsummary_document">
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <div class="row">
+                        <h3>Title</h3>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_emssessionsummary">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'ems.report_emssessionsummary_document')"/>
+                    <h1>pepe</h1>
+                </t>
+            </t>
+        </template-->
+
+        <template id="report_emssessionsummary">
+            <t t-call="report.html_container">
+
+                <!--t t-call="report.external_layout"-->
+
+                    <t t-foreach="ss" t-as="s">
+                        <div class="page">
+
+
+                            <div class="oe_structure"/>
+                            <h2 style="font-family:Kabel Bk BT;color:#99cc00;">It always seems impossible until it's done</h2>
+
+
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <span>Name:<strong t-esc="s[0].name"/></span>
+                                </div>
+                                <div class="col-xs-6">
+                                    <h1><strong>You can do it!</strong></h1>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <t t-foreach="s[1]" t-as="s">
+
+
+                                    <div t-field="s.date_begin"/>
+                                    <div t-field="s.date_begin" t-field-options='{"widget": "date"}'/>
+                                    <div t-field="s.date_begin" t-field-options='{"format": "HH:mm:ss"}'/>
+
+
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                <!--/t-->
+
+            </t>
+        </template>
+    </data>
+</openerp>

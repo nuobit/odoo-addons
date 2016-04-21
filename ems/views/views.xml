@@ -52,6 +52,8 @@
             <field name="arch" type="xml">
                 <form string="Sessions">
                     <header>
+                        <button string="Print" name="button_print" states="confirmed" type="object"
+                                class="oe_highlight" groups="base.group_user"/>
                         <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
                         <button string="Set to Draft" name="button_draft" states="confirmed,rescheduled,cancelled"
@@ -122,10 +124,13 @@
                             <page string="Other information">
                                 <group>
                                     <field name="source_session_id"/>
+
                                 </group>
-                                <group>
+                                <group  attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled'))]}">
+
                                     <field name="target_session_id"/>
                                     <field name="reason"/>
+
                                 </group>
                             </page>
                         </notebook>
@@ -733,10 +738,10 @@
                   groups="base.group_no_one"/>
 
 
-        <!-- Creem el SESSION wizard form -->
-        <record model="ir.ui.view" id="wizard_session_form_view">
-            <field name="name">wizard.session.form</field>
-            <field name="model">ems.session.wizard</field>
+        <!-- Creem el SESSION reschedule wizard form -->
+        <record model="ir.ui.view" id="ems_session_reschedule_wizard_form_view">
+            <field name="name">ems.session.reschedule.wizard.form</field>
+            <field name="model">ems.session.reschedule.wizard</field>
             <field name="arch" type="xml">
                 <form string="Generate sessions">
                     <group>
@@ -748,8 +753,6 @@
                     <group>
                         <field name="confirm"/>
                         <field name="reason" required="1" widget="text"/>
-
-
                     </group>
                     <footer>
                         <button name="reschedule" type="object"
@@ -761,18 +764,37 @@
             </field>
         </record>
 
+        <!-- Creem el SESSION cancel wizard form -->
+        <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
+            <field name="name">ems.session.cancel.wizard.form</field>
+            <field name="model">ems.session.cancel.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate sessions">
+                    <group>
+                        <field name="reason" required="1" widget="text"/>
+                    </group>
+                    <footer>
+                        <button name="accept" type="object"
+                                string="Accept" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
         <!--act_window id="launch_session_wizard"
                     name="Generate sessions"
                     src_model="ems.session"
-                    res_model="ems.session.wizard"
+                    res_model="ems.session.cancel.wizard"
                     view_mode="form"
                     target="new"
                     key2="client_action_multi"/-->
 
         <!-- Creem el warning wizard -->
-        <record model="ir.ui.view" id="wizard_ems_message_form_view">
-            <field name="name">wizard.ems.message.form</field>
+        <record model="ir.ui.view" id="ems_message_wizard_form_view">
+            <field name="name">ems.message.wizard.form</field>
             <field name="model">ems.message.wizard</field>
             <field name="arch" type="xml">
                 <form string="Message">
@@ -788,6 +810,37 @@
                 </form>
             </field>
         </record>
+
+
+
+        <report string="Session summary"
+                id="report_ems_session_summary"
+                model="ems.session"
+                report_type="qweb-pdf"
+                name="ems.report_emssessionsummary"
+                file="ems.report_emssessionsummary"
+        />
+
+        <record id="paperformat_ems_session_summary" model="report.paperformat">
+            <field name="name">A6 Session Summary</field>
+            <field name="default" eval="True"/>
+            <field name="format">A6</field>
+            <!--field name="page_height">80</field>
+            <field name="page_width">175</field-->
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">80</field>
+        </record>
+
+         <record id="report_ems_session_summary" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="ems.paperformat_ems_session_summary"/>
+        </record>
+
 
     </data>
 </openerp>
