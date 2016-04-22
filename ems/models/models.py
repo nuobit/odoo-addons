@@ -25,6 +25,9 @@ import datetime
 
 import pytz
 
+import math
+
+
 from openerp import models, fields, api, _
 from openerp.exceptions import AccessError, Warning, ValidationError
 
@@ -277,7 +280,8 @@ class ems_session(models.Model):
 
     partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id', copy=True)
 
-    partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True, store=True, translate=False)
+    partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True, store=False, translate=False,
+                               search='_search_partner_text')
 
     service_id = fields.Many2one('ems.service', string='Service',
         required=True, readonly=False)
@@ -298,7 +302,6 @@ class ems_session(models.Model):
     date_begin = fields.Datetime(string='Start Date', required=True, default=fields.datetime.now().replace(second=0, microsecond=0),
         readonly=False)
     date_end = fields.Datetime(string='End Date', required=True,
-        #default=fields.datetime.now().replace(second=0, microsecond=0) + datetime.timedelta(hours=1),
         readonly=False)
 
     reason = fields.Char(string='Reason', required=False, readonly=True)
@@ -471,23 +474,28 @@ class ems_session(models.Model):
 
 
 
-    @api.one
-    @api.depends('partner_ids', 'responsible_id')
-    def _compute_auxiliar_text(self):
-        if self.is_all_center:
-            self.session_text = self.service_id.name
-        else:
-            cust_text = []
-            for c in self.partner_ids:
-                num_sessio = ' (%i)' % c.session if self.service_id.is_ems else ''
-                cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
+    @api.depends('partner_ids', 'responsible_id','partner_ids.partner_id', 'partner_ids.partner_id.name')
+    def _compute_auxiliar_text(selfs):
+        for self in selfs:
+            self.session_text = False
+            self.partner_text = False
 
-            self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
-            self.partner_text = '%s' % ', '.join(cust_text)
+            if self.is_all_center:
+                self.session_text = self.service_id.name
+            else:
+                cust_text = []
+                for c in self.partner_ids:
+                    num_sessio = ' (%i)' % c.num_session if self.service_id.is_ems else ''
+                    cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
 
-        if self.state not in ('confirmed'):
-            self.session_text = '#%s# %s' % (self.state.upper(), self.session_text)
+                self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
+                self.partner_text = '%s' % ', '.join(cust_text)
 
+            if self.state not in ('confirmed'):
+                self.session_text = '#%s# %s' % (self.state.upper(), self.session_text)
+
+    def _search_partner_text(self, operator, value):
+        return [('partner_ids.partner_id.name', operator, value)]
 
     @api.onchange('ubication_id')
     def _onchange_ubication(self):
@@ -726,10 +734,12 @@ class ems_partner(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
 
-    session = fields.Integer('Session', compute='_compute_session', inverse='_compute_session_inverse', readonly=True, default=-1, store=False)
+    session = fields.Integer('Session OLD', readonly=True, default=-1)
+
+    num_session = fields.Integer('Session', compute='_compute_session', inverse='_compute_session_inverse', readonly=True, default=-1, store=False)
 
     force_session = fields.Boolean(string='Force session', default=False)
-    session_forced = fields.Integer('Session', required=False, default=1)
+    num_session_forced = fields.Integer('Session', required=False, default=1)
 
     phone = fields.Char(related='partner_id.phone', readonly=True)
 
@@ -739,14 +749,33 @@ class ems_partner(models.Model):
 
     session_id = fields.Many2one('ems.session')
 
+    date_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
+    time_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
+
     _sql_constraints = [('partner_session_unique', 'unique(session_id, partner_id)',_("Partner duplicated"))]
+
+
+    @api.one
+    @api.depends('session_id.date_begin')
+    def _compute_date_begin_str(self):
+        if self.session_id:
+            dt = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.session_id.date_begin))
+
+            lang = self.env['res.lang'].search([('code', '=', self.env.lang)])
+
+            time_format = '%H:%M' #lang.time_format
+
+            self.date_begin_str = dt.strftime(lang.date_format)
+            self.time_begin_str = dt.strftime(time_format)
+
+
 
     @api.one
     @api.depends('partner_id', 'force_session','session_id')
     def _compute_session(self):
         if self.session_id.service_id.is_ems:
             if self.force_session:
-                self.session = self.session_forced
+                self.num_session = self.num_session_forced
             else:
                 sessions_ant = self.env['ems.partner'].search([('partner_id','=', self.partner_id.id)]).\
                     filtered(lambda x: x.session_id.center_id==self.session_id.center_id and
@@ -754,16 +783,16 @@ class ems_partner(models.Model):
                                    x.session_id.service_id.is_ems and
                                    x.session_id.date_begin<self.session_id.date_begin)
 
-                self.session = len(sessions_ant) + 1
+                self.num_session = len(sessions_ant) + 1
                 tt = sessions_ant.filtered(lambda x: x.force_session)
                 if tt:
-                    self.session += tt.session_forced - 1
+                    self.num_session += tt.num_session_forced - 1
         else:
-            self.session = -1
+            self.num_session = -1
 
     @api.one
     def _compute_session_inverse(self):
-        self.session_forced = self.session
+        self.num_session_forced = self.num_session
 
     @api.constrains('force_session')
     def _check_force_session(self):
@@ -782,7 +811,7 @@ class ems_partner(models.Model):
     def onchange_partner(self):
         if self.partner_id:
             if not self.session_id.service_id.is_ems:
-                self.session = -1
+                self.num_session = -1
             else:
                 ## obtenim les sessions quer contenen el aprnter actualitzat
                 sessions = self.env['ems.session'].search([
@@ -793,9 +822,9 @@ class ems_partner(models.Model):
                     .filtered(lambda x: self.partner_id in x.partner_ids.mapped('partner_id'))\
                     .sorted(lambda x: x.date_begin)
                 if sessions:
-                    self.session = sessions[-1].partner_ids.filtered(lambda x: x.partner_id.id == self.partner_id.id).session + 1
+                    self.num_session = sessions[-1].partner_ids.filtered(lambda x: x.partner_id.id == self.partner_id.id).session + 1
                 else:
-                    self.session = 0
+                    self.num_session = 0
     '''
 
 
@@ -1291,29 +1320,85 @@ class ParticularEMSReportSessionSummary(models.AbstractModel):
     _name = 'report.ems.report_emssessionsummary'
 
 
+    def classify_data(self, objs, items_per_block=5, blocks_per_pag=2):
+        # reb una llist d'objectrs ja orddrenada
+        ITEMS_PER_BLOCK = items_per_block
+        BLOCKS_PER_PAG = blocks_per_pag
+        ITEMS_PER_PAG = ITEMS_PER_BLOCK*BLOCKS_PER_PAG
+
+        ### calssifiquem les dades
+        data = {}
+        bloc = 0
+        pag = 1
+        for i,t in enumerate(objs.ids,1):
+            if pag not in data:
+                data[pag]={}
+
+            if bloc not in data[pag]:
+                data[pag][bloc]=[]
+
+            data[pag][bloc].append(t)
+
+            # canvi de pagina
+            if i%(ITEMS_PER_PAG)==0:
+                pag += 1
+
+            # canvi de bloc
+            if i%ITEMS_PER_BLOCK==0:
+                bloc = ((bloc + 1) % BLOCKS_PER_PAG)
+
+        ## convertim les ddes en una llista sequencial i ho convertim aobjectes
+        pags = []
+        for p in sorted(data.keys()):
+            pag = data[p]
+            blocs = []
+            for b in sorted(pag.keys()):
+                bloc = pag[b]
+                bloc_obj = self.env[objs._name].browse(bloc)
+                blocs.append(bloc_obj)
+            pags.append(blocs)
+
+
+        return pags
+
+
 
     @api.multi
     def render_html(self, data=None):
         report_obj = self.env['report']
         #report = report_obj._get_report_from_name('ems.report_emssessionsummary')
-        session_obj = self.env[data['model']].browse(self.ids)
+        session_obj = self.env['ems.session'].browse(self.ids)
 
-
-
+        ps = []
         if len(session_obj)==1:
-            ss = []
-            for p in session_obj.partner_ids:
-                ses_p = self.env['ems.partner'].search([('partner_id','=', p.partner_id.id)]).\
+            # separem per patner i pagines classificades
+            for p in session_obj.partner_ids.mapped('partner_id').sorted(lambda x: x.name):
+                ses_p = self.env['ems.partner'].search([('partner_id','=', p.id)]).\
                             filtered(lambda x: x.session_id.center_id==session_obj.center_id and
                                                x.session_id.state in ('confirmed') and
                                                x.session_id.service_id.is_ems
-                             ).mapped('session_id').sorted(lambda x: x.date_begin)
-                ss.append((p.partner_id, ses_p))
+                             ).sorted(lambda x: x.session_id.date_begin)
 
-            docargs = {
-                #'doc_ids': self._ids,
-                #'doc_model': report.model,
-                'docs': session_obj,
-                'ss': ss,
-            }
-            return report_obj.render('ems.report_emssessionsummary', docargs)
+                # separem per pagina, una pagina 2 taules de 5 elements, 10 en total per pagina
+                sl = self.classify_data(ses_p, items_per_block=5, blocks_per_pag=2)
+
+                ps.append((p, sl))
+        else:
+            for p in session_obj.mapped('partner_ids.partner_id').sorted(lambda x: x.name):
+                ses_p = session_obj.mapped('partner_ids').\
+                            filtered(lambda x: p.id == x.partner_id.id and
+                                               x.session_id.state in ('confirmed') and
+                                               x.session_id.service_id.is_ems
+                            ).sorted(lambda x: x.session_id.date_begin)
+
+                # separem per pagina, una pagina 2 taules de 5 elements, 10 en total per pagina
+                sl = self.classify_data(ses_p, items_per_block=5, blocks_per_pag=2)
+
+                ps.append((p, sl))
+
+        docargs = {
+            'docs': session_obj,
+            'ps': ps,
+            'c': self.env.user.company_id,
+        }
+        return report_obj.render('ems.report_emssessionsummary', docargs)

@@ -20,45 +20,233 @@
             </t>
         </template-->
 
+        <template id="external_layout_header1">
+            <t t-name="ems.external_layout_header1">
+                <div class="header">
+                    <style type="text/css">
+                        <![CDATA[
+                                body {
+                                    font-family: Kabel Bk BT;
+                                    font-size: 1.1em;
+                                }
+
+                                .text-small {
+                                    font-size: 0.8em;
+                                }
+                        ]]>
+                    </style>
+
+                    <div class="row">
+                        <div class="col-xs-11">
+                            <h3 style="color:#99cc00;">It always seems impossible until it's done</h3>
+                        </div>
+                        <div t-if="p_size&gt;1" class="col-xs-1 text-small">
+                            <span t-esc="p_index + 1"/>/
+                            <span t-esc="p_size"/>
+                        </div>
+                    </div>
+
+
+                    <!--div class="row">
+                        <div class="col-xs-3">
+                            <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                                 style="max-height: 45px;"/>
+                        </div>
+                        <div class="col-xs-9 text-right" style="margin-top:20px;" t-field="company.rml_header1"/>
+                    </div>
+                    <div class="row zero_min_height">
+                        <div class="col-xs-12">
+                            <div style="border-bottom: 1px solid black;"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div t-field="company.partner_id"
+                                 t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"
+                                 style="border-bottom: 1px solid black;"/>
+                        </div>
+                    </div-->
+                </div>
+            </t>
+        </template>
+
+        <template id="external_layout_footer1">
+            <t t-name="ems.external_layout_footer1">
+                <div class="footer">
+                    <div class="text-center" style="border-top: 1px solid black;">
+                        <ul t-if="not company.custom_footer" class="list-inline">
+                            <li t-if="company.phone">Phone:
+                                <span t-field="company.phone"/>
+                            </li>
+
+                            <li t-if="company.fax and company.phone">&amp;bull;</li>
+                            <li t-if="company.fax">Fax:
+                                <span t-field="company.fax"/>
+                            </li>
+
+                            <li t-if="company.email">&amp;bull;</li>
+                            <li t-if="company.email">Email:
+                                <span t-field="company.email"/>
+                            </li>
+
+                            <li t-if="company.website">&amp;bull;</li>
+                            <li t-if="company.website">Website:
+                                <span t-field="company.website"/>
+                            </li>
+                        </ul>
+
+                        <t t-if="company.custom_footer">
+                            <span t-raw="company.rml_footer"/>
+                        </t>
+
+                        <ul class="list-inline">
+                            <li>Page:</li>
+                            <li>
+                                <span class="page"/>
+                            </li>
+                            <li>/</li>
+                            <li>
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="external_layout1">
+            <t t-name="ems.external_layout1">
+                <!-- Multicompany -->
+                <t t-if="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id"/>
+                </t>
+                <t t-if="not o or not 'company_id' in o">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+
+                <t t-call="ems.external_layout_header1"/>
+                <t t-raw="0"/>
+                <t t-call="ems.external_layout_footer1"/>
+            </t>
+
+        </template>
+
+
         <template id="report_emssessionsummary">
             <t t-call="report.html_container">
+                <t t-foreach="ps" t-as="ps">
+                    <t t-set="partner_id" t-value="ps[0]"/>
+                    <t t-set="pages" t-value="ps[1]"/>
+                    <t t-foreach="pages" t-as="p">
 
-                <!--t t-call="report.external_layout"-->
+                            <div class="page">
+                                <style type="text/css">
+                                    <![CDATA[
+                                body {
+                                    font-family: Kabel Bk BT;
+                                    font-size: 1.1em;
+                                }
+                                .table {
+                                    margin-bottom: 0em;
+                                }
 
-                    <t t-foreach="ss" t-as="s">
-                        <div class="page">
+                                .text-small {
+                                    font-size: 0.8em;
+                                }
 
+                                .myrow {
+                                    font-size: 0;
+                                }
+                                .myrow > * {
+                                    float: none;
+                                    display: inline-block;
+                                }
+                                .myrow > *:last-child {
+                                    vertical-align: center;
+                                }
+                                .myrow *:last-child {
+                                    margin-top: 0; /* optional */
+                                }
+                            ]]>
+                                </style>
 
-                            <div class="oe_structure"/>
-                            <h2 style="font-family:Kabel Bk BT;color:#99cc00;">It always seems impossible until it's done</h2>
-
-
-
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <span>Name:<strong t-esc="s[0].name"/></span>
+                                <div class="row">
+                                    <div class="col-xs-11">
+                                        <h3 style="color:#99cc00;">It always seems impossible until it's done</h3>
+                                    </div>
+                                    <div t-if="p_size&gt;1" class="col-xs-1 text-small">
+                                        <span t-esc="p_index + 1"/>/
+                                        <span t-esc="p_size"/>
+                                    </div>
                                 </div>
-                                <div class="col-xs-6">
-                                    <h1><strong>You can do it!</strong></h1>
+
+                                <div class="row myrow">
+                                    <div class="col-xs-7">
+                                        <h4 t-esc="partner_id.name"/>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <h2 style="color:#006666;">You can do it!</h2>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <t t-foreach="p" t-as="b">
+                                        <div class="col-xs-6">
+                                            <table class="table table-striped table-condensed">
+                                                <th>Session</th>
+                                                <th>Day</th>
+                                                <th>Time</th>
+                                                <t t-foreach="b" t-as="d">
+                                                    <tr>
+                                                        <td t-esc="d.num_session"/>
+                                                        <td t-esc="d.date_begin_str"/>
+                                                        <td t-esc="d.time_begin_str"/>
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <div class="row mt8">
+                                    <div class="col-xs-8">
+                                        <div t-field="c.name"/>
+                                        <div>
+                                            <span t-field="c.phone"/>
+                                            -
+                                            <span t-field="c.partner_id.mobile"/>
+                                        </div>
+                                        <div>
+                                            <span t-esc="c.website.replace('https://','').replace('http://','')"/>
+                                            -
+                                            <span t-field="c.email"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <img t-if="c.logo" t-att-src="'data:image/png;base64,%s' % c.logo"
+                                             style="max-height: 3em;"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mt16 text-small">
+                                    <div class="col-xs-12">
+                                        <div style="color:#639729;">
+                                            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"/>
+                                            En cas de no poder assistir, la sessió es podrà cancel·lar fins a 24 hores
+                                            abans de l'hora reservada. En el cas de no avisar o fer-ho el mateix dia de
+                                            l'entrenament, la sessió serà no recuperable.
+                                        </div>
+                                        <div style="color:#639729;">
+                                            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"/>
+                                            Caduca als tres mesos des de la data de la última sessió o en el seu defecte
+                                            des de la data d'adquisició.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-
-                            <div class="row">
-                                <t t-foreach="s[1]" t-as="s">
-
-
-                                    <div t-field="s.date_begin"/>
-                                    <div t-field="s.date_begin" t-field-options='{"widget": "date"}'/>
-                                    <div t-field="s.date_begin" t-field-options='{"format": "HH:mm:ss"}'/>
-
-
-                                </t>
-                            </div>
-                        </div>
+                        
                     </t>
-                <!--/t-->
-
+                </t>
             </t>
         </template>
     </data>

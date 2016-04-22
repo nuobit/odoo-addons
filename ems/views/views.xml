@@ -100,11 +100,12 @@
                                 <field name="partner_ids" nolabel="1" attrs="{'readonly':[('state', '!=', 'draft')]}">
                                     <tree editable="bottom">
                                         <field name="partner_id"/>
-                                        <field name="session" attrs="{'readonly':[('force_session', '=', False)]}"/>
+                                        <field name="num_session" attrs="{'readonly':[('force_session', '=', False)]}"/>
                                         <field name="force_session"/>
                                         <field name="phone"/>
                                         <field name="mobile"/>
                                         <field name="email"/>
+                                        <field name="session"/>
                                     </tree>
                                 </field>
                             </group>
@@ -743,7 +744,7 @@
             <field name="name">ems.session.reschedule.wizard.form</field>
             <field name="model">ems.session.reschedule.wizard</field>
             <field name="arch" type="xml">
-                <form string="Generate sessions">
+                <form string="Reschedule sessions">
                     <group>
                         <!--field name="session_id" required="1"/-->
                         <field name="duration" required="1"/>
@@ -769,7 +770,7 @@
             <field name="name">ems.session.cancel.wizard.form</field>
             <field name="model">ems.session.cancel.wizard</field>
             <field name="arch" type="xml">
-                <form string="Generate sessions">
+                <form string="Cancel sessions">
                     <group>
                         <field name="reason" required="1" widget="text"/>
                     </group>
@@ -828,7 +829,7 @@
             <!--field name="page_height">80</field>
             <field name="page_width">175</field-->
             <field name="orientation">Landscape</field>
-            <field name="margin_top">3</field>
+            <field name="margin_top">5</field>
             <field name="margin_bottom">3</field>
             <field name="margin_left">3</field>
             <field name="margin_right">3</field>
