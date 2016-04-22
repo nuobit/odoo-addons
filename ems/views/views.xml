@@ -829,12 +829,12 @@
             <!--field name="page_height">80</field>
             <field name="page_width">175</field-->
             <field name="orientation">Landscape</field>
-            <field name="margin_top">5</field>
-            <field name="margin_bottom">3</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">32</field>
             <field name="margin_left">3</field>
             <field name="margin_right">3</field>
             <field name="header_line" eval="False"/>
-            <field name="header_spacing">3</field>
+            <field name="header_spacing">10</field>
             <field name="dpi">80</field>
         </record>
 
