@@ -180,6 +180,8 @@
                             help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
                             help="Rescheduled Sessions"/>
+                     <filter string="EMS Sessions" name="is_ems" domain="[('service_id.is_ems','=',True)]"
+                            help="EMS Sessions"/>
                     <field name="partner_text" string="Attendees"/>
                     <field name="responsible_id"/>
                     <field name="description"/>
