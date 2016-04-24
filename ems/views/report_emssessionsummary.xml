@@ -31,10 +31,18 @@
                         <div class="header">
                             <style type="text/css">
                                 <![CDATA[
-                                body {
-                                    font-family: Kabel Bk BT;
-                                    font-size: 1.1em;
-                                }
+                                    /* Kabel Bk BT */
+                                    @font-face {
+                                        font-family: 'Kabel Bk BT';
+                                        font-style: normal;
+                                        ;font-weight: 400;
+                                        src: local('Kabel Bk BT'), url(http://erp.mybefit.com/kabeln.ttf) format('truetype');
+                                    }
+
+                                    body {
+                                        font-family: Kabel Bk BT;
+                                        font-size: 1.1em;
+                                    }
                                 ]]>
                             </style>
 
@@ -48,27 +56,35 @@
                         <div class="page">
                             <style type="text/css">
                                 <![CDATA[
-                                body {
-                                    font-family: Kabel Bk BT;
-                                    font-size: 1.1em;
-                                }
-                                .table {
-                                    margin-bottom: 0em;
-                                }
+                                    /* Kabel Bk BT */
+                                    @font-face {
+                                        font-family: 'Kabel Bk BT';
+                                        font-style: normal;
+                                        ;font-weight: 400;
+                                        src: local('Kabel Bk BT'), url(http://erp.mybefit.com/kabeln.ttf) format('truetype');
+                                    }
 
-                                .myrow {
-                                    font-size: 0;
-                                }
-                                .myrow > * {
-                                    float: none;
-                                    display: inline-block;
-                                }
-                                .myrow > *:last-child {
-                                    vertical-align: center;
-                                }
-                                .myrow *:last-child {
-                                    margin-top: 0; /* optional */
-                                }
+                                    body {
+                                        font-family: Kabel Bk BT;
+                                        font-size: 1.1em;
+                                    }
+                                    .table {
+                                        margin-bottom: 0em;
+                                    }
+
+                                    .myrow {
+                                        font-size: 0;
+                                    }
+                                    .myrow > * {
+                                        float: none;
+                                        display: inline-block;
+                                    }
+                                    .myrow > *:last-child {
+                                        vertical-align: center;
+                                    }
+                                    .myrow *:last-child {
+                                        margin-top: 0; /* optional */
+                                    }
                             ]]>
                             </style>
 
@@ -104,30 +120,37 @@
                         <div class="footer">
                             <style type="text/css">
                                 <![CDATA[
-                                body {
-                                    font-family: Kabel Bk BT;
-                                    font-size: 1.1em;
-                                }
+                                    /* Kabel Bk BT */
+                                    @font-face {
+                                        font-family: 'Kabel Bk BT';
+                                        font-style: normal;
+                                        ;font-weight: 400;
+                                        src: local('Kabel Bk BT'), url(http://erp.mybefit.com/kabeln.ttf) format('truetype');
+                                    }
 
-                                .text-small {
-                                    font-size: 0.8em;
-                                }
+                                    body {
+                                        font-family: Kabel Bk BT;
+                                        font-size: 1.1em;
+                                    }
 
-                                .myrow {
-                                font-size: 0;
-                                }
-                                .myrow > * {
-                                    float: none;
-                                    display: inline-block;
-                                }
-                                .myrow > *:last-child {
-                                    vertical-align: center;
-                                }
-                                .myrow *:last-child {
-                                    margin-top: 0; /* optional */
-                                }
+                                    .text-small {
+                                        font-size: 0.8em;
+                                    }
 
-                            ]]>
+                                    .myrow {
+                                    font-size: 0;
+                                    }
+                                    .myrow > * {
+                                        float: none;
+                                        display: inline-block;
+                                    }
+                                    .myrow > *:last-child {
+                                        vertical-align: center;
+                                    }
+                                    .myrow *:last-child {
+                                        margin-top: 0; /* optional */
+                                    }
+                                ]]>
                             </style>
                             <div class="row mt8">
                                 <div class="col-xs-8">
