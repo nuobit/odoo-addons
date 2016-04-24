@@ -739,7 +739,7 @@ class ems_partner(models.Model):
     num_session = fields.Integer('Session', compute='_compute_session', inverse='_compute_session_inverse', readonly=True, default=-1, store=False)
 
     force_session = fields.Boolean(string='Force session', default=False)
-    num_session_forced = fields.Integer('Session', required=False, default=1)
+    num_session_forced = fields.Integer('Session', required=False)
 
     phone = fields.Char(related='partner_id.phone', readonly=True)
 
