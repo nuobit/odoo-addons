@@ -36,7 +36,7 @@
                                         font-family: 'Kabel Bk BT';
                                         font-style: normal;
                                         ;font-weight: 400;
-                                        src: local('Kabel Bk BT'), url(http://erp.mybefit.com/kabeln.ttf) format('truetype');
+                                        src: local('Kabel Bk BT'), url(/kabeln.ttf) format('truetype');
                                     }
 
                                     body {
@@ -61,7 +61,7 @@
                                         font-family: 'Kabel Bk BT';
                                         font-style: normal;
                                         ;font-weight: 400;
-                                        src: local('Kabel Bk BT'), url(http://erp.mybefit.com/kabeln.ttf) format('truetype');
+                                        src: local('Kabel Bk BT'), url(/kabeln.ttf) format('truetype');
                                     }
 
                                     body {
@@ -125,7 +125,7 @@
                                         font-family: 'Kabel Bk BT';
                                         font-style: normal;
                                         ;font-weight: 400;
-                                        src: local('Kabel Bk BT'), url(http://erp.mybefit.com/kabeln.ttf) format('truetype');
+                                        src: local('Kabel Bk BT'), url(/kabeln.ttf) format('truetype');
                                     }
 
                                     body {
