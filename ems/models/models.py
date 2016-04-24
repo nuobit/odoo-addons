@@ -417,11 +417,11 @@ class ems_session(models.Model):
 
     @api.multi
     def button_reschedule(self):
-        sessions0 = self.env['ems.session'].search([('id', '!=', self.id),
+        sessions0 = self.env['ems.session'].search([ #('id', '!=', self.id),
                                             ('state', '=', 'confirmed'),
                                             ('center_id', '=', self.center_id.id),
                                             #('service_id', '=', self.service_id.id),
-                                            ('date_begin', '>', self.date_begin)
+                                            ('date_begin', '>=', self.date_begin)
                                            ]).filtered(lambda x: x.service_id.is_ems and
                                                                  len(set(x.partner_ids.mapped('partner_id.id')) &
                                                                      set(self.partner_ids.mapped('partner_id.id')))!=0
