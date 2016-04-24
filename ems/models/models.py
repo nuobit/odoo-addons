@@ -734,7 +734,7 @@ class ems_partner(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
 
-    session = fields.Integer('Session OLD', readonly=True, default=-1)
+    session = fields.Integer(string='Session OLD', readonly=False, default=-1)
 
     num_session = fields.Integer('Session', compute='_compute_session', inverse='_compute_session_inverse', readonly=True, default=-1, store=False)
 
