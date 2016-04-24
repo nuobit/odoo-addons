@@ -168,7 +168,7 @@
                                 </div>
                                 <div class="col-xs-4">
                                     <img t-if="c.logo" t-att-src="'data:image/png;base64,%s' % c.logo"
-                                         style="max-height: 3em;"/>
+                                         style="max-height: 4em;"/>
                                 </div>
                             </div>
 
