@@ -362,8 +362,8 @@ class ems_session(models.Model):
         ## enca carreguem la sesio replanificada
         if self.target_session_id.state!='draft':
             raise ValidationError(_("The target session has to be in draft state to be deleted."))
-        
-        self.target_session_id.unlink()
+
+        self.target_session_id.unlink(force=True)
         self.target_session_id = False
 
         self.state = 'draft'
@@ -707,12 +707,15 @@ class ems_session(models.Model):
         self._check_all()
 
     @api.multi
-    def unlink(self):
+    def unlink(self, force=False):
         for rec in self:
             #Call the parent method to eliminate the records.
             if rec.state == 'draft':
                 if rec.source_session_id:
-                    raise ValidationError(_("This session is linked to session '%s', delete that before.") % rec.source_session_id.name_get()[0][1])
+                    if rec.source_session_id.state=='rescheduled' and force:
+                         super(ems_session, rec).unlink()
+                    else:
+                        raise ValidationError(_("This session is linked to session '%s', delete that before.") % rec.source_session_id.name_get()[0][1])
                 else:
                     super(ems_session, rec).unlink()
             else:
