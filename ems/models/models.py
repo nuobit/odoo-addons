@@ -362,8 +362,9 @@ class ems_session(models.Model):
         ## enca carreguem la sesio replanificada
         if self.target_session_id.state!='draft':
             raise ValidationError(_("The target session has to be in draft state to be deleted."))
-        self.target_session_id = False
+        
         self.target_session_id.unlink()
+        self.target_session_id = False
 
         self.state = 'draft'
 
