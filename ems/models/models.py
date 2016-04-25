@@ -1343,7 +1343,7 @@ class WizardCheckSessionNumber(models.TransientModel):
     def find(self):
         sids=[]
         for x in self.env['ems.partner'].search([]):
-            if x.session!=-1 and x.num_session!=x.session:
+            if x.service_id.is_ems and x.session!=-1 and x.num_session!=x.session:
                 sids.append(x.session_id.id)
 
         sids=list(set(sids))
