@@ -311,9 +311,9 @@ class ems_session(models.Model):
 
     reason = fields.Char(string='Reason', required=False, readonly=True)
 
-    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True)
+    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, ondelete='restrict')
 
-    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, ondelete='restrict')
+    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True)
 
     session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True, translate=False)
 
