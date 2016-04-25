@@ -127,7 +127,7 @@
                                     <field name="source_session_id"/>
 
                                 </group>
-                                <group  attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled'))]}">
+                                <group attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled'))]}">
 
                                     <field name="target_session_id"/>
                                     <field name="reason"/>
@@ -180,7 +180,7 @@
                             help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
                             help="Rescheduled Sessions"/>
-                     <filter string="EMS Sessions" name="is_ems" domain="[('service_id.is_ems','=',True)]"
+                    <filter string="EMS Sessions" name="is_ems" domain="[('service_id.is_ems','=',True)]"
                             help="EMS Sessions"/>
                     <field name="partner_text" string="Attendees"/>
                     <field name="responsible_id"/>
@@ -188,6 +188,7 @@
                     <field name="service_id"/>
                     <field name="resource_ids"/>
                     <field name="ubication_id"/>
+                    <field name="center_id"/>
                     <group expand="0" string="Group By">
                         <filter string="Responsible" context="{'group_by': 'responsible_id'}"/>
                         <filter string="Service" context="{'group_by':'service_id'}"/>
@@ -761,7 +762,7 @@
                         <button name="reschedule" type="object"
                                 string="Reschedule" class="oe_highlight"/>
                         or
-                        <button special="cancel" string="Cancel"/>
+                        <button special="cancel" class="oe_link" string="Cancel"/>
                     </footer>
                 </form>
             </field>
@@ -780,7 +781,7 @@
                         <button name="accept" type="object"
                                 string="Accept" class="oe_highlight"/>
                         or
-                        <button special="cancel" string="Cancel"/>
+                        <button special="cancel" class="oe_link" string="Cancel"/>
                     </footer>
                 </form>
             </field>
@@ -808,14 +809,47 @@
                         <button name="accept" type="object"
                                 string="Accept" class="oe_highlight"/>
                         or
-                        <button special="cancel" string="Cancel"/>
+                        <button special="cancel" class="oe_link" string="Cancel"/>
                     </footer>
                 </form>
             </field>
         </record>
 
+        <!-- Creem el WIZARD check sesiion number -->
+        <record model="ir.ui.view" id="ems_check_session_number_wizard_form_view">
+            <field name="name">ems.check.session.number.wizard.form</field>
+            <field name="model">ems.check.session.number.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Message">
+                    <group>
+                        <field name="line_ids" nolabel="1" readonly="1">
+                            <tree>
+                                <field name="session_id" />
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button special="cancel" string="Close" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
 
+        <record id="action_check_session_number" model="ir.actions.act_window">
+            <field name="name">Check Session number</field>
+            <field name="res_model">ems.check.session.number.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ems_check_session_number_wizard_form_view"/>
+            <field name="target">new</field>
+        </record>
 
+        <menuitem action="action_check_session_number"
+                  id="menu_check_session_number"
+                  parent="menu_ems_config_root"
+                  groups="base.group_no_one"/>
+
+        <!-- REPORT -->
         <report string="Session summary"
                 id="report_ems_session_summary"
                 model="ems.session"
@@ -840,7 +874,7 @@
             <field name="dpi">80</field>
         </record>
 
-         <record id="report_ems_session_summary" model="ir.actions.report.xml">
+        <record id="report_ems_session_summary" model="ir.actions.report.xml">
             <field name="paperformat_id" ref="ems.paperformat_ems_session_summary"/>
         </record>
 

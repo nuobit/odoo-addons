@@ -1327,6 +1327,50 @@ class WizardTimetable(models.TransientModel):
         string="Timetable", required=True, default=_overlapped_timetables)
 
 
+class WizardCheckSessionNumber(models.TransientModel):
+    _name = 'ems.check.session.number.wizard'
+
+    line_ids = fields.One2many(comodel_name='ems.check.session.number.line.wizard', inverse_name='check_id')
+
+    @api.model
+    def default_get(self, fields):
+        res = super(WizardCheckSessionNumber, self).default_get(fields)
+        if 'line_ids' in fields:
+            res['line_ids'] = self.find()
+        return res
+
+    @api.multi
+    def find(self):
+        sids=[]
+        for x in self.env['ems.partner'].search([]):
+            if x.session!=-1 and x.num_session!=x.session:
+                sids.append(x.session_id.id)
+
+        sids=list(set(sids))
+
+        sessions = self.env['ems.session'].browse(sids).sorted(lambda x: x.date_begin)
+
+        y = []
+        for s in sessions:
+            y.append((0,0, {'session_id': s.id}))
+
+
+        return y
+
+
+
+
+
+class WizardCheckSessionNumberLine(models.TransientModel):
+    _name = 'ems.check.session.number.line.wizard'
+
+    check_id = fields.Many2one('ems.check.session.number.wizard', ondelete='cascade')
+
+    session_id = fields.Many2one('ems.session')
+
+
+
+
 
 ################# CUSTOM REPORTS
 
