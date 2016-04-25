@@ -270,13 +270,16 @@ class ems_session(models.Model):
 
     company_id = fields.Many2one('res.company', string='Company', change_default=True,
         default=lambda self: self.env['res.company']._company_default_get('ems.session'),
+        ondelete='restrict',
         required=False, readonly=False)
 
     center_id = fields.Many2one('ems.center', string='Center', default=lambda self: self.env.user.center_id,
-        required=True, readonly=False)
+                                ondelete='restrict',
+                                required=True, readonly=False)
 
     responsible_id = fields.Many2one('ems.responsible', string='Responsible',
-        required=False, readonly=False)
+                                     ondelete='restrict',
+                                     required=False, readonly=False)
 
     partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id', copy=True)
 
@@ -284,12 +287,14 @@ class ems_session(models.Model):
                                search='_search_partner_text')
 
     service_id = fields.Many2one('ems.service', string='Service',
-        required=True, readonly=False)
+                                 ondelete='restrict',
+                                 required=True, readonly=False)
 
     color_rel = fields.Selection(related="service_id.color", store=False)
 
     ubication_id = fields.Many2one('ems.ubication', string='Ubication',
-        required=True, readonly=False)
+                                   ondelete='restrict',
+                                   required=True, readonly=False)
 
     is_all_center = fields.Boolean(related='ubication_id.is_all_center', store=False)
 
@@ -306,9 +311,9 @@ class ems_session(models.Model):
 
     reason = fields.Char(string='Reason', required=False, readonly=True)
 
-    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True)
+    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, ondelete='restrict',)
 
-    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True)
+    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, ondelete='restrict',)
 
     session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True, translate=False)
 
@@ -736,7 +741,7 @@ class ems_partner(models.Model):
     _name = 'ems.partner'
     _description = 'Partner'
 
-    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
+    partner_id = fields.Many2one('res.partner', string="Partner", ondelete='restrict', required=True)
 
     session = fields.Integer(string='Session OLD', readonly=False, default=-1)
 
@@ -751,7 +756,7 @@ class ems_partner(models.Model):
 
     email = fields.Char(related='partner_id.email', readonly=True)
 
-    session_id = fields.Many2one('ems.session')
+    session_id = fields.Many2one('ems.session', ondelete='cascade',)
 
     date_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
     time_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
@@ -846,7 +851,8 @@ class ems_ubication(models.Model):
     is_all_center = fields.Boolean(string="All center", help="Indicates if this ubication represents the whole center", default=False)
 
     center_id = fields.Many2one('ems.center', string='Center',
-        required=True, readonly=False, default=lambda self: self.env.user.center_id)
+                                ondelete='restrict',
+                                required=True, readonly=False, default=lambda self: self.env.user.center_id)
 
     service_ids = fields.One2many('ems.ubication.service.rel', 'ubication_id', string="Services")
 
@@ -901,9 +907,9 @@ class ems_ubication_service(models.Model):
     _description = 'Ubication-Service relation'
     _order = 'sequence'
 
-    service_id = fields.Many2one('ems.service', string="Service")
+    service_id = fields.Many2one('ems.service', string="Service", ondelete='restrict')
 
-    ubication_id = fields.Many2one('ems.ubication', string="Ubication", required=True)
+    ubication_id = fields.Many2one('ems.ubication', string="Ubication", required=True, ondelete='restrict')
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
         required=False, readonly=False)
@@ -936,7 +942,8 @@ class ems_resource(models.Model):
         readonly=False)
 
     center_id = fields.Many2one('ems.center', string='Center', default=lambda self: self.env.user.center_id,
-        required=True, readonly=False)
+                                ondelete='restrict',
+                                required=True, readonly=False)
 
     description = fields.Text(string='Description',
         readonly=False)
@@ -958,7 +965,8 @@ class ems_timetable(models.Model):
     _order = 'center_id,day,time_begin,time_end desc'
 
     center_id = fields.Many2one('ems.center', string='Center',
-        required=True, readonly=False, default=lambda self: self.env.user.center_id)
+                                ondelete='restrict',
+                                required=True, readonly=False, default=lambda self: self.env.user.center_id)
 
     type = fields.Selection(selection=[('weekday', _('Weekday')), ('yearday', _('Yearday'))], required=True, default='weekday')
 
@@ -974,7 +982,8 @@ class ems_timetable(models.Model):
     date_begin = fields.Datetime(compute='_compute_date_begin') #, inverse="_inverse_date_begin")
     date_end = fields.Datetime(compute='_compute_date_end') #, inverse="_inverse_date_end")
 
-    responsible_id = fields.Many2one('ems.responsible', string='Responsible', required=True, readonly=False)
+    responsible_id = fields.Many2one('ems.responsible', string='Responsible',
+                                     ondelete='restrict', required=True, readonly=False)
 
     color_rel = fields.Selection(related="responsible_id.color", store=False)
 
@@ -1121,7 +1130,7 @@ class ems_responsible(models.Model):
     _description = 'Responsible'
     #_order = 'sequence'
 
-    user_id = fields.Many2one('res.users', string='User', readonly=False, required=True)
+    user_id = fields.Many2one('res.users', string='User', readonly=False, required=True, ondelete='restrict')
 
     name = fields.Char(string="Name")
 
@@ -1160,10 +1169,11 @@ class ems_responsible_absence(models.Model):
     _description = 'Responsible Absence'
     _order = 'responsible_id,center_id,ini_date'
 
-    responsible_id = fields.Many2one('ems.responsible', string='Responsible', required=True, readonly=False)
+    responsible_id = fields.Many2one('ems.responsible', string='Responsible', required=True, readonly=False, ondelete='restrict')
 
     center_id = fields.Many2one('ems.center', string='Center',
-        required=True, readonly=False, default=lambda self: self.env.user.center_id)
+                                ondelete='restrict',
+                                required=True, readonly=False, default=lambda self: self.env.user.center_id)
 
     ini_date = fields.Datetime(string='Initial Date', required=True)
     end_date = fields.Datetime(string='End Date', required=True)
@@ -1195,7 +1205,7 @@ class ems_source(models.Model):
 class res_users(models.Model):
     _inherit = 'res.users'
 
-    center_id = fields.Many2one('ems.center', string='Center',
+    center_id = fields.Many2one('ems.center', string='Center', ondelete='restrict',
         required=False, readonly=False)
 
 
@@ -1203,7 +1213,7 @@ class res_partner(models.Model):
     _inherit = 'res.partner'
 
     birth_date = fields.Date("Birth date")
-    source_id = fields.Many2one('ems.source', string='Origin')
+    source_id = fields.Many2one('ems.source', string='Origin', ondelete='restrict')
     is_detail = fields.Boolean(related='source_id.is_detail')
     source_detail = fields.Char(string='Detail')
     health_survey = fields.Selection([('notoall', 'No to all'), ('yessevere', 'Yes, severe'),
@@ -1318,7 +1328,7 @@ class WizardTimetable(models.TransientModel):
 
 
 
-
+################# CUSTOM REPORTS
 
 class ParticularEMSReportSessionSummary(models.AbstractModel):
     _name = 'report.ems.report_emssessionsummary'
