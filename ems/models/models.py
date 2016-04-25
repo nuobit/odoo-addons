@@ -743,8 +743,6 @@ class ems_partner(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Partner", ondelete='restrict', required=True)
 
-    session = fields.Integer(string='Session OLD', readonly=False, default=-1)
-
     num_session = fields.Integer('Session', compute='_compute_session', inverse='_compute_session_inverse', readonly=True, default=-1, store=False)
 
     force_session = fields.Boolean(string='Force session', default=False)
@@ -1327,6 +1325,7 @@ class WizardTimetable(models.TransientModel):
         string="Timetable", required=True, default=_overlapped_timetables)
 
 
+'''
 class WizardCheckSessionNumber(models.TransientModel):
     _name = 'ems.check.session.number.wizard'
 
@@ -1357,10 +1356,6 @@ class WizardCheckSessionNumber(models.TransientModel):
 
         return y
 
-
-
-
-
 class WizardCheckSessionNumberLine(models.TransientModel):
     _name = 'ems.check.session.number.line.wizard'
 
@@ -1368,7 +1363,7 @@ class WizardCheckSessionNumberLine(models.TransientModel):
 
     session_id = fields.Many2one('ems.session')
 
-
+'''
 
 
 

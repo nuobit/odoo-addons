@@ -105,7 +105,6 @@
                                         <field name="phone"/>
                                         <field name="mobile"/>
                                         <field name="email"/>
-                                        <field name="session"/>
                                     </tree>
                                 </field>
                             </group>
@@ -816,7 +815,7 @@
         </record>
 
         <!-- Creem el WIZARD check sesiion number -->
-        <record model="ir.ui.view" id="ems_check_session_number_wizard_form_view">
+        <!--record model="ir.ui.view" id="ems_check_session_number_wizard_form_view">
             <field name="name">ems.check.session.number.wizard.form</field>
             <field name="model">ems.check.session.number.wizard</field>
             <field name="arch" type="xml">
@@ -847,7 +846,7 @@
         <menuitem action="action_check_session_number"
                   id="menu_check_session_number"
                   parent="menu_ems_config_root"
-                  groups="base.group_no_one"/>
+                  groups="base.group_no_one"/-->
 
         <!-- REPORT -->
         <report string="Session summary"
