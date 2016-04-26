@@ -313,7 +313,7 @@ class ems_session(models.Model):
 
     source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False, ondelete='restrict')
 
-    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, copy=False)
+    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, copy=False, ondelete='restrict')
 
     session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True, translate=False)
 
@@ -367,8 +367,13 @@ class ems_session(models.Model):
         if self.target_session_id.state!='draft':
             raise ValidationError(_("The target session has to be in draft state to be deleted."))
 
-        self.target_session_id.unlink(force=True)
+        obj = self.target_session_id
+
         self.target_session_id = False
+        obj.source_session_id = False
+
+        obj.unlink(force=True)
+
 
         self.state = 'draft'
 
@@ -726,10 +731,10 @@ class ems_session(models.Model):
             #Call the parent method to eliminate the records.
             if rec.state == 'draft':
                 if rec.source_session_id:
-                    if rec.source_session_id.state=='rescheduled' and force:
-                         super(ems_session, rec).unlink()
-                    else:
-                        raise ValidationError(_("This session is linked to session '%s', delete that before.") % rec.source_session_id.name_get()[0][1])
+                    #if rec.source_session_id.state=='rescheduled' and force:
+                    #     super(ems_session, rec).unlink()
+                    #else:
+                    raise ValidationError(_("This session is linked to session '%s', delete that before.") % rec.source_session_id.name_get()[0][1])
                 else:
                     super(ems_session, rec).unlink()
             else:
