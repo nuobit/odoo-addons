@@ -61,7 +61,7 @@
                                 groups="base.group_user"/>
                         <button string="Reschedule" name="button_reschedule" states="confirmed" type="object"
                                 groups="base.group_user"/>
-                        <button string="Cancel" name="button_cancel" states="confirmed" type="object"
+                        <button string="Cancel" name="button_cancel" states="confirmed,draft" type="object"
                                 groups="base.group_user"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirmed,rescheduled,cancelled"/>
@@ -779,6 +779,28 @@
                     <footer>
                         <button name="accept" type="object"
                                 string="Accept" class="oe_highlight"/>
+                        or
+                        <button special="cancel" class="oe_link" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+        <!-- Creem el SESSION print wizard form -->
+        <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
+            <field name="name">ems.session.print.wizard.form</field>
+            <field name="model">ems.session.print.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Print sessions">
+                    <group>
+                        <field name="session_from" required="1"/>
+                        <field name="session_to" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="button_print" type="object"
+                                string="Print" class="oe_highlight"/>
                         or
                         <button special="cancel" class="oe_link" string="Cancel"/>
                     </footer>

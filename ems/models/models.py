@@ -299,7 +299,7 @@ class ems_session(models.Model):
     is_all_center = fields.Boolean(related='ubication_id.is_all_center', store=False)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
-        required=False, readonly=False)
+        required=False, readonly=False, copy=True)
 
     duration = fields.Integer(string='Duration', required=True)
 
@@ -309,11 +309,11 @@ class ems_session(models.Model):
     date_end = fields.Datetime(string='End Date', required=True,
         readonly=False)
 
-    reason = fields.Char(string='Reason', required=False, readonly=True)
+    reason = fields.Char(string='Reason', required=False, readonly=True, copy=False)
 
-    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, ondelete='restrict')
+    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False)
 
-    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True)
+    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, copy=False)
 
     session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True, translate=False)
 
@@ -329,20 +329,28 @@ class ems_session(models.Model):
 
     @api.multi
     def button_print(self):
-        #return self.env['report'].get_action(self, 'ems.report_emssessionsummary', data={'pp': self})
+        wizard_id = self.env['ems.session.print.wizard'].create({
+                    'session_from': 1,
+                    'session_to': 10,
+                })
 
-        #set the data
-        #ids is the list of ids, so have to pass <model>._ids
-        #model is the model name  <model>._name or string literal
-        #form is the field list, I use <model>.read() to get all fields, read() can have parameter to only read specific fields
+        return {
+                'type': 'ir.actions.act_window',
+                'name':_("Display Name"),#Name You want to display on wizard
+                'res_model': 'ems.session.print.wizard',
+                'view_type': 'form',
+                'view_mode': 'form',
+                #'views': [(view.id, 'form')],
+                #'view_id': view.id,
+                'res_id': wizard_id.id,
+                'target': 'new',
+                #'context': context,
+                }
 
+        '''
         datas = {
             'ids': self._ids,
             'model': self._name,
-            #'kk': self.partner_ids,
-            #'pp': [self.partner_ids],
-            #'form': self.read(),
-            #'context':self._context
         }
         #call the report
         return {
@@ -350,18 +358,9 @@ class ems_session(models.Model):
                    'report_name': 'ems.report_emssessionsummary',
                    'datas': datas
                }
+        '''
 
 
-        '''
-        report_obj = self.env['report']
-        report = report_obj._get_report_from_name('ems.report_sessionsummary')
-        docargs = {
-            'doc_ids': self._ids,
-            'doc_model': report.model,
-            'docs': self,
-        }
-        return report_obj.render('ems.report_sessionsummary', docargs)
-        '''
 
     def accept(self):
         ## enca carreguem la sesio replanificada
@@ -469,8 +468,6 @@ class ems_session(models.Model):
             'target': 'new',
             #'context': context,
         }
-
-
 
 
     @api.multi
@@ -595,7 +592,7 @@ class ems_session(models.Model):
         if self.service_id.min_attendees>len(self.partner_ids):
             raise ValidationError(_('It requieres %i attendees minimum') % self.service_id.min_attendees)
 
-        # comprovem que la sessio no te cap forces session anteriro
+        # comprovem que la sessio no te cap forces session anteriro o posterior
         for ep in self.partner_ids:
             if ep.force_session:
                 sessions_ant = self.env['ems.partner'].search([('partner_id','=', ep.partner_id.id)]).\
@@ -606,6 +603,17 @@ class ems_session(models.Model):
                                     )
                 if len(sessions_ant)!=0:
                     raise ValidationError(_("Only the first session can have a forced session."))
+            else:
+                sessions_ant = self.env['ems.partner'].search([('partner_id','=', ep.partner_id.id)]).\
+                    filtered(lambda x: x.session_id.center_id==self.center_id and
+                                       x.session_id.state in ('cancelled', 'confirmed') and
+                                       x.session_id.service_id.is_ems and
+                                       x.session_id.date_begin>self.date_begin
+                                    )
+                if len(sessions_ant)!=0:
+                    raise ValidationError(_("It's not allowed to have a session before another one with forced session."))
+
+
 
         ### cerquem le sessions que se solapin amb l'actual (excepte lactual que segur que  solapa)
         # si la ubicacio actual es de tipus "tot el centre", qualsevol solapament temporal
@@ -759,7 +767,7 @@ class ems_partner(models.Model):
     date_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
     time_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
 
-    _sql_constraints = [('partner_session_unique', 'unique(session_id, partner_id)',_("Partner duplicated"))]
+    _sql_constraints = [('attendee_session_unique', 'unique(session_id, partner_id)',_("Attendee duplicated"))]
 
 
     @api.one
@@ -1074,10 +1082,6 @@ class ems_timetable(models.Model):
 
 
 
-
-
-
-
     @api.constrains('center_id', 'responsible_id', 'type', 'day', 'time_begin', 'time_end', 'date_begin_year', 'date_end_year')
     def _check_timetable(self):
         # serach for other timetables of the same day and same hours
@@ -1296,6 +1300,28 @@ class WizardSessionCancel(models.TransientModel):
         session_id.state = 'cancelled'
 
 
+class WizardSessionPrint(models.TransientModel):
+    _name = 'ems.session.print.wizard'
+
+    session_from = fields.Integer(string='From session', required=True)
+    session_to = fields.Integer(string='To session', required=True)
+
+    @api.multi
+    def button_print(self):
+        datas = {
+            'ids': self.env.context.get('active_ids'),
+            'model': self._name,
+            'button': True,
+            'session_from': self.session_from,
+            'session_to': self.session_to,
+
+        }
+        #call the report
+        return {
+                   'type': 'ir.actions.report.xml',
+                   'report_name': 'ems.report_emssessionsummary',
+                   'datas': datas
+               }
 
 
 
@@ -1423,13 +1449,15 @@ class ParticularEMSReportSessionSummary(models.AbstractModel):
         session_obj = self.env['ems.session'].browse(self.ids)
 
         ps = []
-        if len(session_obj)==1:
-            # separem per patner i pagines classificades
+        if len(session_obj)==1 and data is not None and data.get('button', False):
+            # impresio llancada desde el buto de disn la sessio
             for p in session_obj.partner_ids.mapped('partner_id').sorted(lambda x: x.name):
                 ses_p = self.env['ems.partner'].search([('partner_id','=', p.id)]).\
                             filtered(lambda x: x.session_id.center_id==session_obj.center_id and
                                                x.session_id.state in ('confirmed') and
-                                               x.session_id.service_id.is_ems
+                                               x.session_id.service_id.is_ems and
+                                               x.num_session>=data.get('session_from') and
+                                                    x.num_session<=data.get('session_to')
                              ).sorted(lambda x: x.session_id.date_begin)
 
                 # separem per pagina, una pagina 2 taules de 5 elements, 10 en total per pagina
@@ -1437,6 +1465,7 @@ class ParticularEMSReportSessionSummary(models.AbstractModel):
 
                 ps.append((p, sl))
         else:
+            # impresio llancada des de la vista tree
             for p in session_obj.mapped('partner_ids.partner_id').sorted(lambda x: x.name):
                 ses_p = session_obj.mapped('partner_ids').\
                             filtered(lambda x: p.id == x.partner_id.id and

@@ -20,7 +20,6 @@
             </t>
         </template-->
 
-
         <template id="report_emssessionsummary">
             <t t-call="report.html_container">
                 <t t-foreach="ps" t-as="ps">
