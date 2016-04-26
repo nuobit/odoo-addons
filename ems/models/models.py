@@ -880,7 +880,7 @@ class ems_partner(models.Model):
                 raise ValidationError(_("Only the first session can have a forced session."))
 
     @api.multi
-    def all_sessions(self):
+    def view_sessions(self):
         return {
             "type": "ir.actions.act_window",
             "res_model": "ems.session",

@@ -107,8 +107,8 @@
                                         <field name="phone"/>
                                         <field name="mobile"/>
                                         <field name="email"/>
-                                        <button name="all_sessions"
-                                                string="NewLot" type="object" icon="terp-stock_effects-object-colorize"/>
+                                        <button name="view_sessions"
+                                                string="View Sessions" type="object" icon="terp-stock_effects-object-colorize"/>
                                     </tree>
                                 </field>
                             </group>
