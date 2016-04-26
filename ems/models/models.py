@@ -329,9 +329,12 @@ class ems_session(models.Model):
 
     @api.multi
     def button_print(self):
+        pr = self.env['ems.partner'].search([('partner_id', 'in',
+                                              self.partner_ids.mapped('partner_id.id'))]).mapped('num_session')
+
         wizard_id = self.env['ems.session.print.wizard'].create({
-                    'session_from': 1,
-                    'session_to': 10,
+                    'session_from': min(pr),
+                    'session_to': max(pr),
                 })
 
         return {
@@ -1311,6 +1314,15 @@ class WizardSessionPrint(models.TransientModel):
 
     session_from = fields.Integer(string='From session', required=True)
     session_to = fields.Integer(string='To session', required=True)
+
+
+    @api.constrains('session_from', 'session_to')
+    def _check_session_num(self):
+        if self.session_from<=0 or self.session_to<=0:
+            raise ValidationError(_("The session number must be greater than 0"))
+        else:
+            if self.session_to<self.session_from:
+                 raise ValidationError(_("The session number to must be greater or equal than session number from"))
 
     @api.multi
     def button_print(self):
