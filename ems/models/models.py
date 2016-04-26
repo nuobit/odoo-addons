@@ -1237,7 +1237,7 @@ class res_partner(models.Model):
 class WizardSessionReschedule(models.TransientModel):
     _name = 'ems.session.reschedule.wizard'
 
-    session_id = fields.Many2one('ems.session', required=True)
+    session_id = fields.Many2one('ems.session', required=False)
     duration = fields.Integer(string='Duration', required=True, readonly=True)
 
     date_begin = fields.Datetime(string='Start Date', required=True, readonly=False)
