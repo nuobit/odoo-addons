@@ -326,6 +326,21 @@ class ems_session(models.Model):
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
 
 
+    def get_new_date(self, datestr_s, datestr_l, days=7):
+        do = fields.Datetime.from_string(datestr_s)
+        do_utc = pytz.utc.localize(do)
+        do_loc = do_utc.astimezone(pytz.timezone('Europe/Madrid'))
+
+        du = fields.Datetime.from_string(datestr_l)
+        du_loc = fields.Datetime.context_timestamp(self, du)
+        diff = do_loc.isoweekday()-du_loc.isoweekday()
+
+        du2_loc = du_loc + datetime.timedelta(days=days+diff)
+        du3_loc = du2_loc.replace(hour=do_loc.hour, minute=do_loc.minute, second=do_loc.second)
+        du3_utc = du3_loc.astimezone(pytz.utc).replace(tzinfo=None)
+
+        return du3_utc
+
 
     @api.multi
     def button_print(self):
@@ -429,38 +444,21 @@ class ems_session(models.Model):
 
     @api.multi
     def button_reschedule(self):
-        sessions0 = self.env['ems.session'].search([ #('id', '!=', self.id),
-                                            ('state', '=', 'confirmed'),
-                                            ('center_id', '=', self.center_id.id),
-                                            #('service_id', '=', self.service_id.id),
-                                            ('date_begin', '>=', self.date_begin)
-                                           ]).filtered(lambda x: x.service_id.is_ems and
+        sessions0 = self.env['ems.session'].search([('state', '=', 'confirmed'),
+                                                    ('center_id', '=', self.center_id.id),
+                                                    ('date_begin', '>=', self.date_begin)
+                                            ]).filtered(lambda x: x.service_id.is_ems and
                                                                  len(set(x.partner_ids.mapped('partner_id.id')) &
                                                                      set(self.partner_ids.mapped('partner_id.id')))!=0
                                                      )
 
         last_session = sessions0.sorted(lambda x: x.date_begin)[-1]
 
-        def get_new_date(datestr_s, datestr_l, days=7):
-            do = fields.Datetime.from_string(datestr_s)
-            do_utc = pytz.utc.localize(do)
-            do_loc = do_utc.astimezone(pytz.timezone('Europe/Madrid'))
-
-            du = fields.Datetime.from_string(datestr_l)
-            du_loc = fields.Datetime.context_timestamp(self, du)
-            diff = do_loc.isoweekday()-du_loc.isoweekday()
-
-            du2_loc = du_loc + datetime.timedelta(days=days+diff)
-            du3_loc = du2_loc.replace(hour=do_loc.hour, minute=do_loc.minute, second=do_loc.second)
-            du3_utc = du3_loc.astimezone(pytz.utc).replace(tzinfo=None)
-
-            return du3_utc
-
         wizard_id = self.env['ems.session.reschedule.wizard'].create({
             'session_id': self.id,
             'duration': self.duration,
-            'date_begin': get_new_date(self.date_begin, last_session.date_begin, days=7),
-            'date_end': get_new_date(self.date_end, last_session.date_end, days=7),
+            'date_begin': self.get_new_date(self.date_begin, last_session.date_begin, days=7),
+            'date_end': self.get_new_date(self.date_end, last_session.date_end, days=7),
             'reason': self.reason,
         })
 
@@ -482,6 +480,57 @@ class ems_session(models.Model):
     def button_confirm(self):
         """ Confirm Event and send confirmation email to all register peoples """
         self.state = 'confirmed'
+
+
+    @api.multi
+    def button_schedule(self):
+        sessions0 = self.env['ems.session'].search([('state', '=', 'confirmed'),
+                                                    ('center_id', '=', self.center_id.id),
+                                                    ('date_begin', '>=', self.date_begin)
+                                            ]).filtered(lambda x: x.service_id.is_ems and
+                                                                 len(set(x.partner_ids.mapped('partner_id.id')) &
+                                                                     set(self.partner_ids.mapped('partner_id.id')))!=0
+                                                     )
+
+        last_session = sessions0.sorted(lambda x: x.date_begin)[-1]
+
+        mult = 7
+        line_ids9 = []
+        for n in range(1,10+1):
+            date_begin9 = self.get_new_date(self.date_begin, last_session.date_begin, days=mult*n)
+            date_end9 = self.get_new_date(self.date_end, last_session.date_end, days=mult*n)
+            line_ids9.append((0,0, {'center_id': self.center_id.id,
+                                    'service_id': self.service_id.id,
+                                    'ubication_id': self.ubication_id.id,
+                                    'resource_ids': [(4, x.id, 0) for x in self.resource_ids],
+                                    'duration': self.duration,
+                                    'date_begin': date_begin9,
+                                    'date_end': date_end9,
+                                    'responsible_id': self.responsible_id.id,
+                                    'partner_ids': [(4, x.id, 0) for x in self.partner_ids.mapped('partner_id')]
+                                    }))
+
+
+        wizard_id = self.env['ems.session.schedule.wizard'].create({
+            'session_id': self.id,
+            'line_ids': line_ids9,
+            #'date_begin': self.date_begin, last_session.date_begin, days=7),
+            #'date_end': self.date_end, last_session.date_end, days=7),
+            #'reason': self.reason,
+        })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name':_("Display Name"),#Name You want to display on wizard
+            'res_model': 'ems.session.schedule.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            'res_id': wizard_id.id,
+            'target': 'new',
+            #'context': context,
+        }
 
 
 
@@ -829,6 +878,19 @@ class ems_partner(models.Model):
                                     )
             if len(sessions_ant)!=0:
                 raise ValidationError(_("Only the first session can have a forced session."))
+
+    @api.multi
+    def all_sessions(self):
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "ems.session",
+            "views": [[False, "tree"], [False, "form"]],
+            "domain": [("partner_ids.partner_id.id", "=", self.partner_id.id)],
+            #"context": {'search_default_partner_text': self.partner_id.name, 'default_partner_text' : self.partner_id.name },
+            #"res_id": a_product_id,
+            #"target": "new",
+        }
+
 
     '''
     @api.onchange('partner_id')
@@ -1283,6 +1345,8 @@ class WizardSessionReschedule(models.TransientModel):
 
         self.session_id.state = 'rescheduled'
 
+
+
 class WizardMessage(models.TransientModel):
     _name = 'ems.message.wizard'
 
@@ -1340,6 +1404,52 @@ class WizardSessionPrint(models.TransientModel):
                    'report_name': 'ems.report_emssessionsummary',
                    'datas': datas
                }
+
+
+class WizardSessionSchedule(models.TransientModel):
+    _name = 'ems.session.schedule.wizard'
+
+    session_id = fields.Many2one('ems.session', required=False)
+
+    line_ids = fields.One2many('ems.session.schedule.line.wizard', inverse_name='header_id', required=True)
+
+
+    @api.multi
+    def schedule(self):
+        a=1
+        b=5
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name':_("Display Name"),#Name You want to display on wizard
+            'res_model': 'ems.session.schedule.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            #'view_id': False,
+            'res_id': self.id,
+            'target': 'new',
+            'context': self.env.context,
+            #'flags': {'action_buttons': True},
+        }
+
+class WizardSessionScheduleLine(models.TransientModel):
+    _name = 'ems.session.schedule.line.wizard'
+
+    center_id = fields.Many2one('ems.center')
+    service_id = fields.Many2one('ems.service')
+    ubication_id = fields.Many2one('ems.ubication', string='Ubication')
+    resource_ids = fields.Many2many('ems.resource', string='Resources')
+    responsible_id = fields.Many2one('ems.responsible')
+    duration = fields.Integer(string='Duration')
+
+    date_begin = fields.Datetime('Start Date', required=True)
+    date_end = fields.Datetime('End Date', required=True)
+
+    partner_ids = fields.Many2many('res.partner')
+
+    header_id = fields.Many2one('ems.session.schedule.wizard', required=True)
 
 
 

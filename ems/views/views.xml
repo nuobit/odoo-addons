@@ -63,6 +63,8 @@
                                 groups="base.group_user"/>
                         <button string="Cancel" name="button_cancel" states="confirmed,draft" type="object"
                                 groups="base.group_user"/>
+                        <!--button string="Schedule" name="button_schedule" states="confirmed" type="object"
+                                groups="base.group_user"/-->
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirmed,rescheduled,cancelled"/>
                     </header>
@@ -105,6 +107,8 @@
                                         <field name="phone"/>
                                         <field name="mobile"/>
                                         <field name="email"/>
+                                        <button name="all_sessions"
+                                                string="NewLot" type="object" icon="terp-stock_effects-object-colorize"/>
                                     </tree>
                                 </field>
                             </group>
@@ -166,10 +170,23 @@
             <field name="arch" type="xml">
                 <search>
                     <filter string="My Sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
+                    <filter string="EMS Sessions" name="is_ems" domain="[('service_id.is_ems','=',True)]"
+                            help="EMS Sessions"/>
                     <separator/>
                     <filter string="Upcoming" name="upcoming"
                             domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
                             help="Upcoming Sessions from today"/>
+                    <filter string="Upcoming now" name="upcoming_now"
+                            domain="[('date_begin','&gt;', datetime.datetime.now())]"
+                            help="Upcoming Sessions from now"/>
+                    <filter string="Today" name="today"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))),
+                                     ('date_begin','&lt;', datetime.datetime.combine(context_today()+datetime.timedelta(days=1), datetime.time(0,0,0)))]"
+                            help="Today Sessions"/>
+                    <filter string="Tomorrow" name="tomorrow"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today()+datetime.timedelta(days=1), datetime.time(0,0,0))),
+                                     ('date_begin','&lt;', datetime.datetime.combine(context_today()+datetime.timedelta(days=2), datetime.time(0,0,0)))]"
+                            help="Tomorrow Sessions"/>
                     <separator/>
                     <filter string="Draft" name="draft" domain="[('state','=','draft')]"
                             help="Sessions in New state"/>
@@ -179,8 +196,6 @@
                             help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
                             help="Rescheduled Sessions"/>
-                    <filter string="EMS Sessions" name="is_ems" domain="[('service_id.is_ems','=',True)]"
-                            help="EMS Sessions"/>
                     <field name="partner_text" string="Attendees"/>
                     <field name="responsible_id"/>
                     <field name="description"/>
@@ -786,8 +801,6 @@
             </field>
         </record>
 
-
-
         <!-- Creem el SESSION print wizard form -->
         <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
             <field name="name">ems.session.print.wizard.form</field>
@@ -807,6 +820,46 @@
                 </form>
             </field>
         </record>
+
+        <!-- Creem el SESSION schedule wizard form -->
+        <record model="ir.ui.view" id="ems_session_schedule_wizard_form_view">
+            <field name="name">ems.session.schedule.wizard.form</field>
+            <field name="model">ems.session.schedule.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Schedule sessions">
+                    <group>
+                        <field name="session_id" required="1"/>
+                        </group>
+                    <group>
+                        <field name="line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                 <field name="center_id"/>
+                                 <field name="service_id"/>
+                                 <field name="ubication_id"/>
+                                 <field name="resource_ids" widget="many2many_tags"/>
+                                 <field name="duration"/>
+                                 <field name="date_begin"/>
+                                 <field name="date_end"/>
+                                 <field name="responsible_id"/>
+                                 <field name="partner_ids" widget="many2many_tags"/>
+                            </tree>
+                        </field>
+
+                    </group>
+                    <!--group>
+                        <field name="confirm"/>
+                        <field name="reason" required="1" widget="text"/>
+                    </group!-->
+                    <footer>
+                        <button name="schedule" type="object"
+                                string="Schedule" class="oe_highlight"/>
+                        or
+                        <button special="cancel" class="oe_link" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
 
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
         <!--act_window id="launch_session_wizard"
@@ -869,6 +922,25 @@
                   id="menu_check_session_number"
                   parent="menu_ems_config_root"
                   groups="base.group_no_one"/-->
+
+        <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
+        <!--act_window id="launch_session_wizard"
+                    name="Generate sessions"
+                    src_model="ems.session"
+                    res_model="ems.session.cancel.wizard"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/-->
+
+        <!--act_window
+            id="action_ems_sessions"
+            name="Attendee Sessions"
+            src_model="ems.partner"
+            res_model="ems.session"
+            domain="[('partner_ids.partner_id.id', '=', context.get('active_id').partner_id.id)]"
+
+        /-->
+<!--context="{'search_default_partner_text': active_id, 'default_partner_text' : 'active_id.partner_text' }"-->
 
         <!-- REPORT -->
         <report string="Session summary"
