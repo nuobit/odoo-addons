@@ -311,7 +311,7 @@ class ems_session(models.Model):
 
     reason = fields.Char(string='Reason', required=False, readonly=True, copy=False)
 
-    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False)
+    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False, ondelete='restrict')
 
     target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, copy=False)
 
@@ -608,6 +608,7 @@ class ems_session(models.Model):
                     filtered(lambda x: x.session_id.center_id==self.center_id and
                                        x.session_id.state in ('cancelled', 'confirmed') and
                                        x.session_id.service_id.is_ems and
+                                       x.force_session and
                                        x.session_id.date_begin>self.date_begin
                                     )
                 if len(sessions_ant)!=0:
