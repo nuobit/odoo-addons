@@ -277,7 +277,7 @@ msgstr "Data de finalització"
 #. module: ems
 #: help:ems.session.schedule.wizard,date_begin:0
 msgid "Date to the first new session and from the others will be calculated"
-msgstr "Date to the first new session and from the others will be calculated"
+msgstr "Data de la primera nova sessió des de la qual es calcularà la resta"
 
 #. module: ems
 #: field:ems.timetable,day:0

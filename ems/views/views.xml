@@ -863,7 +863,7 @@
             <field name="arch" type="xml">
                 <form string="Schedule sessions">
                     <group>
-                        <field name="session_id" required="1"/>
+                        <!--field name="session_id" required="1"/-->
                         <field name="num_sessions" required="1"/>
                         <field name="days" required="1"/>
                         <field name="confirm"/>
