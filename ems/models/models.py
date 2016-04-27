@@ -1456,11 +1456,8 @@ class WizardSessionSchedule(models.TransientModel):
             })
 
             if self.confirm:
-                try:
-                    session9.button_confirm()
-                except ValidationError as e:
-                    a = 4
-                    b= 6
+                session9.button_confirm()
+                
 
 
 """
