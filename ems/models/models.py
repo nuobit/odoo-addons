@@ -1442,7 +1442,6 @@ class WizardSessionSchedule(models.TransientModel):
     def schedule(self):
         for n in range(self.num_sessions):
             date_begin9 = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(days=self.days*n)
-            #self.session_id.get_new_date(self.session_id.date_begin, self.date_begin, days=self.days*n)
             date_end9 = date_begin9 + datetime.timedelta(minutes=self.session_id.duration)
             session9 = self.env['ems.session'].create({
                 'center_id': self.session_id.center_id.id,
@@ -1457,7 +1456,12 @@ class WizardSessionSchedule(models.TransientModel):
             })
 
             if self.confirm:
-                session9.button_confirm()
+                try:
+                    session9.button_confirm()
+                except ValidationError as e:
+                    a = 4
+                    b= 6
+
 
 """
 class WizardSessionScheduleLine(models.TransientModel):

@@ -59,14 +59,17 @@
                                 class="oe_highlight" groups="base.group_user"/>
                         <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
-                        <button string="Draft" name="button_draft" states="confirmed,reschedulepending,rescheduled,cancelled"
+                        <button string="Draft" name="button_draft"
+                                states="confirmed,reschedulepending,rescheduled,cancelled"
                                 type="object"
                                 groups="base.group_user"/>
-                        <button string="Reschedule" name="button_reschedule" states="confirmed,reschedulepending" type="object"
+                        <button string="Reschedule" name="button_reschedule" states="confirmed,reschedulepending"
+                                type="object"
                                 groups="base.group_user"/>
                         <button string="Cancel" name="button_cancel" states="confirmed,draft" type="object"
                                 groups="base.group_user"/>
-                        <button string="Reschedule pending" name="button_reschedule_pending" states="confirmed,draft" type="object"
+                        <button string="Reschedule pending" name="button_reschedule_pending" states="confirmed,draft"
+                                type="object"
                                 groups="base.group_user"/>
                         <button string="Schedule" name="button_schedule" states="confirmed" type="object"
                                 groups="base.group_user"/>
@@ -75,16 +78,20 @@
                     </header>
                     <sheet>
                         <group colspan="2" col="4">
+                            <field name="number"/>
+                        </group>
+                        <group colspan="2" col="4">
                             <group>
-                                <field name="number"/>
                                 <field name="center_id" options="{'no_create': True}"
                                        attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
-                            <!--div class="oe_right">
-                                <button name="" class="oe_inline oe_stat_button"
-                                        string="View on calendar" type="action" icon="fa-calendar"/>
-                            </div-->
+                            <group></group>
                         </group>
+                        <!--div class="oe_right">
+                            <button name="" class="oe_inline oe_stat_button"
+                                    string="View on calendar" type="action" icon="fa-calendar"/>
+                        </div-->
+
                         <group colspan="2" col="4">
                             <group>
                                 <field name="service_id" options="{'no_create': True}"
@@ -207,7 +214,8 @@
                             help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
                             help="Rescheduled Sessions"/>
-                    <filter string="Reschedule Pending" name="reschedulepending" domain="[('state','=','reschedulepending')]"
+                    <filter string="Reschedule Pending" name="reschedulepending"
+                            domain="[('state','=','reschedulepending')]"
                             help="Reschedule Pending Sessions"/>
                     <field name="partner_text" string="Attendees"/>
                     <field name="responsible_id"/>
