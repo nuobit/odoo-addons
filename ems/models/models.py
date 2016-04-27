@@ -258,7 +258,7 @@ class ems_session(models.Model):
     _description = 'Session'
     _order = 'date_begin'
 
-    name = fields.Char(string='Number', required=False, readonly=True,
+    name = fields.Char(string='Number', required=True, readonly=True,
                        default=lambda self: self.env['ir.sequence'].get('ems.session.sequence.type'),
                        copy=False)
     description = fields.Text(string='Description', #translate=True,
@@ -314,7 +314,7 @@ class ems_session(models.Model):
 
     source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False, ondelete='restrict')
 
-    source_name = fields.Char(related='source_session_id.name', string="Source Number")
+    source_name = fields.Char(related='source_session_id.name', string="Source")
 
     target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, copy=False, ondelete='restrict')
 
@@ -817,7 +817,8 @@ class ems_partner(models.Model):
     date_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
     time_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
 
-    _sql_constraints = [('attendee_session_unique', 'unique(session_id, partner_id)',_("Attendee duplicated"))]
+    _sql_constraints = [('attendee_session_unique', 'unique(session_id, partner_id)',_("Attendee duplicated")),
+                        ('name_session_unique', 'unique(name)',_("Number duplicated"))]
 
 
     @api.one
