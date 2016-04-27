@@ -751,7 +751,7 @@ msgstr "Imprimir"
 #: code:addons/ems/models/models.py:368
 #, python-format
 msgid "Print Sessions"
-msgstr "Impirmir Sessions"
+msgstr "Imprimir Sessions"
 
 #. module: ems
 #: view:ems.session.print.wizard:ems.ems_session_cancel_wizard_form_view

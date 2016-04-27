@@ -356,7 +356,11 @@ class ems_session(models.Model):
     @api.multi
     def button_print(self):
         pr = self.env['ems.partner'].search([('partner_id', 'in',
-                                              self.partner_ids.mapped('partner_id.id'))]).mapped('num_session')
+                                              self.partner_ids.mapped('partner_id.id'))])\
+                .filtered(lambda x: x.session_id.center_id==self.center_id and
+                                   x.session_id.state in ('cancelled', 'confirmed') and
+                                   x.session_id.service_id.is_ems)\
+                .mapped('num_session')
 
         wizard_id = self.env['ems.session.print.wizard'].create({
                     'session_from': min(pr),
