@@ -326,6 +326,7 @@ class ems_session(models.Model):
             ('draft', 'Draft'),
             ('cancelled', 'Cancelled'),
             ('rescheduled', 'Rescheduled'),
+            ('reschedulepending', 'Reschedule pending'),
             ('confirmed', 'Confirmed'),
         ], string='Status', default='draft', readonly=True, required=True, copy=False,
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
@@ -380,37 +381,6 @@ class ems_session(models.Model):
                 #'context': context,
                 }
 
-        '''
-        datas = {
-            'ids': self._ids,
-            'model': self._name,
-        }
-        #call the report
-        return {
-                   'type': 'ir.actions.report.xml',
-                   'report_name': 'ems.report_emssessionsummary',
-                   'datas': datas
-               }
-        '''
-
-
-
-    def accept(self):
-        ## enca carreguem la sesio replanificada
-        if self.target_session_id.state!='draft':
-            raise ValidationError(_("The target session has to be in draft state to be deleted."))
-
-        obj = self.target_session_id
-
-        self.target_session_id = False
-        obj.source_session_id = False
-
-        obj.unlink(force=True)
-
-
-        self.state = 'draft'
-
-
     @api.multi
     def button_draft(self):
         if self.state == 'rescheduled':
@@ -437,25 +407,23 @@ class ems_session(models.Model):
 
     @api.multi
     def button_cancel(self):
-        if self.state == 'confirmed':
-            wizard_id = self.env['ems.session.cancel.wizard'].create({
-                'reason': self.reason,
-            })
+        wizard_id = self.env['ems.session.cancel.wizard'].create({
+            'reason': self.reason,
+        })
 
-            return {
-                'type': 'ir.actions.act_window',
-                'name': _("Cancel Session"),
-                'res_model': 'ems.session.cancel.wizard',
-                'view_type': 'form',
-                'view_mode': 'form',
-                #'views': [(view.id, 'form')],
-                #'view_id': view.id,
-                'res_id': wizard_id.id,
-                'target': 'new',
-                #'context': context,
-            }
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _("Cancel Session"),
+            'res_model': 'ems.session.cancel.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            'res_id': wizard_id.id,
+            'target': 'new',
+            #'context': context,
+        }
 
-        self.state = 'cancelled'
 
     @api.multi
     def button_reschedule(self):
@@ -490,10 +458,29 @@ class ems_session(models.Model):
             #'context': context,
         }
 
+    @api.multi
+    def button_reschedule_pending(self):
+        wizard_id = self.env['ems.session.reschedule.pending.wizard'].create({
+            'reason': self.reason,
+        })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _("Reschedule Pending"),
+            'res_model': 'ems.session.reschedule.pending.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            'res_id': wizard_id.id,
+            'target': 'new',
+            #'context': context,
+        }
+
+        self.state = 'reschedulepending'
 
     @api.multi
     def button_confirm(self):
-        """ Confirm Event and send confirmation email to all register peoples """
         self.state = 'confirmed'
 
 
@@ -1354,9 +1341,22 @@ class WizardMessage(models.TransientModel):
 
     @api.multi
     def accept(self):
-        active_id = self.env[self.model_name].browse(self._context.get('active_id'))
+        session_id = self.env[self.model_name].browse(self._context.get('active_id'))
 
-        active_id.accept()
+        ## enca carreguem la sesio replanificada
+        if session_id.target_session_id.state!='draft':
+            raise ValidationError(_("The target session has to be in draft state to be deleted."))
+
+        obj_tmp = session_id.target_session_id
+
+        session_id.target_session_id = False
+        obj_tmp.source_session_id = False
+
+        obj_tmp.unlink(force=True)
+
+        session_id.state = 'draft'
+
+
 
 
 class WizardSessionCancel(models.TransientModel):
@@ -1370,6 +1370,17 @@ class WizardSessionCancel(models.TransientModel):
         session_id.reason = self.reason
         session_id.state = 'cancelled'
 
+
+class WizardSessionReschedulePending(models.TransientModel):
+    _name = 'ems.session.reschedule.pending.wizard'
+
+    reason = fields.Char(string='Reason', required=False)
+
+    @api.multi
+    def accept(self):
+        session_id = self.env['ems.session'].browse(self._context.get('active_id'))
+        session_id.reason = self.reason
+        session_id.state = 'reschedulepending'
 
 class WizardSessionPrint(models.TransientModel):
     _name = 'ems.session.print.wizard'
@@ -1414,7 +1425,6 @@ class WizardSessionSchedule(models.TransientModel):
     confirm = fields.Boolean(string='Confirm', help="Try to confirm sessions after created", default=True)
     date_begin = fields.Datetime(String="From date", help="Date to the first new session and from the others will be calculated", required=True)
 
-
     @api.multi
     def schedule(self):
         for n in range(1,self.num_sessions+1):
@@ -1435,23 +1445,7 @@ class WizardSessionSchedule(models.TransientModel):
             if self.confirm:
                 session9.button_confirm()
 
-
-        """
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _("Schedule Sessions"),
-            'res_model': 'ems.session.schedule.wizard',
-            'view_type': 'form',
-            'view_mode': 'form',
-            #'views': [(view.id, 'form')],
-            #'view_id': view.id,
-            #'view_id': False,
-            'res_id': self.id,
-            'target': 'new',
-            'context': self.env.context,
-            #'flags': {'action_buttons': True},
-        }
-        """
+"""
 class WizardSessionScheduleLine(models.TransientModel):
     _name = 'ems.session.schedule.line.wizard'
 
@@ -1468,7 +1462,7 @@ class WizardSessionScheduleLine(models.TransientModel):
     partner_ids = fields.Many2many('res.partner')
 
     header_id = fields.Many2one('ems.session.schedule.wizard', required=True)
-
+"""
 
 
 class WizardTimetable(models.TransientModel):

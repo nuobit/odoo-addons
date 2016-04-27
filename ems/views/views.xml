@@ -31,7 +31,7 @@
             <field name="arch" type="xml">
                 <tree string="Sessions"
                       fonts="bold:state=='confirmed'"
-                      colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';grey:state in ('cancel')">
+                      colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';grey:state in ('cancel')">
                     <field name="name"/>
                     <field name="center_id"/>
                     <field name="service_id"/>
@@ -59,17 +59,19 @@
                                 class="oe_highlight" groups="base.group_user"/>
                         <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
-                        <button string="Set to Draft" name="button_draft" states="confirmed,rescheduled,cancelled"
+                        <button string="Draft" name="button_draft" states="confirmed,reschedulepending,rescheduled,cancelled"
                                 type="object"
                                 groups="base.group_user"/>
-                        <button string="Reschedule" name="button_reschedule" states="confirmed" type="object"
+                        <button string="Reschedule" name="button_reschedule" states="confirmed,reschedulepending" type="object"
                                 groups="base.group_user"/>
                         <button string="Cancel" name="button_cancel" states="confirmed,draft" type="object"
+                                groups="base.group_user"/>
+                        <button string="Reschedule pending" name="button_reschedule_pending" states="confirmed,draft" type="object"
                                 groups="base.group_user"/>
                         <!--button string="Schedule" name="button_schedule" states="confirmed" type="object"
                                 groups="base.group_user"/-->
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,confirmed,rescheduled,cancelled"/>
+                               statusbar_visible="draft,confirmed,reschedulepending,rescheduled,cancelled"/>
                     </header>
                     <sheet>
                         <group colspan="2" col="4">
@@ -139,7 +141,7 @@
                                     <field name="source_session_id"/>
 
                                 </group>
-                                <group attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled'))]}">
+                                <group attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))]}">
 
                                     <field name="target_session_id"/>
                                     <field name="reason"/>
@@ -205,6 +207,8 @@
                             help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
                             help="Rescheduled Sessions"/>
+                    <filter string="Reschedule Pending" name="reschedulepending" domain="[('state','=','reschedulepending')]"
+                            help="Reschedule Pending Sessions"/>
                     <field name="partner_text" string="Attendees"/>
                     <field name="responsible_id"/>
                     <field name="description"/>
@@ -765,6 +769,8 @@
                   groups="base.group_no_one"/>
 
 
+        <!-- ================= WIZARDS ================= -->
+
         <!-- Creem el SESSION reschedule wizard form -->
         <record model="ir.ui.view" id="ems_session_reschedule_wizard_form_view">
             <field name="name">ems.session.reschedule.wizard.form</field>
@@ -810,25 +816,45 @@
             </field>
         </record>
 
-        <!-- Creem el SESSION print wizard form -->
-        <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
-            <field name="name">ems.session.print.wizard.form</field>
-            <field name="model">ems.session.print.wizard</field>
+
+        <!-- Creem el SESSION reschedule pending wizard form -->
+        <record model="ir.ui.view" id="ems_session_reschedule_pending_wizard_form_view">
+            <field name="name">ems.session.reschedule.pending.wizard.form</field>
+            <field name="model">ems.session.reschedule.pending.wizard</field>
             <field name="arch" type="xml">
-                <form string="Print sessions">
+                <form string="Reschedule pending">
                     <group>
-                        <field name="session_from" required="1"/>
-                        <field name="session_to" required="1"/>
+                        <field name="reason" required="1" widget="text"/>
                     </group>
                     <footer>
-                        <button name="button_print" type="object"
-                                string="Print" class="oe_highlight"/>
+                        <button name="accept" type="object"
+                                string="Accept" class="oe_highlight"/>
                         or
                         <button special="cancel" class="oe_link" string="Cancel"/>
                     </footer>
                 </form>
             </field>
         </record>
+
+        <!-- Creem el warning wizard -->
+        <record model="ir.ui.view" id="ems_message_wizard_form_view">
+            <field name="name">ems.message.wizard.form</field>
+            <field name="model">ems.message.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Message">
+                    <group>
+                        <field name="message" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="accept" type="object"
+                                string="Accept" class="oe_highlight"/>
+                        or
+                        <button special="cancel" class="oe_link" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
 
         <!-- Creem el SESSION schedule wizard form -->
         <record model="ir.ui.view" id="ems_session_schedule_wizard_form_view">
@@ -873,6 +899,26 @@
             </field>
         </record>
 
+        <!-- Creem el SESSION print wizard form -->
+        <record model="ir.ui.view" id="ems_session_print_wizard_form_view">
+            <field name="name">ems.session.print.wizard.form</field>
+            <field name="model">ems.session.print.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Print sessions">
+                    <group>
+                        <field name="session_from" required="1"/>
+                        <field name="session_to" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="button_print" type="object"
+                                string="Print" class="oe_highlight"/>
+                        or
+                        <button special="cancel" class="oe_link" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
 
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
         <!--act_window id="launch_session_wizard"
@@ -882,25 +928,6 @@
                     view_mode="form"
                     target="new"
                     key2="client_action_multi"/-->
-
-        <!-- Creem el warning wizard -->
-        <record model="ir.ui.view" id="ems_message_wizard_form_view">
-            <field name="name">ems.message.wizard.form</field>
-            <field name="model">ems.message.wizard</field>
-            <field name="arch" type="xml">
-                <form string="Message">
-                    <group>
-                        <field name="message" nolabel="1"/>
-                    </group>
-                    <footer>
-                        <button name="accept" type="object"
-                                string="Accept" class="oe_highlight"/>
-                        or
-                        <button special="cancel" class="oe_link" string="Cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
 
         <!-- Creem el WIZARD check sesiion number -->
         <!--record model="ir.ui.view" id="ems_check_session_number_wizard_form_view">
