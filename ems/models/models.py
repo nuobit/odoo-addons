@@ -308,6 +308,7 @@ class ems_session(models.Model):
         readonly=False)
     date_end = fields.Datetime(string='End Date', required=True,
         readonly=False)
+    weekday_begin = fields.Selection(string='Day of week', selection=DAYS_OF_WEEK, compute='_compute_weekday_begin')
 
     reason = fields.Char(string='Reason', required=False, readonly=True, copy=False)
 
@@ -341,6 +342,11 @@ class ems_session(models.Model):
 
         return du3_utc
 
+    @api.depends('date_begin')
+    def _compute_weekday_begin(selfs):
+        for self in selfs:
+            dt = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
+            self.weekday_begin = dt.isoweekday()
 
     @api.multi
     def button_print(self):
@@ -354,7 +360,7 @@ class ems_session(models.Model):
 
         return {
                 'type': 'ir.actions.act_window',
-                'name':_("Display Name"),#Name You want to display on wizard
+                'name': _("Print Sessions"),
                 'res_model': 'ems.session.print.wizard',
                 'view_type': 'form',
                 'view_mode': 'form',
@@ -407,7 +413,7 @@ class ems_session(models.Model):
 
                 return {
                     'type': 'ir.actions.act_window',
-                    'name':_("Display Name"),#Name You want to display on wizard
+                    'name': _("Warning"),
                     'res_model': 'ems.message.wizard',
                     'view_type': 'form',
                     'view_mode': 'form',
@@ -429,7 +435,7 @@ class ems_session(models.Model):
 
             return {
                 'type': 'ir.actions.act_window',
-                'name':_("Display Name"),#Name You want to display on wizard
+                'name': _("Cancel Session"),
                 'res_model': 'ems.session.cancel.wizard',
                 'view_type': 'form',
                 'view_mode': 'form',
@@ -464,7 +470,7 @@ class ems_session(models.Model):
 
         return {
             'type': 'ir.actions.act_window',
-            'name':_("Display Name"),#Name You want to display on wizard
+            'name':_("Reschedule Sessions"),
             'res_model': 'ems.session.reschedule.wizard',
             'view_type': 'form',
             'view_mode': 'form',
@@ -494,34 +500,17 @@ class ems_session(models.Model):
 
         last_session = sessions0.sorted(lambda x: x.date_begin)[-1]
 
-        mult = 7
-        line_ids9 = []
-        for n in range(1,10+1):
-            date_begin9 = self.get_new_date(self.date_begin, last_session.date_begin, days=mult*n)
-            date_end9 = self.get_new_date(self.date_end, last_session.date_end, days=mult*n)
-            line_ids9.append((0,0, {'center_id': self.center_id.id,
-                                    'service_id': self.service_id.id,
-                                    'ubication_id': self.ubication_id.id,
-                                    'resource_ids': [(4, x.id, 0) for x in self.resource_ids],
-                                    'duration': self.duration,
-                                    'date_begin': date_begin9,
-                                    'date_end': date_end9,
-                                    'responsible_id': self.responsible_id.id,
-                                    'partner_ids': [(4, x.id, 0) for x in self.partner_ids.mapped('partner_id')]
-                                    }))
-
+        default_days = 7
 
         wizard_id = self.env['ems.session.schedule.wizard'].create({
             'session_id': self.id,
-            'line_ids': line_ids9,
-            #'date_begin': self.date_begin, last_session.date_begin, days=7),
-            #'date_end': self.date_end, last_session.date_end, days=7),
-            #'reason': self.reason,
+            'days': default_days,
+            'date_begin': self.get_new_date(self.date_begin, last_session.date_begin, days=default_days)
         })
 
         return {
             'type': 'ir.actions.act_window',
-            'name':_("Display Name"),#Name You want to display on wizard
+            'name': _("Schedule Sessions"),
             'res_model': 'ems.session.schedule.wizard',
             'view_type': 'form',
             'view_mode': 'form',
@@ -1411,17 +1400,37 @@ class WizardSessionSchedule(models.TransientModel):
 
     session_id = fields.Many2one('ems.session', required=False)
 
-    line_ids = fields.One2many('ems.session.schedule.line.wizard', inverse_name='header_id', required=True)
+    num_sessions = fields.Integer(string='Number of sessions', help="Number of session to schedule",default=10)
+    days = fields.Integer(string='Day interval', help="Days between sessions", required=True)
+    confirm = fields.Boolean(string='Confirm', help="Try to confirm sessions after created", default=True)
+    date_begin = fields.Datetime(String="From date", help="Date to the first new session and from the others will be calculated", required=True)
 
 
     @api.multi
     def schedule(self):
-        a=1
-        b=5
+        for n in range(1,self.num_sessions+1):
+            date_begin9 = self.session_id.get_new_date(self.session_id.date_begin, self.date_begin, days=self.days*n)
+            date_end9 = date_begin9 + datetime.timedelta(minutes=self.session_id.duration)
+            session9 = self.env['ems.session'].create({
+                'center_id': self.session_id.center_id.id,
+                'service_id': self.session_id.service_id.id,
+                'ubication_id': self.session_id.ubication_id.id,
+                'duration': self.session_id.duration,
+                'date_begin': date_begin9,
+                'date_end': date_end9,
+                'responsible_id': self.session_id.responsible_id.id,
+                'resource_ids': [(4, p.id, _) for p in self.session_id.resource_ids],
+                'partner_ids': [(0, _, {'partner_id': p.partner_id.id}) for p in self.session_id.partner_ids],
+            })
 
+            if self.confirm:
+                session9.button_confirm()
+
+
+        """
         return {
             'type': 'ir.actions.act_window',
-            'name':_("Display Name"),#Name You want to display on wizard
+            'name': _("Schedule Sessions"),
             'res_model': 'ems.session.schedule.wizard',
             'view_type': 'form',
             'view_mode': 'form',
@@ -1433,7 +1442,7 @@ class WizardSessionSchedule(models.TransientModel):
             'context': self.env.context,
             #'flags': {'action_buttons': True},
         }
-
+        """
 class WizardSessionScheduleLine(models.TransientModel):
     _name = 'ems.session.schedule.line.wizard'
 

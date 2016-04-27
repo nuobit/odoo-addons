@@ -36,6 +36,7 @@
                     <field name="service_id"/>
                     <field name="ubication_id"/>
                     <field name="resource_ids"/>
+                    <field name="weekday_begin"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
                     <field name="partner_text"/>
@@ -74,7 +75,10 @@
                                 <field name="center_id" options="{'no_create': True}"
                                        attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
-                            <group/>
+                            <!--div class="oe_right">
+                                <button name="" class="oe_inline oe_stat_button"
+                                        string="View on calendar" type="action" icon="fa-calendar"/>
+                            </div-->
                         </group>
                         <group colspan="2" col="4">
                             <group>
@@ -88,6 +92,7 @@
                                 <field name="duration" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                                 <field name="date_begin" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                                 <field name="date_end" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="weekday_begin"/>
                             </group>
                         </group>
 
@@ -108,7 +113,8 @@
                                         <field name="mobile"/>
                                         <field name="email"/>
                                         <button name="view_sessions"
-                                                string="View Sessions" type="object" icon="terp-stock_effects-object-colorize"/>
+                                                string="View Sessions" type="object"
+                                                icon="terp-stock_effects-object-colorize"/>
                                     </tree>
                                 </field>
                             </group>
@@ -829,23 +835,27 @@
                 <form string="Schedule sessions">
                     <group>
                         <field name="session_id" required="1"/>
-                        </group>
-                    <group>
+                        <field name="num_sessions" required="1"/>
+                        <field name="days" required="1"/>
+                        <field name="confirm"/>
+                        <field name="date_begin"/>
+                    </group>
+                    <!--group>
                         <field name="line_ids" nolabel="1">
                             <tree editable="bottom">
-                                 <field name="center_id"/>
-                                 <field name="service_id"/>
-                                 <field name="ubication_id"/>
-                                 <field name="resource_ids" widget="many2many_tags"/>
-                                 <field name="duration"/>
-                                 <field name="date_begin"/>
-                                 <field name="date_end"/>
-                                 <field name="responsible_id"/>
-                                 <field name="partner_ids" widget="many2many_tags"/>
+                                <field name="center_id"/>
+                                <field name="service_id"/>
+                                <field name="ubication_id"/>
+                                <field name="resource_ids" widget="many2many_tags"/>
+                                <field name="duration"/>
+                                <field name="date_begin"/>
+                                <field name="date_end"/>
+                                <field name="responsible_id"/>
+                                <field name="partner_ids" widget="many2many_tags"/>
                             </tree>
                         </field>
 
-                    </group>
+                    </group-->
                     <!--group>
                         <field name="confirm"/>
                         <field name="reason" required="1" widget="text"/>
@@ -909,6 +919,8 @@
             </field>
         </record>
 
+
+
         <record id="action_check_session_number" model="ir.actions.act_window">
             <field name="name">Check Session number</field>
             <field name="res_model">ems.check.session.number.wizard</field>
@@ -932,15 +944,19 @@
                     target="new"
                     key2="client_action_multi"/-->
 
-        <!--act_window
-            id="action_ems_sessions"
-            name="Attendee Sessions"
-            src_model="ems.partner"
-            res_model="ems.session"
-            domain="[('partner_ids.partner_id.id', '=', context.get('active_id').partner_id.id)]"
 
+        <!--context="{'search_default_partner_text': active_id, 'default_partner_text' : 'active_id.partner_text' }"-->
+
+
+        <!--act_window
+                id="action_ems_sessions_calendar"
+                name="Attendee Sessions"
+                src_model="ems.partner"
+                res_model="ems.session"
+                view_mode="calendar,tree,form"
+                domain="[('partner_ids.partner_id.id', '=', context.get('active_id'))]"
         /-->
-<!--context="{'search_default_partner_text': active_id, 'default_partner_text' : 'active_id.partner_text' }"-->
+
 
         <!-- REPORT -->
         <report string="Session summary"
