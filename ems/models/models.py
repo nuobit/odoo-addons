@@ -258,9 +258,9 @@ class ems_session(models.Model):
     _description = 'Session'
     _order = 'date_begin'
 
-    name = fields.Char(string='Session Number', required=False,
-        readonly=False)
-
+    name = fields.Char(string='Number', required=False, readonly=True,
+                       default=lambda self: self.env['ir.sequence'].get('ems.session.sequence.type'),
+                       copy=False)
     description = fields.Text(string='Description', #translate=True,
         readonly=False)
 
@@ -314,6 +314,8 @@ class ems_session(models.Model):
 
     source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False, ondelete='restrict')
 
+    source_name = fields.Char(related='source_session_id.name', string="Source Number")
+
     target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, copy=False, ondelete='restrict')
 
     session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True, translate=False)
@@ -341,6 +343,7 @@ class ems_session(models.Model):
         du3_utc = du3_loc.astimezone(pytz.utc).replace(tzinfo=None)
 
         return du3_utc
+
 
     @api.depends('date_begin')
     def _compute_weekday_begin(selfs):

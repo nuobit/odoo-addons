@@ -32,6 +32,7 @@
                 <tree string="Sessions"
                       fonts="bold:state=='confirmed'"
                       colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';grey:state in ('cancel')">
+                    <field name="name"/>
                     <field name="center_id"/>
                     <field name="service_id"/>
                     <field name="ubication_id"/>
@@ -39,6 +40,7 @@
                     <field name="weekday_begin"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
+                    <field name="source_name"/>
                     <field name="partner_text"/>
                     <field name="responsible_id"/>
                     <field name="state"/>
@@ -72,6 +74,7 @@
                     <sheet>
                         <group colspan="2" col="4">
                             <group>
+                                <field name="name"/>
                                 <field name="center_id" options="{'no_create': True}"
                                        attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>
@@ -987,6 +990,19 @@
             <field name="paperformat_id" ref="ems.paperformat_ems_session_summary"/>
         </record>
 
+
+        <!-- SEQUENCES -->
+
+        <record model="ir.sequence.type" id="seq_ems_session_type_id">
+            <field name="name">EMS Session Number</field>
+            <field name="code">ems.session.sequence.type</field>
+        </record>
+        <record model="ir.sequence" id="seq_ems_session_id">
+            <field name="name">EMS Session Number</field>
+            <field name="code">ems.session.sequence.type</field>
+            <field name="prefix"></field>
+            <field name="padding">0</field>
+        </record>
 
     </data>
 </openerp>
