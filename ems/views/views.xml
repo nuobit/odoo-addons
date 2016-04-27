@@ -32,7 +32,7 @@
                 <tree string="Sessions"
                       fonts="bold:state=='confirmed'"
                       colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';grey:state in ('cancel')">
-                    <field name="name"/>
+                    <field name="number"/>
                     <field name="center_id"/>
                     <field name="service_id"/>
                     <field name="ubication_id"/>
@@ -40,7 +40,7 @@
                     <field name="weekday_begin"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
-                    <field name="source_name"/>
+                    <field name="source_number"/>
                     <field name="partner_text"/>
                     <field name="responsible_id"/>
                     <field name="state"/>
@@ -68,15 +68,15 @@
                                 groups="base.group_user"/>
                         <button string="Reschedule pending" name="button_reschedule_pending" states="confirmed,draft" type="object"
                                 groups="base.group_user"/>
-                        <!--button string="Schedule" name="button_schedule" states="confirmed" type="object"
-                                groups="base.group_user"/-->
+                        <button string="Schedule" name="button_schedule" states="confirmed" type="object"
+                                groups="base.group_user"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirmed,reschedulepending,rescheduled,cancelled"/>
                     </header>
                     <sheet>
                         <group colspan="2" col="4">
                             <group>
-                                <field name="name"/>
+                                <field name="number"/>
                                 <field name="center_id" options="{'no_create': True}"
                                        attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                             </group>

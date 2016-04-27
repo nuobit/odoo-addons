@@ -260,7 +260,7 @@ class ems_session(models.Model):
     _description = 'Session'
     _order = 'date_begin'
 
-    name = fields.Char(string='Number', required=True, readonly=True,
+    number = fields.Char(string='Number', required=True, readonly=True,
                        default=lambda self: self.env['ir.sequence'].get('ems.session.sequence.type'),
                        copy=False)
     description = fields.Text(string='Description', #translate=True,
@@ -316,7 +316,7 @@ class ems_session(models.Model):
 
     source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False, ondelete='restrict')
 
-    source_name = fields.Char(related='source_session_id.name', string="Source")
+    source_number = fields.Char(related='source_session_id.number', string="Source")
 
     target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, copy=False, ondelete='restrict')
 
@@ -331,6 +331,7 @@ class ems_session(models.Model):
         ], string='Status', default='draft', readonly=True, required=True, copy=False,
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
 
+    _sql_constraints = [('number_session_unique', 'unique(number)',_("Number duplicated"))]
 
     def get_new_date(self, datestr_s, datestr_l, days=7):
         do = fields.Datetime.from_string(datestr_s)
@@ -497,9 +498,11 @@ class ems_session(models.Model):
         last_session = sessions0.sorted(lambda x: x.date_begin)[-1]
 
         default_days = 7
+        default_num_sessions = 10
 
         wizard_id = self.env['ems.session.schedule.wizard'].create({
             'session_id': self.id,
+            'num_sessions': default_num_sessions,
             'days': default_days,
             'date_begin': self.get_new_date(self.date_begin, last_session.date_begin, days=default_days)
         })
@@ -810,8 +813,7 @@ class ems_partner(models.Model):
     date_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
     time_begin_str = fields.Char(compute="_compute_date_begin_str", store=False)
 
-    _sql_constraints = [('attendee_session_unique', 'unique(session_id, partner_id)',_("Attendee duplicated")),
-                        ('name_session_unique', 'unique(name)',_("Number duplicated"))]
+    _sql_constraints = [('attendee_session_unique', 'unique(session_id, partner_id)',_("Attendee duplicated"))]
 
 
     @api.one
@@ -1420,15 +1422,27 @@ class WizardSessionSchedule(models.TransientModel):
 
     session_id = fields.Many2one('ems.session', required=False)
 
-    num_sessions = fields.Integer(string='Number of sessions', help="Number of session to schedule",default=10)
+    num_sessions = fields.Integer(string='Number of sessions', help="Number of session to schedule", required=True)
     days = fields.Integer(string='Day interval', help="Days between sessions", required=True)
     confirm = fields.Boolean(string='Confirm', help="Try to confirm sessions after created", default=True)
     date_begin = fields.Datetime(String="From date", help="Date to the first new session and from the others will be calculated", required=True)
 
+    @api.constrains('num_sessions')
+    def _check_num_sessions(self):
+        if self.num_sessions<1:
+            raise ValidationError(_("The number of session to schedule must be greater than 0"))
+
+    @api.constrains('days')
+    def _check_days(self):
+        if self.days<1:
+            raise ValidationError(_("The day interval of session to schedule must be greater than 0"))
+
+
     @api.multi
     def schedule(self):
-        for n in range(1,self.num_sessions+1):
-            date_begin9 = self.session_id.get_new_date(self.session_id.date_begin, self.date_begin, days=self.days*n)
+        for n in range(self.num_sessions):
+            date_begin9 = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(days=self.days*n)
+            #self.session_id.get_new_date(self.session_id.date_begin, self.date_begin, days=self.days*n)
             date_end9 = date_begin9 + datetime.timedelta(minutes=self.session_id.duration)
             session9 = self.env['ems.session'].create({
                 'center_id': self.session_id.center_id.id,
