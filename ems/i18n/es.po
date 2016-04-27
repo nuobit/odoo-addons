@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-27 16:45+0000\n"
-"PO-Revision-Date: 2016-04-27 16:45+0000\n"
+"POT-Creation-Date: 2016-04-27 20:37+0000\n"
+"PO-Revision-Date: 2016-04-27 20:37+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,6 @@ msgid "Absences"
 msgstr "Ausencias"
 
 #. module: ems
-#: view:ems.message.wizard:ems.ems_message_wizard_form_view
 #: view:ems.session.cancel.wizard:ems.ems_session_cancel_wizard_form_view
 #: view:ems.session.reschedule.pending.wizard:ems.ems_session_reschedule_pending_wizard_form_view
 msgid "Accept"
@@ -36,6 +35,12 @@ msgstr "Aceptar"
 #: field:ems.ubication,is_all_center:0
 msgid "All center"
 msgstr "Todo el centro"
+
+#. module: ems
+#: code:addons/ems/models/models.py:1470
+#, python-format
+msgid "All sessions have been created successfully."
+msgstr "All sessions have been created successfully."
 
 #. module: ems
 #: code:addons/ems/models/models.py:816
@@ -92,7 +97,6 @@ msgstr "Caduca a los tres meses de la fecha de la última sessión o en su defec
 "                                        desde la fecha de adquisición."
 
 #. module: ems
-#: view:ems.message.wizard:ems.ems_message_wizard_form_view
 #: view:ems.session:ems.view_ems_session_form
 #: view:ems.session.cancel.wizard:ems.ems_session_cancel_wizard_form_view
 #: view:ems.session.print.wizard:ems.ems_session_print_wizard_form_view
@@ -149,6 +153,7 @@ msgid "Centers"
 msgstr "Centers"
 
 #. module: ems
+#: view:ems.message.info.wizard:ems.ems_message_wizard_form_view
 #: view:ems.timetable.wizard:ems.wizard_timetable_form_view
 msgid "Close"
 msgstr "Cerrar"
@@ -209,6 +214,7 @@ msgstr "Sesiones confirmadas"
 
 #. module: ems
 #: field:ems.center,create_uid:0
+#: field:ems.message.info.wizard,create_uid:0
 #: field:ems.message.wizard,create_uid:0
 #: field:ems.partner,create_uid:0
 #: field:ems.resource,create_uid:0
@@ -231,6 +237,7 @@ msgstr "Created by"
 
 #. module: ems
 #: field:ems.center,create_date:0
+#: field:ems.message.info.wizard,create_date:0
 #: field:ems.message.wizard,create_date:0
 #: field:ems.partner,create_date:0
 #: field:ems.resource,create_date:0
@@ -444,6 +451,7 @@ msgstr "Encuesta de salud"
 
 #. module: ems
 #: field:ems.center,id:0
+#: field:ems.message.info.wizard,id:0
 #: field:ems.message.wizard,id:0
 #: field:ems.partner,id:0
 #: field:ems.resource,id:0
@@ -482,6 +490,12 @@ msgid "Indicates if this ubication represents the whole center"
 msgstr "Indica si la ubicación representa el centro entero"
 
 #. module: ems
+#: code:addons/ems/models/models.py:1478
+#, python-format
+msgid "Info"
+msgstr "Info"
+
+#. module: ems
 #: field:ems.responsible.absence,ini_date:0
 msgid "Initial Date"
 msgstr "Fecha inicial"
@@ -511,6 +525,7 @@ msgstr "It's not allowed to have a session before another one with forced sessio
 
 #. module: ems
 #: field:ems.center,write_uid:0
+#: field:ems.message.info.wizard,write_uid:0
 #: field:ems.message.wizard,write_uid:0
 #: field:ems.partner,write_uid:0
 #: field:ems.resource,write_uid:0
@@ -533,6 +548,7 @@ msgstr "Last Updated by"
 
 #. module: ems
 #: field:ems.center,write_date:0
+#: field:ems.message.info.wizard,write_date:0
 #: field:ems.message.wizard,write_date:0
 #: field:ems.partner,write_date:0
 #: field:ems.resource,write_date:0
@@ -611,7 +627,8 @@ msgid "Medical consent"
 msgstr "Consentimiento médico"
 
 #. module: ems
-#: view:ems.message.wizard:ems.ems_message_wizard_form_view
+#: view:ems.message.info.wizard:ems.ems_message_wizard_form_view
+#: field:ems.message.info.wizard,message:0
 #: field:ems.message.wizard,message:0
 msgid "Message"
 msgstr "Mensaje"
@@ -1110,6 +1127,12 @@ msgid "The target session has to be in draft state to be deleted."
 msgstr "La sesión de destino tiene que estar en estado borrador para poder ser borrada."
 
 #. module: ems
+#: code:addons/ems/models/models.py:1468
+#, python-format
+msgid "There's %i sessions with validation errors. You must confirm them manually."
+msgstr "There's %i sessions with validation errors. You must confirm them manually."
+
+#. module: ems
 #: code:addons/ems/models/models.py:678
 #: code:addons/ems/models/models.py:699
 #, python-format
@@ -1365,7 +1388,6 @@ msgid "You can only delete a draft session"
 msgstr "Sólo se puede borrar una sesión en borrador"
 
 #. module: ems
-#: view:ems.message.wizard:ems.ems_message_wizard_form_view
 #: view:ems.session.cancel.wizard:ems.ems_session_cancel_wizard_form_view
 #: view:ems.session.print.wizard:ems.ems_session_print_wizard_form_view
 #: view:ems.session.reschedule.pending.wizard:ems.ems_session_reschedule_pending_wizard_form_view

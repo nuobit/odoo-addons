@@ -928,6 +928,23 @@
         </record>
 
 
+        <!-- Creem el info wizard -->
+        <record model="ir.ui.view" id="ems_message_wizard_form_view">
+            <field name="name">ems.message.info.wizard.form</field>
+            <field name="model">ems.message.info.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Message">
+                    <group>
+                        <field name="message" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button special="cancel" class="oe_highlight" string="Close"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
         <!--act_window id="launch_session_wizard"
                     name="Generate sessions"

@@ -29,7 +29,7 @@ import math
 
 
 from openerp import models, fields, api, _
-from openerp.exceptions import AccessError, Warning, ValidationError
+from openerp.exceptions import AccessError, Warning, ValidationError, except_orm
 
 from openerp.tools.misc import detect_server_timezone
 
@@ -1440,6 +1440,7 @@ class WizardSessionSchedule(models.TransientModel):
 
     @api.multi
     def schedule(self):
+        d = []
         for n in range(self.num_sessions):
             date_begin9 = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(days=self.days*n)
             date_end9 = date_begin9 + datetime.timedelta(minutes=self.session_id.duration)
@@ -1456,8 +1457,45 @@ class WizardSessionSchedule(models.TransientModel):
             })
 
             if self.confirm:
-                session9.button_confirm()
-                
+                try:
+                    session9.button_confirm()
+                except (ValidationError, except_orm) as e:
+                    session9.button_draft()
+                    d.append((session9, e.value))
+
+
+        if len(d)!=0:
+            message = _("There's %i sessions with validation errors. You must confirm them manually.") % len(d)
+        else:
+            message = _("All sessions have been created successfully.")
+
+        wizard_id = self.env['ems.message.info.wizard'].create({
+            'message': message,
+        })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _("Info"),
+            'res_model': 'ems.message.info.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            'res_id': wizard_id.id,
+            'target': 'new',
+            #'context': context,
+        }
+
+
+
+
+
+class WizardInfo(models.TransientModel):
+    _name = 'ems.message.info.wizard'
+
+    message = fields.Char(readonly=True)
+
+
 
 
 """
