@@ -35,6 +35,8 @@ from openerp.tools.misc import detect_server_timezone
 
 import re
 
+import babel
+
 import hashlib
 
 import logging
@@ -827,13 +829,12 @@ class ems_partner(models.Model):
         if self.session_id:
             dt = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.session_id.date_begin))
 
-            lang = self.env['res.lang'].search([('code', '=', self.env.lang)])
+            lang_code = self.partner_id.lang or self.env.lang
+            #lang = self.env['res.lang'].search([('code', '=', lang_code)])
 
-            time_format = '%H:%M' #lang.time_format
+            self.date_begin_str = babel.dates.format_date(dt, format='full', locale=lang_code).capitalize()
 
-            self.date_begin_str = dt.strftime(lang.date_format)
-            self.time_begin_str = dt.strftime(time_format)
-
+            self.time_begin_str = dt.strftime('%H:%M')
 
 
     @api.one
