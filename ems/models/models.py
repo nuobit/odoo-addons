@@ -266,6 +266,8 @@ class ems_session(models.Model):
     description = fields.Text(string='Description', #translate=True,
         readonly=False)
 
+    has_description = fields.Boolean(string='Note?', compute='_compute_has_description')
+
     weight = fields.Float(string='Weight', digits=(5,2),
         readonly=False)
 
@@ -322,6 +324,8 @@ class ems_session(models.Model):
 
     session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True, translate=False)
 
+    num_pending_sessions = fields.Integer(string='Pending', compute='_compute_num_pending_sessions')
+
     state = fields.Selection([
             ('draft', 'Draft'),
             ('cancelled', 'Cancelled'),
@@ -349,6 +353,25 @@ class ems_session(models.Model):
 
         return du3_utc
 
+
+    @api.depends('state')
+    def _compute_num_pending_sessions(selfs):
+        for self in selfs:
+            ps = self.env['ems.session'].search([ ('state', 'in', ('reschedulepending', 'schedulepending')),
+                                                    ('center_id', '=', self.center_id.id),
+                                            ]).filtered(lambda x: x.service_id.is_ems and
+                                                                 len(set(x.partner_ids.mapped('partner_id.id')) &
+                                                                     set(self.partner_ids.mapped('partner_id.id')))!=0
+                                                     )
+            self.num_pending_sessions = len(ps)
+
+    @api.depends('description')
+    def _compute_has_description(selfs):
+        for self in selfs:
+            if self.description:
+                self.has_description = len(self.description.strip())!=0
+            else:
+                self.has_description = False
 
     @api.depends('date_begin')
     def _compute_weekday_begin(selfs):
@@ -1429,7 +1452,8 @@ class WizardSessionSchedule(models.TransientModel):
 
     num_sessions = fields.Integer(string='Number of sessions', help="Number of session to schedule", required=True)
     days = fields.Integer(string='Day interval', help="Days between sessions", required=True)
-    confirm = fields.Boolean(string='Confirm', help="Try to confirm sessions after created", default=True)
+    action = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'), ('schedulepending', 'Schedule pending')],
+                              string='Action', help="Try to change state of sessions after created", default='draft')
     date_begin = fields.Datetime(String="From date", help="Date to the first new session and from the others will be calculated", required=True)
 
     @api.constrains('num_sessions')
@@ -1461,12 +1485,14 @@ class WizardSessionSchedule(models.TransientModel):
                 'partner_ids': [(0, _, {'partner_id': p.partner_id.id}) for p in self.session_id.partner_ids],
             })
 
-            if self.confirm:
+            if self.action=='confirm':
                 try:
                     session9.button_confirm()
                 except (ValidationError, except_orm) as e:
                     session9.button_draft()
                     d.append((session9, e.value))
+            elif self.action=='schedulepending':
+                session9.button_schedule_pending()
 
 
         if len(d)!=0:

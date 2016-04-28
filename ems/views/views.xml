@@ -33,16 +33,18 @@
                       fonts="bold:state=='confirmed'"
                       colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';darkorange:state=='schedulepending';grey:state in ('cancel')">
                     <field name="number"/>
-                    <field name="center_id"/>
+                    <!--field name="center_id"/>
                     <field name="service_id"/>
                     <field name="ubication_id"/>
-                    <field name="resource_ids"/>
+                    <field name="resource_ids"/-->
                     <field name="weekday_begin"/>
                     <field name="date_begin"/>
                     <field name="date_end"/>
                     <field name="source_number"/>
                     <field name="partner_text"/>
                     <field name="responsible_id"/>
+                    <field name="has_description"/>
+                    <field name="num_pending_sessions"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -880,7 +882,7 @@
                         <!--field name="session_id" required="1"/-->
                         <field name="num_sessions" required="1"/>
                         <field name="days" required="1"/>
-                        <field name="confirm"/>
+                        <field name="action" widget="radio"/>
                         <field name="date_begin"/>
                     </group>
                     <!--group>
