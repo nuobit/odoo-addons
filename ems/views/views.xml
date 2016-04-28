@@ -31,7 +31,7 @@
             <field name="arch" type="xml">
                 <tree string="Sessions"
                       fonts="bold:state=='confirmed'"
-                      colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';grey:state in ('cancel')">
+                      colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';maroon:state=='schedulepending';grey:state in ('cancel')">
                     <field name="number"/>
                     <field name="center_id"/>
                     <field name="service_id"/>
@@ -60,7 +60,7 @@
                         <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
                         <button string="Draft" name="button_draft"
-                                states="confirmed,reschedulepending,rescheduled,cancelled"
+                                states="confirmed,reschedulepending,rescheduled,schedulepending,cancelled"
                                 type="object"
                                 groups="base.group_user"/>
                         <button string="Reschedule" name="button_reschedule" states="confirmed,reschedulepending"
@@ -71,10 +71,13 @@
                         <button string="Reschedule pending" name="button_reschedule_pending" states="confirmed,draft"
                                 type="object"
                                 groups="base.group_user"/>
+                        <button string="Schedule pending" name="button_schedule_pending" states="draft"
+                                type="object"
+                                groups="base.group_user"/>
                         <button string="Schedule" name="button_schedule" states="confirmed" type="object"
                                 groups="base.group_user"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,confirmed,reschedulepending,rescheduled,cancelled"/>
+                               statusbar_visible="draft,confirmed,schedulepending,reschedulepending,rescheduled,cancelled"/>
                     </header>
                     <sheet>
                         <group colspan="2" col="4">
@@ -217,6 +220,9 @@
                     <filter string="Reschedule Pending" name="reschedulepending"
                             domain="[('state','=','reschedulepending')]"
                             help="Reschedule Pending Sessions"/>
+                    <filter string="Schedule Pending" name="schedulepending"
+                            domain="[('state','=','schedulepending')]"
+                            help="Schedule Pending Sessions"/>
                     <field name="partner_text" string="Attendees"/>
                     <field name="responsible_id"/>
                     <field name="description"/>

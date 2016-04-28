@@ -327,6 +327,7 @@ class ems_session(models.Model):
             ('cancelled', 'Cancelled'),
             ('rescheduled', 'Rescheduled'),
             ('reschedulepending', 'Reschedule pending'),
+            ('schedulepending', 'Schedule pending'),
             ('confirmed', 'Confirmed'),
         ], string='Status', default='draft', readonly=True, required=True, copy=False,
         help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
@@ -479,6 +480,10 @@ class ems_session(models.Model):
         }
 
         self.state = 'reschedulepending'
+
+    @api.multi
+    def button_schedule_pending(self):
+        self.state = 'schedulepending'
 
     @api.multi
     def button_confirm(self):
