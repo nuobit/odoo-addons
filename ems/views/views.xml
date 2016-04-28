@@ -31,7 +31,7 @@
             <field name="arch" type="xml">
                 <tree string="Sessions"
                       fonts="bold:state=='confirmed'"
-                      colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';maroon:state=='schedulepending';grey:state in ('cancel')">
+                      colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';darkorange:state=='schedulepending';grey:state in ('cancel')">
                     <field name="number"/>
                     <field name="center_id"/>
                     <field name="service_id"/>
