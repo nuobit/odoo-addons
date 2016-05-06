@@ -148,6 +148,13 @@
                             <page string="Description">
                                 <field name="description" nolabel="1" placeholder="Session Description..."/>
                             </page>
+                            <page string="Attendance control" attrs="{'invisible':[('state', '!=', 'confirmed')]}">
+                                <group>
+                                    <field name="delayed_session"/>
+                                    <field name="date_begin_actual" attrs="{'invisible':[('delayed_session', '=', False)], 'required':[('delayed_session', '=', True)]}"/>
+                                    <field name="delay_reason" widget="text" attrs="{'invisible':[('delayed_session', '=', False)], 'required':[('delayed_session', '=', True)]}"/>
+                                </group>
+                            </page>
                             <page string="Other information">
                                 <group>
                                     <field name="source_session_id"/>

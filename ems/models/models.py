@@ -314,7 +314,7 @@ class ems_session(models.Model):
         readonly=False)
     weekday_begin = fields.Selection(string='Day of week', selection=DAYS_OF_WEEK, compute='_compute_weekday_begin')
 
-    reason = fields.Char(string='Reason', required=False, readonly=False, copy=False)
+    reason = fields.Char(string='Reschedule reason', required=False, readonly=False, copy=False)
 
     source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False, ondelete='restrict')
 
@@ -326,7 +326,14 @@ class ems_session(models.Model):
 
     num_pending_sessions = fields.Integer(string='Pending', compute='_compute_num_pending_sessions')
 
+
     out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False, copy=False)
+
+    delayed_session = fields.Boolean(string='Delayed session', help='Indicates if the session has started with delay', default=False, copy=False)
+
+    date_begin_actual = fields.Datetime(string='Actual start date', required=False, readonly=False, copy=False)
+
+    delay_reason = fields.Char(string='Delay reason', required=False, readonly=False, copy=False)
 
     state = fields.Selection([
             ('draft', 'Draft'),
@@ -649,6 +656,9 @@ class ems_session(models.Model):
 
         return res
 
+    @api.onchange('delayed_session')
+    def onchange_delayed_session(self):
+        self.date_begin_actual = self.date_begin
 
     def _check_all(self):
         # check dates
