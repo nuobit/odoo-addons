@@ -151,13 +151,12 @@
                             <page string="Other information">
                                 <group>
                                     <field name="source_session_id"/>
-
                                 </group>
-                                <group attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))]}">
-
-                                    <field name="target_session_id"/>
-                                    <field name="reason"/>
-
+                                <group>
+                                    <field name="target_session_id" attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))]}"/>
+                                    <field name="out_of_time" attrs="{'invisible':[('state', 'not in', ('rescheduled', 'reschedulepending'))]}"/>
+                                    <field name="reason" widget="text" attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))],
+                                                                               'required':[('state', 'in', ('cancelled', 'rescheduled', 'reschedulepending'))]}"/>
                                 </group>
                             </page>
                         </notebook>
@@ -192,8 +191,8 @@
             <field name="model">ems.session</field>
             <field name="arch" type="xml">
                 <search>
-                    <filter string="My Sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
-                    <filter string="EMS Sessions" name="is_ems" domain="[('service_id.is_ems','=',True)]"
+                    <filter string="My sessions" help="My Sessions" domain="[('responsible_id','=',uid)]"/>
+                    <filter string="EMS sessions" name="is_ems" domain="[('service_id.is_ems','=',True)]"
                             help="EMS Sessions"/>
                     <separator/>
                     <filter string="Upcoming" name="upcoming"
@@ -205,11 +204,20 @@
                     <filter string="Today" name="today"
                             domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))),
                                      ('date_begin','&lt;', datetime.datetime.combine(context_today()+datetime.timedelta(days=1), datetime.time(0,0,0)))]"
-                            help="Today Sessions"/>
+                            help="Today sessions"/>
                     <filter string="Tomorrow" name="tomorrow"
                             domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today()+datetime.timedelta(days=1), datetime.time(0,0,0))),
                                      ('date_begin','&lt;', datetime.datetime.combine(context_today()+datetime.timedelta(days=2), datetime.time(0,0,0)))]"
                             help="Tomorrow Sessions"/>
+                    <separator/>
+                    <filter string="Current month" name="currentmonth"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)).replace(day=1)),
+                                     ('date_begin','&lt;', datetime.datetime.combine(context_today()+datetime.timedelta(days=32), datetime.time(0,0,0)).replace(day=1))]"
+                            help="Current month sessions"/>
+                    <filter string="Previous month" name="previousmonth"
+                            domain="[('date_begin','&gt;=', datetime.datetime.combine((context_today().replace(day=1)+datetime.timedelta(days=-1)).replace(day=1), datetime.time(0,0,0))),
+                                     ('date_begin','&lt;', datetime.datetime.combine(context_today().replace(day=1), datetime.time(0,0,0)))]"
+                            help="Previous month sessions"/>
                     <separator/>
                     <filter string="Draft" name="draft" domain="[('state','=','draft')]"
                             help="Sessions in New state"/>
@@ -219,10 +227,10 @@
                             help="Cancelled Sessions"/>
                     <filter string="Rescheduled" name="rescheduled" domain="[('state','=','rescheduled')]"
                             help="Rescheduled Sessions"/>
-                    <filter string="Reschedule Pending" name="reschedulepending"
+                    <filter string="Reschedule pending" name="reschedulepending"
                             domain="[('state','=','reschedulepending')]"
                             help="Reschedule Pending Sessions"/>
-                    <filter string="Schedule Pending" name="schedulepending"
+                    <filter string="Schedule pending" name="schedulepending"
                             domain="[('state','=','schedulepending')]"
                             help="Schedule Pending Sessions"/>
                     <field name="partner_text" string="Attendees"/>
@@ -801,6 +809,7 @@
                     </group>
                     <group>
                         <field name="confirm"/>
+                        <field name="out_of_time"/>
                         <field name="reason" required="1" widget="text"/>
                     </group>
                     <footer>

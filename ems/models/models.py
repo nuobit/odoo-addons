@@ -314,7 +314,7 @@ class ems_session(models.Model):
         readonly=False)
     weekday_begin = fields.Selection(string='Day of week', selection=DAYS_OF_WEEK, compute='_compute_weekday_begin')
 
-    reason = fields.Char(string='Reason', required=False, readonly=True, copy=False)
+    reason = fields.Char(string='Reason', required=False, readonly=False, copy=False)
 
     source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False, ondelete='restrict')
 
@@ -325,6 +325,8 @@ class ems_session(models.Model):
     session_text = fields.Char(compute='_compute_auxiliar_text', readonly=True, translate=False)
 
     num_pending_sessions = fields.Integer(string='Pending', compute='_compute_num_pending_sessions')
+
+    out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False, copy=False)
 
     state = fields.Selection([
             ('draft', 'Draft'),
@@ -409,26 +411,25 @@ class ems_session(models.Model):
     @api.multi
     def button_draft(self):
         if self.state == 'rescheduled':
-            if self.target_session_id:
-                wizard_id = self.env['ems.message.wizard'].create({
-                    'message': _("The associated target session '%s' will be deleted. Continue?") % self.target_session_id.name_get()[0][1],
-                    'model_name': 'ems.session',
-                })
+            wizard_id = self.env['ems.message.wizard'].create({
+                'message': _("The associated target session '%s' will be deleted. Continue?") % self.target_session_id.name_get()[0][1],
+                'model_name': 'ems.session',
+            })
 
-                return {
-                    'type': 'ir.actions.act_window',
-                    'name': _("Warning"),
-                    'res_model': 'ems.message.wizard',
-                    'view_type': 'form',
-                    'view_mode': 'form',
-                    #'views': [(view.id, 'form')],
-                    #'view_id': view.id,
-                    'res_id': wizard_id.id,
-                    'target': 'new',
-                    #'context': context,
-                }
-
-        self.state = 'draft'
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _("Warning"),
+                'res_model': 'ems.message.wizard',
+                'view_type': 'form',
+                'view_mode': 'form',
+                #'views': [(view.id, 'form')],
+                #'view_id': view.id,
+                'res_id': wizard_id.id,
+                'target': 'new',
+                #'context': context,
+            }
+        else:
+            self.state = 'draft'
 
     @api.multi
     def button_cancel(self):
@@ -1325,6 +1326,8 @@ class WizardSessionReschedule(models.TransientModel):
 
     reason = fields.Char(string='Reason', required=False)
 
+    out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False)
+
     confirm = fields.Boolean(string='Confirm', help='Confirm new session after created', default=True)
 
     @api.onchange('date_begin')
@@ -1352,8 +1355,10 @@ class WizardSessionReschedule(models.TransientModel):
             'partner_ids': [(0, _, {'partner_id': p.partner_id.id}) for p in self.session_id.partner_ids],
         })
 
-        self.session_id.reason = self.reason
         self.session_id.target_session_id = session9
+
+        self.session_id.reason = self.reason
+        self.session_id.out_of_time = self.out_of_time
 
         if self.confirm:
             session9.button_confirm()
