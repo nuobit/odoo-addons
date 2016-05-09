@@ -476,6 +476,9 @@ class ems_session(models.Model):
             'date_begin': self.get_new_date(self.date_begin, last_session.date_begin, days=7),
             'date_end': self.get_new_date(self.date_end, last_session.date_end, days=7),
             'reason': self.reason,
+            'last_session_id': last_session.id,
+            'responsible_id': self.responsible_id.id,
+            'attendee_ids': [(4, x.partner_id.id, 0) for x in self.partner_ids]
         })
 
         return {
@@ -1329,16 +1332,37 @@ class WizardSessionReschedule(models.TransientModel):
     _name = 'ems.session.reschedule.wizard'
 
     session_id = fields.Many2one('ems.session', required=False)
-    duration = fields.Integer(string='Duration', required=True, readonly=True)
 
-    date_begin = fields.Datetime(string='Start Date', required=True, readonly=False)
-    date_end = fields.Datetime(string='End Date', required=True, readonly=False)
+    last_session_id = fields.Many2one('ems.session', required=False)
 
-    reason = fields.Char(string='Reason', required=False)
+    cause = fields.Selection(string="Cause", help="The cause of reschedule",
+                             selection=[('timechange', 'Time change'), ('responsiblechange', 'Responsible change'), ('attendeeschange', 'Attendees change')],
+                             default='timechange')
 
+    duration = fields.Integer(string='Duration', required=False, readonly=True)
+    date_begin = fields.Datetime(string='Start Date', required=False, readonly=False)
+    date_end = fields.Datetime(string='End Date', required=False, readonly=False)
     out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False)
 
-    confirm = fields.Boolean(string='Confirm', help='Confirm new session after created', default=True)
+    responsible_id = fields.Many2one('ems.responsible', string="Responsible")
+
+    attendee_ids = fields.Many2many('res.partner', string="Attendees")
+
+    reason = fields.Char(string='Reason', required=False, help="The reason why of the reschedule")
+
+    @api.constrains('cause', 'date_begin', 'date_end', 'responsible_id', 'attendee_ids')
+    def _check_cause_related(self):
+        if self.cause=='timechange':
+            if self.date_begin==self.session_id.date_begin and self.date_end==self.session_id.date_end:
+                raise ValidationError(_("Dates must be diferent from the ones in the original session"))
+        elif self.cause=='responsiblechange':
+            if self.responsible_id.id==self.session_id.responsible_id.id:
+                raise ValidationError(_("Responsible must be diferent from the one in the original session"))
+        elif self.cause=='attendeeschange':
+            if set(self.attendee_ids.mapped('id'))==set(self.session_id.partner_ids.mapped('partner_id.id')):
+                raise ValidationError(_("Attendees must be diferent from the ones in the original session"))
+
+
 
     @api.onchange('date_begin')
     def _onchange_date_begin(self):
@@ -1348,33 +1372,64 @@ class WizardSessionReschedule(models.TransientModel):
     def _onchange_date_end(self):
         self.date_begin = fields.Datetime.from_string(self.date_end) + datetime.timedelta(minutes=-self.duration)
 
-    @api.multi
     def reschedule(self):
-        # creem la nova sessio
-        session9 = self.env['ems.session'].create({
-            'center_id': self.session_id.center_id.id,
-            'service_id': self.session_id.service_id.id,
-            'ubication_id': self.session_id.ubication_id.id,
-            'duration': self.duration,
-            'date_begin': self.date_begin,
-            'date_end': self.date_end,
-            'responsible_id': self.session_id.responsible_id.id,
-            'resource_ids': [(4, p.id, _) for p in self.session_id.resource_ids],
-            'description': self.session_id.description,
-            'source_session_id': self.session_id.id,
-            'partner_ids': [(0, _, {'partner_id': p.partner_id.id}) for p in self.session_id.partner_ids],
-        })
+        # definim els vlaors de la nova sessio identica a l'oroginal
+        vals = {'center_id': self.session_id.center_id.id,
+                'service_id': self.session_id.service_id.id,
+                'ubication_id': self.session_id.ubication_id.id,
+                'duration': self.session_id.duration,
+                'date_begin': self.session_id.date_begin,
+                'date_end': self.session_id.date_end,
+                'responsible_id': self.session_id.responsible_id.id,
+                'resource_ids': [(4, p.id, _) for p in self.session_id.resource_ids],
+                'description': self.session_id.description,
+                'source_session_id': self.session_id.id,
+                'partner_ids': [(0, _, {'partner_id': p.partner_id.id}) for p in self.session_id.partner_ids],
+            }
+
+        # modfifiquem els valors de la nova sessio en funcio del selecionat en el wizard
+        if self.cause=='timechange':
+            vals.update({'duration': self.duration,
+                         'date_begin': self.date_begin,
+                         'date_end': self.date_end })
+            self.session_id.out_of_time = self.out_of_time
+        elif self.cause=='responsiblechange':
+            vals.update({'responsible_id': self.responsible_id.id })
+        elif self.cause=='attendeeschange':
+            vals.update({'partner_ids': [(0, _, {'partner_id': p.id}) for p in self.attendee_ids] })
+
+
+        ## creem la sessio
+        session9 = self.env['ems.session'].create(vals)
 
         self.session_id.target_session_id = session9
 
         self.session_id.reason = self.reason
-        self.session_id.out_of_time = self.out_of_time
-
-        if self.confirm:
-            session9.button_confirm()
 
         self.session_id.state = 'rescheduled'
 
+        return session9
+
+    @api.multi
+    def reschedule_confirm(self):
+        session9 = self.reschedule()
+        session9.button_confirm()
+
+    @api.multi
+    def reschedule_edit(self):
+        session9 = self.reschedule()
+        return {
+            'type': 'ir.actions.act_window',
+            #'name': _("Warning"),
+            'res_model': 'ems.session',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            'res_id': session9.id,
+            #'target': 'new',
+            #'context': context,
+        }
 
 
 class WizardMessage(models.TransientModel):

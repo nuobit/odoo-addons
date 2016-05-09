@@ -809,25 +809,58 @@
             <field name="arch" type="xml">
                 <form string="Reschedule sessions">
                     <group>
-                        <!--field name="session_id" required="1"/-->
-                        <field name="duration" required="1"/>
-                        <field name="date_begin" required="1"/>
-                        <field name="date_end" required="1"/>
+                        <group>
+                            <field name="cause" required="1"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <group attrs="{'invisible':[('cause', '!=', 'timechange')]}">
+                        <group>
+                            <field name="duration"/>
+                            <newline/>
+                            <field name="date_begin" attrs="{'required':[('cause', '=', 'timechange')]}"/>
+                             <newline/>
+                            <field name="date_end" attrs="{'required':[('cause', '=', 'timechange')]}"/>
+                        </group>
+                        <group>
+                            <field name="out_of_time"/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible':[('cause', '!=', 'responsiblechange')]}">
+                        <group>
+                            <field name="responsible_id" attrs="{'required':[('cause', '=', 'responsiblechange')]}"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <group attrs="{'invisible':[('cause', '!=', 'attendeeschange')]}">
+                        <group>
+                            <field name="attendee_ids" widget="many2many_tags" attrs="{'required':[('cause', '=', 'attendeeschange')]}"/>
+                        </group>
+                        <group/>
                     </group>
                     <group>
-                        <field name="confirm"/>
-                        <field name="out_of_time"/>
                         <field name="reason" required="1" widget="text"/>
                     </group>
                     <footer>
-                        <button name="reschedule" type="object"
-                                string="Reschedule" class="oe_highlight"/>
+                        <button name="reschedule_confirm" type="object"
+                                string="Reschedule and confirm" class="oe_highlight"/>
+                        <button name="reschedule_edit" type="object"
+                                string="Reschedule and edit..."/>
                         or
                         <button special="cancel" class="oe_link" string="Cancel"/>
                     </footer>
                 </form>
             </field>
         </record>
+
+
+        <!--act_window id="launch_ems_session_reschedule_wizard"
+                    name="Reschedule sessions"
+                    src_model="ems.session"
+                    res_model="ems.session.reschedule.wizard"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/-->
 
         <!-- Creem el SESSION cancel wizard form -->
         <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
@@ -953,7 +986,7 @@
 
 
         <!-- Creem el info wizard -->
-        <record model="ir.ui.view" id="ems_message_wizard_form_view">
+        <record model="ir.ui.view" id="ems_message_info_wizard_form_view">
             <field name="name">ems.message.info.wizard.form</field>
             <field name="model">ems.message.info.wizard</field>
             <field name="arch" type="xml">
