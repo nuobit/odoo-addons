@@ -160,6 +160,8 @@
                                     <field name="source_session_id"/>
                                 </group>
                                 <group>
+                                    <field name="cause" attrs="{'invisible':[('state', 'not in', ('rescheduled', 'reschedulepending'))],
+                                                                'required':[('state', 'in', ('rescheduled'))]}"/>
                                     <field name="target_session_id" attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))]}"/>
                                     <field name="out_of_time" attrs="{'invisible':[('state', 'not in', ('rescheduled', 'reschedulepending'))]}"/>
                                     <field name="reason" widget="text" attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))],

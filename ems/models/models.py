@@ -240,6 +240,8 @@ DAYS_OF_WEEK = [(1, _('Monday')), (2, _('Tuesday')), (3, _('Wednesday')),
                                       (4, _('Thursday')), (5, _('Friday')), (6, _('Saturday')),
                                       (7, _('Sunday'))]
 
+RESCHEDULE_CAUSES = [('timechange', 'Time change'), ('responsiblechange', 'Responsible change'), ('attendeeschange', 'Attendees change')]
+
 class ems_center(models.Model):
     """Session"""
     _name = 'ems.center'
@@ -315,6 +317,9 @@ class ems_session(models.Model):
     weekday_begin = fields.Selection(string='Day of week', selection=DAYS_OF_WEEK, compute='_compute_weekday_begin')
 
     reason = fields.Char(string='Reschedule reason', required=False, readonly=False, copy=False)
+
+    cause = fields.Selection(string="Cause", help="The cause of reschedule",
+                             selection=RESCHEDULE_CAUSES)
 
     source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False, ondelete='restrict')
 
@@ -1336,7 +1341,7 @@ class WizardSessionReschedule(models.TransientModel):
     last_session_id = fields.Many2one('ems.session', required=False)
 
     cause = fields.Selection(string="Cause", help="The cause of reschedule",
-                             selection=[('timechange', 'Time change'), ('responsiblechange', 'Responsible change'), ('attendeeschange', 'Attendees change')],
+                             selection=RESCHEDULE_CAUSES,
                              default='timechange')
 
     duration = fields.Integer(string='Duration', required=False, readonly=True)
@@ -1405,6 +1410,8 @@ class WizardSessionReschedule(models.TransientModel):
         self.session_id.target_session_id = session9
 
         self.session_id.reason = self.reason
+
+        self.session_id.cause = self.cause
 
         self.session_id.state = 'rescheduled'
 
