@@ -151,8 +151,10 @@
                             <page string="Attendance control" attrs="{'invisible':[('state', '!=', 'confirmed')]}">
                                 <group>
                                     <field name="delayed_session"/>
-                                    <field name="date_begin_actual" attrs="{'invisible':[('delayed_session', '=', False)], 'required':[('delayed_session', '=', True)]}"/>
-                                    <field name="delay_reason" widget="text" attrs="{'invisible':[('delayed_session', '=', False)], 'required':[('delayed_session', '=', True)]}"/>
+                                    <field name="date_begin_actual"
+                                           attrs="{'invisible':[('delayed_session', '=', False)], 'required':[('delayed_session', '=', True)]}"/>
+                                    <field name="delay_reason" widget="text"
+                                           attrs="{'invisible':[('delayed_session', '=', False)], 'required':[('delayed_session', '=', True)]}"/>
                                 </group>
                             </page>
                             <page string="Other information">
@@ -160,10 +162,10 @@
                                     <field name="source_session_id"/>
                                 </group>
                                 <group>
-                                    <field name="cause" attrs="{'invisible':[('state', 'not in', ('rescheduled', 'reschedulepending'))],
-                                                                'required':[('state', 'in', ('rescheduled'))]}"/>
-                                    <field name="target_session_id" attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))]}"/>
-                                    <field name="out_of_time" attrs="{'invisible':[('state', 'not in', ('rescheduled', 'reschedulepending'))]}"/>
+                                    <field name="target_session_id"
+                                           attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))]}"/>
+                                    <field name="out_of_time"
+                                           attrs="{'invisible':[('state', 'not in', ('rescheduled', 'reschedulepending'))]}"/>
                                     <field name="reason" widget="text" attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))],
                                                                                'required':[('state', 'in', ('cancelled', 'rescheduled', 'reschedulepending'))]}"/>
                                 </group>
@@ -811,32 +813,40 @@
             <field name="arch" type="xml">
                 <form string="Reschedule sessions">
                     <group>
+                        <field name="unique_active_id" invisible="1"/>
+                        <group attrs="{'invisible':[('unique_active_id', '=', False)]}">
+                            <field name="time_change"/>
+                            <field name="weeks"
+                                   attrs="{'invisible':[('time_change', '=', False)], 'required':[('time_change', '=', True)]}"/>
+                            <field name="duration" attrs="{'invisible':[('time_change', '=', False)]}"/>
+                            <field name="date_begin_new"
+                                   attrs="{'invisible':[('time_change', '=', False)], 'required':[('time_change', '=', True)]}"/>
+                            <field name="date_end_new"
+                                   attrs="{'invisible':[('time_change', '=', False)], 'required':[('time_change', '=', True)]}"/>
+                            <field name="out_of_time" attrs="{'invisible':[('time_change', '=', False)]}"/>
+                        </group>
                         <group>
-                            <field name="cause" required="1"/>
+                            <field name="date_begin_original"
+                                   attrs="{'invisible':[('time_change', '=', False)]}"/>
+                            <field name="date_begin_last"
+                                   attrs="{'invisible':[('time_change', '=', False)]}"/>
+                            <field name="allow_past_date"
+                                   attrs="{'invisible':[('time_change', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="responsible_change"/>
+                            <field name="responsible_id"
+                                   attrs="{'invisible':[('responsible_change', '=', False)], 'required':[('responsible_change', '=', True)]}"/>
                         </group>
                         <group/>
                     </group>
-                    <group attrs="{'invisible':[('cause', '!=', 'timechange')]}">
+                    <group>
                         <group>
-                            <field name="duration"/>
-                            <newline/>
-                            <field name="date_begin" attrs="{'required':[('cause', '=', 'timechange')]}"/>
-                             <newline/>
-                            <field name="date_end" attrs="{'required':[('cause', '=', 'timechange')]}"/>
-                        </group>
-                        <group>
-                            <field name="out_of_time"/>
-                        </group>
-                    </group>
-                    <group attrs="{'invisible':[('cause', '!=', 'responsiblechange')]}">
-                        <group>
-                            <field name="responsible_id" attrs="{'required':[('cause', '=', 'responsiblechange')]}"/>
-                        </group>
-                        <group/>
-                    </group>
-                    <group attrs="{'invisible':[('cause', '!=', 'attendeeschange')]}">
-                        <group>
-                            <field name="attendee_ids" widget="many2many_tags" attrs="{'required':[('cause', '=', 'attendeeschange')]}"/>
+                            <field name="attendees_change"/>
+                            <field name="attendee_ids" widget="many2many_tags"
+                                   attrs="{'invisible':[('attendees_change', '=', False)], 'required':[('attendees_change', '=', True)]}"/>
                         </group>
                         <group/>
                     </group>
@@ -847,7 +857,8 @@
                         <button name="reschedule_confirm" type="object"
                                 string="Reschedule and confirm" class="oe_highlight"/>
                         <button name="reschedule_edit" type="object"
-                                string="Reschedule and edit..."/>
+                                string="Reschedule and edit..."
+                                attrs="{'invisible':[('unique_active_id', '=', False)]}"/>
                         or
                         <button special="cancel" class="oe_link" string="Cancel"/>
                     </footer>
@@ -856,13 +867,13 @@
         </record>
 
 
-        <!--act_window id="launch_ems_session_reschedule_wizard"
+        <act_window id="launch_ems_session_reschedule_wizard"
                     name="Reschedule sessions"
                     src_model="ems.session"
                     res_model="ems.session.reschedule.wizard"
                     view_mode="form"
                     target="new"
-                    key2="client_action_multi"/-->
+                    key2="client_action_multi"/>
 
         <!-- Creem el SESSION cancel wizard form -->
         <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
