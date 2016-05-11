@@ -1351,9 +1351,15 @@ class WizardSessionReschedule(models.TransientModel):
     attendees_change = fields.Boolean(string='Attendees change')
     attendee_ids = fields.Many2many('res.partner', string="New attendees")
 
-    reason = fields.Char(string='Reason', required=False, help="The reason why of the reschedule")
+    reason = fields.Char(string='Reason', required=False, help="The reason why of the reschedule", default=lambda self: self._default_reason())
 
-    unique_active_id = fields.Boolean(default=lambda x: x._default_unique_active_id())
+    unique_active_id = fields.Boolean(default=lambda self: self._default_unique_active_id())
+
+    def _default_reason(self):
+        session_ids = self.env['ems.session'].browse(self._context.get('active_ids'))
+
+        if len(session_ids)==1:
+            return session_ids.reason
 
 
     def _default_unique_active_id(self):
@@ -1447,8 +1453,8 @@ class WizardSessionReschedule(models.TransientModel):
         session_idsN = self.env['ems.session'].browse(self._context.get('active_ids'))
         session9_l = []
         for session_ids in session_idsN:
-            if session_ids.state!='confirmed':
-                raise ValidationError(_("Only confirmed sessions can be rescheduled"))
+            if session_ids.state not in ('confirmed', 'reschedulepending'):
+                raise ValidationError(_("Only confirmed and reschedule pending sessions can be rescheduled"))
 
             # definim els vlaors de la nova sessio identica a l'oroginal
             vals = {'center_id': session_ids.center_id.id,
