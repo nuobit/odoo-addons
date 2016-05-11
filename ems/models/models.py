@@ -668,14 +668,6 @@ class ems_session(models.Model):
         self.date_begin_actual = self.date_begin
 
     def _check_all(self):
-        # check dates
-        if self.date_end < self.date_begin:
-            raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
-
-        ####
-        if self.state == 'draft':
-            return
-
         # check number of atendees
         if self.service_id.max_attendees>=0 and len(self.partner_ids)>self.service_id.max_attendees:
             raise ValidationError(_('Too many attendees, maximum of %i') % self.service_id.max_attendees)
@@ -798,7 +790,8 @@ class ems_session(models.Model):
 
     @api.constrains('state')
     def check_state(self):
-        self._check_all()
+        if self.state == 'confirmed':
+            self._check_all()
 
 
     @api.constrains('date_begin', 'date_end', 'center_id',
@@ -808,6 +801,10 @@ class ems_session(models.Model):
         #check state
         if self.state!='draft':
             raise ValidationError(_('You can only change a draft session'))
+
+        # check dates
+        if self.date_end < self.date_begin:
+            raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
 
         self._check_all()
 
@@ -1336,8 +1333,6 @@ class WizardSessionReschedule(models.TransientModel):
     _name = 'ems.session.reschedule.wizard'
 
     time_change = fields.Boolean(string='Time change')
-
-
     weeks = fields.Integer(string='Weeks', help='Number of weeks after last session', required=True, readonly=False, default=1)
     allow_past_date = fields.Boolean(string='Allow past date', help='Allows reschedule sessions in the past', default=False)
 
