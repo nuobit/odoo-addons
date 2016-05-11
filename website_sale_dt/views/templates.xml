@@ -189,7 +189,7 @@
 
 
         <template id="website_sale_restrict_product_item_price" inherit_id="website_sale.products_item" priority="20"
-                  active="False" customize_show="True"
+                  active="True" customize_show="True"
                   name="DT restrict prices">
             <xpath expr="//div[@class='product_price']" position="attributes">
                 <attribute name="t-if">product.product_variant_ids and not user_id.partner_id.name == 'Public user'</attribute>
