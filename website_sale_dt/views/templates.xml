@@ -212,6 +212,16 @@
             </xpath>
         </template>
 
+        <template id="website_sale_dt_show_sign_in"  active="True" customize_show="True" inherit_id="website.layout"  priority="20" name="Show Customer area">
+            <xpath expr="//ul[@id='top_menu']" position="inside">
+                <li class="divider" groups="base.group_public"/>
+                <li groups="base.group_public">
+                    <a t-attf-href="/web/login">
+                        <b>Customer area</b>
+                    </a>
+                </li>
+            </xpath>
+        </template>
 
 
 

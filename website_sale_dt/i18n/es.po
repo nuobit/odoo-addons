@@ -1,3 +1,4 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* website_sale_dt
 #
@@ -5,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-07 12:26+0000\n"
-"PO-Revision-Date: 2016-04-07 12:26+0000\n"
+"POT-Creation-Date: 2016-05-11 18:05+0000\n"
+"PO-Revision-Date: 2016-05-11 18:05+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,6 +19,11 @@ msgstr ""
 #: view:website:website_sale.products
 msgid "All Products"
 msgstr "Todos los productos"
+
+#. module: website_sale_dt
+#: view:website:website.layout
+msgid "Customer area"
+msgstr "Área de clientes"
 
 #. module: website_sale_dt
 #: view:website:website_sale.cart
@@ -70,9 +76,21 @@ msgid "hidden"
 msgstr "hidden"
 
 #. module: website_sale_dt
+#: view:website:website_sale.product
+#: view:website:website_sale.product_price
+#: view:website:website_stock.product_stock
+msgid "not user_id.partner_id.name == 'Public user'"
+msgstr "not user_id.partner_id.name == 'Public user'"
+
+#. module: website_sale_dt
 #: view:website:website_sale.products
 msgid "pagination form-inline"
 msgstr "pagination form-inline"
+
+#. module: website_sale_dt
+#: view:website:website_sale.products_item
+msgid "product.product_variant_ids and not user_id.partner_id.name == 'Public user'"
+msgstr "product.product_variant_ids and not user_id.partner_id.name == 'Public user'"
 
 #. module: website_sale_dt
 #: view:website:website_sale.cart
