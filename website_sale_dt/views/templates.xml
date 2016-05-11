@@ -58,6 +58,19 @@
                     </div>
                 </div>
             </xpath>
+        </template>
+
+        <template id="website_sale_dt_restrict_addtocart_and_quantity" inherit_id="website_sale.product" priority="25" active="True"
+                  customize_show="True"
+                  name="DT restrict Add to Cart and Quantity">
+            <xpath expr="//a[@id='add_to_cart']" position="attributes">
+                <attribute name="t-if">not user_id.partner_id.name == 'Public user'</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='css_quantity input-group oe_website_spinner']" position="attributes">
+                <attribute name="t-if">not user_id.partner_id.name == 'Public user'</attribute>
+            </xpath>
+
 
         </template>
 
@@ -173,6 +186,33 @@
             </xpath>
 
         </template>
+
+
+        <template id="website_sale_restrict_product_item_price" inherit_id="website_sale.products_item" priority="20"
+                  active="False" customize_show="True"
+                  name="DT restrict prices">
+            <xpath expr="//div[@class='product_price']" position="attributes">
+                <attribute name="t-if">product.product_variant_ids and not user_id.partner_id.name == 'Public user'</attribute>
+            </xpath>
+        </template>
+
+        <template id="website_sale_restrict_product_price" inherit_id="website_sale.product_price" priority="20"
+                  active="True" customize_show="True"
+                  name="DT restrict prices">
+            <xpath expr="//div[@class='product_price mt16']" position="attributes">
+                <attribute name="t-if">not user_id.partner_id.name == 'Public user'</attribute>
+            </xpath>
+        </template>
+
+        <template id="website_sale_restrict_product_stock" inherit_id="website_stock.product_stock" priority="20"
+                  active="True" customize_show="True"
+                  name="DT restrict stock">
+            <xpath expr="//div[@id='product_qty']" position="attributes">
+                <attribute name="t-if">not user_id.partner_id.name == 'Public user'</attribute>
+            </xpath>
+        </template>
+
+
 
 
     </data>
