@@ -30,5 +30,5 @@ access_ems_responsible_absence_sale_manager,ems responsible_absence sale manager
 access_ems_responsible_absence_salesman,ems responsible_absence salesman,model_ems_responsible_absence,base.group_sale_salesman,1,0,0,0
 
 access_ems_source_sale_manager,ems source sale manager,model_ems_source,base.group_sale_manager,1,1,1,1
-access_ems_source_salesman,ems source salesman,model_ems_source,base.group_sale_salesman,1,0,0,0
+access_ems_source_salesman,ems source salesman,model_ems_source,base.group_sale_salesman,1,1,0,0
 
