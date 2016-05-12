@@ -297,7 +297,7 @@
         </record>
 
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
-        <act_window id="launch_timetable_wizard"
+        <act_window id="action_timetable_wizard"
                     name="Set priorities"
                     src_model="ems.timetable"
                     res_model="ems.timetable.wizard"
@@ -351,7 +351,7 @@
             <field name="arch" type="xml">
                 <form string="Timetable">
                     <header>
-                        <button name="%(launch_timetable_wizard)d" string="Set priorities" type="action"
+                        <button name="%(action_timetable_wizard)d" string="Set priorities" type="action"
                                 class="oe_highlight" groups="base.group_sale_manager"/>
                     </header>
                     <sheet>
@@ -452,6 +452,7 @@
                 <tree string="Responsible">
                     <field name="user_id"/>
                     <field name="name"/>
+                    <field name="is_staff"/>
                     <field name="timetable_ids"/>
                 </tree>
             </field>
@@ -464,13 +465,17 @@
             <field name="arch" type="xml">
                 <form string="Responsible">
                     <header>
+                        <button string="Print" name="button_print" type="object"
+                                class="oe_highlight" groups="base.group_user"/>
                     </header>
                     <sheet>
                         <group col="4" colspan="2">
                             <field name="user_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="color"/>
                             <field name="name"/>
-                            <newline/>
+                            <field name="is_staff"/>
+                        </group>
+                        <group>
                             <field name="description"/>
                         </group>
                         <group string="Absences">
@@ -766,8 +771,7 @@
             <field name="res_model">ems.resource</field>
             <field name="view_type">form</field>
         </record>
-        <menuitem name="Resources" id="menu_resource" action="action_resource" parent="menu_ems_config_root"
-                  groups="base.group_no_one"/>
+        <menuitem name="Resources" id="menu_resource" action="action_resource" parent="menu_ems_config_root"/>
 
 
         <!-- EMS/CONFIGURATION/Sources -->
@@ -800,8 +804,7 @@
             <field name="res_model">ems.source</field>
             <field name="view_type">form</field>
         </record>
-        <menuitem name="Sources" id="menu_source" action="action_source" parent="menu_ems_config_root"
-                  groups="base.group_no_one"/>
+        <menuitem name="Sources" id="menu_source" action="action_source" parent="menu_ems_config_root"/>
 
 
         <!-- ================= WIZARDS ================= -->
@@ -823,7 +826,7 @@
                                    attrs="{'invisible':[('time_change', '=', False)], 'required':[('time_change', '=', True)]}"/>
                             <field name="date_end_new"
                                    attrs="{'invisible':[('time_change', '=', False)], 'required':[('time_change', '=', True)]}"/>
-                            <field name="out_of_time" attrs="{'invisible':[('time_change', '=', False)]}"/>
+
                         </group>
                         <group>
                             <field name="date_begin_original"
@@ -851,6 +854,8 @@
                         <group/>
                     </group>
                     <group>
+                        <field name="out_of_time"/>
+                        <newline></newline>
                         <field name="reason" required="1" widget="text"/>
                     </group>
                     <footer>
@@ -867,13 +872,13 @@
         </record>
 
 
-        <act_window id="launch_ems_session_reschedule_wizard"
+        <!--act_window id="launch_ems_session_reschedule_wizard"
                     name="Reschedule sessions"
                     src_model="ems.session"
                     res_model="ems.session.reschedule.wizard"
                     view_mode="form"
                     target="new"
-                    key2="client_action_multi"/>
+                    key2="client_action_multi"/-->
 
         <!-- Creem el SESSION cancel wizard form -->
         <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
@@ -1015,6 +1020,29 @@
         </record>
 
 
+        <!-- Creem el RESPONSIBLE SESSION print wizard form -->
+        <record model="ir.ui.view" id="ems_responsible_sessions_print_wizard_form_view">
+            <field name="name">ems.responsible.sessions.print.wizard.form</field>
+            <field name="model">ems.responsible.sessions.print.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Print responsible sessions">
+                    <group>
+                        <field name="responsible_id"/>
+                        <newline></newline>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <footer>
+                        <button name="button_print" type="object"
+                                string="Print" class="oe_highlight"/>
+                        or
+                        <button special="cancel" class="oe_link" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
         <!--act_window id="launch_session_wizard"
                     name="Generate sessions"
@@ -1083,7 +1111,9 @@
         /-->
 
 
-        <!-- REPORT -->
+        <!-- ============= REPORTS ================== -->
+
+        <!-- SESSION SUMMARY -->
         <report string="Session summary"
                 id="report_ems_session_summary"
                 model="ems.session"
@@ -1112,8 +1142,37 @@
             <field name="paperformat_id" ref="ems.paperformat_ems_session_summary"/>
         </record>
 
+        <!-- RESPONSIBLE SESSIONS -->
+        <report string="Responsible sessions"
+                id="report_ems_responsible_sessions"
+                model="ems.responsable"
+                report_type="qweb-pdf"
+                name="ems.report_emsresponsiblesessions"
+                file="ems.report_emsresponsiblesessions"
+        />
 
-        <!-- SEQUENCES -->
+        <record id="paperformat_ems_responsible_sessions" model="report.paperformat">
+            <field name="name">A4 Responsible sessions</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <!--field name="page_height">80</field>
+            <field name="page_width">175</field-->
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">27</field>
+            <field name="margin_bottom">32</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">22</field>
+            <field name="dpi">80</field>
+        </record>
+
+        <record id="report_ems_responsible_sessions" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="ems.paperformat_ems_responsible_sessions"/>
+        </record>
+
+
+        <!-- ================= SEQUENCES ================== -->
 
         <record model="ir.sequence.type" id="seq_ems_session_type_id">
             <field name="name">EMS Session Number</field>

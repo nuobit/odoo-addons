@@ -208,6 +208,17 @@ def datetime_tz_user2custom(dt, tzu, tzc):
         return de - dt.utcoffset()
 '''
 
+def datetime_naivestr_loc2utc(dt, tzloc):
+    # convert date or datetime naive string of implicit timezone tzloc to naive strin of implicit timezone utc
+    datetime_from_naive_loc = fields.Datetime.from_string(dt)
+    datetime_from_loc = pytz.timezone(tzloc).localize(datetime_from_naive_loc)
+    datetime_from_utc = datetime_from_loc.astimezone(pytz.utc)
+    datetime_from_naive_utc = datetime_from_utc.replace(tzinfo=None)
+
+    return fields.Datetime.to_string(datetime_from_naive_utc)
+
+
+
 
 CALENDAR_COLORS = [ (1,  'Brown'),
                     (2,  'Brown-Red'),
@@ -313,6 +324,10 @@ class ems_session(models.Model):
         readonly=False)
     date_end = fields.Datetime(string='End Date', required=True,
         readonly=False)
+
+    date_text = fields.Char(compute='_compute_timedate_text')
+    time_text = fields.Char(compute='_compute_timedate_text')
+
     weekday_begin = fields.Selection(string='Day of week', selection=DAYS_OF_WEEK, compute='_compute_weekday_begin')
 
     reason = fields.Char(string='Reschedule reason', required=False, readonly=False, copy=False)
@@ -389,6 +404,21 @@ class ems_session(models.Model):
             dt = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
             self.weekday_begin = dt.isoweekday()
 
+    @api.depends('date_begin', 'date_end')
+    def _compute_timedate_text(selfs):
+         for self in selfs:
+            date_begin_dt_loc = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
+            date_end_dt_loc = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_end))
+
+            if date_begin_dt_loc.date()!=date_end_dt_loc.date():
+                raise ValidationError(_("Session number '%s' has dates in different days"))
+
+            date_dt = babel.dates.format_date(date_begin_dt_loc, format='full', locale=self.env.lang).capitalize()
+            #self.date_text = "%s (%s - %s)" % (date_dt, date_begin_dt_loc.strftime('%H:%M'), date_end_dt_loc.strftime('%H:%M'))
+            self.date_text = date_dt
+            self.time_text = "%s - %s" % (date_begin_dt_loc.strftime('%H:%M'), date_end_dt_loc.strftime('%H:%M'))
+
+
     @api.multi
     def button_print(self):
         pr = self.env['ems.partner'].search([('partner_id', 'in',
@@ -461,30 +491,6 @@ class ems_session(models.Model):
 
     @api.multi
     def button_reschedule(self):
-        '''
-        sessions0 = self.env['ems.session'].search([('state', '=', 'confirmed'),
-                                                    ('center_id', '=', self.center_id.id),
-                                                    ('date_begin', '>=', self.date_begin)
-                                            ]).filtered(lambda x: x.service_id.is_ems and
-                                                                 len(set(x.partner_ids.mapped('partner_id.id')) &
-                                                                     set(self.partner_ids.mapped('partner_id.id')))!=0
-                                                     )
-
-        last_session = sessions0.sorted(lambda x: x.date_begin)[-1]
-        '''
-        """
-        wizard_id = self.env['ems.session.reschedule.wizard'].create({
-            'session_id': self.id,
-            'duration': self.duration,
-            'date_begin': self.get_new_date(self.date_begin, last_session.date_begin, days=7),
-            'date_end': self.get_new_date(self.date_end, last_session.date_end, days=7),
-            'reason': self.reason,
-            'last_session_id': last_session.id,
-            'responsible_id': self.responsible_id.id,
-            'attendee_ids': [(4, x.partner_id.id, 0) for x in self.partner_ids]
-        })
-        """
-
         return {
             'type': 'ir.actions.act_window',
             'name':_("Reschedule Sessions"),
@@ -562,8 +568,6 @@ class ems_session(models.Model):
             'target': 'new',
             #'context': context,
         }
-
-
 
     @api.depends('partner_ids', 'responsible_id','partner_ids.partner_id', 'partner_ids.partner_id.name')
     def _compute_auxiliar_text(selfs):
@@ -865,7 +869,8 @@ class ems_partner(models.Model):
         if self.session_id:
             dt = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.session_id.date_begin))
 
-            lang_code = self.partner_id.lang or self.env.lang
+            #lang_code = self.partner_id.lang or self.env.lang
+            lang_code = self.env.lang
             #lang = self.env['res.lang'].search([('code', '=', lang_code)])
 
             self.date_begin_str = babel.dates.format_date(dt, format='full', locale=lang_code).capitalize()
@@ -1239,6 +1244,8 @@ class ems_responsible(models.Model):
 
     color = fields.Selection(selection=CALENDAR_COLORS, string="Color", required=True)
 
+    is_staff = fields.Boolean(string="Staff", help='Indicates if responsible is staff or external', default=False)
+
     description = fields.Text(string='Description', required=False)
 
     timetable_ids = fields.One2many('ems.timetable', 'responsible_id', required=True,
@@ -1264,6 +1271,41 @@ class ems_responsible(models.Model):
             name = tr.name if tr.name else tr.user_id.name
             res.append((tr.id, name))
         return res
+
+    @api.multi
+    def button_print(self):
+        # curretn month
+        date_from = fields.Date.from_string(fields.Date.context_today(self)).replace(day=1)
+        date_to = (date_from + datetime.timedelta(days=32)).replace(day=1) + datetime.timedelta(days=-1)
+
+        #datetime.datetime.combine(context_today(), datetime.time(0,0,0)).replace(day=1))
+        #datetime.datetime.combine(context_today()+datetime.timedelta(days=32), datetime.time(0,0,0)).replace(day=1))]"
+
+        # previous month
+        #datetime.datetime.combine((context_today().replace(day=1)+datetime.timedelta(days=-1)).replace(day=1), datetime.time(0,0,0))),
+        #datetime.datetime.combine(context_today().replace(day=1), datetime.time(0,0,0)))]"
+
+        wizard_id = self.env['ems.responsible.sessions.print.wizard'].create({
+                    'responsible_id': self.id,
+                    'date_from': date_from,
+                    'date_to': date_to,
+                })
+
+        return {
+                'type': 'ir.actions.act_window',
+                'name': _("Print Responsible Sessions"),
+                'res_model': 'ems.responsible.sessions.print.wizard',
+                'view_type': 'form',
+                'view_mode': 'form',
+                #'views': [(view.id, 'form')],
+                #'view_id': view.id,
+                'res_id': wizard_id.id,
+                'target': 'new',
+                #'context': context,
+                }
+
+
+
 
 
 class ems_responsible_absence(models.Model):
@@ -1339,7 +1381,7 @@ class WizardSessionReschedule(models.TransientModel):
     duration = fields.Integer(string='Duration', required=False, readonly=True)
     date_begin_new = fields.Datetime(string='New start date', required=False, readonly=False)
     date_end_new = fields.Datetime(string='New end date', required=False, readonly=False)
-    out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False)
+
 
     date_begin_original = fields.Datetime(string='Original start date', help='Session original start date', required=False, readonly=True)
     date_begin_last = fields.Datetime(string='Last start date', help='Last session start date', required=False, readonly=True)
@@ -1352,6 +1394,8 @@ class WizardSessionReschedule(models.TransientModel):
     attendee_ids = fields.Many2many('res.partner', string="New attendees")
 
     reason = fields.Char(string='Reason', required=False, help="The reason why of the reschedule", default=lambda self: self._default_reason())
+
+    out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False)
 
     unique_active_id = fields.Boolean(default=lambda self: self._default_unique_active_id())
 
@@ -1404,8 +1448,6 @@ class WizardSessionReschedule(models.TransientModel):
                     date_begin_last0 = fields.Datetime.to_string(fields.Datetime.from_string(now))
 
             self.date_begin_new = session_ids.get_new_date(session_ids.date_begin, date_begin_last0, days=self.weeks*7)
-
-
 
 
     @api.onchange('date_begin_new')
@@ -1476,7 +1518,6 @@ class WizardSessionReschedule(models.TransientModel):
                 vals.update({#'duration': self.duration,
                              'date_begin': self.date_begin_new,
                              'date_end': self.date_end_new })
-                session_ids.out_of_time = self.out_of_time
                 canviat = True
 
             if self.responsible_change:
@@ -1497,6 +1538,8 @@ class WizardSessionReschedule(models.TransientModel):
 
             session_ids.reason = self.reason
 
+            session_ids.out_of_time = self.out_of_time
+
             session_ids.state = 'rescheduled'
 
             session9_l.append(session9.id)
@@ -1506,7 +1549,7 @@ class WizardSessionReschedule(models.TransientModel):
 
     @api.multi
     def reschedule_confirm(self):
-        sessions9= self.reschedule()
+        sessions9 = self.reschedule()
         for session9 in sessions9:
             session9.button_confirm()
 
@@ -1550,8 +1593,6 @@ class WizardMessage(models.TransientModel):
         obj_tmp.unlink(force=True)
 
         session_id.state = 'draft'
-
-
 
 
 class WizardSessionCancel(models.TransientModel):
@@ -1694,24 +1735,36 @@ class WizardInfo(models.TransientModel):
 
 
 
-"""
-class WizardSessionScheduleLine(models.TransientModel):
-    _name = 'ems.session.schedule.line.wizard'
+class WizardResponsibleSessionsPrint(models.TransientModel):
+    _name = 'ems.responsible.sessions.print.wizard'
 
-    center_id = fields.Many2one('ems.center')
-    service_id = fields.Many2one('ems.service')
-    ubication_id = fields.Many2one('ems.ubication', string='Ubication')
-    resource_ids = fields.Many2many('ems.resource', string='Resources')
-    responsible_id = fields.Many2one('ems.responsible')
-    duration = fields.Integer(string='Duration')
+    responsible_id = fields.Many2one('ems.responsible', string="Responsible", required=True)
+    date_from = fields.Date(string='Date from', required=True)
+    date_to = fields.Date(string='Date to', required=True)
 
-    date_begin = fields.Datetime('Start Date', required=True)
-    date_end = fields.Datetime('End Date', required=True)
 
-    partner_ids = fields.Many2many('res.partner')
+    @api.constrains('date_from', 'date_to')
+    def _check_session_dates(self):
+        if self.date_from>self.date_to:
+            raise ValidationError(_("The date to must be greater or equal than date from"))
 
-    header_id = fields.Many2one('ems.session.schedule.wizard', required=True)
-"""
+
+    @api.multi
+    def button_print(self):
+        datas = {
+            'ids': self.env.context.get('active_ids'),
+            'model': self._name,
+            'button': True,
+            'date_from': self.date_from,
+            'date_to': self.date_to,
+
+        }
+        #call the report
+        return {
+                   'type': 'ir.actions.report.xml',
+                   'report_name': 'ems.report_emsresponsiblesessions',
+                   'datas': datas
+               }
 
 
 class WizardTimetable(models.TransientModel):
@@ -1873,3 +1926,90 @@ class ParticularEMSReportSessionSummary(models.AbstractModel):
             'c': self.env.user.company_id,
         }
         return report_obj.render('ems.report_emssessionsummary', docargs)
+
+
+
+
+class ParticularEMSReportResponsibleSessions(models.AbstractModel):
+    _name = 'report.ems.report_emsresponsiblesessions'
+
+    @api.multi
+    def render_html(self, data=None):
+        responsible_obj = self.env['ems.responsible'].browse(self.ids)
+
+        if len(responsible_obj)==1:
+            datetime_from_naive_utc = datetime_naivestr_loc2utc(data['date_from'], self.env.context.get('tz'))
+            datetime_to_naive_loc = fields.Datetime.to_string(fields.Datetime.from_string(data['date_to']).replace(hour=23, minute=59, second=59))
+            datetime_to_naive_utc = datetime_naivestr_loc2utc(datetime_to_naive_loc, self.env.context.get('tz'))
+
+            # obtenim les sessiond els mes del responsable
+            # ('state', 'in', ('confirmed', 'cancelled')) OR ('state', 'in', ('rescheduled')) AND ('out_of_time', '=', True)
+            sessions_obj = self.env['ems.session'].search([('responsible_id', '=', responsible_obj.id),
+
+                                                           '|', ('state', 'in', ('confirmed', 'cancelled')),
+                                                            '&', ('state', '=', 'rescheduled'), ('out_of_time', '=', True),
+
+
+                                                            ('date_begin', '>=', datetime_from_naive_utc),
+                                                            ('date_begin', '<=', datetime_to_naive_utc)],
+                                                         order='date_begin, id')
+
+            # de le sobtingudes busquem els solapaments i els classifiquem, aixo es fa tota lestona teninr en compte que
+            # les sessions estan ordernades
+            aux = set()
+            overlaps = []
+            for s in sessions_obj:
+                if s.id not in aux:
+                    ovl = sessions_obj.filtered(lambda x: x.date_begin<s.date_end and x.date_end>s.date_begin) #.sorted(lambda x:x.date_begin, x.id)
+                    overlaps.append(ovl)
+                    aux |= set(ovl.mapped('id'))
+
+            # convertim a llista d'objectes, determnant les dates
+            w = []
+            t = {}
+            for session_l in overlaps:
+                date_begin_dt = fields.Datetime.from_string(session_l[0].date_begin)
+                date_end_dt =fields.Datetime.from_string(session_l[-1].date_end)
+                duration_td =  date_end_dt - date_begin_dt
+                duration = duration_td.days*24*60 + duration_td.seconds/60
+                if len(session_l)==1 and session_l[0].duration!=duration:
+                    raise ValidationError(_("Session number '%s' has an incoherence duration: Materialized: %i vs Calculated: %i") % (session_l[0].number, session_l[0].duration, duration))
+
+                date_begin_dt_loc = fields.Datetime.context_timestamp(self, date_begin_dt)
+                date_end_dt_loc = fields.Datetime.context_timestamp(self, date_end_dt)
+
+                if date_begin_dt_loc.date()!=date_end_dt_loc.date():
+                    raise ValidationError(_("Session number '%s' has dates in different days"))
+
+                date_dt = babel.dates.format_date(date_begin_dt_loc, format='full', locale=self.env.lang).capitalize()
+                #datetime_str = "%s (%s - %s)" % (date_dt, date_begin_dt_loc.strftime('%H:%M'), date_end_dt_loc.strftime('%H:%M'))
+                datetime_str = "%s - %s" % (date_begin_dt_loc.strftime('%H:%M'), date_end_dt_loc.strftime('%H:%M'))
+
+                s = dict(datetime_str=datetime_str, duration=duration, sessions=session_l)
+
+                date_k = date_begin_dt_loc.date()
+                if date_k not in t:
+                    t[date_k] = []
+                t[date_k].append(s)
+
+            # ordernem el diccionari
+            for y in sorted(t):
+                y1 = babel.dates.format_date(y, format='full', locale=self.env.lang).capitalize()
+                w.append(dict(day=y1, data=t[y]))
+
+        else:
+            raise ValidationError(_("Not implemented yet"))
+
+
+
+
+        report_obj = self.env['report']
+        #report = report_obj._get_report_from_name('report.ems.report_emsresponsiblesessions')
+
+        docargs = {
+            'docs': responsible_obj,
+            'w': w,
+            'c': self.env.user.company_id,
+        }
+        return report_obj.render('ems.report_emsresponsiblesessions', docargs)
+

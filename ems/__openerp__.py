@@ -32,6 +32,7 @@
         'views/template_views.xml',
         'views/inherit_views.xml',
         'views/report_emssessionsummary.xml',
+        'views/report_emsresponsiblesessions.xml',
         'security/ir.model.access.csv',
         ],
     'installable': True,
