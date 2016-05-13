@@ -465,7 +465,7 @@
             <field name="arch" type="xml">
                 <form string="Responsible">
                     <header>
-                        <button string="Print" name="button_print" type="object"
+                        <button string="Print sessions" name="button_print_sessions" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
                     </header>
                     <sheet>
@@ -1042,6 +1042,29 @@
             </field>
         </record>
 
+        <!-- ########################## EMS/REPORTS ########################## -->
+        <menuitem id="report_menu" name="Reports"
+                  parent="main_ems_menu" sequence="20"/>
+
+        <!--record id="action_ems_report_responsible_print_sessions" model="ir.actions.act_window">
+            <field name="name">Responsible sessions</field>
+            <field name="res_model">ems.responsible.sessions.print.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ems_responsible_sessions_print_wizard_form_view"/>
+            <field name="target">new</field>
+        </record-->
+
+        <act_window id="action_ems_report_responsible_print_sessions"
+                    name="Responsible sessions"
+                    src_model="ems.responsible"
+                    res_model="ems.responsible.sessions.print.wizard"
+                    view_mode="form"
+                    target="new"/>
+        <!--
+                    key2="client_action_multi"/-->
+
+        <menuitem id="menu_ems_report_responsible_print_sessions" action="action_ems_report_responsible_print_sessions" parent="report_menu" sequence="20"/>
 
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
         <!--act_window id="launch_session_wizard"
@@ -1158,12 +1181,12 @@
             <!--field name="page_height">80</field>
             <field name="page_width">175</field-->
             <field name="orientation">Portrait</field>
-            <field name="margin_top">27</field>
-            <field name="margin_bottom">32</field>
-            <field name="margin_left">10</field>
+            <field name="margin_top">48</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">11</field>
             <field name="margin_right">10</field>
             <field name="header_line" eval="False"/>
-            <field name="header_spacing">22</field>
+            <field name="header_spacing">38</field>
             <field name="dpi">80</field>
         </record>
 

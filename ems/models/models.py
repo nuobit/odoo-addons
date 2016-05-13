@@ -27,6 +27,8 @@ import pytz
 
 import math
 
+from collections import namedtuple
+
 
 from openerp import models, fields, api, _
 from openerp.exceptions import AccessError, Warning, ValidationError, except_orm
@@ -1273,10 +1275,10 @@ class ems_responsible(models.Model):
         return res
 
     @api.multi
-    def button_print(self):
+    def button_print_sessions(self):
         # curretn month
-        date_from = fields.Date.from_string(fields.Date.context_today(self)).replace(day=1)
-        date_to = (date_from + datetime.timedelta(days=32)).replace(day=1) + datetime.timedelta(days=-1)
+        #date_from = fields.Date.from_string(fields.Date.context_today(self)).replace(day=1)
+        #date_to = (date_from + datetime.timedelta(days=32)).replace(day=1) + datetime.timedelta(days=-1)
 
         #datetime.datetime.combine(context_today(), datetime.time(0,0,0)).replace(day=1))
         #datetime.datetime.combine(context_today()+datetime.timedelta(days=32), datetime.time(0,0,0)).replace(day=1))]"
@@ -1285,21 +1287,23 @@ class ems_responsible(models.Model):
         #datetime.datetime.combine((context_today().replace(day=1)+datetime.timedelta(days=-1)).replace(day=1), datetime.time(0,0,0))),
         #datetime.datetime.combine(context_today().replace(day=1), datetime.time(0,0,0)))]"
 
+        '''
         wizard_id = self.env['ems.responsible.sessions.print.wizard'].create({
                     'responsible_id': self.id,
                     'date_from': date_from,
                     'date_to': date_to,
                 })
+        '''
 
         return {
                 'type': 'ir.actions.act_window',
-                'name': _("Print Responsible Sessions"),
+                'name': _("Print Responsible sessions"),
                 'res_model': 'ems.responsible.sessions.print.wizard',
                 'view_type': 'form',
                 'view_mode': 'form',
                 #'views': [(view.id, 'form')],
                 #'view_id': view.id,
-                'res_id': wizard_id.id,
+                #'res_id': wizard_id.id,
                 'target': 'new',
                 #'context': context,
                 }
@@ -1738,10 +1742,24 @@ class WizardInfo(models.TransientModel):
 class WizardResponsibleSessionsPrint(models.TransientModel):
     _name = 'ems.responsible.sessions.print.wizard'
 
-    responsible_id = fields.Many2one('ems.responsible', string="Responsible", required=True)
-    date_from = fields.Date(string='Date from', required=True)
-    date_to = fields.Date(string='Date to', required=True)
+    responsible_id = fields.Many2one('ems.responsible', string="Responsible", required=True, default=lambda self: self._default_responsible())
+    date_from = fields.Date(string='Date from', required=True, default=lambda self: self._default_date_from())
+    date_to = fields.Date(string='Date to', required=True, default=lambda self: self._default_date_to())
 
+    def _default_date_from(self):
+        return fields.Date.from_string(fields.Date.context_today(self)).replace(day=1)
+
+    def _default_date_to(self):
+        date_from = fields.Date.from_string(fields.Date.context_today(self)).replace(day=1)
+        return (date_from + datetime.timedelta(days=32)).replace(day=1) + datetime.timedelta(days=-1)\
+
+    def _default_responsible(self):
+        ids = self.env.context.get('active_ids')
+        if ids is not None:
+            if len(ids)==1:
+                return self.env['ems.responsible'].browse(ids).id
+            else:
+                raise ValidationError(_("Not implemented yet"))
 
     @api.constrains('date_from', 'date_to')
     def _check_session_dates(self):
@@ -1752,7 +1770,7 @@ class WizardResponsibleSessionsPrint(models.TransientModel):
     @api.multi
     def button_print(self):
         datas = {
-            'ids': self.env.context.get('active_ids'),
+            'ids': self.responsible_id.ids, # self.env.context.get('active_ids'),
             'model': self._name,
             'button': True,
             'date_from': self.date_from,
@@ -1945,11 +1963,8 @@ class ParticularEMSReportResponsibleSessions(models.AbstractModel):
             # obtenim les sessiond els mes del responsable
             # ('state', 'in', ('confirmed', 'cancelled')) OR ('state', 'in', ('rescheduled')) AND ('out_of_time', '=', True)
             sessions_obj = self.env['ems.session'].search([('responsible_id', '=', responsible_obj.id),
-
                                                            '|', ('state', 'in', ('confirmed', 'cancelled')),
                                                             '&', ('state', '=', 'rescheduled'), ('out_of_time', '=', True),
-
-
                                                             ('date_begin', '>=', datetime_from_naive_utc),
                                                             ('date_begin', '<=', datetime_to_naive_utc)],
                                                          order='date_begin, id')
@@ -1984,7 +1999,6 @@ class ParticularEMSReportResponsibleSessions(models.AbstractModel):
                 date_dt = babel.dates.format_date(date_begin_dt_loc, format='full', locale=self.env.lang).capitalize()
                 #datetime_str = "%s (%s - %s)" % (date_dt, date_begin_dt_loc.strftime('%H:%M'), date_end_dt_loc.strftime('%H:%M'))
                 datetime_str = "%s - %s" % (date_begin_dt_loc.strftime('%H:%M'), date_end_dt_loc.strftime('%H:%M'))
-
                 s = dict(datetime_str=datetime_str, duration=duration, sessions=session_l)
 
                 date_k = date_begin_dt_loc.date()
@@ -1995,19 +2009,23 @@ class ParticularEMSReportResponsibleSessions(models.AbstractModel):
             # ordernem el diccionari
             for y in sorted(t):
                 y1 = babel.dates.format_date(y, format='full', locale=self.env.lang).capitalize()
-                w.append(dict(day=y1, data=t[y]))
+                w.append(dict(day=y1, data=t[y], day_duration=reduce(lambda x, y: x+y, [u['duration'] for u in t[y]])))
 
         else:
             raise ValidationError(_("Not implemented yet"))
 
+        Params = namedtuple('Params', 'date_from date_to print_date_str')
+        pars = Params(date_from=babel.dates.format_date(fields.Date.from_string(data['date_from']), format='medium', locale=self.env.lang),
+                      date_to=babel.dates.format_date(fields.Date.from_string(data['date_to']), format='medium', locale=self.env.lang),
+                      print_date_str=babel.dates.format_datetime(fields.Datetime.context_timestamp(self, fields.datetime.now()),
+                                                                 format='medium', locale=self.env.lang).replace(".", ":")
+                    )
 
-
-
+        # incoquem al report
         report_obj = self.env['report']
-        #report = report_obj._get_report_from_name('report.ems.report_emsresponsiblesessions')
-
         docargs = {
             'docs': responsible_obj,
+            'params': pars,
             'w': w,
             'c': self.env.user.company_id,
         }
