@@ -1683,5 +1683,5 @@ msgstr "o"
 #. module: ems
 #: view:website:ems.report_emsresponsiblesessions
 msgid "to"
-msgstr "fins al"
+msgstr "al"
 
