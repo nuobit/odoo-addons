@@ -71,7 +71,7 @@
 
                     <div class="row mt8">
                         <div class="col-xs-12">
-                            <h3 t-esc="docs.name"/>
+                            <h3 t-esc="docs.user_id.name"/>
                         </div>
                     </div>
                 </div>
