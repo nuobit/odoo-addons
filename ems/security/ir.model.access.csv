@@ -18,7 +18,7 @@ access_ems_ubication_sale_manager,ems ubication sale manager,model_ems_ubication
 access_ems_ubication_salesman,ems ubication salesman,model_ems_ubication,base.group_sale_salesman,1,1,1,1
 
 access_ems_service_sale_manager,ems service sale manager,model_ems_service,base.group_sale_manager,1,1,1,1
-access_ems_service_salesman,ems service salesman,model_ems_service,base.group_sale_salesman,1,0,0,0
+access_ems_service_salesman,ems service salesman,model_ems_service,base.group_sale_salesman,1,1,0,0
 
 access_ems_responsible_sale_manager,ems responsible sale manager,model_ems_responsible,base.group_sale_manager,1,1,1,1
 access_ems_responsible_salesman,ems responsible salesman,model_ems_responsible,base.group_sale_salesman,1,0,0,0
