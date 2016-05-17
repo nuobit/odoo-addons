@@ -579,16 +579,19 @@ class ems_session(models.Model):
             self.session_text = False
             self.partner_text = False
 
-            if self.is_all_center or self.is_meeting:
+            if self.is_all_center:
                 self.session_text = self.service_id.name
             else:
-                cust_text = []
-                for c in self.partner_ids:
-                    num_sessio = ' (%i)' % c.num_session if self.service_id.is_ems else ''
-                    cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
+                if self.is_meeting:
+                    self.session_text = '%s (%s)' % (self.service_id.name, self.ubication_id.name)
+                else:
+                    cust_text = []
+                    for c in self.partner_ids:
+                        num_sessio = ' (%i)' % c.num_session if self.service_id.is_ems else ''
+                        cust_text.append('%s%s' % (c.partner_id.name, num_sessio ))
 
-                self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
-                self.partner_text = '%s' % ', '.join(cust_text)
+                    self.session_text = '%s [%s]' % (', '.join(cust_text), self.responsible_id.name_get()[0][1])
+                    self.partner_text = '%s' % ', '.join(cust_text)
 
             if self.state not in ('confirmed'):
                 self.session_text = '#%s# %s' % (self.state.upper(), self.session_text)
