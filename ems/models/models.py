@@ -307,6 +307,8 @@ class ems_session(models.Model):
     service_id = fields.Many2one('ems.service', string='Service',
                                  ondelete='restrict',
                                  required=True, readonly=False)
+    is_meeting = fields.Boolean(related='service_id.is_meeting', store=False)
+
 
     color_rel = fields.Selection(related="service_id.color", store=False)
 
@@ -577,7 +579,7 @@ class ems_session(models.Model):
             self.session_text = False
             self.partner_text = False
 
-            if self.is_all_center:
+            if self.is_all_center or self.is_meeting:
                 self.session_text = self.service_id.name
             else:
                 cust_text = []
@@ -795,10 +797,17 @@ class ems_session(models.Model):
 
 
     @api.constrains('state')
-    def check_state(self):
+    def _check_state(self):
         if self.state == 'confirmed':
             self._check_all()
 
+    @api.constrains('date_begin', 'date_end')
+    def _check_date_end(self):
+        # check dates
+        if self.date_end < self.date_begin:
+            raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
+
+        self._onchange_date_end()
 
     @api.constrains('date_begin', 'date_end', 'center_id',
                     'ubication_id', 'resource_ids',
@@ -808,11 +817,12 @@ class ems_session(models.Model):
         if self.state!='draft':
             raise ValidationError(_('You can only change a draft session'))
 
-        # check dates
-        if self.date_end < self.date_begin:
-            raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
 
-        self._check_all()
+
+
+
+
+
 
     @api.multi
     def unlink(self, force=False):
@@ -995,6 +1005,8 @@ class ems_service(models.Model):
     duration = fields.Integer(string='Duration', required=True)
 
     is_ems = fields.Boolean(string='EMS', default=False)
+
+    is_meeting = fields.Boolean(string='Meeting', default=False)
 
     min_attendees = fields.Integer(string="Minimum attendees", help="Minimum number of attendees", required=True, default=0)
     max_attendees = fields.Integer(string="Maximum attendees", help="Maximum number of attendees (-1 for no restriction)", required=True, default=-1)

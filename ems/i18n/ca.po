@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-13 15:37+0000\n"
-"PO-Revision-Date: 2016-05-13 15:37+0000\n"
+"POT-Creation-Date: 2016-05-17 10:48+0000\n"
+"PO-Revision-Date: 2016-05-17 10:48+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgid "All center"
 msgstr "Tot el centre"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1711
+#: code:addons/ems/models/models.py:1723
 #, python-format
 msgid "All sessions have been created successfully."
 msgstr "Totes les sessions s'han creat amb èxit."
@@ -69,7 +69,7 @@ msgid "Attendance control"
 msgstr "Control d'assistència"
 
 #. module: ems
-#: code:addons/ems/models/models.py:865
+#: code:addons/ems/models/models.py:875
 #: sql_constraint:ems.partner:0
 #, python-format
 msgid "Attendee duplicated"
@@ -140,7 +140,7 @@ msgid "Cancel"
 msgstr "Cancel·lar"
 
 #. module: ems
-#: code:addons/ems/models/models.py:482
+#: code:addons/ems/models/models.py:484
 #, python-format
 msgid "Cancel Session"
 msgstr "Cancel·lar Sessió"
@@ -192,7 +192,7 @@ msgid "Close"
 msgstr "Tancar"
 
 #. module: ems
-#: code:addons/ems/models/models.py:813
+#: code:addons/ems/models/models.py:808
 #, python-format
 msgid "Closing Date cannot be set before Beginning Date"
 msgstr "La data de finalització no pot ser anterior a la data d'inici"
@@ -204,8 +204,8 @@ msgid "Color"
 msgstr "Color"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1002
-#: code:addons/ems/models/models.py:1267
+#: code:addons/ems/models/models.py:1014
+#: code:addons/ems/models/models.py:1279
 #: sql_constraint:ems.responsible:0
 #: sql_constraint:ems.service:0
 #, python-format
@@ -569,7 +569,7 @@ msgid "Indicates if this ubication represents the whole center"
 msgstr "Indica si aquesta ubicació representa el centre sencer"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1719
+#: code:addons/ems/models/models.py:1731
 #, python-format
 msgid "Info"
 msgstr "Info"
@@ -591,13 +591,13 @@ msgid "It always seems impossible until it's done"
 msgstr "It always seems impossible until it's done"
 
 #. module: ems
-#: code:addons/ems/models/models.py:682
+#: code:addons/ems/models/models.py:684
 #, python-format
 msgid "It requieres %i attendees minimum"
 msgstr "Són necessaris almenys %i assistents"
 
 #. module: ems
-#: code:addons/ems/models/models.py:704
+#: code:addons/ems/models/models.py:706
 #, python-format
 msgid "It's not allowed to have a session before another one with forced session."
 msgstr "No està permès crear una sessió abans d'una altra amb sessions forçades."
@@ -718,6 +718,11 @@ msgid "Medical consent"
 msgstr "Autorització médica"
 
 #. module: ems
+#: field:ems.service,is_meeting:0
+msgid "Meeting"
+msgstr "Reunió"
+
+#. module: ems
 #: view:ems.message.info.wizard:ems.ems_message_info_wizard_form_view
 #: field:ems.message.info.wizard,message:0
 #: view:ems.message.wizard:ems.ems_message_wizard_form_view
@@ -799,8 +804,8 @@ msgid "No to all"
 msgstr "No a tot"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1762
-#: code:addons/ems/models/models.py:2015
+#: code:addons/ems/models/models.py:1774
+#: code:addons/ems/models/models.py:2027
 #, python-format
 msgid "Not implemented yet"
 msgstr "Encara no implementat"
@@ -811,7 +816,7 @@ msgid "Number"
 msgstr "Número"
 
 #. module: ems
-#: code:addons/ems/models/models.py:366
+#: code:addons/ems/models/models.py:368
 #: sql_constraint:ems.session:0
 #, python-format
 msgid "Number duplicated"
@@ -833,14 +838,14 @@ msgid "Number of weeks after last session"
 msgstr "Nombre de setmanes després de l'última sessió"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1503
+#: code:addons/ems/models/models.py:1515
 #, python-format
 msgid "Only confirmed and reschedule pending sessions can be rescheduled"
 msgstr "Només les session confirmades o pendents de replanificar poden ser replanificades"
 
 #. module: ems
-#: code:addons/ems/models/models.py:694
-#: code:addons/ems/models/models.py:917
+#: code:addons/ems/models/models.py:696
+#: code:addons/ems/models/models.py:927
 #, python-format
 msgid "Only the first session can have a forced session."
 msgstr "Només en la primera sessió es pot forçar el número de sessió."
@@ -874,7 +879,7 @@ msgid "Out of time"
 msgstr "Fora de termini"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1217
+#: code:addons/ems/models/models.py:1229
 #, python-format
 msgid "Overlaps detected for responsible %s:\n"
 "%s"
@@ -922,13 +927,13 @@ msgid "Print"
 msgstr "Imprimir"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1300
+#: code:addons/ems/models/models.py:1312
 #, python-format
 msgid "Print Responsible sessions"
 msgstr "Imprimir les sessions per responsable"
 
 #. module: ems
-#: code:addons/ems/models/models.py:440
+#: code:addons/ems/models/models.py:442
 #, python-format
 msgid "Print Sessions"
 msgstr "Imprimir Sessions"
@@ -981,7 +986,7 @@ msgid "Reschedule"
 msgstr "Replanificar"
 
 #. module: ems
-#: code:addons/ems/models/models.py:517
+#: code:addons/ems/models/models.py:519
 #, python-format
 msgid "Reschedule Pending"
 msgstr "Pendent de Replanificar"
@@ -992,7 +997,7 @@ msgid "Reschedule Pending Sessions"
 msgstr "Sessions Pendents de Replanificar"
 
 #. module: ems
-#: code:addons/ems/models/models.py:498
+#: code:addons/ems/models/models.py:500
 #, python-format
 msgid "Reschedule Sessions"
 msgstr "Replanificar Sessions"
@@ -1076,7 +1081,7 @@ msgid "Responsible Absence"
 msgstr "Absències del responsable"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1266
+#: code:addons/ems/models/models.py:1278
 #: sql_constraint:ems.responsible:0
 #, python-format
 msgid "Responsible already exists"
@@ -1122,7 +1127,7 @@ msgid "Schedule Pending Sessions"
 msgstr "Sessions Pendents de Planificar"
 
 #. module: ems
-#: code:addons/ems/models/models.py:563
+#: code:addons/ems/models/models.py:565
 #, python-format
 msgid "Schedule Sessions"
 msgstr "Planificar Sessions"
@@ -1198,14 +1203,14 @@ msgid "Session ids"
 msgstr "Session ids"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1991
+#: code:addons/ems/models/models.py:2003
 #, python-format
 msgid "Session number '%s' has an incoherence duration: Materialized: %i vs Calculated: %i"
 msgstr "La sessió número '%s' té duració incoherent: Materialitzat: %i vs Calculat: %i"
 
 #. module: ems
-#: code:addons/ems/models/models.py:416
-#: code:addons/ems/models/models.py:1997
+#: code:addons/ems/models/models.py:418
+#: code:addons/ems/models/models.py:2009
 #, python-format
 msgid "Session number '%s' has dates in different days"
 msgstr "La sessió número '%s' té dates en dies diferents"
@@ -1260,7 +1265,7 @@ msgstr "Origens"
 #. module: ems
 #: field:ems.responsible,is_staff:0
 msgid "Staff"
-msgstr "Staff"
+msgstr "En plantilla"
 
 #. module: ems
 #: field:ems.session,date_begin:0
@@ -1289,7 +1294,7 @@ msgid "Target session"
 msgstr "Sessió de destí"
 
 #. module: ems
-#: code:addons/ems/models/models.py:455
+#: code:addons/ems/models/models.py:457
 #, python-format
 msgid "The associated target session '%s' will be deleted. Continue?"
 msgstr "La sessió associada '%s' serà esborrada. Continuar?"
@@ -1301,13 +1306,13 @@ msgid "The attendee rescheduled a session out of time"
 msgstr "El client ha replanificat la sessió fora de termini"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1767
+#: code:addons/ems/models/models.py:1779
 #, python-format
 msgid "The date to must be greater or equal than date from"
 msgstr "La data d'inici ha de ser major o igual que la data fi"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1677
+#: code:addons/ems/models/models.py:1689
 #, python-format
 msgid "The day interval of session to schedule must be greater than 0"
 msgstr "L'interval de dies entre sessions ha de ser major que 0"
@@ -1319,43 +1324,43 @@ msgid "The hour has to be between 0 and 23"
 msgstr "L'hora ha d'estar entre 0 i 23"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1168
+#: code:addons/ems/models/models.py:1180
 #, python-format
 msgid "The initial date cannot be greater or equal than end date"
 msgstr "La data inicial no pot ser major o igual que la data final"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1154
+#: code:addons/ems/models/models.py:1166
 #, python-format
 msgid "The initial time cannot be greater or equal than end time"
 msgstr "L'hora inicial no ot ser major o igual a l'hora final"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1176
+#: code:addons/ems/models/models.py:1188
 #, python-format
 msgid "The interval has to be of the same day"
 msgstr "L'interval ha de ser del mateix dia"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1014
+#: code:addons/ems/models/models.py:1026
 #, python-format
 msgid "The minimum attendees cannot be greater than the maximum."
 msgstr "El mínim d'assitents no pot ser major que el màxim."
 
 #. module: ems
-#: code:addons/ems/models/models.py:1010
+#: code:addons/ems/models/models.py:1022
 #, python-format
 msgid "The minimum attendees cannot be less than 0."
 msgstr "El mínim d'assistents no pot ser menor a 0."
 
 #. module: ems
-#: code:addons/ems/models/models.py:1672
+#: code:addons/ems/models/models.py:1684
 #, python-format
 msgid "The number of session to schedule must be greater than 0"
 msgstr "El nombre de sessions a planificar ha de ser superior a 0"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1496
+#: code:addons/ems/models/models.py:1508
 #, python-format
 msgid "The number of weeks must be greater than 0"
 msgstr "El nombre de setmanes ha de ser major que 0"
@@ -1366,62 +1371,62 @@ msgid "The reason why of the reschedule"
 msgstr "La raó perque s'ha hagut de replanificar la sessió"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1635
+#: code:addons/ems/models/models.py:1647
 #, python-format
 msgid "The session number must be greater than 0"
 msgstr "El número de sessió ha de ser major que 0"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1638
+#: code:addons/ems/models/models.py:1650
 #, python-format
 msgid "The session number to must be greater or equal than session number from"
 msgstr "El número de sessió 'Des de' ha de ser major o igual al número de sessió 'Fins'"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1590
+#: code:addons/ems/models/models.py:1602
 #, python-format
 msgid "The target session has to be in draft state to be deleted."
 msgstr "La sessió de destí associada ha d'estar en estat esborrany per poder ser esborrada."
 
 #. module: ems
-#: code:addons/ems/models/models.py:1709
+#: code:addons/ems/models/models.py:1721
 #, python-format
 msgid "There's %i sessions with validation errors. You must confirm them manually."
 msgstr "Hi ha %i sessions amb solapaments que no s'han pogut confirmar. Es necessari confirmar-les manualment."
 
 #. module: ems
-#: code:addons/ems/models/models.py:722
-#: code:addons/ems/models/models.py:743
+#: code:addons/ems/models/models.py:724
+#: code:addons/ems/models/models.py:745
 #, python-format
 msgid "There's another session in selected ubication"
 msgstr "Ja hi ha una altra sessió en la ubicació seleccionada"
 
 #. module: ems
-#: code:addons/ems/models/models.py:763
+#: code:addons/ems/models/models.py:765
 #, python-format
 msgid "There's another session using the same resources"
 msgstr "Ja hi ha una altra sessió utilitzant els mateixos recursos"
 
 #. module: ems
-#: code:addons/ems/models/models.py:794
+#: code:addons/ems/models/models.py:796
 #, python-format
 msgid "There's another session with selected customer"
 msgstr "Ja hi ha una altra sessió amb els mateixos clients"
 
 #. module: ems
-#: code:addons/ems/models/models.py:775
+#: code:addons/ems/models/models.py:777
 #, python-format
 msgid "There's another session with selected responsible"
 msgstr "Ja hi ha una altra sessió amb el mateix responsable"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1536
+#: code:addons/ems/models/models.py:1548
 #, python-format
 msgid "There's no changes selected"
 msgstr "No s'han sel·leccionat canvis"
 
 #. module: ems
-#: code:addons/ems/models/models.py:826
+#: code:addons/ems/models/models.py:836
 #, python-format
 msgid "This session is linked to session '%s', delete that before."
 msgstr "La sessió està associada a la sessió '%s', esborrar-la abans."
@@ -1487,7 +1492,7 @@ msgid "Tomorrow Sessions"
 msgstr "Sessions de demà"
 
 #. module: ems
-#: code:addons/ems/models/models.py:679
+#: code:addons/ems/models/models.py:681
 #, python-format
 msgid "Too many attendees, maximum of %i"
 msgstr "Masses assistents, com a màxim poden ser %i"
@@ -1591,7 +1596,7 @@ msgid "View: %s"
 msgstr "View: %s"
 
 #. module: ems
-#: code:addons/ems/models/models.py:461
+#: code:addons/ems/models/models.py:463
 #, python-format
 msgid "Warning"
 msgstr "Avís"
@@ -1602,7 +1607,7 @@ msgid "Wednesday"
 msgstr "Dimecres"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1085
+#: code:addons/ems/models/models.py:1097
 #: selection:ems.timetable,type:0
 #, python-format
 msgid "Weekday"
@@ -1619,7 +1624,7 @@ msgid "Weight"
 msgstr "Pes"
 
 #. module: ems
-#: code:addons/ems/models/models.py:1085
+#: code:addons/ems/models/models.py:1097
 #: selection:ems.timetable,type:0
 #, python-format
 msgid "Yearday"
@@ -1653,13 +1658,13 @@ msgid "You can do it!"
 msgstr "You can do it!"
 
 #. module: ems
-#: code:addons/ems/models/models.py:809
+#: code:addons/ems/models/models.py:818
 #, python-format
 msgid "You can only change a draft session"
 msgstr "Només es poden modificar les sessions en esborrany"
 
 #. module: ems
-#: code:addons/ems/models/models.py:830
+#: code:addons/ems/models/models.py:840
 #, python-format
 msgid "You can only delete a draft session"
 msgstr "Només es poden esborrar les sessions en esborrany"
