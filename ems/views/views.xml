@@ -33,7 +33,7 @@
                       fonts="bold:state=='confirmed'"
                       colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';darkorange:state=='schedulepending';grey:state in ('cancel')">
                     <field name="number"/>
-                    <field name="source_number"/>
+                    <field name="source_numbers"/>
                     <field name="service_id"/>
                     <!--field name="center_id"/>
                     <field name="ubication_id"/>
@@ -77,6 +77,9 @@
                                 type="object"
                                 groups="base.group_user"/>
                         <button string="Schedule" name="button_schedule" states="confirmed" type="object"
+                                groups="base.group_user"/>
+                        <button string="Reschedule2" name="button_reschedule2" states="confirmed,reschedulepending"
+                                type="object"
                                 groups="base.group_user"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirmed,schedulepending,reschedulepending,rescheduled,cancelled"/>
@@ -162,23 +165,30 @@
                             </page>
                             <page string="Other information">
                                 <group>
-                                    <field name="source_session_id"/>
-                                </group>
-                                <group>
-                                    <field name="target_session_id"
-                                           attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))]}"/>
                                     <field name="out_of_time"
                                            attrs="{'invisible':[('state', 'not in', ('rescheduled', 'reschedulepending'))]}"/>
                                     <field name="reason" widget="text" attrs="{'invisible':[('state', 'not in', ('cancelled', 'rescheduled', 'reschedulepending'))],
                                                                                'required':[('state', 'in', ('cancelled', 'rescheduled', 'reschedulepending'))]}"/>
                                 </group>
+                                <group string="Source sessions">
+                                    <field name="source_session_ids" nolabel="1"/>
+                                </group>
+                                <group string="Target sessions">
+                                    <field name="target_session_ids" nolabel="1"/>
+                                </group>
+                            </page>
+                            <page string="tmp">
+                                <group>
+                                    <field name="source_session_id"/>
+                                    <field name="target_session_id"/>
+                                </group>
                             </page>
                         </notebook>
                     </sheet>
-                    <!--div class="oe_chatter">
+                    <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                         <field name="message_ids" widget="mail_thread"/>
-                    </div-->
+                    </div>
                 </form>
             </field>
         </record>
@@ -630,7 +640,8 @@
                         <field name="name"/>
                         <field name="color"/>
                         <field name="is_ems"/>
-                        <field name="duration" attrs="{'invisible': [('is_meeting', '=', True)], 'required': [('is_meeting', '=', False)]}"/>
+                        <field name="duration"
+                               attrs="{'invisible': [('is_meeting', '=', True)], 'required': [('is_meeting', '=', False)]}"/>
                         <field name="is_meeting"/>
                     </group>
                     <group>
@@ -642,7 +653,7 @@
                         <field name="description"/>
                     </group>
                     <field name="ubication_ids">
-                        <tree string="Printing order" editable="botttom">
+                        <tree editable="bottom">
                             <field name="sequence" widget="handle"/>
                             <field name="ubication_id" options="{'no_quick_create': True}"/>
                             <field name="resource_ids" widget="many2many_tags" options="{'no_quick_create': True}"/>
@@ -885,6 +896,54 @@
                     target="new"
                     key2="client_action_multi"/-->
 
+        <!-- Creem el SESSION reschedule2 wizard form -->
+        <record model="ir.ui.view" id="ems_session_reschedule2_wizard_form_view">
+            <field name="name">ems.session.reschedule2.wizard.form</field>
+            <field name="model">ems.session.reschedule2.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reschedule sessions">
+                    <group col="4" colspan="2">
+                        <field name="duration"/>
+                        <newline></newline>
+                        <field name="date_begin"/>
+                        <field name="date_end"/>
+                        <field name="weeks"/>
+                        <field name="allow_past_date"/>
+                        <field name="session_id" invisible="1"/>
+                    </group>
+                    <field name="line_ids">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="partner_id"/>
+                            <field name="service_id"/>
+                            <field name="ubication_id"/>
+                            <field name="resource_ids" widget="many2many_tags"/>
+                            <field name="responsible_id"/>
+                            <field name="time_change"/>
+                            <field name="date_begin_last"/>
+                            <field name="date_begin" attrs="{'readonly': [('time_change', '=', False)]}"/>
+                            <field name="duration" attrs="{'readonly': [('time_change', '=', False)]}"/>
+                            <field name="date_end"/>
+                            <!--field name="state"/-->
+                        </tree>
+                    </field>
+                    <group>
+                        <field name="out_of_time"/>
+                        <field name="reason" required="1" widget="text"/>
+                    </group>
+                    <footer>
+                        <button name="reschedule2_confirm" type="object"
+                                string="Reschedule and confirm" class="oe_highlight"/>
+                        <!--button name="reschedule2_edit" type="object"
+                                string="Reschedule and edit..."
+                                attrs="{'invisible':[('unique_active_id', '=', False)]}"/-->
+                        or
+                        <button special="cancel" class="oe_link" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
         <!-- Creem el SESSION cancel wizard form -->
         <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
             <field name="name">ems.session.cancel.wizard.form</field>
@@ -1069,7 +1128,8 @@
         <!--
                     key2="client_action_multi"/-->
 
-        <menuitem id="menu_ems_report_responsible_print_sessions" action="action_ems_report_responsible_print_sessions" parent="report_menu" sequence="20"/>
+        <menuitem id="menu_ems_report_responsible_print_sessions" action="action_ems_report_responsible_print_sessions"
+                  parent="report_menu" sequence="20"/>
 
         <!-- posem el link al wizard forma netiro al menu  "mas" del registr -->
         <!--act_window id="launch_session_wizard"
