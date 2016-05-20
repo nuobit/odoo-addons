@@ -46,7 +46,21 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-
+def _reopen(self):
+    return {
+        'type': 'ir.actions.act_window',
+        'view_mode': 'form',
+        'view_type': 'form',
+        'res_id': self.id,
+        'res_model': self._name,
+        'target': 'new',
+        # save original model in context,
+        # because selecting the list of available
+        # templates requires a model in context
+        'context': {
+            'default_model': self._name,
+        },
+    }
 
 def timestr2int(tstr):
     m = re.match("^([0-9]{2}):([0-9]{2})", tstr)
@@ -375,6 +389,23 @@ class ems_session(models.Model):
 
     _sql_constraints = [('number_session_unique', 'unique(number)',_("Number duplicated"))]
 
+    def split_session(self, g):
+        a = []
+        for i, p in enumerate(self.partner_ids, 1):
+            a.append({'session_id': self.id,
+                      'group': g,
+                      'number': self.number,
+                      'center_id': self.center_id.id,
+                      'partner_id': p.partner_id.id,
+                      'service_id': self.service_id,
+                      'ubication_id': self.ubication_id,
+                      'resource_ids': self.resource_ids,
+                      'responsible_id': self.responsible_id,
+                      'duration':  self.duration,
+                      'date_begin': self.date_begin,
+                    })
+        return a
+
     def get_new_date(self, datestr_s, datestr_l, days=7):
         do = fields.Datetime.from_string(datestr_s)
         do_utc = pytz.utc.localize(do)
@@ -505,28 +536,14 @@ class ems_session(models.Model):
         }
 
 
+
+
     @api.multi
     def button_reschedule(self):
         return {
             'type': 'ir.actions.act_window',
             'name':_("Reschedule Sessions"),
             'res_model': 'ems.session.reschedule.wizard',
-            'view_type': 'form',
-            'view_mode': 'form',
-            #'views': [(view.id, 'form')],
-            #'view_id': view.id,
-            #'res_id': wizard_id.id,
-            'target': 'new',
-            #'context': context,
-        }
-
-
-    @api.multi
-    def button_reschedule2(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name':_("Reschedule Sessions"),
-            'res_model': 'ems.session.reschedule2.wizard',
             'view_type': 'form',
             'view_mode': 'form',
             #'views': [(view.id, 'form')],
@@ -865,7 +882,8 @@ class ems_session(models.Model):
     def name_get(self):
         res = []
         for rec in self:
-            res.append((rec.id, rec.session_text))
+            #res.append((rec.id, rec.session_text))
+            res.append((rec.id, '[%s] %s' % (rec.number, rec.partner_text)))
 
         return res
 
@@ -1409,258 +1427,34 @@ class res_partner(models.Model):
 
 ############ WIZARDS #############
 
+
 class WizardSessionReschedule(models.TransientModel):
     _name = 'ems.session.reschedule.wizard'
 
-    time_change = fields.Boolean(string='Time change')
-    weeks = fields.Integer(string='Weeks', help='Number of weeks after last session', required=True, readonly=False, default=1)
-    allow_past_date = fields.Boolean(string='Allow past date', help='Allows reschedule sessions in the past', default=False)
-
-    duration = fields.Integer(string='Duration', required=False, readonly=True)
-    date_begin_new = fields.Datetime(string='New start date', required=False, readonly=False)
-    date_end_new = fields.Datetime(string='New end date', required=False, readonly=False)
-
-
-    date_begin_original = fields.Datetime(string='Original start date', help='Session original start date', required=False, readonly=True)
-    date_begin_last = fields.Datetime(string='Last start date', help='Last session start date', required=False, readonly=True)
-
-
-    responsible_change = fields.Boolean(string='Responsible change')
-    responsible_id = fields.Many2one('ems.responsible', string="New responsible")
-
-    attendees_change = fields.Boolean(string='Attendees change')
-    attendee_ids = fields.Many2many('res.partner', string="New attendees")
-
-    reason = fields.Char(string='Reason', required=False, help="The reason why of the reschedule", default=lambda self: self._default_reason())
-
-    out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False)
-
-    unique_active_id = fields.Boolean(default=lambda self: self._default_unique_active_id())
-
-    def _default_reason(self):
-        session_ids = self.env['ems.session'].browse(self._context.get('active_ids'))
-
-        if len(session_ids)==1:
-            return session_ids.reason
-
-
-    def _default_unique_active_id(self):
-        session_ids = self.env['ems.session'].browse(self._context.get('active_ids'))
-
-        return len(session_ids)==1
-
-    @api.onchange('time_change', 'weeks', 'attendees_change', 'attendee_ids', 'allow_past_date')
-    def _onchange_time_change(self):
-        session_ids = self.env['ems.session'].browse(self._context.get('active_ids'))
-        if len(session_ids)==1:
-            self.duration = session_ids.duration
-            self.date_begin_original = session_ids.date_begin
-
-            if self.attendees_change:
-                partner_ids = self.attendee_ids.mapped('id')
-            else:
-                partner_ids = session_ids.partner_ids.mapped('partner_id.id')
-
-            sessions0 = self.env['ems.session'].search([('state', '=', 'confirmed'),
-                                                        ('center_id', '=', session_ids.center_id.id),
-                                            ]).filtered(lambda x: x.service_id.is_ems and
-                                                                 len(set(x.partner_ids.mapped('partner_id.id')) &
-                                                                     set(partner_ids))!=0
-                                                     )
-            sessions1 = sessions0.filtered(lambda x: x.date_begin>=session_ids.date_begin)
-
-            if sessions1:
-                date_begin_last0 = sessions1.sorted(lambda x: x.date_begin)[-1].date_begin
-                self.date_begin_last = date_begin_last0
-            else:
-                if sessions0:
-                    date_begin_last0 = sessions0.sorted(lambda x: x.date_begin)[-1].date_begin
-                    self.date_begin_last = date_begin_last0
-                else:
-                    date_begin_last0 = session_ids.date_begin
-                    self.date_begin_last = False
-
-            if not self.allow_past_date:
-                now = fields.Datetime.now()
-                if fields.Datetime.from_string(date_begin_last0)<fields.Datetime.from_string(now):
-                    date_begin_last0 = fields.Datetime.to_string(fields.Datetime.from_string(now))
-
-            self.date_begin_new = session_ids.get_new_date(session_ids.date_begin, date_begin_last0, days=self.weeks*7)
-
-
-    @api.onchange('date_begin_new')
-    def _onchange_date_begin_new(self):
-        if self.unique_active_id:
-            self.date_end_new = fields.Datetime.from_string(self.date_begin_new) + datetime.timedelta(minutes=self.duration)
-
-    @api.onchange('date_end_new')
-    def _onchange_date_end_new(self):
-        if self.unique_active_id:
-            self.date_begin_new = fields.Datetime.from_string(self.date_end_new) + datetime.timedelta(minutes=-self.duration)
-
-    @api.onchange('responsible_change')
-    def _onchange_responsible_change(self):
-        if self.responsible_change:
-            session_ids = self.env['ems.session'].browse(self._context.get('active_ids'))
-            if len(session_ids)==1 or len(session_ids.filtered(lambda x: x.responsible_id.id == session_ids[0].responsible_id.id))==len(session_ids):
-                self.responsible_id = session_ids[0].responsible_id
-
-    @api.onchange('attendees_change')
-    def _onchange_attendees_change(self):
-        if self.attendees_change:
-            self.attendee_ids = False
-            session_ids = self.env['ems.session'].browse(self._context.get('active_ids'))
-
-            if len(session_ids)!=1 and len(session_ids.filtered(lambda x: x.service_id.id == session_ids[0].service_id.id)) != len(session_ids):
-                self.attendees_change = False
-                return {
-                    #'domain': {'other_id': [('partner_id', '=', partner_id)]},
-                    'warning': {'title': "Warning", 'message': "You can only change mutiple sessions if they have the same service"},
-                }
-                #raise ValidationError(_("You can only change mutiple sessions if they have the same service"))
-
-            if len(session_ids)==1 or len(session_ids.filtered(lambda x: set(x.partner_ids.mapped('partner_id.id')) == set(session_ids[0].partner_ids.mapped('partner_id.id'))))==len(session_ids):
-                self.attendee_ids = [(4, x.partner_id.id, 0) for x in session_ids[0].partner_ids]
-
-
-    @api.constrains('weeks')
-    def _check_weeks(self):
-        if self.unique_active_id:
-            if self.weeks<0:
-                raise ValidationError(_('The number of weeks must be greater than 0'))
-
-    def reschedule(self):
-        session_idsN = self.env['ems.session'].browse(self._context.get('active_ids'))
-        session9_l = []
-        for session_ids in session_idsN:
-            if session_ids.state not in ('confirmed', 'reschedulepending'):
-                raise ValidationError(_("Only confirmed and reschedule pending sessions can be rescheduled"))
-
-            # definim els vlaors de la nova sessio identica a l'oroginal
-            vals = {'center_id': session_ids.center_id.id,
-                    'service_id': session_ids.service_id.id,
-                    'ubication_id': session_ids.ubication_id.id,
-                    'duration': session_ids.duration,
-                    'date_begin': session_ids.date_begin,
-                    'date_end': session_ids.date_end,
-                    'responsible_id': session_ids.responsible_id.id,
-                    'resource_ids': [(4, p.id, _) for p in session_ids.resource_ids],
-                    'description': session_ids.description,
-                    'source_session_ids': [(4, session_ids.id, 0)],
-                    'partner_ids': [(0, _, {'partner_id': p.partner_id.id}) for p in session_ids.partner_ids],
-                }
-
-            # modfifiquem els valors de la nova sessio en funcio del selecionat en el wizard
-            canviat = False
-            if self.time_change:
-                vals.update({#'duration': self.duration,
-                             'date_begin': self.date_begin_new,
-                             'date_end': self.date_end_new })
-                canviat = True
-
-            if self.responsible_change:
-                vals.update({'responsible_id': self.responsible_id.id })
-                canviat = True
-
-            if self.attendees_change:
-                vals.update({'partner_ids': [(0, _, {'partner_id': p.id}) for p in self.attendee_ids] })
-                canviat = True
-
-            if not canviat:
-                raise ValidationError(_("There's no changes selected"))
-
-            ## creem la sessio
-            session9 = self.env['ems.session'].create(vals)
-
-            session_ids.target_session_id = session9
-
-            session_ids.target_session_ids = [(4, session9.id, 0)]
-
-            session_ids.reason = self.reason
-
-            session_ids.out_of_time = self.out_of_time
-
-            session_ids.state = 'rescheduled'
-
-            session9_l.append(session9.id)
-
-        return self.env['ems.session'].browse(session9_l)
-
-
-    @api.multi
-    def reschedule_confirm(self):
-        sessions9 = self.reschedule()
-        for session9 in sessions9:
-            session9.button_confirm()
-
-    @api.multi
-    def reschedule_edit(self):
-        session9 = self.reschedule()
-        return {
-            'type': 'ir.actions.act_window',
-            #'name': _("Warning"),
-            'res_model': 'ems.session',
-            'view_type': 'form',
-            'view_mode': 'form',
-            #'views': [(view.id, 'form')],
-            #'view_id': view.id,
-            'res_id': session9.id,
-            #'target': 'new',
-            #'context': context,
-        }
-
-
-class WizardSessionReschedule2(models.TransientModel):
-    _name = 'ems.session.reschedule2.wizard'
-
-    session_id = fields.Many2one('ems.session', required=True, default=lambda self: self._default_session())
-
-    duration = fields.Integer(string='Duration', required=False, readonly=True, default=lambda self: self._default_duration())
-    date_begin = fields.Datetime(string='Start date', required=False, readonly=True, default=lambda self: self._default_date_begin())
-    date_end = fields.Datetime(string='End date', required=False, readonly=True, default=lambda self: self._default_date_end())
-
-    weeks = fields.Integer(string='Weeks', help='Number of weeks after last session', required=True, readonly=False, default=1)
-    allow_past_date = fields.Boolean(string='Allow past date', help='Allows reschedule sessions in the past', default=False)
+    session_id = fields.Many2one('ems.session', string="Session", domain=[('state', 'in', ('confirmed', 'reschedulepending'))])
 
     reason = fields.Char(string='Reason', required=False, help="The reason why of the reschedule", default=lambda self: self._default_reason())
 
     out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False)
 
 
-    line_ids = fields.One2many(comodel_name='ems.session.reschedule2.line.wizard', inverse_name='reschedule_id',
-                               default=lambda self: self._default_line_ids())
+    partner_ids = fields.One2many(comodel_name='ems.session.reschedule.partners.wizard', inverse_name='reschedule_id',
+                               default=lambda self: self._default_partner_ids())
 
-    def _default_session(self):
-        session_id = self.env['ems.session'].browse(self.env.context.get('active_ids'))
-        return session_id
+    session_ids = fields.One2many(comodel_name='ems.session.reschedule.sessions.wizard', inverse_name='reschedule_id')
 
-    def _default_duration(self):
-        session_id = self.env['ems.session'].browse(self.env.context.get('active_ids'))
-        return session_id.duration
+    state = fields.Selection(selection=[('step1', 'Step 1'), ('step2', 'Step 2')],
+                             string='Status', readonly=True, default='step1')
 
-    def _default_date_begin(self):
-        session_id = self.env['ems.session'].browse(self.env.context.get('active_ids'))
-        return session_id.date_begin
 
-    def _default_date_end(self):
-        session_id = self.env['ems.session'].browse(self.env.context.get('active_ids'))
-        return session_id.date_end
 
-    def _default_line_ids(self):
-        session_id = self.env['ems.session'].browse(self.env.context.get('active_ids'))
+    def _default_partner_ids(self):
+        session_ids = self.env['ems.session'].browse(self.env.context.get('active_ids'))
 
         a = []
-        for i, p in enumerate(session_id.partner_ids, 1):
-            a.append((0, 0, {'sequence': i,
-                             'partner_id': p.partner_id.id,
-                             'service_id': session_id.service_id,
-                             'ubication_id': session_id.ubication_id,
-                             'resource_ids': session_id.resource_ids,
-                             'responsible_id': session_id.responsible_id,
-                             'duration':  session_id.duration,
-                             'date_begin': session_id.date_begin,
-                             'date_end': session_id.date_end,
-                             }))
+        for g, s in enumerate(session_ids, 1):
+            a += [(0, 0, x) for x in s.split_session(g)]
+
         return a
 
     def _default_reason(self):
@@ -1668,68 +1462,97 @@ class WizardSessionReschedule2(models.TransientModel):
 
         return session_id.reason
 
-
+    '''
     @api.onchange('allow_past_date', 'weeks')
     def _onchange_header_params(self):
-        for p in self.line_ids:
+        for p in self.partner_ids:
             p.refresh_dates()
+    '''
 
-    @api.one
-    def reschedule2_confirm(self):
-        if self.session_id.state not in ('confirmed', 'reschedulepending'):
-            raise ValidationError(_("Only confirmed and reschedule pending sessions can be rescheduled"))
+    @api.multi
+    def button_step1(self):
+        self.state = 'step1'
+        return _reopen(self)
 
-        if len(self.line_ids)<len(self.session_id.partner_ids):
-            raise ValidationError(_("The new sessions must have at least the same attendees as original session"))
-
-        # comprovm els serveis i el nombre dassitents
-        # agrupem els serveis per hora d'inici
+    @api.multi
+    def button_step2(self):
+        # agrupem els serveis per grup i fem comprovacions
         d = {}
-        for p in self.line_ids:
-            if p.date_begin not in d:
-                d[p.date_begin]=[]
-            d[p.date_begin].append(p.id)
+        for p in self.partner_ids:
+            if p.session_id.state not in ('confirmed', 'reschedulepending'):
+                raise ValidationError(_("Only confirmed and reschedule pending sessions can be rescheduled"))
+
+            if p.group not in d:
+                d[p.group]=[]
+            d[p.group].append(p.id)
+
+        # esborrem tot lesxitent
+        self.session_ids = [(2, x.id, 0) for x in self.session_ids ]
 
         # que en el cas que hi hagi mes d'un per data, les dades siguin iguals a tots
-        d1 = {}
+        a = []
         for k, v in d.items():
-            p = self.env['ems.session.reschedule2.line.wizard'].browse(v)
-            d1[k] = p
-            if len(v)!=1:
+            ps = self.env['ems.session.reschedule.partners.wizard'].browse(v)
+            if len(ps.mapped('id'))!=len(set(ps.mapped('partner_id.id'))):
+                raise ValidationError(_("An attendee can only appears once in a group (%i)") % k)
+            vals = {'group': k,
+                    'partner_ids': [(4, x.partner_id.id, 0) for x in ps],
+                    'center_id': ps[0].center_id.id,
+                    'service_id': ps[0].service_id.id,
+                    'ubication_id': ps[0].ubication_id.id,
+                    'resource_ids': [(4, x.id, 0) for x in ps[0].resource_ids],
+                    'responsible_id': ps[0].responsible_id.id,
+                    'date_begin': ps[0].date_begin,
+                    'duration': ps[0].duration,
+                    'source_session_ids': list(set([(4, x.session_id.id, 0) for x in ps]))
+                    }
+            a.append((0, _, vals ))
+
+        self.session_ids = a
+
+
+
+        '''
+            n -= len(v)
+            if n<0:
+                raise ValidationError(_("There's more attendees than original session"))
+
+            p = self.env['ems.session.reschedule.partners.wizard'].browse(v)
+            if len(p)!=1:
                 if len(set(p.mapped('service_id.id')))!=1 or \
                         len(set(p.mapped('ubication_id.id')))!=1 or \
                         len(set([frozenset(x.resource_ids.mapped('id')) for x in p]))!=1 or \
                         len(set(p.mapped('responsible_id.id')))!=1 or \
+                        len(set(p.mapped('date_begin')))!=1 or \
                         len(set(p.mapped('duration')))!=1:
-                    raise ValidationError(_("The multiple attendee sessions must have the same data"))
+                    raise ValidationError(_("The multiple attendee sessions must have the same base data"))
                 if len(set(p.mapped('partner_id.id')))==1:
-                    raise ValidationError(_("The multiple attendee sessions must have diferent atendees"))
+                    raise ValidationError(_("The multiple attendee sessions must have different atendees"))
 
-        # comprovem si ha canviat alguna cosa respecte a l'orginal i generam les sessions
-        for k, v in d1.items():
-            s0 = v[0]
-            if set(v.mapped('partner_id.id'))==set(self.session_id.mapped('partner_ids.partner_id.id')) and \
-                    s0.service_id.id==self.session_id.service_id.id and \
-                    s0.ubication_id.id==self.session_id.ubication_id.id and \
-                    set(s0.resource_ids.mapped('id'))== set(self.session_id.resource_ids.mapped('id')) and \
-                    s0.responsible_id.id==self.session_id.responsible_id.id and \
-                    s0.duration==self.session_id.duration and \
-                    s0.date_begin==self.session_id.date_begin and \
-                    s0.date_end==self.session_id.date_end:
-                raise ValidationError(_("Nothing to change"))
+            if set(p.mapped('partner_id.id'))==set(self.session_id.mapped('partner_ids.partner_id.id')) and \
+                    p[0].service_id.id==self.session_id.service_id.id and \
+                    p[0].ubication_id.id==self.session_id.ubication_id.id and \
+                    set(p[0].resource_ids.mapped('id'))== set(self.session_id.resource_ids.mapped('id')) and \
+                    p[0].responsible_id.id==self.session_id.responsible_id.id and \
+                    p[0].duration==self.session_id.duration and \
+                    p[0].date_begin==self.session_id.date_begin:
+                #raise ValidationError(_("Nothing to change"))
+                continue
+            else:
+                canviat = True
 
             # definim els vlaors de la nova sessio
             vals = {'center_id': self.session_id.center_id.id,
-                    'service_id': s0.service_id.id,
-                    'ubication_id': s0.ubication_id.id,
-                    'duration': s0.duration,
-                    'date_begin': s0.date_begin,
-                    'date_end': s0.date_end,
-                    'responsible_id': s0.responsible_id.id,
-                    'resource_ids': [(4, p.id, _) for p in s0.resource_ids],
+                    'service_id': p[0].service_id.id,
+                    'ubication_id': p[0].ubication_id.id,
+                    'duration': p[0].duration,
+                    'date_begin': p[0].date_begin,
+                    'date_end': fields.Datetime.from_string(p[0].date_begin) + datetime.timedelta(minutes=p[0].duration),
+                    'responsible_id': p[0].responsible_id.id,
+                    'resource_ids': [(4, r.id, _) for r in p[0].resource_ids],
                     'description': self.session_id.description,
                     'source_session_ids': [(4, self.session_id.id, 0)],
-                    'partner_ids': [(0, _, {'partner_id': p.partner_id.id}) for p in v],
+                    'partner_ids': [(0, _, {'partner_id': x.partner_id.id}) for x in p],
                 }
 
 
@@ -1746,74 +1569,223 @@ class WizardSessionReschedule2(models.TransientModel):
 
             session9.button_confirm()
 
+        if not canviat:
+            raise ValidationError(_("Nothing to change"))
+        '''
+
+        self.state = 'step2'
+
+        return _reopen(self)
+
+    @api.multi
+    def button_reschedule(self):
+        a=6
+
+    '''
+    @api.one
+    def reschedule_confirm(self):
+        if self.session_id.state not in ('confirmed', 'reschedulepending'):
+            raise ValidationError(_("Only confirmed and reschedule pending sessions can be rescheduled"))
+
+        if len(self.partner_ids)<len(self.session_id.partner_ids):
+            raise ValidationError(_("The new sessions must have at least the same attendees as original session"))
+
+        # comprovm els serveis i el nombre dassitents
+        # agrupem els serveis per hora d'inici
+        d = {}
+        for p in self.partner_ids:
+            if p.group not in d:
+                d[p.group]=[]
+            d[p.group].append(p.id)
+
+        # que en el cas que hi hagi mes d'un per data, les dades siguin iguals a tots
+        n = len(self.session_id.partner_ids)
+        d1 = {}
+        canviat = False
+        for k, v in d.items():
+            n -= len(v)
+            if n<0:
+                raise ValidationError(_("There's more attendees than original session"))
+
+            p = self.env['ems.session.reschedule.partners.wizard'].browse(v)
+            if len(p)!=1:
+                if len(set(p.mapped('service_id.id')))!=1 or \
+                        len(set(p.mapped('ubication_id.id')))!=1 or \
+                        len(set([frozenset(x.resource_ids.mapped('id')) for x in p]))!=1 or \
+                        len(set(p.mapped('responsible_id.id')))!=1 or \
+                        len(set(p.mapped('date_begin')))!=1 or \
+                        len(set(p.mapped('duration')))!=1:
+                    raise ValidationError(_("The multiple attendee sessions must have the same base data"))
+                if len(set(p.mapped('partner_id.id')))==1:
+                    raise ValidationError(_("The multiple attendee sessions must have different atendees"))
+
+            if set(p.mapped('partner_id.id'))==set(self.session_id.mapped('partner_ids.partner_id.id')) and \
+                    p[0].service_id.id==self.session_id.service_id.id and \
+                    p[0].ubication_id.id==self.session_id.ubication_id.id and \
+                    set(p[0].resource_ids.mapped('id'))== set(self.session_id.resource_ids.mapped('id')) and \
+                    p[0].responsible_id.id==self.session_id.responsible_id.id and \
+                    p[0].duration==self.session_id.duration and \
+                    p[0].date_begin==self.session_id.date_begin:
+                #raise ValidationError(_("Nothing to change"))
+                continue
+            else:
+                canviat = True
+
+            # definim els vlaors de la nova sessio
+            vals = {'center_id': self.session_id.center_id.id,
+                    'service_id': p[0].service_id.id,
+                    'ubication_id': p[0].ubication_id.id,
+                    'duration': p[0].duration,
+                    'date_begin': p[0].date_begin,
+                    'date_end': fields.Datetime.from_string(p[0].date_begin) + datetime.timedelta(minutes=p[0].duration),
+                    'responsible_id': p[0].responsible_id.id,
+                    'resource_ids': [(4, r.id, _) for r in p[0].resource_ids],
+                    'description': self.session_id.description,
+                    'source_session_ids': [(4, self.session_id.id, 0)],
+                    'partner_ids': [(0, _, {'partner_id': x.partner_id.id}) for x in p],
+                }
 
 
-class WizardSessionRescheduleLine2(models.TransientModel):
-    _name = 'ems.session.reschedule2.line.wizard'
+            ## creem la sessio
+            session9 = self.env['ems.session'].create(vals)
 
-    _order = 'sequence'
+            self.session_id.target_session_ids = [(4, session9.id, 0)]
 
-    reschedule_id = fields.Many2one(comodel_name='ems.session.reschedule2.wizard', ondelete='cascade')
+            self.session_id.reason = self.reason
 
-    sequence = fields.Integer('Sequence', default=1)
+            self.session_id.out_of_time = self.out_of_time
 
+            self.session_id.state = 'rescheduled'
+
+            session9.button_confirm()
+
+        if not canviat:
+            raise ValidationError(_("Nothing to change"))
+    '''
+
+    '''
+    @api.multi
+    def reschedule_edit(self):
+        session9 = self.reschedule()
+        return {
+            'type': 'ir.actions.act_window',
+            #'name': _("Warning"),
+            'res_model': 'ems.session',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            'res_id': session9.id,
+            #'target': 'new',
+            #'context': context,
+        }
+    '''
+
+    @api.multi
+    def button_add_session(self):
+        if len(self.partner_ids)==0:
+            g = 1
+        else:
+            dup = self.partner_ids.filtered(lambda x: x.session_id.id==self.session_id.id)
+            if len(dup)!=0:
+                raise ValidationError(_("That session is already added"))
+            g = max(self.partner_ids.mapped('group')) + 1
+
+        self.partner_ids = [(0, 0, x) for x in self.session_id.split_session(g)]
+
+        self.session_id = False
+
+        return _reopen(self)
+
+    @api.multi
+    def button_remove_session(self):
+        toremove = self.partner_ids.filtered(lambda x: x.session_id.id==self.session_id.id)
+        self.partner_ids = [(2, x.id, 0) for x in toremove]
+
+        self.session_id = False
+
+        return _reopen(self)
+
+
+
+
+
+class WizardSessionReschedulePartners(models.TransientModel):
+    _name = 'ems.session.reschedule.partners.wizard'
+
+    reschedule_id = fields.Many2one(comodel_name='ems.session.reschedule.wizard', ondelete='cascade')
+
+    group = fields.Integer('Group', required=True)
+
+    session_id = fields.Many2one('ems.session', string="Session", required=True, domain=[('state', 'in', ('confirmed', 'reschedulepending'))])
+
+    number = fields.Char(string="Session")
+
+    center_id = fields.Many2one('ems.center', string='Center', required=True)
     partner_id = fields.Many2one('res.partner', string="Attendee", required=True)
     service_id = fields.Many2one('ems.service', string="Service", required=True)
     ubication_id = fields.Many2one('ems.ubication', string="Ubication", required=True)
     resource_ids = fields.Many2many('ems.resource', string="Resources", required=False)
     responsible_id = fields.Many2one('ems.responsible', string="Responsible", required=True)
-    date_begin_last = fields.Datetime(string='Last start date', help='Last session start date', required=False, readonly=True)
     date_begin = fields.Datetime(string='Start date', required=True, readonly=False)
-    date_end = fields.Datetime(string='End date', required=True, readonly=True)
     duration = fields.Integer(string='Duration', required=True, readonly=False)
 
+    '''
+    @api.onchange('session_id')
+    def onchange_session(self):
+        if len(self.session_id.partner_ids)==1:
+            self.partner_id = self.session_id.partner_ids.partner_id.id
+            self.center_id = self.session_id.center_id.id
+            self.service_id = self.session_id.service_id.id
+            self.ubication_id = self.session_id.service_id.id
+            self.resource_ids = self.session_id.resource_ids
+            self.responsible_id = self.session_id.responsible_id.id
+            self.time_change = False
+            self.date_begin_last = False
+            self.date_begin = self.session_id.date_begin
+            self.duration = self.session_id.duration
+
+        elif len(self.session_id.partner_ids)>1:
+            raise ValidationError(_("Not implemented yet"))
+    '''
+
+    '''
+    @api.multi
+    def unlink(selfs):
+        for self in selfs:
+            if self.is_from_original_session:
+                raise ValidationError(_("This session is from original session and cannot be deleted"))
+            else:
+                super(WizardSessionReschedulePartners, self).unlink()
+    '''
+
+
+class WizardSessionRescheduleSessions(models.TransientModel):
+    _name = 'ems.session.reschedule.sessions.wizard'
+
+    reschedule_id = fields.Many2one(comodel_name='ems.session.reschedule.wizard', ondelete='cascade')
+
+    group = fields.Integer('Group', required=True)
+
+    center_id = fields.Many2one('ems.center', string="Center", required=True)
+    partner_ids = fields.Many2many('res.partner', string="Attendees", required=True)
+    service_id = fields.Many2one('ems.service', string="Service", required=True)
+    ubication_id = fields.Many2one('ems.ubication', string="Ubication", required=True)
+    resource_ids = fields.Many2many('ems.resource', string="Resources", required=False)
+    responsible_id = fields.Many2one('ems.responsible', string="Responsible", required=True)
+
     time_change = fields.Boolean(string='Time change')
+    weeks = fields.Integer(string='Weeks', help='Number of weeks after last session', required=True, readonly=False, default=1)
+    allow_past_date = fields.Boolean(string='Allow past date', help='Allows reschedule sessions in the past', default=False)
+    date_begin_last = fields.Datetime(string='Last start date', help='Last session start date', required=False, readonly=True)
+    date_begin = fields.Datetime(string='Start date', required=True, readonly=False)
+    date_end = fields.Datetime(string='End date', required=True, readonly=False)
+    duration = fields.Integer(string='Duration', required=True, readonly=False)
+
     #state_new = fields.Datetime(string='New start date', required=False, readonly=False)
 
+    source_session_ids = fields.Many2many('ems.session', relation='ems_wizard_reschedule_sessions_source_session_rel')
 
-    @api.onchange('partner_id', 'time_change')
-    def _onchange_partner(self):
-        self.refresh_dates()
-
-    def refresh_dates(self):
-        if not self.time_change:
-            self.date_begin = self.reschedule_id.session_id.date_begin
-            self.date_end = self.reschedule_id.session_id.date_end
-            self.date_begin_last = False
-            self.duration = self.reschedule_id.session_id.duration
-
-            return
-
-        ### cerquem la ultima sessio del partner
-        # totes les sessions ems del partner
-        sessions0 = self.env['ems.partner'].search([('session_id.state', '=', 'confirmed'),
-                                                    ('session_id.center_id', '=', self.reschedule_id.session_id.center_id.id),
-                                                    ('session_id.service_id.is_ems', '=', True),
-                                                    ('partner_id', '=', self.partner_id.id)
-                                                   ]).mapped('session_id')
-
-        # les sessions posteriors o iguals a la sessio activa
-        sessions1 = sessions0.filtered(lambda x: x.date_begin>=self.reschedule_id.session_id.date_begin)
-
-        if sessions1:   # si hi ha sessions posteriors
-            date_begin_last0 = sessions1.sorted(lambda x: x.date_begin)[-1].date_begin
-            self.date_begin_last = date_begin_last0
-        else:   # si no hi ha sessions posterors
-            if sessions0:   # si hi ha sessions anteiors
-                date_begin_last0 = sessions0.sorted(lambda x: x.date_begin)[-1].date_begin
-                self.date_begin_last = date_begin_last0
-            else:   # si no hi ha cap sessio, ni posteror ni anterior ni a lactual (aixo vol dir que el customer ha canviat)
-                date_begin_last0 = self.reschedule_id.session_id.date_begin
-                self.date_begin_last = False
-
-        if not self.reschedule_id.allow_past_date: # si no permetem que hi hagi replanmificacions anteorir a la data actual
-            now = fields.Datetime.now()
-            if fields.Datetime.from_string(date_begin_last0)<fields.Datetime.from_string(now):
-                date_begin_last0 = fields.Datetime.to_string(fields.Datetime.from_string(now))
-
-        self.date_begin = self.reschedule_id.session_id.get_new_date(self.reschedule_id.session_id.date_begin, date_begin_last0,
-                                                                         days=self.reschedule_id.weeks*7)
-        self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.duration)
 
     @api.onchange('service_id')
     def onchange_service(self):
@@ -1824,7 +1796,7 @@ class WizardSessionRescheduleLine2(models.TransientModel):
         ids = []
         ids2 = []
         ids22 = []
-        for s in self.service_id.ubication_ids.filtered(lambda x: x.ubication_id.center_id==self.reschedule_id.session_id.center_id).sorted(lambda x: x.sequence):
+        for s in self.service_id.ubication_ids.filtered(lambda x: x.ubication_id.center_id==self.center_id).sorted(lambda x: x.sequence):
             ids.append(s.ubication_id.id)
 
             ids2.append(s.resource_ids)
@@ -1848,13 +1820,41 @@ class WizardSessionRescheduleLine2(models.TransientModel):
         if len(domains)!=0:
             res = dict(domain=domains)
 
-        if self.service_id.id == self.reschedule_id.session_id.service_id.id:
-            self.duration = self.reschedule_id.duration
-            self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.duration)
-            self.ubication_id = self.reschedule_id.session_id.ubication_id
-            self.resource_ids = self.reschedule_id.session_id.resource_ids
-
         return res
+
+
+
+    @api.onchange('partner_ids', 'time_change')
+    def _onchange_partner(self):
+        if self.time_change:
+            ### cerquem la ultima sessio del partner
+            # totes les sessions ems dels partners
+            sessions0 = self.env['ems.partner'].search([('session_id.state', '=', 'confirmed'),
+                                                        ('session_id.center_id', '=', self.center_id.id),
+                                                        ('session_id.service_id.is_ems', '=', True),
+                                                        ('partner_id', 'in', self.partner_ids.mapped('id') )
+                                                        ]).mapped('session_id')
+
+            now = fields.Datetime.now()
+            if sessions0:   # si hi ha sessions
+                date_begin_last0 = sessions0.sorted(lambda x: x.date_begin)[-1].date_begin
+                self.date_begin_last = date_begin_last0
+            else:   # si no hi ha cap sessio, (aixo vol dir que el customer ha canviat per un de nou)
+                date_begin_last0 = fields.Datetime.to_string(fields.Datetime.from_string(now))
+                self.date_begin_last = False
+
+            if not self.allow_past_date: # si no permetem que hi hagi replanmificacions anteorir a la data actual
+                if fields.Datetime.from_string(date_begin_last0)<fields.Datetime.from_string(now):
+                    date_begin_last0 = fields.Datetime.to_string(fields.Datetime.from_string(now))
+
+            self.date_begin = fields.Datetime.from_string(date_begin_last0) + datetime.timedelta(days=self.weeks*7)
+            self.date_end = fields.Datetime.from_string(self.date_begin) + datetime.timedelta(minutes=self.duration)
+        else:
+            self.date_begin_last = False
+            self.date_begin = self.source_session_ids[0].date_begin
+            self.date_end = self.source_session_ids[0].date_end
+
+
 
 
 
@@ -2106,47 +2106,6 @@ class WizardTimetable(models.TransientModel):
 
     timetable_ids = fields.Many2many('ems.timetable',
         string="Timetable", required=True, default=_overlapped_timetables)
-
-
-'''
-class WizardCheckSessionNumber(models.TransientModel):
-    _name = 'ems.check.session.number.wizard'
-
-    line_ids = fields.One2many(comodel_name='ems.check.session.number.line.wizard', inverse_name='check_id')
-
-    @api.model
-    def default_get(self, fields):
-        res = super(WizardCheckSessionNumber, self).default_get(fields)
-        if 'line_ids' in fields:
-            res['line_ids'] = self.find()
-        return res
-
-    @api.multi
-    def find(self):
-        sids=[]
-        for x in self.env['ems.partner'].search([]):
-            if x.session_id.service_id.is_ems and x.session!=-1 and x.num_session!=x.session:
-                sids.append(x.session_id.id)
-
-        sids=list(set(sids))
-
-        sessions = self.env['ems.session'].browse(sids).sorted(lambda x: x.date_begin)
-
-        y = []
-        for s in sessions:
-            y.append((0,0, {'session_id': s.id}))
-
-
-        return y
-
-class WizardCheckSessionNumberLine(models.TransientModel):
-    _name = 'ems.check.session.number.line.wizard'
-
-    check_id = fields.Many2one('ems.check.session.number.wizard', ondelete='cascade')
-
-    session_id = fields.Many2one('ems.session')
-
-'''
 
 
 

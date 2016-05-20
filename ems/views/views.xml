@@ -78,11 +78,10 @@
                                 groups="base.group_user"/>
                         <button string="Schedule" name="button_schedule" states="confirmed" type="object"
                                 groups="base.group_user"/>
-                        <button string="Reschedule2" name="button_reschedule2" states="confirmed,reschedulepending"
-                                type="object"
-                                groups="base.group_user"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,confirmed,schedulepending,reschedulepending,rescheduled,cancelled"/>
+                               statusbar_visible="draft,confirmed,schedulepending,reschedulepending,rescheduled,cancelled"
+                               statusbar_colors='{"draft":"blue", "confirmed":"green", "schedulepending":"darkorange", "reschedulepending":"firebrick",
+                                                  "rescheduled":"purple", "cancelled":"grey"}'/>
                     </header>
                     <sheet>
                         <group colspan="2" col="4">
@@ -99,7 +98,6 @@
                             <button name="" class="oe_inline oe_stat_button"
                                     string="View on calendar" type="action" icon="fa-calendar"/>
                         </div-->
-
                         <group colspan="2" col="4">
                             <group>
                                 <field name="service_id" options="{'no_create': True}"
@@ -264,6 +262,7 @@
                     <field name="resource_ids"/>
                     <field name="ubication_id"/>
                     <field name="center_id"/>
+                    <field name="number"/>
                     <group expand="0" string="Group By">
                         <filter string="Responsible" context="{'group_by': 'responsible_id'}"/>
                         <filter string="Service" context="{'group_by':'service_id'}"/>
@@ -831,61 +830,157 @@
             <field name="model">ems.session.reschedule.wizard</field>
             <field name="arch" type="xml">
                 <form string="Reschedule sessions">
-                    <group>
-                        <field name="unique_active_id" invisible="1"/>
-                        <group attrs="{'invisible':[('unique_active_id', '=', False)]}">
-                            <field name="time_change"/>
-                            <field name="weeks"
-                                   attrs="{'invisible':[('time_change', '=', False)], 'required':[('time_change', '=', True)]}"/>
-                            <field name="duration" attrs="{'invisible':[('time_change', '=', False)]}"/>
-                            <field name="date_begin_new"
-                                   attrs="{'invisible':[('time_change', '=', False)], 'required':[('time_change', '=', True)]}"/>
-                            <field name="date_end_new"
-                                   attrs="{'invisible':[('time_change', '=', False)], 'required':[('time_change', '=', True)]}"/>
-
+                    <header>
+                        <field name="state" select="2" widget="statusbar"
+                               statusbar_visible="step1,step2"
+                               statusbar_colors='{"step1":"blue","step2":"green"}'/>
+                    </header>
+                    <group string="Group sessions" attrs="{'invisible':[('state','!=','step1')]}">
+                        <group col="4" colspan="2">
+                            <field name="session_id"/>
+                            <button name="button_add_session" string="Add session" class="oe_highlight" type="object"/>
+                            <button name="button_remove_session" string="Remove session" type="object"/>
                         </group>
-                        <group>
-                            <field name="date_begin_original"
-                                   attrs="{'invisible':[('time_change', '=', False)]}"/>
-                            <field name="date_begin_last"
-                                   attrs="{'invisible':[('time_change', '=', False)]}"/>
-                            <field name="allow_past_date"
-                                   attrs="{'invisible':[('time_change', '=', False)]}"/>
-                        </group>
+                        <field name="partner_ids" nolabel="1">
+                            <tree delete="0" create="0" edit="1" editable="bottom">
+                                <field name="group"/>
+                                <field name="number" readonly="1"/>
+                                <field name="session_id" readonly="1" invisible="1"/>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="service_id" readonly="1"/>
+                                <field name="ubication_id" readonly="1" invisible="1"/>
+                                <field name="resource_ids" readonly="1" widget="many2many_tags" invisible="1"/>
+                                <field name="responsible_id" readonly="1"/>
+                                <field name="date_begin" readonly="1"/>
+                                <field name="duration" readonly="1"/>
+                            </tree>
+                        </field>
                     </group>
-                    <group>
-                        <group>
-                            <field name="responsible_change"/>
-                            <field name="responsible_id"
-                                   attrs="{'invisible':[('responsible_change', '=', False)], 'required':[('responsible_change', '=', True)]}"/>
-                        </group>
-                        <group/>
+                    <group string="Edit grouped sessions" attrs="{'invisible':[('state','!=','step2')]}">
+                        <field name="session_ids" nolabel="1">
+                            <tree delete="0" create="0" edit="1">
+                                <field name="group" readonly="1"/>
+                                <field name="center_id"/>
+                                <field name="partner_ids" widget="many2many_tags"/>
+                                <field name="service_id"/>
+                                <field name="ubication_id"/>
+                                <field name="resource_ids" widget="many2many_tags"/>
+                                <field name="responsible_id"/>
+                                <field name="date_begin"/>
+                                <field name="duration"/>
+                                <field name="source_session_ids" widget="many2many_tags"/>
+                            </tree>
+                        </field>
                     </group>
-                    <group>
-                        <group>
-                            <field name="attendees_change"/>
-                            <field name="attendee_ids" widget="many2many_tags"
-                                   attrs="{'invisible':[('attendees_change', '=', False)], 'required':[('attendees_change', '=', True)]}"/>
-                        </group>
-                        <group/>
-                    </group>
-                    <group>
+                    <group attrs="{'invisible':[('state','!=','step2')]}">
                         <field name="out_of_time"/>
-                        <newline></newline>
                         <field name="reason" required="1" widget="text"/>
                     </group>
                     <footer>
-                        <button name="reschedule_confirm" type="object"
-                                string="Reschedule and confirm" class="oe_highlight"/>
-                        <button name="reschedule_edit" type="object"
-                                string="Reschedule and edit..."
-                                attrs="{'invisible':[('unique_active_id', '=', False)]}"/>
-                        or
-                        <button special="cancel" class="oe_link" string="Cancel"/>
+                        <div states="step1">
+                            <button name="button_step2" string="Next" class="oe_highlight" type="object"/>
+                            or
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </div>
+                        <div states="step2">
+                            <button name="button_step1" string="Previous" type="object"/>
+                            <button name="button_reschedule" string="Reschedule" type="object" class="oe_highlight"/>
+                            or
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </div>
                     </footer>
                 </form>
             </field>
         </record>
+
+
+        <!--record id="ems_session_reschedule_sessions_wizard_form_view" model="ir.ui.view">
+            <field name="name">ems.session.reschedule.sessions.wizard.form</field>
+            <field name="model">ems.session.reschedule.sessions.wizard</field>
+            <field name="inherit_id" ref="view_ems_session_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="replace">
+
+                </xpath>
+            </field>
+        </record-->
+
+
+        <!-- Creem el SESSION reschedule sessions wizard form -->
+        <record model="ir.ui.view" id="ems_session_reschedule_sessions_wizard_form_view">
+            <field name="name">ems.session.reschedule.sessions.wizard.form</field>
+            <field name="model">ems.session.reschedule.sessions.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reschedule sessions">
+                    <group string="New session" col="4" colspan="2">
+                        <field name="center_id"/>
+                        <field name="partner_ids" widget="many2many_tags"/>
+                        <field name="service_id"/>
+                        <field name="ubication_id"/>
+                        <field name="resource_ids" widget="many2many_tags"/>
+                        <field name="responsible_id"/>
+                        <field name="time_change"/>
+                        <field name="weeks"/>
+                        <field name="allow_past_date"/>
+                        <field name="date_begin_last"/>
+                        <field name="date_begin"/>
+                        <field name="date_end"/>
+                        <field name="duration"/>
+                    </group>
+                    <group string="Source sessions">
+                        <field name="source_session_ids" nolabel="1" readonly="1">
+                        </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Creem el SESSION reschedule partners wizard tree -->
+        <!--record model="ir.ui.view" id="ems_session_reschedule_partners_wizard_tree_view">
+            <field name="name">ems.session.reschedule.partners.wizard.tree</field>
+            <field name="model">ems.session.reschedule.partners.wizard</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="set_group" string=""/>
+                    <field name="group"/>
+                    <field name="partner_id"/>
+                    <field name="service_id"/>
+                    <field name="ubication_id"/>
+                    <field name="resource_ids" widget="many2many_tags"/>
+                    <field name="responsible_id"/>
+                    <field name="time_change"/>
+                    <field name="date_begin_last"/>
+                    <field name="date_begin"/>
+                    <field name="duration"/>
+                    <field name="is_from_original_session" invisible="1"/>
+                    <field name="session_id" invisible="1"/>
+                </tree>
+            </field>
+        </record-->
+
+        <!-- Creem el SESSION reschedule sessions wizard form -->
+        <!--record model="ir.ui.view" id="ems_session_reschedule_sessions_wizard_form_view">
+            <field name="name">ems.session.reschedule.sessions.wizard.form</field>
+            <field name="model">ems.session.reschedule.sessions.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reschedule sessions">
+                    <group col="4" colspan="2">
+                        <field name="session_id" attrs="{'readonly': [('is_from_original_session', '=', True)]}"/>
+                        <field name="group"/>
+                        <field name="partner_id"/>
+                        <field name="service_id"/>
+                        <field name="ubication_id"/>
+                        <field name="resource_ids" widget="many2many_tags"/>
+                        <field name="responsible_id"/>
+                        <field name="time_change"/>
+                        <field name="date_begin_last"/>
+                        <field name="date_begin" attrs="{'readonly': [('time_change', '=', False)]}"/>
+                        <field name="duration" attrs="{'readonly': [('time_change', '=', False)]}"/>
+                        <field name="is_from_original_session" invisible="1"/>
+                    </group>
+                </form>
+            </field>
+        </record-->
 
 
         <!--act_window id="launch_ems_session_reschedule_wizard"
@@ -896,53 +991,6 @@
                     target="new"
                     key2="client_action_multi"/-->
 
-        <!-- Creem el SESSION reschedule2 wizard form -->
-        <record model="ir.ui.view" id="ems_session_reschedule2_wizard_form_view">
-            <field name="name">ems.session.reschedule2.wizard.form</field>
-            <field name="model">ems.session.reschedule2.wizard</field>
-            <field name="arch" type="xml">
-                <form string="Reschedule sessions">
-                    <group col="4" colspan="2">
-                        <field name="duration"/>
-                        <newline></newline>
-                        <field name="date_begin"/>
-                        <field name="date_end"/>
-                        <field name="weeks"/>
-                        <field name="allow_past_date"/>
-                        <field name="session_id" invisible="1"/>
-                    </group>
-                    <field name="line_ids">
-                        <tree editable="bottom">
-                            <field name="sequence" widget="handle"/>
-                            <field name="partner_id"/>
-                            <field name="service_id"/>
-                            <field name="ubication_id"/>
-                            <field name="resource_ids" widget="many2many_tags"/>
-                            <field name="responsible_id"/>
-                            <field name="time_change"/>
-                            <field name="date_begin_last"/>
-                            <field name="date_begin" attrs="{'readonly': [('time_change', '=', False)]}"/>
-                            <field name="duration" attrs="{'readonly': [('time_change', '=', False)]}"/>
-                            <field name="date_end"/>
-                            <!--field name="state"/-->
-                        </tree>
-                    </field>
-                    <group>
-                        <field name="out_of_time"/>
-                        <field name="reason" required="1" widget="text"/>
-                    </group>
-                    <footer>
-                        <button name="reschedule2_confirm" type="object"
-                                string="Reschedule and confirm" class="oe_highlight"/>
-                        <!--button name="reschedule2_edit" type="object"
-                                string="Reschedule and edit..."
-                                attrs="{'invisible':[('unique_active_id', '=', False)]}"/-->
-                        or
-                        <button special="cancel" class="oe_link" string="Cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
 
         <!-- Creem el SESSION cancel wizard form -->
         <record model="ir.ui.view" id="ems_session_cancel_wizard_form_view">
