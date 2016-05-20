@@ -25,6 +25,8 @@
 # TODO: Handle utf-8 error when importing non utf-8 csv file
 # TODO: Add import file formats: ods, xls, xlsx
 # TODO: Allow export results grid to file
+# TODO: Allow mappping the same header in more than one field
+# TODO: Add checkbox to not process the errors temporarily
 
 import base64
 import re
