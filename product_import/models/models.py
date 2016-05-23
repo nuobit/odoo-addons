@@ -27,6 +27,9 @@
 # TODO: Allow export results grid to file
 # TODO: Allow mappping the same header in more than one field
 # TODO: Add checkbox to not process the errors temporarily
+# TODO: Add an option to continue if any EAN fails
+# TODO: Clear column data if field selector is cleaned afterwards
+
 
 import base64
 import re
