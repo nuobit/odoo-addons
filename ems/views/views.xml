@@ -874,7 +874,7 @@
                     </group>
                     <group attrs="{'invisible':[('state','!=','step2')]}">
                         <field name="out_of_time"/>
-                        <field name="reason" required="1" widget="text"/>
+                        <field name="reason" widget="text" attrs="{'required':[('state','=','step2')]}"/>
                     </group>
                     <footer>
                         <div states="step1">
@@ -892,6 +892,15 @@
                 </form>
             </field>
         </record>
+
+        <!-- Action add to more buton (key2=client_action_multi) or to print client_print_action -->
+        <act_window id="action_ems_session_reschedule_sessions_wizard_form"
+                    name="Reschedule sessions"
+                    src_model="ems.session"
+                    res_model="ems.session.reschedule.wizard"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/>
 
 
         <!--record id="ems_session_reschedule_sessions_wizard_form_view" model="ir.ui.view">
@@ -912,7 +921,57 @@
             <field name="model">ems.session.reschedule.sessions.wizard</field>
             <field name="arch" type="xml">
                 <form string="Reschedule sessions">
-                    <group string="New session" col="4" colspan="2">
+                    <group string="New session">
+                        <!--group colspan="2" col="4">
+                            <group>
+                                <field name="center_id" options="{'no_create': True}"/>
+                            </group>
+                            <group></group>
+                        </group-->
+                        <group colspan="2" col="4">
+                            <group>
+                                <group>
+                                    <field name="center_id" invisible="1"/>
+                                    <field name="service_id" options="{'no_create': True}"/>
+                                    <field name="ubication_id" options="{'no_create': True}"/>
+                                    <field name="resource_ids" string="Resources" widget="many2many_tags"
+                                           options="{'no_create': True}"/>
+                                </group>
+                                <newline></newline>
+                                <group>
+                                    <field name="responsible_id"/>
+                                    <field name="partner_ids" widget="many2many_tags"/>
+
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="duration"/>
+                                    <field name="date_begin"/>
+                                    <field name="date_end"/>
+                                    <field name="weekday_begin"/>
+                                </group>
+                                <newline></newline>
+                                <group>
+                                    <field name="date_helper"/>
+                                    <field name="date_begin_last" attrs="{'invisible': [('date_helper', '=', False)]}"/>
+                                    <field name="weeks" attrs="{'invisible': [('date_helper', '=', False)]}"/>
+                                    <field name="allow_past_date" attrs="{'invisible': [('date_helper', '=', False)]}"/>
+                                </group>
+                            </group>
+                        </group>
+
+                        <!--group colspan="2" col="4">
+                            <group>
+                                <field name="responsible_id"/>
+                            </group>
+                            <group/>
+                        </group>
+                        <group>
+                            <field name="partner_ids" widget="many2many_tags"/>
+                        </group-->
+                    </group>
+                    <!--group string="New session" col="4" colspan="2">
                         <field name="center_id"/>
                         <field name="partner_ids" widget="many2many_tags"/>
                         <field name="service_id"/>
@@ -926,14 +985,28 @@
                         <field name="date_begin"/>
                         <field name="date_end"/>
                         <field name="duration"/>
-                    </group>
+                    </group-->
                     <group string="Source sessions">
                         <field name="source_session_ids" nolabel="1" readonly="1">
+                            <tree fonts="bold:state=='confirmed'"
+                                  colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';darkorange:state=='schedulepending';grey:state in ('cancel')">
+                                <field name="number"/>
+                                <field name="service_id"/>
+                                <field name="weekday_begin"/>
+                                <field name="date_begin"/>
+                                <field name="duration"/>
+                                <field name="partner_text"/>
+                                <field name="responsible_id"/>
+                                <field name="state"/>
+                                <!--button name="button_select" string="Select" type="object"/-->
+                            </tree>
                         </field>
                     </group>
                 </form>
             </field>
         </record>
+
+
 
         <!-- Creem el SESSION reschedule partners wizard tree -->
         <!--record model="ir.ui.view" id="ems_session_reschedule_partners_wizard_tree_view">
