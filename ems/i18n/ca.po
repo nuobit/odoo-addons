@@ -1432,6 +1432,11 @@ msgid "Step 2"
 msgstr "Pas 2"
 
 #. module: ems
+#: selection:ems.session.reschedule.wizard,state:0
+msgid "Step 3"
+msgstr "Pas 3"
+
+#. module: ems
 #: field:ems.session,message_summary:0
 msgid "Summary"
 msgstr "Summary"

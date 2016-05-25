@@ -1462,7 +1462,7 @@ class WizardSessionReschedule(models.TransientModel):
 
 
     ### COMMON
-    state = fields.Selection(selection=[('step1', 'Step 1'), ('step2', 'Step 2')],
+    state = fields.Selection(selection=[('step1', 'Step 1'), ('step2', 'Step 2'), ('step3', 'Step 3')],
                              string='Status', readonly=True, default='step1')
 
 
@@ -1512,6 +1512,14 @@ class WizardSessionReschedule(models.TransientModel):
     def button_step1(self):
         self.state = 'step1'
         return _reopen(self)
+
+
+    @api.multi
+    def button_step2(self):
+        self.state = 'step2'
+        return _reopen(self)
+
+
 
     @api.multi
     def button_update(self):
@@ -1576,7 +1584,7 @@ class WizardSessionReschedule(models.TransientModel):
         return _reopen(self)
 
     @api.multi
-    def button_step2(self):
+    def button_grouping(self):
         # agrupem els serveis per grup i fem comprovacions
         d = {}
         for p in self.partner_ids:
@@ -1612,9 +1620,11 @@ class WizardSessionReschedule(models.TransientModel):
 
         self.session_ids = a
 
-        self.state = 'step2'
+        self.state = 'step3'
 
         return _reopen(self)
+
+
 
     @api.multi
     def button_reschedule(self):

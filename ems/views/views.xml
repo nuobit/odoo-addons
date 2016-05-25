@@ -833,10 +833,13 @@
                 <form string="Reschedule sessions">
                     <header>
                         <field name="state" select="2" widget="statusbar"
-                               statusbar_visible="step1,step2"
-                               statusbar_colors='{"step1":"blue","step2":"green"}'/>
+                               statusbar_visible="step1,step2,step3"/>
                     </header>
-                    <group string="Group sessions" attrs="{'invisible':[('state','!=','step1')]}">
+                    <group attrs="{'invisible':[('state','!=','step1')]}">
+                        <field name="out_of_time"/>
+                        <field name="reason" widget="text" attrs="{'required':[('state','=','step1')]}"/>
+                    </group>
+                    <group string="Group sessions" attrs="{'invisible':[('state','!=','step2')]}">
                         <group col="4" colspan="2">
                             <field name="session_id"/>
                             <button name="button_add_session" string="Add session" type="object"/>
@@ -857,16 +860,12 @@
                             </tree>
                         </field>
                     </group>
-                    <group string="Edit grouped sessions" attrs="{'invisible':[('state','!=','step2')]}">
+                    <group string="Edit grouped sessions" attrs="{'invisible':[('state','!=','step3')]}">
                         <group colspan="2" col="4">
-
-                                <field name="responsible_id"/>
+                            <field name="responsible_id"/>
                             <field name="weekday_begin"/>
-                                <field name="attendee_ids" widget="many2many_tags"/>
-
-
-                                <button name="button_update" string="Update" type="object"/>
-
+                            <field name="attendee_ids" widget="many2many_tags"/>
+                            <button name="button_update" string="Update" type="object"/>
                         </group>
                         <field name="session_ids" nolabel="1">
                             <tree delete="0" create="0" edit="1">
@@ -885,10 +884,6 @@
                             </tree>
                         </field>
                     </group>
-                    <group attrs="{'invisible':[('state','!=','step2')]}">
-                        <field name="out_of_time"/>
-                        <field name="reason" widget="text" attrs="{'required':[('state','=','step2')]}"/>
-                    </group>
                     <footer>
                         <div states="step1">
                             <button name="button_step2" string="Next" class="oe_highlight" type="object"/>
@@ -897,6 +892,13 @@
                         </div>
                         <div states="step2">
                             <button name="button_step1" string="Previous" type="object"/>
+                            <button name="button_grouping" string="Next" class="oe_highlight" type="object"/>
+                            or
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </div>
+
+                        <div states="step3">
+                            <button name="button_step2" string="Previous" type="object"/>
                             <button name="button_reschedule" string="Reschedule" type="object" class="oe_highlight"/>
                             or
                             <button special="cancel" string="Cancel" class="oe_link"/>
