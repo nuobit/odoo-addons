@@ -1433,18 +1433,28 @@ class res_partner(models.Model):
 class WizardSessionReschedule(models.TransientModel):
     _name = 'ems.session.reschedule.wizard'
 
+    ### STEP 1
     session_id = fields.Many2one('ems.session', string="Session", domain=[('state', 'in', ('confirmed', 'reschedulepending'))])
+
+    partner_ids = fields.One2many(comodel_name='ems.session.reschedule.partners.wizard', inverse_name='reschedule_id',
+                               default=lambda self: self._default_partner_ids())
+
+    ### STEP 2
+    responsible_id = fields.Many2one(comodel_name='ems.responsible', string="New responsible", required=False, readonly=False)
+
+    attendee_ids = fields.Many2many(comodel_name='res.partner', string="New attendees")
+
+    session_ids = fields.One2many(comodel_name='ems.session.reschedule.sessions.wizard', inverse_name='reschedule_id')
+
+    weekday_begin = fields.Selection(selection=DAYS_OF_WEEK, string="New weekday")
+
 
     reason = fields.Char(string='Reason', required=False, help="The reason why of the reschedule", default=lambda self: self._default_reason())
 
     out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False)
 
 
-    partner_ids = fields.One2many(comodel_name='ems.session.reschedule.partners.wizard', inverse_name='reschedule_id',
-                               default=lambda self: self._default_partner_ids())
-
-    session_ids = fields.One2many(comodel_name='ems.session.reschedule.sessions.wizard', inverse_name='reschedule_id')
-
+    ### COMMON
     state = fields.Selection(selection=[('step1', 'Step 1'), ('step2', 'Step 2')],
                              string='Status', readonly=True, default='step1')
 
@@ -1494,6 +1504,54 @@ class WizardSessionReschedule(models.TransientModel):
     @api.multi
     def button_step1(self):
         self.state = 'step1'
+        return _reopen(self)
+
+    @api.multi
+    def button_update(self):
+        for s in self.session_ids:
+            values = {}
+            if self.responsible_id:
+                values['responsible_id'] = self.responsible_id.id
+
+            if self.attendee_ids:
+                values['partner_ids'] = [(6, _, self.attendee_ids.mapped('id'))]
+
+            if self.weekday_begin:
+                # busquem si algun dels partners de cada sessio ja te una altra sessio en la mateixa setmana
+                # en cas afirmatiu, donem error
+                date_begin_dt_loc = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(s.date_begin))
+                weekday_loc = date_begin_dt_loc.isoweekday()
+                mon_dt_loc = date_begin_dt_loc - datetime.timedelta(days=weekday_loc-1)
+                mon_dt_loc0 = mon_dt_loc.replace(hour=0, minute=0, second=0)
+                sun_dt_loc0 = mon_dt_loc.replace(hour=23, minute=59, second=59) + datetime.timedelta(days=7-1)
+
+                mon_str_utc0 = fields.Datetime.to_string((mon_dt_loc0.astimezone(pytz.utc)).replace(tzinfo=None))
+                sun_str_utc0 = fields.Datetime.to_string((sun_dt_loc0.astimezone(pytz.utc)).replace(tzinfo=None))
+
+                sessions = self.env['ems.partner'].search([('session_id.id', 'not in', s.source_session_ids.mapped('id')),
+                                                           ('session_id.state', '=', 'confirmed'),
+                                                           ('session_id.center_id', '=', s.center_id.id),
+                                                           ('session_id.service_id.is_ems', '=', True),
+                                                           ('session_id.date_begin', '>=', mon_str_utc0),
+                                                           ('session_id.date_begin', '<=', sun_str_utc0),
+                                                           ('partner_id', 'in', s.partner_ids.mapped('id'))
+                                                          ]).mapped('session_id')
+                if len(sessions)>1:
+                    raise ValidationError(_("There's more than one session in the same week"))
+
+                date_begin9_dt_loc = mon_dt_loc + datetime.timedelta(days=self.weekday_begin-1)
+                date_begin9_dt_utc = (date_begin9_dt_loc.astimezone(pytz.utc)).replace(tzinfo=None)
+
+                values['date_begin'] = date_begin9_dt_utc
+                values['date_end'] = date_begin9_dt_utc + datetime.timedelta(minutes=s.duration)
+
+            if values:
+                s.write(values)
+
+        self.responsible_id = False
+        self.attendee_ids = False
+        self.weekday_begin = False
+
         return _reopen(self)
 
     @api.multi
@@ -1648,34 +1706,6 @@ class WizardSessionReschedulePartners(models.TransientModel):
     date_begin = fields.Datetime(string='Start date', required=True, readonly=False)
     duration = fields.Integer(string='Duration', required=True, readonly=False)
 
-    '''
-    @api.onchange('session_id')
-    def onchange_session(self):
-        if len(self.session_id.partner_ids)==1:
-            self.partner_id = self.session_id.partner_ids.partner_id.id
-            self.center_id = self.session_id.center_id.id
-            self.service_id = self.session_id.service_id.id
-            self.ubication_id = self.session_id.service_id.id
-            self.resource_ids = self.session_id.resource_ids
-            self.responsible_id = self.session_id.responsible_id.id
-            self.time_change = False
-            self.date_begin_last = False
-            self.date_begin = self.session_id.date_begin
-            self.duration = self.session_id.duration
-
-        elif len(self.session_id.partner_ids)>1:
-            raise ValidationError(_("Not implemented yet"))
-    '''
-
-    '''
-    @api.multi
-    def unlink(selfs):
-        for self in selfs:
-            if self.is_from_original_session:
-                raise ValidationError(_("This session is from original session and cannot be deleted"))
-            else:
-                super(WizardSessionReschedulePartners, self).unlink()
-    '''
 
 
 class WizardSessionRescheduleSessions(models.TransientModel):
@@ -1704,7 +1734,11 @@ class WizardSessionRescheduleSessions(models.TransientModel):
     #state_new = fields.Datetime(string='New start date', required=False, readonly=False)
 
     source_session_ids = fields.Many2many('ems.session', relation='ems_wizard_reschedule_sessions_source_session_rel')
+    source_session_numbers = fields.Char(string="Source sessions", compute="_compute_source_session_numbers")
 
+    @api.depends('source_session_ids')
+    def _compute_source_session_numbers(self):
+        self.source_session_numbers = ', '.join(self.source_session_ids.mapped('number'))
 
     @api.depends('date_begin')
     def _compute_weekday_begin(self):
@@ -1794,6 +1828,7 @@ class WizardSessionRescheduleSessions(models.TransientModel):
     def _check_date_end(self):
         if self.date_end < self.date_begin:
             raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
+
 
 class WizardMessage(models.TransientModel):
     _name = 'ems.message.wizard'
