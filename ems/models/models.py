@@ -348,7 +348,8 @@ class ems_session(models.Model):
     date_text = fields.Char(compute='_compute_timedate_text')
     time_text = fields.Char(compute='_compute_timedate_text')
 
-    weekday_begin = fields.Char(string='Day of week', compute='_compute_weekday_begin')
+    weekday_begin = fields.Char(string='Day of week', compute='_compute_weekdata_begin')
+    weekyear_begin = fields.Integer(string='Week of year', compute="_compute_weekdata_begin")
 
     reason = fields.Char(string='Reason', required=False, readonly=False, copy=False)
 
@@ -421,6 +422,12 @@ class ems_session(models.Model):
 
         return du3_utc
 
+    def _get_additional_message(self):
+        msg = self.env.context.get('additional_message', False)
+        if msg:
+            return ' %s' % msg
+        else:
+            return ''
 
     @api.depends('state')
     def _compute_num_pending_sessions(selfs):
@@ -442,12 +449,13 @@ class ems_session(models.Model):
                 self.has_description = False
 
     @api.depends('date_begin')
-    def _compute_weekday_begin(selfs):
+    def _compute_weekdata_begin(selfs):
         for self in selfs:
             #dt = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
             #self.weekday_begin = dt.isoweekday()
             date_begin_dt_loc = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
             self.weekday_begin = babel.dates.format_date(date_begin_dt_loc, format='EEEE', locale=self.env.lang).capitalize()
+            self.weekyear_begin = babel.dates.format_date(date_begin_dt_loc, format='w', locale=self.env.lang)
 
     @api.depends('date_begin', 'date_end')
     def _compute_timedate_text(selfs):
@@ -728,10 +736,10 @@ class ems_session(models.Model):
     def _check_all(self):
         # check number of atendees
         if self.service_id.max_attendees>=0 and len(self.partner_ids)>self.service_id.max_attendees:
-            raise ValidationError(_('Too many attendees, maximum of %i') % self.service_id.max_attendees)
+            raise ValidationError((_('Too many attendees, maximum of %i') % self.service_id.max_attendees)  + self._get_additional_message())
 
         if self.service_id.min_attendees>len(self.partner_ids):
-            raise ValidationError(_('It requieres %i attendees minimum') % self.service_id.min_attendees)
+            raise ValidationError((_('It requieres %i attendees minimum') % self.service_id.min_attendees) + self._get_additional_message() )
 
         # comprovem que la sessio no te cap forces session anteriro o posterior
         for ep in self.partner_ids:
@@ -743,7 +751,7 @@ class ems_session(models.Model):
                                        x.session_id.date_begin<self.date_begin
                                     )
                 if len(sessions_ant)!=0:
-                    raise ValidationError(_("Only the first session can have a forced session."))
+                    raise ValidationError(_("Only the first session can have a forced session.") + self._get_additional_message())
             else:
                 sessions_ant = self.env['ems.partner'].search([('partner_id','=', ep.partner_id.id)]).\
                     filtered(lambda x: x.session_id.center_id==self.center_id and
@@ -753,7 +761,7 @@ class ems_session(models.Model):
                                        x.session_id.date_begin>self.date_begin
                                     )
                 if len(sessions_ant)!=0:
-                    raise ValidationError(_("It's not allowed to have a session before another one with forced session."))
+                    raise ValidationError(_("It's not allowed to have a session before another one with forced session.") + self._get_additional_message())
 
 
 
@@ -771,7 +779,7 @@ class ems_session(models.Model):
 
 
             if len(sessions)!=0: #hi ha solapaments
-                raise ValidationError(_("There's another session in selected ubication"))
+                raise ValidationError(_("There's another session in selected ubication") + self._get_additional_message())
 
             return
 
@@ -792,7 +800,7 @@ class ems_session(models.Model):
                     ('ubication_id', '=', self.ubication_id.id)
                 ])
         if len(sessions)!=0: #hi ha solapaments
-            raise ValidationError(_("There's another session in selected ubication"))
+            raise ValidationError(_("There's another session in selected ubication") + self._get_additional_message())
 
 
         ## que se solapin amb algun dels recursos usats en la sessio en curs
@@ -812,7 +820,7 @@ class ems_session(models.Model):
             if usats:
                 break
         if usats:
-           raise ValidationError(_("There's another session using the same resources"))
+           raise ValidationError(_("There's another session using the same resources") + self._get_additional_message())
 
         ## que se solapin amb el mateix entrenador
         sessions = self.env['ems.session'].search([
@@ -824,7 +832,7 @@ class ems_session(models.Model):
                 ('responsible_id', '=', self.responsible_id.id)
             ])
         if len(sessions)!=0: #hi ha solapaments
-            raise ValidationError(_("There's another session with selected responsible"))
+            raise ValidationError(_("There's another session with selected responsible") + self._get_additional_message())
 
         ## que se solapin amb el algun client
         sessions = self.env['ems.session'].search([
@@ -843,7 +851,7 @@ class ems_session(models.Model):
             if usats:
                 break
         if usats:
-           raise ValidationError(_("There's another session with selected customer"))
+           raise ValidationError(_("There's another session with selected customer") + self._get_additional_message())
 
 
     @api.constrains('state')
@@ -855,7 +863,7 @@ class ems_session(models.Model):
     def _check_date_end(self):
         # check dates
         if self.date_end < self.date_begin:
-            raise ValidationError(_('Closing Date cannot be set before Beginning Date'))
+            raise ValidationError(_('Closing Date cannot be set before Beginning Date')  + self._get_additional_message())
 
         self._onchange_date_end()
 
@@ -865,8 +873,7 @@ class ems_session(models.Model):
     def _check_session(self):
         #check state
         if self.state!='draft':
-            raise ValidationError(_('You can only change a draft session'))
-
+            raise ValidationError(_('You can only change a draft session')  + self._get_additional_message())
 
 
     @api.multi
@@ -1522,13 +1529,16 @@ class WizardSessionReschedule(models.TransientModel):
                 date_begin_dt_loc = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(s.date_begin))
                 weekday_loc = date_begin_dt_loc.isoweekday()
                 mon_dt_loc = date_begin_dt_loc - datetime.timedelta(days=weekday_loc-1)
+
+                """
+                # comprovrm que no hi hagi cap en la mateixa setmana ni pendent de canviar en la llista
                 mon_dt_loc0 = mon_dt_loc.replace(hour=0, minute=0, second=0)
                 sun_dt_loc0 = mon_dt_loc.replace(hour=23, minute=59, second=59) + datetime.timedelta(days=7-1)
 
                 mon_str_utc0 = fields.Datetime.to_string((mon_dt_loc0.astimezone(pytz.utc)).replace(tzinfo=None))
                 sun_str_utc0 = fields.Datetime.to_string((sun_dt_loc0.astimezone(pytz.utc)).replace(tzinfo=None))
 
-                sessions = self.env['ems.partner'].search([('session_id.id', 'not in', s.source_session_ids.mapped('id')),
+                sessions0 = self.env['ems.partner'].search([('session_id.id', 'not in', self.session_ids.mapped('source_session_ids.id')),
                                                            ('session_id.state', '=', 'confirmed'),
                                                            ('session_id.center_id', '=', s.center_id.id),
                                                            ('session_id.service_id.is_ems', '=', True),
@@ -1536,8 +1546,19 @@ class WizardSessionReschedule(models.TransientModel):
                                                            ('session_id.date_begin', '<=', sun_str_utc0),
                                                            ('partner_id', 'in', s.partner_ids.mapped('id'))
                                                           ]).mapped('session_id')
-                if len(sessions)>1:
-                    raise ValidationError(_("There's more than one session in the same week"))
+                if len(sessions0)>0:
+                    raise ValidationError(_("Group %i: There's more than one session in the same week not listed here.") % s.group)
+
+                sessions1 = self.session_ids.filtered(lambda x: x.group!=s.group and
+                                                                x.center_id.id==s.center_id.id and
+                                                                x.service_id.is_ems==x.service_id.is_ems and
+                                                                x.date_begin>=mon_str_utc0 and
+                                                                x.date_begin<=sun_str_utc0 and
+                                                                x.partner_ids.id in s.partner_ids.mapped('id')
+                                                      )
+                if len(sessions1)>0:
+                    raise ValidationError(_("Group %i: There's more than one session in the same week listed here.") % s.group)
+                """
 
                 date_begin9_dt_loc = mon_dt_loc + datetime.timedelta(days=self.weekday_begin-1)
                 date_begin9_dt_utc = (date_begin9_dt_loc.astimezone(pytz.utc)).replace(tzinfo=None)
@@ -1642,7 +1663,7 @@ class WizardSessionReschedule(models.TransientModel):
                 vals['description'] = '\n'.join(description_l)
 
             ## creem la sessio
-            session9 = self.env['ems.session'].create(vals)
+            session9 = self.env['ems.session'].with_context(additional_message='[Group %i]' % s.group).create(vals)
 
             ## creem els vincles i les dades en les sessions source
             for s_src in s.source_session_ids:
@@ -1723,11 +1744,12 @@ class WizardSessionRescheduleSessions(models.TransientModel):
     responsible_id = fields.Many2one('ems.responsible', string="Responsible", required=True)
 
     date_helper = fields.Boolean(string='Date helper')
-    date_begin_last = fields.Datetime(string='Last start date', help="Last session start date. If there's more than one attendees this date corresponds to the most recent session", required=False, readonly=True)
+    date_begin_last = fields.Datetime(string='Last start date', help="Last session start date. If there's more than one attendees this date corresponds to the later session", required=False, readonly=True)
     weeks = fields.Integer(string='Weeks', help='Number of weeks after last session', required=True, readonly=False, default=1)
     allow_past_date = fields.Boolean(string='Allow past date', help='Allows reschedule sessions in the past', default=False)
     date_begin = fields.Datetime(string='Start date', required=True, readonly=False)
-    weekday_begin = fields.Char(string='Day of week', compute="_compute_weekday_begin")
+    weekday_begin = fields.Char(string='Day of week', compute="_compute_weekdata")
+    weekyear_begin = fields.Integer(string='Week of year', compute="_compute_weekdata")
     date_end = fields.Datetime(string='End date', required=True, readonly=False)
     duration = fields.Integer(string='Duration', required=True, readonly=False)
 
@@ -1736,14 +1758,18 @@ class WizardSessionRescheduleSessions(models.TransientModel):
     source_session_ids = fields.Many2many('ems.session', relation='ems_wizard_reschedule_sessions_source_session_rel')
     source_session_numbers = fields.Char(string="Source sessions", compute="_compute_source_session_numbers")
 
+
     @api.depends('source_session_ids')
-    def _compute_source_session_numbers(self):
-        self.source_session_numbers = ', '.join(self.source_session_ids.mapped('number'))
+    def _compute_source_session_numbers(selfs):
+        for self in selfs:
+            self.source_session_numbers = ', '.join(self.source_session_ids.mapped('number'))
 
     @api.depends('date_begin')
-    def _compute_weekday_begin(self):
-        date_begin_dt_loc = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
-        self.weekday_begin = babel.dates.format_date(date_begin_dt_loc, format='EEEE', locale=self.env.lang).capitalize()
+    def _compute_weekdata(selfs):
+        for self in selfs:
+            date_begin_dt_loc = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(self.date_begin))
+            self.weekday_begin = babel.dates.format_date(date_begin_dt_loc, format='EEEE', locale=self.env.lang).capitalize()
+            self.weekyear_begin = babel.dates.format_date(date_begin_dt_loc, format='w', locale=self.env.lang)
 
     @api.onchange('service_id')
     def onchange_service(self):
@@ -1818,10 +1844,17 @@ class WizardSessionRescheduleSessions(models.TransientModel):
                     date_begin_last0 = fields.Datetime.to_string(now)
 
             self.date_begin = fields.Datetime.from_string(date_begin_last0) + datetime.timedelta(days=self.weeks*7)
+
+        '''
         else:
+            pass
             self.date_begin_last = False
-            self.date_begin = self.source_session_ids[0].date_begin
-            self.date_end = self.source_session_ids[0].date_end
+            self.date_begin = self.env.context['old']['date_begin']
+            self.duration = self.env.context['old']['duration']
+            self.date_end = self.date_begin +  datetime.timedelta(minutes=self.duration)
+            del self.env.context['old']
+        '''
+
 
 
     @api.constrains('date_begin', 'date_end')
