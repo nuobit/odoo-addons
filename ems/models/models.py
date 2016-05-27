@@ -294,7 +294,7 @@ class ems_session(models.Model):
                        default=lambda self: self.env['ir.sequence'].get('ems.session.sequence.type'),
                        copy=False)
     description = fields.Text(string='Description', #translate=True,
-        readonly=False)
+        readonly=False, track_visibility='onchange')
 
     has_description = fields.Boolean(string='Note?', compute='_compute_has_description')
 
@@ -309,20 +309,20 @@ class ems_session(models.Model):
 
     center_id = fields.Many2one('ems.center', string='Center', default=lambda self: self.env.user.center_id,
                                 ondelete='restrict',
-                                required=True, readonly=False)
+                                required=True, readonly=False, track_visibility='onchange')
 
     responsible_id = fields.Many2one('ems.responsible', string='Responsible',
                                      ondelete='restrict',
-                                     required=False, readonly=False)
+                                     required=False, readonly=False, track_visibility='onchange')
 
-    partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id', copy=True)
+    partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id', copy=True, track_visibility='onchange')
 
     partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True, store=False, translate=False,
                                search='_search_partner_text')
 
     service_id = fields.Many2one('ems.service', string='Service',
                                  ondelete='restrict',
-                                 required=True, readonly=False)
+                                 required=True, readonly=False, track_visibility='onchange')
     is_meeting = fields.Boolean(related='service_id.is_meeting', store=False)
 
 
@@ -330,20 +330,20 @@ class ems_session(models.Model):
 
     ubication_id = fields.Many2one('ems.ubication', string='Ubication',
                                    ondelete='restrict',
-                                   required=True, readonly=False)
+                                   required=True, readonly=False, track_visibility='onchange')
 
     is_all_center = fields.Boolean(related='ubication_id.is_all_center', store=False)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
-        required=False, readonly=False, copy=True)
+        required=False, readonly=False, copy=True, track_visibility='onchange')
 
-    duration = fields.Integer(string='Duration', required=True)
+    duration = fields.Integer(string='Duration', required=True, track_visibility='onchange')
 
 
     date_begin = fields.Datetime(string='Start Date', required=True, default=fields.datetime.now().replace(second=0, microsecond=0),
-        readonly=False)
+        readonly=False, track_visibility='onchange')
     date_end = fields.Datetime(string='End Date', required=True,
-        readonly=False)
+        readonly=False, track_visibility='onchange')
 
     date_text = fields.Char(compute='_compute_timedate_text')
     time_text = fields.Char(compute='_compute_timedate_text')
@@ -351,7 +351,7 @@ class ems_session(models.Model):
     weekday_begin = fields.Char(string='Day of week', compute='_compute_weekdata_begin')
     weekyear_begin = fields.Integer(string='Week of year', compute="_compute_weekdata_begin")
 
-    reason = fields.Char(string='Reason', required=False, readonly=False, copy=False)
+    reason = fields.Char(string='Reason', required=False, readonly=False, copy=False, track_visibility='onchange')
 
     source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False) #, ondelete='restrict')
     source_session_ids = fields.Many2many('ems.session', relation="ems_source_session_rel",
@@ -370,13 +370,13 @@ class ems_session(models.Model):
     num_pending_sessions = fields.Integer(string='Pending', compute='_compute_num_pending_sessions')
 
 
-    out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False, copy=False)
+    out_of_time = fields.Boolean(string='Out of time', help='The attendee rescheduled a session out of time', default=False, copy=False, track_visibility='onchange')
 
-    delayed_session = fields.Boolean(string='Delayed session', help='Indicates if the session has started with delay', default=False, copy=False)
+    delayed_session = fields.Boolean(string='Delayed session', help='Indicates if the session has started with delay', default=False, copy=False, track_visibility='onchange')
 
-    date_begin_actual = fields.Datetime(string='Actual start date', required=False, readonly=False, copy=False)
+    date_begin_actual = fields.Datetime(string='Actual start date', required=False, readonly=False, copy=False, track_visibility='onchange')
 
-    delay_reason = fields.Char(string='Delay reason', required=False, readonly=False, copy=False)
+    delay_reason = fields.Char(string='Delay reason', required=False, readonly=False, copy=False, track_visibility='onchange')
 
     state = fields.Selection([
             ('draft', 'Draft'),
@@ -385,8 +385,7 @@ class ems_session(models.Model):
             ('reschedulepending', 'Reschedule pending'),
             ('schedulepending', 'Schedule pending'),
             ('confirmed', 'Confirmed'),
-        ], string='Status', default='draft', readonly=True, required=True, copy=False,
-        help="If session is created, the status is 'Draft'. If session is confirmed for the particular dates the status is set to 'Confirmed'. If the session is over, the status is set to 'Done'. If session is cancelled the status is set to 'Cancelled'.")
+        ], string='Status', default='draft', readonly=True, required=True, copy=False, track_visibility='onchange')
 
     _sql_constraints = [('number_session_unique', 'unique(number)',_("Number duplicated"))]
 
@@ -858,6 +857,14 @@ class ems_session(models.Model):
     def _check_state(self):
         if self.state == 'confirmed':
             self._check_all()
+
+        #self.message_post(body='msg', subject='yy', type='notification', subtype="calendar.subtype_invitation")
+        #self.message_post(type='notification')
+        #def message_post(self, cr, uid, thread_id, body='', subject=None, type='notification', subtype=None, parent_id=False, attachments=None, context=None, **kwargs):
+        #meeting_obj.message_post(cr, uid, attendee.event_id.id, body=_(("%s has accepted invitation") % (attendee.cn)),
+        #self.message_post(cr, uid, event.id, body=_("An invitation email has been sent to attendee %s") % (partner.name,), subtype="calendar.subtype_invitation", context=context)
+        #self.post.sudo(self.user_portal).message_post(body='Should crash', type='comment')
+        #self.post.sudo(self.user_employee).message_post(body='Test0', type='notification')
 
     @api.constrains('date_begin', 'date_end')
     def _check_date_end(self):

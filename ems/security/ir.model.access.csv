@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_ems_session_sale_manager,ems session sale manager,model_ems_session,base.group_sale_manager,1,1,1,1
-access_ems_session_salesman,ems session salesman,model_ems_session,base.group_sale_salesman,1,1,1,1
+access_ems_session_salesman,ems session salesman,model_ems_session,base.group_sale_salesman,1,1,1,0
 
 access_ems_partner_manager,ems partner sale manager,model_ems_partner,base.group_sale_manager,1,1,1,1
 access_ems_partner_salesman,ems partner salesman,model_ems_partner,base.group_sale_salesman,1,1,1,1
