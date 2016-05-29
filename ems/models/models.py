@@ -2367,8 +2367,10 @@ class ParticularEMSReportResponsibleSessions(models.AbstractModel):
             w = []
             t = {}
             for session_l in overlaps:
-                date_begin_dt = fields.Datetime.from_string(session_l[0].date_begin)
-                date_end_dt =fields.Datetime.from_string(session_l[-1].date_end)
+                #date_begin_dt = fields.Datetime.from_string(session_l[0].date_begin)
+                date_begin_dt = min(map(fields.Datetime.from_string, session_l.mapped('date_begin')))
+                #date_end_dt =fields.Datetime.from_string(session_l[-1].date_end)
+                date_end_dt = max(map(fields.Datetime.from_string, session_l.mapped('date_end')))
                 duration_td =  date_end_dt - date_begin_dt
                 duration = duration_td.days*24*60 + duration_td.seconds/60
                 if len(session_l)==1 and session_l[0].duration!=duration:
