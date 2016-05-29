@@ -1833,7 +1833,7 @@ class WizardSessionReschedule(models.TransientModel):
 class WizardSessionReschedulePartners(models.TransientModel):
     _name = 'ems.session.reschedule.partners.wizard'
 
-    reschedule_id = fields.Many2one(comodel_name='ems.session.reschedule.wizard')
+    reschedule_id = fields.Many2one(comodel_name='ems.session.reschedule.wizard', ondelete='cascade')
 
     group = fields.Integer('Group', required=True)
 
