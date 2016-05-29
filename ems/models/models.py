@@ -896,9 +896,7 @@ class ems_session(models.Model):
         tzh = '%s:%s' % (tzh[:3], tzh[3:])
         return '%s %s' % (d, tzh)
 
-    @api.multi
-    def write(self, vals):
-
+    def _post_messages(self, vals, type='write'):
         msg1 = []
         for field, v in vals.items():
             if field=='partner_ids': # one2many
@@ -957,7 +955,7 @@ class ems_session(models.Model):
                     field_value = ', '.join(self.resource_ids.mapped('display_name'))
                     field_value9 = ', '.join(self.env['ems.resource'].browse(v1).mapped('display_name'))
                     prefix = '&#8226; <b>%s:</b>' % self.fields_get(field)[field]['string']
-                    if self.resource_ids:
+                    if self.resource_ids and type == 'write':
                         msg1.append("%s %s &#8594; %s" % (prefix, field_value, field_value9))
                     else:
                         msg1.append("%s %s" % (prefix, field_value9))
@@ -965,7 +963,7 @@ class ems_session(models.Model):
                 field_value = getattr(self, field)
                 field_value9 = vals[field]
                 prefix = '&#8226; <b>%s:</b>' % self.fields_get(field)[field]['string']
-                if field_value:
+                if field_value and type == 'write':
                     if field_value9:
                         msg1.append("%s %s &#8594; %s" % (prefix, self._dtnaive2loc(field_value), self._dtnaive2loc(field_value9)))
                     else:
@@ -975,6 +973,17 @@ class ems_session(models.Model):
 
         if msg1:
             self.message_post(body=''.join(map(lambda x: '<div>%s</div>' % x, msg1)))
+
+    @api.model
+    def create(self, vals):
+        rec = super(ems_session, self).create(vals)
+        rec._post_messages(vals, type='create')
+
+        return rec
+
+    @api.multi
+    def write(self, vals):
+        self._post_messages(vals)
 
         return super(ems_session, self).write(vals)
 
@@ -986,6 +995,7 @@ class ems_session(models.Model):
                 if rec.source_session_ids:
                     raise ValidationError(_("This session is linked to sessions '%s', deal with them before.") % rec.source_numbers)
                 else:
+
                     super(ems_session, rec).unlink()
             else:
                 raise ValidationError(_('You can only delete a draft session'))
@@ -1823,7 +1833,7 @@ class WizardSessionReschedule(models.TransientModel):
 class WizardSessionReschedulePartners(models.TransientModel):
     _name = 'ems.session.reschedule.partners.wizard'
 
-    reschedule_id = fields.Many2one(comodel_name='ems.session.reschedule.wizard', ondelete='cascade')
+    reschedule_id = fields.Many2one(comodel_name='ems.session.reschedule.wizard')
 
     group = fields.Integer('Group', required=True)
 
@@ -2008,7 +2018,8 @@ class WizardMessage(models.TransientModel):
 
         for t in self.env['ems.session'].browse(ids_tmp):
             t.source_session_ids = [(5, 0, 0)]
-            t.unlink()
+            # el sudo es perque algu sense permisos pugui esboorar una sessio fent el proces
+            t.sudo().unlink()
 
         session_id.state = 'draft'
 
