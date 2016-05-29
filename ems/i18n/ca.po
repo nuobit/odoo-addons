@@ -1015,7 +1015,7 @@ msgstr "Assistent"
 #: field:ems.session,partner_ids:0
 #: field:ems.session.reschedule.wizard,partner_ids:0
 msgid "Partner ids"
-msgstr "Partner ids"
+msgstr "Assistents"
 
 #. module: ems
 #: selection:ems.responsible,color:0
