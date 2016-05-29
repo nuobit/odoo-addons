@@ -1837,16 +1837,16 @@ class WizardSessionReschedulePartners(models.TransientModel):
 
     group = fields.Integer('Group', required=True)
 
-    session_id = fields.Many2one('ems.session', string="Session", required=True, domain=[('state', 'in', ('confirmed', 'reschedulepending'))])
+    session_id = fields.Many2one('ems.session', string="Session", domain=[('state', 'in', ('confirmed', 'reschedulepending'))]) #required=True
 
     number = fields.Char(string="Session")
 
-    center_id = fields.Many2one('ems.center', string='Center', required=True)
-    partner_id = fields.Many2one('res.partner', string="Attendee", required=True)
-    service_id = fields.Many2one('ems.service', string="Service", required=True)
-    ubication_id = fields.Many2one('ems.ubication', string="Ubication", required=True)
-    resource_ids = fields.Many2many('ems.resource', string="Resources", required=False)
-    responsible_id = fields.Many2one('ems.responsible', string="Responsible", required=True)
+    center_id = fields.Many2one('ems.center', string='Center') #, required=True)
+    partner_id = fields.Many2one('res.partner', string="Attendee") #, required=True)
+    service_id = fields.Many2one('ems.service', string="Service") #, required=True)
+    ubication_id = fields.Many2one('ems.ubication', string="Ubication") #, required=True)
+    resource_ids = fields.Many2many('ems.resource', string="Resources") #, required=False)
+    responsible_id = fields.Many2one('ems.responsible', string="Responsible") #, required=True)
     date_begin = fields.Datetime(string='Start date', required=True, readonly=False)
     duration = fields.Integer(string='Duration', required=True, readonly=False)
 
