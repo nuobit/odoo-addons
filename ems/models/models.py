@@ -293,8 +293,7 @@ class ems_session(models.Model):
     number = fields.Char(string='Number', required=True, readonly=True,
                        default=lambda self: self.env['ir.sequence'].get('ems.session.sequence.type'),
                        copy=False)
-    description = fields.Text(string='Description', #translate=True,
-        readonly=False, track_visibility='onchange')
+    description = fields.Text(string='Description', readonly=False, track_visibility='onchange')
 
     has_description = fields.Boolean(string='Note?', compute='_compute_has_description')
 
@@ -315,7 +314,7 @@ class ems_session(models.Model):
                                      ondelete='restrict',
                                      required=False, readonly=False, track_visibility='onchange')
 
-    partner_ids = fields.One2many(comodel_name='ems.partner', inverse_name='session_id', copy=True, track_visibility='onchange')
+    partner_ids = fields.One2many(comodel_name='ems.partner', string="Attendees", inverse_name='session_id', copy=True)
 
     partner_text = fields.Char(string='Attendees', compute='_compute_auxiliar_text', readonly=True, store=False, translate=False,
                                search='_search_partner_text')
@@ -335,15 +334,15 @@ class ems_session(models.Model):
     is_all_center = fields.Boolean(related='ubication_id.is_all_center', store=False)
 
     resource_ids = fields.Many2many('ems.resource', string='Resources',
-        required=False, readonly=False, copy=True, track_visibility='onchange')
+        required=False, readonly=False, copy=True)
 
     duration = fields.Integer(string='Duration', required=True, track_visibility='onchange')
 
 
     date_begin = fields.Datetime(string='Start Date', required=True, default=fields.datetime.now().replace(second=0, microsecond=0),
-        readonly=False, track_visibility='onchange')
+        readonly=False) #, track_visibility='onchange')
     date_end = fields.Datetime(string='End Date', required=True,
-        readonly=False, track_visibility='onchange')
+        readonly=False) #, track_visibility='onchange')
 
     date_text = fields.Char(compute='_compute_timedate_text')
     time_text = fields.Char(compute='_compute_timedate_text')
@@ -374,7 +373,7 @@ class ems_session(models.Model):
 
     delayed_session = fields.Boolean(string='Delayed session', help='Indicates if the session has started with delay', default=False, copy=False, track_visibility='onchange')
 
-    date_begin_actual = fields.Datetime(string='Actual start date', required=False, readonly=False, copy=False, track_visibility='onchange')
+    date_begin_actual = fields.Datetime(string='Actual start date', required=False, readonly=False, copy=False) #, track_visibility='onchange')
 
     delay_reason = fields.Char(string='Delay reason', required=False, readonly=False, copy=False, track_visibility='onchange')
 
@@ -881,6 +880,97 @@ class ems_session(models.Model):
         #check state
         if self.state!='draft':
             raise ValidationError(_('You can only change a draft session')  + self._get_additional_message())
+
+    def _dtnaive2loc(self, dt0):
+        dt = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(dt0))
+        d = babel.dates.format_datetime(dt, 'medium', locale=self.env.user.lang)
+        d = d.replace(".",":")
+        tzh = babel.dates.format_datetime(dt, 'Z', locale=self.env.user.lang)
+        #tzh = '%s:%s %s' % (tzh[:3], tzh[3:],  self.env.context.get('tz'))
+        tzh = '%s:%s' % (tzh[:3], tzh[3:])
+        return '%s %s' % (d, tzh)
+
+    @api.multi
+    def write(self, vals):
+
+        msg1 = []
+        for field, v in vals.items():
+            if field=='partner_ids': # one2many
+                msg = []
+                for op, id, v1 in v:
+                    a=[]
+                    partstr = ''
+                    if op == 0: # afegir
+                        if 'partner_id' in v1:
+                            field_name = self.partner_ids.fields_get('partner_id')['partner_id']['string']
+                            field_value = self.env['res.partner'].browse(v1['partner_id']).display_name
+                            a.append('<i>%s</i>: %s' % (field_name, field_value))
+                        if 'num_session' in v1:
+                            field_name = self.partner_ids.fields_get('num_session')['num_session']['string']
+                            a.append('<i>%s</i>: %s' % (field_name, v1['num_session']))
+                        if 'force_session' in v1:
+                            field_name = self.partner_ids.fields_get('force_session')['force_session']['string']
+                            a.append('<i>%s</i>: %s' % (field_name, v1['force_session']))
+                        msg.append('<li type="circle">%s</li>' % ', '.join(a))
+                    elif op == 2: # esborrar
+                        field_name = self.partner_ids.fields_get('partner_id')['partner_id']['string']
+                        field_value = self.partner_ids.browse([id]).partner_id.display_name
+                        a.append('<i>%s</i>: %s' % (field_name, field_value))
+                        field_name = self.partner_ids.fields_get('num_session')['num_session']['string']
+                        field_value = self.partner_ids.browse([id]).num_session
+                        a.append('<i>%s</i>: %s' % (field_name, field_value))
+                        field_name = self.partner_ids.fields_get('force_session')['force_session']['string']
+                        field_value = self.partner_ids.browse([id]).force_session
+                        a.append('<i>%s</i>: %s' % (field_name, field_value))
+                        msg.append('<li type="circle">%s &#8594;</li>' % ', '.join(a))
+                    elif op == 1: # modificar
+                        if 'partner_id' in v1:
+                            field_name = self.partner_ids.fields_get('partner_id')['partner_id']['string']
+                            field_value = self.partner_ids.filtered(lambda x: x.id==id).partner_id.display_name
+                            field_value9 = self.env['res.partner'].browse(v1['partner_id']).display_name
+                            a.append('<i>%s</i>: %s &#8594; %s' % (field_name, field_value, field_value9))
+                        else:
+                            field_value = self.partner_ids.filtered(lambda x: x.id==id).partner_id.display_name
+                            partstr = '(%s)' % field_value
+                        if 'num_session' in v1:
+                            field_name = self.partner_ids.fields_get('num_session')['num_session']['string']
+                            field_value = self.partner_ids.filtered(lambda x: x.id==id).num_session
+                            field_value9 = v1['num_session']
+                            a.append('<i>%s</i>: %s &#8594; %s' % (field_name, field_value, field_value9))
+                        if 'force_session' in v1:
+                            field_name = self.partner_ids.fields_get('force_session')['force_session']['string']
+                            field_value = self.partner_ids.filtered(lambda x: x.id==id).force_session
+                            field_value9 = v1['force_session']
+                            a.append('<i>%s</i>: %s &#8594; %s' % (field_name, field_value, field_value9))
+                        msg.append('<li type="circle">%s</li>' % ' '.join([', '.join(a), partstr]))
+                if msg:
+                    msg1.append("&#8226; <b>%s:</b> <ul>%s</ul>" % (self.fields_get(field)[field]['string'], ''.join(msg)))
+            elif field=='resource_ids': # many2many
+                op, id, v1 = v[0] # es un form i nomes potr haver un valor, ultivaluat peri un valor
+                if op == 6:
+                    field_value = ', '.join(self.resource_ids.mapped('display_name'))
+                    field_value9 = ', '.join(self.env['ems.resource'].browse(v1).mapped('display_name'))
+                    prefix = '&#8226; <b>%s:</b>' % self.fields_get(field)[field]['string']
+                    if self.resource_ids:
+                        msg1.append("%s %s &#8594; %s" % (prefix, field_value, field_value9))
+                    else:
+                        msg1.append("%s %s" % (prefix, field_value9))
+            elif field in ('date_begin', 'date_end', 'date_begin_actual'): #dates basiques pel tema del tz que no el posa als msg
+                field_value = getattr(self, field)
+                field_value9 = vals[field]
+                prefix = '&#8226; <b>%s:</b>' % self.fields_get(field)[field]['string']
+                if field_value:
+                    if field_value9:
+                        msg1.append("%s %s &#8594; %s" % (prefix, self._dtnaive2loc(field_value), self._dtnaive2loc(field_value9)))
+                    else:
+                        msg1.append("%s %s &#8594;" % (prefix, self._dtnaive2loc(field_value)))
+                else:
+                    msg1.append("%s %s" % (prefix, self._dtnaive2loc(field_value9)))
+
+        if msg1:
+            self.message_post(body=''.join(map(lambda x: '<div>%s</div>' % x, msg1)))
+
+        return super(ems_session, self).write(vals)
 
 
     @api.multi
