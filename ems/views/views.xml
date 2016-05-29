@@ -31,7 +31,7 @@
             <field name="arch" type="xml">
                 <tree string="Sessions"
                       fonts="bold:state=='confirmed'"
-                      colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';darkorange:state=='schedulepending';grey:state in ('cancel')">
+                      colors="blue:state=='draft';lightgray:state=='invalid';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';darkorange:state=='schedulepending';grey:state in ('cancel')">
                     <field name="number"/>
                     <field name="source_numbers"/>
                     <field name="service_id"/>
@@ -63,7 +63,7 @@
                         <button string="Confirm" name="button_confirm" states="draft" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
                         <button string="Draft" name="button_draft"
-                                states="confirmed,reschedulepending,rescheduled,schedulepending,cancelled"
+                                states="invalid,confirmed,reschedulepending,rescheduled,schedulepending,cancelled"
                                 type="object"
                                 groups="base.group_user"/>
                         <button string="Reschedule" name="button_reschedule" states="confirmed,reschedulepending"
@@ -79,9 +79,11 @@
                                 groups="base.group_user"/>
                         <button string="Schedule" name="button_schedule" states="confirmed" type="object"
                                 groups="base.group_user"/>
+                        <button string="Invalidate" name="button_invalidate" states="draft" type="object"
+                                groups="base.group_user"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,confirmed,schedulepending,reschedulepending,rescheduled,cancelled"
-                               statusbar_colors='{"draft":"blue", "confirmed":"green", "schedulepending":"darkorange", "reschedulepending":"firebrick",
+                               statusbar_visible="draft,invalid,confirmed,schedulepending,reschedulepending,rescheduled,cancelled"
+                               statusbar_colors='{"draft":"blue", "invalid":"lightgray", "confirmed":"green", "schedulepending":"darkorange", "reschedulepending":"firebrick",
                                                   "rescheduled":"purple", "cancelled":"grey"}'/>
                     </header>
                     <sheet>
@@ -256,6 +258,9 @@
                     <filter string="Schedule pending" name="schedulepending"
                             domain="[('state','=','schedulepending')]"
                             help="Schedule Pending Sessions"/>
+                    <filter string="Invalid" name="invalid"
+                            domain="[('state','=','invalid')]"
+                            help="Invalid Sessions"/>
                     <field name="partner_text" string="Attendees"/>
                     <field name="responsible_id"/>
                     <field name="description"/>
@@ -1004,7 +1009,7 @@
                     <group string="Source sessions">
                         <field name="source_session_ids" nolabel="1" readonly="1">
                             <tree fonts="bold:state=='confirmed'"
-                                  colors="blue:state=='draft';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';darkorange:state=='schedulepending';grey:state in ('cancel')">
+                                  colors="blue:state=='draft';lightgray:state=='invalid';green:state=='confirmed';purple:state=='rescheduled';firebrick:state=='reschedulepending';darkorange:state=='schedulepending';grey:state in ('cancel')">
                                 <field name="number"/>
                                 <field name="service_id"/>
                                 <field name="weekday_begin"/>

@@ -379,6 +379,7 @@ class ems_session(models.Model):
 
     state = fields.Selection([
             ('draft', 'Draft'),
+            ('invalid', 'Invalid'),
             ('cancelled', 'Cancelled'),
             ('rescheduled', 'Rescheduled'),
             ('reschedulepending', 'Reschedule pending'),
@@ -586,6 +587,7 @@ class ems_session(models.Model):
     def button_schedule_pending(self):
         self.state = 'schedulepending'
 
+
     @api.multi
     def button_confirm(self):
         self.state = 'confirmed'
@@ -625,6 +627,12 @@ class ems_session(models.Model):
             'target': 'new',
             #'context': context,
         }
+
+
+    @api.multi
+    def button_invalidate(self):
+        self.state = 'invalid'
+
 
     @api.depends('partner_ids', 'responsible_id','partner_ids.partner_id', 'partner_ids.partner_id.name')
     def _compute_auxiliar_text(selfs):
