@@ -352,14 +352,12 @@ class ems_session(models.Model):
 
     reason = fields.Char(string='Reason', required=False, readonly=False, copy=False, track_visibility='onchange')
 
-    source_session_id = fields.Many2one('ems.session', string="Source session", readonly=True, copy=False) #, ondelete='restrict')
     source_session_ids = fields.Many2many('ems.session', relation="ems_source_session_rel",
                                           column1="session_id", column2="source_session_id",
                                           string="Source sessions", readonly=True, copy=False)
 
     source_numbers = fields.Char(compute='_compute_source_numbers', string="Sources")
 
-    target_session_id = fields.Many2one('ems.session', string="Target session", readonly=True, copy=False) #, ondelete='restrict')
     target_session_ids = fields.Many2many('ems.session', relation="ems_target_session_rel",
                                           column1="session_id", column2="target_session_id",
                                           string="Target sessions", readonly=True, copy=False)
@@ -2074,7 +2072,7 @@ class WizardSessionPrint(models.TransientModel):
 class WizardSessionSchedule(models.TransientModel):
     _name = 'ems.session.schedule.wizard'
 
-    session_id = fields.Many2one('ems.session', required=False)
+    session_id = fields.Many2one('ems.session', string='Session', required=False)
 
     num_sessions = fields.Integer(string='Number of sessions', help="Number of session to schedule", required=True)
     days = fields.Integer(string='Day interval', help="Days between sessions", required=True)

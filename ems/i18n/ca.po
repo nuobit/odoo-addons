@@ -1284,6 +1284,8 @@ msgstr "Serveis"
 
 #. module: ems
 #: field:ems.partner,num_session_forced:0
+#: field:ems.partner,session_id:0
+#: field:ems.session.schedule.wizard,session_id:0
 #: field:ems.session.reschedule.partners.wizard,number:0
 #: field:ems.session.reschedule.partners.wizard,session_id:0
 #: field:ems.session.reschedule.wizard,session_id:0
@@ -1301,12 +1303,6 @@ msgstr "Descripció de la sessió..."
 #: view:ems.session:ems.view_ems_session_calendar
 msgid "Session Organization"
 msgstr "Session Organization"
-
-#. module: ems
-#: field:ems.partner,session_id:0
-#: field:ems.session.schedule.wizard,session_id:0
-msgid "Session id"
-msgstr "Session id"
 
 #. module: ems
 #: field:ems.responsible,session_ids:0

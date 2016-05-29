@@ -178,12 +178,6 @@
                                     <field name="target_session_ids" nolabel="1"/>
                                 </group>
                             </page>
-                            <page string="tmp">
-                                <group>
-                                    <field name="source_session_id"/>
-                                    <field name="target_session_id"/>
-                                </group>
-                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
