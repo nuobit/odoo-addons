@@ -244,6 +244,11 @@ msgid "Confirm"
 msgstr "Confirmar"
 
 #. module: ems
+#: view:ems.session:ems.view_ems_session_form
+msgid "Invalidate"
+msgstr "Invalidar"
+
+#. module: ems
 #: view:ems.session:ems.ems_session_search_view
 #: selection:ems.session,state:0
 msgid "Confirmed"
@@ -425,6 +430,13 @@ msgstr "Camp detall"
 #: selection:ems.session.schedule.wizard,action:0
 msgid "Draft"
 msgstr "Esborrany"
+
+#. module: ems
+#: view:ems.session:ems.ems_session_search_view
+#: view:ems.session:ems.view_ems_session_form
+#: selection:ems.session,state:0
+msgid "Invalid"
+msgstr "Invàlida"
 
 #. module: ems
 #: field:ems.service,duration:0
