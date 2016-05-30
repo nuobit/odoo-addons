@@ -44,8 +44,8 @@
 
                     <div class="row">
                         <div class="col-xs-5">
-                            <img t-if="c.logo" t-att-src="'data:image/png;base64,%s' % c.logo"
-                                 style="max-height: 5.5em;"/>
+                            <!--img t-if="c.logo" t-att-src="'data:image/png;base64,%s' % c.logo"
+                                 style="max-height: 5.5em;"/-->
 
                             <!--div t-field="c.name"/>
                             <div>
