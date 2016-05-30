@@ -180,7 +180,7 @@
                             </t>
                         </div>
                     </t>
-                    <div class="row">
+                    <div class="row" style="page-break-inside: avoid">
                         <div class="col-xs-7 pull-right text-right">
                             <h4>Total minutes:
                                 <strong t-esc="total_minutes"/>
