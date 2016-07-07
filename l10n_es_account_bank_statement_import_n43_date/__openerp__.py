@@ -29,5 +29,5 @@
         'l10n_es_account_bank_statement_import_n43',
     ],
     'data': [],
-    'installable': True,
+    'installable': False,
 }

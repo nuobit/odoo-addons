@@ -33,7 +33,7 @@
     "depends": ["mail", "im_chat"],
 	"data": ["views/fullwidth_view.xml"],
     "qweb": ["static/src/xml/*.xml"],
-    "installable": True,
+    "installable": False,
     "auto_install": False
 }
 

@@ -32,5 +32,5 @@
         'views/templates.xml',
         'views/inherit_views.xml'
         ],
-    'installable': True,
+    'installable': False,
 }

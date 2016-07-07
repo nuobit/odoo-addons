@@ -30,5 +30,5 @@
     'depends': ['survey'],
     'data': [
         ],
-    'installable': True,
+    'installable': False,
 }

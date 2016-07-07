@@ -31,5 +31,5 @@
         'views/views.xml',
         'views/template_views.xml',
         ],
-    'installable': True,
+    'installable': False,
 }

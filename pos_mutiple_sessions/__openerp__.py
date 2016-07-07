@@ -42,4 +42,5 @@
     # only loaded in demonstration mode
     'demo': [
     ],
+    'installable': False,
 }

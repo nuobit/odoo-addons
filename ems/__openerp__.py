@@ -35,5 +35,5 @@
         'views/report_emsresponsiblesessions.xml',
         'security/ir.model.access.csv',
         ],
-    'installable': True,
+    'installable': False,
 }

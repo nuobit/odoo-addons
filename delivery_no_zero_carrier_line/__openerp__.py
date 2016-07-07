@@ -30,5 +30,5 @@
     'depends': ['delivery'],
     'data': [
         ],
-    'installable': True,
+    'installable': False,
 }

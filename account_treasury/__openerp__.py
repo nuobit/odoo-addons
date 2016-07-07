@@ -42,5 +42,5 @@
         "reports/account_treasury_report_view.xml",
     ],
     'demo': [],
-    'installable': True,
+    'installable': False,
 }

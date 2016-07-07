@@ -42,5 +42,5 @@ This module adds relations between products:
     ],
         'qweb': ['static/src/xml/*.xml'],
 
-    'installable': True,
+    'installable': False,
 }
