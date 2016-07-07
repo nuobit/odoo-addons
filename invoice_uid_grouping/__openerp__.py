@@ -21,7 +21,7 @@
 
 {
     'name': 'Invoice uid grouping',
-    'version': '0.1',
+    'version': '8.0.0.1.0',
     'category': 'Generic Modules',
     'description': """
     Avoid invoice grouping by user_id in sale orders and create_uid in purchase orders

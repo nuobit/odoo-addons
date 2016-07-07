@@ -22,7 +22,7 @@
 {
     'name': "Show user data on private surveys",
     'description': "Show user data along with timestamp on private survey results",
-    'version': '0.1',
+    'version': '8.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',

@@ -25,7 +25,7 @@
 This modules removes "using <a ...>Odoo</a>" from the the footer in email \
 followers.
     ''',
-    'version': '0.1',
+    'version': '8.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'category': 'Social Network',
     'depends': ['mail'],

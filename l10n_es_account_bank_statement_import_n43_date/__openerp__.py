@@ -21,7 +21,7 @@
 {
     'name': 'Importación de extractos bancarios españoles (Norma 43) con fecha contable',
     'category': 'Accounting & Finance',
-    'version': '8.0.0.1',
+    'version': '8.0.0.1.0',
     'license': 'AGPL-3',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     "website": 'https://www.nuobit.com',

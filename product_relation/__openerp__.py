@@ -21,7 +21,7 @@
 
 {
     'name': 'Product Relation',
-    'version': '0.1',
+    'version': '8.0.0.1.0',
     'category': 'Generic Modules',
     'description': """
 This module adds relations between products:

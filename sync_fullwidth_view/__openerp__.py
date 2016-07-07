@@ -20,7 +20,7 @@
 ##############################################################################
 {
     "name": "Full Screen View",
-    "version": "1.0",
+    "version": "8.0.1.0.0",
     "author": "Synconics Technologies Pvt. Ltd.",
     "website": "www.synconics.com",
     "version": "1.0",
