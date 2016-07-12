@@ -39,4 +39,6 @@
     'data': [
     ],
 
+    'installable': False,
+
 }
