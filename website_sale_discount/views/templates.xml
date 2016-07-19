@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="website_sale_discount_products_item" inherit_id="website_sale.products_item"
+                  active="True"
+                  customize_show="True"
+                  name="Show product discount">
+            <xpath expr="//del[@t-field='product.lst_price']" position="after">
+                <span>&amp;nbsp;</span><span class="text-danger" style="white-space: nowrap;" t-esc="'(' + str(int(product.price/product.lst_price*100)) + '%)'"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>
