@@ -4,7 +4,7 @@
         <template id="website_sale_discount_products_item" inherit_id="website_sale.products_item"
                   active="True"
                   customize_show="True"
-                  name="Show product discount">
+                  name="Show product discount/net">
             <xpath expr="//del[@t-field='product.lst_price']" position="replace"/>
             <xpath expr="//span[@t-field='product.price']" position="replace"/>
 
@@ -29,5 +29,82 @@
                 </t>
             </xpath>
         </template>
+
+        <template id="website_sale_discount_product_price" inherit_id="website_sale.product_price"
+                  active="True"
+                  customize_show="True"
+                  name="Show product discount/net">
+            <xpath expr="//h4[@class='oe_price_h4 css_editable_mode_hidden']/span[@t-field='product.lst_price']"
+                   position="replace"/>
+            <xpath expr="//h4[@class='oe_price_h4 css_editable_mode_hidden']/b[@t-field='product.price']"
+                   position="replace"/>
+            <xpath expr="//span[@itemprop='price']" position="before">
+                <t t-if="not product.is_net">
+                    <b>
+                        <span class="oe_price" style="white-space: nowrap;" t-field="product.lst_price"
+                              t-field-options='{
+                            "widget": "monetary",
+                            "from_currency": "product.company_id.currency_id",
+                            "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                            }'/>
+                        <span t-if="product.discount">
+                            <span t-esc="'%.0f' % product.discount"/>%
+                        </span>
+                    </b>
+                </t>
+                <t t-if="product.is_net">
+                    <b>
+                        <span class="oe_price" style="white-space: nowrap;" t-field="product.price" t-field-options='{
+                            "widget": "monetary",
+                            "from_currency": "product.company_id.currency_id",
+                            "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                            }'/>
+                        Net
+                    </b>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="website_sale_discount_cart" inherit_id="website_sale.cart"
+                  active="True"
+                  customize_show="True"
+                  name="Show product discount">
+            <xpath expr="//table[@id='cart_products']//th[text()='Price']" position="after">
+                <th width="100">Discount (%)</th>
+            </xpath>
+            <xpath expr="//table[@id='cart_products']//td[@name='price']" position="after">
+                <td class="text-center" name="discount">
+                    <span t-field="line.discount" style="white-space: nowrap;"/>
+                </td>
+            </xpath>
+
+            <xpath expr="//table[@id='cart_products']//td[@name='price']/del" position="replace"/>
+
+            <xpath expr="//table[@id='cart_products']//td[@name='price']/span" position="replace">
+                <span t-field="line.price_unit" style="white-space: nowrap;" t-field-options="{
+                    &quot;widget&quot;: &quot;monetary&quot;,
+                    &quot;from_currency&quot;: &quot;website_sale_order.pricelist_id.currency_id&quot;,
+                    &quot;display_currency&quot;: &quot;user_id.partner_id.property_product_pricelist.currency_id&quot;
+                    }"/>
+            </xpath>
+        </template>
+
+        <template id="website_sale_discount_payment" inherit_id="website_sale.payment"
+                  active="True"
+                  customize_show="True"
+                  name="Show product discount">
+            <xpath expr="//table[@id='cart_products']//th[text()='Price']" position="after">
+                <th width="100">Discount (%)</th>
+            </xpath>
+
+            <xpath expr="//table[@id='cart_products']//td[span[@t-field='line.price_unit']]" position="after">
+                <td class="text-center" name="discount">
+                    <span t-field="line.discount" style="white-space: nowrap;"/>
+                </td>
+            </xpath>
+
+
+        </template>
+
     </data>
 </openerp>
