@@ -27,7 +27,7 @@
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
-    'depends': ['website_sale'],
+    'depends': ['product', 'website_sale'],
     'data': [
         'views/templates.xml',
         ],

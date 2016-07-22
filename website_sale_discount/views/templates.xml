@@ -5,8 +5,28 @@
                   active="True"
                   customize_show="True"
                   name="Show product discount">
-            <xpath expr="//del[@t-field='product.lst_price']" position="after">
-                <span>&amp;nbsp;</span><span class="text-danger" style="white-space: nowrap;" t-esc="'(' + str(int(product.price/product.lst_price*100)) + '%)'"/>
+            <xpath expr="//del[@t-field='product.lst_price']" position="replace"/>
+            <xpath expr="//span[@t-field='product.price']" position="replace"/>
+
+            <xpath expr="//div[@class='product_price']/b" position="inside">
+                <t t-if="not product.is_net">
+                    <span style="white-space: nowrap;" t-field="product.lst_price" t-field-options='{
+                        "widget": "monetary",
+                        "from_currency": "product.company_id.currency_id",
+                        "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                        }'/>
+                    <span t-if="product.discount">
+                        <span t-esc="'%.0f' % product.discount"/>%
+                    </span>
+                </t>
+                <t t-if="product.is_net">
+                    <span t-field="product.price" t-field-options='{
+                        "widget": "monetary",
+                        "from_currency": "product.company_id.currency_id",
+                        "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                        }'/>
+                    Net
+                </t>
             </xpath>
         </template>
     </data>
