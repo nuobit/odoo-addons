@@ -16,7 +16,7 @@
                         "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
                         }'/>
                     <span t-if="product.discount">
-                        <span t-esc="'%.0f' % product.discount"/>%
+                        Disc. <span t-esc="'%.0f' % product.discount"/>%
                     </span>
                 </t>
                 <t t-if="product.is_net">
@@ -41,20 +41,20 @@
             <xpath expr="//span[@itemprop='price']" position="before">
                 <t t-if="not product.is_net">
                     <b>
-                        <span class="oe_price" style="white-space: nowrap;" t-field="product.lst_price"
+                        <span style="white-space: nowrap;" t-field="product.lst_price"
                               t-field-options='{
                             "widget": "monetary",
                             "from_currency": "product.company_id.currency_id",
                             "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
                             }'/>
                         <span t-if="product.discount">
-                            <span t-esc="'%.0f' % product.discount"/>%
+                            Disc. <span t-esc="'%.0f' % product.discount"/>%
                         </span>
                     </b>
                 </t>
                 <t t-if="product.is_net">
                     <b>
-                        <span class="oe_price" style="white-space: nowrap;" t-field="product.price" t-field-options='{
+                        <span style="white-space: nowrap;" t-field="product.price" t-field-options='{
                             "widget": "monetary",
                             "from_currency": "product.company_id.currency_id",
                             "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
