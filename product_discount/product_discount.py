@@ -61,7 +61,10 @@ class sale_order_line(models.Model):
             discount = 0.0
         else:
             price = product_obj.list_price
-            discount = (1 - price_net / price) * 100
+            if price>0:
+                discount = (1.0 - price_net / price) * 100.0
+            else:
+                discount = 0.0
 
         res['value']['discount'] = discount
         res['value']['price_unit'] = price
