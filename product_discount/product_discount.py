@@ -32,21 +32,21 @@ class sale_order_line(models.Model):
     _inherit = "sale.order.line"
 
     @api.multi
-    def product_id_change(self, pricelist_id, product_id, qty=0,
+    def product_id_change(self, pricelist, product, qty=0,
             uom=False, qty_uos=0, uos=False, name='', partner_id=False,
             lang=False, update_tax=True, date_order=False, packaging=False, fiscal_position=False, flag=False):
 
-        res = super(sale_order_line, self).product_id_change(pricelist_id, product_id, qty,
+        res = super(sale_order_line, self).product_id_change(pricelist, product, qty,
             uom, qty_uos, uos, name, partner_id,
             lang, update_tax, date_order, packaging=packaging, fiscal_position=fiscal_position, flag=flag)
 
-        if not product_id:
+        if not product:
             return res
 
-        product_obj = self.env['product.product'].browse(product_id)
+        product_obj = self.env['product.product'].browse(product)
 
-        pricelist_obj = self.env['product.pricelist'].browse(pricelist_id)
-        price_net, rule_id = pricelist_obj.price_rule_get(product_id, qty or 1.0, partner_id)[pricelist_id]
+        pricelist_obj = self.env['product.pricelist'].browse(pricelist)
+        price_net, rule_id = pricelist_obj.price_rule_get(product, qty or 1.0, partner_id)[pricelist]
 
         rule_obj = self.env['product.pricelist.item'].browse(rule_id)
         if rule_obj.price_discount == -1.0 and rule_obj.price_surcharge!=0.0: # es un net
