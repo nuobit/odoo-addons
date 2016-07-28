@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+
+        <template id="assets_frontend" inherit_id="website.assets_frontend" name="Shop Discounts">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/website_sale_discount/static/src/js/website_sale_discount.js"></script>
+            </xpath>
+        </template>
+
+
         <template id="website_sale_discount_products_item" inherit_id="website_sale.products_item"
                   active="True"
                   customize_show="True"
@@ -74,7 +82,7 @@
             </xpath>
             <xpath expr="//table[@id='cart_products']//td[@name='price']" position="after">
                 <td class="text-center" name="discount">
-                    <span t-field="line.discount" style="white-space: nowrap;"/>
+                    <span t-field="line.discount" class="discount" style="white-space: nowrap;"/>
                 </td>
             </xpath>
 
@@ -99,7 +107,7 @@
 
             <xpath expr="//table[@id='cart_products']//td[span[@t-field='line.price_unit']]" position="after">
                 <td class="text-center" name="discount">
-                    <span t-field="line.discount" style="white-space: nowrap;"/>
+                    <span t-field="line.discount" class="discount" style="white-space: nowrap;"/>
                 </td>
             </xpath>
 
