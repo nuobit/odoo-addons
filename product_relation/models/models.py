@@ -22,12 +22,137 @@
 from openerp import models, fields, api, _
 from openerp.exceptions import AccessError, Warning, ValidationError
 
-'''
+
+def _reopen(self, data={}):
+    return {
+        'type': 'ir.actions.act_window',
+        'view_mode': 'form',
+        'view_type': 'form',
+        'res_id': self.id,
+        'res_model': self._name,
+        'target': 'new',
+        # save original model in context,
+        # because selecting the list of available
+        # templates requires a model in context
+        'context': {
+            'default_model': self._name,
+            'data': data,
+        },
+    }
+
+class Product(models.Model):
+    _inherit = 'product.product'
+
+    group_id = fields.Many2one(comodel_name='product.relation.group')
+
+    product_related_ids = fields.One2many(related='group_id.product_related_ids', store=False)
+
+
+    @api.multi
+    def button_add(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name':_("Add related product"),
+            'res_model': 'product.relation.add.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            #'views': [(view.id, 'form')],
+            #'view_id': view.id,
+            #'res_id': wizard_id.id,
+            'target': 'new',
+            #'context': context,
+        }
+
+    @api.multi
+    def button_remove(self):
+        for pr in self.group_id.product_related_ids:
+            if pr.mark:
+                pr.product_id.group_id=False
+                pr.unlink()
+
+        if len(self.group_id.product_related_ids) == 1:
+            self.group_id.product_related_ids.unlink()
+            self.group_id.unlink()
+        elif len(self.group_id.product_related_ids) == 0:
+            self.group_id.unlink()
+
+
+
+class ProductRelationGroupRel(models.Model):
+    _name = 'product.relation.group.rel'
+
+    product_id = fields.Many2one(comodel_name='product.product', required=True, ondelete='restrict')
+    group_id = fields.Many2one(comodel_name='product.relation.group', required=True, ondelete='restrict')
+    mark = fields.Boolean(string='Mark')
+
+    _sql_constraints = [('Unique product', 'unique (product_id)', _('Each product must belong to one group only'))]
+
+
+
+class ProductRelationGroup(models.Model):
+    _name = 'product.relation.group'
+
+    product_related_ids = fields.One2many(comodel_name='product.relation.group.rel', inverse_name='group_id')
+
+
+
+
+class WizardProductRelationAdd(models.TransientModel):
+    _name = 'product.relation.add.wizard'
+
+    product_id = fields.Many2one(comodel_name='product.product', required=True)
+
+    msg = fields.Char()
+
+    state = fields.Selection(selection=[('adding', 'Adding'), ('merge', 'Merge')],
+                             string='Status', readonly=True, default='adding')
+
+    @api.multi
+    def button_add(self):
+        product0_obj = self.env[self.env.context.get('active_model')].browse(self.env.context['active_ids'])
+        # el producte es el mateix de la fitxa del producte actiu
+        if product0_obj.id == self.product_id.id:
+            raise ValidationError(_('This is the source product itself'))
+
+        # el producte ja existeix el la llsyta
+        tmp_obj = product0_obj.group_id.product_related_ids.filtered(lambda x: x.product_id.id == self.product_id.id)
+        if tmp_obj:
+            raise ValidationError(_('The product selected is already added'))
+
+        if not self.product_id.group_id and not product0_obj.group_id:
+            group9_obj = self.env['product.relation.group'].create({})
+            group9_obj.product_related_ids = [(0, 0, {'product_id': self.product_id.id}),
+                                              (0, 0, {'product_id': product0_obj.id})]
+            self.product_id.group_id = product0_obj.group_id = group9_obj.id
+        elif not self.product_id.group_id and product0_obj.group_id:
+            product0_obj.group_id.product_related_ids = [(0, 0, {'product_id': self.product_id.id})]
+            self.product_id.group_id = product0_obj.group_id.id
+        elif self.product_id.group_id and not product0_obj.group_id:
+            self.product_id.group_id.product_related_ids = [(0, 0, {'product_id': product0_obj.id})]
+            product0_obj.group_id = self.product_id.group_id.id
+        else:
+            if self.product_id.group_id.id!=product0_obj.group_id.id:
+                self.state = 'merge'
+                self.msg = _('The product belong to another group. Would you like to merge both groups?')
+
+                return _reopen(self, data={'product0_id': product0_obj.id })
+
+    @api.multi
+    def button_merge(self):
+        product0_obj = self.env['product.product'].browse(self.env.context.get('data')['product0_id'])
+
+        tmp_group = self.product_id.group_id
+        for pr in self.product_id.group_id.product_related_ids:
+            pr.product_id.group_id = pr.group_id = product0_obj.group_id.id
+        tmp_group.unlink()
+
+"""
+
 class Product(models.Model):
     _inherit = 'product.product'
 
     relation_group_id = fields.Many2one(comodel_name='product.relation.group')
-'''
+
 
 class ProductRelationGroup(models.Model):
     _name = 'product.relation.group'
@@ -114,7 +239,7 @@ class WizardPr(models.TransientModel):
     def my_method(self, product_id):
         return {'hello': 'world', 'id': self.id, 'product_id': product_id}
 
-
+"""
 """
 class ProductRelation(models.Model):
     _name = 'product.relation'

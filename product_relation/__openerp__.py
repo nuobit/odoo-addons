@@ -38,9 +38,8 @@ This module adds relations between products:
         #'security/ir.model.access.csv',
         'views/product_relation_view.xml',
         'views/product_relation_view_inherit.xml',
-        'views/template_views.xml',
+        #'views/template_views.xml',
     ],
-        'qweb': ['static/src/xml/*.xml'],
 
     'installable': True,
 }
