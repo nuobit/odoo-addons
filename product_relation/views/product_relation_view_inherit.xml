@@ -9,16 +9,18 @@
             <field name="arch" type="xml">
                 <notebook position="inside">
                     <page string="Product relation">
-                        <button string="Add" name="button_add" type="object" class="oe_edit_only"
+                        <button string="Add" name="button_add" type="object"
                                 icon="gtk-add" groups="base.group_user"/>
-                        <button string="Remove" name="button_remove" type="object" class="oe_edit_only"
-                                groups="base.group_user" icon="gtk-remove"/>
-                        <field name="product_related_ids" readonly="0" options="{'reload_on_button': true}">
-                            <tree editable="bottom" edit="1" delete="0" create="0">
-                                <field name="product_id" readonly="1"/>
-                                <field name="mark"/>
+                        <field name="product_related_ids" readonly="1" options="{'reload_on_button': true}">
+                            <tree>
+                                <field name="product_id"/>
+                                <field name="cost_avg"/>
+                                <field name="qty_available"/>
+                                <button string="Remove" name="button_remove" type="object"
+                                    groups="base.group_user" icon="gtk-cancel"/>
                             </tree>
                         </field>
+
                     </page>
                 </notebook>
             </field>

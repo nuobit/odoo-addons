@@ -33,13 +33,11 @@ This module adds relations between products:
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
     'license': 'AGPL-3',
-    'depends': ['product', 'sale'],
+    'depends': ['product', 'sale', 'purchase', 'stock'],
     'data': [
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/product_relation_view.xml',
         'views/product_relation_view_inherit.xml',
-        #'views/template_views.xml',
     ],
-
     'installable': True,
 }

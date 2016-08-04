@@ -1,0 +1,190 @@
+# This file contains the translation of the following modules:
+#	* product_relation
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-04 14:05+0000\n"
+"PO-Revision-Date: 2016-08-04 14:05+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_relation
+#: view:product.product:product_relation.product_relation_normal_form_view
+#: view:product.relation.add.wizard:product_relation.product_relation_add_wizard_form_view
+#: selection:product.relation.add.wizard,state:0
+msgid "Add"
+msgstr "Add"
+
+#. module: product_relation
+#: code:addons/product_relation/models/models.py:78
+#, python-format
+msgid "Add related product"
+msgstr "Add related product"
+
+#. module: product_relation
+#: view:product.relation.add.wizard:product_relation.product_relation_add_wizard_form_view
+msgid "Cancel"
+msgstr "Cancel"
+
+#. module: product_relation
+#: field:product.product,cost_avg:0
+#: field:product.relation.group.rel,cost_avg:0
+msgid "Cost"
+msgstr "Cost"
+
+#. module: product_relation
+#: field:product.relation.add.wizard,create_uid:0
+#: field:product.relation.group,create_uid:0
+#: field:product.relation.group.rel,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: product_relation
+#: field:product.relation.add.wizard,create_date:0
+#: field:product.relation.group,create_date:0
+#: field:product.relation.group.rel,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: product_relation
+#: help:product.relation.group.rel,qty_available:0
+msgid "Current quantity of products.\n"
+"In a context with a single Stock Location, this includes goods stored at this Location, or any of its children.\n"
+"In a context with a single Warehouse, this includes goods stored in the Stock Location of this Warehouse, or any of its children.\n"
+"stored in the Stock Location of the Warehouse of this Shop, or any of its children.\n"
+"Otherwise, this includes goods stored in any Stock Location with 'internal' type."
+msgstr "Current quantity of products.\n"
+"In a context with a single Stock Location, this includes goods stored at this Location, or any of its children.\n"
+"In a context with a single Warehouse, this includes goods stored in the Stock Location of this Warehouse, or any of its children.\n"
+"stored in the Stock Location of the Warehouse of this Shop, or any of its children.\n"
+"Otherwise, this includes goods stored in any Stock Location with 'internal' type."
+
+#. module: product_relation
+#: field:product.relation.add.wizard,display_name:0
+#: field:product.relation.group,display_name:0
+#: field:product.relation.group.rel,display_name:0
+msgid "Display Name"
+msgstr "Display Name"
+
+#. module: product_relation
+#: code:addons/product_relation/models/models.py:101
+#: sql_constraint:product.relation.group.rel:0
+#, python-format
+msgid "Each product must belong to one group only"
+msgstr "Each product must belong to one group only"
+
+#. module: product_relation
+#: field:product.relation.group.rel,group_id:0
+msgid "Group"
+msgstr "Group"
+
+#. module: product_relation
+#: field:product.product,group_id:0
+msgid "Group id"
+msgstr "Group id"
+
+#. module: product_relation
+#: field:product.relation.add.wizard,id:0
+#: field:product.relation.group,id:0
+#: field:product.relation.group.rel,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: product_relation
+#: field:product.relation.add.wizard,__last_update:0
+#: field:product.relation.group,__last_update:0
+#: field:product.relation.group.rel,__last_update:0
+msgid "Last Modified on"
+msgstr "Last Modified on"
+
+#. module: product_relation
+#: field:product.relation.add.wizard,write_uid:0
+#: field:product.relation.group,write_uid:0
+#: field:product.relation.group.rel,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: product_relation
+#: field:product.relation.add.wizard,write_date:0
+#: field:product.relation.group,write_date:0
+#: field:product.relation.group.rel,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: product_relation
+#: view:product.relation.add.wizard:product_relation.product_relation_add_wizard_form_view
+#: selection:product.relation.add.wizard,state:0
+msgid "Merge"
+msgstr "Merge"
+
+#. module: product_relation
+#: field:product.relation.add.wizard,msg:0
+msgid "Msg"
+msgstr "Msg"
+
+#. module: product_relation
+#: model:ir.model,name:product_relation.model_product_product
+#: field:product.relation.group.rel,product_id:0
+#: field:product.relation.add.wizard,product_id:0
+msgid "Product"
+msgstr "Producte"
+
+#. module: product_relation
+#: field:product.relation.group,product_related_ids:0
+msgid "Product related ids"
+msgstr "Product related ids"
+
+#. module: product_relation
+#: view:product.product:product_relation.product_relation_normal_form_view
+msgid "Product relation"
+msgstr "Product relation"
+
+#. module: product_relation
+#: field:product.relation.group.rel,qty_available:0
+msgid "Quantity On Hand"
+msgstr "Quantity On Hand"
+
+#. module: product_relation
+#: view:product.relation.add.wizard:product_relation.product_relation_add_wizard_form_view
+msgid "Related product"
+msgstr "Related product"
+
+#. module: product_relation
+#: view:product.product:product_relation.product_relation_normal_form_view
+msgid "Remove"
+msgstr "Remove"
+
+#. module: product_relation
+#: field:product.relation.add.wizard,state:0
+msgid "Status"
+msgstr "Status"
+
+#. module: product_relation
+#: code:addons/product_relation/models/models.py:167
+#, python-format
+msgid "The product belong to another group. Would you like to merge both groups?"
+msgstr "The product belong to another group. Would you like to merge both groups?"
+
+#. module: product_relation
+#: code:addons/product_relation/models/models.py:151
+#, python-format
+msgid "The product selected is already added"
+msgstr "The product selected is already added"
+
+#. module: product_relation
+#: code:addons/product_relation/models/models.py:146
+#, python-format
+msgid "This is the source product itself"
+msgstr "This is the source product itself"
+
+#. module: product_relation
+#: view:product.relation.add.wizard:product_relation.product_relation_add_wizard_form_view
+msgid "or"
+msgstr "or"
+
