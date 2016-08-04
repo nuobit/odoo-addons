@@ -64,7 +64,7 @@ class Product(models.Model):
                 for s in self.seller_ids:
                     if len(s.pricelist_ids)>0:
                         pricelist_obj = s.name.property_product_pricelist_purchase
-                        price, _ = pricelist_obj.price_rule_get(self.id, 1.0, s.name.id)[pricelist_obj.id]
+                        price, dummy = pricelist_obj.price_rule_get(self.id, 1.0, s.name.id)[pricelist_obj.id]
                         price_acum += price
                         n += 1
 
