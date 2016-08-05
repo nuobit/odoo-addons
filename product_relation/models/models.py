@@ -91,12 +91,6 @@ class Product(models.Model):
         for p in self.group_id.product_related_ids:
             p.product_id._compute_cost_avg()
 
-    @api.multi
-    def button_refresh_all_costs(self):
-        for p in self.env['product.relation.group.rel'].search([]):
-            p.product_id._compute_cost_avg()
-
-
 
 class ProductRelationGroupRel(models.Model):
     _name = 'product.relation.group.rel'
