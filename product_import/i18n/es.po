@@ -322,6 +322,12 @@ msgid "Incorrect field number in line %i"
 msgstr "Número de campos incorrectos en la linea %i"
 
 #. module: product_import
+#: code:addons/product_import/models/models.py:337
+#, python-format
+msgid "There's data beyond an empty line. Check your input file."
+msgstr "Se han encontrado datos después de una linea en blanco. Compruebe el fichero de entrada."
+
+#. module: product_import
 #: code:addons/product_import/models/models.py:559
 #: code:addons/product_import/models/models.py:703
 #, python-format

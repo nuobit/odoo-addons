@@ -109,7 +109,7 @@ class ImportHeader(models.Model):
         string='Quotechar', required=True,
         readonly=False, default='"')
 
-    encoding = fields.Char(
+    encoding = fields.Selection(selection=[('utf8', 'UTF-8'), ('8859', 'ISO-8859')],
         string='Encoding', required=True,
         readonly=False, default='utf8')
 
@@ -263,9 +263,9 @@ class ImportHeader(models.Model):
 
     def _split_line(self, line):
         line9 = []
-        for line in csv.reader([line], delimiter=self.delimiter.encode(),
-                               quotechar=self.quotechar.encode()):
-            line9.append(line)
+        for line1 in csv.reader([line.encode('utf-8')], delimiter=self.delimiter.encode('utf-8'),
+                               quotechar=self.quotechar.encode('utf-8')):
+            line9.append([unicode(x, 'utf-8') for x in line1])
         return line9[0]
 
     @api.multi
@@ -281,7 +281,7 @@ class ImportHeader(models.Model):
         # esborrem les dades dels desplegables
         self.field_ids.unlink()
 
-        txt = base64.decodestring(self.datas)
+        txt = base64.decodestring(self.datas).decode(self.encoding)
         # remove lasts newlines
         txt = re.sub(r'\n*$', '', txt, flags=re.DOTALL)
 
@@ -313,29 +313,33 @@ class ImportHeader(models.Model):
         # delete all lines
         self.line_ids.unlink()
 
-        txt = base64.decodestring(self.datas)
+        txt = base64.decodestring(self.datas).decode(self.encoding)
         # remove lasts newlines
         txt = re.sub(r'\n*$', '', txt, flags=re.DOTALL)
 
         mapi = dict(map(lambda z: (z[1], z[3].name), self._get_map_fields()))
 
         # read the file headers
+        empty_line = False
         for i, line in enumerate(txt.split('\n')):
-            field_values = [x.decode(self.encoding).strip()
-                            if self.strip_fields else x.decode(self.encoding)
-                            for x in self._split_line(line)]
+            field_values = [x.strip() if self.strip_fields else x for x in self._split_line(line)]
             if i == 0:
                 header = field_values
             else:
                 if len(header) != len(field_values):
                     raise Warning(_("Incorrect field number in line %i") % i+1)
                 field_values = [x if x != '' else None for x in field_values]
-                fields_file = dict(zip(header, field_values))
-                fields = {'header_id': self.id}
-                for k, v in mapi.items():
-                    if v:
-                        fields[k] = fields_file[v]
-                self.env['epe.line'].create(fields)
+                if filter(lambda x: x is not None, field_values) == []:
+                    empty_line = True
+                else:
+                    if empty_line:
+                        raise Warning(_("There's data beyond an empty line. Check your input file."))
+                    fields_file = dict(zip(header, field_values))
+                    fields = {'header_id': self.id}
+                    for k, v in mapi.items():
+                        if v:
+                            fields[k] = fields_file[v]
+                    self.env['epe.line'].create(fields)
 
         self.state = 'update'
 
