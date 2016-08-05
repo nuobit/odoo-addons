@@ -11,6 +11,8 @@
                     <page string="Product relation">
                         <button string="Add" name="button_add" type="object"
                                 icon="gtk-add" groups="base.group_user"/>
+                        <button string="Refresh costs" name="button_refresh_costs" type="object"
+                                icon="gtk-refresh" groups="base.group_user"/>
                         <field name="product_related_ids" readonly="1" options="{'reload_on_button': true}">
                             <tree>
                                 <field name="product_id"/>

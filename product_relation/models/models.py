@@ -47,8 +47,8 @@ class Product(models.Model):
 
     cost_avg = fields.Float(string='Cost', compute='_compute_cost_avg', store=True)
 
-
     product_related_ids = fields.One2many(comodel_name='product.relation.group.rel', compute='_compute_product_related')
+
     @api.depends('group_id', 'group_id.product_related_ids')
     def _compute_product_related(self):
         self.product_related_ids = self.group_id.product_related_ids.sorted(lambda x: (0 if x.product_id.id == self.id else 1, self.cost_avg)) #.filtered(lambda x: x.product_id.id != self.id)
@@ -85,6 +85,12 @@ class Product(models.Model):
             'target': 'new',
             #'context': context,
         }
+
+    @api.multi
+    def button_refresh_costs(self):
+        for p in self.group_id.product_related_ids:
+            p.product_id._compute_cost_avg()
+
 
 
 class ProductRelationGroupRel(models.Model):

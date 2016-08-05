@@ -19,7 +19,12 @@ msgstr ""
 #: view:product.relation.add.wizard:product_relation.product_relation_add_wizard_form_view
 #: selection:product.relation.add.wizard,state:0
 msgid "Add"
-msgstr "Add"
+msgstr "Afegir"
+
+#. module: product_relation
+#: view:product.product:product_relation.product_relation_normal_form_view
+msgid "Refresh costs"
+msgstr "Recalcular costs"
 
 #. module: product_relation
 #: code:addons/product_relation/models/models.py:78
