@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- edit transactions Tree view -->
+        <record model="ir.ui.view" id="edilt_edi_transactions_tree_view">
+            <field name="name">EDI transactions</field>
+            <field name="model">edilt.transaction</field>
+            <field name="arch" type="xml">
+                <tree string="EDI transactions">
+                    <field name="purchase_order_id"/>
+                    <field name="datas_fname"/>
+                    <field name="note"/>
+                    <field name="state"/>
+                    <field name="last_conn_message"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- edit transactions form view  -->
+        <record model="ir.ui.view" id="edilt_edi_transactions_form_view">
+            <field name="name">EDI transactions</field>
+            <field name="model">edilt.transaction</field>
+            <field name="arch" type="xml">
+                <form string="EDI transactions">
+                    <header>
+                        <field name="state" widget="statusbar"/> <!-- statusbar_visible="draft,confirm,done"/-->
+                    </header>
+                    <group name="main_field_group4" col="4">
+                        <field name="purchase_order_id"/>
+                        <newline/>
+                        <field name="datas" filename="datas_fname" readonly="1"/>
+                        <button name="update" string="Update" type="object"
+                                class="oe_highlight" attrs="{'invisible':[('datas', '=', False)]}"
+                                states='error,pending'/>
+                        <field name="datas_fname" class="oe_inline" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="note" widget="text"/>
+                    </group>
+                    <group>
+                        <field name="last_conn_message" readonly="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="edilt_action_transactions">
+            <field name="name">EDI transactions</field>
+            <field name="res_model">edilt.transaction</field>
+            <field name="view_mode">tree,form</field>
+            <!--field name="context">{"search_default_upcoming":1}</field-->
+        </record>
+
+        <menuitem id="edilt_menu_puchase_edi_transactions" action="edilt_action_transactions"
+                  parent="purchase.menu_procurement_management_product" sequence="40"/>
+
+
+        <!--  ===================================================================================    -->
+
+        <menuitem id="edilt_config_menu" name="EDI LT"
+                  parent="base.menu_custom" sequence="10"/>
+
+        <!-- edi server Tree view -->
+        <record model="ir.ui.view" id="edilt_edi_servers_tree_view">
+            <field name="name">EDI servers</field>
+            <field name="model">edilt.server</field>
+            <field name="arch" type="xml">
+                <tree string="EDI servers">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="host"/>
+                    <field name="folder"/>
+                    <field name="default"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- edi servers form view  -->
+        <record model="ir.ui.view" id="edilt_edi_servers_form_view">
+            <field name="name">EDI servers</field>
+            <field name="model">edilt.server</field>
+            <field name="arch" type="xml">
+                <form string="EDI servers">
+                    <group name="main_field_group4" col="4">
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="host"/>
+                        <field name="port"/>
+                        <field name="folder"/>
+                        <field name="username"/>
+                        <field name="password" password="True"/>
+                        <field name="default"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="edilt_action_servers" model="ir.actions.act_window">
+            <field name="name">EDI Servers</field>
+            <field name="res_model">edilt.server</field>
+            <field name="view_mode">tree,form</field>
+            <!--field name="target">inline</field-->
+        </record>
+
+        <menuitem id="edilt_menu_servers" parent="edilt_config_menu" name="Servers" sequence="10"
+                  action="edilt_action_servers"/>
+
+
+
+
+        <!-- WIZARD -->
+         <!-- Creem el info wizard -->
+        <record model="ir.ui.view" id="edilt_message_info_wizard_form_view">
+            <field name="name">edilt.message.info.wizard.form</field>
+            <field name="model">edilt.message.info.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Message">
+                    <group>
+                        <field name="message" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button special="cancel" class="oe_highlight" string="Close"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

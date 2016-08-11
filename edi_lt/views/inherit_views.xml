@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--  Purchase Order inherited form -->
+        <record id="edilt_purchase_order_form_view" model="ir.ui.view">
+            <field name="name">edilt.purchase.order.form.view</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/field[@name='state']" position="before">
+                    <button name="edi_send" states="approved" string="Send EDI" type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--  Product UOM inherited form -->
+        <!--record id="edilt_product_uom_form_view" model="ir.ui.view">
+            <field name="name">edilt.product.uom.form.view</field>
+            <field name="model">product.uom</field>
+            <field name="inherit_id" ref="product.product_uom_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='rounding']" position="after">
+                    <field name="edi_code"/>
+                </xpath>
+            </field>
+        </record-->
+
+        <!--  Product UOM inherited tree -->
+        <!--record id="edilt_product_uom_tree_view" model="ir.ui.view">
+            <field name="name">edilt.product.uom.tree.view</field>
+            <field name="model">product.uom</field>
+            <field name="inherit_id" ref="product.product_uom_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="edi_code"/>
+                </xpath>
+            </field>
+        </record-->
+
+        <!--  Product attribute value inherited tree -->
+        <record id="edilt_product_attribute_value_tree_view" model="ir.ui.view">
+            <field name="name">edilt.product.attribute.value.tree.view</field>
+            <field name="model">product.attribute.value</field>
+            <field name="inherit_id" ref="product.variants_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="edi_code"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
+
+
