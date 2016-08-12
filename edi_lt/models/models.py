@@ -99,7 +99,32 @@ class edilt_transaction(models.Model):
         else:
             raise ValidationError(_('The transaction is already done'))
 
+    def setElementText(self, elem, data, type='string', fmt='%(data)s', num_decimals=0, required=True):
+        if (isinstance(data, bool) and not data) or data is None:
+            if required:
+                raise Warning(_('Element %s cannot be null') % elem.tag)
+            return
+
+        def format_date(obj, dt_str_utc):
+            dt_utc = fields.Datetime.from_string(dt_str_utc)
+            dt_loc = fields.Datetime.context_timestamp(obj, dt_utc)
+
+            return dt_loc.strftime('%d/%m/%Y')
+
+        def format_decimal(num, num_decimals, decimal_sep='.'):
+            return ('{:.%if}' % num_decimals).format(num).replace(',', decimal_sep)
+
+        def format_integer(num):
+            return '{:d}'.format(num)
+
+        format = {'string': lambda: fmt % dict(data=data), 'decimal': lambda: format_decimal(data, num_decimals),
+                  'integer': lambda: format_integer(data), 'date': lambda: format_date(self, data)}
+
+        elem.text = format[type]()
+
     def generate_xml(self):
+
+
         ## root
         InitialPurchaseOrder = etree.Element("InitialPurchaseOrder")
 
@@ -110,17 +135,20 @@ class edilt_transaction(models.Model):
         IdSupplier = etree.SubElement(PurchaseOrderHeader, "IdSupplier")
         ######### level3
         SupplierName1 = etree.SubElement(IdSupplier, "SupplierName1")
-        SupplierName1.text = self.purchase_order_id.partner_id.name
+
+        #SupplierName1.text = self.purchase_order_id.partner_id.name
+        self.setElementText(SupplierName1, self.purchase_order_id.partner_id.name)
+
         SupplierName2 = etree.SubElement(IdSupplier, "SupplierName2")
         SupplierCode = etree.SubElement(IdSupplier, "SupplierCode")
-        SupplierCode.text = self.purchase_order_id.partner_id.ref or None
+        self.setElementText(SupplierCode, self.purchase_order_id.partner_id.ref, required=False)
         SupplierPostalCode = etree.SubElement(IdSupplier, "SupplierPostalCode")
-        SupplierPostalCode.text = self.purchase_order_id.partner_id.zip or None
+        self.setElementText(SupplierPostalCode, self.purchase_order_id.partner_id.zip, required=False)
         SupplierLocality = etree.SubElement(IdSupplier, "SupplierLocality")
-        SupplierLocality.text = self.purchase_order_id.partner_id.city or None
+        self.setElementText(SupplierLocality, self.purchase_order_id.partner_id.city, required=False)
 
         SupplierProvince = etree.SubElement(IdSupplier, "SupplierProvince")
-        SupplierProvince.text = self.purchase_order_id.partner_id.state_id.name or None
+        self.setElementText(SupplierProvince, self.purchase_order_id.partner_id.state_id.name, required=False)
 
         IdDestination = etree.SubElement(PurchaseOrderHeader, "IdDestination")
         ######### level3
@@ -130,28 +158,30 @@ class edilt_transaction(models.Model):
             partner_id = self.purchase_order_id.picking_type_id.warehouse_id.partner_id
 
         DestinationName1 = etree.SubElement(IdDestination, "DestinationName1")
-        DestinationName1.text = '%s%s' % (partner_id.name, '(%s)' % partner_id.comercial if partner_id.comercial else '')
+        fmt = '%(data)s' + (' (%s)' % partner_id.comercial) if partner_id.comercial else ''
+        self.setElementText(DestinationName1, partner_id.name, fmt=fmt, required=True)
+
         DestinationName2 = etree.SubElement(IdDestination, "DestinationName2")
-        DestinationName2.text = partner_id.street2 or None
+        self.setElementText(DestinationName2, partner_id.street2, required=False)
         DestinationAddress = etree.SubElement(IdDestination, "DestinationAddress")
-        DestinationAddress.text = partner_id.street
+        self.setElementText(DestinationAddress, partner_id.street)
         DestinationPostalCode = etree.SubElement(IdDestination, "DestinationPostalCode")
-        DestinationPostalCode.text = partner_id.zip or None
+        self.setElementText(DestinationPostalCode, partner_id.zip, required=False)
         DestinationLocality = etree.SubElement(IdDestination, "DestinationLocality")
-        DestinationLocality.text = partner_id.city or None
+        self.setElementText(DestinationLocality, partner_id.city, required=False)
         DestinationProvince = etree.SubElement(IdDestination, "DestinationProvince")
-        DestinationProvince.text = partner_id.state_id.name or None
+        self.setElementText(DestinationProvince, partner_id.state_id.name, required=False)
         DestinationContry = etree.SubElement(IdDestination, "DestinationContry")
-        DestinationContry.text = partner_id.country_id.name or None
+        self.setElementText(DestinationContry, partner_id.country_id.name, required=False)
 
         IdOrderData = etree.SubElement(PurchaseOrderHeader, "IdOrderData")
         ######### level3
         PurchaseOrder = etree.SubElement(IdOrderData, "PurchaseOrder")
         PurchaseOrder.text = 'Purchase order'
         PurchaseOrderNumber = etree.SubElement(IdOrderData, "PurchaseOrderNumber")
-        PurchaseOrderNumber.text = self.purchase_order_id.name
+        self.setElementText(PurchaseOrderNumber, self.purchase_order_id.name)
         PurchaseOrderDate = etree.SubElement(IdOrderData, "PurchaseOrderDate")
-        PurchaseOrderDate.text = self.format_date(self.purchase_order_id.date_order)
+        self.setElementText(PurchaseOrderDate, self.purchase_order_id.date_order, type='date')
 
         IdOther = etree.SubElement(PurchaseOrderHeader, "IdOther")
         ######### level3
@@ -160,7 +190,7 @@ class edilt_transaction(models.Model):
         so = self.env['sale.order'].search([('name', '=', so_name)])
         Reference.text = 'Order %s %s' % (so.client_order_ref, self.format_date(so.date_order))
         DeliveryDate = etree.SubElement(IdOther, "DeliveryDate")
-        DeliveryDate.text = self.format_date(self.purchase_order_id.minimum_planned_date)
+        self.setElementText(DeliveryDate, self.purchase_order_id.minimum_planned_date, type='date')
         PaymentCode = etree.SubElement(IdOther, "PaymentCode")
         PaymentDescription = etree.SubElement(IdOther, "PaymentDescription")
         MadeGoodsCode = etree.SubElement(IdOther, "MadeGoodsCode")
@@ -179,7 +209,7 @@ class edilt_transaction(models.Model):
                 IdRows = etree.SubElement(PurchaseOrderRows, "IdRows")
 
                 RowNumber = etree.SubElement(IdRows, "RowNumber")
-                RowNumber.text = self.format_int(row_num)
+                self.setElementText(RowNumber, row_num, type='integer')
                 if row_type == 'P':
                     RowProgressive = etree.SubElement(IdRows, "RowProgressive")
                     RowProgressive.text = '0'
@@ -193,25 +223,25 @@ class edilt_transaction(models.Model):
 
                     ItemReference = etree.SubElement(IdRows, "ItemReference")
                     ItemCode = etree.SubElement(IdRows, "ItemCode")
-                    ItemCode.text = item_code
+                    self.setElementText(ItemCode, item_code)
                     BarCode = etree.SubElement(IdRows, "BarCode")
-                    BarCode.text = ol.product_id.ean13
+                    self.setElementText(BarCode, ol.product_id.ean13)
                     Quantity = etree.SubElement(IdRows, "Quantity")
-                    Quantity.text = self.format_float(ol.product_qty, 4)
+                    self.setElementText(Quantity, ol.product_qty, type='decimal', num_decimals=4)
                     UM = etree.SubElement(IdRows, "UM")
-                    UM.text = ol.with_context({'lang' : 'en_US'}).product_uom.name
+                    self.setElementText(UM, ol.with_context({'lang' : 'en_US'}).product_uom.name)
                     Description = etree.SubElement(IdRows, "Description")
-                    Description.text = ol.name
+                    self.setElementText(Description, ol.name)
                     UnitPrice = etree.SubElement(IdRows, "UnitPrice")
-                    UnitPrice.text = self.format_float(ol.price_unit, 2)
+                    self.setElementText(UnitPrice, ol.price_unit, type='decimal', num_decimals=2)
                     Discount1 = etree.SubElement(IdRows, "Discount1")
-                    Discount1.text = self.format_float(ol.discount or 0, 2)
+                    self.setElementText(Discount1, ol.discount or 0, type='decimal', num_decimals=2)
                     Discount2 = etree.SubElement(IdRows, "Discount2")
-                    Discount2.text = self.format_float(0, 2)
+                    self.setElementText(Discount2, 0, type='decimal', num_decimals=2)
                     Amount = etree.SubElement(IdRows, "Amount")
-                    Amount.text = self.format_float(ol.price_subtotal, 2)
+                    self.setElementText(Amount, ol.price_subtotal, type='decimal', num_decimals=2)
                     Currency = etree.SubElement(IdRows, "Currency")
-                    Currency.text = self.purchase_order_id.currency_id.name
+                    self.setElementText(Currency, self.purchase_order_id.currency_id.name)
 
                     '''
                     if ol.taxes_id[0].child_ids:
@@ -231,13 +261,13 @@ class edilt_transaction(models.Model):
                     RowType.text = 'C'
                     Description = etree.SubElement(IdRows, "Description")
                     Discount1 = etree.SubElement(IdRows, "Discount1")
-                    Discount1.text = self.format_float(0, 2)
+                    self.setElementText(Discount1, 0, type='decimal', num_decimals=2)
                     Discount2 = etree.SubElement(IdRows, "Discount2")
-                    Discount2.text = self.format_float(0, 2)
+                    self.setElementText(Discount2, 0, type='decimal', num_decimals=2)
                     Amount = etree.SubElement(IdRows, "Amount")
-                    Amount.text = self.format_float(0, 2)
+                    self.setElementText(Amount, 0, type='decimal', num_decimals=2)
                     Currency = etree.SubElement(IdRows, "Currency")
-                    Currency.text = self.purchase_order_id.currency_id.name
+                    self.setElementText(Currency, self.purchase_order_id.currency_id.name)
                     VatCode = etree.SubElement(IdRows, "VatCode")
 
             row_num += 20
@@ -251,9 +281,9 @@ class edilt_transaction(models.Model):
         ######### level3
         Annotation = etree.SubElement(IdFooters, "Annotation")
         FinalAmount = etree.SubElement(IdFooters, "FinalAmount")
-        FinalAmount.text = self.format_float(self.purchase_order_id.amount_total, 2)
+        self.setElementText(FinalAmount, self.purchase_order_id.amount_total, type='decimal', num_decimals=2)
         Currency = etree.SubElement(IdFooters, "Currency")
-        Currency.text = self.purchase_order_id.currency_id.name
+        self.setElementText(Currency, self.purchase_order_id.currency_id.name)
 
         xml_text = etree.tostring(InitialPurchaseOrder, encoding='UTF-8', method='xml', xml_declaration = True, pretty_print=True)
 
