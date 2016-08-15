@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_edilt_transaction_sale_manager,edilt transaction sale manager,model_edilt_transaction,base.group_sale_manager,1,1,1,0
+access_edilt_transaction_purchase_manager,edilt transaction purchase manager,model_edilt_transaction,purchase.group_purchase_manager,1,1,1,0
+access_edilt_transaction_salesman,edilt transaction salesman,model_edilt_transaction,base.group_sale_salesman,1,1,1,0
+access_edilt_transaction_purchase_user,edilt transaction purhase user,model_edilt_transaction,purchase.group_purchase_user,1,1,1,0
+
+access_edilt_server_sale_manager,edilt server sale manager,model_edilt_server,base.group_sale_manager,1,1,1,0
+access_edilt_server_purchase_manager,edilt server purchase manager,model_edilt_server,purchase.group_purchase_manager,1,1,1,0
+access_edilt_server_salesman,edilt server salesman,model_edilt_server,base.group_sale_salesman,1,0,0,0
+access_edilt_server_purchase_user,edilt server purchase user,model_edilt_server,purchase.group_purchase_user,1,0,0,0
+

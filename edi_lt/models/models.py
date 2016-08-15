@@ -24,7 +24,7 @@ class purchase_order(models.Model):
 
     is_edi = fields.Boolean(related='partner_id.is_edi')
     edi_transaction_id = fields.Many2one(string="EDI transaction", comodel_name='edilt.transaction',
-                                         readonly=True) #, ondelete='restrict')
+                                         readonly=True, ondelete='restrict')
 
     @api.multi
     def edi_send(self):
@@ -112,6 +112,12 @@ class edilt_transaction(models.Model):
 
         else:
             raise ValidationError(_('The purchase order has already been sent'))
+
+    @api.multi
+    def set_to_pending(self):
+        self.state='pending'
+
+
 
     @api.model
     def upload(self, xml_str, filename):

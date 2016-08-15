@@ -6,7 +6,7 @@
             <field name="name">EDI transactions</field>
             <field name="model">edilt.transaction</field>
             <field name="arch" type="xml">
-                <tree string="EDI transactions" colors="blue:state=='pending';green:state=='done';">
+                <tree string="EDI transactions" colors="blue:state=='pending';green:state=='done';" create="0">
                     <field name="purchase_order_id"/>
                     <field name="datas_fname"/>
                     <field name="trx_date"/>
@@ -21,10 +21,12 @@
             <field name="name">EDI transactions</field>
             <field name="model">edilt.transaction</field>
             <field name="arch" type="xml">
-                <form string="EDI transactions">
+                <form string="EDI transactions" create="0">
                     <header>
                         <button name="send" string="Send" type="object"
                                 class="oe_highlight" attrs="{'invisible':[('state', '=', 'done')]}"/>
+                         <button name="set_to_pending" states="done" string="Set to pending" type="object"
+                               groups="base.group_system"/>
                         <field name="state" widget="statusbar" statusbar_colors='{"pending":"blue","done":"green"}'/>
                     </header>
                     <sheet>
