@@ -32,9 +32,7 @@
                                                 <div t-if="o.partner_id.street2" t-field="o.partner_id.street2"/>
                                                 <span t-field="o.partner_id.zip"/>
                                                 <span t-field="o.partner_id.city"/>
-                                                <t t-if="o.partner_id.state_id">(<span t-field="o.partner_id.state_id"/>
-                                                    )
-                                                </t>
+                                                <t t-if="o.partner_id.state_id">(<span t-field="o.partner_id.state_id"/>)</t>
                                                 <span t-if="o.partner_id.country_id" t-field="o.partner_id.country_id"/>
                                                 <div t-if="o.partner_id.phone">Phone:
                                                     <span t-field="o.partner_id.phone"/>
