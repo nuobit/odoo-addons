@@ -127,7 +127,7 @@
         </record>
 
         <record id="edilt_action_servers" model="ir.actions.act_window">
-            <field name="name">EDI Servers</field>
+            <field name="name">EDI servers</field>
             <field name="res_model">edilt.server</field>
             <field name="view_mode">tree,form</field>
             <!--field name="target">inline</field-->

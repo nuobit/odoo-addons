@@ -1,0 +1,340 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* edi_lt
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-15 18:15+0000\n"
+"PO-Revision-Date: 2016-08-15 18:15+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:210
+#, python-format
+msgid "A dropship purchase order must be linked to a sales order"
+msgstr "Un pedido de compra de tipo Dropship debe star siempre vinculado a un pedido de venta"
+
+#. module: edi_lt
+#: view:edilt.message.info.wizard:edi_lt.edilt_message_info_wizard_form_view
+msgid "Close"
+msgstr "Cerrar"
+
+#. module: edi_lt
+#: view:edilt.server:edi_lt.edilt_edi_servers_form_view
+msgid "Connection info"
+msgstr "Información de conexión"
+
+#. module: edi_lt
+#: field:edilt.message.info.wizard,create_uid:0
+#: field:edilt.server,create_uid:0
+#: field:edilt.transaction,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: edi_lt
+#: field:edilt.message.info.wizard,create_date:0
+#: field:edilt.server,create_date:0
+#: field:edilt.transaction,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: edi_lt
+#: field:edilt.server,default:0
+msgid "Default"
+msgstr "Por defecto"
+
+#. module: edi_lt
+#: field:edilt.message.info.wizard,display_name:0
+#: field:edilt.server,display_name:0
+#: field:edilt.transaction,display_name:0
+msgid "Display Name"
+msgstr "Display Name"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.ems_session_search_view
+#: selection:edilt.transaction,state:0
+msgid "Done"
+msgstr "Realizado"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.ems_session_search_view
+msgid "Done transactions"
+msgstr "Transacciones realizadas"
+
+#. module: edi_lt
+#: field:purchase.order,is_edi:0
+#: field:res.partner,is_edi:0
+msgid "EDI"
+msgstr "EDI"
+
+#. module: edi_lt
+#: model:ir.ui.menu,name:edi_lt.edilt_config_menu
+msgid "EDI LT"
+msgstr "EDI LT"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:111
+#, python-format
+msgid "EDI file %s sent"
+msgstr "EL fichero EDI %s ha sido enviado"
+
+#. module: edi_lt
+#: view:edilt.server:edi_lt.edilt_edi_servers_form_view
+#: view:edilt.server:edi_lt.edilt_edi_servers_tree_view
+#: model:ir.actions.act_window,name:edi_lt.edilt_action_servers
+msgid "EDI servers"
+msgstr "Servidores EDI"
+
+#. module: edi_lt
+#: field:purchase.order,edi_transaction_id:0
+msgid "EDI transaction"
+msgstr "Transacción EDI"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
+#: view:edilt.transaction:edi_lt.edilt_edi_transactions_tree_view
+#: model:ir.actions.act_window,name:edi_lt.edilt_action_transactions
+#: model:ir.ui.menu,name:edi_lt.edilt_menu_puchase_edi_transactions
+msgid "EDI transactions"
+msgstr "Transacciones EDI"
+
+#. module: edi_lt
+#: field:product.attribute.value,edi_code:0
+msgid "Edi code"
+msgstr "Código EDI"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:327
+#, python-format
+msgid "Element %s cannot be null"
+msgstr "El elemento %s no puede ser nulo"
+
+#. module: edi_lt
+#: selection:edilt.server,type:0
+msgid "FTP"
+msgstr "FTP"
+
+#. module: edi_lt
+#: field:edilt.transaction,datas:0
+msgid "File"
+msgstr "Fichero"
+
+#. module: edi_lt
+#: field:edilt.transaction,datas_fname:0
+msgid "Filename"
+msgstr "Nombre del fichero"
+
+#. module: edi_lt
+#: field:edilt.server,folder:0
+msgid "Folder"
+msgstr "Carpeta"
+
+#. module: edi_lt
+#: field:edilt.server,host:0
+msgid "Host"
+msgstr "Host"
+
+#. module: edi_lt
+#: field:edilt.message.info.wizard,id:0
+#: field:edilt.server,id:0
+#: field:edilt.transaction,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:345
+#, python-format
+msgid "Info"
+msgstr "Info"
+
+#. module: edi_lt
+#: field:edilt.message.info.wizard,__last_update:0
+#: field:edilt.server,__last_update:0
+#: field:edilt.transaction,__last_update:0
+msgid "Last Modified on"
+msgstr "Last Modified on"
+
+#. module: edi_lt
+#: field:edilt.message.info.wizard,write_uid:0
+#: field:edilt.server,write_uid:0
+#: field:edilt.transaction,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: edi_lt
+#: field:edilt.message.info.wizard,write_date:0
+#: field:edilt.server,write_date:0
+#: field:edilt.transaction,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:329
+#, python-format
+msgid "Line %i: %s"
+msgstr "Linea %i: %s"
+
+#. module: edi_lt
+#: view:edilt.message.info.wizard:edi_lt.edilt_message_info_wizard_form_view
+#: field:edilt.message.info.wizard,message:0
+msgid "Message"
+msgstr "Mensaje"
+
+#. module: edi_lt
+#: field:edilt.server,name:0
+#: field:edilt.transaction,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: edi_lt
+#: field:edilt.transaction,note:0
+msgid "Note"
+msgstr "Nota"
+
+#. module: edi_lt
+#: field:edilt.transaction,purchase_order_id:0
+msgid "Order"
+msgstr "Pedido"
+
+#. module: edi_lt
+#: model:ir.model,name:edi_lt.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: edi_lt
+#: field:edilt.server,password:0
+msgid "Password"
+msgstr "Contraseña"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.ems_session_search_view
+#: selection:edilt.transaction,state:0
+msgid "Pending"
+msgstr "Pendiente"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.ems_session_search_view
+msgid "Pending transactions"
+msgstr "Transacciones pendientes"
+
+#. module: edi_lt
+#: field:edilt.server,port:0
+msgid "Port"
+msgstr "Puerto"
+
+#. module: edi_lt
+#: model:ir.model,name:edi_lt.model_product_uom
+msgid "Product Unit of Measure"
+msgstr "Unidad de medida del producto"
+
+#. module: edi_lt
+#: model:ir.model,name:edi_lt.model_purchase_order
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
+msgid "Send"
+msgstr "Enviar"
+
+#. module: edi_lt
+#: view:purchase.order:edi_lt.edilt_purchase_order_form_view
+msgid "Send EDI"
+msgstr "Enviar EDI"
+
+#. module: edi_lt
+#: view:edilt.server:edi_lt.edilt_edi_servers_form_view
+msgid "Server info"
+msgstr "Información del servidor"
+
+#. module: edi_lt
+#: model:ir.ui.menu,name:edi_lt.edilt_menu_servers
+msgid "Servers"
+msgstr "Servidores"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
+msgid "Set to pending"
+msgstr "Establecer a pendiente"
+
+#. module: edi_lt
+#: field:edilt.transaction,state:0
+msgid "Status"
+msgstr "Estado"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:114
+#, python-format
+msgid "The purchase order has already been sent"
+msgstr "El pedido de compra ya ha sido enviado"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:215
+#, python-format
+msgid "The sale order %s does not exist"
+msgstr "E, pedido de venta %s no existe"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:217
+#, python-format
+msgid "The sale order %s does not have a customer reference"
+msgstr "El pedido de venta %s no tiene número de pedido del cliente"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:90
+#: sql_constraint:edilt.transaction:0
+#, python-format
+msgid "The transaction cannot have more than one purchase order"
+msgstr "Una transacción no puede tener más de un pedido de compra"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:128
+#, python-format
+msgid "There's more than one default server"
+msgstr "Se ha encontrado más de un servidor por defecto"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:126
+#, python-format
+msgid "There's no default server configured"
+msgstr "No hay un servidor por defecto configurado"
+
+#. module: edi_lt
+#: field:edilt.transaction,trx_date:0
+msgid "Transaction date"
+msgstr "Fecha de transacción"
+
+#. module: edi_lt
+#: field:edilt.server,type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: edi_lt
+#: field:edilt.server,username:0
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#. module: edi_lt
+#: help:edilt.transaction,datas:0
+msgid "XML file"
+msgstr "Fichero XML"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:47
+#, python-format
+msgid "You cannot cancel a purchase order associated to a done EDI transaction"
+msgstr "No se puede cancelar un pedido de compra associado a una transacción EDI ya realizada"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:41
+#, python-format
+msgid "You cannot delete a purchase order associated to a done EDI transaction"
+msgstr "No se puede borrar un pedido de compra associado a una transacción EDI ya realizada"
+
