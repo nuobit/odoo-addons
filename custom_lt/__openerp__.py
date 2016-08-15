@@ -27,8 +27,9 @@
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
-    'depends': ['base'],
+    'depends': ['base', 'stock'],
     'data': [
+        'reports/report_stock_picking.xml',
         'views/inherit_views.xml'
         ],
     'installable': True,
