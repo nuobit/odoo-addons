@@ -48,6 +48,20 @@ class purchase_order(models.Model):
         return super(purchase_order, self).action_cancel()
 
 
+    @api.multi
+    def action_picking_create(self):
+        picking_id = super(purchase_order, self).action_picking_create()
+
+        if self.related_usage == 'customer':
+            picking_obj = self.env['stock.picking'].browse(picking_id)
+            partner_id = self.dest_address_id
+            if partner_id.parent_id:
+                partner_id = partner_id.parent_id.partner_id
+
+            picking_obj.partner_id = partner_id
+
+        return picking_id
+
 
 
 
