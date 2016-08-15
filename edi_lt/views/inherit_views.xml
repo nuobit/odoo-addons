@@ -8,10 +8,36 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//header/field[@name='state']" position="before">
-                    <button name="edi_send" states="approved" string="Send EDI" type="object"/>
+                    <field name="is_edi" invisible="1"/>
+                    <button name="edi_send" string="Send EDI" type="object"
+                        attrs="{'invisible':['|',('is_edi', '=', False),('state', '!=', 'approved')]}"/>
                 </xpath>
+                 <xpath expr="//group/field[@name='dest_address_id']" position="after">
+                     <field name="edi_transaction_id" attrs="{'invisible':['|',('is_edi', '=', False),('state', '!=', 'approved')]}"/>
+                </xpath>
+
+
             </field>
         </record>
+
+        <!--  Partner inherited form -->
+        <record id="edilt_res_partner_form_view" model="ir.ui.view">
+            <field name="name">edilt.res.partner.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='sales_purchases']" position="inside">
+                    <group>
+                        <field name="is_edi"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+
 
         <!--  Product UOM inherited form -->
         <!--record id="edilt_product_uom_form_view" model="ir.ui.view">

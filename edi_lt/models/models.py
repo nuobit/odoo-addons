@@ -7,33 +7,45 @@ from lxml import etree
 import ftplib
 import StringIO
 
-'''
-class product_uom(models.Model):
-    _inherit = "product.uom"
-
-    edi_code = fields.Char(string='Edi code')
-
-'''
 
 class product_attribute_value(models.Model):
     _inherit = "product.attribute.value"
 
     edi_code = fields.Char(string='Edi code')
 
+class res_partner(models.Model):
+    _inherit = "res.partner"
 
+    is_edi = fields.Boolean(string='EDI', default=False)
 
 
 class purchase_order(models.Model):
     _inherit = "purchase.order"
 
+    is_edi = fields.Boolean(related='partner_id.is_edi')
+    edi_transaction_id = fields.Many2one(string="EDI transaction", comodel_name='edilt.transaction',
+                                         readonly=True) #, ondelete='restrict')
+
     @api.multi
     def edi_send(self):
-        edilt = self.env['edilt.transaction'].search([('purchase_order_id', '=', self.id)])
-        if not edilt:
-            edilt = self.env['edilt.transaction'].create({'purchase_order_id': self.id})
+        if not self.edi_transaction_id:
+            self.edi_transaction_id = self.env['edilt.transaction'].create({'purchase_order_id': self.id})
 
-        edilt.update()
+        self.edi_transaction_id.send()
 
+
+    @api.multi
+    def unlink(self):
+        for rec in self:
+            if rec.edi_transaction_id and rec.edi_transaction_id.state == 'done':
+                raise ValidationError(_('You cannot delete a purchase order associated to a done EDI transaction'))
+            super(purchase_order, rec).unlink()
+
+    @api.multi
+    def action_cancel(self):
+        if self.edi_transaction_id and self.edi_transaction_id.state == 'done':
+            raise ValidationError(_('You cannot cancel a purchase order associated to a done EDI transaction'))
+        return super(purchase_order, self).action_cancel()
 
 
 
@@ -41,19 +53,21 @@ class purchase_order(models.Model):
 
 class edilt_transaction(models.Model):
     _name = "edilt.transaction"
+    #_rec_name = 'datas_fname'
 
-    purchase_order_id = fields.Many2one(string='Order', comodel_name='purchase.order', readonly=True)
+    name = fields.Char(string='Name', compute='_compute_name')
+
+    purchase_order_id = fields.Many2one(string='Order', comodel_name='purchase.order', readonly=True, ondelete='cascade')
 
     datas = fields.Binary(string='File', help="XML file")
     datas_fname = fields.Char(string='Filename')
 
-    note = fields.Char(string='Note')
+    trx_date = fields.Datetime('Transaction date', readonly=True)
 
-    last_conn_message = fields.Char(string='Last connexion message')
+    note = fields.Char(string='Note')
 
     state = fields.Selection(
         selection=[('pending', 'Pending'),
-                   ('error', 'Error'),
                    ('done', 'Done'),
                    ],
         string='Status', default='pending', readonly=True,
@@ -61,43 +75,56 @@ class edilt_transaction(models.Model):
 
     _sql_constraints = [('Unique purchase order', 'unique (purchase_order_id)', _('The transaction cannot have more than one purchase order'))]
 
+    @api.depends('purchase_order_id', 'state')
+    def _compute_name(self):
+        d = dict(self.fields_get('state')['state']['selection'])
+        self.name = '%s (%s)' % (self.datas_fname, d[self.state])
+
+
+
     @api.multi
-    def update(self):
-        if self.state in ('pending', 'error'):
-            xml = self.generate_xml()
-            self.datas = base64.encodestring(xml)
+    def send(self):
+        if self.state in ('pending'):
+            xml_str = self.generate_xml()
+            self.datas = base64.encodestring(xml_str)
             self.datas_fname = '%s.xml' % self.purchase_order_id.name.replace('/','').replace('\'','')
 
-            server = self.env['edilt.server'].search([('default','=',True)])
+            self.upload(xml_str, self.datas_fname)
+
+            self.state = 'done'
+            self.trx_date = fields.Datetime.now()
+
+            self.purchase_order_id.message_post(body=_('EDI file %s sent') % self.datas_fname)
+
+        else:
+            raise ValidationError(_('The purchase order has already been sent'))
+
+    @api.model
+    def upload(self, xml_str, filename):
+        server = self.env['edilt.server'].search([('default','=',True)])
+        if not server:
+            raise Warning(_("There's no default server configured"))
+        if len(server)>1:
+            raise Warning(_("There's more than one default server"))
+        try:
             ftp = ftplib.FTP()
             ftp.connect(server.host, server.port)
 
-            t = ftp.login(server.username, server.password)
+            ftp.login(server.username, server.password)
 
             if server.folder:
                 ftp.cwd(server.folder)
 
-            t=ftp.pwd()
-
-
-            try:
-                #ftp.delete('oo')
-                ftp.storbinary('STOR %s' % self.datas_fname, StringIO.StringIO(xml))
-
-
-            except ftplib.all_errors as e:
-                self.last_conn_message = e.message
-                self.state = 'error'
-                return self.show_message(e.message)
-                #raise Warning(e.message)
+            #ftp.delete('oo')
+            ftp.storbinary('STOR %s' % filename, StringIO.StringIO(xml_str))
             ftp.quit()
+        except ftplib.all_errors as e:
+            try:
+                ftp.quit()
+            except:
+                pass
 
-
-
-            #raise Warning(t)
-
-        else:
-            raise ValidationError(_('The transaction is already done'))
+            raise Warning('FTP error: %s' % (e.message or e.strerror))
 
     def generate_xml(self):
         ## root
@@ -129,7 +156,7 @@ class edilt_transaction(models.Model):
             partner_id = self.purchase_order_id.picking_type_id.warehouse_id.partner_id
 
         DestinationName1 = etree.SubElement(IdDestination, "DestinationName1")
-        fmt = '%(data)s' + (' (%s)' % partner_id.comercial) if partner_id.comercial else ''
+        fmt = '%(data)s' + ((' (%s)' % partner_id.comercial) if partner_id.comercial else '')
         self.setElementText(DestinationName1, partner_id.name, fmt=fmt, required=True)
 
         DestinationName2 = etree.SubElement(IdDestination, "DestinationName2")
@@ -279,7 +306,7 @@ class edilt_transaction(models.Model):
             if required:
                 err_msg = _('Element %s cannot be null') % elem.tag
                 if line is not None:
-                    err_msg = _('Line %i: %s') % (line, msg)
+                    err_msg = _('Line %i: %s') % (line, err_msg)
                 raise Warning(err_msg)
             return
 
@@ -322,10 +349,16 @@ class edilt_server(models.Model):
 
     default = fields.Boolean('Default', default=lambda self: self._default_default())
 
+
     def _default_default(self):
         s = self.env['edilt.server'].search_count([])
 
         return s==1
+
+    @api.constrains('default')
+    def _constraint_default(self):
+        if self.default:
+            self.env['edilt.server'].search([('id', '!=', self.id)]).default=False
 
 
 
