@@ -71,7 +71,7 @@ class edilt_transaction(models.Model):
     purchase_order_id = fields.Many2one(string='Order', comodel_name='purchase.order', readonly=True, ondelete='cascade')
 
     datas = fields.Binary(string='File', help="XML file")
-    datas_fname = fields.Char(string='Filename', required=True)
+    datas_fname = fields.Char(string='Filename')
 
     trx_date = fields.Datetime('Transaction date', readonly=True)
 
@@ -367,7 +367,9 @@ class edilt_server(models.Model):
     @api.constrains('default')
     def _constraint_default(self):
         if self.default:
-            self.env['edilt.server'].search([('id', '!=', self.id)]).default=False
+            other_servers = self.env['edilt.server'].search([('id', '!=', self.id)])
+            for s in other_servers:
+                s.default = False
 
 
 
