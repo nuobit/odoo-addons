@@ -8,11 +8,6 @@ import ftplib
 import StringIO
 
 
-class product_attribute_value(models.Model):
-    _inherit = "product.attribute.value"
-
-    edi_code = fields.Char(string='Edi code')
-
 class res_partner(models.Model):
     _inherit = "res.partner"
 
@@ -263,14 +258,9 @@ class edilt_transaction(models.Model):
                     RowType = etree.SubElement(IdRows, "RowType")
                     RowType.text = 'P'
 
-                    if ol.product_id.product_tmpl_id.product_variant_count > 1:
-                        item_code = '%s %s' % (ol.product_id.default_code, ol.product_id.attribute_value_ids[0].edi_code)
-                    else:
-                        item_code = ol.product_id.default_code
-
                     ItemReference = etree.SubElement(IdRows, "ItemReference")
                     ItemCode = etree.SubElement(IdRows, "ItemCode")
-                    self.setElementText(ItemCode, item_code, line=i)
+                    self.setElementText(ItemCode, ol.product_id.default_code, line=i)
                     BarCode = etree.SubElement(IdRows, "BarCode")
                     self.setElementText(BarCode, ol.product_id.ean13, line=i)
                     Quantity = etree.SubElement(IdRows, "Quantity")
