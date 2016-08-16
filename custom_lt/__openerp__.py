@@ -30,7 +30,8 @@
     'depends': ['base', 'stock'],
     'data': [
         'reports/report_stock_picking.xml',
-        'views/inherit_views.xml'
+        'views/inherit_views.xml',
+        'views/data.xml'
         ],
     'installable': True,
 }
