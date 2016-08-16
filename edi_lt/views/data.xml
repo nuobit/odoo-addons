@@ -4,5 +4,8 @@
         <record id="stock_dropshipping.picking_type_dropship" model="stock.picking.type">
             <field name="code">outgoing</field>
         </record>
+        <record id="stock_dropshipping.seq_picking_type_dropship" model="ir.sequence">
+            <field name="prefix">DS/%(year)s/</field>
+        </record>
     </data>
 </openerp>
