@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-15 18:17+0000\n"
-"PO-Revision-Date: 2016-08-15 18:17+0000\n"
+"POT-Creation-Date: 2016-08-16 10:54+0000\n"
+"PO-Revision-Date: 2016-08-16 10:54+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,12 +15,18 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:210
+#: code:addons/edi_lt/models/models.py:227
 #, python-format
 msgid "A dropship purchase order must be linked to a sales order"
 msgstr "A dropship purchase order must be linked to a sales order"
 
 #. module: edi_lt
+#: view:edilt.message.acceptcancel.wizard:edi_lt.edilt_message_acceptcancel_wizard_form_view
+msgid "Accept"
+msgstr "Accept"
+
+#. module: edi_lt
+#: view:edilt.message.acceptcancel.wizard:edi_lt.edilt_message_acceptcancel_wizard_form_view
 #: view:edilt.message.info.wizard:edi_lt.edilt_message_info_wizard_form_view
 msgid "Close"
 msgstr "Close"
@@ -31,6 +37,7 @@ msgid "Connection info"
 msgstr "Connection info"
 
 #. module: edi_lt
+#: field:edilt.message.acceptcancel.wizard,create_uid:0
 #: field:edilt.message.info.wizard,create_uid:0
 #: field:edilt.server,create_uid:0
 #: field:edilt.transaction,create_uid:0
@@ -38,6 +45,7 @@ msgid "Created by"
 msgstr "Created by"
 
 #. module: edi_lt
+#: field:edilt.message.acceptcancel.wizard,create_date:0
 #: field:edilt.message.info.wizard,create_date:0
 #: field:edilt.server,create_date:0
 #: field:edilt.transaction,create_date:0
@@ -50,6 +58,12 @@ msgid "Default"
 msgstr "Default"
 
 #. module: edi_lt
+#: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
+msgid "Delete"
+msgstr "Delete"
+
+#. module: edi_lt
+#: field:edilt.message.acceptcancel.wizard,display_name:0
 #: field:edilt.message.info.wizard,display_name:0
 #: field:edilt.server,display_name:0
 #: field:edilt.transaction,display_name:0
@@ -79,7 +93,7 @@ msgid "EDI LT"
 msgstr "EDI LT"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:111
+#: code:addons/edi_lt/models/models.py:125
 #, python-format
 msgid "EDI file %s sent"
 msgstr "EDI file %s sent"
@@ -92,6 +106,7 @@ msgid "EDI servers"
 msgstr "EDI servers"
 
 #. module: edi_lt
+#: field:edilt.message.acceptcancel.wizard,edi_transaction_id:0
 #: field:purchase.order,edi_transaction_id:0
 msgid "EDI transaction"
 msgstr "EDI transaction"
@@ -110,7 +125,7 @@ msgid "Edi code"
 msgstr "Edi code"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:327
+#: code:addons/edi_lt/models/models.py:344
 #, python-format
 msgid "Element %s cannot be null"
 msgstr "Element %s cannot be null"
@@ -141,6 +156,7 @@ msgid "Host"
 msgstr "Host"
 
 #. module: edi_lt
+#: field:edilt.message.acceptcancel.wizard,id:0
 #: field:edilt.message.info.wizard,id:0
 #: field:edilt.server,id:0
 #: field:edilt.transaction,id:0
@@ -148,12 +164,13 @@ msgid "ID"
 msgstr "ID"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:345
+#: code:addons/edi_lt/models/models.py:435
 #, python-format
 msgid "Info"
 msgstr "Info"
 
 #. module: edi_lt
+#: field:edilt.message.acceptcancel.wizard,__last_update:0
 #: field:edilt.message.info.wizard,__last_update:0
 #: field:edilt.server,__last_update:0
 #: field:edilt.transaction,__last_update:0
@@ -161,6 +178,7 @@ msgid "Last Modified on"
 msgstr "Last Modified on"
 
 #. module: edi_lt
+#: field:edilt.message.acceptcancel.wizard,write_uid:0
 #: field:edilt.message.info.wizard,write_uid:0
 #: field:edilt.server,write_uid:0
 #: field:edilt.transaction,write_uid:0
@@ -168,6 +186,7 @@ msgid "Last Updated by"
 msgstr "Last Updated by"
 
 #. module: edi_lt
+#: field:edilt.message.acceptcancel.wizard,write_date:0
 #: field:edilt.message.info.wizard,write_date:0
 #: field:edilt.server,write_date:0
 #: field:edilt.transaction,write_date:0
@@ -175,12 +194,14 @@ msgid "Last Updated on"
 msgstr "Last Updated on"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:329
+#: code:addons/edi_lt/models/models.py:346
 #, python-format
 msgid "Line %i: %s"
 msgstr "Line %i: %s"
 
 #. module: edi_lt
+#: view:edilt.message.acceptcancel.wizard:edi_lt.edilt_message_acceptcancel_wizard_form_view
+#: field:edilt.message.acceptcancel.wizard,message:0
 #: view:edilt.message.info.wizard:edi_lt.edilt_message_info_wizard_form_view
 #: field:edilt.message.info.wizard,message:0
 msgid "Message"
@@ -196,6 +217,12 @@ msgstr "Name"
 #: field:edilt.transaction,note:0
 msgid "Note"
 msgstr "Note"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:430
+#, python-format
+msgid "Operation completed successfully"
+msgstr "Operation completed successfully"
 
 #. module: edi_lt
 #: field:edilt.transaction,purchase_order_id:0
@@ -269,38 +296,38 @@ msgid "Status"
 msgstr "Status"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:114
+#: code:addons/edi_lt/models/models.py:113
 #, python-format
 msgid "The purchase order has already been sent"
 msgstr "The purchase order has already been sent"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:215
+#: code:addons/edi_lt/models/models.py:232
 #, python-format
 msgid "The sale order %s does not exist"
 msgstr "The sale order %s does not exist"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:217
+#: code:addons/edi_lt/models/models.py:234
 #, python-format
 msgid "The sale order %s does not have a customer reference"
 msgstr "The sale order %s does not have a customer reference"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:90
+#: code:addons/edi_lt/models/models.py:92
 #: sql_constraint:edilt.transaction:0
 #, python-format
 msgid "The transaction cannot have more than one purchase order"
 msgstr "The transaction cannot have more than one purchase order"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:128
+#: code:addons/edi_lt/models/models.py:145
 #, python-format
 msgid "There's more than one default server"
 msgstr "There's more than one default server"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:126
+#: code:addons/edi_lt/models/models.py:143
 #, python-format
 msgid "There's no default server configured"
 msgstr "There's no default server configured"
@@ -321,19 +348,38 @@ msgid "Username"
 msgstr "Username"
 
 #. module: edi_lt
+#: code:addons/edi_lt/models/models.py:111
+#, python-format
+msgid "Warning"
+msgstr "Warning"
+
+#. module: edi_lt
 #: help:edilt.transaction,datas:0
 msgid "XML file"
 msgstr "XML file"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:47
+#: code:addons/edi_lt/models/models.py:105
+#, python-format
+msgid "You are about to send the order directly to the supplier.\n"
+"This operation is irreversible. Do you want to continue?"
+msgstr "You are about to send the order directly to the supplier.\n"
+"This operation is irreversible. Do you want to continue?"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:49
 #, python-format
 msgid "You cannot cancel a purchase order associated to a done EDI transaction"
 msgstr "You cannot cancel a purchase order associated to a done EDI transaction"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:41
+#: code:addons/edi_lt/models/models.py:43
 #, python-format
 msgid "You cannot delete a purchase order associated to a done EDI transaction"
 msgstr "You cannot delete a purchase order associated to a done EDI transaction"
+
+#. module: edi_lt
+#: view:edilt.message.acceptcancel.wizard:edi_lt.edilt_message_acceptcancel_wizard_form_view
+msgid "or"
+msgstr "or"
 

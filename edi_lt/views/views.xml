@@ -27,6 +27,8 @@
                                 class="oe_highlight" attrs="{'invisible':[('state', '=', 'done')]}"/>
                          <button name="set_to_pending" states="done" string="Set to pending" type="object"
                                groups="base.group_system"/>
+                         <button name="delete" states="pending" string="Delete" type="object"
+                               groups="base.group_system"/>
                         <field name="state" widget="statusbar" statusbar_colors='{"pending":"blue","done":"green"}'/>
                     </header>
                     <sheet>
@@ -149,6 +151,24 @@
                     </group>
                     <footer>
                         <button special="cancel" class="oe_highlight" string="Close"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Creem el accept/cancel wizard -->
+        <record model="ir.ui.view" id="edilt_message_acceptcancel_wizard_form_view">
+            <field name="name">edilt.message.acceptcancel.wizard.form</field>
+            <field name="model">edilt.message.acceptcancel.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Message">
+                    <group>
+                        <field name="message" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="accept" class="oe_highlight" type="object" string="Accept"/>
+                        or
+                        <button special="cancel" class="oe_link" string="Close"/>
                     </footer>
                 </form>
             </field>

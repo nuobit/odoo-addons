@@ -31,7 +31,9 @@ class purchase_order(models.Model):
         if not self.edi_transaction_id:
             self.edi_transaction_id = self.env['edilt.transaction'].create({'purchase_order_id': self.id})
 
-        self.edi_transaction_id.send()
+        self.edi_transaction_id.set_filename()
+
+        return self.edi_transaction_id.send()
 
 
     @api.multi
@@ -74,7 +76,7 @@ class edilt_transaction(models.Model):
     purchase_order_id = fields.Many2one(string='Order', comodel_name='purchase.order', readonly=True, ondelete='cascade')
 
     datas = fields.Binary(string='File', help="XML file")
-    datas_fname = fields.Char(string='Filename')
+    datas_fname = fields.Char(string='Filename', required=True)
 
     trx_date = fields.Datetime('Transaction date', readonly=True)
 
@@ -94,29 +96,44 @@ class edilt_transaction(models.Model):
         d = dict(self.fields_get('state')['state']['selection'])
         self.name = '%s (%s)' % (self.datas_fname, d[self.state])
 
-
+    def set_filename(self):
+        self.datas_fname = '%s.xml' % self.purchase_order_id.name.replace('/','').replace('\'','')
 
     @api.multi
     def send(self):
         if self.state in ('pending'):
-            xml_str = self.generate_xml()
-            self.datas = base64.encodestring(xml_str)
-            self.datas_fname = '%s.xml' % self.purchase_order_id.name.replace('/','').replace('\'','')
+            message = _('You are about to send the order directly to the supplier.\nThis operation is irreversible. Do you want to continue?')
+            wizard_obj = self.env['edilt.message.acceptcancel.wizard'].create({
+                'message': message,
+                'edi_transaction_id': self.id,
+                })
 
-            self.upload(xml_str, self.datas_fname)
-
-            self.state = 'done'
-            self.trx_date = fields.Datetime.now()
-
-            self.purchase_order_id.message_post(body=_('EDI file %s sent') % self.datas_fname)
-
+            return wizard_obj.run(title=_('Warning'))
         else:
             raise ValidationError(_('The purchase order has already been sent'))
+
+    @api.multi
+    def accept(self):
+        xml_str = self.generate_xml()
+        self.datas = base64.encodestring(xml_str)
+
+        self.upload(xml_str, self.datas_fname)
+
+        self.state = 'done'
+        self.trx_date = fields.Datetime.now()
+
+        self.purchase_order_id.message_post(body=_('EDI file %s sent') % self.datas_fname)
+
 
     @api.multi
     def set_to_pending(self):
         self.state='pending'
 
+    @api.multi
+    def delete(self):
+        self.purchase_order_id.edi_transaction_id = False
+        self.purchase_order_id = False
+        self.unlink()
 
 
     @api.model
@@ -335,24 +352,6 @@ class edilt_transaction(models.Model):
 
         elem.text = format[type]()
 
-    def show_message(self, message):
-        wizard_id = self.env['edilt.message.info.wizard'].create({
-            'message': message,
-            })
-
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _("Info"),
-            'res_model': 'edilt.message.info.wizard',
-            'view_type': 'form',
-            'view_mode': 'form',
-            #'views': [(view.id, 'form')],
-            #'view_id': view.id,
-            'res_id': wizard_id.id,
-            'target': 'new',
-            #'context': context,
-        }
-
 
 class edilt_server(models.Model):
     _name = "edilt.server"
@@ -387,5 +386,55 @@ class edilt_message_info_wizard(models.TransientModel):
     _name = 'edilt.message.info.wizard'
 
     message = fields.Char(readonly=True)
+
+    def run(self, title="Warning"):
+        return {
+                'type': 'ir.actions.act_window',
+                'name': title,
+                'res_model': 'edilt.message.info.wizard',
+                'view_type': 'form',
+                'view_mode': 'form',
+                #'views': [(view.id, 'form')],
+                #'view_id': view.id,
+                'res_id': self.id,
+                'target': 'new',
+                #'context': context,
+            }
+
+
+class edilt_message_acceptcancel_wizard(models.TransientModel):
+    _name = 'edilt.message.acceptcancel.wizard'
+
+    message = fields.Char(readonly=True)
+    edi_transaction_id = fields.Many2one(string="EDI transaction", comodel_name='edilt.transaction',
+                                         readonly=True)
+
+    def run(self, title="Warning"):
+        return {
+                'type': 'ir.actions.act_window',
+                'name': title,
+                'res_model': 'edilt.message.acceptcancel.wizard',
+                'view_type': 'form',
+                'view_mode': 'form',
+                #'views': [(view.id, 'form')],
+                #'view_id': view.id,
+                'res_id': self.id,
+                'target': 'new',
+                #'context': context,
+            }
+
+    @api.multi
+    def accept(self):
+        self.edi_transaction_id.accept()
+
+        message = _('Operation completed successfully')
+        wizard_obj = self.env['edilt.message.info.wizard'].create({
+                'message': message,
+                })
+
+        return wizard_obj.run(title=_('Info'))
+
+
+
 
 

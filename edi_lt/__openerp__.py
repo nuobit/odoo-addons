@@ -27,10 +27,11 @@
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
-    'depends': ['purchase', 'purchase_discount','l10n_es_partner'],
+    'depends': ['purchase', 'purchase_discount','l10n_es_partner', 'stock_dropshipping'],
     'data': [
         'views/views.xml',
         'views/inherit_views.xml',
+        'views/data.xml',
         'security/ir.model.access.csv',
         ],
     'installable': True,
