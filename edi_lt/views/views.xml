@@ -25,9 +25,9 @@
                     <header>
                         <button name="send" string="Send" type="object"
                                 class="oe_highlight" attrs="{'invisible':[('state', '=', 'done')]}"/>
-                         <button name="set_to_pending" states="done" string="Set to pending" type="object"
+                        <button name="set_to_pending" states="done" string="Set to pending" type="object"
                                groups="base.group_system"/>
-                         <button name="delete" states="pending" string="Delete" type="object"
+                        <button name="delete" states="pending" string="Delete" type="object"
                                groups="base.group_system"/>
                         <field name="state" widget="statusbar" statusbar_colors='{"pending":"blue","done":"green"}'/>
                     </header>
