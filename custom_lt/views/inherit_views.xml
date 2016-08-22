@@ -12,6 +12,18 @@
                 </xpath>
             </field>
         </record>
+
+        <!--  sale order inherited form -->
+        <record id="view_custom_lt_sale_order_form" model="ir.ui.view">
+            <field name="name">sale.order.custom.lt.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>
 
