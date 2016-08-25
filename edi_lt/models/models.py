@@ -247,56 +247,40 @@ class edilt_transaction(models.Model):
         ####### level2
         row_num = 10
         for i, ol in enumerate(self.purchase_order_id.order_line.sorted(lambda x: x.id),1):
-            for row_type in ('P', 'C'):
-                IdRows = etree.SubElement(PurchaseOrderRows, "IdRows")
+            IdRows = etree.SubElement(PurchaseOrderRows, "IdRows")
 
-                RowNumber = etree.SubElement(IdRows, "RowNumber")
-                self.setElementText(RowNumber, row_num, type='integer')
-                if row_type == 'P':
-                    RowProgressive = etree.SubElement(IdRows, "RowProgressive")
-                    RowProgressive.text = '0'
-                    RowType = etree.SubElement(IdRows, "RowType")
-                    RowType.text = 'P'
+            RowNumber = etree.SubElement(IdRows, "RowNumber")
+            self.setElementText(RowNumber, row_num, type='integer')
 
-                    ItemReference = etree.SubElement(IdRows, "ItemReference")
-                    ItemCode = etree.SubElement(IdRows, "ItemCode")
-                    self.setElementText(ItemCode, ol.product_id.default_code, line=i)
-                    BarCode = etree.SubElement(IdRows, "BarCode")
-                    self.setElementText(BarCode, ol.product_id.ean13, line=i)
-                    Quantity = etree.SubElement(IdRows, "Quantity")
-                    self.setElementText(Quantity, ol.product_qty, type='decimal', num_decimals=4, line=i)
-                    UM = etree.SubElement(IdRows, "UM")
-                    self.setElementText(UM, ol.with_context({'lang' : 'en_US'}).product_uom.name, line=i)
-                    Description = etree.SubElement(IdRows, "Description")
-                    self.setElementText(Description, ol.name, line=i)
-                    UnitPrice = etree.SubElement(IdRows, "UnitPrice")
-                    self.setElementText(UnitPrice, ol.price_unit, type='decimal', num_decimals=2, line=i)
-                    Discount1 = etree.SubElement(IdRows, "Discount1")
-                    self.setElementText(Discount1, ol.discount or 0, type='decimal', num_decimals=2, line=i)
-                    Discount2 = etree.SubElement(IdRows, "Discount2")
-                    self.setElementText(Discount2, 0, type='decimal', num_decimals=2, line=i)
-                    Amount = etree.SubElement(IdRows, "Amount")
-                    self.setElementText(Amount, ol.price_subtotal, type='decimal', num_decimals=2, line=i)
-                    Currency = etree.SubElement(IdRows, "Currency")
-                    self.setElementText(Currency, self.purchase_order_id.currency_id.name, line=i)
-                    VatCode = etree.SubElement(IdRows, "VatCode")
-                elif row_type == 'C':
-                    RowProgressive = etree.SubElement(IdRows, "RowProgressive")
-                    RowProgressive.text = '1'
-                    RowType = etree.SubElement(IdRows, "RowType")
-                    RowType.text = 'C'
-                    Description = etree.SubElement(IdRows, "Description")
-                    Discount1 = etree.SubElement(IdRows, "Discount1")
-                    self.setElementText(Discount1, 0, type='decimal', num_decimals=2)
-                    Discount2 = etree.SubElement(IdRows, "Discount2")
-                    self.setElementText(Discount2, 0, type='decimal', num_decimals=2)
-                    Amount = etree.SubElement(IdRows, "Amount")
-                    self.setElementText(Amount, 0, type='decimal', num_decimals=2)
-                    Currency = etree.SubElement(IdRows, "Currency")
-                    self.setElementText(Currency, self.purchase_order_id.currency_id.name, line=i)
-                    VatCode = etree.SubElement(IdRows, "VatCode")
+            RowProgressive = etree.SubElement(IdRows, "RowProgressive")
+            RowProgressive.text = '0'
+            RowType = etree.SubElement(IdRows, "RowType")
+            RowType.text = 'P'
 
-            row_num += 20
+            ItemReference = etree.SubElement(IdRows, "ItemReference")
+            ItemCode = etree.SubElement(IdRows, "ItemCode")
+            self.setElementText(ItemCode, ol.product_id.default_code, line=i)
+            BarCode = etree.SubElement(IdRows, "BarCode")
+            self.setElementText(BarCode, ol.product_id.ean13, line=i)
+            Quantity = etree.SubElement(IdRows, "Quantity")
+            self.setElementText(Quantity, ol.product_qty, type='decimal', num_decimals=4, line=i)
+            UM = etree.SubElement(IdRows, "UM")
+            self.setElementText(UM, ol.with_context({'lang' : 'en_US'}).product_uom.name, line=i)
+            Description = etree.SubElement(IdRows, "Description")
+            self.setElementText(Description, ol.name, line=i)
+            UnitPrice = etree.SubElement(IdRows, "UnitPrice")
+            self.setElementText(UnitPrice, ol.price_unit, type='decimal', num_decimals=2, line=i)
+            Discount1 = etree.SubElement(IdRows, "Discount1")
+            self.setElementText(Discount1, ol.discount or 0, type='decimal', num_decimals=2, line=i)
+            Discount2 = etree.SubElement(IdRows, "Discount2")
+            self.setElementText(Discount2, 0, type='decimal', num_decimals=2, line=i)
+            Amount = etree.SubElement(IdRows, "Amount")
+            self.setElementText(Amount, ol.price_subtotal, type='decimal', num_decimals=2, line=i)
+            Currency = etree.SubElement(IdRows, "Currency")
+            self.setElementText(Currency, self.purchase_order_id.currency_id.name, line=i)
+            VatCode = etree.SubElement(IdRows, "VatCode")
+
+            row_num += 10
 
         #### level1
         PurchaseOrderFooters = etree.SubElement(InitialPurchaseOrder, "PurchaseOrderFooters")
