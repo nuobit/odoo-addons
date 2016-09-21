@@ -53,7 +53,7 @@ class purchase_order(models.Model):
             picking_obj = self.env['stock.picking'].browse(picking_id)
             partner_id = self.dest_address_id
             if partner_id.parent_id:
-                partner_id = partner_id.parent_id.partner_id
+                partner_id = partner_id.parent_id
 
             picking_obj.partner_id = partner_id
 
