@@ -24,6 +24,7 @@ from openerp import models, fields, api
 class purchase_order(models.Model):
     _inherit = "purchase.order"
 
+    @api.model
     def _prepare_order_line_move(self, order, order_line, picking_id, group_id):
         res = super(purchase_order, self)._prepare_order_line_move(order, order_line, picking_id, group_id)
 
