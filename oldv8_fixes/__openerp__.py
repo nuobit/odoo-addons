@@ -20,20 +20,20 @@
 ##############################################################################
 
 {
-    'name': 'Fix product name in dropshipping',
+    'name': 'Old Odoo v8 fixes',
     'version': '8.0.0.1.0',
     'category': 'Generic Modules',
     'description': """
-    Fix incorrecct product full name in dropshipping
+    Fixes bugs already solved in future Odoo v8 commits
 
     """,
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
     'license': 'AGPL-3',
-    'depends': ['purchase'
+    'depends': ['purchase',
                ],
     'data': [
-
+        'views/data.xml'
     ],
     'installable': True,
 }
