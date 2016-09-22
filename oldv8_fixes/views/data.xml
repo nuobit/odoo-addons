@@ -2,9 +2,9 @@
 <openerp>
     <data>
         <record id="purchase.purchase_line_form_action2" model="ir.actions.act_window">
-            <field name="domain" value="[('order_id.invoice_method','=','manual'), ('state','in',('confirmed','done')), ('invoiced', '=', False)]"/>
+            <field name="domain">[('order_id.invoice_method','=','manual'), ('state','in',('confirmed','done')), ('invoiced', '=', False)]</field>
         </record>
-        
+
         <!--record id="purchase.action_picking_tree_picking_to_invoice" model="ir.actions.act_window">
             <field name="domain" eval="False"/>
         </record-->
