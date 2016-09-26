@@ -26,14 +26,31 @@ from openerp.http import request
 
 
 class website_sale(main.website_sale):
+    @http.route(['/shop/cart/update_json'], type='json', auth="public", methods=['POST'], website=True)
+    def cart_update_json(self, product_id, line_id, add_qty=None, set_qty=None, display=True):
+
+        value = super(website_sale, self).cart_update_json(product_id, line_id, add_qty, set_qty, display)
+
+        order_obj = request.website.sale_get_order()
+        order_line_obj = order_obj.order_line.search([('id', '=', line_id)])
+
+        lang_code = request.context['lang']
+        lang_obj = request.env['res.lang'].search([('code', '=', lang_code)])
+
+        value['price_unit'] = lang_obj.format('%.2f', order_line_obj.price_unit, grouping=True, monetary=True)
+        value['discount'] = lang_obj.format('%.2f', order_line_obj.discount, grouping=True, monetary=False)
+        value['price_subtotal'] = lang_obj.format('%.2f', order_line_obj.price_subtotal, grouping=True, monetary=True)
+
+        return value
+
+
+    """
     @http.route(['/shop/get_unit_price_discount'], type='json', auth="public", methods=['POST'], website=True)
-    def get_unit_price_discount(self, product_ids, add_qty, use_order_pricelist=False, **kw):
+    def get_unit_price_discount(self, product_ids, add_qty, line_id, **kw):
         products = request.env['product.product'].browse(product_ids)
         partner = request.env['res.users'].browse(request.uid).partner_id
-        if use_order_pricelist:
-            pricelist_id = request.session.get('sale_order_code_pricelist_id') or partner.property_product_pricelist.id
-        else:
-            pricelist_id = partner.property_product_pricelist.id
+        pricelist_id = request.session.get('sale_order_code_pricelist_id') or partner.property_product_pricelist.id
+
         pricelist_obj = request.env['product.pricelist'].browse(pricelist_id)
         prices = pricelist_obj.price_rule_get_multi([(product, add_qty, partner) for product in products])
 
@@ -51,7 +68,7 @@ class website_sale(main.website_sale):
                 else:
                     discount = 0.0
 
-            res[product.id]=(price, discount)
+            res[product.id]=(price, discount, price_net * add_qty)
 
         return res
-
+    """
