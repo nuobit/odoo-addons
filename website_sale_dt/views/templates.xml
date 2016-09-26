@@ -233,6 +233,16 @@
 
                     <table class="pull-right mb16" id="cart_total" t-if="website_sale_order">
                         <thead>
+                            <tr width="100" class="text-muted" id="order_delivery">
+                                <td>
+                                    Products:
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="website_sale_order.nondelivery_products_amount"
+                                          t-field-options="{                         &quot;widget&quot;: &quot;monetary&quot;,                         &quot;display_currency&quot;: &quot;website_sale_order.currency_id&quot;                     }"/>
+                                </td>
+                            </tr>
+
                             <tr width="100" class="text-muted" style="height: 35px; vertical-align: top;" id="order_delivery">
                                 <td>
                                     <abbr title="Delivery will be updated after choosing a new delivery method">

@@ -40,3 +40,11 @@ class dt_product_template(models.Model):
                 record.public_default_code = record.product_variant_ids[0].default_code
 
 
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    nondelivery_products_amount = fields.Float(compute='_compute_nondelivery_products_amount')
+
+    @api.depends('website_order_line')
+    def _compute_nondelivery_products_amount(self):
+        self.nondelivery_products_amount = sum([x.price_subtotal for x in self.website_order_line])
