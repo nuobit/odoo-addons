@@ -32,14 +32,15 @@ class website_sale(main.website_sale):
         value = super(website_sale, self).cart_update_json(product_id, line_id, add_qty, set_qty, display)
 
         order_obj = request.website.sale_get_order()
-        order_line_obj = order_obj.order_line.search([('id', '=', line_id)])
+        if order_obj:
+            order_line_obj = order_obj.order_line.search([('id', '=', line_id)])
 
-        lang_code = request.context['lang']
-        lang_obj = request.env['res.lang'].search([('code', '=', lang_code)])
+            lang_code = request.context['lang']
+            lang_obj = request.env['res.lang'].search([('code', '=', lang_code)])
 
-        value['price_unit'] = lang_obj.format('%.2f', order_line_obj.price_unit, grouping=True, monetary=True)
-        value['discount'] = lang_obj.format('%.2f', order_line_obj.discount, grouping=True, monetary=False)
-        value['price_subtotal'] = lang_obj.format('%.2f', order_line_obj.price_subtotal, grouping=True, monetary=True)
+            value['price_unit'] = lang_obj.format('%.2f', order_line_obj.price_unit, grouping=True, monetary=True)
+            value['discount'] = lang_obj.format('%.2f', order_line_obj.discount, grouping=True, monetary=False)
+            value['price_subtotal'] = lang_obj.format('%.2f', order_line_obj.price_subtotal, grouping=True, monetary=True)
 
         return value
 
