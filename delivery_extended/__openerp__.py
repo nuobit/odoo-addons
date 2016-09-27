@@ -20,8 +20,8 @@
 #/#############################################################################
 
 {
-    'name': "Remove carrier line if its price is zero",
-    'description': "Avoid having an carrier order line with price zero",
+    'name': "Delivery extended",
+    'description': """ * Avoid having a carrier order line with price zero\n * Allow delivery cost calculation from amount untaxed""",
     'version': '8.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
