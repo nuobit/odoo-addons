@@ -153,5 +153,16 @@
             </xpath>
         </template>
 
+        <template id="website_sale_discount_qty_payment" inherit_id="website_sale.payment"
+                  active="True"
+                  >
+            <xpath expr="//table[@id='cart_products']//div[@t-esc='line.product_uom_qty']" position="replace">
+                <div class="text-center" t-field="line.product_uom_qty"/>
+            </xpath>
+
+
+        </template>
+
+
     </data>
 </openerp>
