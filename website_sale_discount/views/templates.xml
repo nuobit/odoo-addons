@@ -134,5 +134,24 @@
 
         </template>
 
+        <template id="website_sale_discount_subtotal_payment" inherit_id="website_sale.payment"
+                  active="True"
+                  customize_show="True"
+                  name="Show product subtotal">
+            <xpath expr="//table[@id='cart_products']//th[last()]" position="after">
+                <th width="100">Subtotal</th>
+            </xpath>
+
+            <xpath expr="//table[@id='cart_products']//td[last()]" position="after">
+                <td class="text-center" name="subtotal">
+                    <span t-field="line.price_subtotal" style="white-space: nowrap;"
+                          t-field-options="{&quot;widget&quot;: &quot;monetary&quot;,
+                                            &quot;from_currency&quot;: &quot;line.company_id.currency_id&quot;,
+                                            &quot;display_currency&quot;: &quot;user_id.partner_id.property_product_pricelist.currency_id&quot;
+                                            }"/>
+                </td>
+            </xpath>
+        </template>
+
     </data>
 </openerp>
