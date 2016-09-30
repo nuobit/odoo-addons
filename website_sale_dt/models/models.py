@@ -48,3 +48,15 @@ class SaleOrder(models.Model):
     @api.depends('website_order_line')
     def _compute_nondelivery_products_amount(self):
         self.nondelivery_products_amount = sum([x.price_subtotal for x in self.website_order_line])
+
+
+class account_payment_term(models.Model):
+    _inherit = "account.payment.term"
+
+    is_immediate = fields.Boolean(string='Immediate payment')
+
+class payment_acquirer(models.Model):
+    _inherit = "payment.acquirer"
+
+    is_credit = fields.Boolean(string='Credit payment')
+

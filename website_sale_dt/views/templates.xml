@@ -243,7 +243,8 @@
                                 </td>
                             </tr>
 
-                            <tr width="100" class="text-muted" style="height: 35px; vertical-align: top;" id="order_delivery">
+                            <tr width="100" class="text-muted" style="height: 35px; vertical-align: top;"
+                                id="order_delivery">
                                 <td>
                                     <abbr title="Delivery will be updated after choosing a new delivery method">
                                         Delivery:
@@ -291,6 +292,26 @@
                         </thead>
                     </table>
                 </t>
+            </xpath>
+        </template>
+
+        <template id="website_sale_dt_payment" active="True" customize_show="True" inherit_id="website_sale.payment"
+                  name="DT filter payment method by term">
+            <xpath expr="//div[h4[text()='Payment Method:']]/ul" position="replace">
+                <ul class="list-unstyled">
+                    <li t-foreach="acquirers or []" t-as="acquirer">
+                        <t t-if="not website_sale_order.payment_term.is_immediate or not acquirer.is_credit">
+                            <label t-if="acquirer.button">
+                                <input t-att-value="acquirer.id" type="radio" name="acquirer"
+                                       t-att-checked="acquirers[0] == acquirer"/>
+                                <img class="media-object" style="width: 60px; display: inline-block;"
+                                     t-att-title="acquirer.name"
+                                     t-att-src="'/payment_%s/static/src/img/%s_icon.png' % (acquirer.provider, acquirer.provider)"/>
+                                <span t-field="acquirer.name"/>
+                            </label>
+                        </t>
+                    </li>
+                </ul>
             </xpath>
         </template>
 
