@@ -79,6 +79,9 @@ class credit_payment_transaction(osv.Model):
         if data.get('currency') != tx.currency_id.name:
             invalid_parameters.append(('currency', data.get('currency'), tx.currency_id.name))
 
+        if tx.sale_order_id.payment_term.is_immediate and tx.acquirer_id.is_credit:
+            invalid_parameters.append(('payment_term', tx.sale_order_id.payment_term.is_immediate , 'payment incoherence'))
+
         return invalid_parameters
 
     def _credit_form_validate(self, cr, uid, tx, data, context=None):
