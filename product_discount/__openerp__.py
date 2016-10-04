@@ -18,29 +18,30 @@
 #
 ##############################################################################
 {
-    'name': 'Prices discount',
+    'name': 'Product discount',
     'version': '8.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'category': 'Sales Management',
     'website': 'https://www.nuobit.com',
     'description': """
-This module lets you calculate discounts on Sale Order lines and Invoice lines base on the partner's pricelist.
-===============================================================================================================
+This module lets you calculate discounts on Sale Order lines, Purchase Order lines based on the partner's pricelist.
+====================================================================================================================
 
-To this end, a new check box named 'Visible Discount' is added to the pricelist form.
+To this end, a new field 'Discount' is added to the purchase order line, the sale order line and invoice line already have this field in the standard.
 
 This module is not compatible with product_visible_discount and purchase_discount
 
 **Example:**
     For the product PC1 and the partner "Asustek": if listprice=450, and the price
-    calculated using Asustek's pricelist is 225. If the check box is checked, we
+    calculated using Asustek's pricelist is 225. If this module is installed, we
     will have on the sale order line: Unit price=450, Discount=50,00, Net price=225.
-    If the check box is unchecked, we will have on Sale Order and Invoice lines:
+    If the modeule is not installed, we will have on Sale Order and Invoice lines:
     Unit price=225, Discount=0,00, Net price=225.
     """,
-    'depends': ["sale","purchase"], #,"account"],
+    'depends': ["sale", "purchase"], # "account"],
     'demo': [],
-    'data': ['product_discount_view.xml'],
+    'data': ['product_discount_view.xml',
+             'report_purchaseorder.xml'],
     'auto_install': False,
     'installable': True,
 }
