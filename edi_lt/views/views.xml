@@ -6,7 +6,7 @@
             <field name="name">EDI transactions</field>
             <field name="model">edilt.transaction</field>
             <field name="arch" type="xml">
-                <tree string="EDI transactions" colors="blue:state=='pending';green:state=='done';" create="0">
+                <tree string="EDI transactions" default_order="trx_date desc" colors="blue:state=='pending';green:state=='done';" create="0">
                     <field name="purchase_order_id"/>
                     <field name="datas_fname"/>
                     <field name="trx_date"/>
@@ -73,7 +73,7 @@
             <field name="name">EDI transactions</field>
             <field name="res_model">edilt.transaction</field>
             <field name="view_mode">tree,form</field>
-            <field name="context">{"search_default_pending":1}</field>
+            <field name="context">{}</field>
         </record>
 
         <menuitem id="edilt_menu_puchase_edi_transactions" action="edilt_action_transactions"
