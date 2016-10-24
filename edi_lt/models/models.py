@@ -80,6 +80,7 @@ class edilt_transaction(models.Model):
     state = fields.Selection(
         selection=[('pending', 'Pending'),
                    ('done', 'Done'),
+                   ('cancel', 'Cancelled')
                    ],
         string='Status', default='pending', readonly=True,
         required=True)
@@ -104,6 +105,8 @@ class edilt_transaction(models.Model):
                 })
 
             return wizard_obj.run(title=_('Warning'))
+        elif self.state in ('cancel'):
+            raise ValidationError(_('The EDI transaction has been cancelled. It cannot be sent again'))
         else:
             raise ValidationError(_('The purchase order has already been sent'))
 
@@ -123,6 +126,10 @@ class edilt_transaction(models.Model):
     @api.multi
     def set_to_pending(self):
         self.state='pending'
+
+    @api.multi
+    def set_to_cancel(self):
+        self.state = 'cancel'
 
     @api.multi
     def delete(self):

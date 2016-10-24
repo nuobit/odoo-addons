@@ -78,6 +78,12 @@ msgstr "Realizado"
 
 #. module: edi_lt
 #: view:edilt.transaction:edi_lt.ems_session_search_view
+#: selection:edilt.transaction,state:0
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.ems_session_search_view
 msgid "Done transactions"
 msgstr "Transacciones realizadas"
 
@@ -291,6 +297,11 @@ msgid "Set to pending"
 msgstr "Establecer a pendiente"
 
 #. module: edi_lt
+#: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: edi_lt
 #: field:edilt.transaction,state:0
 msgid "Status"
 msgstr "Estado"
@@ -300,6 +311,12 @@ msgstr "Estado"
 #, python-format
 msgid "The purchase order has already been sent"
 msgstr "El pedido de compra ya ha sido enviado"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:111
+#, python-format
+msgid "The EDI transaction has been cancelled. It cannot be sent again"
+msgstr "La transacción EDI ha sido cacnelada. No es posible enviarla de nuevo"
 
 #. module: edi_lt
 #: code:addons/edi_lt/models/models.py:232
