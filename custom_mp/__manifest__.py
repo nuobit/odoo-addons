@@ -22,7 +22,7 @@
 {
     'name': "MP Customizations",
     'description': "MP Customizations",
-    'version': '9.0.0.1.0',
+    'version': '10.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -31,5 +31,5 @@
     'data': [
         'views/templates.xml',
         ],
-    'installable': False,
+    'installable': True,
 }
