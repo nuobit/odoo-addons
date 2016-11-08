@@ -5,8 +5,18 @@
              <xpath expr="//t[@t-foreach='doc_ids']/t" position="replace">
                 <t t-raw="translate_doc(doc_id, doc_model, 'lang', 'account_banking_sepa_direct_debit.sepa_direct_debit_mandate_document')"/>
              </xpath>
-        </template>
+         </template>
+
+         <template id="sepa_direct_debit_mandate_document_custom" inherit_id="account_banking_sepa_direct_debit.sepa_direct_debit_mandate_document">
+             <xpath expr="//div[preceding::span[text()='To be completed by the debtor']]//span[@t-field='o.partner_id.zip']/.." position="replace">
+                 <div class="col-xs-10 col-xs-offset-2 under-line mt4">
+                     <t t-if="o.partner_id">
+                        <span t-field="o.partner_id.zip"/> -
+                        <span t-field="o.partner_id.city"/> -
+                        <span t-field="o.partner_id.state_id"/>
+                     </t>
+                 </div>
+             </xpath>
+         </template>
     </data>
 </openerp>
-
-
