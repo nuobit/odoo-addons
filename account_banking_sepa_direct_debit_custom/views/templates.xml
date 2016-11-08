@@ -8,7 +8,7 @@
          </template>
 
          <template id="sepa_direct_debit_mandate_document_custom" inherit_id="account_banking_sepa_direct_debit.sepa_direct_debit_mandate_document">
-             <xpath expr="//div[preceding::span[text()='To be completed by the debtor']]//span[@t-field='o.partner_id.zip']/.." position="replace">
+             <xpath expr="//span[text()='To be completed by the debtor']/following-sibling::div//span[@t-field='o.partner_id.zip']/.." position="replace">
                  <div class="col-xs-10 col-xs-offset-2 under-line mt4">
                      <t t-if="o.partner_id">
                         <span t-field="o.partner_id.zip"/> -
