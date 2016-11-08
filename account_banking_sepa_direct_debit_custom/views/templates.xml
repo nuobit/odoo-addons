@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <template id="sepa_direct_debit_mandate_custom" inherit_id="account_banking_sepa_direct_debit.sepa_direct_debit_mandate">
+             <xpath expr="//t[@t-foreach='doc_ids']/t" position="replace">
+                <t t-raw="translate_doc(doc_id, doc_model, 'lang', 'account_banking_sepa_direct_debit.sepa_direct_debit_mandate_document')"/>
+             </xpath>
+        </template>
+    </data>
+</openerp>
+
+
