@@ -17,6 +17,14 @@
                      </t>
                  </div>
              </xpath>
+             <xpath expr="//span[text()='To be completed by the creditor']/following-sibling::div" position="inside">
+                 <div class="col-xs-12">
+                     <em>Phone:</em>
+                 </div>
+                 <div class="col-xs-10 col-xs-offset-2 under-line mt4">
+                     <span t-field="o.company_id.partner_id.phone"/>
+                 </div>
+              </xpath>
          </template>
     </data>
 </openerp>
