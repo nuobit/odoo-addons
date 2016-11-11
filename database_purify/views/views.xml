@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <!--  HEADER -->
+        <!-- header Form view -->
+        <record model="ir.ui.view" id="form_purify_purge">
+            <field name="model">purify.purge</field>
+            <field name="arch" type="xml">
+                <form string="Purge">
+                    <header>
+                        <button string="Purge" name="button_purge" type="object"
+                                class="oe_highlight" groups="base.group_user"/>
+                    </header>
+                    <sheet>
+                        <group name="main_field_group1">
+                            <field widget="text" name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- header Tree view -->
+        <record model="ir.ui.view" id="tree_purify_purge">
+            <field name="model">purify.purge</field>
+            <field name="arch" type="xml">
+                <tree string="Purge">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- lines Form view -->
+        <!--record model="ir.ui.view" id="view_epe_header_form">
+            <field name="name">Import Lines</field>
+            <field name="model">epe.header</field>
+            <field name="arch" type="xml">
+                <form string="Import Lines">
+                    <sheet>
+
+                    </sheet>
+                </form>
+            </field>
+        </record-->
+</odoo>
