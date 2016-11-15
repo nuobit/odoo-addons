@@ -2,7 +2,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from psycopg2 import ProgrammingError
 from odoo.tests.common import TransactionCase
-from odoo.modules.registry import RegistryManager
+from odoo.modules.registry import Registry
 from odoo.tools import config
 
 class PurifyPurge(models.Model, TransactionCase):
@@ -66,7 +66,7 @@ class PurifyPurge(models.Model, TransactionCase):
         ## this reloads our registry, and we don't want to run tests twice
         ## we also need the original registry for further tests, so save a
         ## reference to it
-        #original_registry = RegistryManager.registries[self.env.cr.dbname]
+        #original_registry = Registry.registries[self.env.cr.dbname]
         #config.options['test_enable'] = False
         #purge_modules.purge_all()
         #config.options['test_enable'] = True
@@ -75,7 +75,7 @@ class PurifyPurge(models.Model, TransactionCase):
         #    ('name', '=', 'database_cleanup_test'),
         #]))
         ## reset afterwards
-        #RegistryManager.registries[self.env.cr.dbname] = original_registry
+        #Registry.registries[self.env.cr.dbname] = original_registry
 
         ########################## Orphaned column Orphaned tables
         # create an orphaned table
