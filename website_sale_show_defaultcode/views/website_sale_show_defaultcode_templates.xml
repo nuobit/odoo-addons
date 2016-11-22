@@ -8,8 +8,6 @@
                 <t t-set="references"
                    t-value="[x.default_code for x in product.product_variant_ids.filtered(lambda x: x.default_code)]"/>
                     <h5 t-if="references!=[]" class="text-muted">
-                        <span t-if="len(references)==1">Reference:</span>
-                        <span t-if="len(references)>1">References:</span>
                         <strong itemprop="reference" t-esc="', '.join(references)"/>
                     </h5>
             </xpath>
