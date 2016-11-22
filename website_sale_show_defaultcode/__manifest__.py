@@ -20,16 +20,16 @@
 #/#############################################################################
 
 {
-    'name': "Show internal reference in product list",
-    'description': "Show internal reference (default code) in product list",
-    'version': '8.0.0.1.0',
+    'name': "Show internal reference in website sale",
+    'description': "Show internal reference (default code) in website sale",
+    'version': '10.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
     'depends': ['website_sale'],
     'data': [
-        'views/templates.xml',
+        'views/website_sale_show_defaultcode_templates.xml',
         ],
-    'installable': False,
+    'installable': True,
 }
