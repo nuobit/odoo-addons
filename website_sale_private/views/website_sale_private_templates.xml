@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="restrict_product_addtocart_quantity_price" inherit_id="website_sale.product"
+              active="True"
+              priority="32"
+              customize_show="True"
+              name="Restrict Add to Cart, Quantity and Price">
+        <xpath expr="//a[@id='add_to_cart']" position="attributes">
+            <attribute name="t-if">request.uid !=  %(base.public_user)d</attribute>
+        </xpath>
+
+        <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' oe_website_spinner ')]" position="attributes">
+            <attribute name="t-if">request.uid !=  %(base.public_user)d</attribute>
+        </xpath>
+
+        <xpath expr="//t[@t-call='website_sale.product_price']" position="attributes">
+            <attribute name="t-if">request.uid !=  %(base.public_user)d</attribute>
+        </xpath>
+    </template>
+
+    <template id="restrict_products_item_price" inherit_id="website_sale.products_item"
+              active="True"
+              customize_show="True"
+              name="Restrict Price">
+        <xpath expr="//div[@class='product_price']" position="attributes">
+            <attribute name="t-if">product.product_variant_ids and request.uid !=  %(base.public_user)d</attribute>
+        </xpath>
+    </template>
+</odoo>
+
+
