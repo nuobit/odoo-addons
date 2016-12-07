@@ -5,11 +5,48 @@ from odoo.tests.common import TransactionCase
 from odoo.modules.registry import Registry
 from odoo.tools import config
 
+from odoo.http import request
+
+import json
+import urllib
+
 class PurifyPurge(models.Model, TransactionCase):
     _name = 'purify.purge'
     _description = 'Purge'
 
     name = fields.Char(string='Log')
+
+    def button_geoip(self):
+        '''
+        {"ip": "88.148.27.10", "country_code": "ES", "country_name": "Spain", "region_code": "CT",
+         "region_name": "Catalonia", "city": "Riells i Viabrea", "zip_code": "17404", "time_zone": "Europe/Madrid",
+         "latitude": 41.7752, "longitude": 2.5116, "metro_code": 0}
+        '''
+
+        remote_addr = request.httprequest.remote_addr
+
+        url = 'http://freegeoip.net/json/'
+        #http: // geoip.nekudo.com /
+        url += urllib.quote(remote_addr.encode('utf8'))
+
+        try:
+            result = json.load(urllib.urlopen(url))
+        except Exception as e:
+            raise UserError(_(
+                'Cannot contact geolocation servers. Please make sure that your Internet connection is up and running (%s).') % e)
+
+        country_code = result['country_code'] #'ES'
+        region_code = result['region_code'] #'CT', 'IB'
+
+
+        #b =  country_code = request.session.geoip and request.session.geoip.get('country_code')
+
+        self.name = 'Country: %(country_code)s, region: %(region_code)s' % result
+
+        a = 4
+
+
+
 
     def button_purge(self):
         ########################## Orphaned column

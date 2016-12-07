@@ -9,6 +9,8 @@
                     <header>
                         <button string="Purge" name="button_purge" type="object"
                                 class="oe_highlight" groups="base.group_user"/>
+                         <button string="Geoip" name="button_geoip" type="object"
+                                class="oe_highlight" groups="base.group_user"/>
                     </header>
                     <sheet>
                         <group name="main_field_group1">
