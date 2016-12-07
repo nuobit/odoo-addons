@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="geoip_company_address" inherit_id="website.company_description" active="True"
+              customize_show="True"
+              name="Show GeoIP Address">
+
+        <xpath expr="//div[@t-field='res_company.partner_id']" position="attributes">
+            <!--div t-field="res_company.partner_id" t-options="{                 &quot;widget&quot;: &quot;contact&quot;,                 &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;fax&quot;, &quot;email&quot;]}"/-->
+            <!--div t-field="res_company.partner_id" t-options="{                 &quot;widget&quot;: &quot;contact&quot;,                 &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;fax&quot;, &quot;email&quot;]}"/-->
+            <attribute name="t-field">res_company.geoip_partner_id</attribute>
+        </xpath>
+    </template>
+</odoo>
+
+
