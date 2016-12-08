@@ -17,6 +17,7 @@ class Company(models.Model):
 
     geoip_partner_id = fields.Many2one(comodel_name='res.partner', compute="_compute_geoip_partner")
 
+    @api.depends('fallback_geoip_partner_id', 'geoip_address_ids')
     def _compute_geoip_partner(self):
         '''
             {"ip": "88.148.27.10", "country_code": "ES", "country_name": "Spain", "region_code": "CT",
@@ -59,6 +60,17 @@ class Company(models.Model):
                     return
 
         self.geoip_partner_id = fallback_geoip_partner_id
+
+
+    @api.multi
+    def geoip_google_map_img(self, zoom=8, width=298, height=298):
+        partner = self.sudo().geoip_partner_id
+        return partner and partner.google_map_img(zoom, width, height) or None
+
+    @api.multi
+    def geoip_google_map_link(self, zoom=8):
+        partner = self.sudo().geoip_partner_id
+        return partner and partner.google_map_link(zoom) or None
 
 
 
