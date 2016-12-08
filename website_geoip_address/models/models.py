@@ -17,9 +17,14 @@ class Company(models.Model):
 
     geoip_partner_id = fields.Many2one(comodel_name='res.partner', compute="_compute_geoip_partner")
 
+    geoip_remote_ip = fields.Char(string="Remote IP", compute="_compute_remote_ip", readonly=True)
+
     config_verify_cert = fields.Boolean(string="Verify geoip certificate", default=True)
     config_timeout = fields.Integer(string="Geoip timeout", required=True, default=3)
+    config_show_remote_ip = fields.Boolean(string="Show remote IP", default=False)
 
+    def _compute_remote_ip(self):
+        self.geoip_remote_ip = request.httprequest.remote_addr
 
     @api.depends('fallback_geoip_partner_id', 'geoip_address_ids')
     def _compute_geoip_partner(self):

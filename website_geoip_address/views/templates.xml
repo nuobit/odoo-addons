@@ -19,6 +19,7 @@
                         <img class="thumbnail img-responsive" t-att-src="res_company.geoip_google_map_img()"/>
                     </a>
                 </t>
+                <h3 t-if="res_company.config_show_remote_ip" t-field="res_company.geoip_remote_ip"/>
             </t>
         </xpath>
     </template>
