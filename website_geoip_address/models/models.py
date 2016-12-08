@@ -1,7 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.http import request
 import urllib
-import json
+import requests
 
 from odoo.exceptions import UserError
 
@@ -17,9 +17,13 @@ class Company(models.Model):
 
     geoip_partner_id = fields.Many2one(comodel_name='res.partner', compute="_compute_geoip_partner")
 
+    config_verify_cert = fields.Boolean(string="Verify geoip certificate", default=True)
+    config_timeout = fields.Integer(string="Geoip timeout", required=True, default=3)
+
+
     @api.depends('fallback_geoip_partner_id', 'geoip_address_ids')
     def _compute_geoip_partner(self):
-        '''
+        ''' freegeoip.net response:
             {"ip": "88.148.27.10", "country_code": "ES", "country_name": "Spain", "region_code": "CT",
             "region_name": "Catalonia", "city": "Riells i Viabrea", "zip_code": "17404", "time_zone": "Europe/Madrid",
             "latitude": 41.7752, "longitude": 2.5116, "metro_code": 0}
@@ -28,22 +32,23 @@ class Company(models.Model):
 
         remote_addr = request.httprequest.remote_addr
 
-        url = 'http://freegeoip.net/json/'
-        # http: // geoip.nekudo.com /
-        url += urllib.quote(remote_addr.encode('utf8'))
+        url = 'https://freegeoip.net/json/%s' % urllib.quote(remote_addr.encode('utf8'))
+        # TODO: Usar un altre servi de geoip si falla el primer, per exemple: https://geoip.nekudo.com/api/%s/full
 
         try:
-            result = json.load(urllib.urlopen(url))
+            r = requests.get(url, verify=self.config_verify_cert, timeout=self.config_timeout)
         except Exception as e:
             self.geoip_partner_id = fallback_geoip_partner_id
             return
-
-        country_code = result['country_code'] or None # 'ES'
-        if country_code is None:
+        if r.status_code != 200:
             self.geoip_partner_id = fallback_geoip_partner_id
             return
 
-        region_code = result['region_code']  or None # 'CT', 'IB'
+        country_code = r.json()['country_code'] or None # 'ES'
+        if country_code is None:
+            self.geoip_partner_id = fallback_geoip_partner_id
+            return
+        region_code = r.json()['region_code']  or None # 'CT', 'IB'
 
         for geoip in self.geoip_address_ids.sorted(lambda x: (x.sequence, x.id)):
             if geoip.country_code == country_code:
@@ -78,7 +83,7 @@ class GeoIPAddress(models.Model):
     _name = 'website.geoip.address'
     _order = 'sequence'
 
-    sequence = fields.Integer()
+    sequence = fields.Integer(default=1)
 
     country_code = fields.Char(string='Country code')
     region_code = fields.Char(string='Region code')

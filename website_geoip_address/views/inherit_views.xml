@@ -21,7 +21,13 @@
                             </field>
                         </group>
                         <group>
-                             <field name="fallback_geoip_partner_id" domain="[('parent_id', '=', partner_id)]"/>
+                            <field name="fallback_geoip_partner_id" domain="[('parent_id', '=', partner_id)]"/>
+                        </group>
+                         <group>
+                             <group>
+                                <field name="config_verify_cert"/>
+                                <field name="config_timeout"/>
+                            </group>
                         </group>
                     </page>
                 </xpath>
