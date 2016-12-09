@@ -28,7 +28,7 @@
                   name="Product provider">
             <xpath expr="//div[@id='product_details']/hr[1]" position="after">
                 <p class="text-muted" t-if="len(product.product_variant_ids) == 1 and len(product.seller_ids) > 0">
-                    Seller: <strong t-esc="product.seller_ids.sorted(lambda x: x.sequence)[0].name.display_name"/>
+                    Seller: <strong t-esc="product.sudo().seller_ids.sorted(lambda x: x.sequence)[0].name.display_name"/>
                 </p>
             </xpath>
         </template>
