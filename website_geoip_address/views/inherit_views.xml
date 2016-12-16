@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!--  Partner inherited form -->
-        <record id="view_custom_lt_partner_info_form" model="ir.ui.view">
+        <!--  Company inherited form -->
+        <record id="view_website_geoip_address_form" model="ir.ui.view">
             <field name="name">website.geoip.address.inherit</field>
             <field name="model">res.company</field>
             <field name="inherit_id" ref="base.view_company_form"/>
