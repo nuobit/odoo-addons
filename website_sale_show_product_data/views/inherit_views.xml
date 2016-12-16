@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="website_sale_pricelist_show_form_view" model="ir.ui.view">
+        <field name="name">website.sale.product.pricelist.show.inherit</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="website_sale.website_sale_pricelist_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='website_id']" position="after">
+                <field name="show_on_website"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

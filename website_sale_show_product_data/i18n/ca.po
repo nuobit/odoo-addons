@@ -1,3 +1,4 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* website_sale_show_product_data
 #
@@ -5,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-05 13:08+0000\n"
-"PO-Revision-Date: 2016-12-05 13:08+0000\n"
+"POT-Creation-Date: 2016-12-16 10:30+0000\n"
+"PO-Revision-Date: 2016-12-16 10:30+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,7 +16,22 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_sale_show_product_data
+#: model:ir.model,name:website_sale_show_product_data.model_product_pricelist
+msgid "Pricelist"
+msgstr "Tarifa"
+
+#. module: website_sale_show_product_data
 #: model:ir.ui.view,arch_db:website_sale_show_product_data.website_sale_show_provider_product_id
 msgid "Seller:"
 msgstr "Fabricant:"
+
+#. module: website_sale_show_product_data
+#: model:ir.model.fields,field_description:website_sale_show_product_data.field_product_pricelist_show_on_website
+msgid "Show on website"
+msgstr "Mostrar en el lloc web"
+
+#. module: website_sale_show_product_data
+#: model:ir.ui.view,arch_db:website_sale_show_product_data.website_sale_show_alternateprices_product_item_id
+msgid "units)"
+msgstr "unitats)"
 
