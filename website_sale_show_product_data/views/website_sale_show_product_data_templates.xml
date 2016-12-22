@@ -62,5 +62,11 @@
                   name="Hide helper text">
             <xpath expr="//div[@id='right_column']" position="replace"/>
         </template>
+
+        <template id="website_sale_hide_print_button" inherit_id="website_sale.confirmation"
+                  active="True" customize_show="True"
+                  name="Hide print button">
+            <xpath expr="//div[@class='thanks_msg']/h2/a" position="replace"/>
+        </template>
     </data>
 </openerp>

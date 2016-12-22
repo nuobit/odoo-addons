@@ -21,7 +21,7 @@
 
 {
     'name': "Show product data in website sale",
-    'description': "Show product data in website sale: internal reference (default code), providers ",
+    'description': "Show product data in website sale: internal reference (default code), providers, helper text, print button ",
     'version': '10.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
