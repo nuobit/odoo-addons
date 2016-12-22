@@ -48,5 +48,19 @@
                 </span>
             </xpath>
         </template>
+
+        <template id="website_sale_hide_helper_text" inherit_id="website_sale.product"
+                  active="True" customize_show="True"
+                  name="Hide helper text">
+            <xpath expr="//div[@id='product_details']/hr[last()]" position="replace"/>
+            <xpath expr="//div[@id='product_details']/p[last()]" position="replace"/>
+        </template>
+
+
+        <template id="website_sale_hide_helper_text2" inherit_id="website_sale.cart"
+                  active="True" customize_show="True"
+                  name="Hide helper text">
+            <xpath expr="//div[@id='right_column']" position="replace"/>
+        </template>
     </data>
 </openerp>
