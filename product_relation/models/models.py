@@ -54,7 +54,7 @@ class Product(models.Model):
         self.product_related_ids = self.group_id.product_related_ids.sorted(lambda x: (0 if x.product_id.id == self.id else 1, self.cost_avg)) #.filtered(lambda x: x.product_id.id != self.id)
 
 
-    @api.depends('standard_price', 'seller_ids.pricelist_ids', 'seller_ids.name.property_product_pricelist_purchase.version_id.items_id')
+    @api.depends('standard_price', 'seller_ids.pricelist_ids')
     def _compute_cost_avg(selfs):
         for self in selfs:
             self.cost_avg = self.standard_price
