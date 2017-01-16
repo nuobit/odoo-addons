@@ -42,9 +42,9 @@
                   active="True"
                   customize_show="True"
                   name="Show product discount/net">
-            <xpath expr="//h4[@class='oe_price_h4 css_editable_mode_hidden']/span[@t-field='product.lst_price']"
+            <xpath expr="//div[@itemprop='offers']/h4[1]/span[@t-field='product.lst_price']"
                    position="replace"/>
-            <xpath expr="//h4[@class='oe_price_h4 css_editable_mode_hidden']/b[@t-field='product.price']"
+            <xpath expr="//div[@itemprop='offers']/h4[1]/b[@t-field='product.price']"
                    position="replace"/>
             <xpath expr="//span[@itemprop='price']" position="before">
                 <t t-if="not product.is_net">
