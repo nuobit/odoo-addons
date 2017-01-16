@@ -30,7 +30,7 @@ msgstr "Delivery Price Rules"
 #: code:addons/delivery_extended/models/models.py:111
 #, python-format
 msgid "Price untaxed"
-msgstr "Price sense impostos"
+msgstr "Preu sense impostos"
 
 #. module: delivery_extended
 #: model:ir.model.fields,field_description:delivery_extended.field_delivery_carrier_fixed_price_without_taxes
