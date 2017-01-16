@@ -35,7 +35,7 @@ msgstr "Preu sense impostos"
 #. module: delivery_extended
 #: model:ir.model.fields,field_description:delivery_extended.field_delivery_carrier_fixed_price_without_taxes
 msgid "Price without taxes"
-msgstr "Price sense impostos"
+msgstr "Preu sense impostos"
 
 #. module: delivery_extended
 #: model:ir.model,name:delivery_extended.model_sale_order
