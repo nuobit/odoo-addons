@@ -107,5 +107,5 @@ class DeliveryCarrier(models.Model):
 class PriceRule(models.Model):
     _inherit = "delivery.price.rule"
 
-    variable = fields.Selection(selection_add=[('price_untaxed', 'Price untaxed')], default='price_untaxed')
-    variable_factor = fields.Selection(selection_add=[('price_untaxed', 'Price untaxed')])
+    variable = fields.Selection(selection_add=[('price_untaxed', _('Price untaxed'))], default='price_untaxed')
+    variable_factor = fields.Selection(selection_add=[('price_untaxed', _('Price untaxed'))])

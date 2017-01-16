@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0\n"
+"Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-27 12:53+0000\n"
-"PO-Revision-Date: 2016-09-27 12:53+0000\n"
+"POT-Creation-Date: 2017-01-16 17:13+0000\n"
+"PO-Revision-Date: 2017-01-16 17:13+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,26 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: delivery_extended
-#: model:ir.model,name:delivery_extended.model_delivery_grid
-msgid "Delivery Grid"
-msgstr "Quadrícula d'enviament"
+#: model:ir.model,name:delivery_extended.model_delivery_carrier
+msgid "Carrier"
+msgstr "Transportista"
 
 #. module: delivery_extended
-#: model:ir.model,name:delivery_extended.model_delivery_grid_line
-msgid "Delivery Grid Line"
-msgstr "Línia quadrícula lliurament"
+#: model:ir.model,name:delivery_extended.model_delivery_price_rule
+msgid "Delivery Price Rules"
+msgstr "Delivery Price Rules"
+
+#. module: delivery_extended
+#: code:addons/delivery_extended/models/models.py:110
+#: code:addons/delivery_extended/models/models.py:111
+#, python-format
+msgid "Price untaxed"
+msgstr "Price sense impostos"
+
+#. module: delivery_extended
+#: model:ir.model.fields,field_description:delivery_extended.field_delivery_carrier_fixed_price_without_taxes
+msgid "Price without taxes"
+msgstr "Price sense impostos"
 
 #. module: delivery_extended
 #: model:ir.model,name:delivery_extended.model_sale_order
@@ -31,19 +43,8 @@ msgid "Sales Order"
 msgstr "Comanda de venda"
 
 #. module: delivery_extended
-#: code:addons/delivery_extended/models/models.py:97
+#: code:addons/delivery_extended/models/models.py:101
 #, python-format
-msgid "Selected product in the delivery method doesn't fulfill any of the delivery grid(s) criteria."
-msgstr "Selected product in the delivery method doesn't fulfill any of the delivery grid(s) criteria."
+msgid "Selected product in the delivery method doesn't fulfill any of the delivery carrier(s) criteria."
+msgstr "El producte seleccionat en el mètode d'entrega no compleix amb cap dels criteris del transportista."
 
-#. module: delivery_extended
-#: code:addons/delivery_extended/models/models.py:97
-#, python-format
-msgid "Unable to fetch delivery method!"
-msgstr "Unable to fetch delivery method!"
-
-#. module: delivery_extended
-#: selection:delivery.grid.line,type:0
-#: selection:delivery.grid.line,variable_factor:0
-msgid "Price untaxed"
-msgstr "Preu sense impostos"
