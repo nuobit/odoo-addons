@@ -19,20 +19,11 @@
 #
 #/#############################################################################
 
-{
-    'name': "DT Customizations",
-    'description': "DT Customizations",
-    'version': '8.0.0.1.0',
-    'author': 'NuoBiT Solutions, S.L., Eric Antones',
-    'license': 'AGPL-3',
-    'category': 'Custom',
-    'website': 'https://www.nuobit.com',
-    'depends': ['account', 'payment', 'website', 'website_sale', 'website_sale_product_attribute_order',
-                'portal_sale', 'website_stock', 'website_sale_delivery'],
-    'data': [
-        'views/templates.xml',
-        'views/inherit_views.xml',
-        'views/data.xml',
-        ],
-    'installable': True,
-}
+import openerp.addons.website_sale.controllers.main as main
+
+
+class website_sale(main.website_sale):
+    def _get_search_order(self, post):
+        res = super(website_sale, self)._get_search_order(post)
+        # OrderBy will be parsed in orm and so no direct sql injection
+        return 'website_published desc,public_categ_sequence,public_default_code'

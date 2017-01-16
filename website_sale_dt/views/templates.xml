@@ -60,7 +60,8 @@
             </xpath>
         </template>
 
-        <template id="website_sale_dt_restrict_addtocart_and_quantity" inherit_id="website_sale.product" priority="25" active="True"
+        <template id="website_sale_dt_restrict_addtocart_and_quantity" inherit_id="website_sale.product" priority="25"
+                  active="True"
                   customize_show="True"
                   name="DT restrict Add to Cart and Quantity">
             <xpath expr="//a[@id='add_to_cart']" position="attributes">
@@ -192,7 +193,8 @@
                   active="True" customize_show="True"
                   name="DT restrict prices">
             <xpath expr="//div[@class='product_price']" position="attributes">
-                <attribute name="t-if">product.product_variant_ids and not user_id.partner_id.name == 'Public user'</attribute>
+                <attribute name="t-if">product.product_variant_ids and not user_id.partner_id.name == 'Public user'
+                </attribute>
             </xpath>
         </template>
 
@@ -212,7 +214,8 @@
             </xpath>
         </template>
 
-        <template id="website_sale_dt_show_sign_in"  active="True" customize_show="True" inherit_id="website.layout"  priority="20" name="Show Customer area">
+        <template id="website_sale_dt_show_sign_in" active="True" customize_show="True" inherit_id="website.layout"
+                  priority="20" name="Show Customer area">
             <xpath expr="//ul[@id='top_menu']" position="inside">
                 <li class="divider" groups="base.group_public"/>
                 <li groups="base.group_public">
@@ -223,7 +226,100 @@
             </xpath>
         </template>
 
+        <template id="website_sale_dt_total" active="True" customize_show="True" inherit_id="website_sale.total"
+                  name="DT custom total">
+            <xpath expr="." position="replace">
+                <t t-name="website_sale.total">
 
+                    <table class="pull-right mb16" id="cart_total" t-if="website_sale_order">
+                        <thead>
+                            <tr width="100" class="text-muted" id="order_delivery">
+                                <td>
+                                    Products:
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="website_sale_order.nondelivery_products_amount"
+                                          t-field-options="{                         &quot;widget&quot;: &quot;monetary&quot;,                         &quot;display_currency&quot;: &quot;website_sale_order.currency_id&quot;                     }"/>
+                                </td>
+                            </tr>
+
+                            <tr width="100" class="text-muted" style="height: 35px; vertical-align: top;"
+                                id="order_delivery">
+                                <td>
+                                    <abbr title="Delivery will be updated after choosing a new delivery method">
+                                        Delivery:
+                                    </abbr>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="website_sale_order.amount_delivery"
+                                          t-field-options="{                         &quot;widget&quot;: &quot;monetary&quot;,                         &quot;display_currency&quot;: &quot;website_sale_order.currency_id&quot;                     }"/>
+                                </td>
+                            </tr>
+
+                            <tr width="100" style="border-top: 1px solid #000" id="order_untaxed_amount">
+                                <th>
+                                    <h4>Untaxed amount:</h4>
+                                </th>
+                                <th class="text-right">
+                                    <h4>
+                                        <span t-field="website_sale_order.amount_untaxed"
+                                              style="white-space: nowrap;"
+                                              t-field-options="{                       &quot;widget&quot;: &quot;monetary&quot;,                       &quot;from_currency&quot;: &quot;website_sale_order.pricelist_id.currency_id&quot;,                       &quot;display_currency&quot;: &quot;user_id.partner_id.property_product_pricelist.currency_id&quot;                     }"/>
+                                    </h4>
+                                </th>
+                            </tr>
+                            <tr width="120" class="text-muted" id="order_total_taxes">
+                                <td>
+                                    <abbr title="Taxes may be updated after providing shipping address">Taxes:
+                                    </abbr>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="website_sale_order.amount_tax" style="white-space: nowrap;"
+                                          t-field-options="{                         &quot;widget&quot;: &quot;monetary&quot;,                         &quot;from_currency&quot;: &quot;website_sale_order.pricelist_id.currency_id&quot;,                         &quot;display_currency&quot;: &quot;user_id.partner_id.property_product_pricelist.currency_id&quot;                     }"/>
+                                </td>
+                            </tr>
+                            <tr width="100" id="order_total">
+                                <th>
+                                    <h3>Total:</h3>
+                                </th>
+                                <th class="text-right">
+                                    <h3>
+                                        <span t-field="website_sale_order.amount_total" style="white-space: nowrap;"
+                                              t-field-options="{                       &quot;widget&quot;: &quot;monetary&quot;,                       &quot;from_currency&quot;: &quot;website_sale_order.pricelist_id.currency_id&quot;,                       &quot;display_currency&quot;: &quot;user_id.partner_id.property_product_pricelist.currency_id&quot;                     }"/>
+                                    </h3>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="website_sale_dt_payment" active="True" customize_show="True" inherit_id="website_sale.payment"
+                  name="DT filter payment method by term">
+            <xpath expr="//div[h4[text()='Payment Method:']]/ul" position="replace">
+                <ul class="list-unstyled">
+                    <li t-foreach="acquirers or []" t-as="acquirer">
+                        <t t-if="not website_sale_order.payment_term.is_immediate or not acquirer.is_credit">
+                            <label t-if="acquirer.button">
+                                <input t-att-value="acquirer.id" type="radio" name="acquirer"
+                                       t-att-checked="acquirers[0] == acquirer"/>
+                                <img class="media-object" style="width: 60px; display: inline-block;"
+                                     t-att-title="acquirer.name"
+                                     t-att-src="'/payment_%s/static/src/img/%s_icon.png' % (acquirer.provider, acquirer.provider)"/>
+                                <span t-field="acquirer.name"/>
+                            </label>
+                        </t>
+                    </li>
+                </ul>
+            </xpath>
+        </template>
+
+        <template id="website_sale_dt_login_user" inherit_id="web.login" name="Show username label">
+            <xpath expr="//form[@class='oe_login_form']//label[@for='login']" position="replace">
+                <label for="login" class="control-label">Username</label>
+            </xpath>
+        </template>
 
     </data>
 </openerp>

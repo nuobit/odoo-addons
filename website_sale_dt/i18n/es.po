@@ -76,6 +76,11 @@ msgid "hidden"
 msgstr "hidden"
 
 #. module: website_sale_dt
+#: view:website:web.login
+msgid "Username"
+msgstr "Usuario"
+
+#. module: website_sale_dt
 #: view:website:website_sale.product
 #: view:website:website_sale.product_price
 #: view:website:website_stock.product_stock
@@ -117,3 +122,23 @@ msgstr "☑ Portes pagados en pedidos de 150€ o más"
 msgid "☑ Processed by Redsys"
 msgstr "☑ Procesado por Redsys"
 
+
+#. module: website_sale_dt
+#: view:website:website_sale.total
+msgid "Untaxed amount:"
+msgstr "Base imponible:"
+
+#. module: website_sale_dt
+#: view:website:website_sale.total
+msgid "Products:"
+msgstr "Productos:"
+
+#. module: website_sale_dt
+#: field:payment.acquirer,is_credit:0
+msgid "Credit payment"
+msgstr "Pago a crédito"
+
+#. module: website_sale_dt
+#: field:account.payment.term,is_immediate:0
+msgid "Immediate payment"
+msgstr "Contado"
