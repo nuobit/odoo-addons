@@ -41,66 +41,24 @@ class SaleOrder(models.Model):
         return sol
 
 
-'''
-class delivery_grid(models.Model):
-    _inherit = "delivery.grid"
-
-    @api.multi
-    def get_price(self, order, dt):
-        total = 0
-        weight = 0
-        volume = 0
-        quantity = 0
-        total_delivery = 0.0
-        total_delivery_untaxed = 0.0
-        for line in order.order_line:
-            if line.state == 'cancel':
-                continue
-            if line.is_delivery:
-                total_delivery_untaxed += line.price_subtotal
-                total_delivery += line.price_subtotal + order._amount_line_tax(line)
-
-            if not line.product_id or line.is_delivery:
-                continue
-            q = line.product_uom._compute_qty(line.product_uom_qty, line.product_id.uom_id.id)
-            weight += (line.product_id.weight or 0.0) * q
-            volume += (line.product_id.volume or 0.0) * q
-            quantity += q
-
-        total_untaxed = (order.amount_untaxed or 0.0) - total_delivery_untaxed
-        total_untaxed = order.currency_id.with_context(date=order.date_order).compute(total_untaxed, order.company_id.currency_id)
-
-        total = (order.amount_total or 0.0) - total_delivery
-        total = order.currency_id.with_context(date=order.date_order).compute(total, order.company_id.currency_id)
-
-        return self.get_price_from_picking(total_untaxed, total, weight, volume, quantity)
-
-
-    def get_price_from_picking(self, total_untaxed, total, weight, volume, quantity):
-        price = 0.0
-        ok = False
-        price_dict = {'price_untaxed': total_untaxed, 'price': total, 'volume': volume,
-                      'weight': weight, 'wv': volume * weight, 'quantity': quantity}
-        for line in self.line_ids:
-            test = eval(line.type + line.operator + str(line.max_value), price_dict)
-            if test:
-                if line.price_type == 'variable':
-                    price = line.list_price * price_dict[line.variable_factor]
-                else:
-                    price = line.list_price
-                ok = True
-                break
-        if not ok:
-            raise ValidationError(_("Unable to fetch delivery method!"), _(
-                "Selected product in the delivery method doesn't fulfill any of the delivery grid(s) criteria."))
-
-        return price
-'''
 
 class DeliveryCarrier(models.Model):
     _inherit = 'delivery.carrier'
 
     fixed_price_without_taxes = fields.Boolean(string='Price without taxes', default=False)
+
+    @api.multi
+    def create_price_rules(self):
+        res = super(DeliveryCarrier, self).create_price_rules()
+
+        PriceRule = self.env['delivery.price.rule']
+        for record in self:
+            if record.delivery_type == 'fixed' and self.fixed_price_without_taxes:
+                prs = PriceRule.search([('carrier_id', '=', record.id)])
+                for pr in prs:
+                    pr.variable = 'price_untaxed'
+
+        return res
 
     @api.multi
     def get_price_available(self, order):
