@@ -19,11 +19,11 @@
 #
 #/#############################################################################
 
-import openerp.addons.website_sale.controllers.main as main
+import odoo.addons.website_sale.controllers.main as main
 
 
-class website_sale(main.website_sale):
+class WebsiteSale(main.WebsiteSale):
     def _get_search_order(self, post):
-        res = super(website_sale, self)._get_search_order(post)
+        res = super(WebsiteSale, self)._get_search_order(post)
         # OrderBy will be parsed in orm and so no direct sql injection
         return 'website_published desc,public_categ_sequence,public_default_code'
