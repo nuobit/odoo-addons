@@ -20,7 +20,8 @@
 #/#############################################################################
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.safe_eval import safe_eval
 
 
 import logging
@@ -101,8 +102,52 @@ class DeliveryCarrier(models.Model):
 
     fixed_price_without_taxes = fields.Boolean(string='Price without taxes', default=False)
 
+    @api.multi
+    def get_price_available(self, order):
+        self.ensure_one()
+        total = weight = volume = quantity = 0
+        total_delivery = total_delivery_untaxed = 0.0
+        for line in order.order_line:
+            if line.state == 'cancel':
+                continue
+            if line.is_delivery:
+                total_delivery_untaxed += line.price_subtotal
+                total_delivery += line.price_total
+            if not line.product_id or line.is_delivery:
+                continue
+            qty = line.product_uom._compute_quantity(line.product_uom_qty, line.product_id.uom_id)
+            weight += (line.product_id.weight or 0.0) * qty
+            volume += (line.product_id.volume or 0.0) * qty
+            quantity += qty
+
+        total_untaxed = (order.amount_untaxed or 0.0) - total_delivery_untaxed
+        total_untaxed = order.currency_id.with_context(date=order.date_order).compute(total_untaxed, order.company_id.currency_id)
+
+        total = (order.amount_total or 0.0) - total_delivery
+        total = order.currency_id.with_context(date=order.date_order).compute(total, order.company_id.currency_id)
+
+        return self.get_price_from_picking(total_untaxed, total, weight, volume, quantity)
+
+    def get_price_from_picking(self, total_untaxed, total, weight, volume, quantity):
+        price = 0.0
+        criteria_found = False
+        price_dict = {'price_untaxed': total_untaxed, 'price': total, 'volume': volume,
+                      'weight': weight, 'wv': volume * weight, 'quantity': quantity}
+        for line in self.price_rule_ids:
+            test = safe_eval(line.variable + line.operator + str(line.max_value), price_dict)
+            if test:
+                price = line.list_base_price + line.list_price * price_dict[line.variable_factor]
+                criteria_found = True
+                break
+        if not criteria_found:
+            raise UserError(_("Selected product in the delivery method doesn't fulfill any of the delivery carrier(s) criteria."))
+
+        return price
+
+
 
 class PriceRule(models.Model):
     _inherit = "delivery.price.rule"
 
     variable = fields.Selection(selection_add=[('price_untaxed', 'Price untaxed')], default='price_untaxed')
+    variable_factor = fields.Selection(selection_add=[('price_untaxed', 'Price untaxed')])
