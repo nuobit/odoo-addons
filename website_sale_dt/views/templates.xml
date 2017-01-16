@@ -315,5 +315,11 @@
             </xpath>
         </template>
 
+        <template id="website_sale_dt_login_user" inherit_id="web.login" name="Show username label">
+            <xpath expr="//form[@class='oe_login_form']//label[@for='login']" position="replace">
+                <label for="login" class="control-label">Username</label>
+            </xpath>
+        </template>
+
     </data>
 </openerp>

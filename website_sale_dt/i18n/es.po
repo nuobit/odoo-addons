@@ -76,6 +76,11 @@ msgid "hidden"
 msgstr "hidden"
 
 #. module: website_sale_dt
+#: view:website:web.login
+msgid "Username"
+msgstr "Usuario"
+
+#. module: website_sale_dt
 #: view:website:website_sale.product
 #: view:website:website_sale.product_price
 #: view:website:website_stock.product_stock

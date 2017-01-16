@@ -70,6 +70,11 @@ msgid "hidden"
 msgstr "hidden"
 
 #. module: website_sale_dt
+#: view:website:web.login
+msgid "Username"
+msgstr "Usuari"
+
+#. module: website_sale_dt
 #: view:website:website_sale.products
 msgid "pagination form-inline"
 msgstr "pagination form-inline"
