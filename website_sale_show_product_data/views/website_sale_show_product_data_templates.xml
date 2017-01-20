@@ -25,9 +25,14 @@
                 </span>
             </xpath>
 
-            <xpath expr="//section[div[@itemprop='offers']]" position="attributes">
-                <attribute name="style">min-height: 100px;</attribute>
+            <xpath expr="//div[@itemprop='offers']" position="attributes">
+                <attribute name="style">position: static;</attribute>
             </xpath>
+
+            <xpath expr="//section[div[@itemprop='offers']]" position="attributes">
+                <attribute name="style">padding-bottom: 0;</attribute>
+            </xpath>
+
         </template>
 
         <template id="website_sale_show_defaultcode_product_id" inherit_id="website_sale.product"
