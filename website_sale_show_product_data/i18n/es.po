@@ -33,5 +33,5 @@ msgstr "Mostrar en el sitio web"
 #. module: website_sale_show_product_data
 #: model:ir.ui.view,arch_db:website_sale_show_product_data.website_sale_show_alternateprices_product_item_id
 msgid "units)"
-msgstr "unidades)"
+msgstr "uds.)"
 
