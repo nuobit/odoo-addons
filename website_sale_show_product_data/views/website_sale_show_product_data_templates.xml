@@ -24,6 +24,10 @@
                     <small>(<span t-esc="website_pricelist_item.min_quantity"/> units)</small>
                 </span>
             </xpath>
+
+            <xpath expr="//section[div[@itemprop='offers']]" position="attributes">
+                <attribute name="style">min-height: 100px;</attribute>
+            </xpath>
         </template>
 
         <template id="website_sale_show_defaultcode_product_id" inherit_id="website_sale.product"
