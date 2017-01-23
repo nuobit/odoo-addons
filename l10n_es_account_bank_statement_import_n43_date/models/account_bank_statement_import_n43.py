@@ -28,8 +28,11 @@ class AccountBankStatementImport(models.TransientModel):
                     'name': ' '.join(conceptos),
                     'ref': self._get_ref(line),
                     'amount': line['importe'],
-                    'partner_id': self._get_partner(line),
+                    'note': line,
                 }
+                c = line['conceptos']
+                if c.get('01'):
+                    vals_line['partner_name'] = c['01'][0] + c['01'][1]
                 if not vals_line['name']:
                     vals_line['name'] = vals_line['ref']
                 transactions.append(vals_line)
@@ -38,8 +41,8 @@ class AccountBankStatementImport(models.TransientModel):
             'balance_start': n43 and n43[0]['saldo_ini'] or 0.0,
             'balance_end_real': n43 and n43[-1]['saldo_fin'] or 0.0,
         }
-        str_currency = self.journal_id.currency and  \
-            self.journal_id.currency.name or \
-            self.journal_id.company_id.currency_id.name
+        str_currency = self.journal_id.currency and \
+                       self.journal_id.currency.name or \
+                       self.journal_id.company_id.currency_id.name
         return str_currency, False, [vals_bank_statement]
 
