@@ -27,7 +27,7 @@
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
-    'depends': ['report', 'account'],
+    'depends': ['report', 'sale', 'account'],
     'data': [
         'views/inherit_reports.xml',
         #'views/data.xml'
