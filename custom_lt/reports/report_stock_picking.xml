@@ -95,7 +95,14 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <span t-field="o.move_lines[0].procurement_id.sale_line_id.order_id.client_order_ref"/>
+                                                    <t t-if="not o.move_lines[0].procurement_id.purchase_line_id">
+                                                        <span t-field="o.move_lines[0].procurement_id.sale_line_id.order_id.client_order_ref"/>
+                                                    </t>
+                                                    <t t-if="o.move_lines[0].procurement_id.purchase_line_id">
+                                                        <t t-set="sale_names" t-value="o.move_lines[0].procurement_id.purchase_line_id.order_id.origin.split(', ')"/>
+                                                        <t t-set="sale_client_refs" t-value="o.env['sale.order'].search([('name', 'in', sale_names)]).mapped('client_order_ref')"/>
+                                                        <span t-esc="', '.join(filter(None, sale_client_refs))"/>
+                                                    </t>
                                                 </td>
                                                 <td>
                                                     <span t-field="o.state"/>
