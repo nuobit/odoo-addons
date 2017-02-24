@@ -26,7 +26,6 @@
 # TODO: Add import file formats: ods, xls, xlsx
 # TODO: Allow export results grid to file
 # TODO: Allow mappping the same header in more than one field
-# TODO: Add checkbox to not process the errors temporarily
 # TODO: Add an option to continue if any EAN fails
 # TODO: Clear column data if field selector is cleaned afterwards
 
@@ -243,6 +242,8 @@ class ImportHeader(models.Model):
     progress = fields.Float(
         string='Progress', readonly=True, required=False, default=0)
 
+    autoremove_done = fields.Boolean(string='Autoremove done', default=False)
+
     state = fields.Selection(
         selection=[('headers', 'Load header'),
                    ('data', 'Load data'),
@@ -351,6 +352,10 @@ class ImportHeader(models.Model):
     def remove_done(self):
         self.line_ids.search([('status', '=', 'done')]).unlink()
 
+    @api.multi
+    def reset_errors(self):
+        self.line_ids.search([('status', '=', 'error')]).write({'status': False, 'observations': False})
+
     def _format_decimal(self, d, ret_type='float'):
         f = decimal.Decimal(d)
         if self.round_numeric_fields:
@@ -445,7 +450,9 @@ class ImportHeader(models.Model):
                                                                  i+1, n))
             pco = int(self.progress)
 
-            if line.status == 'done':
+            if line.status:
+                if line.status == 'done' and self.autoremove_done:
+                    line.unlink()
                 continue
 
             line.status = False
@@ -780,6 +787,9 @@ class ImportHeader(models.Model):
                 self.env['product.product'].create(product['data'])
 
             line.status = 'done'
+
+            if self.autoremove_done:
+                line.unlink()
 
 
 class ImportHeaderField(models.Model):

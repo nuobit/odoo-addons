@@ -442,6 +442,11 @@ msgid "Remove done"
 msgstr "Eliminar hechos"
 
 #. module: product_import
+#: view:epe.header:product_import.view_epe_header_form
+msgid "Reset errors"
+msgstr "Resetear errores"
+
+#. module: product_import
 #: help:epe.header,strip_fields:0
 msgid "Remove trail and leading spaces of each field"
 msgstr "Elimina nos espacios traseros y delanteros de cada campo"
@@ -673,3 +678,7 @@ msgstr "Opciones de Actualización"
 msgid "Used category %s instead of %s"
 msgstr "Se ha utilizado la category %s en lugar de %s"
 
+#. module: product_import
+#: field:epe.header,autoremove_done:0
+msgid "Autoremove done"
+msgstr "Autoeliminar hechos"
