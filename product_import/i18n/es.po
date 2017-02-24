@@ -484,12 +484,6 @@ msgid "Service"
 msgstr "Servicio"
 
 #. module: product_import
-#: code:addons/product_import/models/models.py:298
-#, python-format
-msgid "Some file headers are mapped more than once"
-msgstr "Se han encontrado cabeceras mapeadas más de una vez"
-
-#. module: product_import
 #: selection:epe.header,cost_method:0
 msgid "Standard Price"
 msgstr "Precio estándar"

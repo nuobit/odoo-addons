@@ -25,7 +25,6 @@
 # TODO: Handle utf-8 error when importing non utf-8 csv file
 # TODO: Add import file formats: ods, xls, xlsx
 # TODO: Allow export results grid to file
-# TODO: Allow mappping the same header in more than one field
 # TODO: Add an option to continue if any EAN fails
 # TODO: Clear column data if field selector is cleaned afterwards
 
@@ -304,11 +303,6 @@ class ImportHeader(models.Model):
 
     @api.multi
     def load_data(self):
-        fl = filter(lambda z: z is not False,
-                    map(lambda y: y[3].id, self._get_map_fields()))
-        if len(fl) != len(set(fl)):
-            raise Warning(_("Some file headers are mapped more than once"))
-
         self.progress = 0
 
         # delete all lines
