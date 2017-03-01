@@ -1,0 +1,42 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* website_sale_category_restrict
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-01 12:44+0000\n"
+"PO-Revision-Date: 2017-03-01 12:44+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_sale_category_restrict
+#: field:product.public.category,access_type:0
+msgid "Access type"
+msgstr "Tipo de acceso"
+
+#. module: website_sale_category_restrict
+#: selection:product.public.category,access_type:0
+msgid "Allow all users except:"
+msgstr "Permitir a todos los usuarios excepto:"
+
+#. module: website_sale_category_restrict
+#: selection:product.public.category,access_type:0
+msgid "Deny all user except:"
+msgstr "Denegar a todos los usuarios excepto:"
+
+#. module: website_sale_category_restrict
+#: field:product.public.category,except_users:0
+msgid "Except users"
+msgstr "Except users"
+
+#. module: website_sale_category_restrict
+#: view:product.public.category:website_sale_category_restrict.product_public_category_form_view
+msgid "User access"
+msgstr "Accesos de usuario"
+
