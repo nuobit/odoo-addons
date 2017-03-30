@@ -109,6 +109,7 @@
                                 <th>Quantity</th>
                                 <th class="text-right">Unit Price</th>
                                 <th class="text-right" groups="sale.group_discount_per_so_line">Discount (%)</th>
+                                <th class="text-right">Taxes</th>
                                 <th class="text-right">Amount</th>
                             </tr>
                         </thead>
@@ -123,6 +124,9 @@
                                     <span t-field="l.price_unit" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
                                 </td>
                                 <td class="text-right" groups="sale.group_discount_per_so_line"><span t-field="l.discount"/></td>
+                                <td class="text-right">
+                                    <span t-esc="', '.join(map(lambda x: x.name, l.invoice_line_tax_id))"/>
+                                </td>
                                 <td class="text-right">
                                     <span t-field="l.price_subtotal" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
                                 </td>
