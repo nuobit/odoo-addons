@@ -37,7 +37,7 @@ msgstr ""
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Account name"
-msgstr ""
+msgstr "Nom del compte"
 
 #. module: account_journal_book
 #: selection:account.journal.entries.report,target_move:0
@@ -63,7 +63,7 @@ msgstr ""
 #. module: account_journal_book
 #: selection:account.move.book.move.renumber,numbering_order:0
 msgid "By Date"
-msgstr "Per Data"
+msgstr ""
 
 #. module: account_journal_book
 #: selection:account.move.book.move.renumber,numbering_order:0
@@ -78,17 +78,17 @@ msgstr "Per data"
 #. module: account_journal_book
 #: selection:account.journal.entries.report,sort_selection:0
 msgid "By entry number"
-msgstr ""
+msgstr "Per número d'assentament"
 
 #. module: account_journal_book
 #: selection:account.journal.entries.report,sort_selection:0
 msgid "By reference number"
-msgstr ""
+msgstr "Per referència"
 
 #. module: account_journal_book
 #: view:account.move.book.move.renumber:account_journal_book.view_account_book_move_renumber_form
 msgid "Cancel"
-msgstr "Cancel·la"
+msgstr "Cancel·lar"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,chart_account_id:0
@@ -99,25 +99,25 @@ msgstr ""
 #: field:account.journal.entries.report,company_id:0
 #: field:account.move.book.move.renumber,company_id:0
 msgid "Company"
-msgstr ""
+msgstr "Companyia"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,create_uid:0
 #: field:account.move.book.move.renumber,create_uid:0
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,create_date:0
 #: field:account.move.book.move.renumber,create_date:0
 msgid "Created on"
-msgstr ""
+msgstr "Creado en"
 
 #. module: account_journal_book
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Credit"
-msgstr ""
+msgstr "Haber"
 
 #. module: account_journal_book
 #: selection:account.journal.entries.report,filter:0
@@ -130,7 +130,7 @@ msgstr "Data"
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Debit"
-msgstr ""
+msgstr "Debe"
 
 #. module: account_journal_book
 #: report:account.journal.entries.report.wzd:0
@@ -142,12 +142,12 @@ msgstr "Descripció"
 #: field:account.journal.entries.report,display_name:0
 #: field:account.move.book.move.renumber,display_name:0
 msgid "Display Name"
-msgstr ""
+msgstr "Nom a Mostrar"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,date_to:0
 msgid "End Date"
-msgstr "Data final"
+msgstr "Data de fi"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,period_to:0
@@ -158,28 +158,28 @@ msgstr ""
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "End of report"
-msgstr ""
+msgstr "Final de l'informe"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,sort_selection:0
 msgid "Entries Sorted By"
-msgstr ""
+msgstr "Assentaments ordenats per"
 
 #. module: account_journal_book
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Entry"
-msgstr ""
+msgstr "Assentament"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,filter:0
 msgid "Filter by"
-msgstr ""
+msgstr "Filtrar per"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,fiscalyear_id:0
 msgid "Fiscal Year"
-msgstr ""
+msgstr "Any Fiscal"
 
 #. module: account_journal_book
 #: help:account.move.book.move.renumber,period_ids:0
@@ -195,7 +195,7 @@ msgstr ""
 #: field:account.journal.entries.report,id:0
 #: field:account.move.book.move.renumber,id:0
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: account_journal_book
 #: help:account.move.book.move.renumber,sequence_id:0
@@ -217,7 +217,7 @@ msgstr "Diari"
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Journal Ledger  -"
-msgstr "Llibre Diari   -"
+msgstr "Llibre diari   -"
 
 #. module: account_journal_book
 #: model:ir.ui.menu,name:account_journal_book.menu_journal_entries_report
@@ -229,7 +229,7 @@ msgstr "Llibre diari"
 #: view:account.move.book.move.renumber:account_journal_book.view_account_book_move_renumber_form
 #: field:account.move.book.move.renumber,journal_ids:0
 msgid "Journals"
-msgstr ""
+msgstr "Diaris"
 
 #. module: account_journal_book
 #: help:account.move.book.move.renumber,journal_ids:0
@@ -244,25 +244,25 @@ msgstr ""
 #. module: account_journal_book
 #: field:account.journal.entries.report,landscape:0
 msgid "Landscape mode"
-msgstr ""
+msgstr "Mode apaisat"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,__last_update:0
 #: field:account.move.book.move.renumber,__last_update:0
 msgid "Last Modified on"
-msgstr ""
+msgstr "Última Modificación en"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,write_uid:0
 #: field:account.move.book.move.renumber,write_uid:0
 msgid "Last Updated by"
-msgstr ""
+msgstr "Last Updated by"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,write_date:0
 #: field:account.move.book.move.renumber,write_date:0
 msgid "Last Updated on"
-msgstr ""
+msgstr "Last Updated on"
 
 #. module: account_journal_book
 #: field:account.move.book.move.renumber,number_next:0
@@ -279,7 +279,7 @@ msgstr ""
 #. module: account_journal_book
 #: selection:account.journal.entries.report,filter:0
 msgid "No Filters"
-msgstr ""
+msgstr "Sense filtres"
 
 #. module: account_journal_book
 #: code:addons/account_journal_book/wizard/account_period_close_wizard.py:16
@@ -307,7 +307,7 @@ msgstr ""
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Page"
-msgstr "Foli"
+msgstr "Pàgina"
 
 #. module: account_journal_book
 #: report:account.journal.entries.report.wzd:0
@@ -319,14 +319,14 @@ msgstr "Empresa"
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Period"
-msgstr "Període"
+msgstr "Período"
 
 #. module: account_journal_book
 #: selection:account.journal.entries.report,filter:0
 #: view:account.move.book.move.renumber:account_journal_book.view_account_book_move_renumber_form
 #: field:account.move.book.move.renumber,period_ids:0
 msgid "Periods"
-msgstr ""
+msgstr "Períodes"
 
 #. module: account_journal_book
 #: view:account.move.book.move.renumber:account_journal_book.view_account_book_move_renumber_form
@@ -341,13 +341,13 @@ msgstr ""
 #: model:ir.actions.report.xml,name:account_journal_book.report_account_journal_entries_report1
 #: model:ir.model,name:account_journal_book.model_account_journal_entries_report
 msgid "Print journal by entries"
-msgstr "Imprimir llibre diari"
+msgstr "Imprimir libro diario"
 
 #. module: account_journal_book
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Reference"
-msgstr ""
+msgstr "Referència"
 
 #. module: account_journal_book
 #: view:account.move.book.move.renumber:account_journal_book.view_account_book_move_renumber_form
@@ -385,7 +385,7 @@ msgstr ""
 #. module: account_journal_book
 #: field:account.journal.entries.report,date_from:0
 msgid "Start Date"
-msgstr "Data d'inici"
+msgstr "Data inici"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,period_from:0
@@ -395,7 +395,7 @@ msgstr ""
 #. module: account_journal_book
 #: field:account.move.book.move.renumber,state:0
 msgid "State"
-msgstr ""
+msgstr "Estat"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,target_move:0
@@ -415,4 +415,4 @@ msgstr ""
 #. module: account_journal_book
 #: view:account.move.book.move.renumber:account_journal_book.view_account_book_move_renumber_form
 msgid "or"
-msgstr ""
+msgstr "o"
