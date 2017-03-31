@@ -23,11 +23,10 @@ class AccountJournalEntriesReport(models.TransientModel):
     sort_selection = fields.Selection(
         [('date', 'By date'),
          ('name', 'By entry number'),
-         ('number_in_book', 'Number in Book'),
          ('ref', 'By reference number')],
         'Entries Sorted By',
         required=True,
-        default='number_in_book',
+        default='date',
         )
     landscape = fields.Boolean(
         'Landscape mode',
