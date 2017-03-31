@@ -26,7 +26,7 @@ msgstr "Compte"
 #. module: account_journal_book
 #: model:ir.model,name:account_journal_book.model_account_move
 msgid "Account Entry"
-msgstr ""
+msgstr "Número d'assentament"
 
 #. module: account_journal_book
 #: model:ir.model,name:account_journal_book.model_account_move_book_move_renumber
@@ -63,7 +63,7 @@ msgstr ""
 #. module: account_journal_book
 #: selection:account.move.book.move.renumber,numbering_order:0
 msgid "By Date"
-msgstr ""
+msgstr "Per Data"
 
 #. module: account_journal_book
 #: selection:account.move.book.move.renumber,numbering_order:0
@@ -73,7 +73,7 @@ msgstr ""
 #. module: account_journal_book
 #: selection:account.journal.entries.report,sort_selection:0
 msgid "By date"
-msgstr ""
+msgstr "Per data"
 
 #. module: account_journal_book
 #: selection:account.journal.entries.report,sort_selection:0
@@ -217,12 +217,12 @@ msgstr "Diari"
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Journal Ledger  -"
-msgstr ""
+msgstr "Llibre Diari   -"
 
 #. module: account_journal_book
 #: model:ir.ui.menu,name:account_journal_book.menu_journal_entries_report
 msgid "Journal by entries"
-msgstr ""
+msgstr "Llibre diari"
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,journal_ids:0
@@ -341,7 +341,7 @@ msgstr ""
 #: model:ir.actions.report.xml,name:account_journal_book.report_account_journal_entries_report1
 #: model:ir.model,name:account_journal_book.model_account_journal_entries_report
 msgid "Print journal by entries"
-msgstr ""
+msgstr "Imprimir llibre diari"
 
 #. module: account_journal_book
 #: report:account.journal.entries.report.wzd:0
