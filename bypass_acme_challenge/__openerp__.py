@@ -24,10 +24,10 @@
     'description': """
         Allow Acme challenges like Let's Encrypt ones pass through Odoo server
 
-        Usage: Add system parameter acme.challenge.local.folder with the local "webroot" mapped folder
+        Usage: Add system parameter acme.challenge.webroot.folder with the local "webroot" mapped folder
     """,
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
-    'version': '0.1.0',
+    'version': '0.1.1',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
     'installable': True,

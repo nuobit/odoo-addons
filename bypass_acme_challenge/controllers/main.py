@@ -22,14 +22,16 @@
 from openerp import http
 from openerp.http import request
 
-class bypass_acme_challenge(http.Controller):
-    @http.route('/.well-known/acme-challenge/<filename>', type='http', auth='none')
-    def get_acme_challenge(self, filename, **kw):
+BASE_PATH = '/.well-known/acme-challenge'
 
-        local_folder = request.env['ir.config_parameter'].get_param('acme.challenge.local.folder')
+class bypass_acme_challenge(http.Controller):
+    @http.route('%s/<filename>' % BASE_PATH, type='http', auth='none')
+    def get_acme_challenge(self, filename, **kw):
+        local_folder = request.env['ir.config_parameter'].get_param('acme.challenge.webroot.folder')
         if local_folder:
+            local_filename = local_folder.rstrip('/') + BASE_PATH + '/' + filename
             try:
-                with open(local_folder + '/' + filename, 'r') as f:
+                with open(local_filename, 'r') as f:
                     return f.read()
             except:
                 pass
