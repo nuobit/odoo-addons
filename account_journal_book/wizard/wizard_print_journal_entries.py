@@ -26,7 +26,7 @@ class AccountJournalEntriesReport(models.TransientModel):
          ('ref', 'By reference number')],
         'Entries Sorted By',
         required=True,
-        default='date',
+        default='name',
         )
     landscape = fields.Boolean(
         'Landscape mode',

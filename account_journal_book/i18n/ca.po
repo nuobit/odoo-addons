@@ -169,7 +169,7 @@ msgstr "Assentaments ordenats per"
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Entry"
-msgstr "Assentament"
+msgstr "Assent."
 
 #. module: account_journal_book
 #: field:account.journal.entries.report,filter:0
@@ -319,7 +319,7 @@ msgstr "Empresa"
 #: report:account.journal.entries.report.wzd:0
 #: report:account.journal.entries.report.wzd1:0
 msgid "Period"
-msgstr "Período"
+msgstr "Període"
 
 #. module: account_journal_book
 #: selection:account.journal.entries.report,filter:0
