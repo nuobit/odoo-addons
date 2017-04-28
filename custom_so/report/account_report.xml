@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report
+            id="account_invoices_sargantana"
+            model="account.invoice"
+            string="Invoices La Sargantana"
+            report_type="qweb-pdf"
+            name="custom_so.report_invoice_sargantana"
+            file="custom_so.report_invoice_sargantana"
+            attachment_use="True"
+            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+        />
+
+        <report
+            id="account_invoices_onacom"
+            model="account.invoice"
+            string="Invoices Onacom"
+            report_type="qweb-pdf"
+            name="custom_so.report_invoice_onacom"
+            file="custom_so.report_invoice_onacom"
+            attachment_use="True"
+            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+        />
+
+    </data>
+</openerp>
+
+
