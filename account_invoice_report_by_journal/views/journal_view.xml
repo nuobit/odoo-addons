@@ -6,9 +6,16 @@
             <field name="model">account.journal</field>
             <field name="inherit_id" ref="account.view_account_journal_form"/>
             <field name="arch" type="xml">
-                <field name="user_id" position="after">
+                <!--field name="user_id" position="after">
                     <field name="invoice_report_id" attrs="{'invisible': [('type', 'not in', ('sale','sale_refund'))]}" />
-                </field>
+                </field-->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Report" attrs="{'invisible': [('type', 'not in', ('sale','sale_refund'))]}">
+                        <group>
+                            <field name="invoice_report_id"/>
+                        </group>
+                    </page>
+                </xpath>
             </field>
         </record>
     </data>
