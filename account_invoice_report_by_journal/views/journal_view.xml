@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="account.view_account_journal_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
-                    <page string="Report" attrs="{'invisible': [('type', 'not in', ('sale','sale_refund'))]}">
+                    <page name="report" string="Report" attrs="{'invisible': [('type', 'not in', ('sale','sale_refund'))]}">
                         <group>
                             <field name="invoice_report_id"/>
                         </group>
