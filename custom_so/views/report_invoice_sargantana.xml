@@ -87,8 +87,10 @@
                                     <span t-field="o.number"/>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><strong>Reference</strong></td>
+                            <tr t-if="o.comment">
+                                <td>
+                                    <strong>Reference</strong>
+                                </td>
                                 <td colspan="2">
                                     <span t-field="o.comment"/>
                                 </td>
