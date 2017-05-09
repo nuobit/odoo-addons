@@ -82,7 +82,7 @@ msgstr "Factura borrador"
 #. module: custom_so
 #: view:website:custom_so.report_invoice_sargantana_document
 msgid "Due date"
-msgstr "Due date"
+msgstr "Vencimiento"
 
 #. module: custom_so
 #: view:website:custom_so.external_layout_onacom_footer
@@ -113,22 +113,22 @@ msgstr "Factura"
 #. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
 msgid "Invoice Date:"
-msgstr "Fecha de factura:"
+msgstr "Fecha:"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_sargantana_document
 msgid "Invoice Total"
-msgstr "Invoice Total"
+msgstr "Total factura"
 
 #. module: custom_so
 #: model:ir.actions.report.xml,name:custom_so.account_invoices_sargantana
 msgid "Invoices La Sargantana"
-msgstr "Invoices La Sargantana"
+msgstr "Facturas La Sargantana"
 
 #. module: custom_so
 #: model:ir.actions.report.xml,name:custom_so.account_invoices_onacom
 msgid "Invoices Onacom"
-msgstr "Invoices Onacom"
+msgstr "Facturas Onacom"
 
 #. module: custom_so
 #: model:ir.model,name:custom_so.model_account_journal
@@ -164,7 +164,7 @@ msgstr "Página:"
 #. module: custom_so
 #: field:account.journal,report_partner_id:0
 msgid "Partner"
-msgstr "Partner"
+msgstr "Empresa"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_sargantana_document
@@ -185,11 +185,6 @@ msgstr "Teléfono:"
 #: view:website:custom_so.report_invoice_sargantana_document
 msgid "Price"
 msgstr "Precio"
-
-#. module: custom_so
-#: view:account.invoice:custom_so.account_invoice_print_form_inherit
-msgid "Print Pepe"
-msgstr "Print Pepe"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
@@ -248,7 +243,7 @@ msgstr "Total"
 #: view:website:custom_so.report_invoice_onacom_document
 #: view:website:custom_so.report_invoice_sargantana_document
 msgid "Total Without Taxes"
-msgstr "Total sin impuestos"
+msgstr "Base imponible"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
