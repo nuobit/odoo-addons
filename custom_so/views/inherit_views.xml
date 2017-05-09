@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="account_invoice_report_form_inherit">
+            <field name="name">account.invoice.report.form.inherit</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account_invoice_report_by_journal.account_journal_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='report']/group" position="inside">
+                    <field name="report_partner_id"/>
+                </xpath>
+            </field>
+        </record>
+
+
+         <record model="ir.ui.view" id="account_invoice_print_form_inherit">
+            <field name="name">account.invoice.print.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[@name='invoice_print'][2]" position="before">
+                    <button name="invoice_print" string="Print" type="object" groups="base.group_user" attrs="{'invisible':[('state', '=', 'open')]}" />
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
