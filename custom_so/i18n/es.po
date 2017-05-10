@@ -32,12 +32,15 @@ msgstr "Base"
 
 #. module: custom_so
 #: view:website:custom_so.external_layout_sargantana_header
+#: view:website:custom_so.external_layout_onacom_header
 #: view:website:custom_so.report_invoice_onacom_document
 msgid "Cancelled Invoice"
 msgstr "Factura cancelada"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_invoice_onacom_document
+#: view:website:custom_so.report_order_onacom_document
 msgid "Code"
 msgstr "Código"
 
@@ -53,12 +56,25 @@ msgstr "Código de cliente"
 
 #. module: custom_so
 #: view:website:custom_so.external_layout_sargantana_header
+#: view:website:custom_so.external_layout_onacom_header
+#: view:website:custom_so.external_layout_onacom_order_header
 msgid "Date"
 msgstr "Fecha"
 
 #. module: custom_so
+#: view:website:custom_so.external_layout_onacom_order_header
+msgid "Order N°"
+msgstr "Presupuesto N°"
+
+#. module: custom_so
+#: view:website:custom_so.external_layout_onacom_order_header
+msgid "Order N°"
+msgstr "Pedido No°"
+
+#. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
 #: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_order_onacom_document
 msgid "Description"
 msgstr "Descripción"
 
@@ -70,17 +86,20 @@ msgstr "Descripción:"
 #. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
 #: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_order_onacom_document
 msgid "Discount (%)"
 msgstr "Descuento (%)"
 
 #. module: custom_so
 #: view:website:custom_so.external_layout_sargantana_header
+#: view:website:custom_so.external_layout_onacom_header
 #: view:website:custom_so.report_invoice_onacom_document
 msgid "Draft Invoice"
 msgstr "Factura borrador"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_invoice_onacom_document
 msgid "Due date"
 msgstr "Vencimiento"
 
@@ -101,11 +120,25 @@ msgstr "Observaciones de la posición fiscal"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_sargantana_document
-msgid "IBAN"
-msgstr "IBAN"
+#: view:website:custom_so.report_invoice_onacom_document
+msgid "Payment mode"
+msgstr "Forma de pago"
+
+#. module: custom_so
+#: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_invoice_onacom_document
+msgid "Payment term"
+msgstr "Plazo de pago"
+
+#. module: custom_so
+#: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_invoice_onacom_document
+msgid "Bank account"
+msgstr "Cuenta bancaria"
 
 #. module: custom_so
 #: view:website:custom_so.external_layout_sargantana_header
+#: view:website:custom_so.external_layout_onacom_header
 #: view:website:custom_so.report_invoice_onacom_document
 msgid "Invoice"
 msgstr "Factura"
@@ -114,11 +147,6 @@ msgstr "Factura"
 #: view:website:custom_so.report_invoice_onacom_document
 msgid "Invoice Date:"
 msgstr "Fecha:"
-
-#. module: custom_so
-#: view:website:custom_so.report_invoice_sargantana_document
-msgid "Invoice Total"
-msgstr "Total factura"
 
 #. module: custom_so
 #: model:ir.actions.report.xml,name:custom_so.account_invoices_sargantana
@@ -153,13 +181,10 @@ msgstr "PRO-FORMA"
 
 #. module: custom_so
 #: view:website:custom_so.external_layout_sargantana_header
+#: view:website:custom_so.external_layout_onacom_header
+#: view:website:custom_so.external_layout_onacom_order_header
 msgid "Page"
 msgstr "Página"
-
-#. module: custom_so
-#: view:website:custom_so.external_layout_onacom_footer
-msgid "Page:"
-msgstr "Página:"
 
 #. module: custom_so
 #: field:account.journal,report_partner_id:0
@@ -183,17 +208,26 @@ msgstr "Teléfono:"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_invoice_onacom_document
+#: view:website:custom_so.report_order_onacom_document
 msgid "Price"
 msgstr "Precio"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
 #: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_order_onacom_document
 msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: custom_so
+#: view:website:custom_so.external_layout_onacom_order_header
+msgid "Quotation N°"
+msgstr "Presupuesto N."
+
+#. module: custom_so
 #: view:website:custom_so.external_layout_sargantana_header
+#: view:website:custom_so.external_layout_onacom_header
 msgid "Reference"
 msgstr "Referencia"
 
@@ -204,6 +238,7 @@ msgstr "Referencia:"
 
 #. module: custom_so
 #: view:website:custom_so.external_layout_sargantana_header
+#: view:website:custom_so.external_layout_onacom_header
 #: view:website:custom_so.report_invoice_onacom_document
 msgid "Refund"
 msgstr "Factura rectificativa"
@@ -230,25 +265,23 @@ msgstr "Impuesto"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
+#: view:website:custom_so.report_order_onacom_document
 msgid "Taxes"
 msgstr "Impuestos"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
 #: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_order_onacom_document
 msgid "Total"
 msgstr "Total"
 
 #. module: custom_so
 #: view:website:custom_so.report_invoice_onacom_document
 #: view:website:custom_so.report_invoice_sargantana_document
+#: view:website:custom_so.report_order_onacom_document
 msgid "Total Without Taxes"
 msgstr "Base imponible"
-
-#. module: custom_so
-#: view:website:custom_so.report_invoice_onacom_document
-msgid "Unit Price"
-msgstr "Precio unidad"
 
 #. module: custom_so
 #: view:website:custom_so.external_layout_onacom_footer

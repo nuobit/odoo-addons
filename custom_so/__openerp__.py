@@ -27,12 +27,13 @@
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
-    'depends': ['account', 'account_invoice_report_by_journal'],
+    'depends': ['account', 'account_invoice_report_by_journal', 'sale'],
     'data': [
         'views/inherit_views.xml',
         'report/account_report.xml',
         'views/report_invoice_sargantana.xml',
         'views/report_invoice_onacom.xml',
+        'views/report_order_onacom.xml',
         ],
     'installable': True,
 }

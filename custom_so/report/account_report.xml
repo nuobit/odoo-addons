@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record id="paperformat_invoice_sargantonacom" model="report.paperformat">
+        <record id="paperformat1_sargantonacom" model="report.paperformat">
             <field name="name"><![CDATA[A4 La Sargantana & Onacom Solutions]]></field>
             <field name="default" eval="True"/>
             <field name="format">A4</field>
@@ -29,7 +29,7 @@
         />
 
          <record id="account_invoices_sargantana" model="ir.actions.report.xml">
-            <field name="paperformat_id" ref="custom_so.paperformat_invoice_sargantonacom"/>
+            <field name="paperformat_id" ref="custom_so.paperformat1_sargantonacom"/>
         </record>
 
 
@@ -45,7 +45,21 @@
         />
 
         <record id="account_invoices_onacom" model="ir.actions.report.xml">
-            <field name="paperformat_id" ref="custom_so.paperformat_invoice_sargantonacom"/>
+            <field name="paperformat_id" ref="custom_so.paperformat1_sargantonacom"/>
+        </record>
+
+
+        <report
+            id="sale_orders_onacom"
+            model="sale.order"
+            string="Sale orders Onacom"
+            report_type="qweb-pdf"
+            name="custom_so.report_order_onacom"
+            file="custom_so.report_order_onacom"
+        />
+
+        <record id="sale_orders_onacom" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="custom_so.paperformat1_sargantonacom"/>
         </record>
 
     </data>
