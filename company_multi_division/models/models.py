@@ -121,6 +121,16 @@ class SaleOrder(models.Model):
 
         return new_id
 
+    @api.multi
+    def _prepare_invoice(self, order, lines):
+        invoice_vals = super(SaleOrder, self)._prepare_invoice(order, lines)
+
+        if order.division_id:
+            invoice_vals['division_id'] = order.division_id.id
+
+        return invoice_vals
+
+
 
 
 class AccountInvoice(models.Model):
