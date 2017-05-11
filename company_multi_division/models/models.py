@@ -70,8 +70,6 @@ class ResCompanyDivision(models.Model):
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    type = fields.Selection(selection_add=[('division', 'Division')])
-
     division_id = fields.Many2one('division.division', string="Division")
 
 

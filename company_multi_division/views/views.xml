@@ -8,7 +8,7 @@
                 <form string="Division">
                     <group>
                         <group string="Partner">
-                            <field name="partner_id" nolabel="1" domain="[('parent_id','=',parent_id),('is_company','=',False),('type','=','division')]"/>
+                            <field name="partner_id" nolabel="1" domain="[('parent_id','=',parent_id),('is_company','=',False)]"/>
                         </group>
                     </group>
                     <group>
