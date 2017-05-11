@@ -35,7 +35,7 @@
                 </xpath>
             </field>
         </record>
-        
+
         <record model="ir.ui.view" id="view_order_form">
             <field name="name">sale.order.form</field>
             <field name="model">sale.order</field>
