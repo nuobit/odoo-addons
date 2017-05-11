@@ -125,8 +125,9 @@ class SaleOrder(models.Model):
     def _prepare_invoice(self, order, lines):
         invoice_vals = super(SaleOrder, self)._prepare_invoice(order, lines)
 
-        if order.division_id:
+        if order.division_id and invoice_vals['type'] == 'out_invoice':
             invoice_vals['division_id'] = order.division_id.id
+            invoice_vals['journal_id'] = order.division_id.sale_invoice_journal_id.id
 
         return invoice_vals
 
