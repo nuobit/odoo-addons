@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_company_form">
+            <field name="name">res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="divisions" string="Divisions">
+                        <field name="division_ids" nolabel="1" context="{'parent_id': partner_id}">
+                            <tree>
+                                <field name="partner_id"/>
+                                <field name="sale_order_sequence_id"/>
+                                <field name="sale_order_report_id"/>
+                                <field name="sale_invoice_journal_id"/>
+                                <field name="sale_refund_invoice_journal_id"/>
+                                <field name="sale_invoice_report_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_order_form">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="division_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

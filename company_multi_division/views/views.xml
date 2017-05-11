@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_division_form">
+            <field name="name">Division form</field>
+            <field name="model">division.division</field>
+            <field name="arch" type="xml">
+                <form string="Division">
+                    <group>
+                    <group string="Partner">
+                        <field name="partner_id" nolabel="1" domain="[('parent_id','=',parent_id),('is_company','=',False),('type','=','division')]"/>
+                    </group>
+                    <group string="Sale Orders">
+                        <field name="sale_order_sequence_id" string="Sequence"/>
+                        <field name="sale_order_report_id" string="Report Template"/>
+                    </group>
+                    <group string="Sale Invoices">
+                        <field name="sale_invoice_journal_id" string="Journal"/>
+                        <field name="sale_refund_invoice_journal_id" string="Refund Journal"/>
+                        <field name="sale_invoice_report_id" string="Report Template"/>
+                    </group>
+                        <group string="Defaults">
+                            <field name="sale_order_default"/>
+                            <field name="sale_invoice_default"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>
