@@ -55,8 +55,10 @@
                 <xpath expr="//field[@name='journal_id']" position="before">
                     <field name="division_id" options="{'no_create': True}" attrs="{'readonly':[('internal_number','!=',False)]}"/>
                 </xpath>
+                <xpath expr="//header/button[@name='invoice_print'][2]" position="before">
+                    <button name="invoice_print" string="Print" type="object" groups="base.group_user" attrs="{'invisible':[('state', '=', 'open')]}" />
+                </xpath>
             </field>
         </record>
-
     </data>
 </openerp>
