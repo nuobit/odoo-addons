@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* account_invoice_report_by_journal
+#	* company_multi_division
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-09 15:56+0000\n"
-"PO-Revision-Date: 2017-05-09 15:56+0000\n"
+"POT-Creation-Date: 2017-05-11 14:55+0000\n"
+"PO-Revision-Date: 2017-05-11 14:55+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,23 +15,158 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: account_invoice_report_by_journal
-#: model:ir.model,name:account_invoice_report_by_journal.model_account_invoice
+#. module: company_multi_division
+#: model:ir.model,name:company_multi_division.model_res_company
+msgid "Companies"
+msgstr "Companyies"
+
+#. module: company_multi_division
+#: field:division.division,company_id:0
+msgid "Company id"
+msgstr "Company id"
+
+#. module: company_multi_division
+#: field:division.division,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: company_multi_division
+#: field:division.division,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: company_multi_division
+#: field:division.division,sale_invoice_default:0
+msgid "Default on sale invoices"
+msgstr "Per defecte en factures de venda"
+
+#. module: company_multi_division
+#: field:division.division,sale_order_default:0
+msgid "Default on sale orders"
+msgstr "Per defecte en comandes de venda"
+
+#. module: company_multi_division
+#: view:division.division:company_multi_division.view_division_form
+msgid "Defaults"
+msgstr "Valors per defecte"
+
+#. module: company_multi_division
+#: field:division.division,display_name:0
+msgid "Display Name"
+msgstr "Display Name"
+
+#. module: company_multi_division
+#: field:account.invoice,division_id:0
+#: view:division.division:company_multi_division.view_division_form
+#: field:res.company,division_ids:0
+#: field:res.partner,division_id:0
+#: field:sale.order,division_id:0
+msgid "Division"
+msgstr "Línia de negoci"
+
+#. module: company_multi_division
+#: field:division.division,partner_id:0
+msgid "Division Partner"
+msgstr "Empresa de la línia de negoci"
+
+#. module: company_multi_division
+#: view:res.company:company_multi_division.view_company_form
+msgid "Divisions"
+msgstr "Línies de negoci"
+
+#. module: company_multi_division
+#: field:division.division,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: company_multi_division
+#: model:ir.model,name:company_multi_division.model_account_invoice
 msgid "Invoice"
 msgstr "Factura"
 
-#. module: account_invoice_report_by_journal
-#: field:account.journal,invoice_report_id:0
-msgid "Invoice Report Template"
-msgstr "Plantilla de factura"
-
-#. module: account_invoice_report_by_journal
-#: model:ir.model,name:account_invoice_report_by_journal.model_account_journal
+#. module: company_multi_division
+#: view:division.division:company_multi_division.view_division_form
 msgid "Journal"
 msgstr "Diari"
 
-#. module: account_invoice_report_by_journal
-#: view:account.journal:account_invoice_report_by_journal.account_journal_form_inherit
-msgid "Report"
-msgstr "Report"
+#. module: company_multi_division
+#: field:division.division,__last_update:0
+msgid "Last Modified on"
+msgstr "Last Modified on"
+
+#. module: company_multi_division
+#: field:division.division,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: company_multi_division
+#: field:division.division,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: company_multi_division
+#: view:division.division:company_multi_division.view_division_form
+#: model:ir.model,name:company_multi_division.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: company_multi_division
+#: view:account.invoice:company_multi_division.invoice_form
+msgid "Print"
+msgstr "Imprimeix"
+
+#. module: company_multi_division
+#: view:division.division:company_multi_division.view_division_form
+msgid "Refund Journal"
+msgstr "Diari d'abonament"
+
+#. module: company_multi_division
+#: view:division.division:company_multi_division.view_division_form
+msgid "Report Template"
+msgstr "Plantilla d'Informe"
+
+#. module: company_multi_division
+#: field:division.division,sale_invoice_journal_id:0
+msgid "Sale Invoice Journal"
+msgstr "Diari de Factures de Venda"
+
+#. module: company_multi_division
+#: field:division.division,sale_refund_invoice_journal_id:0
+msgid "Sale Invoice refund Journal"
+msgstr "Diari de Factures d'abonament de Venda"
+
+#. module: company_multi_division
+#: field:division.division,sale_invoice_report_id:0
+msgid "Sale Invoice report Template"
+msgstr "Plantilla d'informe de Factures de venda"
+
+#. module: company_multi_division
+#: view:division.division:company_multi_division.view_division_form
+msgid "Sale Invoices"
+msgstr "Factures de Venda"
+
+#. module: company_multi_division
+#: field:division.division,sale_order_sequence_id:0
+msgid "Sale Order Sequence"
+msgstr "Seqüència de comandes de venda"
+
+#. module: company_multi_division
+#: field:division.division,sale_order_report_id:0
+msgid "Sale Order report Template"
+msgstr "Plantilla d'informe de Comandes de venda"
+
+#. module: company_multi_division
+#: view:division.division:company_multi_division.view_division_form
+msgid "Sale Orders"
+msgstr "Comandes de Venda"
+
+#. module: company_multi_division
+#: model:ir.model,name:company_multi_division.model_sale_order
+msgid "Sales Order"
+msgstr "Comanda de venda"
+
+#. module: company_multi_division
+#: view:division.division:company_multi_division.view_division_form
+msgid "Sequence"
+msgstr "Seqüència"
 
