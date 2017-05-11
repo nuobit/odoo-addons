@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <template id="external_layout_sargantana">
+        <template id="external_layout_sargantana_invoice">
             <!-- Multicompany -->
             <t t-if="o and 'company_id' in o">
                 <t t-set="company" t-value="o.company_id"></t>
@@ -11,19 +11,19 @@
             </t>
             <t t-set="logoimage" t-value="company.logo"/>
 
-            <t t-if="o.journal_id.invoice_report_id and o.journal_id.report_partner_id">
-                <t t-set="logoimage" t-value="o.journal_id.report_partner_id.image"/>
+            <t t-if="o.division_id and o.division_id.partner_id">
+                <t t-set="logoimage" t-value="o.division_id.partner_id.image"/>
             </t>
 
-            <t t-call="custom_so.external_layout_sargantana_header"/>
+            <t t-call="custom_so.external_layout_sargantana_invoice_header"/>
             <t t-raw="0"/>
-            <t t-call="custom_so.external_layout_sargantana_footer"/>
+            <t t-call="custom_so.external_layout_sargantana_invoice_footer"/>
         </template>
 
-        <template id="external_layout_sargantana_header">
+        <template id="external_layout_sargantana_invoice_header">
             <div class="header">
                 <div class="sarg-info vertical-text text-center">
-                    <t t-set="division" t-value="o.journal_id.report_partner_id"/>
+                    <t t-set="division" t-value="o.division_id.partner_id"/>
                     <span t-field="o.company_id.name"/>
                     <span t-field="o.company_id.vat"/>
                     <span t-field="o.company_id.street"/>
@@ -101,14 +101,14 @@
             </div>
         </template>
 
-        <template id="external_layout_sargantana_footer">
+        <template id="external_layout_sargantana_invoice_footer">
             <div class="footer">
             </div>
         </template>
 
 
         <template id="report_invoice_sargantana_document">
-            <t t-call="custom_so.external_layout_sargantana">
+            <t t-call="custom_so.external_layout_sargantana_invoice">
                 <div class="page">
                     <table class="table table-condensed">
                         <thead>
