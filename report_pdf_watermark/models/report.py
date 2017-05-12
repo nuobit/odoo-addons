@@ -24,10 +24,6 @@ class Report(models.Model):
             cr, uid, ids, report_name, html=html, data=data,
             context=context
         )
-
-        with open('/home/eantones/tmp/pepe.pdf', 'wb') as f:
-            f.write(result)
-
         report = self._get_report_from_name(cr, uid, report_name)
         watermark = None
         if report.pdf_watermark:
@@ -43,9 +39,6 @@ class Report(models.Model):
 
         if not watermark:
             return result
-
-        with open('/home/eantones/tmp/pepe2.png', 'wb') as f:
-            f.write(watermark)
 
         pdf = PdfFileWriter()
         pdf_watermark = None
