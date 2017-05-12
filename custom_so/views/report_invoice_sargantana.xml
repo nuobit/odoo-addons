@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="mt32">
-                    <table class="table table-condensed noborders">
+                    <table class="table table-condensed noborders adapt">
                         <tbody>
                             <tr>
                                 <td><strong>Date</strong></td>
@@ -201,8 +201,8 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-6">
-                            <table class="table table-condensed noborders">
+                        <div class="col-xs-8">
+                            <table class="table table-condensed noborders adapt">
                                 <tbody>
                                     <tr>
                                         <td><strong>Payment mode</strong></td>
@@ -295,9 +295,10 @@
                     border: 2px solid #FF6600 !important;
                 }
 
-
-
-
+               .adapt > tbody > tr > td:first-child {
+                   width: 0.1% !important;
+                   white-space: nowrap !important;
+               }
             </style>
 
             <t t-call="report.html_container">

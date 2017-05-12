@@ -69,12 +69,12 @@
                 </div>
 
                 <div class="mt32">
-                    <table class="table table-condensed noborders">
+                    <table class="table table-condensed noborders adapt">
                         <tbody>
                             <tr>
                                 <td><strong>Date</strong></td>
                                 <td>
-                                    <span t-field="o.date_order"/>
+                                    <span t-field="o.date_order" t-field-options='{"widget": "date"}'/>
                                 </td>
                                 <td class="text-right">
                                     <div>
@@ -363,6 +363,11 @@
                     background-image: linear-gradient(to right, #1b30a3 0%, #bfbfbf 100%);
                 }
                 */
+
+                .adapt > tbody > tr > td:first-child {
+                   width: 0.1% !important;
+                   white-space: nowrap !important;
+               }
 
             </style>
 
