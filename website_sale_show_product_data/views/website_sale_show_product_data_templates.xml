@@ -50,8 +50,7 @@
                   name="Product provider">
             <xpath expr="//div[@id='product_details']/hr[1]" position="after">
                 <span style="display:inline-block;" class="text-muted" t-if="len(product.product_variant_ids) == 1 and len(product.seller_ids) > 0">
-                    Seller: <strong t-field="product.sudo().first_seller.display_name"/>
-                    <span t-if="product.sudo().first_seller_image" itemprop="image" t-field="product.sudo().first_seller_image"
+                    Seller: <span t-if="product.sudo().first_seller_image" itemprop="image" t-field="product.sudo().first_seller_image"
                           t-options="{'widget': 'image', 'resize': None if product_image_big else '32x32','zoom': 'image'}"
                           style="display:inline-block;vertical-align: middle;" />
                 </span>
