@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="stock_panel_ur" inherit_id="website_stock.stock_panel" active="True"
+              customize_show="True" name="Hide Stock Information if MTO">
+        <xpath expr="//div[@class='stock-panel pull-right']" position="replace">
+            <div class="stock-panel pull-right">
+                <span t-if="product.wk_make_to_order">
+                    <div class="in-stock-status">
+                        <field name="product."
+                        </div>
+
+
+                <span t-if="product_tmp_qty > 0">
+                    <t t-set="message_value"
+                       t-value="website.get_in_of_stock_message_template(product, product_tmp_qty,  config_setting)"/>
+                    <t t-if="message_value[0]==True">
+                        <div class="custome-stock-status" t-esc="message_value[1]"/>
+                    </t>
+                    <t t-if="message_value[0]==False">
+                        <div class="in-stock-status" t-esc="message_value[1]"/>
+                    </t>
+                </span>
+                <span t-if="product.product_variant_ids and not product_tmp_qty &gt; 0">
+                    <div class="out-of-stock-status"
+                         t-esc="website.get_out_of_stock_message(product.product_variant_ids[0], config_setting)"/>
+                </span>
+            </div>
+        </xpath>
+    </template>
+</odoo>
+
+

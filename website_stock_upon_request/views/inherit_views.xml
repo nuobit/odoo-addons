@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="Wk_website_stock_product_ur" model="ir.ui.view">
+        <field name="name">product_product_form_ur</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="website_stock.Wk_website_stock_product"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page/group[.//field[@name='wk_override_order_allow']]" position="before">
+                <group>
+                    <field name="wk_make_to_order"/>
+                </group>
+            </xpath>
+            <xpath expr="//page/group[.//field[@name='wk_override_order_allow']]" position="attributes">
+                <attribute name="attrs">{'invisible':[('wk_make_to_order','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page/group[.//field[@name='wk_in_stock_msg']]" position="attributes">
+                <attribute name="attrs">{'invisible':['|',('wk_override_default','=',False),('wk_make_to_order','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page/group[.//field[@name='wk_out_of_stock_msg']]" position="attributes">
+                <attribute name="attrs">{'invisible':['|',('wk_override_default','=',False),('wk_make_to_order','=',True)]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[.//field[@name='wk_override_order_allow']]" position="inside">
+                <group attrs="{'invisible':['|',('wk_override_default','=',False),('wk_make_to_order','=',False)]}">
+                    <field name="wk_ur_msg"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_wk_website_config_settings_ur" model="ir.ui.view">
+        <field name="name">Website Stock Settings UR</field>
+        <field name="model">website.stock.config.settings</field>
+        <field name="inherit_id" ref="website_stock.view_wk_website_config_settings"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Upon Request" name="upon_request">
+                    <field name="wk_ur_msg"/>
+                    <field name="wk_ur_color"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+
+

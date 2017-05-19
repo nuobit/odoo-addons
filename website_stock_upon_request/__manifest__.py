@@ -20,8 +20,8 @@
 #/#############################################################################
 
 {
-    'name': "Website Stock Make to Order (MTO)",
-    'description': "States when a products is MTO",
+    'name': "Website Stock Upon Request",
+    'description': "Allow selling products upon request",
     'version': '10.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
@@ -29,8 +29,8 @@
     'website': 'https://www.nuobit.com',
     'depends': ['website_stock'],
     'data': [
-        'views/website_stock_mto_templates.xml',
-        'views/website_stock_mto_inherit.xml',
+        'views/templates.xml',
+        'views/inherit_views.xml',
         ],
     'installable': True,
 }

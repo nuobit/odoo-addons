@@ -28,18 +28,56 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class ProductProduct(models.Model):
+class WebsiteStockConfigSettingsUR(models.Model):
+    _inherit = 'website.stock.config.settings'
+
+    wk_ur_msg = fields.Char('Message', translate=True, default='Upon Request')
+    wk_ur_color = fields.Char('Color', size=7, default="#008A00")
+
+
+
+class ProductProductUR(models.Model):
     _inherit = 'product.product'
 
-    wk_make_to_order = fields.Boolean('Make to order')
+    wk_upon_request = fields.Boolean('Upon Request')
+    wk_ur_msg = fields.Char('Message when Product is Upon Request', translate=True, default="Upon Request")
 
 
-class Website(models.Model):
+
+class WebsiteUR(models.Model):
     _inherit = 'website'
 
     @api.model
+    def get_ur_message_template(self, product_obj=False, config_vals={}):
+
+        """
+        if product_obj and product_obj.type == 'service':
+            values = [False, config_vals.get('wk_in_stock_msg')]
+            return values
+        if product_obj:
+            values = [False, config_vals.get('wk_in_stock_msg')]
+            extra_msg_value = config_vals.get('wk_extra_msg')
+            min_qunt = config_vals.get('wk_minimum_qty')
+            if extra_msg_value == True and min_qunt > float(product_qty):
+                values[0] = True
+                values[1] = config_vals.get('wk_custom_message')
+                return values
+            else:
+                product_var_object = product_obj.product_variant_ids[0]
+                if product_var_object.wk_override_default:
+                    values[0] = False
+                    values[1] = product_var_object.wk_in_stock_msg
+                    return values
+        return values
+    """
+
+
+
+    """
+
+    @api.model
     def get_in_of_stock_message_template(self, product_obj=False, product_qty=0.0, config_vals={}):
-        values = super(Website, self).get_in_of_stock_message_template(product_obj=product_obj,
+        values = super(WebsiteUR, self).get_in_of_stock_message_template(product_obj=product_obj,
                                                                         product_qty=product_qty, config_vals=config_vals)
         if product_obj and product_obj.type != 'service':
             product_var_object = product_obj.product_variant_ids[0]
@@ -50,10 +88,11 @@ class Website(models.Model):
 
     @api.model
     def get_in_of_stock_message(self, product_obj=False, product_qty=0.00, config_vals={}):
-        values = super(Website, self).get_in_of_stock_message(product_obj=product_obj,
+        values = super(WebsiteUR, self).get_in_of_stock_message(product_obj=product_obj,
                                                                        product_qty=product_qty, config_vals=config_vals)
         if product_obj and product_obj.type != 'service':
             if product_obj.wk_make_to_order:
                 values = [False, config_vals.get('wk_in_stock_msg')]
 
         return values
+    """
