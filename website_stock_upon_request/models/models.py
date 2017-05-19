@@ -32,8 +32,6 @@ class WebsiteStockConfigSettingsUR(models.Model):
     _inherit = 'website.stock.config.settings'
 
     wk_ur_msg = fields.Char('Message', translate=True, default='Upon Request')
-    wk_ur_color = fields.Char('Color', size=7, default="#008A00")
-
 
 
 class ProductProductUR(models.Model):
@@ -48,28 +46,30 @@ class WebsiteUR(models.Model):
     _inherit = 'website'
 
     @api.model
-    def get_ur_message_template(self, product_obj=False, config_vals={}):
+    def get_config_settings_values(self):
+        res = super(WebsiteUR, self).get_config_settings_values()
 
-        """
-        if product_obj and product_obj.type == 'service':
-            values = [False, config_vals.get('wk_in_stock_msg')]
-            return values
-        if product_obj:
-            values = [False, config_vals.get('wk_in_stock_msg')]
-            extra_msg_value = config_vals.get('wk_extra_msg')
-            min_qunt = config_vals.get('wk_minimum_qty')
-            if extra_msg_value == True and min_qunt > float(product_qty):
-                values[0] = True
-                values[1] = config_vals.get('wk_custom_message')
-                return values
-            else:
-                product_var_object = product_obj.product_variant_ids[0]
-                if product_var_object.wk_override_default:
-                    values[0] = False
-                    values[1] = product_var_object.wk_in_stock_msg
-                    return values
-        return values
-    """
+        stock_config_values = self.env['website.stock.config.settings'].sudo().search([('is_active', '=', True)],
+                                                                                      limit=1)
+        if stock_config_values:
+            res['wk_ur_msg'] = stock_config_values.wk_ur_msg
+
+        return res
+
+
+
+    @api.model
+    def get_upon_request_message_template(self, template_obj, config_setting):
+        if template_obj and template_obj.product_variant_ids:
+            product_obj = template_obj.product_variant_ids[0]
+            if product_obj.wk_upon_request:
+                if product_obj.wk_override_default:
+                    return product_obj.wk_ur_msg
+                else:
+                    return config_setting.get('wk_ur_msg')
+
+        return False
+
 
 
 
@@ -81,7 +81,7 @@ class WebsiteUR(models.Model):
                                                                         product_qty=product_qty, config_vals=config_vals)
         if product_obj and product_obj.type != 'service':
             product_var_object = product_obj.product_variant_ids[0]
-            if product_var_object.wk_make_to_order:
+            if product_var_object.wk_upon_request:
                 values = [False, config_vals.get('wk_in_stock_msg')]
 
         return values
@@ -91,7 +91,7 @@ class WebsiteUR(models.Model):
         values = super(WebsiteUR, self).get_in_of_stock_message(product_obj=product_obj,
                                                                        product_qty=product_qty, config_vals=config_vals)
         if product_obj and product_obj.type != 'service':
-            if product_obj.wk_make_to_order:
+            if product_obj.wk_upon_request:
                 values = [False, config_vals.get('wk_in_stock_msg')]
 
         return values

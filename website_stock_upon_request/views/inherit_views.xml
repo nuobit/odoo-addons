@@ -7,21 +7,21 @@
         <field name="arch" type="xml">
             <xpath expr="//page/group[.//field[@name='wk_override_order_allow']]" position="before">
                 <group>
-                    <field name="wk_make_to_order"/>
+                    <field name="wk_upon_request"/>
                 </group>
             </xpath>
             <xpath expr="//page/group[.//field[@name='wk_override_order_allow']]" position="attributes">
-                <attribute name="attrs">{'invisible':[('wk_make_to_order','=',True)]}</attribute>
+                <attribute name="attrs">{'invisible':[('wk_upon_request','=',True)]}</attribute>
             </xpath>
             <xpath expr="//page/group[.//field[@name='wk_in_stock_msg']]" position="attributes">
-                <attribute name="attrs">{'invisible':['|',('wk_override_default','=',False),('wk_make_to_order','=',True)]}</attribute>
+                <attribute name="attrs">{'invisible':['|',('wk_override_default','=',False),('wk_upon_request','=',True)]}</attribute>
             </xpath>
             <xpath expr="//page/group[.//field[@name='wk_out_of_stock_msg']]" position="attributes">
-                <attribute name="attrs">{'invisible':['|',('wk_override_default','=',False),('wk_make_to_order','=',True)]}</attribute>
+                <attribute name="attrs">{'invisible':['|',('wk_override_default','=',False),('wk_upon_request','=',True)]}</attribute>
             </xpath>
 
             <xpath expr="//page[.//field[@name='wk_override_order_allow']]" position="inside">
-                <group attrs="{'invisible':['|',('wk_override_default','=',False),('wk_make_to_order','=',False)]}">
+                <group attrs="{'invisible':['|',('wk_override_default','=',False),('wk_upon_request','=',False)]}">
                     <field name="wk_ur_msg"/>
                 </group>
             </xpath>
@@ -36,7 +36,6 @@
             <xpath expr="//sheet" position="inside">
                 <group string="Upon Request" name="upon_request">
                     <field name="wk_ur_msg"/>
-                    <field name="wk_ur_color"/>
                 </group>
             </xpath>
         </field>
