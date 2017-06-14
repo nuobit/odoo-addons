@@ -33,6 +33,13 @@ class WebsiteStockConfigSettingsUR(models.Model):
 
     wk_ur_msg = fields.Char('Message', translate=True, default='Upon Request')
 
+    wk_order_allow = fields.Selection(selection=[('allow', 'Allow'), ('deny', 'Deny'), ('deny0', 'Deny if no stock')],
+                                      string="Allow Order", default='allow', required=True)
+
+    @api.multi
+    def set_product_default_value(self):
+        pass
+
 
 class ProductProductUR(models.Model):
     _inherit = 'product.product'
@@ -40,7 +47,14 @@ class ProductProductUR(models.Model):
     wk_upon_request = fields.Boolean('Upon Request')
     wk_ur_msg = fields.Char('Message when Product is Upon Request', translate=True, default="Upon Request")
 
-
+    @api.multi
+    def get_default_order_type(self):
+        for current_rec in self:
+            if not current_rec.wk_override_order_allow:
+                active_ids = current_rec.env['website.stock.config.settings'].search([('is_active','=',True)],limit=1)
+                current_rec.wk_order_allow = active_ids.wk_order_allow
+            else:
+                current_rec.wk_order_allow = current_rec.wk_override_order_allow
 
 class WebsiteUR(models.Model):
     _inherit = 'website'
@@ -53,6 +67,7 @@ class WebsiteUR(models.Model):
                                                                                       limit=1)
         if stock_config_values:
             res['wk_ur_msg'] = stock_config_values.wk_ur_msg
+            res['wk_order_allow'] = stock_config_values.wk_order_allow
 
         return res
 
@@ -67,6 +82,16 @@ class WebsiteUR(models.Model):
                     return product_obj.wk_ur_msg
                 else:
                     return config_setting.get('wk_ur_msg')
+
+        return False
+
+    @api.model
+    def get_upon_request_message(self, product_obj, config_setting):
+        if product_obj.wk_upon_request:
+            if product_obj.wk_override_default:
+                return product_obj.wk_ur_msg
+            else:
+                return config_setting.get('wk_ur_msg')
 
         return False
 

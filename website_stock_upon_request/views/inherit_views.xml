@@ -38,6 +38,11 @@
                     <field name="wk_ur_msg"/>
                 </group>
             </xpath>
+            <xpath expr="//group[@name='deny']" position="replace">
+                <group string="Allow order" name="allow_order">
+                    <field name="wk_order_allow"/>
+                </group>
+            </xpath>
         </field>
     </record>
 
