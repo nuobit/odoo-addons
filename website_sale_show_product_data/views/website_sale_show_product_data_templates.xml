@@ -65,7 +65,7 @@
         </template>
 
         <template id="website_sale_show_alternateprices_product" inherit_id="website_sale.product"
-                  active="True" customize_show="True"
+                  active="False" customize_show="True"
                   name="Product alternate prices">
 
             <xpath expr="//t[@t-call='website_sale.product_price']" position="before">
