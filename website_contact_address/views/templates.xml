@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="company_description" inherit_id="website.company_description" active="True"
+              customize_show="True"
+              name="Show Custom Address">
+        <xpath expr="//t[@t-name='website.company_description']" position="replace">
+            <t name="Company Description" t-name="website.company_description">
+                <t t-if="not res_company.website_contact">
+                    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+                        <!-- TODO widget contact must add itemprop attributes -->
+                        <div t-field="res_company.partner_id" t-field-options="{                 &quot;widget&quot;: &quot;contact&quot;,                 &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;fax&quot;, &quot;email&quot;]}"/>
+                    </address>
+                    <a t-att-href="res_company.google_map_link()" target="_BLANK">
+                        <img class="thumbnail img-responsive" t-att-src="res_company.google_map_img()"/>
+                    </a>
+                </t>
+
+                <t t-if="res_company.website_contact">
+                    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+                    <!-- TODO widget contact must add itemprop attributes -->
+                        <div t-field="res_company.website_contact" t-field-options="{                 &quot;widget&quot;: &quot;contact&quot;,                 &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;fax&quot;, &quot;email&quot;]}"/>
+                    </address>
+                    <a t-att-href="res_company.website_contact.google_map_link()" target="_BLANK">
+                        <img class="thumbnail img-responsive" t-att-src="res_company.website_contact.google_map_img()"/>
+                    </a>
+                </t>
+            </t>
+        </xpath>
+    </template>
+    </data>
+</openerp>
