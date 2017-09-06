@@ -69,20 +69,31 @@
                   name="Product alternate prices">
 
             <xpath expr="//t[@t-call='website_sale.product_price']" position="before">
-                <h4 class="oe_price_h4">
-                    <b>
-                        <span t-esc="product.website_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                        <span itemprop="price" style="display:none;" t-esc="product.website_price"/>
-                        <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+                <div id="alternate_price" class="product_price">
+                    <h4 class="oe_price_h4">
+                        <b>
+                            <span t-esc="product.website_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                            <span itemprop="price" style="display:none;" t-esc="product.website_price"/>
+                            <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
 
-                        <t t-set="website_pricelist_item"
-                                t-value="website.env['product.pricelist.item'].search([('product_tmpl_id', '=', product.id)]).filtered(lambda x: x.pricelist_id.show_on_website)"/>
-                        <span t-if="website_pricelist_item"> /
-                            <span t-esc="website_pricelist_item.fixed_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                            <small>(<span t-esc="website_pricelist_item.min_quantity"/> units)</small>
-                        </span>
-                    </b>
-                </h4>
+                            <t t-set="website_pricelist_item"
+                                    t-value="website.env['product.pricelist.item'].search([('product_tmpl_id', '=', product.id)]).filtered(lambda x: x.pricelist_id.show_on_website)"/>
+                            <span t-if="website_pricelist_item"> /
+                                <span t-esc="website_pricelist_item.fixed_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                <small>(<span t-esc="website_pricelist_item.min_quantity"/> units)</small>
+                            </span>
+                        </b>
+                    </h4>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="website_sale_private_alternateprices_product" inherit_id="website_sale_show_product_data.website_sale_show_alternateprices_product"
+                  active="False" customize_show="True"
+                  name="Restrict alternate prices">
+
+            <xpath expr="//div[@id='alternate_price']" position="attributes">
+                <attribute name="t-if">request.uid !=  %(base.public_user)d</attribute>
             </xpath>
         </template>
 
