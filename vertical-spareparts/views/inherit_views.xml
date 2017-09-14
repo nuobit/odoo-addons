@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
-        <!--  Partner inherited form -->
-        <record id="view_custom_lt_partner_info_form" model="ir.ui.view">
-            <field name="name">res.partner.custom.lt.inherit</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='ref']" position="after">
-                    <field name="ref_as_supplier"/>
-                </xpath>
-            </field>
-        </record>
-    </data>
-</openerp>
+<odoo>
+    <record model="ir.actions.act_window" id="action_product_camshaft">
+        <field name="name">Camshaft</field>
+        <field name="res_model">sp.product.camshaft</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_product_camshaft" parent="sales_team.menu_sales" name="Camshaft" sequence="10"
+          action="action_product_camshaft"/>
+
+
+    <!-- Camshaft Tree view -->
+    <record model="ir.ui.view" id="view_product_camshaft_tree">
+        <field name="name">Camshaft</field>
+        <field name="model">sp.product.camshaft</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="length"/>
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Camshaft Form view -->
+    <record model="ir.ui.view" id="view_product_camshaft_form">
+        <field name="name">Camshaft</field>
+        <field name="model">sp.product.camshaft</field>
+        <field name="arch" type="xml">
+            <form string="Camshaft">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="length"/>
+                        <field name="typ"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
 
 

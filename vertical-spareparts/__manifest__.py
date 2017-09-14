@@ -29,7 +29,7 @@
     'website': 'https://www.nuobit.com',
     'depends': ['website_sale'],
     'data': [
-        #'views/inherit_views.xml'
+        'views/inherit_views.xml'
         ],
     'installable': True,
 }
