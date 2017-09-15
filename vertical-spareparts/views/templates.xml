@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_properties" inherit_id="website_sale.product" active="True"
+              customize_show="True" name="Product properties">
+        <xpath expr="//span[@t-field='product.image']/.." position="inside">
+            <div>
+                <span t-field="product.child_id"/>
+            </div>
+            <div>
+                <t t-if="product.child_id._name == 'sp.product.camshaft'">
+                     <t t-call="vertical-spareparts.product_camshaft"/>
+                </t>
+               <t t-if="product.child_id._name == 'sp.product.camshaft.bearing.set'">
+                     <t t-call="vertical-spareparts.product_camshaft_bearing_set"/>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
+
+

@@ -29,7 +29,12 @@
     'website': 'https://www.nuobit.com',
     'depends': ['website_sale'],
     'data': [
-        'views/inherit_views.xml'
+        'views/inherit_views.xml',
+        'views/templates.xml',
+        'views/camshaft_views.xml',
+        'views/camshaft_templates.xml',
+        'views/camshaft_bearing_set_views.xml',
+        'views/camshaft_bearing_set_templates.xml',
         ],
     'installable': True,
 }

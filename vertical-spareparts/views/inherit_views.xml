@@ -1,45 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record model="ir.actions.act_window" id="action_product_camshaft">
-        <field name="name">Camshaft</field>
-        <field name="res_model">sp.product.camshaft</field>
-        <field name="view_mode">tree,form</field>
-    </record>
 
-    <menuitem id="menu_product_camshaft" parent="sales_team.menu_sales" name="Camshaft" sequence="10"
-          action="action_product_camshaft"/>
-
-
-    <!-- Camshaft Tree view -->
-    <record model="ir.ui.view" id="view_product_camshaft_tree">
-        <field name="name">Camshaft</field>
-        <field name="model">sp.product.camshaft</field>
+    <!-- Product Tree view -->
+    <!--record id="product_product_tree_view" model="ir.ui.view">
+        <field name="name">product.product.form.inherit</field>
+        <field name="model">product.producr</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
         <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
-                <field name="length"/>
-                <field name="type"/>
-            </tree>
-        </field>
-    </record>
+             <field name="image_medium" position="after">
+                  <field name="child_ref"/>
+             </field>
+         </field>
+    </record-->
 
-    <!-- Camshaft Form view -->
-    <record model="ir.ui.view" id="view_product_camshaft_form">
-        <field name="name">Camshaft</field>
-        <field name="model">sp.product.camshaft</field>
+    <!-- Product Template and Product Form view -->
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.common.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
-            <form string="Camshaft">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                    <group>
-                        <field name="length"/>
-                        <field name="typ"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
+             <field name="categ_id" position="after">
+                  <field name="child_id"/>
+             </field>
+         </field>
     </record>
 
 </odoo>

@@ -2,8 +2,10 @@ from odoo import api, fields, models, _
 
 from lxml import etree
 
-class SpProductProduct(models.Model):
-    _inherit = 'product.product'
+CHILDS = [('sp.product.camshaft', 'Camshaft'), ('sp.product.camshaft.bearing.set', 'Camshaft bearing set')]
+
+class SpProductTemplate(models.Model):
+    _inherit = 'product.template'
 
     sustitute = fields.Char(string='Sustitute')
     note = fields.Char(string='Note')
@@ -12,6 +14,7 @@ class SpProductProduct(models.Model):
     is_comercial_equivalent = fields.Boolean(string='Comercial equivalent')
     is_premium = fields.Boolean(string='Premium')
 
+    child_id = fields.Reference(selection=CHILDS, string='Refers to', readonly=True)
 
     '''
     @api.model
@@ -32,24 +35,38 @@ class SpProductProduct(models.Model):
         return res
     '''
 
+class SpProduct(models.AbstractModel):
+    _name = 'sp.product'
+
+    product_id = fields.Many2one('product.product', required=True, ondelete='cascade', auto_join=True,
+                                 string='Related Product', help='Product-related data')
+
+    @api.model
+    def create(self, values):
+        res = super(SpProduct, self).create(values)
+        res.child_id = res
+
+        return res
+
+    @api.multi
+    def unlink(self):
+        parent_ids = self.mapped('product_id')
+        res = parent_ids.unlink()
+
+        return res
 
 
-class SpProductCamshaft(models.Model):
+
+class SpProductCamshaft(SpProduct, models.Model):
     _name = 'sp.product.camshaft'
     _inherits = {'product.product': 'product_id'}
-
-    product_id = fields.Many2one('product.product', required=True, ondelete='restrict', auto_join=True,
-        string='Related Product', help='Product-related data of the Camshaft')
 
     length = fields.Float(string='Length')
     typ = fields.Char(string='Type')
 
-class SpProductCamshaftBearingSet(models.Model):
+class SpProductCamshaftBearingSet(SpProduct, models.Model):
     _name = 'sp.product.camshaft.bearing.set'
     _inherits = {'product.product': 'product_id'}
-
-    product_id = fields.Many2one('product.product', required=True, ondelete='restrict', auto_join=True,
-        string='Related Product', help='Product-related data of the Camshaft bearing set')
 
     shaft_diameter_max = fields.Float(string='Shaft diameter max.')
     housing_diameter_min = fields.Float(string='Housing diameter min.')

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.actions.act_window" id="action_product_camshaft">
+        <field name="name">Camshaft</field>
+        <field name="res_model">sp.product.camshaft</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_product_camshaft" parent="sales_team.menu_sales" name="Camshaft" sequence="10"
+          action="action_product_camshaft"/>
+
+    <!-- Tree view -->
+    <record model="ir.ui.view" id="view_product_camshaft_tree">
+        <field name="name">Camshaft</field>
+        <field name="model">sp.product.camshaft</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="length"/>
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record model="ir.ui.view" id="view_product_camshaft_form">
+        <field name="name">Camshaft</field>
+        <field name="model">sp.product.camshaft</field>
+        <field name="arch" type="xml">
+            <form string="Camshaft">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="length"/>
+                        <field name="typ"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+
+
