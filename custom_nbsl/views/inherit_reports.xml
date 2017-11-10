@@ -36,15 +36,15 @@
                     </ul>
                 </div>
 
-                <t t-foreach="company.bank_ids" t-as="b">
-                    <t t-if="b.footer">
+                <t t-foreach="company.bank_journal_ids" t-as="b">
+                    <t t-if="b.display_on_footer">
                         <div class="text-center small">
                             <t t-if="b_first"></t>
-                            <span t-esc="b.bank_name"/>
+                            <span t-esc="b.bank_id.name"/>
                             -
-                            <span t-esc="b.acc_number"/>
+                            <span t-esc="b.bank_acc_number"/>
                             -
-                            <span t-esc="b.bank_bic"/>
+                            <span t-esc="b.bank_id.bic"/>
                         </div>
                     </t>
                 </t>
