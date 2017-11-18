@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- wizard -->
+    <record id="view_timesheet_invoice_create" model="ir.ui.view">
+        <field name="name">timesheet.invoice.create.form</field>
+        <field name="model">timesheet.invoice.create</field>
+        <field name="arch" type="xml">
+            <form string="Create Invoice">
+                <notebook>
+                    <page string="Billing Data">
+                        <group cols="2">
+                            <group string="Do you want to show details of work in invoice?" colspan="1" cols="2">
+                                <field name="date"/>
+                                <field name="time"/>
+                                <field name="name"/>
+                                <field name="price"/>
+                            </group>
+                            <group string="Force to use a specific product" colspan="1" cols="2">
+                                <p class="oe_grey" colspan="2">When reinvoicing costs, the amount on the invoice lines
+                                    is given by the sale price of the corresponding product (if any, and if its sale
+                                    price is not 0). You can use the following field to enforce the use of a single
+                                    product for all the chosen lines in the future invoices.
+                                </p>
+                                <field name="product"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="do_create" string="Create Invoices" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_timesheet_invoice_create" model="ir.actions.act_window">
+        <field name="name">Create Invoice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">timesheet.invoice.create</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.values" id="timesheet_invoice_create_values">
+        <field name="model_id" ref="model_account_analytic_line"/>
+        <field name="name">Create Invoice</field>
+        <field name="key2">client_action_multi</field>
+        <field name="value" eval="'ir.actions.act_window,' + str(ref('action_timesheet_invoice_create'))"/>
+        <field name="key">action</field>
+        <field name="model">account.analytic.line</field>
+    </record>
+
+
+    <!-- account analytic lines -->
+    <record id="view_account_analytic_line_search_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.line.search.to_invoice</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="before">
+                <separator/>
+                <filter name="to_invoice" string="To Invoice" context="{'to_invoice': 1}"
+                        domain="[('invoice_id','=',False), ('to_invoice','&lt;&gt;',False)]" icon="terp-dolar"/>
+                <filter name="invoiced" string="Invoiced"
+                        domain="[('invoice_id','!=',False), ('to_invoice','&lt;&gt;',False)]" icon="terp-dolar"/>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_line_tree_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree.to_invoice</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="account_id" position="after">
+                <field name="to_invoice"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_line_form_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.line.form.to_invoice</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+        <field name="arch" type="xml">
+            <field name="amount" position="before">
+                <field name="to_invoice"/>
+                <field name="invoice_id"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- factor -->
+    <record id="view_timesheet_invoice_factor_search" model="ir.ui.view">
+        <field name="name">timesheet.invoice.factor.search</field>
+        <field name="model">timesheet.invoice.factor</field>
+        <field name="arch" type="xml">
+            <search string="Type of invoicing">
+                <field name="name" string="Type of invoicing"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="view_timesheet_invoice_factor_form" model="ir.ui.view">
+        <field name="name">timesheet.invoice.factor.form</field>
+        <field name="model">timesheet.invoice.factor</field>
+        <field name="arch" type="xml">
+            <form string="Type of invoicing">
+                <group col="4">
+                    <field name="name"/>
+                    <field name="customer_name"/>
+                    <field name="factor"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_timesheet_invoice_factor_tree" model="ir.ui.view">
+        <field name="name">timesheet.invoice.factor.tree</field>
+        <field name="model">timesheet.invoice.factor</field>
+        <field name="arch" type="xml">
+            <tree string="Types of invoicing">
+                <field name="name"/>
+                <field name="customer_name"/>
+                <field name="factor"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_timesheet_invoice_factor_form" model="ir.actions.act_window">
+        <field name="name">Types of Invoicing</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">timesheet.invoice.factor</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="view_timesheet_invoice_factor_tree"/>
+        <field name="search_view_id" ref="view_timesheet_invoice_factor_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add a new type of invoicing.
+            </p>
+            <p>
+                Odoo allows you to create default invoicing types. You might
+                have to regularly assign discounts because of a specific
+                contract or agreement with a customer. From this menu, you can
+                create additional types of invoicing to speed up your
+                invoicing.
+            </p>
+        </field>
+    </record>
+
+    <menuitem action="action_timesheet_invoice_factor_form"
+              id="timesheet_invoice_factor_view"
+              parent="account.account_management_menu" sequence="25"/>
+    <!--groups="base.group_no_one"/-->
+
+
+</odoo>
