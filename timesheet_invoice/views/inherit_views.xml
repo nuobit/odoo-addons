@@ -133,6 +133,53 @@
         </field>
     </record-->
 
+    <!-- contract tree -->
+
+    <record id="view_account_analytic_account_journal_tree" model="ir.ui.view">
+        <field name="name">Contract list simplified</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="contract.view_account_analytic_account_journal_tree"/>
+        <field name="arch" type="xml">
+            <field name="display_name" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+             <field name="code" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="debit" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+             <field name="credit" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+             <field name="balance" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="journal_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="recurring_next_date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="ca_to_invoice"/>
+            </field>
+            <field name="display_name" position="after">
+                <field name="name"/>
+            </field>
+
+
+            <!--xpath expr="//field[@name='timesheet_ids']/tree" position="inside">
+                <field name="to_invoice"/>
+            </xpath>
+            <xpath expr="//field[@name='timesheet_ids']" position="attributes">
+                <attribute name="context">{'default_project_id': project_id, 'default_to_invoice': 1, 'task_id': active_id}</attribute>
+            </xpath-->
+        </field>
+    </record>
+
+
 
     <!-- factor -->
     <record id="view_timesheet_invoice_factor_search" model="ir.ui.view">

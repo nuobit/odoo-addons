@@ -90,32 +90,33 @@ class AccountAnalyticAccount(models.Model):
         return res
         '''
 
-    def _ca_to_invoice_calc(self):
-        self.ca_to_invoice = 0.0
+    def _ca_to_invoice_calc(selfs):
+        for self in selfs:
+            self.ca_to_invoice = 0.0
 
-        invoice_grouping = {}
-        lines = self.line_ids.filtered(lambda x: x.project_id and not x.invoice_id and x.to_invoice)
-        for line in lines:
-            key = (line.product_id.id,
-                   line.user_id.id,
-                   line.to_invoice.id,
-                   line.product_uom_id.id,
-                   line.name)
+            invoice_grouping = {}
+            lines = self.line_ids.filtered(lambda x: x.project_id and not x.invoice_id and x.to_invoice)
+            for line in lines:
+                key = (line.product_id.id,
+                       line.user_id.id,
+                       line.to_invoice.id,
+                       line.product_uom_id.id,
+                       line.name)
 
-            if key not in invoice_grouping:
-                invoice_grouping[key] = dict(amount=0.0, qty=0.0)
-            invoice_grouping[key]['amount'] += line.amount
-            invoice_grouping[key]['qty'] += line.unit_amount
+                if key not in invoice_grouping:
+                    invoice_grouping[key] = dict(amount=0.0, qty=0.0)
+                invoice_grouping[key]['amount'] += line.amount
+                invoice_grouping[key]['qty'] += line.unit_amount
 
-        for (product_id, user_id, factor_id, uom, line_name), amounts in invoice_grouping.items():
-            price, qty = amounts['amount'], amounts['qty']
+            for (product_id, user_id, factor_id, uom, line_name), amounts in invoice_grouping.items():
+                price, qty = amounts['amount'], amounts['qty']
 
-            price = -price
-            if product_id:
-                price = self.env['account.analytic.line']._get_invoice_price(self, product_id, user_id, qty)
-            factor = self.env['timesheet.invoice.factor'].browse(factor_id)
+                price = -price
+                if product_id:
+                    price = self.env['account.analytic.line']._get_invoice_price(self, product_id, user_id, qty)
+                factor = self.env['timesheet.invoice.factor'].browse(factor_id)
 
-            self.ca_to_invoice += price * qty * (100 - factor.factor or 0.0) / 100.0
+                self.ca_to_invoice += price * qty * (100 - factor.factor or 0.0) / 100.0
 
 
     #############
