@@ -29,6 +29,7 @@
     'website': 'https://www.nuobit.com',
     'depends': ['sale', 'hr_timesheet', 'analytic', 'contract'],
     'data': [
+        'security/ir.model.access.csv',
         'views/inherit_views.xml',
         'data/timesheet_invoice_data.xml'
         ],
