@@ -197,6 +197,7 @@ class AccountAnalyticLine(models.Model):
         if partner.property_payment_term_id:
             pterm_list = partner.property_payment_term_id.compute(1, date_ref=time.strftime('%Y-%m-%d'))
             if pterm_list:
+                pterm_list = pterm_list[0]
                 pterm_list = [line[0] for line in pterm_list]
                 pterm_list.sort()
                 date_due = pterm_list[-1]
