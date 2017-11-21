@@ -30,7 +30,7 @@
     'depends': ['sale', 'hr_timesheet', 'analytic', 'contract'],
     'data': [
         'views/inherit_views.xml',
-        #'views/data.xml'
+        'data/timesheet_invoice_data.xml'
         ],
     'installable': True,
 }

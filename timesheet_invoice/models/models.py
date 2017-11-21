@@ -4,6 +4,8 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
+import odoo.addons.decimal_precision as dp
+
 class TimesheetInvoiceFactor(models.Model):
     _name = 'timesheet.invoice.factor'
     _description = 'Invoice Rate'
@@ -14,13 +16,169 @@ class TimesheetInvoiceFactor(models.Model):
     factor = fields.Float('Discount (%)', required=True, help="Discount in percentage", default=lambda *a: 0.0)
 
 
+class HrEmployee(models.Model):
+    _inherit = "hr.employee"
+
+    product_id = fields.Many2one('product.product', 'Product',
+                                      help="If you want to reinvoice working time of employees, link this employee to a service to determinate the cost price of the job.")
+
+
+
+
+class AccountAnalyticAccount(models.Model):
+    _inherit = 'account.analytic.account'
+
+    invoice_on_timesheets = fields.Boolean("On Timesheets")
+    hours_qtt_est = fields.Float('Estimation of Hours to Invoice')
+    timesheet_ca_invoiced = fields.Float(compute='_timesheet_ca_invoiced_calc', string='Remaining Time',
+                                             help="Sum of timesheet lines invoiced for this contract.")
+    remaining_hours_to_invoice = fields.Float(compute='_remaining_hours_to_invoice_calc',
+                                                  string='Remaining Time',
+                                                  help="Computed using the formula: Expected on timesheets - Total invoiced on timesheets")
+    ca_to_invoice = fields.Float(compute='_ca_to_invoice_calc', string='Uninvoiced Amount',
+                                     help="If invoice from analytic account, the remaining amount you can invoice to the customer based on the total costs.",
+                                     digits=dp.get_precision('Account'))
+
+
+    ##################
+
+    to_invoice = fields.Many2one('timesheet.invoice.factor', 'Timesheet Invoicing Ratio',
+                                  help="You usually invoice 100% of the timesheets. But if you mix fixed price and timesheet invoicing, you may use another ratio. For instance, if you do a 20% advance invoice (fixed price, based on a sales order), you should invoice the rest on timesheet with a 80% ratio.")
+
+
+    ###########
+    @api.onchange('invoice_on_timesheets')
+    def timesheet_invoice_check_invoice_on_timesheets(self):
+        if not self.invoice_on_timesheets:
+            return {'value': {'to_invoice': False}}
+
+        try:
+            #to_invoice = self.env['ir.model.data'].get_object_reference('timesheet_invoice', 'timesheet_invoice_factor1')
+            to_invoice = self.env.ref('timesheet_invoice.timesheet_invoice_factor1')
+            return {'value': {'to_invoice': to_invoice}}
+        except ValueError:
+            pass
+
+
+
+    def _timesheet_ca_invoiced_calc(self):
+        pass
+        '''
+        lines_obj = self.pool.get('account.analytic.line')
+        res = {}
+        inv_ids = []
+        for account in self.browse(cr, uid, ids, context=context):
+            res[account.id] = 0.0
+            line_ids = lines_obj.search(cr, uid, [('account_id','=', account.id), ('invoice_id','!=',False), ('invoice_id.state', 'not in', ['draft', 'cancel']), ('to_invoice','!=', False), ('journal_id.type', '=', 'general'), ('invoice_id.type', 'in', ['out_invoice', 'out_refund'])], context=context)
+            for line in lines_obj.browse(cr, uid, line_ids, context=context):
+                if line.invoice_id not in inv_ids:
+                    inv_ids.append(line.invoice_id)
+                    if line.invoice_id.type == 'out_refund':
+                        res[account.id] -= line.invoice_id.amount_untaxed
+                    else:
+                        res[account.id] += line.invoice_id.amount_untaxed
+        return res
+        '''
+
+    def _remaining_hours_to_invoice_calc(selfg):
+        pass
+        '''
+
+        res = {}
+        for account in self.browse(cr, uid, ids, context=context):
+            res[account.id] = max(account.hours_qtt_est - account.timesheet_ca_invoiced, account.ca_to_invoice)
+        return res
+        '''
+
+    def _ca_to_invoice_calc(self):
+        self.ca_to_invoice = 0.0
+
+        invoice_grouping = {}
+        lines = self.line_ids.filtered(lambda x: x.project_id and not x.invoice_id and x.to_invoice)
+        for line in lines:
+            key = (line.product_id.id,
+                   line.user_id.id,
+                   line.to_invoice.id,
+                   line.product_uom_id.id,
+                   line.name)
+
+            if key not in invoice_grouping:
+                invoice_grouping[key] = dict(amount=0.0, qty=0.0)
+            invoice_grouping[key]['amount'] += line.amount
+            invoice_grouping[key]['qty'] += line.unit_amount
+
+        for (product_id, user_id, factor_id, uom, line_name), amounts in invoice_grouping.items():
+            price, qty = amounts['amount'], amounts['qty']
+
+            price = -price
+            if product_id:
+                price = self.env['account.analytic.line']._get_invoice_price(self, product_id, user_id, qty)
+            factor = self.env['timesheet.invoice.factor'].browse(factor_id)
+
+            self.ca_to_invoice += price * qty * (100 - factor.factor or 0.0) / 100.0
+
+
+    #############
+
+    def to_invoice_timesheets(self):
+        domain = [('invoice_id', '=', False), ('to_invoice', '!=', False), ('project_id', '!=' , False), #('journal_id.type', '=', 'general'),
+                  ('account_id', '=', self.id)]
+        name = _('Timesheets to Invoice of %s') % ','.join([record.name for record in self])
+        return {
+            'type': 'ir.actions.act_window',
+            'name': name,
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'domain': domain,
+            'res_model': 'account.analytic.line',
+            'nodestroy': True,
+        }
+
+
+
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
+    @api.model
+    def _default_product(self):
+        user_id = self.env.context.get('user_id', self.env.user.id)
+        employee = self.env['hr.employee'].search([('user_id', '=', user_id)])
+
+        return employee.product_id.id
+
     invoice_id = fields.Many2one('account.invoice', 'Invoice', ondelete="set null", copy=False)
-    to_invoice = fields.Many2one('timesheet.invoice.factor', 'Invoiceable', help="It allows to set the discount while making invoice, keep empty if the activities should not be invoiced.")
+    to_invoice = fields.Many2one('timesheet.invoice.factor', 'Invoiceable',
+                                 help="It allows to set the discount while making invoice, keep empty if the activities should not be invoiced.")
+
+    product_id = fields.Many2one(default=_default_product)
+
+    @api.model
+    def create(self, vals):
+        if not vals.get('to_invoice') and vals.get('project_id'):
+            project = self.env['project.project'].browse(vals.get('project_id'))
+            vals['to_invoice'] = project.analytic_account_id.to_invoice.id
+        return super(AccountAnalyticLine, self).create(vals)
+
+    '''
+    def write(self, cr, uid, ids, vals, context=None):
+        self._check_inv(cr, uid, ids, vals)
+        return super(account_analytic_line,self).write(cr, uid, ids, vals,
+                context=context)
+
+    def _check_inv(self, cr, uid, ids, vals):
+        select = ids
+        if isinstance(select, (int, long)):
+            select = [ids]
+        if ( not vals.has_key('invoice_id')) or vals['invoice_id' ] == False:
+            for line in self.browse(cr, uid, select):
+                if line.invoice_id:
+                    raise osv.except_osv(_('Error!'),
+                        _('You cannot modify an invoiced analytic line!'))
+        return True
+    '''
 
 
+    ############
     def _get_invoice_price(self, account, product_id, user_id, qty):
         if account.pricelist_id:
             price = account.pricelist_id.price_get(product_id, qty or 1.0, account.partner_id.id)[account.pricelist_id.id]
@@ -32,7 +190,6 @@ class AccountAnalyticLine(models.Model):
 
     def _prepare_cost_invoice(self, partner, company_id, currency_id, analytic_lines):
         """ returns values used to create main invoice from analytic lines"""
-        account_payment_term_obj = self.env['account.payment.term']
         invoice_name = analytic_lines[0].account_id.name
 
         date_due = False
@@ -47,29 +204,28 @@ class AccountAnalyticLine(models.Model):
             'name': "%s - %s" % (time.strftime('%d/%m/%Y'), invoice_name),
             'partner_id': partner.id,
             'company_id': company_id,
-            'payment_term': partner.property_payment_term_id.id or False,
+            'payment_term_id': partner.property_payment_term_id.id or False,
             'account_id': partner.property_account_receivable_id.id,
             'currency_id': currency_id,
             'date_due': date_due,
-            'fiscal_position': partner.property_account_position_id.id
+            'fiscal_position_id': partner.property_account_position_id.id
         }
 
     def _prepare_cost_invoice_line(self, invoice_id, product_id, uom, user_id,
                                    factor_id, account, analytic_lines, data):
-        product_obj = self.env['product.product']
-
-        total_price = sum(l.amount for l in analytic_lines)
         total_qty = sum(l.unit_amount for l in analytic_lines)
-
         if data.product:
             # force product, use its public price
             unit_price = self.with_context(uom=uom)._get_invoice_price(account, data.product.id, user_id, total_qty)
-        #elif journal_type == 'general' and product_id:
+        elif product_id:
             # timesheets, use sale price
-        #    unit_price = self.with_context(uom=uom)._get_invoice_price(account, data.product.id, user_id, total_qty)
+            unit_price = self.with_context(uom=uom)._get_invoice_price(account, product_id, user_id, total_qty)
         else:
+            raise UserError(_("There's a line without product."))
+
+            #total_price = sum(l.amount for l in analytic_lines)
             # expenses, using price from amount field
-            unit_price = total_price * -1.0 / total_qty
+            #unit_price = total_price * -1.0 / total_qty
 
         factor = self.env['timesheet.invoice.factor'].with_context(uom=uom).browse(factor_id)
         factor_name = factor.customer_name or ''
@@ -80,12 +236,12 @@ class AccountAnalyticLine(models.Model):
             'discount': factor.factor,
             'invoice_id': invoice_id,
             'name': factor_name,
-            'uos_id': uom,
+            'uom_id': uom,
             'account_analytic_id': account.id,
         }
 
         if product_id:
-            product = product_obj.with_context(uom=uom).browse(product_id)
+            product = self.env['product.product'].with_context(uom=uom).browse(product_id)
             factor_name = product.name_get()[0][1]
             if factor.customer_name:
                 factor_name += ' - ' + factor.customer_name
@@ -98,9 +254,8 @@ class AccountAnalyticLine(models.Model):
             taxes = product.taxes_id or general_account.tax_ids
             tax = account.partner_id.property_account_position_id.map_tax(taxes)
             curr_invoice_line.update({
-                'invoice_line_tax_id': [(6, 0, tax)],
+                'invoice_line_tax_ids': [(6, 0, tax.mapped('id'))],
                 'name': factor_name,
-                #'invoice_line_tax_id': [(6, 0, tax)],
                 'account_id': general_account.id,
             })
 
@@ -192,11 +347,26 @@ class AccountAnalyticLine(models.Model):
                 invoice_line_obj.create(curr_invoice_line)
 
             analytic_line_obj.browse(map(lambda x: x.id, analytic_lines)).write({'invoice_id': last_invoice.id})
-            #self.write(cr, uid, [l.id for l in analytic_lines], {'invoice_id': last_invoice}, context=context)
-            #invoice_obj.button_reset_taxes(cr, uid, [last_invoice], context)
+            last_invoice.compute_taxes()
             invoices |= last_invoice
 
         return invoices
+
+
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
+
+    def create_analytic_lines(self):
+        res = super(AccountMoveLine, self).create_analytic_lines()
+        for obj_line in self:
+            #For customer invoice, link analytic line to the invoice so it is not proposed for invoicing in Bill Tasks Work
+            invoice_id = obj_line.invoice_id and obj_line.invoice_id.type in ('out_invoice','out_refund') and obj_line.invoice_id.id or False
+            for line in obj_line.analytic_line_ids:
+                line.write({
+                    'invoice_id': invoice_id,
+                    'to_invoice': line.account_id.to_invoice and line.account_id.to_invoice.id or False
+                    })
+        return res
 
 class TimesheetInvoiceCreate(models.TransientModel):
     _name = 'timesheet.invoice.create'
