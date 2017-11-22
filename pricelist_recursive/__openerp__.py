@@ -29,7 +29,6 @@
     'website': 'https://www.nuobit.com',
     'depends': ['product'],
     'data': [
-        'views/inherit_views.xml',
         ],
     'installable': True,
 }
