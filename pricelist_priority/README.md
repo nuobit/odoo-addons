@@ -1,7 +1,0 @@
-Pricelist priority
-==================
-
-* Pricelist priority
-
-
-
