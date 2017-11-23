@@ -111,10 +111,11 @@ class ProductPricelist(models.Model):
                     if not cat:
                         continue
 
+                rule_id = rule.id
                 if rule.base == -1:
                     if rule.base_pricelist_id:
-                        price_tmp = self._price_get_multi(cr, uid,
-                                                          rule.base_pricelist_id, [(product,
+                        price_tmp, rule_id = self._price_rule_get_multi(cr, uid,
+                                                               rule.base_pricelist_id, [(product,
                                                                                     qty, partner)], context=context)[
                             product.id]
                         ptype_src = rule.base_pricelist_id.currency_id.id
@@ -175,7 +176,6 @@ class ProductPricelist(models.Model):
                         price_max_margin = convert_to_price_uom(rule.price_max_margin)
                         price = min(price, price_limit + price_max_margin)
 
-                    rule_id = rule.id
                     break
 
             # Final price conversion to target UoM
