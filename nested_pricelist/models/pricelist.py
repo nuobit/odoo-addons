@@ -54,9 +54,9 @@ class ProductPricelist(models.Model):
             'SELECT i.id '
             'FROM product_pricelist_item AS i '
             'WHERE (product_tmpl_id IS NULL OR product_tmpl_id = any(%s)) '
-            'AND (product_id IS NULL OR (product_id = any(%s))) '
-            'AND ((categ_id IS NULL) OR (categ_id = any(%s))) '
-            'AND (price_version_id = %s) '
+                'AND (product_id IS NULL OR (product_id = any(%s))) '
+                'AND ((categ_id IS NULL) OR (categ_id = any(%s))) '
+                'AND (price_version_id = %s) '
             'ORDER BY sequence, min_quantity desc',
             (prod_tmpl_ids, prod_ids, categ_ids, version.id))
 
@@ -68,7 +68,7 @@ class ProductPricelist(models.Model):
         results = {}
         for product, qty, partner in products_by_qty_by_partner:
             results[product.id] = 0.0
-            rule_id = False
+            rule_ids = []
             price = False
 
             # Final unit price is computed according to `qty` in the `qty_uom_id` UoM.
@@ -92,8 +92,7 @@ class ProductPricelist(models.Model):
                 if is_product_template:
                     if rule.product_tmpl_id and product.id != rule.product_tmpl_id.id:
                         continue
-                    if rule.product_id and not (
-                            product.product_variant_count == 1 and product.product_variant_ids[0].id == rule.product_id.id):
+                    if rule.product_id and not (product.product_variant_count == 1 and product.product_variant_ids[0].id == rule.product_id.id):
                         # product rule acceptable on template if has only one variant
                         continue
                 else:
@@ -111,19 +110,18 @@ class ProductPricelist(models.Model):
                     if not cat:
                         continue
 
-                rule_id = rule.id
                 if rule.base == -1:
                     if rule.base_pricelist_id:
-                        price_tmp, rule_id = self._price_rule_get_multi(cr, uid,
-                                                               rule.base_pricelist_id, [(product,
-                                                                                    qty, partner)], context=context)[
-                            product.id]
+                        price_tmp, rule_ids_tmp = self._price_rule_get_multi(cr, uid,
+                                rule.base_pricelist_id, [(product,
+                                qty, partner)], context=context)[product.id]
                         ptype_src = rule.base_pricelist_id.currency_id.id
                         price_uom_id = qty_uom_id
                         price = currency_obj.compute(cr, uid,
-                                                     ptype_src, pricelist.currency_id.id,
-                                                     price_tmp, round=False,
-                                                     context=context)
+                                ptype_src, pricelist.currency_id.id,
+                                price_tmp, round=False,
+                                context=context)
+                        rule_ids += rule_ids_tmp
                 elif rule.base == -2:
                     seller = False
                     for seller_id in product.seller_ids:
@@ -150,20 +148,20 @@ class ProductPricelist(models.Model):
                     # price_get returns the price in the context UoM, i.e. qty_uom_id
                     price_uom_id = qty_uom_id
                     price = currency_obj.compute(
-                        cr, uid,
-                        price_type.currency_id.id, pricelist.currency_id.id,
-                        product_obj._price_get(cr, uid, [product], price_type.field, context=context)[product.id],
-                        round=False, context=context)
+                            cr, uid,
+                            price_type.currency_id.id, pricelist.currency_id.id,
+                            product_obj._price_get(cr, uid, [product], price_type.field, context=context)[product.id],
+                            round=False, context=context)
 
                 if price is not False:
                     price_limit = price
-                    price = price * (1.0 + (rule.price_discount or 0.0))
+                    price = price * (1.0+(rule.price_discount or 0.0))
                     if rule.price_round:
                         price = tools.float_round(price, precision_rounding=rule.price_round)
 
                     convert_to_price_uom = (lambda price: product_uom_obj._compute_price(
-                        cr, uid, product.uom_id.id,
-                        price, price_uom_id))
+                                                cr, uid, product.uom_id.id,
+                                                price, price_uom_id))
                     if rule.price_surcharge:
                         price_surcharge = convert_to_price_uom(rule.price_surcharge)
                         price += price_surcharge
@@ -176,11 +174,12 @@ class ProductPricelist(models.Model):
                         price_max_margin = convert_to_price_uom(rule.price_max_margin)
                         price = min(price, price_limit + price_max_margin)
 
+                    rule_ids += [rule.id]
                     break
 
             # Final price conversion to target UoM
             price = product_uom_obj._compute_price(cr, uid, price_uom_id, price, qty_uom_id)
 
-            results[product.id] = (price, rule_id)
+            results[product.id] = (price, rule_ids)
         return results
 
