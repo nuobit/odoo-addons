@@ -6,27 +6,16 @@ from openerp import tools
 from itertools import chain
 import time
 
+
 class ProductPricelist(models.Model):
     _inherit = "product.pricelist"
 
-    @api.v7
-    def _price_rule_get_multi(self, cr, uid, pricelist, products_by_qty_by_partner, context=None):
-         return super(ProductPricelist, self)._price_rule_get_multi(cr, uid, pricelist, products_by_qty_by_partner, context)
-
     @api.v8
     def _price_rule_get_multi(self, products_by_qty_by_partner):
-       return ProductPricelist._price_rule_get_multi(
+        return ProductPricelist._price_rule_get_multi(
             self._model, self._cr, self._uid, self, products_by_qty_by_partner, context=self._context)
 
-    def _is_net_get_multi(self, product, quantity, partner):
-        _, rule_ids = self._price_rule_get_multi([(product, quantity, partner)]).get(product.id, False)
-        if rule_ids:
-            _, rule_id = rule_ids[0]
-            rule_obj = self.env['product.pricelist.item'].browse(rule_id)
-            return rule_obj.price_discount == -1.0 and rule_obj.price_surcharge!=0.0
-
-        return False
-
+    @api.v7
     def _price_rule_get_multi(self, cr, uid, pricelist, products_by_qty_by_partner, context=None):
         context = context or {}
         date = context.get('date') or time.strftime('%Y-%m-%d')
@@ -201,3 +190,12 @@ class ProductPricelist(models.Model):
             results[product.id] = (price, rule_ids)
         return results
 
+
+    def _is_net_get_multi(self, product, quantity, partner):
+        _, rule_ids = self._price_rule_get_multi([(product, quantity, partner)]).get(product.id, False)
+        if rule_ids:
+            _, rule_id = rule_ids[0]
+            rule_obj = self.env['product.pricelist.item'].browse(rule_id)
+            return rule_obj.price_discount == -1.0 and rule_obj.price_surcharge != 0.0
+
+        return False
