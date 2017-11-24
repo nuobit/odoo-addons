@@ -20,7 +20,7 @@
 #/#############################################################################
 
 {
-    'name': "Nested pricelist",
+    'name': "Pricelist extended",
     'description': "Allows to define nested pricelists and evaluate them recursively",
     'version': '8.0.0.1.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
