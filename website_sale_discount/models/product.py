@@ -28,27 +28,6 @@ from openerp.exceptions import AccessError, Warning, ValidationError, except_orm
 
 #from openerp.osv import osv
 
-class product_pricelist(models.Model):
-    _inherit = "product.pricelist"
-
-    @api.v7
-    def _price_rule_get_multi(self, cr, uid, pricelist, products_by_qty_by_partner, context=None):
-         return super(product_pricelist, self)._price_rule_get_multi(cr, uid, pricelist, products_by_qty_by_partner, context)
-
-    @api.v8
-    def _price_rule_get_multi(self, products_by_qty_by_partner):
-       return product_pricelist._price_rule_get_multi(
-            self._model, self._cr, self._uid, self, products_by_qty_by_partner, context=self._context)
-
-    def _is_net_get_multi(self, product, quantity, partner):
-        prl = self._price_rule_get_multi([(product, quantity, partner)]).get(product.id, False)
-        if prl:
-            _, rule_id = prl
-            rule_obj = self.env['product.pricelist.item'].browse(rule_id)
-            return rule_obj.price_discount == -1.0 and rule_obj.price_surcharge!=0.0
-
-        return False
-
 class product_template(models.Model):
     _inherit = "product.template"
 
@@ -78,9 +57,6 @@ class product_template(models.Model):
                 pl = plobj.browse(pricelist)
                 for product in self:
                     product.is_net = pl._is_net_get_multi(product, quantity, partner)
-
-
-
 
 
 class product_product(models.Model):
