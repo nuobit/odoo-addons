@@ -174,7 +174,7 @@ class ProductPricelist(models.Model):
                         price_max_margin = convert_to_price_uom(rule.price_max_margin)
                         price = min(price, price_limit + price_max_margin)
 
-                    rule_ids += [rule.id]
+                    rule_ids += [(price_limit, rule.id)]
                     break
 
             # Final price conversion to target UoM
