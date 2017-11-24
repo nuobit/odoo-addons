@@ -38,7 +38,7 @@ This module is not compatible with product_visible_discount and purchase_discoun
     If the modeule is not installed, we will have on Sale Order and Invoice lines:
     Unit price=225, Discount=0,00, Net price=225.
     """,
-    'depends': ["sale", "purchase"], # "account"],
+    'depends': ["sale", "purchase", "pricelist_extended"],
     'demo': [],
     'data': ['product_discount_view.xml',
              'report_purchaseorder.xml'],
