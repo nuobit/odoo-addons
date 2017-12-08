@@ -94,8 +94,6 @@
                 <tree string="EDI servers">
                     <field name="name"/>
                     <field name="type"/>
-                    <field name="host"/>
-                    <field name="folder"/>
                     <field name="default"/>
                 </tree>
             </field>
@@ -110,18 +108,25 @@
                     <sheet>
                         <group name="main_field_group4" col="4">
                             <field name="name"/>
-                            <field name="type"/>
                             <field name="default"/>
                         </group>
                         <group>
+                             <field name="type"/>
+                        </group>
+                        <group name="ftp_group" attrs="{'invisible': [('type', 'not in', ('ftp',))]}">
                             <group string="Server info">
-                                <field name="host"/>
-                                <field name="port"/>
+                                <field name="host" attrs="{'required': [('type', 'in', ('ftp',))]}"/>
+                                <field name="port" attrs="{'required': [('type', 'in', ('ftp',))]}"/>
                                 <field name="folder"/>
                             </group>
                             <group string="Connection info">
-                                <field name="username"/>
-                                <field name="password" password="True"/>
+                                <field name="username" attrs="{'required': [('type', 'in', ('ftp',))]}"/>
+                                <field name="password" password="True" attrs="{'required': [('type', 'in', ('ftp',))]}"/>
+                            </group>
+                        </group>
+                        <group name="email_group" attrs="{'invisible': [('type', 'not in', ('email',))]}">
+                            <group string="e-mail info">
+                                <field name="email" attrs="{'required': [('type', 'in', ('email',))]}"/>
                             </group>
                         </group>
                     </sheet>

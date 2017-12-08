@@ -8,4 +8,31 @@
             <field name="prefix">DS/%(year)s/</field>
         </record>
     </data>
+
+    <data noupdate="1">
+        <record id="example_email_template" model="email.template">
+            <field name="name">Example e-mail template</field>
+            <field name="email_from">${(object.company_id and object.company_id.email or '')|safe}</field>
+            <field name="subject">Congratz ${object.name}</field>
+            <!--field name="partner_to">${object.partner_invoice_id.id}</field-->
+            <field name="model_id" ref="base.model_res_partner"/>
+            <!--field name="model_id" ref="sale.model_sale_order"/-->
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.lang}</field>
+            <!--field name="lang">${object.partner_id.lang}</field-->
+            <!--field name="report_template" ref="sale.report_sale_order"/>
+            <field name="report_name">${(object.name or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}</field-->
+            <field name="auto_delete" eval="True"/>
+            <!--field name="user_signature" eval="True"/-->
+            <field name="body_html">
+                <![CDATA[
+	      <p>Dear ${(object.name)},<br/><br/>
+	      Good job, you've just created your first e-mail template!<br/></p>
+              Regards,<br/>
+              ${(object.company_id.name)}
+	    ]]>
+            </field>
+        </record>
+    </data>
+    
 </openerp>

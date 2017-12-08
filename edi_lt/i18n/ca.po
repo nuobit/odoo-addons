@@ -287,6 +287,11 @@ msgid "Server info"
 msgstr "Server info"
 
 #. module: edi_lt
+#: view:edilt.server:edi_lt.edilt_edi_servers_form_view
+msgid "e-mail info"
+msgstr "Información de l'e-mail"
+
+#. module: edi_lt
 #: model:ir.ui.menu,name:edi_lt.edilt_menu_servers
 msgid "Servers"
 msgstr "Servers"

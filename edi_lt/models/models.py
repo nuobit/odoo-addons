@@ -139,20 +139,15 @@ class edilt_transaction(models.Model):
 
 
     @api.model
-    def upload(self, xml_str, filename):
-        server = self.env['edilt.server'].search([('default','=',True)])
-        if not server:
-            raise Warning(_("There's no default server configured"))
-        if len(server)>1:
-            raise Warning(_("There's more than one default server"))
+    def send_ftp(self, config, xml_str, filename):
         try:
             ftp = ftplib.FTP()
-            ftp.connect(server.host, server.port)
+            ftp.connect(config.host, config.port)
 
-            ftp.login(server.username, server.password)
+            ftp.login(config.username, config.password)
 
-            if server.folder:
-                ftp.cwd(server.folder)
+            if config.folder:
+                ftp.cwd(config.folder)
 
             #ftp.delete('oo')
             ftp.storbinary('STOR %s' % filename, StringIO.StringIO(xml_str))
@@ -164,6 +159,29 @@ class edilt_transaction(models.Model):
                 pass
 
             raise Warning('FTP error: %s' % (e.message or e.strerror))
+
+    @api.model
+    def send_email(self, config, xml_str, filename):
+        pass
+
+        #from openerp.addons.base.ir.ir_mail_server import MailDeliveryException
+
+
+
+    @api.model
+    def upload(self, xml_str, filename):
+        server = self.env['edilt.server'].search([('default','=',True)])
+        if not server:
+            raise Warning(_("There's no default server configured"))
+        if len(server)>1:
+            raise Warning(_("There's more than one default server"))
+
+        if server.type == 'ftp':
+            self.send_ftp(server, xml_str, filename)
+        elif server.type == 'email':
+            self.send_email(server, xml_str, filename)
+        else:
+            raise Warning('Server type %s unknown' % server.type)
 
     def generate_xml(self):
         ## root
@@ -338,17 +356,16 @@ class edilt_server(models.Model):
     _name = "edilt.server"
 
     name = fields.Char('Name', required=True)
-    type = fields.Selection(string='Type', selection=[('ftp', 'FTP')], required=True, default='ftp')
-    host = fields.Char('Host', required=True)
-    port = fields.Integer('Port', required=True, default=21)
-
-    folder = fields.Char('Folder')
-
-    username = fields.Char('Username', required=True)
-    password = fields.Char('Password', required=True)
-
+    type = fields.Selection(string='Type', selection=[('ftp', 'FTP'),('email', 'e-mail')], required=True)
     default = fields.Boolean('Default', default=lambda self: self._default_default())
 
+    host = fields.Char('Host', required=False)
+    port = fields.Integer('Port', required=False, default=21)
+    folder = fields.Char('Folder')
+    username = fields.Char('Username', required=False)
+    password = fields.Char('Password', required=False)
+
+    email = fields.Char('e-mail', required=False)
 
     def _default_default(self):
         s = self.env['edilt.server'].search_count([])
