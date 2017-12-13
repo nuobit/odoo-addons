@@ -11,13 +11,13 @@ import StringIO
 class res_partner(models.Model):
     _inherit = "res.partner"
 
-    is_edi = fields.Boolean(string='EDI', default=False)
+    edi_config = fields.Many2one('edilt.server', string='EDI config', default=False)
 
 
 class purchase_order(models.Model):
     _inherit = "purchase.order"
 
-    is_edi = fields.Boolean(related='partner_id.is_edi')
+    edi_config = fields.Many2one(related='partner_id.edi_config')
     edi_transaction_id = fields.Many2one(string="EDI transaction", comodel_name='edilt.transaction',
                                          readonly=True, ondelete='restrict')
 
@@ -58,8 +58,6 @@ class purchase_order(models.Model):
             picking_obj.partner_id = partner_id
 
         return picking_id
-
-
 
 
 class edilt_transaction(models.Model):
@@ -160,28 +158,61 @@ class edilt_transaction(models.Model):
 
             raise Warning('FTP error: %s' % (e.message or e.strerror))
 
-    @api.model
-    def send_email(self, config, xml_str, filename):
-        pass
+    @api.multi
+    def send_email(self, config):
+        if not config.template_id:
+            raise ValidationError(_("Edi configuration used %s has no template defined") % config.name)
+
+        msg_id = config.template_id.send_mail(self.id, force_send=True, raise_exception=True)
+
+
+        '''
+        """ create signup token for each user, and send their signup url by email """
+        # prepare reset password signup
+        res_partner = self.pool.get('res.partner')
+        partner_ids = [user.partner_id.id for user in self.browse(cr, uid, ids, context)]
+        res_partner.signup_prepare(cr, uid, partner_ids, signup_type="reset", expiration=now(days=+1), context=context)
+
+        context = dict(context or {})
+
+        # send email to users with their signup url
+        template = False
+        if context.get('create_user'):
+            try:
+                # get_object() raises ValueError if record does not exist
+                template = self.pool.get('ir.model.data').get_object(cr, uid, 'auth_signup', 'set_password_email')
+            except ValueError:
+                pass
+        if not bool(template):
+            template = self.pool.get('ir.model.data').get_object(cr, uid, 'auth_signup', 'reset_password_email')
+        assert template._name == 'email.template'
+
+        for user in self.browse(cr, uid, ids, context):
+            if not user.email:
+                raise osv.except_osv(_("Cannot send email: user has no email address."), user.name)
+            context['lang'] = user.lang  # translate in targeted user language
+            self.pool.get('email.template').send_mail(cr, uid, template.id, user.id, force_send=True, raise_exception=True,
+                                                      context=context)
+        '''
 
         #from openerp.addons.base.ir.ir_mail_server import MailDeliveryException
+        pass
 
 
-
-    @api.model
+    @api.multi
     def upload(self, xml_str, filename):
-        server = self.env['edilt.server'].search([('default','=',True)])
-        if not server:
+        config = self.purchase_order_id.partner_id.edi_config
+        if not config:
             raise Warning(_("There's no default server configured"))
-        if len(server)>1:
+        if len(config)>1:
             raise Warning(_("There's more than one default server"))
 
-        if server.type == 'ftp':
-            self.send_ftp(server, xml_str, filename)
-        elif server.type == 'email':
-            self.send_email(server, xml_str, filename)
+        if config.type == 'ftp':
+            self.send_ftp(config, xml_str, filename)
+        elif config.type == 'email':
+            self.send_email(config)
         else:
-            raise Warning('Server type %s unknown' % server.type)
+            raise Warning('Server type %s unknown' % config.type)
 
     def generate_xml(self):
         ## root
@@ -357,7 +388,6 @@ class edilt_server(models.Model):
 
     name = fields.Char('Name', required=True)
     type = fields.Selection(string='Type', selection=[('ftp', 'FTP'),('email', 'e-mail')], required=True)
-    default = fields.Boolean('Default', default=lambda self: self._default_default())
 
     host = fields.Char('Host', required=False)
     port = fields.Integer('Port', required=False, default=21)
@@ -365,21 +395,24 @@ class edilt_server(models.Model):
     username = fields.Char('Username', required=False)
     password = fields.Char('Password', required=False)
 
-    email = fields.Char('e-mail', required=False)
+    email_from = fields.Char('e-mail from', required=False)
+    email_to = fields.Char('e-mail to', required=False)
+    template_id = fields.Many2one('email.template', 'Template', required=False, ondelete='restrict',
+                                  default=lambda self: self._default_template()) #, domain=lambda self: self._get_template_domain())
 
-    def _default_default(self):
-        s = self.env['edilt.server'].search_count([])
-
-        return s==1
-
-    @api.constrains('default')
-    def _constraint_default(self):
-        if self.default:
-            other_servers = self.env['edilt.server'].search([('id', '!=', self.id)])
-            for s in other_servers:
-                s.default = False
+    @api.model
+    def _default_template(self):
+        return self.env.ref('edi_lt.email_template')
 
 
+class EmailTemplate(models.Model):
+    "Templates for sending email"
+    _inherit = "email.template"
+
+    def generate_email(self, cr, uid, template_id, res_id, context=None):
+        res = super(EmailTemplate, self).generate_email(cr, uid, template_id, res_id, context)
+
+        return res
 
 
 class edilt_message_info_wizard(models.TransientModel):

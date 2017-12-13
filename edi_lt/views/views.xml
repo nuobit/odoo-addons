@@ -6,7 +6,8 @@
             <field name="name">EDI transactions</field>
             <field name="model">edilt.transaction</field>
             <field name="arch" type="xml">
-                <tree string="EDI transactions" default_order="trx_date desc" colors="blue:state=='pending';green:state=='done';grey:state=='cancel';" create="0">
+                <tree string="EDI transactions" default_order="trx_date desc"
+                      colors="blue:state=='pending';green:state=='done';grey:state=='cancel';" create="0">
                     <field name="purchase_order_id"/>
                     <field name="datas_fname"/>
                     <field name="trx_date"/>
@@ -27,10 +28,11 @@
                                 class="oe_highlight" states="pending"/>
                         <button name="set_to_cancel" states="done" string="Cancel" type="object"/>
                         <button name="set_to_pending" states="done,cancel" string="Set to pending" type="object"
-                               groups="base.group_system"/>
+                                groups="base.group_system"/>
                         <button name="delete" states="pending,cancel" string="Delete" type="object"
-                               groups="base.group_system"/>
-                        <field name="state" widget="statusbar" statusbar_colors='{"pending":"blue","done":"green","cancel":"grey"}'/>
+                                groups="base.group_system"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_colors='{"pending":"blue","done":"green","cancel":"grey"}'/>
                     </header>
                     <sheet>
                         <group name="main_field_group4" col="4">
@@ -43,6 +45,7 @@
                         <group>
                             <field name="note" widget="text"/>
                         </group>
+                        <button string="Send e-mail" type="object" name="accept"/>
                     </sheet>
                 </form>
             </field>
@@ -57,7 +60,7 @@
                     <filter string="Pending" help="Pending transactions" name="pending"
                             domain="[('state','=','pending')]"/>
                     <separator/>
-                    <filter string="Done" help="Done transactions" name="is_ems" domain="[('state','=','done')]"/>
+                    <filter string="Done" help="Done transactions" name="is_done" domain="[('state','=','done')]"/>
                     <field name="purchase_order_id"/>
 
                     <!--group expand="0" string="Group By">
@@ -94,7 +97,6 @@
                 <tree string="EDI servers">
                     <field name="name"/>
                     <field name="type"/>
-                    <field name="default"/>
                 </tree>
             </field>
         </record>
@@ -108,10 +110,9 @@
                     <sheet>
                         <group name="main_field_group4" col="4">
                             <field name="name"/>
-                            <field name="default"/>
                         </group>
                         <group>
-                             <field name="type"/>
+                            <field name="type"/>
                         </group>
                         <group name="ftp_group" attrs="{'invisible': [('type', 'not in', ('ftp',))]}">
                             <group string="Server info">
@@ -121,12 +122,16 @@
                             </group>
                             <group string="Connection info">
                                 <field name="username" attrs="{'required': [('type', 'in', ('ftp',))]}"/>
-                                <field name="password" password="True" attrs="{'required': [('type', 'in', ('ftp',))]}"/>
+                                <field name="password" password="True"
+                                       attrs="{'required': [('type', 'in', ('ftp',))]}"/>
                             </group>
                         </group>
                         <group name="email_group" attrs="{'invisible': [('type', 'not in', ('email',))]}">
                             <group string="e-mail info">
-                                <field name="email" attrs="{'required': [('type', 'in', ('email',))]}"/>
+                                <field name="email_from"/>
+                                <field name="email_to" attrs="{'required': [('type', 'in', ('email',))]}"/>
+                                <field name="template_id" attrs="{'required': [('type', 'in', ('email',))]}"
+                                       domain="[('model_id','=',%(edi_lt.model_edilt_transaction)d )]"/>
                             </group>
                         </group>
                     </sheet>
