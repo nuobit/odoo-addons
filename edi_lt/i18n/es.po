@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-16 10:54+0000\n"
-"PO-Revision-Date: 2016-08-16 10:54+0000\n"
+"POT-Creation-Date: 2017-12-14 18:40+0000\n"
+"PO-Revision-Date: 2017-12-14 18:40+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,10 +15,20 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:227
+#: model:email.template,subject:edi_lt.email_template
+msgid "${object.datas_fname}"
+msgstr "${object.datas_fname}"
+
+#. module: edi_lt
+#: model:email.template,body_html:edi_lt.email_template
+msgid "<pre style=\"background-color:#ffffff;color:#000000;font-family:'DejaVu Sans Mono';font-size:18,0pt;\">${object.datas_fname}</pre>"
+msgstr "<pre style=\"background-color:#ffffff;color:#000000;font-family:'DejaVu Sans Mono';font-size:18,0pt;\">${object.datas_fname}</pre>"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:282
 #, python-format
 msgid "A dropship purchase order must be linked to a sales order"
-msgstr "Un pedido de compra de tipo Dropship debe estar siempre vinculado a un pedido de venta"
+msgstr "Un pedido de compra de tipo Dropship debe star siempre vinculado a un pedido de venta"
 
 #. module: edi_lt
 #: view:edilt.message.acceptcancel.wizard:edi_lt.edilt_message_acceptcancel_wizard_form_view
@@ -26,10 +36,25 @@ msgid "Accept"
 msgstr "Aceptar"
 
 #. module: edi_lt
+#: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: edi_lt
+#: selection:edilt.transaction,state:0
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: edi_lt
 #: view:edilt.message.acceptcancel.wizard:edi_lt.edilt_message_acceptcancel_wizard_form_view
 #: view:edilt.message.info.wizard:edi_lt.edilt_message_info_wizard_form_view
 msgid "Close"
 msgstr "Cerrar"
+
+#. module: edi_lt
+#: field:edilt.transaction,config_id:0
+msgid "Config id"
+msgstr "Config id"
 
 #. module: edi_lt
 #: view:edilt.server:edi_lt.edilt_edi_servers_form_view
@@ -42,7 +67,7 @@ msgstr "Información de conexión"
 #: field:edilt.server,create_uid:0
 #: field:edilt.transaction,create_uid:0
 msgid "Created by"
-msgstr "Created by"
+msgstr "Creado por"
 
 #. module: edi_lt
 #: field:edilt.message.acceptcancel.wizard,create_date:0
@@ -50,12 +75,7 @@ msgstr "Created by"
 #: field:edilt.server,create_date:0
 #: field:edilt.transaction,create_date:0
 msgid "Created on"
-msgstr "Created on"
-
-#. module: edi_lt
-#: field:edilt.server,default:0
-msgid "Default"
-msgstr "Por defecto"
+msgstr "Creado el"
 
 #. module: edi_lt
 #: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
@@ -78,20 +98,8 @@ msgstr "Realizado"
 
 #. module: edi_lt
 #: view:edilt.transaction:edi_lt.ems_session_search_view
-#: selection:edilt.transaction,state:0
-msgid "Cancelled"
-msgstr "Cancelado"
-
-#. module: edi_lt
-#: view:edilt.transaction:edi_lt.ems_session_search_view
 msgid "Done transactions"
 msgstr "Transacciones realizadas"
-
-#. module: edi_lt
-#: field:purchase.order,is_edi:0
-#: field:res.partner,is_edi:0
-msgid "EDI"
-msgstr "EDI"
 
 #. module: edi_lt
 #: model:ir.ui.menu,name:edi_lt.edilt_config_menu
@@ -99,7 +107,13 @@ msgid "EDI LT"
 msgstr "EDI LT"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:125
+#: field:purchase.order,edi_config:0
+#: field:res.partner,edi_config:0
+msgid "EDI config"
+msgstr "Configuración EDI"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:132
 #, python-format
 msgid "EDI file %s sent"
 msgstr "EL fichero EDI %s ha sido enviado"
@@ -126,15 +140,21 @@ msgid "EDI transactions"
 msgstr "Transacciones EDI"
 
 #. module: edi_lt
-#: field:product.attribute.value,edi_code:0
-msgid "Edi code"
-msgstr "Código EDI"
+#: code:addons/edi_lt/models/models.py:192
+#, python-format
+msgid "Edi configuration used %s has no template defined"
+msgstr "La configuración EDI usada %s no tiene plantilla definida"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:344
+#: code:addons/edi_lt/models/models.py:376
 #, python-format
 msgid "Element %s cannot be null"
 msgstr "El elemento %s no puede ser nulo"
+
+#. module: edi_lt
+#: model:ir.model,name:edi_lt.model_email_template
+msgid "Email Templates"
+msgstr "Plantillas email"
 
 #. module: edi_lt
 #: selection:edilt.server,type:0
@@ -170,10 +190,10 @@ msgid "ID"
 msgstr "ID"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:435
+#: code:addons/edi_lt/models/models.py:487
 #, python-format
 msgid "Info"
-msgstr "Información"
+msgstr "Info"
 
 #. module: edi_lt
 #: field:edilt.message.acceptcancel.wizard,__last_update:0
@@ -200,7 +220,7 @@ msgid "Last Updated on"
 msgstr "Last Updated on"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:346
+#: code:addons/edi_lt/models/models.py:378
 #, python-format
 msgid "Line %i: %s"
 msgstr "Linea %i: %s"
@@ -225,10 +245,10 @@ msgid "Note"
 msgstr "Nota"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:430
+#: code:addons/edi_lt/models/models.py:482
 #, python-format
 msgid "Operation completed successfully"
-msgstr "Operacion terminada correctamente"
+msgstr "La operación se ha completado satisfactoriamente"
 
 #. module: edi_lt
 #: field:edilt.transaction,purchase_order_id:0
@@ -262,11 +282,6 @@ msgid "Port"
 msgstr "Puerto"
 
 #. module: edi_lt
-#: model:ir.model,name:edi_lt.model_product_uom
-msgid "Product Unit of Measure"
-msgstr "Unidad de medida del producto"
-
-#. module: edi_lt
 #: model:ir.model,name:edi_lt.model_purchase_order
 msgid "Purchase Order"
 msgstr "Pedido de compra"
@@ -287,11 +302,6 @@ msgid "Server info"
 msgstr "Información del servidor"
 
 #. module: edi_lt
-#: view:edilt.server:edi_lt.edilt_edi_servers_form_view
-msgid "e-mail info"
-msgstr "Información del e-mail"
-
-#. module: edi_lt
 #: model:ir.ui.menu,name:edi_lt.edilt_menu_servers
 msgid "Servers"
 msgstr "Servidores"
@@ -302,20 +312,29 @@ msgid "Set to pending"
 msgstr "Establecer a pendiente"
 
 #. module: edi_lt
-#: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
-msgid "Cancel"
-msgstr "Cancelar"
-
-#. module: edi_lt
 #: field:edilt.transaction,state:0
 msgid "Status"
 msgstr "Estado"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:113
-#, python-format
-msgid "The purchase order has already been sent"
-msgstr "El pedido de compra ya ha sido enviado"
+#: field:edilt.server,template_id:0
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: edi_lt
+#: field:edilt.server,is_test:0
+msgid "Test"
+msgstr "Test"
+
+#. module: edi_lt
+#: view:edilt.transaction:edi_lt.edilt_edi_transactions_form_view
+msgid "Test send"
+msgstr "Test send"
+
+#. module: edi_lt
+#: field:edilt.server,test_server_id:0
+msgid "Test server"
+msgstr "Servidor de test"
 
 #. module: edi_lt
 #: code:addons/edi_lt/models/models.py:111
@@ -324,35 +343,53 @@ msgid "The EDI transaction has been cancelled. It cannot be sent again"
 msgstr "La transacción EDI ha sido cacnelada. No es posible enviarla de nuevo"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:232
+#: code:addons/edi_lt/models/models.py:113
+#, python-format
+msgid "The purchase order has already been sent"
+msgstr "El pedido de compra ya ha sido enviado"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:287
 #, python-format
 msgid "The sale order %s does not exist"
 msgstr "El pedido de venta %s no existe"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:234
+#: code:addons/edi_lt/models/models.py:289
 #, python-format
 msgid "The sale order %s does not have a customer reference"
 msgstr "El pedido de venta %s no tiene número de pedido del cliente"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:92
+#: code:addons/edi_lt/models/models.py:90
 #: sql_constraint:edilt.transaction:0
 #, python-format
 msgid "The transaction cannot have more than one purchase order"
 msgstr "Una transacción no puede tener más de un pedido de compra"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:145
+#: code:addons/edi_lt/models/models.py:212
 #, python-format
 msgid "There's more than one default server"
 msgstr "Se ha encontrado más de un servidor por defecto"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:143
+#: code:addons/edi_lt/models/models.py:156
+#, python-format
+msgid "There's no config server configured for this partner %s"
+msgstr "La empresa %s no tiene configuración EDI definida"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:210
 #, python-format
 msgid "There's no default server configured"
 msgstr "No hay un servidor por defecto configurado"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:161
+#, python-format
+msgid "There's no test server configured for this server %s"
+msgstr "No hay ningún servidor de test configurado para este servidor %s"
 
 #. module: edi_lt
 #: field:edilt.transaction,trx_date:0
@@ -370,10 +407,10 @@ msgid "Username"
 msgstr "Nombre de usuario"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:111
+#: code:addons/edi_lt/models/models.py:109
 #, python-format
 msgid "Warning"
-msgstr "Aviso"
+msgstr "Atención"
 
 #. module: edi_lt
 #: help:edilt.transaction,datas:0
@@ -381,7 +418,7 @@ msgid "XML file"
 msgstr "Fichero XML"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:105
+#: code:addons/edi_lt/models/models.py:103
 #, python-format
 msgid "You are about to send the order directly to the supplier.\n"
 "This operation is irreversible. Do you want to continue?"
@@ -389,19 +426,56 @@ msgstr "Estas a punto de enviar el pedido directamente al proveedor.\n"
 "Esta operación es irreversible. ¿Quieres continuar?"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:49
+#: code:addons/edi_lt/models/models.py:44
 #, python-format
 msgid "You cannot cancel a purchase order associated to a done EDI transaction"
 msgstr "No se puede cancelar un pedido de compra associado a una transacción EDI ya realizada"
 
 #. module: edi_lt
-#: code:addons/edi_lt/models/models.py:43
+#: code:addons/edi_lt/models/models.py:38
 #, python-format
 msgid "You cannot delete a purchase order associated to a done EDI transaction"
 msgstr "No se puede borrar un pedido de compra associado a una transacción EDI ya realizada"
 
 #. module: edi_lt
+#: selection:edilt.server,type:0
+msgid "e-mail"
+msgstr "e-mail"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:199
+#, python-format
+msgid "e-mail error: Exception on sending, check the parameters and the template"
+msgstr "e-mail error: Excepción de envío, comprueba los parámetros de la plantilla"
+
+#. module: edi_lt
+#: code:addons/edi_lt/models/models.py:202
+#, python-format
+msgid "e-mail error: Unexpected state (%s)"
+msgstr "e-mail error: Estado (%s) inesperado"
+
+#. module: edi_lt
+#: field:edilt.server,email_from:0
+msgid "e-mail from"
+msgstr "e-mail desde"
+
+#. module: edi_lt
+#: view:edilt.server:edi_lt.edilt_edi_servers_form_view
+msgid "e-mail info"
+msgstr "Información del e-mail"
+
+#. module: edi_lt
+#: field:edilt.transaction,email_id:0
+msgid "e-mail message"
+msgstr "e-mail"
+
+#. module: edi_lt
+#: field:edilt.server,email_to:0
+msgid "e-mail to"
+msgstr "e-mail para"
+
+#. module: edi_lt
 #: view:edilt.message.acceptcancel.wizard:edi_lt.edilt_message_acceptcancel_wizard_form_view
 msgid "or"
-msgstr "o"
+msgstr "ó"
 

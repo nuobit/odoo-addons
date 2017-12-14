@@ -192,7 +192,7 @@ class edilt_transaction(models.Model):
             raise ValidationError(_("Edi configuration used %s has no template defined") % config.name)
 
         lang = self.purchase_order_id.partner_id.lang or self.env.user.lang
-        
+
         email_id = template.with_context(lang=lang).send_mail(self.id, force_send=True, raise_exception=True)
         email = self.env['mail.mail'].browse(email_id)
         if email.state == 'exception':
