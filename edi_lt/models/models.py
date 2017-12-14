@@ -155,10 +155,12 @@ class edilt_transaction(models.Model):
         if not edi_config:
             raise Warning(_("There's no config server configured for this partner %s") % self.purchase_order_id.partner_id.name)
 
-        test_server = self.env['edilt.server'].search(
+        test_servers = self.env['edilt.server'].search(
                 [('is_test', '=', True), ('test_server_id', '=', edi_config.id)])
-        if not test_server:
+        if not test_servers:
             raise Warning(_("There's no test server configured for this server %s") % edi_config.name)
+
+        test_server = test_servers.sorted(key=lambda x: x.sequence)[0]
 
         return self.accept(test_edi_server=test_server)
 
@@ -404,6 +406,9 @@ class edilt_server(models.Model):
 
     is_test = fields.Boolean('Test')
     test_server_id = fields.Many2one('edilt.server', 'Test server', domain=[('is_test', '=', False)])
+
+    sequence = fields.Integer(string='Sequence', default=10,
+                              help="Gives the sequence of this line when there's more than one test server for the same production server.")
 
     @api.model
     def _default_template(self):

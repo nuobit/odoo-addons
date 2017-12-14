@@ -98,6 +98,7 @@
             <field name="model">edilt.server</field>
             <field name="arch" type="xml">
                 <tree string="EDI servers">
+                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="type"/>
                     <field name="is_test"/>
@@ -118,6 +119,7 @@
                         </group>
                         <group col="4">
                             <field name="is_test"/>
+                            <field name="sequence"/>
                             <field name="test_server_id" attrs="{'invisible': [('is_test', '=', False)], 'required': [('is_test', '=', True)]}"/>
                         </group>
                         <group name="ftp_group" attrs="{'invisible': [('type', 'not in', ('ftp',))]}">
