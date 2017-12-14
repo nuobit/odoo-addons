@@ -12,27 +12,12 @@
     <data noupdate="1">
         <record id="email_template" model="email.template">
             <field name="name">EDI LT e-mail template</field>
-            <field name="email_from">${(object.purchase_order_id.partner_id.edi_config.email_from or '')|safe}</field>
-            <field name="subject">Congratz ${object.purchase_order_id.partner_id.edi_config.name}</field>
-            <!--field name="partner_to">${object.partner_invoice_id.id}</field-->
+            <field name="email_from">${(object.config_id.email_from or object.env.user.email or '')|safe}</field>
+            <field name="subject">${object.datas_fname}</field>
             <field name="model_id" ref="edi_lt.model_edilt_transaction"/>
-            <!--field name="model_id" ref="edi_lt.model_edilt_server"/-->
-            <!--field name="model_id" ref="sale.model_sale_order"/-->
-            <field name="email_to">${object.purchase_order_id.partner_id.edi_config.email_to|safe}</field>
-            <!--field name="lang">${object.lang}</field-->
-            <!--field name="lang">${object.partner_id.lang}</field-->
-            <!--field name="report_template" ref="sale.report_sale_order"/>
-            <field name="report_name">${(object.name or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}</field-->
+            <field name="email_to">${object.config_id.email_to|safe}</field>
             <field name="auto_delete" eval="False"/>
-            <!--field name="user_signature" eval="True"/-->
-            <field name="body_html">
-                <![CDATA[
-	      <p>Dear ${(object.purchase_order_id.partner_id.edi_config.name)},<br/><br/>
-	      Good job, you've just created your first e-mail template!<br/></p>
-              Regards,<br/>
-              ${(object.purchase_order_id.partner_id.edi_config.email_to)}
-	    ]]>
-            </field>
+            <field name="body_html">${object.datas_fname}</field>
         </record>
     </data>
 

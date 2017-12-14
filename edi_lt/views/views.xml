@@ -29,6 +29,7 @@
                         <button name="set_to_cancel" states="done" string="Cancel" type="object"/>
                         <button name="set_to_pending" states="done,cancel" string="Set to pending" type="object"
                                 groups="base.group_system"/>
+                        <button name="test_send" string="Test send" type="object" groups="base.group_system"/>
                         <button name="delete" states="pending,cancel" string="Delete" type="object"
                                 groups="base.group_system"/>
                         <field name="state" widget="statusbar"
@@ -45,7 +46,9 @@
                         <group>
                             <field name="note" widget="text"/>
                         </group>
-                        <button string="Send e-mail" type="object" name="accept"/>
+                         <group>
+                            <field name="email_id"/>
+                        </group>
                     </sheet>
                 </form>
             </field>
@@ -97,6 +100,7 @@
                 <tree string="EDI servers">
                     <field name="name"/>
                     <field name="type"/>
+                    <field name="is_test"/>
                 </tree>
             </field>
         </record>
@@ -110,9 +114,11 @@
                     <sheet>
                         <group name="main_field_group4" col="4">
                             <field name="name"/>
-                        </group>
-                        <group>
                             <field name="type"/>
+                        </group>
+                        <group col="4">
+                            <field name="is_test"/>
+                            <field name="test_server_id" attrs="{'invisible': [('is_test', '=', False)], 'required': [('is_test', '=', True)]}"/>
                         </group>
                         <group name="ftp_group" attrs="{'invisible': [('type', 'not in', ('ftp',))]}">
                             <group string="Server info">

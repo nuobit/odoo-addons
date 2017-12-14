@@ -1,6 +1,6 @@
 from openerp import models, fields, api, _
 
-from openerp.exceptions import AccessError, Warning, ValidationError, except_orm
+from openerp.exceptions import AccessError, Warning, ValidationError
 
 import base64
 from lxml import etree
@@ -11,7 +11,7 @@ import StringIO
 class res_partner(models.Model):
     _inherit = "res.partner"
 
-    edi_config = fields.Many2one('edilt.server', string='EDI config', default=False)
+    edi_config = fields.Many2one('edilt.server', string='EDI config', default=False, domain=[('is_test', '=', False)])
 
 
 class purchase_order(models.Model):
@@ -75,6 +75,10 @@ class edilt_transaction(models.Model):
 
     note = fields.Char(string='Note')
 
+    email_id = fields.Many2one('mail.mail', 'e-mail message', readonly=True)
+
+    config_id = fields.Many2one('edilt.server')
+
     state = fields.Selection(
         selection=[('pending', 'Pending'),
                    ('done', 'Done'),
@@ -109,21 +113,30 @@ class edilt_transaction(models.Model):
             raise ValidationError(_('The purchase order has already been sent'))
 
     @api.multi
-    def accept(self):
+    def accept(self, test_edi_server=None):
         xml_str = self.generate_xml()
         self.datas = base64.encodestring(xml_str)
 
-        self.upload(xml_str, self.datas_fname)
+        config_tmp = self.config_id
+        if test_edi_server is None:
+            self.config_id = self.purchase_order_id.partner_id.edi_config
+        else:
+            self.config_id = test_edi_server
 
-        self.state = 'done'
-        self.trx_date = fields.Datetime.now()
+        self.upload(self.config_id, xml_str, self.datas_fname)
 
-        self.purchase_order_id.message_post(body=_('EDI file %s sent') % self.datas_fname)
+        if not self.config_id.is_test:
+            self.state = 'done'
+            self.trx_date = fields.Datetime.now()
 
+            self.purchase_order_id.message_post(body=_('EDI file %s sent') % self.datas_fname)
+        else:
+            self.config_id = config_tmp
 
     @api.multi
     def set_to_pending(self):
         self.state='pending'
+        self.email_id = False
 
     @api.multi
     def set_to_cancel(self):
@@ -134,6 +147,20 @@ class edilt_transaction(models.Model):
         self.purchase_order_id.edi_transaction_id = False
         self.purchase_order_id = False
         self.unlink()
+
+
+    @api.multi
+    def test_send(self):
+        edi_config = self.purchase_order_id.partner_id.edi_config
+        if not edi_config:
+            raise Warning(_("There's no config server configured for this partner %s") % self.purchase_order_id.partner_id.name)
+
+        test_server = self.env['edilt.server'].search(
+                [('is_test', '=', True), ('test_server_id', '=', edi_config.id)])
+        if not test_server:
+            raise Warning(_("There's no test server configured for this server %s") % edi_config.name)
+
+        return self.accept(test_edi_server=test_server)
 
 
     @api.model
@@ -160,48 +187,25 @@ class edilt_transaction(models.Model):
 
     @api.multi
     def send_email(self, config):
-        if not config.template_id:
+        template = config.template_id
+        if not template:
             raise ValidationError(_("Edi configuration used %s has no template defined") % config.name)
 
-        msg_id = config.template_id.send_mail(self.id, force_send=True, raise_exception=True)
+        lang = self.purchase_order_id.partner_id.lang or self.env.user.lang
+        
+        email_id = template.with_context(lang=lang).send_mail(self.id, force_send=True, raise_exception=True)
+        email = self.env['mail.mail'].browse(email_id)
+        if email.state == 'exception':
+            raise Warning(_('e-mail error: Exception on sending, check the parameters and the template'))
 
+        if email.state != 'sent':
+            raise Warning(_('e-mail error: Unexpected state (%s)') % self.email_id.state)
 
-        '''
-        """ create signup token for each user, and send their signup url by email """
-        # prepare reset password signup
-        res_partner = self.pool.get('res.partner')
-        partner_ids = [user.partner_id.id for user in self.browse(cr, uid, ids, context)]
-        res_partner.signup_prepare(cr, uid, partner_ids, signup_type="reset", expiration=now(days=+1), context=context)
-
-        context = dict(context or {})
-
-        # send email to users with their signup url
-        template = False
-        if context.get('create_user'):
-            try:
-                # get_object() raises ValueError if record does not exist
-                template = self.pool.get('ir.model.data').get_object(cr, uid, 'auth_signup', 'set_password_email')
-            except ValueError:
-                pass
-        if not bool(template):
-            template = self.pool.get('ir.model.data').get_object(cr, uid, 'auth_signup', 'reset_password_email')
-        assert template._name == 'email.template'
-
-        for user in self.browse(cr, uid, ids, context):
-            if not user.email:
-                raise osv.except_osv(_("Cannot send email: user has no email address."), user.name)
-            context['lang'] = user.lang  # translate in targeted user language
-            self.pool.get('email.template').send_mail(cr, uid, template.id, user.id, force_send=True, raise_exception=True,
-                                                      context=context)
-        '''
-
-        #from openerp.addons.base.ir.ir_mail_server import MailDeliveryException
-        pass
-
+        if not config.is_test:
+            self.email_id = email
 
     @api.multi
-    def upload(self, xml_str, filename):
-        config = self.purchase_order_id.partner_id.edi_config
+    def upload(self, config, xml_str, filename):
         if not config:
             raise Warning(_("There's no default server configured"))
         if len(config)>1:
@@ -354,7 +358,6 @@ class edilt_transaction(models.Model):
 
         return xml_text
 
-
     def format_date(self, dt_str_utc):
         dt_utc = fields.Datetime.from_string(dt_str_utc)
         dt_loc = fields.Datetime.context_timestamp(self, dt_utc)
@@ -366,7 +369,6 @@ class edilt_transaction(models.Model):
 
     def format_integer(self, num):
         return '{:d}'.format(num)
-
 
     def setElementText(self, elem, data, type='string', fmt='%(data)s', num_decimals=0, required=True, line=None):
         if (isinstance(data, bool) and not data) or data is None:
@@ -400,17 +402,34 @@ class edilt_server(models.Model):
     template_id = fields.Many2one('email.template', 'Template', required=False, ondelete='restrict',
                                   default=lambda self: self._default_template()) #, domain=lambda self: self._get_template_domain())
 
+    is_test = fields.Boolean('Test')
+    test_server_id = fields.Many2one('edilt.server', 'Test server', domain=[('is_test', '=', False)])
+
     @api.model
     def _default_template(self):
         return self.env.ref('edi_lt.email_template')
 
 
 class EmailTemplate(models.Model):
-    "Templates for sending email"
     _inherit = "email.template"
 
-    def generate_email(self, cr, uid, template_id, res_id, context=None):
-        res = super(EmailTemplate, self).generate_email(cr, uid, template_id, res_id, context)
+    @api.multi
+    def generate_email(self, res_id):
+        res = super(EmailTemplate, self).generate_email(self.id, res_id)
+
+        editrx_class = None
+        try:
+            editrx_class = self.env['edilt.transaction']
+        except KeyError:
+            pass
+
+        if editrx_class is not None:
+            editrx = editrx_class.browse(res_id)
+            if editrx:
+                edi_config = editrx.purchase_order_id.partner_id.edi_config
+                if 'attachments' not in res:
+                    res['attachments'] = []
+                res['attachments'].append((editrx.datas_fname, editrx.datas))
 
         return res
 
