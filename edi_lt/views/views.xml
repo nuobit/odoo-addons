@@ -102,6 +102,7 @@
                     <field name="name"/>
                     <field name="type"/>
                     <field name="is_test"/>
+                    <field name="sequence"/>
                 </tree>
             </field>
         </record>
