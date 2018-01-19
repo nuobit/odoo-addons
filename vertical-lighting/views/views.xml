@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================ VIEWS =========================== -->
+    <!-- view product -->
+    <record model="ir.ui.view" id="product_form_view">
+        <field name="name">product.form</field>
+        <field name="model">vl.product</field>
+        <field name="arch" type="xml">
+            <form string="Product Form">
+                <sheet>
+                    <group>
+                        <field name="reference"/>
+                        <field name="name"/>
+                        <field name="ean"/>
+                        <field name="catalog_ids" widget="many2many_tags"/>
+                        <field name="category_id"/>
+                        <field name="type_id"/>
+                    </group>
+
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <field name="environment"/>
+                                <field name="application_id"/>
+                                <field name="finish_id"/>
+                                <field name="body_material_id"/>
+                                <field name="diffusor_material_id"/>
+                                <field name="frame_material_id"/>
+                                <field name="blade_material_id"/>
+                                <field name="reflector_material_id"/>
+
+                                <label for="ip_check" string="IP"/>
+                                <div>
+                                    <field name="ip_check"/>
+                                    <field name="ip" style="width: 10%"
+                                           attrs="{'invisible': [('ip_check', '=', False)], 'required': [('ip_check', '=', True)]}"/>
+                                </div>
+
+                                <label for="ip2_check" string="IP2"/>
+                                <div>
+                                    <field name="ip2_check"/>
+                                    <field name="ip2" style="width: 10%"
+                                           attrs="{'invisible': [('ip2_check', '=', False)], 'required': [('ip2_check', '=', True)]}"/>
+                                </div>
+
+                                <label for="ik_check" string="IK"/>
+                                <div>
+                                    <field name="ik_check"/>
+                                    <field name="ik" style="width: 10%"
+                                           attrs="{'invisible': [('ik_check', '=', False)], 'required': [('ik_check', '=', True)]}"/>
+                                </div>
+
+                                <field name="static_pressure_kg"/>
+                                <field name="dynamic_pressure_kg"/>
+                                <field name="corrosion_resistance"/>
+
+
+                                <field name="technical_comments" widget="text"/>
+                            </group>
+                        </page>
+                        <!--page string="Certifications">
+                            <group>
+                                <field name="gnx_compliance_statement" widget="many2many_binary"/>
+                                <field name="eu_manufacturer_declaration" widget="many2many_binary"/>
+                                <field name="emc" widget="many2many_binary"/>
+                                <field name="lvd" widget="many2many_binary"/>
+                                <field name="rohs" widget="many2many_binary"/>
+                                <field name="others_test_reports" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                        <page string="Instructions">
+                            <group>
+                                <field name="installation_instructions" widget="many2many_binary"/>
+                                <field name="assembly_instructions" widget="many2many_binary"/>
+                            </group>
+                        </page-->
+                        <page string="Attachments">
+                            <group>
+                                <field name="attachment_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="type_id"/>
+                                        <field name="datas" filename="datas_fname"/>
+                                        <field name="datas_fname"/>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_tree_view">
+        <field name="name">product.tree</field>
+        <field name="model">vl.product</field>
+        <field name="arch" type="xml">
+            <tree string="Product Tree">
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="type_id"/>
+                <field name="ean"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view catalog -->
+    <record model="ir.ui.view" id="catalog_form_view">
+        <field name="name">catalog.form</field>
+        <field name="model">vl.catalog</field>
+        <field name="arch" type="xml">
+            <form string="Catalog Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="catalog_tree_view">
+        <field name="name">catalog.tree</field>
+        <field name="model">vl.catalog</field>
+        <field name="arch" type="xml">
+            <tree string="Catalog Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view category -->
+    <record model="ir.ui.view" id="category_form_view">
+        <field name="name">category.form</field>
+        <field name="model">vl.category</field>
+        <field name="arch" type="xml">
+            <form string="Category Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="category_tree_view">
+        <field name="name">category.tree</field>
+        <field name="model">vl.category</field>
+        <field name="arch" type="xml">
+            <tree string="Category Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view type -->
+    <record model="ir.ui.view" id="type_form_view">
+        <field name="name">type.form</field>
+        <field name="model">vl.type</field>
+        <field name="arch" type="xml">
+            <form string="Type Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="type_tree_view">
+        <field name="name">type.tree</field>
+        <field name="model">vl.type</field>
+        <field name="arch" type="xml">
+            <tree string="Type Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view application -->
+    <record model="ir.ui.view" id="application_form_view">
+        <field name="name">application.form</field>
+        <field name="model">vl.application</field>
+        <field name="arch" type="xml">
+            <form string="Application Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="application_tree_view">
+        <field name="name">application.tree</field>
+        <field name="model">vl.application</field>
+        <field name="arch" type="xml">
+            <tree string="Application Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view finish -->
+    <record model="ir.ui.view" id="finish_form_view">
+        <field name="name">finish.form</field>
+        <field name="model">vl.finish</field>
+        <field name="arch" type="xml">
+            <form string="Finish Form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="finish_tree_view">
+        <field name="name">finish.tree</field>
+        <field name="model">vl.finish</field>
+        <field name="arch" type="xml">
+            <tree string="Finish Tree">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- view material -->
+    <record model="ir.ui.view" id="material_form_view">
+        <field name="name">material.form</field>
+        <field name="model">vl.material</field>
+        <field name="arch" type="xml">
+            <form string="Material Form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="material_tree_view">
+        <field name="name">material.tree</field>
+        <field name="model">vl.material</field>
+        <field name="arch" type="xml">
+            <tree string="Material Tree">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- view attachment -->
+    <record model="ir.ui.view" id="attachment_form_view">
+        <field name="name">attachment.form</field>
+        <field name="model">vl.attachment</field>
+        <field name="arch" type="xml">
+            <form string="Attachment Form">
+                <sheet>
+                    <group>
+                        <field name="type_id"/>
+                        <field name="datas" filename="datas_fname"/>
+                        <field name="datas_fname" invisible="1"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- view attachment type -->
+    <record model="ir.ui.view" id="attachment_type_form_view">
+        <field name="name">attachment.type.form</field>
+        <field name="model">vl.attachment.type</field>
+        <field name="arch" type="xml">
+            <form string="Attachment typ Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="attachment_type_tree_view">
+        <field name="name">attachment.type.tree</field>
+        <field name="model">vl.attachment.type</field>
+        <field name="arch" type="xml">
+            <tree string="Attachment type Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================================ WINDOW ACTIONS =========================== -->
+    <!-- window action product -->
+    <record model="ir.actions.act_window" id="product_list_action">
+        <field name="name">Products</field>
+        <field name="res_model">vl.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product
+            </p>
+        </field>
+    </record>
+
+    <!-- window action catalog -->
+    <record model="ir.actions.act_window" id="catalog_list_action">
+        <field name="name">Catalogs</field>
+        <field name="res_model">vl.catalog</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first catalog
+            </p>
+        </field>
+    </record>
+
+    <!-- window action category -->
+    <record model="ir.actions.act_window" id="category_list_action">
+        <field name="name">Category</field>
+        <field name="res_model">vl.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first category
+            </p>
+        </field>
+    </record>
+
+    <!-- window action type -->
+    <record model="ir.actions.act_window" id="type_list_action">
+        <field name="name">Type</field>
+        <field name="res_model">vl.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product type
+            </p>
+        </field>
+    </record>
+
+    <!-- window action application -->
+    <record model="ir.actions.act_window" id="application_list_action">
+        <field name="name">Application</field>
+        <field name="res_model">vl.application</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product application
+            </p>
+        </field>
+    </record>
+
+    <!-- window action finish -->
+    <record model="ir.actions.act_window" id="finish_list_action">
+        <field name="name">Finish</field>
+        <field name="res_model">vl.finish</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product finish
+            </p>
+        </field>
+    </record>
+
+    <!-- window action material -->
+    <record model="ir.actions.act_window" id="material_list_action">
+        <field name="name">Material</field>
+        <field name="res_model">vl.material</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first material
+            </p>
+        </field>
+    </record>
+
+
+    <!-- window action attachment type -->
+    <record model="ir.actions.act_window" id="attachment_type_list_action">
+        <field name="name">Attachment type</field>
+        <field name="res_model">vl.attachment.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first attachment type</p>
+        </field>
+    </record>
+
+
+    <!-- ================================ MENU =========================== -->
+    <!-- top level menu: no parent -->
+    <menuitem id="main_lighting_menu" name="Lighting"/>
+    <!-- A first level in the left side menu is needed
+         before using action= attribute -->
+    <menuitem id="lighting_menu" name="Lighting"
+              parent="main_lighting_menu"/>
+    <!-- the following menuitem should appear *after*
+         its parent openacademy_menu and *after* its
+         action course_list_action -->
+
+    <menuitem id="products_menu" name="Products" parent="lighting_menu"
+              action="product_list_action"/>
+
+    <menuitem id="catalogs_menu" name="Catalogs" parent="lighting_menu"
+              action="catalog_list_action"/>
+
+    <menuitem id="categories_menu" name="Categories" parent="lighting_menu"
+              action="category_list_action"/>
+
+    <menuitem id="types_menu" name="Types" parent="lighting_menu"
+              action="type_list_action"/>
+
+    <menuitem id="applications_menu" name="Applications" parent="lighting_menu"
+              action="application_list_action"/>
+
+    <menuitem id="finishes_menu" name="Finishes" parent="lighting_menu"
+              action="finish_list_action"/>
+
+    <menuitem id="materials_menu" name="Materials" parent="lighting_menu"
+              action="material_list_action"/>
+
+    <menuitem id="attachment_types_menu" name="Attachment types" parent="lighting_menu"
+              action="attachment_type_list_action"/>
+</odoo>
+
+

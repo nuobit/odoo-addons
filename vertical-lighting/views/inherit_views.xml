@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Product Tree view -->
+    <!--record id="product_product_tree_view" model="ir.ui.view">
+        <field name="name">product.product.form.inherit</field>
+        <field name="model">product.producr</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+             <field name="image_medium" position="after">
+                  <field name="child_ref"/>
+             </field>
+         </field>
+    </record-->
+
+    <!-- Product Template and Product Form view -->
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.common.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+             <field name="categ_id" position="after">
+                  <field name="child_id"/>
+             </field>
+         </field>
+    </record>
+
+</odoo>
+
+
