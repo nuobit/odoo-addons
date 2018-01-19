@@ -30,5 +30,5 @@
     'depends': ['website_sale'],
     'data': [
         ],
-    'installable': True,
+    'installable': False,
 }

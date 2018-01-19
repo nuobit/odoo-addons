@@ -31,5 +31,5 @@
     'data': [
         #'views/inherit_views.xml'
         ],
-    'installable': True,
+    'installable': False,
 }

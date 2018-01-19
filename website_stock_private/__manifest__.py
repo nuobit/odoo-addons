@@ -31,5 +31,5 @@
     'data': [
         'views/website_stock_private_templates.xml'
         ],
-    'installable': True,
+    'installable': False,
 }

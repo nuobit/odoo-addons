@@ -32,5 +32,5 @@
         'views/website_sale_show_product_data_templates.xml',
         'views/inherit_views.xml',
         ],
-    'installable': True,
+    'installable': False,
 }

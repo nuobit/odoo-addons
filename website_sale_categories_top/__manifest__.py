@@ -31,5 +31,5 @@
     'data': [
         'views/website_sale_categories_top_templates.xml',
         ],
-    'installable': True,
+    'installable': False,
 }

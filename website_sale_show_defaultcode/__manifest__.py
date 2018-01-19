@@ -31,5 +31,5 @@
     'data': [
         'views/website_sale_show_defaultcode_templates.xml',
         ],
-    'installable': True,
+    'installable': False,
 }

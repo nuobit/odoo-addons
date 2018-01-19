@@ -31,5 +31,5 @@
     'data': [
         'views/website_customer_area_templates.xml'
         ],
-    'installable': True,
+    'installable': False,
 }

@@ -1,3 +1,3 @@
-# odoo-addons-10.0
+# odoo-addons-11.0
 
 Additional Odoo addons

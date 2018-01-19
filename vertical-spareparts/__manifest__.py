@@ -36,5 +36,5 @@
         'views/camshaft_bearing_set_views.xml',
         'views/camshaft_bearing_set_templates.xml',
         ],
-    'installable': True,
+    'installable': False,
 }

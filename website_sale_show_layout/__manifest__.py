@@ -31,5 +31,5 @@
     'data': [
         'views/website_sale_show_layout_views.xml',
         ],
-    'installable': True,
+    'installable': False,
 }

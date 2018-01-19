@@ -33,5 +33,5 @@
         'views/inherit_views.xml',
         'data/timesheet_invoice_data.xml'
         ],
-    'installable': True,
+    'installable': False,
 }

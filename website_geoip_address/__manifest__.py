@@ -42,5 +42,5 @@ More info: https://github.com/odoo/odoo/issues/11035
         'views/inherit_views.xml',
         'views/templates.xml'
         ],
-    'installable': True,
+    'installable': False,
 }

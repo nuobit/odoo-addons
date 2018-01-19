@@ -32,5 +32,5 @@
         'views/inherit_reports.xml',
         #'views/data.xml'
         ],
-    'installable': True,
+    'installable': False,
 }
