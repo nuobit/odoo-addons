@@ -1,0 +1,19 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lighting_product_user,lighting.product user,model_lighting_product,lighting.group_lighting_user,1,0,0,0
+access_lighting_product_manager,lighting.product manager,model_lighting_product,lighting.group_lighting_manager,1,1,1,1
+access_lighting_catalog_user,lighting.catalog user,model_lighting_catalog,lighting.group_lighting_user,1,0,0,0
+access_lighting_catalog_manager,lighting.catalog manager,model_lighting_catalog,lighting.group_lighting_manager,1,1,1,1
+access_lighting_category_user,lighting.category user,model_lighting_category,lighting.group_lighting_user,1,0,0,0
+access_lighting_category_manager,lighting.category manager,model_lighting_category,lighting.group_lighting_manager,1,1,1,1
+access_lighting_finish_user,lighting.finish user,model_lighting_finish,lighting.group_lighting_user,1,0,0,0
+access_lighting_finish_manager,lighting.finish manager,model_lighting_finish,lighting.group_lighting_manager,1,1,1,1
+access_lighting_type_user,lighting.type user,model_lighting_type,lighting.group_lighting_user,1,0,0,0
+access_lighting_type_manager,lighting.type manager,model_lighting_type,lighting.group_lighting_manager,1,1,1,1
+access_lighting_material_user,lighting.material user,model_lighting_material,lighting.group_lighting_user,1,0,0,0
+access_lighting_material_manager,lighting.material manager,model_lighting_material,lighting.group_lighting_manager,1,1,1,1
+access_lighting_application_user,lighting.application user,model_lighting_application,lighting.group_lighting_user,1,0,0,0
+access_lighting_application_manager,lighting.application manager,model_lighting_application,lighting.group_lighting_manager,1,1,1,1
+access_lighting_attachment_user,lighting.attachment user,model_lighting_attachment,lighting.group_lighting_user,1,0,0,0
+access_lighting_attachment_manager,lighting.attachment manager,model_lighting_attachment,lighting.group_lighting_manager,1,1,1,1
+access_lighting_attachment_type_user,lighting.attachment.type user,model_lighting_attachment_type,lighting.group_lighting_user,1,0,0,0
+access_lighting_attachment_type_manager,lighting.attachment.type manager,model_lighting_attachment_type,lighting.group_lighting_manager,1,1,1,1
