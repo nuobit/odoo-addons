@@ -34,7 +34,7 @@
                                 <div>
                                     <field name="ip_check"/>
                                     <field name="ip" style="width: 10%"
-                                           attrs="{'invisible': [('ip_check', '=', False)], 'required': [('ip_check', '=', True)]}"/>
+                                           attrs="{'readonly': [('ip_check', '=', False)], 'required': [('ip_check', '=', True)]}"/>
                                 </div>
 
                                 <label for="ip2_check" string="IP2"/>
@@ -53,7 +53,10 @@
 
                                 <field name="static_pressure_kg"/>
                                 <field name="dynamic_pressure_kg"/>
+                                <field name="dynamic_pressure_kmh"/>
                                 <field name="corrosion_resistance"/>
+
+                                <field name="protection_class"/>
 
 
                                 <field name="technical_comments" widget="text"/>
@@ -75,6 +78,22 @@
                                 <field name="assembly_instructions" widget="many2many_binary"/>
                             </group>
                         </page-->
+                        <page string="Sources">
+                            <group>
+                                <field name="source_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="type"/>
+                                        <field name="lamp"/>
+                                        <field name="wattage"/>
+                                        <field name="is_max_wattage"/>
+                                        <field name="luminous_flux1"/>
+                                        <field name="luminous_flux2"/>
+                                        <field name="color_temperature"/>
+                                        <field name="special_spectrum"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
                         <page string="Attachments">
                             <group>
                                 <field name="attachment_ids" nolabel="1">
@@ -83,6 +102,7 @@
                                         <field name="datas" filename="datas_fname"/>
                                         <field name="datas_fname"/>
                                         <field name="name"/>
+                                        <field name="lang"/>
                                     </tree>
                                 </field>
                             </group>
@@ -262,6 +282,109 @@
         </field>
     </record>
 
+    <!-- view language -->
+    <record model="ir.ui.view" id="language_form_view">
+        <field name="name">language.form</field>
+        <field name="model">lighting.language</field>
+        <field name="arch" type="xml">
+            <form string="Language Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="language_tree_view">
+        <field name="name">language.tree</field>
+        <field name="model">lighting.language</field>
+        <field name="arch" type="xml">
+            <tree string="Language Tree">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view protection clas -->
+    <record model="ir.ui.view" id="protectionclass_form_view">
+        <field name="name">protectionclass.form</field>
+        <field name="model">lighting.protectionclass</field>
+        <field name="arch" type="xml">
+            <form string="Protection class Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="protectionclass_tree_view">
+        <field name="name">protectionclass.tree</field>
+        <field name="model">lighting.protectionclass</field>
+        <field name="arch" type="xml">
+            <tree string="Protection class Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- view language -->
+    <record model="ir.ui.view" id="language_form_view">
+        <field name="name">language.form</field>
+        <field name="model">lighting.language</field>
+        <field name="arch" type="xml">
+            <form string="Language Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="language_tree_view">
+        <field name="name">language.tree</field>
+        <field name="model">lighting.language</field>
+        <field name="arch" type="xml">
+            <tree string="Language Tree">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- view source -->
+    <record model="ir.ui.view" id="source_form_view">
+        <field name="name">source.form</field>
+        <field name="model">lighting.source</field>
+        <field name="arch" type="xml">
+            <form string="Source Form">
+                <sheet>
+                    <group>
+                        <field name="type"/>
+                        <field name="lamp"/>
+                        <field name="wattage"/>
+                        <field name="is_max_wattage"/>
+                        <field name="luminous_flux1"/>
+                        <field name="luminous_flux2"/>
+                        <field name="color_temperature"/>
+                        <field name="special_spectrum"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
 
     <!-- view attachment -->
     <record model="ir.ui.view" id="attachment_form_view">
@@ -275,6 +398,7 @@
                         <field name="datas" filename="datas_fname"/>
                         <field name="datas_fname" invisible="1"/>
                         <field name="name"/>
+                        <field name="lang"/>
                     </group>
                 </sheet>
             </form>
@@ -282,7 +406,7 @@
     </record>
 
 
-     <!-- view attachment type -->
+    <!-- view attachment type -->
     <record model="ir.ui.view" id="attachment_type_form_view">
         <field name="name">attachment.type.form</field>
         <field name="model">lighting.attachment.type</field>
@@ -392,6 +516,29 @@
         </field>
     </record>
 
+    <!-- window action protection class -->
+    <record model="ir.actions.act_window" id="protectionclass_list_action">
+        <field name="name">Protection class</field>
+        <field name="res_model">lighting.protectionclass</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first protection class
+            </p>
+        </field>
+    </record>
+
+    <!-- window action language -->
+    <record model="ir.actions.act_window" id="language_list_action">
+        <field name="name">Language</field>
+        <field name="res_model">lighting.language</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first language
+            </p>
+        </field>
+    </record>
 
     <!-- window action attachment type -->
     <record model="ir.actions.act_window" id="attachment_type_list_action">
@@ -436,6 +583,12 @@
 
     <menuitem id="materials_menu" name="Materials" parent="lighting_menu"
               action="material_list_action"/>
+
+    <menuitem id="protectionclasses_menu" name="Protection classes" parent="lighting_menu"
+              action="protectionclass_list_action"/>
+
+    <menuitem id="lenguages_menu" name="Languages" parent="lighting_menu"
+              action="language_list_action"/>
 
     <menuitem id="attachment_types_menu" name="Attachment types" parent="lighting_menu"
               action="attachment_type_list_action"/>

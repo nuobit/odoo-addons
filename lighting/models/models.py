@@ -2,8 +2,11 @@ from odoo import api, fields, models, _
 
 class LightingProduct(models.Model):
     _name = 'lighting.product'
+    #_rec_name = 'full_name'
+    _rec_name = 'reference'
 
     name = fields.Char(string='Description', translate=True)  #required=True
+    #full_name = fields.Char(compute='_compute_full_name', string='Product Name', search='_search_full_name')
     reference = fields.Char(string='Reference', required=True, index=True, copy=False)
     ean = fields.Char(string='EAN', required=True, index=True, copy=False)
     category_id = fields.Many2one(comodel_name='lighting.category', ondelete='restrict', string='Category')
@@ -31,7 +34,13 @@ class LightingProduct(models.Model):
 
     static_pressure_kg = fields.Float(string="Static pressure (kg)")
     dynamic_pressure_kg = fields.Float(string="Dynamic pressure (kg)")
+    dynamic_pressure_kmh = fields.Float(string="Dynamic pressure (km/h)")
     corrosion_resistance = fields.Boolean(string="Corrosion resistance")
+    protection_class = fields.Many2one(comodel_name='lighting.protectionclass', ondelete='restrict', string='Protection class')
+
+
+    source_ids = fields.One2many(comodel_name='lighting.source', inverse_name='product_id',
+                                     string='Sources')
 
     attachment_ids = fields.One2many(comodel_name='lighting.attachment', inverse_name='product_id', string='Attachments')
 
@@ -47,17 +56,63 @@ class LightingProduct(models.Model):
     assembly_instructions = fields.Many2many(comodel_name='ir.attachment', string="Assembly instructions")
     """
 
-
-
-
-
     technical_comments = fields.Char(string='Technical comments')
 
 
     _sql_constraints = [ ('reference_uniq', 'unique (reference)', 'The reference must be unique!'),
                          ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
-    ]
+        ]
 
+    '''
+    @api.depends('category_id.name', 'name')
+    def _compute_full_name(self):
+        # Important: value must be stored in environment of group, not group1!
+        for group, group1 in pycompat.izip(self, self.sudo()):
+            if group1.category_id:
+                group.full_name = '%s / %s' % (group1.category_id.name, group1.name)
+            else:
+                group.full_name = group1.name
+
+    def _search_full_name(self, operator, operand):
+        lst = True
+        if isinstance(operand, bool):
+            domains = [[('name', operator, operand)], [('category_id.name', operator, operand)]]
+            if operator in expression.NEGATIVE_TERM_OPERATORS == (not operand):
+                return expression.AND(domains)
+            else:
+                return expression.OR(domains)
+        if isinstance(operand, pycompat.string_types):
+            lst = False
+            operand = [operand]
+        where = []
+        for group in operand:
+            values = [v for v in group.split('/') if v]
+            group_name = values.pop().strip()
+            category_name = values and '/'.join(values).strip() or group_name
+            group_domain = [('name', operator, lst and [group_name] or group_name)]
+            category_domain = [('category_id.name', operator, lst and [category_name] or category_name)]
+            if operator in expression.NEGATIVE_TERM_OPERATORS and not values:
+                category_domain = expression.OR([category_domain, [('category_id', '=', False)]])
+            if (operator in expression.NEGATIVE_TERM_OPERATORS) == (not values):
+                sub_where = expression.AND([group_domain, category_domain])
+            else:
+                sub_where = expression.OR([group_domain, category_domain])
+            if operator in expression.NEGATIVE_TERM_OPERATORS:
+                where = expression.AND([where, sub_where])
+            else:
+                where = expression.OR([where, sub_where])
+        return where
+
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        # add explicit ordering if search is sorted on full_name
+        if order and order.startswith('full_name'):
+            groups = super(Groups, self).search(args)
+            groups = groups.sorted('full_name', reverse=order.endswith('DESC'))
+            groups = groups[offset:offset+limit] if limit else groups[offset:]
+            return len(groups) if count else groups.ids
+        return super(Groups, self).search(args, offset=offset, limit=limit, order=order, count=count)
+    '''
 
 class LightingCatalog(models.Model):
     _name = 'lighting.catalog'
@@ -111,6 +166,48 @@ class LightingMaterial(models.Model):
                         ('code_uniq', 'unique (code)', 'The material code must be unique!'),
                         ]
 
+class LightingProtectionClass(models.Model):
+    _name = 'lighting.protectionclass'
+
+    name = fields.Char(string='Class', required=True, translate=True)
+
+    _sql_constraints = [('name_uniq', 'unique (name)', 'The protection class must be unique!'),
+                        ]
+
+class LightingLanguage(models.Model):
+    _name = 'lighting.language'
+
+    name = fields.Char(string='Language', required=True, translate=True)
+    code = fields.Char(string='Code', required=True)
+
+    _sql_constraints = [('name_uniq', 'unique (name)', 'The language must be unique!'),
+                        ('code_uniq', 'unique (code)', 'The language code must be unique!'),
+                        ]
+
+
+class LightingSource(models.Model):
+    _name = 'lighting.source'
+
+    _rec_name = 'lamp'
+
+    type = fields.Selection([('main', 'Main'), ('aux', 'Auxiliary')], string='Type')
+
+    lamp = fields.Char(string='Lamp')
+    num = fields.Integer(string='Num')
+    wattage = fields.Integer(string='Wattage (W)')
+    is_max_wattage = fields.Boolean(string='Max. Wattage (W)')
+    luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
+    luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
+    color_temperature = fields.Integer(string='Color temperature (K)')
+    special_spectrum = fields.Selection([('blue' ,'Blue'), ('meat', 'Meat'), ('fashion', 'Moda'),
+                                         ('multifood', 'Multi Food'), ('bread', 'Bread'),
+                                         ('fish', 'Fish'), ('vegetable', 'Vegetable')
+                                         ], string='Special spectrum')
+
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
+
+
+
 class LightingAttachment(models.Model):
     _name = 'lighting.attachment'
 
@@ -120,7 +217,10 @@ class LightingAttachment(models.Model):
     datas = fields.Binary(string="Document", attachment=True)
     datas_fname = fields.Char(string='Filename')
 
+    lang = fields.Many2one(comodel_name='lighting.language', ondelete='restrict', string='Language')
+
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
+
 
 class LightingAttachmentType(models.Model):
     _name = 'lighting.attachment.type'

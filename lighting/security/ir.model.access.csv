@@ -11,6 +11,8 @@ access_lighting_type_user,lighting.type user,model_lighting_type,lighting.group_
 access_lighting_type_manager,lighting.type manager,model_lighting_type,lighting.group_lighting_manager,1,1,1,1
 access_lighting_material_user,lighting.material user,model_lighting_material,lighting.group_lighting_user,1,0,0,0
 access_lighting_material_manager,lighting.material manager,model_lighting_material,lighting.group_lighting_manager,1,1,1,1
+access_lighting_language_user,lighting.language user,model_lighting_language,lighting.group_lighting_user,1,0,0,0
+access_lighting_language_manager,lighting.language manager,model_lighting_language,lighting.group_lighting_manager,1,1,1,1
 access_lighting_application_user,lighting.application user,model_lighting_application,lighting.group_lighting_user,1,0,0,0
 access_lighting_application_manager,lighting.application manager,model_lighting_application,lighting.group_lighting_manager,1,1,1,1
 access_lighting_attachment_user,lighting.attachment user,model_lighting_attachment,lighting.group_lighting_user,1,0,0,0
