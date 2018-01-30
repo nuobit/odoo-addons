@@ -28,6 +28,8 @@
     'website': 'https://www.nuobit.com',
     'depends': [],
     'data': [
+        #'security/lighting_security.xml',
+        #'security/ir.model.access.csv',
         'views/views.xml',
         #'views/templates.xml',
         #'views/camshaft_views.xml',

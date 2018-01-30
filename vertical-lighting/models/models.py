@@ -1,23 +1,23 @@
 from odoo import api, fields, models, _
 
-class VlProduct(models.Model):
-    _name = 'vl.product'
+class LightingProduct(models.Model):
+    _name = 'lighting.product'
 
     name = fields.Char(string='Description', translate=True)  #required=True
     reference = fields.Char(string='Reference', required=True, index=True, copy=False)
     ean = fields.Char(string='EAN', required=True, index=True, copy=False)
-    category_id = fields.Many2one(comodel_name='vl.category', ondelete='restrict', string='Category')
-    catalog_ids = fields.Many2many(comodel_name='vl.catalog', relation='vl_product_vl_catalog_rel', )
-    type_id = fields.Many2one(comodel_name='vl.type', ondelete='restrict', string='Type')
+    category_id = fields.Many2one(comodel_name='lighting.category', ondelete='restrict', string='Category')
+    catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', )
+    type_id = fields.Many2one(comodel_name='lighting.type', ondelete='restrict', string='Type')
     environment = fields.Selection(selection=[('indoor', _('Indoor')), ('outdoor', _('Outdoor')), ('underwater', _('Underwater'))
                                 ], string='Environment', required=True)
-    application_id = fields.Many2one(comodel_name='vl.application', ondelete='restrict', string='Application')
-    finish_id = fields.Many2one(comodel_name='vl.finish', ondelete='restrict', string='Finish')
-    body_material_id = fields.Many2one(comodel_name='vl.material', ondelete='restrict', string='Body material')
-    diffusor_material_id = fields.Many2one(comodel_name='vl.material', ondelete='restrict', string='Diffusor material')
-    frame_material_id = fields.Many2one(comodel_name='vl.material', ondelete='restrict', string='Frame material')
-    reflector_material_id = fields.Many2one(comodel_name='vl.material', ondelete='restrict', string='Reflector material')
-    blade_material_id = fields.Many2one(comodel_name='vl.material', ondelete='restrict', string='Blade material')
+    application_id = fields.Many2one(comodel_name='lighting.application', ondelete='restrict', string='Application')
+    finish_id = fields.Many2one(comodel_name='lighting.finish', ondelete='restrict', string='Finish')
+    body_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Body material')
+    diffusor_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Diffusor material')
+    frame_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Frame material')
+    reflector_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Reflector material')
+    blade_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Blade material')
 
     ip_check = fields.Boolean(string="IP")
     ip = fields.Integer(string="IP")
@@ -33,7 +33,7 @@ class VlProduct(models.Model):
     dynamic_pressure_kg = fields.Float(string="Dynamic pressure (kg)")
     corrosion_resistance = fields.Boolean(string="Corrosion resistance")
 
-    attachment_ids = fields.One2many(comodel_name='vl.attachment', inverse_name='product_id', string='Attachments')
+    attachment_ids = fields.One2many(comodel_name='lighting.attachment', inverse_name='product_id', string='Attachments')
 
     """
     gnx_compliance_statement = fields.Many2many(comodel_name='ir.attachment', string="GNX compliance statement")
@@ -59,40 +59,40 @@ class VlProduct(models.Model):
     ]
 
 
-class VlCatalog(models.Model):
-    _name = 'vl.catalog'
+class LightingCatalog(models.Model):
+    _name = 'lighting.catalog'
 
     name = fields.Char(string='Catalog', required=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name of catalog must be unique!'),
                         ]
 
-class VlCategory(models.Model):
-    _name = 'vl.category'
+class LightingCategory(models.Model):
+    _name = 'lighting.category'
 
     name = fields.Char(string='Category', required=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name of category must be unique!'),
                         ]
 
-class VlType(models.Model):
-    _name = 'vl.type'
+class LightingType(models.Model):
+    _name = 'lighting.type'
 
     name = fields.Char(string='Type', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
                         ]
 
-class VlApplication(models.Model):
-    _name = 'vl.application'
+class LightingApplication(models.Model):
+    _name = 'lighting.application'
 
     name = fields.Char(string='Application', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The application must be unique!'),
                         ]
 
-class VlFinish(models.Model):
-    _name = 'vl.finish'
+class LightingFinish(models.Model):
+    _name = 'lighting.finish'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
@@ -101,8 +101,8 @@ class VlFinish(models.Model):
                         ('code_uniq', 'unique (code)', 'The finish code must be unique!'),
                         ]
 
-class VlMaterial(models.Model):
-    _name = 'vl.material'
+class LightingMaterial(models.Model):
+    _name = 'lighting.material'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
@@ -111,19 +111,19 @@ class VlMaterial(models.Model):
                         ('code_uniq', 'unique (code)', 'The material code must be unique!'),
                         ]
 
-class VlAttachment(models.Model):
-    _name = 'vl.attachment'
+class LightingAttachment(models.Model):
+    _name = 'lighting.attachment'
 
     name = fields.Char(string='Description', translate=True)
-    type_id = fields.Many2one(comodel_name='vl.attachment.type', ondelete='restrict', required=True, string='Type')
+    type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='restrict', required=True, string='Type')
 
     datas = fields.Binary(string="Document", attachment=True)
     datas_fname = fields.Char(string='Filename')
 
-    product_id = fields.Many2one(comodel_name='vl.product', ondelete='restrict', string='Product')
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
 
-class VlAttachmentType(models.Model):
-    _name = 'vl.attachment.type'
+class LightingAttachmentType(models.Model):
+    _name = 'lighting.attachment.type'
 
     name = fields.Char(string='Description', required=True, translate=True)
 
