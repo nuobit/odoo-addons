@@ -34,7 +34,7 @@
                                 <div>
                                     <field name="ip_check"/>
                                     <field name="ip" style="width: 10%"
-                                           attrs="{'readonly': [('ip_check', '=', False)], 'required': [('ip_check', '=', True)]}"/>
+                                           attrs="{'invisible': [('ip_check', '=', False)], 'required': [('ip_check', '=', True)]}"/>
                                 </div>
 
                                 <label for="ip2_check" string="IP2"/>
