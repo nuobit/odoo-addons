@@ -57,6 +57,9 @@
                                 <field name="corrosion_resistance"/>
 
                                 <field name="protection_class"/>
+                                <field name="frequency"/>
+                                <field name="dimmable_ids" widget="many2many_tags"/>
+                                <field name="auxiliary_equipment"/>
 
 
                                 <field name="technical_comments" widget="text"/>
@@ -83,6 +86,7 @@
                                 <field name="source_ids" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="type"/>
+                                        <field name="lampholder"/>
                                         <field name="lamp"/>
                                         <field name="wattage"/>
                                         <field name="is_max_wattage"/>
@@ -282,33 +286,6 @@
         </field>
     </record>
 
-    <!-- view language -->
-    <record model="ir.ui.view" id="language_form_view">
-        <field name="name">language.form</field>
-        <field name="model">lighting.language</field>
-        <field name="arch" type="xml">
-            <form string="Language Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="code"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="language_tree_view">
-        <field name="name">language.tree</field>
-        <field name="model">lighting.language</field>
-        <field name="arch" type="xml">
-            <tree string="Language Tree">
-                <field name="name"/>
-                <field name="code"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- view protection clas -->
     <record model="ir.ui.view" id="protectionclass_form_view">
         <field name="name">protectionclass.form</field>
@@ -334,34 +311,135 @@
         </field>
     </record>
 
-
-    <!-- view language -->
-    <record model="ir.ui.view" id="language_form_view">
-        <field name="name">language.form</field>
-        <field name="model">lighting.language</field>
+    <!-- view frequency -->
+    <record model="ir.ui.view" id="frequency_form_view">
+        <field name="name">frequency.form</field>
+        <field name="model">lighting.frequency</field>
         <field name="arch" type="xml">
-            <form string="Language Form">
+            <form string="Frequency Form">
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="code"/>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record model="ir.ui.view" id="language_tree_view">
-        <field name="name">language.tree</field>
-        <field name="model">lighting.language</field>
+    <record model="ir.ui.view" id="frequency_tree_view">
+        <field name="name">frequency.tree</field>
+        <field name="model">lighting.frequency</field>
         <field name="arch" type="xml">
-            <tree string="Language Tree">
+            <tree string="Frequency Tree">
                 <field name="name"/>
-                <field name="code"/>
             </tree>
         </field>
     </record>
 
+    <!-- view dimmable -->
+    <record model="ir.ui.view" id="dimmable_form_view">
+        <field name="name">dimmable.form</field>
+        <field name="model">lighting.dimmable</field>
+        <field name="arch" type="xml">
+            <form string="Dimmable Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="dimmable_tree_view">
+        <field name="name">dimmable.tree</field>
+        <field name="model">lighting.dimmable</field>
+        <field name="arch" type="xml">
+            <tree string="Dimmable Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view auxiliary equipment -->
+    <record model="ir.ui.view" id="auxiliaryequipment_form_view">
+        <field name="name">auxiliaryequipment.form</field>
+        <field name="model">lighting.auxiliaryequipment</field>
+        <field name="arch" type="xml">
+            <form string="Auxiliary equipment Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="auxiliaryequipment_tree_view">
+        <field name="name">auxiliaryequipment.tree</field>
+        <field name="model">lighting.auxiliaryequipment</field>
+        <field name="arch" type="xml">
+            <tree string="Auxiliary equipment Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- view lampholder -->
+    <record model="ir.ui.view" id="lampholder_form_view">
+        <field name="name">lampholder.form</field>
+        <field name="model">lighting.lampholder</field>
+        <field name="arch" type="xml">
+            <form string="Lampholder Form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="lampholder_tree_view">
+        <field name="name">lampholder.tree</field>
+        <field name="model">lighting.lampholder</field>
+        <field name="arch" type="xml">
+            <tree string="Lampholder Tree">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view lamp -->
+    <record model="ir.ui.view" id="lamp_form_view">
+        <field name="name">lamp.form</field>
+        <field name="model">lighting.lamp</field>
+        <field name="arch" type="xml">
+            <form string="Lamp Form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="lamp_tree_view">
+        <field name="name">lamp.tree</field>
+        <field name="model">lighting.lamp</field>
+        <field name="arch" type="xml">
+            <tree string="Lamp Tree">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
 
     <!-- view source -->
     <record model="ir.ui.view" id="source_form_view">
@@ -373,6 +451,7 @@
                     <group>
                         <field name="type"/>
                         <field name="lamp"/>
+                        <field name="lampholder"/>
                         <field name="wattage"/>
                         <field name="is_max_wattage"/>
                         <field name="luminous_flux1"/>
@@ -427,6 +506,33 @@
         <field name="arch" type="xml">
             <tree string="Attachment type Tree">
                 <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+        <!-- view language -->
+    <record model="ir.ui.view" id="language_form_view">
+        <field name="name">language.form</field>
+        <field name="model">lighting.language</field>
+        <field name="arch" type="xml">
+            <form string="Language Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="language_tree_view">
+        <field name="name">language.tree</field>
+        <field name="model">lighting.language</field>
+        <field name="arch" type="xml">
+            <tree string="Language Tree">
+                <field name="name"/>
+                <field name="code"/>
             </tree>
         </field>
     </record>
@@ -528,17 +634,66 @@
         </field>
     </record>
 
-    <!-- window action language -->
-    <record model="ir.actions.act_window" id="language_list_action">
-        <field name="name">Language</field>
-        <field name="res_model">lighting.language</field>
+    <!-- window action frequency -->
+    <record model="ir.actions.act_window" id="frequency_list_action">
+        <field name="name">Frequency</field>
+        <field name="res_model">lighting.frequency</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first language
+            <p class="oe_view_nocontent_create">Create the first frequency
             </p>
         </field>
     </record>
+
+    <!-- window action dimmable -->
+    <record model="ir.actions.act_window" id="dimmable_list_action">
+        <field name="name">Dimmable</field>
+        <field name="res_model">lighting.dimmable</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first dimmable
+            </p>
+        </field>
+    </record>
+
+    <!-- window action auxiliary equipment -->
+    <record model="ir.actions.act_window" id="auxiliaryequipment_list_action">
+        <field name="name">Auxiliary equipment</field>
+        <field name="res_model">lighting.auxiliaryequipment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first auxiliary equipment
+            </p>
+        </field>
+    </record>
+
+    <!-- window action lampholder class -->
+    <record model="ir.actions.act_window" id="lampholder_list_action">
+        <field name="name">Lampholder</field>
+        <field name="res_model">lighting.lampholder</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first lampholder
+            </p>
+        </field>
+    </record>
+
+    <!-- window action lamp class -->
+    <record model="ir.actions.act_window" id="lamp_list_action">
+        <field name="name">Lamp</field>
+        <field name="res_model">lighting.lamp</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first lamp
+            </p>
+        </field>
+    </record>
+
 
     <!-- window action attachment type -->
     <record model="ir.actions.act_window" id="attachment_type_list_action">
@@ -548,6 +703,18 @@
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first attachment type</p>
+        </field>
+    </record>
+
+    <!-- window action language -->
+    <record model="ir.actions.act_window" id="language_list_action">
+        <field name="name">Language</field>
+        <field name="res_model">lighting.language</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first language
+            </p>
         </field>
     </record>
 
@@ -587,11 +754,29 @@
     <menuitem id="protectionclasses_menu" name="Protection classes" parent="lighting_menu"
               action="protectionclass_list_action"/>
 
-    <menuitem id="lenguages_menu" name="Languages" parent="lighting_menu"
-              action="language_list_action"/>
+    <menuitem id="frequency_menu" name="Frequencies" parent="lighting_menu"
+              action="frequency_list_action"/>
+
+    <menuitem id="dimmable_menu" name="Dimmables" parent="lighting_menu"
+              action="dimmable_list_action"/>
+
+    <menuitem id="auxiliaryequipment_menu" name="Auxiliary equipments" parent="lighting_menu"
+              action="auxiliaryequipment_list_action"/>
+
+
+
+    <menuitem id="lampholders_menu" name="Lampholders" parent="lighting_menu"
+              action="lampholder_list_action"/>
+
+    <menuitem id="lamps_menu" name="Lamps" parent="lighting_menu"
+              action="lamp_list_action"/>
+
 
     <menuitem id="attachment_types_menu" name="Attachment types" parent="lighting_menu"
               action="attachment_type_list_action"/>
+
+    <menuitem id="lenguages_menu" name="Languages" parent="lighting_menu"
+              action="language_list_action"/>
 </odoo>
 
 
