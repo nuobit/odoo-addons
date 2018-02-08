@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <act_window name="Send invoices by e-mail"
+                res_model="mail.compose.message"
+                src_model="account.invoice"
+                view_mode="form"
+                multi="True"
+                target="new"
+                key2="client_action_multi"
+                id="action_send_mass_email_invoice"
+                context="{
+                            'default_composition_mode': 'mass_mail',
+                            'default_email_to':'{($object.email or \'\')|safe}',
+                        }"
+    />
+</odoo>
