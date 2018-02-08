@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* custom_nbsl
+#	* custom_gj
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-10 18:41+0000\n"
-"PO-Revision-Date: 2017-11-10 18:41+0000\n"
+"POT-Creation-Date: 2018-02-08 19:21+0000\n"
+"PO-Revision-Date: 2018-02-08 19:21+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,14 +15,29 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: custom_nbsl
-#: model:ir.ui.view,arch_db:custom_nbsl.report_invoice_document_custom
-#: model:ir.ui.view,arch_db:custom_nbsl.report_saleorder_document_custom
+#. module: custom_gj
+#: model:ir.ui.view,arch_db:custom_gj.report_invoice_document
 msgid "<strong>Payment Term:</strong>"
 msgstr "<strong>Termini de pagament:</strong>"
 
-#. module: custom_nbsl
-#: model:ir.ui.view,arch_db:custom_nbsl.external_layout_footer_custom
-msgid "VAT:"
+#. module: custom_gj
+#: model:ir.ui.view,arch_db:custom_gj.external_layout_header
+msgid "Fax:"
+msgstr "Fax:"
+
+#. module: custom_gj
+#: model:ir.ui.view,arch_db:custom_gj.external_layout_header
+#: model:ir.ui.view,arch_db:custom_gj.report_invoice_document
+msgid "NIF:"
 msgstr "NIF:"
+
+#. module: custom_gj
+#: model:ir.ui.view,arch_db:custom_gj.external_layout_header
+msgid "Phone:"
+msgstr "Telèfon:"
+
+#. module: custom_gj
+#: model:ir.ui.view,arch_db:custom_gj.external_layout_header
+msgid "e-mail:"
+msgstr "e-mail:"
 
