@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="external_layout_header" inherit_id="report.external_layout_header">
+        <xpath expr="//div[@class='header']" position="replace">
+            <div class="header">
+                <!--div class="row">
+                    <div class="col-xs-3">
+                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                             style="max-height: 45px;"/>
+                    </div>
+                    <div class="col-xs-9 text-right" style="margin-top:20px;" t-field="company.rml_header1"/>
+                </div>
+                <div class="row zero_min_height">
+                    <div class="col-xs-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div-->
+
+
+                <div class="row">
+                    <div class="col-xs-6" name="company_address">
+                        <!--span t-field="company.partner_id"
+                              t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"
+                              style="border-bottom: 1px solid black; display:inline-block;"/-->
+                        <p>
+                            <div>
+                                <strong t-field="company.partner_id.name" style="font-size: larger;"/>
+                            </div>
+                            <div t-field="company.partner_id.street"/>
+                            <div t-if="company.partner_id.street2" t-field="company.partner_id.street2"/>
+                            <div>
+                                <span t-field="company.partner_id.zip"/>
+                                <span t-field="company.partner_id.city"/>
+                                <span>(<span t-field="company.partner_id.country_id"/>)
+                                </span>
+                            </div>
+                        </p>
+                        <p>NIF:
+                            <span t-field="company.partner_id.vat"/>
+                        </p>
+                        <p>
+                            <div t-if="company.partner_id.phone">Phone:
+                                <span t-field="company.partner_id.phone"/>
+                            </div>
+                            <div t-if="company.partner_id.fax">Fax:
+                                <span t-field="company.partner_id.fax"/>
+                            </div>
+                            <div t-if="company.partner_id.email">e-mail:
+                                <span t-field="company.partner_id.email"/>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="col-xs-6" name="company_logo">
+                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                             style="max-width:100%;"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+
+    <!--template id="external_layout_header" inherit_id="report.external_layout_header">
+        <xpath expr="//div[@class='header']" position="replace">
+            <div class="header">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
+                             style="max-height: 130px;"/>
+                    </div>
+                    <div class="col-xs-9 text-right" style="margin-top:20px;" t-field="company.rml_header1"/>
+                </div>
+                <div class="row mt32">
+                    <div class="col-xs-3">
+                        <div t-if="company.partner_id.website" t-field="company.partner_id.website"/>
+                        <div t-field="company.partner_id.email"/>
+                        <div t-field="company.partner_id.phone"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template-->
+
+    <template id="external_layout_footer" inherit_id="report.external_layout_footer">
+        <xpath expr="//div[@class='footer']" position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
+    </template>
+
+    <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//span[@t-field='o.payment_term_id.note']" position="before">
+            <strong>Payment Term:</strong>
+        </xpath>
+
+        <xpath expr="//div[@name='invoice_address']" position="replace">
+            <div name="invoice_address" class="col-xs-6 col-xs-offset-6">
+                <p>
+                    <div>
+                        <strong t-field="o.partner_id.name" style="font-size: larger;"/>
+                    </div>
+                    <div t-field="o.partner_id.street"/>
+                    <div t-if="o.partner_id.street2" t-field="company.partner_id.street2"/>
+                    <div>
+                        <span t-if="o.partner_id.zip" t-field="o.partner_id.zip"/>
+                        <span t-if="o.partner_id.city" t-field="o.partner_id.city"/>
+                        <span t-if="o.partner_id.country_id">(<span t-field="o.partner_id.country_id"/>)
+                        </span>
+                    </div>
+                </p>
+                <p>NIF:
+                    <span t-field="o.partner_id.vat"/>
+                </p>
+            </div>
+        </xpath>
+    </template>
+
+    <!--template id="report_saleorder_document_custom" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//span[@t-field='doc.payment_term_id.note']" position="before">
+           <strong>Payment Term:</strong>
+        </xpath>
+
+        <xpath expr="//div[@class='col-xs-6']" position="attributes">
+            <attribute name="class">hidden</attribute>
+        </xpath>
+
+        <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']" position="attributes">
+           <attribute name="class">col-xs-5 col-xs-offset-7</attribute>
+        </xpath>
+
+        <xpath expr="//div[@name='payment_term']" position="attributes">
+           <attribute name="class">hidden</attribute>
+        </xpath>
+
+        <xpath expr="//div[@name='payment_term']" position="attributes">
+           <attribute name="class">hidden</attribute>
+        </xpath>
+    </template-->
+</odoo>
