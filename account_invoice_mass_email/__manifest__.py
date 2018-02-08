@@ -20,7 +20,7 @@
     'name': 'Mass Email Invoices',
     'description': 'Sending multiple invoices by email.',
     'category': 'Accounting',
-    'version': '1.0',
+    'version': '0.1.0',
     'website': 'https://www.nuobit.com/',
     'license': 'AGPL-3',
     "author": "NuoBiT Solutions, S.L.",
