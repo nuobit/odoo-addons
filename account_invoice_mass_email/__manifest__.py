@@ -18,7 +18,7 @@
 
 {
     'name': 'Mass Email Invoices',
-    'summary': 'Sending multiple invoices by email.',
+    'description': 'Sending multiple invoices by email.',
     'category': 'Accounting',
     'version': '1.0',
     'website': 'https://www.nuobit.com/',
@@ -30,7 +30,5 @@
     'data': [
         "views/mass_email_view.xml"
     ],
-    'images':[
-        'static/description/icon.png'
-    ],
+    'installable': True,
 }
