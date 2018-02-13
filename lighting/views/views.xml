@@ -2,6 +2,7 @@
 <odoo>
 
     <!-- ================================ VIEWS =========================== -->
+    <!-- ============= main product views ============ -->
     <!-- view product -->
     <record model="ir.ui.view" id="product_form_view">
         <field name="name">product.form</field>
@@ -11,7 +12,7 @@
                 <sheet>
                     <group>
                         <field name="reference"/>
-                        <field name="name"/>
+                        <field name="description"/>
                         <field name="ean"/>
                         <field name="catalog_ids" widget="many2many_tags"/>
                         <field name="category_id"/>
@@ -19,7 +20,7 @@
                     </group>
 
                     <notebook>
-                        <page string="General">
+                        <page string="Description">
                             <group>
                                 <field name="environment"/>
                                 <field name="application_id"/>
@@ -51,36 +52,104 @@
                                            attrs="{'invisible': [('ik_check', '=', False)], 'required': [('ik_check', '=', True)]}"/>
                                 </div>
 
-                                <field name="static_pressure_kg"/>
-                                <field name="dynamic_pressure_kg"/>
-                                <field name="dynamic_pressure_kmh"/>
+                                <field name="static_pressure"/>
+                                <field name="dynamic_pressure"/>
+                                <field name="dynamic_pressure_velocity"/>
                                 <field name="corrosion_resistance"/>
-
-                                <field name="protection_class"/>
-                                <field name="frequency"/>
-                                <field name="dimmable_ids" widget="many2many_tags"/>
-                                <field name="auxiliary_equipment"/>
-
 
                                 <field name="technical_comments" widget="text"/>
                             </group>
                         </page>
-                        <!--page string="Certifications">
+                        <page string="Electrics">
                             <group>
-                                <field name="gnx_compliance_statement" widget="many2many_binary"/>
-                                <field name="eu_manufacturer_declaration" widget="many2many_binary"/>
-                                <field name="emc" widget="many2many_binary"/>
-                                <field name="lvd" widget="many2many_binary"/>
-                                <field name="rohs" widget="many2many_binary"/>
-                                <field name="others_test_reports" widget="many2many_binary"/>
+                                <field name="protection_class"/>
+                                <field name="frequency"/>
+                                <field name="dimmable_ids" widget="many2many_tags"/>
+                                <field name="auxiliary_equipment"/>
+                                <field name="auxiliary_equipment_model"/>
+                                <field name="auxiliary_equipment_model_alt"/>
+
+                                <field name="input_voltage"/>
+                                <field name="input_current"/>
+                                <field name="output_voltage"/>
+                                <field name="output_current"/>
+                                <field name="total_wattage"/>
+                                <field name="power_factor_min"/>
+                                <field name="power_switches"/>
+                            </group>
+                            <group col="6">
+                                <field name="usb_ports"/>
+                                <field name="usb_voltage"
+                                       attrs="{'invisible': [('usb_ports', '=', 0)], 'required': [('usb_ports', '!=', 0)]}"/>
+                                <field name="usb_current"
+                                       attrs="{'invisible': [('usb_ports', '=', 0)], 'required': [('usb_ports', '!=', 0)]}"/>
+                            </group>
+
+                            <group>
+                                <field name="sensor_ids" widget="many2many_tags"/>
+                                <field name="battery_duration"/>
+                                <field name="battery_charging_cycle"/>
+                                <field name="surface_temperature"/>
+                                <field name="operating_temperature_min"/>
+                                <field name="operating_temperature_max"/>
+                                <field name="glow_wire_temperature"/>
                             </group>
                         </page>
-                        <page string="Instructions">
+                        <page string="Lighting">
                             <group>
-                                <field name="installation_instructions" widget="many2many_binary"/>
-                                <field name="assembly_instructions" widget="many2many_binary"/>
+                                <field name="cri_min"/>
+                                <field name="ugr_max"/>
+                                <field name="mean_life"/>
+
+                                <field name="led_lifetime_l"/>
+                                <field name="led_lifetime_b"/>
+
+                                <field name="color_consistency"/>
+
+                                <field name="led_brand"/>
                             </group>
-                        </page-->
+                        </page>
+                        <page string="Physical">
+                            <group>
+                                <field name="weight"/>
+                                <field name="dimension_ids">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="value"/>
+                                    </tree>
+                                </field>
+                                <field name="cable_outlets"/>
+                                <field name="lead_wires"/>
+                                <field name="lead_wire_length"/>
+                                <field name="inclination_angle_max"/>
+                                <field name="rotation_angle_max"/>
+                                <field name="recessing_box_included"/>
+                                <field name="recess_dimension_ids">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="value"/>
+                                    </tree>
+                                </field>
+                                <field name="ecorrae_category_id"/>
+                                <field name="ecorrae2_category_id"/>
+                                <field name="ecorrae"/>
+                                <field name="ecorrae2"/>
+                                <field name="periodic_maintenance"/>
+                                <field name="anchorage_included"/>
+                                <field name="post_included"/>
+                                <field name="post_with_inspection_chamber"/>
+                                <field name="emergency_light"/>
+                                <field name="average_emergency_time"/>
+                                <field name="flammable_surfaces"/>
+                                <field name="photobiological_risk_group_id"/>
+                                <field name="no_mechanical_screwdriver"/>
+                                <field name="fan_blades"/>
+                                <field name="fan_control"/>
+                                <!--field name="fan_wattage"/-->
+                            </group>
+                        </page>
                         <page string="Sources">
                             <group>
                                 <field name="source_ids" nolabel="1">
@@ -111,6 +180,38 @@
                                 </field>
                             </group>
                         </page>
+                        <page string="Accessories">
+                            <group>
+                                <field name="accessory_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Other">
+                            <group>
+                                <field name="tariff_item"/>
+                                <field name="assembler"/>
+                                <field name="supplier_ids">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="reference"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Marketing">
+                            <group>
+                                <field name="discontinued"/>
+                                <field name="discontinued_by_supplier"/>
+                                <field name="until_end_stock"/>
+                                <field name="on_request"/>
+                                <field name="obsolete"/>
+                                <field name="fixed_mrp"/>
+                                <field name="seo_description"/>
+                                <field name="url_description"/>
+                                <field name="state_id"/>
+                                <field name="marketing_comments" widget="text"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -123,7 +224,7 @@
         <field name="arch" type="xml">
             <tree string="Product Tree">
                 <field name="reference"/>
-                <field name="name"/>
+                <field name="description"/>
                 <field name="category_id"/>
                 <field name="type_id"/>
                 <field name="ean"/>
@@ -131,6 +232,8 @@
         </field>
     </record>
 
+
+    <!-- ============= common data ============ -->
     <!-- view catalog -->
     <record model="ir.ui.view" id="catalog_form_view">
         <field name="name">catalog.form</field>
@@ -190,6 +293,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="is_accessory"/>
                     </group>
                 </sheet>
             </form>
@@ -202,10 +306,13 @@
         <field name="arch" type="xml">
             <tree string="Type Tree">
                 <field name="name"/>
+                <field name="is_accessory"/>
             </tree>
         </field>
     </record>
 
+
+    <!-- ============= description tab ============ -->
     <!-- view application -->
     <record model="ir.ui.view" id="application_form_view">
         <field name="name">application.form</field>
@@ -286,6 +393,7 @@
         </field>
     </record>
 
+    <!-- ============= Electrical characteristics tab ============ -->
     <!-- view protection clas -->
     <record model="ir.ui.view" id="protectionclass_form_view">
         <field name="name">protectionclass.form</field>
@@ -386,7 +494,198 @@
         </field>
     </record>
 
+    <!-- view auxiliaryequipmentmodel -->
+    <record model="ir.ui.view" id="auxiliaryequipmentmodel_form_view">
+        <field name="name">auxiliaryequipmentmodel.form</field>
+        <field name="model">lighting.auxiliaryequipmentmodel</field>
+        <field name="arch" type="xml">
+            <form string="Auxiliary equipment model Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
+    <record model="ir.ui.view" id="auxiliaryequipmentmodel_tree_view">
+        <field name="name">auxiliaryequipmentmodel.tree</field>
+        <field name="model">lighting.auxiliaryequipmentmodel</field>
+        <field name="arch" type="xml">
+            <tree string="Auxiliary equipment model Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view voltage -->
+    <record model="ir.ui.view" id="voltage_form_view">
+        <field name="name">voltage.form</field>
+        <field name="model">lighting.voltage</field>
+        <field name="arch" type="xml">
+            <form string="Voltage Form">
+                <sheet>
+                    <group>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </group>
+                    <group col="4">
+                        <field name="voltage1"/>
+
+                        <label for="voltage2_check" string="Voltage 2 (V)"/>
+                        <div>
+                            <field name="voltage2_check"/>
+                            <field name="voltage2" style="width: 90%"
+                                   attrs="{'invisible': [('voltage2_check', '=', False)], 'required': [('voltage2_check', '=', True)]}"/>
+                        </div>
+
+                        <field name="current_type"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="voltage_tree_view">
+        <field name="name">voltage.tree</field>
+        <field name="model">lighting.voltage</field>
+        <field name="arch" type="xml">
+            <tree string="Voltage Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view sensor -->
+    <record model="ir.ui.view" id="sensor_form_view">
+        <field name="name">sensor.form</field>
+        <field name="model">lighting.sensor</field>
+        <field name="arch" type="xml">
+            <form string="Sensor Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="sensor_tree_view">
+        <field name="name">sensor.tree</field>
+        <field name="model">lighting.sensor</field>
+        <field name="arch" type="xml">
+            <tree string="Sensor Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ============= Lighting characteristics tab ============ -->
+    <!-- view ledbrand -->
+    <record model="ir.ui.view" id="ledbrand_form_view">
+        <field name="name">ledbrand.form</field>
+        <field name="model">lighting.ledbrand</field>
+        <field name="arch" type="xml">
+            <form string="LED brand Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="ledbrand_tree_view">
+        <field name="name">ledbrand.tree</field>
+        <field name="model">lighting.ledbrand</field>
+        <field name="arch" type="xml">
+            <tree string="LED brand Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- ============= Physical characteristics tab ============ -->
+    <!-- view dimension.type -->
+    <record model="ir.ui.view" id="dimension_type_form_view">
+        <field name="name">dimension.type.form</field>
+        <field name="model">lighting.dimension.type</field>
+        <field name="arch" type="xml">
+            <form string="Dimension type Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="dimension_type_tree_view">
+        <field name="name">dimension.type.tree</field>
+        <field name="model">lighting.dimension.type</field>
+        <field name="arch" type="xml">
+            <tree string="Dimension type Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view ecorrae.category -->
+    <record model="ir.ui.view" id="ecorrae_category_form_view">
+        <field name="name">ecorrae.category.form</field>
+        <field name="model">lighting.ecorrae.category</field>
+        <field name="arch" type="xml">
+            <form string="Ecorrae category Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="ecorrae_category_tree_view">
+        <field name="name">ecorrae.category.tree</field>
+        <field name="model">lighting.ecorrae.category</field>
+        <field name="arch" type="xml">
+            <tree string="Ecorrae category Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view photobiologicalriskgroup -->
+    <record model="ir.ui.view" id="photobiologicalriskgroup_form_view">
+        <field name="name">photobiologicalriskgroup.form</field>
+        <field name="model">lighting.photobiologicalriskgroup</field>
+        <field name="arch" type="xml">
+            <form string="Photobiological risk group Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="photobiologicalriskgroup_tree_view">
+        <field name="name">photobiologicalriskgroup.tree</field>
+        <field name="model">lighting.photobiologicalriskgroup</field>
+        <field name="arch" type="xml">
+            <tree string="Photobiological risk group Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ============= sources tab ============ -->
     <!-- view lampholder -->
     <record model="ir.ui.view" id="lampholder_form_view">
         <field name="name">lampholder.form</field>
@@ -464,7 +763,7 @@
         </field>
     </record>
 
-
+    <!-- ============= attachments tab ============ -->
     <!-- view attachment -->
     <record model="ir.ui.view" id="attachment_form_view">
         <field name="name">attachment.form</field>
@@ -510,7 +809,7 @@
         </field>
     </record>
 
-        <!-- view language -->
+    <!-- view language -->
     <record model="ir.ui.view" id="language_form_view">
         <field name="name">language.form</field>
         <field name="model">lighting.language</field>
@@ -537,7 +836,86 @@
         </field>
     </record>
 
+    <!-- ============= Other tab ============ -->
+    <!-- view assembler -->
+    <record model="ir.ui.view" id="assembler_form_view">
+        <field name="name">assembler.form</field>
+        <field name="model">lighting.assembler</field>
+        <field name="arch" type="xml">
+            <form string="Assembler Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="assembler_tree_view">
+        <field name="name">assembler.tree</field>
+        <field name="model">lighting.assembler</field>
+        <field name="arch" type="xml">
+            <tree string="Assembler Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view supplier -->
+    <record model="ir.ui.view" id="supplier_form_view">
+        <field name="name">supplier.form</field>
+        <field name="model">lighting.supplier</field>
+        <field name="arch" type="xml">
+            <form string="Supplier Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="supplier_tree_view">
+        <field name="name">supplier.tree</field>
+        <field name="model">lighting.supplier</field>
+        <field name="arch" type="xml">
+            <tree string="Supplier Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ============= marketing tab ============ -->
+    <!-- view product.state -->
+    <record model="ir.ui.view" id="product_state_form_view">
+        <field name="name">product.state.form</field>
+        <field name="model">lighting.product.state</field>
+        <field name="arch" type="xml">
+            <form string="Product state Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_state_tree_view">
+        <field name="name">product.state.tree</field>
+        <field name="model">lighting.product.state</field>
+        <field name="arch" type="xml">
+            <tree string="Product state Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
     <!-- ================================ WINDOW ACTIONS =========================== -->
+    <!-- ============= main window ============ -->
     <!-- window action product -->
     <record model="ir.actions.act_window" id="product_list_action">
         <field name="name">Products</field>
@@ -550,6 +928,7 @@
         </field>
     </record>
 
+    <!-- ============= common data ============ -->
     <!-- window action catalog -->
     <record model="ir.actions.act_window" id="catalog_list_action">
         <field name="name">Catalogs</field>
@@ -586,6 +965,7 @@
         </field>
     </record>
 
+    <!-- ============= description tab ============ -->
     <!-- window action application -->
     <record model="ir.actions.act_window" id="application_list_action">
         <field name="name">Application</field>
@@ -622,6 +1002,7 @@
         </field>
     </record>
 
+    <!-- ============= Electrical characteristics tab ============ -->
     <!-- window action protection class -->
     <record model="ir.actions.act_window" id="protectionclass_list_action">
         <field name="name">Protection class</field>
@@ -670,6 +1051,86 @@
         </field>
     </record>
 
+    <!-- window action auxiliaryequipmentmodel class -->
+    <record model="ir.actions.act_window" id="auxiliaryequipmentmodel_list_action">
+        <field name="name">Auxiliary equipment model</field>
+        <field name="res_model">lighting.auxiliaryequipmentmodel</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Auxiliary equipment model</p>
+        </field>
+    </record>
+
+    <!-- window action voltage class -->
+    <record model="ir.actions.act_window" id="voltage_list_action">
+        <field name="name">Voltage</field>
+        <field name="res_model">lighting.voltage</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Voltage</p>
+        </field>
+    </record>
+
+    <!-- window action sensor class -->
+    <record model="ir.actions.act_window" id="sensor_list_action">
+        <field name="name">Sensor</field>
+        <field name="res_model">lighting.sensor</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Sensor</p>
+        </field>
+    </record>
+
+    <!-- ============= Lighting characteristics tab ============ -->
+    <!-- window action ledbrand class -->
+    <record model="ir.actions.act_window" id="ledbrand_list_action">
+        <field name="name">LED brand</field>
+        <field name="res_model">lighting.ledbrand</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first LED brand</p>
+        </field>
+    </record>
+
+    <!-- ============= Pysical characteristics tab ============ -->
+    <!-- window action dimension.type class -->
+    <record model="ir.actions.act_window" id="dimension_type_list_action">
+        <field name="name">Dimension type</field>
+        <field name="res_model">lighting.dimension.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Dimension type</p>
+        </field>
+    </record>
+
+    <!-- window action ecorrae.category class -->
+    <record model="ir.actions.act_window" id="ecorrae_category_list_action">
+        <field name="name">Ecorrae category</field>
+        <field name="res_model">lighting.ecorrae.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Ecorrae category</p>
+        </field>
+    </record>
+
+    <!-- window action photobiologicalriskgroup class -->
+    <record model="ir.actions.act_window" id="photobiologicalriskgroup_list_action">
+        <field name="name">Photobiological risk group</field>
+        <field name="res_model">lighting.photobiologicalriskgroup</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Photobiological risk group</p>
+        </field>
+    </record>
+
+    <!-- ============= sources tab ============ -->
     <!-- window action lampholder class -->
     <record model="ir.actions.act_window" id="lampholder_list_action">
         <field name="name">Lampholder</field>
@@ -695,6 +1156,7 @@
     </record>
 
 
+    <!-- ============= attachment tab ============ -->
     <!-- window action attachment type -->
     <record model="ir.actions.act_window" id="attachment_type_list_action">
         <field name="name">Attachment type</field>
@@ -718,6 +1180,41 @@
         </field>
     </record>
 
+    <!-- ============= other tab ============ -->
+    <!-- window action assembler class -->
+    <record model="ir.actions.act_window" id="assembler_list_action">
+        <field name="name">Assembler</field>
+        <field name="res_model">lighting.assembler</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Assembler</p>
+        </field>
+    </record>
+
+    <!-- window action supplier class -->
+    <record model="ir.actions.act_window" id="supplier_list_action">
+        <field name="name">Supplier</field>
+        <field name="res_model">lighting.supplier</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Supplier</p>
+        </field>
+    </record>
+
+    <!-- ============= marketing tab ============ -->
+    <!-- window action product.state class -->
+    <record model="ir.actions.act_window" id="product_state_list_action">
+        <field name="name">Product state</field>
+        <field name="res_model">lighting.product.state</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product state</p>
+        </field>
+    </record>
+
 
     <!-- ================================ MENU =========================== -->
     <!-- top level menu: no parent -->
@@ -730,9 +1227,12 @@
          its parent openacademy_menu and *after* its
          action course_list_action -->
 
+    <!-- ============= product menu ============ -->
     <menuitem id="products_menu" name="Products" parent="lighting_menu"
               action="product_list_action"/>
 
+
+    <!-- ============= common data ============ -->
     <menuitem id="catalogs_menu" name="Catalogs" parent="lighting_menu"
               action="catalog_list_action"/>
 
@@ -742,6 +1242,8 @@
     <menuitem id="types_menu" name="Types" parent="lighting_menu"
               action="type_list_action"/>
 
+
+    <!-- ============= description tab ============ -->
     <menuitem id="applications_menu" name="Applications" parent="lighting_menu"
               action="application_list_action"/>
 
@@ -751,6 +1253,7 @@
     <menuitem id="materials_menu" name="Materials" parent="lighting_menu"
               action="material_list_action"/>
 
+    <!-- ============= Electrical characteristics tab ============ -->
     <menuitem id="protectionclasses_menu" name="Protection classes" parent="lighting_menu"
               action="protectionclass_list_action"/>
 
@@ -763,20 +1266,50 @@
     <menuitem id="auxiliaryequipment_menu" name="Auxiliary equipments" parent="lighting_menu"
               action="auxiliaryequipment_list_action"/>
 
+    <menuitem id="auxiliaryequipmentmodels_menu" name="Auxiliary equipment models" parent="lighting_menu"
+              action="auxiliaryequipmentmodel_list_action"/>
 
+    <menuitem id="voltages_menu" name="Voltages" parent="lighting_menu" action="voltage_list_action"/>
 
+    <menuitem id="sensors_menu" name="Sensors" parent="lighting_menu" action="sensor_list_action"/>
+
+    <!-- ============= Lighting characteristics tab ============ -->
+    <menuitem id="ledbrands_menu" name="LED brands" parent="lighting_menu" action="ledbrand_list_action"/>
+
+    <!-- ============= Pysical characteristics tab ============ -->
+    <menuitem id="dimension_types_menu" name="Dimension types" parent="lighting_menu"
+              action="dimension_type_list_action"/>
+
+    <menuitem id="ecorrae_categories_menu" name="Ecorrae categories" parent="lighting_menu"
+              action="ecorrae_category_list_action"/>
+
+    <menuitem id="photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="lighting_menu"
+              action="photobiologicalriskgroup_list_action"/>
+
+    <!-- ============= sources tab ============ -->
     <menuitem id="lampholders_menu" name="Lampholders" parent="lighting_menu"
               action="lampholder_list_action"/>
 
     <menuitem id="lamps_menu" name="Lamps" parent="lighting_menu"
               action="lamp_list_action"/>
 
-
+    <!-- ============= attachments tab ============ -->
     <menuitem id="attachment_types_menu" name="Attachment types" parent="lighting_menu"
               action="attachment_type_list_action"/>
 
     <menuitem id="lenguages_menu" name="Languages" parent="lighting_menu"
               action="language_list_action"/>
+
+    <!-- ============= other tab ============ -->
+    <menuitem id="assemblers_menu" name="Assemblers" parent="lighting_menu" action="assembler_list_action"/>
+
+    <menuitem id="suppliers_menu" name="Suppliers" parent="lighting_menu" action="supplier_list_action"/>
+
+
+    <!-- ============= marketing tab ============ -->
+    <menuitem id="product_states_menu" name="States" parent="lighting_menu"           action="product_state_list_action"/>
+
+
 </odoo>
 
 
