@@ -167,6 +167,10 @@
                                 </field>
                             </group>
                         </page>
+                        <page string="Beams">
+                            <group>
+                            </group>
+                        </page>
                         <page string="Attachments">
                             <group>
                                 <field name="attachment_ids" nolabel="1">
