@@ -15,22 +15,21 @@
                         <field name="description"/>
                         <field name="ean"/>
                         <field name="catalog_ids" widget="many2many_tags"/>
-                        <field name="category_id"/>
+                        <field name="family_id"/>
                         <field name="type_id"/>
                     </group>
 
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="environment"/>
+                                <field name="install_location"/>
                                 <field name="application_id"/>
                                 <field name="finish_id"/>
                                 <field name="body_material_id"/>
                                 <field name="diffusor_material_id"/>
                                 <field name="frame_material_id"/>
-                                <field name="blade_material_id"/>
                                 <field name="reflector_material_id"/>
-
+                                <field name="blade_material_id"/>
                                 <label for="ip_check" string="IP"/>
                                 <div>
                                     <field name="ip_check"/>
@@ -87,8 +86,8 @@
 
                             <group>
                                 <field name="sensor_ids" widget="many2many_tags"/>
-                                <field name="battery_duration"/>
-                                <field name="battery_charging_cycle"/>
+                                <field name="battery_autonomy"/>
+                                <field name="battery_charge_time"/>
                                 <field name="surface_temperature"/>
                                 <field name="operating_temperature_min"/>
                                 <field name="operating_temperature_max"/>
@@ -97,9 +96,10 @@
                         </page>
                         <page string="Lighting">
                             <group>
+                                <field name="total_nominal_flux"/>
                                 <field name="cri_min"/>
                                 <field name="ugr_max"/>
-                                <field name="mean_life"/>
+                                <field name="lifetime"/>
 
                                 <field name="led_lifetime_l"/>
                                 <field name="led_lifetime_b"/>
@@ -144,7 +144,7 @@
                                 <field name="average_emergency_time"/>
                                 <field name="flammable_surfaces"/>
                                 <field name="photobiological_risk_group_id"/>
-                                <field name="no_mechanical_screwdriver"/>
+                                <field name="mechanical_screwdriver"/>
                                 <field name="fan_blades"/>
                                 <field name="fan_control"/>
                                 <!--field name="fan_wattage"/-->
@@ -169,6 +169,12 @@
                         </page>
                         <page string="Beams">
                             <group>
+                                <field name="beam_ids" nolabel="1">
+                                    <tree>
+                                        <field name="num"/>
+                                        <field name="photometric_distribution_ids" widget="many2many_tags"/>
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                         <page string="Attachments">
@@ -189,10 +195,15 @@
                                 <field name="accessory_ids" nolabel="1"/>
                             </group>
                         </page>
+                        <page string="Substitutes">
+                            <group>
+                                <field name="substitute_ids" nolabel="1"/>
+                            </group>
+                        </page>
                         <page string="Other">
                             <group>
                                 <field name="tariff_item"/>
-                                <field name="assembler"/>
+                                <field name="assembler_id"/>
                                 <field name="supplier_ids">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
@@ -229,7 +240,7 @@
             <tree string="Product Tree">
                 <field name="reference"/>
                 <field name="description"/>
-                <field name="category_id"/>
+                <field name="family_id"/>
                 <field name="type_id"/>
                 <field name="ean"/>
             </tree>
@@ -263,12 +274,12 @@
         </field>
     </record>
 
-    <!-- view category -->
-    <record model="ir.ui.view" id="category_form_view">
-        <field name="name">category.form</field>
-        <field name="model">lighting.category</field>
+    <!-- view family -->
+    <record model="ir.ui.view" id="product_family_form_view">
+        <field name="name">product.family.form</field>
+        <field name="model">lighting.product.family</field>
         <field name="arch" type="xml">
-            <form string="Category Form">
+            <form string="Product family Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -278,11 +289,11 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="category_tree_view">
-        <field name="name">category.tree</field>
-        <field name="model">lighting.category</field>
+    <record model="ir.ui.view" id="product_family_tree_view">
+        <field name="name">product.family.tree</field>
+        <field name="model">lighting.product.family</field>
         <field name="arch" type="xml">
-            <tree string="Category Tree">
+            <tree string="Product family Tree">
                 <field name="name"/>
             </tree>
         </field>
@@ -399,9 +410,9 @@
 
     <!-- ============= Electrical characteristics tab ============ -->
     <!-- view protection clas -->
-    <record model="ir.ui.view" id="protectionclass_form_view">
-        <field name="name">protectionclass.form</field>
-        <field name="model">lighting.protectionclass</field>
+    <record model="ir.ui.view" id="product_protectionclass_form_view">
+        <field name="name">product.protectionclass.form</field>
+        <field name="model">lighting.product.protectionclass</field>
         <field name="arch" type="xml">
             <form string="Protection class Form">
                 <sheet>
@@ -413,9 +424,9 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="protectionclass_tree_view">
-        <field name="name">protectionclass.tree</field>
-        <field name="model">lighting.protectionclass</field>
+    <record model="ir.ui.view" id="product_protectionclass_tree_view">
+        <field name="name">product.protectionclass.tree</field>
+        <field name="model">lighting.product.protectionclass</field>
         <field name="arch" type="xml">
             <tree string="Protection class Tree">
                 <field name="name"/>
@@ -589,11 +600,11 @@
 
     <!-- ============= Lighting characteristics tab ============ -->
     <!-- view ledbrand -->
-    <record model="ir.ui.view" id="ledbrand_form_view">
-        <field name="name">ledbrand.form</field>
-        <field name="model">lighting.ledbrand</field>
+    <record model="ir.ui.view" id="product_ledbrand_form_view">
+        <field name="name">product.ledbrand.form</field>
+        <field name="model">lighting.product.ledbrand</field>
         <field name="arch" type="xml">
-            <form string="LED brand Form">
+            <form string="Product LED brand Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -603,11 +614,11 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="ledbrand_tree_view">
-        <field name="name">ledbrand.tree</field>
-        <field name="model">lighting.ledbrand</field>
+    <record model="ir.ui.view" id="product_ledbrand_tree_view">
+        <field name="name">product.ledbrand.tree</field>
+        <field name="model">lighting.product.ledbrand</field>
         <field name="arch" type="xml">
-            <tree string="LED brand Tree">
+            <tree string="Product LED brand Tree">
                 <field name="name"/>
             </tree>
         </field>
@@ -640,12 +651,12 @@
         </field>
     </record>
 
-    <!-- view ecorrae.category -->
-    <record model="ir.ui.view" id="ecorrae_category_form_view">
-        <field name="name">ecorrae.category.form</field>
-        <field name="model">lighting.ecorrae.category</field>
+    <!-- view product.ecorrae.category -->
+    <record model="ir.ui.view" id="product_ecorrae_category_form_view">
+        <field name="name">product.ecorrae.category.form</field>
+        <field name="model">lighting.product.ecorrae.category</field>
         <field name="arch" type="xml">
-            <form string="Ecorrae category Form">
+            <form string="Product Ecorrae I category Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -655,22 +666,47 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="ecorrae_category_tree_view">
-        <field name="name">ecorrae.category.tree</field>
-        <field name="model">lighting.ecorrae.category</field>
+    <record model="ir.ui.view" id="product_ecorrae_category_tree_view">
+        <field name="name">product.ecorrae.category.tree</field>
+        <field name="model">lighting.product.ecorrae.category</field>
         <field name="arch" type="xml">
-            <tree string="Ecorrae category Tree">
+            <tree string="Product Ecorrae I category Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view product.ecorrae2.category -->
+    <record model="ir.ui.view" id="product_ecorrae2_category_form_view">
+        <field name="name">product.ecorrae2.category.form</field>
+        <field name="model">lighting.product.ecorrae2.category</field>
+        <field name="arch" type="xml">
+            <form string="Product Ecorrae II category Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_ecorrae2_category_tree_view">
+        <field name="name">product.ecorrae2.category.tree</field>
+        <field name="model">lighting.product.ecorrae2.category</field>
+        <field name="arch" type="xml">
+            <tree string="Product Ecorrae II category Tree">
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
     <!-- view photobiologicalriskgroup -->
-    <record model="ir.ui.view" id="photobiologicalriskgroup_form_view">
-        <field name="name">photobiologicalriskgroup.form</field>
-        <field name="model">lighting.photobiologicalriskgroup</field>
+    <record model="ir.ui.view" id="product_photobiologicalriskgroup_form_view">
+        <field name="name">product.photobiologicalriskgroup.form</field>
+        <field name="model">lighting.product.photobiologicalriskgroup</field>
         <field name="arch" type="xml">
-            <form string="Photobiological risk group Form">
+            <form string="Product photobiological risk group Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -679,11 +715,11 @@
             </form>
         </field>
     </record>
-    <record model="ir.ui.view" id="photobiologicalriskgroup_tree_view">
-        <field name="name">photobiologicalriskgroup.tree</field>
-        <field name="model">lighting.photobiologicalriskgroup</field>
+    <record model="ir.ui.view" id="product_photobiologicalriskgroup_tree_view">
+        <field name="name">product.photobiologicalriskgroup.tree</field>
+        <field name="model">lighting.product.photobiologicalriskgroup</field>
         <field name="arch" type="xml">
-            <tree string="Photobiological risk group Tree">
+            <tree string="Product photobiological risk group Tree">
                 <field name="name"/>
             </tree>
         </field>
@@ -764,6 +800,65 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <!-- ============= beams tab ============ -->
+    <!-- view product.beam -->
+    <record model="ir.ui.view" id="product_beam_form_view">
+        <field name="name">product.beam.form</field>
+        <field name="model">lighting.product.beam</field>
+        <field name="arch" type="xml">
+            <form string="Product beam Form">
+                <sheet>
+                    <group>
+                        <field name="num"/>
+                        <field name="photometric_distribution_ids" widget="many2many_tags"/>
+                        <field name="dimension_ids">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name"/>
+                                <field name="value"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--record model="ir.ui.view" id="product_beam_photodistribution_tree_view">
+        <field name="name">product.beam.photodistribution.tree</field>
+        <field name="model">lighting.product.beam.photodistribution</field>
+        <field name="arch" type="xml">
+            <tree string="Product beam photometric distribution Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record-->
+
+    <!-- view product.beam.photodistribution -->
+    <record model="ir.ui.view" id="product_beam_photodistribution_form_view">
+        <field name="name">product.beam.photodistribution.form</field>
+        <field name="model">lighting.product.beam.photodistribution</field>
+        <field name="arch" type="xml">
+            <form string="Product beam photometric distribution Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_beam_photodistribution_tree_view">
+        <field name="name">product.beam.photodistribution.tree</field>
+        <field name="model">lighting.product.beam.photodistribution</field>
+        <field name="arch" type="xml">
+            <tree string="Product beam photometric distribution Tree">
+                <field name="name"/>
+            </tree>
         </field>
     </record>
 
@@ -945,14 +1040,14 @@
         </field>
     </record>
 
-    <!-- window action category -->
-    <record model="ir.actions.act_window" id="category_list_action">
-        <field name="name">Category</field>
-        <field name="res_model">lighting.category</field>
+    <!-- window action family -->
+    <record model="ir.actions.act_window" id="product_family_list_action">
+        <field name="name">Product family</field>
+        <field name="res_model">lighting.product.family</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first category
+            <p class="oe_view_nocontent_create">Create the first product family
             </p>
         </field>
     </record>
@@ -1008,13 +1103,13 @@
 
     <!-- ============= Electrical characteristics tab ============ -->
     <!-- window action protection class -->
-    <record model="ir.actions.act_window" id="protectionclass_list_action">
+    <record model="ir.actions.act_window" id="product_protectionclass_list_action">
         <field name="name">Protection class</field>
-        <field name="res_model">lighting.protectionclass</field>
+        <field name="res_model">lighting.product.protectionclass</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first protection class
+            <p class="oe_view_nocontent_create">Create the first Protection class
             </p>
         </field>
     </record>
@@ -1090,9 +1185,9 @@
 
     <!-- ============= Lighting characteristics tab ============ -->
     <!-- window action ledbrand class -->
-    <record model="ir.actions.act_window" id="ledbrand_list_action">
-        <field name="name">LED brand</field>
-        <field name="res_model">lighting.ledbrand</field>
+    <record model="ir.actions.act_window" id="product_ledbrand_list_action">
+        <field name="name">Product LED brand</field>
+        <field name="res_model">lighting.product.ledbrand</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -1112,21 +1207,32 @@
         </field>
     </record>
 
-    <!-- window action ecorrae.category class -->
-    <record model="ir.actions.act_window" id="ecorrae_category_list_action">
-        <field name="name">Ecorrae category</field>
-        <field name="res_model">lighting.ecorrae.category</field>
+    <!-- window action product.ecorrae.category class -->
+    <record model="ir.actions.act_window" id="product_ecorrae_category_list_action">
+        <field name="name">Product Ecorrae I category</field>
+        <field name="res_model">lighting.product.ecorrae.category</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Ecorrae category</p>
+            <p class="oe_view_nocontent_create">Create the first Product Ecorrae I category</p>
+        </field>
+    </record>
+
+    <!-- window action product.ecorrae2.category class -->
+    <record model="ir.actions.act_window" id="product_ecorrae2_category_list_action">
+        <field name="name">Product Ecorrae II category</field>
+        <field name="res_model">lighting.product.ecorrae2.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product Ecorrae II category</p>
         </field>
     </record>
 
     <!-- window action photobiologicalriskgroup class -->
-    <record model="ir.actions.act_window" id="photobiologicalriskgroup_list_action">
-        <field name="name">Photobiological risk group</field>
-        <field name="res_model">lighting.photobiologicalriskgroup</field>
+    <record model="ir.actions.act_window" id="product_photobiologicalriskgroup_list_action">
+        <field name="name">Product photobiological risk group</field>
+        <field name="res_model">lighting.product.photobiologicalriskgroup</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -1156,6 +1262,18 @@
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first lamp
             </p>
+        </field>
+    </record>
+
+    <!-- ============= sources tab ============ -->
+    <!-- window action product.beam.photodistribution class -->
+    <record model="ir.actions.act_window" id="product_beam_photodistribution_list_action">
+        <field name="name">Product beam photometric distribution</field>
+        <field name="res_model">lighting.product.beam.photodistribution</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product beam photometric distribution</p>
         </field>
     </record>
 
@@ -1240,8 +1358,8 @@
     <menuitem id="catalogs_menu" name="Catalogs" parent="lighting_menu"
               action="catalog_list_action"/>
 
-    <menuitem id="categories_menu" name="Categories" parent="lighting_menu"
-              action="category_list_action"/>
+    <menuitem id="product_families_menu" name="Families" parent="lighting_menu"
+              action="product_family_list_action"/>
 
     <menuitem id="types_menu" name="Types" parent="lighting_menu"
               action="type_list_action"/>
@@ -1258,8 +1376,8 @@
               action="material_list_action"/>
 
     <!-- ============= Electrical characteristics tab ============ -->
-    <menuitem id="protectionclasses_menu" name="Protection classes" parent="lighting_menu"
-              action="protectionclass_list_action"/>
+    <menuitem id="product_protectionclasses_menu" name="Protection classes" parent="lighting_menu"
+              action="product_protectionclass_list_action"/>
 
     <menuitem id="frequency_menu" name="Frequencies" parent="lighting_menu"
               action="frequency_list_action"/>
@@ -1278,17 +1396,21 @@
     <menuitem id="sensors_menu" name="Sensors" parent="lighting_menu" action="sensor_list_action"/>
 
     <!-- ============= Lighting characteristics tab ============ -->
-    <menuitem id="ledbrands_menu" name="LED brands" parent="lighting_menu" action="ledbrand_list_action"/>
+    <menuitem id="product_ledbrands_menu" name="LED brands" parent="lighting_menu"
+              action="product_ledbrand_list_action"/>
 
     <!-- ============= Pysical characteristics tab ============ -->
     <menuitem id="dimension_types_menu" name="Dimension types" parent="lighting_menu"
               action="dimension_type_list_action"/>
 
-    <menuitem id="ecorrae_categories_menu" name="Ecorrae categories" parent="lighting_menu"
-              action="ecorrae_category_list_action"/>
+    <menuitem id="product_ecorrae_categories_menu" name="Ecorrae I categories" parent="lighting_menu"
+              action="product_ecorrae_category_list_action"/>
 
-    <menuitem id="photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="lighting_menu"
-              action="photobiologicalriskgroup_list_action"/>
+    <menuitem id="product_ecorrae2_categories_menu" name="Ecorrae II categories" parent="lighting_menu"
+              action="product_ecorrae2_category_list_action"/>
+
+    <menuitem id="product_photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="lighting_menu"
+              action="product_photobiologicalriskgroup_list_action"/>
 
     <!-- ============= sources tab ============ -->
     <menuitem id="lampholders_menu" name="Lampholders" parent="lighting_menu"
@@ -1296,6 +1418,10 @@
 
     <menuitem id="lamps_menu" name="Lamps" parent="lighting_menu"
               action="lamp_list_action"/>
+
+    <!-- ============= beams tab ============ -->
+    <menuitem id="product_beam_photodistributions_menu" name="Beam photometric distributions" parent="lighting_menu"
+              action="product_beam_photodistribution_list_action"/>
 
     <!-- ============= attachments tab ============ -->
     <menuitem id="attachment_types_menu" name="Attachment types" parent="lighting_menu"
@@ -1311,7 +1437,7 @@
 
 
     <!-- ============= marketing tab ============ -->
-    <menuitem id="product_states_menu" name="States" parent="lighting_menu"           action="product_state_list_action"/>
+    <menuitem id="product_states_menu" name="States" parent="lighting_menu" action="product_state_list_action"/>
 
 
 </odoo>

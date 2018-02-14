@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="product_ecorrae_category_cata" model="lighting.product.ecorrae.category">
+            <field name="name">CAT-A</field>
+        </record>
+        <record id="product_ecorrae_category_catb" model="lighting.product.ecorrae.category">
+            <field name="name">CAT-B</field>
+        </record>
+        <record id="product_ecorrae_category_catc" model="lighting.product.ecorrae.category">
+            <field name="name">CAT-C</field>
+        </record>
+        <record id="product_ecorrae_category_leda" model="lighting.product.ecorrae.category">
+            <field name="name">LED-A</field>
+        </record>
+        <record id="product_ecorrae_category_ledb" model="lighting.product.ecorrae.category">
+            <field name="name">LED-B</field>
+        </record>
+        <record id="product_ecorrae_category_ledc" model="lighting.product.ecorrae.category">
+            <field name="name">LED-C</field>
+        </record>
+        <record id="product_ecorrae_category_code" model="lighting.product.ecorrae.category">
+            <field name="name">COD-E</field>
+        </record>
+        <record id="product_ecorrae_category_lede" model="lighting.product.ecorrae.category">
+            <field name="name">LED-E</field>
+        </record>
+
+
+        <record id="product_ecorrae_category_cod60" model="lighting.product.ecorrae2.category">
+            <field name="name">COD-60</field>
+        </record>
+        <record id="product_ecorrae_category_cod61" model="lighting.product.ecorrae2.category">
+            <field name="name">COD-61</field>
+        </record>
+        <record id="product_ecorrae_category_cod62" model="lighting.product.ecorrae2.category">
+            <field name="name">COD-62</field>
+        </record>
+        <record id="product_ecorrae_category_cod63" model="lighting.product.ecorrae2.category">
+            <field name="name">COD-63</field>
+        </record>
+        <record id="product_ecorrae_category_cod105a" model="lighting.product.ecorrae2.category">
+            <field name="name">COD-105a</field>
+        </record>
+        <record id="product_ecorrae_category_cod105b" model="lighting.product.ecorrae2.category">
+            <field name="name">COD-105b</field>
+        </record>
+        <record id="product_ecorrae_category_rota" model="lighting.product.ecorrae2.category">
+            <field name="name">ROT-A</field>
+        </record>
+        <record id="product_ecorrae_category_rotb" model="lighting.product.ecorrae2.category">
+            <field name="name">ROT-B</field>
+        </record>
+        <record id="product_ecorrae_category_rotc" model="lighting.product.ecorrae2.category">
+            <field name="name">ROT-C</field>
+        </record>
+        <record id="product_ecorrae_category_neón*" model="lighting.product.ecorrae2.category">
+            <field name="name">NEÓN*</field>
+        </record>
+
+
+        <record id="product_photobiologicalriskgroup_gr0" model="lighting.product.photobiologicalriskgroup">
+            <field name="name">GR0</field>
+        </record>
+        <record id="product_photobiologicalriskgroup_gr1" model="lighting.product.photobiologicalriskgroup">
+            <field name="name">GR1</field>
+        </record>
+        <record id="product_photobiologicalriskgroup_gr2" model="lighting.product.photobiologicalriskgroup">
+            <field name="name">GR2</field>
+        </record>
+        <record id="product_photobiologicalriskgroup_gr3" model="lighting.product.photobiologicalriskgroup">
+            <field name="name">GR3</field>
+        </record>
+
+
+        <record id="product_protectionclass_class i" model="lighting.product.protectionclass">
+            <field name="name">Class I</field>
+        </record>
+        <record id="product_protectionclass_class ii" model="lighting.product.protectionclass">
+            <field name="name">Class II</field>
+        </record>
+        <record id="product_protectionclass_class iii" model="lighting.product.protectionclass">
+            <field name="name">Class III</field>
+        </record>
+
+
+
+
+    </data>
+</openerp>

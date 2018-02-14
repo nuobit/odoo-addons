@@ -31,11 +31,7 @@
         'security/lighting_security.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
-        #'views/templates.xml',
-        #'views/camshaft_views.xml',
-        #'views/camshaft_templates.xml',
-        #'views/camshaft_bearing_set_views.xml',
-        #'views/camshaft_bearing_set_templates.xml',
+        'data/lighting_data.xml',
         ],
     'installable': True,
 }
