@@ -250,8 +250,9 @@ class edilt_transaction(models.Model):
             partner_id = self.purchase_order_id.picking_type_id.warehouse_id.partner_id
 
         DestinationName1 = etree.SubElement(IdDestination, "DestinationName1")
-        fmt = '%(data)s' + ((' (%s)' % partner_id.comercial) if partner_id.comercial else '')
-        self.setElementText(DestinationName1, partner_id.name, fmt=fmt, required=True)
+        parent_id = partner_id.parent_id if partner_id.parent_id else partner_id
+        fmt = '%(data)s' + ((' (%s)' % parent_id.comercial) if parent_id.comercial else '')
+        self.setElementText(DestinationName1, parent_id.name, fmt=fmt, required=True)
 
         DestinationName2 = etree.SubElement(IdDestination, "DestinationName2")
         self.setElementText(DestinationName2, partner_id.street2, required=False)
