@@ -61,16 +61,16 @@
                         </page>
                         <page string="Electrics">
                             <group>
-                                <field name="protection_class"/>
-                                <field name="frequency"/>
+                                <field name="protection_class_id"/>
+                                <field name="frequency_id"/>
                                 <field name="dimmable_ids" widget="many2many_tags"/>
-                                <field name="auxiliary_equipment"/>
-                                <field name="auxiliary_equipment_model"/>
-                                <field name="auxiliary_equipment_model_alt"/>
+                                <field name="auxiliary_equipment_id"/>
+                                <field name="auxiliary_equipment_model_id"/>
+                                <field name="auxiliary_equipment_model_alt_id"/>
 
-                                <field name="input_voltage"/>
+                                <field name="input_voltage_id"/>
                                 <field name="input_current"/>
-                                <field name="output_voltage"/>
+                                <field name="output_voltage_id"/>
                                 <field name="output_current"/>
                                 <field name="total_wattage"/>
                                 <field name="power_factor_min"/>
@@ -106,7 +106,7 @@
 
                                 <field name="color_consistency"/>
 
-                                <field name="led_brand"/>
+                                <field name="led_brand_id"/>
                             </group>
                         </page>
                         <page string="Physical">
@@ -115,7 +115,7 @@
                                 <field name="dimension_ids">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
-                                        <field name="name"/>
+                                        <field name="type_id"/>
                                         <field name="value"/>
                                     </tree>
                                 </field>
@@ -128,7 +128,7 @@
                                 <field name="recess_dimension_ids">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
-                                        <field name="name"/>
+                                        <field name="type_id"/>
                                         <field name="value"/>
                                     </tree>
                                 </field>
@@ -151,28 +151,36 @@
                             </group>
                         </page>
                         <page string="Sources">
+                            <group string="Source types">
+                                <field name="source_count"/>
+                            </group>
                             <group>
                                 <field name="source_ids" nolabel="1">
-                                    <tree editable="bottom">
-                                        <field name="type"/>
-                                        <field name="lampholder"/>
-                                        <field name="lamp"/>
-                                        <field name="wattage"/>
-                                        <field name="is_max_wattage"/>
-                                        <field name="luminous_flux1"/>
-                                        <field name="luminous_flux2"/>
-                                        <field name="color_temperature"/>
-                                        <field name="special_spectrum"/>
+                                    <tree>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="relevance"/>
+                                        <field name="num"/>
+                                        <field name="lampholder_id"/>
+
+                                        <!--field name="line_ids"/-->
+                                        <field name="line_display"/>
+
                                     </tree>
                                 </field>
                             </group>
                         </page>
                         <page string="Beams">
+                            <group string="Beam types">
+                                <field name="beam_count"/>
+                            </group>
                             <group>
                                 <field name="beam_ids" nolabel="1">
                                     <tree>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="relevance"/>
                                         <field name="num"/>
                                         <field name="photometric_distribution_ids" widget="many2many_tags"/>
+                                        <field name="dimensions_display"/>
                                     </tree>
                                 </field>
                             </group>
@@ -185,7 +193,7 @@
                                         <field name="datas" filename="datas_fname"/>
                                         <field name="datas_fname"/>
                                         <field name="name"/>
-                                        <field name="lang"/>
+                                        <field name="lang_id"/>
                                     </tree>
                                 </field>
                             </group>
@@ -207,7 +215,7 @@
                                 <field name="supplier_ids">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
-                                        <field name="name"/>
+                                        <field name="supplier_id"/>
                                         <field name="reference"/>
                                     </tree>
                                 </field>
@@ -322,6 +330,58 @@
             <tree string="Product type Tree">
                 <field name="name"/>
                 <field name="is_accessory"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- view dimension.type -->
+    <record model="ir.ui.view" id="dimension_type_form_view">
+        <field name="name">dimension.type.form</field>
+        <field name="model">lighting.dimension.type</field>
+        <field name="arch" type="xml">
+            <form string="Dimension type Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="dimension_type_tree_view">
+        <field name="name">dimension.type.tree</field>
+        <field name="model">lighting.dimension.type</field>
+        <field name="arch" type="xml">
+            <tree string="Dimension type Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view energyefficiency -->
+    <record model="ir.ui.view" id="energyefficiency_form_view">
+        <field name="name">energyefficiency.form</field>
+        <field name="model">lighting.energyefficiency</field>
+        <field name="arch" type="xml">
+            <form string="Energy efficiency Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="energyefficiency_tree_view">
+        <field name="name">energyefficiency.tree</field>
+        <field name="model">lighting.energyefficiency</field>
+        <field name="arch" type="xml">
+            <tree string="Energy efficiency Tree">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
             </tree>
         </field>
     </record>
@@ -626,31 +686,6 @@
 
 
     <!-- ============= Physical characteristics tab ============ -->
-    <!-- view dimension.type -->
-    <record model="ir.ui.view" id="dimension_type_form_view">
-        <field name="name">dimension.type.form</field>
-        <field name="model">lighting.dimension.type</field>
-        <field name="arch" type="xml">
-            <form string="Dimension type Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="dimension_type_tree_view">
-        <field name="name">dimension.type.tree</field>
-        <field name="model">lighting.dimension.type</field>
-        <field name="arch" type="xml">
-            <tree string="Dimension type Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- view product.ecorraecategory -->
     <record model="ir.ui.view" id="product_ecorraecategory_form_view">
         <field name="name">product.ecorraecategory.form</field>
@@ -726,6 +761,90 @@
     </record>
 
     <!-- ============= sources tab ============ -->
+    <!-- view product.source -->
+    <record model="ir.ui.view" id="product_source_form_view">
+        <field name="name">product.source.form</field>
+        <field name="model">lighting.product.source</field>
+        <field name="arch" type="xml">
+            <form string="Product source Form">
+                <sheet>
+                    <group>
+                        <!--field name="sequence"/-->
+                        <field name="relevance"/>
+                        <field name="num"/>
+                        <field name="lampholder_id"/>
+                        <field name="lampholder_marketing_id"/>
+                    </group>
+                    <group>
+                        <field name="line_ids" nolabel="1">
+                            <tree>
+                                <field name="sequence" widget="handle"/>
+                                <field name="type_id"/>
+                                <!--field name="wattage"/>
+                                <field name="is_max_wattage"/-->
+                                <field name="wattage_display"/>
+
+                                <!--field name="luminous_flux1"/>
+                                <field name="luminous_flux2"/-->
+                                <field name="luminous_flux_display"/>
+
+                                <field name="color_temperature"/>
+                                <field name="special_spectrum"/>
+
+                                <field name="efficiency_ids" widget="many2many_tags"/>
+                                <!--field name="efficiency_display"/-->
+
+                                <field name="is_lamp_included"/>
+                                <field name="lamp_included_efficiency_ids" widget="many2many_tags"
+                                        attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
+
+                                <!--field name="wattage_marketing_ids"/-->
+
+                                <field name="wattage_marketing_display"/>
+
+
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- view product.source line -->
+    <record model="ir.ui.view" id="product_source_line_form_view">
+        <field name="name">product.source.line.form</field>
+        <field name="model">lighting.product.source.line</field>
+        <field name="arch" type="xml">
+            <form string="Product source line Form">
+                <sheet>
+                    <group>
+                        <!--field name="sequence"/-->
+                        <field name="type_id"/>
+                        <field name="wattage"/>
+                        <field name="is_max_wattage"/>
+
+                        <field name="luminous_flux1"/>
+                        <field name="luminous_flux2"/>
+                        <field name="color_temperature"/>
+                        <field name="special_spectrum"/>
+
+                        <field name="efficiency_ids" widget="many2many_tags"/>
+                        <field name="is_lamp_included"/>
+                        <field name="lamp_included_efficiency_ids" widget="many2many_tags"
+                               attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
+
+                        <field name="wattage_marketing_ids">
+                            <tree editable="bottom">
+                                <field name="wattage"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <!-- view product source lampholder -->
     <record model="ir.ui.view" id="product_source_lampholder_form_view">
         <field name="name">product.source.lampholder.form</field>
@@ -753,12 +872,12 @@
         </field>
     </record>
 
-    <!-- view product source lamp -->
-    <record model="ir.ui.view" id="product_source_lamp_form_view">
-        <field name="name">product.source.lamp.form</field>
-        <field name="model">lighting.product.source.lamp</field>
+    <!-- view product source type -->
+    <record model="ir.ui.view" id="product_source_type_form_view">
+        <field name="name">product.source.type.form</field>
+        <field name="model">lighting.product.source.type</field>
         <field name="arch" type="xml">
-            <form string="Product source lamp Form">
+            <form string="Product source type Form">
                 <sheet>
                     <group>
                         <field name="code"/>
@@ -769,37 +888,14 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="product_source_lamp_tree_view">
-        <field name="name">product.source.lamp.tree</field>
-        <field name="model">lighting.product.source.lamp</field>
+    <record model="ir.ui.view" id="product_source_type_tree_view">
+        <field name="name">product.source.type.tree</field>
+        <field name="model">lighting.product.source.type</field>
         <field name="arch" type="xml">
-            <tree string="Product source lamp Tree">
+            <tree string="Product source type Tree">
                 <field name="code"/>
                 <field name="name"/>
             </tree>
-        </field>
-    </record>
-
-    <!-- view source -->
-    <record model="ir.ui.view" id="product_source_form_view">
-        <field name="name">product.source.form</field>
-        <field name="model">lighting.product.source</field>
-        <field name="arch" type="xml">
-            <form string="Product source Form">
-                <sheet>
-                    <group>
-                        <field name="type"/>
-                        <field name="lamp"/>
-                        <field name="lampholder"/>
-                        <field name="wattage"/>
-                        <field name="is_max_wattage"/>
-                        <field name="luminous_flux1"/>
-                        <field name="luminous_flux2"/>
-                        <field name="color_temperature"/>
-                        <field name="special_spectrum"/>
-                    </group>
-                </sheet>
-            </form>
         </field>
     </record>
 
@@ -812,12 +908,15 @@
             <form string="Product beam Form">
                 <sheet>
                     <group>
+                        <!--field name="sequence"/-->
+                        <field name="relevance"/>
                         <field name="num"/>
                         <field name="photometric_distribution_ids" widget="many2many_tags"/>
+                        <!--field name="dimensions_display"/-->
                         <field name="dimension_ids">
                             <tree editable="bottom">
                                 <field name="sequence" widget="handle"/>
-                                <field name="name"/>
+                                <field name="type_id"/>
                                 <field name="value"/>
                             </tree>
                         </field>
@@ -827,15 +926,6 @@
         </field>
     </record>
 
-    <!--record model="ir.ui.view" id="product_beam_photodistribution_tree_view">
-        <field name="name">product.beam.photodistribution.tree</field>
-        <field name="model">lighting.product.beam.photodistribution</field>
-        <field name="arch" type="xml">
-            <tree string="Product beam photometric distribution Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record-->
 
     <!-- view product.beam.photodistribution -->
     <record model="ir.ui.view" id="product_beam_photodistribution_form_view">
@@ -875,7 +965,7 @@
                         <field name="datas" filename="datas_fname"/>
                         <field name="datas_fname" invisible="1"/>
                         <field name="name"/>
-                        <field name="lang"/>
+                        <field name="lang_id"/>
                     </group>
                 </sheet>
             </form>
@@ -1064,6 +1154,28 @@
         </field>
     </record>
 
+    <!-- window action dimension.type class -->
+    <record model="ir.actions.act_window" id="dimension_type_list_action">
+        <field name="name">Dimension type</field>
+        <field name="res_model">lighting.dimension.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Dimension type</p>
+        </field>
+    </record>
+
+    <!-- window action energyefficiency class -->
+    <record model="ir.actions.act_window" id="energyefficiency_list_action">
+        <field name="name">Energy efficiency</field>
+        <field name="res_model">lighting.energyefficiency</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Energy efficiency</p>
+        </field>
+    </record>
+
     <!-- ============= description tab ============ -->
     <!-- window action application -->
     <record model="ir.actions.act_window" id="product_application_list_action">
@@ -1196,17 +1308,6 @@
     </record>
 
     <!-- ============= Pysical characteristics tab ============ -->
-    <!-- window action dimension.type class -->
-    <record model="ir.actions.act_window" id="dimension_type_list_action">
-        <field name="name">Dimension type</field>
-        <field name="res_model">lighting.dimension.type</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Dimension type</p>
-        </field>
-    </record>
-
     <!-- window action product.ecorraecategory class -->
     <record model="ir.actions.act_window" id="product_ecorraecategory_list_action">
         <field name="name">Product Ecorrae I category</field>
@@ -1253,14 +1354,14 @@
         </field>
     </record>
 
-    <!-- window action product source lamp class -->
-    <record model="ir.actions.act_window" id="product_source_lamp_list_action">
-        <field name="name">Product source lamp</field>
-        <field name="res_model">lighting.product.source.lamp</field>
+    <!-- window action product source type class -->
+    <record model="ir.actions.act_window" id="product_source_type_list_action">
+        <field name="name">Product source type</field>
+        <field name="res_model">lighting.product.source.type</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product source lamp
+            <p class="oe_view_nocontent_create">Create the first product source type
             </p>
         </field>
     </record>
@@ -1364,6 +1465,12 @@
     <menuitem id="product_types_menu" name="Types" parent="lighting_menu"
               action="product_type_list_action"/>
 
+    <menuitem id="dimension_types_menu" name="Dimension types" parent="lighting_menu"
+              action="dimension_type_list_action"/>
+
+    <menuitem id="energyefficiencies_menu" name="Energy efficiencies" parent="lighting_menu"
+              action="energyefficiency_list_action"/>
+
 
     <!-- ============= description tab ============ -->
     <menuitem id="product_applications_menu" name="Applications" parent="lighting_menu"
@@ -1400,9 +1507,6 @@
               action="product_ledbrand_list_action"/>
 
     <!-- ============= Pysical characteristics tab ============ -->
-    <menuitem id="dimension_types_menu" name="Dimension types" parent="lighting_menu"
-              action="dimension_type_list_action"/>
-
     <menuitem id="product_ecorraecategories_menu" name="Ecorrae I categories" parent="lighting_menu"
               action="product_ecorraecategory_list_action"/>
 
@@ -1416,8 +1520,8 @@
     <menuitem id="product_source_lampholders_menu" name="Lampholders" parent="lighting_menu"
               action="product_source_lampholder_list_action"/>
 
-    <menuitem id="product_source_lamps_menu" name="Lamps" parent="lighting_menu"
-              action="product_source_lamp_list_action"/>
+    <menuitem id="product_source_types_menu" name="Lamps" parent="lighting_menu"
+              action="product_source_type_list_action"/>
 
     <!-- ============= beams tab ============ -->
     <menuitem id="product_beam_photodistributions_menu" name="Beam photometric distributions" parent="lighting_menu"

@@ -74,16 +74,49 @@
         </record>
 
 
-        <record id="product_protectionclass_class i" model="lighting.product.protectionclass">
+        <record id="product_protectionclass_class_i" model="lighting.product.protectionclass">
             <field name="name">Class I</field>
         </record>
-        <record id="product_protectionclass_class ii" model="lighting.product.protectionclass">
+        <record id="product_protectionclass_class_ii" model="lighting.product.protectionclass">
             <field name="name">Class II</field>
         </record>
-        <record id="product_protectionclass_class iii" model="lighting.product.protectionclass">
+        <record id="product_protectionclass_class_iii" model="lighting.product.protectionclass">
             <field name="name">Class III</field>
         </record>
 
+
+        <record id="energyefficiency_a_plusplus" model="lighting.energyefficiency">
+            <field name="sequence">10</field>
+            <field name="name">A++</field>
+        </record>
+        <record id="energyefficiency_a_plus" model="lighting.energyefficiency">
+            <field name="sequence">20</field>
+            <field name="name">A+</field>
+        </record>
+        <record id="energyefficiency_a" model="lighting.energyefficiency">
+            <field name="sequence">30</field>
+            <field name="name">A</field>
+        </record>
+        <record id="energyefficiency_b" model="lighting.energyefficiency">
+            <field name="sequence">40</field>
+            <field name="name">B</field>
+        </record>
+        <record id="energyefficiency_c" model="lighting.energyefficiency">
+            <field name="sequence">50</field>
+            <field name="name">C</field>
+        </record>
+        <record id="energyefficiency_d" model="lighting.energyefficiency">
+            <field name="sequence">60</field>
+            <field name="name">D</field>
+        </record>
+        <record id="energyefficiency_e" model="lighting.energyefficiency">
+            <field name="sequence">70</field>
+            <field name="name">E</field>
+        </record>
+        <record id="energyefficiency_g" model="lighting.energyefficiency">
+            <field name="sequence">80</field>
+            <field name="name">G</field>
+        </record>
 
     </data>
 </openerp>
