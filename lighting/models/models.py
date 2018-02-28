@@ -15,20 +15,20 @@ class LightingProduct(models.Model):
     ean = fields.Char(string='EAN', required=True, index=True, copy=False)
     family_id = fields.Many2one(comodel_name='lighting.product.family', ondelete='restrict', string='Family')
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', string='Catalogs')
-    type_id = fields.Many2one(comodel_name='lighting.type', ondelete='restrict', string='Type')
+    type_id = fields.Many2one(comodel_name='lighting.product.type', ondelete='restrict', string='Type')
 
 
     install_location = fields.Selection(selection=[('indoor', _('Indoor')), ('outdoor', _('Outdoor')), ('underwater', _('Underwater'))
                                 ], string='Installation location')
 
     # Description tab
-    application_id = fields.Many2one(comodel_name='lighting.application', ondelete='restrict', string='Application')
-    finish_id = fields.Many2one(comodel_name='lighting.finish', ondelete='restrict', string='Finish')
-    body_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Body material')
-    diffusor_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Diffusor material')
-    frame_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Frame material')
-    reflector_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Reflector material')
-    blade_material_id = fields.Many2one(comodel_name='lighting.material', ondelete='restrict', string='Blade material')
+    application_id = fields.Many2one(comodel_name='lighting.product.application', ondelete='restrict', string='Application')
+    finish_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish')
+    body_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Body material')
+    diffusor_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Diffusor material')
+    frame_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Frame material')
+    reflector_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Reflector material')
+    blade_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Blade material')
 
     ip_check = fields.Boolean(string="IP")
     ip = fields.Integer(string="IP")
@@ -48,16 +48,16 @@ class LightingProduct(models.Model):
 
     # electrical characteristics tab
     protection_class = fields.Many2one(comodel_name='lighting.product.protectionclass', ondelete='restrict', string='Protection class')
-    frequency = fields.Many2one(comodel_name='lighting.frequency', ondelete='restrict', string='Frequency')
-    dimmable_ids = fields.Many2many(comodel_name='lighting.dimmable', relation='lighting_product_dimmable_rel', string='Dimmables')
-    auxiliary_equipment = fields.Many2one(comodel_name='lighting.auxiliaryequipment', ondelete='restrict', string='Auxiliary equipment')
-    auxiliary_equipment_model = fields.Many2one(comodel_name='lighting.auxiliaryequipmentmodel', ondelete='restrict',
+    frequency = fields.Many2one(comodel_name='lighting.product.frequency', ondelete='restrict', string='Frequency')
+    dimmable_ids = fields.Many2many(comodel_name='lighting.product.dimmable', relation='lighting_product_dimmable_rel', string='Dimmables')
+    auxiliary_equipment = fields.Many2one(comodel_name='lighting.product.auxiliaryequipment', ondelete='restrict', string='Auxiliary equipment')
+    auxiliary_equipment_model = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentmodel', ondelete='restrict',
                                           string='Auxiliary equipment model')
-    auxiliary_equipment_model_alt = fields.Many2one(comodel_name='lighting.auxiliaryequipmentmodel', ondelete='restrict',
+    auxiliary_equipment_model_alt = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentmodel', ondelete='restrict',
                                                 string='Auxiliary equipment model alternative')
-    input_voltage = fields.Many2one(comodel_name='lighting.voltage', ondelete='restrict', string='Input voltage')
+    input_voltage = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Input voltage')
     input_current = fields.Float(string='Input current (mA)')
-    output_voltage = fields.Many2one(comodel_name='lighting.voltage', ondelete='restrict', string='Output voltage')
+    output_voltage = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Output voltage')
     output_current = fields.Float(string='Output current (mA)')
 
     total_wattage = fields.Float(string='Total wattage (W)', help='Total power consumed by the luminaire')
@@ -68,7 +68,7 @@ class LightingProduct(models.Model):
     usb_voltage = fields.Float(string='USB voltage')
     usb_current = fields.Float(string='USB current')
 
-    sensor_ids = fields.Many2many(comodel_name='lighting.sensor', relation='lighting_product_sensor_rel',
+    sensor_ids = fields.Many2many(comodel_name='lighting.product.sensor', relation='lighting_product_sensor_rel',
                                     string='Sensors')
 
     battery_autonomy = fields.Float(string='Battery autonomy (h)')
@@ -103,10 +103,10 @@ class LightingProduct(models.Model):
     inclination_angle_max = fields.Float(string='Maximum inclination angle (º)')
     rotation_angle_max = fields.Float(string='Maximum rotation angle (º)')
     recessing_box_included = fields.Boolean(string='Recessing box included')
-    recess_dimension_ids = fields.One2many(comodel_name='lighting.recess.dimension', inverse_name='product_id', string='Recess dimensions')
-    ecorrae_category_id = fields.Many2one(comodel_name='lighting.product.ecorrae.category', ondelete='restrict',
+    recess_dimension_ids = fields.One2many(comodel_name='lighting.product.recessdimension', inverse_name='product_id', string='Recess dimensions')
+    ecorrae_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
                                           string='ECORRAE I category')
-    ecorrae2_category_id = fields.Many2one(comodel_name='lighting.product.ecorrae2.category', ondelete='restrict',
+    ecorrae2_category_id = fields.Many2one(comodel_name='lighting.product.ecorrae2category', ondelete='restrict',
                                           string='ECORRAE II category')
     ecorrae = fields.Float(string='ECORRAE I')
     ecorrae2 = fields.Float(string='ECORRAE II')
@@ -132,7 +132,7 @@ class LightingProduct(models.Model):
     #fan_wattage = fields.Integer(string="Fan wattage (W)")
 
     # Sources tab
-    source_ids = fields.One2many(comodel_name='lighting.source', inverse_name='product_id', string='Sources')
+    source_ids = fields.One2many(comodel_name='lighting.product.source', inverse_name='product_id', string='Sources')
 
     # Beams tab
     beam_ids = fields.One2many(comodel_name='lighting.product.beam', inverse_name='product_id', string='Beams')
@@ -149,7 +149,7 @@ class LightingProduct(models.Model):
                                      column2='lighting_product_substitute_id', string='Substitutes')
 
 
-    # other tab
+    # logistics tab
     tariff_item = fields.Char(string="Tariff item")
     assembler_id = fields.Many2one(comodel_name='lighting.assembler', ondelete='restrict', string='Assembler')
     supplier_ids = fields.One2many(comodel_name='lighting.product.supplier', inverse_name='product_id',
@@ -183,7 +183,7 @@ class LightingCatalog(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name of catalog must be unique!'),
                         ]
 
-class LightingFamily(models.Model):
+class LightingProductFamily(models.Model):
     _name = 'lighting.product.family'
 
     name = fields.Char(string='Family', required=True)
@@ -191,14 +191,14 @@ class LightingFamily(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The family must be unique!'),
                         ]
 
-class LightingType(models.Model):
-    _name = 'lighting.type'
+class LightingProductType(models.Model):
+    _name = 'lighting.product.type'
 
     name = fields.Char(string='Type', required=True, translate=True)
     is_accessory = fields.Boolean(string='Is accessory')
 
     '''
-    field_ids = fields.Many2many(comodel_name='ir.model.fields', relation='lighting_type_model_fields_rel',
+    field_ids = fields.Many2many(comodel_name='ir.model.fields', relation='lighting_product_type_model_fields_rel',
                                  domain=[('model_id.model', '=', 'lighting.product')],string='Fields')
     '''
 
@@ -207,17 +207,18 @@ class LightingType(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
                         ]
+
 ########### description tab
-class LightingApplication(models.Model):
-    _name = 'lighting.application'
+class LightingProductApplication(models.Model):
+    _name = 'lighting.product.application'
 
     name = fields.Char(string='Application', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The application must be unique!'),
                         ]
 
-class LightingFinish(models.Model):
-    _name = 'lighting.finish'
+class LightingProductFinish(models.Model):
+    _name = 'lighting.product.finish'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
@@ -226,8 +227,8 @@ class LightingFinish(models.Model):
                         ('code_uniq', 'unique (code)', 'The finish code must be unique!'),
                         ]
 
-class LightingMaterial(models.Model):
-    _name = 'lighting.material'
+class LightingProductMaterial(models.Model):
+    _name = 'lighting.product.material'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
@@ -245,40 +246,40 @@ class LightingProductProtectionClass(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The protection class must be unique!'),
                         ]
 
-class LightingFrequency(models.Model):
-    _name = 'lighting.frequency'
+class LightingProductFrequency(models.Model):
+    _name = 'lighting.product.frequency'
 
     name = fields.Char(string='Frequency', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The frequency must be unique!'),
                         ]
 
-class LightingDimmable(models.Model):
-    _name = 'lighting.dimmable'
+class LightingProductDimmable(models.Model):
+    _name = 'lighting.product.dimmable'
 
     name = fields.Char(string='Dimmable', required=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The dimmable must be unique!'),
                         ]
 
-class LightingAuxiliaryEquipment(models.Model):
-    _name = 'lighting.auxiliaryequipment'
+class LightingProductAuxiliaryEquipment(models.Model):
+    _name = 'lighting.product.auxiliaryequipment'
 
     name = fields.Char(string='Auxiliary equipment', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment must be unique!'),
                         ]
 
-class LightingAuxiliaryEquipmentModel(models.Model):
-    _name = 'lighting.auxiliaryequipmentmodel'
+class LightingProductAuxiliaryEquipmentModel(models.Model):
+    _name = 'lighting.product.auxiliaryequipmentmodel'
 
     name = fields.Char(string='Auxiliary equipment model', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment model must be unique!'),
                         ]
 
-class LightingVoltage(models.Model):
-    _name = 'lighting.voltage'
+class LightingProductVoltage(models.Model):
+    _name = 'lighting.product.voltage'
 
     name = fields.Char(compute='_compute_name', string='Voltage', required=True)
 
@@ -327,8 +328,8 @@ class LightingVoltage(models.Model):
         if self.voltage2_check and self.voltage2==0:
             raise ValidationError("Voltage 2 cannot be 0")
 
-class LightingSensor(models.Model):
-    _name = 'lighting.sensor'
+class LightingProductSensor(models.Model):
+    _name = 'lighting.product.sensor'
 
     name = fields.Char(string='Sensor', required=True)
 
@@ -355,8 +356,8 @@ class LightingProductDimension(models.Model):
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
 
-class LightingRecessDimension(models.Model):
-    _name = 'lighting.recess.dimension'
+class LightingProductRecessDimension(models.Model):
+    _name = 'lighting.product.recessdimension'
 
     name = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Recess dimension', required=True)
     value = fields.Float(string='Value', required=True)
@@ -374,7 +375,7 @@ class LightingDimensionType(models.Model):
                         ]
 
 class LightingProductEcorraeCategory(models.Model):
-    _name = 'lighting.product.ecorrae.category'
+    _name = 'lighting.product.ecorraecategory'
 
     name = fields.Char(string='Description', required=True)
 
@@ -382,7 +383,7 @@ class LightingProductEcorraeCategory(models.Model):
                         ]
 
 class LightingProductEcorrae2Category(models.Model):
-    _name = 'lighting.product.ecorrae2.category'
+    _name = 'lighting.product.ecorrae2category'
 
     name = fields.Char(string='Description', required=True)
 
@@ -398,15 +399,15 @@ class LightingProductPhotobiologicalRiskGroup(models.Model):
                         ]
 
 ########### sources tab
-class LightingSource(models.Model):
-    _name = 'lighting.source'
+class LightingProductSource(models.Model):
+    _name = 'lighting.product.source'
 
     _rec_name = 'lamp'
 
     type = fields.Selection([('main', 'Main'), ('aux', 'Auxiliary')], string='Type')
 
-    lampholder =  fields.Many2one(comodel_name='lighting.lampholder', ondelete='restrict', string='Lampholder')
-    lamp = fields.Many2one(comodel_name='lighting.lamp', ondelete='restrict', string='Lamp')
+    lampholder =  fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict', string='Lampholder')
+    lamp = fields.Many2one(comodel_name='lighting.product.source.lamp', ondelete='restrict', string='Lamp')
     num = fields.Integer(string='Num')
     wattage = fields.Integer(string='Wattage (W)')
     is_max_wattage = fields.Boolean(string='Max. Wattage (W)')
@@ -421,8 +422,8 @@ class LightingSource(models.Model):
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
 
 
-class LightingLampholder(models.Model):
-    _name = 'lighting.lampholder'
+class LightingProductSourceLampholder(models.Model):
+    _name = 'lighting.product.source.lampholder'
     _rec_name = 'code'
 
     code = fields.Char(string='Code', required=True)
@@ -432,8 +433,8 @@ class LightingLampholder(models.Model):
                         ('code_uniq', 'unique (code)', 'The lampholder code must be unique!'),
                         ]
 
-class LightingLamp(models.Model):
-    _name = 'lighting.lamp'
+class LightingProductSourceLamp(models.Model):
+    _name = 'lighting.product.source.lamp'
     _rec_name = 'code'
 
     code = fields.Char(string='Code', required=True)
@@ -511,7 +512,7 @@ class LightingLanguage(models.Model):
                         ('code_uniq', 'unique (code)', 'The language code must be unique!'),
                         ]
 
-########### other tab
+########### logistics tab
 class LightingAssembler(models.Model):
     _name = 'lighting.assembler'
 
@@ -520,7 +521,7 @@ class LightingAssembler(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The assembler must be unique!'),
                         ]
 
-class LightingSupplier(models.Model):
+class LightingProductSupplier(models.Model):
     _name = 'lighting.product.supplier'
 
     sequence = fields.Integer(required=True, default=1,

@@ -2,60 +2,60 @@
 <openerp>
     <data noupdate="1">
 
-        <record id="product_ecorrae_category_cata" model="lighting.product.ecorrae.category">
+        <record id="product_ecorraecategory_cata" model="lighting.product.ecorraecategory">
             <field name="name">CAT-A</field>
         </record>
-        <record id="product_ecorrae_category_catb" model="lighting.product.ecorrae.category">
+        <record id="product_ecorraecategory_catb" model="lighting.product.ecorraecategory">
             <field name="name">CAT-B</field>
         </record>
-        <record id="product_ecorrae_category_catc" model="lighting.product.ecorrae.category">
+        <record id="product_ecorraecategory_catc" model="lighting.product.ecorraecategory">
             <field name="name">CAT-C</field>
         </record>
-        <record id="product_ecorrae_category_leda" model="lighting.product.ecorrae.category">
+        <record id="product_ecorraecategory_leda" model="lighting.product.ecorraecategory">
             <field name="name">LED-A</field>
         </record>
-        <record id="product_ecorrae_category_ledb" model="lighting.product.ecorrae.category">
+        <record id="product_ecorraecategory_ledb" model="lighting.product.ecorraecategory">
             <field name="name">LED-B</field>
         </record>
-        <record id="product_ecorrae_category_ledc" model="lighting.product.ecorrae.category">
+        <record id="product_ecorraecategory_ledc" model="lighting.product.ecorraecategory">
             <field name="name">LED-C</field>
         </record>
-        <record id="product_ecorrae_category_code" model="lighting.product.ecorrae.category">
+        <record id="product_ecorraecategory_code" model="lighting.product.ecorraecategory">
             <field name="name">COD-E</field>
         </record>
-        <record id="product_ecorrae_category_lede" model="lighting.product.ecorrae.category">
+        <record id="product_ecorraecategory_lede" model="lighting.product.ecorraecategory">
             <field name="name">LED-E</field>
         </record>
 
 
-        <record id="product_ecorrae_category_cod60" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_cod60" model="lighting.product.ecorrae2category">
             <field name="name">COD-60</field>
         </record>
-        <record id="product_ecorrae_category_cod61" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_cod61" model="lighting.product.ecorrae2category">
             <field name="name">COD-61</field>
         </record>
-        <record id="product_ecorrae_category_cod62" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_cod62" model="lighting.product.ecorrae2category">
             <field name="name">COD-62</field>
         </record>
-        <record id="product_ecorrae_category_cod63" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_cod63" model="lighting.product.ecorrae2category">
             <field name="name">COD-63</field>
         </record>
-        <record id="product_ecorrae_category_cod105a" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_cod105a" model="lighting.product.ecorrae2category">
             <field name="name">COD-105a</field>
         </record>
-        <record id="product_ecorrae_category_cod105b" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_cod105b" model="lighting.product.ecorrae2category">
             <field name="name">COD-105b</field>
         </record>
-        <record id="product_ecorrae_category_rota" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_rota" model="lighting.product.ecorrae2category">
             <field name="name">ROT-A</field>
         </record>
-        <record id="product_ecorrae_category_rotb" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_rotb" model="lighting.product.ecorrae2category">
             <field name="name">ROT-B</field>
         </record>
-        <record id="product_ecorrae_category_rotc" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_rotc" model="lighting.product.ecorrae2category">
             <field name="name">ROT-C</field>
         </record>
-        <record id="product_ecorrae_category_neón*" model="lighting.product.ecorrae2.category">
+        <record id="product_ecorraecategory_neón*" model="lighting.product.ecorrae2category">
             <field name="name">NEÓN*</field>
         </record>
 
@@ -83,8 +83,6 @@
         <record id="product_protectionclass_class iii" model="lighting.product.protectionclass">
             <field name="name">Class III</field>
         </record>
-
-
 
 
     </data>

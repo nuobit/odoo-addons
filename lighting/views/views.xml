@@ -200,7 +200,7 @@
                                 <field name="substitute_ids" nolabel="1"/>
                             </group>
                         </page>
-                        <page string="Other">
+                        <page string="Logistics">
                             <group>
                                 <field name="tariff_item"/>
                                 <field name="assembler_id"/>
@@ -299,12 +299,12 @@
         </field>
     </record>
 
-    <!-- view type -->
-    <record model="ir.ui.view" id="type_form_view">
-        <field name="name">type.form</field>
-        <field name="model">lighting.type</field>
+    <!-- view product type -->
+    <record model="ir.ui.view" id="product_type_form_view">
+        <field name="name">product.type.form</field>
+        <field name="model">lighting.product.type</field>
         <field name="arch" type="xml">
-            <form string="Type Form">
+            <form string="Product type Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -315,11 +315,11 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="type_tree_view">
-        <field name="name">type.tree</field>
-        <field name="model">lighting.type</field>
+    <record model="ir.ui.view" id="product_type_tree_view">
+        <field name="name">product.type.tree</field>
+        <field name="model">lighting.product.type</field>
         <field name="arch" type="xml">
-            <tree string="Type Tree">
+            <tree string="Product type Tree">
                 <field name="name"/>
                 <field name="is_accessory"/>
             </tree>
@@ -329,11 +329,11 @@
 
     <!-- ============= description tab ============ -->
     <!-- view application -->
-    <record model="ir.ui.view" id="application_form_view">
-        <field name="name">application.form</field>
-        <field name="model">lighting.application</field>
+    <record model="ir.ui.view" id="product_application_form_view">
+        <field name="name">product.application.form</field>
+        <field name="model">lighting.product.application</field>
         <field name="arch" type="xml">
-            <form string="Application Form">
+            <form string="Product application Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -343,22 +343,22 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="application_tree_view">
-        <field name="name">application.tree</field>
-        <field name="model">lighting.application</field>
+    <record model="ir.ui.view" id="product_application_tree_view">
+        <field name="name">product.application.tree</field>
+        <field name="model">lighting.product.application</field>
         <field name="arch" type="xml">
-            <tree string="Application Tree">
+            <tree string="Product application Tree">
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
     <!-- view finish -->
-    <record model="ir.ui.view" id="finish_form_view">
-        <field name="name">finish.form</field>
-        <field name="model">lighting.finish</field>
+    <record model="ir.ui.view" id="product_finish_form_view">
+        <field name="name">product.finish.form</field>
+        <field name="model">lighting.product.finish</field>
         <field name="arch" type="xml">
-            <form string="Finish Form">
+            <form string="Product finish Form">
                 <sheet>
                     <group>
                         <field name="code"/>
@@ -369,11 +369,11 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="finish_tree_view">
-        <field name="name">finish.tree</field>
-        <field name="model">lighting.finish</field>
+    <record model="ir.ui.view" id="product_finish_tree_view">
+        <field name="name">product.finish.tree</field>
+        <field name="model">lighting.product.finish</field>
         <field name="arch" type="xml">
-            <tree string="Finish Tree">
+            <tree string="Product finish Tree">
                 <field name="code"/>
                 <field name="name"/>
             </tree>
@@ -382,11 +382,11 @@
 
 
     <!-- view material -->
-    <record model="ir.ui.view" id="material_form_view">
-        <field name="name">material.form</field>
-        <field name="model">lighting.material</field>
+    <record model="ir.ui.view" id="product_material_form_view">
+        <field name="name">product.material.form</field>
+        <field name="model">lighting.product.material</field>
         <field name="arch" type="xml">
-            <form string="Material Form">
+            <form string="Product material Form">
                 <sheet>
                     <group>
                         <field name="code"/>
@@ -397,11 +397,11 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="material_tree_view">
-        <field name="name">material.tree</field>
-        <field name="model">lighting.material</field>
+    <record model="ir.ui.view" id="product_material_tree_view">
+        <field name="name">product.material.tree</field>
+        <field name="model">lighting.product.material</field>
         <field name="arch" type="xml">
-            <tree string="Material Tree">
+            <tree string="Product material Tree">
                 <field name="code"/>
                 <field name="name"/>
             </tree>
@@ -435,11 +435,11 @@
     </record>
 
     <!-- view frequency -->
-    <record model="ir.ui.view" id="frequency_form_view">
-        <field name="name">frequency.form</field>
-        <field name="model">lighting.frequency</field>
+    <record model="ir.ui.view" id="product_frequency_form_view">
+        <field name="name">product.frequency.form</field>
+        <field name="model">lighting.product.frequency</field>
         <field name="arch" type="xml">
-            <form string="Frequency Form">
+            <form string="Product frequency Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -449,22 +449,22 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="frequency_tree_view">
-        <field name="name">frequency.tree</field>
-        <field name="model">lighting.frequency</field>
+    <record model="ir.ui.view" id="product_frequency_tree_view">
+        <field name="name">product.frequency.tree</field>
+        <field name="model">lighting.product.frequency</field>
         <field name="arch" type="xml">
-            <tree string="Frequency Tree">
+            <tree string="Product frequency Tree">
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
     <!-- view dimmable -->
-    <record model="ir.ui.view" id="dimmable_form_view">
-        <field name="name">dimmable.form</field>
-        <field name="model">lighting.dimmable</field>
+    <record model="ir.ui.view" id="product_dimmable_form_view">
+        <field name="name">product.dimmable.form</field>
+        <field name="model">lighting.product.dimmable</field>
         <field name="arch" type="xml">
-            <form string="Dimmable Form">
+            <form string="Product dimmable Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -474,22 +474,22 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="dimmable_tree_view">
-        <field name="name">dimmable.tree</field>
-        <field name="model">lighting.dimmable</field>
+    <record model="ir.ui.view" id="product_dimmable_tree_view">
+        <field name="name">product.dimmable.tree</field>
+        <field name="model">lighting.product.dimmable</field>
         <field name="arch" type="xml">
-            <tree string="Dimmable Tree">
+            <tree string="Product dimmable Tree">
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
-    <!-- view auxiliary equipment -->
-    <record model="ir.ui.view" id="auxiliaryequipment_form_view">
-        <field name="name">auxiliaryequipment.form</field>
-        <field name="model">lighting.auxiliaryequipment</field>
+    <!-- view product auxiliary equipment -->
+    <record model="ir.ui.view" id="product_auxiliaryequipment_form_view">
+        <field name="name">product.auxiliaryequipment.form</field>
+        <field name="model">lighting.product.auxiliaryequipment</field>
         <field name="arch" type="xml">
-            <form string="Auxiliary equipment Form">
+            <form string="Product auxiliary equipment Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -499,22 +499,22 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="auxiliaryequipment_tree_view">
-        <field name="name">auxiliaryequipment.tree</field>
-        <field name="model">lighting.auxiliaryequipment</field>
+    <record model="ir.ui.view" id="product_auxiliaryequipment_tree_view">
+        <field name="name">product.auxiliaryequipment.tree</field>
+        <field name="model">lighting.product.auxiliaryequipment</field>
         <field name="arch" type="xml">
-            <tree string="Auxiliary equipment Tree">
+            <tree string="Product auxiliary equipment Tree">
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
-    <!-- view auxiliaryequipmentmodel -->
-    <record model="ir.ui.view" id="auxiliaryequipmentmodel_form_view">
-        <field name="name">auxiliaryequipmentmodel.form</field>
-        <field name="model">lighting.auxiliaryequipmentmodel</field>
+    <!-- view product auxiliaryequipmentmodel -->
+    <record model="ir.ui.view" id="product_auxiliaryequipmentmodel_form_view">
+        <field name="name">product.auxiliaryequipmentmodel.form</field>
+        <field name="model">lighting.product.auxiliaryequipmentmodel</field>
         <field name="arch" type="xml">
-            <form string="Auxiliary equipment model Form">
+            <form string="Product auxiliary equipment model Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -525,21 +525,21 @@
     </record>
 
     <record model="ir.ui.view" id="auxiliaryequipmentmodel_tree_view">
-        <field name="name">auxiliaryequipmentmodel.tree</field>
-        <field name="model">lighting.auxiliaryequipmentmodel</field>
+        <field name="name">product.auxiliaryequipmentmodel.tree</field>
+        <field name="model">lighting.product.auxiliaryequipmentmodel</field>
         <field name="arch" type="xml">
-            <tree string="Auxiliary equipment model Tree">
+            <tree string="Product auxiliary equipment model Tree">
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
     <!-- view voltage -->
-    <record model="ir.ui.view" id="voltage_form_view">
-        <field name="name">voltage.form</field>
-        <field name="model">lighting.voltage</field>
+    <record model="ir.ui.view" id="product_voltage_form_view">
+        <field name="name">product.voltage.form</field>
+        <field name="model">lighting.product.voltage</field>
         <field name="arch" type="xml">
-            <form string="Voltage Form">
+            <form string="Product voltage Form">
                 <sheet>
                     <group>
                         <h1>
@@ -563,22 +563,22 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="voltage_tree_view">
-        <field name="name">voltage.tree</field>
-        <field name="model">lighting.voltage</field>
+    <record model="ir.ui.view" id="product_voltage_tree_view">
+        <field name="name">product.voltage.tree</field>
+        <field name="model">lighting.product.voltage</field>
         <field name="arch" type="xml">
-            <tree string="Voltage Tree">
+            <tree string="Product voltage Tree">
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
     <!-- view sensor -->
-    <record model="ir.ui.view" id="sensor_form_view">
-        <field name="name">sensor.form</field>
-        <field name="model">lighting.sensor</field>
+    <record model="ir.ui.view" id="product_sensor_form_view">
+        <field name="name">product.sensor.form</field>
+        <field name="model">lighting.product.sensor</field>
         <field name="arch" type="xml">
-            <form string="Sensor Form">
+            <form string="Product sensor Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -588,11 +588,11 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="sensor_tree_view">
-        <field name="name">sensor.tree</field>
-        <field name="model">lighting.sensor</field>
+    <record model="ir.ui.view" id="product_sensor_tree_view">
+        <field name="name">product.sensor.tree</field>
+        <field name="model">lighting.product.sensor</field>
         <field name="arch" type="xml">
-            <tree string="Sensor Tree">
+            <tree string="Product sensor Tree">
                 <field name="name"/>
             </tree>
         </field>
@@ -651,10 +651,10 @@
         </field>
     </record>
 
-    <!-- view product.ecorrae.category -->
-    <record model="ir.ui.view" id="product_ecorrae_category_form_view">
-        <field name="name">product.ecorrae.category.form</field>
-        <field name="model">lighting.product.ecorrae.category</field>
+    <!-- view product.ecorraecategory -->
+    <record model="ir.ui.view" id="product_ecorraecategory_form_view">
+        <field name="name">product.ecorraecategory.form</field>
+        <field name="model">lighting.product.ecorraecategory</field>
         <field name="arch" type="xml">
             <form string="Product Ecorrae I category Form">
                 <sheet>
@@ -666,9 +666,9 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="product_ecorrae_category_tree_view">
-        <field name="name">product.ecorrae.category.tree</field>
-        <field name="model">lighting.product.ecorrae.category</field>
+    <record model="ir.ui.view" id="product_ecorraecategory_tree_view">
+        <field name="name">product.ecorraecategory.tree</field>
+        <field name="model">lighting.product.ecorraecategory</field>
         <field name="arch" type="xml">
             <tree string="Product Ecorrae I category Tree">
                 <field name="name"/>
@@ -676,10 +676,10 @@
         </field>
     </record>
 
-    <!-- view product.ecorrae2.category -->
-    <record model="ir.ui.view" id="product_ecorrae2_category_form_view">
-        <field name="name">product.ecorrae2.category.form</field>
-        <field name="model">lighting.product.ecorrae2.category</field>
+    <!-- view product.ecorrae2category -->
+    <record model="ir.ui.view" id="product_ecorrae2category_form_view">
+        <field name="name">product.ecorrae2category.form</field>
+        <field name="model">lighting.product.ecorrae2category</field>
         <field name="arch" type="xml">
             <form string="Product Ecorrae II category Form">
                 <sheet>
@@ -691,9 +691,9 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="product_ecorrae2_category_tree_view">
-        <field name="name">product.ecorrae2.category.tree</field>
-        <field name="model">lighting.product.ecorrae2.category</field>
+    <record model="ir.ui.view" id="product_ecorrae2category_tree_view">
+        <field name="name">product.ecorrae2category.tree</field>
+        <field name="model">lighting.product.ecorrae2category</field>
         <field name="arch" type="xml">
             <tree string="Product Ecorrae II category Tree">
                 <field name="name"/>
@@ -726,12 +726,12 @@
     </record>
 
     <!-- ============= sources tab ============ -->
-    <!-- view lampholder -->
-    <record model="ir.ui.view" id="lampholder_form_view">
-        <field name="name">lampholder.form</field>
-        <field name="model">lighting.lampholder</field>
+    <!-- view product source lampholder -->
+    <record model="ir.ui.view" id="product_source_lampholder_form_view">
+        <field name="name">product.source.lampholder.form</field>
+        <field name="model">lighting.product.source.lampholder</field>
         <field name="arch" type="xml">
-            <form string="Lampholder Form">
+            <form string="Product source lampholder Form">
                 <sheet>
                     <group>
                         <field name="code"/>
@@ -742,23 +742,23 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="lampholder_tree_view">
-        <field name="name">lampholder.tree</field>
-        <field name="model">lighting.lampholder</field>
+    <record model="ir.ui.view" id="product_source_lampholder_tree_view">
+        <field name="name">product.source.lampholder.tree</field>
+        <field name="model">lighting.product.source.lampholder</field>
         <field name="arch" type="xml">
-            <tree string="Lampholder Tree">
+            <tree string="Product source lampholder Tree">
                 <field name="code"/>
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
-    <!-- view lamp -->
-    <record model="ir.ui.view" id="lamp_form_view">
-        <field name="name">lamp.form</field>
-        <field name="model">lighting.lamp</field>
+    <!-- view product source lamp -->
+    <record model="ir.ui.view" id="product_source_lamp_form_view">
+        <field name="name">product.source.lamp.form</field>
+        <field name="model">lighting.product.source.lamp</field>
         <field name="arch" type="xml">
-            <form string="Lamp Form">
+            <form string="Product source lamp Form">
                 <sheet>
                     <group>
                         <field name="code"/>
@@ -769,11 +769,11 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="lamp_tree_view">
-        <field name="name">lamp.tree</field>
-        <field name="model">lighting.lamp</field>
+    <record model="ir.ui.view" id="product_source_lamp_tree_view">
+        <field name="name">product.source.lamp.tree</field>
+        <field name="model">lighting.product.source.lamp</field>
         <field name="arch" type="xml">
-            <tree string="Lamp Tree">
+            <tree string="Product source lamp Tree">
                 <field name="code"/>
                 <field name="name"/>
             </tree>
@@ -781,11 +781,11 @@
     </record>
 
     <!-- view source -->
-    <record model="ir.ui.view" id="source_form_view">
-        <field name="name">source.form</field>
-        <field name="model">lighting.source</field>
+    <record model="ir.ui.view" id="product_source_form_view">
+        <field name="name">product.source.form</field>
+        <field name="model">lighting.product.source</field>
         <field name="arch" type="xml">
-            <form string="Source Form">
+            <form string="Product source Form">
                 <sheet>
                     <group>
                         <field name="type"/>
@@ -935,7 +935,7 @@
         </field>
     </record>
 
-    <!-- ============= Other tab ============ -->
+    <!-- ============= Logistics tab ============ -->
     <!-- view assembler -->
     <record model="ir.ui.view" id="assembler_form_view">
         <field name="name">assembler.form</field>
@@ -1053,9 +1053,9 @@
     </record>
 
     <!-- window action type -->
-    <record model="ir.actions.act_window" id="type_list_action">
-        <field name="name">Type</field>
-        <field name="res_model">lighting.type</field>
+    <record model="ir.actions.act_window" id="product_type_list_action">
+        <field name="name">Product type</field>
+        <field name="res_model">lighting.product.type</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -1066,9 +1066,9 @@
 
     <!-- ============= description tab ============ -->
     <!-- window action application -->
-    <record model="ir.actions.act_window" id="application_list_action">
-        <field name="name">Application</field>
-        <field name="res_model">lighting.application</field>
+    <record model="ir.actions.act_window" id="product_application_list_action">
+        <field name="name">Product application</field>
+        <field name="res_model">lighting.product.application</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -1078,9 +1078,9 @@
     </record>
 
     <!-- window action finish -->
-    <record model="ir.actions.act_window" id="finish_list_action">
-        <field name="name">Finish</field>
-        <field name="res_model">lighting.finish</field>
+    <record model="ir.actions.act_window" id="product_finish_list_action">
+        <field name="name">product finish</field>
+        <field name="res_model">lighting.product.finish</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -1090,9 +1090,9 @@
     </record>
 
     <!-- window action material -->
-    <record model="ir.actions.act_window" id="material_list_action">
-        <field name="name">Material</field>
-        <field name="res_model">lighting.material</field>
+    <record model="ir.actions.act_window" id="product_material_list_action">
+        <field name="name">Product material</field>
+        <field name="res_model">lighting.product.material</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -1115,71 +1115,71 @@
     </record>
 
     <!-- window action frequency -->
-    <record model="ir.actions.act_window" id="frequency_list_action">
-        <field name="name">Frequency</field>
-        <field name="res_model">lighting.frequency</field>
+    <record model="ir.actions.act_window" id="product_frequency_list_action">
+        <field name="name">Product frequency</field>
+        <field name="res_model">lighting.product.frequency</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first frequency
+            <p class="oe_view_nocontent_create">Create the first product frequency
             </p>
         </field>
     </record>
 
     <!-- window action dimmable -->
-    <record model="ir.actions.act_window" id="dimmable_list_action">
-        <field name="name">Dimmable</field>
-        <field name="res_model">lighting.dimmable</field>
+    <record model="ir.actions.act_window" id="product_dimmable_list_action">
+        <field name="name">Product dimmable</field>
+        <field name="res_model">lighting.product.dimmable</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first dimmable
+            <p class="oe_view_nocontent_create">Create the first product dimmable
             </p>
         </field>
     </record>
 
-    <!-- window action auxiliary equipment -->
-    <record model="ir.actions.act_window" id="auxiliaryequipment_list_action">
-        <field name="name">Auxiliary equipment</field>
-        <field name="res_model">lighting.auxiliaryequipment</field>
+    <!-- window action product auxiliary equipment -->
+    <record model="ir.actions.act_window" id="product_auxiliaryequipment_list_action">
+        <field name="name">Product auxiliary equipment</field>
+        <field name="res_model">lighting.product.auxiliaryequipment</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first auxiliary equipment
+            <p class="oe_view_nocontent_create">Create the first product auxiliary equipment
             </p>
         </field>
     </record>
 
-    <!-- window action auxiliaryequipmentmodel class -->
-    <record model="ir.actions.act_window" id="auxiliaryequipmentmodel_list_action">
-        <field name="name">Auxiliary equipment model</field>
-        <field name="res_model">lighting.auxiliaryequipmentmodel</field>
+    <!-- window action product auxiliaryequipmentmodel class -->
+    <record model="ir.actions.act_window" id="product_auxiliaryequipmentmodel_list_action">
+        <field name="name">Product auxiliary equipment model</field>
+        <field name="res_model">lighting.product.auxiliaryequipmentmodel</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Auxiliary equipment model</p>
+            <p class="oe_view_nocontent_create">Create the first product auxiliary equipment model</p>
         </field>
     </record>
 
     <!-- window action voltage class -->
-    <record model="ir.actions.act_window" id="voltage_list_action">
-        <field name="name">Voltage</field>
-        <field name="res_model">lighting.voltage</field>
+    <record model="ir.actions.act_window" id="product_voltage_list_action">
+        <field name="name">Product voltage</field>
+        <field name="res_model">lighting.product.voltage</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Voltage</p>
+            <p class="oe_view_nocontent_create">Create the first product voltage</p>
         </field>
     </record>
 
     <!-- window action sensor class -->
-    <record model="ir.actions.act_window" id="sensor_list_action">
-        <field name="name">Sensor</field>
-        <field name="res_model">lighting.sensor</field>
+    <record model="ir.actions.act_window" id="product_sensor_list_action">
+        <field name="name">Product sensor</field>
+        <field name="res_model">lighting.product.sensor</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Sensor</p>
+            <p class="oe_view_nocontent_create">Create the first product sensor</p>
         </field>
     </record>
 
@@ -1207,10 +1207,10 @@
         </field>
     </record>
 
-    <!-- window action product.ecorrae.category class -->
-    <record model="ir.actions.act_window" id="product_ecorrae_category_list_action">
+    <!-- window action product.ecorraecategory class -->
+    <record model="ir.actions.act_window" id="product_ecorraecategory_list_action">
         <field name="name">Product Ecorrae I category</field>
-        <field name="res_model">lighting.product.ecorrae.category</field>
+        <field name="res_model">lighting.product.ecorraecategory</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -1218,10 +1218,10 @@
         </field>
     </record>
 
-    <!-- window action product.ecorrae2.category class -->
-    <record model="ir.actions.act_window" id="product_ecorrae2_category_list_action">
+    <!-- window action product.ecorrae2category class -->
+    <record model="ir.actions.act_window" id="product_ecorrae2category_list_action">
         <field name="name">Product Ecorrae II category</field>
-        <field name="res_model">lighting.product.ecorrae2.category</field>
+        <field name="res_model">lighting.product.ecorrae2category</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -1241,26 +1241,26 @@
     </record>
 
     <!-- ============= sources tab ============ -->
-    <!-- window action lampholder class -->
-    <record model="ir.actions.act_window" id="lampholder_list_action">
-        <field name="name">Lampholder</field>
-        <field name="res_model">lighting.lampholder</field>
+    <!-- window action product source lampholder class -->
+    <record model="ir.actions.act_window" id="product_source_lampholder_list_action">
+        <field name="name">Product source lampholder</field>
+        <field name="res_model">lighting.product.source.lampholder</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first lampholder
+            <p class="oe_view_nocontent_create">Create the first product source lampholder
             </p>
         </field>
     </record>
 
-    <!-- window action lamp class -->
-    <record model="ir.actions.act_window" id="lamp_list_action">
-        <field name="name">Lamp</field>
-        <field name="res_model">lighting.lamp</field>
+    <!-- window action product source lamp class -->
+    <record model="ir.actions.act_window" id="product_source_lamp_list_action">
+        <field name="name">Product source lamp</field>
+        <field name="res_model">lighting.product.source.lamp</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first lamp
+            <p class="oe_view_nocontent_create">Create the first product source lamp
             </p>
         </field>
     </record>
@@ -1302,7 +1302,7 @@
         </field>
     </record>
 
-    <!-- ============= other tab ============ -->
+    <!-- ============= logistics tab ============ -->
     <!-- window action assembler class -->
     <record model="ir.actions.act_window" id="assembler_list_action">
         <field name="name">Assembler</field>
@@ -1361,39 +1361,39 @@
     <menuitem id="product_families_menu" name="Families" parent="lighting_menu"
               action="product_family_list_action"/>
 
-    <menuitem id="types_menu" name="Types" parent="lighting_menu"
-              action="type_list_action"/>
+    <menuitem id="product_types_menu" name="Types" parent="lighting_menu"
+              action="product_type_list_action"/>
 
 
     <!-- ============= description tab ============ -->
-    <menuitem id="applications_menu" name="Applications" parent="lighting_menu"
-              action="application_list_action"/>
+    <menuitem id="product_applications_menu" name="Applications" parent="lighting_menu"
+              action="product_application_list_action"/>
 
-    <menuitem id="finishes_menu" name="Finishes" parent="lighting_menu"
-              action="finish_list_action"/>
+    <menuitem id="product_finishes_menu" name="Finishes" parent="lighting_menu"
+              action="product_finish_list_action"/>
 
-    <menuitem id="materials_menu" name="Materials" parent="lighting_menu"
-              action="material_list_action"/>
+    <menuitem id="product_materials_menu" name="Materials" parent="lighting_menu"
+              action="product_material_list_action"/>
 
     <!-- ============= Electrical characteristics tab ============ -->
     <menuitem id="product_protectionclasses_menu" name="Protection classes" parent="lighting_menu"
               action="product_protectionclass_list_action"/>
 
-    <menuitem id="frequency_menu" name="Frequencies" parent="lighting_menu"
-              action="frequency_list_action"/>
+    <menuitem id="product_frequencies_menu" name="Frequencies" parent="lighting_menu"
+              action="product_frequency_list_action"/>
 
-    <menuitem id="dimmable_menu" name="Dimmables" parent="lighting_menu"
-              action="dimmable_list_action"/>
+    <menuitem id="product_dimmables_menu" name="Dimmables" parent="lighting_menu"
+              action="product_dimmable_list_action"/>
 
-    <menuitem id="auxiliaryequipment_menu" name="Auxiliary equipments" parent="lighting_menu"
-              action="auxiliaryequipment_list_action"/>
+    <menuitem id="product_auxiliaryequipments_menu" name="Auxiliary equipments" parent="lighting_menu"
+              action="product_auxiliaryequipment_list_action"/>
 
-    <menuitem id="auxiliaryequipmentmodels_menu" name="Auxiliary equipment models" parent="lighting_menu"
-              action="auxiliaryequipmentmodel_list_action"/>
+    <menuitem id="product_auxiliaryequipmentmodels_menu" name="Auxiliary equipment models" parent="lighting_menu"
+              action="product_auxiliaryequipmentmodel_list_action"/>
 
-    <menuitem id="voltages_menu" name="Voltages" parent="lighting_menu" action="voltage_list_action"/>
+    <menuitem id="product_voltages_menu" name="Voltages" parent="lighting_menu" action="product_voltage_list_action"/>
 
-    <menuitem id="sensors_menu" name="Sensors" parent="lighting_menu" action="sensor_list_action"/>
+    <menuitem id="product_sensors_menu" name="Sensors" parent="lighting_menu" action="product_sensor_list_action"/>
 
     <!-- ============= Lighting characteristics tab ============ -->
     <menuitem id="product_ledbrands_menu" name="LED brands" parent="lighting_menu"
@@ -1403,21 +1403,21 @@
     <menuitem id="dimension_types_menu" name="Dimension types" parent="lighting_menu"
               action="dimension_type_list_action"/>
 
-    <menuitem id="product_ecorrae_categories_menu" name="Ecorrae I categories" parent="lighting_menu"
-              action="product_ecorrae_category_list_action"/>
+    <menuitem id="product_ecorraecategories_menu" name="Ecorrae I categories" parent="lighting_menu"
+              action="product_ecorraecategory_list_action"/>
 
-    <menuitem id="product_ecorrae2_categories_menu" name="Ecorrae II categories" parent="lighting_menu"
-              action="product_ecorrae2_category_list_action"/>
+    <menuitem id="product_ecorrae2categories_menu" name="Ecorrae II categories" parent="lighting_menu"
+              action="product_ecorrae2category_list_action"/>
 
     <menuitem id="product_photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="lighting_menu"
               action="product_photobiologicalriskgroup_list_action"/>
 
     <!-- ============= sources tab ============ -->
-    <menuitem id="lampholders_menu" name="Lampholders" parent="lighting_menu"
-              action="lampholder_list_action"/>
+    <menuitem id="product_source_lampholders_menu" name="Lampholders" parent="lighting_menu"
+              action="product_source_lampholder_list_action"/>
 
-    <menuitem id="lamps_menu" name="Lamps" parent="lighting_menu"
-              action="lamp_list_action"/>
+    <menuitem id="product_source_lamps_menu" name="Lamps" parent="lighting_menu"
+              action="product_source_lamp_list_action"/>
 
     <!-- ============= beams tab ============ -->
     <menuitem id="product_beam_photodistributions_menu" name="Beam photometric distributions" parent="lighting_menu"
@@ -1430,7 +1430,7 @@
     <menuitem id="lenguages_menu" name="Languages" parent="lighting_menu"
               action="language_list_action"/>
 
-    <!-- ============= other tab ============ -->
+    <!-- ============= logistics tab ============ -->
     <menuitem id="assemblers_menu" name="Assemblers" parent="lighting_menu" action="assembler_list_action"/>
 
     <menuitem id="suppliers_menu" name="Suppliers" parent="lighting_menu" action="supplier_list_action"/>
