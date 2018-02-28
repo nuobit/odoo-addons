@@ -30,26 +30,10 @@
                                 <field name="frame_material_id"/>
                                 <field name="reflector_material_id"/>
                                 <field name="blade_material_id"/>
-                                <label for="ip_check" string="IP"/>
-                                <div>
-                                    <field name="ip_check"/>
-                                    <field name="ip" style="width: 10%"
-                                           attrs="{'invisible': [('ip_check', '=', False)], 'required': [('ip_check', '=', True)]}"/>
-                                </div>
 
-                                <label for="ip2_check" string="IP2"/>
-                                <div>
-                                    <field name="ip2_check"/>
-                                    <field name="ip2" style="width: 10%"
-                                           attrs="{'invisible': [('ip2_check', '=', False)], 'required': [('ip2_check', '=', True)]}"/>
-                                </div>
-
-                                <label for="ik_check" string="IK"/>
-                                <div>
-                                    <field name="ik_check"/>
-                                    <field name="ik" style="width: 10%"
-                                           attrs="{'invisible': [('ik_check', '=', False)], 'required': [('ik_check', '=', True)]}"/>
-                                </div>
+                                <field name="ip"/>
+                                <field name="ip2"/>
+                                <field name="ik"/>
 
                                 <field name="static_pressure"/>
                                 <field name="dynamic_pressure"/>
@@ -212,13 +196,30 @@
                             <group>
                                 <field name="tariff_item"/>
                                 <field name="assembler_id"/>
-                                <field name="supplier_ids">
+                            </group>
+                            <group string="Suppliers">
+                                <field name="supplier_ids" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="supplier_id"/>
                                         <field name="reference"/>
                                     </tree>
                                 </field>
+                            </group>
+                            <group col="4">
+                                <group colspan="2" string="IBox">
+                                    <field name="ibox_weight" string="Weight (Kg)"/>
+                                    <field name="ibox_length" string="Length (cm)"/>
+                                    <field name="ibox_width" string="Width (cm)"/>
+                                    <field name="ibox_height" string="Height (cm)"/>
+                                </group>
+                                <group colspan="2" string="Masterbox">
+                                    <field name="mbox_qty" string="Quantity"/>
+                                    <field name="mbox_weight" string="Weight (Kg)"/>
+                                    <field name="mbox_length" string="Length (cm)"/>
+                                    <field name="mbox_width" string="Width (cm)"/>
+                                    <field name="mbox_height" string="Height (cm)"/>
+                                </group>
                             </group>
                         </page>
                         <page string="Marketing">
@@ -796,7 +797,7 @@
 
                                 <field name="is_lamp_included"/>
                                 <field name="lamp_included_efficiency_ids" widget="many2many_tags"
-                                        attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
+                                       attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
 
                                 <!--field name="wattage_marketing_ids"/-->
 

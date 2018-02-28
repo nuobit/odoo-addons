@@ -39,13 +39,8 @@ class LightingProduct(models.Model):
     reflector_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Reflector material')
     blade_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Blade material')
 
-    ip_check = fields.Boolean(string="IP")
     ip = fields.Integer(string="IP")
-
-    ip2_check = fields.Boolean(string="IP2")
     ip2 = fields.Integer(string="IP2")
-
-    ik_check = fields.Boolean(string="IK")
     ik = fields.Selection(
         selection=[("%02d" % x, "%02d" % x) for x in range(11)], string='IK')
 
@@ -176,7 +171,16 @@ class LightingProduct(models.Model):
     supplier_ids = fields.One2many(comodel_name='lighting.product.supplier', inverse_name='product_id',
                                            string='Suppliers')
 
-    
+    ibox_weight = fields.Float(string='IBox weight (Kg)')
+    ibox_length = fields.Float(string='IBox length (cm)')
+    ibox_width = fields.Float(string='IBox width (cm)')
+    ibox_height = fields.Float(string='IBox height (cm)')
+
+    mbox_qty = fields.Integer(string='Masterbox quantity')
+    mbox_weight = fields.Float(string='Masterbox weight (kg)')
+    mbox_length = fields.Float(string='Masterbox length (cm)')
+    mbox_width = fields.Float(string='Masterbox width (cm)')
+    mbox_height = fields.Float(string='Masterbox height (cm)')
 
     # marketing tab
     discontinued = fields.Boolean(string='Discontinued')
