@@ -1263,10 +1263,10 @@
         <record id="product_state_ampliacion_gama" model="lighting.product.state">
             <field name="name">Ampliación gama</field>
         </record>
-        <record id="product_state_ampliacion_continua" model="lighting.product.state">
+        <record id="product_state_continua" model="lighting.product.state">
             <field name="name">Continúa</field>
         </record>
-        <record id="product_state_ampliacion_new" model="lighting.product.state">
+        <record id="product_state_new" model="lighting.product.state">
             <field name="name">New</field>
         </record>
 
