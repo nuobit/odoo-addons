@@ -835,8 +835,8 @@
         <record id="product_ecorraecategory_led-c" model="lighting.product.ecorraecategory">
             <field name="name">LED-C</field>
         </record>
-        <record id="product_ecorraecategory_cod-e" model="lighting.product.ecorraecategory">
-            <field name="name">COD-E</field>
+        <record id="product_ecorraecategory_cod-105" model="lighting.product.ecorraecategory">
+            <field name="name">COD-105</field>
         </record>
         <record id="product_ecorraecategory_led-e" model="lighting.product.ecorraecategory">
             <field name="name">LED-E</field>
