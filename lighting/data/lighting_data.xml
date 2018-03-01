@@ -2,6 +2,7 @@
 <openerp>
     <data noupdate="1">
 
+        <!-- ECORRAE category -->
         <record id="product_ecorraecategory_cata" model="lighting.product.ecorraecategory">
             <field name="name">CAT-A</field>
         </record>
@@ -27,7 +28,7 @@
             <field name="name">LED-E</field>
         </record>
 
-
+        <!-- ECORRAE II category -->
         <record id="product_ecorraecategory_cod60" model="lighting.product.ecorrae2category">
             <field name="name">COD-60</field>
         </record>
@@ -59,7 +60,7 @@
             <field name="name">NEÓN*</field>
         </record>
 
-
+        <!-- Photobiological risk group -->
         <record id="product_photobiologicalriskgroup_gr0" model="lighting.product.photobiologicalriskgroup">
             <field name="name">GR0</field>
         </record>
@@ -73,7 +74,7 @@
             <field name="name">GR3</field>
         </record>
 
-
+        <!-- Protection class -->
         <record id="product_protectionclass_class_i" model="lighting.product.protectionclass">
             <field name="name">Class I</field>
         </record>
@@ -84,7 +85,7 @@
             <field name="name">Class III</field>
         </record>
 
-
+        <!-- Energy efficiency -->
         <record id="energyefficiency_a_plusplus" model="lighting.energyefficiency">
             <field name="sequence">10</field>
             <field name="name">A++</field>
@@ -117,6 +118,89 @@
             <field name="sequence">80</field>
             <field name="name">G</field>
         </record>
+
+        <!-- Attachment type -->
+        <record id="attachment_type_af" model="lighting.attachment.type">
+            <field name="code">AF</field>
+            <field name="name">Archivo fotométrico</field>
+        </record>
+        <record id="attachment_type_c" model="lighting.attachment.type">
+            <field name="code">C</field>
+            <field name="name">Curva fotométrica</field>
+        </record>
+        <record id="attachment_type_e" model="lighting.attachment.type">
+            <field name="code">E</field>
+            <field name="name">Esquema de medidas</field>
+        </record>
+        <record id="attachment_type_ef" model="lighting.attachment.type">
+            <field name="code">EF</field>
+            <field name="name">Etiqueta energética</field>
+        </record>
+        <record id="attachment_type_fa" model="lighting.attachment.type">
+            <field name="code">FA</field>
+            <field name="name">Foto de aplicación</field>
+        </record>
+        <record id="attachment_type_f" model="lighting.attachment.type">
+            <field name="code">F</field>
+            <field name="name">Foto producto</field>
+        </record>
+        <record id="attachment_type_fp" model="lighting.attachment.type">
+            <field name="code">FP</field>
+            <field name="name">Foto de particularidad o detalle</field>
+        </record>
+        <record id="attachment_type_im" model="lighting.attachment.type">
+            <field name="code">IM</field>
+            <field name="name">Instrucciones de montaje</field>
+        </record>
+        <record id="attachment_type_q" model="lighting.attachment.type">
+            <field name="code">Q</field>
+            <field name="name">Tabla iluminancia</field>
+        </record>
+        <record id="attachment_type_ete" model="lighting.attachment.type">
+            <field name="code">ETE</field>
+            <field name="name">Etiqueta eléctrica</field>
+        </record>
+        <record id="attachment_type_etb" model="lighting.attachment.type">
+            <field name="code">ETB</field>
+            <field name="name">Etiqueta IBOX</field>
+        </record>
+        <record id="attachment_type_ce" model="lighting.attachment.type">
+            <field name="code">CE</field>
+            <field name="name">Certificado CE</field>
+        </record>
+        <record id="attachment_type_ce_gnx" model="lighting.attachment.type">
+            <field name="code">CE_GNX</field>
+            <field name="name">Certificado CE GNX</field>
+        </record>
+        <record id="attachment_type_ue" model="lighting.attachment.type">
+            <field name="code">UE</field>
+            <field name="name">Certificado UE</field>
+        </record>
+        <record id="attachment_type_ue_gnx" model="lighting.attachment.type">
+            <field name="code">UE_GNX</field>
+            <field name="name">Certificado UE GNX</field>
+        </record>
+        <record id="attachment_type_emc" model="lighting.attachment.type">
+            <field name="code">EMC</field>
+            <field name="name">Certificado EMC</field>
+        </record>
+        <record id="attachment_type_emc_r" model="lighting.attachment.type">
+            <field name="code">EMC_R</field>
+            <field name="name">Test EMC</field>
+        </record>
+        <record id="attachment_type_lvd" model="lighting.attachment.type">
+            <field name="code">LVD</field>
+            <field name="name">Certificado LVD</field>
+        </record>
+        <record id="attachment_type_lvd_r" model="lighting.attachment.type">
+            <field name="code">LVD_R</field>
+            <field name="name">Test LVD</field>
+        </record>
+        <record id="attachment_type_rohs" model="lighting.attachment.type">
+            <field name="code">ROHS</field>
+            <field name="name">Certificado RoHs</field>
+        </record>
+
 
     </data>
 </openerp>

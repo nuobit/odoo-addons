@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <!-- ================================ VIEWS =========================== -->
     <!-- ============= main product views ============ -->
     <!-- view product -->
@@ -10,8 +9,20 @@
         <field name="arch" type="xml">
             <form string="Product Form">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-files-o"
+                                name="%(attachment_list_action)d"
+                                domain="[('product_id', '=', active_id)]">
+                            <field string="Attachments" name="attachment_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" placeholder="Reference"/>
+                        </h1>
+                    </div>
+
                     <group>
-                        <field name="reference"/>
                         <field name="description"/>
                         <field name="ean"/>
                         <field name="catalog_ids" widget="many2many_tags"/>
@@ -169,8 +180,20 @@
                                 </field>
                             </group>
                         </page>
-                        <page string="Attachments">
+                        <!--page string="Attachments">
                             <group>
+                                <field name="attachment_count" widget="statinfo"/>
+
+                                <div>
+                                    <button type="action" class="btn-link"
+                                            name="%(base.action_res_partner_bank_account_form)d"
+                                            context="{'search_default_product_id': active_id, 'default_product_id': active_id}">
+                                        <field string="Bank account(s)" name="bank_account_count" widget="statinfo"/>
+                                    </button>
+                                </div>
+
+
+
                                 <field name="attachment_ids" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="type_id"/>
@@ -181,7 +204,7 @@
                                     </tree>
                                 </field>
                             </group>
-                        </page>
+                        </page-->
                         <page string="Accessories">
                             <group>
                                 <field name="accessory_ids" nolabel="1"/>
@@ -383,6 +406,119 @@
             <tree string="Energy efficiency Tree">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- ============= attachments smart button ============ -->
+    <!--record model="ir.ui.view" id="attachment_search">
+        <field name="name">attachment.search</field>
+        <field name="model">lighting.attachment</field>
+        <field name="arch" type="xml">
+            <search string="Attachment">
+                <field name="product_id"/>
+            </search>
+        </field>
+    </record-->
+
+    <!-- window action attachment type -->
+    <record model="ir.actions.act_window" id="attachment_list_action">
+        <field name="name">Attachment</field>
+        <field name="res_model">lighting.attachment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!--field name="domain">[('product_id', '=', active_id)]</field-->
+        <!--field name="context">{'search_default_product_id': active_id, 'default_product_id': active_id}</field-->
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first attachment</p>
+        </field>
+    </record>
+
+    <!-- view attachment -->
+    <record model="ir.ui.view" id="attachment_form_view">
+        <field name="name">attachment.form</field>
+        <field name="model">lighting.attachment</field>
+        <field name="arch" type="xml">
+            <form string="Attachment Form">
+                <sheet>
+                    <group>
+                        <field name="type_id"/>
+                        <field name="datas" filename="datas_fname"/>
+                        <field name="datas_fname" invisible="1"/>
+                        <field name="name"/>
+                        <field name="lang_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="attachment_tree_view">
+        <field name="name">attachment.tree</field>
+        <field name="model">lighting.attachment</field>
+        <field name="arch" type="xml">
+            <tree string="Attachment Tree">
+                <field name="type_id"/>
+                <field name="datas" filename="datas_fname"/>
+                <field name="datas_fname" invisible="1"/>
+                <field name="name"/>
+                <field name="lang_id"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- view attachment type -->
+    <record model="ir.ui.view" id="attachment_type_form_view">
+        <field name="name">attachment.type.form</field>
+        <field name="model">lighting.attachment.type</field>
+        <field name="arch" type="xml">
+            <form string="Attachment typ Form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="attachment_type_tree_view">
+        <field name="name">attachment.type.tree</field>
+        <field name="model">lighting.attachment.type</field>
+        <field name="arch" type="xml">
+            <tree string="Attachment type Tree">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- view language -->
+    <record model="ir.ui.view" id="language_form_view">
+        <field name="name">language.form</field>
+        <field name="model">lighting.language</field>
+        <field name="arch" type="xml">
+            <form string="Language Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="language_tree_view">
+        <field name="name">language.tree</field>
+        <field name="model">lighting.language</field>
+        <field name="arch" type="xml">
+            <tree string="Language Tree">
+                <field name="name"/>
+                <field name="code"/>
             </tree>
         </field>
     </record>
@@ -953,79 +1089,6 @@
         </field>
     </record>
 
-    <!-- ============= attachments tab ============ -->
-    <!-- view attachment -->
-    <record model="ir.ui.view" id="attachment_form_view">
-        <field name="name">attachment.form</field>
-        <field name="model">lighting.attachment</field>
-        <field name="arch" type="xml">
-            <form string="Attachment Form">
-                <sheet>
-                    <group>
-                        <field name="type_id"/>
-                        <field name="datas" filename="datas_fname"/>
-                        <field name="datas_fname" invisible="1"/>
-                        <field name="name"/>
-                        <field name="lang_id"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-
-    <!-- view attachment type -->
-    <record model="ir.ui.view" id="attachment_type_form_view">
-        <field name="name">attachment.type.form</field>
-        <field name="model">lighting.attachment.type</field>
-        <field name="arch" type="xml">
-            <form string="Attachment typ Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="attachment_type_tree_view">
-        <field name="name">attachment.type.tree</field>
-        <field name="model">lighting.attachment.type</field>
-        <field name="arch" type="xml">
-            <tree string="Attachment type Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
-    <!-- view language -->
-    <record model="ir.ui.view" id="language_form_view">
-        <field name="name">language.form</field>
-        <field name="model">lighting.language</field>
-        <field name="arch" type="xml">
-            <form string="Language Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="code"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="language_tree_view">
-        <field name="name">language.tree</field>
-        <field name="model">lighting.language</field>
-        <field name="arch" type="xml">
-            <tree string="Language Tree">
-                <field name="name"/>
-                <field name="code"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- ============= Logistics tab ============ -->
     <!-- view assembler -->
     <record model="ir.ui.view" id="assembler_form_view">
@@ -1380,7 +1443,7 @@
     </record>
 
 
-    <!-- ============= attachment tab ============ -->
+    <!-- ============= attachment smart button ============ -->
     <!-- window action attachment type -->
     <record model="ir.actions.act_window" id="attachment_type_list_action">
         <field name="name">Attachment type</field>

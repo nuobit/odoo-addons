@@ -155,6 +155,11 @@ class LightingProduct(models.Model):
 
     # Attachment tab
     attachment_ids = fields.One2many(comodel_name='lighting.attachment', inverse_name='product_id', string='Attachments')
+    attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
+
+    def _compute_attachment_count(self):
+        for record in self:
+            record.attachment_count = self.env['lighting.attachment'].search_count([('product_id', '=', record.id)])
 
     # Accesories tab
     accessory_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_accessory_rel',
@@ -658,14 +663,38 @@ class LightingAttachment(models.Model):
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
 
+    @api.multi
+    def name_get(self):
+        vals = []
+        for record in self:
+            name = '%s (%s)' % (record.datas_fname, record.type_id.name)
+            vals.append((record.id, name))
+
+        return vals
+
 
 class LightingAttachmentType(models.Model):
     _name = 'lighting.attachment.type'
 
-    name = fields.Char(string='Description', required=True, translate=True)
+    code = fields.Char(string='Code', required=True)
+    name = fields.Char(string='Description', translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The attachment type description must be unique!'),
                         ]
+
+    @api.multi
+    def name_get(self):
+        vals = []
+        for record in self:
+            if record.name:
+                name = '%s (%s)' % (record.name, record.code)
+            else:
+                name = record.code
+
+            vals.append((record.id, name))
+
+        return vals
+
 
 class LightingLanguage(models.Model):
     _name = 'lighting.language'
@@ -861,3 +890,13 @@ def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu
                 rec.efficiency_display = "/".join(res)
 
 '''
+
+'''
+    @api.multi
+    def _compute_attachment_count(self):
+        attachment_data = self.env['lighting.attachment'].read_group([('product_id', 'in', self.ids)], ['product_id'],
+                                                            ['product_id'])
+        mapped_data = dict([(attachment['product_id'][0], attachment['product_id_count']) for attachment in attachment_data])
+        for record in self:
+            record.attachment_count = mapped_data.get(record.id, 0)
+            '''
