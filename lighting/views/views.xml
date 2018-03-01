@@ -146,7 +146,7 @@
                             </group>
                         </page>
                         <page string="Sources">
-                            <group string="Source types">
+                            <group string="Sources">
                                 <field name="source_count"/>
                             </group>
                             <group>
@@ -368,6 +368,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="uom"/>
                     </group>
                 </sheet>
             </form>
@@ -380,6 +381,7 @@
         <field name="arch" type="xml">
             <tree string="Dimension type Tree">
                 <field name="name"/>
+                <field name="uom"/>
             </tree>
         </field>
     </record>
@@ -504,8 +506,8 @@
             <form string="Language Form">
                 <sheet>
                     <group>
-                        <field name="name"/>
                         <field name="code"/>
+                        <field name="name"/>
                     </group>
                 </sheet>
             </form>
@@ -517,8 +519,8 @@
         <field name="model">lighting.language</field>
         <field name="arch" type="xml">
             <tree string="Language Tree">
-                <field name="name"/>
                 <field name="code"/>
+                <field name="name"/>
             </tree>
         </field>
     </record>
@@ -1584,7 +1586,7 @@
     <menuitem id="product_source_lampholders_menu" name="Lampholders" parent="lighting_menu"
               action="product_source_lampholder_list_action"/>
 
-    <menuitem id="product_source_types_menu" name="Lamps" parent="lighting_menu"
+    <menuitem id="product_source_types_menu" name="Source types" parent="lighting_menu"
               action="product_source_type_list_action"/>
 
     <!-- ============= beams tab ============ -->

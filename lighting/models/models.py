@@ -237,26 +237,34 @@ class LightingProductType(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
                         ]
 
+class LightingEnergyEfficiency(models.Model):
+    _name = 'lighting.energyefficiency'
+    _order = 'sequence'
+
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+    name = fields.Char(string='Description', required=True)
+
+    _sql_constraints = [('name_uniq', 'unique (name)', 'The energy efficiency must be unique!'),
+                        ]
+
 
 class LightingDimensionType(models.Model):
     _name = 'lighting.dimension.type'
 
     name = fields.Char(string='Description', required=True, translate=True)
+    uom = fields.Char(string='Uom', help='Unit of mesure')
 
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The dimension description must be unique!'),
+    _sql_constraints = [('name_uniq', 'unique (name, uom)', 'The dimension description must be unique!'),
                         ]
 
-class LightingEnergyEfficiency(models.Model):
-    _name = 'lighting.energyefficiency'
+    @api.multi
+    def name_get(self):
+        vals = []
+        for record in self:
+            name = '%s (%s)' % (record.name, record.uom)
+            vals.append((record.id, name))
 
-    _order = 'sequence'
-
-    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
-
-    name = fields.Char(string='Description', required=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The energy efficiency must be unique!'),
-                        ]
+        return vals
 
 
 ########### description tab
@@ -277,6 +285,15 @@ class LightingProductFinish(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The finish name must be unique!'),
                         ('code_uniq', 'unique (code)', 'The finish code must be unique!'),
                         ]
+
+    @api.multi
+    def name_get(self):
+        vals = []
+        for record in self:
+            name = '[%s] %s' % (record.code, record.name)
+            vals.append((record.id, name))
+
+        return vals
 
 class LightingProductMaterial(models.Model):
     _name = 'lighting.product.material'
@@ -586,7 +603,7 @@ class LightingProductSourceLineMarketingWattage(models.Model):
 
     wattage = fields.Integer(string='Marketing wattage (W)', required=True)
 
-    source_line_id = fields.Many2one(comodel_name='lighting.product.source.line', ondelete='restrict', string='Source line')
+    source_line_id = fields.Many2one(comodel_name='lighting.product.source.line', ondelete='cascade', string='Source line')
 
     _sql_constraints = [('wattage_line_uniq', 'unique (source_line_id, wattage)', 'There are duplicated marketing wattages on a source line!'),
                     ]
@@ -649,7 +666,7 @@ class LightingProductBeamDimension(models.Model):
 
     beam_id = fields.Many2one(comodel_name='lighting.product.beam', ondelete='restrict', string='Beam')
 
-########### attachment tab
+########### attachment button
 class LightingAttachment(models.Model):
     _name = 'lighting.attachment'
 
@@ -699,8 +716,8 @@ class LightingAttachmentType(models.Model):
 class LightingLanguage(models.Model):
     _name = 'lighting.language'
 
-    name = fields.Char(string='Language', required=True, translate=True)
     code = fields.Char(string='Code', required=True)
+    name = fields.Char(string='Language', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The language must be unique!'),
                         ('code_uniq', 'unique (code)', 'The language code must be unique!'),

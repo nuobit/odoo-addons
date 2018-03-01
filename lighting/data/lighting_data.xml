@@ -2,87 +2,62 @@
 <openerp>
     <data noupdate="1">
 
-        <!-- ECORRAE category -->
-        <record id="product_ecorraecategory_cata" model="lighting.product.ecorraecategory">
-            <field name="name">CAT-A</field>
+        <!-- dimension type -->
+        <record id="dimension_type_largo_mm" model="lighting.dimension.type">
+            <field name="name">Largo</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_catb" model="lighting.product.ecorraecategory">
-            <field name="name">CAT-B</field>
+        <record id="dimension_type_anchura_mm" model="lighting.dimension.type">
+            <field name="name">Anchura</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_catc" model="lighting.product.ecorraecategory">
-            <field name="name">CAT-C</field>
+        <record id="dimension_type_anchura_minima_mm" model="lighting.dimension.type">
+            <field name="name">Anchura mínima</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_leda" model="lighting.product.ecorraecategory">
-            <field name="name">LED-A</field>
+        <record id="dimension_type_anchura_maxima_mm" model="lighting.dimension.type">
+            <field name="name">Anchura máxima</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_ledb" model="lighting.product.ecorraecategory">
-            <field name="name">LED-B</field>
+        <record id="dimension_type_diametro_1_mm" model="lighting.dimension.type">
+            <field name="name">Diámetro 1</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_ledc" model="lighting.product.ecorraecategory">
-            <field name="name">LED-C</field>
+        <record id="dimension_type_diametro_2_mm" model="lighting.dimension.type">
+            <field name="name">Diámetro 2</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_code" model="lighting.product.ecorraecategory">
-            <field name="name">COD-E</field>
+        <record id="dimension_type_altura_1_mm" model="lighting.dimension.type">
+            <field name="name">Altura 1</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_lede" model="lighting.product.ecorraecategory">
-            <field name="name">LED-E</field>
+        <record id="dimension_type_altura_2_mm" model="lighting.dimension.type">
+            <field name="name">Altura 2</field>
+            <field name="uom">mm</field>
         </record>
-
-        <!-- ECORRAE II category -->
-        <record id="product_ecorraecategory_cod60" model="lighting.product.ecorrae2category">
-            <field name="name">COD-60</field>
+        <record id="dimension_type_altura_maxima_mm" model="lighting.dimension.type">
+            <field name="name">Altura máxima</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_cod61" model="lighting.product.ecorrae2category">
-            <field name="name">COD-61</field>
+        <record id="dimension_type_longitud_suspension_mecanica_maxima_mm" model="lighting.dimension.type">
+            <field name="name">Longitud suspensión mecánica máxima</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_cod62" model="lighting.product.ecorrae2category">
-            <field name="name">COD-62</field>
+        <record id="dimension_type_diametro_superior_poste_mm" model="lighting.dimension.type">
+            <field name="name">Diámetro superior poste</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_cod63" model="lighting.product.ecorrae2category">
-            <field name="name">COD-63</field>
+        <record id="dimension_type_diametro_minimo_mm" model="lighting.dimension.type">
+            <field name="name">Diámetro mínimo</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_cod105a" model="lighting.product.ecorrae2category">
-            <field name="name">COD-105a</field>
+        <record id="dimension_type_diametro_maximo_mm" model="lighting.dimension.type">
+            <field name="name">Diámetro máximo</field>
+            <field name="uom">mm</field>
         </record>
-        <record id="product_ecorraecategory_cod105b" model="lighting.product.ecorrae2category">
-            <field name="name">COD-105b</field>
-        </record>
-        <record id="product_ecorraecategory_rota" model="lighting.product.ecorrae2category">
-            <field name="name">ROT-A</field>
-        </record>
-        <record id="product_ecorraecategory_rotb" model="lighting.product.ecorrae2category">
-            <field name="name">ROT-B</field>
-        </record>
-        <record id="product_ecorraecategory_rotc" model="lighting.product.ecorrae2category">
-            <field name="name">ROT-C</field>
-        </record>
-        <record id="product_ecorraecategory_neón*" model="lighting.product.ecorrae2category">
-            <field name="name">NEÓN*</field>
-        </record>
-
-        <!-- Photobiological risk group -->
-        <record id="product_photobiologicalriskgroup_gr0" model="lighting.product.photobiologicalriskgroup">
-            <field name="name">GR0</field>
-        </record>
-        <record id="product_photobiologicalriskgroup_gr1" model="lighting.product.photobiologicalriskgroup">
-            <field name="name">GR1</field>
-        </record>
-        <record id="product_photobiologicalriskgroup_gr2" model="lighting.product.photobiologicalriskgroup">
-            <field name="name">GR2</field>
-        </record>
-        <record id="product_photobiologicalriskgroup_gr3" model="lighting.product.photobiologicalriskgroup">
-            <field name="name">GR3</field>
-        </record>
-
-        <!-- Protection class -->
-        <record id="product_protectionclass_class_i" model="lighting.product.protectionclass">
-            <field name="name">Class I</field>
-        </record>
-        <record id="product_protectionclass_class_ii" model="lighting.product.protectionclass">
-            <field name="name">Class II</field>
-        </record>
-        <record id="product_protectionclass_class_iii" model="lighting.product.protectionclass">
-            <field name="name">Class III</field>
+        <record id="dimension_type_profundidad_mm" model="lighting.dimension.type">
+            <field name="name">Profundidad</field>
+            <field name="uom">mm</field>
         </record>
 
         <!-- Energy efficiency -->
@@ -117,6 +92,1071 @@
         <record id="energyefficiency_g" model="lighting.energyefficiency">
             <field name="sequence">80</field>
             <field name="name">G</field>
+        </record>
+
+        <!-- finish -->
+        <record id="product_finish_01" model="lighting.product.finish">
+            <field name="code">01</field>
+            <field name="name">Blanco</field>
+        </record>
+        <record id="product_finish_02" model="lighting.product.finish">
+            <field name="code">02</field>
+            <field name="name">Negro</field>
+        </record>
+        <record id="product_finish_03" model="lighting.product.finish">
+            <field name="code">03</field>
+            <field name="name">Gris</field>
+        </record>
+        <record id="product_finish_04" model="lighting.product.finish">
+            <field name="code">04</field>
+            <field name="name">Antracita</field>
+        </record>
+        <record id="product_finish_05" model="lighting.product.finish">
+            <field name="code">05</field>
+            <field name="name">Verde</field>
+        </record>
+        <record id="product_finish_06" model="lighting.product.finish">
+            <field name="code">06</field>
+            <field name="name">Azul</field>
+        </record>
+        <record id="product_finish_07" model="lighting.product.finish">
+            <field name="code">07</field>
+            <field name="name">Rojo</field>
+        </record>
+        <record id="product_finish_08" model="lighting.product.finish">
+            <field name="code">08</field>
+            <field name="name">Naranja</field>
+        </record>
+        <record id="product_finish_09" model="lighting.product.finish">
+            <field name="code">09</field>
+            <field name="name">Beige</field>
+        </record>
+        <record id="product_finish_10" model="lighting.product.finish">
+            <field name="code">10</field>
+            <field name="name">Gris envejecido</field>
+        </record>
+        <record id="product_finish_11" model="lighting.product.finish">
+            <field name="code">11</field>
+            <field name="name">Marfil</field>
+        </record>
+        <record id="product_finish_12" model="lighting.product.finish">
+            <field name="code">12</field>
+            <field name="name">Marrón oscuro</field>
+        </record>
+        <record id="product_finish_13" model="lighting.product.finish">
+            <field name="code">13</field>
+            <field name="name">Gris piedra</field>
+        </record>
+        <record id="product_finish_28" model="lighting.product.finish">
+            <field name="code">28</field>
+            <field name="name">Matizado</field>
+        </record>
+        <record id="product_finish_29" model="lighting.product.finish">
+            <field name="code">29</field>
+            <field name="name">Transparente</field>
+        </record>
+        <record id="product_finish_30" model="lighting.product.finish">
+            <field name="code">30</field>
+            <field name="name">Inox</field>
+        </record>
+        <record id="product_finish_31" model="lighting.product.finish">
+            <field name="code">31</field>
+            <field name="name">Inox pulido</field>
+        </record>
+        <record id="product_finish_32" model="lighting.product.finish">
+            <field name="code">32</field>
+            <field name="name">Cromo</field>
+        </record>
+        <record id="product_finish_33" model="lighting.product.finish">
+            <field name="code">33</field>
+            <field name="name">Latón envejecido</field>
+        </record>
+        <record id="product_finish_34" model="lighting.product.finish">
+            <field name="code">34</field>
+            <field name="name">Latón</field>
+        </record>
+        <record id="product_finish_35" model="lighting.product.finish">
+            <field name="code">35</field>
+            <field name="name">Niquel satinado</field>
+        </record>
+        <record id="product_finish_36" model="lighting.product.finish">
+            <field name="code">36</field>
+            <field name="name">Latón cromo</field>
+        </record>
+        <record id="product_finish_37" model="lighting.product.finish">
+            <field name="code">37</field>
+            <field name="name">Cobre</field>
+        </record>
+        <record id="product_finish_38" model="lighting.product.finish">
+            <field name="code">38</field>
+            <field name="name">Acero cincado</field>
+        </record>
+        <record id="product_finish_39" model="lighting.product.finish">
+            <field name="code">39</field>
+            <field name="name">Aluminio anodizado</field>
+        </record>
+        <record id="product_finish_40" model="lighting.product.finish">
+            <field name="code">40</field>
+            <field name="name">Aluminio cepillado</field>
+        </record>
+        <record id="product_finish_41" model="lighting.product.finish">
+            <field name="code">41</field>
+            <field name="name">Acero galvanizado</field>
+        </record>
+        <record id="product_finish_42" model="lighting.product.finish">
+            <field name="code">42</field>
+            <field name="name">Burdeos cepillado</field>
+        </record>
+        <record id="product_finish_43" model="lighting.product.finish">
+            <field name="code">43</field>
+            <field name="name">Inox cepillado</field>
+        </record>
+        <record id="product_finish_44" model="lighting.product.finish">
+            <field name="code">44</field>
+            <field name="name">Plata</field>
+        </record>
+        <record id="product_finish_45" model="lighting.product.finish">
+            <field name="code">45</field>
+            <field name="name">Cromo mate</field>
+        </record>
+        <record id="product_finish_46" model="lighting.product.finish">
+            <field name="code">46</field>
+            <field name="name">Oro mate</field>
+        </record>
+        <record id="product_finish_47" model="lighting.product.finish">
+            <field name="code">47</field>
+            <field name="name">Oro</field>
+        </record>
+        <record id="product_finish_48" model="lighting.product.finish">
+            <field name="code">48</field>
+            <field name="name">Níquel mate</field>
+        </record>
+        <record id="product_finish_49" model="lighting.product.finish">
+            <field name="code">49</field>
+            <field name="name">Oro envejecido</field>
+        </record>
+        <record id="product_finish_50" model="lighting.product.finish">
+            <field name="code">50</field>
+            <field name="name">Madera haya</field>
+        </record>
+        <record id="product_finish_51" model="lighting.product.finish">
+            <field name="code">51</field>
+            <field name="name">Madera roble</field>
+        </record>
+        <record id="product_finish_52" model="lighting.product.finish">
+            <field name="code">52</field>
+            <field name="name">Madera cerezo</field>
+        </record>
+        <record id="product_finish_53" model="lighting.product.finish">
+            <field name="code">53</field>
+            <field name="name">Fibra natural beige</field>
+        </record>
+        <record id="product_finish_54" model="lighting.product.finish">
+            <field name="code">54</field>
+            <field name="name">Fibra natural marrón</field>
+        </record>
+        <record id="product_finish_55" model="lighting.product.finish">
+            <field name="code">55</field>
+            <field name="name">Fibra sintética plata</field>
+        </record>
+        <record id="product_finish_56" model="lighting.product.finish">
+            <field name="code">56</field>
+            <field name="name">Fibra sintética oro</field>
+        </record>
+        <record id="product_finish_60" model="lighting.product.finish">
+            <field name="code">60</field>
+            <field name="name">Piedra leccese</field>
+        </record>
+        <record id="product_finish_61" model="lighting.product.finish">
+            <field name="code">61</field>
+            <field name="name">Piedra leccese antracita</field>
+        </record>
+        <record id="product_finish_62" model="lighting.product.finish">
+            <field name="code">62</field>
+            <field name="name">Piedra leccese marrón</field>
+        </record>
+        <record id="product_finish_63" model="lighting.product.finish">
+            <field name="code">63</field>
+            <field name="name">Piedra leccese rosso mattone</field>
+        </record>
+        <record id="product_finish_64" model="lighting.product.finish">
+            <field name="code">64</field>
+            <field name="name">Piedra crema</field>
+        </record>
+        <record id="product_finish_65" model="lighting.product.finish">
+            <field name="code">65</field>
+            <field name="name">Piedra ardesia</field>
+        </record>
+        <record id="product_finish_71" model="lighting.product.finish">
+            <field name="code">71</field>
+            <field name="name">Piedra lavica</field>
+        </record>
+        <record id="product_finish_74" model="lighting.product.finish">
+            <field name="code">74</field>
+            <field name="name">Marmol travertino</field>
+        </record>
+        <record id="product_finish_75" model="lighting.product.finish">
+            <field name="code">75</field>
+            <field name="name">Marmol de carrara</field>
+        </record>
+        <record id="product_finish_90" model="lighting.product.finish">
+            <field name="code">90</field>
+            <field name="name">Marrón óxido</field>
+        </record>
+        <record id="product_finish_91" model="lighting.product.finish">
+            <field name="code">91</field>
+            <field name="name">Marrón cobrizo</field>
+        </record>
+        <record id="product_finish_92" model="lighting.product.finish">
+            <field name="code">92</field>
+            <field name="name">Cristal transparente</field>
+        </record>
+        <record id="product_finish_94" model="lighting.product.finish">
+            <field name="code">94</field>
+            <field name="name">Pan de oro</field>
+        </record>
+        <record id="product_finish_95" model="lighting.product.finish">
+            <field name="code">95</field>
+            <field name="name">Pan de plata</field>
+        </record>
+        <record id="product_finish_ba" model="lighting.product.finish">
+            <field name="code">BA</field>
+            <field name="name">Linen white</field>
+        </record>
+        <record id="product_finish_bd" model="lighting.product.finish">
+            <field name="code">BD</field>
+            <field name="name">Linen stone</field>
+        </record>
+        <record id="product_finish_be" model="lighting.product.finish">
+            <field name="code">BE</field>
+            <field name="name">Linen graphitte</field>
+        </record>
+        <record id="product_finish_bf" model="lighting.product.finish">
+            <field name="code">BF</field>
+            <field name="name">Linen brown</field>
+        </record>
+        <record id="product_finish_ca" model="lighting.product.finish">
+            <field name="code">CA</field>
+            <field name="name">Cotton White</field>
+        </record>
+        <record id="product_finish_cb" model="lighting.product.finish">
+            <field name="code">CB</field>
+            <field name="name">Cotton black</field>
+        </record>
+        <record id="product_finish_cc" model="lighting.product.finish">
+            <field name="code">CC</field>
+            <field name="name">Cotton beige</field>
+        </record>
+        <record id="product_finish_cd" model="lighting.product.finish">
+            <field name="code">CD</field>
+            <field name="name">Cotton moutarde</field>
+        </record>
+        <record id="product_finish_ce" model="lighting.product.finish">
+            <field name="code">CE</field>
+            <field name="name">Cotton capuccino</field>
+        </record>
+        <record id="product_finish_cg" model="lighting.product.finish">
+            <field name="code">CG</field>
+            <field name="name">Coton earth</field>
+        </record>
+        <record id="product_finish_ch" model="lighting.product.finish">
+            <field name="code">CH</field>
+            <field name="name">Cotton orange</field>
+        </record>
+        <record id="product_finish_cj" model="lighting.product.finish">
+            <field name="code">CJ</field>
+            <field name="name">Cotton red</field>
+        </record>
+        <record id="product_finish_ck" model="lighting.product.finish">
+            <field name="code">CK</field>
+            <field name="name">Cotton grey</field>
+        </record>
+        <record id="product_finish_cm" model="lighting.product.finish">
+            <field name="code">CM</field>
+            <field name="name">Cotton brown</field>
+        </record>
+        <record id="product_finish_dc" model="lighting.product.finish">
+            <field name="code">DC</field>
+            <field name="name">Eco Beige</field>
+        </record>
+        <record id="product_finish_fc" model="lighting.product.finish">
+            <field name="code">FC</field>
+            <field name="name">Persia beige</field>
+        </record>
+        <record id="product_finish_gd" model="lighting.product.finish">
+            <field name="code">GD</field>
+            <field name="name">Damasco brown</field>
+        </record>
+        <record id="product_finish_hc" model="lighting.product.finish">
+            <field name="code">HC</field>
+            <field name="name">Yute Beige</field>
+        </record>
+        <record id="product_finish_na" model="lighting.product.finish">
+            <field name="code">-</field>
+            <field name="name">-</field>
+        </record>
+
+        <!-- materials -->
+        <record id="product_material_abs_metal" model="lighting.product.material">
+            <field name="code">ABS METAL</field>
+            <field name="name">ABS metalizado</field>
+        </record>
+        <record id="product_material_acer" model="lighting.product.material">
+            <field name="code">ACER</field>
+            <field name="name">Acero</field>
+        </record>
+        <record id="product_material_acer_paint" model="lighting.product.material">
+            <field name="code">ACER PAINT</field>
+            <field name="name">Acero pintado</field>
+        </record>
+        <record id="product_material_alu" model="lighting.product.material">
+            <field name="code">ALU</field>
+            <field name="name">Aluminio</field>
+        </record>
+        <record id="product_material_alu_99,99%" model="lighting.product.material">
+            <field name="code">ALU 99,99%</field>
+            <field name="name">Aluminio 99%</field>
+        </record>
+        <record id="product_material_alu_anod" model="lighting.product.material">
+            <field name="code">ALU ANOD</field>
+            <field name="name">Aluminio anodizado</field>
+        </record>
+        <record id="product_material_alu_anod_brillo" model="lighting.product.material">
+            <field name="code">ALU ANOD BRILLO</field>
+            <field name="name">Aluminio anodizado brillo</field>
+        </record>
+        <record id="product_material_alu_cepill" model="lighting.product.material">
+            <field name="code">ALU CEPILL</field>
+            <field name="name">Aluminio cepillado</field>
+        </record>
+        <record id="product_material_alu_escal" model="lighting.product.material">
+            <field name="code">ALU ESCAL</field>
+            <field name="name">Aluminio escalonado</field>
+        </record>
+        <record id="product_material_alu_facet" model="lighting.product.material">
+            <field name="code">ALU FACET</field>
+            <field name="name">Aluminio facetado</field>
+        </record>
+        <record id="product_material_alu_mat" model="lighting.product.material">
+            <field name="code">ALU MAT</field>
+            <field name="name">Aluminio matizado</field>
+        </record>
+        <record id="product_material_alu_paint" model="lighting.product.material">
+            <field name="code">ALU PAINT</field>
+            <field name="name">Aluminio pintado</field>
+        </record>
+        <record id="product_material_antiq_brass" model="lighting.product.material">
+            <field name="code">ANTIQ BRASS</field>
+            <field name="name">Latón envejecido</field>
+        </record>
+        <record id="product_material_beech_wood" model="lighting.product.material">
+            <field name="code">BEECH WOOD</field>
+            <field name="name">Madera de haya</field>
+        </record>
+        <record id="product_material_brass" model="lighting.product.material">
+            <field name="code">BRASS</field>
+            <field name="name">Latón</field>
+        </record>
+        <record id="product_material_chrom_brass" model="lighting.product.material">
+            <field name="code">CHROM BRASS</field>
+            <field name="name">Latón cromado</field>
+        </record>
+        <record id="product_material_concr" model="lighting.product.material">
+            <field name="code">CONCR</field>
+            <field name="name">Hormigón</field>
+        </record>
+        <record id="product_material_cotton" model="lighting.product.material">
+            <field name="code">COTTON</field>
+            <field name="name">Algodón</field>
+        </record>
+        <record id="product_material_cu" model="lighting.product.material">
+            <field name="code">Cu</field>
+            <field name="name">Cobre</field>
+        </record>
+        <record id="product_material_glass" model="lighting.product.material">
+            <field name="code">GLASS</field>
+            <field name="name">Cristal</field>
+        </record>
+        <record id="product_material_glass_amber" model="lighting.product.material">
+            <field name="code">GLASS AMBER</field>
+            <field name="name">Cristal ambar</field>
+        </record>
+        <record id="product_material_glass_mat" model="lighting.product.material">
+            <field name="code">GLASS MAT</field>
+            <field name="name">Cristal matizado</field>
+        </record>
+        <record id="product_material_glass_opal" model="lighting.product.material">
+            <field name="code">GLASS OPAL</field>
+            <field name="name">Cristal opalizado</field>
+        </record>
+        <record id="product_material_glass_prism" model="lighting.product.material">
+            <field name="code">GLASS PRISM</field>
+            <field name="name">Cristal prismático</field>
+        </record>
+        <record id="product_material_glass_trans" model="lighting.product.material">
+            <field name="code">GLASS TRANS</field>
+            <field name="name">Cristal transparente</field>
+        </record>
+        <record id="product_material_glass_trans_temp" model="lighting.product.material">
+            <field name="code">GLASS TRANS TEMP</field>
+            <field name="name">Cristal templado transparente</field>
+        </record>
+        <record id="product_material_inox" model="lighting.product.material">
+            <field name="code">INOX</field>
+            <field name="name">Acero inoxidable</field>
+        </record>
+        <record id="product_material_inox_316l" model="lighting.product.material">
+            <field name="code">INOX 316L</field>
+            <field name="name">Inox 316L</field>
+        </record>
+        <record id="product_material_inox_aisi_304" model="lighting.product.material">
+            <field name="code">INOX AISI 304</field>
+            <field name="name">Inox aisi 304</field>
+        </record>
+        <record id="product_material_inox_aisi_316" model="lighting.product.material">
+            <field name="code">INOX AISI 316</field>
+            <field name="name">Inox aisi 316</field>
+        </record>
+        <record id="product_material_inox_aisi_316l" model="lighting.product.material">
+            <field name="code">INOX AISI 316L</field>
+            <field name="name">Inox aisi 316L</field>
+        </record>
+        <record id="product_material_lens_pmma" model="lighting.product.material">
+            <field name="code">LENS PMMA</field>
+            <field name="name">Lentes PMMA</field>
+        </record>
+        <record id="product_material_nat_fiber" model="lighting.product.material">
+            <field name="code">NAT FIBER</field>
+            <field name="name">Fibra natural</field>
+        </record>
+        <record id="product_material_nickel_sat" model="lighting.product.material">
+            <field name="code">NICKEL SAT</field>
+            <field name="name">Niquel satinado</field>
+        </record>
+        <record id="product_material_nylon" model="lighting.product.material">
+            <field name="code">NYLON</field>
+            <field name="name">Nylon</field>
+        </record>
+        <record id="product_material_oak_wood" model="lighting.product.material">
+            <field name="code">OAK WOOD</field>
+            <field name="name">Madera de roble</field>
+        </record>
+        <record id="product_material_pa" model="lighting.product.material">
+            <field name="code">PA</field>
+            <field name="name">Poliamida</field>
+        </record>
+        <record id="product_material_pc" model="lighting.product.material">
+            <field name="code">PC</field>
+            <field name="name">Policarbonato</field>
+        </record>
+        <record id="product_material_pc_facet_metal" model="lighting.product.material">
+            <field name="code">PC FACET METAL</field>
+            <field name="name">Policarbonato facetado metalizado</field>
+        </record>
+        <record id="product_material_pc_mat" model="lighting.product.material">
+            <field name="code">PC MAT</field>
+            <field name="name">Policarbonato matizado</field>
+        </record>
+        <record id="product_material_pc_metal" model="lighting.product.material">
+            <field name="code">PC METAL</field>
+            <field name="name">Policarbonato metalizado</field>
+        </record>
+        <record id="product_material_pc_opal" model="lighting.product.material">
+            <field name="code">PC OPAL</field>
+            <field name="name">Policarbonato opalizado</field>
+        </record>
+        <record id="product_material_pc_prism" model="lighting.product.material">
+            <field name="code">PC PRISM</field>
+            <field name="name">Policarbonato prismático</field>
+        </record>
+        <record id="product_material_pc_trans" model="lighting.product.material">
+            <field name="code">PC TRANS</field>
+            <field name="name">Policarbonato transparente</field>
+        </record>
+        <record id="product_material_pe" model="lighting.product.material">
+            <field name="code">PE</field>
+            <field name="name">Polietileno</field>
+        </record>
+        <record id="product_material_plaster" model="lighting.product.material">
+            <field name="code">PLASTER</field>
+            <field name="name">Yeso</field>
+        </record>
+        <record id="product_material_pmma" model="lighting.product.material">
+            <field name="code">PMMA</field>
+            <field name="name">Metacrilato</field>
+        </record>
+        <record id="product_material_pmma_mat" model="lighting.product.material">
+            <field name="code">PMMA MAT</field>
+            <field name="name">Metacrilato matizado</field>
+        </record>
+        <record id="product_material_pmma_opal" model="lighting.product.material">
+            <field name="code">PMMA OPAL</field>
+            <field name="name">Metacrilato opalizado</field>
+        </record>
+        <record id="product_material_pmma_prism" model="lighting.product.material">
+            <field name="code">PMMA PRISM</field>
+            <field name="name">Metacrilato prismático</field>
+        </record>
+        <record id="product_material_pmma_trans" model="lighting.product.material">
+            <field name="code">PMMA TRANS</field>
+            <field name="name">Metacrilato transparente</field>
+        </record>
+        <record id="product_material_pph" model="lighting.product.material">
+            <field name="code">PPH</field>
+            <field name="name">Polipropileno homopolímero</field>
+        </record>
+        <record id="product_material_resin" model="lighting.product.material">
+            <field name="code">RESIN</field>
+            <field name="name">Resina</field>
+        </record>
+        <record id="product_material_silicon" model="lighting.product.material">
+            <field name="code">SILICON</field>
+            <field name="name">Silicona</field>
+        </record>
+        <record id="product_material_stone" model="lighting.product.material">
+            <field name="code">STONE</field>
+            <field name="name">Piedra</field>
+        </record>
+        <record id="product_material_straw" model="lighting.product.material">
+            <field name="code">STRAW</field>
+            <field name="name">Paja</field>
+        </record>
+        <record id="product_material_synt_fiber" model="lighting.product.material">
+            <field name="code">SYNT FIBER</field>
+            <field name="name">Fibra sintética</field>
+        </record>
+        <record id="product_material_tecnopolim" model="lighting.product.material">
+            <field name="code">TECNOPOLIM</field>
+            <field name="name">Tecnopolímero</field>
+        </record>
+        <record id="product_material_termoplastic" model="lighting.product.material">
+            <field name="code">TERMOPLASTIC</field>
+            <field name="name">Termoplástico</field>
+        </record>
+        <record id="product_material_wood" model="lighting.product.material">
+            <field name="code">WOOD</field>
+            <field name="name">Madera</field>
+        </record>
+        <record id="product_material_yute" model="lighting.product.material">
+            <field name="code">YUTE</field>
+            <field name="name">Yute</field>
+        </record>
+        <record id="product_material_zamak" model="lighting.product.material">
+            <field name="code">ZAMAK</field>
+            <field name="name">Zamak</field>
+        </record>
+        <record id="product_material_na" model="lighting.product.material">
+            <field name="code">-</field>
+            <field name="name">-</field>
+        </record>
+
+        <!-- Protection class -->
+        <record id="product_protectionclass_class_i" model="lighting.product.protectionclass">
+            <field name="name">Class I</field>
+        </record>
+        <record id="product_protectionclass_class_ii" model="lighting.product.protectionclass">
+            <field name="name">Class II</field>
+        </record>
+        <record id="product_protectionclass_class_iii" model="lighting.product.protectionclass">
+            <field name="name">Class III</field>
+        </record>
+        <record id="product_protectionclass_na" model="lighting.product.protectionclass">
+            <field name="name">-</field>
+        </record>
+
+
+        <!-- Frequencies -->
+        <record id="product_frequency_50" model="lighting.product.frequency">
+            <field name="name">50</field>
+        </record>
+        <record id="product_frequency_50_60" model="lighting.product.frequency">
+            <field name="name">50/60</field>
+        </record>
+        <record id="product_frequency_na" model="lighting.product.frequency">
+            <field name="name">-</field>
+        </record>
+
+        <!-- Dimmables -->
+        <record id="product_dimmable_push" model="lighting.product.dimmable">
+            <field name="name">Push</field>
+        </record>
+        <record id="product_dimmable_1-10v" model="lighting.product.dimmable">
+            <field name="name">1-10V</field>
+        </record>
+        <record id="product_dimmable_dali" model="lighting.product.dimmable">
+            <field name="name">Dali</field>
+        </record>
+        <record id="product_dimmable_corte_de_fase_l" model="lighting.product.dimmable">
+            <field name="name">Corte de fase L</field>
+        </record>
+        <record id="product_dimmable_corte_de_fase_c" model="lighting.product.dimmable">
+            <field name="name">Corte de fase C</field>
+        </record>
+        <record id="product_dimmable_si" model="lighting.product.dimmable">
+            <field name="name">Sí</field>
+        </record>
+        <record id="product_dimmable_no" model="lighting.product.dimmable">
+            <field name="name">No</field>
+        </record>
+        <record id="product_dimmable_na" model="lighting.product.dimmable">
+            <field name="name">-</field>
+        </record>
+
+        <!-- Auxiliary equipments -->
+        <record id="product_auxiliaryequipment_electromagnetico" model="lighting.product.auxiliaryequipment">
+            <field name="name">Electromagnético</field>
+        </record>
+        <record id="product_auxiliaryequipment_electronico" model="lighting.product.auxiliaryequipment">
+            <field name="name">Electrónico</field>
+        </record>
+        <record id="product_auxiliaryequipment_sin_equipo_no_precisa" model="lighting.product.auxiliaryequipment">
+            <field name="name">Sin equipo no precisa</field>
+        </record>
+        <record id="product_auxiliaryequipment_sin_equipo_si_precisa" model="lighting.product.auxiliaryequipment">
+            <field name="name">Sin equipo sí precisa</field>
+        </record>
+        <record id="product_auxiliaryequipment_na" model="lighting.product.auxiliaryequipment">
+            <field name="name">-</field>
+        </record>
+
+
+        <!-- Auxiliary equipment models -->
+        <record id="product_auxiliaryequipmentmodel_tci" model="lighting.product.auxiliaryequipmentmodel">
+            <field name="name">TCI</field>
+        </record>
+        <record id="product_auxiliaryequipmentmodel_meanwell" model="lighting.product.auxiliaryequipmentmodel">
+            <field name="name">Meanwell</field>
+        </record>
+        <record id="product_auxiliaryequipmentmodel_tecnotrafo" model="lighting.product.auxiliaryequipmentmodel">
+            <field name="name">Tecnotrafo</field>
+        </record>
+        <record id="product_auxiliaryequipmentmodel_tridonic" model="lighting.product.auxiliaryequipmentmodel">
+            <field name="name">Tridonic</field>
+        </record>
+        <record id="product_auxiliaryequipmentmodel_elt" model="lighting.product.auxiliaryequipmentmodel">
+            <field name="name">ELT</field>
+        </record>
+        <record id="product_auxiliaryequipmentmodel_na" model="lighting.product.auxiliaryequipmentmodel">
+            <field name="name">-</field>
+        </record>
+
+        <!-- Voltages -->
+        <record id="product_voltage_110-240v_ac" model="lighting.product.voltage">
+            <field name="voltage1">110</field>
+            <field name="voltage2_check">True</field>
+            <field name="voltage2">240</field>
+            <field name="current_type">AC</field>
+        </record>
+        <record id="product_voltage_220-240v_ac" model="lighting.product.voltage">
+            <field name="voltage1">220</field>
+            <field name="voltage2_check">True</field>
+            <field name="voltage2">240</field>
+            <field name="current_type">AC</field>
+        </record>
+        <record id="product_voltage_12v_dc" model="lighting.product.voltage">
+            <field name="voltage1">12</field>
+            <field name="voltage2_check">False</field>
+            <field name="current_type">DC</field>
+        </record>
+        <record id="product_voltage_12v_ac" model="lighting.product.voltage">
+            <field name="voltage1">12</field>
+            <field name="voltage2_check">False</field>
+            <field name="current_type">AC</field>
+        </record>
+        <record id="product_voltage_230v_ac" model="lighting.product.voltage">
+            <field name="voltage1">230</field>
+            <field name="voltage2_check">False</field>
+            <field name="current_type">AC</field>
+        </record>
+
+        <!-- Sensors -->
+        <record id="product_sensor_crepuscular" model="lighting.product.sensor">
+            <field name="name">Crepuscular</field>
+        </record>
+        <record id="product_sensor_movimiento" model="lighting.product.sensor">
+            <field name="name">Movimiento</field>
+        </record>
+        <record id="product_sensor_na" model="lighting.product.sensor">
+            <field name="name">-</field>
+        </record>
+
+        <!-- LED brands -->
+        <record id="product_ledbrand_bridgelux" model="lighting.product.ledbrand">
+            <field name="name">Bridgelux</field>
+        </record>
+        <record id="product_ledbrand_citizen" model="lighting.product.ledbrand">
+            <field name="name">Citizen</field>
+        </record>
+        <record id="product_ledbrand_cree" model="lighting.product.ledbrand">
+            <field name="name">Cree</field>
+        </record>
+        <record id="product_ledbrand_edison" model="lighting.product.ledbrand">
+            <field name="name">Edison</field>
+        </record>
+        <record id="product_ledbrand_epistar" model="lighting.product.ledbrand">
+            <field name="name">Epistar</field>
+        </record>
+        <record id="product_ledbrand_Lumileds" model="lighting.product.ledbrand">
+            <field name="name">Lumileds</field>
+        </record>
+        <record id="product_ledbrand_osram" model="lighting.product.ledbrand">
+            <field name="name">Osram</field>
+        </record>
+        <record id="product_ledbrand_samsung" model="lighting.product.ledbrand">
+            <field name="name">Samsung</field>
+        </record>
+        <record id="product_ledbrand_seoul" model="lighting.product.ledbrand">
+            <field name="name">Seoul</field>
+        </record>
+        <record id="product_ledbrand_vossloh" model="lighting.product.ledbrand">
+            <field name="name">Vossloh</field>
+        </record>
+        <record id="product_ledbrand_na" model="lighting.product.ledbrand">
+            <field name="name">-</field>
+        </record>
+
+
+        <!-- ECORRAE category -->
+        <record id="product_ecorraecategory_cat-a" model="lighting.product.ecorraecategory">
+            <field name="name">CAT-A</field>
+        </record>
+        <record id="product_ecorraecategory_cat-b" model="lighting.product.ecorraecategory">
+            <field name="name">CAT-B</field>
+        </record>
+        <record id="product_ecorraecategory_cat-c" model="lighting.product.ecorraecategory">
+            <field name="name">CAT-C</field>
+        </record>
+        <record id="product_ecorraecategory_led-a" model="lighting.product.ecorraecategory">
+            <field name="name">LED-A</field>
+        </record>
+        <record id="product_ecorraecategory_led-b" model="lighting.product.ecorraecategory">
+            <field name="name">LED-B</field>
+        </record>
+        <record id="product_ecorraecategory_led-c" model="lighting.product.ecorraecategory">
+            <field name="name">LED-C</field>
+        </record>
+        <record id="product_ecorraecategory_cod-e" model="lighting.product.ecorraecategory">
+            <field name="name">COD-E</field>
+        </record>
+        <record id="product_ecorraecategory_led-e" model="lighting.product.ecorraecategory">
+            <field name="name">LED-E</field>
+        </record>
+
+        <!-- ECORRAE II category -->
+        <record id="product_ecorrae2category_cod-60" model="lighting.product.ecorrae2category">
+            <field name="name">COD-60</field>
+        </record>
+        <record id="product_ecorrae2category_cod-61" model="lighting.product.ecorrae2category">
+            <field name="name">COD-61</field>
+        </record>
+        <record id="product_ecorrae2category_cod-62" model="lighting.product.ecorrae2category">
+            <field name="name">COD-62</field>
+        </record>
+        <record id="product_ecorrae2category_cod-63" model="lighting.product.ecorrae2category">
+            <field name="name">COD-63</field>
+        </record>
+        <record id="product_ecorrae2category_cod-105a" model="lighting.product.ecorrae2category">
+            <field name="name">COD-105a</field>
+        </record>
+        <record id="product_ecorrae2category_cod-105b" model="lighting.product.ecorrae2category">
+            <field name="name">COD-105b</field>
+        </record>
+        <record id="product_ecorrae2category_rot-a" model="lighting.product.ecorrae2category">
+            <field name="name">ROT-A</field>
+        </record>
+        <record id="product_ecorrae2category_rot-b" model="lighting.product.ecorrae2category">
+            <field name="name">ROT-B</field>
+        </record>
+        <record id="product_ecorrae2category_rot-c" model="lighting.product.ecorrae2category">
+            <field name="name">ROT-C</field>
+        </record>
+        <record id="product_ecorrae2category_neon*" model="lighting.product.ecorrae2category">
+            <field name="name">NEÓN*</field>
+        </record>
+
+        <!-- Photobiological risk group -->
+        <record id="product_photobiologicalriskgroup_gr0" model="lighting.product.photobiologicalriskgroup">
+            <field name="name">GR0</field>
+        </record>
+        <record id="product_photobiologicalriskgroup_gr1" model="lighting.product.photobiologicalriskgroup">
+            <field name="name">GR1</field>
+        </record>
+        <record id="product_photobiologicalriskgroup_gr2" model="lighting.product.photobiologicalriskgroup">
+            <field name="name">GR2</field>
+        </record>
+        <record id="product_photobiologicalriskgroup_gr3" model="lighting.product.photobiologicalriskgroup">
+            <field name="name">GR3</field>
+        </record>
+
+        <!-- Lampholders -->
+        <record id="product_source_lampholder_2g11" model="lighting.product.source.lampholder">
+            <field name="code">2G11</field>
+        </record>
+        <record id="product_source_lampholder_2gx13" model="lighting.product.source.lampholder">
+            <field name="code">2GX13</field>
+        </record>
+        <record id="product_source_lampholder_e14" model="lighting.product.source.lampholder">
+            <field name="code">E14</field>
+        </record>
+        <record id="product_source_lampholder_e27" model="lighting.product.source.lampholder">
+            <field name="code">E27</field>
+        </record>
+        <record id="product_source_lampholder_e40" model="lighting.product.source.lampholder">
+            <field name="code">E40</field>
+        </record>
+        <record id="product_source_lampholder_g12" model="lighting.product.source.lampholder">
+            <field name="code">G12</field>
+        </record>
+        <record id="product_source_lampholder_g24-d1" model="lighting.product.source.lampholder">
+            <field name="code">G24-d1</field>
+        </record>
+        <record id="product_source_lampholder_g24-d2" model="lighting.product.source.lampholder">
+            <field name="code">G24-d2</field>
+        </record>
+        <record id="product_source_lampholder_g24-d3" model="lighting.product.source.lampholder">
+            <field name="code">G24-d3</field>
+        </record>
+        <record id="product_source_lampholder_g24-q2" model="lighting.product.source.lampholder">
+            <field name="code">G24-q2</field>
+        </record>
+        <record id="product_source_lampholder_g24-q3" model="lighting.product.source.lampholder">
+            <field name="code">G24-q3</field>
+        </record>
+        <record id="product_source_lampholder_g5" model="lighting.product.source.lampholder">
+            <field name="code">G5</field>
+        </record>
+        <record id="product_source_lampholder_g53" model="lighting.product.source.lampholder">
+            <field name="code">G53</field>
+        </record>
+        <record id="product_source_lampholder_g8-5" model="lighting.product.source.lampholder">
+            <field name="code">G8.5</field>
+        </record>
+        <record id="product_source_lampholder_g9" model="lighting.product.source.lampholder">
+            <field name="code">G9</field>
+        </record>
+        <record id="product_source_lampholder_gu10" model="lighting.product.source.lampholder">
+            <field name="code">GU10</field>
+        </record>
+        <record id="product_source_lampholder_gu4" model="lighting.product.source.lampholder">
+            <field name="code">GU4</field>
+        </record>
+        <record id="product_source_lampholder_gu5-3" model="lighting.product.source.lampholder">
+            <field name="code">GU5.3</field>
+        </record>
+        <record id="product_source_lampholder_gx12" model="lighting.product.source.lampholder">
+            <field name="code">GX12</field>
+        </record>
+        <record id="product_source_lampholder_gx16d" model="lighting.product.source.lampholder">
+            <field name="code">GX16d</field>
+        </record>
+        <record id="product_source_lampholder_gx24-d3" model="lighting.product.source.lampholder">
+            <field name="code">GX24-d3</field>
+        </record>
+        <record id="product_source_lampholder_gx24-q2" model="lighting.product.source.lampholder">
+            <field name="code">GX24-q2</field>
+        </record>
+        <record id="product_source_lampholder_gx24-q4" model="lighting.product.source.lampholder">
+            <field name="code">GX24-q4</field>
+        </record>
+        <record id="product_source_lampholder_gx24-q5" model="lighting.product.source.lampholder">
+            <field name="code">GX24-q5</field>
+        </record>
+        <record id="product_source_lampholder_gx5-3" model="lighting.product.source.lampholder">
+            <field name="code">GX5.3</field>
+        </record>
+        <record id="product_source_lampholder_gx53" model="lighting.product.source.lampholder">
+            <field name="code">GX53</field>
+        </record>
+        <record id="product_source_lampholder_gx8-5" model="lighting.product.source.lampholder">
+            <field name="code">GX8.5</field>
+        </record>
+        <record id="product_source_lampholder_gz10" model="lighting.product.source.lampholder">
+            <field name="code">GZ10</field>
+        </record>
+        <record id="product_source_lampholder_r7s" model="lighting.product.source.lampholder">
+            <field name="code">R7s</field>
+        </record>
+        <record id="product_source_lampholder_rx7s" model="lighting.product.source.lampholder">
+            <field name="code">RX7s</field>
+        </record>
+
+        <!-- source types -->
+        <record id="product_source_type_hal" model="lighting.product.source.type">
+            <field name="code">HAL</field>
+        </record>
+        <record id="product_source_type_hie" model="lighting.product.source.type">
+            <field name="code">HIE</field>
+        </record>
+        <record id="product_source_type_hie/t" model="lighting.product.source.type">
+            <field name="code">HIE/T</field>
+        </record>
+        <record id="product_source_type_hipar_111" model="lighting.product.source.type">
+            <field name="code">HIPAR 111</field>
+        </record>
+        <record id="product_source_type_hit" model="lighting.product.source.type">
+            <field name="code">HIT</field>
+        </record>
+        <record id="product_source_type_hit-ce" model="lighting.product.source.type">
+            <field name="code">HIT-CE</field>
+        </record>
+        <record id="product_source_type_hit-de" model="lighting.product.source.type">
+            <field name="code">HIT-DE</field>
+        </record>
+        <record id="product_source_type_hit-t" model="lighting.product.source.type">
+            <field name="code">HIT-T</field>
+        </record>
+        <record id="product_source_type_hit-tc" model="lighting.product.source.type">
+            <field name="code">HIT-TC</field>
+        </record>
+        <record id="product_source_type_hme" model="lighting.product.source.type">
+            <field name="code">HME</field>
+        </record>
+        <record id="product_source_type_hse/t" model="lighting.product.source.type">
+            <field name="code">HSE/T</field>
+        </record>
+        <record id="product_source_type_hst" model="lighting.product.source.type">
+            <field name="code">HST</field>
+        </record>
+        <record id="product_source_type_hst-cri" model="lighting.product.source.type">
+            <field name="code">HST-CRI</field>
+        </record>
+        <record id="product_source_type_hti-tc" model="lighting.product.source.type">
+            <field name="code">HTI-TC</field>
+        </record>
+        <record id="product_source_type_lamp_vintage" model="lighting.product.source.type">
+            <field name="code">Lamp Vintage</field>
+        </record>
+        <record id="product_source_type_led" model="lighting.product.source.type">
+            <field name="code">LED</field>
+        </record>
+        <record id="product_source_type_led_ar111" model="lighting.product.source.type">
+            <field name="code">LED AR111</field>
+        </record>
+        <record id="product_source_type_led_cob" model="lighting.product.source.type">
+            <field name="code">LED COB</field>
+        </record>
+        <record id="product_source_type_led_filament" model="lighting.product.source.type">
+            <field name="code">Led Filament</field>
+        </record>
+        <record id="product_source_type_led_g9" model="lighting.product.source.type">
+            <field name="code">LED G9</field>
+        </record>
+        <record id="product_source_type_led_retrofit" model="lighting.product.source.type">
+            <field name="code">LED Retrofit</field>
+        </record>
+        <record id="product_source_type_led_smd" model="lighting.product.source.type">
+            <field name="code">LED SMD</field>
+        </record>
+        <record id="product_source_type_led_t2" model="lighting.product.source.type">
+            <field name="code">LED T2</field>
+        </record>
+        <record id="product_source_type_luz_mezcla" model="lighting.product.source.type">
+            <field name="code">Luz Mezcla</field>
+        </record>
+        <record id="product_source_type_master_ql" model="lighting.product.source.type">
+            <field name="code">MASTER QL</field>
+        </record>
+        <record id="product_source_type_par16" model="lighting.product.source.type">
+            <field name="code">PAR16</field>
+        </record>
+        <record id="product_source_type_par30" model="lighting.product.source.type">
+            <field name="code">PAR30</field>
+        </record>
+        <record id="product_source_type_par36" model="lighting.product.source.type">
+            <field name="code">PAR36</field>
+        </record>
+        <record id="product_source_type_par38" model="lighting.product.source.type">
+            <field name="code">PAR38</field>
+        </record>
+        <record id="product_source_type_qpar-16" model="lighting.product.source.type">
+            <field name="code">QPAR-16</field>
+        </record>
+        <record id="product_source_type_qpar30" model="lighting.product.source.type">
+            <field name="code">QPAR30</field>
+        </record>
+        <record id="product_source_type_qpar38" model="lighting.product.source.type">
+            <field name="code">QPAR38</field>
+        </record>
+        <record id="product_source_type_qr-cb" model="lighting.product.source.type">
+            <field name="code">QR-CB</field>
+        </record>
+        <record id="product_source_type_qr-cbc_51" model="lighting.product.source.type">
+            <field name="code">QR-CBC 51</field>
+        </record>
+        <record id="product_source_type_qr-lp_111" model="lighting.product.source.type">
+            <field name="code">QR-LP 111</field>
+        </record>
+        <record id="product_source_type_qt-de" model="lighting.product.source.type">
+            <field name="code">QT-DE</field>
+        </record>
+        <record id="product_source_type_qt14" model="lighting.product.source.type">
+            <field name="code">QT14</field>
+        </record>
+        <record id="product_source_type_qt32" model="lighting.product.source.type">
+            <field name="code">QT32</field>
+        </record>
+        <record id="product_source_type_r-125" model="lighting.product.source.type">
+            <field name="code">R-125</field>
+        </record>
+        <record id="product_source_type_t1" model="lighting.product.source.type">
+            <field name="code">T1</field>
+        </record>
+        <record id="product_source_type_t2_led" model="lighting.product.source.type">
+            <field name="code">T2 LED</field>
+        </record>
+        <record id="product_source_type_t5" model="lighting.product.source.type">
+            <field name="code">T5</field>
+        </record>
+        <record id="product_source_type_t5c" model="lighting.product.source.type">
+            <field name="code">T5c</field>
+        </record>
+        <record id="product_source_type_tc-d" model="lighting.product.source.type">
+            <field name="code">TC-D</field>
+        </record>
+        <record id="product_source_type_tc-de" model="lighting.product.source.type">
+            <field name="code">TC-DE</field>
+        </record>
+        <record id="product_source_type_tc-fl" model="lighting.product.source.type">
+            <field name="code">TC-FL</field>
+        </record>
+        <record id="product_source_type_tc-l" model="lighting.product.source.type">
+            <field name="code">TC-L</field>
+        </record>
+        <record id="product_source_type_tc-t" model="lighting.product.source.type">
+            <field name="code">TC-T</field>
+        </record>
+        <record id="product_source_type_tc-te" model="lighting.product.source.type">
+            <field name="code">TC-TE</field>
+        </record>
+        <record id="product_source_type_tc-tse" model="lighting.product.source.type">
+            <field name="code">TC-TSE</field>
+        </record>
+        <record id="product_source_type_ts-tse" model="lighting.product.source.type">
+            <field name="code">TS-TSE</field>
+        </record>
+
+        <!-- Beam photometric distribution -->
+        <record id="product_beam_photodistribution_asimetrica_directa" model="lighting.product.beam.photodistribution">
+            <field name="name">Asimétrica Directa</field>
+        </record>
+        <record id="product_beam_photodistribution_simetrica_directa" model="lighting.product.beam.photodistribution">
+            <field name="name">Simétrica Directa</field>
+        </record>
+        <record id="product_beam_photodistribution_asimetrica_indirecta"
+                model="lighting.product.beam.photodistribution">
+            <field name="name">Asimétrica Indirecta</field>
+        </record>
+        <record id="product_beam_photodistribution_simetrica_indirecta" model="lighting.product.beam.photodistribution">
+            <field name="name">Simétrica Indirecta</field>
+        </record>
+        <record id="product_beam_photodistribution_difusa" model="lighting.product.beam.photodistribution">
+            <field name="name">Difusa</field>
+        </record>
+        <record id="product_beam_photodistribution_semidirecta" model="lighting.product.beam.photodistribution">
+            <field name="name">Semidirecta</field>
+        </record>
+        <record id="product_beam_photodistribution_semiindirecta" model="lighting.product.beam.photodistribution">
+            <field name="name">Semiindirecta</field>
         </record>
 
         <!-- Attachment type -->
@@ -201,6 +1241,34 @@
             <field name="name">Certificado RoHs</field>
         </record>
 
+        <!-- Languages -->
+        <record id="language_en_us" model="lighting.language">
+            <field name="code">en_US</field>
+            <field name="name">English</field>
+        </record>
+        <record id="language_fr_fr" model="lighting.language">
+            <field name="code">fr_FR</field>
+            <field name="name">French</field>
+        </record>
+        <record id="language_pt_pt" model="lighting.language">
+            <field name="code">pt_PT</field>
+            <field name="name">Portuguese</field>
+        </record>
+        <record id="language_es_es" model="lighting.language">
+            <field name="code">es_ES</field>
+            <field name="name">Spanish</field>
+        </record>
+
+        <!-- States -->
+        <record id="product_state_ampliacion_gama" model="lighting.product.state">
+            <field name="name">Ampliación gama</field>
+        </record>
+        <record id="product_state_ampliacion_continua" model="lighting.product.state">
+            <field name="name">Continúa</field>
+        </record>
+        <record id="product_state_ampliacion_new" model="lighting.product.state">
+            <field name="name">New</field>
+        </record>
 
     </data>
 </openerp>
