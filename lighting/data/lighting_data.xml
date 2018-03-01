@@ -413,7 +413,7 @@
             <field name="code">ALU</field>
             <field name="name">Aluminio</field>
         </record>
-        <record id="product_material_alu_99,99%" model="lighting.product.material">
+        <record id="product_material_alu_99" model="lighting.product.material">
             <field name="code">ALU 99,99%</field>
             <field name="name">Aluminio 99%</field>
         </record>
