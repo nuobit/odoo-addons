@@ -177,6 +177,7 @@ class LightingProduct(models.Model):
                                            string='Suppliers')
 
     ibox_weight = fields.Float(string='IBox weight (Kg)')
+    ibox_volume = fields.Float(string='IBox volume (m³)')
     ibox_length = fields.Float(string='IBox length (cm)')
     ibox_width = fields.Float(string='IBox width (cm)')
     ibox_height = fields.Float(string='IBox height (cm)')
