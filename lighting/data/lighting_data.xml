@@ -841,6 +841,9 @@
         <record id="product_ecorraecategory_led-e" model="lighting.product.ecorraecategory">
             <field name="name">LED-E</field>
         </record>
+        <record id="product_ecorraecategory_na" model="lighting.product.ecorraecategory">
+            <field name="name">-</field>
+        </record>
 
         <!-- ECORRAE II category -->
         <record id="product_ecorrae2category_cod-60" model="lighting.product.ecorrae2category">
@@ -872,6 +875,9 @@
         </record>
         <record id="product_ecorrae2category_neon*" model="lighting.product.ecorrae2category">
             <field name="name">NEÓN*</field>
+        </record>
+        <record id="product_ecorrae2category_na" model="lighting.product.ecorrae2category">
+            <field name="name">-</field>
         </record>
 
         <!-- Photobiological risk group -->
