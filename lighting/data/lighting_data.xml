@@ -758,6 +758,11 @@
             <field name="voltage2_check">False</field>
             <field name="current_type">DC</field>
         </record>
+        <record id="product_voltage_24v_dc" model="lighting.product.voltage">
+            <field name="voltage1">24</field>
+            <field name="voltage2_check">False</field>
+            <field name="current_type">DC</field>
+        </record>
         <record id="product_voltage_12v_ac" model="lighting.product.voltage">
             <field name="voltage1">12</field>
             <field name="voltage2_check">False</field>
