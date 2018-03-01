@@ -133,8 +133,7 @@ class LightingProduct(models.Model):
 
     fan_blades = fields.Integer(string='Fan blades', help='Number of fan blades')
     fan_control = fields.Selection(selection=[('remote', 'Remote control'), ('wall', 'Wall control')], string='Fan control type')
-
-    #fan_wattage = fields.Integer(string="Fan wattage (W)")
+    fan_wattage_ids = fields.One2many(comodel_name='lighting.product.fanwattage', inverse_name='product_id', string='Fan wattages (W)')
 
     # Sources tab
     source_ids = fields.One2many(comodel_name='lighting.product.source', inverse_name='product_id', string='Sources')
@@ -463,6 +462,22 @@ class LightingProductPhotobiologicalRiskGroup(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The photobiological risk group description must be unique!'),
                         ]
 
+class LightingProductFanWattage(models.Model):
+    _name = 'lighting.product.fanwattage'
+    _rec_name = 'wattage'
+
+    wattage = fields.Float(string='Wattage (W)', required=True)
+
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
+
+    _sql_constraints = [('wattage_product_uniq', 'unique (product_id, wattage)', 'There are duplicated wattages on the same product!'),
+                    ]
+
+    @api.constrains('wattage')
+    def _check_wattage(self):
+        for rec in self:
+            if rec.wattage == 0:
+                raise ValidationError("The fan wattage, if defined, cannot be 0")
 
 ########### sources tab
 class LightingProductSource(models.Model):
@@ -602,7 +617,7 @@ class LightingProductSourceLineMarketingWattage(models.Model):
     _name = 'lighting.product.source.line.marketingwattage'
     _rec_name = 'wattage'
 
-    wattage = fields.Integer(string='Marketing wattage (W)', required=True)
+    wattage = fields.Float(string='Marketing wattage (W)', required=True)
 
     source_line_id = fields.Many2one(comodel_name='lighting.product.source.line', ondelete='cascade', string='Source line')
 
