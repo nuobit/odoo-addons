@@ -250,7 +250,7 @@
                             <group col="4">
                                 <group colspan="2" string="IBox">
                                     <field name="ibox_weight" string="Weight (Kg)"/>
-                                    <field name="ibox_volume" string="Volume (m³)"/>
+                                    <field name="ibox_volume" string="Volume (cm³)"/>
                                     <field name="ibox_length" string="Length (cm)"/>
                                     <field name="ibox_width" string="Width (cm)"/>
                                     <field name="ibox_height" string="Height (cm)"/>
