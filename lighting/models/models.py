@@ -142,7 +142,8 @@ class LightingProduct(models.Model):
 
     @api.depends('source_ids')
     def _compute_source_count(self):
-        self.source_count = sum(self.source_ids.mapped('num'))
+        for rec in self:
+            rec.source_count = sum(rec.source_ids.mapped('num'))
 
     # Beams tab
     beam_ids = fields.One2many(comodel_name='lighting.product.beam', inverse_name='product_id', string='Beams')
@@ -151,12 +152,14 @@ class LightingProduct(models.Model):
 
     @api.depends('beam_ids')
     def _compute_beam_count(self):
-        self.beam_count = sum(self.beam_ids.mapped('num'))
+        for rec in self:
+            rec.beam_count = sum(rec.beam_ids.mapped('num'))
 
     # Attachment tab
     attachment_ids = fields.One2many(comodel_name='lighting.attachment', inverse_name='product_id', string='Attachments')
     attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
 
+    @api.depends('attachment_ids')
     def _compute_attachment_count(self):
         for record in self:
             record.attachment_count = self.env['lighting.attachment'].search_count([('product_id', '=', record.id)])
