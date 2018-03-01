@@ -50,11 +50,11 @@
                                 <field name="install_location"/>
                                 <field name="application_id"/>
                                 <field name="finish_id"/>
-                                <field name="body_material_id"/>
-                                <field name="diffusor_material_id"/>
-                                <field name="frame_material_id"/>
-                                <field name="reflector_material_id"/>
-                                <field name="blade_material_id"/>
+                                <field name="body_material_ids" widget="many2many_tags"/>
+                                <field name="diffusor_material_ids" widget="many2many_tags"/>
+                                <field name="frame_material_ids" widget="many2many_tags"/>
+                                <field name="reflector_material_ids" widget="many2many_tags"/>
+                                <field name="blade_material_ids" widget="many2many_tags"/>
 
                                 <field name="ip"/>
                                 <field name="ip2"/>

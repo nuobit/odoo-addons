@@ -33,11 +33,12 @@ class LightingProduct(models.Model):
     # Description tab
     application_id = fields.Many2one(comodel_name='lighting.product.application', ondelete='restrict', string='Application')
     finish_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish')
-    body_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Body material')
-    diffusor_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Diffusor material')
-    frame_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Frame material')
-    reflector_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Reflector material')
-    blade_material_id = fields.Many2one(comodel_name='lighting.product.material', ondelete='restrict', string='Blade material')
+
+    body_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_body_material_rel', string='Body material')
+    diffusor_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_diffusor_material_rel', string='Diffusor material')
+    frame_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_frame_material_rel', string='Frame material')
+    reflector_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_reflector_material_rel', string='Reflector material')
+    blade_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_blade_material_rel', string='Blade material')
 
     ip = fields.Integer(string="IP")
     ip2 = fields.Integer(string="IP2")
