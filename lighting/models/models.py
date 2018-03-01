@@ -121,7 +121,7 @@ class LightingProduct(models.Model):
     post_with_inspection_chamber = fields.Boolean(string='Post with inspection chamber')
 
     emergency_light = fields.Boolean(string='Emergency light', help="Luminarie with emergency light")
-    average_emergency_time = fields.Boolean(string='Average emergency time (h)')
+    average_emergency_time = fields.Float(string='Average emergency time (h)')
 
     flammable_surfaces = fields.Boolean(string='Flammable surfaces')
 
