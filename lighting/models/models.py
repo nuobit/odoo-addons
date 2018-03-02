@@ -530,7 +530,7 @@ class LightingProductSourceLine(models.Model):
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
     type_id = fields.Many2one(comodel_name='lighting.product.source.type', ondelete='restrict', string='Type', required=True)
-    wattage = fields.Integer(string='Wattage')
+    wattage = fields.Float(string='Wattage')
     is_max_wattage = fields.Boolean(string='Max. Wattage')
     wattage_magnitude = fields.Selection([('w', 'W'), ('wm', 'W/m')], string='Wattage magnitude', required=True, default='w')
 
