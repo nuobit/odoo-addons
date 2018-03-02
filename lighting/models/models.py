@@ -537,7 +537,7 @@ class LightingProductSourceLine(models.Model):
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
     color_temperature = fields.Integer(string='Color temperature (K)')
-    special_spectrum = fields.Selection([('blue' ,'Blue'), ('meat', 'Meat'), ('fashion', 'Moda'),
+    special_spectrum = fields.Selection([('blue' ,'Blue'), ('meat', 'Meat'), ('fashion', 'Fashion'),
                                          ('multifood', 'Multi Food'), ('bread', 'Bread'),
                                          ('fish', 'Fish'), ('vegetable', 'Vegetable')
                                          ], string='Special spectrum')
