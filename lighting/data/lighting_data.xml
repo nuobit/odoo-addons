@@ -63,10 +63,6 @@
             <field name="name">Light emission angle</field>
             <field name="uom">º</field>
         </record>
-        <record id="dimension_type_light_emission_angle_2_degrees" model="lighting.dimension.type">
-            <field name="name">Light emission angle 2</field>
-            <field name="uom">º</field>
-        </record>
         <record id="dimension_type_light_emission_angle_minimum_degrees" model="lighting.dimension.type">
             <field name="name">Light emission angle minimum</field>
             <field name="uom">º</field>
@@ -75,6 +71,29 @@
             <field name="name">Light emission angle maximum</field>
             <field name="uom">º</field>
         </record>
+        <record id="dimension_type_light_emission_angle_x_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle X</field>
+            <field name="uom">º</field>
+        </record>
+        <record id="dimension_type_light_emission_angle_y_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle Y</field>
+            <field name="uom">º</field>
+        </record>
+        <record id="dimension_type_light_emission_angle_opt1_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle option 1</field>
+            <field name="uom">º</field>
+        </record>
+        <record id="dimension_type_light_emission_angle_opt2_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle option 2</field>
+            <field name="uom">º</field>
+        </record>
+        <record id="dimension_type_light_emission_angle_opt3_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle option 3</field>
+            <field name="uom">º</field>
+        </record>
+
+
+
 
         <!-- Energy efficiency -->
         <record id="energyefficiency_a_plusplus" model="lighting.energyefficiency">

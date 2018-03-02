@@ -387,6 +387,7 @@
                     <group>
                         <field name="name"/>
                         <field name="uom"/>
+                        <field name="description" widget="text"/>
                     </group>
                 </sheet>
             </form>

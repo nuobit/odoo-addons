@@ -256,10 +256,11 @@ class LightingEnergyEfficiency(models.Model):
 class LightingDimensionType(models.Model):
     _name = 'lighting.dimension.type'
 
-    name = fields.Char(string='Description', required=True, translate=True)
+    name = fields.Char(string='Name', required=True, translate=True)
     uom = fields.Char(string='Uom', help='Unit of mesure')
+    description = fields.Char(string='Internal description')
 
-    _sql_constraints = [('name_uniq', 'unique (name, uom)', 'The dimension description must be unique!'),
+    _sql_constraints = [('name_uniq', 'unique (name, uom)', 'The dimension name must be unique!'),
                         ]
 
     @api.multi
