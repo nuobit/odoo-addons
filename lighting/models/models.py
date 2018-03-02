@@ -10,7 +10,13 @@ def float2text(f, decs=2):
     else:
         return ("{0:.%if}" % decs).format(f)
 
-
+COLOR_SELECTION = [ ('meat', 'Meat'), ('fashion', 'Fashion'),
+                    ('multifood', 'Multi Food'), ('bread', 'Bread'),
+                    ('fish', 'Fish'), ('vegetable', 'Vegetable'),
+                    ('blue', _('Blue')), ('orange', _('Orange')),
+                    ('green', _('Green')), ('red', _('Red')),
+                    ('purple', _('Purple')), ('pink', _('Pink')),
+                ]
 
 ## main model
 class LightingProduct(models.Model):
@@ -97,10 +103,7 @@ class LightingProduct(models.Model):
 
     color_consistency = fields.Float(string='Color consistency')
 
-    color = fields.Selection(selection=[('blue', _('Blue')), ('orange', _('Orange')),
-                                        ('green', _('Green')), ('red', _('Red')),
-                                        ('purple', _('Purple')), ('pink', _('Pink'))
-                                            ], string='Color')
+    color = fields.Selection(selection=COLOR_SELECTION, string='Color')
 
     led_brand_id = fields.Many2one(comodel_name='lighting.product.ledbrand', ondelete='restrict', string='LED brand')
 
@@ -542,10 +545,7 @@ class LightingProductSourceLine(models.Model):
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
     color_temperature = fields.Integer(string='Color temperature (K)')
-    special_spectrum = fields.Selection([('blue' ,'Blue'), ('meat', 'Meat'), ('fashion', 'Fashion'),
-                                         ('multifood', 'Multi Food'), ('bread', 'Bread'),
-                                         ('fish', 'Fish'), ('vegetable', 'Vegetable'),
-                                         ], string='Special spectrum')
+    special_spectrum = fields.Selection(COLOR_SELECTION, string='Special spectrum')
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
                                   relation='lighting_product_source_energyefficiency_rel',
