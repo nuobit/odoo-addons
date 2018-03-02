@@ -35,7 +35,7 @@
             <field name="name">Height 2</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_altura_maxima_mm" model="lighting.dimension.type">
+        <record id="dimension_type_maximum_height_mm" model="lighting.dimension.type">
             <field name="name">Maximum height</field>
             <field name="uom">mm</field>
         </record>
@@ -819,7 +819,7 @@
         <record id="product_ledbrand_na" model="lighting.product.ledbrand">
             <field name="name">-</field>
         </record>
-        
+
         <!-- ECORRAE category -->
         <record id="product_ecorraecategory_cat-a" model="lighting.product.ecorraecategory">
             <field name="name">CAT-A</field>
