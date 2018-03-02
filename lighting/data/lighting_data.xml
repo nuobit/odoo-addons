@@ -3,60 +3,60 @@
     <data noupdate="1">
 
         <!-- dimension type -->
-        <record id="dimension_type_largo_mm" model="lighting.dimension.type">
-            <field name="name">Largo</field>
+        <record id="dimension_type_length_mm" model="lighting.dimension.type">
+            <field name="name">Length</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_anchura_mm" model="lighting.dimension.type">
-            <field name="name">Anchura</field>
+        <record id="dimension_type_width_mm" model="lighting.dimension.type">
+            <field name="name">Width</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_anchura_minima_mm" model="lighting.dimension.type">
-            <field name="name">Anchura mínima</field>
+        <record id="dimension_type_minimum_width_mm" model="lighting.dimension.type">
+            <field name="name">Minimum width</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_anchura_maxima_mm" model="lighting.dimension.type">
-            <field name="name">Anchura máxima</field>
+        <record id="dimension_type_maximum_width_mm" model="lighting.dimension.type">
+            <field name="name">Maximum width</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_diametro_mm" model="lighting.dimension.type">
-            <field name="name">Diámetro</field>
+        <record id="dimension_type_diameter_mm" model="lighting.dimension.type">
+            <field name="name">Diameter</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_diametro_2_mm" model="lighting.dimension.type">
-            <field name="name">Diámetro 2</field>
+        <record id="dimension_type_diameter_2_mm" model="lighting.dimension.type">
+            <field name="name">Diameter 2</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_altura_mm" model="lighting.dimension.type">
-            <field name="name">Altura</field>
+        <record id="dimension_type_height_mm" model="lighting.dimension.type">
+            <field name="name">Height</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_altura_2_mm" model="lighting.dimension.type">
-            <field name="name">Altura 2</field>
+        <record id="dimension_type_height_2_mm" model="lighting.dimension.type">
+            <field name="name">Height 2</field>
             <field name="uom">mm</field>
         </record>
         <record id="dimension_type_altura_maxima_mm" model="lighting.dimension.type">
-            <field name="name">Altura máxima</field>
+            <field name="name">Maximum height</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_longitud_suspension_mecanica_maxima_mm" model="lighting.dimension.type">
-            <field name="name">Longitud suspensión mecánica máxima</field>
+        <record id="dimension_type_mechanical_suspension_maximum_length_mm" model="lighting.dimension.type">
+            <field name="name">Mechanical suspension maximum length</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_diametro_superior_poste_mm" model="lighting.dimension.type">
-            <field name="name">Diámetro superior poste</field>
+        <record id="dimension_type_pole_top_diameter_mm" model="lighting.dimension.type">
+            <field name="name">Pole's top diameter</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_diametro_minimo_mm" model="lighting.dimension.type">
-            <field name="name">Diámetro mínimo</field>
+        <record id="dimension_type_minimum_diameter_mm" model="lighting.dimension.type">
+            <field name="name">Minimum diameter</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_diametro_maximo_mm" model="lighting.dimension.type">
-            <field name="name">Diámetro máximo</field>
+        <record id="dimension_type_maximum_diameter_mm" model="lighting.dimension.type">
+            <field name="name">Maximum diameter</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_profundidad_mm" model="lighting.dimension.type">
-            <field name="name">Profundidad</field>
+        <record id="dimension_type_depth_mm" model="lighting.dimension.type">
+            <field name="name">Depth</field>
             <field name="uom">mm</field>
         </record>
 
@@ -686,14 +686,14 @@
         <record id="product_dimmable_dali" model="lighting.product.dimmable">
             <field name="name">Dali</field>
         </record>
-        <record id="product_dimmable_corte_de_fase_l" model="lighting.product.dimmable">
-            <field name="name">Corte de fase L</field>
+        <record id="product_dimmable_phase_cut_l" model="lighting.product.dimmable">
+            <field name="name">Phase cut L</field>
         </record>
-        <record id="product_dimmable_corte_de_fase_c" model="lighting.product.dimmable">
-            <field name="name">Corte de fase C</field>
+        <record id="product_dimmable_phase_cut_c" model="lighting.product.dimmable">
+            <field name="name">Phase cut C</field>
         </record>
-        <record id="product_dimmable_si" model="lighting.product.dimmable">
-            <field name="name">Sí</field>
+        <record id="product_dimmable_yes" model="lighting.product.dimmable">
+            <field name="name">Yes</field>
         </record>
         <record id="product_dimmable_no" model="lighting.product.dimmable">
             <field name="name">No</field>
@@ -703,17 +703,17 @@
         </record>
 
         <!-- Auxiliary equipments -->
-        <record id="product_auxiliaryequipment_electromagnetico" model="lighting.product.auxiliaryequipment">
-            <field name="name">Electromagnético</field>
+        <record id="product_auxiliaryequipment_electromagnetic" model="lighting.product.auxiliaryequipment">
+            <field name="name">Electromagnetic</field>
         </record>
-        <record id="product_auxiliaryequipment_electronico" model="lighting.product.auxiliaryequipment">
-            <field name="name">Electrónico</field>
+        <record id="product_auxiliaryequipment_electronic" model="lighting.product.auxiliaryequipment">
+            <field name="name">Electronic</field>
         </record>
-        <record id="product_auxiliaryequipment_sin_equipo_no_precisa" model="lighting.product.auxiliaryequipment">
-            <field name="name">Sin equipo no precisa</field>
+        <record id="product_auxiliaryequipment_without_equipment_not_needed" model="lighting.product.auxiliaryequipment">
+            <field name="name">Without equipment, not needed</field>
         </record>
-        <record id="product_auxiliaryequipment_sin_equipo_si_precisa" model="lighting.product.auxiliaryequipment">
-            <field name="name">Sin equipo sí precisa</field>
+        <record id="product_auxiliaryequipment_without_equipment_needed" model="lighting.product.auxiliaryequipment">
+            <field name="name">Without equipment, needed</field>
         </record>
         <record id="product_auxiliaryequipment_na" model="lighting.product.auxiliaryequipment">
             <field name="name">-</field>
@@ -775,11 +775,11 @@
         </record>
 
         <!-- Sensors -->
-        <record id="product_sensor_crepuscular" model="lighting.product.sensor">
-            <field name="name">Crepuscular</field>
+        <record id="product_sensor_daylight" model="lighting.product.sensor">
+            <field name="name">Daylight</field>
         </record>
-        <record id="product_sensor_movimiento" model="lighting.product.sensor">
-            <field name="name">Movimiento</field>
+        <record id="product_sensor_motion" model="lighting.product.sensor">
+            <field name="name">Motion</field>
         </record>
         <record id="product_sensor_na" model="lighting.product.sensor">
             <field name="name">-</field>
@@ -819,8 +819,7 @@
         <record id="product_ledbrand_na" model="lighting.product.ledbrand">
             <field name="name">-</field>
         </record>
-
-
+        
         <!-- ECORRAE category -->
         <record id="product_ecorraecategory_cat-a" model="lighting.product.ecorraecategory">
             <field name="name">CAT-A</field>
@@ -1147,27 +1146,26 @@
         </record>
 
         <!-- Beam photometric distribution -->
-        <record id="product_beam_photodistribution_asimetrica_directa" model="lighting.product.beam.photodistribution">
-            <field name="name">Asimétrica Directa</field>
+        <record id="product_beam_photodistribution_direct_asymmetric" model="lighting.product.beam.photodistribution">
+            <field name="name">Direct asymmetric</field>
         </record>
-        <record id="product_beam_photodistribution_simetrica_directa" model="lighting.product.beam.photodistribution">
-            <field name="name">Simétrica Directa</field>
+        <record id="product_beam_photodistribution_direct_symmetric" model="lighting.product.beam.photodistribution">
+            <field name="name">Direct symmetric</field>
         </record>
-        <record id="product_beam_photodistribution_asimetrica_indirecta"
-                model="lighting.product.beam.photodistribution">
-            <field name="name">Asimétrica Indirecta</field>
+        <record id="product_beam_photodistribution_indirect_asymmetric" model="lighting.product.beam.photodistribution">
+            <field name="name">Indirect asymmetric</field>
         </record>
-        <record id="product_beam_photodistribution_simetrica_indirecta" model="lighting.product.beam.photodistribution">
-            <field name="name">Simétrica Indirecta</field>
+        <record id="product_beam_photodistribution_indirect_symmetric" model="lighting.product.beam.photodistribution">
+            <field name="name">Indirect symmetric</field>
         </record>
-        <record id="product_beam_photodistribution_difusa" model="lighting.product.beam.photodistribution">
-            <field name="name">Difusa</field>
+        <record id="product_beam_photodistribution_diffuse" model="lighting.product.beam.photodistribution">
+            <field name="name">Diffuse</field>
         </record>
-        <record id="product_beam_photodistribution_semidirecta" model="lighting.product.beam.photodistribution">
-            <field name="name">Semidirecta</field>
+        <record id="product_beam_photodistribution_semidirect" model="lighting.product.beam.photodistribution">
+            <field name="name">Semi-direct</field>
         </record>
-        <record id="product_beam_photodistribution_semiindirecta" model="lighting.product.beam.photodistribution">
-            <field name="name">Semiindirecta</field>
+        <record id="product_beam_photodistribution_semiindirect" model="lighting.product.beam.photodistribution">
+            <field name="name">Semi-indirect</field>
         </record>
 
         <!-- Attachment type -->
@@ -1271,11 +1269,11 @@
         </record>
 
         <!-- States -->
-        <record id="product_state_ampliacion_gama" model="lighting.product.state">
-            <field name="name">Ampliación gama</field>
+        <record id="product_state_range_expansion" model="lighting.product.state">
+            <field name="name">Range expansion</field>
         </record>
-        <record id="product_state_continua" model="lighting.product.state">
-            <field name="name">Continúa</field>
+        <record id="product_state_continue" model="lighting.product.state">
+            <field name="name">Continue</field>
         </record>
         <record id="product_state_new" model="lighting.product.state">
             <field name="name">New</field>

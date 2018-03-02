@@ -329,7 +329,7 @@ class LightingProductFrequency(models.Model):
 class LightingProductDimmable(models.Model):
     _name = 'lighting.product.dimmable'
 
-    name = fields.Char(string='Dimmable', required=True)
+    name = fields.Char(string='Dimmable', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The dimmable must be unique!'),
                         ]
@@ -403,7 +403,7 @@ class LightingProductVoltage(models.Model):
 class LightingProductSensor(models.Model):
     _name = 'lighting.product.sensor'
 
-    name = fields.Char(string='Sensor', required=True)
+    name = fields.Char(string='Sensor', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The sensor must be unique!'),
                         ]
@@ -671,7 +671,7 @@ class LightingProductBeam(models.Model):
 class LightingProductBeamPhotometricDistribution(models.Model):
     _name = 'lighting.product.beam.photodistribution'
 
-    name = fields.Char(string='Description', translate=True)
+    name = fields.Char(string='Description', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The photometric distribution name must be unique!'),
                         ]
