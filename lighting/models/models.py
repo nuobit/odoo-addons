@@ -97,6 +97,11 @@ class LightingProduct(models.Model):
 
     color_consistency = fields.Float(string='Color consistency')
 
+    color = fields.Selection(selection=[('blue', _('Blue')), ('orange', _('Orange')),
+                                        ('green', _('Green')), ('red', _('Red')),
+                                        ('purple', _('Purple')), ('pink', _('Pink'))
+                                            ], string='Color')
+
     led_brand_id = fields.Many2one(comodel_name='lighting.product.ledbrand', ondelete='restrict', string='LED brand')
 
     # Physical characteristics
@@ -540,7 +545,6 @@ class LightingProductSourceLine(models.Model):
     special_spectrum = fields.Selection([('blue' ,'Blue'), ('meat', 'Meat'), ('fashion', 'Fashion'),
                                          ('multifood', 'Multi Food'), ('bread', 'Bread'),
                                          ('fish', 'Fish'), ('vegetable', 'Vegetable'),
-                                         ('orange', 'Orange'), ('green', 'Green')
                                          ], string='Special spectrum')
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',

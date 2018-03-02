@@ -934,6 +934,9 @@
         </record>
 
         <!-- Lampholders -->
+        <record id="product_source_lampholder_2g10" model="lighting.product.source.lampholder">
+            <field name="code">2G10</field>
+        </record>
         <record id="product_source_lampholder_2g11" model="lighting.product.source.lampholder">
             <field name="code">2G11</field>
         </record>
