@@ -19,16 +19,16 @@
             <field name="name">Anchura máxima</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_diametro_1_mm" model="lighting.dimension.type">
-            <field name="name">Diámetro 1</field>
+        <record id="dimension_type_diametro_mm" model="lighting.dimension.type">
+            <field name="name">Diámetro</field>
             <field name="uom">mm</field>
         </record>
         <record id="dimension_type_diametro_2_mm" model="lighting.dimension.type">
             <field name="name">Diámetro 2</field>
             <field name="uom">mm</field>
         </record>
-        <record id="dimension_type_altura_1_mm" model="lighting.dimension.type">
-            <field name="name">Altura 1</field>
+        <record id="dimension_type_altura_mm" model="lighting.dimension.type">
+            <field name="name">Altura</field>
             <field name="uom">mm</field>
         </record>
         <record id="dimension_type_altura_2_mm" model="lighting.dimension.type">
