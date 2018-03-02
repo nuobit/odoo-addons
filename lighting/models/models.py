@@ -539,7 +539,8 @@ class LightingProductSourceLine(models.Model):
     color_temperature = fields.Integer(string='Color temperature (K)')
     special_spectrum = fields.Selection([('blue' ,'Blue'), ('meat', 'Meat'), ('fashion', 'Fashion'),
                                          ('multifood', 'Multi Food'), ('bread', 'Bread'),
-                                         ('fish', 'Fish'), ('vegetable', 'Vegetable')
+                                         ('fish', 'Fish'), ('vegetable', 'Vegetable'),
+                                         ('orange', 'Orange'), ('green', 'Green')
                                          ], string='Special spectrum')
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
