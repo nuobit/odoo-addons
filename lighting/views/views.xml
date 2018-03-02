@@ -115,6 +115,8 @@
 
                                 <field name="color_consistency"/>
 
+                                <field name="color"/>
+
                                 <field name="led_brand_id"/>
                             </group>
                         </page>
