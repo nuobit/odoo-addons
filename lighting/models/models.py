@@ -529,8 +529,9 @@ class LightingProductSourceLine(models.Model):
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
     type_id = fields.Many2one(comodel_name='lighting.product.source.type', ondelete='restrict', string='Type', required=True)
-    wattage = fields.Integer(string='Wattage (W)')
-    is_max_wattage = fields.Boolean(string='Max. Wattage (W)')
+    wattage = fields.Integer(string='Wattage')
+    is_max_wattage = fields.Boolean(string='Max. Wattage')
+    wattage_magnitude = fields.Selection([('w', 'W'), ('wm', 'W/m')], string='Wattage magnitude', required=True, default='w')
 
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
@@ -557,13 +558,16 @@ class LightingProductSourceLine(models.Model):
     ## computed fields
     wattage_display = fields.Char(compute='_compute_wattage_display', string='Wattage (W)')
 
-    @api.depends('wattage', 'is_max_wattage')
+    @api.depends('wattage', 'is_max_wattage', 'wattage_magnitude')
     def _compute_wattage_display(self):
+        wattage_magnitude_option = dict(
+            self.fields_get(['wattage_magnitude'], ['selection']).get('wattage_magnitude').get('selection'))
+
         for rec in self:
             res = []
             if rec.wattage:
-                res.append(float2text(rec.wattage))
-
+                res.append(float2text(rec.wattage) +
+                           wattage_magnitude_option.get(rec.wattage_magnitude))
                 if rec.is_max_wattage:
                     res.append(_('max.'))
 

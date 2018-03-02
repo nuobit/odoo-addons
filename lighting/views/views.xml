@@ -968,6 +968,7 @@
                         <field name="type_id"/>
                         <field name="wattage"/>
                         <field name="is_max_wattage"/>
+                        <field name="wattage_magnitude"/>
 
                         <field name="luminous_flux1"/>
                         <field name="luminous_flux2"/>
