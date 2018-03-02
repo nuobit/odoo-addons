@@ -190,7 +190,6 @@
                                 <field name="beam_ids" nolabel="1">
                                     <tree>
                                         <field name="sequence" widget="handle"/>
-                                        <field name="relevance"/>
                                         <field name="num"/>
                                         <field name="photometric_distribution_ids" widget="many2many_tags"/>
                                         <field name="dimensions_display"/>
@@ -1055,7 +1054,6 @@
                 <sheet>
                     <group>
                         <!--field name="sequence"/-->
-                        <field name="relevance"/>
                         <field name="num"/>
                         <field name="photometric_distribution_ids" widget="many2many_tags"/>
                         <!--field name="dimensions_display"/-->

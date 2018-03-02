@@ -639,11 +639,8 @@ class LightingProductSourceLineMarketingWattage(models.Model):
 class LightingProductBeam(models.Model):
     _name = 'lighting.product.beam'
 
-    _rec_name = 'relevance'
-
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
-    relevance = fields.Selection([('main', 'Main'), ('aux', 'Auxiliary')], string='Relevance', required=True, default='main')
     num = fields.Integer(string='Number of beams', default=1)
 
     photometric_distribution_ids = fields.Many2many(comodel_name='lighting.product.beam.photodistribution',
@@ -684,7 +681,7 @@ class LightingProductBeamDimension(models.Model):
     sequence = fields.Integer(required=True, default=1,
         help="The sequence field is used to define order in which the dimension lines are sorted")
 
-    beam_id = fields.Many2one(comodel_name='lighting.product.beam', ondelete='restrict', string='Beam')
+    beam_id = fields.Many2one(comodel_name='lighting.product.beam', ondelete='cascade', string='Beam')
 
 ########### attachment button
 class LightingAttachment(models.Model):
