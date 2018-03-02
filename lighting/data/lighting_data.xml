@@ -1027,6 +1027,9 @@
         <record id="product_source_lampholder_rx7s" model="lighting.product.source.lampholder">
             <field name="code">RX7s</field>
         </record>
+        <record id="product_source_lampholder_na" model="lighting.product.source.lampholder">
+            <field name="code">-</field>
+        </record>
 
         <!-- source types -->
         <record id="product_source_type_hal" model="lighting.product.source.type">
