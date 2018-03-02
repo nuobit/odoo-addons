@@ -532,7 +532,7 @@ class LightingProductSourceLine(models.Model):
     type_id = fields.Many2one(comodel_name='lighting.product.source.type', ondelete='restrict', string='Type', required=True)
     wattage = fields.Float(string='Wattage')
     is_max_wattage = fields.Boolean(string='Max. Wattage')
-    wattage_magnitude = fields.Selection([('w', 'W'), ('wm', 'W/m')], string='Wattage magnitude', required=True, default='w')
+    wattage_magnitude = fields.Selection([('w', 'W'), ('wm', 'W/m')], string='Wattage magnitude', default='w')
 
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
