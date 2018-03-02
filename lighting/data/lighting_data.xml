@@ -59,6 +59,22 @@
             <field name="name">Depth</field>
             <field name="uom">mm</field>
         </record>
+        <record id="dimension_type_light_emission_angle_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle</field>
+            <field name="uom">º</field>
+        </record>
+        <record id="dimension_type_light_emission_angle_2_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle 2</field>
+            <field name="uom">º</field>
+        </record>
+        <record id="dimension_type_light_emission_angle_minimum_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle minimum</field>
+            <field name="uom">º</field>
+        </record>
+        <record id="dimension_type_light_emission_angle_maximum_degrees" model="lighting.dimension.type">
+            <field name="name">Light emission angle maximum</field>
+            <field name="uom">º</field>
+        </record>
 
         <!-- Energy efficiency -->
         <record id="energyefficiency_a_plusplus" model="lighting.energyefficiency">
