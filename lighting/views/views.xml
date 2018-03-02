@@ -290,7 +290,8 @@
             <tree string="Product Tree">
                 <field name="reference"/>
                 <field name="description"/>
-                <!--field name="family_id"/-->
+                <field name="catalog_ids" widget="many2many_tags"/>
+                <field name="family_ids" widget="many2many_tags"/>
                 <field name="type_id"/>
                 <field name="ean"/>
             </tree>

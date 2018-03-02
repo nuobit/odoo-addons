@@ -23,7 +23,7 @@ class LightingProduct(models.Model):
     description = fields.Char(string='Description', translate=True)  #required=True
     #full_name = fields.Char(compute='_compute_full_name', string='Product Name', search='_search_full_name')
     ean = fields.Char(string='EAN', required=True, index=True, copy=False)
-    family_ids = fields.Many2many(comodel_name='lighting.product.family', relation='lighting_product_family_rel', string='Family')
+    family_ids = fields.Many2many(comodel_name='lighting.product.family', relation='lighting_product_family_rel', string='Families')
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', string='Catalogs')
     type_id = fields.Many2one(comodel_name='lighting.product.type', ondelete='restrict', string='Type')
 
@@ -647,7 +647,7 @@ class LightingProductBeam(models.Model):
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
-    num = fields.Integer(string='Number of beams', default=1)
+    num = fields.Integer(string='Number of beams', required=True, default=1)
 
     photometric_distribution_ids = fields.Many2many(comodel_name='lighting.product.beam.photodistribution',
                                                     relation='lighting_product_beam_photodistribution_rel',
