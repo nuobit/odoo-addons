@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from lxml import etree
 
@@ -428,7 +429,7 @@ class LightingProductDimension(models.Model):
     sequence = fields.Integer(required=True, default=1,
         help="The sequence field is used to define order in which the dimension lines are sorted")
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
 class LightingProductRecessDimension(models.Model):
     _name = 'lighting.product.recessdimension'
@@ -440,7 +441,7 @@ class LightingProductRecessDimension(models.Model):
     sequence = fields.Integer(required=True, default=1,
         help="The sequence field is used to define order in which the recess dimension lines are sorted")
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
 class LightingProductEcorraeCategory(models.Model):
     _name = 'lighting.product.ecorraecategory'
@@ -550,7 +551,7 @@ class LightingProductSourceLine(models.Model):
 
     wattage_marketing_ids = fields.One2many(comodel_name='lighting.product.source.line.marketingwattage', inverse_name='source_line_id', string='Marketing wattages')
 
-    source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='restrict', string='Source')
+    source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
 
     ## computed fields
@@ -649,7 +650,7 @@ class LightingProductBeam(models.Model):
 
     dimension_ids = fields.One2many(comodel_name='lighting.product.beam.dimension', inverse_name='beam_id', string='Dimensions')
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
 
     ## computed fields
@@ -759,7 +760,7 @@ class LightingProductSupplier(models.Model):
     supplier_id = fields.Many2one(comodel_name='lighting.supplier', ondelete='restrict', string='Supplier', required=True)
     reference = fields.Char(string="Supplier reference")
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
 
 class LightingSupplier(models.Model):
