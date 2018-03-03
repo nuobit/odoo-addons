@@ -1254,6 +1254,10 @@
             <field name="code">ETE</field>
             <field name="name">Etiqueta eléctrica</field>
         </record>
+        <record id="attachment_type_etm" model="lighting.attachment.type">
+            <field name="code">ETM</field>
+            <field name="name">Etiqueta master box</field>
+        </record>
         <record id="attachment_type_f" model="lighting.attachment.type">
             <field name="code">F</field>
             <field name="name">Foto producto</field>
