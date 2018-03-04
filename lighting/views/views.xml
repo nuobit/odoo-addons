@@ -7,8 +7,8 @@
         <field name="res_model">lighting.attachment</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <!--field name="domain">[('product_id', '=', active_id)]</field-->
-        <!--field name="context">{'search_default_product_id': active_id, 'default_product_id': active_id}</field-->
+        <field name="domain">[('product_id', '=', active_id)]</field>
+        <field name="context">{'search_default_product_id': active_id, 'default_product_id': active_id}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first attachment</p>
         </field>
@@ -25,8 +25,7 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button type="action" class="oe_stat_button" icon="fa-files-o"
-                                name="%(attachment_list_action)d"
-                                domain="[('product_id', '=', active_id)]">
+                                name="%(attachment_list_action)d">
                             <field string="Attachments" name="attachment_count" widget="statinfo"/>
                         </button>
                     </div>
