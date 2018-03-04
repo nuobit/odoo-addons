@@ -1303,7 +1303,7 @@
             <field name="name">Certificado RoHs</field>
         </record>
         <record id="attachment_type_rohs_r" model="lighting.attachment.type">
-            <field name="code">ROHS</field>
+            <field name="code">ROHS_R</field>
             <field name="name">Test RoHs</field>
         </record>
         <record id="attachment_type_ue" model="lighting.attachment.type">

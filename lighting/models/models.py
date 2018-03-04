@@ -724,7 +724,7 @@ class LightingAttachmentType(models.Model):
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', translate=True)
 
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The attachment type description must be unique!'),
+    _sql_constraints = [('name_uniq', 'unique (code)', 'The attachment type description must be unique!'),
                         ]
 
     @api.multi
