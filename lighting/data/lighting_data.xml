@@ -124,8 +124,12 @@
             <field name="sequence">70</field>
             <field name="name">E</field>
         </record>
-        <record id="energyefficiency_g" model="lighting.energyefficiency">
+        <record id="energyefficiency_f" model="lighting.energyefficiency">
             <field name="sequence">80</field>
+            <field name="name">F</field>
+        </record>
+        <record id="energyefficiency_g" model="lighting.energyefficiency">
+            <field name="sequence">90</field>
             <field name="name">G</field>
         </record>
 
