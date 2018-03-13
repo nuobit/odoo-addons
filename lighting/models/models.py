@@ -670,7 +670,7 @@ class LightingProductBeam(models.Model):
         for rec in self:
             res = []
             for dimension in rec.dimension_ids.sorted(lambda x: x.sequence):
-                res.append('%s: %f' % (dimension.type_id.name, dimension.value))
+                res.append('%s: %f' % (dimension.type_id.display_name, dimension.value))
 
             rec.dimensions_display = ', '.join(res)
 
