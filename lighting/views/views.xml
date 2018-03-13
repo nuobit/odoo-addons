@@ -1136,6 +1136,7 @@
                 <field name="application_id"/>
                 <field name="dimmable_ids"/>
                 <group expand="0" string="Group By">
+                    <filter string="Types" domain="[]" context="{'group_by':'type_id'}"/>
                     <filter string="Applications" domain="[]" context="{'group_by':'application_id'}"/>
                 </group>
             </search>
