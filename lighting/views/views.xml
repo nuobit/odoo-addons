@@ -1118,6 +1118,30 @@
         </field>
     </record>
 
+    <!-- ================================ SEARCH VIEWS =========================== -->
+    <!-- Product Search view -->
+    <record model="ir.ui.view" id="lighting_product_view">
+        <field name="name">lighting.product.search</field>
+        <field name="model">lighting.product</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference" string="Product"
+                       filter_domain="['|', '|', '|', '|', '|', ('reference','ilike',self), ('description','ilike',self), ('ean','ilike',self), ('catalog_ids','ilike',self), ('family_ids','ilike',self), ('type_id','ilike',self)]"/>
+                <field name="reference"/>
+                <field name="description"/>
+                <field name="ean"/>
+                <field name="catalog_ids"/>
+                <field name="family_ids"/>
+                <field name="type_id"/>
+                <field name="application_id"/>
+                <field name="dimmable_ids"/>
+                <group expand="0" string="Group By">
+                    <filter string="Applications" domain="[]" context="{'group_by':'application_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- ================================ WINDOW ACTIONS =========================== -->
     <!-- ============= main window ============ -->
     <!-- window action product -->
