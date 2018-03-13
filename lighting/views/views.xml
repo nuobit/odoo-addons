@@ -1031,6 +1031,7 @@
                     <group>
                         <field name="code"/>
                         <field name="name"/>
+                        <field name="is_integrated"/>
                     </group>
                 </sheet>
             </form>
@@ -1044,6 +1045,7 @@
             <tree string="Product source type Tree">
                 <field name="code"/>
                 <field name="name"/>
+                <field name="is_integrated"/>
             </tree>
         </field>
     </record>

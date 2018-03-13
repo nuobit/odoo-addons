@@ -623,6 +623,7 @@ class LightingProductSourceType(models.Model):
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', translate=True)
+    is_integrated = fields.Boolean(string='Integrated')
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The source type description must be unique!'),
                         ('code_uniq', 'unique (code)', 'The source type code must be unique!'),
