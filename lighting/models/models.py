@@ -23,6 +23,7 @@ class LightingProduct(models.Model):
     _name = 'lighting.product'
     #_rec_name = 'full_name'
     _rec_name = 'reference'
+    _order = 'reference'
 
     # Common data
     reference = fields.Char(string='Reference', required=True, index=True, copy=False)
@@ -222,6 +223,7 @@ class LightingProduct(models.Model):
 ######### common data
 class LightingCatalog(models.Model):
     _name = 'lighting.catalog'
+    _order = 'name'
 
     name = fields.Char(string='Catalog', required=True)
 
@@ -230,6 +232,7 @@ class LightingCatalog(models.Model):
 
 class LightingProductFamily(models.Model):
     _name = 'lighting.product.family'
+    _order = 'name'
 
     name = fields.Char(string='Family', required=True)
 
@@ -238,6 +241,7 @@ class LightingProductFamily(models.Model):
 
 class LightingProductType(models.Model):
     _name = 'lighting.product.type'
+    _order = 'name'
 
     name = fields.Char(string='Type', required=True, translate=True)
     is_accessory = fields.Boolean(string='Is accessory')
@@ -263,6 +267,7 @@ class LightingEnergyEfficiency(models.Model):
 
 class LightingDimensionType(models.Model):
     _name = 'lighting.dimension.type'
+    _order = 'name'
 
     name = fields.Char(string='Name', required=True, translate=True)
     uom = fields.Char(string='Uom', help='Unit of mesure')
@@ -284,6 +289,7 @@ class LightingDimensionType(models.Model):
 ########### description tab
 class LightingProductApplication(models.Model):
     _name = 'lighting.product.application'
+    _order = 'name'
 
     name = fields.Char(string='Application', required=True, translate=True)
 
@@ -292,6 +298,7 @@ class LightingProductApplication(models.Model):
 
 class LightingProductFinish(models.Model):
     _name = 'lighting.product.finish'
+    _order = 'code'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
@@ -311,6 +318,7 @@ class LightingProductFinish(models.Model):
 
 class LightingProductMaterial(models.Model):
     _name = 'lighting.product.material'
+    _order = 'code'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
@@ -322,6 +330,7 @@ class LightingProductMaterial(models.Model):
 ###### Electrical characteristics tab
 class LightingProductProtectionClass(models.Model):
     _name = 'lighting.product.protectionclass'
+    _order = 'name'
 
     name = fields.Char(string='Class', required=True, translate=True)
 
@@ -330,6 +339,7 @@ class LightingProductProtectionClass(models.Model):
 
 class LightingProductFrequency(models.Model):
     _name = 'lighting.product.frequency'
+    _order = 'name'
 
     name = fields.Char(string='Frequency', required=True, translate=True)
 
@@ -338,6 +348,7 @@ class LightingProductFrequency(models.Model):
 
 class LightingProductDimmable(models.Model):
     _name = 'lighting.product.dimmable'
+    _order = 'name'
 
     name = fields.Char(string='Dimmable', required=True, translate=True)
 
@@ -346,6 +357,7 @@ class LightingProductDimmable(models.Model):
 
 class LightingProductAuxiliaryEquipment(models.Model):
     _name = 'lighting.product.auxiliaryequipment'
+    _order = 'name'
 
     name = fields.Char(string='Auxiliary equipment', required=True, translate=True)
 
@@ -354,6 +366,7 @@ class LightingProductAuxiliaryEquipment(models.Model):
 
 class LightingProductAuxiliaryEquipmentModel(models.Model):
     _name = 'lighting.product.auxiliaryequipmentmodel'
+    _order = 'name'
 
     name = fields.Char(string='Auxiliary equipment model', required=True, translate=True)
 
@@ -362,6 +375,7 @@ class LightingProductAuxiliaryEquipmentModel(models.Model):
 
 class LightingProductVoltage(models.Model):
     _name = 'lighting.product.voltage'
+    _order = 'name'
 
     name = fields.Char(compute='_compute_name', string='Voltage', required=True)
 
@@ -412,6 +426,7 @@ class LightingProductVoltage(models.Model):
 
 class LightingProductSensor(models.Model):
     _name = 'lighting.product.sensor'
+    _order = 'name'
 
     name = fields.Char(string='Sensor', required=True, translate=True)
 
@@ -421,6 +436,7 @@ class LightingProductSensor(models.Model):
 ###########  Lighting characteristics tab
 class LightingProductLedBrand(models.Model):
     _name = 'lighting.product.ledbrand'
+    _order = 'name'
 
     name = fields.Char(string='LED brand', required=True)
 
@@ -430,8 +446,8 @@ class LightingProductLedBrand(models.Model):
 ###########  Physical characteristics tab
 class LightingProductDimension(models.Model):
     _name = 'lighting.product.dimension'
-
     _rec_name = 'type_id'
+    _order = 'sequence'
 
     type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension', required=True)
     value = fields.Float(string='Value', required=True)
@@ -442,8 +458,8 @@ class LightingProductDimension(models.Model):
 
 class LightingProductRecessDimension(models.Model):
     _name = 'lighting.product.recessdimension'
-
     _rec_name = 'type_id'
+    _order = 'sequence'
 
     type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Recess dimension', required=True)
     value = fields.Float(string='Value', required=True)
@@ -454,6 +470,7 @@ class LightingProductRecessDimension(models.Model):
 
 class LightingProductEcorraeCategory(models.Model):
     _name = 'lighting.product.ecorraecategory'
+    _order = 'name'
 
     name = fields.Char(string='Description', required=True)
 
@@ -462,6 +479,7 @@ class LightingProductEcorraeCategory(models.Model):
 
 class LightingProductEcorrae2Category(models.Model):
     _name = 'lighting.product.ecorrae2category'
+    _order = 'name'
 
     name = fields.Char(string='Description', required=True)
 
@@ -470,6 +488,7 @@ class LightingProductEcorrae2Category(models.Model):
 
 class LightingProductPhotobiologicalRiskGroup(models.Model):
     _name = 'lighting.product.photobiologicalriskgroup'
+    _order = 'name'
 
     name = fields.Char(string='Description', required=True)
 
@@ -496,8 +515,8 @@ class LightingProductFanWattage(models.Model):
 ########### sources tab
 class LightingProductSource(models.Model):
     _name = 'lighting.product.source'
-
     _rec_name = 'relevance'
+    _order = 'sequence'
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
@@ -532,8 +551,8 @@ class LightingProductSource(models.Model):
 
 class LightingProductSourceLine(models.Model):
     _name = 'lighting.product.source.line'
-
     _rec_name = 'type_id'
+    _order = 'sequence'
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
@@ -609,6 +628,7 @@ class LightingProductSourceLine(models.Model):
 class LightingProductSourceLampholder(models.Model):
     _name = 'lighting.product.source.lampholder'
     _rec_name = 'code'
+    _order = 'code'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', translate=True)
@@ -620,6 +640,7 @@ class LightingProductSourceLampholder(models.Model):
 class LightingProductSourceType(models.Model):
     _name = 'lighting.product.source.type'
     _rec_name = 'code'
+    _order = 'code'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', translate=True)
@@ -650,6 +671,7 @@ class LightingProductSourceLineMarketingWattage(models.Model):
 ########### beams tab
 class LightingProductBeam(models.Model):
     _name = 'lighting.product.beam'
+    _order = 'sequence'
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
@@ -679,6 +701,7 @@ class LightingProductBeam(models.Model):
 
 class LightingProductBeamPhotometricDistribution(models.Model):
     _name = 'lighting.product.beam.photodistribution'
+    _order = 'name'
 
     name = fields.Char(string='Description', required=True, translate=True)
 
@@ -687,6 +710,7 @@ class LightingProductBeamPhotometricDistribution(models.Model):
 
 class LightingProductBeamDimension(models.Model):
     _name = 'lighting.product.beam.dimension'
+    _order = 'sequence'
 
     type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension', required=True)
     value = fields.Float(string='Value', required=True)
@@ -698,6 +722,7 @@ class LightingProductBeamDimension(models.Model):
 ########### attachment button
 class LightingAttachment(models.Model):
     _name = 'lighting.attachment'
+    _order = 'type_id'
 
     name = fields.Char(string='Description', translate=True)
     type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='restrict', required=True, string='Type')
@@ -721,6 +746,7 @@ class LightingAttachment(models.Model):
 
 class LightingAttachmentType(models.Model):
     _name = 'lighting.attachment.type'
+    _order = 'code'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', translate=True)
@@ -744,6 +770,7 @@ class LightingAttachmentType(models.Model):
 
 class LightingLanguage(models.Model):
     _name = 'lighting.language'
+    _order = 'code'
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Language', required=True, translate=True)
@@ -755,6 +782,7 @@ class LightingLanguage(models.Model):
 ########### logistics tab
 class LightingAssembler(models.Model):
     _name = 'lighting.assembler'
+    _order = 'name'
 
     name = fields.Char(string='Asssembler', required=True)
 
@@ -763,8 +791,8 @@ class LightingAssembler(models.Model):
 
 class LightingProductSupplier(models.Model):
     _name = 'lighting.product.supplier'
-
     _rec_name = 'supplier_id'
+    _order = 'sequence'
 
     sequence = fields.Integer(required=True, default=1,
                               help="The sequence field is used to define the priority of suppliers")
@@ -776,6 +804,7 @@ class LightingProductSupplier(models.Model):
 
 class LightingSupplier(models.Model):
     _name = 'lighting.supplier'
+    _order = 'name'
 
     name = fields.Char(string='Description', required=True)
 
@@ -785,6 +814,7 @@ class LightingSupplier(models.Model):
 ########### marketing tab
 class LightingProductState(models.Model):
     _name = 'lighting.product.state'
+    _order = 'name'
 
     name = fields.Char(string='State', required=True, translate=True)
 
