@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="1">
-
         <!-- dimension type -->
         <record id="dimension_type_length_mm" model="lighting.dimension.type">
             <field name="name">Length</field>
@@ -91,9 +90,6 @@
             <field name="name">Light emission angle option 3</field>
             <field name="uom">º</field>
         </record>
-
-
-
 
         <!-- Energy efficiency -->
         <record id="energyefficiency_a_plusplus" model="lighting.energyefficiency">
@@ -703,7 +699,6 @@
             <field name="name">-</field>
         </record>
 
-
         <!-- Frequencies -->
         <record id="product_frequency_50" model="lighting.product.frequency">
             <field name="name">50</field>
@@ -757,7 +752,6 @@
         <record id="product_auxiliaryequipment_na" model="lighting.product.auxiliaryequipment">
             <field name="name">-</field>
         </record>
-
 
         <!-- Auxiliary equipment models -->
         <record id="product_auxiliaryequipmentmodel_tci" model="lighting.product.auxiliaryequipmentmodel">
@@ -1347,6 +1341,5 @@
         <record id="product_state_new" model="lighting.product.state">
             <field name="name">New</field>
         </record>
-
     </data>
 </openerp>

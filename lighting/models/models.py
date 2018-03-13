@@ -3,7 +3,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from lxml import etree
 
-#### auxiliary funcntions
+#### auxiliary functions
 def float2text(f, decs=2):
     if f == int(f):
         return '%i' % int(f)
@@ -21,14 +21,12 @@ COLOR_SELECTION = [ ('meat', 'Meat'), ('fashion', 'Fashion'),
 ## main model
 class LightingProduct(models.Model):
     _name = 'lighting.product'
-    #_rec_name = 'full_name'
     _rec_name = 'reference'
     _order = 'reference'
 
     # Common data
     reference = fields.Char(string='Reference', required=True, index=True, copy=False)
     description = fields.Char(string='Description', translate=True)  #required=True
-    #full_name = fields.Char(compute='_compute_full_name', string='Product Name', search='_search_full_name')
     ean = fields.Char(string='EAN', required=True, index=True, copy=False)
     family_ids = fields.Many2many(comodel_name='lighting.product.family', relation='lighting_product_family_rel', string='Families')
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', string='Catalogs')
@@ -182,7 +180,6 @@ class LightingProduct(models.Model):
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',
                                      column2='lighting_product_substitute_id', string='Substitutes')
 
-
     # logistics tab
     tariff_item = fields.Char(string="Tariff item")
     assembler_id = fields.Many2one(comodel_name='lighting.assembler', ondelete='restrict', string='Assembler')
@@ -217,9 +214,6 @@ class LightingProduct(models.Model):
                          ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
         ]
 
-
-
-
 ######### common data
 class LightingCatalog(models.Model):
     _name = 'lighting.catalog'
@@ -246,11 +240,6 @@ class LightingProductType(models.Model):
     name = fields.Char(string='Type', required=True, translate=True)
     is_accessory = fields.Boolean(string='Is accessory')
 
-    '''
-    field_ids = fields.Many2many(comodel_name='ir.model.fields', relation='lighting_product_type_model_fields_rel',
-                                 domain=[('model_id.model', '=', 'lighting.product')],string='Fields')
-    '''
-
     _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
                         ]
 
@@ -263,7 +252,6 @@ class LightingEnergyEfficiency(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The energy efficiency must be unique!'),
                         ]
-
 
 class LightingDimensionType(models.Model):
     _name = 'lighting.dimension.type'
@@ -391,7 +379,6 @@ class LightingProductVoltage(models.Model):
 
     @api.depends('voltage1', 'voltage2', 'voltage2_check','current_type')
     def _compute_name(self):
-        # TODO voltage que si no te decimals no posi .0
         for record in self:
             voltage_l = []
             if record.voltage1!=0:
@@ -413,7 +400,6 @@ class LightingProductVoltage(models.Model):
     def _onchange_voltage2_check(self):
         if not self.voltage2_check:
             self.voltage2 = False
-
 
     @api.constrains('voltage1', 'voltage2', 'voltage2_check')
     def _check_voltages(self):
@@ -530,7 +516,6 @@ class LightingProductSource(models.Model):
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
 
-
     ## computed fields
     line_display = fields.Char(compute='_compute_line_display', string='Sources')
 
@@ -539,15 +524,10 @@ class LightingProductSource(models.Model):
         for rec in self:
             res = []
             for l in rec.line_ids.sorted(lambda x: x.sequence):
-                #res0 = [l.type_id.code]
-                #if l.wattage_display:
-                #    res0.append(l.wattage_display)
-
                 res.append(l.type_id.code)
 
             if res != []:
                 rec.line_display = "/".join(res)
-
 
 class LightingProductSourceLine(models.Model):
     _name = 'lighting.product.source.line'
@@ -578,7 +558,6 @@ class LightingProductSourceLine(models.Model):
     wattage_marketing_ids = fields.One2many(comodel_name='lighting.product.source.line.marketingwattage', inverse_name='source_line_id', string='Marketing wattages')
 
     source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
-
 
     ## computed fields
     wattage_display = fields.Char(compute='_compute_wattage_display', string='Wattage (W)')
@@ -613,7 +592,6 @@ class LightingProductSourceLine(models.Model):
 
             if res != []:
                 rec.luminous_flux_display = "-".join(res)
-
 
     wattage_marketing_display = fields.Char(compute='_compute_wattage_marketing_display', string='Marketing wattages (W)')
 
@@ -667,7 +645,6 @@ class LightingProductSourceLineMarketingWattage(models.Model):
             if rec.wattage == 0:
                 raise ValidationError("The marketing wattage on a source line, if defined, cannot be 0")
 
-
 ########### beams tab
 class LightingProductBeam(models.Model):
     _name = 'lighting.product.beam'
@@ -685,7 +662,6 @@ class LightingProductBeam(models.Model):
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
-
     ## computed fields
     dimensions_display = fields.Char(compute='_compute_dimensions_display', string='Dimensions')
 
@@ -697,7 +673,6 @@ class LightingProductBeam(models.Model):
                 res.append('%s: %f' % (dimension.type_id.name, dimension.value))
 
             rec.dimensions_display = ', '.join(res)
-
 
 class LightingProductBeamPhotometricDistribution(models.Model):
     _name = 'lighting.product.beam.photodistribution'
@@ -743,7 +718,6 @@ class LightingAttachment(models.Model):
 
         return vals
 
-
 class LightingAttachmentType(models.Model):
     _name = 'lighting.attachment.type'
     _order = 'code'
@@ -766,7 +740,6 @@ class LightingAttachmentType(models.Model):
             vals.append((record.id, name))
 
         return vals
-
 
 class LightingLanguage(models.Model):
     _name = 'lighting.language'
@@ -820,159 +793,3 @@ class LightingProductState(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The state description must be unique!'),
                         ]
-
-
-"""
-gnx_compliance_statement = fields.Many2many(comodel_name='ir.attachment', string="GNX compliance statement")
-eu_manufacturer_declaration = fields.Many2many(comodel_name='ir.attachment', string="EU Manufacturer Declaration")
-emc = fields.Many2many(comodel_name='ir.attachment', string="EMC")
-lvd = fields.Many2many(comodel_name='ir.attachment', string="LVD")
-rohs = fields.Many2many(comodel_name='ir.attachment', string="RoHS")
-others_test_reports = fields.Many2many(comodel_name='ir.attachment', string="Other's test reports")
-
-installation_instructions = fields.Many2many(comodel_name='ir.attachment', string="Installation instructions")
-assembly_instructions = fields.Many2many(comodel_name='ir.attachment', string="Assembly instructions")
-"""
-
-
-
-'''
-@api.depends('category_id.name', 'name')
-def _compute_full_name(self):
-    # Important: value must be stored in environment of group, not group1!
-    for group, group1 in pycompat.izip(self, self.sudo()):
-        if group1.category_id:
-            group.full_name = '%s / %s' % (group1.category_id.name, group1.name)
-        else:
-            group.full_name = group1.name
-
-def _search_full_name(self, operator, operand):
-    lst = True
-    if isinstance(operand, bool):
-        domains = [[('name', operator, operand)], [('category_id.name', operator, operand)]]
-        if operator in expression.NEGATIVE_TERM_OPERATORS == (not operand):
-            return expression.AND(domains)
-        else:
-            return expression.OR(domains)
-    if isinstance(operand, pycompat.string_types):
-        lst = False
-        operand = [operand]
-    where = []
-    for group in operand:
-        values = [v for v in group.split('/') if v]
-        group_name = values.pop().strip()
-        category_name = values and '/'.join(values).strip() or group_name
-        group_domain = [('name', operator, lst and [group_name] or group_name)]
-        category_domain = [('category_id.name', operator, lst and [category_name] or category_name)]
-        if operator in expression.NEGATIVE_TERM_OPERATORS and not values:
-            category_domain = expression.OR([category_domain, [('category_id', '=', False)]])
-        if (operator in expression.NEGATIVE_TERM_OPERATORS) == (not values):
-            sub_where = expression.AND([group_domain, category_domain])
-        else:
-            sub_where = expression.OR([group_domain, category_domain])
-        if operator in expression.NEGATIVE_TERM_OPERATORS:
-            where = expression.AND([where, sub_where])
-        else:
-            where = expression.OR([where, sub_where])
-    return where
-
-@api.model
-def search(self, args, offset=0, limit=None, order=None, count=False):
-    # add explicit ordering if search is sorted on full_name
-    if order and order.startswith('full_name'):
-        groups = super(Groups, self).search(args)
-        groups = groups.sorted('full_name', reverse=order.endswith('DESC'))
-        groups = groups[offset:offset+limit] if limit else groups[offset:]
-        return len(groups) if count else groups.ids
-    return super(Groups, self).search(args, offset=offset, limit=limit, order=order, count=count)
-'''
-
-'''
-@api.model
-def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-    res = super(LightingProduct, self).fields_view_get(
-        view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-
-    if res['type'] == 'form' and res['name'] == 'product.form':
-        doc = etree.XML(res['arch'])
-
-        for node in doc.xpath("//field[@name='product_id']"):
-            if self._context['type'] in ('in_invoice', 'in_refund'):
-                # Hack to fix the stable version 8.0 -> saas-12
-                # purchase_ok will be moved from purchase to product in master #13271
-                if 'purchase_ok' in self.env['product.template']._fields:
-                    node.set('domain', "[('purchase_ok', '=', True)]")
-            else:
-                node.set('domain', "[('sale_ok', '=', True)]")
-        res['arch'] = etree.tostring(doc, encoding='unicode')
-
-
-    return res
-'''
-
-'''
-@api.model
-def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-    def get_view_id(xid, name):
-        try:
-            return self.env.ref('account.' + xid)
-        except ValueError:
-            view = self.env['ir.ui.view'].search([('name', '=', name)], limit=1)
-            if not view:
-                return False
-            return view.id
-
-    context = self._context
-    if context.get('active_model') == 'res.partner' and context.get('active_ids'):
-        partner = self.env['res.partner'].browse(context['active_ids'])[0]
-        if not view_type:
-            view_id = get_view_id('invoice_tree', 'account.invoice.tree')
-            view_type = 'tree'
-        elif view_type == 'form':
-            if partner.supplier and not partner.customer:
-                view_id = get_view_id('invoice_supplier_form', 'account.invoice.supplier.form').id
-            elif partner.customer and not partner.supplier:
-                view_id = get_view_id('invoice_form', 'account.invoice.form').id
-    return super(AccountInvoice, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar,
-                                                       submenu=submenu)
-
-@api.model
-def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-    res = super(AccountInvoiceLine, self).fields_view_get(
-        view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-    if self._context.get('type'):
-        doc = etree.XML(res['arch'])
-        for node in doc.xpath("//field[@name='product_id']"):
-            if self._context['type'] in ('in_invoice', 'in_refund'):
-                # Hack to fix the stable version 8.0 -> saas-12
-                # purchase_ok will be moved from purchase to product in master #13271
-                if 'purchase_ok' in self.env['product.template']._fields:
-                    node.set('domain', "[('purchase_ok', '=', True)]")
-            else:
-                node.set('domain', "[('sale_ok', '=', True)]")
-        res['arch'] = etree.tostring(doc, encoding='unicode')
-    return res
-
-'''
-
-'''
-    efficiency_display = fields.Char(compute='_compute_efficiency_display', string='Energy efficiency')
-    @api.depends('efficiency_ids')
-    def _compute_efficiency_display(self):
-        for rec in self:
-            res = [x.name for x in rec.efficiency_ids.sorted(lambda x: x.sequence)]
-
-            if res != []:
-                rec.efficiency_display = "/".join(res)
-
-'''
-
-'''
-    @api.multi
-    def _compute_attachment_count(self):
-        attachment_data = self.env['lighting.attachment'].read_group([('product_id', 'in', self.ids)], ['product_id'],
-                                                            ['product_id'])
-        mapped_data = dict([(attachment['product_id'][0], attachment['product_id_count']) for attachment in attachment_data])
-        for record in self:
-            record.attachment_count = mapped_data.get(record.id, 0)
-            '''

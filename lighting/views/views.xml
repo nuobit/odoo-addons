@@ -14,7 +14,6 @@
         </field>
     </record>
 
-
     <!-- ============= main product views ============ -->
     <!-- view product -->
     <record model="ir.ui.view" id="product_form_view">
@@ -176,9 +175,7 @@
                                         <field name="num"/>
                                         <field name="lampholder_id"/>
 
-                                        <!--field name="line_ids"/-->
                                         <field name="line_display"/>
-
                                     </tree>
                                 </field>
                             </group>
@@ -198,31 +195,6 @@
                                 </field>
                             </group>
                         </page>
-                        <!--page string="Attachments">
-                            <group>
-                                <field name="attachment_count" widget="statinfo"/>
-
-                                <div>
-                                    <button type="action" class="btn-link"
-                                            name="%(base.action_res_partner_bank_account_form)d"
-                                            context="{'search_default_product_id': active_id, 'default_product_id': active_id}">
-                                        <field string="Bank account(s)" name="bank_account_count" widget="statinfo"/>
-                                    </button>
-                                </div>
-
-
-
-                                <field name="attachment_ids" nolabel="1">
-                                    <tree editable="bottom">
-                                        <field name="type_id"/>
-                                        <field name="datas" filename="datas_fname"/>
-                                        <field name="datas_fname"/>
-                                        <field name="name"/>
-                                        <field name="lang_id"/>
-                                    </tree>
-                                </field>
-                            </group>
-                        </page-->
                         <page string="Accessories">
                             <group>
                                 <field name="accessory_ids" nolabel="1"/>
@@ -298,7 +270,6 @@
             </tree>
         </field>
     </record>
-
 
     <!-- ============= common data ============ -->
     <!-- view catalog -->
@@ -378,7 +349,6 @@
         </field>
     </record>
 
-
     <!-- view dimension.type -->
     <record model="ir.ui.view" id="dimension_type_form_view">
         <field name="name">dimension.type.form</field>
@@ -433,19 +403,7 @@
         </field>
     </record>
 
-
     <!-- ============= attachments smart button ============ -->
-    <!--record model="ir.ui.view" id="attachment_search">
-        <field name="name">attachment.search</field>
-        <field name="model">lighting.attachment</field>
-        <field name="arch" type="xml">
-            <search string="Attachment">
-                <field name="product_id"/>
-            </search>
-        </field>
-    </record-->
-
-
     <!-- view attachment -->
     <record model="ir.ui.view" id="attachment_form_view">
         <field name="name">attachment.form</field>
@@ -478,7 +436,6 @@
             </tree>
         </field>
     </record>
-
 
     <!-- view attachment type -->
     <record model="ir.ui.view" id="attachment_type_form_view">
@@ -534,7 +491,6 @@
         </field>
     </record>
 
-
     <!-- ============= description tab ============ -->
     <!-- view application -->
     <record model="ir.ui.view" id="product_application_form_view">
@@ -587,7 +543,6 @@
             </tree>
         </field>
     </record>
-
 
     <!-- view material -->
     <record model="ir.ui.view" id="product_material_form_view">
@@ -756,14 +711,12 @@
                     </group>
                     <group col="4">
                         <field name="voltage1"/>
-
                         <label for="voltage2_check" string="Voltage 2 (V)"/>
                         <div>
                             <field name="voltage2_check"/>
                             <field name="voltage2" style="width: 90%"
                                    attrs="{'invisible': [('voltage2_check', '=', False)], 'required': [('voltage2_check', '=', True)]}"/>
                         </div>
-
                         <field name="current_type"/>
                     </group>
                 </sheet>
@@ -832,7 +785,6 @@
         </field>
     </record>
 
-
     <!-- ============= Physical characteristics tab ============ -->
     <!-- view product.ecorraecategory -->
     <record model="ir.ui.view" id="product_ecorraecategory_form_view">
@@ -898,6 +850,7 @@
             </form>
         </field>
     </record>
+
     <record model="ir.ui.view" id="product_photobiologicalriskgroup_tree_view">
         <field name="name">product.photobiologicalriskgroup.tree</field>
         <field name="model">lighting.product.photobiologicalriskgroup</field>
@@ -917,7 +870,6 @@
             <form string="Product source Form">
                 <sheet>
                     <group>
-                        <!--field name="sequence"/-->
                         <field name="relevance"/>
                         <field name="num"/>
                         <field name="lampholder_id"/>
@@ -928,29 +880,20 @@
                             <tree>
                                 <field name="sequence" widget="handle"/>
                                 <field name="type_id"/>
-                                <!--field name="wattage"/>
-                                <field name="is_max_wattage"/-->
                                 <field name="wattage_display"/>
 
-                                <!--field name="luminous_flux1"/>
-                                <field name="luminous_flux2"/-->
                                 <field name="luminous_flux_display"/>
 
                                 <field name="color_temperature"/>
                                 <field name="special_spectrum"/>
 
                                 <field name="efficiency_ids" widget="many2many_tags"/>
-                                <!--field name="efficiency_display"/-->
 
                                 <field name="is_lamp_included"/>
                                 <field name="lamp_included_efficiency_ids" widget="many2many_tags"
                                        attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
 
-                                <!--field name="wattage_marketing_ids"/-->
-
                                 <field name="wattage_marketing_display"/>
-
-
                             </tree>
                         </field>
                     </group>
@@ -967,7 +910,6 @@
             <form string="Product source line Form">
                 <sheet>
                     <group>
-                        <!--field name="sequence"/-->
                         <field name="type_id"/>
                         <field name="wattage"/>
                         <field name="is_max_wattage"/>
@@ -1059,10 +1001,8 @@
             <form string="Product beam Form">
                 <sheet>
                     <group>
-                        <!--field name="sequence"/-->
                         <field name="num"/>
                         <field name="photometric_distribution_ids" widget="many2many_tags"/>
-                        <!--field name="dimensions_display"/-->
                         <field name="dimension_ids">
                             <tree editable="bottom">
                                 <field name="sequence" widget="handle"/>
@@ -1075,7 +1015,6 @@
             </form>
         </field>
     </record>
-
 
     <!-- view product.beam.photodistribution -->
     <record model="ir.ui.view" id="product_beam_photodistribution_form_view">
@@ -1178,7 +1117,6 @@
             </tree>
         </field>
     </record>
-
 
     <!-- ================================ WINDOW ACTIONS =========================== -->
     <!-- ============= main window ============ -->
@@ -1455,7 +1393,6 @@
         </field>
     </record>
 
-
     <!-- ============= attachment smart button ============ -->
     <!-- window action attachment type -->
     <record model="ir.actions.act_window" id="attachment_type_list_action">
@@ -1515,7 +1452,6 @@
         </field>
     </record>
 
-
     <!-- ================================ MENU =========================== -->
     <!-- top level menu: no parent -->
     <menuitem id="main_lighting_menu" name="Lighting"/>
@@ -1530,7 +1466,6 @@
     <!-- ============= product menu ============ -->
     <menuitem id="products_menu" name="Products" parent="lighting_menu"
               action="product_list_action"/>
-
 
     <!-- ============= common data ============ -->
     <menuitem id="catalogs_menu" name="Catalogs" parent="lighting_menu"
@@ -1547,7 +1482,6 @@
 
     <menuitem id="energyefficiencies_menu" name="Energy efficiencies" parent="lighting_menu"
               action="energyefficiency_list_action"/>
-
 
     <!-- ============= description tab ============ -->
     <menuitem id="product_applications_menu" name="Applications" parent="lighting_menu"
@@ -1616,10 +1550,8 @@
 
     <menuitem id="suppliers_menu" name="Suppliers" parent="lighting_menu" action="supplier_list_action"/>
 
-
     <!-- ============= marketing tab ============ -->
     <menuitem id="product_states_menu" name="States" parent="lighting_menu" action="product_state_list_action"/>
-
 
 </odoo>
 
