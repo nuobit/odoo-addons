@@ -2,8 +2,16 @@ from odoo import api, fields, models, _
 from odoo.http import request
 import urllib
 import requests
+import json
 
 from odoo.exceptions import UserError
+
+def dict_to_object(d):
+    class Struct:
+        def __init__(self, **entries):
+            self.__dict__.update(entries)
+
+    return Struct(**d)
 
 class Company(models.Model):
     _inherit = 'res.company'
@@ -26,6 +34,58 @@ class Company(models.Model):
     def _compute_remote_ip(self):
         self.geoip_remote_ip = request.httprequest.remote_addr
 
+    def get_geoip(self, ip):
+        #url = 'http://ip-api.com/json/%s'
+        #res = self.get_freegeoip(ip)
+        res = self.get_dbip(ip)
+
+        return dict_to_object(res)
+
+    def get_freegeoip(self, ip):
+        url = 'https://freegeoip.net/json/%s'
+
+        url = url % urllib.quote(ip)
+        r = requests.get(url, verify=self.config_verify_cert, timeout=self.config_timeout)
+
+        res = {'status_code': r.status_code}
+        if r.status_code != 200:
+            return res
+
+        data = r.json()
+
+        res['country_code'] = data['country_code'] or None  # 'ES'
+        if res['country_code'] is None:
+            return res
+
+        res['region_code'] = data['region_code'] or None  # 'CT', 'IB'
+
+        return res
+
+    def get_dbip(self, ip):
+        url = 'http://api.db-ip.com/v2/%s/%s'
+        key = '45414ce88fdee3d9c082851b0f4d5e46ab379caa'
+
+        url = url % (key, urllib.quote(ip))
+        r = requests.get(url, verify=self.config_verify_cert, timeout=self.config_timeout)
+
+        res = {'status_code': r.status_code}
+        if r.status_code != 200:
+            return res
+
+        data = json.loads(r.text)
+
+        res['country_code'] = data['countryCode'] or None  # 'ES'
+        if res['country_code'] is None:
+            return res
+
+        mapreg = {'Catalonia': 'CT', 'Illes Balears': 'IB'} # 'CT', 'IB' / 'Catalonia', 'Illes Balears'
+        if data['stateProv'] in mapreg:
+            res['region_code'] = mapreg[data['stateProv']]
+        else:
+            res['region_code'] = None
+
+        return res
+
     @api.depends('fallback_geoip_partner_id', 'geoip_address_ids')
     def _compute_geoip_partner(self):
         ''' freegeoip.net response:
@@ -37,23 +97,21 @@ class Company(models.Model):
 
         remote_addr = request.httprequest.remote_addr
 
-        url = 'https://freegeoip.net/json/%s' % urllib.quote(remote_addr.encode('utf8'))
-        # TODO: Usar un altre servi de geoip si falla el primer, per exemple: https://geoip.nekudo.com/api/%s/full
-
         try:
-            r = requests.get(url, verify=self.config_verify_cert, timeout=self.config_timeout)
+            geodata = self.get_geoip(remote_addr.encode('utf8'))
+            # TODO: Usar un altre servi de geoip si falla el primer
         except Exception as e:
             self.geoip_partner_id = fallback_geoip_partner_id
             return
-        if r.status_code != 200:
+        if geodata.status_code != 200:
             self.geoip_partner_id = fallback_geoip_partner_id
             return
 
-        country_code = r.json()['country_code'] or None # 'ES'
+        country_code = geodata.country_code or None # 'ES'
         if country_code is None:
             self.geoip_partner_id = fallback_geoip_partner_id
             return
-        region_code = r.json()['region_code']  or None # 'CT', 'IB'
+        region_code = geodata.region_code or None # 'CT', 'IB'
 
         for geoip in self.geoip_address_ids.sorted(lambda x: (x.sequence, x.id)):
             if geoip.country_code == country_code:
