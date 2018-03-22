@@ -429,8 +429,8 @@
         <field name="arch" type="xml">
             <tree string="Attachment Tree">
                 <field name="type_id"/>
-                <field name="datas" filename="datas_fname"/>
-                <field name="datas_fname" invisible="1"/>
+                <field name="datas_fname"/>
+                <field name="datas" filename="datas_fname" string="Size"/>
                 <field name="name"/>
                 <field name="lang_id"/>
             </tree>
