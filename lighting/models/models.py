@@ -32,6 +32,9 @@ class LightingProduct(models.Model):
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', string='Catalogs')
     type_id = fields.Many2one(comodel_name='lighting.product.type', ondelete='restrict', string='Type')
 
+    _sql_constraints = [ ('reference_uniq', 'unique (reference)', 'The reference must be unique!'),
+                         ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
+        ]
 
     install_location = fields.Selection(selection=[('indoor', _('Indoor')), ('outdoor', _('Outdoor')), ('underwater', _('Underwater'))
                                 ], string='Installation location')
@@ -210,9 +213,66 @@ class LightingProduct(models.Model):
     state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State')
     marketing_comments = fields.Char(string='Comments')
 
-    _sql_constraints = [ ('reference_uniq', 'unique (reference)', 'The reference must be unique!'),
-                         ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
-        ]
+    ########### external data tab
+    external_data_available = fields.Boolean(compute='_compute_external_data_available', readonly=True)
+
+    ext_itemname = fields.Char(string='Item name', readonly=True)
+    ext_frgnname = fields.Char(string='Foreign name', readonly=True)
+    ext_codebars = fields.Char(string='Code bar', readonly=True)
+    ext_onhand = fields.Integer(string='On hand', readonly=True)
+    ext_avgprice = fields.Float(string='Average price', readonly=True)
+    ext_stockvalue = fields.Float(string='Stock value', readonly=True)
+    ext_lastpurdat = fields.Date(string='Last purchase date', readonly=True)
+    ext_sheight1 = fields.Float(string='S Height 1', readonly=True)
+    ext_swidth1 = fields.Float(string='S Width 1', readonly=True)
+    ext_slength1 = fields.Float(string='S Length 1', readonly=True)
+    ext_svolume = fields.Float(string='S Volume', readonly=True)
+    ext_sweight = fields.Float(string='S Weight', readonly=True)
+
+    def _compute_external_data_available(self):
+        try:
+            from hdbcli import dbapi
+        except ImportError:
+            self.external_data_available = False
+            return
+
+        if self.env['lighting.settings'].search_count([]) == 0:
+            self.external_data_available = False
+            return
+
+        self.external_data_available = True
+
+    def get_external_data(self):
+        ext_fields = ["ItemCode", "ItemName", "FrgnName", "CodeBars",
+                      "OnHand", "AvgPrice", "StockValue", "LastPurDat",
+                      "SHeight1", "SWidth1", "SLength1", "SVolume", "SWeight1"]
+
+        settings = self.env['lighting.settings'].search([]).sorted(lambda x: x.sequence)
+
+        from hdbcli import dbapi
+
+        conn = dbapi.connect(settings['host'],
+                             settings['port'],
+                             settings['username'],
+                             settings['password'])
+
+        cursor = conn.cursor()
+        stmnt = """SELECT %s
+                   FROM %s.OITM p 
+                   WHERE p."ItemCode" = ?""" % (', '.join(['p."%s"' % x for x in ext_fields]),
+                                                settings['schema'])
+        cursor.execute(stmnt, self.reference)
+
+        header = [x[0] for x in cursor.description]
+        result = cursor.fetchone()
+        result_d = dict(zip(header, result))
+        #TODO more than one occurence
+
+        for field in ext_fields:
+            setattr(self, 'ext_%s' % field.lower(), result_d[field])
+
+        cursor.close()
+        conn.close()
 
 ######### common data
 class LightingCatalog(models.Model):
@@ -793,3 +853,29 @@ class LightingProductState(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The state description must be unique!'),
                         ]
+
+########### Configuration
+class LightingSettings(models.Model):
+    _name = 'lighting.settings'
+
+    sequence = fields.Integer(required=True, default=1,
+                              help="The sequence field is used to define the priority of settngs")
+    host = fields.Char(string='Host', required=True)
+    port = fields.Integer(string='Port', required=True)
+    schema = fields.Char(string='Schema', required=True)
+    username = fields.Char(string='Username', required=True)
+    password = fields.Char(string='Password', required=True)
+
+
+    _sql_constraints = [('settings_uniq', 'unique (host, port, username)', 'The host, port, username must be unique!'),
+                        ]
+
+    @api.multi
+    def name_get(self):
+        vals = []
+        for record in self:
+            name = '%s@%s:%s' % (record.host, record.port, record.username)
+
+            vals.append((record.id, name))
+
+        return vals

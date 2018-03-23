@@ -250,6 +250,37 @@
                                 <field name="marketing_comments" widget="text"/>
                             </group>
                         </page>
+                        <field name="external_data_available" invisible="1"/>
+                        <page string="SAP" attrs="{'invisible': [('external_data_available', '=', False)]}">
+                            <group col="4">
+                                <group colspan="4">
+                                    <field name="ext_itemname"/>
+                                    <field name="ext_frgnname"/>
+                                    <field name="ext_codebars"/>
+                                </group>
+                            </group>
+                            <group col="4">
+                                <group colspan="2">
+                                    <field name="ext_onhand"/>
+                                    <field name="ext_avgprice"/>
+                                    <field name="ext_stockvalue"/>
+                                    <field name="ext_lastpurdat"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="ext_sheight1"/>
+                                    <field name="ext_swidth1"/>
+                                    <field name="ext_slength1"/>
+                                    <field name="ext_svolume"/>
+                                    <field name="ext_sweight"/>
+                                </group>
+                            </group>
+                            <group>
+                                <button type="object" class="btn btn-primary"
+                                        name="get_external_data"
+                                        string="Get data">
+                                </button>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -1118,6 +1149,40 @@
         </field>
     </record>
 
+    <!-- ============= settings ============ -->
+    <!-- view settings -->
+    <record model="ir.ui.view" id="settings_form_view">
+        <field name="name">settings.form</field>
+        <field name="model">lighting.settings</field>
+        <field name="arch" type="xml">
+            <form string="Settings Form">
+                <sheet>
+                    <group>
+                        <field name="host"/>
+                        <field name="port"/>
+                        <field name="schema"/>
+                        <field name="username"/>
+                        <field name="password" password="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="settings_tree_view">
+        <field name="name">settings.tree</field>
+        <field name="model">lighting.settings</field>
+        <field name="arch" type="xml">
+            <tree string="Settings Tree">
+                <field name="sequence" widget="handle"/>
+                <field name="host"/>
+                <field name="port"/>
+                <field name="schema"/>
+                <field name="username"/>
+            </tree>
+        </field>
+    </record>
+
     <!-- ================================ SEARCH VIEWS =========================== -->
     <!-- Product Search view -->
     <record model="ir.ui.view" id="lighting_product_view">
@@ -1477,9 +1542,25 @@
         </field>
     </record>
 
+    <!-- ============= configuration ============ -->
+    <!-- window action lighting.settings class -->
+    <record model="ir.actions.act_window" id="settings_list_action">
+        <field name="name">Settings</field>
+        <field name="res_model">lighting.settings</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Configuration</p>
+        </field>
+    </record>
+
     <!-- ================================ MENU =========================== -->
+
     <!-- top level menu: no parent -->
-    <menuitem id="main_lighting_menu" name="Lighting"/>
+    <menuitem id="main_lighting_menu"
+              name="Lighting"
+              sequence="0"/>
+
     <!-- A first level in the left side menu is needed
          before using action= attribute -->
     <menuitem id="lighting_menu" name="Lighting"
@@ -1578,6 +1659,18 @@
     <!-- ============= marketing tab ============ -->
     <menuitem id="product_states_menu" name="States" parent="lighting_menu" action="product_state_list_action"/>
 
+    <!-- ============= configuracio ============ -->
+    <menuitem id="menu_lighting_configuration"
+              name="Configuration"
+              parent="main_lighting_menu"
+              groups="group_lighting_admin"
+              sequence="100"/>
+
+    <menuitem id="menu_lighting_settings"
+              action="settings_list_action"
+              parent="menu_lighting_configuration"
+              groups="group_lighting_admin"
+              sequence="1"/>
 </odoo>
 
 

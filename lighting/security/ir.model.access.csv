@@ -75,4 +75,6 @@ access_lighting_product_beam_photodistribution_manager,lighting.product.beam.pho
 access_lighting_product_beam_photodistribution_user,lighting.product.beam.photodistribution user,model_lighting_product_beam_photodistribution,lighting.group_lighting_user,1,0,0,0
 access_lighting_product_beam_dimension_manager,lighting.product.beam.dimension manager,model_lighting_product_beam_dimension,lighting.group_lighting_manager,1,1,1,1
 access_lighting_product_beam_dimension_user,lighting.product.beam.dimension user,model_lighting_product_beam_dimension,lighting.group_lighting_user,1,1,1,1
-
+access_lighting_settings_user,lighting.settings user,model_lighting_settings,lighting.group_lighting_user,0,0,0,0
+access_lighting_settings_manager,lighting.settings manager,model_lighting_settings,lighting.group_lighting_manager,0,0,0,0
+access_lighting_settings_admin,lighting.settings admin,model_lighting_settings,lighting.group_lighting_admin,1,1,1,1
