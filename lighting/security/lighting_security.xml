@@ -6,15 +6,20 @@
         <field name="sequence">16</field>
     </record>
 
-
     <record id="group_lighting_user" model="res.groups">
         <field name="name">User</field>
         <field name="category_id" ref="module_category_lighting"/>
-        <!--field name="implied_ids" eval="[(4, ref('base.group_user'))]"/-->
     </record>
 
     <record id="group_lighting_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="module_category_lighting"/>
+    </record>
+
+    <record id="group_lighting_admin" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="module_category_lighting"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="implied_ids" eval="[(4, ref('lighting.group_lighting_manager'))]"/>
     </record>
 </odoo>
