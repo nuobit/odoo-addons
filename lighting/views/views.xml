@@ -271,7 +271,7 @@
                                     <field name="ext_swidth1"/>
                                     <field name="ext_slength1"/>
                                     <field name="ext_svolume"/>
-                                    <field name="ext_sweight"/>
+                                    <field name="ext_sweight1"/>
                                 </group>
                             </group>
                             <group>
