@@ -1081,8 +1081,12 @@
         <record id="product_source_type_led_ar111" model="lighting.product.source.type">
             <field name="code">LED AR111</field>
         </record>
+        <record id="product_source_type_led_bulb" model="lighting.product.source.type">
+            <field name="code">LED Bulb</field>
+        </record>
         <record id="product_source_type_led_cob" model="lighting.product.source.type">
             <field name="code">LED COB</field>
+            <field name="is_integrated">True</field>
         </record>
         <record id="product_source_type_led_filament" model="lighting.product.source.type">
             <field name="code">Led Filament</field>
@@ -1090,11 +1094,16 @@
         <record id="product_source_type_led_g9" model="lighting.product.source.type">
             <field name="code">LED G9</field>
         </record>
+        <record id="product_source_type_led_integrated" model="lighting.product.source.type">
+            <field name="code">LED Integrated</field>
+            <field name="is_integrated">True</field>
+        </record>
         <record id="product_source_type_led_retrofit" model="lighting.product.source.type">
             <field name="code">LED Retrofit</field>
         </record>
         <record id="product_source_type_led_smd" model="lighting.product.source.type">
             <field name="code">LED SMD</field>
+            <field name="is_integrated">True</field>
         </record>
         <record id="product_source_type_led_t2" model="lighting.product.source.type">
             <field name="code">LED T2</field>
@@ -1149,9 +1158,6 @@
         </record>
         <record id="product_source_type_t1" model="lighting.product.source.type">
             <field name="code">T1</field>
-        </record>
-        <record id="product_source_type_t2_led" model="lighting.product.source.type">
-            <field name="code">T2 LED</field>
         </record>
         <record id="product_source_type_t5" model="lighting.product.source.type">
             <field name="code">T5</field>
