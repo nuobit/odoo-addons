@@ -1075,9 +1075,6 @@
         <record id="product_source_type_lamp_vintage" model="lighting.product.source.type">
             <field name="code">Lamp Vintage</field>
         </record>
-        <record id="product_source_type_led" model="lighting.product.source.type">
-            <field name="code">LED</field>
-        </record>
         <record id="product_source_type_led_ar111" model="lighting.product.source.type">
             <field name="code">LED AR111</field>
         </record>
