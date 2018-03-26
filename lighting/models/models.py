@@ -584,7 +584,10 @@ class LightingProductSource(models.Model):
         for rec in self:
             res = []
             for l in rec.line_ids.sorted(lambda x: x.sequence):
-                res.append(l.type_id.code)
+                line = [l.type_id.code]
+                if l.wattage_display:
+                    line.append("(%s)" % l.wattage_display)
+                res.append(' '.join(line))
 
             if res != []:
                 rec.line_display = "/".join(res)
