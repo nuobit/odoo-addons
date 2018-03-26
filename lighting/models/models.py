@@ -25,10 +25,11 @@ class LightingProduct(models.Model):
     _order = 'reference'
 
     # Common data
-    reference = fields.Char(string='Reference', required=True, index=True, copy=False)
+    reference = fields.Char(string='Reference', required=True, index=True)
     description = fields.Char(string='Description', translate=True)  #required=True
-    ean = fields.Char(string='EAN', required=True, index=True, copy=False)
-    family_ids = fields.Many2many(comodel_name='lighting.product.family', relation='lighting_product_family_rel', string='Families')
+    ean = fields.Char(string='EAN', required=True, index=True)
+    family_ids = fields.Many2many(comodel_name='lighting.product.family',
+                                  relation='lighting_product_family_rel', string='Families')
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', string='Catalogs')
     type_id = fields.Many2one(comodel_name='lighting.product.type', ondelete='restrict', string='Type')
 
@@ -248,17 +249,18 @@ class LightingProduct(models.Model):
     ext_sweight1 = fields.Float(string='S Weight 1', readonly=True)
 
     def _compute_external_data_available(self):
-        try:
-            from hdbcli import dbapi
-        except ImportError:
-            self.external_data_available = False
-            return
+        for rec in self:
+            try:
+                from hdbcli import dbapi
+            except ImportError:
+                rec.external_data_available = False
+                return
 
-        if self.env['lighting.settings'].sudo().search_count([]) == 0:
-            self.external_data_available = False
-            return
+            if self.env['lighting.settings'].sudo().search_count([]) == 0:
+                rec.external_data_available = False
+                return
 
-        self.external_data_available = True
+            rec.external_data_available = True
 
     def get_external_data(self):
         ext_fields = ["ItemCode", "ItemName", "FrgnName", "CodeBars",
@@ -291,6 +293,36 @@ class LightingProduct(models.Model):
 
         cursor.close()
         conn.close()
+
+    def dupOne2many(self, default, pfield, cfields):
+        l = []
+        for p in getattr(self, pfield):
+            d = {}
+            for c in cfields:
+                b = p[c]
+                if c.endswith('_id'):
+                    b = b.id
+                d.update({c: b})
+            l.append((0, False, d))
+
+        if l != []:
+            default.update({pfield: l})
+
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = dict(default or {},
+                       reference=_('%s (copy)') % self.reference,
+                       ean=_('%s (copy)') % self.ean,
+                       )
+
+        self.dupOne2many(default, 'led_driver_ids', ['reference', 'brand_id'])
+        self.dupOne2many(default, 'dimension_ids', ['type_id', 'value'])
+        self.dupOne2many(default, 'recess_dimension_ids', ['type_id', 'value'])
+        self.dupOne2many(default, 'fan_wattage_ids', ['wattage'])
+        self.dupOne2many(default, 'supplier_ids', ['supplier_id', 'reference'])
+
+        return super(LightingProduct, self).copy(default)
 
 ######### common data
 class LightingCatalog(models.Model):
