@@ -125,8 +125,6 @@ class LightingProduct(models.Model):
 
     color = fields.Selection(selection=COLOR_SELECTION, string='Color')
 
-    led_brand_id = fields.Many2one(comodel_name='lighting.product.ledbrand', ondelete='restrict', string='LED brand')
-
     led_driver_ids = fields.One2many(comodel_name='lighting.product.leddriver', inverse_name='product_id', string='LED drivers')
 
     # Physical characteristics
