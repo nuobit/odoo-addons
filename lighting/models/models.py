@@ -74,7 +74,27 @@ class LightingProduct(models.Model):
     output_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Output voltage')
     output_current = fields.Float(string='Output current (mA)')
 
-    total_wattage = fields.Float(string='Total wattage (W)', help='Total power consumed by the luminaire')
+    #total_wattage = fields.Float(string='Total wattage (W)', help='Total power consumed by the luminaire')
+    total_wattage = fields.Float(compute='_compute_total_wattage',
+                                 inverse='_inverse_total_wattage',
+                                 string='Total wattage (W)', help='Total power consumed by the luminaire', store=True)
+    total_wattage_auto = fields.Boolean(string='Autocalculate', help='Autocalculate total wattage', default=True)
+
+    @api.depends('total_wattage_auto', 'source_ids.line_ids.wattage', 'source_ids.line_ids.type_id',
+                 'source_ids.line_ids.type_id.is_integrated')
+    def _compute_total_wattage(self):
+        for rec in self:
+            if rec.total_wattage_auto:
+                line_l = rec.source_ids.mapped('line_ids').filtered(lambda x: x.type_id.is_integrated)
+                for line in line_l:
+                    if line.wattage <= 0:
+                        raise ValidationError("The source line %s has invalid wattage" % line.type_id.display_name)
+                    rec.total_wattage += line.wattage
+
+    def _inverse_total_wattage(self):
+        ## dummy method. It allows to update calculated field
+        pass
+
     power_factor_min = fields.Float(string='Minimum power factor')
     power_switches = fields.Integer(string='Power switches', help="Number of power switches")
 
@@ -600,9 +620,16 @@ class LightingProductSourceLine(models.Model):
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
     type_id = fields.Many2one(comodel_name='lighting.product.source.type', ondelete='restrict', string='Type', required=True)
+
     wattage = fields.Float(string='Wattage')
     is_max_wattage = fields.Boolean(string='Max. Wattage')
     wattage_magnitude = fields.Selection([('w', 'W'), ('wm', 'W/m')], string='Wattage magnitude', default='w')
+
+    @api.constrains('wattage', 'type_id')
+    def _check_wattage(self):
+        for rec in self:
+            if rec.type_id.is_integrated and rec.wattage <= 0:
+                raise ValidationError("The wattage on line %s must be greater than 0 if source type is integrated" % rec.type_id.display_name)
 
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
@@ -776,7 +803,7 @@ class LightingAttachment(models.Model):
     def name_get(self):
         vals = []
         for record in self:
-            name = '%s (%s)' % (record.datas_fname, record.type_id.name)
+            name = '%s (%s)' % (record.datas_fname, record.type_id.display_name)
             vals.append((record.id, name))
 
         return vals
