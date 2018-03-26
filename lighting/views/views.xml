@@ -89,7 +89,7 @@
                             <group>
                                 <field name="auxiliary_equipment_id"/>
                                 <field name="auxiliary_equipment_model_id"/>
-                                <field name="auxiliary_equipment_model_alt_id"/>
+                                <field name="auxiliary_equipment_model_alt" widget="text"/>
                             </group>
                             <group col="6">
                                 <field name="usb_ports"/>

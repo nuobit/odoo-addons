@@ -67,14 +67,12 @@ class LightingProduct(models.Model):
     auxiliary_equipment_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipment', ondelete='restrict', string='Auxiliary equipment')
     auxiliary_equipment_model_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentmodel', ondelete='restrict',
                                           string='Auxiliary equipment model')
-    auxiliary_equipment_model_alt_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentmodel', ondelete='restrict',
-                                                string='Auxiliary equipment model alternative')
+    auxiliary_equipment_model_alt = fields.Char(string='Auxiliary equipment model alternative')
     input_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Input voltage')
     input_current = fields.Float(string='Input current (mA)')
     output_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Output voltage')
     output_current = fields.Float(string='Output current (mA)')
 
-    #total_wattage = fields.Float(string='Total wattage (W)', help='Total power consumed by the luminaire')
     total_wattage = fields.Float(compute='_compute_total_wattage',
                                  inverse='_inverse_total_wattage',
                                  string='Total wattage (W)', help='Total power consumed by the luminaire', store=True)
