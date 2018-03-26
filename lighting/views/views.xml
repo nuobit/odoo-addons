@@ -124,6 +124,12 @@
                                 <field name="color"/>
 
                                 <field name="led_brand_id"/>
+                                <field name="led_driver_ids">
+                                    <tree editable="bottom">
+                                        <field name="reference"/>
+                                        <field name="brand_id"/>
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                         <page string="Physical">

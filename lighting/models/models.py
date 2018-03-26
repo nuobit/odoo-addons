@@ -127,6 +127,8 @@ class LightingProduct(models.Model):
 
     led_brand_id = fields.Many2one(comodel_name='lighting.product.ledbrand', ondelete='restrict', string='LED brand')
 
+    led_driver_ids = fields.One2many(comodel_name='lighting.product.leddriver', inverse_name='product_id', string='LED drivers')
+
     # Physical characteristics
     weight = fields.Float(string='Weight (kg)')
     dimension_ids = fields.One2many(comodel_name='lighting.product.dimension', inverse_name='product_id', string='Dimensions')
@@ -498,6 +500,20 @@ class LightingProductSensor(models.Model):
                         ]
 
 ###########  Lighting characteristics tab
+
+class LightingProductLedDriver(models.Model):
+    _name = 'lighting.product.leddriver'
+    _rec_name = 'reference'
+
+    reference = fields.Char(string='Reference')
+    brand_id = fields.Many2one(comodel_name='lighting.product.ledbrand', ondelete='restrict', string='Brand')
+
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
+
+    _sql_constraints = [('leddriver_uniq', 'unique (product_id, reference, brand_id)', 'The LED brand must be unique!'),
+                        ]
+
+
 class LightingProductLedBrand(models.Model):
     _name = 'lighting.product.ledbrand'
     _order = 'name'
