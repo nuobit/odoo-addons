@@ -236,7 +236,7 @@ class LightingProduct(models.Model):
             self.external_data_available = False
             return
 
-        if self.env['lighting.settings'].search_count([]) == 0:
+        if self.env['lighting.settings'].sudo().search_count([]) == 0:
             self.external_data_available = False
             return
 
@@ -247,7 +247,7 @@ class LightingProduct(models.Model):
                       "OnHand", "AvgPrice", "StockValue", "LastPurDat",
                       "SHeight1", "SWidth1", "SLength1", "SVolume", "SWeight1"]
 
-        settings = self.env['lighting.settings'].search([]).sorted(lambda x: x.sequence)
+        settings = self.env['lighting.settings'].sudo().search([]).sorted(lambda x: x.sequence)
 
         from hdbcli import dbapi
 
