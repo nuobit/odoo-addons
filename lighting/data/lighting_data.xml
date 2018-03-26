@@ -1088,9 +1088,6 @@
         <record id="product_source_type_led_filament" model="lighting.product.source.type">
             <field name="code">Led Filament</field>
         </record>
-        <record id="product_source_type_led_g9" model="lighting.product.source.type">
-            <field name="code">LED G9</field>
-        </record>
         <record id="product_source_type_led_integrated" model="lighting.product.source.type">
             <field name="code">LED Integrated</field>
             <field name="is_integrated">True</field>
