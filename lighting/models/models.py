@@ -590,7 +590,7 @@ class LightingProductSource(models.Model):
                 res.append(' '.join(line))
 
             if res != []:
-                rec.line_display = "/".join(res)
+                rec.line_display = " / ".join(res)
 
 class LightingProductSourceLine(models.Model):
     _name = 'lighting.product.source.line'
