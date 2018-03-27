@@ -87,7 +87,8 @@ class LightingProduct(models.Model):
                 line_l = rec.source_ids.mapped('line_ids').filtered(lambda x: x.type_id.is_integrated)
                 for line in line_l:
                     if line.wattage <= 0:
-                        raise ValidationError("The source line %s has invalid wattage" % line.type_id.display_name)
+                        raise ValidationError("%s: The source line %s has invalid wattage" % (rec.display_name,
+                                                                                              line.type_id.display_name))
                     rec.total_wattage += line.wattage
 
     def _inverse_total_wattage(self):
@@ -282,7 +283,6 @@ class LightingProduct(models.Model):
                    WHERE p."ItemCode" = ?""" % (', '.join(['p."%s"' % x for x in ext_fields]),
                                                 settings['schema'])
         cursor.execute(stmnt, self.reference)
-
         header = [x[0] for x in cursor.description]
         result = cursor.fetchone()
         if result is not None:
@@ -674,7 +674,8 @@ class LightingProductSourceLine(models.Model):
     def _check_wattage(self):
         for rec in self:
             if rec.type_id.is_integrated and rec.wattage <= 0:
-                raise ValidationError("The wattage on line %s must be greater than 0 if source type is integrated" % rec.type_id.display_name)
+                raise ValidationError("%s: The wattage on line %s must be greater than 0 if source type is integrated" % (rec.source_id.product_id.display_name,
+                                                                                                                          rec.type_id.display_name))
 
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
