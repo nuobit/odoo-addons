@@ -705,9 +705,12 @@ class LightingProductSourceLine(models.Model):
 
         for rec in self:
             res = []
-            if rec.wattage:
-                res.append(float2text(rec.wattage) +
-                           wattage_magnitude_option.get(rec.wattage_magnitude))
+            if rec.wattage > 0:
+                wattage_str = float2text(rec.wattage)
+                if rec.wattage_magnitude:
+                    wattage_str += rec.wattage_magnitude
+                res.append(wattage_str)
+
                 if rec.is_max_wattage:
                     res.append(_('max.'))
 
