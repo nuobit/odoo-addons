@@ -285,11 +285,12 @@ class LightingProduct(models.Model):
 
         header = [x[0] for x in cursor.description]
         result = cursor.fetchone()
-        result_d = dict(zip(header, result))
-        #TODO more than one occurence
+        if result is not None:
+            result_d = dict(zip(header, result))
+            #TODO deal with more than one occurrence
 
-        for field in ext_fields:
-            setattr(self, 'ext_%s' % field.lower(), result_d[field])
+            for field in ext_fields:
+                setattr(self, 'ext_%s' % field.lower(), result_d[field])
 
         cursor.close()
         conn.close()
