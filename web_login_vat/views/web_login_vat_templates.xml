@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="login" customize_show="True" inherit_id="web.login" name="Show login label as TIN/VAT" active="False">
+        <xpath expr="//input[@id='login']/../label[@for='login']" position="replace">
+            <label for="login" class="control-label">TIN/VAT</label>
+        </xpath>
+    </template>
+</odoo>
