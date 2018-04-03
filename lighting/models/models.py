@@ -84,6 +84,7 @@ class LightingProduct(models.Model):
     def _compute_total_wattage(self):
         for rec in self:
             if rec.total_wattage_auto:
+                rec.total_wattage = 0
                 line_l = rec.source_ids.mapped('line_ids').filtered(lambda x: x.type_id.is_integrated)
                 for line in line_l:
                     if line.wattage <= 0:
