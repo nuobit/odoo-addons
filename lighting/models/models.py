@@ -199,9 +199,15 @@ class LightingProduct(models.Model):
         for record in self:
             record.attachment_count = self.env['lighting.attachment'].search_count([('product_id', '=', record.id)])
 
-    # Accesories tab
-    accessory_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_accessory_rel',
-                                     column2='lighting_product_accessory_id', domain=[('is_accessory', '=', True)], string='Accessories')
+    # Required accesories tab
+    required_accessory_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_required_accessory_rel',
+                                     column2='lighting_product_accessory_id', domain=[('is_accessory', '=', True)],
+                                     string='Required accessories')
+
+    # Recomended accesories tab
+    recommended_accessory_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_recommended_accessory_rel',
+                                     column2='lighting_product_accessory_id', domain=[('is_accessory', '=', True)],
+                                     string='Recommended accessories')
 
     # Substitutes tab
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',

@@ -209,16 +209,6 @@
                                 </field>
                             </group>
                         </page>
-                        <page string="Accessories">
-                            <group>
-                                <field name="accessory_ids" nolabel="1"/>
-                            </group>
-                        </page>
-                        <page string="Substitutes">
-                            <group>
-                                <field name="substitute_ids" nolabel="1"/>
-                            </group>
-                        </page>
                         <page string="Logistics">
                             <group>
                                 <field name="tariff_item"/>
@@ -262,6 +252,21 @@
                                 <field name="url_description"/>
                                 <field name="state_id"/>
                                 <field name="marketing_comments" widget="text"/>
+                            </group>
+                        </page>
+                        <page string="Required accessories">
+                            <group>
+                                <field name="required_accessory_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Recommended accessories">
+                            <group>
+                                <field name="recommended_accessory_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Substitutes">
+                            <group>
+                                <field name="substitute_ids" nolabel="1"/>
                             </group>
                         </page>
                         <field name="external_data_available" invisible="1"/>
