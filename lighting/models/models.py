@@ -700,8 +700,6 @@ class LightingProductSourceLine(models.Model):
                                   relation='lighting_product_source_lampenergyefficiency_rel',
                                   string='Lamp included efficiency')
 
-    wattage_marketing_ids = fields.One2many(comodel_name='lighting.product.source.line.marketingwattage', inverse_name='source_line_id', string='Marketing wattages')
-
     source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
     ## computed fields
@@ -741,16 +739,6 @@ class LightingProductSourceLine(models.Model):
             if res != []:
                 rec.luminous_flux_display = "-".join(res)
 
-    wattage_marketing_display = fields.Char(compute='_compute_wattage_marketing_display', string='Marketing wattages (W)')
-
-    @api.depends('wattage_marketing_ids')
-    def _compute_wattage_marketing_display(self):
-        for rec in self:
-            res = [float2text(x.wattage) for x in rec.wattage_marketing_ids.sorted(lambda x: x.wattage)]
-
-            if res != []:
-                rec.wattage_marketing_display = "-".join(res)
-
 class LightingProductSourceLampholder(models.Model):
     _name = 'lighting.product.source.lampholder'
     _rec_name = 'code'
@@ -775,23 +763,6 @@ class LightingProductSourceType(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The source type description must be unique!'),
                         ('code_uniq', 'unique (code)', 'The source type code must be unique!'),
                         ]
-
-class LightingProductSourceLineMarketingWattage(models.Model):
-    _name = 'lighting.product.source.line.marketingwattage'
-    _rec_name = 'wattage'
-
-    wattage = fields.Float(string='Marketing wattage (W)', required=True)
-
-    source_line_id = fields.Many2one(comodel_name='lighting.product.source.line', ondelete='cascade', string='Source line')
-
-    _sql_constraints = [('wattage_line_uniq', 'unique (source_line_id, wattage)', 'There are duplicated marketing wattages on a source line!'),
-                    ]
-
-    @api.constrains('wattage')
-    def _check_wattage(self):
-        for rec in self:
-            if rec.wattage == 0:
-                raise ValidationError("The marketing wattage on a source line, if defined, cannot be 0")
 
 ########### beams tab
 class LightingProductBeam(models.Model):

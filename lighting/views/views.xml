@@ -942,7 +942,6 @@
                                 <field name="lamp_included_efficiency_ids" widget="many2many_tags"
                                        attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
 
-                                <field name="wattage_marketing_display"/>
                             </tree>
                         </field>
                     </group>
@@ -974,12 +973,6 @@
                         <field name="is_lamp_included"/>
                         <field name="lamp_included_efficiency_ids" widget="many2many_tags"
                                attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
-
-                        <field name="wattage_marketing_ids">
-                            <tree editable="bottom">
-                                <field name="wattage"/>
-                            </tree>
-                        </field>
                     </group>
                 </sheet>
             </form>
