@@ -236,7 +236,6 @@ class LightingProduct(models.Model):
     discontinued_by_supplier = fields.Boolean(string='Discontinued by supplier')
     until_end_stock = fields.Boolean(string='Until end of stock')
     on_request = fields.Boolean(string='On request')
-    obsolete = fields.Boolean(string='Obsolete')
     fixed_mrp  = fields.Boolean(string='Fixed MRP')
     seo_description = fields.Char(string='SEO description', translate=True)
     url_description = fields.Char(string='URL description')

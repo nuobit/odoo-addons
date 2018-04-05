@@ -246,7 +246,6 @@
                                 <field name="discontinued_by_supplier"/>
                                 <field name="until_end_stock"/>
                                 <field name="on_request"/>
-                                <field name="obsolete"/>
                                 <field name="fixed_mrp"/>
                                 <field name="seo_description" widget="text"/>
                                 <field name="url_description"/>
