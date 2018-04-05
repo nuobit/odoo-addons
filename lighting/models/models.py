@@ -128,7 +128,8 @@ class LightingProduct(models.Model):
 
     color = fields.Selection(selection=COLOR_SELECTION, string='Color')
 
-    led_driver_ids = fields.One2many(comodel_name='lighting.product.leddriver', inverse_name='product_id', string='LED drivers')
+    led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
+                                   inverse_name='product_id', string='LED chip')
 
     # Physical characteristics
     weight = fields.Float(string='Weight (kg)')
@@ -318,7 +319,7 @@ class LightingProduct(models.Model):
                        ean=_('%s (copy)') % self.ean,
                        )
 
-        self.dupOne2many(default, 'led_driver_ids', ['reference', 'brand_id'])
+        self.dupOne2many(default, 'led_chip_ids', ['reference', 'brand_id'])
         self.dupOne2many(default, 'dimension_ids', ['type_id', 'value'])
         self.dupOne2many(default, 'recess_dimension_ids', ['type_id', 'value'])
         self.dupOne2many(default, 'fan_wattage_ids', ['wattage'])
@@ -533,8 +534,8 @@ class LightingProductSensor(models.Model):
 
 ###########  Lighting characteristics tab
 
-class LightingProductLedDriver(models.Model):
-    _name = 'lighting.product.leddriver'
+class LightingProductLedChip(models.Model):
+    _name = 'lighting.product.ledchip'
     _rec_name = 'reference'
 
     reference = fields.Char(string='Reference')
@@ -542,7 +543,7 @@ class LightingProductLedDriver(models.Model):
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
-    _sql_constraints = [('leddriver_uniq', 'unique (product_id, reference, brand_id)', 'The LED brand must be unique!'),
+    _sql_constraints = [('ledchip_uniq', 'unique (product_id, reference, brand_id)', 'The LED brand must be unique!'),
                         ]
 
 

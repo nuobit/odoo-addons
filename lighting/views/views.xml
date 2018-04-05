@@ -123,7 +123,7 @@
 
                                 <field name="color"/>
 
-                                <field name="led_driver_ids">
+                                <field name="led_chip_ids">
                                     <tree editable="bottom">
                                         <field name="reference"/>
                                         <field name="brand_id"/>
