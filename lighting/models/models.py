@@ -636,8 +636,8 @@ class LightingProductSource(models.Model):
     relevance = fields.Selection([('main', 'Main'), ('aux', 'Auxiliary')], string='Relevance', required=True, default='main')
     num = fields.Integer(string='Number of sources', default=1)
     lampholder_id =  fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict', string='Lampholder')
-    lampholder_marketing_id = fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict',
-                                    string='Marketing lampholder')
+    lampholder_technical_id = fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict',
+                                    string='Technical lampholder')
 
     line_ids = fields.One2many(comodel_name='lighting.product.source.line', inverse_name='source_id', string='Lines')
 

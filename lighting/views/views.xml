@@ -917,7 +917,7 @@
                         <field name="relevance"/>
                         <field name="num"/>
                         <field name="lampholder_id"/>
-                        <field name="lampholder_marketing_id"/>
+                        <field name="lampholder_technical_id"/>
                     </group>
                     <group>
                         <field name="line_ids" nolabel="1">
