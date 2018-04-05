@@ -353,7 +353,6 @@ class LightingProductType(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Type', required=True, translate=True)
-    is_accessory = fields.Boolean(string='Is accessory')
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
                         ]
