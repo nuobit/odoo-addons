@@ -238,7 +238,7 @@ class LightingProduct(models.Model):
     on_request = fields.Boolean(string='On request')
     obsolete = fields.Boolean(string='Obsolete')
     fixed_mrp  = fields.Boolean(string='Fixed MRP')
-    seo_description = fields.Char(string='SEO description')
+    seo_description = fields.Char(string='SEO description', translate=True)
     url_description = fields.Char(string='URL description')
     state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State')
     marketing_comments = fields.Char(string='Comments')

@@ -248,7 +248,7 @@
                                 <field name="on_request"/>
                                 <field name="obsolete"/>
                                 <field name="fixed_mrp"/>
-                                <field name="seo_description"/>
+                                <field name="seo_description" widget="text"/>
                                 <field name="url_description"/>
                                 <field name="state_id"/>
                                 <field name="marketing_comments" widget="text"/>
