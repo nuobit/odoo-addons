@@ -33,6 +33,8 @@ class LightingProduct(models.Model):
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', string='Catalogs')
     type_id = fields.Many2one(comodel_name='lighting.product.type', ondelete='restrict', string='Type')
 
+    is_accessory = fields.Boolean(string='Is accessory')
+
     _sql_constraints = [ ('reference_uniq', 'unique (reference)', 'The reference must be unique!'),
                          ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
         ]
@@ -199,7 +201,7 @@ class LightingProduct(models.Model):
 
     # Accesories tab
     accessory_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_accessory_rel',
-                                     column2='lighting_product_accessory_id', domain=[('type_id.is_accessory', '=', True)],string='Accessories')
+                                     column2='lighting_product_accessory_id', domain=[('is_accessory', '=', True)], string='Accessories')
 
     # Substitutes tab
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',
