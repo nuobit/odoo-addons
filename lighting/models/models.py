@@ -85,9 +85,10 @@ class LightingProduct(models.Model):
 
                     wattage_d = {}
                     for line in source.line_ids:
-                        if line.wattage_magnitude not in wattage_d:
-                            wattage_d[line.wattage_magnitude] = []
-                        wattage_d[line.wattage_magnitude].append((line.wattage, line.wattage_display))
+                        if line.wattage > 0 and line.wattage_magnitude:
+                            if line.wattage_magnitude not in wattage_d:
+                                wattage_d[line.wattage_magnitude] = []
+                            wattage_d[line.wattage_magnitude].append((line.wattage, line.wattage_display))
 
                     data_source.append(','.join ([sorted(w, key=lambda x: x[0], reverse=True)[0][1] for w in wattage_d.values()]))
 
