@@ -33,9 +33,11 @@
                             <field name="reference" placeholder="Reference"/>
                         </h1>
                     </div>
-
                     <group>
                         <field name="description"/>
+                        <field name="description_manual"/>
+                    </group>
+                    <group>
                         <field name="ean"/>
                         <field name="catalog_ids" widget="many2many_tags"/>
                         <field name="family_ids" widget="many2many_tags"/>
@@ -334,6 +336,9 @@
                     <group>
                         <field name="name"/>
                     </group>
+                    <group>
+                        <field name="description_show_ip"/>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -345,6 +350,7 @@
         <field name="arch" type="xml">
             <tree string="Catalog Tree">
                 <field name="name"/>
+                <field name="description_show_ip"/>
             </tree>
         </field>
     </record>
@@ -963,7 +969,7 @@
                         <field name="wattage"/>
                         <field name="is_max_wattage"/>
                         <field name="wattage_magnitude"
-                                    attrs="{'required': [('wattage', '>', 0)]}"/>
+                               attrs="{'required': [('wattage', '>', 0)]}"/>
 
                         <field name="luminous_flux1"/>
                         <field name="luminous_flux2"/>
@@ -1019,6 +1025,9 @@
                         <field name="name"/>
                         <field name="is_integrated"/>
                     </group>
+                    <group>
+                        <field name="description_text"/>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -1032,6 +1041,7 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="is_integrated"/>
+                <field name="description_text"/>
             </tree>
         </field>
     </record>
@@ -1702,7 +1712,8 @@
     <menuitem id="suppliers_menu" name="Suppliers" parent="lighting_menu" action="supplier_list_action"/>
 
     <!-- ============= marketing tab ============ -->
-    <menuitem id="product_seokeyword_menu" name="SEO keywords" parent="lighting_menu" action="product_seokeyword_list_action"/>
+    <menuitem id="product_seokeyword_menu" name="SEO keywords" parent="lighting_menu"
+              action="product_seokeyword_list_action"/>
 
     <menuitem id="product_states_menu" name="States" parent="lighting_menu" action="product_state_list_action"/>
 

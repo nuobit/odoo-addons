@@ -26,7 +26,82 @@ class LightingProduct(models.Model):
 
     # Common data
     reference = fields.Char(string='Reference', required=True, index=True)
-    description = fields.Char(string='Description', translate=True)  #required=True
+
+    description = fields.Char(compute='_compute_description', string='Description', readonly=True,
+                                   help="Description dynamically generated from product data", store=True)
+
+    @api.depends('application_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip', 'ip', 'ip2',
+                 'dimmable_ids.name',
+                 'source_ids.lampholder_id.code',
+                 'source_ids.line_ids.type_id.code',
+                 'source_ids.line_ids.type_id.description_text',
+                 'source_ids.line_ids.wattage',
+                 'source_ids.line_ids.wattage_magnitude',
+                 'source_ids.line_ids.luminous_flux1',
+                 'source_ids.line_ids.luminous_flux2',
+                 'source_ids.line_ids.color_temperature',
+                 'finish_id.name')
+    def _compute_description(self):
+        for rec in self:
+            data = []
+            data.append(','.join(rec.application_ids.mapped('name')))
+            data.append(','.join(rec.family_ids.mapped('name')))
+
+            ip_catalogs = rec.catalog_ids.filtered(lambda x: x.description_show_ip)
+            if ip_catalogs:
+                data_ip = []
+                for ipx in ('ip', 'ip2'):
+                    ip = getattr(rec, ipx)
+                    if ip:
+                        prefix = self.fields_get([ipx], ['string']).get(ipx).get('string')
+                        data_ip.append('%s %i' % (prefix, ip))
+                data.append(','.join(data_ip))
+
+            data.append(','.join(rec.dimmable_ids.mapped('name')))
+
+            data_sources = []
+            sources_integrated = rec.source_ids.mapped("line_ids").filtered(lambda x: x.type_id.is_integrated)
+            for source in sources_integrated:
+                data_source = []
+                data_source.append(source.type_id.description_text or source.type_id.code)
+                data_source.append(source.wattage_display or '')
+
+                data_lm = []
+                for lmx in ('luminous_flux1', 'luminous_flux2'):
+                    lm = getattr(source, lmx)
+                    if lm: data_lm.append('%i' % lm)
+                if data_lm != []:
+                    data_source.append('%sLm' % '-'.join(data_lm))
+
+                if source.color_temperature:
+                    data_source.append('%sK' % source.color_temperature)
+
+                data_sources.append(' '.join(data_source))
+
+            if data_sources == []:
+                for source in rec.source_ids:
+                    data_source = []
+                    data_source.append(source.lampholder_id.code or '')
+
+                    wattage_d = {}
+                    for line in source.line_ids:
+                        if line.wattage_magnitude not in wattage_d:
+                            wattage_d[line.wattage_magnitude] = []
+                        wattage_d[line.wattage_magnitude].append((line.wattage, line.wattage_display))
+
+                    data_source.append(','.join ([sorted(w, key=lambda x: x[0], reverse=True)[0][1] for w in wattage_d.values()]))
+
+                    data_sources.append(' '.join(data_source))
+
+            if data_sources != []:
+                data.append(','.join(data_sources))
+
+            data.append(rec.finish_id.name or '')
+
+            rec.description = ' '.join(data)
+
+    description_manual = fields.Char(string='Description (manual)', help='Manual description', translate=True)
+
     ean = fields.Char(string='EAN', required=True, index=True)
     family_ids = fields.Many2many(comodel_name='lighting.product.family',
                                   relation='lighting_product_family_rel', string='Families')
@@ -344,6 +419,10 @@ class LightingCatalog(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Catalog', required=True)
+
+    description_show_ip = fields.Boolean(string='Description show IP',
+                                         help="If checked, IP and IP2 will be shown on a generated product description "
+                                              "for every product in this catalog")
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name of catalog must be unique!'),
                         ]
@@ -760,8 +839,10 @@ class LightingProductSourceType(models.Model):
     _order = 'code'
 
     code = fields.Char(string='Code', required=True)
-    name = fields.Char(string='Description', translate=True)
+    name = fields.Char(string='Name', help='Source description', translate=True)
     is_integrated = fields.Boolean(string='Integrated')
+
+    description_text = fields.Char(string='Description text', help='Text to show on a generated product description', translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The source type description must be unique!'),
                         ('code_uniq', 'unique (code)', 'The source type code must be unique!'),
