@@ -240,6 +240,7 @@ class LightingProduct(models.Model):
     seo_description = fields.Char(string='SEO description', translate=True)
     url_description = fields.Char(string='URL description')
     state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State')
+    effective_date = fields.Date(string='Effective date')
     marketing_comments = fields.Char(string='Comments')
 
     ########### external data tab
