@@ -238,6 +238,8 @@ class LightingProduct(models.Model):
     on_request = fields.Boolean(string='On request')
     fixed_mrp  = fields.Boolean(string='Fixed MRP')
     seo_description = fields.Char(string='SEO description', translate=True)
+    seo_keyword_ids = fields.Many2many(comodel_name='lighting.product.seokeyword', relation='lighting_product_seokeyword_rel',
+                                       column2='lighting_product_seokeyword_id', string='SEO keywords')
     url_description = fields.Char(string='URL description')
     state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State')
     effective_date = fields.Date(string='Effective date')
@@ -904,6 +906,15 @@ class LightingSupplier(models.Model):
                         ]
 
 ########### marketing tab
+class LightingProductSEOKeyword(models.Model):
+    _name = 'lighting.product.seokeyword'
+    _order = 'name'
+
+    name = fields.Char(string='Keyword', required=True, translate=True)
+
+    _sql_constraints = [('name_uniq', 'unique (name)', 'The keyword must be unique!'),
+                        ]
+
 class LightingProductState(models.Model):
     _name = 'lighting.product.state'
     _order = 'name'

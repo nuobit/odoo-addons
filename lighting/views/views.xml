@@ -248,6 +248,7 @@
                                 <field name="on_request"/>
                                 <field name="fixed_mrp"/>
                                 <field name="seo_description" widget="text"/>
+                                <field name="seo_keyword_ids" widget="many2many_tags"/>
                                 <field name="url_description"/>
                                 <field name="state_id"/>
                                 <field name="effective_date"/>
@@ -1136,6 +1137,31 @@
     </record>
 
     <!-- ============= marketing tab ============ -->
+    <!-- view product.seokeyword -->
+    <record model="ir.ui.view" id="product_seokeyword_form_view">
+        <field name="name">product.seokeyword.form</field>
+        <field name="model">lighting.product.seokeyword</field>
+        <field name="arch" type="xml">
+            <form string="Product SEO keyword Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_seokeyword_tree_view">
+        <field name="name">product.seokeyword.tree</field>
+        <field name="model">lighting.product.seokeyword</field>
+        <field name="arch" type="xml">
+            <tree string="Product SEO keyword Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
     <!-- view product.state -->
     <record model="ir.ui.view" id="product_state_form_view">
         <field name="name">product.state.form</field>
@@ -1543,6 +1569,17 @@
     </record>
 
     <!-- ============= marketing tab ============ -->
+    <!-- window action product.seokeyword class -->
+    <record model="ir.actions.act_window" id="product_seokeyword_list_action">
+        <field name="name">Product SEO keyword</field>
+        <field name="res_model">lighting.product.seokeyword</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first SEO keyword</p>
+        </field>
+    </record>
+
     <!-- window action product.state class -->
     <record model="ir.actions.act_window" id="product_state_list_action">
         <field name="name">Product state</field>
@@ -1669,6 +1706,8 @@
     <menuitem id="suppliers_menu" name="Suppliers" parent="lighting_menu" action="supplier_list_action"/>
 
     <!-- ============= marketing tab ============ -->
+    <menuitem id="product_seokeeyword_menu" name="SEO keywords" parent="lighting_menu" action="product_seokeyword_list_action"/>
+
     <menuitem id="product_states_menu" name="States" parent="lighting_menu" action="product_state_list_action"/>
 
     <!-- ============= configuracio ============ -->
