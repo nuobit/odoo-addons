@@ -78,3 +78,5 @@ access_lighting_settings_manager,lighting.settings manager,model_lighting_settin
 access_lighting_settings_admin,lighting.settings admin,model_lighting_settings,lighting.group_lighting_admin,1,1,1,1
 access_lighting_product_ledchip_manager,lighting.product.ledchip manager,model_lighting_product_ledchip,lighting.group_lighting_manager,1,1,1,1
 access_lighting_product_ledchip_user,lighting.product.ledchip user,model_lighting_product_ledchip,lighting.group_lighting_user,1,1,1,1
+access_lighting_product_seokeyword_manager,lighting.product.seokeyword manager,model_lighting_product_seokeyword,lighting.group_lighting_manager,1,1,1,1
+access_lighting_product_seokeyword_user,lighting.product.seokeyword user,model_lighting_product_seokeyword,lighting.group_lighting_user,1,0,0,0
