@@ -1706,7 +1706,7 @@
     <menuitem id="suppliers_menu" name="Suppliers" parent="lighting_menu" action="supplier_list_action"/>
 
     <!-- ============= marketing tab ============ -->
-    <menuitem id="product_seokeeyword_menu" name="SEO keywords" parent="lighting_menu" action="product_seokeyword_list_action"/>
+    <menuitem id="product_seokeyword_menu" name="SEO keywords" parent="lighting_menu" action="product_seokeyword_list_action"/>
 
     <menuitem id="product_states_menu" name="States" parent="lighting_menu" action="product_state_list_action"/>
 
