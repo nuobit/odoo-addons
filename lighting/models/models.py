@@ -43,7 +43,8 @@ class LightingProduct(models.Model):
                                 ], string='Installation location')
 
     # Description tab
-    application_id = fields.Many2one(comodel_name='lighting.product.application', ondelete='restrict', string='Application')
+    application_ids = fields.Many2many(comodel_name='lighting.product.application',
+                                       relation='lighting_product_application_rel', string='Applications')
     finish_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish')
 
     body_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_body_material_rel', string='Body material')

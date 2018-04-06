@@ -47,7 +47,7 @@
                         <page string="Description">
                             <group>
                                 <field name="install_location"/>
-                                <field name="application_id"/>
+                                <field name="application_ids" widget="many2many_tags"/>
                                 <field name="finish_id"/>
                                 <field name="body_material_ids" widget="many2many_tags"/>
                                 <field name="diffusor_material_ids" widget="many2many_tags"/>
@@ -1236,11 +1236,8 @@
                 <field name="catalog_ids"/>
                 <field name="family_ids"/>
                 <field name="type_ids"/>
-                <field name="application_id"/>
+                <field name="application_ids"/>
                 <field name="dimmable_ids"/>
-                <group expand="0" string="Group By">
-                    <filter string="Applications" domain="[]" context="{'group_by':'application_id'}"/>
-                </group>
             </search>
         </field>
     </record>
