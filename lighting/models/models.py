@@ -906,8 +906,8 @@ class LightingAttachment(models.Model):
     name = fields.Char(string='Description', translate=True)
     type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='restrict', required=True, string='Type')
 
-    datas = fields.Binary(string="Document", attachment=True)
-    datas_fname = fields.Char(string='Filename')
+    datas = fields.Binary(string="Document", attachment=True, required=True)
+    datas_fname = fields.Char(string='Filename', required=True)
 
     lang_id = fields.Many2one(comodel_name='lighting.language', ondelete='restrict', string='Language')
 
