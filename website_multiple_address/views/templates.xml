@@ -16,7 +16,7 @@
                             <a t-att-href="res_company.google_map_link_partner(partner_id)" target="_BLANK">Google Maps</a>
                         </t>
                     </address>
-                    <t t-if="res_company.google_map_img_partner(partner_id)">
+                    <t t-if="res_company.google_map_img_partner(partner_id) and partner_id.show_map_website">
                         <a t-att-href="res_company.google_map_link_partner(partner_id)" target="_BLANK">
                             <img class="thumbnail img-responsive" t-att-src="res_company.google_map_img_partner(partner_id)"/>
                         </a>
