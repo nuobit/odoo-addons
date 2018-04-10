@@ -208,11 +208,11 @@ class LightingProduct(models.Model):
     color = fields.Selection(selection=COLOR_SELECTION, string='Color')
 
     led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
-                                   inverse_name='product_id', string='LED chip')
+                                   inverse_name='product_id', string='LED chip', copy=True)
 
     # Physical characteristics
     weight = fields.Float(string='Weight (kg)')
-    dimension_ids = fields.One2many(comodel_name='lighting.product.dimension', inverse_name='product_id', string='Dimensions')
+    dimension_ids = fields.One2many(comodel_name='lighting.product.dimension', inverse_name='product_id', string='Dimensions', copy=True)
 
     cable_outlets = fields.Integer(string='Cable outlets', help="Number of cable outlets")
     lead_wires = fields.Integer(string='Lead wires supplied', help="Number of lead wires supplied")
@@ -220,7 +220,7 @@ class LightingProduct(models.Model):
     inclination_angle_max = fields.Float(string='Maximum inclination angle (º)')
     rotation_angle_max = fields.Float(string='Maximum rotation angle (º)')
     recessing_box_included = fields.Boolean(string='Recessing box included')
-    recess_dimension_ids = fields.One2many(comodel_name='lighting.product.recessdimension', inverse_name='product_id', string='Recess dimensions')
+    recess_dimension_ids = fields.One2many(comodel_name='lighting.product.recessdimension', inverse_name='product_id', string='Recess dimensions', copy=True)
     ecorrae_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
                                           string='ECORRAE I category')
     ecorrae2_category_id = fields.Many2one(comodel_name='lighting.product.ecorrae2category', ondelete='restrict',
@@ -245,10 +245,10 @@ class LightingProduct(models.Model):
 
     fan_blades = fields.Integer(string='Fan blades', help='Number of fan blades')
     fan_control = fields.Selection(selection=[('remote', 'Remote control'), ('wall', 'Wall control')], string='Fan control type')
-    fan_wattage_ids = fields.One2many(comodel_name='lighting.product.fanwattage', inverse_name='product_id', string='Fan wattages (W)')
+    fan_wattage_ids = fields.One2many(comodel_name='lighting.product.fanwattage', inverse_name='product_id', string='Fan wattages (W)', copy=True)
 
     # Sources tab
-    source_ids = fields.One2many(comodel_name='lighting.product.source', inverse_name='product_id', string='Sources')
+    source_ids = fields.One2many(comodel_name='lighting.product.source', inverse_name='product_id', string='Sources', copy=True)
 
     source_count = fields.Integer(compute='_compute_source_count', string='Total sources')
 
@@ -258,7 +258,7 @@ class LightingProduct(models.Model):
             rec.source_count = sum(rec.source_ids.mapped('num'))
 
     # Beams tab
-    beam_ids = fields.One2many(comodel_name='lighting.product.beam', inverse_name='product_id', string='Beams')
+    beam_ids = fields.One2many(comodel_name='lighting.product.beam', inverse_name='product_id', string='Beams', copy=True)
 
     beam_count = fields.Integer(compute='_compute_beam_count', string='Total beams')
 
@@ -268,7 +268,7 @@ class LightingProduct(models.Model):
             rec.beam_count = sum(rec.beam_ids.mapped('num'))
 
     # Attachment tab
-    attachment_ids = fields.One2many(comodel_name='lighting.attachment', inverse_name='product_id', string='Attachments')
+    attachment_ids = fields.One2many(comodel_name='lighting.attachment', inverse_name='product_id', string='Attachments', copy=True)
     attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
 
     @api.depends('attachment_ids')
@@ -294,7 +294,7 @@ class LightingProduct(models.Model):
     tariff_item = fields.Char(string="Tariff item")
     assembler_id = fields.Many2one(comodel_name='lighting.assembler', ondelete='restrict', string='Assembler')
     supplier_ids = fields.One2many(comodel_name='lighting.product.supplier', inverse_name='product_id',
-                                           string='Suppliers')
+                                           string='Suppliers', copy=True)
 
     ibox_weight = fields.Float(string='IBox weight (Kg)')
     ibox_volume = fields.Float(string='IBox volume (cm³)')
@@ -384,20 +384,6 @@ class LightingProduct(models.Model):
         cursor.close()
         conn.close()
 
-    def dupOne2many(self, default, pfield, cfields):
-        l = []
-        for p in getattr(self, pfield):
-            d = {}
-            for c in cfields:
-                b = p[c]
-                if c.endswith('_id'):
-                    b = b.id
-                d.update({c: b})
-            l.append((0, False, d))
-
-        if l != []:
-            default.update({pfield: l})
-
     @api.multi
     def copy(self, default=None):
         self.ensure_one()
@@ -405,12 +391,6 @@ class LightingProduct(models.Model):
                        reference=_('%s (copy)') % self.reference,
                        ean=_('%s (copy)') % self.ean,
                        )
-
-        self.dupOne2many(default, 'led_chip_ids', ['reference', 'brand_id'])
-        self.dupOne2many(default, 'dimension_ids', ['type_id', 'value'])
-        self.dupOne2many(default, 'recess_dimension_ids', ['type_id', 'value'])
-        self.dupOne2many(default, 'fan_wattage_ids', ['wattage'])
-        self.dupOne2many(default, 'supplier_ids', ['supplier_id', 'reference'])
 
         return super(LightingProduct, self).copy(default)
 
@@ -729,9 +709,9 @@ class LightingProductSource(models.Model):
     lampholder_technical_id = fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict',
                                     string='Technical lampholder')
 
-    line_ids = fields.One2many(comodel_name='lighting.product.source.line', inverse_name='source_id', string='Lines')
+    line_ids = fields.One2many(comodel_name='lighting.product.source.line', inverse_name='source_id', string='Lines', copy=True)
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
     ## computed fields
     line_display = fields.Char(compute='_compute_line_display', string='Sources')
@@ -862,7 +842,7 @@ class LightingProductBeam(models.Model):
                                                     relation='lighting_product_beam_photodistribution_rel',
                                                     string='Photometric distributions')
 
-    dimension_ids = fields.One2many(comodel_name='lighting.product.beam.dimension', inverse_name='beam_id', string='Dimensions')
+    dimension_ids = fields.One2many(comodel_name='lighting.product.beam.dimension', inverse_name='beam_id', string='Dimensions', copy=True)
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
@@ -911,7 +891,7 @@ class LightingAttachment(models.Model):
 
     lang_id = fields.Many2one(comodel_name='lighting.language', ondelete='restrict', string='Language')
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict', string='Product')
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
     @api.multi
     def name_get(self):
