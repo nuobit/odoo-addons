@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="company_description" inherit_id="website.company_description" active="True"
+              customize_show="True"
+              name="Show Multiple Address">
+        <xpath expr="//t[@t-name='website.company_description']" position="replace">
+            <t name="Company Description" t-name="website.company_description">
+                <t t-foreach="res_company.address_partner_ids" t-as="partner_id">
+                    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+                        <!-- TODO widget contact must add itemprop attributes -->
+                        <!--div><strong t-esc="partner_id.parent_id.name or partner_id.name"/></div-->
+                        <div t-esc="partner_id"
+                             t-options="{                 &quot;widget&quot;: &quot;contact&quot;,                 &quot;fields&quot;: [&quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;fax&quot;, &quot;email&quot;]}"/>
+                        <t t-if="not res_company.google_map_img_partner(partner_id)">
+                            <span class="fa fa-map-marker fa-fw mt16"/>
+                            <a t-att-href="res_company.google_map_link_partner(partner_id)" target="_BLANK">Google Maps</a>
+                        </t>
+                    </address>
+                    <t t-if="res_company.google_map_img_partner(partner_id)">
+                        <a t-att-href="res_company.google_map_link_partner(partner_id)" target="_BLANK">
+                            <img class="thumbnail img-responsive" t-att-src="res_company.google_map_img_partner(partner_id)"/>
+                        </a>
+                    </t>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>
