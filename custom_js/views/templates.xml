@@ -5,8 +5,8 @@
               name="JS product">
 
         <xpath expr="//div[@id='product_details']/h1"
-               position="replace">
-            <h2 itemprop="name" t-field="product.name">Product Name</h2>
+               position="attributes">
+            <attribute name="class">text-muted</attribute>
         </xpath>
 
         <xpath expr="//div[@id='product_details']//p[@t-field='product.description_sale']"
