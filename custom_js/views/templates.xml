@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product" inherit_id="website_sale.product" active="True"
+              customize_show="True"
+              name="JS product">
+
+        <xpath expr="//div[@id='product_details']/h1"
+               position="replace">
+            <h2 itemprop="name" t-field="product.name">Product Name</h2>
+        </xpath>
+
+        <xpath expr="//div[@id='product_details']//p[@t-field='product.description_sale']"
+               position="attributes">
+            <attribute name="class">lead</attribute>
+        </xpath>
+
+    </template>
+</odoo>
