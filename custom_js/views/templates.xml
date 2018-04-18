@@ -7,12 +7,13 @@
         <xpath expr="//div[@id='product_details']/h1"
                position="attributes">
             <attribute name="class">text-muted</attribute>
+            <attribute name="style">font-size: x-large;</attribute>
         </xpath>
 
         <xpath expr="//div[@id='product_details']//p[@t-field='product.description_sale']"
                position="attributes">
             <attribute name="class">lead</attribute>
+            <attribute name="style">color: black;</attribute>
         </xpath>
-
     </template>
 </odoo>
