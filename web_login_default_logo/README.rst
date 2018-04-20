@@ -6,4 +6,4 @@
 Web login default logo
 ======================
 
-This module force default Odoo logo at login login screen.
+This module forces default Odoo logo at login screen.

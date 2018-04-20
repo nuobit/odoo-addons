@@ -5,7 +5,7 @@
 
 {
     'name': 'Web login default logo',
-    'summary': 'This module force default Odoo logo at login login screen.',
+    'summary': 'This module forces default Odoo logo at login screen.',
     'version': '10.0.0.1.0',
     'category': 'Web',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
