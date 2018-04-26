@@ -6,6 +6,11 @@
         <field name="sequence">16</field>
     </record>
 
+    <record id="group_lighting_guest" model="res.groups">
+        <field name="name">Guest</field>
+        <field name="category_id" ref="module_category_lighting"/>
+    </record>
+
     <record id="group_lighting_user" model="res.groups">
         <field name="name">User</field>
         <field name="category_id" ref="module_category_lighting"/>
