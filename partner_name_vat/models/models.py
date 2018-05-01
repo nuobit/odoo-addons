@@ -21,3 +21,7 @@ class ResPartner(models.Model):
             result.append((partner.id, name))
 
         return result
+
+    @api.depends('vat')
+    def _compute_display_name(self):
+        super(ResPartner, self)._compute_display_name()
