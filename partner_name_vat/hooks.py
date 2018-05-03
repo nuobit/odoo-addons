@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright 2017 LasLabs Inc.
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+# Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
