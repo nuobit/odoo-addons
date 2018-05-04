@@ -1,0 +1,89 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* contract_purchase
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-05-04 15:22+0000\n"
+"PO-Revision-Date: 2018-05-04 15:22+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: contract_purchase
+#: model:ir.model,name:contract_purchase.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "Cuenta analítica"
+
+#. module: contract_purchase
+#: model:ir.actions.act_window,help:contract_purchase.action_purchase_account_analytic_overdue_all
+msgid "Click to create a new purchase contract."
+msgstr "Clica para crear un nuevo contrato de compra."
+
+#. module: contract_purchase
+#: model:ir.actions.act_window,name:contract_purchase.action_purchase_account_analytic_overdue_all
+#: model:ir.ui.menu,name:contract_purchase.menu_action_purchase_account_analytic_overdue_all
+msgid "Contracts"
+msgstr "Contratos"
+
+#. module: contract_purchase
+#: model:ir.ui.view,arch_db:contract_purchase.view_account_analytic_account_search
+msgid "Group By..."
+msgstr "Agrupar por..."
+
+#. module: contract_purchase
+#: model:ir.ui.view,arch_db:contract_purchase.account_analytic_account_recurring_form_form
+#: model:ir.ui.view,arch_db:contract_purchase.view_account_analytic_account_journal_tree
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: contract_purchase
+#: code:addons/contract_purchase/models/account_analytic_account.py:72
+#, python-format
+msgid "Please define a sale or purchase journal for the company '%s'."
+msgstr "Please define a sale or purchase journal for the company '%s'."
+
+#. module: contract_purchase
+#: model:ir.ui.view,arch_db:contract_purchase.view_account_analytic_account_search
+msgid "Purchase"
+msgstr "Compra"
+
+#. module: contract_purchase
+#: model:ir.ui.view,arch_db:contract_purchase.view_account_analytic_account_search
+msgid "Sale"
+msgstr "Venta"
+
+#. module: contract_purchase
+#: model:ir.model.fields,help:contract_purchase.field_account_analytic_account_type
+#: model:ir.model.fields,help:contract_purchase.field_project_project_type
+msgid "Select 'Sale' for customer invoices journals.\n"
+"Select 'Purchase' for vendor bills journals.\n"
+"Select 'Cash' or 'Bank' for journals that are used in customer or vendor payments.\n"
+"Select 'General' for miscellaneous operations journals."
+msgstr "Seleccione 'Ventas' para diarios de facturas de cliente.\n"
+"Seleccione 'Compras' para diarios de facturas de proveedor.\n"
+"Seleccione 'Caja' o 'Banco' para diarios que se usan para pagos de clientes y proveedores. Seleccione 'General' para diarios que contienen operaciones varias."
+
+#. module: contract_purchase
+#: model:ir.model.fields,field_description:contract_purchase.field_account_analytic_account_type
+#: model:ir.model.fields,field_description:contract_purchase.field_project_project_type
+#: model:ir.ui.view,arch_db:contract_purchase.view_account_analytic_account_search
+msgid "Type"
+msgstr "Tipo"
+
+#. module: contract_purchase
+#: code:addons/contract_purchase/models/account_analytic_account.py:64
+#, python-format
+msgid "You must first select a Partner for Contract %s!"
+msgstr "You must first select a Partner for Contract %s!"
+
+#. module: contract_purchase
+#: model:ir.model,name:contract_purchase.model_account_analytic_contract
+msgid "account.analytic.contract"
+msgstr "account.analytic.contract"
+
