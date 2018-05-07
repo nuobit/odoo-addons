@@ -6,7 +6,7 @@
 {
     'name': "Timesheet Invoice",
     'description': "Allows invoicing timesheets",
-    'version': '10.0.0.1.1',
+    'version': '10.0.0.2.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',

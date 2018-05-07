@@ -148,8 +148,10 @@ class AccountAnalyticLine(models.Model):
         return employee.product_id.id
 
     invoice_id = fields.Many2one('account.invoice', 'Invoice', ondelete="set null", copy=False)
-    to_invoice = fields.Many2one('timesheet.invoice.factor', 'Invoiceable',
-                                 help="It allows to set the discount while making invoice, keep empty if the activities should not be invoiced.")
+    to_invoice = fields.Many2one('timesheet.invoice.factor', string='Invoiceable',
+                                 default=lambda self: self.env.ref('timesheet_invoice.timesheet_invoice_factor1'),
+                                 help="It allows to set the discount while making invoice, "
+                                      "keep empty if the activities should not be invoiced.")
 
     product_id = fields.Many2one(default=_default_product)
 
