@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- wizard create invoice -->
     <record id="view_timesheet_invoice_create" model="ir.ui.view">
@@ -82,10 +85,6 @@
         <field name="model">account.analytic.line</field>
         <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
         <field name="arch" type="xml">
-            <!--xpath expr="//tree" position="attributes">
-                <attribute name="editable"></attribute>
-            </xpath-->
-
             <field name="unit_amount" position="after">
                 <field name="to_invoice"/>
                 <field name="invoice_id" readonly="1"/>
@@ -118,23 +117,7 @@
         </field>
     </record>
 
-
-    <!--record id="view_task_form2_inherited" model="ir.ui.view">
-        <field name="name">view.task.form2.inherited.to_invoice</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='timesheet_ids']/tree" position="inside">
-                <field name="to_invoice"/>
-            </xpath>
-            <xpath expr="//field[@name='timesheet_ids']" position="attributes">
-                <attribute name="context">{'default_project_id': project_id, 'default_to_invoice': 1, 'task_id': active_id}</attribute>
-            </xpath>
-        </field>
-    </record-->
-
     <!-- contract tree -->
-
     <record id="view_account_analytic_account_journal_tree" model="ir.ui.view">
         <field name="name">Contract list simplified</field>
         <field name="model">account.analytic.account</field>
@@ -143,17 +126,16 @@
             <field name="display_name" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
-
-             <field name="code" position="attributes">
+            <field name="code" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="debit" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
-             <field name="credit" position="attributes">
+            <field name="credit" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
-             <field name="balance" position="attributes">
+            <field name="balance" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="journal_id" position="attributes">
@@ -168,18 +150,8 @@
             <field name="display_name" position="after">
                 <field name="name"/>
             </field>
-
-
-            <!--xpath expr="//field[@name='timesheet_ids']/tree" position="inside">
-                <field name="to_invoice"/>
-            </xpath>
-            <xpath expr="//field[@name='timesheet_ids']" position="attributes">
-                <attribute name="context">{'default_project_id': project_id, 'default_to_invoice': 1, 'task_id': active_id}</attribute>
-            </xpath-->
         </field>
     </record>
-
-
 
     <!-- factor -->
     <record id="view_timesheet_invoice_factor_search" model="ir.ui.view">
@@ -191,7 +163,6 @@
             </search>
         </field>
     </record>
-
 
     <record id="view_timesheet_invoice_factor_form" model="ir.ui.view">
         <field name="name">timesheet.invoice.factor.form</field>
@@ -243,7 +214,6 @@
     <menuitem action="action_timesheet_invoice_factor_form"
               id="timesheet_invoice_factor_view"
               parent="account.account_management_menu" sequence="25"/>
-    <!--groups="base.group_no_one"/-->
 
     <!-- employee -->
     <record id="view_employee_form" model="ir.ui.view">
@@ -346,5 +316,4 @@
             </group>
         </field>
     </record>
-
 </odoo>
