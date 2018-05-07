@@ -323,7 +323,7 @@
         <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='timesheet_ids']/tree" position="inside">
-                <field name="to_invoice" required="True"/>
+                <field name="to_invoice" required="True" attrs="{'readonly': [('invoice_id', '!=', False)]}"/>
                 <field name="invoice_id" readonly="True"/>
             </xpath>
         </field>
