@@ -11,6 +11,7 @@ from odoo.tools.translate import _
 
 import odoo.addons.decimal_precision as dp
 
+
 class TimesheetInvoiceFactor(models.Model):
     _name = 'timesheet.invoice.factor'
     _description = 'Invoice Rate'
@@ -26,8 +27,6 @@ class HrEmployee(models.Model):
 
     product_id = fields.Many2one('product.product', 'Product',
                                       help="If you want to reinvoice working time of employees, link this employee to a service to determinate the cost price of the job.")
-
-
 
 
 class AccountAnalyticAccount(models.Model):
@@ -54,17 +53,14 @@ class AccountAnalyticAccount(models.Model):
     ###########
     @api.onchange('invoice_on_timesheets')
     def timesheet_invoice_check_invoice_on_timesheets(self):
-        if not self.invoice_on_timesheets:
-            return {'value': {'to_invoice': False}}
-
-        try:
-            #to_invoice = self.env['ir.model.data'].get_object_reference('timesheet_invoice', 'timesheet_invoice_factor1')
-            to_invoice = self.env.ref('timesheet_invoice.timesheet_invoice_factor1')
-            return {'value': {'to_invoice': to_invoice}}
-        except ValueError:
-            pass
-
-
+        for rec in self:
+            if not rec.invoice_on_timesheets:
+                rec.to_invoice = False
+            else:
+                try:
+                    rec.to_invoice = self.env.ref('timesheet_invoice.timesheet_invoice_factor1')
+                except ValueError:
+                    pass
 
     def _timesheet_ca_invoiced_calc(self):
         pass
@@ -139,7 +135,6 @@ class AccountAnalyticAccount(models.Model):
             'res_model': 'account.analytic.line',
             'nodestroy': True,
         }
-
 
 
 class AccountAnalyticLine(models.Model):
