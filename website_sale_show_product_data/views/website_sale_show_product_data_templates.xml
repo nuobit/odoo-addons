@@ -2,122 +2,133 @@
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
-<openerp>
-    <data>
-        <template id="website_sale_show_defaultcode_product_item_id" inherit_id="website_sale.products_item"
-                  active="True" customize_show="True"
-                  name="Product internal reference">
-            <xpath expr="//h5[//a[@t-field='product.name']]" position="after">
-                <t t-set="references"
-                   t-value="[x.default_code for x in product.product_variant_ids.filtered(lambda x: x.default_code)]"/>
-                    <h5 t-if="references!=[]" class="text-muted">
-                        <strong itemprop="reference" t-esc="', '.join(references)"/>
-                    </h5>
-            </xpath>
-        </template>
+<odoo>
+    <template id="website_sale_show_defaultcode_product_item_id" inherit_id="website_sale.products_item"
+              active="True" customize_show="True"
+              name="Product internal reference">
+        <xpath expr="//h5[//a[@t-field='product.name']]" position="after">
+            <t t-set="references"
+               t-value="[x.default_code for x in product.product_variant_ids.filtered(lambda x: x.default_code)]"/>
+            <h5 t-if="references!=[]" class="text-muted">
+                <strong itemprop="reference" t-esc="', '.join(references)"/>
+            </h5>
+        </xpath>
+    </template>
 
-        <template id="website_sale_show_alternateprices_product_item_id" inherit_id="website_sale.products_item"
-                  active="True" customize_show="True"
-                  name="Product alternate prices">
-            <xpath expr="//div[@itemprop='offers']/b" position="after">
-                <t t-set="website_pricelist_item"
-                        t-value="website.env['product.pricelist.item'].search([('product_tmpl_id', '=', product.id)]).filtered(lambda x: x.pricelist_id.show_on_website)"/>
-                <span t-if="website_pricelist_item"> /
-                    <b t-esc="website_pricelist_item.fixed_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                    <small>(<span t-esc="website_pricelist_item.min_quantity"/> units)</small>
-                </span>
-            </xpath>
+    <template id="website_sale_show_alternateprices_product_item_id" inherit_id="website_sale.products_item"
+              active="True" customize_show="True"
+              name="Product alternate prices">
+        <xpath expr="//div[@itemprop='offers']/b" position="after">
+            <t t-set="website_pricelist_item"
+               t-value="website.env['product.pricelist.item'].search([('product_tmpl_id', '=', product.id)]).filtered(lambda x: x.pricelist_id.show_on_website)"/>
+            <span t-if="website_pricelist_item">/
+                <b t-esc="website_pricelist_item.fixed_price"
+                   t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                <small>(
+                    <span t-esc="website_pricelist_item.min_quantity"/>
+                    units)
+                </small>
+            </span>
+        </xpath>
 
-            <xpath expr="//div[@itemprop='offers']" position="attributes">
-                <attribute name="style">position: static;</attribute>
-            </xpath>
+        <xpath expr="//div[@itemprop='offers']" position="attributes">
+            <attribute name="style">position: static;</attribute>
+        </xpath>
 
-            <xpath expr="//section[div[@itemprop='offers']]" position="attributes">
-                <attribute name="style">padding-bottom: 0;</attribute>
-            </xpath>
+        <xpath expr="//section[div[@itemprop='offers']]" position="attributes">
+            <attribute name="style">padding-bottom: 0;</attribute>
+        </xpath>
 
-        </template>
+    </template>
 
-        <template id="website_sale_show_defaultcode_product_id" inherit_id="website_sale.product"
-                  active="True" customize_show="True"
-                  name="Product internal reference">
-            <xpath expr="//div[@id='product_details']/h1[@itemprop='name']" position="after">
-                <h4 class="text-muted" t-if="len(product.product_variant_ids) == 1">
-                    <strong t-field="product.default_code"/>
+    <template id="website_sale_show_defaultcode_product_id" inherit_id="website_sale.product"
+              active="True" customize_show="True"
+              name="Product internal reference">
+        <xpath expr="//div[@id='product_details']/h1[@itemprop='name']" position="after">
+            <h4 class="text-muted" t-if="len(product.product_variant_ids) == 1">
+                <strong t-field="product.default_code"/>
+            </h4>
+        </xpath>
+    </template>
+
+    <template id="website_sale_show_provider_product_id" inherit_id="website_sale.product"
+              active="True" customize_show="True"
+              name="Product provider">
+        <xpath expr="//div[@id='product_details']/hr[1]" position="after">
+            <span style="display:inline-block;" class="text-muted"
+                  t-if="len(product.product_variant_ids) == 1 and len(product.seller_ids) > 0">
+                Seller:
+                <span t-if="product.sudo().first_seller_image" itemprop="image"
+                      t-field="product.sudo().first_seller_image"
+                      t-options="{'widget': 'image', 'style': 'max-height: 32px'}"
+                      style="display:inline-block;vertical-align: middle"/>
+            </span>
+        </xpath>
+    </template>
+
+    <template id="website_sale_hide_helper_text" inherit_id="website_sale.product"
+              active="True" customize_show="True"
+              name="Hide helper text">
+        <xpath expr="//div[@id='product_details']/hr[last()]" position="replace"/>
+        <xpath expr="//div[@id='product_details']/p[last()]" position="replace"/>
+    </template>
+
+    <template id="website_sale_show_alternateprices_product" inherit_id="website_sale.product"
+              active="False" customize_show="True"
+              name="Product alternate prices">
+
+        <xpath expr="//t[@t-call='website_sale.product_price']" position="before">
+            <div id="alternate_price" class="product_price">
+                <h4 class="oe_price_h4">
+                    <b>
+                        <span t-esc="product.website_price"
+                              t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        <span itemprop="price" style="display:none;" t-esc="product.website_price"/>
+                        <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+
+                        <t t-set="website_pricelist_item"
+                           t-value="website.env['product.pricelist.item'].search([('product_tmpl_id', '=', product.id)]).filtered(lambda x: x.pricelist_id.show_on_website)"/>
+                        <span t-if="website_pricelist_item">/
+                            <span t-esc="website_pricelist_item.fixed_price"
+                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                            <small>(
+                                <span t-esc="website_pricelist_item.min_quantity"/>
+                                units)
+                            </small>
+                        </span>
+                    </b>
                 </h4>
-            </xpath>
-        </template>
+            </div>
+        </xpath>
+    </template>
 
-         <template id="website_sale_show_provider_product_id" inherit_id="website_sale.product"
-                  active="True" customize_show="True"
-                  name="Product provider">
-            <xpath expr="//div[@id='product_details']/hr[1]" position="after">
-                <span style="display:inline-block;" class="text-muted" t-if="len(product.product_variant_ids) == 1 and len(product.seller_ids) > 0">
-                    Seller: <span t-if="product.sudo().first_seller_image" itemprop="image" t-field="product.sudo().first_seller_image"
-                          t-options="{'widget': 'image', 'style': 'max-height: 32px'}"
-                          style="display:inline-block;vertical-align: middle" />
-                </span>
-            </xpath>
-        </template>
+    <template id="website_sale_private_alternateprices_product"
+              inherit_id="website_sale_show_product_data.website_sale_show_alternateprices_product"
+              active="False" customize_show="True"
+              name="Restrict alternate prices">
 
-        <template id="website_sale_hide_helper_text" inherit_id="website_sale.product"
-                  active="True" customize_show="True"
-                  name="Hide helper text">
-            <xpath expr="//div[@id='product_details']/hr[last()]" position="replace"/>
-            <xpath expr="//div[@id='product_details']/p[last()]" position="replace"/>
-        </template>
+        <xpath expr="//div[@id='alternate_price']" position="attributes">
+            <attribute name="t-if">request.uid != %(base.public_user)d</attribute>
+        </xpath>
+    </template>
 
-        <template id="website_sale_show_alternateprices_product" inherit_id="website_sale.product"
-                  active="False" customize_show="True"
-                  name="Product alternate prices">
+    <template id="website_sale_show_hideprice_product_price" inherit_id="website_sale.product_price"
+              active="False" customize_show="True"
+              name="Hide price">
+        <xpath expr="//div[@itemprop='offers']" position="attributes">
+            <attribute name="class">hidden</attribute>
+        </xpath>
+    </template>
 
-            <xpath expr="//t[@t-call='website_sale.product_price']" position="before">
-                <div id="alternate_price" class="product_price">
-                    <h4 class="oe_price_h4">
-                        <b>
-                            <span t-esc="product.website_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                            <span itemprop="price" style="display:none;" t-esc="product.website_price"/>
-                            <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+    <template id="website_sale_hide_helper_text2" inherit_id="website_sale.cart"
+              active="True" customize_show="True"
+              name="Hide helper text">
+        <xpath expr="//div[@id='right_column']" position="replace"/>
+    </template>
 
-                            <t t-set="website_pricelist_item"
-                                    t-value="website.env['product.pricelist.item'].search([('product_tmpl_id', '=', product.id)]).filtered(lambda x: x.pricelist_id.show_on_website)"/>
-                            <span t-if="website_pricelist_item"> /
-                                <span t-esc="website_pricelist_item.fixed_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                                <small>(<span t-esc="website_pricelist_item.min_quantity"/> units)</small>
-                            </span>
-                        </b>
-                    </h4>
-                </div>
-            </xpath>
-        </template>
-
-        <template id="website_sale_private_alternateprices_product" inherit_id="website_sale_show_product_data.website_sale_show_alternateprices_product"
-                  active="False" customize_show="True"
-                  name="Restrict alternate prices">
-
-            <xpath expr="//div[@id='alternate_price']" position="attributes">
-                <attribute name="t-if">request.uid !=  %(base.public_user)d</attribute>
-            </xpath>
-        </template>
-
-        <template id="website_sale_show_hideprice_product_price" inherit_id="website_sale.product_price"
-                  active="False" customize_show="True"
-                  name="Hide price">
-            <xpath expr="//div[@itemprop='offers']" position="attributes">
-                <attribute name="class">hidden</attribute>
-            </xpath>
-        </template>
-
-        <template id="website_sale_hide_helper_text2" inherit_id="website_sale.cart"
-                  active="True" customize_show="True"
-                  name="Hide helper text">
-            <xpath expr="//div[@id='right_column']" position="replace"/>
-        </template>
-
-        <template id="website_sale_hide_print_button" inherit_id="website_sale.confirmation"
-                  active="True" customize_show="True"
-                  name="Hide print button">
-            <xpath expr="//div[@class='thanks_msg']/h2/a" position="replace"/>
-        </template>
-    </data>
-</openerp>
+    <template id="website_sale_hide_print_button" inherit_id="website_sale.confirmation"
+              active="True" customize_show="True"
+              name="Hide print button">
+        <xpath expr="//div[@class='thanks_msg']/h2/a" position="replace"/>
+    </template>
+</odoo>
