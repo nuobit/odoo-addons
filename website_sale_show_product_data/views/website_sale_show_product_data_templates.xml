@@ -51,6 +51,16 @@
         </xpath>
     </template>
 
+    <template id="website_sale_show_barcode_product_id" inherit_id="website_sale.product"
+              active="True" customize_show="True"
+              name="Product barcode">
+        <xpath expr="//div[@id='product_details']/span[@itemprop='url']" position="before">
+            <small t-if="len(product.product_variant_ids) == 1">
+                <strong><em t-field="product.barcode"/></strong>
+            </small>
+        </xpath>
+    </template>
+
     <template id="website_sale_show_provider_product_id" inherit_id="website_sale.product"
               active="True" customize_show="True"
               name="Product provider">
