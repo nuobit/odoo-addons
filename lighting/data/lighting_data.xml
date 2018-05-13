@@ -750,24 +750,21 @@
             <field name="name">-</field>
         </record>
 
-        <!-- Auxiliary equipment models -->
-        <record id="product_auxiliaryequipmentmodel_tci" model="lighting.product.auxiliaryequipmentmodel">
+        <!-- Auxiliary equipment brands -->
+        <record id="product_auxiliaryequipmentbrand_tci" model="lighting.product.auxiliaryequipmentbrand">
             <field name="name">TCI</field>
         </record>
-        <record id="product_auxiliaryequipmentmodel_meanwell" model="lighting.product.auxiliaryequipmentmodel">
+        <record id="product_auxiliaryequipmentbrand_meanwell" model="lighting.product.auxiliaryequipmentbrand">
             <field name="name">Meanwell</field>
         </record>
-        <record id="product_auxiliaryequipmentmodel_tecnotrafo" model="lighting.product.auxiliaryequipmentmodel">
+        <record id="product_auxiliaryequipmentbrand_tecnotrafo" model="lighting.product.auxiliaryequipmentbrand">
             <field name="name">Tecnotrafo</field>
         </record>
-        <record id="product_auxiliaryequipmentmodel_tridonic" model="lighting.product.auxiliaryequipmentmodel">
+        <record id="product_auxiliaryequipmentbrand_tridonic" model="lighting.product.auxiliaryequipmentbrand">
             <field name="name">Tridonic</field>
         </record>
-        <record id="product_auxiliaryequipmentmodel_elt" model="lighting.product.auxiliaryequipmentmodel">
+        <record id="product_auxiliaryequipmentbrand_elt" model="lighting.product.auxiliaryequipmentbrand">
             <field name="name">ELT</field>
-        </record>
-        <record id="product_auxiliaryequipmentmodel_na" model="lighting.product.auxiliaryequipmentmodel">
-            <field name="name">-</field>
         </record>
 
         <!-- Voltages -->

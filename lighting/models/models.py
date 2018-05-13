@@ -149,8 +149,8 @@ class LightingProduct(models.Model):
     frequency_id = fields.Many2one(comodel_name='lighting.product.frequency', ondelete='restrict', string='Frequency')
     dimmable_ids = fields.Many2many(comodel_name='lighting.product.dimmable', relation='lighting_product_dimmable_rel', string='Dimmables')
     auxiliary_equipment_ids = fields.Many2many(comodel_name='lighting.product.auxiliaryequipment', relation='lighting_product_auxiliary_equipment_rel', string='Auxiliary equipment')
-    auxiliary_equipment_model_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentmodel', ondelete='restrict',
-                                          string='Auxiliary equipment model')
+    auxiliary_equipment_brand_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentbrand', ondelete='restrict',
+                                          string='Auxiliary equipment brand')
     auxiliary_equipment_model_alt = fields.Char(string='Auxiliary equipment model alternative')
     input_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Input voltage')
     input_current = fields.Float(string='Input current (mA)')
@@ -544,13 +544,13 @@ class LightingProductAuxiliaryEquipment(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment must be unique!'),
                         ]
 
-class LightingProductAuxiliaryEquipmentModel(models.Model):
-    _name = 'lighting.product.auxiliaryequipmentmodel'
+class LightingProductAuxiliaryEquipmentBrand(models.Model):
+    _name = 'lighting.product.auxiliaryequipmentbrand'
     _order = 'name'
 
-    name = fields.Char(string='Auxiliary equipment model', required=True, translate=True)
+    name = fields.Char(string='Auxiliary equipment brand', required=True, translate=False)
 
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment model must be unique!'),
+    _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment brand must be unique!'),
                         ]
 
 class LightingProductVoltage(models.Model):
