@@ -149,8 +149,6 @@ class LightingProduct(models.Model):
     frequency_id = fields.Many2one(comodel_name='lighting.product.frequency', ondelete='restrict', string='Frequency')
     dimmable_ids = fields.Many2many(comodel_name='lighting.product.dimmable', relation='lighting_product_dimmable_rel', string='Dimmables')
     auxiliary_equipment_ids = fields.Many2many(comodel_name='lighting.product.auxiliaryequipment', relation='lighting_product_auxiliary_equipment_rel', string='Auxiliary equipment')
-    auxiliary_equipment_brand_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentbrand', ondelete='restrict',
-                                          string='Auxiliary equipment brand')
     auxiliary_equipment_model_ids = fields.One2many(comodel_name='lighting.product.auxiliaryequipmentmodel',
                                         inverse_name='product_id', string='Auxiliary equipment models', copy=True)
     auxiliary_equipment_model_alt = fields.Char(string='Auxiliary equipment model alternative')
