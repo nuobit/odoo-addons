@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="lighting_product_addattachment_view" model="ir.ui.view">
         <field name="name">lighting.product.addattachment.form</field>
