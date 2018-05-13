@@ -93,7 +93,7 @@
                                 </div>
                             </group>
                             <group>
-                                <field name="auxiliary_equipment_id"/>
+                                <field name="auxiliary_equipment_ids" widget="many2many_tags"/>
                                 <field name="auxiliary_equipment_model_id"/>
                                 <field name="auxiliary_equipment_model_alt" widget="text"/>
                             </group>
