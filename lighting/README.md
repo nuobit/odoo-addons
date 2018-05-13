@@ -1,7 +1,0 @@
-Lighting vertical
-====================
-
-* Lighting vertical
-
-
-

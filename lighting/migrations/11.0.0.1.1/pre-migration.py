@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-# Copyright 2018 NuoBiT Solutions, S.L. - Eric Antones
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+# Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 def migrate(cr, version):
     if not version:
