@@ -94,7 +94,12 @@
                             </group>
                             <group>
                                 <field name="auxiliary_equipment_ids" widget="many2many_tags"/>
-                                <field name="auxiliary_equipment_brand_id"/>
+                                <field name="auxiliary_equipment_model_ids">
+                                    <tree editable="bottom">
+                                        <field name="reference"/>
+                                        <field name="brand_id"/>
+                                    </tree>
+                                </field>
                                 <field name="auxiliary_equipment_model_alt" widget="text"/>
                             </group>
                             <group col="6">

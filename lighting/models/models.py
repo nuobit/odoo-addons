@@ -151,6 +151,8 @@ class LightingProduct(models.Model):
     auxiliary_equipment_ids = fields.Many2many(comodel_name='lighting.product.auxiliaryequipment', relation='lighting_product_auxiliary_equipment_rel', string='Auxiliary equipment')
     auxiliary_equipment_brand_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentbrand', ondelete='restrict',
                                           string='Auxiliary equipment brand')
+    auxiliary_equipment_model_ids = fields.One2many(comodel_name='lighting.product.auxiliaryequipmentmodel',
+                                        inverse_name='product_id', string='Auxiliary equipment models', copy=True)
     auxiliary_equipment_model_alt = fields.Char(string='Auxiliary equipment model alternative')
     input_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Input voltage')
     input_current = fields.Float(string='Input current (mA)')
@@ -542,6 +544,18 @@ class LightingProductAuxiliaryEquipment(models.Model):
     name = fields.Char(string='Auxiliary equipment', required=True, translate=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment must be unique!'),
+                        ]
+
+class LightingProductAuxiliaryEquipmentModel(models.Model):
+    _name = 'lighting.product.auxiliaryequipmentmodel'
+    _rec_name = 'reference'
+
+    reference = fields.Char(string='Reference')
+    brand_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentbrand', ondelete='restrict', string='Brand')
+
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
+
+    _sql_constraints = [('auxiliaryequipmentmodel_uniq', 'unique (product_id, reference, brand_id)', 'The equioment brand must be unique!'),
                         ]
 
 class LightingProductAuxiliaryEquipmentBrand(models.Model):
