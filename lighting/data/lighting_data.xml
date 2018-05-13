@@ -732,12 +732,6 @@
         <record id="product_dimmable_yes" model="lighting.product.dimmable">
             <field name="name">Yes</field>
         </record>
-        <record id="product_dimmable_no" model="lighting.product.dimmable">
-            <field name="name">No</field>
-        </record>
-        <record id="product_dimmable_na" model="lighting.product.dimmable">
-            <field name="name">-</field>
-        </record>
 
         <!-- Auxiliary equipments -->
         <record id="product_auxiliaryequipment_electromagnetic" model="lighting.product.auxiliaryequipment">
