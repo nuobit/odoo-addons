@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="product" inherit_id="website_sale.product"
+              active="True" customize_show="True"
+              name="Product brand">
+        <xpath expr="//div[@id='product_details']/hr[1]" position="after">
+            <span style="display:inline-block;" class="text-muted"
+                  t-if="product.sudo().product_brand_id.logo">
+                Manufacturer:
+                <span itemprop="image"
+                      t-field="product.sudo().product_brand_id.logo"
+                      t-options="{'widget': 'image', 'style': 'max-height: 32px'}"
+                      style="display:inline-block;vertical-align: middle"/>
+            </span>
+        </xpath>
+    </template>
+</odoo>
