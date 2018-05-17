@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
     <data>
         <template id="website_sale_categories_top_products" inherit_id="website_sale.products" priority="5" active="False"
                   customize_show="True" name="Product categories on top">
@@ -19,6 +22,6 @@
             </xpath>
         </template>
     </data>
-</openerp>
+</odoo>
 
 
