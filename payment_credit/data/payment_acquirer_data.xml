@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <data noupdate="1">
+
+        <record id="payment.payment_acquirer_credit" model="payment.acquirer">
+            <field name="name">Credit</field>
+            <field name="image" type="base64" file="payment_credit/static/src/img/credit_icon.png"/>
+            <field name="provider">credit</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="view_template_id" ref="credit_acquirer_button"/>
+            <field name="auto_confirm">none</field>
+            <field name="environment">test</field>
+            <field name="website_published" eval="True"/>
+            <field name="pre_msg"><![CDATA[
+<p>Credit information will be provided after choosing the payment method.</p>]]>
+            </field>
+        </record>
+
+    </data>
+</odoo>
