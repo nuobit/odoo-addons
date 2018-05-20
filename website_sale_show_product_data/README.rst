@@ -13,6 +13,7 @@ This module adds the following information on website products.
 * Hide helper text
 * Hide print button
 * Show barcode
+* Show alternate prices and offers
 
 Bug Tracker
 ===========
@@ -29,4 +30,3 @@ Contributors
 ------------
 
 * Eric Antones <eantones@nuobit.com>
-

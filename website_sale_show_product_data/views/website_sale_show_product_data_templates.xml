@@ -3,8 +3,9 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+    <!-- show default_code -->
     <template id="website_sale_show_defaultcode_product_item_id" inherit_id="website_sale.products_item"
-              active="True" customize_show="True"
+              active="False" customize_show="True"
               name="Product internal reference">
         <xpath expr="//h5[//a[@t-field='product.name']]" position="after">
             <t t-set="references"
@@ -15,34 +16,8 @@
         </xpath>
     </template>
 
-    <template id="website_sale_show_alternateprices_product_item_id" inherit_id="website_sale.products_item"
-              active="True" customize_show="True"
-              name="Product alternate prices">
-        <xpath expr="//div[@itemprop='offers']/b" position="after">
-            <t t-set="website_pricelist_items"
-               t-value="website.env['product.pricelist.item'].search([('product_tmpl_id', '=', product.id)]).filtered(lambda x: x.pricelist_id.show_on_website).sorted(lambda x: x.min_quantity)"/>
-            <span t-foreach="website_pricelist_items" t-as="li">/
-                <b t-esc="li.fixed_price"
-                   t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                <small>(
-                    <span t-esc="li.min_quantity"/>
-                    units)
-                </small>
-            </span>
-        </xpath>
-
-        <xpath expr="//div[@itemprop='offers']" position="attributes">
-            <attribute name="style">position: static;</attribute>
-        </xpath>
-
-        <xpath expr="//section[div[@itemprop='offers']]" position="attributes">
-            <attribute name="style">padding-bottom: 0;</attribute>
-        </xpath>
-
-    </template>
-
     <template id="website_sale_show_defaultcode_product_id" inherit_id="website_sale.product"
-              active="True" customize_show="True"
+              active="False" customize_show="True"
               name="Product internal reference">
         <xpath expr="//div[@id='product_details']/h1[@itemprop='name']" position="after">
             <h4 class="text-muted" t-if="len(product.product_variant_ids) == 1">
@@ -51,8 +26,10 @@
         </xpath>
     </template>
 
+
+    <!-- show barcode -->
     <template id="website_sale_show_barcode_product_id" inherit_id="website_sale.product"
-              active="True" customize_show="True"
+              active="False" customize_show="True"
               name="Product barcode">
         <xpath expr="//div[@id='product_details']/span[@itemprop='url']" position="before">
             <small t-if="len(product.product_variant_ids) == 1">
@@ -63,8 +40,10 @@
         </xpath>
     </template>
 
+
+    <!-- show provider -->
     <template id="website_sale_show_provider_product_id" inherit_id="website_sale.product"
-              active="True" customize_show="True"
+              active="False" customize_show="True"
               name="Product provider">
         <xpath expr="//div[@id='product_details']/hr[1]" position="after">
             <span style="display:inline-block;" class="text-muted"
@@ -78,11 +57,79 @@
         </xpath>
     </template>
 
-    <template id="website_sale_hide_helper_text" inherit_id="website_sale.product"
-              active="True" customize_show="True"
-              name="Hide helper text">
-        <xpath expr="//div[@id='product_details']/hr[last()]" position="replace"/>
-        <xpath expr="//div[@id='product_details']/p[last()]" position="replace"/>
+
+    <!-- show alternate prices -->
+    <template id="website_sale_show_alternateprices_products" inherit_id="website_sale.products"
+              active="False" customize_show="True"
+              name="Product alternate prices base">
+        <xpath expr="//div[@id='products_grid']" position="before">
+            <t t-set="website_pricelist"
+               t-value="website.env['product.pricelist'].search([('show_on_website', '=', True)])"/>
+
+            <t t-set="website_offer_pricelist"
+               t-value="website_pricelist.item_ids.filtered(lambda x: x.applied_on == '3_global' and x.compute_price == 'formula' and x.base == 'pricelist').base_pricelist_id"/>
+        </xpath>
+    </template>
+
+    <template id="website_sale_show_alternateprices_product_item_id" inherit_id="website_sale.products_item"
+              active="False" customize_show="True"
+              name="Product alternate prices (base required)">
+        <xpath expr="//div[@itemprop='offers']/b" position="replace">
+            <t t-if="website_pricelist">
+                <t t-set="website_pricelist_items"
+                   t-value="website_pricelist.item_ids.filtered(lambda x: x.product_tmpl_id.id == product.id).sorted(lambda x: x.min_quantity)"/>
+
+                <t t-if="website_offer_pricelist" t-set="website_pricelist_offer_items"
+                   t-value="website_offer_pricelist.item_ids.filtered(lambda x: x.product_tmpl_id.id == product.id).sorted(lambda x: x.min_quantity)"/>
+
+                <!-- Website price -->
+                <t t-set="website_price_tmpl">
+                    <b>
+                        <span t-esc="product.list_price"
+                              t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        <span itemprop="price" style="display:none;" t-esc="product.list_price"/>
+                        <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+                    </b>
+                    <span t-foreach="website_pricelist_items" t-as="li">/
+                        <b t-esc="li.fixed_price"
+                           t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        <small>(
+                            <span t-esc="li.min_quantity"/>
+                            units)
+                        </small>
+                    </span>
+                </t>
+
+                <div>
+                    <del t-if="website_pricelist_offer_items" class="text-danger">
+                        <t t-raw="website_price_tmpl"/>
+                    </del>
+                    <t t-if="not website_pricelist_offer_items" t-raw="website_price_tmpl"/>
+                </div>
+
+                <!-- Website offers -->
+                <div>
+                    <span t-foreach="website_pricelist_offer_items" t-as="li">
+                        <span t-if="not li_first">/</span>
+                        <b t-esc="li.fixed_price"
+                           t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        <small t-if="li.min_quantity > 1">(
+                            <span t-esc="li.min_quantity"/>
+                            units)
+                        </small>
+                    </span>
+                </div>
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@itemprop='offers']" position="attributes">
+            <attribute name="style">position: static;</attribute>
+        </xpath>
+
+        <xpath expr="//section[div[@itemprop='offers']]" position="attributes">
+            <attribute name="style">padding-bottom: 0;</attribute>
+        </xpath>
+
     </template>
 
     <template id="website_sale_show_alternateprices_product" inherit_id="website_sale.product"
@@ -90,26 +137,65 @@
               name="Product alternate prices">
 
         <xpath expr="//t[@t-call='website_sale.product_price']" position="before">
-            <div id="alternate_price" class="product_price">
-                <h4 class="oe_price_h4">
-                    <b>
-                        <span t-esc="product.website_price"
-                              t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                        <span itemprop="price" style="display:none;" t-esc="product.website_price"/>
-                        <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+            <t t-set="website_pricelist"
+               t-value="website.env['product.pricelist'].search([('show_on_website', '=', True)])"/>
 
-                        <t t-set="website_pricelist_items"
-                           t-value="website.env['product.pricelist.item'].search([('product_tmpl_id', '=', product.id)]).filtered(lambda x: x.pricelist_id.show_on_website).sorted(lambda x: x.min_quantity)"/>
-                        <span t-foreach="website_pricelist_items" t-as="li">/
-                            <span t-esc="li.fixed_price"
-                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                            <small>(
+            <t t-set="website_offer_pricelist"
+               t-value="website_pricelist.item_ids.filtered(lambda x: x.applied_on == '3_global' and x.compute_price == 'formula' and x.base == 'pricelist').base_pricelist_id"/>
+
+
+            <t t-set="website_pricelist_items"
+               t-value="website_pricelist.item_ids.filtered(lambda x: x.product_tmpl_id.id == product.id).sorted(lambda x: x.min_quantity)"/>
+
+            <t t-if="website_offer_pricelist" t-set="website_pricelist_offer_items"
+               t-value="website_offer_pricelist.item_ids.filtered(lambda x: x.product_tmpl_id.id == product.id).sorted(lambda x: x.min_quantity)"/>
+
+
+            <t t-set="website_price_tmpl">
+                <b>
+                    <span t-esc="product.list_price"
+                          t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                    <span itemprop="price" style="display:none;" t-esc="product.website_price"/>
+                    <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+                </b>
+                <span t-foreach="website_pricelist_items" t-as="li">/
+                    <b t-esc="li.fixed_price"
+                       t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                    <small>(
+                        <span t-esc="li.min_quantity"/>
+                        units)
+                    </small>
+                </span>
+            </t>
+
+            <div id="alternate_price" class="product_price">
+                <!-- Website price -->
+                <div>
+                    <span t-if="website_pricelist_offer_items" class="text-danger">
+                        <del>
+                            <t t-raw="website_price_tmpl"/>
+                        </del>
+                    </span>
+
+                    <h4 class="oe_price_h4" t-if="not website_pricelist_offer_items">
+                        <t t-raw="website_price_tmpl"/>
+                    </h4>
+                </div>
+
+                <!-- Website offers -->
+                <div>
+                    <h4 class="oe_price_h4">
+                        <t t-foreach="website_pricelist_offer_items" t-as="li">
+                            <span t-if="not li_first">/</span>
+                            <b t-esc="li.fixed_price"
+                               t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                            <small t-if="li.min_quantity > 1">(
                                 <span t-esc="li.min_quantity"/>
                                 units)
                             </small>
-                        </span>
-                    </b>
-                </h4>
+                        </t>
+                    </h4>
+                </div>
             </div>
         </xpath>
     </template>
@@ -124,6 +210,7 @@
         </xpath>
     </template>
 
+
     <template id="website_sale_show_hideprice_product_price" inherit_id="website_sale.product_price"
               active="False" customize_show="True"
               name="Hide price">
@@ -132,11 +219,20 @@
         </xpath>
     </template>
 
+
     <template id="website_sale_hide_helper_text2" inherit_id="website_sale.cart"
               active="True" customize_show="True"
               name="Hide helper text">
         <xpath expr="//div[@id='right_column']" position="replace"/>
     </template>
+
+    <template id="website_sale_hide_helper_text" inherit_id="website_sale.product"
+              active="True" customize_show="True"
+              name="Hide helper text">
+        <xpath expr="//div[@id='product_details']/hr[last()]" position="replace"/>
+        <xpath expr="//div[@id='product_details']/p[last()]" position="replace"/>
+    </template>
+
 
     <template id="website_sale_hide_print_button" inherit_id="website_sale.confirmation"
               active="True" customize_show="True"

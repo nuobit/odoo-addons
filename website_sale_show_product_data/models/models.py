@@ -7,7 +7,7 @@ from openerp import api, models, fields, SUPERUSER_ID
 from openerp.api import Environment
 
 
-class ProductPrcelist(models.Model):
+class ProductPricelist(models.Model):
     _inherit = 'product.pricelist'
 
     show_on_website = fields.Boolean(string="Show on website", default=False)
