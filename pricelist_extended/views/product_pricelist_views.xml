@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_pricelist_view" model="ir.ui.view">
+        <field name="name">product.pricelist.extended.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <field name="sequence" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </field>
+            <field name="sequence" position="before">
+                <field name="manual_order"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_pricelist_item_form_view" model="ir.ui.view">
+        <field name="name">product.pricelist.item.extended.form</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[1]" position="after">
+                <group>
+                    <group>
+                        <field name="manual_order"/>
+                        <field name="sequence" attrs="{'invisible': [('manual_order', '=', False)]}"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
