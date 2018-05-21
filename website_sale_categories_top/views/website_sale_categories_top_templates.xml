@@ -3,25 +3,57 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <data>
-        <template id="website_sale_categories_top_products" inherit_id="website_sale.products" priority="5" active="False"
-                  customize_show="True" name="Product categories on top">
-            <xpath expr="//div[@class='container oe_website_sale']//div[@class='products_pager']" position="before">
-                <div class="row">
-                    <div class="col-md-12">
+    <template id="categories_level" name="Categories level">
+        <t t-foreach="menu_level" t-as="c_raw">
+            <t t-set="c_pair" t-value="c_raw.popitem()"/>
+            <t t-set="c" t-value="c_pair[0]"/>
+            <t t-set="attrib" t-value="c_pair[1]"/>
+            <li t-att-class="'active' if attrib.get('active', False) else None">
+                <a t-att-href="keep('/shop/category/' + slug(c), category=0)" t-field="c.name"/>
+            </li>
+        </t>
+    </template>
+
+    <template id="products" inherit_id="website_sale.products" priority="5" active="False"
+              customize_show="True" name="Product categories on top">
+        <xpath expr="//div[@class='container oe_website_sale']/div[@class='products_pager']" position="before">
+            <div class="row">
+                <div class="col-md-12">
+                    <t t-if="not category">
                         <ul class="nav nav-tabs mt16">
                             <li t-att-class=" '' if category else 'active' ">
                                 <a t-att-href="keep('/shop',category=0)" class="o_not_editable">All Products</a>
                             </li>
                             <t t-foreach="categories" t-as="c">
-                                <t t-call="website_sale.categories_recursive"/>
+                                <li>
+                                    <a t-att-href="keep('/shop/category/' + slug(c), category=0)" t-field="c.name"/>
+                                </li>
                             </t>
                         </ul>
-                    </div>
+                    </t>
+                    <t t-if="category">
+                        <t t-set="menu" t-value="category.get_menu_structure()"/>
+
+                        <ul class="nav nav-tabs mt16">
+                            <li>
+                                <a t-att-href="keep('/shop',category=0)" class="o_not_editable">All Products</a>
+                            </li>
+                            <t t-call="website_sale_categories_top.categories_level">
+                                <t t-set="menu_level" t-value="menu[0]"/>
+                            </t>
+                        </ul>
+                        <t t-foreach="menu[1:]" t-as="m">
+                            <ul t-if="m" class="nav nav-tabs mt8">
+                                <t t-call="website_sale_categories_top.categories_level">
+                                    <t t-set="menu_level" t-value="m"/>
+                                </t>
+                            </ul>
+                        </t>
+                    </t>
                 </div>
-            </xpath>
-        </template>
-    </data>
+            </div>
+        </xpath>
+    </template>
 </odoo>
 
 
