@@ -32,7 +32,7 @@ class LightingProduct(models.Model):
     reference = fields.Char(string='Reference', required=True, index=True)
 
     description = fields.Char(compute='_compute_description', string='Description', readonly=True,
-                                   help="Description dynamically generated from product data", store=True)
+                                   help="Description dynamically generated from product data")
 
     @api.depends('application_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip', 'ip', 'ip2',
                  'dimmable_ids.name',
@@ -64,42 +64,52 @@ class LightingProduct(models.Model):
             data.append(','.join(rec.dimmable_ids.mapped('name')))
 
             data_sources = []
-            sources_integrated = rec.source_ids.mapped("line_ids").filtered(lambda x: x.type_id.is_integrated)
-            for source in sources_integrated:
-                data_source = []
-                data_source.append(source.type_id.description_text or source.type_id.code)
-                data_source.append(source.wattage_display or '')
+            for source in rec.source_ids:
+                type_d = {}
+                for line in source.line_ids:
+                    is_integrated = line.type_id.is_integrated
+                    if is_integrated not in type_d:
+                        type_d[is_integrated] = []
+                    type_d[is_integrated].append(line)
 
-                data_lm = []
-                for lmx in ('luminous_flux1', 'luminous_flux2'):
-                    lm = getattr(source, lmx)
-                    if lm: data_lm.append('%i' % lm)
-                if data_lm != []:
-                    data_source.append('%sLm' % '-'.join(data_lm))
-
-                if source.color_temperature:
-                    data_source.append('%sK' % source.color_temperature)
-
-                data_sources.append(' '.join(data_source))
-
-            if data_sources == []:
-                for source in rec.source_ids:
+                for is_integrated, lines in type_d.items():
                     data_source = []
-                    data_source.append(source.lampholder_id.code or '')
+                    if is_integrated:
+                        data_lines = []
+                        for line in lines:
+                            data_line = []
+                            data_line.append(line.type_id.description_text or line.type_id.code)
+                            data_line.append(line.wattage_display or '')
 
-                    wattage_d = {}
-                    for line in source.line_ids:
-                        if line.wattage > 0 and line.wattage_magnitude:
-                            if line.wattage_magnitude not in wattage_d:
-                                wattage_d[line.wattage_magnitude] = []
-                            wattage_d[line.wattage_magnitude].append((line.wattage, line.wattage_display))
+                            data_lm = []
+                            for lmx in ('luminous_flux1', 'luminous_flux2'):
+                                lm = getattr(line, lmx)
+                                if lm: data_lm.append('%i' % lm)
+                            if data_lm != []:
+                                data_line.append('%sLm' % '-'.join(data_lm))
 
-                    data_source.append(','.join ([sorted(w, key=lambda x: x[0], reverse=True)[0][1] for w in wattage_d.values()]))
+                            if line.color_temperature:
+                                data_line.append('%sK' % line.color_temperature)
+
+                            data_lines.append(' '.join(data_line))
+                        data_source.append(','.join(data_lines))
+                    else:
+                        data_source.append(source.lampholder_id.code or '')
+
+                        wattage_d = {}
+                        for line in lines:
+                            if line.wattage > 0 and line.wattage_magnitude:
+                                if line.wattage_magnitude not in wattage_d:
+                                    wattage_d[line.wattage_magnitude] = []
+                                wattage_d[line.wattage_magnitude].append((line.wattage, line.wattage_display))
+
+                        data_source.append(
+                            ','.join([sorted(w, key=lambda x: x[0], reverse=True)[0][1] for w in wattage_d.values()]))
 
                     data_sources.append(' '.join(data_source))
 
             if data_sources != []:
-                data.append(','.join(data_sources))
+                data.append('+'.join(data_sources))
 
             data.append(rec.finish_id.name or '')
 
@@ -402,6 +412,7 @@ class LightingProduct(models.Model):
                        )
 
         return super(LightingProduct, self).copy(default)
+
 
 ######### common data
 class LightingCatalog(models.Model):
