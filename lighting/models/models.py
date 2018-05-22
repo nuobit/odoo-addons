@@ -32,7 +32,7 @@ class LightingProduct(models.Model):
     reference = fields.Char(string='Reference', required=True, index=True)
 
     description = fields.Char(compute='_compute_description', string='Description', readonly=True,
-                                   help="Description dynamically generated from product data")
+                                   help="Description dynamically generated from product data", store=True, translate=True)
 
     @api.depends('application_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip', 'ip', 'ip2',
                  'dimmable_ids.name',
