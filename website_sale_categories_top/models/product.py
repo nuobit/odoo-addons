@@ -15,7 +15,7 @@ class ProductPublicCategory(models.Model):
         else:
             childs = self.env['product.public.category'].search([('parent_id', '=', False)])
 
-        return childs.sorted(lambda x: x.sequence)
+        return childs.sorted(lambda x: (x.sequence, x.name))
 
     def _get_ancestors(self):
         parent_active_ancestors = []
