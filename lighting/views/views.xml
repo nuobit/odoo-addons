@@ -139,6 +139,7 @@
                                     <tree editable="bottom">
                                         <field name="reference"/>
                                         <field name="brand_id"/>
+                                        <field name="date"/>
                                     </tree>
                                 </field>
                             </group>

@@ -651,13 +651,16 @@ class LightingProductSensor(models.Model):
 class LightingProductLedChip(models.Model):
     _name = 'lighting.product.ledchip'
     _rec_name = 'reference'
+    _order = 'product_id,date desc'
 
     reference = fields.Char(string='Reference')
-    brand_id = fields.Many2one(comodel_name='lighting.product.ledbrand', ondelete='restrict', string='Brand')
+    brand_id = fields.Many2one(comodel_name='lighting.product.ledbrand',
+                               ondelete='restrict', string='Brand', required=True)
+    date = fields.Date(string='Date')
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
-    _sql_constraints = [('ledchip_uniq', 'unique (product_id, reference, brand_id)', 'The LED brand must be unique!'),
+    _sql_constraints = [('ledchip_uniq', 'unique (product_id, date)', 'The LED chip date must be unique!'),
                         ]
 
 
