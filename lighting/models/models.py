@@ -79,7 +79,10 @@ class LightingProduct(models.Model):
                         for line in lines:
                             data_line = []
                             data_line.append(line.type_id.description_text or line.type_id.code)
-                            data_line.append(line.wattage_display or '')
+
+                            wattage_total_display = line.prepare_wattage_str(mult=line.source_id.num or 1,
+                                                                             is_max_wattage=False)
+                            data_line.append(wattage_total_display or '')
 
                             data_lm = []
                             for lmx in ('luminous_flux1', 'luminous_flux2'):
@@ -101,10 +104,15 @@ class LightingProduct(models.Model):
                             if line.wattage > 0 and line.wattage_magnitude:
                                 if line.wattage_magnitude not in wattage_d:
                                     wattage_d[line.wattage_magnitude] = []
-                                wattage_d[line.wattage_magnitude].append((line.wattage, line.wattage_display))
+                                wattage_d[line.wattage_magnitude].append(line)
 
-                        data_source.append(
-                            ','.join([sorted(w, key=lambda x: x[0], reverse=True)[0][1] for w in wattage_d.values()]))
+                        data_lines = []
+                        for lines in wattage_d.values():
+                            line_max = sorted(lines, key=lambda x: x.wattage, reverse=True)[0]
+                            wattage_total_display = line_max.prepare_wattage_str(mult=line_max.source_id.num or 1,
+                                                                                 is_max_wattage=False)
+                            data_lines.append(wattage_total_display or '')
+                        data_source.append(','.join(data_lines))
 
                     data_sources.append(' '.join(data_source))
 
@@ -183,7 +191,7 @@ class LightingProduct(models.Model):
                     if line.wattage <= 0:
                         raise ValidationError("%s: The source line %s has invalid wattage" % (rec.display_name,
                                                                                               line.type_id.display_name))
-                    rec.total_wattage += line.wattage
+                    rec.total_wattage += line.source_id.num*line.wattage
 
     def _inverse_total_wattage(self):
         ## dummy method. It allows to update calculated field
@@ -800,24 +808,34 @@ class LightingProductSourceLine(models.Model):
     ## computed fields
     wattage_display = fields.Char(compute='_compute_wattage_display', string='Wattage (W)')
 
-    @api.depends('wattage', 'is_max_wattage', 'wattage_magnitude')
-    def _compute_wattage_display(self):
+    def prepare_wattage_str(self, mult=1, is_max_wattage=None):
+        self.ensure_one()
+
+        if is_max_wattage is None:
+            is_max_wattage = self.is_max_wattage
+
         wattage_magnitude_option = dict(
             self.fields_get(['wattage_magnitude'], ['selection']).get('wattage_magnitude').get('selection'))
 
+        res = []
+        if self.wattage > 0:
+            wattage_str = float2text(self.wattage*mult)
+            if self.wattage_magnitude:
+                wattage_str += wattage_magnitude_option.get(self.wattage_magnitude)
+            res.append(wattage_str)
+
+        if is_max_wattage:
+            res.append(_('max.'))
+
+        if res != []:
+            return " ".join(res)
+        else:
+            return False
+
+    @api.depends('wattage', 'is_max_wattage', 'wattage_magnitude')
+    def _compute_wattage_display(self):
         for rec in self:
-            res = []
-            if rec.wattage > 0:
-                wattage_str = float2text(rec.wattage)
-                if rec.wattage_magnitude:
-                    wattage_str += wattage_magnitude_option.get(rec.wattage_magnitude)
-                res.append(wattage_str)
-
-                if rec.is_max_wattage:
-                    res.append(_('max.'))
-
-                if res != []:
-                    rec.wattage_display = " ".join(res)
+            rec.wattage_display = rec.prepare_wattage_str()
 
     luminous_flux_display = fields.Char(compute='_compute_luminous_flux_display', string='Luminous flux (Lm)')
 
