@@ -16,9 +16,10 @@ class WebsiteSale(main.WebsiteSale):
         request.session['category_ant'] = category.id if category is not None else None
         if search:
             if category:
-                if category_ant:
-                    if category_ant == category.id: # s'ha premut la lupa estant en una categoria
-                        return request.redirect('/shop?search=%s' % search)
+                if category_ant and category_ant == category.id: # s'ha premut la lupa estant en una categoria
+                    return request.redirect('/shop?search=%s' % search)
+                else:
+                    return request.redirect(request.httprequest.base_url)
 
         response = super(WebsiteSale, self).shop(page=page, category=category, search=search, ppg=ppg, **post)
 
