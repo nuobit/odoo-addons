@@ -566,13 +566,17 @@ class LightingProductAuxiliaryEquipment(models.Model):
 class LightingProductAuxiliaryEquipmentModel(models.Model):
     _name = 'lighting.product.auxiliaryequipmentmodel'
     _rec_name = 'reference'
+    _order = 'product_id,date desc'
 
     reference = fields.Char(string='Reference')
-    brand_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentbrand', ondelete='restrict', string='Brand')
+    brand_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentbrand',
+                               ondelete='restrict', string='Brand', required=True)
+    date = fields.Date(string='Date')
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
-    _sql_constraints = [('auxiliaryequipmentmodel_uniq', 'unique (product_id, reference, brand_id)', 'The equioment brand must be unique!'),
+    _sql_constraints = [('prodate_uniq', 'unique (product_id, date)',
+                         'The date must be unique!'),
                         ]
 
 class LightingProductAuxiliaryEquipmentBrand(models.Model):

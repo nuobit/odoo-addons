@@ -98,6 +98,7 @@
                                     <tree editable="bottom">
                                         <field name="reference"/>
                                         <field name="brand_id"/>
+                                        <field name="date"/>
                                     </tree>
                                 </field>
                                 <field name="auxiliary_equipment_model_alt" widget="text"/>
