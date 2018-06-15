@@ -3,13 +3,6 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <template id="total_align_checkout" active="False" customize_show="True" inherit_id="website_sale.checkout"
-              priority="20" name="Custom total align">
-        <xpath expr="//t[@t-call='website_sale.total']/.." position="attributes">
-            <attribute name="class">col-md-4 text-muted</attribute>
-        </xpath>
-    </template>
-
     <template id="total" active="True" customize_show="True" inherit_id="website_sale.total"
               priority="20" name="Custom total">
         <xpath expr="." position="replace">
