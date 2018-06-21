@@ -59,67 +59,47 @@
 
 
     <!-- show alternate prices -->
-    <template id="website_sale_show_alternateprices_products" inherit_id="website_sale.products"
-              active="False" customize_show="True"
-              name="Product alternate prices base">
-        <xpath expr="//div[@id='products_grid']" position="before">
-            <t t-set="website_pricelist"
-               t-value="website.env['product.pricelist'].search([('show_on_website', '=', True)])"/>
-
-            <t t-set="website_offer_pricelist"
-               t-value="website_pricelist.item_ids.filtered(lambda x: x.applied_on == '3_global' and x.compute_price == 'formula' and x.base == 'pricelist').base_pricelist_id"/>
-        </xpath>
-    </template>
-
     <template id="website_sale_show_alternateprices_product_item_id" inherit_id="website_sale.products_item"
               active="False" customize_show="True"
-              name="Product alternate prices (base required)">
+              name="Product alternate prices">
         <xpath expr="//div[@itemprop='offers']/b" position="replace">
-            <t t-if="website_pricelist">
-                <t t-set="website_pricelist_items"
-                   t-value="website_pricelist.item_ids.filtered(lambda x: x.product_tmpl_id.id == product.id).sorted(lambda x: x.min_quantity)"/>
-
-                <t t-if="website_offer_pricelist" t-set="website_pricelist_offer_items"
-                   t-value="website_offer_pricelist.item_ids.filtered(lambda x: x.product_tmpl_id.id == product.id).sorted(lambda x: x.min_quantity)"/>
-
-                <!-- Website price -->
-                <t t-set="website_price_tmpl">
-                    <b>
-                        <span t-esc="product.list_price"
-                              t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                        <span itemprop="price" style="display:none;" t-esc="product.list_price"/>
-                        <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
-                    </b>
-                    <span t-foreach="website_pricelist_items" t-as="li">/
-                        <b t-esc="li.fixed_price"
+            <t t-set="website_price_tmpl">
+                <b>
+                    <span t-esc="product.list_price"
+                          t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                    <span itemprop="price" style="display:none;" t-esc="product.list_price"/>
+                    <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+                </b>
+                <t t-if="product.id in website_prices">
+                    <span t-foreach="website_prices[product.id]" t-as="li">/
+                        <b t-esc="li['fixed_price']"
                            t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                         <small>(
-                            <span t-esc="li.min_quantity"/>
+                            <span t-esc="li['min_quantity']"/>
                             units)
                         </small>
                     </span>
                 </t>
-
-                <div>
-                    <del t-if="website_pricelist_offer_items" class="text-danger">
-                        <t t-raw="website_price_tmpl"/>
-                    </del>
-                    <t t-if="not website_pricelist_offer_items" t-raw="website_price_tmpl"/>
-                </div>
-
-                <!-- Website offers -->
-                <div>
-                    <span t-foreach="website_pricelist_offer_items" t-as="li">
-                        <span t-if="not li_first">/</span>
-                        <b t-esc="li.fixed_price"
-                           t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                        <small t-if="li.min_quantity > 1">(
-                            <span t-esc="li.min_quantity"/>
-                            units)
-                        </small>
-                    </span>
-                </div>
             </t>
+
+            <div>
+                <del t-if="website_offers" class="text-danger">
+                    <t t-raw="website_price_tmpl"/>
+                </del>
+                <t t-if="not website_offers" t-raw="website_price_tmpl"/>
+            </div>
+
+            <div t-if="product.id in website_offers">
+                <span t-foreach="website_offers[product.id]" t-as="li">
+                    <span t-if="not li_first">/</span>
+                    <b t-esc="li['fixed_price']"
+                       t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                    <small t-if="li['min_quantity'] > 1">(
+                        <span t-esc="li['min_quantity']"/>
+                        units)
+                    </small>
+                </span>
+            </div>
         </xpath>
 
         <xpath expr="//div[@itemprop='offers']" position="attributes">
