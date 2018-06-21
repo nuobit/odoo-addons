@@ -70,7 +70,7 @@ class WebsiteSale(main.WebsiteSale):
                     product_id = pricelist_item.product_tmpl_id.id
                     if product_id not in product_offers:
                         product_offers[product_id] = []
-                        product_offers[product_id].append({'fixed_price': pricelist_item.fixed_price,
+                    product_offers[product_id].append({'fixed_price': pricelist_item.fixed_price,
                                                        'min_quantity': pricelist_item.min_quantity},
                                                       )
         values['website_offers'] = product_offers

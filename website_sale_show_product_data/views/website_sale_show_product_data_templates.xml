@@ -63,6 +63,7 @@
               active="False" customize_show="True"
               name="Product alternate prices">
         <xpath expr="//div[@itemprop='offers']/b" position="replace">
+            <!-- pricelist -->
             <t t-set="website_price_tmpl">
                 <b>
                     <span t-esc="product.list_price"
@@ -82,23 +83,30 @@
                 </t>
             </t>
 
-            <div>
-                <del t-if="website_offers" class="text-danger">
+            <!--offers -->
+            <t t-set="website_offer_tmpl">
+                <div t-if="product.id in website_offers">
+                    <span t-foreach="website_offers[product.id]" t-as="li">
+                        <span t-if="not li_first">/</span>
+                        <b t-esc="li['fixed_price']"
+                           t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        <small t-if="li['min_quantity'] > 1">(
+                            <span t-esc="li['min_quantity']"/>
+                            units)
+                        </small>
+                    </span>
+                </div>
+            </t>
+
+            <div t-if="website_offers">
+                <del t-if="website_prices" class="text-danger">
                     <t t-raw="website_price_tmpl"/>
                 </del>
-                <t t-if="not website_offers" t-raw="website_price_tmpl"/>
+                <t t-raw="website_offer_tmpl"/>
             </div>
 
-            <div t-if="product.id in website_offers">
-                <span t-foreach="website_offers[product.id]" t-as="li">
-                    <span t-if="not li_first">/</span>
-                    <b t-esc="li['fixed_price']"
-                       t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                    <small t-if="li['min_quantity'] > 1">(
-                        <span t-esc="li['min_quantity']"/>
-                        units)
-                    </small>
-                </span>
+            <div t-if="not website_offers and website_prices">
+                <t t-raw="website_price_tmpl"/>
             </div>
         </xpath>
 
