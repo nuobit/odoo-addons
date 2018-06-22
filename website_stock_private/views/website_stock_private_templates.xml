@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="restrict_product_stock" inherit_id="website_sale.product"
+    <template id="restrict_product_stock" inherit_id="website_stock.website_stock_show"
               active="True" customize_show="True"
-              priority="20"
               name="Restrict Stock">
         <xpath expr="//t[@t-call='website_stock.product_stock']/.." position="attributes">
             <attribute name="t-if">request.uid !=  %(base.public_user)d</attribute>
         </xpath>
     </template>
 
-    <template id="restrict_products_item_stock" inherit_id="website_sale.products_item"
+    <template id="restrict_products_item_stock" inherit_id="website_stock.stock_panel"
               active="True" customize_show="True"
-              priority="20"
               name="Restrict Stock">
         <xpath expr="//div[@itemscope='itemscope']" position="attributes">
-            <attribute name="t-att-data-publish">'off' if product.product_variant_ids and not product_tmp_qty &gt; 0 and product.product_variant_ids[0].wk_order_allow != 'allow' and request.uid !=  %(base.public_user)d else 'on'</attribute>
+            <attribute name="t-att-data-publish">'off' if product.product_variant_ids and not product_quantity > 0 and product.product_variant_ids[0].wk_order_allow != 'allow' and request.uid !=  %(base.public_user)d else 'on'</attribute>
         </xpath>
         <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' stock-panel ')]" position="attributes">
             <attribute name="t-if">request.uid !=  %(base.public_user)d</attribute>
         </xpath>
         <xpath expr="//span[@class='stock-quantity']/.." position="attributes">
-            <attribute name="t-if">config_setting.get('wk_display_qty') and product_type==0 and request.uid !=  %(base.public_user)d</attribute>
+            <attribute name="t-if">config_setting.get('wk_display_qty') and product.type != 'service' and request.uid !=  %(base.public_user)d</attribute>
         </xpath>
     </template>
 </odoo>
