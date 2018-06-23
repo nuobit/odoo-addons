@@ -30,3 +30,42 @@ class ProductTemplate(models.Model):
     def _compute_first_seller(self):
         self.first_seller = self.sudo().seller_ids.sorted(lambda x: (x.sequence, x.id))[0].name
 
+    def get_website_alternate_prices(self):
+        res = {}
+        ### pricelists
+        product_prices = []
+
+        pricelist_data = self.env['product.pricelist.item'].search(
+            [('pricelist_id.show_on_website', '=', True), ('product_tmpl_id.id', '=', self.id)],
+            order='product_tmpl_id, min_quantity'
+        )
+
+        if pricelist_data:
+            for pricelist_item in pricelist_data:
+                product_prices.append({'fixed_price': pricelist_item.fixed_price,
+                                       'min_quantity': pricelist_item.min_quantity},
+                                    )
+
+        res['website_prices'] = product_prices
+
+        ### offers
+        product_offers = []
+
+        priceoffer_pricelist = self.env['product.pricelist.item'].search([('pricelist_id.show_on_website', '=', True),
+                                                                             ('applied_on', '=', '3_global'),
+                                                                             ('compute_price', '=', 'formula'),
+                                                                             ('base', '=', 'pricelist')])
+        if priceoffer_pricelist:
+            offer_pricelist_id = priceoffer_pricelist.base_pricelist_id.id
+            priceoffer_data = self.env['product.pricelist.item'].search(
+                [('pricelist_id', '=', offer_pricelist_id), ('product_tmpl_id.id', '=', self.id)],
+                order='product_tmpl_id, min_quantity'
+            )
+            if priceoffer_data:
+                for pricelist_item in priceoffer_data:
+                    product_offers.append({'fixed_price': pricelist_item.fixed_price,
+                                                       'min_quantity': pricelist_item.min_quantity},
+                                          )
+        res['website_offers'] = product_offers
+
+        return res
