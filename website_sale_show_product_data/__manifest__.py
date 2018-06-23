@@ -8,7 +8,7 @@
     'description': "Show product data in website sale: "
                    "internal reference (default code), providers, "
                    "helper text, print button, barcode ",
-    'version': '10.0.0.3.2',
+    'version': '10.0.0.3.3',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',

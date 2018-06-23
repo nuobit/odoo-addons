@@ -36,43 +36,45 @@ class WebsiteSale(main.WebsiteSale):
         ### pricelists
         product_prices = {}
 
-        pricelist_data = request.env['product.pricelist.item'].search(
-            [('pricelist_id.show_on_website', '=', True), ('product_tmpl_id.id', 'in', values['products'].ids)],
-            order='product_tmpl_id, min_quantity'
-        )
+        if 'product' in values:
+            pricelist_data = request.env['product.pricelist.item'].search(
+                [('pricelist_id.show_on_website', '=', True), ('product_tmpl_id.id', 'in', values['products'].ids)],
+                order='product_tmpl_id, min_quantity'
+            )
 
-        if pricelist_data:
-            for pricelist_item in pricelist_data:
-                product_id = pricelist_item.product_tmpl_id.id
-                if product_id not in product_prices:
-                    product_prices[product_id]=[]
-                product_prices[product_id].append({'fixed_price': pricelist_item.fixed_price,
-                                       'min_quantity': pricelist_item.min_quantity},
-                                    )
+            if pricelist_data:
+                for pricelist_item in pricelist_data:
+                    product_id = pricelist_item.product_tmpl_id.id
+                    if product_id not in product_prices:
+                        product_prices[product_id]=[]
+                    product_prices[product_id].append({'fixed_price': pricelist_item.fixed_price,
+                                           'min_quantity': pricelist_item.min_quantity},
+                                        )
 
         values['website_prices'] = product_prices
 
         ### offers
         product_offers = {}
 
-        priceoffer_pricelist = request.env['product.pricelist.item'].search([('pricelist_id.show_on_website', '=', True),
-                                                                             ('applied_on', '=', '3_global'),
-                                                                             ('compute_price', '=', 'formula'),
-                                                                             ('base', '=', 'pricelist')])
-        if priceoffer_pricelist:
-            offer_pricelist_id = priceoffer_pricelist.base_pricelist_id.id
-            priceoffer_data = request.env['product.pricelist.item'].search(
-                [('pricelist_id', '=', offer_pricelist_id), ('product_tmpl_id.id', 'in', values['products'].ids)],
-                order='product_tmpl_id, min_quantity'
-            )
-            if priceoffer_data:
-                for pricelist_item in priceoffer_data:
-                    product_id = pricelist_item.product_tmpl_id.id
-                    if product_id not in product_offers:
-                        product_offers[product_id] = []
-                    product_offers[product_id].append({'fixed_price': pricelist_item.fixed_price,
-                                                       'min_quantity': pricelist_item.min_quantity},
-                                                      )
+        if 'product' in values:
+            priceoffer_pricelist = request.env['product.pricelist.item'].search([('pricelist_id.show_on_website', '=', True),
+                                                                                 ('applied_on', '=', '3_global'),
+                                                                                 ('compute_price', '=', 'formula'),
+                                                                                 ('base', '=', 'pricelist')])
+            if priceoffer_pricelist:
+                offer_pricelist_id = priceoffer_pricelist.base_pricelist_id.id
+                priceoffer_data = request.env['product.pricelist.item'].search(
+                    [('pricelist_id', '=', offer_pricelist_id), ('product_tmpl_id.id', 'in', values['products'].ids)],
+                    order='product_tmpl_id, min_quantity'
+                )
+                if priceoffer_data:
+                    for pricelist_item in priceoffer_data:
+                        product_id = pricelist_item.product_tmpl_id.id
+                        if product_id not in product_offers:
+                            product_offers[product_id] = []
+                        product_offers[product_id].append({'fixed_price': pricelist_item.fixed_price,
+                                                           'min_quantity': pricelist_item.min_quantity},
+                                                          )
         values['website_offers'] = product_offers
 
         return request.render("website_sale.products", values)
