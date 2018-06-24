@@ -6,7 +6,7 @@
 {
     'name': "Website Sale search all products",
     'description': "Search always on all products ignoring the current category.",
-    'version': '10.0.0.1.2',
+    'version': '10.0.0.1.3',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
