@@ -6,7 +6,7 @@
 {
     'name': "Web categories on top",
     'description': "Show web categories on top of product page",
-    'version': '10.0.0.2.1',
+    'version': '10.0.0.2.2',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',

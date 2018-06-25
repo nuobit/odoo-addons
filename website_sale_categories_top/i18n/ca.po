@@ -15,9 +15,9 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_sale_categories_top
-#: model:ir.ui.view,arch_db:website_sale_categories_top.website_sale_categories_top_products
+#: model:ir.ui.view,arch_db:website_sale_categories_top.products
 msgid "All Products"
-msgstr "Tots els Productes"
+msgstr "Tots els productes"
 
 
 
