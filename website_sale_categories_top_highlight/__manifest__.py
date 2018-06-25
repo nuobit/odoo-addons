@@ -6,7 +6,7 @@
 {
     'name': "Highlight active top categories",
     'description': "Show web categories on top of product page highlighted",
-    'version': '10.0.0.1.0',
+    'version': '10.0.0.2.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',

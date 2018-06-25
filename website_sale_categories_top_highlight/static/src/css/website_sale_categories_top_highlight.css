@@ -1,4 +1,8 @@
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+.rootcategories > li.active > a, .rootcategories > li.active > a:hover, .rootcategories > li.active > a:focus {
     font-weight: bold;
+    color: black;
+}
+
+.childcategories > li:not(active) > a, .childcategories > li:not(active) > a:hover, .childcategories > li:not(active) > a:focus {
     color: black;
 }
