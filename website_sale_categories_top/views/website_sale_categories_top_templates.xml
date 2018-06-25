@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <t t-if="not category">
-                        <ul class="nav nav-tabs mt16">
+                        <ul class="nav nav-tabs mt16 rootcategories">
                             <li t-att-class=" '' if category else 'active' ">
                                 <a t-att-href="keep('/shop',category=0)" class="o_not_editable">All Products</a>
                             </li>
@@ -34,7 +34,7 @@
                     <t t-if="category">
                         <t t-set="menu" t-value="category.get_menu_structure()"/>
 
-                        <ul class="nav nav-tabs mt16">
+                        <ul class="nav nav-tabs mt16 rootcategories">
                             <li>
                                 <a t-att-href="keep('/shop',category=0)" class="o_not_editable">All Products</a>
                             </li>
@@ -43,7 +43,7 @@
                             </t>
                         </ul>
                         <t t-foreach="menu[1:]" t-as="m">
-                            <ul t-if="m" class="nav nav-tabs mt8">
+                            <ul t-if="m" class="nav nav-tabs mt8 childcategories">
                                 <t t-call="website_sale_categories_top.categories_level">
                                     <t t-set="menu_level" t-value="m"/>
                                 </t>
