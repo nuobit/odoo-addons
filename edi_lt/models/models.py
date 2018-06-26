@@ -17,9 +17,9 @@ class res_partner(models.Model):
 class purchase_order(models.Model):
     _inherit = "purchase.order"
 
-    edi_config = fields.Many2one(related='partner_id.edi_config')
+    edi_config = fields.Many2one(related='partner_id.edi_config', readonly=True)
     edi_transaction_id = fields.Many2one(string="EDI transaction", comodel_name='edilt.transaction',
-                                         readonly=True, ondelete='restrict')
+                                         readonly=True, ondelete='restrict', copy=False)
 
     @api.multi
     def edi_send(self):
