@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="connector_security" model="ir.module.category">
+        <field name="name">Connector</field>
+        <field name="description">Allows customers to obtain data</field>
+    </record>
+
+    <record id="connector_group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="connector_security"/>
+    </record>
+
+    <record id="connector_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="connector_security"/>
+    </record>
+
+    <record id="connector_group_administrator" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="connector_security"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="implied_ids" eval="[(4, ref('lighting.connector_group_manager'))]"/>
+    </record>
+</odoo>

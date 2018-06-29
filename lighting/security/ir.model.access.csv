@@ -150,3 +150,6 @@ access_lighting_settings_user,lighting.settings user,model_lighting_settings,lig
 access_lighting_supplier_guest,lighting.supplier guest,model_lighting_supplier,lighting.group_lighting_guest,1,0,0,0
 access_lighting_supplier_manager,lighting.supplier manager,model_lighting_supplier,lighting.group_lighting_manager,1,1,1,1
 access_lighting_supplier_user,lighting.supplier user,model_lighting_supplier,lighting.group_lighting_user,1,0,0,0
+
+access_lighting_connector_product_manager,lighting.connector.product manager,model_lighting_connector_product,lighting.connector_group_manager,1,1,1,1
+access_lighting_connector_product_user,lighting.connector.product user,model_lighting_connector_product,lighting.connector_group_user,1,0,0,0

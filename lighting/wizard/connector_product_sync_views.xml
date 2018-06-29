@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- form product sync -->
+    <record id="connector_product_sync_view_form" model="ir.ui.view">
+        <field name="name">connector.product.sync.form</field>
+        <field name="model">lighting.connector.product.sync</field>
+        <field name="arch" type="xml">
+            <form string="Synchronize">
+                <group>
+                    <span>Synchronize all data</span>
+                </group>
+                <footer>
+                    <button string="Synchronize" name="synchronize" type="object" default_focus="1"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="connector_product_action_sync"
+           name="Synchronize"
+            res_model="lighting.connector.product.sync"
+            view_mode="form" target="new" view_type="form"/>
+
+    <!-- ============= connector product menu ============ -->
+    <menuitem id="connector_product_sync_menu"
+              name="Synchronize"
+              parent="connector_menu"
+              action="connector_product_action_sync"
+              groups="connector_group_manager"/>
+</odoo>
