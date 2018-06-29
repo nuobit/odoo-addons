@@ -29,7 +29,7 @@ class LightingProduct(models.Model):
     _order = 'reference'
 
     # Common data
-    reference = fields.Char(string='Reference', required=True, index=True)
+    reference = fields.Char(string='Reference', required=True)
 
     description = fields.Char(compute='_compute_description', string='Description', readonly=True,
                                    help="Description dynamically generated from product data", store=True)
