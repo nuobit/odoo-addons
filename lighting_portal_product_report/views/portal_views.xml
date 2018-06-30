@@ -8,11 +8,9 @@
         <field name="model">lighting.portal.product</field>
         <field name="inherit_id" ref="lighting_portal.portal_product_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet" position="before">
-                <header>
-                    <button name="print_product" string="Product data sheet"
-                            type="object" class="o_sale_print"/>
-                </header>
+            <xpath expr="//header" position="before">
+                <button name="print_product" string="Product data sheet"
+                        type="object" class="o_sale_print"/>
             </xpath>
         </field>
     </record>
