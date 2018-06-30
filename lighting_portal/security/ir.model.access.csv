@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lighting_portal_product_manager,lighting.portal.product manager,model_lighting_portal_product,lighting_portal.portal_group_manager,1,1,1,1
+access_lighting_portal_product_user,lighting.portal.product user,model_lighting_portal_product,lighting_portal.portal_group_user,1,0,0,0

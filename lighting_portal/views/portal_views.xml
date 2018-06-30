@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ================================ COMMON MENU =========================== -->
+    <!-- Menu top level: no parent -->
+    <menuitem id="portal_menu_root"
+              name="Portal"
+              sequence="0"/>
+
+    <!-- Menu first level in the left side menu is needed
+         before using action= attribute -->
+    <menuitem id="portal_menu"
+              name="Products"
+              parent="portal_menu_root"/>
+
+
+    <!-- ================================ PRODUCT =========================== -->
+    <!-- View Form portal.product -->
+    <record id="portal_product_view_form" model="ir.ui.view">
+        <field name="name">portal.product.form</field>
+        <field name="model">lighting.portal.product</field>
+        <field name="arch" type="xml">
+            <form string="Portal Product Form">
+                <header>
+                    <button name="print_product" string="Print" type="object" class="o_sale_print"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" placeholder="Reference"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="description"/>
+                        <field name="catalog"/>
+                    </group>
+                    <group>
+                        <field name="qty_available"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- View Tree portal.product -->
+    <record id="portal_product_view_tree" model="ir.ui.view">
+        <field name="name">portal.product.tree</field>
+        <field name="model">lighting.portal.product</field>
+        <field name="arch" type="xml">
+            <tree string="Products"
+                  decoration-danger="qty_available==0"
+                  decoration-success="qty_available!=0">
+                <field name="reference"/>
+                <field name="description"/>
+                <field name="catalog"/>
+                <field name="qty_available"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- View Search portal.product -->
+    <record id="portal_product_view_search" model="ir.ui.view">
+        <field name="name">portal.product.tree.search</field>
+        <field name="model">lighting.portal.product</field>
+        <field name="arch" type="xml">
+            <search string="Product">
+                <field name="reference" string="Product"
+                       filter_domain="['|', '|', ('reference','ilike',self), ('description','ilike',self), ('catalog','ilike',self)]"/>
+                <field name="reference"/>
+                <field name="description"/>
+                <field name="catalog"/>
+                <separator/>
+                <filter string="With stock" name="with_stock" domain="[('qty_available','!=', 0)]"/>
+                <filter string="Without stock" name="without_stock" domain="[('qty_available','=', 0)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Catalog" name="groupby_catalog" domain="[]"
+                            context="{'group_by': 'catalog'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action Window portal.product -->
+    <record id="portal_product_action_list" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">lighting.portal.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
+        </field>
+    </record>
+
+    <!-- Menu portal.product -->
+    <menuitem id="portal_product_menu"
+              name="Products"
+              parent="portal_menu"
+              action="portal_product_action_list"/>
+</odoo>
