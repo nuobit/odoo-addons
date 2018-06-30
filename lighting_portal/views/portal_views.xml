@@ -23,9 +23,6 @@
         <field name="model">lighting.portal.product</field>
         <field name="arch" type="xml">
             <form string="Portal Product Form">
-                <header>
-                    <button name="print_product" string="Print" type="object" class="o_sale_print"/>
-                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>

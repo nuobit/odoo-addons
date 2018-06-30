@@ -18,7 +18,3 @@ class LightingPortalProduct(models.Model):
 
     _sql_constraints = [('reference', 'unique (reference)', 'The reference must be unique!'),
                         ]
-
-    @api.multi
-    def print_product(self):
-        return self.env.ref('lighting_portal.action_report_portal_product').report_action(self)
