@@ -12,12 +12,9 @@
                 <button name="update" string="Update" type="object"
                         class="btn-primary"/>
             </xpath>
-            <xpath expr="//sheet" position="inside">
+            <xpath expr="//field[@name='qty_available']/.." position="after">
                 <group>
                     <field name="last_update"/>
-                </group>
-                <group>
-                    <field name="product_id"/>
                 </group>
             </xpath>
         </field>

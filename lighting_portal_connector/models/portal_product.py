@@ -10,9 +10,6 @@ class LightingPortalProduct(models.Model):
     _inherit = 'lighting.portal.product'
 
     last_update = fields.Datetime(string='Last update', readonly=True)
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict',
-                                 string='Product',
-                                 groups='lighting_portal_connector.portal_connector_group_admin')
 
     def update(self):
         self.ensure_one()

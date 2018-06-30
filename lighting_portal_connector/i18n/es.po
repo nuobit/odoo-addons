@@ -100,7 +100,7 @@ msgstr "Última Actualización el"
 #. module: lighting_portal_connector
 #: model:ir.model.fields,field_description:lighting_portal_connector.field_lighting_portal_product_last_update
 msgid "Last update"
-msgstr "Last update"
+msgstr "Actualizado el"
 
 #. module: lighting_portal_connector
 #: code:addons/lighting_portal_connector/models/portal_product.py:22

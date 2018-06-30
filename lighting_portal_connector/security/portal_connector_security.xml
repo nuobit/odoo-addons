@@ -4,7 +4,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="portal_connector_security" model="ir.module.category">
-        <field name="name">Portal Connector</field>
+        <field name="name">Lighting Portal Connector</field>
         <field name="description">Allows customers to obtain data</field>
     </record>
 
