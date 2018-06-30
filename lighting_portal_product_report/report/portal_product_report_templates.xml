@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_portalproduct_document">
+        <t t-call="web.external_layout">
+            <!--t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/-->
+            <div class="page">
+                <div class="oe_structure"/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h1 t-field="doc.reference"/>
+                        <h3 t-field="doc.description"/>
+                    </div>
+                    <div class="col-xs-5 col-xs-offset-1">
+                        <h3 t-field="doc.qty_available"/>
+                    </div>
+                </div>
+                <!--img t-att-src="'data:image/png;base64,%s' % to_text(doc.product_id.image_medium)"/-->
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_portalproduct">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <!--t t-call="lighting_portal_product_report.report_portalproduct" t-lang="doc.partner_id.lang"/-->
+                <t t-call="lighting_portal_product_report.report_portalproduct_document"/>
+            </t>
+        </t>
+    </template>
+</odoo>

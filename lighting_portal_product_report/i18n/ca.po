@@ -1,0 +1,28 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* lighting_portal_product_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-30 22:42+0000\n"
+"PO-Revision-Date: 2018-06-30 22:42+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_portal_product_report
+#: model:ir.actions.report,name:lighting_portal_product_report.action_report_portal_product
+#: model:ir.ui.view,arch_db:lighting_portal_product_report.portal_product_view_form_inherit_lighting_portal_product_report
+msgid "Product data sheet"
+msgstr "Fitxa de producte"
+
+#. module: lighting_portal_product_report
+#: model:ir.model,name:lighting_portal_product_report.model_lighting_portal_product
+msgid "lighting.portal.product"
+msgstr "lighting.portal.product"
+

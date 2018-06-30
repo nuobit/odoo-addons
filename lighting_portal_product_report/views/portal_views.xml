@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="portal_product_view_form_inherit_lighting_portal_product_report" model="ir.ui.view">
+        <field name="name">product_view_form.inherit.lighting_portal_product_report</field>
+        <field name="model">lighting.portal.product</field>
+        <field name="inherit_id" ref="lighting_portal.portal_product_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="print_product" string="Product data sheet"
+                            type="object" class="o_sale_print"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>
