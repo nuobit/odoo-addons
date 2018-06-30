@@ -17,6 +17,8 @@ class LightingPortalConnectorSync(models.TransientModel):
         settings = self.env['lighting.portal.connector.settings'].sudo().search([]).sorted(lambda x: x.sequence)
         if settings:
             settings = settings[0]
+        else:
+            raise UserError(_("No configuration present, please configure database server"))
 
         from hdbcli import dbapi
 
