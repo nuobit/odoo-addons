@@ -16,5 +16,9 @@ class LightingPortalProduct(models.Model):
     catalog = fields.Char(string='Catalog')
     qty_available = fields.Integer(string='Quantity available')
 
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='restrict',
+                                 string='Product',
+                                 groups='lighting_portal.portal_group_manager')
+
     _sql_constraints = [('reference', 'unique (reference)', 'The reference must be unique!'),
                         ]

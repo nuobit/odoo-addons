@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-30 21:58+0000\n"
-"PO-Revision-Date: 2018-06-30 21:58+0000\n"
+"POT-Creation-Date: 2018-06-30 23:09+0000\n"
+"PO-Revision-Date: 2018-06-30 23:09+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: lighting_portal
 #: model:ir.module.category,description:lighting_portal.portal_security
 msgid "Allows customers to get data on a restricted environment"
-msgstr "Permite a los clientes obtener datos en un entorno controlado"
+msgstr "Permite a los clientes consultar datos en un entorno restringido"
 
 #. module: lighting_portal
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_catalog
@@ -29,7 +29,7 @@ msgstr "Catálogo"
 #. module: lighting_portal
 #: model:ir.actions.act_window,help:lighting_portal.portal_product_action_list
 msgid "Create the first Product"
-msgstr "Crea el primer Productp"
+msgstr "Crear el primer Producto"
 
 #. module: lighting_portal
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_create_uid
@@ -97,27 +97,18 @@ msgid "Portal Product Form"
 msgstr "Portal Product Form"
 
 #. module: lighting_portal
-#: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_form
-msgid "Print"
-msgstr "Imprimir"
-
-#. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_product_id
 #: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_search
 msgid "Product"
 msgstr "Producto"
 
 #. module: lighting_portal
+#: model:ir.actions.act_window,name:lighting_portal.portal_product_action_list
 #: model:ir.ui.menu,name:lighting_portal.portal_menu
 #: model:ir.ui.menu,name:lighting_portal.portal_product_menu
 #: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_tree
-#: model:ir.actions.act_window,name:lighting_portal.portal_product_action_list
 msgid "Products"
 msgstr "Productos"
-
-#. module: lighting_portal
-#: model:ir.actions.report,name:lighting_portal.action_report_portal_product
-msgid "Product data sheet"
-msgstr "Ficha de producto"
 
 #. module: lighting_portal
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_qty_available

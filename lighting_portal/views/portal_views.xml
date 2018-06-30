@@ -37,6 +37,9 @@
                     <group>
                         <field name="qty_available"/>
                     </group>
+                    <group>
+                        <field name="product_id"/>
+                    </group>
                 </sheet>
             </form>
         </field>
