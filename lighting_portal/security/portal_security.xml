@@ -6,6 +6,7 @@
     <record id="portal_security" model="ir.module.category">
         <field name="name">Lighting Portal</field>
         <field name="description">Allows customers to get data on a restricted environment</field>
+        <field name="sequence">1001</field>
     </record>
 
     <record id="portal_group_user" model="res.groups">
