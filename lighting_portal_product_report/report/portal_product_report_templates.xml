@@ -18,12 +18,12 @@
                         </h4>
                     </div>
                     <div class="col-xs-5">
-                        <img t-if="doc.product_id"
+                        <img t-if="doc.sudo().product_id"
                              class="img-responsive"
-                             t-attf-src="data:image/*;base64,{{doc.product_id.attachment_ids and doc.product_id.attachment_ids[0].datas}}"/>
+                             t-attf-src="data:image/*;base64,{{doc.sudo().product_id.attachment_ids and doc.sudo().product_id.attachment_ids[0].datas}}"/>
                     </div>
                 </div>
-                <div t-if="doc.product_id" class="row">
+                <div class="row">
                     <div class="col-xs-12">
                         <p t-field="doc.catalog"/>
                     </div>
