@@ -883,6 +883,18 @@ class LightingAttachment(models.Model):
 
     datas = fields.Binary(string="Document", attachment=True, required=True)
     datas_fname = fields.Char(string='Filename', required=True)
+    attachment_id = fields.Many2one(comodel_name='ir.attachment',
+                                             compute='_compute_ir_attachment', readonly=True)
+    @api.depends('datas')
+    def _compute_ir_attachment(self):
+        for rec in self:
+            attachment_obj = self.env['ir.attachment'].search([('res_field', '=', 'datas'),
+                                                                  ('res_id', '=', self.id),
+                                                                  ('res_model', '=', self._name)])
+            if attachment_obj:
+                rec.attachment_id = attachment_obj[0]
+            else:
+                rec.attachment_id = False
 
     lang_id = fields.Many2one(comodel_name='lighting.language', ondelete='restrict', string='Language')
 
