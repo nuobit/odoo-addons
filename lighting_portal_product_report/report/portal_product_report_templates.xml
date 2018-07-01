@@ -20,7 +20,7 @@
                     <div class="col-xs-5">
                         <t t-if="doc.sudo().product_id">
                             <t t-set="images"
-                               t-value="doc.sudo().product_id.attachment_ids.filtered(lambda x: x.attachment_id.index_content == 'image')"/>
+                               t-value="doc.sudo().product_id.attachment_ids.filtered(lambda x: x.type_id.code == 'F' and x.attachment_id.index_content == 'image').sorted(lambda x: x.attachment_id.file_size, reverse=True)"/>
                             <img class="img-responsive"
                                  t-attf-src="data:image/*;base64,{{images and images[0].datas}}"/>
                         </t>

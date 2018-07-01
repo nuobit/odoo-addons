@@ -5,7 +5,7 @@
 {
     'name': "Lighting Portal Product report",
     'description': "Lighting Portal Product report datasheet",
-    'version': '11.0.0.1.2',
+    'version': '11.0.0.1.3',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
