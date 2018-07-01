@@ -24,7 +24,7 @@ class LightingPortalConnectorSettings(models.Model):
     def name_get(self):
         vals = []
         for record in self:
-            name = '%s@%s:%s' % (record.host, record.port, record.username)
+            name = '%s@%s:%i' % (record.username, record.host, record.port, )
 
             vals.append((record.id, name))
 
