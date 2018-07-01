@@ -14,7 +14,7 @@ class LightingPortalConnectorSync(models.TransientModel):
     @api.model
     def synchronize(self, ids=None, context=None, reference=None):
         if not reference:_logger.info('Start syncronization')
-        settings = self.env['lighting.portal.connector.settings'].sudo().search([]).sorted(lambda x: x.sequence)
+        settings = self.env['lighting.portal.connector.settings'].search([]).sorted(lambda x: x.sequence)
         if settings:
             settings = settings[0]
         else:
@@ -64,7 +64,7 @@ class LightingPortalConnectorSync(models.TransientModel):
             elif result0_d['qty_available'] < 0:
                 result0_d['qty_available'] = 0
 
-            pim_ref = self.env['lighting.product'].sudo().search([('reference', '=', result0_d['reference'])])
+            pim_ref = self.env['lighting.product'].search([('reference', '=', result0_d['reference'])])
             if pim_ref:
                 result0_d['description'] = pim_ref.description
                 result0_d['product_id'] = pim_ref.id
@@ -80,7 +80,7 @@ class LightingPortalConnectorSync(models.TransientModel):
 
                 result1_d['last_update'] = last_update
                 if reference:
-                    ref_obj = ref_obj.sudo()
+                    ref_obj = ref_obj
                 ref_obj.write(result1_d)
             else:
                 result0_d['last_update'] = last_update

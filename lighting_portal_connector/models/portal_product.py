@@ -18,4 +18,4 @@ class LightingPortalProduct(models.Model):
             if tdelta.seconds < 300:
                 raise UserError(_("Only one update is allowed every 5 minutes"))
 
-        self.env['lighting.portal.connector.sync'].synchronize(reference=self.reference)
+        self.env['lighting.portal.connector.sync'].sudo().synchronize(reference=self.reference)
