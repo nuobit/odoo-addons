@@ -6,6 +6,7 @@
     <record id="portal_connector_security" model="ir.module.category">
         <field name="name">Lighting Portal Connector</field>
         <field name="description">Allows customers to obtain data</field>
+        <field name="sequence">1002</field>
     </record>
 
     <record id="portal_connector_group_user" model="res.groups">

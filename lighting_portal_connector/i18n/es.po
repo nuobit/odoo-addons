@@ -120,8 +120,8 @@ msgstr "Puerto"
 
 #. module: lighting_portal_connector
 #: model:ir.module.category,name:lighting_portal_connector.portal_connector_security
-msgid "Portal Connector"
-msgstr "Portal Connector"
+msgid "Lighting Portal Connector"
+msgstr "Lighting Portal Connector"
 
 #. module: lighting_portal_connector
 #: model:ir.ui.view,arch_db:lighting_portal_connector.portal_connector_settings_view_form
