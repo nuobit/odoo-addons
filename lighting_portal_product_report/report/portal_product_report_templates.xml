@@ -9,15 +9,26 @@
             <div class="page">
                 <div class="oe_structure"/>
                 <div class="row">
-                    <div class="col-xs-6">
+                    <div class="col-xs-7">
                         <h1 t-field="doc.reference"/>
                         <h3 t-field="doc.description"/>
+                        <h4 t-attf-class="{{'text-danger' if doc.qty_available == 0 else 'text-success'}}">
+                            <strong>Stock:</strong>
+                            <span t-field="doc.qty_available"/>
+                        </h4>
                     </div>
-                    <div class="col-xs-5 col-xs-offset-1">
-                        <h3 t-field="doc.qty_available"/>
+                    <div class="col-xs-5">
+                        <img t-if="doc.product_id"
+                             t-attf-src="data:image/*;base64,{{doc.product_id.attachment_ids[0].datas}}"
+                             t-att-alt="doc.product_id.attachment_ids[0].name"
+                             style="max-height: 500px;"/>
                     </div>
                 </div>
-                <!--img t-att-src="'data:image/png;base64,%s' % to_text(doc.product_id.image_medium)"/-->
+                <div t-if="doc.product_id" class="row">
+                    <div class="col-xs-12">
+
+                    </div>
+                </div>
                 <div class="oe_structure"/>
             </div>
         </t>
