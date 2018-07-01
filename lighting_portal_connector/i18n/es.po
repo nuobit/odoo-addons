@@ -147,8 +147,8 @@ msgstr "Producto"
 
 #. module: lighting_portal_connector
 #: model:ir.ui.view,arch_db:lighting_portal_connector.product_view_form_inherit_lighting_portal_connector
-msgid "SAP"
-msgstr "SAP"
+msgid "External data"
+msgstr "Datos externos"
 
 #. module: lighting_portal_connector
 #: model:ir.model.fields,field_description:lighting_portal_connector.field_lighting_portal_connector_settings_schema

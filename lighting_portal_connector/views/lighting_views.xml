@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <field name="external_data_available" invisible="1"/>
-                <page string="SAP" attrs="{'invisible': [('external_data_available', '=', False)]}">
+                <page string="External data" attrs="{'invisible': [('external_data_available', '=', False)]}">
                     <group col="4">
                         <group colspan="4">
                             <field name="ext_itemname"/>
