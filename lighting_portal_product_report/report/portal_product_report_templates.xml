@@ -18,9 +18,12 @@
                         </h4>
                     </div>
                     <div class="col-xs-5">
-                        <img t-if="doc.sudo().product_id"
-                             class="img-responsive"
-                             t-attf-src="data:image/*;base64,{{doc.sudo().product_id.attachment_ids and doc.sudo().product_id.attachment_ids[0].datas}}"/>
+                        <t t-if="doc.sudo().product_id">
+                            <t t-set="images"
+                               t-value="doc.sudo().product_id.attachment_ids.filtered(lambda x: x.attachment_id.index_content == 'image')"/>
+                            <img class="img-responsive"
+                                 t-attf-src="data:image/*;base64,{{images and images[0].datas}}"/>
+                        </t>
                     </div>
                 </div>
                 <div class="row">
