@@ -888,9 +888,9 @@ class LightingAttachment(models.Model):
     @api.depends('datas')
     def _compute_ir_attachment(self):
         for rec in self:
-            attachment_obj = self.env['ir.attachment'].search([('res_field', '=', 'datas'),
-                                                                  ('res_id', '=', self.id),
-                                                                  ('res_model', '=', self._name)])
+            attachment_obj = rec.env['ir.attachment'].search([('res_field', '=', 'datas'),
+                                                                  ('res_id', '=', rec.id),
+                                                                  ('res_model', '=', rec._name)])
             if attachment_obj:
                 rec.attachment_id = attachment_obj[0]
             else:
