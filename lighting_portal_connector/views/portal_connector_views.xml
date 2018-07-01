@@ -9,7 +9,7 @@
     <menuitem id="portal_connector_menu"
               name="Connector"
               parent="lighting_portal.portal_menu_root"
-              groups="portal_connector_group_admin"/>
+              groups="portal_connector_group_manager"/>
 
     <!-- ============= SETTINGS ============ -->
     <!-- Form View portal.connector.settings -->

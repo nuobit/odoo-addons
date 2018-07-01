@@ -13,7 +13,7 @@ class LightingPortalProduct(models.Model):
 
     def update(self):
         self.ensure_one()
-        if not self.env.user.has_group('lighting_portal_connector.portal_connector_group_admin'):
+        if not self.env.user.has_group('lighting_portal_connector.portal_connector_group_manager'):
             tdelta = fields.datetime.now() - fields.Datetime.from_string(self.last_update)
             if tdelta.seconds < 300:
                 raise UserError(_("Only one update is allowed every 5 minutes"))
