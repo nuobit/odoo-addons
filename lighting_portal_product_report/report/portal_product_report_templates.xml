@@ -12,9 +12,9 @@
                     <div class="col-xs-7">
                         <h1 t-field="doc.reference"/>
                         <h3 t-field="doc.description"/>
-                        <h4 t-attf-class="{{'text-danger' if doc.qty_available == 0 else 'text-success'}}">
+                        <h4 t-attf-class="{{'text-danger' if doc.quantity == 0 else 'text-success'}}">
                             <strong>Stock:</strong>
-                            <span t-field="doc.qty_available"/>
+                            <span t-field="doc.quantity"/>
                         </h4>
                     </div>
                     <div class="col-xs-5">
