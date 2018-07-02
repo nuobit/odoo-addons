@@ -1070,7 +1070,6 @@ msgstr "Cast iron"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_catalog
 #: model:ir.ui.view,arch_db:lighting.connector_product_view_search
 msgid "Catalog"
 msgstr "Catàleg"
@@ -1674,8 +1673,6 @@ msgstr "Create the first product voltage"
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_create_uid
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_create_uid
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_sync_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_class_create_uid
@@ -1731,8 +1728,6 @@ msgstr "Creat per"
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_create_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_create_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_sync_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_class_create_date
@@ -1924,7 +1919,6 @@ msgstr "Depth"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_description
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_class_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_feature_name
@@ -2197,8 +2191,6 @@ msgstr "Discontinued by supplier"
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_display_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_display_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_sync_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_class_display_name
@@ -3481,8 +3473,6 @@ msgstr "IBox width (cm)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_id_19348
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_id
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_id
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_sync_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_class_feature_id
@@ -4190,8 +4180,6 @@ msgstr "Idiomes"
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog___last_update
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product___last_update
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_sync___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_class___last_update
@@ -4247,8 +4235,6 @@ msgstr "Darrera modificació feta el"
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_write_uid
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_sync_write_uid
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_class_feature_value_write_uid
@@ -4304,8 +4290,6 @@ msgstr "Actualitzat per última vegada per"
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_write_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_sync_write_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_etim_class_feature_value_write_date
@@ -4360,11 +4344,6 @@ msgstr "Actualitzat per última vegada el dia"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_lastpurdat
 msgid "Last purchase date"
 msgstr "Last purchase date"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_last_update
-msgid "Last update"
-msgstr "Last update"
 
 #. module: lighting
 #: model:lighting.product.finish,name:lighting.product_finish_34
@@ -6215,11 +6194,6 @@ msgid "Quantity"
 msgstr "Quantitat"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_qty_available
-msgid "Quantity available"
-msgstr "Quantity available"
-
-#. module: lighting
 #: model:lighting.etim.value,name:lighting.lighting_etim_value_ev000168
 msgid "R7s"
 msgstr "R7s"
@@ -6375,7 +6349,6 @@ msgid "Red"
 msgstr "Red"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_connector_product_reference
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel_reference
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_reference
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_reference
@@ -8071,16 +8044,6 @@ msgstr "lighting.attachment.type"
 #: model:ir.model,name:lighting.model_lighting_catalog
 msgid "lighting.catalog"
 msgstr "lighting.catalog"
-
-#. module: lighting
-#: model:ir.model,name:lighting.model_lighting_connector_product
-msgid "lighting.connector.product"
-msgstr "lighting.connector.product"
-
-#. module: lighting
-#: model:ir.model,name:lighting.model_lighting_connector_product_sync
-msgid "lighting.connector.product.sync"
-msgstr "lighting.connector.product.sync"
 
 #. module: lighting
 #: model:ir.model,name:lighting.model_lighting_dimension_type
