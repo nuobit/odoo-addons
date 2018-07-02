@@ -35,7 +35,7 @@
                         <field name="catalog"/>
                     </group>
                     <group>
-                        <field name="qty_available"/>
+                        <field name="quantity"/>
                     </group>
                     <group>
                         <field name="product_id"/>
@@ -51,12 +51,12 @@
         <field name="model">lighting.portal.product</field>
         <field name="arch" type="xml">
             <tree string="Products"
-                  decoration-danger="qty_available==0"
-                  decoration-success="qty_available!=0">
+                  decoration-danger="quantity==0"
+                  decoration-success="quantity!=0">
                 <field name="reference"/>
                 <field name="description"/>
                 <field name="catalog"/>
-                <field name="qty_available"/>
+                <field name="quantity"/>
             </tree>
         </field>
     </record>
@@ -73,8 +73,8 @@
                 <field name="description"/>
                 <field name="catalog"/>
                 <separator/>
-                <filter string="With stock" name="with_stock" domain="[('qty_available','!=', 0)]"/>
-                <filter string="Without stock" name="without_stock" domain="[('qty_available','=', 0)]"/>
+                <filter string="With stock" name="with_stock" domain="[('quantity','!=', 0)]"/>
+                <filter string="Without stock" name="without_stock" domain="[('quantity','=', 0)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Catalog" name="groupby_catalog" domain="[]"
                             context="{'group_by': 'catalog'}"/>

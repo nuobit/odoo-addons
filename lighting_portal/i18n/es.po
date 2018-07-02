@@ -111,9 +111,9 @@ msgid "Products"
 msgstr "Productos"
 
 #. module: lighting_portal
-#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_qty_available
-msgid "Quantity available"
-msgstr "Cantidad disponible"
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_quantity
+msgid "Quantity"
+msgstr "Cantidad"
 
 #. module: lighting_portal
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_reference

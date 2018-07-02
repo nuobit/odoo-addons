@@ -14,7 +14,7 @@ class LightingPortalProduct(models.Model):
     reference = fields.Char(string='Reference', required=True)
     description = fields.Char(string='Description')
     catalog = fields.Char(string='Catalog')
-    qty_available = fields.Integer(string='Quantity available')
+    quantity = fields.Integer(string='Quantity')
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='set null',
                                  string='Product',
