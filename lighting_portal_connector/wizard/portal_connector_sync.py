@@ -88,9 +88,10 @@ class LightingPortalConnectorSync(models.TransientModel):
                     self.env['lighting.portal.product'].create(result0_d)
 
         # clean residual portal products
-        pim_product_references = self.env['lighting.product'].search([]).mapped("reference")
-        portal_product_orphan_ids = self.env['lighting.portal.product'].search([('reference', 'not in', pim_product_references)])
-        portal_product_orphan_ids.unlink()
+        if not reference:
+            pim_product_references = self.env['lighting.product'].search([]).mapped("reference")
+            portal_product_orphan_ids = self.env['lighting.portal.product'].search([('reference', 'not in', pim_product_references)])
+            portal_product_orphan_ids.unlink()
 
         cursor.close()
         conn.close()
