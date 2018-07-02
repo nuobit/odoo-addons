@@ -42,7 +42,8 @@ class LightingPortalConnectorSync(models.TransientModel):
         stmnt = """SELECT pw."ItemCode" as "reference", p."ItemName" as "description", 
                           c."ItmsGrpNam" as "catalog", 
                           /*pw."OnHand" as "qty_onhand",*/ 
-                          pw."OnHand" - pw."IsCommited" + pw."OnOrder" AS "qty_available"
+                          /*pw."OnHand" - pw."IsCommited" + pw."OnOrder" AS "qty_available"*/
+                          pw."OnHand" - pw."IsCommited" as "quantity"
                    FROM %(schema)s.OITW pw, %(schema)s.OITM p, %(schema)s.OITB c
                    WHERE pw."ItemCode" = p."ItemCode" AND
                          (:reference is null OR p."ItemCode" = :reference) AND
@@ -57,11 +58,11 @@ class LightingPortalConnectorSync(models.TransientModel):
         header = [x[0] for x in cursor.description]
         for row in cursor:
             result0_d = dict(zip(header, row))
-            result0_d['qty_available'] = int(result0_d['qty_available'])
-            if result0_d['qty_available'] >= 99:
-                result0_d['qty_available'] = 99
-            elif result0_d['qty_available'] < 0:
-                result0_d['qty_available'] = 0
+            result0_d['quantity'] = int(result0_d['quantity'])
+            if result0_d['quantity'] >= 99:
+                result0_d['quantity'] = 99
+            elif result0_d['quantity'] < 0:
+                result0_d['quantity'] = 0
 
             pim_product = self.env['lighting.product'].search([('reference', '=', result0_d['reference'])])
             if pim_product:
