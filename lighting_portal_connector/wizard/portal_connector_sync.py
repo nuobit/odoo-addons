@@ -48,14 +48,13 @@ class LightingPortalConnectorSync(models.TransientModel):
                          (:reference is null OR p."ItemCode" = :reference) AND
                          p."ItmsGrpCod" = c."ItmsGrpCod" AND
                          pw."WhsCode" = '00' AND 
-                         p."ItemType" = 'I' AND
-                         p."ItmsGrpCod" IN (107, 108, 109, 111) /* Cristher, Dopo, Exo, Indeluz */
+                         p."ItemType" = 'I'
+                         /*AND p."ItmsGrpCod" IN (107, 108, 109, 111) */ /* Cristher, Dopo, Exo, Indeluz */
                    ORDER BY pw."ItemCode", pw."WhsCode"
                 """ % dict(schema=settings['schema'])
 
         cursor.execute(stmnt, {'reference': reference})
         header = [x[0] for x in cursor.description]
-        obj_rs = self.env['lighting.portal.product']
         for row in cursor:
             result0_d = dict(zip(header, row))
             result0_d['qty_available'] = int(result0_d['qty_available'])
@@ -64,27 +63,34 @@ class LightingPortalConnectorSync(models.TransientModel):
             elif result0_d['qty_available'] < 0:
                 result0_d['qty_available'] = 0
 
-            pim_ref = self.env['lighting.product'].search([('reference', '=', result0_d['reference'])])
-            if pim_ref:
-                result0_d['description'] = pim_ref.description
-                result0_d['product_id'] = pim_ref.id
+            pim_product = self.env['lighting.product'].search([('reference', '=', result0_d['reference'])])
+            if pim_product:
+                result0_d['description'] = pim_product.description
+                result0_d['product_id'] = pim_product.id
 
-            ref_obj = obj_rs.search([('reference', '=', result0_d['reference'])])
-            if ref_obj:
-                result1_d = {}
-                for k0, v0 in result0_d.items():
-                    v1 = getattr(ref_obj, k0, None)
-                    v1 = v1.id if k0 == 'product_id' else v1
-                    if v1 != v0:
-                        result1_d[k0] = v0
+            portal_product = self.env['lighting.portal.product'].search([('reference', '=', result0_d['reference'])])
+            if portal_product:
+                if not pim_product:
+                    portal_product.unlink()
+                else:
+                    result1_d = {}
+                    for k0, v0 in result0_d.items():
+                        v1 = getattr(portal_product, k0, None)
+                        v1 = v1.id if k0 == 'product_id' else v1
+                        if v1 != v0:
+                            result1_d[k0] = v0
 
-                result1_d['last_update'] = last_update
-                if reference:
-                    ref_obj = ref_obj
-                ref_obj.write(result1_d)
+                    result1_d['last_update'] = last_update
+                    portal_product.write(result1_d)
             else:
-                result0_d['last_update'] = last_update
-                obj_rs.create(result0_d)
+                if pim_product:
+                    result0_d['last_update'] = last_update
+                    self.env['lighting.portal.product'].create(result0_d)
+
+        # clean residual portal products
+        pim_product_references = self.env['lighting.product'].search([]).mapped("reference")
+        portal_product_orphan_ids = self.env['lighting.portal.product'].search([('reference', 'not in', pim_product_references)])
+        portal_product_orphan_ids.unlink()
 
         cursor.close()
         conn.close()
