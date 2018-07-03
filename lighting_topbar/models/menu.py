@@ -15,17 +15,16 @@ class IrUiMenu(models.Model):
         :return: the root menu ids
         :rtype: list(int)
         """
+        if not self.env.user.has_group('lighting_topbar.topbar_group_hide'):
+            return super(IrUiMenu, self).get_user_roots()
+
         domain = []
         if self.env['ir.module.module'].sudo().search([('name', '=', 'lighting'),
                                                 ('state', '=', 'installed')]):
-            domain.append(('id', '=', self.env.ref('lighting.main_lighting_menu').id))
+            domain.append(self.env.ref('lighting.main_lighting_menu').id)
 
         if self.env['ir.module.module'].sudo().search([('name', '=', 'lighting_portal'),
                                                 ('state', '=', 'installed')]):
-            domain.append(('id', '=', self.env.ref('lighting_portal.portal_menu_root').id))
+            domain.append(self.env.ref('lighting_portal.portal_menu_root').id)
 
-        if domain and self.env.user.has_group('lighting_topbar.topbar_group_hide'):
-            domain = ['|'] * (len(domain) - 1) + domain
-            return self.search([('parent_id', '=', False)] + domain)
-        else:
-            return super(IrUiMenu, self).get_user_roots()
+        return self.search([('parent_id', '=', False), ('id', 'in', domain)])
