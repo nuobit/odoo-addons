@@ -19,15 +19,4 @@
             </xpath>
         </field>
     </record>
-
-    <record id="portal_product_view_tree_inherit_lighting_portal_connector" model="ir.ui.view">
-        <field name="name">product_view_tree.inherit.lighting_portal_connector</field>
-        <field name="model">lighting.portal.product</field>
-        <field name="inherit_id" ref="lighting_portal.portal_product_view_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
-                <field name="last_update"/>
-            </xpath>
-        </field>
-    </record>
 </odoo>
