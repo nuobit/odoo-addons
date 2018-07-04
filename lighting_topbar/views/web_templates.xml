@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="web_menu_inherit_lighting_topbar" inherit_id="web.menu">
-        <xpath expr="//ul[contains(@class, 'oe_systray')]"
+        <xpath expr="//ul[hasclass('oe_systray')]"
                position="replace">
             <t t-if="not env.user.has_group('lighting_topbar.topbar_group_hide')">
                 <ul class="nav navbar-nav navbar-right oe_systray" style="display: none;"/>
