@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-30 23:09+0000\n"
-"PO-Revision-Date: 2018-06-30 23:09+0000\n"
+"POT-Creation-Date: 2018-07-04 16:43+0000\n"
+"PO-Revision-Date: 2018-07-04 16:43+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_ids
+msgid "ATP quantity"
+msgstr "Cantidad ATP"
 
 #. module: lighting_portal
 #: model:ir.module.category,description:lighting_portal.portal_security
@@ -32,11 +37,13 @@ msgid "Create the first Product"
 msgstr "Crear el primer Producto"
 
 #. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_create_uid
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_create_date
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_create_date
 msgid "Created on"
 msgstr "Creado el"
@@ -47,6 +54,7 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_display_name
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
@@ -57,21 +65,25 @@ msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_id
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_id
 msgid "ID"
 msgstr "ID"
 
 #. module: lighting_portal
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product___last_update
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp___last_update
 msgid "Last Modified on"
 msgstr "Última Modificación en"
 
 #. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_write_uid
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_write_uid
 msgid "Last Updated by"
 msgstr "Última actualización de"
 
 #. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_write_date
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_write_date
 msgid "Last Updated on"
 msgstr "Última Actualización el"
@@ -87,6 +99,13 @@ msgid "Manager"
 msgstr "Responsable"
 
 #. module: lighting_portal
+#: code:addons/lighting_portal/models/portal_product.py:45
+#: sql_constraint:lighting.portal.product.atp:0
+#, python-format
+msgid "Only one ship date is allowed for a product"
+msgstr "Solo está permitido una fecha de entraga por producto"
+
+#. module: lighting_portal
 #: model:ir.ui.menu,name:lighting_portal.portal_menu_root
 msgid "Portal"
 msgstr "Portal"
@@ -97,6 +116,7 @@ msgid "Portal Product Form"
 msgstr "Portal Product Form"
 
 #. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_portal_product_id
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_product_id
 #: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_search
 msgid "Product"
@@ -111,15 +131,37 @@ msgid "Products"
 msgstr "Productos"
 
 #. module: lighting_portal
-#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_quantity
+#: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_form
 msgid "Quantity"
 msgstr "Cantidad"
+
+#. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_qty_available
+msgid "Quantity available"
+msgstr "Cantidad disponible"
+
+#. module: lighting_portal
+#: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_form
+#: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_tree
+msgid "Quantity in transit"
+msgstr "Cantidad en tránsito"
+
+#. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_qty_ordered
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_qty_ordered
+msgid "Quantity ordered"
+msgstr "Cantidad pedida"
 
 #. module: lighting_portal
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_reference
 #: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_form
 msgid "Reference"
 msgstr "Referencia"
+
+#. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_atp_ship_date
+msgid "Ship date"
+msgstr "Fecha de entrega"
 
 #. module: lighting_portal
 #: sql_constraint:lighting.portal.product:0
@@ -145,4 +187,9 @@ msgstr "Sin stock"
 #: model:ir.model,name:lighting_portal.model_lighting_portal_product
 msgid "lighting.portal.product"
 msgstr "lighting.portal.product"
+
+#. module: lighting_portal
+#: model:ir.model,name:lighting_portal.model_lighting_portal_product_atp
+msgid "lighting.portal.product.atp"
+msgstr "lighting.portal.product.atp"
 
