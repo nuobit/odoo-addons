@@ -38,7 +38,24 @@ class LightingPortalConnectorSync(models.TransientModel):
 
         last_update = fields.datetime.now()
 
-        ########## Syncronize Stock
+        ########## Syncronize Products
+        self.synchronize_products(cursor, settings['schema'], last_update, reference=reference)
+
+        ########## Syncronize ATP
+        self.synchronize_atp(cursor, settings['schema'], last_update, reference=reference)
+
+        cursor.close()
+        conn.close()
+
+        if not reference: _logger.info('End syncronization')
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    @api.model
+    def synchronize_products(self, cursor, schema, last_update, reference=None):
         stmnt = """SELECT pw."ItemCode" as "reference", p."ItemName" as "description", 
                           c."ItmsGrpNam" as "catalog", 
                           /*pw."OnHand" as "qty_onhand",*/ 
@@ -52,7 +69,7 @@ class LightingPortalConnectorSync(models.TransientModel):
                          p."ItemType" = 'I'
                          /*AND p."ItmsGrpCod" IN (107, 108, 109, 111) */ /* Cristher, Dopo, Exo, Indeluz */
                    ORDER BY pw."ItemCode", pw."WhsCode"
-                """ % dict(schema=settings['schema'])
+                """ % dict(schema=schema)
 
         cursor.execute(stmnt, {'reference': reference})
         header = [x[0] for x in cursor.description]
@@ -94,35 +111,35 @@ class LightingPortalConnectorSync(models.TransientModel):
             portal_product_orphan_ids = self.env['lighting.portal.product'].search([('reference', 'not in', pim_product_references)])
             portal_product_orphan_ids.unlink()
 
-
-        ########## Syncronize ATP
+    @api.model
+    def synchronize_atp(self, cursor, schema, last_update, reference=None):
         stmnt = """WITH atp_onorder AS (
-                       SELECT lc."ItemCode",
-	                          lc."OpenCreQty" AS "OnOrder",
-		                      lc."ShipDate"
-	                   FROM %(schema)s.POR1 lc, %(schema)s.OPOR c
-	                   WHERE lc."DocEntry" = c."DocEntry" AND
-	                         (:reference is null OR lc."ItemCode" = :reference) AND
-	                         lc."WhsCode" = '00' AND
-	                         lc."OpenCreQty" != 0 AND
-	                         c.CANCELED = 'N'
-	                   UNION ALL
-                       SELECT o."ItemCode",
-                              o."PlannedQty" - (o."CmpltQty" + o."RjctQty") AS "OnOrder",
-                              o."DueDate" AS "ShipDate"
-                       FROM %(schema)s.OWOR o
-                       WHERE (:reference is null OR o."ItemCode" = :reference) AND
-                             o."Warehouse" = '00' AND
-                             o."Status" IN ('R', 'L') AND 
-                             (o."PlannedQty" - (o."CmpltQty" + o."RjctQty")) > 0
-                   )
-                   SELECT a."ItemCode" AS "reference", a."ShipDate" as "ship_date", 
-                          sum(a."OnOrder") AS "qty_ordered"
-                   FROM atp_onorder a
-                   WHERE DAYS_BETWEEN(CURRENT_DATE, a."ShipDate") <= 7*4
-                   GROUP BY a."ItemCode", a."ShipDate"
-                   ORDER BY "ItemCode", "ShipDate"
-                """ % dict(schema=settings['schema'])
+                               SELECT lc."ItemCode",
+        	                          lc."OpenCreQty" AS "OnOrder",
+        		                      lc."ShipDate"
+        	                   FROM %(schema)s.POR1 lc, %(schema)s.OPOR c
+        	                   WHERE lc."DocEntry" = c."DocEntry" AND
+        	                         (:reference is null OR lc."ItemCode" = :reference) AND
+        	                         lc."WhsCode" = '00' AND
+        	                         lc."OpenCreQty" != 0 AND
+        	                         c.CANCELED = 'N'
+        	                   UNION ALL
+                               SELECT o."ItemCode",
+                                      o."PlannedQty" - (o."CmpltQty" + o."RjctQty") AS "OnOrder",
+                                      o."DueDate" AS "ShipDate"
+                               FROM %(schema)s.OWOR o
+                               WHERE (:reference is null OR o."ItemCode" = :reference) AND
+                                     o."Warehouse" = '00' AND
+                                     o."Status" IN ('R', 'L') AND 
+                                     (o."PlannedQty" - (o."CmpltQty" + o."RjctQty")) > 0
+                           )
+                           SELECT a."ItemCode" AS "reference", a."ShipDate" as "ship_date", 
+                                  sum(a."OnOrder") AS "qty_ordered"
+                           FROM atp_onorder a
+                           WHERE DAYS_BETWEEN(CURRENT_DATE, a."ShipDate") <= 7*4
+                           GROUP BY a."ItemCode", a."ShipDate"
+                           ORDER BY "ItemCode", "ShipDate"
+                        """ % dict(schema=schema)
 
         cursor.execute(stmnt, {'reference': reference})
         header = [x[0] for x in cursor.description]
@@ -133,20 +150,10 @@ class LightingPortalConnectorSync(models.TransientModel):
 
             portal_product = self.env['lighting.portal.product'].search([('reference', '=', result0_d['reference'])])
             if portal_product:
-                values = {x:result0_d[x] for x in ['ship_date', 'qty_ordered']}
+                values = {x: result0_d[x] for x in ['ship_date', 'qty_ordered']}
                 atp_d.setdefault(portal_product, []).append(values)
 
         ## updatem
         for product_portal, atp_l in atp_d.items():
             product_portal.atp_ids.unlink()
             product_portal.atp_ids = [(0, False, values) for values in atp_l]
-
-        cursor.close()
-        conn.close()
-
-        if not reference: _logger.info('End syncronization')
-
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
