@@ -62,8 +62,9 @@
         <field name="model">lighting.portal.product</field>
         <field name="arch" type="xml">
             <tree string="Products"
-                  decoration-danger="qty_available==0"
-                  decoration-success="qty_available!=0">
+                  decoration-success="qty_available!=0"
+                  decoration-warning="qty_available==0 and qty_ordered!=0"
+                  decoration-danger="qty_available==0 and qty_ordered==0">
                 <field name="reference"/>
                 <field name="description"/>
                 <field name="catalog"/>
