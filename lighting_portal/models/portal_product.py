@@ -38,7 +38,7 @@ class LightingPortalProductATP(models.Model):
     qty_ordered = fields.Integer(string='Quantity ordered', required=True)
     ship_date = fields.Date(string='Ship date', required=True)
 
-    portal_product_id = fields.Many2one(comodel_name='lighting.portal.product', ondelete='restrict',
+    portal_product_id = fields.Many2one(comodel_name='lighting.portal.product', ondelete='cascade',
                                         string='Product')
 
 
