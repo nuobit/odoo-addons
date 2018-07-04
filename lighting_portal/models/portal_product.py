@@ -17,7 +17,7 @@ class LightingPortalProduct(models.Model):
 
     atp_ids = fields.One2many(comodel_name='lighting.portal.product.atp',
                               inverse_name='portal_product_id', string='ATP quantity')
-    qty_ordered = fields.Integer(string='Quantity ordered', compute="_compute_qty_ordered")
+    qty_ordered = fields.Integer(string='Quantity ordered', compute="_compute_qty_ordered", store=True)
     @api.depends('atp_ids.qty_ordered')
     def _compute_qty_ordered(self):
         for rec in self:

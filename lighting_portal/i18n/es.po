@@ -184,6 +184,16 @@ msgid "Without stock"
 msgstr "Sin stock"
 
 #. module: lighting_portal
+#: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_search
+msgid "In transit"
+msgstr "En tránsito"
+
+#. module: lighting_portal
+#: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_search
+msgid "Not in transit"
+msgstr "No en tránsito"
+
+#. module: lighting_portal
 #: model:ir.model,name:lighting_portal.model_lighting_portal_product
 msgid "lighting.portal.product"
 msgstr "lighting.portal.product"

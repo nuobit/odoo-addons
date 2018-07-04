@@ -88,6 +88,9 @@
                 <separator/>
                 <filter string="With stock" name="with_stock" domain="[('qty_available','!=', 0)]"/>
                 <filter string="Without stock" name="without_stock" domain="[('qty_available','=', 0)]"/>
+                <separator/>
+                <filter string="In transit" name="in_transit" domain="[('qty_ordered','!=', 0)]"/>
+                <filter string="Not in transit" name="not_in_transit" domain="[('qty_ordered','=', 0)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Catalog" name="groupby_catalog" domain="[]"
                             context="{'group_by': 'catalog'}"/>
