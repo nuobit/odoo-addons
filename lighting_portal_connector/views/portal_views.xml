@@ -12,7 +12,7 @@
                 <button name="update" string="Update" type="object"
                         class="btn-primary"/>
             </xpath>
-            <xpath expr="//field[@name='quantity']/.." position="after">
+            <xpath expr="//sheet" position="inside">
                 <group>
                     <field name="last_update"/>
                 </group>
