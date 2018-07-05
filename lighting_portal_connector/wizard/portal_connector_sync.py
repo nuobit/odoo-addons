@@ -130,7 +130,7 @@ class LightingPortalConnectorSync(models.TransientModel):
                                FROM %(schema)s.OWOR o
                                WHERE (:reference is null OR o."ItemCode" = :reference) AND
                                      o."Warehouse" = '00' AND
-                                     o."Status" IN ('R', 'L') AND 
+                                     o."Status" IN ('R', 'P') AND 
                                      (o."PlannedQty" - (o."CmpltQty" + o."RjctQty")) > 0
                            )
                            SELECT a."ItemCode" AS "reference", a."ShipDate" as "ship_date", 
