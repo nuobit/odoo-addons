@@ -1847,101 +1847,108 @@
 
     <!-- ============= product menu ============ -->
     <menuitem id="products_menu" name="Products" parent="lighting_menu"
-              action="product_list_action"/>
+              action="product_list_action"
+              sequence="10"/>
 
     <!-- ============= common data ============ -->
-    <menuitem id="catalogs_menu" name="Catalogs" parent="lighting_menu"
+    <menuitem id="common_data_menu"
+              name="Common data"
+              parent="lighting_menu"
+              sequence="20"/>
+
+    <menuitem id="catalogs_menu" name="Catalogs" parent="common_data_menu"
               action="catalog_list_action"/>
 
-    <menuitem id="product_families_menu" name="Families" parent="lighting_menu"
+    <menuitem id="product_families_menu" name="Families" parent="common_data_menu"
               action="product_family_list_action"/>
 
-    <menuitem id="product_types_menu" name="Types" parent="lighting_menu"
+    <menuitem id="product_types_menu" name="Types" parent="common_data_menu"
               action="product_type_list_action"/>
 
-    <menuitem id="dimension_types_menu" name="Dimension types" parent="lighting_menu"
+    <menuitem id="dimension_types_menu" name="Dimension types" parent="common_data_menu"
               action="dimension_type_list_action"/>
 
-    <menuitem id="energyefficiencies_menu" name="Energy efficiencies" parent="lighting_menu"
+    <menuitem id="energyefficiencies_menu" name="Energy efficiencies" parent="common_data_menu"
               action="energyefficiency_list_action"/>
 
     <!-- ============= description tab ============ -->
-    <menuitem id="product_applications_menu" name="Applications" parent="lighting_menu"
+    <menuitem id="product_applications_menu" name="Applications" parent="common_data_menu"
               action="product_application_list_action"/>
 
-    <menuitem id="product_finishes_menu" name="Finishes" parent="lighting_menu"
+    <menuitem id="product_finishes_menu" name="Finishes" parent="common_data_menu"
               action="product_finish_list_action"/>
 
-    <menuitem id="product_materials_menu" name="Materials" parent="lighting_menu"
+    <menuitem id="product_materials_menu" name="Materials" parent="common_data_menu"
               action="product_material_list_action"/>
 
     <!-- ============= Electrical characteristics tab ============ -->
-    <menuitem id="product_protectionclasses_menu" name="Protection classes" parent="lighting_menu"
+    <menuitem id="product_protectionclasses_menu" name="Protection classes" parent="common_data_menu"
               action="product_protectionclass_list_action"/>
 
-    <menuitem id="product_frequencies_menu" name="Frequencies" parent="lighting_menu"
+    <menuitem id="product_frequencies_menu" name="Frequencies" parent="common_data_menu"
               action="product_frequency_list_action"/>
 
-    <menuitem id="product_dimmables_menu" name="Dimmables" parent="lighting_menu"
+    <menuitem id="product_dimmables_menu" name="Dimmables" parent="common_data_menu"
               action="product_dimmable_list_action"/>
 
-    <menuitem id="product_auxiliaryequipments_menu" name="Auxiliary equipments" parent="lighting_menu"
+    <menuitem id="product_auxiliaryequipments_menu" name="Auxiliary equipments" parent="common_data_menu"
               action="product_auxiliaryequipment_list_action"/>
 
-    <menuitem id="product_auxiliaryequipmentbrands_menu" name="Auxiliary equipment brands" parent="lighting_menu"
+    <menuitem id="product_auxiliaryequipmentbrands_menu" name="Auxiliary equipment brands" parent="common_data_menu"
               action="product_auxiliaryequipmentbrand_list_action"/>
 
-    <menuitem id="product_voltages_menu" name="Voltages" parent="lighting_menu" action="product_voltage_list_action"/>
+    <menuitem id="product_voltages_menu" name="Voltages" parent="common_data_menu" action="product_voltage_list_action"/>
 
-    <menuitem id="product_sensors_menu" name="Sensors" parent="lighting_menu" action="product_sensor_list_action"/>
+    <menuitem id="product_sensors_menu" name="Sensors" parent="common_data_menu" action="product_sensor_list_action"/>
 
     <!-- ============= Lighting characteristics tab ============ -->
-    <menuitem id="product_ledbrands_menu" name="LED brands" parent="lighting_menu"
+    <menuitem id="product_ledbrands_menu" name="LED brands" parent="common_data_menu"
               action="product_ledbrand_list_action"/>
 
     <!-- ============= Pysical characteristics tab ============ -->
-    <menuitem id="product_ecorraecategories_menu" name="Ecorrae I categories" parent="lighting_menu"
+    <menuitem id="product_ecorraecategories_menu" name="Ecorrae I categories" parent="common_data_menu"
               action="product_ecorraecategory_list_action"/>
 
-    <menuitem id="product_ecorrae2categories_menu" name="Ecorrae II categories" parent="lighting_menu"
+    <menuitem id="product_ecorrae2categories_menu" name="Ecorrae II categories" parent="common_data_menu"
               action="product_ecorrae2category_list_action"/>
 
-    <menuitem id="product_photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="lighting_menu"
+    <menuitem id="product_photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="common_data_menu"
               action="product_photobiologicalriskgroup_list_action"/>
 
     <!-- ============= sources tab ============ -->
-    <menuitem id="product_source_lampholders_menu" name="Lampholders" parent="lighting_menu"
+    <menuitem id="product_source_lampholders_menu" name="Lampholders" parent="common_data_menu"
               action="product_source_lampholder_list_action"/>
 
-    <menuitem id="product_source_types_menu" name="Source types" parent="lighting_menu"
+    <menuitem id="product_source_types_menu" name="Source types" parent="common_data_menu"
               action="product_source_type_list_action"/>
 
     <!-- ============= beams tab ============ -->
-    <menuitem id="product_beam_photodistributions_menu" name="Beam photometric distributions" parent="lighting_menu"
+    <menuitem id="product_beam_photodistributions_menu" name="Beam photometric distributions" parent="common_data_menu"
               action="product_beam_photodistribution_list_action"/>
 
     <!-- ============= attachments tab ============ -->
-    <menuitem id="attachment_types_menu" name="Attachment types" parent="lighting_menu"
+    <menuitem id="attachment_types_menu" name="Attachment types" parent="common_data_menu"
               action="attachment_type_list_action"/>
 
-    <menuitem id="lenguages_menu" name="Languages" parent="lighting_menu"
+    <menuitem id="lenguages_menu" name="Languages" parent="common_data_menu"
               action="language_list_action"/>
 
     <!-- ============= logistics tab ============ -->
-    <menuitem id="assemblers_menu" name="Assemblers" parent="lighting_menu" action="assembler_list_action"/>
+    <menuitem id="assemblers_menu" name="Assemblers" parent="common_data_menu" action="assembler_list_action"/>
 
-    <menuitem id="suppliers_menu" name="Suppliers" parent="lighting_menu" action="supplier_list_action"/>
+    <menuitem id="suppliers_menu" name="Suppliers" parent="common_data_menu" action="supplier_list_action"/>
 
     <!-- ============= marketing tab ============ -->
-    <menuitem id="product_seokeyword_menu" name="SEO keywords" parent="lighting_menu"
+    <menuitem id="product_seokeyword_menu" name="SEO keywords" parent="common_data_menu"
               action="product_seokeyword_list_action"/>
 
-    <menuitem id="product_states_menu" name="States" parent="lighting_menu" action="product_state_list_action"/>
+    <menuitem id="product_states_menu" name="States" parent="common_data_menu" action="product_state_list_action"/>
 
     <!-- ============= ETIM ============ -->
     <menuitem id="menu_lighting_etim"
               name="ETIM"
-              parent="lighting_menu"/>
+              parent="lighting_menu"
+              sequence="30"/>
 
     <menuitem id="etim_group_menu"
               parent="menu_lighting_etim"
