@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_advanced_search_view_form" model="ir.ui.view">
+        <field name="name">product.advanced.search.form</field>
+        <field name="model">lighting.product.advanced.search</field>
+        <field name="arch" type="xml">
+            <form string="Advanced Product Search">
+                <group string="By attachment type">
+                    <group string="With types">
+                        <field string="Types" name="type_in_ids" widget="many2many_tags"/>
+                        <field name="type_in_op" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                    <group string="Without types">
+                        <field string="Types" name="type_not_in_ids" widget="many2many_tags"/>
+                        <field name="type_not_in_op" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Search" name="advanced_search" type="object" default_focus="1"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="product_advanced_search_action"
+                name="Advanced search"
+                res_model="lighting.product.advanced.search"
+                view_mode="form" target="new" view_type="form"/>
+
+    <menuitem id="product_advanced_search_menu"
+              name="Advanced Search"
+              parent="lighting.lighting_menu"
+              action="product_advanced_search_action"
+              sequence="20"/>
+</odoo>
