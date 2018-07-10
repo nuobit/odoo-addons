@@ -13,9 +13,9 @@
                         <h1 t-field="doc.reference"/>
                         <h3 t-field="doc.description"/>
 
-                        <div>
+                        <div t-if="doc.ean">
                             <strong>EAN</strong>
-                            <span t-field="doc.ip"/>
+                            <span t-field="doc.ean"/>
                         </div>
 
                         <div t-if="doc.catalog_ids">
@@ -45,12 +45,10 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <dl t-if="doc.ip" class="dl-horizontal">
-                            <dt>IP</dt>
-                            <dd>
-                                <span t-field="doc.ip"/>
-                            </dd>
-                        </dl>
+                        <div t-if="doc.ip">
+                            <strong>IP</strong>
+                            <span t-field="doc.ip"/>
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>
