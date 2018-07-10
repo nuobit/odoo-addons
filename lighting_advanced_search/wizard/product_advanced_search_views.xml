@@ -7,7 +7,7 @@
         <field name="name">product.advanced.search.form</field>
         <field name="model">lighting.product.advanced.search</field>
         <field name="arch" type="xml">
-            <form string="Advanced Product Search">
+            <form string="Advanced product search">
                 <group string="By attachment type">
                     <group string="With types">
                         <field string="Types" name="type_in_ids" widget="many2many_tags"/>
@@ -33,8 +33,8 @@
                 view_mode="form" target="new" view_type="form"/>
 
     <menuitem id="product_advanced_search_menu"
-              name="Advanced Search"
+              name="Advanced search"
               parent="lighting.lighting_menu"
               action="product_advanced_search_action"
-              sequence="20"/>
+              sequence="15"/>
 </odoo>
