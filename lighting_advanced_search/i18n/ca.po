@@ -1,0 +1,135 @@
+# This file contains the translation of the following modules:
+#	* lighting_advanced_search
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-10 17:26+0000\n"
+"PO-Revision-Date: 2018-07-10 17:26+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_advanced_search
+#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:61
+#, python-format
+msgid "Advanced Search"
+msgstr "Advanced Search"
+
+#. module: lighting_advanced_search
+#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Advanced product search"
+msgstr "Advanced product search"
+
+#. module: lighting_advanced_search
+#: model:ir.actions.act_window,name:lighting_advanced_search.product_advanced_search_action
+#: model:ir.ui.menu,name:lighting_advanced_search.product_advanced_search_menu
+msgid "Advanced search"
+msgstr "Advanced search"
+
+#. module: lighting_advanced_search
+#: model:ir.model,name:lighting_advanced_search.model_lighting_product_advanced_search
+msgid "Advanced search for products"
+msgstr "Advanced search for products"
+
+#. module: lighting_advanced_search
+#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:8
+#: selection:lighting.product.advanced.search,type_in_op:0
+#: selection:lighting.product.advanced.search,type_not_in_op:0
+#, python-format
+msgid "And"
+msgstr "And"
+
+#. module: lighting_advanced_search
+#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "By attachment type"
+msgstr "By attachment type"
+
+#. module: lighting_advanced_search
+#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_create_uid
+msgid "Created by"
+msgstr "Creat per"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_create_date
+msgid "Created on"
+msgstr "Creat el"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_display_name
+msgid "Display Name"
+msgstr "Mostra Nom"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_id
+msgid "ID"
+msgstr "ID"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search___last_update
+msgid "Last Modified on"
+msgstr "Darrera modificació feta el"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_write_uid
+msgid "Last Updated by"
+msgstr "Actualitzat per última vegada per"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_write_date
+msgid "Last Updated on"
+msgstr "Actualitzat per última vegada el dia"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_type_in_op
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_type_not_in_op
+msgid "Operator"
+msgstr "Operador"
+
+#. module: lighting_advanced_search
+#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:8
+#: selection:lighting.product.advanced.search,type_in_op:0
+#: selection:lighting.product.advanced.search,type_not_in_op:0
+#, python-format
+msgid "Or"
+msgstr "Or"
+
+#. module: lighting_advanced_search
+#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Search"
+msgstr "Cercar"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_type_in_ids
+msgid "Type In"
+msgstr "Type In"
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_type_not_in_ids
+msgid "Type Not In"
+msgstr "Type Not In"
+
+#. module: lighting_advanced_search
+#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Types"
+msgstr "Types"
+
+#. module: lighting_advanced_search
+#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "With types"
+msgstr "With types"
+
+#. module: lighting_advanced_search
+#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Without types"
+msgstr "Without types"
+
