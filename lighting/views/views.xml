@@ -458,6 +458,7 @@
                         <field name="datas_fname" invisible="1"/>
                         <field name="name"/>
                         <field name="lang_id"/>
+                        <field name="date"/>
                     </group>
                 </sheet>
             </form>
@@ -474,6 +475,7 @@
                 <field name="datas" filename="datas_fname" string="Size"/>
                 <field name="name"/>
                 <field name="lang_id"/>
+                <field name="date"/>
             </tree>
         </field>
     </record>

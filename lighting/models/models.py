@@ -885,6 +885,9 @@ class LightingAttachment(models.Model):
     datas_fname = fields.Char(string='Filename', required=True)
     attachment_id = fields.Many2one(comodel_name='ir.attachment',
                                              compute='_compute_ir_attachment', readonly=True)
+
+    date = fields.Date(string='Date')
+
     @api.depends('datas')
     def _compute_ir_attachment(self):
         for rec in self:
