@@ -133,6 +133,8 @@ class LightingProduct(models.Model):
 
     is_accessory = fields.Boolean(string='Is accessory')
 
+    last_update = fields.Date(string='Last modified on')
+
     _sql_constraints = [ ('reference_uniq', 'unique (reference)', 'The reference must be unique!'),
                          ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
         ]

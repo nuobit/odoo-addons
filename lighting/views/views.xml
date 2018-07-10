@@ -47,6 +47,9 @@
                         <field name="type_ids" widget="many2many_tags"/>
                         <field name="is_accessory"/>
                     </group>
+                    <group>
+                        <field name="last_update"/>
+                    </group>
 
                     <notebook>
                         <page string="Description">
@@ -306,6 +309,7 @@
                 <field name="type_ids" widget="many2many_tags"/>
                 <field name="ean"/>
                 <field name="is_accessory"/>
+                <field name="last_update"/>
             </tree>
         </field>
     </record>
@@ -1899,7 +1903,8 @@
     <menuitem id="product_auxiliaryequipmentbrands_menu" name="Auxiliary equipment brands" parent="common_data_menu"
               action="product_auxiliaryequipmentbrand_list_action"/>
 
-    <menuitem id="product_voltages_menu" name="Voltages" parent="common_data_menu" action="product_voltage_list_action"/>
+    <menuitem id="product_voltages_menu" name="Voltages" parent="common_data_menu"
+              action="product_voltage_list_action"/>
 
     <menuitem id="product_sensors_menu" name="Sensors" parent="common_data_menu" action="product_sensor_list_action"/>
 
