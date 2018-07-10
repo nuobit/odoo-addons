@@ -1415,6 +1415,8 @@
             <search>
                 <field name="reference" string="Product"
                        filter_domain="['|', '|', '|', '|', '|', ('reference','ilike',self), ('description','ilike',self), ('ean','ilike',self), ('catalog_ids','ilike',self), ('family_ids','ilike',self), ('type_ids','ilike',self)]"/>
+                 <field name="attachment_ids" string="Attachment type"
+                       filter_domain="[('attachment_ids.type_id.code','=',self)]"/>
                 <field name="reference"/>
                 <field name="description"/>
                 <field name="ean"/>
