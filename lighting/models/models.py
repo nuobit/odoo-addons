@@ -127,7 +127,7 @@ class LightingProduct(models.Model):
 
     description_manual = fields.Char(string='Description (manual)', help='Manual description', translate=True)
 
-    ean = fields.Char(string='EAN', required=True, index=True)
+    ean = fields.Char(string='EAN', required=False, index=True)
     family_ids = fields.Many2many(comodel_name='lighting.product.family',
                                   relation='lighting_product_family_rel', string='Families')
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', string='Catalogs')
