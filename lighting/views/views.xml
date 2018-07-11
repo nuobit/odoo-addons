@@ -47,7 +47,10 @@
                         <field name="catalog_ids" widget="many2many_tags"/>
                         <field name="family_ids" widget="many2many_tags"/>
                         <field name="type_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
                         <field name="is_accessory"/>
+                        <field name="is_component"/>
                     </group>
 
                     <notebook>
@@ -269,14 +272,14 @@
                                 <field name="marketing_comments" widget="text"/>
                             </group>
                         </page>
-                        <page string="Required accessories">
+                        <page string="Components">
                             <group>
-                                <field name="required_accessory_ids" nolabel="1"/>
+                                <field name="component_ids" nolabel="1"/>
                             </group>
                         </page>
-                        <page string="Recommended accessories">
+                        <page string="Accessories">
                             <group>
-                                <field name="recommended_accessory_ids" nolabel="1"/>
+                                <field name="accessory_ids" nolabel="1"/>
                             </group>
                         </page>
                         <page string="Substitutes">
@@ -308,6 +311,7 @@
                 <field name="type_ids" widget="many2many_tags"/>
                 <field name="ean"/>
                 <field name="is_accessory"/>
+                <field name="is_component"/>
                 <field name="in_progress"/>
                 <field name="last_update"/>
             </tree>
