@@ -303,7 +303,9 @@
         <field name="name">product.tree</field>
         <field name="model">lighting.product</field>
         <field name="arch" type="xml">
-            <tree string="Product Tree">
+            <tree string="Product Tree"
+                  decoration-warning="in_progress"
+                  decoration-danger="discontinued">
                 <field name="reference"/>
                 <field name="description"/>
                 <field name="catalog_ids" widget="many2many_tags"/>
@@ -312,8 +314,9 @@
                 <field name="ean"/>
                 <field name="is_accessory"/>
                 <field name="is_component"/>
-                <field name="in_progress"/>
                 <field name="last_update"/>
+                <field name="in_progress" invisible="1"/>
+                <field name="discontinued" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -1438,8 +1441,10 @@
                 <field name="application_ids"/>
                 <field name="dimmable_ids"/>
                 <separator/>
-                <filter string="Published" name="published" domain="[('in_progress','=', False)]"/>
-                <filter string="In progress" name="in_progress" domain="[('in_progress','!=', False)]"/>
+                <filter string="Published" name="published"
+                        domain="[('in_progress','=', False),('discontinued','=', False)]"/>
+                <filter string="Discontinued" name="discontinued" domain="[('discontinued','=', True)]"/>
+                <filter string="In progress" name="in_progress" domain="[('in_progress','=', True)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Published" name="groupby_published" domain="[]"
                             context="{'group_by': 'in_progress'}"/>
