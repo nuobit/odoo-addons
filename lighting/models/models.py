@@ -317,7 +317,8 @@ class LightingProduct(models.Model):
 
     # Substitutes tab
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',
-                                     column2='lighting_product_substitute_id', string='Substitutes')
+                                      column1='product_id', column2='substitute_id',
+                                      string='Substitutes')
 
     # logistics tab
     tariff_item = fields.Char(string="Tariff item")
