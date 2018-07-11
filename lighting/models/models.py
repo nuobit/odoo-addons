@@ -889,6 +889,7 @@ class LightingAttachment(models.Model):
                                              compute='_compute_ir_attachment', readonly=True)
 
     date = fields.Date(string='Date')
+    is_default = fields.Boolean(string='Default')
 
     @api.depends('datas')
     def _compute_ir_attachment(self):

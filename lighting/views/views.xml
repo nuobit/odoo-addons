@@ -464,6 +464,7 @@
                         <field name="name"/>
                         <field name="lang_id"/>
                         <field name="date"/>
+                        <field name="is_default"/>
                     </group>
                 </sheet>
             </form>
@@ -481,6 +482,7 @@
                 <field name="name"/>
                 <field name="lang_id"/>
                 <field name="date"/>
+                <field name="is_default"/>
             </tree>
         </field>
     </record>
