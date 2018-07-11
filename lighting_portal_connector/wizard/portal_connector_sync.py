@@ -42,7 +42,7 @@ class LightingPortalConnectorSync(models.TransientModel):
         self.synchronize_products(cursor, settings['schema'], last_update, reference=reference)
 
         ########## Syncronize ATP
-        self.synchronize_atp(cursor, settings['schema'], last_update, reference=reference)
+        #self.synchronize_atp(cursor, settings['schema'], last_update, reference=reference)
 
         cursor.close()
         conn.close()
