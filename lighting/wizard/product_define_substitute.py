@@ -19,13 +19,13 @@ class LightingProductDefineSubstitute(models.TransientModel):
         active_ids = context.get('active_ids', []) or []
         products = self.env['lighting.product'].browse(active_ids)
 
-        errors = {}
         for product in products:
-            a=1
-            #products.accessory_ids = (4, id, _)
+            substitute_ids = products.filtered(lambda x: x.id!=product.id)
+
+            if product.substitute_ids:
+                substitute_ids = substitute_ids.filtered(lambda x: x.id not in (product.substitute_ids.mapped('id')))
+
+            if substitute_ids:
+                product.substitute_ids = [(4, x.id, False) for x in substitute_ids]
 
 
-
-        return {
-            'type': 'ir.actions.do_nothing'
-        }
