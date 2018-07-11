@@ -31,6 +31,8 @@ class LightingProduct(models.Model):
     # Common data
     reference = fields.Char(string='Reference', required=True)
 
+    in_progress = fields.Boolean(string="In progress")
+
     description = fields.Char(compute='_compute_description', string='Description', readonly=True,
                                    help="Description dynamically generated from product data", store=True)
 
