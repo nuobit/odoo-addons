@@ -12,3 +12,8 @@ class LightingProduct(models.Model):
     @api.multi
     def print_product(self):
         return self.env.ref('lighting_reporting.action_report_product').report_action(self)
+
+class LightingAttachment(models.Model):
+    _inherit = 'lighting.attachment'
+
+    show_in_data_sheet = fields.Boolean(string='Show in data sheet')
