@@ -26,6 +26,24 @@
         </xpath>
     </template>
 
+    <template id="website_sale_show_defaultcode_product_cart_line" inherit_id="website_sale.cart_lines"
+              active="False" customize_show="True"
+              name="Product internal reference">
+        <xpath expr="//table[@id='cart_products']/tbody//a/strong[@t-esc='line.product_id.with_context(display_default_code=False).display_name']"
+               position="attributes">
+            <attribute name="t-esc">line.product_id.with_context(display_default_code=True).display_name</attribute>
+        </xpath>
+    </template>
+
+    <template id="website_sale_show_defaultcode_product_payment_line" inherit_id="website_sale.payment"
+              active="False" customize_show="True"
+              name="Product internal reference">
+        <xpath expr="//table[@id='cart_products']/tbody//td/div/strong[@t-field='line.product_id.with_context(display_default_code=False).display_name']"
+               position="attributes">
+            <attribute name="t-field">line.product_id.with_context(display_default_code=True).display_name</attribute>
+        </xpath>
+    </template>
+
 
     <!-- show barcode -->
     <template id="website_sale_show_barcode_product_id" inherit_id="website_sale.product"

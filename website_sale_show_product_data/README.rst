@@ -8,7 +8,7 @@ Show product data in website sale
 
 This module adds the following information on website products.
 
-* Show internal reference (default code) in products list and product detail
+* Show internal reference (default code) in products list, product detail, cart and payment.
 * Show provider in product detail
 * Hide helper text
 * Hide print button
