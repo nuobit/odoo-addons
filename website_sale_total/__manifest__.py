@@ -6,7 +6,7 @@
 {
     'name': "Website total form with cleaner interface",
     'description': "Custom total form with cleaner interface",
-    'version': '10.0.0.2.0',
+    'version': '10.0.0.3.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',

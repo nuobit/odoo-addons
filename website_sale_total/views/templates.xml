@@ -33,14 +33,19 @@
                                   t-options="{'widget': 'monetary','from_currency': website_sale_order.pricelist_id.currency_id,'display_currency': website.currency_id}"/>
                         </span>
                     </div>
-                    <div class="row" id="order_total_taxes">
-                        <span class="col-xs-7 text-left text-muted"
-                              title="Taxes may be updated after providing shipping address">Taxes:
-                        </span>
-                        <span class="col-xs-5 text-right text-muted">
-                            <span t-field="website_sale_order.amount_tax" style="white-space: nowrap;"
-                                  t-options="{'widget': 'monetary', 'from_currency': website_sale_order.pricelist_id.currency_id, 'display_currency': website.currency_id}"/>
-                        </span>
+                    <div id="order_total_taxes">
+                        <t t-foreach="website_sale_order._get_tax_amount_by_group()" t-as="amount_by_group">
+                            <div class="row">
+                                <span class="col-xs-7 text-left text-muted">
+                                    <span title="Taxes may be updated after providing shipping address"
+                                          t-esc="amount_by_group[0] or 'Taxes'"/><span>:</span>
+                                </span>
+                                <span class="col-xs-5 text-right text-muted">
+                                    <span t-esc="amount_by_group[1]" style="white-space: nowrap;"
+                                          t-options="{'widget': 'monetary', 'from_currency': website_sale_order.pricelist_id.currency_id, 'display_currency': website.currency_id}"/>
+                                </span>
+                            </div>
+                        </t>
                     </div>
                     <div class="row" id="order_total">
                         <span class="col-xs-6 text-left h3">Total:</span>
