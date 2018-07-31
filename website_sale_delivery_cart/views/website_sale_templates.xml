@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="cart_delivery" name="Show delivery methods" inherit_id="website_sale.cart"
+              active="False" customize_show="True">
+        <xpath expr="//div[@id='right_column']" position="replace">
+            <t t-set="website_deliveries"
+               t-value="website_sale_order.env['delivery.carrier'].search([('website_published', '=', True)]).sorted(lambda x: x.sequence)"/>
+            <div class="col-lg-3 col-lg-offset-1 col-sm-3 col-md-3 text-muted" id="right_column">
+                <t t-if="website_deliveries">
+                    <h4 class="mb16">Delivery options</h4>
+                </t>
+                <t t-foreach="website_deliveries" t-as="delivery">
+                    <h5>☑
+                        <span t-field="delivery.name"/>
+                    </h5>
+                    <ul class="list-unstyled mb16">
+                        <li>
+                            <span t-field="delivery.website_description"/>
+                        </li>
+                    </ul>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
