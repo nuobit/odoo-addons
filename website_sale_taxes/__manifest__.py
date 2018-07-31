@@ -18,5 +18,5 @@
     "data": [
         "views/website_sale_templates.xml",
         ],
-    "installabl": True,
+    "installable": True,
 }
