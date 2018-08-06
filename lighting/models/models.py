@@ -14,13 +14,6 @@ def float2text(f, decs=2):
     else:
         return ("{0:.%if}" % decs).format(f)
 
-COLOR_SELECTION = [ ('meat', 'Meat'), ('fashion', 'Fashion'),
-                    ('multifood', 'Multi Food'), ('bread', 'Bread'),
-                    ('fish', 'Fish'), ('vegetable', 'Vegetable'),
-                    ('blue', _('Blue')), ('orange', _('Orange')),
-                    ('green', _('Green')), ('red', _('Red')),
-                    ('purple', _('Purple')), ('pink', _('Pink')),
-                ]
 
 ## main model
 class LightingProduct(models.Model):
@@ -229,8 +222,6 @@ class LightingProduct(models.Model):
 
     led_lifetime_l = fields.Integer(string='LED lifetime L')
     led_lifetime_b = fields.Integer(string='LED lifetime B')
-
-    color = fields.Selection(selection=COLOR_SELECTION, string='Color')
 
     led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
                                    inverse_name='product_id', string='LED chip', copy=True)
@@ -814,7 +805,14 @@ class LightingProductSourceLine(models.Model):
 
     is_led = fields.Boolean(related='type_id.is_led')
     color_consistency = fields.Float(string='Color consistency')
-    special_spectrum = fields.Selection(COLOR_SELECTION, string='Special spectrum')
+    special_spectrum = fields.Selection(selection = [
+            ('meat', 'Meat'), ('fashion', 'Fashion'),
+            ('multifood', 'Multi Food'), ('bread', 'Bread'),
+            ('fish', 'Fish'), ('vegetable', 'Vegetable'),
+            ('blue', _('Blue')), ('orange', _('Orange')),
+            ('green', _('Green')), ('red', _('Red')),
+            ('purple', _('Purple')), ('pink', _('Pink')),
+        ], string='Special spectrum')
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
                                   relation='lighting_product_source_energyefficiency_rel',
