@@ -4861,8 +4861,8 @@ msgstr "Matt"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_max_wattage
-msgid "Max. Wattage"
-msgstr "Max. Wattage"
+msgid "Is max. Wattage"
+msgstr "Is max. Wattage"
 
 #. module: lighting
 #: model:lighting.etim.feature,name:lighting.lighting_etim_feature_ef000232

@@ -800,7 +800,7 @@ class LightingProductSourceLine(models.Model):
     type_id = fields.Many2one(comodel_name='lighting.product.source.type', ondelete='restrict', string='Type', required=True)
 
     wattage = fields.Float(string='Wattage')
-    is_max_wattage = fields.Boolean(string='Max. Wattage')
+    is_max_wattage = fields.Boolean(string='Is max. Wattage')
     wattage_magnitude = fields.Selection([('w', 'W'), ('wm', 'W/m')], string='Wattage magnitude', default='w')
 
     @api.constrains('wattage', 'type_id')
@@ -813,6 +813,7 @@ class LightingProductSourceLine(models.Model):
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
     color_temperature = fields.Integer(string='Color temperature (K)')
+
     special_spectrum = fields.Selection(COLOR_SELECTION, string='Special spectrum')
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
