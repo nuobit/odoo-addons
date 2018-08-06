@@ -1043,8 +1043,10 @@
                     <group>
                         <field name="code"/>
                         <field name="name"/>
-                        <field name="is_integrated"/>
+                    </group>
+                    <group>
                         <field name="is_led"/>
+                        <field name="is_integrated"/>
                     </group>
                     <group>
                         <field name="description_text"/>
@@ -1061,8 +1063,8 @@
             <tree string="Product source type Tree">
                 <field name="code"/>
                 <field name="name"/>
-                <field name="is_integrated"/>
                 <field name="is_led"/>
+                <field name="is_integrated"/>
                 <field name="description_text"/>
             </tree>
         </field>

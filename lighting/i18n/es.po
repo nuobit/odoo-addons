@@ -3958,8 +3958,8 @@ msgstr "Insulation displacement connector"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_is_integrated
-msgid "Integrated"
-msgstr "Integrated"
+msgid "Is integrated"
+msgstr "Is integrated"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_description
