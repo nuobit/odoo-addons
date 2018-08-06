@@ -230,8 +230,6 @@ class LightingProduct(models.Model):
     led_lifetime_l = fields.Integer(string='LED lifetime L')
     led_lifetime_b = fields.Integer(string='LED lifetime B')
 
-    color_consistency = fields.Float(string='Color consistency')
-
     color = fields.Selection(selection=COLOR_SELECTION, string='Color')
 
     led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
@@ -814,6 +812,8 @@ class LightingProductSourceLine(models.Model):
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
     color_temperature = fields.Integer(string='Color temperature (K)')
 
+    is_led = fields.Boolean(related='type_id.is_led')
+    color_consistency = fields.Float(string='Color consistency')
     special_spectrum = fields.Selection(COLOR_SELECTION, string='Special spectrum')
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',

@@ -136,8 +136,6 @@
                                 <field name="led_lifetime_l"/>
                                 <field name="led_lifetime_b"/>
 
-                                <field name="color_consistency"/>
-
                                 <field name="color"/>
 
                                 <field name="led_chip_ids">
@@ -991,7 +989,9 @@
                             <field name="efficiency_ids" widget="many2many_tags"/>
                         </group>
                     </group>
-                    <group>
+                    <group attrs="{'invisible': [('is_led', '=', False)]}">
+                        <field name="is_led" invisible="1"/>
+                        <field name="color_consistency"/>
                         <field name="special_spectrum"/>
                     </group>
                     <group>
