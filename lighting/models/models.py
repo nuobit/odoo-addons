@@ -382,6 +382,13 @@ class LightingCatalog(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name of catalog must be unique!'),
                         ]
 
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('catalog_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingCatalog, self).unlink()
+
 class LightingProductFamily(models.Model):
     _name = 'lighting.product.family'
     _order = 'name'
@@ -390,6 +397,13 @@ class LightingProductFamily(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The family must be unique!'),
                         ]
+
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('family_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductFamily, self).unlink()
 
 class LightingProductType(models.Model):
     _name = 'lighting.product.type'
@@ -400,6 +414,13 @@ class LightingProductType(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
                         ]
 
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('type_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductType, self).unlink()
+
 class LightingEnergyEfficiency(models.Model):
     _name = 'lighting.energyefficiency'
     _order = 'sequence'
@@ -409,6 +430,15 @@ class LightingEnergyEfficiency(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The energy efficiency must be unique!'),
                         ]
+
+    @api.multi
+    def unlink(self):
+        fields = ['efficiency_ids', 'lamp_included_efficiency_ids']
+        for f in fields:
+            records = self.env['lighting.product'].search([(f, 'in', self.ids)])
+            if records:
+                raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingEnergyEfficiency, self).unlink()
 
 class LightingDimensionType(models.Model):
     _name = 'lighting.dimension.type'
@@ -441,6 +471,13 @@ class LightingProductApplication(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The application must be unique!'),
                         ]
 
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('application_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductApplication, self).unlink()
+
 class LightingProductFinish(models.Model):
     _name = 'lighting.product.finish'
     _order = 'code'
@@ -472,6 +509,16 @@ class LightingProductMaterial(models.Model):
                         ('code_uniq', 'unique (code)', 'The material code must be unique!'),
                         ]
 
+    @api.multi
+    def unlink(self):
+        fields = ['body_material_ids', 'diffusor_material_ids', 'frame_material_ids'
+                  'reflector_material_ids', 'blade_material_ids']
+        for f in fields:
+            records = self.env['lighting.product'].search([(f, 'in', self.ids)])
+            if records:
+                raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductMaterial, self).unlink()
+
 ###### Electrical characteristics tab
 class LightingProductProtectionClass(models.Model):
     _name = 'lighting.product.protectionclass'
@@ -500,6 +547,13 @@ class LightingProductDimmable(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The dimmable must be unique!'),
                         ]
 
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('dimmable_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductDimmable, self).unlink()
+
 class LightingProductAuxiliaryEquipment(models.Model):
     _name = 'lighting.product.auxiliaryequipment'
     _order = 'name'
@@ -508,6 +562,13 @@ class LightingProductAuxiliaryEquipment(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment must be unique!'),
                         ]
+
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('auxiliary_equipment_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductAuxiliaryEquipment, self).unlink()
 
 class LightingProductAuxiliaryEquipmentModel(models.Model):
     _name = 'lighting.product.auxiliaryequipmentmodel'
@@ -591,6 +652,13 @@ class LightingProductSensor(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The sensor must be unique!'),
                         ]
+
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('sensor_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductSensor, self).unlink()
 
 ###########  Lighting characteristics tab
 
@@ -870,6 +938,13 @@ class LightingProductBeamPhotometricDistribution(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The photometric distribution name must be unique!'),
                         ]
 
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('photometric_distribution_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductBeamPhotometricDistribution, self).unlink()
+
 class LightingProductBeamDimension(models.Model):
     _name = 'lighting.product.beam.dimension'
     _order = 'sequence'
@@ -996,6 +1071,13 @@ class LightingProductSEOKeyword(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The keyword must be unique!'),
                         ]
+
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product'].search([('seo_keyword_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super(LightingProductSEOKeyword, self).unlink()
 
 class LightingProductState(models.Model):
     _name = 'lighting.product.state'
