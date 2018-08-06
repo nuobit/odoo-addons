@@ -1044,6 +1044,7 @@
                         <field name="code"/>
                         <field name="name"/>
                         <field name="is_integrated"/>
+                        <field name="is_led"/>
                     </group>
                     <group>
                         <field name="description_text"/>
@@ -1061,6 +1062,7 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="is_integrated"/>
+                <field name="is_led"/>
                 <field name="description_text"/>
             </tree>
         </field>

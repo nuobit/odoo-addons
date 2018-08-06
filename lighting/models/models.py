@@ -894,6 +894,7 @@ class LightingProductSourceType(models.Model):
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Name', help='Source description', translate=True)
     is_integrated = fields.Boolean(string='Integrated')
+    is_led = fields.Boolean(string='Is LED?')
 
     description_text = fields.Char(string='Description text', help='Text to show on a generated product description', translate=True)
 
