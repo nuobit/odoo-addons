@@ -992,8 +992,9 @@
                         <field name="color_consistency"/>
                         <field name="special_spectrum"/>
                     </group>
-                    <group>
+                    <group attrs="{'invisible': [('is_integrated', '=', True)]}">
                         <group>
+                            <field name="is_integrated" invisible="1"/>
                             <field name="is_lamp_included"/>
                             <field name="lamp_included_efficiency_ids" widget="many2many_tags"
                                    attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>

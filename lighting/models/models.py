@@ -818,6 +818,7 @@ class LightingProductSourceLine(models.Model):
                                   relation='lighting_product_source_energyefficiency_rel',
                                   string='Energy efficiency')
 
+    is_integrated = fields.Boolean(related='type_id.is_integrated')
     is_lamp_included = fields.Boolean(string='Lamp included?')
     lamp_included_efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
                                   relation='lighting_product_source_lampenergyefficiency_rel',
