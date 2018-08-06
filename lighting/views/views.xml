@@ -135,14 +135,6 @@
 
                                 <field name="led_lifetime_l"/>
                                 <field name="led_lifetime_b"/>
-
-                                <field name="led_chip_ids">
-                                    <tree editable="bottom">
-                                        <field name="reference"/>
-                                        <field name="brand_id"/>
-                                        <field name="date"/>
-                                    </tree>
-                                </field>
                             </group>
                         </page>
                         <page string="Physical">
@@ -991,6 +983,13 @@
                         <field name="is_led" invisible="1"/>
                         <field name="color_consistency"/>
                         <field name="special_spectrum"/>
+                        <field name="led_chip_ids">
+                            <tree editable="bottom">
+                                <field name="reference"/>
+                                <field name="brand_id"/>
+                                <field name="date"/>
+                            </tree>
+                        </field>
                     </group>
                     <group attrs="{'invisible': [('is_integrated', '=', True)]}">
                         <group>

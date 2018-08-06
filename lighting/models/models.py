@@ -223,9 +223,6 @@ class LightingProduct(models.Model):
     led_lifetime_l = fields.Integer(string='LED lifetime L')
     led_lifetime_b = fields.Integer(string='LED lifetime B')
 
-    led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
-                                   inverse_name='product_id', string='LED chip', copy=True)
-
     # Physical characteristics
     weight = fields.Float(string='Weight (kg)')
     dimension_ids = fields.One2many(comodel_name='lighting.product.dimension', inverse_name='product_id', string='Dimensions', copy=True)
@@ -654,16 +651,16 @@ class LightingProductSensor(models.Model):
 class LightingProductLedChip(models.Model):
     _name = 'lighting.product.ledchip'
     _rec_name = 'reference'
-    _order = 'product_id,date desc'
+    _order = 'source_line_id,date desc'
 
     reference = fields.Char(string='Reference')
     brand_id = fields.Many2one(comodel_name='lighting.product.ledbrand',
                                ondelete='restrict', string='Brand', required=True)
     date = fields.Date(string='Date')
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
+    source_line_id = fields.Many2one(comodel_name='lighting.product.source.line', ondelete='cascade', string='Source line')
 
-    _sql_constraints = [('ledchip_uniq', 'unique (product_id, date)', 'The LED chip date must be unique!'),
+    _sql_constraints = [('ledchip_uniq', 'unique (source_line_id, date)', 'The LED chip date must be unique!'),
                         ]
 
 
@@ -813,6 +810,8 @@ class LightingProductSourceLine(models.Model):
             ('green', _('Green')), ('red', _('Red')),
             ('purple', _('Purple')), ('pink', _('Pink')),
         ], string='Special spectrum')
+    led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
+                                   inverse_name='source_line_id', string='LED chip', copy=True)
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
                                   relation='lighting_product_source_energyefficiency_rel',
@@ -823,8 +822,6 @@ class LightingProductSourceLine(models.Model):
     lamp_included_efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
                                   relation='lighting_product_source_lampenergyefficiency_rel',
                                   string='Lamp included efficiency')
-
-    source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
     ## computed fields
     wattage_display = fields.Char(compute='_compute_wattage_display', string='Wattage (W)')
@@ -872,6 +869,8 @@ class LightingProductSourceLine(models.Model):
 
             if res != []:
                 rec.luminous_flux_display = "-".join(res)
+
+    source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
 class LightingProductSourceLampholder(models.Model):
     _name = 'lighting.product.source.lampholder'
