@@ -17,4 +17,49 @@
             </xpath>
         </field>
     </record>
+
+    <record id="product_family_view_form_inherit_seo" model="ir.ui.view">
+        <field name="name">product_family_view.form.inherit.seo</field>
+        <field name="model">lighting.product.family</field>
+        <field name="inherit_id" ref="lighting.product_family_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="SEO/SEM">
+                    <field name="seo_description" widget="text"/>
+                    <field name="seo_keyword_ids" widget="many2many_tags"/>
+                    <field name="url_description"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_type_view_form_inherit_seo" model="ir.ui.view">
+        <field name="name">product_type_view.form.inherit.seo</field>
+        <field name="model">lighting.product.type</field>
+        <field name="inherit_id" ref="lighting.product_type_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="SEO/SEM">
+                    <field name="seo_description" widget="text"/>
+                    <field name="seo_keyword_ids" widget="many2many_tags"/>
+                    <field name="url_description"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_application_view_form_inherit_seo" model="ir.ui.view">
+        <field name="name">product_application_view.form.inherit.seo</field>
+        <field name="model">lighting.product.application</field>
+        <field name="inherit_id" ref="lighting.product_application_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="SEO/SEM">
+                    <field name="seo_description" widget="text"/>
+                    <field name="seo_keyword_ids" widget="many2many_tags"/>
+                    <field name="url_description"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
 </odoo>

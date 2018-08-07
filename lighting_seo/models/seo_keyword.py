@@ -17,7 +17,12 @@ class LightingSEOKeyword(models.Model):
 
     @api.multi
     def unlink(self):
-        records = self.env['lighting.product'].search([('seo_keyword_ids', 'in', self.ids)])
-        if records:
-            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        models = ['lighting.product', 'lighting.product.family',
+                  'lighting.product.type', 'lighting.product.application']
+
+        for m in models:
+            records = self.env[m].search([('seo_keyword_ids', 'in', self.ids)])
+            if records:
+                raise UserError(_("You are trying to delete a record that is still referenced by '%s' model!" % m))
+
         return super(LightingSEOKeyword, self).unlink()

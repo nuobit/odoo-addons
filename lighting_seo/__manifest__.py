@@ -5,7 +5,7 @@
 {
     'name': "Lighting SEO/SEM",
     'description': "Add SEO/SEM capabilities to Lighting vertical",
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.2.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
