@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-07 08:38+0000\n"
-"PO-Revision-Date: 2018-08-07 08:38+0000\n"
+"POT-Creation-Date: 2018-08-07 09:28+0000\n"
+"PO-Revision-Date: 2018-08-07 09:28+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,6 +31,13 @@ msgid "Created on"
 msgstr "Creat el"
 
 #. module: lighting_seo
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_application_seo_description
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_family_seo_description
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_type_seo_description
+msgid "Description"
+msgstr "Descripció"
+
+#. module: lighting_seo
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_seo_keyword_display_name
 msgid "Display Name"
 msgstr "Mostra Nom"
@@ -46,6 +53,10 @@ msgid "Keyword"
 msgstr "Keyword"
 
 #. module: lighting_seo
+#: model:ir.actions.act_window,name:lighting_seo.seo_keyword_action
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_application_seo_keyword_ids
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_family_seo_keyword_ids
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_type_seo_keyword_ids
 #: model:ir.ui.menu,name:lighting_seo.seo_keyword_menu
 msgid "Keywords"
 msgstr "Keywords"
@@ -66,11 +77,6 @@ msgid "Last Updated on"
 msgstr "Actualitzat per última vegada el dia"
 
 #. module: lighting_seo
-#: model:ir.actions.act_window,name:lighting_seo.seo_keyword_action
-msgid "Keywords"
-msgstr "Keywords"
-
-#. module: lighting_seo
 #: model:ir.ui.view,arch_db:lighting_seo.seo_keyword_form_view
 msgid "SEO keyword Form"
 msgstr "SEO keyword Form"
@@ -82,6 +88,9 @@ msgstr "SEO keyword Tree"
 
 #. module: lighting_seo
 #: model:ir.ui.menu,name:lighting_seo.seo_menu
+#: model:ir.ui.view,arch_db:lighting_seo.product_application_view_form_inherit_seo
+#: model:ir.ui.view,arch_db:lighting_seo.product_family_view_form_inherit_seo
+#: model:ir.ui.view,arch_db:lighting_seo.product_type_view_form_inherit_seo
 #: model:ir.ui.view,arch_db:lighting_seo.product_view_form_inherit_seo
 msgid "SEO/SEM"
 msgstr "SEO/SEM"
@@ -92,15 +101,46 @@ msgid "The keyword must be unique!"
 msgstr "The keyword must be unique!"
 
 #. module: lighting_seo
-#: code:addons/lighting_seo/models/seo_keyword.py:23
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_application_seo_title
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_family_seo_title
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_seo_title
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_type_seo_title
+msgid "Title"
+msgstr "Títol"
+
+#. module: lighting_seo
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_application_seo_url
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_family_seo_url
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_seo_url
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_type_seo_url
+msgid "URL"
+msgstr "URL"
+
+#. module: lighting_seo
+#: code:addons/lighting_seo/models/seo_keyword.py:26
 #, python-format
-msgid "You are trying to delete a record that is still referenced!"
-msgstr "You are trying to delete a record that is still referenced!"
+msgid "You are trying to delete a record that is still referenced by '%s' model!"
+msgstr "You are trying to delete a record that is still referenced by '%s' model!"
 
 #. module: lighting_seo
 #: model:ir.model,name:lighting_seo.model_lighting_product
 msgid "lighting.product"
 msgstr "lighting.product"
+
+#. module: lighting_seo
+#: model:ir.model,name:lighting_seo.model_lighting_product_application
+msgid "lighting.product.application"
+msgstr "lighting.product.application"
+
+#. module: lighting_seo
+#: model:ir.model,name:lighting_seo.model_lighting_product_family
+msgid "lighting.product.family"
+msgstr "lighting.product.family"
+
+#. module: lighting_seo
+#: model:ir.model,name:lighting_seo.model_lighting_product_type
+msgid "lighting.product.type"
+msgstr "lighting.product.type"
 
 #. module: lighting_seo
 #: model:ir.model,name:lighting_seo.model_lighting_seo_keyword
