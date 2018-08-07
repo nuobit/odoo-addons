@@ -39,3 +39,12 @@ class LightingProductApplication(models.Model):
     seo_keyword_ids = fields.Many2many(comodel_name='lighting.seo.keyword', relation='lighting_product_application_seo_keyword_rel',
                                        column1='application_id', column2='keyword_id', string='Keywords')
     seo_url = fields.Char(string='URL')
+
+class LightingCatalog(models.Model):
+    _inherit = 'lighting.catalog'
+
+    seo_title = fields.Char(string='Title', translate=True)
+    seo_description = fields.Char(string='Description', translate=True)
+    seo_keyword_ids = fields.Many2many(comodel_name='lighting.seo.keyword', relation='lighting_catalog_seo_keyword_rel',
+                                       column1='catalog_id', column2='keyword_id', string='Keywords')
+    seo_url = fields.Char(string='URL')

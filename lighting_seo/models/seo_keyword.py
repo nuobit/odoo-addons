@@ -17,7 +17,7 @@ class LightingSEOKeyword(models.Model):
 
     @api.multi
     def unlink(self):
-        models = ['lighting.product', 'lighting.product.family',
+        models = ['lighting.product', 'lighting.catalog', 'lighting.product.family',
                   'lighting.product.type', 'lighting.product.application']
 
         for m in models:
