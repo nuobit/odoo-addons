@@ -375,6 +375,7 @@
         <field name="arch" type="xml">
             <tree string="Product family Tree">
                 <field name="name"/>
+                <field name="product_count"/>
             </tree>
         </field>
     </record>
@@ -648,6 +649,7 @@
             <tree string="Product material Tree">
                 <field name="code"/>
                 <field name="name"/>
+                <field name="product_count"/>
             </tree>
         </field>
     </record>
