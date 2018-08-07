@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ================================ VIEWS =========================== -->
+    <!-- view seo.keyword -->
+    <record id="seo_keyword_form_view" model="ir.ui.view">
+        <field name="name">seo.keyword.form</field>
+        <field name="model">lighting.seo.keyword</field>
+        <field name="arch" type="xml">
+            <form string="SEO keyword Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="seo_keyword_tree_view" model="ir.ui.view">
+        <field name="name">seo.keyword.tree</field>
+        <field name="model">lighting.seo.keyword</field>
+        <field name="arch" type="xml">
+            <tree string="SEO keyword Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================================ WINDOWS =========================== -->
+    <!-- window action seo.keyword class -->
+    <record id="seo_keyword_action" model="ir.actions.act_window">
+        <field name="name">Keywords</field>
+        <field name="res_model">lighting.seo.keyword</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Keyword</p>
+        </field>
+    </record>
+
+    <!-- ================================ MENUS =========================== -->
+    <!-- A first level in the left side menu is needed
+         before using action= attribute -->
+    <menuitem id="seo_menu" name="SEO/SEM"
+              parent="lighting.main_lighting_menu"/>
+
+    <!-- menu seo.keyword -->
+    <menuitem id="seo_keyword_menu" name="Keywords" parent="seo_menu"
+              action="seo_keyword_action"/>
+</odoo>
