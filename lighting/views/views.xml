@@ -1433,6 +1433,8 @@
                 <field name="type_ids"/>
                 <field name="application_ids"/>
                 <field name="dimmable_ids"/>
+                <field name="body_material_ids" string="=Material code"
+                       filter_domain="['|', '|', '|', '|', ('body_material_ids.code','=ilike',self), ('diffusor_material_ids.code','=ilike',self), ('frame_material_ids.code','=ilike',self), ('reflector_material_ids.code','=ilike',self), ('blade_material_ids.code','=ilike',self)]"/>
                 <separator/>
                 <filter string="Published" name="published"
                         domain="[('in_progress','=', False),('discontinued','=', False)]"/>
