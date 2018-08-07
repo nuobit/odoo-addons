@@ -2,7 +2,7 @@
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
-<openerp>
+<odoo>
     <data noupdate="1">
         <!-- dimension type -->
         <record id="dimension_type_length_mm" model="lighting.dimension.type">
@@ -435,255 +435,255 @@
         </record>
 
         <!-- materials -->
-        <record id="product_material_abs_metal" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_abs_metal" model="lighting.product.material">
             <field name="code">ABS METAL</field>
             <field name="name">ABS metalizado</field>
         </record>
-        <record id="product_material_acer" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_acer" model="lighting.product.material">
             <field name="code">ACER</field>
             <field name="name">Acero</field>
         </record>
-        <record id="product_material_acer_paint" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_acer_paint" model="lighting.product.material">
             <field name="code">ACER PAINT</field>
             <field name="name">Acero pintado</field>
         </record>
-        <record id="product_material_alu" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu" model="lighting.product.material">
             <field name="code">ALU</field>
             <field name="name">Aluminio</field>
         </record>
-        <record id="product_material_alu_99" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu_99" model="lighting.product.material">
             <field name="code">ALU 99,99%</field>
             <field name="name">Aluminio 99%</field>
         </record>
-        <record id="product_material_alu_anod" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu_anod" model="lighting.product.material">
             <field name="code">ALU ANOD</field>
             <field name="name">Aluminio anodizado</field>
         </record>
-        <record id="product_material_alu_anod_brillo" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu_anod_brillo" model="lighting.product.material">
             <field name="code">ALU ANOD BRILLO</field>
             <field name="name">Aluminio anodizado brillo</field>
         </record>
-        <record id="product_material_alu_cepill" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu_cepill" model="lighting.product.material">
             <field name="code">ALU CEPILL</field>
             <field name="name">Aluminio cepillado</field>
         </record>
-        <record id="product_material_alu_escal" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu_escal" model="lighting.product.material">
             <field name="code">ALU ESCAL</field>
             <field name="name">Aluminio escalonado</field>
         </record>
-        <record id="product_material_alu_facet" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu_facet" model="lighting.product.material">
             <field name="code">ALU FACET</field>
             <field name="name">Aluminio facetado</field>
         </record>
-        <record id="product_material_alu_mat" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu_mat" model="lighting.product.material">
             <field name="code">ALU MAT</field>
             <field name="name">Aluminio matizado</field>
         </record>
-        <record id="product_material_alu_paint" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_alu_paint" model="lighting.product.material">
             <field name="code">ALU PAINT</field>
             <field name="name">Aluminio pintado</field>
         </record>
-        <record id="product_material_antiq_brass" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_antiq_brass" model="lighting.product.material">
             <field name="code">ANTIQ BRASS</field>
             <field name="name">Latón envejecido</field>
         </record>
-        <record id="product_material_beech_wood" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_beech_wood" model="lighting.product.material">
             <field name="code">BEECH WOOD</field>
             <field name="name">Madera de haya</field>
         </record>
-        <record id="product_material_brass" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_brass" model="lighting.product.material">
             <field name="code">BRASS</field>
             <field name="name">Latón</field>
         </record>
-        <record id="product_material_chrom_brass" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_chrom_brass" model="lighting.product.material">
             <field name="code">CHROM BRASS</field>
             <field name="name">Latón cromado</field>
         </record>
-        <record id="product_material_concr" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_concr" model="lighting.product.material">
             <field name="code">CONCR</field>
             <field name="name">Hormigón</field>
         </record>
-        <record id="product_material_cotton" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_cotton" model="lighting.product.material">
             <field name="code">COTTON</field>
             <field name="name">Algodón</field>
         </record>
-        <record id="product_material_cu" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_cu" model="lighting.product.material">
             <field name="code">Cu</field>
             <field name="name">Cobre</field>
         </record>
-        <record id="product_material_glass" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_glass" model="lighting.product.material">
             <field name="code">GLASS</field>
             <field name="name">Cristal</field>
         </record>
-        <record id="product_material_glass_amber" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_glass_amber" model="lighting.product.material">
             <field name="code">GLASS AMBER</field>
             <field name="name">Cristal ambar</field>
         </record>
-        <record id="product_material_glass_mat" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_glass_mat" model="lighting.product.material">
             <field name="code">GLASS MAT</field>
             <field name="name">Cristal matizado</field>
         </record>
-        <record id="product_material_glass_opal" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_glass_opal" model="lighting.product.material">
             <field name="code">GLASS OPAL</field>
             <field name="name">Cristal opalizado</field>
         </record>
-        <record id="product_material_glass_prism" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_glass_prism" model="lighting.product.material">
             <field name="code">GLASS PRISM</field>
             <field name="name">Cristal prismático</field>
         </record>
-        <record id="product_material_glass_trans" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_glass_trans" model="lighting.product.material">
             <field name="code">GLASS TRANS</field>
             <field name="name">Cristal transparente</field>
         </record>
-        <record id="product_material_glass_trans_temp" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_glass_trans_temp" model="lighting.product.material">
             <field name="code">GLASS TRANS TEMP</field>
             <field name="name">Cristal templado transparente</field>
         </record>
-        <record id="product_material_inox" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_inox" model="lighting.product.material">
             <field name="code">INOX</field>
             <field name="name">Acero inoxidable</field>
         </record>
-        <record id="product_material_inox_316l" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_inox_316l" model="lighting.product.material">
             <field name="code">INOX 316L</field>
             <field name="name">Inox 316L</field>
         </record>
-        <record id="product_material_inox_aisi_304" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_inox_aisi_304" model="lighting.product.material">
             <field name="code">INOX AISI 304</field>
             <field name="name">Inox aisi 304</field>
         </record>
-        <record id="product_material_inox_aisi_316" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_inox_aisi_316" model="lighting.product.material">
             <field name="code">INOX AISI 316</field>
             <field name="name">Inox aisi 316</field>
         </record>
-        <record id="product_material_inox_aisi_316l" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_inox_aisi_316l" model="lighting.product.material">
             <field name="code">INOX AISI 316L</field>
             <field name="name">Inox aisi 316L</field>
         </record>
-        <record id="product_material_lens_pmma" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_lens_pmma" model="lighting.product.material">
             <field name="code">LENS PMMA</field>
             <field name="name">Lentes PMMA</field>
         </record>
-        <record id="product_material_nat_fiber" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_nat_fiber" model="lighting.product.material">
             <field name="code">NAT FIBER</field>
             <field name="name">Fibra natural</field>
         </record>
-        <record id="product_material_nickel_sat" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_nickel_sat" model="lighting.product.material">
             <field name="code">NICKEL SAT</field>
             <field name="name">Niquel satinado</field>
         </record>
-        <record id="product_material_nylon" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_nylon" model="lighting.product.material">
             <field name="code">NYLON</field>
             <field name="name">Nylon</field>
         </record>
-        <record id="product_material_oak_wood" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_oak_wood" model="lighting.product.material">
             <field name="code">OAK WOOD</field>
             <field name="name">Madera de roble</field>
         </record>
-        <record id="product_material_pa" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pa" model="lighting.product.material">
             <field name="code">PA</field>
             <field name="name">Poliamida</field>
         </record>
-        <record id="product_material_pc" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pc" model="lighting.product.material">
             <field name="code">PC</field>
             <field name="name">Policarbonato</field>
         </record>
-        <record id="product_material_pc_facet_metal" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pc_facet_metal" model="lighting.product.material">
             <field name="code">PC FACET METAL</field>
             <field name="name">Policarbonato facetado metalizado</field>
         </record>
-        <record id="product_material_pc_mat" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pc_mat" model="lighting.product.material">
             <field name="code">PC MAT</field>
             <field name="name">Policarbonato matizado</field>
         </record>
-        <record id="product_material_pc_metal" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pc_metal" model="lighting.product.material">
             <field name="code">PC METAL</field>
             <field name="name">Policarbonato metalizado</field>
         </record>
-        <record id="product_material_pc_opal" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pc_opal" model="lighting.product.material">
             <field name="code">PC OPAL</field>
             <field name="name">Policarbonato opalizado</field>
         </record>
-        <record id="product_material_pc_prism" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pc_prism" model="lighting.product.material">
             <field name="code">PC PRISM</field>
             <field name="name">Policarbonato prismático</field>
         </record>
-        <record id="product_material_pc_trans" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pc_trans" model="lighting.product.material">
             <field name="code">PC TRANS</field>
             <field name="name">Policarbonato transparente</field>
         </record>
-        <record id="product_material_pe" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pe" model="lighting.product.material">
             <field name="code">PE</field>
             <field name="name">Polietileno</field>
         </record>
-        <record id="product_material_plaster" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_plaster" model="lighting.product.material">
             <field name="code">PLASTER</field>
             <field name="name">Yeso</field>
         </record>
-        <record id="product_material_pmma" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pmma" model="lighting.product.material">
             <field name="code">PMMA</field>
             <field name="name">Metacrilato</field>
         </record>
-        <record id="product_material_pmma_mat" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pmma_mat" model="lighting.product.material">
             <field name="code">PMMA MAT</field>
             <field name="name">Metacrilato matizado</field>
         </record>
-        <record id="product_material_pmma_opal" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pmma_opal" model="lighting.product.material">
             <field name="code">PMMA OPAL</field>
             <field name="name">Metacrilato opalizado</field>
         </record>
-        <record id="product_material_pmma_prism" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pmma_prism" model="lighting.product.material">
             <field name="code">PMMA PRISM</field>
             <field name="name">Metacrilato prismático</field>
         </record>
-        <record id="product_material_pmma_trans" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pmma_trans" model="lighting.product.material">
             <field name="code">PMMA TRANS</field>
             <field name="name">Metacrilato transparente</field>
         </record>
-        <record id="product_material_pph" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_pph" model="lighting.product.material">
             <field name="code">PPH</field>
             <field name="name">Polipropileno homopolímero</field>
         </record>
-        <record id="product_material_resin" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_resin" model="lighting.product.material">
             <field name="code">RESIN</field>
             <field name="name">Resina</field>
         </record>
-        <record id="product_material_silicon" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_silicon" model="lighting.product.material">
             <field name="code">SILICON</field>
             <field name="name">Silicona</field>
         </record>
-        <record id="product_material_stone" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_stone" model="lighting.product.material">
             <field name="code">STONE</field>
             <field name="name">Piedra</field>
         </record>
-        <record id="product_material_straw" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_straw" model="lighting.product.material">
             <field name="code">STRAW</field>
             <field name="name">Paja</field>
         </record>
-        <record id="product_material_synt_fiber" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_synt_fiber" model="lighting.product.material">
             <field name="code">SYNT FIBER</field>
             <field name="name">Fibra sintética</field>
         </record>
-        <record id="product_material_tecnopolim" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_tecnopolim" model="lighting.product.material">
             <field name="code">TECNOPOLIM</field>
             <field name="name">Tecnopolímero</field>
         </record>
-        <record id="product_material_termoplastic" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_termoplastic" model="lighting.product.material">
             <field name="code">TERMOPLASTIC</field>
             <field name="name">Termoplástico</field>
         </record>
-        <record id="product_material_wood" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_wood" model="lighting.product.material">
             <field name="code">WOOD</field>
             <field name="name">Madera</field>
         </record>
-        <record id="product_material_yute" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_yute" model="lighting.product.material">
             <field name="code">YUTE</field>
             <field name="name">Yute</field>
         </record>
-        <record id="product_material_zamak" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_zamak" model="lighting.product.material">
             <field name="code">ZAMAK</field>
             <field name="name">Zamak</field>
         </record>
-        <record id="product_material_na" model="lighting.product.material">
+        <record forcecreate="0" id="product_material_na" model="lighting.product.material">
             <field name="code">-</field>
             <field name="name">-</field>
         </record>
@@ -740,7 +740,8 @@
         <record id="product_auxiliaryequipment_electronic" model="lighting.product.auxiliaryequipment">
             <field name="name">Electronic</field>
         </record>
-        <record id="product_auxiliaryequipment_without_equipment_not_needed" model="lighting.product.auxiliaryequipment">
+        <record id="product_auxiliaryequipment_without_equipment_not_needed"
+                model="lighting.product.auxiliaryequipment">
             <field name="name">Without equipment, not needed</field>
         </record>
         <record id="product_auxiliaryequipment_without_equipment_needed" model="lighting.product.auxiliaryequipment">
@@ -1336,4 +1337,4 @@
             <field name="name">New</field>
         </record>
     </data>
-</openerp>
+</odoo>
