@@ -335,6 +335,19 @@
         </field>
     </record>
 
+    <!-- window action familiy smart button -->
+    <record id="product_family_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('family_ids','=',active_id)]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product</p>
+        </field>
+    </record>
+
     <!-- view family -->
     <record model="ir.ui.view" id="product_family_form_view">
         <field name="name">product.family.form</field>
@@ -342,6 +355,12 @@
         <field name="arch" type="xml">
             <form string="Product family Form">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_family_action_product)d">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
                     </group>
@@ -590,10 +609,13 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">['|', '|', '|', '|', ('body_material_ids','=',active_id), ('diffusor_material_ids','=',active_id), ('frame_material_ids','=',active_id), ('reflector_material_ids','=',active_id), ('blade_material_ids','=',active_id)]</field>
+        <field name="domain">['|', '|', '|', '|', ('body_material_ids','=',active_id),
+            ('diffusor_material_ids','=',active_id), ('frame_material_ids','=',active_id),
+            ('reflector_material_ids','=',active_id), ('blade_material_ids','=',active_id)]
+        </field>
         <field name="context">{}</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first attachment</p>
+            <p class="oe_view_nocontent_create">Create the first product</p>
         </field>
     </record>
 

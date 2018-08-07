@@ -376,6 +376,11 @@ class LightingProductFamily(models.Model):
 
     name = fields.Char(string='Family', required=True)
 
+    product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = self.env['lighting.product'].search_count([('family_ids','=',record.id)])
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The family must be unique!'),
                         ]
 
