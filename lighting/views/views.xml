@@ -245,7 +245,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Marketing">
+                        <page string="Marketing" id="marketing_tab">
                             <group>
                                 <field name="discontinued"/>
                                 <field name="discontinued_by_supplier"/>
