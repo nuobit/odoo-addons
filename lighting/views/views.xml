@@ -976,7 +976,15 @@
                             <field name="efficiency_ids" widget="many2many_tags"/>
                         </group>
                     </group>
-                    <group attrs="{'invisible': [('is_led', '=', False)]}">
+                    <group attrs="{'invisible': [('is_integrated', '=', True)]}">
+                        <group>
+                            <field name="is_integrated" invisible="1"/>
+                            <field name="is_lamp_included"/>
+                            <field name="lamp_included_efficiency_ids" widget="many2many_tags"
+                                   attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <group string="LED specifications" attrs="{'invisible': [('is_led', '=', False)]}">
                         <field name="is_led" invisible="1"/>
                         <field name="color_consistency"/>
                         <field name="special_spectrum"/>
@@ -987,14 +995,6 @@
                                 <field name="date"/>
                             </tree>
                         </field>
-                    </group>
-                    <group attrs="{'invisible': [('is_integrated', '=', True)]}">
-                        <group>
-                            <field name="is_integrated" invisible="1"/>
-                            <field name="is_lamp_included"/>
-                            <field name="lamp_included_efficiency_ids" widget="many2many_tags"
-                                   attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
-                        </group>
                     </group>
                 </sheet>
             </form>

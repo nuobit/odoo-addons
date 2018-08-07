@@ -3999,8 +3999,8 @@ msgstr "LED brands"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_led_chip_ids
-msgid "LED chip"
-msgstr "LED chip"
+msgid "Chip"
+msgstr "Chip"
 
 #. module: lighting
 #: model:lighting.etim.value,name:lighting.lighting_etim_value_ev011514
@@ -7077,8 +7077,8 @@ msgstr "The LED brand must be unique!"
 
 #. module: lighting
 #: sql_constraint:lighting.product.ledchip:0
-msgid "The LED chip date must be unique!"
-msgstr "The LED chip date must be unique!"
+msgid "The chip date must be unique!"
+msgstr "The chip date must be unique!"
 
 #. module: lighting
 #: sql_constraint:lighting.product.application:0

@@ -656,7 +656,7 @@ class LightingProductLedChip(models.Model):
 
     source_line_id = fields.Many2one(comodel_name='lighting.product.source.line', ondelete='cascade', string='Source line')
 
-    _sql_constraints = [('ledchip_uniq', 'unique (source_line_id, date)', 'The LED chip date must be unique!'),
+    _sql_constraints = [('ledchip_uniq', 'unique (source_line_id, date)', 'The chip date must be unique!'),
                         ]
 
 
@@ -807,7 +807,7 @@ class LightingProductSourceLine(models.Model):
             ('purple', _('Purple')), ('pink', _('Pink')),
         ], string='Special spectrum')
     led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
-                                   inverse_name='source_line_id', string='LED chip', copy=True)
+                                   inverse_name='source_line_id', string='Chip', copy=True)
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
                                   relation='lighting_product_source_energyefficiency_rel',
