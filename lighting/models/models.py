@@ -486,6 +486,14 @@ class LightingProductMaterial(models.Model):
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
 
+    product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = self.env['lighting.product'].search_count([
+                '|', '|', '|', '|', ('body_material_ids','=',record.id),
+                ('diffusor_material_ids','=',record.id), ('frame_material_ids','=',record.id),
+                ('reflector_material_ids','=',record.id), ('blade_material_ids','=',record.id)])
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The material name must be unique!'),
                         ('code_uniq', 'unique (code)', 'The material code must be unique!'),
                         ]
