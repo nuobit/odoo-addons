@@ -492,7 +492,7 @@ class LightingProductMaterial(models.Model):
 
     @api.multi
     def unlink(self):
-        fields = ['body_material_ids', 'diffusor_material_ids', 'frame_material_ids'
+        fields = ['body_material_ids', 'diffusor_material_ids', 'frame_material_ids',
                   'reflector_material_ids', 'blade_material_ids']
         for f in fields:
             records = self.env['lighting.product'].search([(f, 'in', self.ids)])
