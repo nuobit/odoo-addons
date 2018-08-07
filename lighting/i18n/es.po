@@ -1569,11 +1569,6 @@ msgid "Create the first Protection class"
 msgstr "Create the first Protection class"
 
 #. module: lighting
-#: model:ir.actions.act_window,help:lighting.product_seokeyword_list_action
-msgid "Create the first SEO keyword"
-msgstr "Create the first SEO keyword"
-
-#. module: lighting
 #: model:ir.actions.act_window,help:lighting.supplier_list_action
 msgid "Create the first Supplier"
 msgstr "Create the first Supplier"
@@ -1709,7 +1704,6 @@ msgstr "Create the first product voltage"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protectionclass_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_create_uid
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seokeyword_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_create_uid
@@ -1764,7 +1758,6 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protectionclass_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_create_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seokeyword_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_create_date
@@ -2227,7 +2220,6 @@ msgstr "Discontinuado por el proveedor"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protectionclass_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_display_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seokeyword_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display_name
@@ -3509,7 +3501,6 @@ msgstr "IBox width (cm)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protectionclass_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_id
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seokeyword_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_id_19283
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_id
@@ -3987,11 +3978,6 @@ msgid "Kelvin"
 msgstr "Kelvin"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seokeyword_name
-msgid "Keyword"
-msgstr "Keyword"
-
-#. module: lighting
 #: model:lighting.etim.unit,name:lighting.lighting_etim_unit_eu570039
 msgid "Kilogram"
 msgstr "Kilogram"
@@ -4216,7 +4202,6 @@ msgstr "Idiomas"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protectionclass___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor___last_update
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seokeyword___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line___last_update
@@ -4270,7 +4255,6 @@ msgstr "Última Modificación en"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protectionclass_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_write_uid
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seokeyword_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_write_uid
@@ -4325,7 +4309,6 @@ msgstr "Última actualización de"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protectionclass_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_write_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seokeyword_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_write_date
@@ -5868,21 +5851,6 @@ msgid "Product LED brand Tree"
 msgstr "Product LED brand Tree"
 
 #. module: lighting
-#: model:ir.actions.act_window,name:lighting.product_seokeyword_list_action
-msgid "Product SEO keyword"
-msgstr "Product SEO keyword"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_seokeyword_form_view
-msgid "Product SEO keyword Form"
-msgstr "Product SEO keyword Form"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_seokeyword_tree_view
-msgid "Product SEO keyword Tree"
-msgstr "Product SEO keyword Tree"
-
-#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_tree_view
 msgid "Product Tree"
 msgstr "Product Tree"
@@ -6500,17 +6468,6 @@ msgstr "SDCM6"
 #: model:lighting.etim.value,name:lighting.lighting_etim_value_ev014020
 msgid "SDCM7"
 msgstr "SDCM7"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seo_description
-msgid "SEO description"
-msgstr "SEO description"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_seo_keyword_ids
-#: model:ir.ui.menu,name:lighting.product_seokeyword_menu
-msgid "SEO keywords"
-msgstr "SEO keywords"
 
 #. module: lighting
 #: model:lighting.etim.value,name:lighting.lighting_etim_value_ev010144
@@ -7211,11 +7168,6 @@ msgstr "The frequency must be unique!"
 #: sql_constraint:lighting.settings:0
 msgid "The host, port, username must be unique!"
 msgstr "The host, port, username must be unique!"
-
-#. module: lighting
-#: sql_constraint:lighting.product.seokeyword:0
-msgid "The keyword must be unique!"
-msgstr "The keyword must be unique!"
 
 #. module: lighting
 #: sql_constraint:lighting.product.source.lampholder:0
@@ -8219,11 +8171,6 @@ msgstr "lighting.product.recessdimension"
 #: model:ir.model,name:lighting.model_lighting_product_sensor
 msgid "lighting.product.sensor"
 msgstr "lighting.product.sensor"
-
-#. module: lighting
-#: model:ir.model,name:lighting.model_lighting_product_seokeyword
-msgid "lighting.product.seokeyword"
-msgstr "lighting.product.seokeyword"
 
 #. module: lighting
 #: model:ir.model,name:lighting.model_lighting_product_source
