@@ -2785,11 +2785,6 @@ msgid "Fit for monitor workplace acc. EN 12464-1"
 msgstr "Fit for monitor workplace acc. EN 12464-1"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_fixed_mrp
-msgid "Fixed MRP"
-msgstr "Fixed MRP"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_flammable_surfaces
 msgid "Flammable surfaces"
 msgstr "Flammable surfaces"

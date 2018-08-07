@@ -329,7 +329,6 @@ class LightingProduct(models.Model):
     discontinued_by_supplier = fields.Boolean(string='Discontinued by supplier')
     until_end_stock = fields.Boolean(string='Until end of stock')
     on_request = fields.Boolean(string='On request')
-    fixed_mrp  = fields.Boolean(string='Fixed MRP')
     state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State')
     effective_date = fields.Date(string='Effective date')
     marketing_comments = fields.Char(string='Comments')

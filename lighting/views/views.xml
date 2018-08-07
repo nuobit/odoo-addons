@@ -251,7 +251,6 @@
                                 <field name="discontinued_by_supplier"/>
                                 <field name="until_end_stock"/>
                                 <field name="on_request"/>
-                                <field name="fixed_mrp"/>
                                 <field name="state_id"/>
                                 <field name="effective_date"/>
                                 <field name="marketing_comments" widget="text"/>
