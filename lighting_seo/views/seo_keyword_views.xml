@@ -45,7 +45,8 @@
     <!-- A first level in the left side menu is needed
          before using action= attribute -->
     <menuitem id="seo_menu" name="SEO/SEM"
-              parent="lighting.lighting_menu"/>
+              parent="lighting.lighting_menu"
+              sequence="20"/>
 
     <!-- menu seo.keyword -->
     <menuitem id="seo_keyword_menu" name="Keywords" parent="seo_menu"
