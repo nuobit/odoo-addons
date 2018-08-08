@@ -34,7 +34,7 @@
 
     <menuitem id="product_advanced_search_menu"
               name="Advanced search"
-              parent="lighting.lighting_menu"
+              parent="lighting.lighting_product_menu"
               action="product_advanced_search_action"
               sequence="15"/>
 </odoo>
