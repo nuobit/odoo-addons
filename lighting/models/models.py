@@ -23,9 +23,6 @@ class LightingProduct(models.Model):
 
     # Common data
     reference = fields.Char(string='Reference', required=True)
-
-    in_progress = fields.Boolean(string="In progress")
-
     description = fields.Char(compute='_compute_description', string='Description', readonly=True,
                                    help="Description dynamically generated from product data", store=True)
 
@@ -344,7 +341,6 @@ class LightingProduct(models.Model):
     mbox_height = fields.Float(string='Masterbox height (cm)')
 
     # marketing tab
-    discontinued = fields.Boolean(string='Discontinued')
     discontinued_by_supplier = fields.Boolean(string='Discontinued by supplier')
     until_end_stock = fields.Boolean(string='Until end of stock')
     on_request = fields.Boolean(string='On request')
@@ -356,6 +352,12 @@ class LightingProduct(models.Model):
     class_id = fields.Many2one(comodel_name='lighting.etim.class', ondelete='restrict', string='Class')
     feature_ids = fields.One2many(comodel_name='lighting.product.etim.feature',
                                    inverse_name='product_id', string='Features', copy=True)
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+        ('discontinued', 'Discontinued'),
+    ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
 
     @api.multi
     def copy(self, default=None):

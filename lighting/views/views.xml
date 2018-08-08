@@ -24,7 +24,12 @@
         <field name="model">lighting.product</field>
         <field name="arch" type="xml">
             <form string="Product Form">
-                <header/>
+                <header>
+                    <field name="state" widget="statusbar"
+                           clickable="True" options="{'fold_field': 'fold'}"
+                           statusbar_visible="draft,published,discontinued"
+                           statusbar_colors='{"draft":"blue", "published":"green", "discontinued":"red"}'/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button type="action" class="oe_stat_button" icon="fa-files-o"
@@ -37,10 +42,9 @@
                             <field name="reference" placeholder="Reference"/>
                         </h1>
                     </div>
-                    <group col="10">
-                        <field name="description" colspan="8"/>
-                        <field name="in_progress" colspan="2"/>
-                        <field name="description_manual" colspan="8"/>
+                    <group>
+                        <field name="description"/>
+                        <field name="description_manual"/>
                     </group>
                     <group>
                         <field name="ean"/>
@@ -247,7 +251,6 @@
                         </page>
                         <page string="Marketing" id="marketing_tab">
                             <group>
-                                <field name="discontinued"/>
                                 <field name="discontinued_by_supplier"/>
                                 <field name="until_end_stock"/>
                                 <field name="on_request"/>
@@ -288,8 +291,8 @@
         <field name="model">lighting.product</field>
         <field name="arch" type="xml">
             <tree string="Product Tree"
-                  decoration-warning="in_progress"
-                  decoration-danger="discontinued">
+                  decoration-warning="state == 'draft'"
+                  decoration-danger="state == 'discontinued'">
                 <field name="reference"/>
                 <field name="description"/>
                 <field name="catalog_ids" widget="many2many_tags"/>
@@ -298,9 +301,8 @@
                 <field name="ean"/>
                 <field name="is_accessory"/>
                 <field name="is_component"/>
+                <field name="state"/>
                 <field name="last_update"/>
-                <field name="in_progress" invisible="1"/>
-                <field name="discontinued" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -1480,12 +1482,12 @@
                        filter_domain="['|', '|', '|', '|', ('body_material_ids.code','=ilike',self), ('diffusor_material_ids.code','=ilike',self), ('frame_material_ids.code','=ilike',self), ('reflector_material_ids.code','=ilike',self), ('blade_material_ids.code','=ilike',self)]"/>
                 <separator/>
                 <filter string="Published" name="published"
-                        domain="[('in_progress','=', False),('discontinued','=', False)]"/>
-                <filter string="Discontinued" name="discontinued" domain="[('discontinued','=', True)]"/>
-                <filter string="In progress" name="in_progress" domain="[('in_progress','=', True)]"/>
+                        domain="[('state','=', 'published')]"/>
+                <filter string="Discontinued" name="discontinued" domain="[('state', '=', 'discontinued')]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
                 <group expand="0" string="Group By">
-                    <filter string="Published" name="groupby_published" domain="[]"
-                            context="{'group_by': 'in_progress'}"/>
+                    <filter string="State" name="groupby_state" domain="[]"
+                            context="{'group_by': 'state'}"/>
                 </group>
             </search>
         </field>
