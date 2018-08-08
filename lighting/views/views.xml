@@ -27,8 +27,7 @@
                 <header>
                     <field name="state" widget="statusbar"
                            clickable="True" options="{'fold_field': 'fold'}"
-                           statusbar_visible="draft,published,discontinued"
-                           statusbar_colors='{"draft":"blue", "published":"green", "discontinued":"red"}'/>
+                           statusbar_visible="draft,to_review,published,discontinued"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -40,7 +39,7 @@
                     <div class="oe_title">
                         <h1>
                             <field name="reference" placeholder="Reference"
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                   attrs="{'readonly': [('state', 'not in', ('draft', 'to_review'))]}"/>
                         </h1>
                     </div>
                     <group>
@@ -293,6 +292,7 @@
         <field name="arch" type="xml">
             <tree string="Product Tree"
                   decoration-warning="state == 'draft'"
+                  decoration-info="state == 'to_review'"
                   decoration-danger="state == 'discontinued'">
                 <field name="reference"/>
                 <field name="description"/>
@@ -1484,8 +1484,12 @@
                 <separator/>
                 <filter string="Published" name="published"
                         domain="[('state','=', 'published')]"/>
-                <filter string="Discontinued" name="discontinued" domain="[('state', '=', 'discontinued')]"/>
-                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="To review" name="to_review"
+                        domain="[('state','=', 'to_review')]"/>
+                <filter string="Discontinued" name="discontinued"
+                        domain="[('state', '=', 'discontinued')]"/>
+                <filter string="Draft" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="groupby_state" domain="[]"
                             context="{'group_by': 'state'}"/>

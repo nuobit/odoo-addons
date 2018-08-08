@@ -355,6 +355,7 @@ class LightingProduct(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
+        ('to_review', 'To review'),
         ('published', 'Published'),
         ('discontinued', 'Discontinued'),
     ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
