@@ -845,7 +845,10 @@ class LightingProductSourceLine(models.Model):
 
         res = []
         if self.wattage > 0:
-            wattage_str = float2text(self.wattage*mult)
+            wattage_str = float2text(self.wattage)
+            if mult>1:
+                wattage_str = '%ix%s' % (mult, wattage_str)
+
             if self.wattage_magnitude:
                 wattage_str += wattage_magnitude_option.get(self.wattage_magnitude)
             res.append(wattage_str)
