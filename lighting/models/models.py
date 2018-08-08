@@ -43,7 +43,7 @@ class LightingProduct(models.Model):
     def _compute_description(self):
         for rec in self:
             data = []
-            data.append(','.join(rec.application_ids.mapped('name')))
+            data.append(','.join(rec.type_ids.mapped('name')))
             data.append(','.join(rec.family_ids.mapped('name')))
 
             ip_catalogs = rec.catalog_ids.filtered(lambda x: x.description_show_ip)
