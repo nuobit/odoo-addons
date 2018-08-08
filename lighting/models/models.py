@@ -43,20 +43,26 @@ class LightingProduct(models.Model):
     def _compute_description(self):
         for rec in self:
             data = []
-            data.append(','.join(rec.type_ids.mapped('name')))
-            data.append(','.join(rec.family_ids.mapped('name')))
+            if rec.type_ids:
+                data.append(','.join(rec.type_ids.mapped('name')))
 
-            ip_catalogs = rec.catalog_ids.filtered(lambda x: x.description_show_ip)
-            if ip_catalogs:
-                data_ip = []
-                for ipx in ('ip', 'ip2'):
-                    ip = getattr(rec, ipx)
-                    if ip:
-                        prefix = self.fields_get([ipx], ['string']).get(ipx).get('string')
-                        data_ip.append('%s %i' % (prefix, ip))
-                data.append(','.join(data_ip))
+            if rec.family_ids:
+                data.append(','.join(rec.family_ids.mapped('name')))
 
-            data.append(','.join(rec.dimmable_ids.mapped('name')))
+            if rec.catalog_ids:
+                ip_catalogs = rec.catalog_ids.filtered(lambda x: x.description_show_ip)
+                if ip_catalogs:
+                    data_ip = []
+                    for ipx in ('ip', 'ip2'):
+                        ip = getattr(rec, ipx)
+                        if ip:
+                            prefix = self.fields_get([ipx], ['string']).get(ipx).get('string')
+                            data_ip.append('%s %i' % (prefix, ip))
+                    if data_ip:
+                        data.append(','.join(data_ip))
+
+            if rec.dimmable_ids:
+                data.append(','.join(rec.dimmable_ids.mapped('name')))
 
             data_sources = []
             for source in rec.source_ids:
@@ -77,7 +83,8 @@ class LightingProduct(models.Model):
 
                             wattage_total_display = line.prepare_wattage_str(mult=line.source_id.num or 1,
                                                                              is_max_wattage=False)
-                            data_line.append(wattage_total_display or '')
+                            if wattage_total_display:
+                                data_line.append(wattage_total_display)
 
                             data_lm = []
                             for lmx in ('luminous_flux1', 'luminous_flux2'):
@@ -93,10 +100,13 @@ class LightingProduct(models.Model):
                             if line.color_temperature:
                                 data_line.append('%sK' % line.color_temperature)
 
-                            data_lines.append(' '.join(data_line))
-                        data_source.append(','.join(data_lines))
+                            if data_line:
+                                data_lines.append(' '.join(data_line))
+                        if data_lines:
+                            data_source.append(','.join(data_lines))
                     else:
-                        data_source.append(source.lampholder_id.code or '')
+                        if source.lampholder_id:
+                            data_source.append(source.lampholder_id.code)
 
                         wattage_d = {}
                         for line in lines:
@@ -110,17 +120,22 @@ class LightingProduct(models.Model):
                             line_max = sorted(lines, key=lambda x: x.wattage, reverse=True)[0]
                             wattage_total_display = line_max.prepare_wattage_str(mult=line_max.source_id.num or 1,
                                                                                  is_max_wattage=False)
-                            data_lines.append(wattage_total_display or '')
-                        data_source.append(','.join(data_lines))
+                            if wattage_total_display:
+                                data_lines.append(wattage_total_display)
+                        if data_lines:
+                            data_source.append(','.join(data_lines))
 
-                    data_sources.append(' '.join(data_source))
+                    if data_source:
+                        data_sources.append(' '.join(data_source))
 
-            if data_sources != []:
+            if data_sources:
                 data.append('+'.join(data_sources))
 
-            data.append(rec.finish_id.name or '')
+            if rec.finish_id:
+                data.append(rec.finish_id.name)
 
-            rec.description = ' '.join(data)
+            if data:
+                rec.description = ' '.join(data)
 
     description_manual = fields.Char(string='Description (manual)', help='Manual description', translate=True)
 
