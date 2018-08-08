@@ -29,7 +29,7 @@ class LightingProduct(models.Model):
     description = fields.Char(compute='_compute_description', string='Description', readonly=True,
                                    help="Description dynamically generated from product data", store=True)
 
-    @api.depends('application_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip', 'ip', 'ip2',
+    @api.depends('type_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip', 'ip', 'ip2',
                  'dimmable_ids.name',
                  'source_ids.lampholder_id.code',
                  'source_ids.line_ids.type_id.code',
