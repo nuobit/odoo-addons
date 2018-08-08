@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ================================ VIEWS =========================== -->
+    <!-- view project -->
+    <record id="project_form_view" model="ir.ui.view">
+        <field name="name">project.form</field>
+        <field name="model">lighting.project</field>
+        <field name="arch" type="xml">
+            <form string="Project Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_tree_view" model="ir.ui.view">
+        <field name="name">project.tree</field>
+        <field name="model">lighting.project</field>
+        <field name="arch" type="xml">
+            <tree string="Project Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================================ WINDOWS =========================== -->
+    <!-- window action project class -->
+    <record id="project_action" model="ir.actions.act_window">
+        <field name="name">Projects</field>
+        <field name="res_model">lighting.project</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Project</p>
+        </field>
+    </record>
+
+    <!-- ================================ MENUS =========================== -->
+    <!-- A first level in the left side menu is needed
+         before using action= attribute -->
+    <menuitem id="lighting_project_menu" name="Projects"
+              parent="lighting.lighting_menu"
+              sequence="30"/>
+
+    <!-- menu seo.keyword -->
+    <menuitem id="seo_keyword_menu" name="Projects" parent="lighting_project_menu"
+              action="project_action"/>
+</odoo>
