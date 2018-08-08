@@ -82,9 +82,13 @@ class LightingProduct(models.Model):
                             data_lm = []
                             for lmx in ('luminous_flux1', 'luminous_flux2'):
                                 lm = getattr(line, lmx)
-                                if lm: data_lm.append('%i' % lm)
+                                if lm:
+                                    data_lm.append('%i' % lm)
                             if data_lm != []:
-                                data_line.append('%sLm' % '-'.join(data_lm))
+                                lm_str = '%sLm' % '-'.join(data_lm)
+                                if (line.source_id.num or 1) > 1:
+                                    lm_str = '%ix%s' % (line.source_id.num, lm_str)
+                                data_line.append(lm_str)
 
                             if line.color_temperature:
                                 data_line.append('%sK' % line.color_temperature)
