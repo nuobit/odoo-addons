@@ -20,7 +20,7 @@ class LightingProject(models.Model):
 
     name = fields.Char(string='Name', required=True)
 
-    city = fields.Char(string='City')
+    city = fields.Char(string='City', required=True)
     country_id = fields.Many2one(comodel_name='res.country', ondelete='restrict', string='Country', required=True)
     type_id = fields.Many2one(comodel_name='lighting.project.type', ondelete='restrict', string='Type', required=True)
     prescriptor = fields.Char(string='Prescriptor')
