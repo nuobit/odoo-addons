@@ -31,6 +31,9 @@
         <field name="arch" type="xml">
             <tree string="Product family Tree">
                 <field name="name"/>
+                <button name="%(product_family_action_product)d" type="action"
+                        string="Products" icon="fa-list"
+                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
                 <field name="product_count"/>
             </tree>
         </field>
