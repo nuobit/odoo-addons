@@ -21,7 +21,7 @@ class IrUiMenu(models.Model):
         domain = []
         if self.env['ir.module.module'].sudo().search([('name', '=', 'lighting'),
                                                 ('state', '=', 'installed')]):
-            domain.append(self.env.ref('lighting.main_lighting_menu').id)
+            domain.append(self.env.ref('lighting.lighting_menu').id)
 
         if self.env['ir.module.module'].sudo().search([('name', '=', 'lighting_portal'),
                                                 ('state', '=', 'installed')]):
