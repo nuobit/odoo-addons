@@ -11,6 +11,12 @@
         <field name="arch" type="xml">
             <form string="Project Form">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-files-o"
+                                name="%(project_attachment_action_project)d">
+                            <field string="Attachments" name="attachment_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Name"/>
@@ -36,7 +42,7 @@
                         </page>
                         <page string="Internal info">
                             <group>
-                                <field name="agent_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                <field name="agent_id"/>
                             </group>
                             <group string="Photo autorization contact">
                                 <field name="auth_contact_name"/>

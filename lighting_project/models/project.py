@@ -39,5 +39,14 @@ class LightingProject(models.Model):
     auth_contact_email = fields.Char(string="e-mail")
     auth_contact_phone = fields.Char(string="Phone")
 
+    attachment_ids = fields.One2many(comodel_name='lighting.project.attachment',
+                                     inverse_name='project_id', string='Attachments', copy=True)
+    attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
+    @api.depends('attachment_ids')
+    def _compute_attachment_count(self):
+        for record in self:
+            record.attachment_count = self.env['lighting.project.attachment'].search_count([('project_id', '=', record.id)])
+
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The keyword must be unique!'),
                         ]
