@@ -22,14 +22,17 @@ class LightingProject(models.Model):
 
     city = fields.Char(string='City', required=True)
     country_id = fields.Many2one(comodel_name='res.country', ondelete='restrict', string='Country', required=True)
-    type_id = fields.Many2one(comodel_name='lighting.project.type', ondelete='restrict', string='Type', required=True)
+    type_ids = fields.Many2many(comodel_name='lighting.project.type', string='Types',
+                                  relation='lighting_project_product_type_rel',
+                                  column1='project_id', column2='type_id', required=True)
+
     prescriptor = fields.Char(string='Prescriptor')
 
     year = fields.Selection(selection=get_years(), string='Year',
                             default=int(time.strftime('%Y')))
     family_ids = fields.Many2many(comodel_name='lighting.product.family', string='Families',
                                   relation='lighting_project_product_family_rel',
-                                  column1='project_id', column2='family_id')
+                                  column1='project_id', column2='family_id', required=True)
 
     description = fields.Text(string="Description", translate=True)
 

@@ -34,7 +34,7 @@
                             </group>
                             <group>
                                 <field name="year"/>
-                                <field name="type_id"/>
+                                <field name="type_ids" widget="many2many_tags"/>
                                 <field name="prescriptor"/>
                             </group>
                             <group>
@@ -69,7 +69,7 @@
                 <field name="city"/>
                 <field name="country_id"/>
                 <field name="year"/>
-                <field name="type_id"/>
+                <field name="type_ids" widget="many2many_tags"/>
                 <field name="prescriptor"/>
                 <field name="family_ids" widget="many2many_tags"/>
             </tree>

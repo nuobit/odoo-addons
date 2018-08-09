@@ -34,7 +34,11 @@
                                         <strong>Project</strong>
                                     </td>
                                     <td>
-                                        <span t-field="doc.type_id"/>
+                                        <ul class="list-unstyled" t-foreach="doc.type_ids" t-as="type">
+                                            <li>
+                                                <span t-field="type.name"/>
+                                            </li>
+                                        </ul>
                                     </td>
                                 </tr>
                                 <tr>
@@ -68,7 +72,9 @@
                             </tbody>
                         </table>
 
-                        <strong><p t-field="doc.with_context(dict(lang='es_ES')).description"/></strong>
+                        <strong>
+                            <p t-field="doc.with_context(dict(lang='es_ES')).description"/>
+                        </strong>
                         <p t-field="doc.with_context(dict(lang='en_US')).description"/>
 
                         <!--h4 t-attf-class="{{'text-danger' if doc.qty_available == 0 else 'text-success'}}">
