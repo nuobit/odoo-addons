@@ -4,13 +4,40 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+import time
+
+
+def get_years():
+    year_list = []
+    for i in range(1990, 2100):
+        year_list.append((i, str(i)))
+    return year_list
 
 
 class LightingProject(models.Model):
     _name = 'lighting.project'
     _order = 'name'
 
-    name = fields.Char(string='Name', required=True)
+    name = fields.Char(string='Name', required=True, translate=True)
+
+    city = fields.Char(string='City')
+    country_id = fields.Many2one(comodel_name='res.country', ondelete='restrict', string='Country', required=True)
+    type_id = fields.Many2one(comodel_name='lighting.project.type', ondelete='restrict', string='Type', required=True)
+    prescriptor = fields.Char(string='Prescriptor')
+
+    year = fields.Selection(selection=get_years(), string='Year',
+                            default=int(time.strftime('%Y')))
+    family_ids = fields.Many2many(comodel_name='lighting.product.family', string='Families',
+                                  relation='lighting_project_product_family_rel',
+                                  column1='project_id', column2='family_id')
+
+    description = fields.Text(string="Description", translate=True)
+
+    agent_id = fields.Many2one(comodel_name='lighting.project.agent', required=True)
+
+    auth_contact_name = fields.Char(string="Name")
+    auth_contact_email = fields.Char(string="e-mail")
+    auth_contact_phone = fields.Char(string="Phone")
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The keyword must be unique!'),
                         ]

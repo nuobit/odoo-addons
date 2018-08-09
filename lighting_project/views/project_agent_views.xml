@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ================================ VIEWS =========================== -->
+    <!-- view project agent -->
+    <record id="project_agent_form_view" model="ir.ui.view">
+        <field name="name">project.agent.form</field>
+        <field name="model">lighting.project.agent</field>
+        <field name="arch" type="xml">
+            <form string="Project agent Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="user_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_agent_tree_view" model="ir.ui.view">
+        <field name="name">project.agent.tree</field>
+        <field name="model">lighting.project.agent</field>
+        <field name="arch" type="xml">
+            <tree string="Project agent Tree">
+                <field name="name"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================================ WINDOWS =========================== -->
+    <!-- window action project agent class -->
+    <record id="project_agent_action" model="ir.actions.act_window">
+        <field name="name">Project agents</field>
+        <field name="res_model">lighting.project.agent</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Project agent</p>
+        </field>
+    </record>
+
+    <!-- ================================ MENUS =========================== -->
+    <!-- menu project.agent -->
+    <menuitem id="project_agents_menu" name="Agents" parent="common_data_menu"
+              action="project_agent_action"/>
+</odoo>

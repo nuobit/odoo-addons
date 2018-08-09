@@ -11,9 +11,40 @@
         <field name="arch" type="xml">
             <form string="Project Form">
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="General info">
+                            <group>
+                                <field name="city"/>
+                                <field name="country_id"/>
+                            </group>
+                            <group>
+                                <field name="year"/>
+                                <field name="type_id"/>
+                                <field name="prescriptor"/>
+                            </group>
+                            <group>
+                                <field name="family_ids" widget="many2many_tags"/>
+                            </group>
+                            <group>
+                                <field name="description"/>
+                            </group>
+                        </page>
+                        <page string="Internal info">
+                            <group>
+                                <field name="agent_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                            </group>
+                            <group string="Photo autorization contact">
+                                <field name="auth_contact_name"/>
+                                <field name="auth_contact_email"/>
+                                <field name="auth_contact_phone"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -25,6 +56,12 @@
         <field name="arch" type="xml">
             <tree string="Project Tree">
                 <field name="name"/>
+                <field name="city"/>
+                <field name="country_id"/>
+                <field name="year"/>
+                <field name="type_id"/>
+                <field name="prescriptor"/>
+                <field name="family_ids" widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -48,7 +85,13 @@
               parent="lighting.lighting_menu"
               sequence="30"/>
 
-    <!-- menu seo.keyword -->
-    <menuitem id="seo_keyword_menu" name="Projects" parent="lighting_project_menu"
-              action="project_action"/>
+    <!-- menu projects -->
+    <menuitem id="projects_menu" name="Projects" parent="lighting_project_menu"
+              action="project_action"
+              sequence="10"/>
+
+    <menuitem id="common_data_menu"
+              name="Common data"
+              parent="lighting_project_menu"
+              sequence="20"/>
 </odoo>

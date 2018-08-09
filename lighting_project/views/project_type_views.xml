@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ================================ VIEWS =========================== -->
+    <!-- view project type -->
+    <record id="project_type_form_view" model="ir.ui.view">
+        <field name="name">project.type.form</field>
+        <field name="model">lighting.project.type</field>
+        <field name="arch" type="xml">
+            <form string="Project type Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_type_tree_view" model="ir.ui.view">
+        <field name="name">project.type.tree</field>
+        <field name="model">lighting.project.type</field>
+        <field name="arch" type="xml">
+            <tree string="Project type Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================================ WINDOWS =========================== -->
+    <!-- window action project type class -->
+    <record id="project_type_action" model="ir.actions.act_window">
+        <field name="name">Project types</field>
+        <field name="res_model">lighting.project.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Project type</p>
+        </field>
+    </record>
+
+    <!-- ================================ MENUS =========================== -->
+    <!-- menu project.type -->
+    <menuitem id="project_types_menu" name="Types" parent="common_data_menu"
+              action="project_type_action"/>
+</odoo>

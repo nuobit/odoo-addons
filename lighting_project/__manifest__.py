@@ -12,8 +12,11 @@
     'website': 'https://www.nuobit.com',
     'depends': ['lighting'],
     'data': [
+        'security/project_security.xml',
         'security/ir.model.access.csv',
         'views/project_views.xml',
+        'views/project_type_views.xml',
+        'views/project_agent_views.xml',
         ],
     'installable': True,
 }
