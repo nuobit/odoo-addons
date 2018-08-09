@@ -11,20 +11,79 @@
                 <div class="row">
                     <div class="col-xs-7">
                         <h1 t-field="doc.name"/>
-                        <h3 t-field="doc.description"/>
+
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Location</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.city"/>
+                                        (<span t-field="doc.country_id"/>)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Project developer</strong>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Project</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.type_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Main lighting</strong>
+                                    </td>
+                                    <td>
+                                        <ul class="list-unstyled" t-foreach="doc.family_ids" t-as="family">
+                                            <li>
+                                                <span t-field="family.name"/>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Year</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.year"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <strong>Prescriptor</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.prescriptor"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <strong><p t-field="doc.with_context(dict(lang='es_ES')).description"/></strong>
+                        <p t-field="doc.with_context(dict(lang='en_US')).description"/>
+
                         <!--h4 t-attf-class="{{'text-danger' if doc.qty_available == 0 else 'text-success'}}">
                             <strong>Stock:</strong>
                             <span t-field="doc.qty_available"/>
                         </h4-->
                     </div>
-                    <!--div class="col-xs-5">
-                        <t t-if="doc.sudo().product_id">
-                            <t t-set="images"
-                               t-value="doc.sudo().product_id.attachment_ids.filtered(lambda x: x.type_id.code == 'F' and x.attachment_id.index_content == 'image').sorted(lambda x: x.attachment_id.file_size, reverse=True)"/>
+                    <div class="col-xs-5">
+                        <t t-set="images"
+                           t-value="doc.attachment_ids.filtered(lambda x: x.is_default and x.attachment_id.index_content == 'image').sorted(lambda x: x.attachment_id.file_size, reverse=True)"/>
+                        <t t-if="images">
                             <img class="img-responsive"
                                  t-attf-src="data:image/*;base64,{{images and images[0].datas}}"/>
                         </t>
-                    </div-->
+                    </div>
                 </div>
                 <!--div class="row">
                     <div class="col-xs-12">
