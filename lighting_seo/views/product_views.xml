@@ -13,7 +13,7 @@
                     <field name="seo_title"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url"/>
+                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
@@ -29,7 +29,7 @@
                     <field name="seo_title"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url"/>
+                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
@@ -45,7 +45,7 @@
                     <field name="seo_title"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url"/>
+                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
@@ -61,7 +61,7 @@
                     <field name="seo_title"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url"/>
+                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
@@ -77,7 +77,7 @@
                     <field name="seo_title"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url"/>
+                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
