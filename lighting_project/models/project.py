@@ -18,7 +18,7 @@ class LightingProject(models.Model):
     _name = 'lighting.project'
     _order = 'name'
 
-    name = fields.Char(string='Name', required=True, translate=True)
+    name = fields.Char(string='Name', required=True)
 
     city = fields.Char(string='City')
     country_id = fields.Many2one(comodel_name='res.country', ondelete='restrict', string='Country', required=True)
