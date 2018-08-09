@@ -50,8 +50,8 @@
                             </group>
                             <group string="Photo autorization contact">
                                 <field name="auth_contact_name"/>
-                                <field name="auth_contact_email"/>
-                                <field name="auth_contact_phone"/>
+                                <field name="auth_contact_email" widget="email"/>
+                                <field name="auth_contact_phone" widget="phone"/>
                             </group>
                         </page>
                     </notebook>
