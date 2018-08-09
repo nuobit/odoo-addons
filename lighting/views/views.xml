@@ -56,7 +56,6 @@
                         <field name="is_accessory"/>
                         <field name="is_component"/>
                     </group>
-
                     <notebook>
                         <page string="Description">
                             <group>
@@ -334,51 +333,6 @@
             <tree string="Catalog Tree">
                 <field name="name"/>
                 <field name="description_show_ip"/>
-            </tree>
-        </field>
-    </record>
-
-    <!-- window action familiy smart button -->
-    <record id="product_family_action_product" model="ir.actions.act_window">
-        <field name="name">Product</field>
-        <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('family_ids','=',active_id)]</field>
-        <field name="context">{}</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product</p>
-        </field>
-    </record>
-
-    <!-- view family -->
-    <record model="ir.ui.view" id="product_family_form_view">
-        <field name="name">product.family.form</field>
-        <field name="model">lighting.product.family</field>
-        <field name="arch" type="xml">
-            <form string="Product family Form">
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_family_action_product)d">
-                            <field string="Products" name="product_count" widget="statinfo"/>
-                        </button>
-                    </div>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_family_tree_view">
-        <field name="name">product.family.tree</field>
-        <field name="model">lighting.product.family</field>
-        <field name="arch" type="xml">
-            <tree string="Product family Tree">
-                <field name="name"/>
-                <field name="product_count"/>
             </tree>
         </field>
     </record>
@@ -1526,18 +1480,6 @@
         </field>
     </record>
 
-    <!-- window action family -->
-    <record model="ir.actions.act_window" id="product_family_list_action">
-        <field name="name">Product family</field>
-        <field name="res_model">lighting.product.family</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product family
-            </p>
-        </field>
-    </record>
-
     <!-- window action type -->
     <record model="ir.actions.act_window" id="product_type_list_action">
         <field name="name">Product type</field>
@@ -1890,20 +1832,11 @@
     </record>
 
     <!-- ================================ MENU =========================== -->
-
-    <!-- top level menu: no parent -->
-    <menuitem id="lighting_menu"
-              name="Lighting"
-              sequence="0"/>
-
     <!-- A first level in the left side menu is needed
          before using action= attribute -->
     <menuitem id="lighting_product_menu" name="Products"
               parent="lighting_menu"
               sequence="0"/>
-    <!-- the following menuitem should appear *after*
-         its parent openacademy_menu and *after* its
-         action course_list_action -->
 
     <!-- ============= product menu ============ -->
     <menuitem id="products_menu" name="Products" parent="lighting_product_menu"
@@ -1911,16 +1844,8 @@
               sequence="10"/>
 
     <!-- ============= common data ============ -->
-    <menuitem id="common_data_menu"
-              name="Common data"
-              parent="lighting_product_menu"
-              sequence="20"/>
-
     <menuitem id="catalogs_menu" name="Catalogs" parent="common_data_menu"
               action="catalog_list_action"/>
-
-    <menuitem id="product_families_menu" name="Families" parent="common_data_menu"
-              action="product_family_list_action"/>
 
     <menuitem id="product_types_menu" name="Types" parent="common_data_menu"
               action="product_type_list_action"/>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ================================ MENUS =========================== -->
+    <!-- top level menu: no parent -->
+    <menuitem id="lighting_menu"
+              name="Lighting"
+              sequence="0"/>
+
+    <!-- ============= common data ============ -->
+    <menuitem id="common_data_menu"
+              name="Common data"
+              parent="lighting_product_menu"
+              sequence="20"/>
+</odoo>

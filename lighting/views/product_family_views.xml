@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- view family -->
+    <record id="product_family_form_view" model="ir.ui.view">
+        <field name="name">product.family.form</field>
+        <field name="model">lighting.product.family</field>
+        <field name="arch" type="xml">
+            <form string="Product family Form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_family_action_product)d">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_family_tree_view" model="ir.ui.view">
+        <field name="name">product.family.tree</field>
+        <field name="model">lighting.product.family</field>
+        <field name="arch" type="xml">
+            <tree string="Product family Tree">
+                <field name="name"/>
+                <field name="product_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action family -->
+    <record id="product_family_list_action" model="ir.actions.act_window">
+        <field name="name">Product family</field>
+        <field name="res_model">lighting.product.family</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product family
+            </p>
+        </field>
+    </record>
+
+    <!-- window action familiy smart button -->
+    <record id="product_family_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('family_ids','=',active_id)]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product</p>
+        </field>
+    </record>
+
+    <menuitem id="product_families_menu" name="Families" parent="common_data_menu"
+              action="product_family_list_action"/>
+</odoo>
