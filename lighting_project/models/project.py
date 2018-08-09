@@ -47,6 +47,9 @@ class LightingProject(models.Model):
         for record in self:
             record.attachment_count = self.env['lighting.project.attachment'].search_count([('project_id', '=', record.id)])
 
+    @api.multi
+    def print_project_sheet(self):
+        return self.env.ref('lighting_project.project_sheet_report_action').report_action(self)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The keyword must be unique!'),
                         ]
