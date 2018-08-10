@@ -927,43 +927,6 @@
         </field>
     </record>
 
-    <!-- view product source type -->
-    <record model="ir.ui.view" id="product_source_type_form_view">
-        <field name="name">product.source.type.form</field>
-        <field name="model">lighting.product.source.type</field>
-        <field name="arch" type="xml">
-            <form string="Product source type Form">
-                <sheet>
-                    <group>
-                        <field name="code"/>
-                        <field name="name"/>
-                    </group>
-                    <group>
-                        <field name="is_led"/>
-                        <field name="is_integrated"/>
-                    </group>
-                    <group>
-                        <field name="description_text"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_source_type_tree_view">
-        <field name="name">product.source.type.tree</field>
-        <field name="model">lighting.product.source.type</field>
-        <field name="arch" type="xml">
-            <tree string="Product source type Tree">
-                <field name="code"/>
-                <field name="name"/>
-                <field name="is_led"/>
-                <field name="is_integrated"/>
-                <field name="description_text"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- ============= beams tab ============ -->
     <!-- view product.beam -->
     <record model="ir.ui.view" id="product_beam_form_view">
@@ -1544,19 +1507,6 @@
     </record>
 
     <!-- ============= sources tab ============ -->
-    <!-- window action product source type class -->
-    <record model="ir.actions.act_window" id="product_source_type_list_action">
-        <field name="name">Product source type</field>
-        <field name="res_model">lighting.product.source.type</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product source type
-            </p>
-        </field>
-    </record>
-
-    <!-- ============= sources tab ============ -->
     <!-- window action product.beam.photodistribution class -->
     <record model="ir.actions.act_window" id="product_beam_photodistribution_list_action">
         <field name="name">Product beam photometric distribution</field>
@@ -1743,10 +1693,6 @@
 
     <menuitem id="product_photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="common_data_menu"
               action="product_photobiologicalriskgroup_list_action"/>
-
-    <!-- ============= sources tab ============ -->
-    <menuitem id="product_source_types_menu" name="Source types" parent="common_data_menu"
-              action="product_source_type_list_action"/>
 
     <!-- ============= beams tab ============ -->
     <menuitem id="product_beam_photodistributions_menu" name="Beam photometric distributions" parent="common_data_menu"

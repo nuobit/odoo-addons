@@ -831,23 +831,6 @@ class LightingProductSourceLine(models.Model):
 
     source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
-class LightingProductSourceType(models.Model):
-    _name = 'lighting.product.source.type'
-    _rec_name = 'code'
-    _order = 'code'
-
-    code = fields.Char(string='Code', required=True)
-    name = fields.Char(string='Name', help='Source description', translate=True)
-
-    is_led = fields.Boolean(string='Is LED?')
-    is_integrated = fields.Boolean(string='Is integrated?')
-
-    description_text = fields.Char(string='Description text', help='Text to show on a generated product description', translate=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The source type description must be unique!'),
-                        ('code_uniq', 'unique (code)', 'The source type code must be unique!'),
-                        ]
-
 ########### beams tab
 class LightingProductBeam(models.Model):
     _name = 'lighting.product.beam'
