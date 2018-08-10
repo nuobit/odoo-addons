@@ -371,26 +371,6 @@ class LightingProduct(models.Model):
 
 
 ######### common data
-class LightingCatalog(models.Model):
-    _name = 'lighting.catalog'
-    _order = 'name'
-
-    name = fields.Char(string='Catalog', required=True)
-
-    description_show_ip = fields.Boolean(string='Description show IP',
-                                         help="If checked, IP and IP2 will be shown on a generated product description "
-                                              "for every product in this catalog")
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The name of catalog must be unique!'),
-                        ]
-
-    @api.multi
-    def unlink(self):
-        records = self.env['lighting.product'].search([('catalog_ids', 'in', self.ids)])
-        if records:
-            raise UserError(_("You are trying to delete a record that is still referenced!"))
-        return super(LightingCatalog, self).unlink()
-
 class LightingProductType(models.Model):
     _name = 'lighting.product.type'
     _order = 'name'

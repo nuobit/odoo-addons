@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- view catalog -->
+    <record id="catalog_form_view" model="ir.ui.view">
+        <field name="name">catalog.form</field>
+        <field name="model">lighting.catalog</field>
+        <field name="arch" type="xml">
+            <form string="Catalog Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="description_show_ip"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="catalog_tree_view" model="ir.ui.view">
+        <field name="name">catalog.tree</field>
+        <field name="model">lighting.catalog</field>
+        <field name="arch" type="xml">
+            <tree string="Catalog Tree">
+                <field name="name"/>
+                <field name="description_show_ip"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action catalog -->
+    <record id="catalog_list_action" model="ir.actions.act_window">
+        <field name="name">Catalogs</field>
+        <field name="res_model">lighting.catalog</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first catalog
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="catalogs_menu" name="Catalogs" parent="common_data_menu"
+              action="catalog_list_action"/>
+</odoo>
