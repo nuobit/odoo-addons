@@ -14,9 +14,22 @@ class LightingProductFamily(models.Model):
     description = fields.Text(string='Description', translate=True)
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+
     def _compute_product_count(self):
         for record in self:
-            record.product_count = self.env['lighting.product'].search_count([('family_ids','=',record.id)])
+            record.product_count = self.env['lighting.product'].search_count([('family_ids', '=', record.id)])
+
+    discontinued_product_percent = fields.Float(compute='_compute_discontinued_product_percent',
+                                                string='% Discontinued product(s)')
+
+    def _compute_discontinued_product_percent(self):
+        for record in self:
+            percent = 0
+            if record.product_count != 0:
+                discontinued_product_count = self.env['lighting.product'].search_count(
+                    [('family_ids', '=', record.id), ('state', '=', 'discontinued')])
+                percent = discontinued_product_count / record.product_count * 100
+            record.discontinued_product_percent = percent
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The family must be unique!'),
                         ]
