@@ -16,6 +16,12 @@ class LightingCatalog(models.Model):
                                          help="If checked, IP and IP2 will be shown on a generated product description "
                                               "for every product in this catalog")
 
+    product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = self.env['lighting.product'].search_count([('catalog_ids', '=', record.id)])
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name of catalog must be unique!'),
                         ]
 

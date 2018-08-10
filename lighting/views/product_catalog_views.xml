@@ -3,6 +3,19 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+    <!-- window action catalog2product smart button -->
+    <record id="product_catalog_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('catalog_ids','=',active_id)]</field>
+        <field name="context">{'default_catalog_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
+        </field>
+    </record>
+
     <!-- view catalog -->
     <record id="catalog_form_view" model="ir.ui.view">
         <field name="name">catalog.form</field>
@@ -10,9 +23,17 @@
         <field name="arch" type="xml">
             <form string="Catalog Form">
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_catalog_action_product)d">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Catalog"/>
+                        </h1>
+                    </div>
                     <group>
                         <field name="description_show_ip"/>
                     </group>
@@ -28,6 +49,10 @@
             <tree string="Catalog Tree">
                 <field name="name"/>
                 <field name="description_show_ip"/>
+                <field name="product_count"/>
+                <button name="%(product_family_action_product)d" type="action"
+                        string="Products" icon="fa-external-link"
+                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
             </tree>
         </field>
     </record>
