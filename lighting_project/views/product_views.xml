@@ -29,4 +29,19 @@
             </xpath>
         </field>
     </record>
+
+    <record id="product_family_view_tree_inherit_project" model="ir.ui.view">
+        <field name="name">product_family_view.tree.inherit.project</field>
+        <field name="model">lighting.product.family</field>
+        <field name="inherit_id" ref="lighting.product_family_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="project_count"/>
+                <button type="action" class="oe_stat_button" icon="fa-external-link"
+                        name="%(product_family_action_project)d">
+                    <field string="Projects" name="project_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
 </odoo>
