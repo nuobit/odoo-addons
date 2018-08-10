@@ -831,18 +831,6 @@ class LightingProductSourceLine(models.Model):
 
     source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
-class LightingProductSourceLampholder(models.Model):
-    _name = 'lighting.product.source.lampholder'
-    _rec_name = 'code'
-    _order = 'code'
-
-    code = fields.Char(string='Code', required=True)
-    name = fields.Char(string='Description', translate=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The lampholder name must be unique!'),
-                        ('code_uniq', 'unique (code)', 'The lampholder code must be unique!'),
-                        ]
-
 class LightingProductSourceType(models.Model):
     _name = 'lighting.product.source.type'
     _rec_name = 'code'

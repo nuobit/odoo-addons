@@ -927,33 +927,6 @@
         </field>
     </record>
 
-    <!-- view product source lampholder -->
-    <record model="ir.ui.view" id="product_source_lampholder_form_view">
-        <field name="name">product.source.lampholder.form</field>
-        <field name="model">lighting.product.source.lampholder</field>
-        <field name="arch" type="xml">
-            <form string="Product source lampholder Form">
-                <sheet>
-                    <group>
-                        <field name="code"/>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_source_lampholder_tree_view">
-        <field name="name">product.source.lampholder.tree</field>
-        <field name="model">lighting.product.source.lampholder</field>
-        <field name="arch" type="xml">
-            <tree string="Product source lampholder Tree">
-                <field name="code"/>
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- view product source type -->
     <record model="ir.ui.view" id="product_source_type_form_view">
         <field name="name">product.source.type.form</field>
@@ -1571,18 +1544,6 @@
     </record>
 
     <!-- ============= sources tab ============ -->
-    <!-- window action product source lampholder class -->
-    <record model="ir.actions.act_window" id="product_source_lampholder_list_action">
-        <field name="name">Product source lampholder</field>
-        <field name="res_model">lighting.product.source.lampholder</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product source lampholder
-            </p>
-        </field>
-    </record>
-
     <!-- window action product source type class -->
     <record model="ir.actions.act_window" id="product_source_type_list_action">
         <field name="name">Product source type</field>
@@ -1784,9 +1745,6 @@
               action="product_photobiologicalriskgroup_list_action"/>
 
     <!-- ============= sources tab ============ -->
-    <menuitem id="product_source_lampholders_menu" name="Lampholders" parent="common_data_menu"
-              action="product_source_lampholder_list_action"/>
-
     <menuitem id="product_source_types_menu" name="Source types" parent="common_data_menu"
               action="product_source_type_list_action"/>
 
