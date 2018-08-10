@@ -3,7 +3,71 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- ================================ VIEWS =========================== -->
+    <!-- window action product smart button -->
+    <record id="seo_keyword_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('seo_keyword_ids','=',active_id)]</field>
+        <field name="context">{'default_seo_keyword_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
+        </field>
+    </record>
+
+    <!-- window action familiy smart button -->
+    <record id="seo_keyword_action_family" model="ir.actions.act_window">
+        <field name="name">Product Family</field>
+        <field name="res_model">lighting.product.family</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('seo_keyword_ids','=',active_id)]</field>
+        <field name="context">{'default_seo_keyword_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Family</p>
+        </field>
+    </record>
+
+    <!-- window action type smart button -->
+    <record id="seo_keyword_action_type" model="ir.actions.act_window">
+        <field name="name">Product Type</field>
+        <field name="res_model">lighting.product.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('seo_keyword_ids','=',active_id)]</field>
+        <field name="context">{'default_seo_keyword_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Type</p>
+        </field>
+    </record>
+
+    <!-- window action application smart button -->
+    <record id="seo_keyword_action_application" model="ir.actions.act_window">
+        <field name="name">Product Application</field>
+        <field name="res_model">lighting.product.application</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('seo_keyword_ids','=',active_id)]</field>
+        <field name="context">{'default_seo_keyword_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Application</p>
+        </field>
+    </record>
+
+    <!-- window action catalog smart button -->
+    <record id="seo_keyword_action_catalog" model="ir.actions.act_window">
+        <field name="name">Product Catalog</field>
+        <field name="res_model">lighting.catalog</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('seo_keyword_ids','=',active_id)]</field>
+        <field name="context">{'default_seo_keyword_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Catalog</p>
+        </field>
+    </record>
+
     <!-- view seo.keyword -->
     <record id="seo_keyword_form_view" model="ir.ui.view">
         <field name="name">seo.keyword.form</field>
@@ -11,9 +75,33 @@
         <field name="arch" type="xml">
             <form string="SEO keyword Form">
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(seo_keyword_action_product)d">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(seo_keyword_action_family)d">
+                            <field string="Families" name="family_count" widget="statinfo"/>
+                        </button>
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(seo_keyword_action_type)d">
+                            <field string="Types" name="type_count" widget="statinfo"/>
+                        </button>
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(seo_keyword_action_application)d">
+                            <field string="Applications" name="application_count" widget="statinfo"/>
+                        </button>
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(seo_keyword_action_catalog)d">
+                            <field string="Catalogs" name="catalog_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Keyword"/>
+                        </h1>
+                    </div>
                 </sheet>
             </form>
         </field>
