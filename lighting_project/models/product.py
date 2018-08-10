@@ -9,6 +9,12 @@ from odoo.exceptions import UserError
 class LightingProductFamily(models.Model):
     _inherit = 'lighting.product.family'
 
+    project_count = fields.Integer(compute='_compute_project_count', string='Projects(s)')
+
+    def _compute_project_count(self):
+        for record in self:
+            record.project_count = self.env['lighting.project'].search_count([('family_ids', '=', record.id)])
+
     @api.multi
     def unlink(self):
         records = self.env['lighting.project'].search([('family_ids', 'in', self.ids)])

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- window action family2project smart button -->
+    <record id="product_family_action_project" model="ir.actions.act_window">
+        <field name="name">Project</field>
+        <field name="res_model">lighting.project</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('family_ids','=',active_id)]</field>
+        <field name="context">{'default_family_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Project</p>
+        </field>
+    </record>
+
+    <record id="product_family_view_form_inherit_project" model="ir.ui.view">
+        <field name="name">product_family_view.form.inherit.project</field>
+        <field name="model">lighting.product.family</field>
+        <field name="inherit_id" ref="lighting.product_family_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button type="action" class="oe_stat_button" icon="fa-filter"
+                        name="%(product_family_action_project)d">
+                    <field string="Projects" name="project_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
