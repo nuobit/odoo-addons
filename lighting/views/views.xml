@@ -637,43 +637,6 @@
         </field>
     </record>
 
-    <!-- view voltage -->
-    <record model="ir.ui.view" id="product_voltage_form_view">
-        <field name="name">product.voltage.form</field>
-        <field name="model">lighting.product.voltage</field>
-        <field name="arch" type="xml">
-            <form string="Product voltage Form">
-                <sheet>
-                    <group>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
-                    </group>
-                    <group col="4">
-                        <field name="voltage1"/>
-                        <label for="voltage2_check" string="Voltage 2 (V)"/>
-                        <div>
-                            <field name="voltage2_check"/>
-                            <field name="voltage2" style="width: 90%"
-                                   attrs="{'invisible': [('voltage2_check', '=', False)], 'required': [('voltage2_check', '=', True)]}"/>
-                        </div>
-                        <field name="current_type"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_voltage_tree_view">
-        <field name="name">product.voltage.tree</field>
-        <field name="model">lighting.product.voltage</field>
-        <field name="arch" type="xml">
-            <tree string="Product voltage Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- view sensor -->
     <record model="ir.ui.view" id="product_sensor_form_view">
         <field name="name">product.sensor.form</field>
@@ -1399,17 +1362,6 @@
         </field>
     </record>
 
-    <!-- window action voltage class -->
-    <record model="ir.actions.act_window" id="product_voltage_list_action">
-        <field name="name">Product voltage</field>
-        <field name="res_model">lighting.product.voltage</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product voltage</p>
-        </field>
-    </record>
-
     <!-- window action sensor class -->
     <record model="ir.actions.act_window" id="product_sensor_list_action">
         <field name="name">Product sensor</field>
@@ -1632,9 +1584,6 @@
 
     <menuitem id="product_auxiliaryequipmentbrands_menu" name="Auxiliary equipment brands" parent="common_data_menu"
               action="product_auxiliaryequipmentbrand_list_action"/>
-
-    <menuitem id="product_voltages_menu" name="Voltages" parent="common_data_menu"
-              action="product_voltage_list_action"/>
 
     <menuitem id="product_sensors_menu" name="Sensors" parent="common_data_menu" action="product_sensor_list_action"/>
 

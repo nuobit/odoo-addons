@@ -517,55 +517,6 @@ class LightingProductAuxiliaryEquipmentBrand(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment brand must be unique!'),
                         ]
 
-class LightingProductVoltage(models.Model):
-    _name = 'lighting.product.voltage'
-    _order = 'name'
-
-    name = fields.Char(compute='_compute_name', string='Voltage', required=True)
-
-    voltage1 = fields.Float(string="Voltage 1 (V)", required=True)
-    voltage2_check = fields.Boolean(string="Voltage 2 check")
-    voltage2 = fields.Float(string="Voltage 2 (V)", required=False, default=None)
-    current_type = fields.Selection(selection=[('AC', 'Alternating'), ('DC', 'Direct')], string="Current type", required=True)
-
-
-    _sql_constraints = [('voltage_uniq', 'unique (voltage1, voltage2, voltage2_check, current_type)',
-                            'It already exists another voltage with the same parameters'),
-                        ]
-
-    @api.depends('voltage1', 'voltage2', 'voltage2_check','current_type')
-    def _compute_name(self):
-        for record in self:
-            voltage_l = []
-            if record.voltage1!=0:
-                voltage_l.append('%i' % record.voltage1)
-
-            if record.voltage2_check and record.voltage2!=0:
-                voltage_l.append('-%i' % record.voltage2)
-
-            if voltage_l:
-                voltage_l.append('V')
-
-            if record.current_type:
-                voltage_l.append(' %s' % record.current_type)
-
-            if voltage_l:
-                record.name = ''.join(voltage_l)
-
-    @api.onchange('voltage2_check')
-    def _onchange_voltage2_check(self):
-        if not self.voltage2_check:
-            self.voltage2 = False
-
-    @api.constrains('voltage1', 'voltage2', 'voltage2_check')
-    def _check_voltages(self):
-        self.ensure_one()
-        if self.voltage1==0:
-            raise ValidationError("Voltage 1 cannot be 0")
-
-        if self.voltage2_check and self.voltage2==0:
-            raise ValidationError("Voltage 2 cannot be 0")
-
 class LightingProductSensor(models.Model):
     _name = 'lighting.product.sensor'
     _order = 'name'
