@@ -81,5 +81,6 @@
     </record>
 
     <menuitem id="product_source_types_menu" name="Source types" parent="common_data_menu"
-              action="product_source_type_list_action"/>
+              action="product_source_type_list_action"
+              sequence="60"/>
 </odoo>

@@ -96,5 +96,6 @@
     </record>
 
     <menuitem id="product_families_menu" name="Families" parent="common_data_menu"
-              action="product_family_list_action"/>
+              action="product_family_list_action"
+              sequence="20"/>
 </odoo>

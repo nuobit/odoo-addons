@@ -66,5 +66,6 @@
     </record>
 
     <menuitem id="product_types_menu" name="Types" parent="common_data_menu"
-              action="product_type_list_action"/>
+              action="product_type_list_action"
+              sequence="30"/>
 </odoo>

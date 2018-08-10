@@ -81,5 +81,6 @@
     </record>
 
     <menuitem id="product_voltages_menu" name="Voltages" parent="common_data_menu"
-              action="product_voltage_list_action"/>
+              action="product_voltage_list_action"
+              sequence="80"/>
 </odoo>

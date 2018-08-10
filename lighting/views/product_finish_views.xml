@@ -70,5 +70,6 @@
     </record>
 
     <menuitem id="product_finishes_menu" name="Finishes" parent="common_data_menu"
-              action="product_finish_list_action"/>
+              action="product_finish_list_action"
+              sequence="70"/>
 </odoo>

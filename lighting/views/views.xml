@@ -1560,65 +1560,88 @@
 
     <!-- ============= common data ============ -->
     <menuitem id="dimension_types_menu" name="Dimension types" parent="common_data_menu"
-              action="dimension_type_list_action"/>
+              action="dimension_type_list_action"
+              sequence="1000"/>
 
     <menuitem id="energyefficiencies_menu" name="Energy efficiencies" parent="common_data_menu"
-              action="energyefficiency_list_action"/>
+              action="energyefficiency_list_action"
+              sequence="1000"/>
 
     <!-- ============= description tab ============ -->
     <menuitem id="product_materials_menu" name="Materials" parent="common_data_menu"
-              action="product_material_list_action"/>
+              action="product_material_list_action"
+              sequence="1000"/>
 
     <!-- ============= Electrical characteristics tab ============ -->
     <menuitem id="product_protectionclasses_menu" name="Protection classes" parent="common_data_menu"
-              action="product_protectionclass_list_action"/>
+              action="product_protectionclass_list_action"
+              sequence="1000"/>
 
     <menuitem id="product_frequencies_menu" name="Frequencies" parent="common_data_menu"
-              action="product_frequency_list_action"/>
+              action="product_frequency_list_action"
+              sequence="1000"/>
 
     <menuitem id="product_dimmables_menu" name="Dimmables" parent="common_data_menu"
-              action="product_dimmable_list_action"/>
+              action="product_dimmable_list_action"
+              sequence="1000"/>
 
     <menuitem id="product_auxiliaryequipments_menu" name="Auxiliary equipments" parent="common_data_menu"
-              action="product_auxiliaryequipment_list_action"/>
+              action="product_auxiliaryequipment_list_action"
+              sequence="1000"/>
 
     <menuitem id="product_auxiliaryequipmentbrands_menu" name="Auxiliary equipment brands" parent="common_data_menu"
-              action="product_auxiliaryequipmentbrand_list_action"/>
+              action="product_auxiliaryequipmentbrand_list_action"
+              sequence="1000"/>
 
-    <menuitem id="product_sensors_menu" name="Sensors" parent="common_data_menu" action="product_sensor_list_action"/>
+    <menuitem id="product_sensors_menu" name="Sensors" parent="common_data_menu"
+              action="product_sensor_list_action"
+              sequence="1000"/>
 
     <!-- ============= Lighting characteristics tab ============ -->
     <menuitem id="product_ledbrands_menu" name="LED brands" parent="common_data_menu"
-              action="product_ledbrand_list_action"/>
+              action="product_ledbrand_list_action"
+              sequence="1000"/>
 
     <!-- ============= Pysical characteristics tab ============ -->
     <menuitem id="product_ecorraecategories_menu" name="Ecorrae I categories" parent="common_data_menu"
-              action="product_ecorraecategory_list_action"/>
+              action="product_ecorraecategory_list_action"
+              sequence="1000"/>
 
     <menuitem id="product_ecorrae2categories_menu" name="Ecorrae II categories" parent="common_data_menu"
-              action="product_ecorrae2category_list_action"/>
+              action="product_ecorrae2category_list_action"
+              sequence="1000"/>
 
     <menuitem id="product_photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="common_data_menu"
-              action="product_photobiologicalriskgroup_list_action"/>
+              action="product_photobiologicalriskgroup_list_action"
+              sequence="1000"/>
 
     <!-- ============= beams tab ============ -->
     <menuitem id="product_beam_photodistributions_menu" name="Beam photometric distributions" parent="common_data_menu"
-              action="product_beam_photodistribution_list_action"/>
+              action="product_beam_photodistribution_list_action"
+              sequence="1000"/>
 
     <!-- ============= attachments tab ============ -->
     <menuitem id="attachment_types_menu" name="Attachment types" parent="common_data_menu"
-              action="attachment_type_list_action"/>
+              action="attachment_type_list_action"
+              sequence="1000"/>
 
     <menuitem id="lenguages_menu" name="Languages" parent="common_data_menu"
-              action="language_list_action"/>
+              action="language_list_action"
+              sequence="1000"/>
 
     <!-- ============= logistics tab ============ -->
-    <menuitem id="assemblers_menu" name="Assemblers" parent="common_data_menu" action="assembler_list_action"/>
+    <menuitem id="assemblers_menu" name="Assemblers" parent="common_data_menu"
+              action="assembler_list_action"
+              sequence="1000"/>
 
-    <menuitem id="suppliers_menu" name="Suppliers" parent="common_data_menu" action="supplier_list_action"/>
+    <menuitem id="suppliers_menu" name="Suppliers" parent="common_data_menu"
+              action="supplier_list_action"
+              sequence="1000"/>
 
     <!-- ============= marketing tab ============ -->
-    <menuitem id="product_states_menu" name="States" parent="common_data_menu" action="product_state_list_action"/>
+    <menuitem id="product_states_menu" name="States" parent="common_data_menu"
+              action="product_state_list_action"
+              sequence="1000"/>
 
     <!-- ============= ETIM ============ -->
     <menuitem id="menu_lighting_etim"

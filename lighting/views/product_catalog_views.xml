@@ -70,5 +70,6 @@
     </record>
 
     <menuitem id="catalogs_menu" name="Catalogs" parent="common_data_menu"
-              action="catalog_list_action"/>
+              action="catalog_list_action"
+              sequence="10"/>
 </odoo>

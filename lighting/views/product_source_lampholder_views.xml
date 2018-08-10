@@ -73,5 +73,6 @@
     </record>
 
     <menuitem id="product_source_lampholders_menu" name="Lampholders" parent="common_data_menu"
-              action="product_source_lampholder_list_action"/>
+              action="product_source_lampholder_list_action"
+              sequence="50"/>
 </odoo>
