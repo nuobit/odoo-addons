@@ -308,31 +308,6 @@
     </record>
 
     <!-- ============= common data ============ -->
-    <!-- view product type -->
-    <record model="ir.ui.view" id="product_type_form_view">
-        <field name="name">product.type.form</field>
-        <field name="model">lighting.product.type</field>
-        <field name="arch" type="xml">
-            <form string="Product type Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_type_tree_view">
-        <field name="name">product.type.tree</field>
-        <field name="model">lighting.product.type</field>
-        <field name="arch" type="xml">
-            <tree string="Product type Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- view dimension.type -->
     <record model="ir.ui.view" id="dimension_type_form_view">
         <field name="name">dimension.type.form</field>
@@ -1445,18 +1420,6 @@
     </record>
 
     <!-- ============= common data ============ -->
-    <!-- window action type -->
-    <record model="ir.actions.act_window" id="product_type_list_action">
-        <field name="name">Product type</field>
-        <field name="res_model">lighting.product.type</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product type
-            </p>
-        </field>
-    </record>
-
     <!-- window action dimension.type class -->
     <record model="ir.actions.act_window" id="dimension_type_list_action">
         <field name="name">Dimension type</field>
@@ -1809,9 +1772,6 @@
               sequence="10"/>
 
     <!-- ============= common data ============ -->
-    <menuitem id="product_types_menu" name="Types" parent="common_data_menu"
-              action="product_type_list_action"/>
-
     <menuitem id="dimension_types_menu" name="Dimension types" parent="common_data_menu"
               action="dimension_type_list_action"/>
 

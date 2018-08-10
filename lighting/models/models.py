@@ -371,22 +371,6 @@ class LightingProduct(models.Model):
 
 
 ######### common data
-class LightingProductType(models.Model):
-    _name = 'lighting.product.type'
-    _order = 'name'
-
-    name = fields.Char(string='Type', required=True, translate=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
-                        ]
-
-    @api.multi
-    def unlink(self):
-        records = self.env['lighting.product'].search([('type_ids', 'in', self.ids)])
-        if records:
-            raise UserError(_("You are trying to delete a record that is still referenced!"))
-        return super(LightingProductType, self).unlink()
-
 class LightingEnergyEfficiency(models.Model):
     _name = 'lighting.energyefficiency'
     _order = 'sequence'
