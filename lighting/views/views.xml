@@ -455,33 +455,6 @@
     </record>
 
     <!-- ============= description tab ============ -->
-    <!-- view finish -->
-    <record model="ir.ui.view" id="product_finish_form_view">
-        <field name="name">product.finish.form</field>
-        <field name="model">lighting.product.finish</field>
-        <field name="arch" type="xml">
-            <form string="Product finish Form">
-                <sheet>
-                    <group>
-                        <field name="code"/>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_finish_tree_view">
-        <field name="name">product.finish.tree</field>
-        <field name="model">lighting.product.finish</field>
-        <field name="arch" type="xml">
-            <tree string="Product finish Tree">
-                <field name="code"/>
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- window action material2product smart button -->
     <record id="product_material_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
@@ -1354,18 +1327,6 @@
     </record>
 
     <!-- ============= description tab ============ -->
-    <!-- window action finish -->
-    <record model="ir.actions.act_window" id="product_finish_list_action">
-        <field name="name">product finish</field>
-        <field name="res_model">lighting.product.finish</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product finish
-            </p>
-        </field>
-    </record>
-
     <!-- window action material -->
     <record model="ir.actions.act_window" id="product_material_list_action">
         <field name="name">Product material</field>
@@ -1653,9 +1614,6 @@
               action="energyefficiency_list_action"/>
 
     <!-- ============= description tab ============ -->
-    <menuitem id="product_finishes_menu" name="Finishes" parent="common_data_menu"
-              action="product_finish_list_action"/>
-
     <menuitem id="product_materials_menu" name="Materials" parent="common_data_menu"
               action="product_material_list_action"/>
 

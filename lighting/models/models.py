@@ -412,26 +412,6 @@ class LightingDimensionType(models.Model):
 
 
 ########### description tab
-class LightingProductFinish(models.Model):
-    _name = 'lighting.product.finish'
-    _order = 'code'
-
-    code = fields.Char(string='Code', required=True)
-    name = fields.Char(string='Description', required=True, translate=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The finish name must be unique!'),
-                        ('code_uniq', 'unique (code)', 'The finish code must be unique!'),
-                        ]
-
-    @api.multi
-    def name_get(self):
-        vals = []
-        for record in self:
-            name = '[%s] %s' % (record.code, record.name)
-            vals.append((record.id, name))
-
-        return vals
-
 class LightingProductMaterial(models.Model):
     _name = 'lighting.product.material'
     _order = 'code'

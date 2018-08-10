@@ -9,5 +9,7 @@ from . import product_family
 from . import product_type
 from . import product_application
 
+from . import product_finish
+
 from . import product_source_type
 from . import product_source_lampholder
