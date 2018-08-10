@@ -21,13 +21,9 @@
                     <group>
                         <field name="seo_keyword_ids" widget="many2many_tags"/>
                     </group>
-                    <separator/>
-                    <div style="font-family:arial,sans-serif;max-width:600px;">
-                        <field name="seo_title" readonly="1" style="margin-bottom:0;color:#1a0dab;font-size:18px;"/>
-                        <field name="seo_url" readonly="1" style="margin-bottom:0;color:#006621;font-size:14px;"/>
-                        <field name="seo_description" readonly="1"
-                               style="margin-bottom:0;color:#545454;font-size:small;"/>
-                    </div>
+                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
+                        <field name="meta_preview" widget="html"/>
+                    </group>
                 </group>
             </xpath>
         </field>
@@ -51,13 +47,9 @@
                     <group>
                         <field name="seo_keyword_ids" widget="many2many_tags"/>
                     </group>
-                    <separator/>
-                    <div style="font-family:arial,sans-serif;max-width:600px;">
-                        <field name="seo_title" readonly="1" style="margin-bottom:0;color:#1a0dab;font-size:18px;"/>
-                        <field name="seo_url" readonly="1" style="margin-bottom:0;color:#006621;font-size:14px;"/>
-                        <field name="seo_description" readonly="1"
-                               style="margin-bottom:0;color:#545454;font-size:small;"/>
-                    </div>
+                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
+                        <field name="meta_preview" widget="html"/>
+                    </group>
                 </group>
             </xpath>
         </field>
@@ -81,13 +73,9 @@
                     <group>
                         <field name="seo_keyword_ids" widget="many2many_tags"/>
                     </group>
-                    <separator/>
-                    <div style="font-family:arial,sans-serif;max-width:600px;">
-                        <field name="seo_title" readonly="1" style="margin-bottom:0;color:#1a0dab;font-size:18px;"/>
-                        <field name="seo_url" readonly="1" style="margin-bottom:0;color:#006621;font-size:14px;"/>
-                        <field name="seo_description" readonly="1"
-                               style="margin-bottom:0;color:#545454;font-size:small;"/>
-                    </div>
+                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
+                        <field name="meta_preview" widget="html"/>
+                    </group>
                 </group>
             </xpath>
         </field>
@@ -111,13 +99,9 @@
                     <group>
                         <field name="seo_keyword_ids" widget="many2many_tags"/>
                     </group>
-                    <separator/>
-                    <div style="font-family:arial,sans-serif;max-width:600px;">
-                        <field name="seo_title" readonly="1" style="margin-bottom:0;color:#1a0dab;font-size:18px;"/>
-                        <field name="seo_url" readonly="1" style="margin-bottom:0;color:#006621;font-size:14px;"/>
-                        <field name="seo_description" readonly="1"
-                               style="margin-bottom:0;color:#545454;font-size:small;"/>
-                    </div>
+                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
+                        <field name="meta_preview" widget="html"/>
+                    </group>
                 </group>
             </xpath>
         </field>
@@ -141,13 +125,9 @@
                     <group>
                         <field name="seo_keyword_ids" widget="many2many_tags"/>
                     </group>
-                    <separator/>
-                    <div style="font-family:arial,sans-serif;max-width:600px;">
-                        <field name="seo_title" readonly="1" style="margin-bottom:0;color:#1a0dab;font-size:18px;"/>
-                        <field name="seo_url" readonly="1" style="margin-bottom:0;color:#006621;font-size:14px;"/>
-                        <field name="seo_description" readonly="1"
-                               style="margin-bottom:0;color:#545454;font-size:small;"/>
-                    </div>
+                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
+                        <field name="meta_preview" widget="html"/>
+                    </group>
                 </group>
             </xpath>
         </field>
