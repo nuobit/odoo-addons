@@ -136,6 +136,10 @@
         <field name="arch" type="xml">
             <tree string="SEO keyword Tree">
                 <field name="name"/>
+                <field name="all_product_count"/>
+                <button name="%(seo_keyword_action_all_product)d" type="action"
+                        string="All products" icon="fa-list"
+                        attrs="{'invisible': [('all_product_count', '=', 0)]}"/>
             </tree>
         </field>
     </record>
