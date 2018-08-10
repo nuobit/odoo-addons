@@ -68,6 +68,25 @@
         </field>
     </record>
 
+    <!-- window action product keyword2allproduct smart button -->
+    <record id="seo_keyword_action_all_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">['|','|','|','|',
+            ('seo_keyword_ids','=',active_id),
+            ('family_ids.seo_keyword_ids','=',active_id),
+            ('type_ids.seo_keyword_ids','=',active_id),
+            ('application_ids.seo_keyword_ids','=',active_id),
+            ('catalog_ids.seo_keyword_ids','=',active_id)]
+        </field>
+        <field name="context">{'default_seo_keyword_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
+        </field>
+    </record>
+
     <!-- view seo.keyword -->
     <record id="seo_keyword_form_view" model="ir.ui.view">
         <field name="name">seo.keyword.form</field>
@@ -95,6 +114,10 @@
                         <button type="action" class="oe_stat_button" icon="fa-filter"
                                 name="%(seo_keyword_action_catalog)d">
                             <field string="Catalogs" name="catalog_count" widget="statinfo"/>
+                        </button>
+                        <button type="action" class="oe_stat_button" icon="fa-asterisk"
+                                name="%(seo_keyword_action_all_product)d">
+                            <field string="All products" name="all_product_count" widget="statinfo"/>
                         </button>
                     </div>
                     <div class="oe_title">

@@ -33,6 +33,23 @@ class LightingSEOKeyword(models.Model):
                 count = self.env[model].search_count([('seo_keyword_ids', '=', record.id)])
                 setattr(record, field, count)
 
+    all_product_count = fields.Integer(compute='_compute_all_product_count', string='All product(s)')
+
+    def _compute_all_product_count(self):
+        maps = [('id', 'lighting.product'),
+                ('family_ids', 'lighting.product.family'),
+                ('type_ids', 'lighting.product.type'),
+                ('application_ids', 'lighting.product.application'),
+                ('catalog_ids', 'lighting.catalog'),
+                ]
+
+        for record in self:
+            product_ids = set()
+            for field, model in maps:
+                ids = record.env[model].search([('seo_keyword_ids', '=', record.id)]).mapped('id')
+                product_ids.update(record.env['lighting.product'].search([(field, 'in', ids)]))
+            record.all_product_count = len(product_ids)
+
     @api.multi
     def unlink(self):
         models = ['lighting.product', 'lighting.catalog', 'lighting.product.family',
