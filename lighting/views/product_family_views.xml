@@ -3,6 +3,19 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+    <!-- window action familiy2product smart button -->
+    <record id="product_family_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('family_ids','=',active_id)]</field>
+        <field name="context">{'default_family_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product</p>
+        </field>
+    </record>
+
     <!-- view family -->
     <record id="product_family_form_view" model="ir.ui.view">
         <field name="name">product.family.form</field>
@@ -52,19 +65,6 @@
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product family
             </p>
-        </field>
-    </record>
-
-    <!-- window action familiy smart button -->
-    <record id="product_family_action_product" model="ir.actions.act_window">
-        <field name="name">Product</field>
-        <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('family_ids','=',active_id)]</field>
-        <field name="context">{}</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product</p>
         </field>
     </record>
 

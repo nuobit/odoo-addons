@@ -561,7 +561,7 @@
         </field>
     </record>
 
-    <!-- window action product material smart button -->
+    <!-- window action material2product smart button -->
     <record id="product_material_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
@@ -571,7 +571,13 @@
             ('diffusor_material_ids','=',active_id), ('frame_material_ids','=',active_id),
             ('reflector_material_ids','=',active_id), ('blade_material_ids','=',active_id)]
         </field>
-        <field name="context">{}</field>
+        <field name="context">{
+            'default_body_material_ids': [(4, active_id, False)],
+            'default_diffusor_material_ids': [(4, active_id, False)],
+            'default_frame_material_ids': [(4, active_id, False)],
+            'default_reflector_material_ids': [(4, active_id, False)],
+            'default_blade_material_ids': [(4, active_id, False)]}
+        </field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product</p>
         </field>
