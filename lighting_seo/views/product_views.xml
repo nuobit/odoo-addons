@@ -11,9 +11,9 @@
             <xpath expr="//page[@id='marketing_tab']" position="inside">
                 <group string="SEO/SEM">
                     <field name="seo_title"/>
+                    <field name="seo_url" widget="url"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
@@ -25,28 +25,25 @@
         <field name="inherit_id" ref="lighting.product_family_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
-                <group string="SEO/SEM">
-                    <group col="2" style="width:95%;">
-                        <field name="seo_title"/>
-                        <field name="seo_description"/>
+                <group string="SEO/SEM" col="1">
+                    <group col="40">
+                        <field name="seo_title" colspan="38"/>
+                        <field name="meta_title_length" nolabel="1" colspan="2"/>
+                        <field name="seo_url" widget="url" colspan="38"/><newline></newline>
+                        <field name="seo_description" colspan="38"/>
+                        <field name="meta_description_length" nolabel="1" colspan="2"/>
+                    </group>
+                    <group>
                         <field name="seo_keyword_ids" widget="many2many_tags"/>
-                        <field name="seo_url" widget="url"/>
                     </group>
-                    <group col="1" style="width:5%;">
-                        <field name="meta_title_length" nolabel="1"/>
-                        <field name="meta_description_length" nolabel="1"/>
-                    </group>
-                </group>
-
-                <div>
-                    <h3>Preview</h3>
+                    <separator/>
                     <div style="font-family:arial,sans-serif;max-width:600px;">
                         <field name="seo_title" readonly="1" style="margin-bottom:0;color:#1a0dab;font-size:18px;"/>
                         <field name="seo_url" readonly="1" style="margin-bottom:0;color:#006621;font-size:14px;"/>
                         <field name="seo_description" readonly="1"
                                style="margin-bottom:0;color:#545454;font-size:small;"/>
                     </div>
-                </div>
+                </group>
             </xpath>
         </field>
     </record>
@@ -59,9 +56,9 @@
             <xpath expr="//sheet" position="inside">
                 <group string="SEO/SEM">
                     <field name="seo_title"/>
+                    <field name="seo_url" widget="url"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
@@ -75,9 +72,9 @@
             <xpath expr="//sheet" position="inside">
                 <group string="SEO/SEM">
                     <field name="seo_title"/>
+                    <field name="seo_url" widget="url"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
@@ -91,9 +88,9 @@
             <xpath expr="//sheet" position="inside">
                 <group string="SEO/SEM">
                     <field name="seo_title"/>
+                    <field name="seo_url" widget="url"/>
                     <field name="seo_description" widget="text"/>
                     <field name="seo_keyword_ids" widget="many2many_tags"/>
-                    <field name="seo_url" widget="url"/>
                 </group>
             </xpath>
         </field>
