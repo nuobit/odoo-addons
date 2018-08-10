@@ -455,31 +455,6 @@
     </record>
 
     <!-- ============= description tab ============ -->
-    <!-- view application -->
-    <record model="ir.ui.view" id="product_application_form_view">
-        <field name="name">product.application.form</field>
-        <field name="model">lighting.product.application</field>
-        <field name="arch" type="xml">
-            <form string="Product application Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_application_tree_view">
-        <field name="name">product.application.tree</field>
-        <field name="model">lighting.product.application</field>
-        <field name="arch" type="xml">
-            <tree string="Product application Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- view finish -->
     <record model="ir.ui.view" id="product_finish_form_view">
         <field name="name">product.finish.form</field>
@@ -1443,18 +1418,6 @@
     </record>
 
     <!-- ============= description tab ============ -->
-    <!-- window action application -->
-    <record model="ir.actions.act_window" id="product_application_list_action">
-        <field name="name">Product application</field>
-        <field name="res_model">lighting.product.application</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product application
-            </p>
-        </field>
-    </record>
-
     <!-- window action finish -->
     <record model="ir.actions.act_window" id="product_finish_list_action">
         <field name="name">product finish</field>
@@ -1779,9 +1742,6 @@
               action="energyefficiency_list_action"/>
 
     <!-- ============= description tab ============ -->
-    <menuitem id="product_applications_menu" name="Applications" parent="common_data_menu"
-              action="product_application_list_action"/>
-
     <menuitem id="product_finishes_menu" name="Finishes" parent="common_data_menu"
               action="product_finish_list_action"/>
 

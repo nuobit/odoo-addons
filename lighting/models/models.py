@@ -412,22 +412,6 @@ class LightingDimensionType(models.Model):
 
 
 ########### description tab
-class LightingProductApplication(models.Model):
-    _name = 'lighting.product.application'
-    _order = 'name'
-
-    name = fields.Char(string='Application', required=True, translate=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The application must be unique!'),
-                        ]
-
-    @api.multi
-    def unlink(self):
-        records = self.env['lighting.product'].search([('application_ids', 'in', self.ids)])
-        if records:
-            raise UserError(_("You are trying to delete a record that is still referenced!"))
-        return super(LightingProductApplication, self).unlink()
-
 class LightingProductFinish(models.Model):
     _name = 'lighting.product.finish'
     _order = 'code'
