@@ -3,7 +3,7 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- window action product smart button -->
+    <!-- window action product keyword2product smart button -->
     <record id="seo_keyword_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
@@ -16,7 +16,7 @@
         </field>
     </record>
 
-    <!-- window action familiy smart button -->
+    <!-- window action keyword2familiy smart button -->
     <record id="seo_keyword_action_family" model="ir.actions.act_window">
         <field name="name">Product Family</field>
         <field name="res_model">lighting.product.family</field>
@@ -29,7 +29,7 @@
         </field>
     </record>
 
-    <!-- window action type smart button -->
+    <!-- window action keyword2type smart button -->
     <record id="seo_keyword_action_type" model="ir.actions.act_window">
         <field name="name">Product Type</field>
         <field name="res_model">lighting.product.type</field>
@@ -42,7 +42,7 @@
         </field>
     </record>
 
-    <!-- window action application smart button -->
+    <!-- window action keyword2application smart button -->
     <record id="seo_keyword_action_application" model="ir.actions.act_window">
         <field name="name">Product Application</field>
         <field name="res_model">lighting.product.application</field>
@@ -55,7 +55,7 @@
         </field>
     </record>
 
-    <!-- window action catalog smart button -->
+    <!-- window action keyword2catalog smart button -->
     <record id="seo_keyword_action_catalog" model="ir.actions.act_window">
         <field name="name">Product Catalog</field>
         <field name="res_model">lighting.catalog</field>
