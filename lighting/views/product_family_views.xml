@@ -16,8 +16,12 @@
                             <field string="Products" name="product_count" widget="statinfo"/>
                         </button>
                     </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Family"/>
+                        </h1>
+                    </div>
                     <group>
-                        <field name="name"/>
                         <field name="description" widget="html"/>
                     </group>
                 </sheet>
