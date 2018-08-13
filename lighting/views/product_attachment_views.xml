@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ================== attachment model =========================== -->
+    <!-- view attachment -->
+    <record id="attachment_form_view" model="ir.ui.view">
+        <field name="name">attachment.form</field>
+        <field name="model">lighting.attachment</field>
+        <field name="arch" type="xml">
+            <form string="Attachment Form">
+                <sheet>
+                    <group>
+                        <field name="type_id"/>
+                        <field name="datas" filename="datas_fname"/>
+                        <field name="datas_fname" invisible="1"/>
+                        <field name="name"/>
+                        <field name="lang_id"/>
+                        <field name="date"/>
+                        <field name="is_default"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="attachment_tree_view" model="ir.ui.view">
+        <field name="name">attachment.tree</field>
+        <field name="model">lighting.attachment</field>
+        <field name="arch" type="xml">
+            <tree string="Attachment Tree">
+                <field name="type_id"/>
+                <field name="datas_fname"/>
+                <field name="datas" filename="datas_fname" string="Size"/>
+                <field name="name"/>
+                <field name="lang_id"/>
+                <field name="date"/>
+                <field name="is_default"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- ================== attachment.type model =========================== -->
+    <!-- view attachment type -->
+    <record id="attachment_type_form_view" model="ir.ui.view">
+        <field name="name">attachment.type.form</field>
+        <field name="model">lighting.attachment.type</field>
+        <field name="arch" type="xml">
+            <form string="Attachment typ Form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="attachment_type_tree_view" model="ir.ui.view">
+        <field name="name">attachment.type.tree</field>
+        <field name="model">lighting.attachment.type</field>
+        <field name="arch" type="xml">
+            <tree string="Attachment type Tree">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action attachment type -->
+    <act_window id="attachment_type_list_action"
+                name="Attachment type"
+                res_model="lighting.attachment.type"
+                view_type="form"
+                view_mode="tree,form"/>
+
+    <!-- menu attachment type -->
+    <menuitem id="attachment_types_menu" name="Attachment types" parent="common_data_menu"
+              action="attachment_type_list_action"
+              sequence="1000"/>
+</odoo>

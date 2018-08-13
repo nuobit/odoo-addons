@@ -3,21 +3,21 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- ================================ VIEWS =========================== -->
-    <!-- window action attachment type -->
-    <record model="ir.actions.act_window" id="attachment_list_action">
+    <!-- ============= main product views ============ -->
+
+    <!-- window action product2attachment smart button-->
+    <record id="attachment_list_action" model="ir.actions.act_window">
         <field name="name">Attachment</field>
         <field name="res_model">lighting.attachment</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('product_id', '=', active_id)]</field>
-        <field name="context">{'search_default_product_id': active_id, 'default_product_id': active_id}</field>
+        <field name="context">{'default_product_id': active_id}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first attachment</p>
         </field>
     </record>
 
-    <!-- ============= main product views ============ -->
     <!-- view product -->
     <record model="ir.ui.view" id="product_form_view">
         <field name="name">product.form</field>
@@ -362,71 +362,7 @@
         </field>
     </record>
 
-    <!-- ============= attachments smart button ============ -->
-    <!-- view attachment -->
-    <record model="ir.ui.view" id="attachment_form_view">
-        <field name="name">attachment.form</field>
-        <field name="model">lighting.attachment</field>
-        <field name="arch" type="xml">
-            <form string="Attachment Form">
-                <sheet>
-                    <group>
-                        <field name="type_id"/>
-                        <field name="datas" filename="datas_fname"/>
-                        <field name="datas_fname" invisible="1"/>
-                        <field name="name"/>
-                        <field name="lang_id"/>
-                        <field name="date"/>
-                        <field name="is_default"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="attachment_tree_view">
-        <field name="name">attachment.tree</field>
-        <field name="model">lighting.attachment</field>
-        <field name="arch" type="xml">
-            <tree string="Attachment Tree">
-                <field name="type_id"/>
-                <field name="datas_fname"/>
-                <field name="datas" filename="datas_fname" string="Size"/>
-                <field name="name"/>
-                <field name="lang_id"/>
-                <field name="date"/>
-                <field name="is_default"/>
-            </tree>
-        </field>
-    </record>
-
-    <!-- view attachment type -->
-    <record model="ir.ui.view" id="attachment_type_form_view">
-        <field name="name">attachment.type.form</field>
-        <field name="model">lighting.attachment.type</field>
-        <field name="arch" type="xml">
-            <form string="Attachment typ Form">
-                <sheet>
-                    <group>
-                        <field name="code"/>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="attachment_type_tree_view">
-        <field name="name">attachment.type.tree</field>
-        <field name="model">lighting.attachment.type</field>
-        <field name="arch" type="xml">
-            <tree string="Attachment type Tree">
-                <field name="code"/>
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
+    <!-- ============= smart button ============ -->
     <!-- view language -->
     <record model="ir.ui.view" id="language_form_view">
         <field name="name">language.form</field>
@@ -1431,18 +1367,7 @@
         </field>
     </record>
 
-    <!-- ============= attachment smart button ============ -->
-    <!-- window action attachment type -->
-    <record model="ir.actions.act_window" id="attachment_type_list_action">
-        <field name="name">Attachment type</field>
-        <field name="res_model">lighting.attachment.type</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first attachment type</p>
-        </field>
-    </record>
-
+    <!-- ============= languages ============ -->
     <!-- window action language -->
     <record model="ir.actions.act_window" id="language_list_action">
         <field name="name">Language</field>
@@ -1620,11 +1545,7 @@
               action="product_beam_photodistribution_list_action"
               sequence="1000"/>
 
-    <!-- ============= attachments tab ============ -->
-    <menuitem id="attachment_types_menu" name="Attachment types" parent="common_data_menu"
-              action="attachment_type_list_action"
-              sequence="1000"/>
-
+    <!-- ============= languages ============ -->
     <menuitem id="lenguages_menu" name="Languages" parent="common_data_menu"
               action="language_list_action"
               sequence="1000"/>
