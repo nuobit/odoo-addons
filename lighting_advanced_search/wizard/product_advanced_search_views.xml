@@ -10,53 +10,53 @@
             <form string="Advanced product search">
                 <group>
                     <group col="4" colspan="2">
-                        <group string="By application" col="1" colspan="1">
+                        <group string="Application" col="1" colspan="1">
                             <field name="application_in_ids" widget="many2many_tags" nolabel="1" colspan="1"/>
                             <field name="application_in_op" widget="radio" options="{'horizontal': true}" nolabel="1"
                                    colspan="1"/>
                         </group>
-                        <group string="By finish" col="1" colspan="1">
+                        <group string="Finish" col="1" colspan="1">
                             <field name="finish_in_ids" widget="many2many_tags" nolabel="1"/>
                         </group>
-                        <group string="By lampholder" col="1" colspan="1">
+                        <group string="Lampholder" col="1" colspan="1">
                             <field name="lampholder_in_ids" widget="many2many_tags" nolabel="1"/>
                             <field name="lampholder_in_op" widget="radio" options="{'horizontal': true}" nolabel="1"/>
                         </group>
-                        <group string="By source type" col="1" colspan="1">
+                        <group string="Source type" col="1" colspan="1">
                             <field name="source_type_in_ids" widget="many2many_tags" nolabel="1"/>
                             <field name="source_type_in_op" widget="radio" options="{'horizontal': true}" nolabel="1"/>
                         </group>
-                        <group string="By body material" col="1" colspan="1">
+                        <group string="Body material" col="1" colspan="1">
                             <field name="body_material_in_ids" widget="many2many_tags" nolabel="1"/>
                             <field name="body_material_in_op" widget="radio" options="{'horizontal': true}"
                                    nolabel="1"/>
                         </group>
-                        <group string="By voltage" col="1" colspan="1">
+                        <group string="Voltage" col="1" colspan="1">
                             <field name="voltage_in_ids" widget="many2many_tags" nolabel="1"/>
                             <field name="voltage_in_op" widget="radio" options="{'horizontal': true}" nolabel="1"/>
                         </group>
                     </group>
                 </group>
                 <group>
-                    <group string="By IP">
+                    <group string="IP">
                         <field name="ip_from_in"/>
                         <field name="ip_to_in"/>
                     </group>
-                    <group string="By wattage (W)">
+                    <group string="Wattage (W)">
                         <field name="wattage_from_in"/>
                         <field name="wattage_to_in"/>
                     </group>
-                    <group string="By luminous flux (Lm)">
+                    <group string="Luminous flux (Lm)">
                         <field name="luminous_flux_from_in"/>
                         <field name="luminous_flux_to_in"/>
                     </group>
-                    <group string="By color temperture (K)">
+                    <group string="Color temperture (K)">
                         <field name="color_temperature_from_in"/>
                         <field name="color_temperature_to_in"/>
                     </group>
                 </group>
 
-                <group string="By attachment type">
+                <group string="Attachment type">
                     <group string="With types">
                         <field name="attachment_type_in_ids" widget="many2many_tags"/>
                         <field name="attachment_type_in_op" widget="radio" options="{'horizontal': true}"/>
