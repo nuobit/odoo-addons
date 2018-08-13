@@ -10,12 +10,12 @@
             <form string="Advanced product search">
                 <group string="By attachment type">
                     <group string="With types">
-                        <field string="Types" name="type_in_ids" widget="many2many_tags"/>
-                        <field name="type_in_op" widget="radio" options="{'horizontal': true}"/>
+                        <field string="Types" name="attachment_type_in_ids" widget="many2many_tags"/>
+                        <field name="attachment_type_in_op" widget="radio" options="{'horizontal': true}"/>
                     </group>
                     <group string="Without types">
-                        <field string="Types" name="type_not_in_ids" widget="many2many_tags"/>
-                        <field name="type_not_in_op" widget="radio" options="{'horizontal': true}"/>
+                        <field string="Types" name="attachment_type_not_in_ids" widget="many2many_tags"/>
+                        <field name="attachment_type_not_in_op" widget="radio" options="{'horizontal': true}"/>
                     </group>
                 </group>
                 <footer>
