@@ -112,6 +112,14 @@
                 </p>
             </div>
         </xpath>
+
+        <xpath expr="//p[@t-field='o.origin']/.." position="attributes">
+            <attribute name="class">col-xs-2 hidden</attribute>
+        </xpath>
+
+        <xpath expr="//p[@t-field='o.partner_id.ref']/.." position="attributes">
+            <attribute name="class">col-xs-2 hidden</attribute>
+        </xpath>
     </template>
 
     <!--template id="report_saleorder_document_custom" inherit_id="sale.report_saleorder_document">
