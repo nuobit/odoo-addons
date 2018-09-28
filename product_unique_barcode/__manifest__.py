@@ -6,7 +6,7 @@
 {
     'name': 'Product unique barcode',
     'summary': 'This module ensures that you enter a Unique Barcode for your Products',
-    'version': '10.0.0.1.0',
+    'version': '10.0.0.1.1',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
