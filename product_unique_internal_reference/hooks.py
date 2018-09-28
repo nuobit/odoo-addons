@@ -14,15 +14,16 @@ def pre_init_hook_internal_reference_check(cr):
         Database cursor.
     """
     with cr.savepoint():
-        cr.execute("""SELECT distinct p0.company_id, p0.default_code 
+        cr.execute("""SELECT distinct p0.company_id, p0.product_tmpl_id, p0.default_code 
                       FROM product_product p0
                       WHERE EXISTS (
                                SELECT 1
                                FROM product_product p1
                                where p1.company_id = p0.company_id and
+                                     p1.product_tmpl_id = p0.product_tmpl_id and
                                      p1.default_code = p0.default_code AND 
                                      p1.id != p0.id
-                            )
+                            )        
                       """)
 
         products = sorted(['[%i] %s' % p for p in cr.fetchall()])
