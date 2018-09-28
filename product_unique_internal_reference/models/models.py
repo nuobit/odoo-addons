@@ -11,6 +11,6 @@ class ProductProduct(models.Model):
     _inherit = "product.product"
 
     _sql_constraints = [
-        ('default_code_uniq', 'unique(company_id, product_tmpl_id, default_code)',
+        ('default_code_uniq', 'unique(company_id, default_code)',
          _("A internal reference can only be assigned to one product per company!")),
     ]
