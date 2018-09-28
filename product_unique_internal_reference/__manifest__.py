@@ -6,17 +6,13 @@
 {
     'name': 'Product unique internal reference',
     'summary': 'This module ensures that you enter a Unique Internal Reference (default_code) for your Products',
-    'version': '10.0.0.1.1',
+    'version': '10.0.0.1.2',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
     'license': 'AGPL-3',
     'depends': [
-        'product',
-    ],
-    'data': [
-    ],
-    'qweb': [
+        'product_variant_company_aware',
     ],
     'pre_init_hook': 'pre_init_hook_internal_reference_check',
     'installable': True,
