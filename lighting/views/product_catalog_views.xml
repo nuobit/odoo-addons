@@ -50,7 +50,7 @@
                 <field name="name"/>
                 <field name="description_show_ip"/>
                 <field name="product_count"/>
-                <button name="%(product_family_action_product)d" type="action"
+                <button name="%(product_catalog_action_product)d" type="action"
                         string="Products" icon="fa-external-link"
                         attrs="{'invisible': [('product_count', '=', 0)]}"/>
             </tree>
