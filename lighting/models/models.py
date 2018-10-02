@@ -18,7 +18,7 @@ def float2text(f, decs=2):
 class LightingProduct(models.Model):
     _name = 'lighting.product'
     _rec_name = 'reference'
-    _order = 'reference'
+    _order = 'sequence,reference'
 
     # Common data
     reference = fields.Char(string='Reference', required=True)
@@ -146,17 +146,19 @@ class LightingProduct(models.Model):
 
     last_update = fields.Date(string='Last modified on')
 
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+
     _sql_constraints = [ ('reference_uniq', 'unique (reference)', 'The reference must be unique!'),
                          ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
         ]
 
+    # Description tab
     install_location = fields.Selection(selection=[('indoor', _('Indoor')),
                                                    ('outdoor', _('Outdoor')),
                                                    ('indoor_outdoor', _('Indoor and Outdoor')),
                                                    ('underwater', _('Underwater'))
                                 ], string='Installation location')
 
-    # Description tab
     application_ids = fields.Many2many(comodel_name='lighting.product.application',
                                        relation='lighting_product_application_rel', string='Applications')
     finish_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish')

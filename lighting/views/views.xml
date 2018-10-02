@@ -53,8 +53,13 @@
                         <field name="type_ids" widget="many2many_tags"/>
                     </group>
                     <group>
-                        <field name="is_accessory"/>
-                        <field name="is_component"/>
+                        <group>
+                            <field name="is_accessory"/>
+                            <field name="is_component"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Description">
@@ -294,6 +299,7 @@
                   decoration-warning="state == 'draft'"
                   decoration-info="state == 'to_review'"
                   decoration-danger="state == 'discontinued'">
+                <field name="sequence" widget="handle"/>
                 <field name="reference"/>
                 <field name="description"/>
                 <field name="catalog_ids" widget="many2many_tags"/>
