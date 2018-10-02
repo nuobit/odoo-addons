@@ -55,6 +55,7 @@
                     <group>
                         <group>
                             <field name="is_accessory"/>
+                            <field name="is_required"/>
                             <field name="is_component"/>
                         </group>
                         <group>
@@ -264,14 +265,19 @@
                                 <field name="marketing_comments" widget="text"/>
                             </group>
                         </page>
-                        <page string="Components">
+                        <page string="Required">
                             <group>
-                                <field name="component_ids" nolabel="1"/>
+                                <field name="required_ids" nolabel="1"/>
                             </group>
                         </page>
                         <page string="Accessories">
                             <group>
                                 <field name="accessory_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Components">
+                            <group>
+                                <field name="component_ids" nolabel="1"/>
                             </group>
                         </page>
                         <page string="Substitutes">
@@ -306,8 +312,6 @@
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="type_ids" widget="many2many_tags"/>
                 <field name="ean"/>
-                <field name="is_accessory"/>
-                <field name="is_component"/>
                 <field name="state"/>
                 <field name="last_update"/>
             </tree>

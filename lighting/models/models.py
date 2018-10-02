@@ -142,6 +142,7 @@ class LightingProduct(models.Model):
     type_ids = fields.Many2many(comodel_name='lighting.product.type', relation='lighting_product_type_rel', string='Types')
 
     is_accessory = fields.Boolean(string='Is accessory')
+    is_required = fields.Boolean(string='Is required')
     is_component = fields.Boolean(string='Is component')
 
     last_update = fields.Date(string='Last modified on')
@@ -309,17 +310,25 @@ class LightingProduct(models.Model):
         for record in self:
             record.attachment_count = self.env['lighting.attachment'].search_count([('product_id', '=', record.id)])
 
+    # Optional accesories tab
+    accessory_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_accessory_rel',
+                                     column1="product_id", column2='accessory_id',
+                                     domain=[('is_accessory', '=', True)],
+                                     string='Accessories')
+
+    # Required accessories tab
+    required_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_required_rel',
+                                     column1="product_id", column2='required_id',
+                                     domain=[('is_required', '=', True)],
+                                     string='Required')
+
     # Components tab
     component_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_component_rel',
                                      column1="product_id", column2='component_id',
                                      domain=[('is_component', '=', True)],
                                      string='Components')
 
-    # Accesories tab
-    accessory_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_accessory_rel',
-                                     column1="product_id", column2='accessory_id',
-                                     domain=[('is_accessory', '=', True)],
-                                     string='Accessories')
+
 
     # Substitutes tab
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',
