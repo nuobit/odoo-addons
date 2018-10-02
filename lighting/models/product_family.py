@@ -13,6 +13,7 @@ class LightingProductFamily(models.Model):
     name = fields.Char(string='Family', required=True)
     is_export = fields.Boolean(string='Is export')
     description = fields.Text(string='Description', translate=True)
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 

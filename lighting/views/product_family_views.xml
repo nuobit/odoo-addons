@@ -59,6 +59,9 @@
                         <field name="is_export"/>
                         <field name="description" widget="html"/>
                     </group>
+                    <group>
+                        <field name="sequence"/>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -71,6 +74,7 @@
             <tree string="Product family Tree"
                   decoration-warning="discontinued_product_percent > 50"
                   decoration-danger="discontinued_product_percent == 100">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="is_export"/>
                 <field name="product_count"/>
