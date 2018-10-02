@@ -251,6 +251,7 @@
                         <page string="Marketing" id="marketing_tab">
                             <group>
                                 <field name="discontinued_by_supplier"/>
+                                <field name="discontinued_soon"/>
                                 <field name="until_end_stock"/>
                                 <field name="on_request"/>
                                 <field name="state_id"/>
