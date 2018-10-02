@@ -150,7 +150,10 @@ class LightingProduct(models.Model):
                          ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
         ]
 
-    install_location = fields.Selection(selection=[('indoor', _('Indoor')), ('outdoor', _('Outdoor')), ('underwater', _('Underwater'))
+    install_location = fields.Selection(selection=[('indoor', _('Indoor')),
+                                                   ('outdoor', _('Outdoor')),
+                                                   ('indoor_outdoor', _('Indoor and Outdoor')),
+                                                   ('underwater', _('Underwater'))
                                 ], string='Installation location')
 
     # Description tab
