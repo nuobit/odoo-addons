@@ -7,6 +7,7 @@
     <!-- top level menu: no parent -->
     <menuitem id="lighting_menu"
               name="Lighting"
+              groups="group_lighting_user,group_lighting_user,group_lighting_manager"
               sequence="0"/>
 
     <!-- ============= common data ============ -->
