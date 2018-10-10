@@ -1486,12 +1486,6 @@
     </record>
 
     <!-- ================================ MENU =========================== -->
-    <!-- A first level in the left side menu is needed
-         before using action= attribute -->
-    <menuitem id="lighting_product_menu" name="Products"
-              parent="lighting_menu"
-              sequence="0"/>
-
     <!-- ============= product menu ============ -->
     <menuitem id="products_menu" name="Products" parent="lighting_product_menu"
               action="product_list_action"

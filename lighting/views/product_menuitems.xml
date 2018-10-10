@@ -9,6 +9,12 @@
               name="Lighting"
               groups="group_lighting_user,group_lighting_user,group_lighting_manager"
               sequence="0"/>
+    
+    <!-- A first level in the left side menu is needed
+         before using action= attribute -->
+    <menuitem id="lighting_product_menu" name="Products"
+              parent="lighting_menu"
+              sequence="0"/>
 
     <!-- ============= common data ============ -->
     <menuitem id="common_data_menu"
