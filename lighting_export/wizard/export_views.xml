@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="export_product_view" model="ir.ui.view">
+        <field name="name">export.product.form</field>
+        <field name="model">lighting.export</field>
+        <field name="arch" type="xml">
+            <form string="Export products">
+                <header/>
+                <group>
+                    <h4>Are you sure to define selected products as a substitutes?</h4>
+                </group>
+                <footer>
+                    <button string="Export" name="export_product_xlsx" type="object" default_focus="1"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="export_product_action"
+                multi="True"
+                key2="client_action_multi" name="Export products"
+                res_model="lighting.export" src_model="lighting.product"
+                view_mode="form" target="new" view_type="form"/>
+</odoo>
