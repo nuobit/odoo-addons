@@ -38,7 +38,7 @@ class LightingExportTemplate(models.Model):
                 .filtered(lambda x: x.id not in rec.line_ids.mapped('field_id.id')) \
                 .sorted(lambda x: x.id)
 
-            max_sequence = max(rec.line_ids.mapped('sequence'))
+            max_sequence = max(rec.line_ids.mapped('sequence') or [0])
             rec.line_ids = [(0, False, {'sequence': max_sequence + i,
                                         'field_id': x.id
                                         }) for i, x in enumerate(new_field_ids, 1)]
