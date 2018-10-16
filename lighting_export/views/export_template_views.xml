@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- view export.template -->
+    <record id="export_template_form_view" model="ir.ui.view">
+        <field name="name">export.template.form</field>
+        <field name="model">lighting.export.template</field>
+        <field name="arch" type="xml">
+            <form string="Export template Form">
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"
+                           options="{'preview_image': 'image_medium'}"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Template"/>
+                        </h1>
+                    </div>
+                    <button name="all_fields" type="object" string="All fields"
+                            class="btn btn-sm oe_edit_only fa fa-external-link btn btn-link "/>
+                    <group>
+                        <field name="line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="field_id"/>
+                                <field name="label"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="export_template_kanban_view" model="ir.ui.view">
+        <field name="name">export.template.kanban</field>
+        <field name="model">lighting.export.template</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="display_name"/>
+                <field name="image_small"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_res_partner_kanban">
+                            <div class="o_kanban_image">
+                                <t t-if="record.image_small.raw_value">
+                                    <img t-att-src="kanban_image('lighting.export.template', 'image_small', record.id.raw_value)"/>
+                                </t>
+                                <t t-if="!record.image_small.raw_value">
+                                    <img t-att-src='_s + "/base/static/src/img/company_image.png"'/>
+                                </t>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title oe_partner_heading">
+                                    <field name="display_name"/>
+                                </strong>
+                                <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+
+                                <div class="oe_kanban_partner_links"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="export_template_tree_view" model="ir.ui.view">
+        <field name="name">export.template.tree</field>
+        <field name="model">lighting.export.template</field>
+        <field name="arch" type="xml">
+            <tree string="Export template Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================================ WINDOWS =========================== -->
+    <!-- window action export.template class -->
+    <record id="export_template_action" model="ir.actions.act_window">
+        <field name="name">Templates</field>
+        <field name="res_model">lighting.export.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Template</p>
+        </field>
+    </record>
+
+    <!-- ================================ MENUS =========================== -->
+    <!-- A first level in the left side menu is needed
+         before using action= attribute -->
+    <menuitem id="export_menu" name="Export"
+              parent="lighting.lighting_menu"
+              sequence="40"/>
+
+    <!-- menu export.template -->
+    <menuitem id="export_template_menu" name="Templates" parent="export_menu"
+              action="export_template_action"/>
+</odoo>

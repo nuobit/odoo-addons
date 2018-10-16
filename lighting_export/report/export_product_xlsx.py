@@ -43,7 +43,6 @@ class ExportProductXlsx(models.AbstractModel):
                         else:
                             datum = 'NOT SUPPORTED'
 
-
                     sheet.write(row, col, datum)
                 col += 1
             row += 1
