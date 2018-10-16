@@ -33,7 +33,10 @@ class LightingExportTemplate(models.Model):
     @api.multi
     def all_fields(self):
         for rec in self:
-            lighting_product_fields_ids = self.env['ir.model.fields'].search([('model', '=', 'lighting.product')])
+            lighting_product_fields_ids = self.env['ir.model.fields'].search([
+                ('model', '=', 'lighting.product'),
+                ('name', 'in', list(self.env['lighting.product'].fields_get().keys())),
+            ])
             new_field_ids = lighting_product_fields_ids \
                 .filtered(lambda x: x.id not in rec.line_ids.mapped('field_id.id')) \
                 .sorted(lambda x: x.id)
