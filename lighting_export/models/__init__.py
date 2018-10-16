@@ -9,4 +9,4 @@ from . import product_beam_dimension
 from . import product_auxiliary_equipment_model
 from . import product_fan_wattage
 
-from . import ir_model  b
+from . import ir_model
