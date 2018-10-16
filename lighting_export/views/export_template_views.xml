@@ -24,6 +24,8 @@
                             <tree editable="bottom">
                                 <field name="sequence" widget="handle"/>
                                 <field name="field_id"/>
+                                <field name="field_name" groups="lighting.group_lighting_manager"/>
+                                <field name="field_ttype" groups="lighting.group_lighting_manager"/>
                                 <field name="label"/>
                             </tree>
                         </field>

@@ -60,6 +60,9 @@ class LightingExportTemplateLine(models.Model):
     field_id = fields.Many2one(comodel_name='ir.model.fields', ondelete='cascade',
                                domain=[('model', '=', 'lighting.product')],
                                string='Field', required=True)
+    field_name = fields.Char(related='field_id.name', readonly=True)
+    field_ttype = fields.Selection(related='field_id.ttype', readonly=True)
+
     label = fields.Char(string='Label', translate=True)
 
     template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='cascade',
