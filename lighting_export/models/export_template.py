@@ -59,11 +59,11 @@ class LightingExportTemplateLine(models.Model):
 
     field_id = fields.Many2one(comodel_name='ir.model.fields', ondelete='cascade',
                                domain=[('model', '=', 'lighting.product')],
-                               string='Field')
+                               string='Field', required=True)
     label = fields.Char(string='Label', translate=True)
 
     template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='cascade',
-                                  string='Template')
+                                  string='Template', required=True)
 
     _sql_constraints = [('line_uniq', 'unique (field_id,template_id)', 'The template line must be unique!'),
                         ]
