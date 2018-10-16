@@ -12,14 +12,24 @@ class ExportProductXlsx(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, objects):
+        template_id = self.env['lighting.export.template'].browse(objects[0].id)
+
+        objects = objects[1:]
+
         bold = workbook.add_format({'bold': True})
 
-        headers = objects.fields_get()
+        fields = objects.fields_get([x.field_id.name for x in template_id.line_ids])
+
+        headers = []
+        for line in template_id.line_ids.sorted(lambda x: x.sequence):
+            item = objects.fields_get([line.field_id.name])
+            if item:
+                headers.append(tuple(item.items())[0])
 
         sheet = workbook.add_worksheet('test')
         row = col = 0
 
-        xlsx_header = [x['string'] for x in headers.values()]
+        xlsx_header = [meta['string'] for _, meta in headers]
         for col_header in xlsx_header:
             sheet.write(row, col, col_header, bold)
             col += 1
@@ -27,7 +37,7 @@ class ExportProductXlsx(models.AbstractModel):
         row = 1
         for obj in objects:
             col = 0
-            for field, meta in headers.items():
+            for field, meta in headers:
                 datum = getattr(obj, field)
                 if datum:
                     if meta['type'] == 'selection':

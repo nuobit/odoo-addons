@@ -17,7 +17,7 @@ class LightingExport(models.TransientModel):
     def export_product_xlsx(self):
         self.ensure_one()
         context = dict(self.env.context,
-                       active_ids=self.env.context.get('active_ids'))
+                       active_ids = [self.template_id.id] + self.env.context.get('active_ids'))
         return {
             'name': 'Lighting product XLSX report',
             'model': 'lighting.product',
