@@ -18,13 +18,14 @@ class ExportProductXlsx(models.AbstractModel):
 
         bold = workbook.add_format({'bold': True})
 
-        fields = objects.fields_get([x.field_id.name for x in template_id.line_ids])
-
         headers = []
         for line in template_id.line_ids.sorted(lambda x: x.sequence):
             item = objects.fields_get([line.field_id.name])
             if item:
-                headers.append(tuple(item.items())[0])
+                field, meta = tuple(item.items())[0]
+                if line.label and line.label.strip():
+                    meta['string'] = line.label
+                headers.append((field, meta))
 
         sheet = workbook.add_worksheet('test')
         row = col = 0
