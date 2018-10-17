@@ -10,16 +10,23 @@ class LightingProductAuxiliaryEquipmentModel(models.Model):
 
     @api.multi
     def export_name(self):
-        lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
+        valid_field = ['reference', 'brand_id', 'date']
         res = []
         for rec in self:
             line = []
-            if rec.reference:
-                line.append(rec.reference)
-            line.append(rec.brand_id.display_name)
-            if rec.date:
-                line.append(fields.Date.from_string(rec.date).strftime(lang.date_format))
-            res.append(' - '.join(line))
+            for field in valid_field:
+                field_meta = self.fields_get([field], ['string', 'type'])[field]
+                datum = getattr(rec, field)
+                if field_meta['type'] in ('many2one', 'many2many', 'one2many'):
+                    datum = datum.display_name
+                elif field_meta['type'] == 'date':
+                    datum = fields.Date.from_string(datum)
 
-        #TODO: acabar de veure com ho posem
-        return ','.join(res)
+                if field_meta['type'] not in ('boolean',) and not datum:
+                    datum = None
+
+                line.append((field_meta['string'], datum))
+
+            res.append(line)
+
+        return res
