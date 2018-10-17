@@ -102,6 +102,5 @@ class ExportProductXlsx(models.AbstractModel):
                             sheet.write(row, col, sod)
                             col += 1
                         num -= 1
-                    for i in range(num * len(meta['subfields'])):
-                        col += 1
+                    col += num * len(meta['subfields'])
             row += 1
