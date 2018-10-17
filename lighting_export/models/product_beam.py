@@ -19,7 +19,9 @@ class LightingProductBeam(models.Model):
                 datum = getattr(rec, field)
                 if field_meta['type'] == 'many2one':
                     datum = datum.display_name
-                elif field_meta['type'] in('many2many', 'one2many'):
+                elif field_meta['type'] == 'many2many':
+                    datum = ','.join([x.display_name for x in datum])
+                elif field_meta['type'] == 'one2many':
                     datum = datum.export_name()
                 elif field_meta['type'] == 'date':
                     datum = fields.Date.from_string(datum)
