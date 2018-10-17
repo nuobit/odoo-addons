@@ -39,11 +39,10 @@ class ExportProductXlsx(models.AbstractModel):
                 elif meta['type'] == 'many2one':
                     datum = datum.display_name
                 elif meta['type'] == 'one2many':
-                    if field in ('dimension_ids', 'recess_dimension_ids',
-                                 'auxiliary_equipment_model_ids', 'fan_wattage_ids'):
+                    if hasattr(datum, 'export_name'):
                         datum = datum.export_name()
                     else:
-                        datum = 'NOT SUPPORTED'
+                        datum = None #'NOT SUPPORTED'
 
                 if meta['type'] != 'boolean' and not datum:
                     datum = None
