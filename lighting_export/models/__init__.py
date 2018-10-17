@@ -7,6 +7,7 @@ from . import product_dimension
 from . import product_recess_dimension
 from . import product_beam_dimension
 from . import product_fan_wattage
+from . import product_beam_photodistribution
 
 from . import product_auxiliary_equipment_model
 from . import product_beam
