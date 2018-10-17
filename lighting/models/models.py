@@ -862,7 +862,7 @@ class LightingProductSupplier(models.Model):
     sequence = fields.Integer(required=True, default=1,
                               help="The sequence field is used to define the priority of suppliers")
     supplier_id = fields.Many2one(comodel_name='lighting.supplier', ondelete='restrict', string='Supplier', required=True)
-    reference = fields.Char(string="Supplier reference")
+    reference = fields.Char(string="Reference")
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
