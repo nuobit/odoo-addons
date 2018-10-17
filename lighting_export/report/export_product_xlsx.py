@@ -45,7 +45,7 @@ class ExportProductXlsx(models.AbstractModel):
                     else:
                         datum = 'NOT SUPPORTED'
 
-                if meta['type'] not in ('boolean',) and not datum:
+                if meta['type'] != 'boolean' and not datum:
                     datum = None
 
                 if isinstance(datum, (tuple, list)):

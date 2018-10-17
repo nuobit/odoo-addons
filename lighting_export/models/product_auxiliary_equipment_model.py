@@ -22,7 +22,7 @@ class LightingProductAuxiliaryEquipmentModel(models.Model):
                 elif field_meta['type'] == 'date':
                     datum = fields.Date.from_string(datum)
 
-                if field_meta['type'] not in ('boolean',) and not datum:
+                if field_meta['type'] != 'boolean' and not datum:
                     datum = None
 
                 line.append((field_meta['string'], datum))
