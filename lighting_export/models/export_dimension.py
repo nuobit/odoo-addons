@@ -8,6 +8,9 @@ class LightingExportDimension():
 
     @api.multi
     def export_name(self):
+        if not self:
+            return None
+
         same_uom = True
         uoms = set()
         for rec in self:

@@ -97,10 +97,11 @@ class ExportProductXlsx(models.AbstractModel):
                     col += 1
                 else:
                     num = meta['num']
-                    for so in obj[field]:
-                        for _, sod in so:
-                            sheet.write(row, col, sod)
-                            col += 1
-                        num -= 1
+                    if obj[field]:
+                        for so in obj[field]:
+                            for _, sod in so:
+                                sheet.write(row, col, sod)
+                                col += 1
+                            num -= 1
                     col += num * len(meta['subfields'])
             row += 1
