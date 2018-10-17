@@ -9,7 +9,7 @@ class LightingProductSupplier(models.Model):
     _inherit = 'lighting.product.supplier'
 
     @api.multi
-    def export_name(self):
+    def export_name(self, template_id=None):
         valid_field = ['supplier_id', 'reference']
         res = []
         for rec in self.sorted(lambda x: x.sequence):

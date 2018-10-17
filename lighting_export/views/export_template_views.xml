@@ -17,19 +17,36 @@
                             <field name="name" default_focus="1" placeholder="Template"/>
                         </h1>
                     </div>
-                    <button name="all_fields" type="object" string="All fields"
-                            class="btn btn-sm oe_edit_only fa fa-external-link btn btn-link "/>
-                    <group>
-                        <field name="line_ids" nolabel="1">
-                            <tree editable="bottom">
-                                <field name="sequence" widget="handle"/>
-                                <field name="field_id"/>
-                                <field name="field_name" groups="lighting.group_lighting_manager"/>
-                                <field name="field_ttype" groups="lighting.group_lighting_manager"/>
-                                <field name="label"/>
-                            </tree>
-                        </field>
-                    </group>
+                    <notebook>
+                        <page string="Fields">
+                            <group>
+                                <field name="field_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="field_id"/>
+                                        <field name="field_name" groups="lighting.group_lighting_manager"/>
+                                        <field name="field_ttype" groups="lighting.group_lighting_manager"/>
+                                        <field name="label"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group>
+                                <button name="add_all_fields" type="object" string="Add all fields"
+                                        class="btn btn-sm oe_edit_only"/>
+                            </group>
+                        </page>
+                        <page string="Attachments">
+                            <group>
+                                <field name="attachment_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="type_id"/>
+                                        <field name="resolution"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

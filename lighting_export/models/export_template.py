@@ -24,25 +24,28 @@ class LightingExportTemplate(models.Model):
                                      "resized as a 64x64px image, with aspect ratio preserved. " \
                                      "Use this field anywhere a small image is required.")
 
-    line_ids = fields.One2many(comodel_name='lighting.export.template.line', inverse_name='template_id',
-                               string='Lines', copy=True)
+    field_ids = fields.One2many(comodel_name='lighting.export.template.field', inverse_name='template_id',
+                                string='Fields', copy=True)
+
+    attachment_ids = fields.One2many(comodel_name='lighting.export.template.attachment', inverse_name='template_id',
+                                     string='Attachments', copy=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The template name must be unique!'),
                         ]
 
     @api.multi
-    def all_fields(self):
+    def add_all_fields(self):
         for rec in self:
             lighting_product_fields_ids = self.env['ir.model.fields'].search([
                 ('model', '=', 'lighting.product'),
                 ('name', 'in', list(self.env['lighting.product'].fields_get().keys())),
             ])
             new_field_ids = lighting_product_fields_ids \
-                .filtered(lambda x: x.id not in rec.line_ids.mapped('field_id.id')) \
+                .filtered(lambda x: x.id not in rec.field_ids.mapped('field_id.id')) \
                 .sorted(lambda x: x.id)
 
-            max_sequence = max(rec.line_ids.mapped('sequence') or [0])
-            rec.line_ids = [(0, False, {'sequence': max_sequence + i,
+            max_sequence = max(rec.field_ids.mapped('sequence') or [0])
+            rec.field_ids = [(0, False, {'sequence': max_sequence + i,
                                         'field_id': x.id
                                         }) for i, x in enumerate(new_field_ids, 1)]
 
@@ -54,8 +57,8 @@ class LightingExportTemplate(models.Model):
         return result
 
 
-class LightingExportTemplateLine(models.Model):
-    _name = 'lighting.export.template.line'
+class LightingExportTemplateField(models.Model):
+    _name = 'lighting.export.template.field'
     _order = 'sequence'
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
@@ -71,5 +74,24 @@ class LightingExportTemplateLine(models.Model):
     template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='cascade',
                                   string='Template', required=True)
 
-    _sql_constraints = [('line_uniq', 'unique (field_id,template_id)', 'The template line must be unique!'),
-                        ]
+    _sql_constraints = [
+        ('line_uniq', 'unique (field_id,template_id)', 'The template field must be unique per template!'),
+        ]
+
+
+class LightingExportTemplateAttachment(models.Model):
+    _name = 'lighting.export.template.attachment'
+    _order = 'sequence'
+
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+
+    type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='cascade',
+                              string='Type', required=True)
+    resolution = fields.Char(string='Resolution')
+
+    template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='cascade',
+                                  string='Template', required=True)
+
+    _sql_constraints = [
+        ('line_uniq', 'unique (type_id,template_id)', 'The template attachment must be unique per template!'),
+        ]

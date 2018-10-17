@@ -13,4 +13,6 @@ from . import product_beam
 from . import product_supplier
 from . import product_source
 
+from . import product_attachment
+
 from . import ir_model

@@ -7,7 +7,7 @@ from odoo import api
 class LightingExportDimension():
 
     @api.multi
-    def export_name(self):
+    def export_name(self, template_id=None):
         if not self:
             return None
 

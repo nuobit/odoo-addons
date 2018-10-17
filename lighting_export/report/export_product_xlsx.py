@@ -17,7 +17,7 @@ class ExportProductXlsx(models.AbstractModel):
 
         ## base headers with labels replaced and subset acoridng to template
         header = []
-        for line in template_id.line_ids.sorted(lambda x: x.sequence):
+        for line in template_id.field_ids.sorted(lambda x: x.sequence):
             item = objects.fields_get([line.field_id.name], ['string', 'type', 'selection'])
             if item:
                 field, meta = tuple(item.items())[0]
@@ -40,7 +40,7 @@ class ExportProductXlsx(models.AbstractModel):
                     datum = datum.display_name
                 elif meta['type'] == 'one2many':
                     if hasattr(datum, 'export_name'):
-                        datum = datum.export_name()
+                        datum = datum.export_name(template_id)
                     else:
                         datum = None #'NOT SUPPORTED'
 

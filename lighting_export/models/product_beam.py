@@ -9,7 +9,7 @@ class LightingProductBeam(models.Model):
     _inherit = 'lighting.product.beam'
 
     @api.multi
-    def export_name(self):
+    def export_name(self, template_id=None):
         valid_field = ['num', 'photometric_distribution_ids', 'dimension_ids']
         res = []
         for rec in self:

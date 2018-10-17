@@ -9,7 +9,7 @@ class LightingProductSource(models.Model):
     _inherit = 'lighting.product.source'
 
     @api.multi
-    def export_name(self):
+    def export_name(self, template_id=None):
         valid_field = ['relevance', 'num', 'lampholder_id', 'line_display', 'line_ids']
         res = []
         for rec in self.sorted(lambda x: x.sequence):
@@ -45,7 +45,7 @@ class LightingProductSourceLine(models.Model):
     _inherit = 'lighting.product.source.line'
 
     @api.multi
-    def export_name(self):
+    def export_name(self, template_id=None):
         res = []
 
         field = 'color_temperature'
