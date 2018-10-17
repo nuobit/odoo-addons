@@ -664,7 +664,7 @@ class LightingProductSource(models.Model):
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
     ## computed fields
-    line_display = fields.Char(compute='_compute_line_display', string='Sources')
+    line_display = fields.Char(compute='_compute_line_display', string='Types')
 
     @api.depends('line_ids')
     def _compute_line_display(self):
