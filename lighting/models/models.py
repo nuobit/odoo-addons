@@ -6,6 +6,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from lxml import etree
 
+
 #### auxiliary functions
 def float2text(f, decs=2):
     if f == int(f):
