@@ -21,7 +21,7 @@
         </field>
     </record>
 
-    <act_window id="export_product_action"
+    <act_window id="export_product_action" groups="export_group_user"
                 multi="True"
                 key2="client_action_multi" name="Export products"
                 res_model="lighting.export" src_model="lighting.product"
