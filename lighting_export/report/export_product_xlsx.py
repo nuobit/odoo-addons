@@ -12,8 +12,11 @@ class ExportProductXlsx(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, objects):
-        template_id = self.env['lighting.export.template'].browse(objects[0].id)
-        objects = objects[1:]
+        template_id = self.env['lighting.export.template'].browse(data.get('template_id'))
+        if data.get('interval') == 'all':
+            active_model = self.env.context.get('active_model')
+            active_domain = data.get('context').get('active_domain')
+            objects = self.env[active_model].search(active_domain)
 
         ## base headers with labels replaced and subset acoridng to template
         header = []

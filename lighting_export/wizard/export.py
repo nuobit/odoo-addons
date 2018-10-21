@@ -13,11 +13,12 @@ class LightingExport(models.TransientModel):
     template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='set null',
                                   string='Template', required=True)
 
+    interval = fields.Selection(selection=[('all', _('All')), ('selection', _('Selection'))], default='selection')
+
     @api.multi
     def export_product_xlsx(self):
         self.ensure_one()
-        context = dict(self.env.context,
-                       active_ids = [self.template_id.id] + self.env.context.get('active_ids'))
+
         return {
             'name': 'Lighting product XLSX report',
             'model': 'lighting.product',
@@ -25,5 +26,7 @@ class LightingExport(models.TransientModel):
             'report_name': 'lighting_export.export_product_xlsx',
             'report_type': 'xlsx',
             'report_file': 'export.product',
-            'context': context,
+            'data': {'interval': self.interval,
+                     'template_id': self.template_id.id,
+                     },
         }

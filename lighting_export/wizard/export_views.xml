@@ -12,6 +12,9 @@
                 <group>
                     <field name="template_id"/>
                 </group>
+                <group>
+                    <field name="interval" widget="radio"/>
+                </group>
                 <footer>
                     <button string="Export" name="export_product_xlsx" type="object" default_focus="1"
                             class="btn-primary"/>
