@@ -81,7 +81,7 @@ class ExportProductXlsx(models.AbstractModel):
                         xlsx_header.append('%s/%s' % (''.join(field1), sf))
 
         ## write to xlsx
-        sheet = workbook.add_worksheet(template_id.display_name or template_id.name)
+        sheet = workbook.add_worksheet(template_id.display_name)
         row = col = 0
 
         # write header to xlsx
