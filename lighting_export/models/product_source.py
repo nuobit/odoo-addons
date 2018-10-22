@@ -54,7 +54,7 @@ class LightingProductSourceLine(models.Model):
         if len(field_data0) == 1:
             field_data = field_data0[0]
         else:
-            field_data = ' / '.join(field_data0)
+            field_data = ' / '.join(map(lambda x: '%i' % x, field_data0))
         res.append((metas[field]['string'], field_data))
 
         field = 'luminous_flux1'
