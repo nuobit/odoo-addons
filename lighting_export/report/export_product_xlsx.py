@@ -13,6 +13,7 @@ class ExportProductXlsx(models.AbstractModel):
 
     def generate_xlsx_report(self, workbook, data, objects):
         template_id = self.env['lighting.export.template'].browse(data.get('template_id'))
+        objects = self.env['lighting.product'].browse(data.get('active_ids'))
         if data.get('interval') == 'all':
             active_model = self.env.context.get('active_model')
             active_domain = data.get('context').get('active_domain')

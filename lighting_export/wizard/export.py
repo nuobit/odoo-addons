@@ -28,5 +28,6 @@ class LightingExport(models.TransientModel):
             'report_file': 'export.product',
             'data': {'interval': self.interval,
                      'template_id': self.template_id.id,
+                     'active_ids': self.env.context.get('active_ids'),
                      },
         }
