@@ -20,6 +20,10 @@
                         <field name="date"/>
                         <field name="is_default"/>
                     </group>
+                    <group>
+                        <field name="public"/>
+                        <field name="url" widget="url" attrs="{'invisible': [('public', '!=', True)]}"/>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -37,6 +41,7 @@
                 <field name="lang_id"/>
                 <field name="date"/>
                 <field name="is_default"/>
+                <field name="public"/>
             </tree>
         </field>
     </record>

@@ -19,9 +19,6 @@ class LightingAttachment(models.Model):
     attachment_id = fields.Many2one(comodel_name='ir.attachment',
                                     compute='_compute_ir_attachment', readonly=True)
 
-    date = fields.Date(string='Date')
-    is_default = fields.Boolean(string='Default')
-
     @api.depends('datas')
     def _compute_ir_attachment(self):
         for rec in self:
@@ -32,6 +29,18 @@ class LightingAttachment(models.Model):
                 rec.attachment_id = attachment_obj[0]
             else:
                 rec.attachment_id = False
+
+    public = fields.Boolean(related='attachment_id.public', string='Public')
+    url = fields.Char(string='URL', compute='_compute_url', readonly=True)
+
+    @api.depends('attachment_id')
+    def _compute_url(self):
+        for rec in self:
+            self.url = self.url_get()
+
+    date = fields.Date(string='Date')
+    is_default = fields.Boolean(string='Default')
+
 
     lang_id = fields.Many2one(comodel_name='lighting.language', ondelete='restrict', string='Language')
 
@@ -45,6 +54,16 @@ class LightingAttachment(models.Model):
             vals.append((record.id, name))
 
         return vals
+
+    def url_get(self, resolution=None):
+        self.ensure_one()
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        pattern_l = ['%s/web/image/%i']
+        if resolution:
+            pattern_l.append(resolution)
+        pattern_l.append('%s')
+
+        return '/'.join(pattern_l) % (base_url, self.attachment_id.id, self.datas_fname)
 
 
 class LightingAttachmentType(models.Model):
