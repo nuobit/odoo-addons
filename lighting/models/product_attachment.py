@@ -22,9 +22,11 @@ class LightingAttachment(models.Model):
     @api.depends('datas')
     def _compute_ir_attachment(self):
         for rec in self:
-            attachment_obj = rec.env['ir.attachment'].search([('res_field', '=', 'datas'),
-                                                              ('res_id', '=', rec.id),
-                                                              ('res_model', '=', rec._name)])
+            attachment_obj = rec.env['ir.attachment'] \
+                .search([('res_field', '=', 'datas'),
+                         ('res_id', '=', rec.id),
+                         ('res_model', '=', rec._name)]) \
+                .sorted('id', reverse=True)
             if attachment_obj:
                 rec.attachment_id = attachment_obj[0]
             else:
@@ -42,7 +44,6 @@ class LightingAttachment(models.Model):
 
     date = fields.Date(string='Date')
     is_default = fields.Boolean(string='Default')
-
 
     lang_id = fields.Many2one(comodel_name='lighting.language', ondelete='restrict', string='Language')
 
