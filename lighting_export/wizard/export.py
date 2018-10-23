@@ -10,7 +10,7 @@ class LightingExport(models.TransientModel):
     _name = "lighting.export"
     _description = "Export data"
 
-    template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='set null',
+    template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='cascade',
                                   string='Template', required=True)
 
     interval = fields.Selection(selection=[('all', _('All')), ('selection', _('Selection'))], default='selection')
