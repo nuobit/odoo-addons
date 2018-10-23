@@ -30,6 +30,8 @@ class LightingAttachment(models.Model):
             else:
                 rec.attachment_id = False
 
+    checksum = fields.Char(related='attachment_id.checksum', string='Checksum', readonly=True)
+
     public = fields.Boolean(related='attachment_id.public', string='Public')
     url = fields.Char(string='URL', compute='_compute_url', readonly=True)
 
