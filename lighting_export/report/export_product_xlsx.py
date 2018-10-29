@@ -27,7 +27,7 @@ class ExportProductXlsx(models.AbstractModel):
                 field, meta = tuple(item.items())[0]
                 if line.label and line.label.strip():
                     meta['string'] = line.label
-                meta.update(dict(num=1, subfields=None))
+                meta.update(dict(num=0, subfields=None))
                 header.append((field, meta))
 
         ## generate data and gather header data
@@ -63,6 +63,9 @@ class ExportProductXlsx(models.AbstractModel):
 
                     meta['num'] = max(meta['num'], len(datum))
                     meta['subfields'] = subfields
+                else:
+                    if not meta['num'] and datum:
+                        meta['num'] = 1
 
                 obj_d[field] = datum
 
@@ -71,6 +74,8 @@ class ExportProductXlsx(models.AbstractModel):
         ## generate xlsx headers according to data
         xlsx_header = []
         for field, meta in header:
+            if not meta['num'] and data.get('hide_empty_fields'):
+                continue
             if not meta['subfields']:
                 xlsx_header.append(meta['string'])
             else:
@@ -96,6 +101,8 @@ class ExportProductXlsx(models.AbstractModel):
         for obj in objects_ld:
             col = 0
             for field, meta in header:
+                if not meta['num'] and data.get('hide_empty_fields'):
+                    continue
                 if not meta['subfields']:
                     sheet.write(row, col, obj[field])
                     col += 1

@@ -15,6 +15,8 @@ class LightingExport(models.TransientModel):
 
     interval = fields.Selection(selection=[('all', _('All')), ('selection', _('Selection'))], default='selection')
 
+    hide_empty_fields = fields.Boolean(string="Hide empty fields", default=True)
+
     @api.multi
     def export_product_xlsx(self):
         self.ensure_one()
@@ -27,6 +29,7 @@ class LightingExport(models.TransientModel):
             'report_type': 'xlsx',
             'report_file': 'export.product',
             'data': {'interval': self.interval,
+                     'hide_empty_fields': self.hide_empty_fields,
                      'template_id': self.template_id.id,
                      'active_ids': self.env.context.get('active_ids'),
                      },
