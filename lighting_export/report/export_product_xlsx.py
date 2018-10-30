@@ -40,13 +40,15 @@ class ExportProductXlsx(models.AbstractModel):
                     datum = dict(meta['selection']).get(datum)
                 elif meta['type'] == 'many2many':
                     datum = ','.join([x.display_name for x in datum])
+                elif meta['type'] == 'boolean':
+                    datum = _('Yes') if datum else _('No')
                 elif meta['type'] == 'many2one':
                     datum = datum.display_name
                 elif meta['type'] == 'one2many':
                     if hasattr(datum, 'export_name'):
                         datum = datum.export_name(template_id)
                     else:
-                        datum = None #'NOT SUPPORTED'
+                        datum = None  # NOT SUPPORTED
 
                 if meta['type'] != 'boolean' and not datum:
                     datum = None
@@ -110,7 +112,7 @@ class ExportProductXlsx(models.AbstractModel):
                     num = meta['num']
                     if obj[field]:
                         for so in obj[field]:
-                            for _, sod in so:
+                            for dummy, sod in so:
                                 sheet.write(row, col, sod)
                                 col += 1
                             num -= 1
