@@ -19,6 +19,7 @@
                         <field name="lang_id"/>
                         <field name="date"/>
                         <field name="is_default"/>
+                        <field name="sequence"/>
                     </group>
                     <group>
                         <field name="public"/>
@@ -34,6 +35,7 @@
         <field name="model">lighting.attachment</field>
         <field name="arch" type="xml">
             <tree string="Attachment Tree">
+                <field name="sequence" widget="handle"/>
                 <field name="type_id"/>
                 <field name="datas_fname"/>
                 <field name="datas" filename="datas_fname" string="Size"/>

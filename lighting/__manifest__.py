@@ -5,7 +5,7 @@
 {
     'name': "Lighting vertical",
     'description': "Lighting vertical",
-    'version': '11.0.0.20.2',
+    'version': '11.0.0.21.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -29,6 +29,6 @@
         'wizard/product_define_substitute_views.xml',
         'data/lighting_data.xml',
         'data/lighting_data_etim.xml',
-        ],
+    ],
     'installable': True,
 }

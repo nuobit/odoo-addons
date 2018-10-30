@@ -8,7 +8,9 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingAttachment(models.Model):
     _name = 'lighting.attachment'
-    _order = 'type_id'
+    _order = 'type_id,sequence'
+
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
     name = fields.Char(string='Description', translate=True)
     type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='restrict', required=True,
