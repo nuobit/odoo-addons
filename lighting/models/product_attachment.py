@@ -8,9 +8,17 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingAttachment(models.Model):
     _name = 'lighting.attachment'
-    _order = 'type_id,sequence'
+    _order = 'type_id,sequence,id'
 
-    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+    def _sequence_default(self):
+        max_sequence = self.env['lighting.attachment'] \
+            .search([('product_id', '=', self.env.context.get('default_product_id'))],
+                    order='sequence desc', limit=1).sequence
+
+        return max_sequence + 1
+
+    sequence = fields.Integer(required=True, default=_sequence_default,
+                              help="The sequence field is used to define order")
 
     name = fields.Char(string='Description', translate=True)
     type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='restrict', required=True,
