@@ -23,8 +23,8 @@ class LightingProject(models.Model):
     city = fields.Char(string='City', required=True)
     country_id = fields.Many2one(comodel_name='res.country', ondelete='restrict', string='Country', required=True)
     type_ids = fields.Many2many(comodel_name='lighting.project.type', string='Types',
-                                  relation='lighting_project_product_type_rel',
-                                  column1='project_id', column2='type_id', required=True)
+                                relation='lighting_project_product_type_rel',
+                                column1='project_id', column2='type_id', required=True)
 
     prescriptor = fields.Char(string='Prescriptor')
 
@@ -45,10 +45,22 @@ class LightingProject(models.Model):
     attachment_ids = fields.One2many(comodel_name='lighting.project.attachment',
                                      inverse_name='project_id', string='Attachments', copy=True)
     attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
+
     @api.depends('attachment_ids')
     def _compute_attachment_count(self):
         for record in self:
-            record.attachment_count = self.env['lighting.project.attachment'].search_count([('project_id', '=', record.id)])
+            record.attachment_count = self.env['lighting.project.attachment'] \
+                .search_count([('project_id', '=', record.id)])
+
+    catalog_ids = fields.Many2many(compute='_compute_catalog_ids', comodel_name='lighting.catalog',
+                                   string='Catalogs', readonly=True)
+
+    @api.depends('family_ids')
+    def _compute_catalog_ids(self):
+        for record in self:
+            record.catalog_ids = self.env['lighting.product'] \
+                .search([('family_ids', 'in', record.family_ids.mapped('id'))]) \
+                .mapped('catalog_ids')
 
     @api.multi
     def print_project_sheet(self):

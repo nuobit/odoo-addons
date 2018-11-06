@@ -44,4 +44,46 @@
             </xpath>
         </field>
     </record>
+
+    <!-- window action catalog2project smart button -->
+    <record id="product_catalog_action_project" model="ir.actions.act_window">
+        <field name="name">Project</field>
+        <field name="res_model">lighting.project</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('catalog_ids','=',active_id)]</field>
+        <field name="context"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Project</p>
+        </field>
+    </record>
+
+    <record id="catalog_view_form_inherit_project" model="ir.ui.view">
+        <field name="name">catalog_view.form.inherit.project</field>
+        <field name="model">lighting.catalog</field>
+        <field name="inherit_id" ref="lighting.catalog_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button type="action" class="oe_stat_button" icon="fa-filter"
+                        name="%(product_catalog_action_project)d">
+                    <field string="Projects" name="project_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="catalog_view_tree_inherit_project" model="ir.ui.view">
+        <field name="name">catalog_view.tree.inherit.project</field>
+        <field name="model">lighting.catalog</field>
+        <field name="inherit_id" ref="lighting.catalog_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="project_count"/>
+                <button type="action" class="oe_stat_button" icon="fa-external-link"
+                        name="%(product_catalog_action_project)d">
+                    <field string="Projects" name="project_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
 </odoo>
