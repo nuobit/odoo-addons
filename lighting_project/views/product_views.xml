@@ -51,7 +51,7 @@
         <field name="res_model">lighting.project</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('catalog_ids','=',active_id)]</field>
+        <field name="domain"/>
         <field name="context"/>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Project</p>
@@ -64,8 +64,8 @@
         <field name="inherit_id" ref="lighting.catalog_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet/div[@name='button_box']" position="inside">
-                <button type="action" class="oe_stat_button" icon="fa-filter"
-                        name="%(product_catalog_action_project)d">
+                <button type="object" class="oe_stat_button" icon="fa-filter"
+                        name="get_catalog_projects">
                     <field string="Projects" name="project_count" widget="statinfo"/>
                 </button>
             </xpath>
@@ -79,8 +79,8 @@
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
                 <field name="project_count"/>
-                <button type="action" class="oe_stat_button" icon="fa-external-link"
-                        name="%(product_catalog_action_project)d">
+                <button type="object" class="oe_stat_button" icon="fa-external-link"
+                        name="get_catalog_projects">
                     <field string="Projects" name="project_count" widget="statinfo"/>
                 </button>
             </xpath>

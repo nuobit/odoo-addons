@@ -41,3 +41,11 @@ class LightingCatalog(models.Model):
     def _compute_project_count(self):
         for record in self:
             record.project_count = len(record.project_ids)
+
+    def get_catalog_projects(self):
+        self.ensure_one()
+
+        action = self.env.ref('lighting_project.product_catalog_action_project').read()[0]
+        action.update({'domain': [('id', 'in', self.project_ids.mapped('id'))]})
+
+        return action
