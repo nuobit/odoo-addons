@@ -166,7 +166,7 @@ class LightingProduct(models.Model):
     finish_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish')
 
     body_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_body_material_rel', string='Body material')
-    diffusor_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_diffusor_material_rel', string='Diffusor material')
+    diffusor_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_diffusor_material_rel', string='Diffuser material')
     frame_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_frame_material_rel', string='Frame material')
     reflector_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_reflector_material_rel', string='Reflector material')
     blade_material_ids = fields.Many2many(comodel_name='lighting.product.material', relation='lighting_product_blade_material_rel', string='Blade material')
@@ -184,12 +184,12 @@ class LightingProduct(models.Model):
 
     # electrical characteristics tab
     protection_class_id = fields.Many2one(comodel_name='lighting.product.protectionclass', ondelete='restrict', string='Protection class')
-    frequency_id = fields.Many2one(comodel_name='lighting.product.frequency', ondelete='restrict', string='Frequency')
+    frequency_id = fields.Many2one(comodel_name='lighting.product.frequency', ondelete='restrict', string='Frequency (Hz)')
     dimmable_ids = fields.Many2many(comodel_name='lighting.product.dimmable', relation='lighting_product_dimmable_rel', string='Dimmables')
-    auxiliary_equipment_ids = fields.Many2many(comodel_name='lighting.product.auxiliaryequipment', relation='lighting_product_auxiliary_equipment_rel', string='Auxiliary equipment')
+    auxiliary_equipment_ids = fields.Many2many(comodel_name='lighting.product.auxiliaryequipment', relation='lighting_product_auxiliary_equipment_rel', string='Auxiliary gear')
     auxiliary_equipment_model_ids = fields.One2many(comodel_name='lighting.product.auxiliaryequipmentmodel',
-                                        inverse_name='product_id', string='Auxiliary equipment models', copy=True)
-    auxiliary_equipment_model_alt = fields.Char(string='Auxiliary equipment model alternative')
+                                        inverse_name='product_id', string='Auxiliary gear code', copy=True)
+    auxiliary_equipment_model_alt = fields.Char(string='Alternative auxiliary gear code')
     input_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Input voltage')
     input_current = fields.Float(string='Input current (mA)')
     output_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage', ondelete='restrict', string='Output voltage')
@@ -362,11 +362,6 @@ class LightingProduct(models.Model):
     state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State')
     effective_date = fields.Date(string='Effective date')
     marketing_comments = fields.Char(string='Comments')
-
-    ########### ETIM
-    class_id = fields.Many2one(comodel_name='lighting.etim.class', ondelete='restrict', string='Class')
-    feature_ids = fields.One2many(comodel_name='lighting.product.etim.feature',
-                                   inverse_name='product_id', string='Features', copy=True)
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -850,7 +845,7 @@ class LightingAssembler(models.Model):
     _name = 'lighting.assembler'
     _order = 'name'
 
-    name = fields.Char(string='Asssembler', required=True)
+    name = fields.Char(string='Assembler', required=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The assembler must be unique!'),
                         ]
@@ -886,225 +881,3 @@ class LightingProductState(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The state description must be unique!'),
                         ]
-
-########## ETIM tab
-class LightingProductETIMFeature(models.Model):
-    _name = 'lighting.product.etim.feature'
-
-    feature_id = fields.Many2one(comodel_name='lighting.etim.feature', ondelete='restrict', string='Feature')
-
-    @api.onchange('feature_id')
-    def feature_id_change(self):
-        self.unit_id = self.product_id.class_id.feature_ids.filtered(
-            lambda x: x['feature_id']==self.feature_id).unit_id
-        feature_value_ids = self.product_id.class_id.feature_ids.filtered(
-            lambda x: x['feature_id'] == self.feature_id).value_ids.mapped('value_id.id')
-
-        return {'domain': {'unit_id': [('id', '=', self.unit_id.id)],
-                           'a_value_id': [('id', 'in', feature_value_ids)]
-                           },
-                }
-
-    feature_type = fields.Selection(related='feature_id.type', string="Type", readonly=True)
-
-    unit_id = fields.Many2one(comodel_name='lighting.etim.unit', ondelete='restrict', string='Unit', readonly=True)
-    has_unit = fields.Boolean(compute="_compute_has_unit")
-
-    @api.depends('feature_id')
-    def _compute_has_unit(self):
-        for rec in self:
-            unit_ids = self.product_id.class_id.feature_ids.filtered(
-                lambda x: x['feature_id'] == self.feature_id).unit_id
-
-            rec.has_unit = len(unit_ids) != 0
-
-    a_value_id = fields.Many2one(comodel_name='lighting.etim.value', ondelete='restrict', string='Value')
-    l_value = fields.Boolean('Value')
-    n_value = fields.Float('Value')
-    r1_value = fields.Float('Value 1')
-    r2_value = fields.Float('Value 2')
-
-    value = fields.Char(compute='_compute_value', string='Value', readonly=True)
-
-    @api.depends('feature_id', 'a_value_id', 'l_value', 'n_value', 'r1_value', 'r2_value')
-    def _compute_value(self):
-        for rec in self:
-            if rec.feature_id.type == 'A':
-                rec.value = rec.a_value_id.display_name
-            elif rec.feature_id.type == 'L':
-                rec.value = 'True' if rec.l_value else 'False'
-            elif rec.feature_id.type == 'N':
-                rec.value = str(rec.n_value)
-            elif rec.feature_id.type == 'R':
-                range_str = []
-                if rec.r1_value:
-                    range_str.append(str(rec.r1_value))
-                if rec.r2_value:
-                    range_str.append(str(rec.r2_value))
-                if range_str != []:
-                    rec.value = ' - '.join(range_str)
-
-    product_class_id = fields.Many2one(related='product_id.class_id', readonly=True)
-    # @api.onchange('product_class_id')
-    # def product_class_id_change(self):
-    #     return {'domain': {'feature_id': [('id', 'in', self.product_id.class_id.feature_ids.mapped('feature_id.id'))]}}
-
-    product_class_feature_ids = fields.One2many(comodel_name='lighting.etim.feature',
-                                                compute="_product_class_feature_ids", readonly=True)
-
-    @api.depends('product_class_id')
-    def _product_class_feature_ids(self):
-        for rec in self:
-            rec.product_class_feature_ids = rec.product_id.class_id.feature_ids.mapped('feature_id')
-
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product', required=True)
-
-    _sql_constraints = [
-        ('feature_uniq', 'unique (feature_id, product_id)', 'Feature duplicated'),
-        ]
-
-########### ETIM
-
-class LightingETIMUnit(models.Model):
-    _name = 'lighting.etim.unit'
-
-    code = fields.Char("Code", required=True)
-    name = fields.Char("Description", required=True, translate=True)
-    abbreviation = fields.Char("Abbreviation", required=True, translate=True)
-
-    _sql_constraints = [ ('code', 'unique (code)', 'The code must be unique!'),
-        ]
-
-    @api.multi
-    def name_get(self):
-        vals = []
-        for record in self:
-            name = '[%s] %s (%s)' % (record.code, record.name, record.abbreviation)
-            vals.append((record.id, name))
-
-        return vals
-
-
-
-class LightingETIMFeature(models.Model):
-    _name = 'lighting.etim.feature'
-
-    code = fields.Char("Code", required=True)
-    name = fields.Char("Description", required=True, translate=True)
-    type = fields.Selection([('N', 'Numeric'),
-                             ('L', 'Logical'),
-                             ('R', 'Range'),
-                             ('A', 'Alphanumeric')], "Type", required=True)
-
-    _sql_constraints = [ ('code', 'unique (code)', 'The code must be unique!'),
-        ]
-
-    @api.multi
-    def name_get(self):
-        vals = []
-        for record in self:
-            name = '[%s] %s' % (record.code, record.name)
-            vals.append((record.id, name))
-
-        return vals
-
-class LightingETIMValue(models.Model):
-    _name = 'lighting.etim.value'
-
-    code = fields.Char("Code", required=True)
-    name = fields.Char("Description", required=True, translate=True)
-
-    _sql_constraints = [ ('code', 'unique (code)', 'The code must be unique!'),
-        ]
-
-    @api.multi
-    def name_get(self):
-        vals = []
-        for record in self:
-            name = '[%s] %s' % (record.code, record.name)
-            vals.append((record.id, name))
-
-        return vals
-
-class LightingETIMGroup(models.Model):
-    _name = 'lighting.etim.group'
-
-    code = fields.Char("Code", required=True)
-    name = fields.Char("Description", required=True, translate=True)
-
-    _sql_constraints = [ ('code', 'unique (code)', 'The code must be unique!'),
-        ]
-
-    @api.multi
-    def name_get(self):
-        vals = []
-        for record in self:
-            name = '[%s] %s' % (record.code, record.name)
-            vals.append((record.id, name))
-
-        return vals
-
-class LightingETIMClass(models.Model):
-    _name = 'lighting.etim.class'
-
-    code = fields.Char("Code", required=True)
-    name = fields.Char("Description", required=True, translate=True)
-    version = fields.Integer("Version", required=True)
-    change_code = fields.Char("Change code", required=True)
-
-    status = fields.Char("Status", required=True)
-
-    group_id = fields.Many2one(comodel_name='lighting.etim.group', ondelete='restrict', string='Group', required=True)
-
-    synonim_ids = fields.One2many(comodel_name='lighting.etim.class.synonim',
-                                   inverse_name='class_id', string='Synonims')
-
-    feature_ids = fields.One2many(comodel_name='lighting.etim.class.feature',
-                                   inverse_name='class_id', string='Features')
-
-    _sql_constraints = [ ('code', 'unique (code)', 'The code must be unique!'),
-        ]
-
-    @api.multi
-    def name_get(self):
-        vals = []
-        for record in self:
-            name = '[%s] %s' % (record.code, record.name)
-            vals.append((record.id, name))
-
-        return vals
-
-class LightingETIMClassSynonim(models.Model):
-    _name = 'lighting.etim.class.synonim'
-
-    name = fields.Char("Synonim", required=True, translate=True)
-
-    class_id = fields.Many2one(comodel_name='lighting.etim.class', ondelete='cascade', string='Class')
-
-
-class LightingETIMClassFeature(models.Model):
-    _name = 'lighting.etim.class.feature'
-
-    sequence = fields.Integer("Order", required=True, default=1)
-
-    change_code = fields.Char("Change code", required=True)
-
-    feature_id = fields.Many2one(comodel_name='lighting.etim.feature', ondelete='restrict', string='Feature')
-    unit_id = fields.Many2one(comodel_name='lighting.etim.unit', ondelete='restrict', string='Unit')
-
-    value_ids = fields.One2many(comodel_name='lighting.etim.class.feature.value',
-                                  inverse_name='feature_id', string='Values')
-
-    class_id = fields.Many2one(comodel_name='lighting.etim.class', ondelete='cascade', string='Class')
-
-
-class LightingETIMClassFeatureValue(models.Model):
-    _name = 'lighting.etim.class.feature.value'
-
-    sequence = fields.Integer("Order", required=True, default=1)
-
-    change_code = fields.Char("Change code", required=True)
-
-    value_id = fields.Many2one(comodel_name='lighting.etim.value', ondelete='restrict', string='Value')
-
-    feature_id = fields.Many2one(comodel_name='lighting.etim.class.feature', ondelete='cascade', string='Feature')

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-07 16:32+0000\n"
-"PO-Revision-Date: 2018-11-07 16:32+0000\n"
+"POT-Creation-Date: 2018-11-07 17:04+0000\n"
+"PO-Revision-Date: 2018-11-07 17:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,30 +18,30 @@ msgstr ""
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_discontinued_product_percent
 msgid "% Discontinued product(s)"
-msgstr "% Producto(s) descatalogado(s)"
+msgstr "% Discontinued product(s)"
 
 #. module: lighting
 #: code:addons/lighting/models/models.py:377
 #: code:addons/lighting/models/models.py:378
 #, python-format
 msgid "%s (copy)"
-msgstr "%s (copia)"
+msgstr "%s (copy)"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "=Material code"
-msgstr "=Código de material"
+msgstr "=Material code"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_accessory_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Accessories"
-msgstr "Accesorios"
+msgstr "Accessories"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.add_attachment_action
 msgid "Add attachment"
-msgstr "Añadir adjunto"
+msgstr "Add attachment"
 
 #. module: lighting
 #: code:addons/lighting/wizard/lighting_product_addattachment.py:99
@@ -58,7 +58,7 @@ msgstr "Already exists an attachment with the same type"
 #. module: lighting
 #: selection:lighting.product.voltage,current_type:0
 msgid "Alternating"
-msgstr "Alterna"
+msgstr "Alternating"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_anchorage_included
@@ -69,13 +69,13 @@ msgstr "Anchorage included"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_application_name
 #: model:ir.ui.view,arch_db:lighting.product_application_form_view
 msgid "Application"
-msgstr "Aplicación"
+msgstr "Application"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_application_ids
 #: model:ir.ui.menu,name:lighting.product_applications_menu
 msgid "Applications"
-msgstr "Applicaciones"
+msgstr "Applications"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_define_substitute_view
@@ -87,7 +87,7 @@ msgstr "Are you sure to define selected products as a substitutes?"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_assembler_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_assembler_name
 msgid "Assembler"
-msgstr "Montador"
+msgstr "Assembler"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.assembler_form_view
@@ -102,12 +102,12 @@ msgstr "Assembler Tree"
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.assemblers_menu
 msgid "Assemblers"
-msgstr "Montadores"
+msgstr "Assemblers"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_addattachment_view
 msgid "Attach"
-msgstr "Adjuntar"
+msgstr "Attach"
 
 #. module: lighting
 #: model:ir.model,name:lighting.model_lighting_product_addattachment
@@ -123,7 +123,7 @@ msgstr "Attach mutiple files"
 #: model:ir.actions.act_window,name:lighting.attachment_list_action
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_attachment_id
 msgid "Attachment"
-msgstr "Adjunto"
+msgstr "Pièce jointe"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.attachment_form_view
@@ -144,7 +144,7 @@ msgstr "Attachment typ Form"
 #: model:ir.actions.act_window,name:lighting.attachment_type_list_action
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Attachment type"
-msgstr "Tipo de adjunto"
+msgstr "Attachment type"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.attachment_type_tree_view
@@ -154,54 +154,54 @@ msgstr "Attachment type Tree"
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.attachment_types_menu
 msgid "Attachment types"
-msgstr "Tipos de adjunto"
+msgstr "Attachment types"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_attachment_count
 msgid "Attachment(s)"
-msgstr "Adjunto(s)"
+msgstr "Attachment(s)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_attachment_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Attachments"
-msgstr "Adjuntos"
+msgstr "Pièces jointes"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_total_wattage_auto
 msgid "Autocalculate"
-msgstr "Autocalcular"
+msgstr "Autocalculate"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_total_wattage_auto
 msgid "Autocalculate total wattage"
-msgstr "Autocalcula la potencia total"
+msgstr "Autocalculate total wattage"
 
 #. module: lighting
 #: selection:lighting.product.source,relevance:0
 msgid "Auxiliary"
-msgstr "Auxiliar"
+msgstr "Auxiliary"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliary_equipment_ids
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipment_name
 msgid "Auxiliary gear"
-msgstr "Equipo auxiliar"
+msgstr "Unité electrique auxiliaire"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentbrand_name_19610
 msgid "Auxiliary gear code"
-msgstr "Modelo equipo auxiliar"
+msgstr "Code de l'unité electrique auxiliaire"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_auxiliaryequipmentbrands_menu
 msgid "Auxiliary gear codes"
-msgstr "Modelos equipo auxiliar"
+msgstr "Codes de l'unité electrique auxiliaire"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliary_equipment_model_alt
 msgid "Alternative auxiliary gear code"
-msgstr "Modelo equipo auxiliar alternativo"
+msgstr "Code de l'unité elect. aux. alternative"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliary_equipment_model_ids
@@ -226,12 +226,12 @@ msgstr "Average price"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_autonomy
 msgid "Battery autonomy (h)"
-msgstr "Autonomia bateria (h)"
+msgstr "Batterie d'autonomie (h)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_charge_time
 msgid "Battery charge time (h)"
-msgstr "Ciclo de carga (h)"
+msgstr "Cycle de charge (h)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_beam_id
@@ -264,23 +264,23 @@ msgstr "Blade material"
 #: selection:lighting.product.source.line,special_spectrum:0
 #, python-format
 msgid "Blue"
-msgstr "Blue"
+msgstr "Bleu"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_body_material_ids
 msgid "Body material"
-msgstr "Material del cuerpo"
+msgstr "Matériau du corps"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel_brand_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_brand_id
 msgid "Brand"
-msgstr "Marca"
+msgstr "Brand"
 
 #. module: lighting
 #: selection:lighting.product.source.line,special_spectrum:0
 msgid "Bread"
-msgstr "Pan"
+msgstr "Bread"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cri_min
@@ -296,13 +296,13 @@ msgstr "Cable outlets"
 #: model:ir.ui.view,arch_db:lighting.lighting_product_addattachment_view
 #: model:ir.ui.view,arch_db:lighting.product_define_substitute_view
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Annuler"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_name
 #: model:ir.ui.view,arch_db:lighting.catalog_form_view
 msgid "Catalog"
-msgstr "Catálogo"
+msgstr "Catalogue"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.catalog_form_view
@@ -339,7 +339,7 @@ msgstr "Class"
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_addattachment_view
 msgid "Close"
-msgstr "Cerrar"
+msgstr "Fermer"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_code
@@ -350,7 +350,7 @@ msgstr "Cerrar"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_code
 #: model:ir.ui.view,arch_db:lighting.product_finish_form_view
 msgid "Code"
-msgstr "Código"
+msgstr "Code"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_codebars
@@ -370,7 +370,7 @@ msgstr "Color temperature (K)"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_marketing_comments
 msgid "Comments"
-msgstr "Comments"
+msgstr "Commentaires"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.common_data_menu
@@ -398,7 +398,7 @@ msgstr "Components"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_corrosion_resistance
 msgid "Corrosion resistance"
-msgstr "Resistencia a la corrosión"
+msgstr "Résistance à la corrosion"
 
 #. module: lighting
 #: model:ir.actions.act_window,help:lighting.assembler_list_action
@@ -434,7 +434,7 @@ msgstr "Create the first Photobiological risk group"
 #: model:ir.actions.act_window,help:lighting.product_type_action_product
 #: model:ir.actions.act_window,help:lighting.product_voltage_action_product
 msgid "Create the first Product"
-msgstr "Crear el primer Producto"
+msgstr "Create the first Product"
 
 #. module: lighting
 #: model:ir.actions.act_window,help:lighting.product_ecorraecategory_list_action
@@ -597,7 +597,7 @@ msgstr "Create the first product voltage"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr "Créé par"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_assembler_create_date
@@ -642,24 +642,24 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Créé le"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_current_type
 msgid "Current type"
-msgstr "Tipo de corriente"
+msgstr "Courant type"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_date
 msgid "Date"
-msgstr "Fecha"
+msgstr "Date "
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_is_default
 msgid "Default"
-msgstr "Por defecto"
+msgstr "Par défaut"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_define_substitute_view
@@ -694,12 +694,12 @@ msgstr "Define substitutes"
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_name
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Description"
-msgstr "Descripción"
+msgstr "Description"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_description_manual
 msgid "Description (manual)"
-msgstr "Descripción (manual)"
+msgstr "Description (manual)"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_description
@@ -719,7 +719,7 @@ msgstr "Description text"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_diffusor_material_ids
 msgid "Diffuser material"
-msgstr "Material del difusor"
+msgstr "Matériau du diffuseur"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_type_id
@@ -745,14 +745,14 @@ msgstr "Dimension type Tree"
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.dimension_types_menu
 msgid "Dimension types"
-msgstr "Tipos de dimension"
+msgstr "Dimension types"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_ids
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimensions_display
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_ids
 msgid "Dimensions"
-msgstr "Dimensiones"
+msgstr "Dimensions"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable_name
@@ -768,28 +768,28 @@ msgstr "Dimmables"
 #. module: lighting
 #: selection:lighting.product.voltage,current_type:0
 msgid "Direct"
-msgstr "Continua"
+msgstr "Direct"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_family_form_view
 msgid "Disc. products"
-msgstr "Prod. desc."
+msgstr "Disc. products"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state:0
 msgid "Discontinued"
-msgstr "Descatalogado"
+msgstr "Discontinued"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued_by_supplier
 msgid "Discontinued by supplier"
-msgstr "Descatalogado por el proveedor"
+msgstr "Discontinued by supplier"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued_soon
 msgid "Discontinued soon"
-msgstr "Descatalogado en breve"
+msgstr "Discontinued soon"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_assembler_display_name
@@ -834,29 +834,29 @@ msgstr "Descatalogado en breve"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_display_name
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr "Nom à afficher"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_datas
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_datas
 msgid "Document"
-msgstr "Documento"
+msgstr "Document"
 
 #. module: lighting
 #: selection:lighting.product.addattachment,state:0
 msgid "Done"
-msgstr "Hecho"
+msgstr "Fait"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state:0
 msgid "Draft"
-msgstr "Borrador"
+msgstr "Brouillon"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dynamic_pressure
 msgid "Dynamic pressure (kg)"
-msgstr "Presión dinámica (kg)"
+msgstr "Pression dynamique (kg)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dynamic_pressure_velocity
@@ -916,13 +916,13 @@ msgstr "Emergency light"
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.energyefficiencies_menu
 msgid "Energy efficiencies"
-msgstr "Eficiencias energéticas"
+msgstr "Efficacité énergétique"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.energyefficiency_list_action
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_efficiency_ids
 msgid "Energy efficiency"
-msgstr "Eficiencia energética"
+msgstr "Efficacité énergétique"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.energyefficiency_form_view
@@ -937,7 +937,7 @@ msgstr "Energy efficiency Tree"
 #. module: lighting
 #: selection:lighting.product.addattachment,state:0
 msgid "Error"
-msgstr "Error"
+msgstr "Erreur"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_external_data_available
@@ -954,7 +954,7 @@ msgstr "Families"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_name
 #: model:ir.ui.view,arch_db:lighting.product_family_form_view
 msgid "Family"
-msgstr "Familia"
+msgstr "Famille"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_blades
@@ -964,38 +964,38 @@ msgstr "Fan blades"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_control
 msgid "Fan control type"
-msgstr "Tipo de control de ventilador"
+msgstr "Fan control type"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_wattage_ids
 msgid "Fan wattages (W)"
-msgstr "Potencias del ventilador (W)"
+msgstr "Fan wattages (W)"
 
 #. module: lighting
 #: selection:lighting.product.source.line,special_spectrum:0
 msgid "Fashion"
-msgstr "Moda"
+msgstr "Fashion"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_datas_fname
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_datas_fname
 msgid "Filename"
-msgstr "Nombre de archivo"
+msgstr "Nom du fichier"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_id
 msgid "Finish"
-msgstr "Acabado"
+msgstr "Finition"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_finishes_menu
 msgid "Finishes"
-msgstr "Acabados"
+msgstr "Finitions"
 
 #. module: lighting
 #: selection:lighting.product.source.line,special_spectrum:0
 msgid "Fish"
-msgstr "Pescado"
+msgstr "Fish"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_flammable_surfaces
@@ -1010,35 +1010,35 @@ msgstr "Foreign name"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frame_material_ids
 msgid "Frame material"
-msgstr "Material del marco"
+msgstr "Matériau du cadre"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_frequencies_menu
 msgid "Frequencies"
-msgstr "Frequencies"
+msgstr "Fréquences"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frequency_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frequency_name
 msgid "Frequency (Hz)"
-msgstr "Frecuencia (Hz)"
+msgstr "Fréquence (Hz)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_glow_wire_temperature
 msgid "Glow wire temperature (ºC)"
-msgstr "Temperatura de hilo incandescente (ºC)"
+msgstr "Température du fil incandescent (ºC)"
 
 #. module: lighting
 #: code:addons/lighting/models/models.py:708
 #: selection:lighting.product.source.line,special_spectrum:0
 #, python-format
 msgid "Green"
-msgstr "Green"
+msgstr "Vert"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Group By"
-msgstr "Agrupar por"
+msgstr "Regrouper par"
 
 #. module: lighting
 #: model:res.groups,name:lighting.group_lighting_guest
@@ -1167,12 +1167,12 @@ msgstr "Indoor and Outdoor"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_input_current
 msgid "Input current (mA)"
-msgstr "Corriente de entrada (mA)"
+msgstr "Courant d'entrée (mA)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_input_voltage_id
 msgid "Input voltage"
-msgstr "Tensión de entrada"
+msgstr "Tension d'entrée"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_install_location
@@ -1269,18 +1269,18 @@ msgstr "Lamp included efficiency"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_lamp_included
 msgid "Lamp included?"
-msgstr "Lámpara incluida?"
+msgstr "Lampe incluse?"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_id
 #: model:ir.ui.view,arch_db:lighting.product_source_lampholder_form_view
 msgid "Lampholder"
-msgstr "Portalámparas"
+msgstr "Douille"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_source_lampholders_menu
 msgid "Lampholders"
-msgstr "Portalámparas"
+msgstr "Douilles"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.language_list_action
@@ -1288,7 +1288,7 @@ msgstr "Portalámparas"
 #: model:ir.model.fields,field_description:lighting.field_lighting_language_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_lang_id
 msgid "Language"
-msgstr "Idioma"
+msgstr "Langue"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.language_form_view
@@ -1303,7 +1303,7 @@ msgstr "Language Tree"
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.lenguages_menu
 msgid "Languages"
-msgstr "Idiomas"
+msgstr "Langues"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_assembler___last_update
@@ -1348,7 +1348,7 @@ msgstr "Idiomas"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier___last_update
 msgid "Last Modified on"
-msgstr "Última Modificación en"
+msgstr "Dernière modification le"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_assembler_write_uid
@@ -1393,7 +1393,7 @@ msgstr "Última Modificación en"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_write_uid
 msgid "Last Updated by"
-msgstr "Última actualización de"
+msgstr "Dernière mise à jour par"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_assembler_write_date
@@ -1438,7 +1438,7 @@ msgstr "Última actualización de"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_write_date
 msgid "Last Updated on"
-msgstr "Última Actualización el"
+msgstr "Dernière mise à jour le"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_last_update
@@ -1480,12 +1480,12 @@ msgstr "Lighting"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_ids
 msgid "Lines"
-msgstr "Líneas"
+msgstr "Lignes"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Logistics"
-msgstr "Logística"
+msgstr "Logistique"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_total_nominal_flux
@@ -1520,7 +1520,7 @@ msgstr "Main"
 #. module: lighting
 #: model:res.groups,name:lighting.group_lighting_manager
 msgid "Manager"
-msgstr "Responsable"
+msgstr "Gestionnaire"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_description_manual
@@ -1575,7 +1575,7 @@ msgstr "Maximum inclination angle (º)"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_operating_temperature_max
 msgid "Maximum operating temperature (ºC)"
-msgstr "Temperatura máxima de funcionamiento (ºC)"
+msgstr "Température de fonctionnement maximale (ºC)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_rotation_angle_max
@@ -1610,12 +1610,12 @@ msgstr "Minimum color rendering index"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_operating_temperature_min
 msgid "Minimum operating temperature (ºC)"
-msgstr "Temperatura mínima de funcionamiento (ºC)"
+msgstr "Température de fonctionnement minimale (ºC)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_power_factor_min
 msgid "Minimum power factor"
-msgstr "Factor de potencia"
+msgstr "Facteur de puissance minimum"
 
 #. module: lighting
 #: selection:lighting.product.source.line,special_spectrum:0
@@ -1626,7 +1626,7 @@ msgstr "Multi Food"
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_name
 msgid "Name"
-msgstr "Nombre"
+msgstr "Nom"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_usb_ports
@@ -1661,7 +1661,7 @@ msgstr "Number of power switches"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_num
 msgid "Number of sources"
-msgstr "Número de fuentes"
+msgstr "Nombre de sources"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_onhand
@@ -1690,17 +1690,17 @@ msgstr "Outdoor"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_output_current
 msgid "Output current (mA)"
-msgstr "Corriente de Salida (mA)"
+msgstr "Courant de sortie (mA)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_output_voltage_id
 msgid "Output voltage"
-msgstr "Tensión de salida"
+msgstr "Tension de sortie"
 
 #. module: lighting
 #: selection:lighting.product.addattachment,state:0
 msgid "Pending"
-msgstr "Pending"
+msgstr "En attente"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_periodic_maintenance
@@ -1747,7 +1747,7 @@ msgstr "Post with inspection chamber"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_power_switches
 msgid "Power switches"
-msgstr "Interruptores de encendido"
+msgstr "Interrupteurs d'allumage"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.product_application_action_product
@@ -1770,7 +1770,7 @@ msgstr "Interruptores de encendido"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_product_id
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Product"
-msgstr "Producto"
+msgstr "Article"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.product_ecorraecategory_list_action
@@ -2113,13 +2113,13 @@ msgstr "Product(s)"
 #: model:ir.ui.view,arch_db:lighting.product_voltage_form_view
 #: model:ir.ui.view,arch_db:lighting.product_voltage_tree_view
 msgid "Products"
-msgstr "Productos"
+msgstr "Articles"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.product_protectionclass_list_action
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protection_class_id
 msgid "Protection class"
-msgstr "Clase eléctrica"
+msgstr "Classe électrique"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_protectionclass_form_view
@@ -2139,13 +2139,13 @@ msgstr "Protection classes"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_public
 msgid "Public"
-msgstr "Público"
+msgstr "Public"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state:0
 msgid "Published"
-msgstr "Publicado"
+msgstr "Publié"
 
 #. module: lighting
 #: code:addons/lighting/models/models.py:709
@@ -2157,7 +2157,7 @@ msgstr "Purple"
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Quantity"
-msgstr "Cantidad"
+msgstr "Quantité"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_type_id
@@ -2179,7 +2179,7 @@ msgstr "Recessing box included"
 #: selection:lighting.product.source.line,special_spectrum:0
 #, python-format
 msgid "Red"
-msgstr "Red"
+msgstr "Rouge"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel_reference
@@ -2188,12 +2188,12 @@ msgstr "Red"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_reference
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Reference"
-msgstr "Referencia"
+msgstr "Référence"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_reflector_material_ids
 msgid "Reflector material"
-msgstr "Material del reflector"
+msgstr "Matériau du réflecteur"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_relevance
@@ -2209,7 +2209,7 @@ msgstr "Remote control"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_required_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Required"
-msgstr "Requerido"
+msgstr "Requis"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_result
@@ -2244,13 +2244,13 @@ msgstr "S Width 1"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_name
 msgid "Sensor"
-msgstr "Sensor"
+msgstr "Capteur"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_ids
 #: model:ir.ui.menu,name:lighting.product_sensors_menu
 msgid "Sensors"
-msgstr "Sensores"
+msgstr "Capteurs"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_sequence
@@ -2265,17 +2265,17 @@ msgstr "Sensores"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_sequence
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_sequence
 msgid "Sequence"
-msgstr "Secuencia"
+msgstr "Séquence"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.attachment_tree_view
 msgid "Size"
-msgstr "Tamaño"
+msgstr "Taille"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_source_id
 msgid "Source"
-msgstr "Source"
+msgstr "Origine"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_source_type_name
@@ -2295,13 +2295,13 @@ msgstr "Source line"
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_source_types_menu
 msgid "Source types"
-msgstr "Tipos de fuente"
+msgstr "Types de source"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Sources"
-msgstr "Fuentes"
+msgstr "Sources"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_special_spectrum
@@ -2313,23 +2313,23 @@ msgstr "Special spectrum"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_state_name
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "State"
-msgstr "Estado"
+msgstr "Statut"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_states_menu
 msgid "States"
-msgstr "States"
+msgstr "États"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_static_pressure
 msgid "Static pressure (kg)"
-msgstr "Presión estática (Kg)"
+msgstr "Pression statique (Kg)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_state
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_state
 msgid "Status"
-msgstr "Estado"
+msgstr "État"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_stockvalue
@@ -2368,7 +2368,7 @@ msgstr "Suppliers"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_surface_temperature
 msgid "Surface temperature (ºC)"
-msgstr "Temperatura superficial (ºC)"
+msgstr "Température de surface (ºC)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_tariff_item
@@ -2378,12 +2378,12 @@ msgstr "Tariff item"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_technical_comments
 msgid "Technical comments"
-msgstr "Comentarios técnicos"
+msgstr "Commentaires techniques"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_technical_id
 msgid "Technical lampholder"
-msgstr "Portalámparas técnico"
+msgstr "Douille technique"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_source_type_description_text
@@ -2533,7 +2533,7 @@ msgstr "The protection class must be unique!"
 #. module: lighting
 #: sql_constraint:lighting.product:0
 msgid "The reference must be unique!"
-msgstr "La referencia debe ser única!"
+msgstr "The reference must be unique!"
 
 #. module: lighting
 #: sql_constraint:lighting.product.sensor:0
@@ -2636,14 +2636,14 @@ msgstr "Total wattage (W)"
 #: model:ir.ui.view,arch_db:lighting.product_source_type_form_view
 #: model:ir.ui.view,arch_db:lighting.product_type_form_view
 msgid "Type"
-msgstr "Tipo"
+msgstr "Type"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_ids
 #: model:ir.ui.menu,name:lighting.product_types_menu
 msgid "Types"
-msgstr "Tipos"
+msgstr "Types"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ugr_max
@@ -2695,14 +2695,14 @@ msgstr "Uom"
 #. module: lighting
 #: model:res.groups,name:lighting.group_lighting_user
 msgid "User"
-msgstr "Usuario"
+msgstr "Utilisateur"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_value
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_value
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_value
 msgid "Value"
-msgstr "Valor"
+msgstr "Valeur"
 
 #. module: lighting
 #: selection:lighting.product.source.line,special_spectrum:0
@@ -2753,33 +2753,33 @@ msgstr "Wall control"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_wattage
 msgid "Wattage"
-msgstr "Potencia"
+msgstr "Puissance"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_wattage
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_wattage_display
 msgid "Wattage (W)"
-msgstr "Potencia (W)"
+msgstr "Puissance (W)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_wattage_magnitude
 msgid "Wattage magnitude"
-msgstr "Magnitud potencia"
+msgstr "Puissance magnitude"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Weight (Kg)"
-msgstr "Peso (Kg)"
+msgstr "Poids (Kg)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_weight
 msgid "Weight (kg)"
-msgstr "Peso (kg)"
+msgstr "Poids (kg)"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Width (cm)"
-msgstr "Ancho (cm)"
+msgstr "Largeur (cm)"
 
 #. module: lighting
 #: code:addons/lighting/models/models.py:401
