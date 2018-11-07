@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- views etim.unit -->
+    <record id="etim_unit_form_view" model="ir.ui.view">
+        <field name="name">etim.unit.form</field>
+        <field name="model">lighting.etim.unit</field>
+        <field name="arch" type="xml">
+            <form string="Etim Unit form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="abbreviation"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="etim_unit_tree_view" model="ir.ui.view">
+        <field name="name">etim.unit.tree</field>
+        <field name="model">lighting.etim.unit</field>
+        <field name="arch" type="xml">
+            <tree string="ETIM Unit tree">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="abbreviation"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action etim.unit -->
+    <record id="etim_unit_list_action" model="ir.actions.act_window">
+        <field name="name">ETIM Unit</field>
+        <field name="res_model">lighting.etim.unit</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first ETIM Unit</p>
+        </field>
+    </record>
+
+    <!-- menu etim.unit -->
+    <menuitem id="etim_unit_menu"
+              parent="menu_lighting_etim"
+              action="etim_unit_list_action"
+              name="Units"
+              sequence="50"/>
+</odoo>

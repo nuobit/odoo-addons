@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- views etim.feature -->
+    <record id="etim_feature_form_view" model="ir.ui.view">
+        <field name="name">etim.feature.form</field>
+        <field name="model">lighting.etim.feature</field>
+        <field name="arch" type="xml">
+            <form string="Etim Feature form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="type"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="etim_feature_tree_view" model="ir.ui.view">
+        <field name="name">etim.feature.tree</field>
+        <field name="model">lighting.etim.feature</field>
+        <field name="arch" type="xml">
+            <tree string="ETIM Feature tree">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action etim.feature -->
+    <record id="etim_feature_list_action" model="ir.actions.act_window">
+        <field name="name">ETIM Feature</field>
+        <field name="res_model">lighting.etim.feature</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first ETIM Feature</p>
+        </field>
+    </record>
+
+    <!-- menu etim.feature -->
+    <menuitem id="etim_feature_menu"
+              parent="menu_lighting_etim"
+              action="etim_feature_list_action"
+              name="Features"
+              sequence="30"/>
+</odoo>
