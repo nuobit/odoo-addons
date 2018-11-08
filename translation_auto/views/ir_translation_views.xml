@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_translation_dialog_tree_inherit_translation_auto" model="ir.ui.view">
+        <field name="model">ir.translation</field>
+        <field name="inherit_id" ref="base.view_translation_dialog_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <button string="Translate"
+                        type="object" icon="fa fa-arrow-circle-right fa-lg"
+                        name="translate_source_to_dest"/>
+                <button type="object" icon="fa-arrow-circle-left fa-lg"
+                        name="translate_dest_to_source"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
