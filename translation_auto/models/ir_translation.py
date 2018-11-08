@@ -16,11 +16,21 @@ class IrTranslation(models.Model):
     def translate_source_to_dest(self):
         self.ensure_one()
 
-        self.value = Translator().translate(text=self.source, src='en_US', dest=self.lang).text
+        trl = Translator().translate(text=self.source, src='en_US', dest=self.lang).text
+
+        if self.source == self.source.capitalize():
+            trl = trl.capitalize()
+
+        self.value = trl
         self.state = 'translated'
 
     def translate_dest_to_source(self):
         self.ensure_one()
 
-        self.source = Translator().translate(text=self.value, src=self.lang, dest='en_US').text
+        trl = Translator().translate(text=self.value, src=self.lang, dest='en_US').text
+        
+        if self.value == self.value.capitalize():
+            trl = trl.capitalize()
+
+        self.source = trl
         self.state = 'translated'
