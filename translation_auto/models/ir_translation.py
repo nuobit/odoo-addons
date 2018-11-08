@@ -4,7 +4,10 @@
 
 from odoo import fields, models
 
-from py_translator import Translator
+try:
+    from py_translator import Translator
+except ImportError:
+    pass
 
 
 class IrTranslation(models.Model):
