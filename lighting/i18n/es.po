@@ -63,7 +63,7 @@ msgstr "Alterna"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_anchorage_included
 msgid "Anchorage included"
-msgstr "Anchorage included"
+msgstr "Anclaje incluido"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_application_name
@@ -216,7 +216,7 @@ msgstr "Auxiliary equipments"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_average_emergency_time
 msgid "Average emergency time (h)"
-msgstr "Average emergency time (h)"
+msgstr "Tiempo promedio de emergencia (h)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_avgprice
@@ -236,23 +236,23 @@ msgstr "Ciclo de carga (h)"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_beam_id
 msgid "Beam"
-msgstr "Beam"
+msgstr "Haz"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Beam groups"
-msgstr "Beam groups"
+msgstr "Grupo de haces"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_beam_photodistributions_menu
 msgid "Beam photometric distributions"
-msgstr "Beam photometric distributions"
+msgstr "Distribución fotométrica del haz"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Beams"
-msgstr "Beams"
+msgstr "Haces"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_blade_material_ids
@@ -285,12 +285,12 @@ msgstr "Pan"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cri_min
 msgid "CRI"
-msgstr "CRI"
+msgstr "Índice Repro. Cromática"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cable_outlets
 msgid "Cable outlets"
-msgstr "Cable outlets"
+msgstr "Salidas de cable"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_addattachment_view
@@ -360,17 +360,17 @@ msgstr "Code bar"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_consistency
 msgid "Color consistency"
-msgstr "Color consistency"
+msgstr "Consistencia del color"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature
 msgid "Color temperature (K)"
-msgstr "Color temperature (K)"
+msgstr "Temperatura de color (K)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_marketing_comments
 msgid "Comments"
-msgstr "Comments"
+msgstr "Comentarios"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.common_data_menu
@@ -876,7 +876,7 @@ msgstr "ECORRAE I"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae_category_id
 msgid "ECORRAE I category"
-msgstr "ECORRAE I category"
+msgstr "Categoría ECORRAE I"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2
@@ -886,17 +886,17 @@ msgstr "ECORRAE II"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2_category_id
 msgid "ECORRAE II category"
-msgstr "ECORRAE II category"
+msgstr "Categoría ECORRAE II"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_ecorraecategories_menu
 msgid "Ecorrae I categories"
-msgstr "Ecorrae I categories"
+msgstr "Categorías Ecorrae I"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_ecorrae2categories_menu
 msgid "Ecorrae II categories"
-msgstr "Ecorrae II categories"
+msgstr "Categorías Ecorrae II"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_effective_date
@@ -959,7 +959,7 @@ msgstr "Familia"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_blades
 msgid "Fan blades"
-msgstr "Fan blades"
+msgstr "Número de aspas"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_control
@@ -1000,7 +1000,7 @@ msgstr "Pescado"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_flammable_surfaces
 msgid "Flammable surfaces"
-msgstr "Flammable surfaces"
+msgstr "Superficies inflamables"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_frgnname
@@ -1048,7 +1048,7 @@ msgstr "Guest"
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Height (cm)"
-msgstr "Height (cm)"
+msgstr "Altura (cm)"
 
 #. module: lighting
 #: model:ir.module.category,description:lighting.module_category_lighting
@@ -1239,12 +1239,12 @@ msgstr "Keywords"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledbrand_name
 msgid "LED brand"
-msgstr "LED brand"
+msgstr "Marca de LED"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_ledbrands_menu
 msgid "LED brands"
-msgstr "LED brands"
+msgstr "Marcas de LED"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_led_lifetime_b
@@ -1458,17 +1458,17 @@ msgstr "Lead wires supplied"
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Length (cm)"
-msgstr "Length (cm)"
+msgstr "Largo (cm)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_lead_wire_length
 msgid "Length of the lead wire supplied (mm)"
-msgstr "Length of the lead wire supplied (mm)"
+msgstr "Longitud del cable conductor suministrado (mm)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_lifetime
 msgid "Lifetime (h)"
-msgstr "Lifetime (h)"
+msgstr "Horas de vida (h)"
 
 #. module: lighting
 #: model:ir.module.category,name:lighting.module_category_lighting
@@ -1500,17 +1500,17 @@ msgstr "Luminarie with emergency light"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux_display
 msgid "Luminous flux (Lm)"
-msgstr "Luminous flux (Lm)"
+msgstr "Flujo nominal (Lm)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux1
 msgid "Luminous flux 1 (Lm)"
-msgstr "Luminous flux 1 (Lm)"
+msgstr "Flujo nominal 1 (Lm)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux2
 msgid "Luminous flux 2 (Lm)"
-msgstr "Luminous flux 2 (Lm)"
+msgstr "Flujo nominal 2 (Lm)"
 
 #. module: lighting
 #: selection:lighting.product.source,relevance:0
@@ -1569,8 +1569,8 @@ msgstr "Materials"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_inclination_angle_max
-msgid "Maximum inclination angle (º)"
-msgstr "Maximum inclination angle (º)"
+msgid "Maximum tilting angle (º)"
+msgstr "Ángulo de basculación máximo (º)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_operating_temperature_max
@@ -1580,7 +1580,7 @@ msgstr "Temperatura máxima de funcionamiento (ºC)"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_rotation_angle_max
 msgid "Maximum rotation angle (º)"
-msgstr "Maximum rotation angle (º)"
+msgstr "Ángulo de rotación máximo (º)"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_ugr_max
@@ -1594,8 +1594,8 @@ msgstr "Meat"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_mechanical_screwdriver
-msgid "Mechanical screwdriver"
-msgstr "Mechanical screwdriver"
+msgid "Electric screwdriver"
+msgstr "Atornillador eléctrico"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_seo_description
@@ -1636,12 +1636,12 @@ msgstr "Number of USB ports"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_num
 msgid "Number of beams"
-msgstr "Number of beams"
+msgstr "Número de haces"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_cable_outlets
 msgid "Number of cable outlets"
-msgstr "Number of cable outlets"
+msgstr "Número de salidas de cable"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_fan_blades
@@ -1656,7 +1656,7 @@ msgstr "Number of lead wires supplied"
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_power_switches
 msgid "Number of power switches"
-msgstr "Number of power switches"
+msgstr "Número de interruptores"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_num
@@ -1671,7 +1671,7 @@ msgstr "On hand"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_on_request
 msgid "On request"
-msgstr "On request"
+msgstr "Bajo Pedido"
 
 #. module: lighting
 #: code:addons/lighting/models/models.py:707
@@ -1705,22 +1705,22 @@ msgstr "Pending"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_periodic_maintenance
 msgid "Periodic maintenance"
-msgstr "Periodic maintenance"
+msgstr "Mantenimiento periódico"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_photobiological_risk_group_id
 msgid "Photobiological risk group"
-msgstr "Photobiological risk group"
+msgstr "Grupo de riesgo fotobiológico"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_photobiologicalriskgrous_menu
 msgid "Photobiological risk groups"
-msgstr "Photobiological risk groups"
+msgstr "Grupos de riesgo fotobiológico"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_photometric_distribution_ids
 msgid "Photometric distributions"
-msgstr "Photometric distributions"
+msgstr "Distribuciones fotométricas"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
@@ -1737,12 +1737,12 @@ msgstr "Pink"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_post_included
 msgid "Post included"
-msgstr "Post included"
+msgstr "Poste incluido"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_post_with_inspection_chamber
 msgid "Post with inspection chamber"
-msgstr "Post with inspection chamber"
+msgstr "Poste con registro"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_power_switches
@@ -2172,7 +2172,7 @@ msgstr "Recess dimensions"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessing_box_included
 msgid "Recessing box included"
-msgstr "Recessing box included"
+msgstr "Incluye caja de empotrar"
 
 #. module: lighting
 #: code:addons/lighting/models/models.py:708
@@ -2306,7 +2306,7 @@ msgstr "Fuentes"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_special_spectrum
 msgid "Special spectrum"
-msgstr "Special spectrum"
+msgstr "Espectro especial"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_state_id
@@ -2346,7 +2346,7 @@ msgstr "Substitutes"
 #: model:ir.actions.act_window,name:lighting.supplier_list_action
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_supplier_id
 msgid "Supplier"
-msgstr "Supplier"
+msgstr "Proveedor"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.supplier_form_view
@@ -2363,7 +2363,7 @@ msgstr "Supplier Tree"
 #: model:ir.ui.menu,name:lighting.suppliers_menu
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Suppliers"
-msgstr "Suppliers"
+msgstr "Proveedores"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_surface_temperature
@@ -2373,7 +2373,7 @@ msgstr "Temperatura superficial (ºC)"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_tariff_item
 msgid "Tariff item"
-msgstr "Tariff item"
+msgstr "Partida arancelaría"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_technical_comments
@@ -2606,12 +2606,12 @@ msgstr "To review"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_count
 msgid "Total beams"
-msgstr "Total beams"
+msgstr "Haces totales"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_total_nominal_flux
 msgid "Total flux (Lm)"
-msgstr "Total flux (Lm)"
+msgstr "Flujo total (Lm)"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_total_wattage
@@ -2685,7 +2685,7 @@ msgstr "Unit of mesure"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_until_end_stock
 msgid "Until end of stock"
-msgstr "Until end of stock"
+msgstr "Hasta fin de existencias"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_uom

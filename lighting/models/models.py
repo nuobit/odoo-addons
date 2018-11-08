@@ -276,7 +276,7 @@ class LightingProduct(models.Model):
     photobiological_risk_group_id = fields.Many2one(comodel_name='lighting.product.photobiologicalriskgroup', ondelete='restrict',
                                          string='Photobiological risk group')
 
-    mechanical_screwdriver = fields.Boolean(string='Mechanical screwdriver')
+    mechanical_screwdriver = fields.Boolean(string='Electric screwdriver')
 
     fan_blades = fields.Integer(string='Fan blades', help='Number of fan blades')
     fan_control = fields.Selection(selection=[('remote', 'Remote control'), ('wall', 'Wall control')], string='Fan control type')
