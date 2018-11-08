@@ -28,7 +28,7 @@ class IrTranslation(models.Model):
         self.ensure_one()
 
         trl = Translator().translate(text=self.value, src=self.lang, dest='en_US').text
-        
+
         if self.value == self.value.capitalize():
             trl = trl.capitalize()
 
