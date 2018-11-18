@@ -1,7 +1,0 @@
-LT Customizations
-=================
-
-* LT customization.
-
-
-

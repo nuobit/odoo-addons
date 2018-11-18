@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="custom_mp.footer" inherit_id="website.footer_default" priority="16" active="True"
-              customize_show="True" name="MP customizations">
-        <xpath expr="//div[@id='footer']/div/div[last()]/div" position="inside">
-            <p><small class="text-muted" t-field="res_company.company_registry"/></p>
-        </xpath>
-    </template>
-</odoo>

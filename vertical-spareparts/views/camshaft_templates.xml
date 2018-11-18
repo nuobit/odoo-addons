@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="product_camshaft">
-         <span t-field="product.child_id.length"/>
-         <span t-field="product.child_id.typ"/>
-    </template>
-</odoo>
-
-

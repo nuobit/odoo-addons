@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_timesheet_invoice_factor_employee,timesheet_invoice.factor.hr.user,model_timesheet_invoice_factor,base.group_user,1,1,1,1
-access_timesheet_invoice_factor_acc_inv,timesheet_invoice.factor.account.invoice,model_timesheet_invoice_factor,account.group_account_invoice,1,1,1,1
-
