@@ -287,6 +287,11 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
@@ -448,7 +453,7 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="product_count"/>
-                 <button name="%(product_material_action_product)d" type="action"
+                <button name="%(product_material_action_product)d" type="action"
                         string="Products" icon="fa-external-link"
                         attrs="{'invisible': [('product_count', '=', 0)]}"/>
             </tree>
