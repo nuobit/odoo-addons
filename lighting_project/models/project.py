@@ -16,34 +16,36 @@ def get_years():
 
 class LightingProject(models.Model):
     _name = 'lighting.project'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name'
+    _description = 'Project'
 
-    name = fields.Char(string='Name', required=True)
+    name = fields.Char(string='Name', required=True, track_visibility='onchange')
 
-    city = fields.Char(string='City', required=True)
+    city = fields.Char(string='City', required=True, track_visibility='onchange')
     country_id = fields.Many2one(comodel_name='res.country', ondelete='restrict', string='Country', required=True)
     type_ids = fields.Many2many(comodel_name='lighting.project.type', string='Types',
                                 relation='lighting_project_product_type_rel',
-                                column1='project_id', column2='type_id', required=True)
+                                column1='project_id', column2='type_id', required=True, track_visibility='onchange')
 
-    prescriptor = fields.Char(string='Prescriptor')
+    prescriptor = fields.Char(string='Prescriptor', track_visibility='onchange')
 
     year = fields.Selection(selection=get_years(), string='Year',
-                            default=int(time.strftime('%Y')))
+                            default=int(time.strftime('%Y')), track_visibility='onchange')
     family_ids = fields.Many2many(comodel_name='lighting.product.family', string='Families',
                                   relation='lighting_project_product_family_rel',
-                                  column1='project_id', column2='family_id', required=True)
+                                  column1='project_id', column2='family_id', required=True, track_visibility='onchange')
 
-    description = fields.Text(string="Description", translate=True)
+    description = fields.Text(string="Description", translate=True, track_visibility='onchange')
 
-    agent_id = fields.Many2one(comodel_name='lighting.project.agent', required=True)
+    agent_id = fields.Many2one(comodel_name='lighting.project.agent', required=True, track_visibility='onchange')
 
-    auth_contact_name = fields.Char(string="Name")
-    auth_contact_email = fields.Char(string="e-mail")
-    auth_contact_phone = fields.Char(string="Phone")
+    auth_contact_name = fields.Char(string="Name", track_visibility='onchange')
+    auth_contact_email = fields.Char(string="e-mail", track_visibility='onchange')
+    auth_contact_phone = fields.Char(string="Phone", track_visibility='onchange')
 
     attachment_ids = fields.One2many(comodel_name='lighting.project.attachment',
-                                     inverse_name='project_id', string='Attachments', copy=True)
+                                     inverse_name='project_id', string='Attachments', copy=True, track_visibility='onchange')
     attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
 
     @api.depends('attachment_ids')
@@ -53,7 +55,7 @@ class LightingProject(models.Model):
                 .search_count([('project_id', '=', record.id)])
 
     catalog_ids = fields.Many2many(compute='_compute_catalog_ids', comodel_name='lighting.catalog',
-                                   string='Catalogs', readonly=True)
+                                   string='Catalogs', readonly=True, track_visibility='onchange')
 
     @api.depends('family_ids')
     def _compute_catalog_ids(self):
