@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_invoice_document_inherit_custom_gj" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@name='invoice_address']/address" position="replace">
+            <t t-call="custom_gj.report_partner_address"/>
+        </xpath>
+
+        <xpath expr="//div[@name='invoice_address']/div[@t-if='o.partner_id.vat']" position="replace">
+            <t t-call="custom_gj.report_partner_vat"/>
+        </xpath>
+
+        <xpath expr="//p[@t-field='o.origin']/.." position="attributes">
+            <attribute name="class">col-xs-2 hidden</attribute>
+        </xpath>
+
+        <xpath expr="//p[@t-field='o.partner_id.ref']/.." position="attributes">
+            <attribute name="class">col-xs-2 hidden</attribute>
+        </xpath>
+
+        <!--xpath expr="//table[@name='invoice_line_table']/tbody//td/span[contains(@t-esc, 'invoice_line_tax_ids')]"
+               position="attributes">
+            <attribute name="t-esc">', '.join(map(lambda x: (x.name or x.description), l.invoice_line_tax_ids))
+            </attribute>
+        </xpath-->
+    </template>
+</odoo>

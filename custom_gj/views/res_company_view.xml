@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_company_report_form_inherit_custom_gj" model="ir.ui.view">
+        <field name="name">res.company.report.form.inherit.custom.gj</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_report_form"/>
+        <!--field name="mode">primary</field>
+        <field name="priority">1024</field-->
+        <field name="arch" type="xml">
+            <field name="external_report_layout" position="attributes">
+                <attribute name="options">
+                    {
+                    'background': {
+                    'image_link': '/base/static/img/preview_background.png',
+                    'preview_link': '/base/static/pdf/preview_background.pdf'
+                    },
+                    'boxed': {
+                    'image_link': '/base/static/img/preview_boxed.png',
+                    'preview_link': '/base/static/pdf/preview_boxed.pdf'
+                    },
+                    'clean': {
+                    'image_link': '/base/static/img/preview_clean.png',
+                    'preview_link': '/base/static/pdf/preview_clean.pdf'
+                    },
+                    'standard': {
+                    'image_link': '/base/static/img/preview_standard.png',
+                    'preview_link': '/base/static/pdf/preview_standard.pdf'
+                    },
+                    'gj': {
+                    'image_link': '/custom_gj/static/img/preview_gj.png',
+                    'preview_link': '/custom_gj/static/pdf/preview_gj.pdf'
+                    },
+                    'adda': {
+                    'image_link': '/custom_gj/static/img/preview_adda.png',
+                    'preview_link': '/custom_gj/static/pdf/preview_adda.pdf'
+                    }
+                    }
+                </attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

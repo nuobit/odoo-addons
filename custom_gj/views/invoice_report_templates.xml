@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_invoice_document_inherit_sale_inherit_custom_gj"
+              inherit_id="sale.report_invoice_document_inherit_sale">
+        <xpath expr="//div[@t-field='o.partner_id']" position="replace">
+            <t t-call="custom_gj.report_partner_address"/>
+        </xpath>
+
+        <xpath expr="//div[@t-if='o.partner_id.vat']" position="replace">
+            <t t-call="custom_gj.report_partner_vat"/>
+        </xpath>
+    </template>
+</odoo>
