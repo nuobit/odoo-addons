@@ -25,7 +25,7 @@ class LightingProduct(models.Model):
 
     # Common data
     reference = fields.Char(string='Reference', required=True, track_visibility='onchange')
-    description = fields.Char(compute='_compute_description', string='Description', readonly=False,
+    description = fields.Char(compute='_compute_description', string='Description', readonly=True,
                               help="Description dynamically generated from product data",
                               translate=True, store=True)
 
