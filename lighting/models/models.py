@@ -25,8 +25,9 @@ class LightingProduct(models.Model):
 
     # Common data
     reference = fields.Char(string='Reference', required=True, track_visibility='onchange')
-    description = fields.Char(compute='_compute_description', string='Description', readonly=True,
-                                   help="Description dynamically generated from product data", store=True)
+    description = fields.Char(compute='_compute_description', string='Description', readonly=False,
+                              help="Description dynamically generated from product data",
+                              translate=True, store=True)
 
     @api.depends('type_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip', 'ip', 'ip2',
                  'dimmable_ids.name',
@@ -41,100 +42,106 @@ class LightingProduct(models.Model):
                  'finish_id.name')
     def _compute_description(self):
         for rec in self:
-            data = []
-            if rec.type_ids:
-                data.append(','.join(rec.type_ids.mapped('name')))
+            rec.description = rec._generate_description()
 
-            if rec.family_ids:
-                data.append(','.join(rec.family_ids.mapped('name')))
+    def _generate_description(self):
+        self.ensure_one()
+        data = []
+        if self.type_ids:
+            data.append(','.join(self.type_ids.mapped('name')))
 
-            if rec.catalog_ids:
-                ip_catalogs = rec.catalog_ids.filtered(lambda x: x.description_show_ip)
-                if ip_catalogs:
-                    data_ip = []
-                    for ipx in ('ip', 'ip2'):
-                        ip = getattr(rec, ipx)
-                        if ip:
-                            prefix = self.fields_get([ipx], ['string']).get(ipx).get('string')
-                            data_ip.append('%s %i' % (prefix, ip))
-                    if data_ip:
-                        data.append(','.join(data_ip))
+        if self.family_ids:
+            data.append(','.join(self.family_ids.mapped('name')))
 
-            if rec.dimmable_ids:
-                data.append(','.join(rec.dimmable_ids.mapped('name')))
+        if self.catalog_ids:
+            ip_catalogs = self.catalog_ids.filtered(lambda x: x.description_show_ip)
+            if ip_catalogs:
+                data_ip = []
+                for ipx in ('ip', 'ip2'):
+                    ip = getattr(self, ipx)
+                    if ip:
+                        prefix = self.fields_get([ipx], ['string']).get(ipx).get('string')
+                        data_ip.append('%s %i' % (prefix, ip))
+                if data_ip:
+                    data.append(','.join(data_ip))
 
-            data_sources = []
-            for source in rec.source_ids:
-                type_d = {}
-                for line in source.line_ids:
-                    is_integrated = line.type_id.is_integrated
-                    if is_integrated not in type_d:
-                        type_d[is_integrated] = []
-                    type_d[is_integrated].append(line)
+        if self.dimmable_ids:
+            data.append(','.join(self.dimmable_ids.mapped('name')))
 
-                for is_integrated, lines in type_d.items():
-                    data_source = []
-                    if is_integrated:
-                        data_lines = []
-                        for line in lines:
-                            data_line = []
-                            data_line.append(line.type_id.description_text or line.type_id.code)
+        data_sources = []
+        for source in self.source_ids:
+            type_d = {}
+            for line in source.line_ids:
+                is_integrated = line.type_id.is_integrated
+                if is_integrated not in type_d:
+                    type_d[is_integrated] = []
+                type_d[is_integrated].append(line)
 
-                            wattage_total_display = line.prepare_wattage_str(mult=line.source_id.num or 1,
+            for is_integrated, lines in type_d.items():
+                data_source = []
+                if is_integrated:
+                    data_lines = []
+                    for line in lines:
+                        data_line = []
+                        data_line.append(line.type_id.description_text or line.type_id.code)
+
+                        wattage_total_display = line.prepare_wattage_str(mult=line.source_id.num or 1,
+                                                                         is_max_wattage=False)
+                        if wattage_total_display:
+                            data_line.append(wattage_total_display)
+
+                        data_lm = []
+                        for lmx in ('luminous_flux1', 'luminous_flux2'):
+                            lm = getattr(line, lmx)
+                            if lm:
+                                data_lm.append('%i' % lm)
+                        if data_lm != []:
+                            lm_str = '%sLm' % '-'.join(data_lm)
+                            if (line.source_id.num or 1) > 1:
+                                lm_str = '%ix%s' % (line.source_id.num, lm_str)
+                            data_line.append(lm_str)
+
+                        if line.color_temperature:
+                            data_line.append('%sK' % line.color_temperature)
+
+                        if data_line:
+                            data_lines.append(' '.join(data_line))
+                    if data_lines:
+                        data_source.append(','.join(data_lines))
+                else:
+                    if source.lampholder_id:
+                        data_source.append(source.lampholder_id.code)
+
+                    wattage_d = {}
+                    for line in lines:
+                        if line.wattage > 0 and line.wattage_magnitude:
+                            if line.wattage_magnitude not in wattage_d:
+                                wattage_d[line.wattage_magnitude] = []
+                            wattage_d[line.wattage_magnitude].append(line)
+
+                    data_lines = []
+                    for lines in wattage_d.values():
+                        line_max = sorted(lines, key=lambda x: x.wattage, reverse=True)[0]
+                        wattage_total_display = line_max.prepare_wattage_str(mult=line_max.source_id.num or 1,
                                                                              is_max_wattage=False)
-                            if wattage_total_display:
-                                data_line.append(wattage_total_display)
+                        if wattage_total_display:
+                            data_lines.append(wattage_total_display)
+                    if data_lines:
+                        data_source.append(','.join(data_lines))
 
-                            data_lm = []
-                            for lmx in ('luminous_flux1', 'luminous_flux2'):
-                                lm = getattr(line, lmx)
-                                if lm:
-                                    data_lm.append('%i' % lm)
-                            if data_lm != []:
-                                lm_str = '%sLm' % '-'.join(data_lm)
-                                if (line.source_id.num or 1) > 1:
-                                    lm_str = '%ix%s' % (line.source_id.num, lm_str)
-                                data_line.append(lm_str)
+                if data_source:
+                    data_sources.append(' '.join(data_source))
 
-                            if line.color_temperature:
-                                data_line.append('%sK' % line.color_temperature)
+        if data_sources:
+            data.append('+'.join(data_sources))
 
-                            if data_line:
-                                data_lines.append(' '.join(data_line))
-                        if data_lines:
-                            data_source.append(','.join(data_lines))
-                    else:
-                        if source.lampholder_id:
-                            data_source.append(source.lampholder_id.code)
+        if self.finish_id:
+            data.append(self.finish_id.name)
 
-                        wattage_d = {}
-                        for line in lines:
-                            if line.wattage > 0 and line.wattage_magnitude:
-                                if line.wattage_magnitude not in wattage_d:
-                                    wattage_d[line.wattage_magnitude] = []
-                                wattage_d[line.wattage_magnitude].append(line)
-
-                        data_lines = []
-                        for lines in wattage_d.values():
-                            line_max = sorted(lines, key=lambda x: x.wattage, reverse=True)[0]
-                            wattage_total_display = line_max.prepare_wattage_str(mult=line_max.source_id.num or 1,
-                                                                                 is_max_wattage=False)
-                            if wattage_total_display:
-                                data_lines.append(wattage_total_display)
-                        if data_lines:
-                            data_source.append(','.join(data_lines))
-
-                    if data_source:
-                        data_sources.append(' '.join(data_source))
-
-            if data_sources:
-                data.append('+'.join(data_sources))
-
-            if rec.finish_id:
-                data.append(rec.finish_id.name)
-
-            if data:
-                rec.description = ' '.join(data)
+        if data:
+            return ' '.join(data)
+        else:
+            return None
 
     description_manual = fields.Char(string='Description (manual)', help='Manual description', translate=True, track_visibility='onchange')
 
@@ -413,6 +420,48 @@ class LightingProduct(models.Model):
                        )
 
         return super(LightingProduct, self).copy(default)
+
+    def _update_computed_description(self):
+        for lang in self.env['res.lang'].search([('code', '!=', self.env.lang)]):
+            en_trl = self.with_context(lang='en_US')._generate_description()
+            non_en_trl = self.with_context(lang=lang.code)._generate_description()
+            trl = self.env['ir.translation'].search([
+                ('name', '=', 'lighting.product,description'),
+                ('lang', '=', lang.code),
+                ('res_id', '=', self.id)
+            ])
+            if not trl and lang.code != 'en_US':
+                trl = self.env['ir.translation'].create({
+                    'name': 'lighting.product,description',
+                    'type': 'model',
+                    'lang': lang.code,
+                    'res_id': self.id,
+                })
+
+            self.env.cr.execute('update lighting_product set description=%s where id=%s', (en_trl, self.id,))
+            trl.with_context(lang=None).write({
+                'state': 'translated',
+                # 'source': en_trl,
+                'src': en_trl,
+                'value': non_en_trl, })
+
+    @api.model
+    def create(self, values):
+        res = super().create(values)
+        if res.description == 'false':
+            res.description = False
+        if 'description' in values:
+            res._update_computed_description()
+
+        return res
+
+    @api.multi
+    def write(self, values):
+        res = super().write(values)
+        if 'description' in values:
+            self._update_computed_description()
+
+        return res
 
 
 ######### common data
