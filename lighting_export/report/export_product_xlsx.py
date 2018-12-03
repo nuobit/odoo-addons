@@ -12,6 +12,9 @@ class ExportProductXlsx(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, objects):
+        self.with_context(lang=data['lang']).generate_xlsx_report_ctx(workbook, data, objects)
+
+    def generate_xlsx_report_ctx(self, workbook, data, objects):
         template_id = self.env['lighting.export.template'].browse(data.get('template_id'))
         objects = self.env['lighting.product'].browse(data.get('active_ids'))
         if data.get('interval') == 'all':

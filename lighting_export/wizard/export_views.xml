@@ -9,12 +9,14 @@
         <field name="arch" type="xml">
             <form string="Export products">
                 <header/>
-                <group>
-                    <field name="template_id"/>
+                <group col="6">
+                    <field colspan="4" name="template_id"/>
+                    <field colspan="2" name="lang_id"/>
                 </group>
                 <group>
                     <field name="interval" widget="radio"/>
                 </group>
+
                 <group>
                     <field name="hide_empty_fields"/>
                 </group>

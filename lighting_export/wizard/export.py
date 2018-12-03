@@ -17,6 +17,8 @@ class LightingExport(models.TransientModel):
 
     hide_empty_fields = fields.Boolean(string="Hide empty fields", default=True)
 
+    lang_id = fields.Many2one(comodel_name='res.lang', required=True)
+
     @api.multi
     def export_product_xlsx(self):
         self.ensure_one()
@@ -32,5 +34,6 @@ class LightingExport(models.TransientModel):
                      'hide_empty_fields': self.hide_empty_fields,
                      'template_id': self.template_id.id,
                      'active_ids': self.env.context.get('active_ids'),
+                     'lang': self.lang_id.code,
                      },
         }
