@@ -34,6 +34,17 @@ class LightingProductFamily(models.Model):
                 percent = discontinued_product_count / record.product_count * 100
             record.discontinued_product_percent = percent
 
+    attachment_ids = fields.One2many(comodel_name='lighting.product.family.attachment',
+                                     inverse_name='family_id', string='Attachments', copy=True,
+                                     track_visibility='onchange')
+    attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
+
+    @api.depends('attachment_ids')
+    def _compute_attachment_count(self):
+        for record in self:
+            record.attachment_count = self.env['lighting.product.family.attachment'] \
+                .search_count([('family_id', '=', record.id)])
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The family must be unique!'),
                         ]
 
