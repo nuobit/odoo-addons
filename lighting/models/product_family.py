@@ -11,7 +11,7 @@ class LightingProductFamily(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Family', required=True)
-    code = fields.Char(string='Code', unique=True, required=False, size=3)
+    code = fields.Char(string='Code', required=False, size=3)
     is_export = fields.Boolean(string='Is export')
     description = fields.Text(string='Description', translate=True)
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
@@ -45,8 +45,10 @@ class LightingProductFamily(models.Model):
             record.attachment_count = self.env['lighting.product.family.attachment'] \
                 .search_count([('family_id', '=', record.id)])
 
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The family must be unique!'),
-                        ]
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', 'The family must be unique!'),
+        ('code_uniq', 'unique (code)', 'The code must be unique!'),
+    ]
 
     @api.multi
     def unlink(self):
