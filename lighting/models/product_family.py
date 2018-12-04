@@ -11,7 +11,7 @@ class LightingProductFamily(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Family', required=True)
-    code = fields.Char(string='Code', unique=True, required=True, size=3)
+    code = fields.Char(string='Code', unique=True, required=False, size=3)
     is_export = fields.Boolean(string='Is export')
     description = fields.Text(string='Description', translate=True)
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
