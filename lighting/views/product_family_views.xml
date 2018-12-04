@@ -55,6 +55,11 @@
                             <field name="name" placeholder="Family"/>
                         </h1>
                     </div>
+                    <group col="6">
+                        <group colspan="2">
+                            <field name="code"/>
+                        </group>
+                    </group>
                     <group>
                         <field name="is_export"/>
                         <field name="description" widget="html"/>
@@ -76,6 +81,7 @@
                   decoration-danger="discontinued_product_percent == 100">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="code"/>
                 <field name="is_export"/>
                 <field name="product_count"/>
                 <button name="%(product_family_action_product)d" type="action"

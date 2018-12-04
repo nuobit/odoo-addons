@@ -1207,7 +1207,12 @@ msgstr "Es componente"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_is_export
 msgid "Is export"
-msgstr "Es exportacion"
+msgstr "Es export"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_code
+msgid "Code"
+msgstr "Código"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_integrated

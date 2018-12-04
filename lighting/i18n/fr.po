@@ -1210,6 +1210,11 @@ msgid "Is export"
 msgstr "Est l'exportation"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_code
+msgid "Code"
+msgstr "Code"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_integrated
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_is_integrated
 msgid "Is integrated?"
