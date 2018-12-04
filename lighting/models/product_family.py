@@ -47,7 +47,6 @@ class LightingProductFamily(models.Model):
 
     _sql_constraints = [
         ('name_uniq', 'unique (name)', 'The family must be unique!'),
-        ('code_uniq', 'unique (code)', 'The code must be unique!'),
     ]
 
     @api.multi
