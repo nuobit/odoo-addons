@@ -100,6 +100,29 @@
         </field>
     </record>
 
+    <!-- Family Search view -->
+    <record id="product_family_search_view" model="ir.ui.view">
+        <field name="name">lighting.product.family.search</field>
+        <field name="model">lighting.product.family</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Family"
+                       filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]"/>
+                <field name="name"/>
+                <field name="code"/>
+                <separator/>
+                <filter string="Iberia" name="iberia"
+                        domain="[('is_export','=', True)]"/>
+                <filter string="Export" name="export"
+                        domain="[('is_export','=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Code" name="groupby_code" domain="[]"
+                            context="{'group_by': 'code'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- window action family -->
     <record id="product_family_list_action" model="ir.actions.act_window">
         <field name="name">Product family</field>
