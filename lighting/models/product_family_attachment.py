@@ -28,6 +28,8 @@ class LightingProductFamilyAttachment(models.Model):
             else:
                 rec.attachment_id = False
 
+    checksum = fields.Char(related='attachment_id.checksum', string='Checksum', readonly=True)
+
     is_default = fields.Boolean(string='Default')
 
     family_id = fields.Many2one(comodel_name='lighting.product.family', ondelete='cascade', string='Family')
