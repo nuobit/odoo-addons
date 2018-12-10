@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem id="sage_menu_root" parent="connector.menu_connector_root"
+              name="Sage" sequence="10" groups="connector.group_connector_manager"/>
+    <!-- TODO group: Sage Manager -->
+
+    <menuitem id="sage_backend_menu_action" name="Backends"
+              parent="sage_menu_root" action="sage_backend_action"/>
+
+
+    <!-- TODO: Implement security strategy groups="odoo_base.group_oc_manager" -->
+    <menuitem id="sage_external_objects_menu" name="External Objects"
+              parent="sage_menu_root"
+              sequence="100"/>
+
+    <menuitem id="sage_external_employees_menu" name="External Employees"
+              parent="sage_external_objects_menu" action="sage_hr_employee_action"/>
+
+    <menuitem id="sage_external_labour_agreements_menu" name="External Labour agreementss"
+              parent="sage_external_objects_menu" action="sage_labour_agreement_action"/>
+
+    <menuitem id="sage_external_partners_menu" name="External Contacts"
+              parent="sage_external_objects_menu" action="sage_res_partner_action"/>
+</odoo>
