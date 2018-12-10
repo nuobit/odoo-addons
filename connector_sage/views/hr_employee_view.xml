@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="hr_employee_view_form_inherit_connector_sage" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.connector.sage</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="groups_id"
+               eval="[(4, ref('connector.group_connector_manager'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Connectors">
+                    <group string="Sage Bindings">
+                        <field name="sage_bind_ids" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sage_hr_employee_view_form" model="ir.ui.view">
+        <field name="name">sage.hr.employee.form</field>
+        <field name="model">sage.hr.employee</field>
+        <field name="arch" type="xml">
+            <form string="Sage Employee">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="sage_codigo_empresa" readonly="True"/>
+                    <field name="sage_codigo_empleado" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="sage_hr_employee_view_tree" model="ir.ui.view">
+        <field name="name">sage.hr.employee.tree</field>
+        <field name="model">sage.hr.employee</field>
+        <field name="arch" type="xml">
+            <tree string="Sage Employee">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="sage_codigo_empresa" readonly="True"/>
+                <field name="sage_codigo_empleado" readonly="True"/>
+                <field name="sync_date"/>
+                <button name="resync" type="object"
+                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sage_hr_employee_action" model="ir.actions.act_window">
+        <field name="name">Employee</field>
+        <field name="res_model">sage.hr.employee</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
