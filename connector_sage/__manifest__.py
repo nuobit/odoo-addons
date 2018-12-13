@@ -4,7 +4,7 @@
 
 {
     'name': "Sage-Odoo connector",
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.1.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',
@@ -21,15 +21,12 @@
     },
     'data': [
         # 'data/cron.xml',
-        # 'data/product_decimal_precision.xml',
-        # 'data/ecommerce_data.xml',
         'views/sage_backend_view.xml',
         'views/hr_employee_view.xml',
         'views/res_partner_view.xml',
         'views/payroll_sage_labour_agreement_view.xml',
         'views/connector_sage_menu.xml',
-        # 'security/ir.model.access.csv',
-        # 'security/prestashop_security.xml',
+        'security/ir.model.access.csv',
     ],
     'installable': True,
     'application': True,
