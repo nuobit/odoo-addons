@@ -33,6 +33,8 @@ class Backend(models.Model):
     database = fields.Char('Database')
     schema = fields.Char('Schema')
 
+    version = fields.Text('Version', readonly=True)
+
     username = fields.Char('Username')
     password = fields.Char('Password')
 
@@ -63,20 +65,19 @@ class Backend(models.Model):
     @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
-        self.write({'state': 'draft'})
+        self.write({'state': 'draft', 'version': None})
 
-    # @api.multi
-    # def _check_connection(self):
-    #     self.ensure_one()
-    #     with self.work_on('sage.backend') as work:
-    #         component = work.component_by_name(name='sage.adapter.test')
-    #         with api_handle_errors('Connection failed'):
-    #             component.check()
+    @api.multi
+    def _check_connection(self):
+        self.ensure_one()
+        with self.work_on('sage.backend') as work:
+            component = work.component_by_name(name='sage.adapter.test')
+            with api_handle_errors('Connection failed'):
+                self.version = component.get_version()
 
     @api.multi
     def button_check_connection(self):
         self._check_connection()
-        # raise exceptions.UserError(_('Connection successful'))
         self.write({'state': 'checked'})
 
     @api.multi
@@ -108,10 +109,11 @@ class Backend(models.Model):
         self.search(domain or []).import_labour_agreements_since()
 
 
-# class NoModelAdapter(Component):
-#     """ Used to test the connection """
-#     _name = 'sage.adapter.test'
-#     _inherit = 'sage.adapter'
-#     _apply_on = 'sage.backend'
-#
-#     _sage_model = ''
+class NoModelAdapter(Component):
+    """ Used to test the connection """
+    _name = 'sage.adapter.test'
+    _inherit = 'sage.adapter'
+    _apply_on = 'sage.backend'
+
+    _sql = "select @@version"
+    _id = None
