@@ -7,8 +7,6 @@ from odoo import models, fields
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.job import job
 
-import pymssql
-
 
 class PayrollSageLabourAgreementAdapter(Component):
     _name = 'sage.payroll.sage.labour.agreement.adapter'
