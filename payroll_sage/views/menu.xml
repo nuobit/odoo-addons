@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem id="menu_root" name="Sage payroll"
+              sequence="46"/>
+
+
+    <menuitem id="menu_sage_payroll" parent="menu_root"
+              name="Sage payroll" sequence="10"/>
+
+
+    <menuitem id="labour_agreement_menu_action" name="Labour agreement"
+              parent="menu_sage_payroll" action="labour_agreement_action"/>
+</odoo>
