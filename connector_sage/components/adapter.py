@@ -50,6 +50,10 @@ def api_handle_errors(message=''):
         raise exceptions.UserError(
             _(u'{}DB internal Error:\n\n{}').format(message, err)
         )
+    except (pymssql.InterfaceError,) as err:
+        raise exceptions.UserError(
+            _(u'{}DB interface Error:\n\n{}').format(message, err)
+        )
 
 
 class CRUDAdapter(AbstractComponent):
@@ -100,7 +104,7 @@ class CRUDAdapter(AbstractComponent):
         """ Delete a record on the external system """
         raise NotImplementedError
 
-    def check(self):
+    def get_version(self):
         """ Check connection """
         raise NotImplementedError
 
@@ -139,9 +143,10 @@ class GenericAdapter(AbstractComponent):
 
             fields_l = fields or ['*']
             if fields:
-                for f in self._id:
-                    if f not in fields_l:
-                        fields_l.append(f)
+                if self._id:
+                    for f in self._id:
+                        if f not in fields_l:
+                            fields_l.append(f)
 
             sql_l.append("select %s from t" % (', '.join(fields_l),))
 
@@ -156,7 +161,7 @@ class GenericAdapter(AbstractComponent):
 
         res = self._exec_sql(sql, tuple(values), as_dict=as_dict)
 
-        if set(self._id).issubset(set(filters)):
+        if self._id and set(self._id).issubset(set(filters)):
             self._check_uniq(res)
 
         return res
@@ -182,8 +187,6 @@ class GenericAdapter(AbstractComponent):
             self._sql, filters)
 
         res = self._exec_query(filters=filters)
-
-        res = res[0:20]
 
         res = [tuple([x[f] for f in self._id]) for x in res]
 
@@ -239,7 +242,9 @@ class GenericAdapter(AbstractComponent):
         # Delete a record(s) on the external system
         return self.client.delete(resource, ids)
 
-    def check(self):
-        res = self.client.check_connection()
+    def get_version(self):
+        res = self._exec_query(as_dict=False)
 
-        return res
+        return res[0][0]
+
+
