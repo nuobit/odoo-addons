@@ -105,7 +105,11 @@
         <field name="arch" type="xml">
             <tree string="Sage Backend">
                 <field name="name"/>
+                <field name="company_id"/>
                 <field name="server"/>
+                <field name="database"/>
+                <field name="schema"/>
+                <field name="sage_company_id"/>
             </tree>
         </field>
     </record>
