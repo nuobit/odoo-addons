@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="security" model="ir.module.category">
+        <field name="name">Sage payroll</field>
+        <field name="sequence">1010</field>
+    </record>
+
+    <record id="group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="security"/>
+    </record>
+
+    <record id="group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="security"/>
+    </record>
+
+    <record id="group_guest" model="res.groups">
+        <field name="name">Guest</field>
+        <field name="category_id" ref="security"/>
+    </record>
+</odoo>
