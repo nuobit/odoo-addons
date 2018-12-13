@@ -11,8 +11,13 @@ from contextlib import contextmanager
 from requests.exceptions import HTTPError, RequestException, ConnectionError
 import base64
 import logging
-import pymssql
+
 from functools import partial
+
+try:
+    import pymssql
+except ImportError:
+    pymssql = None
 
 _logger = logging.getLogger(__name__)
 
