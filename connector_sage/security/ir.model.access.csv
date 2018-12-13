@@ -1,28 +1,10 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_lighting_etim_class_guest,lighting.etim.class guest,model_lighting_etim_class,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_class_manager,lighting.etim.class manager,model_lighting_etim_class,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_class_user,lighting.etim.class user,model_lighting_etim_class,lighting.group_lighting_user,1,0,0,0
-access_lighting_etim_class_feature_guest,lighting.etim.class.feature guest,model_lighting_etim_class_feature,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_class_feature_manager,lighting.etim.class.feature manager,model_lighting_etim_class_feature,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_class_feature_user,lighting.etim.class.feature user,model_lighting_etim_class_feature,lighting.group_lighting_user,1,0,0,0
-access_lighting_etim_class_feature_value_guest,lighting.etim.class.feature.value guest,model_lighting_etim_class_feature_value,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_class_feature_value_manager,lighting.etim.class.feature.value manager,model_lighting_etim_class_feature_value,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_class_feature_value_user,lighting.etim.class.feature.value user,model_lighting_etim_class_feature_value,lighting.group_lighting_user,1,0,0,0
-access_lighting_etim_class_synonim_guest,lighting.etim.class.synonim guest,model_lighting_etim_class_synonim,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_class_synonim_manager,lighting.etim.class.synonim manager,model_lighting_etim_class_synonim,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_class_synonim_user,lighting.etim.class.synonim user,model_lighting_etim_class_synonim,lighting.group_lighting_user,1,0,0,0
-access_lighting_etim_feature_guest,lighting.etim.feature guest,model_lighting_etim_feature,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_feature_manager,lighting.etim.feature manager,model_lighting_etim_feature,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_feature_user,lighting.etim.feature user,model_lighting_etim_feature,lighting.group_lighting_user,1,0,0,0
-access_lighting_etim_group_guest,lighting.etim.group guest,model_lighting_etim_group,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_group_manager,lighting.etim.group manager,model_lighting_etim_group,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_group_user,lighting.etim.group user,model_lighting_etim_group,lighting.group_lighting_user,1,0,0,0
-access_lighting_etim_unit_guest,lighting.etim.unit guest,model_lighting_etim_unit,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_unit_manager,lighting.etim.unit manager,model_lighting_etim_unit,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_unit_user,lighting.etim.unit user,model_lighting_etim_unit,lighting.group_lighting_user,1,0,0,0
-access_lighting_etim_value_guest,lighting.etim.value guest,model_lighting_etim_value,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_value_manager,lighting.etim.value manager,model_lighting_etim_value,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_value_user,lighting.etim.value user,model_lighting_etim_value,lighting.group_lighting_user,1,0,0,0
-access_lighting_etim_product_feature_guest,lighting.etim.product.feature guest,model_lighting_etim_product_feature,lighting.group_lighting_guest,1,0,0,0
-access_lighting_etim_product_feature_manager,lighting.etim.product.feature manager,model_lighting_etim_product_feature,lighting.group_lighting_manager,1,1,1,1
-access_lighting_etim_product_feature_user,lighting.etim.product.feature user,model_lighting_etim_product_feature,lighting.group_lighting_user,1,1,1,1
+"access_sage_res_partner","sage_res_partner connector manager","model_sage_res_partner","connector.group_connector_manager",1,1,1,1
+"access_sage_res_partner_group_user","sage_res_partner group_user","model_sage_res_partner","base.group_user",1,0,0,0
+"access_sage_hr_employee","sage_hr_employee connector manager","model_sage_hr_employee","connector.group_connector_manager",1,1,1,1
+"access_sage_hr_employee_group_user","sage_hr_employee group_user","model_sage_hr_employee","base.group_user",1,0,0,0
+"access_sage_payroll_sage_labour_agreement","sage_payroll_sage_labour_agreement connector manager","model_sage_payroll_sage_labour_agreement","connector.group_connector_manager",1,1,1,1
+"access_sage_payroll_sage_labour_agreement_group_user","sage_payroll_sage_labour_agreement group_user","model_sage_payroll_sage_labour_agreement","base.group_user",1,0,0,0
+"access_sage_payroll_sage_labour_agreement_wage_type_line","sage_payroll_sage_labour_agreement_wage_type_line connector manager","model_sage_payroll_sage_labour_agreement_wage_type_line","connector.group_connector_manager",1,1,1,1
+"access_sage_payroll_sage_labour_agreement_wage_type_line_group_user","sage_payroll_sage_labour_agreement_wage_type_line group_user","model_sage_payroll_sage_labour_agreement_wage_type_line","base.group_user",1,0,0,0
+"access_sage_backend","sage_backend connector manager","model_sage_backend","connector.group_connector_manager",1,1,1,1
