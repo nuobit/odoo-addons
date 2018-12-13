@@ -60,8 +60,6 @@ class Backend(models.Model):
     import_employees_since_date = fields.Datetime('Import employees since')
     import_labour_agreements_since_date = fields.Datetime('Import labour agreements since')
 
-    #import_contacts_since_date = fields.Datetime('Import contacts since')
-
     @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
@@ -101,16 +99,6 @@ class Backend(models.Model):
 
         return True
 
-    # @api.multi
-    # def import_contacts_since(self):
-    #     for rec in self:
-    #         since_date = rec.import_contacts_since_date
-    #         self.env['sage.res.partner'].with_delay(
-    #         ).import_contacts_since(
-    #             backend_record=rec, since_date=since_date)
-    #
-    #     return True
-
     @api.model
     def _scheduler_import_employees(self, domain=None):
         self.search(domain or []).import_employees_since()
@@ -119,9 +107,6 @@ class Backend(models.Model):
     def _scheduler_import_labour_agreements(self, domain=None):
         self.search(domain or []).import_labour_agreements_since()
 
-    # @api.model
-    # def _scheduler_import_contacts(self, domain=None):
-    #     self.search(domain or []).import_contacts_since()
 
 # class NoModelAdapter(Component):
 #     """ Used to test the connection """
