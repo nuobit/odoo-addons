@@ -43,6 +43,7 @@
         <field name="model">payroll.sage.labour.agreement</field>
         <field name="arch" type="xml">
             <tree string="Labour agreement">
+                <field name="company_id"/>
                 <field name="code"/>
                 <field name="name"/>
                 <field name="registration_date_cv"/>
