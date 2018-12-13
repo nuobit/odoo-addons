@@ -27,16 +27,16 @@ class Backend(models.Model):
 
     name = fields.Char('Name', required=True)
 
-    server = fields.Char('Server')
-    port = fields.Integer('Port')
+    server = fields.Char('Server', required=True)
+    port = fields.Integer('Port', required=True)
 
-    database = fields.Char('Database')
-    schema = fields.Char('Schema')
+    database = fields.Char('Database', required=True)
+    schema = fields.Char('Schema', required=True)
 
     version = fields.Text('Version', readonly=True)
 
-    username = fields.Char('Username')
-    password = fields.Char('Password')
+    username = fields.Char('Username', required=True)
+    password = fields.Char('Password', required=True)
 
     company_id = fields.Many2one(
         comodel_name='res.company',
