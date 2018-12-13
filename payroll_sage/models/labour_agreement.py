@@ -45,13 +45,13 @@ class LabourAgreementWageTypeLine(models.Model):
         selection=[('accrural', 'Devengo'), ('withholding', 'Retencion'), ('no', _('No'))])
 
     default_credit_account_id = fields.Many2one('account.account', string='Default Credit Account',
+                                                domain=[('deprecated', '=', False)],
                                                 help="It acts as a default account for credit amount")
-    default_debit_account_id = fields.Many2one('account.account',
-                                               string='Default Debit Account',
+    default_debit_account_id = fields.Many2one('account.account', string='Default Debit Account',
+                                               domain=[('deprecated', '=', False)],
                                                help="It acts as a default account for debit amount")
 
     note = fields.Text(string='Description')
 
     labour_agreement_id = fields.Many2one('payroll.sage.labour.agreement', string='Labour agreeemnt')
 
-    company_id = fields.Many2one('res.company', related='labour_agreement_id.company_id', store=True)
