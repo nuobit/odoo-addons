@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <!--record id="product_product_view_form_inherit_connector_ambugest" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.connector.ambugest</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="groups_id"
+               eval="[(4, ref('connector.group_connector_manager'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Connectors">
+                    <group string="Ambugest Bindings">
+                        <field name="ambugest_bind_ids" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="ambugest_product_product_view_form" model="ir.ui.view">
+        <field name="name">ambugest.product.product.form</field>
+        <field name="model">ambugest.product.product</field>
+        <field name="arch" type="xml">
+            <form string="Ambugest Product">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="ambugest_codigo_empresa" readonly="True"/>
+                    <field name="ambugest_codigo_empleado" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="ambugest_product_product_view_tree" model="ir.ui.view">
+        <field name="name">ambugest.product.product.tree</field>
+        <field name="model">ambugest.product.product</field>
+        <field name="arch" type="xml">
+            <tree string="Ambugest Product">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="ambugest_codigo_empresa" readonly="True"/>
+                <field name="ambugest_codigo_empleado" readonly="True"/>
+                <field name="sync_date"/>
+                <button name="resync" type="object"
+                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+            </tree>
+        </field>
+    </record-->
+
+    <record id="ambugest_sale_order_action" model="ir.actions.act_window">
+        <field name="name">Services</field>
+        <field name="res_model">ambugest.sale.order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
