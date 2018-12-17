@@ -13,7 +13,11 @@ create the binding between them.
 """
 
 from odoo import fields, models, tools
-from odoo.addons.component.core import AbstractComponent
+
+try:
+    from odoo.addons.component.core import AbstractComponent
+except ImportError:
+    pass
 
 
 class BinderComposite(AbstractComponent):
@@ -22,7 +26,6 @@ class BinderComposite(AbstractComponent):
     """
     _name = 'base.binder.composite'
     _inherit = 'base.binder'
-
 
     def _orm_value(self, func_name, field, value):
         field_type = self.model.fields_get([field], ['type'])[field]['type']
@@ -40,7 +43,6 @@ class BinderComposite(AbstractComponent):
 
     def _from_orm_value(self, field, value):
         return self._orm_value('from_string', field, value)
-
 
     def to_internal(self, external_id, unwrap=False):
         """ Give the Odoo recordset for an external ID
