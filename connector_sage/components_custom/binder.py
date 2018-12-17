@@ -17,7 +17,7 @@ from odoo import fields, models, tools
 try:
     from odoo.addons.component.core import AbstractComponent
 except ImportError:
-    pass
+    AbstractComponent = None
 
 
 class BinderComposite(AbstractComponent):
