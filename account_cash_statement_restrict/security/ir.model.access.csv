@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_journal_cashier,account.journal.cashier,account.model_account_journal,group_cashier,1,1,0,0
+access_account_bank_statement_cashier,account.bank.statement.cashier,account.model_account_bank_statement,group_cashier,1,1,1,0
+access_account_bank_statement_line_cashier,account.bank.statement.line.cashier,account.model_account_bank_statement_line,group_cashier,1,1,1,1
+access_account_move_cashier,account.move.cashier,account.model_account_move,group_cashier,0,0,1,0
+access_account_move_line_cashier,account.move.line.cashier,account.model_account_move_line,group_cashier,1,1,0,0
+access_account_bank_statement_cashbox_cashier,account.bank.statement.cashbox.cashier,account.model_account_bank_statement_cashbox,group_cashier,1,1,1,1
+access_account_cashbox_line_cashier,account.cashbox.line.cashier,account.model_account_cashbox_line,group_cashier,1,1,1,1
+
