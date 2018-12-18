@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem id="menu_root"
+              name="Cash box" sequence="-10" groups="group_cashier"/>
+
+    <menuitem id="cashbox_menu_action" parent="menu_root"
+              name="Cash box" sequence="10" action="account.open_account_journal_dashboard_kanban"/>
+</odoo>
