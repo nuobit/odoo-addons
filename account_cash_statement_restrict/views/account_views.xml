@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="account_bank_statement_view_form_inherit_cash_statement_restrict" model="ir.ui.view">
+        <field name="name">account.bank.statement.form.inherit</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <button name="%(account.action_bank_reconcile_bank_statements)d" position="attributes">
+                <attribute name="attrs">
+                    {'invisible':['|','|',('all_lines_reconciled','=',True),('line_ids','=',[]),
+                    ('state', 'not in', ('open', 'close'))]}
+                </attribute>
+            </button>
+            <button name="check_confirm_bank" position="before">
+                <button name="close_bank" string="Close" type="object" class="oe_highlight"
+                        attrs="{'invisible':['|',('line_ids','=',[]),('state', 'not in', ('open'))]}"/>
+            </button>
+            <button name="check_confirm_bank" position="attributes">
+                <attribute name="attrs">
+                    {'invisible':['|','|',('all_lines_reconciled','=',True),('line_ids','=',[]),
+                    ('state', 'not in', ('open', 'close'))]}
+                </attribute>
+            </button>
+            <field name="state" position="attributes">
+                <attribute name="statusbar_visible">open,close,confirm</attribute>
+            </field>
+
+            <xpath expr="//field[@name='journal_type']/.." position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
+
+
