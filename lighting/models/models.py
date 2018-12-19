@@ -143,13 +143,17 @@ class LightingProduct(models.Model):
         else:
             return None
 
-    description_manual = fields.Char(string='Description (manual)', help='Manual description', translate=True, track_visibility='onchange')
+    description_manual = fields.Char(string='Description (manual)', help='Manual description', translate=True,
+                                     track_visibility='onchange')
 
-    ean = fields.Char(string='EAN', required=False, index=True, track_visibility='onchange')
+    ean = fields.Char(string='EAN', required=False, track_visibility='onchange')
     family_ids = fields.Many2many(comodel_name='lighting.product.family',
-                                  relation='lighting_product_family_rel', string='Families', track_visibility='onchange')
-    catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel', string='Catalogs', track_visibility='onchange')
-    type_ids = fields.Many2many(comodel_name='lighting.product.type', relation='lighting_product_type_rel', string='Types', track_visibility='onchange')
+                                  relation='lighting_product_family_rel', string='Families',
+                                  track_visibility='onchange')
+    catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel',
+                                   string='Catalogs', track_visibility='onchange')
+    type_ids = fields.Many2many(comodel_name='lighting.product.type', relation='lighting_product_type_rel',
+                                string='Types', track_visibility='onchange')
 
     is_accessory = fields.Boolean(string='Is accessory', track_visibility='onchange')
     is_required = fields.Boolean(string='Is required', track_visibility='onchange')
@@ -157,23 +161,25 @@ class LightingProduct(models.Model):
 
     last_update = fields.Date(string='Last modified on', track_visibility='onchange')
 
-    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order", track_visibility='onchange')
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order",
+                              track_visibility='onchange')
 
-    _sql_constraints = [ ('reference_uniq', 'unique (reference)', 'The reference must be unique!'),
-                         ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
-        ]
+    _sql_constraints = [('reference_uniq', 'unique (reference)', 'The reference must be unique!'),
+                        ('ean_uniq', 'unique (ean)', 'The EAN must be unique!')
+                        ]
 
     # Description tab
     install_location = fields.Selection(selection=[('indoor', _('Indoor')),
                                                    ('outdoor', _('Outdoor')),
                                                    ('indoor_outdoor', _('Indoor and Outdoor')),
                                                    ('underwater', _('Underwater'))
-                                ], string='Installation location', track_visibility='onchange')
+                                                   ], string='Installation location', track_visibility='onchange')
 
     application_ids = fields.Many2many(comodel_name='lighting.product.application',
                                        relation='lighting_product_application_rel', string='Applications',
                                        track_visibility='onchange')
-    finish_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish', track_visibility='onchange')
+    finish_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish',
+                                track_visibility='onchange')
 
     body_material_ids = fields.Many2many(comodel_name='lighting.product.material',
                                          relation='lighting_product_body_material_rel',
@@ -216,7 +222,8 @@ class LightingProduct(models.Model):
                                                string='Auxiliary gear', track_visibility='onchange')
     auxiliary_equipment_model_ids = fields.One2many(comodel_name='lighting.product.auxiliaryequipmentmodel',
                                                     inverse_name='product_id',
-                                                    string='Auxiliary gear code', copy=True, track_visibility='onchange')
+                                                    string='Auxiliary gear code', copy=True,
+                                                    track_visibility='onchange')
     auxiliary_equipment_model_alt = fields.Char(string='Alternative auxiliary gear code', track_visibility='onchange')
     input_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage',
                                        ondelete='restrict', string='Input voltage', track_visibility='onchange')
@@ -243,21 +250,22 @@ class LightingProduct(models.Model):
                     if line.wattage <= 0:
                         raise ValidationError("%s: The source line %s has invalid wattage" % (rec.display_name,
                                                                                               line.type_id.display_name))
-                    rec.total_wattage += line.source_id.num*line.wattage
+                    rec.total_wattage += line.source_id.num * line.wattage
 
     def _inverse_total_wattage(self):
         ## dummy method. It allows to update calculated field
         pass
 
     power_factor_min = fields.Float(string='Minimum power factor', track_visibility='onchange')
-    power_switches = fields.Integer(string='Power switches', help="Number of power switches", track_visibility='onchange')
+    power_switches = fields.Integer(string='Power switches', help="Number of power switches",
+                                    track_visibility='onchange')
 
     usb_ports = fields.Integer(string='USB ports', help="Number of USB ports", track_visibility='onchange')
     usb_voltage = fields.Float(string='USB voltage', track_visibility='onchange')
     usb_current = fields.Float(string='USB current', track_visibility='onchange')
 
     sensor_ids = fields.Many2many(comodel_name='lighting.product.sensor', relation='lighting_product_sensor_rel',
-                                    string='Sensors', track_visibility='onchange')
+                                  string='Sensors', track_visibility='onchange')
 
     battery_autonomy = fields.Float(string='Battery autonomy (h)', track_visibility='onchange')
     battery_charge_time = fields.Float(string='Battery charge time (h)', track_visibility='onchange')
@@ -267,8 +275,9 @@ class LightingProduct(models.Model):
 
     glow_wire_temperature = fields.Float(string='Glow wire temperature (ºC)', track_visibility='onchange')
 
-    #light characteristics tab
-    total_nominal_flux = fields.Float(string='Total flux (Lm)', help='Luminaire total nominal flux', track_visibility='onchange')
+    # light characteristics tab
+    total_nominal_flux = fields.Float(string='Total flux (Lm)', help='Luminaire total nominal flux',
+                                      track_visibility='onchange')
     cri_min = fields.Integer(string='CRI', help='Minimum color rendering index', track_visibility='onchange')
     ugr_max = fields.Integer(string='UGR', help='Maximum unified glare rating', track_visibility='onchange')
 
@@ -280,10 +289,12 @@ class LightingProduct(models.Model):
     # Physical characteristics
     weight = fields.Float(string='Weight (kg)', track_visibility='onchange')
     dimension_ids = fields.One2many(comodel_name='lighting.product.dimension',
-                                    inverse_name='product_id', string='Dimensions', copy=True, track_visibility='onchange')
+                                    inverse_name='product_id', string='Dimensions', copy=True,
+                                    track_visibility='onchange')
 
     cable_outlets = fields.Integer(string='Cable outlets', help="Number of cable outlets", track_visibility='onchange')
-    lead_wires = fields.Integer(string='Lead wires supplied', help="Number of lead wires supplied", track_visibility='onchange')
+    lead_wires = fields.Integer(string='Lead wires supplied', help="Number of lead wires supplied",
+                                track_visibility='onchange')
     lead_wire_length = fields.Float(string='Length of the lead wire supplied (mm)', track_visibility='onchange')
     inclination_angle_max = fields.Float(string='Maximum inclination angle (º)', track_visibility='onchange')
     rotation_angle_max = fields.Float(string='Maximum rotation angle (º)', track_visibility='onchange')
@@ -303,13 +314,15 @@ class LightingProduct(models.Model):
     post_included = fields.Boolean(string='Post included', track_visibility='onchange')
     post_with_inspection_chamber = fields.Boolean(string='Post with inspection chamber', track_visibility='onchange')
 
-    emergency_light = fields.Boolean(string='Emergency light', help="Luminarie with emergency light", track_visibility='onchange')
+    emergency_light = fields.Boolean(string='Emergency light', help="Luminarie with emergency light",
+                                     track_visibility='onchange')
     average_emergency_time = fields.Float(string='Average emergency time (h)', track_visibility='onchange')
 
     flammable_surfaces = fields.Boolean(string='Flammable surfaces', track_visibility='onchange')
 
-    photobiological_risk_group_id = fields.Many2one(comodel_name='lighting.product.photobiologicalriskgroup', ondelete='restrict',
-                                         string='Photobiological risk group', track_visibility='onchange')
+    photobiological_risk_group_id = fields.Many2one(comodel_name='lighting.product.photobiologicalriskgroup',
+                                                    ondelete='restrict',
+                                                    string='Photobiological risk group', track_visibility='onchange')
 
     mechanical_screwdriver = fields.Boolean(string='Electric screwdriver', track_visibility='onchange')
 
@@ -317,7 +330,8 @@ class LightingProduct(models.Model):
     fan_control = fields.Selection(selection=[('remote', 'Remote control'), ('wall', 'Wall control')],
                                    string='Fan control type', track_visibility='onchange')
     fan_wattage_ids = fields.One2many(comodel_name='lighting.product.fanwattage',
-                                      inverse_name='product_id', string='Fan wattages (W)', copy=True, track_visibility='onchange')
+                                      inverse_name='product_id', string='Fan wattages (W)', copy=True,
+                                      track_visibility='onchange')
 
     # Sources tab
     source_ids = fields.One2many(comodel_name='lighting.product.source',
@@ -343,7 +357,8 @@ class LightingProduct(models.Model):
 
     # Attachment tab
     attachment_ids = fields.One2many(comodel_name='lighting.attachment',
-                                     inverse_name='product_id', string='Attachments', copy=True, track_visibility='onchange')
+                                     inverse_name='product_id', string='Attachments', copy=True,
+                                     track_visibility='onchange')
     attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
 
     @api.depends('attachment_ids')
@@ -359,17 +374,15 @@ class LightingProduct(models.Model):
 
     # Required accessories tab
     required_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_required_rel',
-                                     column1="product_id", column2='required_id',
-                                     domain=[('is_required', '=', True)],
-                                     string='Required', track_visibility='onchange')
+                                    column1="product_id", column2='required_id',
+                                    domain=[('is_required', '=', True)],
+                                    string='Required', track_visibility='onchange')
 
     # Components tab
     component_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_component_rel',
                                      column1="product_id", column2='component_id',
                                      domain=[('is_component', '=', True)],
                                      string='Components', track_visibility='onchange')
-
-
 
     # Substitutes tab
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',
@@ -381,7 +394,7 @@ class LightingProduct(models.Model):
     assembler_id = fields.Many2one(comodel_name='lighting.assembler', ondelete='restrict',
                                    string='Assembler', track_visibility='onchange')
     supplier_ids = fields.One2many(comodel_name='lighting.product.supplier', inverse_name='product_id',
-                                           string='Suppliers', copy=True, track_visibility='onchange')
+                                   string='Suppliers', copy=True, track_visibility='onchange')
 
     ibox_weight = fields.Float(string='IBox weight (Kg)', track_visibility='onchange')
     ibox_volume = fields.Float(string='IBox volume (cm³)', track_visibility='onchange')
@@ -400,7 +413,8 @@ class LightingProduct(models.Model):
     discontinued_soon = fields.Boolean(string='Discontinued soon', track_visibility='onchange')
     until_end_stock = fields.Boolean(string='Until end of stock', track_visibility='onchange')
     on_request = fields.Boolean(string='On request', track_visibility='onchange')
-    state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State', track_visibility='onchange')
+    state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State',
+                               track_visibility='onchange')
     effective_date = fields.Date(string='Effective date', track_visibility='onchange')
     marketing_comments = fields.Char(string='Comments', track_visibility='onchange')
 
@@ -416,7 +430,7 @@ class LightingProduct(models.Model):
         self.ensure_one()
         default = dict(default or {},
                        reference=_('%s (copy)') % self.reference,
-                       ean=_('%s (copy)') % self.ean,
+                       ean=False,
                        )
 
         return super(LightingProduct, self).copy(default)
@@ -484,6 +498,7 @@ class LightingEnergyEfficiency(models.Model):
                 raise UserError(_("You are trying to delete a record that is still referenced!"))
         return super(LightingEnergyEfficiency, self).unlink()
 
+
 class LightingDimensionType(models.Model):
     _name = 'lighting.dimension.type'
     _order = 'name'
@@ -514,12 +529,13 @@ class LightingProductMaterial(models.Model):
     name = fields.Char(string='Description', required=True, translate=True)
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+
     def _compute_product_count(self):
         for record in self:
             record.product_count = self.env['lighting.product'].search_count([
-                '|', '|', '|', '|', ('body_material_ids','=',record.id),
-                ('diffusor_material_ids','=',record.id), ('frame_material_ids','=',record.id),
-                ('reflector_material_ids','=',record.id), ('blade_material_ids','=',record.id)])
+                '|', '|', '|', '|', ('body_material_ids', '=', record.id),
+                ('diffusor_material_ids', '=', record.id), ('frame_material_ids', '=', record.id),
+                ('reflector_material_ids', '=', record.id), ('blade_material_ids', '=', record.id)])
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The material name must be unique!'),
                         ('code_uniq', 'unique (code)', 'The material code must be unique!'),
@@ -535,6 +551,7 @@ class LightingProductMaterial(models.Model):
                 raise UserError(_("You are trying to delete a record that is still referenced!"))
         return super(LightingProductMaterial, self).unlink()
 
+
 ###### Electrical characteristics tab
 class LightingProductProtectionClass(models.Model):
     _name = 'lighting.product.protectionclass'
@@ -545,6 +562,7 @@ class LightingProductProtectionClass(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The protection class must be unique!'),
                         ]
 
+
 class LightingProductFrequency(models.Model):
     _name = 'lighting.product.frequency'
     _order = 'name'
@@ -553,6 +571,7 @@ class LightingProductFrequency(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The frequency must be unique!'),
                         ]
+
 
 class LightingProductDimmable(models.Model):
     _name = 'lighting.product.dimmable'
@@ -570,6 +589,7 @@ class LightingProductDimmable(models.Model):
             raise UserError(_("You are trying to delete a record that is still referenced!"))
         return super(LightingProductDimmable, self).unlink()
 
+
 class LightingProductAuxiliaryEquipment(models.Model):
     _name = 'lighting.product.auxiliaryequipment'
     _order = 'name'
@@ -585,6 +605,7 @@ class LightingProductAuxiliaryEquipment(models.Model):
         if records:
             raise UserError(_("You are trying to delete a record that is still referenced!"))
         return super(LightingProductAuxiliaryEquipment, self).unlink()
+
 
 class LightingProductAuxiliaryEquipmentModel(models.Model):
     _name = 'lighting.product.auxiliaryequipmentmodel'
@@ -602,6 +623,7 @@ class LightingProductAuxiliaryEquipmentModel(models.Model):
                          'The date must be unique!'),
                         ]
 
+
 class LightingProductAuxiliaryEquipmentBrand(models.Model):
     _name = 'lighting.product.auxiliaryequipmentbrand'
     _order = 'name'
@@ -610,6 +632,7 @@ class LightingProductAuxiliaryEquipmentBrand(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The auxiliary equipment brand must be unique!'),
                         ]
+
 
 class LightingProductSensor(models.Model):
     _name = 'lighting.product.sensor'
@@ -627,6 +650,7 @@ class LightingProductSensor(models.Model):
             raise UserError(_("You are trying to delete a record that is still referenced!"))
         return super(LightingProductSensor, self).unlink()
 
+
 ###########  Lighting characteristics tab
 
 class LightingProductLedChip(models.Model):
@@ -639,7 +663,8 @@ class LightingProductLedChip(models.Model):
                                ondelete='restrict', string='Brand', required=True)
     date = fields.Date(string='Date')
 
-    source_line_id = fields.Many2one(comodel_name='lighting.product.source.line', ondelete='cascade', string='Source line')
+    source_line_id = fields.Many2one(comodel_name='lighting.product.source.line', ondelete='cascade',
+                                     string='Source line')
 
     _sql_constraints = [('ledchip_uniq', 'unique (source_line_id, date)', 'The chip date must be unique!'),
                         ]
@@ -654,30 +679,35 @@ class LightingProductLedBrand(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The LED brand must be unique!'),
                         ]
 
+
 ###########  Physical characteristics tab
 class LightingProductDimension(models.Model):
     _name = 'lighting.product.dimension'
     _rec_name = 'type_id'
     _order = 'sequence'
 
-    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension', required=True)
+    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension',
+                              required=True)
     value = fields.Float(string='Value', required=True)
     sequence = fields.Integer(required=True, default=1,
-        help="The sequence field is used to define order in which the dimension lines are sorted")
+                              help="The sequence field is used to define order in which the dimension lines are sorted")
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
+
 
 class LightingProductRecessDimension(models.Model):
     _name = 'lighting.product.recessdimension'
     _rec_name = 'type_id'
     _order = 'sequence'
 
-    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Recess dimension', required=True)
+    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Recess dimension',
+                              required=True)
     value = fields.Float(string='Value', required=True)
     sequence = fields.Integer(required=True, default=1,
-        help="The sequence field is used to define order in which the recess dimension lines are sorted")
+                              help="The sequence field is used to define order in which the recess dimension lines are sorted")
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
+
 
 class LightingProductEcorraeCategory(models.Model):
     _name = 'lighting.product.ecorraecategory'
@@ -688,6 +718,7 @@ class LightingProductEcorraeCategory(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The ecorrae category description must be unique!'),
                         ]
 
+
 class LightingProductEcorrae2Category(models.Model):
     _name = 'lighting.product.ecorrae2category'
     _order = 'name'
@@ -696,6 +727,7 @@ class LightingProductEcorrae2Category(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The ecorrae2 category description must be unique!'),
                         ]
+
 
 class LightingProductPhotobiologicalRiskGroup(models.Model):
     _name = 'lighting.product.photobiologicalriskgroup'
@@ -706,6 +738,7 @@ class LightingProductPhotobiologicalRiskGroup(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The photobiological risk group description must be unique!'),
                         ]
 
+
 class LightingProductFanWattage(models.Model):
     _name = 'lighting.product.fanwattage'
     _rec_name = 'wattage'
@@ -714,14 +747,16 @@ class LightingProductFanWattage(models.Model):
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
-    _sql_constraints = [('wattage_product_uniq', 'unique (product_id, wattage)', 'There are duplicated wattages on the same product!'),
-                    ]
+    _sql_constraints = [
+        ('wattage_product_uniq', 'unique (product_id, wattage)', 'There are duplicated wattages on the same product!'),
+        ]
 
     @api.constrains('wattage')
     def _check_wattage(self):
         for rec in self:
             if rec.wattage == 0:
                 raise ValidationError("The fan wattage, if defined, cannot be 0")
+
 
 ########### sources tab
 class LightingProductSource(models.Model):
@@ -731,13 +766,16 @@ class LightingProductSource(models.Model):
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
-    relevance = fields.Selection([('main', 'Main'), ('aux', 'Auxiliary')], string='Relevance', required=True, default='main')
+    relevance = fields.Selection([('main', 'Main'), ('aux', 'Auxiliary')], string='Relevance', required=True,
+                                 default='main')
     num = fields.Integer(string='Number of sources', default=1)
-    lampholder_id =  fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict', string='Lampholder')
+    lampholder_id = fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict',
+                                    string='Lampholder')
     lampholder_technical_id = fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict',
-                                    string='Technical lampholder')
+                                              string='Technical lampholder')
 
-    line_ids = fields.One2many(comodel_name='lighting.product.source.line', inverse_name='source_id', string='Lines', copy=True)
+    line_ids = fields.One2many(comodel_name='lighting.product.source.line', inverse_name='source_id', string='Lines',
+                               copy=True)
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
@@ -757,6 +795,7 @@ class LightingProductSource(models.Model):
             if res != []:
                 rec.line_display = " / ".join(res)
 
+
 class LightingProductSourceLine(models.Model):
     _name = 'lighting.product.source.line'
     _rec_name = 'type_id'
@@ -764,7 +803,8 @@ class LightingProductSourceLine(models.Model):
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
-    type_id = fields.Many2one(comodel_name='lighting.product.source.type', ondelete='restrict', string='Type', required=True)
+    type_id = fields.Many2one(comodel_name='lighting.product.source.type', ondelete='restrict', string='Type',
+                              required=True)
 
     wattage = fields.Float(string='Wattage')
     is_max_wattage = fields.Boolean(string='Is max. Wattage')
@@ -774,8 +814,10 @@ class LightingProductSourceLine(models.Model):
     def _check_wattage(self):
         for rec in self:
             if rec.type_id.is_integrated and rec.wattage <= 0:
-                raise ValidationError("%s: The wattage on line %s must be greater than 0 if source type is integrated" % (rec.source_id.product_id.display_name,
-                                                                                                                          rec.type_id.display_name))
+                raise ValidationError(
+                    "%s: The wattage on line %s must be greater than 0 if source type is integrated" % (
+                    rec.source_id.product_id.display_name,
+                    rec.type_id.display_name))
 
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
@@ -783,26 +825,26 @@ class LightingProductSourceLine(models.Model):
 
     is_led = fields.Boolean(related='type_id.is_led')
     color_consistency = fields.Float(string='Color consistency')
-    special_spectrum = fields.Selection(selection = [
-            ('meat', 'Meat'), ('fashion', 'Fashion'),
-            ('multifood', 'Multi Food'), ('bread', 'Bread'),
-            ('fish', 'Fish'), ('vegetable', 'Vegetable'),
-            ('blue', _('Blue')), ('orange', _('Orange')),
-            ('green', _('Green')), ('red', _('Red')),
-            ('purple', _('Purple')), ('pink', _('Pink')),
-        ], string='Special spectrum')
+    special_spectrum = fields.Selection(selection=[
+        ('meat', 'Meat'), ('fashion', 'Fashion'),
+        ('multifood', 'Multi Food'), ('bread', 'Bread'),
+        ('fish', 'Fish'), ('vegetable', 'Vegetable'),
+        ('blue', _('Blue')), ('orange', _('Orange')),
+        ('green', _('Green')), ('red', _('Red')),
+        ('purple', _('Purple')), ('pink', _('Pink')),
+    ], string='Special spectrum')
     led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
                                    inverse_name='source_line_id', string='Chip', copy=True)
 
     efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
-                                  relation='lighting_product_source_energyefficiency_rel',
-                                  string='Energy efficiency')
+                                      relation='lighting_product_source_energyefficiency_rel',
+                                      string='Energy efficiency')
 
     is_integrated = fields.Boolean(related='type_id.is_integrated')
     is_lamp_included = fields.Boolean(string='Lamp included?')
     lamp_included_efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
-                                  relation='lighting_product_source_lampenergyefficiency_rel',
-                                  string='Lamp included efficiency')
+                                                    relation='lighting_product_source_lampenergyefficiency_rel',
+                                                    string='Lamp included efficiency')
 
     ## computed fields
     wattage_display = fields.Char(compute='_compute_wattage_display', string='Wattage (W)')
@@ -819,7 +861,7 @@ class LightingProductSourceLine(models.Model):
         res = []
         if self.wattage > 0:
             wattage_str = float2text(self.wattage)
-            if mult>1:
+            if mult > 1:
                 wattage_str = '%ix%s' % (mult, wattage_str)
 
             if self.wattage_magnitude:
@@ -856,6 +898,7 @@ class LightingProductSourceLine(models.Model):
 
     source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
+
 ########### beams tab
 class LightingProductBeam(models.Model):
     _name = 'lighting.product.beam'
@@ -869,7 +912,8 @@ class LightingProductBeam(models.Model):
                                                     relation='lighting_product_beam_photodistribution_rel',
                                                     string='Photometric distributions')
 
-    dimension_ids = fields.One2many(comodel_name='lighting.product.beam.dimension', inverse_name='beam_id', string='Dimensions', copy=True)
+    dimension_ids = fields.One2many(comodel_name='lighting.product.beam.dimension', inverse_name='beam_id',
+                                    string='Dimensions', copy=True)
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
@@ -884,6 +928,7 @@ class LightingProductBeam(models.Model):
                 res.append('%s: %g' % (dimension.type_id.display_name, dimension.value))
 
             rec.dimensions_display = ', '.join(res)
+
 
 class LightingProductBeamPhotometricDistribution(models.Model):
     _name = 'lighting.product.beam.photodistribution'
@@ -901,16 +946,19 @@ class LightingProductBeamPhotometricDistribution(models.Model):
             raise UserError(_("You are trying to delete a record that is still referenced!"))
         return super(LightingProductBeamPhotometricDistribution, self).unlink()
 
+
 class LightingProductBeamDimension(models.Model):
     _name = 'lighting.product.beam.dimension'
     _order = 'sequence'
 
-    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension', required=True)
+    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension',
+                              required=True)
     value = fields.Float(string='Value', required=True)
     sequence = fields.Integer(required=True, default=1,
-        help="The sequence field is used to define order in which the dimension lines are sorted")
+                              help="The sequence field is used to define order in which the dimension lines are sorted")
 
     beam_id = fields.Many2one(comodel_name='lighting.product.beam', ondelete='cascade', string='Beam')
+
 
 class LightingLanguage(models.Model):
     _name = 'lighting.language'
@@ -923,6 +971,7 @@ class LightingLanguage(models.Model):
                         ('code_uniq', 'unique (code)', 'The language code must be unique!'),
                         ]
 
+
 ########### logistics tab
 class LightingAssembler(models.Model):
     _name = 'lighting.assembler'
@@ -933,6 +982,7 @@ class LightingAssembler(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The assembler must be unique!'),
                         ]
 
+
 class LightingProductSupplier(models.Model):
     _name = 'lighting.product.supplier'
     _rec_name = 'supplier_id'
@@ -940,7 +990,8 @@ class LightingProductSupplier(models.Model):
 
     sequence = fields.Integer(required=True, default=1,
                               help="The sequence field is used to define the priority of suppliers")
-    supplier_id = fields.Many2one(comodel_name='lighting.supplier', ondelete='restrict', string='Supplier', required=True)
+    supplier_id = fields.Many2one(comodel_name='lighting.supplier', ondelete='restrict', string='Supplier',
+                                  required=True)
     reference = fields.Char(string="Reference")
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
@@ -954,6 +1005,7 @@ class LightingSupplier(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The supplier description must be unique!'),
                         ]
+
 
 ########### marketing tab
 class LightingProductState(models.Model):
