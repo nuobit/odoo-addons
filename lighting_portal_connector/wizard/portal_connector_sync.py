@@ -56,19 +56,35 @@ class LightingPortalConnectorSync(models.TransientModel):
 
     @api.model
     def synchronize_products(self, cursor, schema, last_update, reference=None):
-        stmnt = """SELECT pw."ItemCode" as "reference", p."ItemName" as "description", 
-                          c."ItmsGrpNam" as "catalog", 
-                          /*pw."OnHand" as "qty_onhand",*/ 
-                          /*pw."OnHand" - pw."IsCommited" + pw."OnOrder" AS "qty_available"*/
-                          pw."OnHand" - pw."IsCommited" as "qty_available"
-                   FROM %(schema)s.OITW pw, %(schema)s.OITM p, %(schema)s.OITB c
-                   WHERE pw."ItemCode" = p."ItemCode" AND
-                         (:reference is null OR p."ItemCode" = :reference) AND
-                         p."ItmsGrpCod" = c."ItmsGrpCod" AND
-                         pw."WhsCode" = '00' AND 
-                         p."ItemType" = 'I'
-                         /*AND p."ItmsGrpCod" IN (107, 108, 109, 111) */ /* Cristher, Dopo, Exo, Indeluz */
-                   ORDER BY pw."ItemCode", pw."WhsCode"
+        stmnt = """WITH product_stock AS (
+                        SELECT pw."ItemCode",
+                               p."InvntItem",
+                               pw."OnHand" - pw."IsCommited" AS "Available"
+                        FROM %(schema)s.OITW pw, %(schema)s.OITM p
+                        WHERE pw."ItemCode" = p."ItemCode" AND
+                              p."ItemType" = 'I' AND
+                              pw."WhsCode" = '00'
+                    ), product_capacity AS ( 
+                        select lml."Father",
+                               min(MAP(ps."InvntItem", 'Y', 
+                                       round(ps."Available"/lml."Quantity", 0, ROUND_DOWN))) AS "Capacity"
+                        from %(schema)s.ITT1 lml, product_stock ps
+                        WHERE lml."Code" = ps."ItemCode"
+                        GROUP BY lml."Father"
+                    ), product_merged AS (
+                        SELECT ps."ItemCode", ps."Available", 0 AS "IsKit"
+                        FROM product_stock ps
+                        UNION ALL
+                        SELECT pc."Father" AS "ItemCode", 
+                               (CASE WHEN pc."Capacity"<0 THEN 0 ELSE pc."Capacity" END)  AS "Available",
+                               1 AS "IsKit"
+                        FROM product_capacity pc
+                    )
+                    SELECT pm."ItemCode" as "reference", sum(pm."Available") AS "qty_available", 
+                           (CASE WHEN sum(pm."IsKit") > 0 THEN 'Y' ELSE 'N' END) AS "is_kit"
+                    FROM product_merged pm
+                    WHERE (:reference is null OR pm."ItemCode" = :reference)
+                    GROUP BY pm."ItemCode"
                 """ % dict(schema=schema)
 
         cursor.execute(stmnt, {'reference': reference})
