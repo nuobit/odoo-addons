@@ -25,3 +25,8 @@ class ProductProduct(models.Model):
                         _("Error! The Barcode %s already exists" %
                           record.barcode)
                     )
+
+    # replace current sql_constraint with a dummy one
+    _sql_constraints = [
+        ('barcode_uniq', 'unique(barcode, id)', "A barcode can only be assigned to one product !"),
+    ]
