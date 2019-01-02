@@ -5,13 +5,13 @@
 {
     'name': 'Product unique barcode',
     'summary': 'This module ensures that you enter a Unique Barcode for your Products',
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.2.0',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
     'license': 'AGPL-3',
     'depends': [
-        'product_variant_company_aware',
+        'product',
     ],
     'pre_init_hook': 'pre_init_hook_barcode_check',
     'installable': True,
