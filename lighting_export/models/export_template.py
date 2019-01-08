@@ -46,8 +46,8 @@ class LightingExportTemplate(models.Model):
 
             max_sequence = max(rec.field_ids.mapped('sequence') or [0])
             rec.field_ids = [(0, False, {'sequence': max_sequence + i,
-                                        'field_id': x.id
-                                        }) for i, x in enumerate(new_field_ids, 1)]
+                                         'field_id': x.id
+                                         }) for i, x in enumerate(new_field_ids, 1)]
 
     @api.multi
     def write(self, vals):
@@ -55,6 +55,18 @@ class LightingExportTemplate(models.Model):
         result = super().write(vals)
 
         return result
+
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = dict(default or {},
+                       name=_('%s (copy)') % self.name,
+                       image=False,
+                       image_medium=False,
+                       image_small=False,
+                       )
+
+        return super().copy(default)
 
 
 class LightingExportTemplateField(models.Model):
@@ -76,7 +88,7 @@ class LightingExportTemplateField(models.Model):
 
     _sql_constraints = [
         ('line_uniq', 'unique (field_id,template_id)', 'The template field must be unique per template!'),
-        ]
+    ]
 
 
 class LightingExportTemplateAttachment(models.Model):
@@ -94,4 +106,4 @@ class LightingExportTemplateAttachment(models.Model):
 
     _sql_constraints = [
         ('line_uniq', 'unique (type_id,template_id)', 'The template attachment must be unique per template!'),
-        ]
+    ]
