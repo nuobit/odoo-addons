@@ -71,12 +71,12 @@ class LightingAttachment(models.Model):
     def url_get(self, resolution=None):
         self.ensure_one()
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        pattern_l = ['%s/web/image/%i']
+        pattern_l = ['%s/web/image/h/%s']
         if resolution:
             pattern_l.append(resolution)
         pattern_l.append('%s')
 
-        return '/'.join(pattern_l) % (base_url, self.attachment_id.id, self.datas_fname)
+        return '/'.join(pattern_l) % (base_url, self.attachment_id.checksum, self.datas_fname)
 
 
 class LightingAttachmentType(models.Model):
