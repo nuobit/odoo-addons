@@ -1278,7 +1278,7 @@ msgstr "Eficiencia de la lámpara incluida"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_lamp_included
 msgid "Lamp included?"
-msgstr "Lámpara incluida?"
+msgstr "¿Lámpara incluida?"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_id
