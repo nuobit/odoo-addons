@@ -60,8 +60,20 @@ class ResPartnerImportMapper(Component):
 
     @only_create
     @mapping
-    def contact(self, record):
-        return {'customer': False, 'supplier': False}
+    def customer(self, record):
+        return {'customer': False}
+
+    @mapping
+    def employee_as_supplier(self, record):
+        return {'supplier': True}
+
+    @only_create
+    @mapping
+    def employee_as_supplier_account(self, record):
+        account_ids = self.env['account.account'].search([('code', '=', '465000000')])
+
+        return {'supplier': True,
+                'property_account_payable_id': account_ids.id}
 
     @mapping
     def type(self, record):
