@@ -6,6 +6,8 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from lxml import etree
 
+from collections import OrderedDict
+
 
 #### auxiliary functions
 def float2text(f, decs=2):
@@ -31,9 +33,13 @@ class LightingProduct(models.Model):
 
     @api.depends('type_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip', 'ip', 'ip2',
                  'dimmable_ids.name',
+                 'source_ids.sequence',
                  'source_ids.lampholder_id.code',
+                 'source_ids.line_ids.sequence',
                  'source_ids.line_ids.type_id.code',
+                 'source_ids.line_ids.type_id.is_integrated',
                  'source_ids.line_ids.type_id.description_text',
+                 'source_ids.line_ids.is_lamp_included',
                  'source_ids.line_ids.wattage',
                  'source_ids.line_ids.wattage_magnitude',
                  'source_ids.line_ids.luminous_flux1',
@@ -48,10 +54,10 @@ class LightingProduct(models.Model):
         self.ensure_one()
         data = []
         if self.type_ids:
-            data.append(','.join(self.type_ids.mapped('name')))
+            data.append(','.join(self.type_ids.sorted(lambda x: x.name).mapped('name')))
 
         if self.family_ids:
-            data.append(','.join(self.family_ids.mapped('name')))
+            data.append(','.join(self.family_ids.sorted(lambda x: x.sequence).mapped('name')))
 
         if self.catalog_ids:
             ip_catalogs = self.catalog_ids.filtered(lambda x: x.description_show_ip)
@@ -66,21 +72,24 @@ class LightingProduct(models.Model):
                     data.append(','.join(data_ip))
 
         if self.dimmable_ids:
-            data.append(','.join(self.dimmable_ids.mapped('name')))
+            data.append(','.join(self.dimmable_ids.sorted(lambda x: x.name).mapped('name')))
 
         data_sources = []
-        for source in self.source_ids:
-            type_d = {}
-            for line in source.line_ids:
+        for source in self.source_ids.sorted(lambda x: x.sequence):
+            data_source = []
+            if source.lampholder_id:
+                data_source.append(source.lampholder_id.code)
+
+            type_d = OrderedDict()
+            for line in source.line_ids.sorted(lambda x: (x.type_id.is_integrated, x.sequence)):
                 is_integrated = line.type_id.is_integrated
                 if is_integrated not in type_d:
                     type_d[is_integrated] = []
                 type_d[is_integrated].append(line)
 
+            data_lines = []
             for is_integrated, lines in type_d.items():
-                data_source = []
                 if is_integrated:
-                    data_lines = []
                     for line in lines:
                         data_line = []
                         data_line.append(line.type_id.description_text or line.type_id.code)
@@ -106,31 +115,62 @@ class LightingProduct(models.Model):
 
                         if data_line:
                             data_lines.append(' '.join(data_line))
-                    if data_lines:
-                        data_source.append(','.join(data_lines))
                 else:
-                    if source.lampholder_id:
-                        data_source.append(source.lampholder_id.code)
-
-                    wattage_d = {}
+                    lamp_d = OrderedDict()
                     for line in lines:
-                        if line.wattage > 0 and line.wattage_magnitude:
-                            if line.wattage_magnitude not in wattage_d:
-                                wattage_d[line.wattage_magnitude] = []
-                            wattage_d[line.wattage_magnitude].append(line)
+                        is_lamp_included = line.is_lamp_included
+                        if is_lamp_included not in lamp_d:
+                            lamp_d[is_lamp_included] = []
+                        lamp_d[is_lamp_included].append(line)
 
                     data_lines = []
-                    for lines in wattage_d.values():
-                        line_max = sorted(lines, key=lambda x: x.wattage, reverse=True)[0]
-                        wattage_total_display = line_max.prepare_wattage_str(mult=line_max.source_id.num or 1,
-                                                                             is_max_wattage=False)
-                        if wattage_total_display:
-                            data_lines.append(wattage_total_display)
-                    if data_lines:
-                        data_source.append(','.join(data_lines))
+                    for is_lamp_included, llines in lamp_d.items():
+                        if is_lamp_included:
+                            for line in llines:
+                                data_line = []
+                                data_line.append(line.type_id.description_text or line.type_id.code)
 
-                if data_source:
-                    data_sources.append(' '.join(data_source))
+                                wattage_total_display = line.prepare_wattage_str(mult=line.source_id.num or 1,
+                                                                                 is_max_wattage=False)
+                                if wattage_total_display:
+                                    data_line.append(wattage_total_display)
+
+                                data_lm = []
+                                for lmx in ('luminous_flux1', 'luminous_flux2'):
+                                    lm = getattr(line, lmx)
+                                    if lm:
+                                        data_lm.append('%i' % lm)
+                                if data_lm != []:
+                                    lm_str = '%sLm' % '-'.join(data_lm)
+                                    if (line.source_id.num or 1) > 1:
+                                        lm_str = '%ix%s' % (line.source_id.num, lm_str)
+                                    data_line.append(lm_str)
+
+                                if line.color_temperature:
+                                    data_line.append('%sK' % line.color_temperature)
+
+                                if data_line:
+                                    data_lines.append(' '.join(data_line))
+                        else:
+                            wattage_d = {}
+                            for line in llines:
+                                if line.wattage > 0 and line.wattage_magnitude:
+                                    if line.wattage_magnitude not in wattage_d:
+                                        wattage_d[line.wattage_magnitude] = []
+                                    wattage_d[line.wattage_magnitude].append(line)
+
+                            for wlines in wattage_d.values():
+                                line_max = sorted(wlines, key=lambda x: x.wattage, reverse=True)[0]
+                                wattage_total_display = line_max.prepare_wattage_str(mult=line_max.source_id.num or 1,
+                                                                                     is_max_wattage=False)
+                                if wattage_total_display:
+                                    data_lines.append(wattage_total_display)
+
+            if data_lines:
+                data_source.append(','.join(data_lines))
+
+            if data_source:
+                data_sources.append(' '.join(data_source))
 
         if data_sources:
             data.append('+'.join(data_sources))
@@ -749,7 +789,7 @@ class LightingProductFanWattage(models.Model):
 
     _sql_constraints = [
         ('wattage_product_uniq', 'unique (product_id, wattage)', 'There are duplicated wattages on the same product!'),
-        ]
+    ]
 
     @api.constrains('wattage')
     def _check_wattage(self):
@@ -816,8 +856,8 @@ class LightingProductSourceLine(models.Model):
             if rec.type_id.is_integrated and rec.wattage <= 0:
                 raise ValidationError(
                     "%s: The wattage on line %s must be greater than 0 if source type is integrated" % (
-                    rec.source_id.product_id.display_name,
-                    rec.type_id.display_name))
+                        rec.source_id.product_id.display_name,
+                        rec.type_id.display_name))
 
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
