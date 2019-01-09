@@ -761,40 +761,38 @@
             <form string="Product source line Form">
                 <sheet>
                     <group col="4">
-                        <group colspan="2">
-                            <field name="type_id"/>
-                        </group>
+                        <field name="type_id" colspan="2"/>
+                        <field name="is_integrated" readonly="1" colspan="1"/>
                     </group>
+
                     <group col="6">
                         <field name="wattage"/>
                         <field name="wattage_magnitude"
                                attrs="{'required': [('wattage', '>', 0)]}"/>
                         <field name="is_max_wattage"/>
+                        <field name="efficiency_ids" widget="many2many_tags" colspan="3"/>
                     </group>
-                    <group col="6">
+
+                    <group col="4" attrs="{'invisible': [('is_integrated', '=', True)]}">
                         <group colspan="2">
-                            <field name="color_temperature"/>
-                        </group>
-                    </group>
-                    <group col="4">
-                        <group colspan="3" col="4">
-                            <field name="luminous_flux1"/>
-                            <field name="luminous_flux2"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="efficiency_ids" widget="many2many_tags"/>
-                        </group>
-                    </group>
-                    <group attrs="{'invisible': [('is_integrated', '=', True)]}">
-                        <group>
-                            <field name="is_integrated" invisible="1"/>
                             <field name="is_lamp_included"/>
                             <field name="lamp_included_efficiency_ids" widget="many2many_tags"
                                    attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
                         </group>
                     </group>
+
+                    <group col="6"
+                           attrs="{'invisible': [('is_integrated', '=', False), ('is_lamp_included', '=', False)]}">
+                        <group colspan="2">
+                            <field name="color_temperature"/>
+                        </group>
+                        <group colspan="4"/>
+                        <group colspan="4" col="4">
+                            <field name="luminous_flux1" colspan="2"/>
+                            <field name="luminous_flux2" colspan="2"/>
+                        </group>
+                    </group>
+
                     <group string="LED specifications" attrs="{'invisible': [('is_led', '=', False)]}">
                         <field name="is_led" invisible="1"/>
                         <field name="color_consistency"/>
