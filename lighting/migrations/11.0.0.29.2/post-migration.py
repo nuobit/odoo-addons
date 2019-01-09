@@ -16,5 +16,6 @@ def migrate(env, version):
 
     # recalculate automatic descriptions
     _logger.info("Recalculating descriptions...")
-    env['lighting.product'].search([])._update_computed_description()
+    for p in env['lighting.product'].search([]):
+        p._update_computed_description()
     _logger.info("Descriptions successfully recalculated")
