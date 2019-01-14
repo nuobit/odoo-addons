@@ -74,20 +74,33 @@
                             </p>
                             <group>
                                 <div>
-                                    <label string="Import employees since"
-                                           class="oe_inline"/>
-                                    <field name="import_employees_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <h4>Import employees</h4>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <label string="Since" class="oe_inline"/>
+                                            <field name="import_employees_since_date" class="oe_inline"
+                                                   nolabel="1"/>
+                                        </li>
+                                        <li>
+                                            <label string="Default account payable" class="oe_inline"/>
+                                            <field name="import_employees_default_account_payable_id"
+                                                   class="oe_inline"/>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <button name="import_employees_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
                             </group>
                             <group>
                                 <div>
-                                    <label string="Import labour agreements since"
-                                           class="oe_inline"/>
-                                    <field name="import_labour_agreements_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <h4>Import labour agreements</h4>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <label string="Since" class="oe_inline"/>
+                                            <field name="import_labour_agreements_since_date" class="oe_inline"
+                                                   nolabel="1"/>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <button name="import_labour_agreements_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
