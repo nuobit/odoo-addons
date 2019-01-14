@@ -121,11 +121,11 @@ class SageImporter(AbstractComponent):
         internal_data = mapper.map_record(self.external_data)
         if binding:
             # if yes, we update it
-            binding.write(internal_data.values())
+            binding.with_context(force_company=self.backend_record.company_id.id).write(internal_data.values())
             _logger.debug('%d updated from Sage %s', binding, external_id)
         else:
             # or we create it
-            binding = self.model.create(internal_data.values(for_create=True))
+            binding = self.model.with_context(force_company=self.backend_record.company_id.id).create(internal_data.values(for_create=True))
             _logger.debug('%d created from Sage %s', binding, external_id)
 
         # finally, we bind both, so the next time we import
