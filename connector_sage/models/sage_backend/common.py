@@ -60,6 +60,11 @@ class Backend(models.Model):
     )
 
     import_employees_since_date = fields.Datetime('Import employees since')
+    import_employees_default_account_payable_id = fields.Many2one(
+        comodel_name='account.account',
+        domain="[('company_id', '=', company_id)]",
+        string='Defaul account payable')
+
     import_labour_agreements_since_date = fields.Datetime('Import labour agreements since')
 
     @api.multi
@@ -83,6 +88,9 @@ class Backend(models.Model):
     @api.multi
     def import_employees_since(self):
         for rec in self:
+            if not rec.import_employees_default_account_payable_id:
+                raise exceptions.UserError(_("There's no Account payable selected!"))
+
             since_date = rec.import_employees_since_date
             self.env['sage.hr.employee'].with_delay(
             ).import_employees_since(

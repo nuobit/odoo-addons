@@ -70,10 +70,7 @@ class ResPartnerImportMapper(Component):
     @only_create
     @mapping
     def employee_as_supplier_account(self, record):
-        account_ids = self.env['account.account'].search([('code', '=', '465000000')])
-
-        return {'supplier': True,
-                'property_account_payable_id': account_ids.id}
+        return {'property_account_payable_id': self.backend_record.import_employees_default_account_payable_id.id}
 
     @mapping
     def type(self, record):

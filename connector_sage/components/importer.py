@@ -107,6 +107,7 @@ class SageImporter(AbstractComponent):
         # find if the sage id already exists in odoo
         binding = binder.to_internal(external_id)
 
+
         # if not force and self._is_uptodate(binding):
         #     return _('Already up-to-date.')
 
@@ -118,7 +119,6 @@ class SageImporter(AbstractComponent):
         mapper = self.component(usage='import.mapper')
         # convert to odoo data
         internal_data = mapper.map_record(self.external_data)
-
         if binding:
             # if yes, we update it
             binding.write(internal_data.values())
