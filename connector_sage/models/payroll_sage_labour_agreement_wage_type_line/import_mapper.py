@@ -34,7 +34,7 @@ class PayrollSageLabourAgreementWageTypeLineImportMapper(Component):
         return {'backend_id': self.backend_record.id}
 
     @mapping
-    def positive(self, record):
+    def total_historical_record(self, record):
         mapping = {
             'TD1': 'accrural',
             'TR1': 'withholding',
