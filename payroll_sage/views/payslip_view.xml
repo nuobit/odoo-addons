@@ -8,11 +8,20 @@
         <field name="model">payroll.sage.payslip</field>
         <field name="arch" type="xml">
             <form string="Payslip">
+                <header>
+                    <button name="action_paysplip_validate" type="object" states="draft" string="Validate"
+                            class="oe_highlight"/>
+                    <button name="action_paysplip_post" type="object" states="validated" string="Post"
+                            class="oe_highlight"/>
+                    <button name="action_paysplip_set_to_draft" type="object" states="validated" string="Set to draft"/>
+                    <button name="action_paysplip_unpost" type="object" states="posted" string="Unpost"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <group col="4">
-                    <field name="name"/>
-                    <field name="date"/>
+                    <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
-                    <field name="labour_agreement_id"/>
+                    <field name="labour_agreement_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     <field name="company_id"/>
                 </group>
                 <group>
@@ -20,7 +29,7 @@
                 </group>
                 <notebook>
                     <page string="Lines">
-                        <field name="payslip_line_ids" nolabel="1">
+                        <field name="payslip_line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
                             <tree editable="bottom">
                                 <field name="name"/>
                                 <field name="wage_type_line_id"/>
