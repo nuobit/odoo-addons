@@ -4,7 +4,7 @@
 
 {
     'name': "Sage Payroll",
-    'version': '11.0.0.1.2',
+    'version': '11.0.0.2.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -17,6 +17,7 @@
         'security/ir.model.access.csv',
 
         'views/labour_agreement_view.xml',
+        'views/payslip_view.xml',
 
         'views/menu.xml',
         ],
