@@ -7,7 +7,7 @@
     'version': '11.0.0.3.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
-    'category': 'Custom',
+    'category': 'Human Resources',
     'website': 'https://www.nuobit.com',
     'depends': [
         'account',
