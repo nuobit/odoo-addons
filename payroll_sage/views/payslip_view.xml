@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="payslip__view_form" model="ir.ui.view">
+        <field name="name">payslip.form</field>
+        <field name="model">payroll.sage.payslip</field>
+        <field name="arch" type="xml">
+            <form string="Payslip">
+                <group col="4">
+                    <field name="name"/>
+                    <field name="date"/>
+
+                    <field name="labour_agreement_id"/>
+                    <field name="company_id"/>
+                </group>
+                <group>
+                    <field name="note"/>
+                </group>
+                <notebook>
+                    <page string="Lines">
+                        <field name="payslip_line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="wage_type_line_id"/>
+                                <field name="employee_id"/>
+                                <field name="amount"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="payslip_view_tree" model="ir.ui.view">
+        <field name="name">payslip.tree</field>
+        <field name="model">payroll.sage.payslip</field>
+        <field name="arch" type="xml">
+            <tree string="Payslip">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="labour_agreement_id"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="payslip_action" model="ir.actions.act_window">
+        <field name="name">Payslip</field>
+        <field name="res_model">payroll.sage.payslip</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
