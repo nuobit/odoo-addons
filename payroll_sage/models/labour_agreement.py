@@ -28,6 +28,15 @@ class LabourAgreement(models.Model):
                          'The code and Registration date must be unique for the same company!'),
                         ]
 
+    @api.multi
+    def name_get(self):
+        result = []
+        for rec in self:
+            name = "%s - %s" % (rec.code, rec.name)
+            result.append((rec.id, name))
+
+        return result
+
 
 class LabourAgreementWageTypeLine(models.Model):
     _name = 'payroll.sage.labour.agreement.wage.type.line'
@@ -55,3 +64,11 @@ class LabourAgreementWageTypeLine(models.Model):
 
     labour_agreement_id = fields.Many2one('payroll.sage.labour.agreement', string='Labour agreeemnt')
 
+    @api.multi
+    def name_get(self):
+        result = []
+        for rec in self:
+            name = "%03d %s" % (rec.code, rec.name)
+            result.append((rec.id, name))
+
+        return result
