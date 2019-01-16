@@ -25,6 +25,28 @@ class Payslip(models.Model):
     payslip_line_ids = fields.One2many('payroll.sage.payslip.line',
                                        'payslip_id', string='Wage types', copy=True)
 
+    state = fields.Selection([
+        ('draft', _('Draft')),
+        ('validated', _('Validated')),
+        ('posted', _('Posted')),
+    ], string='Status', default='draft', readonly=True, required=True, copy=False)
+
+    @api.multi
+    def action_paysplip_validate(self):
+        self.write({'state': 'validated'})
+
+    @api.multi
+    def action_paysplip_set_to_draft(self):
+        self.write({'state': 'draft'})
+
+    @api.multi
+    def action_paysplip_post(self):
+        self.write({'state': 'posted'})
+
+    @api.multi
+    def action_paysplip_unpost(self):
+        self.write({'state': 'validated'})
+
 
 class PayslipLine(models.Model):
     _name = 'payroll.sage.payslip.line'
