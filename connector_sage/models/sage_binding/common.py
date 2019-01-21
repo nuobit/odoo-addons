@@ -37,17 +37,17 @@ class SageBinding(models.AbstractModel):
             importer = work.component(usage='record.importer')
             return importer.run(external_id)
 
-    @api.multi
-    def resync(self):
-        for record in self:
-            with record.backend_id.work_on(record._name) as work:
-                binder = work.component(usage='binder')
-                external_id = binder.to_external(self)
-
-            func = record.import_record
-            if record.env.context.get('connector_delay'):
-                func = record.import_record.delay
-
-            func(record.backend_id, external_id)
-
-        return True
+    # @api.multi
+    # def resync(self):
+    #     for record in self:
+    #         with record.backend_id.work_on(record._name) as work:
+    #             binder = work.component(usage='binder')
+    #             external_id = binder.to_external(self)
+    #
+    #         func = record.import_record
+    #         if record.env.context.get('connector_delay'):
+    #             func = record.import_record.delay
+    #
+    #         func(record.backend_id, external_id)
+    #
+    #     return True

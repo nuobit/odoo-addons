@@ -105,6 +105,20 @@
                                 <button name="import_labour_agreements_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
                             </group>
+                            <group>
+                                <div>
+                                    <h4>Import Payslip lines</h4>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <label string="Payslip" class="oe_inline"/>
+                                            <field name="import_payslip_id" class="oe_inline"
+                                                   nolabel="1"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button name="import_payslip_lines" type="object"
+                                        class="oe_highlight" string="Import in background"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>

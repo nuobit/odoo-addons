@@ -67,6 +67,8 @@ class SageBackend(models.Model):
 
     import_labour_agreements_since_date = fields.Datetime('Import labour agreements since')
 
+    import_payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip')
+
     _sql_constraints = [
         ('company_uniq', 'unique(company_id)', _('Already exists another backend associated to the same company!')),
     ]
@@ -110,6 +112,16 @@ class SageBackend(models.Model):
             ).import_labour_agreements_since(
                 backend_record=rec, since_date=since_date)
 
+        return True
+
+    @api.multi
+    def import_payslip_lines(self):
+        for rec in self:
+            if not rec.import_payslip_id:
+                raise exceptions.UserError(_("There's no Payslip selected!"))
+            payslip_id = rec.import_payslip_id
+            self.env['sage.payroll.sage.payslip.line']. \
+                import_payslip_lines(payslip_id, rec)
         return True
 
     @api.model
