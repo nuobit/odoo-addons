@@ -67,6 +67,10 @@ class Backend(models.Model):
 
     import_labour_agreements_since_date = fields.Datetime('Import labour agreements since')
 
+    _sql_constraints = [
+        ('company_uniq', 'unique(company_id)', _('Already exists another backend associated to the same company!')),
+    ]
+
     @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
