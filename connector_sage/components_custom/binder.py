@@ -16,7 +16,7 @@ from odoo import fields, models, tools
 from odoo.addons.component.core import AbstractComponent
 
 
-class BinderComposite(AbstractComponent):
+class SageBinderComposite(AbstractComponent):
     """ The same as Binder but allowing composite external keys
 
     """
