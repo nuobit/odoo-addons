@@ -16,7 +16,7 @@ class PayrollSageLabourAgreementBinder(Component):
     fields belonging to the Sage instance.
     """
     _name = 'sage.payroll.sage.labour.agreement.binder'
-    _inherit = 'base.binder.composite'
+    _inherit = 'base.binder'
     _external_field = ['sage_codigo_empresa', 'sage_codigo_convenio', 'sage_fecha_registro_cv']
 
     _apply_on = 'sage.payroll.sage.labour.agreement'

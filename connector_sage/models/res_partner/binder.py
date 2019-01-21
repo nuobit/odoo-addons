@@ -16,7 +16,7 @@ class ResPartnerBinder(Component):
     fields belonging to the Sage instance.
     """
     _name = 'sage.res.partner.binder'
-    _inherit = 'base.binder.composite'
+    _inherit = 'base.binder'
     _external_field = ['sage_codigo_empresa', 'sage_codigo_empleado']
 
     _apply_on = 'sage.res.partner'

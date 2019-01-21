@@ -4,7 +4,7 @@
 
 {
     'name': "Sage-Odoo connector",
-    'version': '11.0.0.2.4',
+    'version': '11.0.0.2.5',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',

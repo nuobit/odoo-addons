@@ -16,7 +16,7 @@ class HrEmployeeBinder(Component):
     fields belonging to the Sage instance.
     """
     _name = 'sage.hr.employee.binder'
-    _inherit = 'base.binder.composite'
+    _inherit = 'base.binder'
     _external_field = ['sage_codigo_empresa', 'sage_codigo_empleado']
 
     _apply_on = 'sage.hr.employee'
