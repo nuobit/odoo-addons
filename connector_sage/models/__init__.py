@@ -12,4 +12,5 @@ from . import hr_employee
 
 from . import payroll_sage_labour_agreement
 from . import payroll_sage_labour_agreement_wage_type_line
+from . import payroll_sage_payslip_line
 
