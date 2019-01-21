@@ -12,7 +12,7 @@ from ...components.adapter import api_handle_errors
 _logger = logging.getLogger(__name__)
 
 
-class Backend(models.Model):
+class SageBackend(models.Model):
     _name = 'sage.backend'
     _inherit = 'connector.backend'
 
@@ -121,7 +121,7 @@ class Backend(models.Model):
         self.search(domain or []).import_labour_agreements_since()
 
 
-class NoModelAdapter(Component):
+class SageNoModelAdapter(Component):
     """ Used to test the connection """
     _name = 'sage.adapter.test'
     _inherit = 'sage.adapter'

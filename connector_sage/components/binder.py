@@ -5,7 +5,7 @@
 from odoo.addons.component.core import Component
 
 
-class ModelBinder(Component):
+class SageModelBinder(Component):
     """ Bind records and give odoo/sage ids correspondence
 
     Binding models are models called ``sage.{normal_model}``,
