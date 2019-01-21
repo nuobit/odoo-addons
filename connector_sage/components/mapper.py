@@ -9,7 +9,3 @@ from odoo.addons.connector.components.mapper import mapping
 class SageImportMapper(AbstractComponent):
     _name = 'sage.import.mapper'
     _inherit = ['base.import.mapper', 'base.sage.connector']
-    _usage = 'import.mapper'
-
-
-
