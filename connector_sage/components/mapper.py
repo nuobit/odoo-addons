@@ -6,7 +6,7 @@ from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.components.mapper import mapping
 
 
-class ImportMapper(AbstractComponent):
+class SageImportMapper(AbstractComponent):
     _name = 'sage.import.mapper'
     _inherit = ['base.import.mapper', 'base.sage.connector']
     _usage = 'import.mapper'

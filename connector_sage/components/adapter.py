@@ -61,7 +61,7 @@ def api_handle_errors(message=''):
         )
 
 
-class CRUDAdapter(AbstractComponent):
+class SageCRUDAdapter(AbstractComponent):
     """ External Records Adapter for Sage """
     _name = 'sage.crud.adapter'
     _inherit = ['base.backend.adapter', 'base.sage.connector']
