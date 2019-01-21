@@ -134,7 +134,7 @@ class SageImporter(AbstractComponent):
         binder.bind(external_id, binding)
 
 
-class BatchImporter(AbstractComponent):
+class SageBatchImporter(AbstractComponent):
     """ The role of a BatchImporter is to search for a list of
     items to import, then it can either import them directly or delay
     the import of each item separately.
@@ -157,7 +157,7 @@ class BatchImporter(AbstractComponent):
         raise NotImplementedError
 
 
-class DirectBatchImporter(AbstractComponent):
+class SageDirectBatchImporter(AbstractComponent):
     """ Import the records directly, without delaying the jobs. """
 
     _name = 'sage.direct.batch.importer'
@@ -168,7 +168,7 @@ class DirectBatchImporter(AbstractComponent):
         self.model.import_record(self.backend_record, external_id)
 
 
-class DelayedBatchImporter(AbstractComponent):
+class SageDelayedBatchImporter(AbstractComponent):
     """ Delay import of the records """
 
     _name = 'sage.delayed.batch.importer'
