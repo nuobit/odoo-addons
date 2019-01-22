@@ -16,7 +16,7 @@ class ResPartnerBinder(Component):
     fields belonging to the Sage instance.
     """
     _name = 'sage.res.partner.binder'
-    _inherit = 'base.binder'
+    _inherit = 'sage.binder'
 
     _apply_on = 'sage.res.partner'
 
