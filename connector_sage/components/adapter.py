@@ -2,7 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo.addons.component.core import AbstractComponent
+from odoo.addons.component.core import AbstractComponent, Component
 
 from odoo import exceptions, _
 from odoo.addons.connector.exception import NetworkRetryableError
@@ -253,3 +253,11 @@ class GenericAdapter(AbstractComponent):
         return res[0][0]
 
 
+class SageNoModelAdapter(Component):
+    """ Used to test the connection """
+    _name = 'sage.adapter.test'
+    _inherit = 'sage.adapter'
+    _apply_on = 'sage.backend'
+
+    _sql = "select @@version"
+    _id = None
