@@ -16,7 +16,7 @@ class PayslipLineBinder(Component):
     fields belonging to the Sage instance.
     """
     _name = 'sage.payroll.sage.payslip.line.binder'
-    _inherit = 'base.binder.composite'
+    _inherit = 'sage.binder'
     _external_field = ['CodigoEmpresa', 'Año', 'MesD', 'CodigoEmpleado', 'CodigoConceptoNom',
                        'CodigoConvenio', 'FechaRegistroCV']
 
