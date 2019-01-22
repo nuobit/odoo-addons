@@ -9,7 +9,7 @@ from odoo.addons.queue_job.job import job
 
 
 class HrEmployeeAdapter(Component):
-    _name = 'sage.hr.employee'
+    _name = 'sage.hr.employee.adapter'
     _inherit = 'sage.adapter'
     _apply_on = 'sage.hr.employee'
 
