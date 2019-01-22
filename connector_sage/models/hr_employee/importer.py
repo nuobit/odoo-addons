@@ -16,7 +16,7 @@ class HrEmployeeBatchImporter(Component):
 
     For every partner in the list, a delayed job is created.
     """
-    _name = 'sage.hr.employee.batch.importer'
+    _name = 'sage.hr.employee.delayed.batch.importer'
     _inherit = 'sage.delayed.batch.importer'
     _apply_on = 'sage.hr.employee'
 
