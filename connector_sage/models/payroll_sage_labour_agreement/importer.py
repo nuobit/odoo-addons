@@ -16,7 +16,7 @@ class PayrollSageLabourAgreementBatchImporter(Component):
 
     For every payroll structure in the list, a delayed job is created.
     """
-    _name = 'sage.payroll.sage.labour.agreement.batch.importer'
+    _name = 'sage.payroll.sage.labour.agreement.delayed.batch.importer'
     _inherit = 'sage.delayed.batch.importer'
     _apply_on = 'sage.payroll.sage.labour.agreement'
 
