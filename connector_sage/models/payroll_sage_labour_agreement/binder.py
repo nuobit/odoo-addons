@@ -16,7 +16,7 @@ class PayrollSageLabourAgreementBinder(Component):
     fields belonging to the Sage instance.
     """
     _name = 'sage.payroll.sage.labour.agreement.binder'
-    _inherit = 'base.binder'
+    _inherit = 'sage.binder'
 
     _apply_on = 'sage.payroll.sage.labour.agreement'
 
