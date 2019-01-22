@@ -1,10 +1,11 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-"access_sage_res_partner","sage_res_partner connector manager","model_sage_res_partner","connector.group_connector_manager",1,1,1,1
-"access_sage_res_partner_group_user","sage_res_partner group_user","model_sage_res_partner","base.group_user",1,0,0,0
-"access_sage_hr_employee","sage_hr_employee connector manager","model_sage_hr_employee","connector.group_connector_manager",1,1,1,1
-"access_sage_hr_employee_group_user","sage_hr_employee group_user","model_sage_hr_employee","base.group_user",1,0,0,0
-"access_sage_payroll_sage_labour_agreement","sage_payroll_sage_labour_agreement connector manager","model_sage_payroll_sage_labour_agreement","connector.group_connector_manager",1,1,1,1
-"access_sage_payroll_sage_labour_agreement_group_user","sage_payroll_sage_labour_agreement group_user","model_sage_payroll_sage_labour_agreement","base.group_user",1,0,0,0
-"access_sage_payroll_sage_labour_agreement_wage_type_line","sage_payroll_sage_labour_agreement_wage_type_line connector manager","model_sage_payroll_sage_labour_agreement_wage_type_line","connector.group_connector_manager",1,1,1,1
-"access_sage_payroll_sage_labour_agreement_wage_type_line_group_user","sage_payroll_sage_labour_agreement_wage_type_line group_user","model_sage_payroll_sage_labour_agreement_wage_type_line","base.group_user",1,0,0,0
-"access_sage_backend","sage_backend connector manager","model_sage_backend","connector.group_connector_manager",1,1,1,1
+"access_sage_backend_manager","sage_backend connector manager","model_sage_backend","connector.group_connector_manager",1,1,1,1
+"access_sage_res_partner_manager","sage_res_partner connector_manager","model_sage_res_partner","connector.group_connector_manager",1,1,1,1
+"access_sage_res_partner_user","sage_res_partner user","model_sage_res_partner","base.group_user",1,0,0,0
+"access_sage_hr_employee_manager","sage_hr_employee connector_manager","model_sage_hr_employee","connector.group_connector_manager",1,1,1,1
+"access_sage_hr_employee_user","sage_hr_employee user","model_sage_hr_employee","base.group_user",1,0,0,0
+"access_sage_payroll_sage_labour_agreement_manager","sage_payroll_sage_labour_agreement connector_manager","model_sage_payroll_sage_labour_agreement","connector.group_connector_manager",1,1,1,1
+"access_sage_payroll_sage_labour_agreement_user","sage_payroll_sage_labour_agreement user","model_sage_payroll_sage_labour_agreement","base.group_user",1,0,0,0
+"access_sage_payroll_sage_labour_agreement_wage_type_line_manager","sage_payroll_sage_labour_agreement_wage_type_line connector_manager","model_sage_payroll_sage_labour_agreement_wage_type_line","connector.group_connector_manager",1,1,1,1
+"access_sage_payroll_sage_labour_agreement_wage_type_line_user","sage_payroll_sage_labour_agreement_wage_type_line user","model_sage_payroll_sage_labour_agreement_wage_type_line","base.group_user",1,0,0,0
+
