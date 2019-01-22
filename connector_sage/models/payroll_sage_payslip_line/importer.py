@@ -16,7 +16,7 @@ class PayslipLineBatchImporter(Component):
 
     For every partner in the list, a delayed job is created.
     """
-    _name = 'sage.payroll.sage.payslip.line.batch.importer'
+    _name = 'sage.payroll.sage.payslip.line.delayed.batch.importer'
     _inherit = 'sage.delayed.batch.importer'
     _apply_on = 'sage.payroll.sage.payslip.line'
 
