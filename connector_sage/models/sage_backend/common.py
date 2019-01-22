@@ -119,13 +119,3 @@ class SageBackend(models.Model):
     @api.model
     def _scheduler_import_labour_agreements(self, domain=None):
         self.search(domain or []).import_labour_agreements_since()
-
-
-class SageNoModelAdapter(Component):
-    """ Used to test the connection """
-    _name = 'sage.adapter.test'
-    _inherit = 'sage.adapter'
-    _apply_on = 'sage.backend'
-
-    _sql = "select @@version"
-    _id = None
