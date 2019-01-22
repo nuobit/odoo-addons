@@ -16,7 +16,7 @@ class ResPartnerBatchImporter(Component):
 
     For every partner in the list, a delayed job is created.
     """
-    _name = 'sage.res.partner.batch.importer'
+    _name = 'sage.res.partner.delayed.batch.importer'
     _inherit = 'sage.delayed.batch.importer'
     _apply_on = 'sage.res.partner'
 
