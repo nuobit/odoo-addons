@@ -21,6 +21,7 @@ class PayslipLineAdapter(Component):
                      sum(n.importenom) as Importe
               from Historico n, ConvenioConcepto c
               where n.CodigoEmpresa in (1, 2, 4, 5) AND
+                    n.Año >= 2018 AND
                     n.CodigoConceptoNom = c.CodigoConceptoNom AND
                     n.CodigoEmpresa = c.CodigoEmpresa
               group by n.CodigoEmpresa, n.CodigoEmpleado, n.IdEmpleado,
