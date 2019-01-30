@@ -20,6 +20,8 @@ class Payslip(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
                                  copy=False, default=lambda self: self.env['res.company']._company_default_get())
 
+    ss_cost = fields.Float('S.S. cost')
+
     note = fields.Text(string='Note')
 
     payslip_line_ids = fields.One2many('payroll.sage.payslip.line',
