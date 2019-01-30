@@ -23,6 +23,7 @@
 
                     <field name="labour_agreement_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     <field name="company_id"/>
+                    <field name="ss_cost"/>
                 </group>
                 <group>
                     <field name="note"/>
