@@ -22,8 +22,15 @@
                     <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
                     <field name="labour_agreement_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
                     <field name="company_id"/>
-                    <field name="ss_cost"/>
+                </group>
+                <group col="4">
+                    <field name="type" colspan="2" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="ss_cost" colspan="2"
+                           attrs="{'invisible': [('type', '!=', 'payroll')], 'required': [('type', '=', 'payroll')], 'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="payment_date" colspan="2"
+                           attrs="{'invisible': [('type', '!=', 'transfer')], 'required': [('type', '=', 'transfer')], 'readonly': [('state', '!=', 'draft')]}"/>
                 </group>
                 <group>
                     <field name="note"/>
