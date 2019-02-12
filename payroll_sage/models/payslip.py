@@ -20,7 +20,11 @@ class Payslip(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
                                  copy=False, default=lambda self: self.env['res.company']._company_default_get())
 
+    type = fields.Selection([('transfer', _('Transfer')), ('payroll', _('Payroll'))], string='Type', required=True)
+
     ss_cost = fields.Float('S.S. cost')
+
+    payment_date = fields.Date('Payment date')
 
     note = fields.Text(string='Note')
 
