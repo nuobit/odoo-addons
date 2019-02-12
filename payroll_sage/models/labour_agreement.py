@@ -53,12 +53,10 @@ class LabourAgreementWageTypeLine(models.Model):
         string='Totalize in historical record',
         selection=[('accrural', 'Devengo'), ('withholding', 'Retencion'), ('no', _('No'))])
 
-    default_credit_account_id = fields.Many2one('account.account', string='Default Credit Account',
-                                                domain=[('deprecated', '=', False)],
-                                                help="It acts as a default account for credit amount")
-    default_debit_account_id = fields.Many2one('account.account', string='Default Debit Account',
-                                               domain=[('deprecated', '=', False)],
-                                               help="It acts as a default account for debit amount")
+    wage_tag_ids = fields.Many2many(comodel_name='payroll.sage.wage.tag',
+                                    relation='paytroll_sage_labour_agreement_wage_type_line_tag',
+                                    column1='wage_type_line_id', column2='wage_tag_id',
+                                    string='Tags')
 
     note = fields.Text(string='Description')
 
