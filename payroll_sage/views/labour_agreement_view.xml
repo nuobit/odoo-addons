@@ -25,8 +25,7 @@
                                 <field name="name"/>
                                 <field name="positive"/>
                                 <field name="total_historical_record"/>
-                                <field name="default_debit_account_id"/>
-                                <field name="default_credit_account_id"/>
+                                <field name="wage_tag_ids" widget="many2many_tags"/>
                             </tree>
                         </field>
                     </page>
