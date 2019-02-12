@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="wage_tag_view_form" model="ir.ui.view">
+        <field name="name">wage.tag.form</field>
+        <field name="model">payroll.sage.wage.tag</field>
+        <field name="arch" type="xml">
+            <form string="Wage Tag">
+                <header/>
+                <group col="4">
+                    <field name="type"/>
+                    <field name="account_id"/>
+
+                    <field name="credit_debit"/>
+                    <field name="aggregate"/>
+                    <field name="negative_withholding"/>
+                    <field name="description"/>
+                    <field name="company_id"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="wage_tag_view_tree" model="ir.ui.view">
+        <field name="name">wage.tag.tree</field>
+        <field name="model">payroll.sage.wage.tag</field>
+        <field name="arch" type="xml">
+            <tree string="Wage Tag">
+                <field name="type"/>
+                <field name="account_id"/>
+                <field name="credit_debit"/>
+                <field name="description"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="wage_tag_action" model="ir.actions.act_window">
+        <field name="name">Wage Tag</field>
+        <field name="res_model">payroll.sage.wage.tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
