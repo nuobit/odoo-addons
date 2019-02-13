@@ -30,7 +30,7 @@ class PayrollSageLabourAgreementWageTypeLineBinding(models.Model):
 
     backend_id = fields.Many2one(
         related='sage_labour_agreement_id.backend_id',
-        string='Sage Backend',
+        string='Backend',
         readonly=True,
         store=True,
         # override 'sage.binding', can't be INSERTed if True:
