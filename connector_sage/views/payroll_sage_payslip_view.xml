@@ -28,14 +28,13 @@
         <field name="name">sage.payslip.line.payroll.form</field>
         <field name="model">sage.payroll.sage.payslip.line.payroll</field>
         <field name="arch" type="xml">
-            <form string="Sage Payslip Line">
+            <form string="Sage Payslip Line Payroll">
                 <group>
                     <field name="backend_id"/>
                     <field name="odoo_id" readonly="True"/>
                     <field name="sage_codigo_empresa" readonly="True"/>
                     <field name="sage_codigo_convenio" readonly="True"/>
                     <field name="sage_fecha_registro_cv" readonly="True"/>
-
                     <field name="sage_ano" readonly="True"/>
                     <field name="sage_mesd" readonly="True"/>
                     <field name="sage_codigo_empleado" readonly="True"/>
@@ -50,7 +49,7 @@
         <field name="name">sage.payslip.line.payroll.tree</field>
         <field name="model">sage.payroll.sage.payslip.line.payroll</field>
         <field name="arch" type="xml">
-            <tree string="Sage Payslip Line">
+            <tree string="Sage Payslip Line Payroll">
                 <field name="backend_id"/>
                 <field name="odoo_id"/>
                 <field name="sage_codigo_empresa" readonly="True"/>
@@ -70,26 +69,46 @@
     <record id="sage_payslip_line_transfer_view_form" model="ir.ui.view">
         <field name="name">sage.payslip.line.transfer.form</field>
         <field name="model">sage.payroll.sage.payslip.line.transfer</field>
-        <field name="inherit_id" ref="connector_sage.sage_payslip_line_payroll_view_form"/>
-        <field name="groups_id"
-               eval="[(4, ref('connector.group_connector_manager'))]"/>
         <field name="arch" type="xml">
-            <field name="sage_codigo_concepto_nom" position="after">
-                <field name="sage_fecha_cobro" readonly="True"/>
-            </field>
+            <form string="Sage Payslip Line Transfer">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="sage_codigo_empresa" readonly="True"/>
+                    <field name="sage_codigo_convenio" readonly="True"/>
+                    <field name="sage_fecha_registro_cv" readonly="True"/>
+                    <field name="sage_ano" readonly="True"/>
+                    <field name="sage_mesd" readonly="True"/>
+                    <field name="sage_codigo_empleado" readonly="True"/>
+                    <field name="sage_codigo_concepto_nom" readonly="True"/>
+
+                    <field name="sage_fecha_cobro" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
         </field>
     </record>
 
     <record id="sage_payslip_line_transfer_view_tree" model="ir.ui.view">
         <field name="name">sage.payslip.line.transfer.tree</field>
         <field name="model">sage.payroll.sage.payslip.line.transfer</field>
-        <field name="inherit_id" ref="connector_sage.sage_payslip_line_payroll_view_tree"/>
-        <field name="groups_id"
-               eval="[(4, ref('connector.group_connector_manager'))]"/>
         <field name="arch" type="xml">
-            <field name="sage_codigo_concepto_nom" position="after">
+            <tree string="Sage Payslip Line Transfer">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="sage_codigo_empresa" readonly="True"/>
+                <field name="sage_codigo_convenio" readonly="True"/>
+                <field name="sage_fecha_registro_cv" readonly="True"/>
+                <field name="sage_ano" readonly="True"/>
+                <field name="sage_mesd" readonly="True"/>
+                <field name="sage_codigo_empleado" readonly="True"/>
+                <field name="sage_codigo_concepto_nom" readonly="True"/>
+
                 <field name="sage_fecha_cobro" readonly="True"/>
-            </field>
+                <field name="sync_date"/>
+                <button name="resync" type="object"
+                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+            </tree>
         </field>
     </record>
 </odoo>
