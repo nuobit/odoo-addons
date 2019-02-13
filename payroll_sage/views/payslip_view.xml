@@ -78,4 +78,33 @@
         <field name="res_model">payroll.sage.payslip</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <record id="payslip_line_view_form" model="ir.ui.view">
+        <field name="name">payslip.line.form</field>
+        <field name="model">payroll.sage.payslip.line</field>
+        <field name="arch" type="xml">
+            <form string="Payslip Line">
+                <group>
+                    <field name="wage_type_line_id"/>
+                    <field name="employee_id"/>
+                    <field name="name"/>
+                    <field name="amount"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="payslip_check_view_form" model="ir.ui.view">
+        <field name="name">payslip.check.form</field>
+        <field name="model">payroll.sage.payslip.check</field>
+        <field name="arch" type="xml">
+            <form string="Payslip Check">
+                <group>
+                    <field name="employee_id"/>
+                    <field name="name"/>
+                    <field name="amount"/>
+                </group>
+            </form>
+        </field>
+    </record>
 </odoo>
