@@ -31,6 +31,9 @@ class Payslip(models.Model):
     payslip_line_ids = fields.One2many('payroll.sage.payslip.line',
                                        'payslip_id', string='Wage types', copy=True)
 
+    payslip_check_ids = fields.One2many('payroll.sage.payslip.check',
+                                        'payslip_id', string='Checks', copy=True)
+
     state = fields.Selection([
         ('draft', _('Draft')),
         ('validated', _('Validated')),
@@ -66,4 +69,17 @@ class PayslipLine(models.Model):
 
     amount = fields.Float('Amount', required=True)
 
-    payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip')
+    payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip', required=True)
+
+
+class PayslipCheck(models.Model):
+    _name = 'payroll.sage.payslip.check'
+    _description = 'Payslip check'
+
+    name = fields.Char('Description')
+
+    employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
+
+    amount = fields.Float('Amount', required=True)
+
+    payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip', required=True)
