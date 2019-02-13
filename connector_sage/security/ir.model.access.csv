@@ -8,5 +8,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_sage_payroll_sage_labour_agreement_user","sage_payroll_sage_labour_agreement user","model_sage_payroll_sage_labour_agreement","base.group_user",1,0,0,0
 "access_sage_payroll_sage_labour_agreement_wage_type_line_manager","sage_payroll_sage_labour_agreement_wage_type_line connector_manager","model_sage_payroll_sage_labour_agreement_wage_type_line","connector.group_connector_manager",1,1,1,1
 "access_sage_payroll_sage_labour_agreement_wage_type_line_user","sage_payroll_sage_labour_agreement_wage_type_line user","model_sage_payroll_sage_labour_agreement_wage_type_line","base.group_user",1,0,0,0
-"access_sage_payroll_sage_payslip_line_manager","sage_payroll_sage_payslip_line connector manager","model_sage_payroll_sage_payslip_line","connector.group_connector_manager",1,1,1,1
-"access_sage_payroll_sage_payslip_line_user","sage_payroll_sage_payslip_line connector user","model_sage_payroll_sage_payslip_line","base.group_user",1,0,0,0
+"access_sage_payroll_sage_payslip_line_payroll_manager","sage_payroll_sage_payslip_line_payroll connector manager","model_sage_payroll_sage_payslip_line_payroll","connector.group_connector_manager",1,1,1,1
+"access_sage_payroll_sage_payslip_line_payrolluser","sage_payroll_sage_payslip_line_payroll connector user","model_sage_payroll_sage_payslip_line_payroll","base.group_user",1,0,0,0
+"access_sage_payroll_sage_payslip_line_transfer_manager","sage_payroll_sage_payslip_line_transfer connector manager","model_sage_payroll_sage_payslip_line_transfer","connector.group_connector_manager",1,1,1,1
+"access_sage_payroll_sage_payslip_line_transfer_user","sage_payroll_sage_payslip_line_transfer connector user","model_sage_payroll_sage_payslip_line_transfer","base.group_user",1,0,0,0

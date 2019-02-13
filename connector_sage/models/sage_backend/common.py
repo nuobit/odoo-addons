@@ -120,8 +120,14 @@ class SageBackend(models.Model):
             if not rec.import_payslip_id:
                 raise exceptions.UserError(_("There's no Payslip selected!"))
             payslip_id = rec.import_payslip_id
-            self.env['sage.payroll.sage.payslip.line'].with_delay(
-            ).import_payslip_lines(payslip_id, rec)
+            if payslip_id.type == 'transfer':
+                model = 'sage.payroll.sage.payslip.line.transfer'
+            elif payslip_id.type == 'payroll':
+                model = 'sage.payroll.sage.payslip.line.payroll'
+            else:
+                raise exceptions.UserError(_("Unexpected payslip type %s!") % payslip_id.type)
+
+            self.env[model].with_delay().import_payslip_lines(payslip_id, rec)
         return True
 
     @api.model
