@@ -11,7 +11,7 @@ from odoo.addons.connector.components.mapper import (
     mapping, external_to_m2o, only_create)
 
 
-class PayslipLineBatchImporter(Component):
+class PayslipLineDelayedBatchImporter(Component):
     """ Import the Sage Employees.
 
     For every partner in the list, a delayed job is created.
@@ -19,6 +19,12 @@ class PayslipLineBatchImporter(Component):
     _name = 'sage.payroll.sage.payslip.line.delayed.batch.importer'
     _inherit = 'sage.delayed.batch.importer'
     _apply_on = 'sage.payroll.sage.payslip.line'
+
+    def run(self, filters=None):
+        """ Run the synchronization """
+        record_ids = self.backend_adapter.search(filters)
+        for record_id in record_ids[1:2]:
+            self._import_record(record_id)
 
 
 class PayslipLineImporter(Component):

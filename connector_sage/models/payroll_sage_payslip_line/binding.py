@@ -31,7 +31,7 @@ class PayslipLineBinding(models.Model):
     ## composed id
     sage_codigo_empresa = fields.Integer(string="CodigoEmpresa on Sage", required=True)
     sage_codigo_convenio = fields.Integer(string="CodigoConvenio on Sage", required=True)
-    sage_fecha_registro_cv = fields.Integer(string="FechaRegistroCV on Sage", required=True)
+    sage_fecha_registro_cv = fields.Date(string="FechaRegistroCV on Sage", required=True)
 
     sage_ano = fields.Integer(string="Año on Sage", required=True)
     sage_mesd = fields.Integer(string="MesD on Sage", required=True)
@@ -50,11 +50,15 @@ class PayslipLineBinding(models.Model):
         filters = {
             'CodigoEmpresa': backend_record.sage_company_id,
             'CodigoConvenio': payslip_id.labour_agreement_id.code,
-            'FechaRegistroCV': fields.Datetime.from_string(payslip_id.labour_agreement_id.registration_date_cv),
+            'FechaRegistroCV': fields.Date.from_string(payslip_id.labour_agreement_id.registration_date_cv),
 
             'Año': fields.Date.from_string(payslip_id.date).year,
             'MesD': fields.Date.from_string(payslip_id.date).month,
         }
+        if payslip_id.type == 'transfer':
+            filters.update({
+                'FechaCobro': fields.Date.from_string(payslip_id.payment_date),
+            })
 
         self.env['sage.payroll.sage.payslip.line'].import_batch(
             backend=backend_record, filters=filters)
