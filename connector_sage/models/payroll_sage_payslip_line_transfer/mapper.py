@@ -17,10 +17,6 @@ class PayslipLineTransferImportMapper(Component):
 
     _apply_on = 'sage.payroll.sage.payslip.line.transfer'
 
-    direct = [
-        ('FechaCobro', 'sage_fecha_cobro'),
-    ]
-
-    # @mapping
-    # def payment_date(self, record):
-    #     return {'sage_fecha_cobro': record['FechaCobro']}
+    @mapping
+    def payment_date(self, record):
+        return {'sage_fecha_cobro': record['FechaCobro']}
