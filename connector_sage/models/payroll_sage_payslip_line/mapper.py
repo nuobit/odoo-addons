@@ -63,4 +63,4 @@ class PayslipLineImportMapper(AbstractComponent):
     @only_create
     @mapping
     def payslip_id(self, record):
-        return {'payslip_id': self.backend_record.import_payslip_id.id}
+        return {'payslip_id': self.backend_record.import_payslip_line_id.id}

@@ -12,3 +12,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_sage_payroll_sage_payslip_line_payrolluser","sage_payroll_sage_payslip_line_payroll connector user","model_sage_payroll_sage_payslip_line_payroll","base.group_user",1,0,0,0
 "access_sage_payroll_sage_payslip_line_transfer_manager","sage_payroll_sage_payslip_line_transfer connector manager","model_sage_payroll_sage_payslip_line_transfer","connector.group_connector_manager",1,1,1,1
 "access_sage_payroll_sage_payslip_line_transfer_user","sage_payroll_sage_payslip_line_transfer connector user","model_sage_payroll_sage_payslip_line_transfer","base.group_user",1,0,0,0
+"access_sage_payroll_sage_payslip_check_manager","sage_payroll_sage_payslip_check connector manager","model_sage_payroll_sage_payslip_check","connector.group_connector_manager",1,1,1,1
+"access_sage_payroll_sage_payslip_check_user","sage_payroll_sage_payslip_check connector user","model_sage_payroll_sage_payslip_check","base.group_user",1,0,0,0
