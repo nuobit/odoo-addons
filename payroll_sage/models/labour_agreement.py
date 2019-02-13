@@ -60,7 +60,8 @@ class LabourAgreementWageTypeLine(models.Model):
 
     note = fields.Text(string='Description')
 
-    labour_agreement_id = fields.Many2one('payroll.sage.labour.agreement', string='Labour agreeemnt')
+    labour_agreement_id = fields.Many2one('payroll.sage.labour.agreement', string='Labour agreeemnt',
+                                          ondelete='cascade', required=True)
 
     @api.multi
     def name_get(self):
