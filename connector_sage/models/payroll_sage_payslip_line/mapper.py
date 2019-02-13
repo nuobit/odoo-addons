@@ -17,16 +17,17 @@ class PayslipLineImportMapper(Component):
     _apply_on = 'sage.payroll.sage.payslip.line'
 
     direct = [
-        ('Importe', 'amount'),
+        ('ImporteNom', 'amount'),
+        ('ConceptoLargo', 'name'),
+
+        ('CodigoEmpresa', 'sage_codigo_empresa'),
+        ('CodigoConvenio', 'sage_codigo_convenio'),
+        ('FechaRegistroCV', 'sage_fecha_registro_cv'),
+        ('Año', 'sage_ano'),
+        ('MesD', 'sage_mesd'),
+        ('CodigoConceptoNom', 'sage_codigo_concepto_nom'),
+        ('CodigoEmpleado', 'sage_codigo_empleado'),
     ]
-
-    @mapping
-    def backend_id(self, record):
-        return {'backend_id': self.backend_record.id}
-
-    @mapping
-    def payslip_id(self, record):
-        return {'payslip_id': self.backend_record.import_payslip_id.id}
 
     @mapping
     def wage_type_line_id(self, record):
@@ -54,3 +55,13 @@ class PayslipLineImportMapper(Component):
                 "HrEmployeeImporter._import_dependencies" % external_id)
 
         return {'employee_id': employee.id}
+
+    @only_create
+    @mapping
+    def backend_id(self, record):
+        return {'backend_id': self.backend_record.id}
+
+    @only_create
+    @mapping
+    def payslip_id(self, record):
+        return {'payslip_id': self.backend_record.import_payslip_id.id}

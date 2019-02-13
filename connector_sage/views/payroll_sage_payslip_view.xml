@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="payslip_line_view_form_inherit_connector_sage" model="ir.ui.view">
+        <field name="name">payslip.line.form.inherit.connector.sage</field>
+        <field name="model">payroll.sage.payslip.line</field>
+        <field name="inherit_id" ref="payroll_sage.payslip_line_view_form"/>
+        <field name="groups_id"
+               eval="[(4, ref('connector.group_connector_manager'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Connectors">
+                    <group string="Sage Bindings">
+                        <field name="sage_bind_ids" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
