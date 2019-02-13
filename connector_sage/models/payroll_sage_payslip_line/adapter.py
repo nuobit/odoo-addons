@@ -4,15 +4,12 @@
 
 from odoo import models, fields
 
-from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import job
+from odoo.addons.component.core import AbstractComponent
 
 
-class PayslipLineAdapter(Component):
+class PayslipLineAdapter(AbstractComponent):
     _name = 'sage.payroll.sage.payslip.line.adapter'
     _inherit = 'sage.adapter'
-    _apply_on = 'sage.payroll.sage.payslip.line'
-
 
     _sql = """select n.CodigoEmpresa, n.CodigoEmpleado, n.IdEmpleado,
                         n.Año, n.MesD, n.CodigoConceptoNom, 
