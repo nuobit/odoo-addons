@@ -31,6 +31,3 @@ class PayslipLineAdapter(AbstractComponent):
                        c.CodigoConvenio, c.FechaRegistroCV
               having sum(n.importenom) != 0
     """
-
-    _id = ('CodigoEmpresa', 'Año', 'MesD', 'CodigoEmpleado', 'CodigoConceptoNom',
-           'CodigoConvenio', 'FechaRegistroCV')
