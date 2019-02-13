@@ -15,8 +15,8 @@ class LabourAgreement(models.Model):
     name = fields.Char(string='Name', required=True)
     code = fields.Integer(string='Code', required=True)
 
-    registration_date_cv = fields.Datetime(string='Registration date', required=True)
-    end_date = fields.Datetime(string='End date')
+    registration_date_cv = fields.Date(string='Registration date', required=True)
+    end_date = fields.Date(string='End date')
 
     company_id = fields.Many2one('res.company', string='Company', required=True,
                                  copy=False, default=lambda self: self.env['res.company']._company_default_get())
