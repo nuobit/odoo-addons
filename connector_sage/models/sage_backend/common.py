@@ -67,7 +67,10 @@ class SageBackend(models.Model):
 
     import_labour_agreements_since_date = fields.Datetime('Import labour agreements since')
 
-    import_payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip')
+    import_payslip_line_id = fields.Many2one('payroll.sage.payslip', string='Payslip')
+
+    import_payslip_check_id = fields.Many2one('payroll.sage.payslip', string='Payslip',
+                                              domain=[('type', '=', 'transfer')])
 
     _sql_constraints = [
         ('company_uniq', 'unique(company_id)', _('Already exists another backend associated to the same company!')),
@@ -117,9 +120,9 @@ class SageBackend(models.Model):
     @api.multi
     def import_payslip_lines(self):
         for rec in self:
-            if not rec.import_payslip_id:
+            if not rec.import_payslip_line_id:
                 raise exceptions.UserError(_("There's no Payslip selected!"))
-            payslip_id = rec.import_payslip_id
+            payslip_id = rec.import_payslip_line_id
             if payslip_id.type == 'transfer':
                 model = 'sage.payroll.sage.payslip.line.transfer'
             elif payslip_id.type == 'payroll':
@@ -128,6 +131,18 @@ class SageBackend(models.Model):
                 raise exceptions.UserError(_("Unexpected payslip type %s!") % payslip_id.type)
 
             self.env[model].with_delay().import_payslip_lines(payslip_id, rec)
+        return True
+
+    @api.multi
+    def import_payslip_checks(self):
+        for rec in self:
+            if not rec.import_payslip_check_id:
+                raise exceptions.UserError(_("There's no Payslip selected!"))
+            payslip_id = rec.import_payslip_check_id
+            if payslip_id.type != 'transfer':
+                raise exceptions.UserError(_("Check import only makes sense on transfer payslips!"))
+
+            self.env['sage.payroll.sage.payslip.check'].with_delay().import_payslip_checks(payslip_id, rec)
         return True
 
     @api.model

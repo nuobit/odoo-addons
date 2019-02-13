@@ -6,41 +6,28 @@ import re
 
 from odoo import _
 
-from odoo.addons.component.core import AbstractComponent
+from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
     mapping, external_to_m2o, only_create)
 
 
-class PayslipLineImportMapper(AbstractComponent):
-    _name = 'sage.payroll.sage.payslip.line.import.mapper'
+class PayslipCheckImportMapper(Component):
+    _name = 'sage.payroll.sage.payslip.check.import.mapper'
     _inherit = 'sage.import.mapper'
 
+    _apply_on = 'sage.payroll.sage.payslip.check'
+
     direct = [
-        ('ImporteNom', 'amount'),
-        ('ConceptoLargo', 'name'),
+        ('ImporteFijo', 'amount'),
 
         ('CodigoEmpresa', 'sage_codigo_empresa'),
         ('CodigoConvenio', 'sage_codigo_convenio'),
         ('FechaRegistroCV', 'sage_fecha_registro_cv'),
         ('Año', 'sage_ano'),
         ('MesD', 'sage_mesd'),
-        ('CodigoConceptoNom', 'sage_codigo_concepto_nom'),
         ('CodigoEmpleado', 'sage_codigo_empleado'),
+        ('FechaCobro', 'sage_fecha_cobro'),
     ]
-
-    @mapping
-    def wage_type_line_id(self, record):
-        external_id = [record['CodigoEmpresa'], record['CodigoConvenio'], record['FechaRegistroCV'],
-                       record['CodigoConceptoNom']]
-
-        binder = self.binder_for('sage.payroll.sage.labour.agreement.wage.type.line')
-        wage_type_line = binder.to_internal(external_id, unwrap=True)
-
-        assert wage_type_line, (
-                "wage_type_line_id %s should have been imported in "
-                "PayrollSageLabourAgreementImporter._import_dependencies" % external_id)
-
-        return {'wage_type_line_id': wage_type_line.id}
 
     @mapping
     def employee_id(self, record):
@@ -63,4 +50,6 @@ class PayslipLineImportMapper(AbstractComponent):
     @only_create
     @mapping
     def payslip_id(self, record):
-        return {'payslip_id': self.backend_record.import_payslip_line_id.id}
+        return {'payslip_id': self.backend_record.import_payslip_check_id.id}
+
+
