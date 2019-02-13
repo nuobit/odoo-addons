@@ -9,7 +9,6 @@ from odoo.addons.queue_job.job import job
 class PayslipLineTransferBinding(models.Model):
     _name = 'sage.payroll.sage.payslip.line.transfer'
     _inherit = 'sage.payroll.sage.payslip.line'
-    _inherits = {'payroll.sage.payslip.line': 'odoo_id'}
 
     ## composed id
     sage_fecha_cobro = fields.Date(string="FechaCobro", required=True)
