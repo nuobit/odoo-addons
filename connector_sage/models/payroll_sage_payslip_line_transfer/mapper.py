@@ -1,0 +1,26 @@
+# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+# Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+import re
+
+from odoo import _
+
+from odoo.addons.component.core import Component
+from odoo.addons.connector.components.mapper import (
+    mapping, external_to_m2o, only_create)
+
+
+class PayslipLineTransferImportMapper(Component):
+    _name = 'sage.payroll.sage.payslip.line.transfer.import.mapper'
+    _inherit = 'sage.payroll.sage.payslip.line.import.mapper'
+
+    _apply_on = 'sage.payroll.sage.payslip.line.transfer'
+
+    direct = [
+        ('FechaCobro', 'sage_fecha_cobro'),
+    ]
+
+    # @mapping
+    # def payment_date(self, record):
+    #     return {'sage_fecha_cobro': record['FechaCobro']}
