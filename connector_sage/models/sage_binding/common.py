@@ -14,7 +14,7 @@ class SageBinding(models.AbstractModel):
 
     backend_id = fields.Many2one(
         comodel_name='sage.backend',
-        string='Sage Backend',
+        string='Backend',
         required=True,
         readonly=True,
         ondelete='restrict')

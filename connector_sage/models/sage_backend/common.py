@@ -120,8 +120,8 @@ class SageBackend(models.Model):
             if not rec.import_payslip_id:
                 raise exceptions.UserError(_("There's no Payslip selected!"))
             payslip_id = rec.import_payslip_id
-            self.env['sage.payroll.sage.payslip.line']. \
-                import_payslip_lines(payslip_id, rec)
+            self.env['sage.payroll.sage.payslip.line'].with_delay(
+            ).import_payslip_lines(payslip_id, rec)
         return True
 
     @api.model

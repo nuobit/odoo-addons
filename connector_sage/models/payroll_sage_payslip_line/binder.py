@@ -18,7 +18,7 @@ class PayslipLineBinder(Component):
     _name = 'sage.payroll.sage.payslip.line.binder'
     _inherit = 'sage.binder'
     _external_field = ['sage_codigo_empresa', 'sage_ano', 'sage_mesd',
-                       'sage_codigo_empleado', 'sage_codigo_concepto_nom', 'sage_codigo_convenio',
-                       'sage_fecha_registro_cv']
+                       'sage_codigo_empleado', 'sage_codigo_concepto_nom',
+                       'sage_codigo_convenio', 'sage_fecha_registro_cv']
 
     _apply_on = 'sage.payroll.sage.payslip.line'
