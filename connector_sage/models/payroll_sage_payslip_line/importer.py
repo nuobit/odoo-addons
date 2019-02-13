@@ -18,7 +18,7 @@ class PayslipLineDelayedBatchImporter(Component):
     """
     _name = 'sage.payroll.sage.payslip.line.delayed.batch.importer'
     _inherit = 'sage.delayed.batch.importer'
-    _apply_on = 'sage.payroll.sage.payslip.line'
+    _apply_on = ['sage.payroll.sage.payslip.line.payroll', 'sage.payroll.sage.payslip.line.transfer']
 
     def run(self, filters=None):
         """ Run the synchronization """
@@ -30,7 +30,7 @@ class PayslipLineDelayedBatchImporter(Component):
 class PayslipLineImporter(Component):
     _name = 'sage.payroll.sage.payslip.line.importer'
     _inherit = 'sage.importer'
-    _apply_on = 'sage.payroll.sage.payslip.line'
+    _apply_on = ['sage.payroll.sage.payslip.line.payroll', 'sage.payroll.sage.payslip.line.transfer']
 
     # def _import_dependencies(self):
     #     external_id = (self.external_data['CodigoEmpresa'], self.external_data['CodigoEmpleado'])

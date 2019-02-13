@@ -6,15 +6,14 @@ import re
 
 from odoo import _
 
-from odoo.addons.component.core import Component
+from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.components.mapper import (
     mapping, external_to_m2o, only_create)
 
 
-class PayslipLineImportMapper(Component):
+class PayslipLineImportMapper(AbstractComponent):
     _name = 'sage.payroll.sage.payslip.line.import.mapper'
     _inherit = 'sage.import.mapper'
-    _apply_on = 'sage.payroll.sage.payslip.line'
 
     direct = [
         ('ImporteNom', 'amount'),
