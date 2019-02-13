@@ -29,8 +29,8 @@ class HrEmployeeBinding(models.Model):
                               ondelete='cascade')
 
     ## composed id
-    sage_codigo_empresa = fields.Integer(string="CodigoEmpresa on Sage", required=True)
-    sage_codigo_empleado = fields.Integer(string="CodigoEmpleado on Sage", required=True)
+    sage_codigo_empresa = fields.Integer(string="CodigoEmpresa", required=True)
+    sage_codigo_empleado = fields.Integer(string="CodigoEmpleado", required=True)
 
     _sql_constraints = [
         ('uniq', 'unique(odoo_id, sage_codigo_empresa, sage_codigo_empleado)',
