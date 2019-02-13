@@ -23,7 +23,7 @@ class PayslipLineDelayedBatchImporter(Component):
     def run(self, filters=None):
         """ Run the synchronization """
         record_ids = self.backend_adapter.search(filters)
-        for record_id in record_ids: #[1:10]:
+        for record_id in record_ids:
             self._import_record(record_id)
 
 
