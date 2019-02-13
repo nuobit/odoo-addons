@@ -9,8 +9,11 @@ access_payslip_manager,payslip manager,model_payroll_sage_payslip,payroll_sage.g
 access_payslip_user,payslip user,model_payroll_sage_payslip,payroll_sage.group_user,1,1,1,1
 access_payslip_guest,payslip guest,model_payroll_sage_payslip,payroll_sage.group_guest,1,0,0,0
 access_payslip_line_manager,payslip.line manager,model_payroll_sage_payslip_line,payroll_sage.group_manager,1,1,1,1
-access_payslip_user,payslip.line user,model_payroll_sage_payslip_line,payroll_sage.group_user,1,1,1,1
+access_payslip_line_user,payslip.line user,model_payroll_sage_payslip_line,payroll_sage.group_user,1,1,1,1
 access_payslip_line_guest,payslip.line guest,model_payroll_sage_payslip_line,payroll_sage.group_guest,1,0,0,0
+access_payslip_check_manager,payslip.check manager,model_payroll_sage_payslip_check,payroll_sage.group_manager,1,1,1,1
+access_payslip_check_user,payslip.check user,model_payroll_sage_payslip_check,payroll_sage.group_user,1,1,1,1
+access_payslip_check_guest,payslip.check guest,model_payroll_sage_payslip_check,payroll_sage.group_guest,1,0,0,0
 access_wage_tag_line_manager,wage.tag manager,model_payroll_sage_wage_tag,payroll_sage.group_manager,1,1,1,1
-access_wage_tag_user,wage.tag user,model_payroll_sage_wage_tag,payroll_sage.group_user,1,1,1,1
+access_wage_tag_line_user,wage.tag user,model_payroll_sage_wage_tag,payroll_sage.group_user,1,1,1,1
 access_wage_tag_line_guest,wage.tag guest,model_payroll_sage_wage_tag,payroll_sage.group_guest,1,0,0,0

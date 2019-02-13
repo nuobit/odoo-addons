@@ -39,9 +39,18 @@
                     <page string="Lines">
                         <field name="payslip_line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
                             <tree editable="bottom">
-                                <field name="name"/>
                                 <field name="wage_type_line_id"/>
                                 <field name="employee_id"/>
+                                <field name="name"/>
+                                <field name="amount"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Checks" attrs="{'invisible': [('type', '!=', 'transfer')]}">
+                        <field name="payslip_check_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                            <tree editable="bottom">
+                                <field name="employee_id"/>
+                                <field name="name"/>
                                 <field name="amount"/>
                             </tree>
                         </field>
