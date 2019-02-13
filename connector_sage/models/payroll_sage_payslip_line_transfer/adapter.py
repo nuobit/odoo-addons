@@ -22,6 +22,7 @@ class PayslipLineTransferAdapter(Component):
               from Historico n, ConvenioConcepto c
               where n.CodigoEmpresa in (1, 2, 4, 5) AND
                     n.Año >= 2018 AND
+                    n.TotalFichaHistorica in ('TD1', 'TR1') AND
                     n.CodigoConceptoNom = c.CodigoConceptoNom AND
                     n.CodigoEmpresa = c.CodigoEmpresa
               group by n.CodigoEmpresa, n.Año, n.MesD, 
