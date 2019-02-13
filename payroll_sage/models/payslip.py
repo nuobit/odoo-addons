@@ -69,7 +69,7 @@ class PayslipLine(models.Model):
 
     amount = fields.Float('Amount', required=True)
 
-    payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip', required=True)
+    payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip', required=True, ondelete='cascade')
 
 
 class PayslipCheck(models.Model):
@@ -82,4 +82,4 @@ class PayslipCheck(models.Model):
 
     amount = fields.Float('Amount', required=True)
 
-    payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip', required=True)
+    payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip', required=True, ondelete='cascade')
