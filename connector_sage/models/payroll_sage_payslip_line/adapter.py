@@ -17,6 +17,7 @@ class PayslipLineAdapter(Component):
     _sql = """select n.CodigoEmpresa, n.CodigoEmpleado, n.IdEmpleado,
                         n.Año, n.MesD, n.CodigoConceptoNom, 
                         n.TipoProceso,n.ClaveEspecial,
+                        n.FechaCobro,
                      c.CodigoConvenio, c.FechaRegistroCV,
                      sum(n.importenom) as Importe
               from Historico n, ConvenioConcepto c
@@ -27,6 +28,7 @@ class PayslipLineAdapter(Component):
               group by n.CodigoEmpresa, n.CodigoEmpleado, n.IdEmpleado,
                        n.Año, n.MesD, n.CodigoConceptoNom, 
                        n.TipoProceso,n.ClaveEspecial,
+                       n.FechaCobro,
                        c.CodigoConvenio, c.FechaRegistroCV
               having sum(n.importenom) != 0
     """
