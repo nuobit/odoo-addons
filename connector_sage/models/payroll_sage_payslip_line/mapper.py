@@ -24,53 +24,33 @@ class PayslipLineImportMapper(Component):
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 
-    # @mapping
-    # def company_id(self, record):
-    #     return {'company_id': self.backend_record.company_id.id}
-    #
-    # @mapping
-    # def identification_id(self, record):
-    #     parts = [part for part in (record['SiglaNacion'],
-    #                                record['Dni']) if part]
-    #     return {'identification_id': ''.join(parts).strip().upper()}
-    #
-    # @mapping
-    # def names(self, record):
-    #     parts = [part for part in (record['NombreEmpleado'],
-    #                                record['PrimerApellidoEmpleado'],
-    #                                record['SegundoApellidoEmpleado']) if part]
-    #     return {'name': ' '.join(parts)}
+    @mapping
+    def payslip_id(self, record):
+        return {'payslip_id': self.backend_record.import_payslip_id.id}
 
-    # @mapping
-    # def gender(self, record):
-    #     mapping = {
-    #         0: 'male',
-    #         1: 'female',
-    #     }
-    #     Sexo
-    #     return gender1
-    #
-    # @mapping
-    # def marital(self, record):
-    #     mapping = {
-    #         0: 'male',
-    #         1: 'female',
-    #     }
-    #     EstadoCivil
-    #     return gender1
-    #
-    # @mapping
-    # def email2_notes(self, record):
-    #     if record['Email1'] != record['Email2']:
-    #         return {'notes': record['Email2']}
-    #
-    # @mapping
-    # def address_home_id(self, record):
-    #     external_id = (record['CodigoEmpresa'], record['CodigoEmpleado'])
-    #
-    #     binder = self.binder_for('sage.res.partner')
-    #     partner = binder.to_internal(external_id, unwrap=True)
-    #     assert partner, (
-    #         "customer_id %s should have been imported in "
-    #         "HrEmployeeImporter._import_dependencies" % external_id)
-    #     return {'address_home_id': partner.id}
+    @mapping
+    def wage_type_line_id(self, record):
+        external_id = [record['CodigoEmpresa'], record['CodigoConvenio'], record['FechaRegistroCV'],
+                       record['CodigoConceptoNom']]
+
+        binder = self.binder_for('sage.payroll.sage.labour.agreement.wage.type.line')
+        wage_type_line = binder.to_internal(external_id, unwrap=True)
+
+        assert wage_type_line, (
+                "wage_type_line_id %s should have been imported in "
+                "PayrollSageLabourAgreementImporter._import_dependencies" % external_id)
+
+        return {'wage_type_line_id': wage_type_line.id}
+
+    @mapping
+    def employee_id(self, record):
+        external_id = [record['CodigoEmpresa'], record['CodigoEmpleado']]
+
+        binder = self.binder_for('sage.hr.employee')
+        employee = binder.to_internal(external_id, unwrap=True)
+
+        assert employee, (
+                "employee_id %s should have been imported in "
+                "HrEmployeeImporter._import_dependencies" % external_id)
+
+        return {'employee_id': employee.id}

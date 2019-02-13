@@ -37,7 +37,7 @@ class PayrollSageLabourAgreementBinding(models.Model):
     ## composed id
     sage_codigo_empresa = fields.Integer(string="CodigoEmpresa on Sage", required=True)
     sage_codigo_convenio = fields.Integer(string="CodigoConvenio on Sage", required=True)
-    sage_fecha_registro_cv = fields.Datetime(string="FechaRegistroCV on Sage", required=True)
+    sage_fecha_registro_cv = fields.Date(string="FechaRegistroCV on Sage", required=True)
 
     _sql_constraints = [
         ('uniq',
