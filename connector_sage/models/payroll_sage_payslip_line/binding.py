@@ -8,14 +8,14 @@ from odoo.addons.component.core import Component
 from odoo.addons.queue_job.job import job
 
 
-# class PayslipLine(models.Model):
-#     _inherit = 'payroll.sage.payslip.line'
-#
-#     sage_bind_ids = fields.One2many(
-#         comodel_name='sage.payroll.sage.payslip.line',
-#         inverse_name='odoo_id',
-#         string='Sage Bindings',
-#     )
+class PayslipLine(models.Model):
+    _inherit = 'payroll.sage.payslip.line'
+
+    sage_bind_ids = fields.One2many(
+        comodel_name='sage.payroll.sage.payslip.line',
+        inverse_name='odoo_id',
+        string='Sage Bindings',
+    )
 
 
 class PayslipLineBinding(models.Model):
