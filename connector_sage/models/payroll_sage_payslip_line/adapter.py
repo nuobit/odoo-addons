@@ -10,24 +10,3 @@ from odoo.addons.component.core import AbstractComponent
 class PayslipLineAdapter(AbstractComponent):
     _name = 'sage.payroll.sage.payslip.line.adapter'
     _inherit = 'sage.adapter'
-
-    _sql = """select n.CodigoEmpresa, n.CodigoEmpleado, n.IdEmpleado,
-                        n.Año, n.MesD, n.CodigoConceptoNom, 
-                        n.TipoProceso,n.ClaveEspecial,
-                        n.ConceptoCorto, n.ConceptoLargo,
-                        n.FechaCobro,
-                     c.CodigoConvenio, c.FechaRegistroCV,
-                     sum(n.ImporteNom) as ImporteNom
-              from Historico n, ConvenioConcepto c
-              where n.CodigoEmpresa in (1, 2, 4, 5) AND
-                    n.Año >= 2018 AND
-                    n.CodigoConceptoNom = c.CodigoConceptoNom AND
-                    n.CodigoEmpresa = c.CodigoEmpresa
-              group by n.CodigoEmpresa, n.CodigoEmpleado, n.IdEmpleado,
-                       n.Año, n.MesD, n.CodigoConceptoNom, 
-                       n.TipoProceso,n.ClaveEspecial,
-                       n.ConceptoCorto, n.ConceptoLargo,
-                       n.FechaCobro,
-                       c.CodigoConvenio, c.FechaRegistroCV
-              having sum(n.importenom) != 0
-    """
