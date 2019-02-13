@@ -29,15 +29,15 @@ class PayslipLineBinding(models.Model):
                               ondelete='cascade')
 
     ## composed id
-    sage_codigo_empresa = fields.Integer(string="CodigoEmpresa on Sage", required=True)
-    sage_codigo_convenio = fields.Integer(string="CodigoConvenio on Sage", required=True)
-    sage_fecha_registro_cv = fields.Date(string="FechaRegistroCV on Sage", required=True)
+    sage_codigo_empresa = fields.Integer(string="CodigoEmpresa", required=True)
+    sage_codigo_convenio = fields.Integer(string="CodigoConvenio", required=True)
+    sage_fecha_registro_cv = fields.Date(string="FechaRegistroCV", required=True)
 
-    sage_ano = fields.Integer(string="Año on Sage", required=True)
-    sage_mesd = fields.Integer(string="MesD on Sage", required=True)
+    sage_ano = fields.Integer(string="Año", required=True)
+    sage_mesd = fields.Integer(string="MesD", required=True)
 
-    sage_codigo_empleado = fields.Integer(string="CodigoEmpleado on Sage", required=True)
-    sage_codigo_concepto_nom = fields.Integer(string="CodigoConceptoNom on Sage", required=True)
+    sage_codigo_empleado = fields.Integer(string="CodigoEmpleado", required=True)
+    sage_codigo_concepto_nom = fields.Integer(string="CodigoConceptoNom", required=True)
 
     _sql_constraints = [
         ('uniq', 'unique(odoo_id, sage_codigo_empresa, sage_codigo_convenio, sage_fecha_registro_cv, sage_ano, sage_mesd, sage_codigo_empleado, sage_codigo_concepto_nom)',
