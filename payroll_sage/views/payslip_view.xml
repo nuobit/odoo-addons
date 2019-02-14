@@ -61,6 +61,15 @@
                                 </tree>
                             </field>
                         </page>
+                        <page string="Wage types" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <field name="payslip_wage_type_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="wage_type_line_id"/>
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

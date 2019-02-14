@@ -33,10 +33,13 @@ class Payslip(models.Model):
     note = fields.Text(string='Note')
 
     payslip_line_ids = fields.One2many('payroll.sage.payslip.line',
-                                       'payslip_id', string='Wage types', copy=True)
+                                       'payslip_id', string='Wage type lines', copy=True)
 
     payslip_check_ids = fields.One2many('payroll.sage.payslip.check',
                                         'payslip_id', string='Checks', copy=True)
+
+    payslip_wage_type_ids = fields.One2many('payroll.sage.payslip.wage.type',
+                                            'payslip_id', string='Wage types', copy=True, readonly=True)
 
     move_id = fields.Many2one('account.move', string='Journal Entry',
                               readonly=True, index=True, ondelete='restrict', copy=False,
@@ -53,11 +56,39 @@ class Payslip(models.Model):
 
     @api.multi
     def action_paysplip_set_to_draft(self):
-        self.write({'state': 'draft'})
+        for rec in self:
+            rec.payslip_wage_type_ids.unlink()
+            rec.write({
+                'state': 'draft'
+            })
 
     @api.multi
     def action_paysplip_validate(self):
-        self.write({'state': 'validated'})
+        for rec in self:
+            ### agrupem i acumulem iomports per wage type
+            items_d = {}
+            for line in rec.payslip_line_ids:
+                wage_type_line = line.wage_type_line_id
+                amount = line.amount * (-1 if not wage_type_line.positive else 1)
+                amount = amount * (-1 if wage_type_line.total_historical_record == 'withholding' else 1)
+                key = (wage_type_line.id,)
+                if key not in items_d:
+                    items_d[key] = {'wage_line_type': wage_type_line,
+                                    'amount': 0, }
+                items_d[key]['amount'] += amount
+
+            ### muntem el valors
+            values_l = []
+            for wage_type in sorted(items_d.values(), key=lambda x: x['wage_line_type'].code):
+                values_l.append({
+                    'wage_type_line_id': wage_type['wage_line_type'].id,
+                    'amount': wage_type['amount'],
+                })
+
+            ## inserim
+            rec.write({'payslip_wage_type_ids': [(0, False, v) for v in values_l],
+                       'state': 'validated',
+                       })
 
     @api.multi
     def action_paysplip_post(self):
@@ -87,6 +118,7 @@ class Payslip(models.Model):
             for line in rec.payslip_line_ids:
                 wage_type_line = line.wage_type_line_id
                 amount = line.amount * (-1 if not wage_type_line.positive else 1)
+                amount = amount * (-1 if wage_type_line.total_historical_record == 'withholding' else 1)
                 for tag in wage_type_line.wage_tag_ids.filtered(lambda x: x.type == rec.type):
                     amount_tag = amount
                     if tag.negative_withholding and wage_type_line.total_historical_record == 'withholding':
@@ -205,6 +237,20 @@ class PayslipCheck(models.Model):
     name = fields.Char('Description')
 
     employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
+
+    amount = fields.Float('Amount', required=True)
+
+    payslip_id = fields.Many2one('payroll.sage.payslip', string='Payslip', required=True, ondelete='cascade')
+
+
+class PayslipWageType(models.Model):
+    _name = 'payroll.sage.payslip.wage.type'
+    _description = 'Payslip wage type'
+
+    name = fields.Char('Description')
+
+    wage_type_line_id = fields.Many2one('payroll.sage.labour.agreement.wage.type.line',
+                                        string='Wage type line', required=True)
 
     amount = fields.Float('Amount', required=True)
 
