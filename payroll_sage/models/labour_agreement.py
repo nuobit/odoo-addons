@@ -26,6 +26,11 @@ class LabourAgreement(models.Model):
                                   column1='labour_agreement_id', column2='wage_tag_id',
                                   string='S.S. Tags')
 
+    check_tag_ids = fields.Many2many(comodel_name='payroll.sage.wage.tag',
+                                  relation='payroll_sage_labour_agreement_check_tag',
+                                  column1='labour_agreement_id', column2='wage_tag_id',
+                                  string='Check Tags')
+
     wage_type_line_ids = fields.One2many('payroll.sage.labour.agreement.wage.type.line',
                                          'labour_agreement_id', string='Wage types', copy=True)
 
