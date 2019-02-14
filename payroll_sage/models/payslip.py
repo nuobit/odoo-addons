@@ -117,13 +117,14 @@ class Payslip(models.Model):
             items_d = {}
             for line in rec.payslip_line_ids:
                 wage_type_line = line.wage_type_line_id
-                amount = line.amount * (-1 if not wage_type_line.positive else 1)
-                amount = amount * (-1 if wage_type_line.total_historical_record == 'withholding' else 1)
-                for tag in wage_type_line.wage_tag_ids.filtered(lambda x: x.type == rec.type):
-                    amount_tag = amount
-                    if tag.negative_withholding and wage_type_line.total_historical_record == 'withholding':
-                        amount_tag *= -1
-                    add2dict(items_d, tag, amount_tag)
+                if wage_type_line.total_historical_record in ('accrural', 'withholding'):
+                    amount = line.amount * (-1 if not wage_type_line.positive else 1)
+                    amount = amount * (-1 if wage_type_line.total_historical_record == 'withholding' else 1)
+                    for tag in wage_type_line.wage_tag_ids.filtered(lambda x: x.type == rec.type):
+                        amount_tag = amount
+                        if tag.negative_withholding and wage_type_line.total_historical_record == 'withholding':
+                            amount_tag *= -1
+                        add2dict(items_d, tag, amount_tag)
 
             ### afegim ls S.S si es payroll
             if rec.type == 'payroll':
