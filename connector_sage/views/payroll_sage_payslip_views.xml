@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="payslip_view_form_inherit_connector_sage" model="ir.ui.view">
+        <field name="name">payslip.form.inherit.connector.sage</field>
+        <field name="model">payroll.sage.payslip</field>
+        <field name="inherit_id" ref="payroll_sage.payslip_view_form"/>
+        <field name="arch" type="xml">
+            <button name="action_paysplip_validate" position="after">
+                <button name="action_paysplip_import" type="object" states="validated" string="Import"
+                        class="oe_highlight"/>
+            </button>
+        </field>
+    </record>
+</odoo>
