@@ -8,33 +8,31 @@
         <field name="model">payroll.sage.labour.agreement</field>
         <field name="arch" type="xml">
             <form string="Labour agreement">
-                <sheet>
-                    <group col="4">
-                        <field name="name"/>
-                        <field name="code"/>
+                <group col="4">
+                    <field name="name"/>
+                    <field name="code"/>
 
-                        <field name="registration_date_cv"/>
-                        <field name="end_date"/>
-                        <field name="company_id"/>
-                    </group>
-                    <group>
-                        <field name="ss_tag_ids" widget="many2many_tags"/>
-                    </group>
-                    <notebook>
-                        <page string="Wage types">
-                            <field name="wage_type_line_ids" nolabel="1">
-                                <tree editable="bottom">
-                                    <field name="code"/>
-                                    <field name="short_name"/>
-                                    <field name="name"/>
-                                    <field name="positive"/>
-                                    <field name="total_historical_record"/>
-                                    <field name="wage_tag_ids" widget="many2many_tags"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
+                    <field name="registration_date_cv"/>
+                    <field name="end_date"/>
+                    <field name="company_id"/>
+                </group>
+                <group>
+                    <field name="ss_tag_ids" widget="many2many_tags"/>
+                </group>
+                <notebook>
+                    <page string="Wage types">
+                        <field name="wage_type_line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="code"/>
+                                <field name="short_name"/>
+                                <field name="name"/>
+                                <field name="positive"/>
+                                <field name="total_historical_record"/>
+                                <field name="wage_tag_ids" widget="many2many_tags"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>
