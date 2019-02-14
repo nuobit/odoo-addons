@@ -53,6 +53,21 @@
         </field>
     </record>
 
+    <record id="labour_agreement_wage_type_line_view_tree" model="ir.ui.view">
+        <field name="name">labour.agreement.wage.tyle.line.tree</field>
+        <field name="model">payroll.sage.labour.agreement.wage.type.line</field>
+        <field name="arch" type="xml">
+            <tree string="Labour agreement">
+                <field name="code"/>
+                <field name="short_name"/>
+                <field name="name"/>
+                <field name="positive"/>
+                <field name="total_historical_record"/>
+                <field name="wage_tag_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="labour_agreement_action" model="ir.actions.act_window">
         <field name="name">Labour agreements</field>
         <field name="res_model">payroll.sage.labour.agreement</field>

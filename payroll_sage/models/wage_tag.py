@@ -38,6 +38,13 @@ class WageTag(models.Model):
          'Already exists a Wage Tag with the same code'),
     ]
 
+    wage_type_line_count = fields.Integer(compute='_compute_wage_type_line_count', string='Wage type line(s)')
+
+    def _compute_wage_type_line_count(self):
+        for record in self:
+            record.wage_type_line_count = self.env['payroll.sage.labour.agreement.wage.type.line'].search_count(
+                [('wage_tag_ids', '=', record.id)])
+
     @api.model
     def default_code(self):
         n_l = self.env[self._name].search([])
