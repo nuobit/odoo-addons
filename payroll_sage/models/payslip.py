@@ -61,6 +61,26 @@ class Payslip(models.Model):
 
     @api.multi
     def action_paysplip_post(self):
+        def add2dict(items_d, tag, amount):
+            if tag.aggregate:
+                employee_id = None
+                description = None
+                key = (tag.id, employee_id)
+            else:
+                employee_id = line.employee_id
+                description = set()
+                key = (tag.id, employee_id.id)
+
+            if key not in items_d:
+                items_d[key] = {'tag': tag,
+                                'employee': employee_id,
+                                'amount': 0,
+                                'description': description}
+
+            items_d[key]['amount'] += amount
+            if not tag.aggregate:
+                items_d[key]['description'].add(line.name.strip())
+
         for rec in self:
             ### agrupem i acumulem iomports per tag
             items_d = {}
@@ -71,25 +91,12 @@ class Payslip(models.Model):
                     amount_tag = amount
                     if tag.negative_withholding and wage_type_line.total_historical_record == 'withholding':
                         amount_tag *= -1
+                    add2dict(items_d, tag, amount_tag)
 
-                    if tag.aggregate:
-                        employee_id = None
-                        description = None
-                        key = (tag.id, employee_id)
-                    else:
-                        employee_id = line.employee_id
-                        description = set()
-                        key = (tag.id, employee_id.id)
-
-                    if key not in items_d:
-                        items_d[key] = {'tag': tag,
-                                        'employee': employee_id,
-                                        'amount': 0,
-                                        'description': description}
-
-                    items_d[key]['amount'] += amount_tag
-                    if not tag.aggregate:
-                        items_d[key]['description'].add(line.name.strip())
+            ### afegim ls S.S si es payroll
+            if rec.type == 'payroll':
+                for tag in rec.labour_agreement_id.ss_tag_ids:
+                    add2dict(items_d, tag, round(rec.ss_cost, 2))
 
             #### generem lassentament
             ## apunts
