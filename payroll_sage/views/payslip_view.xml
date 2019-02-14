@@ -17,61 +17,59 @@
                     <button name="action_paysplip_unpost" type="object" states="posted" string="Unpost"/>
                     <field name="state" widget="statusbar"/>
                 </header>
-                <sheet>
-                    <group col="4">
-                        <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <group col="4">
+                    <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
-                        <field name="labour_agreement_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="labour_agreement_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
-                        <field name="company_id"/>
-                    </group>
-                    <group col="4">
-                        <field name="journal_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="move_id"/>
-                    </group>
-                    <group col="4">
-                        <field name="type" colspan="2" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="ss_cost" colspan="2"
-                               attrs="{'invisible': [('type', '!=', 'payroll')], 'required': [('type', '=', 'payroll')], 'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="payment_date" colspan="2"
-                               attrs="{'invisible': [('type', '!=', 'transfer')], 'required': [('type', '=', 'transfer')], 'readonly': [('state', '!=', 'draft')]}"/>
-                    </group>
-                    <group>
-                        <field name="note"/>
-                    </group>
-                    <notebook>
-                        <page string="Lines">
-                            <field name="payslip_line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
-                                <tree editable="bottom">
-                                    <field name="wage_type_line_id"/>
-                                    <field name="employee_id"/>
-                                    <field name="name"/>
-                                    <field name="amount"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Checks" attrs="{'invisible': [('type', '!=', 'transfer')]}">
-                            <field name="payslip_check_ids" nolabel="1"
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}">
-                                <tree editable="bottom">
-                                    <field name="employee_id"/>
-                                    <field name="name"/>
-                                    <field name="amount"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Wage types" attrs="{'invisible': [('state', '=', 'draft')]}">
-                            <field name="payslip_wage_type_ids" nolabel="1">
-                                <tree editable="bottom">
-                                    <field name="wage_type_line_id"/>
-                                    <field name="name"/>
-                                    <field name="amount"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
+                    <field name="company_id"/>
+                </group>
+                <group col="4">
+                    <field name="journal_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="move_id"/>
+                </group>
+                <group col="4">
+                    <field name="type" colspan="2" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="ss_cost" colspan="2"
+                           attrs="{'invisible': [('type', '!=', 'payroll')], 'required': [('type', '=', 'payroll')], 'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="payment_date" colspan="2"
+                           attrs="{'invisible': [('type', '!=', 'transfer')], 'required': [('type', '=', 'transfer')], 'readonly': [('state', '!=', 'draft')]}"/>
+                </group>
+                <group>
+                    <field name="note"/>
+                </group>
+                <notebook>
+                    <page string="Lines">
+                        <field name="payslip_line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                            <tree editable="bottom">
+                                <field name="wage_type_line_id"/>
+                                <field name="employee_id"/>
+                                <field name="name"/>
+                                <field name="amount"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Checks" attrs="{'invisible': [('type', '!=', 'transfer')]}">
+                        <field name="payslip_check_ids" nolabel="1"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}">
+                            <tree editable="bottom">
+                                <field name="employee_id"/>
+                                <field name="name"/>
+                                <field name="amount"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Wage types" attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <field name="payslip_wage_type_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="wage_type_line_id"/>
+                                <field name="name"/>
+                                <field name="amount"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>
