@@ -3,6 +3,19 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
 <odoo>
+    <!-- window action wage_tag2wage_type_line smart button -->
+    <record id="wage_tag_action_wage_type_line" model="ir.actions.act_window">
+        <field name="name">Wage type line</field>
+        <field name="res_model">payroll.sage.labour.agreement.wage.type.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('wage_tag_ids','=',active_id)]</field>
+        <field name="context">{'default_wage_tag_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first wage type line</p>
+        </field>
+    </record>
+
     <record id="wage_tag_view_form" model="ir.ui.view">
         <field name="name">wage.tag.form</field>
         <field name="model">payroll.sage.wage.tag</field>
@@ -10,6 +23,12 @@
             <form string="Wage Tag">
                 <header/>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(wage_tag_action_wage_type_line)d">
+                            <field string="Wage type" name="wage_type_line_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <group col="4">
                         <field name="code"/>
                         <field name="type"/>
