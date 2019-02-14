@@ -10,6 +10,8 @@ class WageTag(models.Model):
     _name = 'payroll.sage.wage.tag'
     _description = 'Wage Tag'
 
+    sequence = fields.Integer('Display order', default=lambda self: self.default_sequence())
+
     code = fields.Integer('Code', required=True, default=lambda self: self.default_code())
 
     type = fields.Selection([('transfer', _('Transfer')), ('payroll', _('Payroll'))], string='Type', required=True)
@@ -52,6 +54,15 @@ class WageTag(models.Model):
             return 1
         else:
             n = max(n_l.mapped('code'))
+            return n + 1
+
+    @api.model
+    def default_sequence(self):
+        n_l = self.env[self._name].search([])
+        if not n_l:
+            return 1
+        else:
+            n = max(n_l.mapped('sequence'))
             return n + 1
 
     @api.multi
