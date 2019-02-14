@@ -19,3 +19,5 @@ from . import payroll_sage_payslip_line_transfer
 
 from . import payroll_sage_payslip_check
 
+from . import payroll_sage_payslip
+
