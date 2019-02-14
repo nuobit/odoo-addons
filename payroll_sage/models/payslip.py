@@ -92,19 +92,18 @@ class Payslip(models.Model):
 
     @api.multi
     def action_paysplip_post(self):
-        def add2dict(items_d, tag, amount):
+        def add2dict(items_d, tag, employee, amount):
             if tag.aggregate:
-                employee_id = None
+                employee = None
                 description = None
-                key = (tag.id, employee_id)
+                key = (tag.id, employee)
             else:
-                employee_id = line.employee_id
                 description = set()
-                key = (tag.id, employee_id.id)
+                key = (tag.id, employee.id)
 
             if key not in items_d:
                 items_d[key] = {'tag': tag,
-                                'employee': employee_id,
+                                'employee': employee,
                                 'amount': 0,
                                 'description': description}
 
@@ -124,12 +123,19 @@ class Payslip(models.Model):
                         amount_tag = amount
                         if tag.negative_withholding and wage_type_line.total_historical_record == 'withholding':
                             amount_tag *= -1
-                        add2dict(items_d, tag, amount_tag)
+                        add2dict(items_d, tag, line.employee_id, amount_tag)
 
             ### afegim ls S.S si es payroll
             if rec.type == 'payroll':
                 for tag in rec.labour_agreement_id.ss_tag_ids:
-                    add2dict(items_d, tag, round(rec.ss_cost, 2))
+                    if not tag.aggregate:
+                        raise UserError(_("S.S. Tags must be aggregated!"))
+                    add2dict(items_d, tag, None, round(rec.ss_cost, 2))
+            else:
+                ## afegm els talons si es transfer (sempre han de restar)
+                for check in rec.payslip_check_ids:
+                    for tag in rec.labour_agreement_id.check_tag_ids:
+                        add2dict(items_d, tag, check.employee_id, round(-check.amount,2))
 
             #### generem lassentament
             ## apunts
