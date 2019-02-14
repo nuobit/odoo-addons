@@ -21,6 +21,11 @@ class LabourAgreement(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True,
                                  copy=False, default=lambda self: self.env['res.company']._company_default_get())
 
+    ss_tag_ids = fields.Many2many(comodel_name='payroll.sage.wage.tag',
+                                  relation='payroll_sage_labour_agreement_ss_tag',
+                                  column1='labour_agreement_id', column2='wage_tag_id',
+                                  string='S.S. Tags')
+
     wage_type_line_ids = fields.One2many('payroll.sage.labour.agreement.wage.type.line',
                                          'labour_agreement_id', string='Wage types', copy=True)
 
@@ -54,7 +59,7 @@ class LabourAgreementWageTypeLine(models.Model):
         selection=[('accrural', 'Devengo'), ('withholding', 'Retencion'), ('no', _('No'))])
 
     wage_tag_ids = fields.Many2many(comodel_name='payroll.sage.wage.tag',
-                                    relation='paytroll_sage_labour_agreement_wage_type_line_tag',
+                                    relation='payroll_sage_labour_agreement_wage_type_line_tag',
                                     column1='wage_type_line_id', column2='wage_tag_id',
                                     string='Tags')
 
