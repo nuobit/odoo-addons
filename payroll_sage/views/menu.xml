@@ -4,6 +4,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <menuitem id="menu_root" name="Sage payroll"
+              web_icon="payroll_sage,static/description/appicon.png"
               sequence="46"/>
 
 
