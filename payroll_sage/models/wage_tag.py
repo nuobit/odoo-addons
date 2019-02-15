@@ -92,3 +92,13 @@ class WageTag(models.Model):
 
             res.append((rec.id, ': '.join(fd)))
         return res
+
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = dict(default or {},
+                       code=self.default_code(),
+                       description=False,
+                       )
+
+        return super().copy(default)
