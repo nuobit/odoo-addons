@@ -18,7 +18,7 @@ class LabourAgreement(models.Model):
     registration_date_cv = fields.Date(string='Registration date', required=True)
     end_date = fields.Date(string='End date')
 
-    company_id = fields.Many2one('res.company', string='Company', required=True,
+    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
                                  copy=False, default=lambda self: self.env['res.company']._company_default_get())
 
     ss_tag_ids = fields.Many2many(comodel_name='payroll.sage.wage.tag',
