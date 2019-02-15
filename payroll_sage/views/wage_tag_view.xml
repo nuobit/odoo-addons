@@ -60,7 +60,6 @@
                 <field name="aggregate"/>
                 <field name="negative_withholding"/>
                 <field name="description"/>
-                <field name="company_id"/>
             </tree>
         </field>
     </record>
