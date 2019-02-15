@@ -44,10 +44,6 @@ class Payslip(models.Model):
     move_id = fields.Many2one('account.move', string='Journal Entry',
                               readonly=True, index=True, ondelete='restrict', copy=False,
                               help="Link to the automatically generated Journal Items.")
-    move_name = fields.Char(string='Journal Entry Name', readonly=False,
-                            default=False, copy=False,
-                            help="Technical field holding the number given to the invoice, automatically set when the invoice is validated then stored to set the same number again if the invoice is cancelled, set to draft and re-validated.")
-
     state = fields.Selection([
         ('draft', _('Draft')),
         ('validated', _('Validated')),
@@ -187,17 +183,12 @@ class Payslip(models.Model):
                 'journal_id': self.journal_id.id,
                 'line_ids': [(0, False, values) for values in line_values_l]
             }
-            if rec.move_name:
-                values.update({
-                    'name': rec.move_name,
-                })
 
             move = self.env['account.move'].create(values)
             move.post()
 
             rec.write({
                 'move_id': move.id,
-                'move_name': move.name,
                 'state': 'posted'
             })
 
@@ -216,9 +207,7 @@ class Payslip(models.Model):
         for rec in self:
             if rec.state not in ('draft',):
                 raise UserError(_('You cannot delete a payslip which is not draft,'))
-            elif rec.move_name:
-                raise UserError(_(
-                    'You cannot delete a payslip after it has been posted (and received a number). You can set it back to "Draft" state and modify its content, then re-confirm it.'))
+
         return super().unlink()
 
 
