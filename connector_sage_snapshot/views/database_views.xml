@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="databaset_form_view" model="ir.ui.view">
+        <field name="name">database.form</field>
+        <field name="model">connector.sage.snapshot.database</field>
+        <field name="arch" type="xml">
+            <form string="Database Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="year"/>
+                        <field name="month"/>
+                        <field name="datas" filename="datas_fname"/>
+                        <field name="datas_fname" invisible="1"/>
+                        <field name="company_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="database_tree_view" model="ir.ui.view">
+        <field name="name">database.tree</field>
+        <field name="model">connector.sage.snapshot.database</field>
+        <field name="arch" type="xml">
+            <tree string="Database Tree">
+                <field name="year"/>
+                <field name="month"/>
+                <field name="datas_fname"/>
+                <field name="datas" filename="datas_fname" string="Size"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <act_window id="sage_database_action"
+                name="Database"
+                res_model="connector.sage.snapshot.database"
+                view_type="form"
+                view_mode="tree,form"/>
+</odoo>
