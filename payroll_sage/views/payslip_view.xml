@@ -82,7 +82,6 @@
                 <field name="name"/>
                 <field name="date"/>
                 <field name="labour_agreement_id"/>
-                <field name="company_id"/>
             </tree>
         </field>
     </record>
