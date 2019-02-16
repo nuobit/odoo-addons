@@ -20,6 +20,9 @@
                     <field name="ss_tag_ids" widget="many2many_tags"/>
                     <field name="check_tag_ids" widget="many2many_tags"/>
                 </group>
+                <group>
+                    <field name="error_balancing_account_id"/>
+                </group>
                 <notebook>
                     <page string="Wage types">
                         <field name="wage_type_line_ids" nolabel="1">
