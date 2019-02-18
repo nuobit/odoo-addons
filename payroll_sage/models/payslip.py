@@ -179,16 +179,16 @@ class Payslip(models.Model):
                 # if unbalanced
                 diff = 0
                 if rec.labour_agreement_id.error_balancing_account_id:
-                    diff = sum([x.get('debit', 0) - x.get('credit', 0) for x in line_values_l])
+                    diff = round(sum([x.get('debit', 0) - x.get('credit', 0) for x in line_values_l]), 2)
                     if diff != 0:
                         values = {
                             'account_id': rec.labour_agreement_id.error_balancing_account_id.id,
                             'name': _("Temporary unbalanced journal item"),
                         }
                         if diff < 0:
-                            values.update({'debit': abs(round(diff, 2))})
+                            values.update({'debit': abs(diff)})
                         else:
-                            values.update({'credit': round(diff, 2)})
+                            values.update({'credit': diff})
 
                         line_values_l.append(values)
 
@@ -215,8 +215,8 @@ class Payslip(models.Model):
                 ## comprovem si estav descuaddrat
                 diff = 0
                 if rec.labour_agreement_id.error_balancing_account_id:
-                    diff = sum([x.debit - x.credit for x in move.line_ids.filtered(
-                        lambda x: x.account_id.id != rec.labour_agreement_id.error_balancing_account_id.id)])
+                    diff = round(sum([x.debit - x.credit for x in move.line_ids.filtered(
+                        lambda x: x.account_id.id != rec.labour_agreement_id.error_balancing_account_id.id)]), 2)
 
                 # si no esta desquadrat el fixem
                 if diff == 0:
