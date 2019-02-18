@@ -35,7 +35,6 @@ class LabourAgreement(models.Model):
                                          'labour_agreement_id', string='Wage types', copy=True)
 
     error_balancing_account_id = fields.Many2one('account.account', string='Error balancing account',
-                                                 required=True,
                                                  domain=[('deprecated', '=', False)])
 
     _sql_constraints = [('comp_code_regd', 'unique (company_id, code, registration_date_cv)',
