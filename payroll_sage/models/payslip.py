@@ -61,7 +61,7 @@ class Payslip(models.Model):
     @api.multi
     def action_paysplip_validate(self):
         for rec in self:
-            ### agrupem i acumulem iomports per wage type
+            ### agrupem i acumulem imports per wage type
             items_d = {}
             for line in rec.payslip_line_ids:
                 wage_type_line = line.wage_type_line_id
@@ -109,7 +109,7 @@ class Payslip(models.Model):
 
         for rec in self:
             if not rec.move_id:
-                ### agrupem i acumulem iomports per tag
+                ### agrupem i acumulem imports per tag
                 items_d = {}
                 for line in rec.payslip_line_ids:
                     wage_type_line = line.wage_type_line_id
@@ -134,8 +134,8 @@ class Payslip(models.Model):
                         for tag in rec.labour_agreement_id.check_tag_ids:
                             add2dict(items_d, tag, check.employee_id, round(-check.amount, 2))
 
-                #### generem lassentament
-                ## apunts
+                #### generem l'assentament
+                ## generem els apunts
                 line_values_l = []
                 for item_d in items_d.values():
                     tag = item_d['tag']
@@ -176,27 +176,53 @@ class Payslip(models.Model):
 
                     line_values_l.append(values)
 
-                ## assentament
+                # if unbalanced
+                if rec.labour_agreement_id.error_balancing_account_id:
+                    diff = sum([x.get('debit', 0) - x.get('credit', 0) for x in line_values_l])
+                    if diff != 0:
+                        values = {
+                            'account_id': rec.labour_agreement_id.error_balancing_account_id.id,
+                            'name': _("Temporary unbalanced journal item"),
+                        }
+                        if diff < 0:
+                            values.update({'debit': abs(round(diff, 2))})
+                        else:
+                            values.update({'credit': round(diff, 2)})
+
+                        line_values_l.append(values)
+
+                ## generem la capçalera de l'assentament
                 values = {
-                    'date': self.date,
-                    'ref': self.name,
-                    'company_id': self.company_id.id,
-                    'journal_id': self.journal_id.id,
+                    'date': rec.date,
+                    'ref': rec.name,
+                    'company_id': rec.company_id.id,
+                    'journal_id': rec.journal_id.id,
                     'line_ids': [(0, False, values) for values in line_values_l]
                 }
 
+                ## creem el moviment
                 move = self.env['account.move'].create(values)
                 move.post()
 
                 rec.write({
                     'move_id': move.id,
+                    'state': 'posted'
                 })
             else:
-                rec.move_id.post()
+                ## comprovem si estav descuaddrat
+                diff = 0
+                if rec.labour_agreement_id.error_balancing_account_id:
+                    diff = sum([x.debit - x.credit for x in move.line_ids.filtered(
+                        lambda x: x.account_id.id != rec.labour_agreement_id.error_balancing_account_id.id)])
 
-            rec.write({
-                'state': 'posted'
-            })
+                # si no esta desquadrat el fixem
+                if diff == 0:
+                    rec.move_id.post()
+                    rec.write({
+                        'state': 'posted'
+                    })
+                else:
+                    raise ValidationError(_("The entry is unbalanced and it cannot be posted!"))
 
     @api.multi
     def action_paysplip_unpost(self):
