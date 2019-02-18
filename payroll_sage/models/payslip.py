@@ -177,6 +177,7 @@ class Payslip(models.Model):
                     line_values_l.append(values)
 
                 # if unbalanced
+                diff = 0
                 if rec.labour_agreement_id.error_balancing_account_id:
                     diff = sum([x.get('debit', 0) - x.get('credit', 0) for x in line_values_l])
                     if diff != 0:
@@ -202,7 +203,9 @@ class Payslip(models.Model):
 
                 ## creem el moviment
                 move = self.env['account.move'].create(values)
-                move.post()
+
+                if diff == 0:
+                    move.post()
 
                 rec.write({
                     'move_id': move.id,
