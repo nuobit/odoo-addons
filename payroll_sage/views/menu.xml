@@ -12,11 +12,11 @@
               name="Sage payroll" sequence="10"/>
 
 
-    <menuitem id="labour_agreement_menu_action" name="Labour agreement" sequence="10"
-              parent="menu_sage_payroll" action="labour_agreement_action"/>
-
-    <menuitem id="payslip_menu_action" name="Payslip" sequence="20"
+    <menuitem id="payslip_menu_action" name="Payslip" sequence="10"
               parent="menu_sage_payroll" action="payslip_action"/>
+
+    <menuitem id="labour_agreement_menu_action" name="Labour agreement" sequence="20"
+              parent="menu_sage_payroll" action="labour_agreement_action"/>
 
     <menuitem id="wage_tag_menu_action" name="Wage tag" sequence="30"
               parent="menu_sage_payroll" action="wage_tag_action"/>
