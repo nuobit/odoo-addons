@@ -108,87 +108,93 @@ class Payslip(models.Model):
                 items_d[key]['description'].add(line.name.strip())
 
         for rec in self:
-            ### agrupem i acumulem iomports per tag
-            items_d = {}
-            for line in rec.payslip_line_ids:
-                wage_type_line = line.wage_type_line_id
-                if wage_type_line.total_historical_record in ('accrural', 'withholding'):
-                    amount = line.amount * (-1 if not wage_type_line.positive else 1)
-                    amount = amount * (-1 if wage_type_line.total_historical_record == 'withholding' else 1)
-                    for tag in wage_type_line.wage_tag_ids.filtered(lambda x: x.type == rec.type):
-                        amount_tag = amount
-                        if tag.negative_withholding and wage_type_line.total_historical_record == 'withholding':
-                            amount_tag *= -1
-                        add2dict(items_d, tag, line.employee_id, amount_tag)
+            if not rec.move_id:
+                ### agrupem i acumulem iomports per tag
+                items_d = {}
+                for line in rec.payslip_line_ids:
+                    wage_type_line = line.wage_type_line_id
+                    if wage_type_line.total_historical_record in ('accrural', 'withholding'):
+                        amount = line.amount * (-1 if not wage_type_line.positive else 1)
+                        amount = amount * (-1 if wage_type_line.total_historical_record == 'withholding' else 1)
+                        for tag in wage_type_line.wage_tag_ids.filtered(lambda x: x.type == rec.type):
+                            amount_tag = amount
+                            if tag.negative_withholding and wage_type_line.total_historical_record == 'withholding':
+                                amount_tag *= -1
+                            add2dict(items_d, tag, line.employee_id, amount_tag)
 
-            ### afegim ls S.S si es payroll
-            if rec.type == 'payroll':
-                for tag in rec.labour_agreement_id.ss_tag_ids:
+                ### afegim ls S.S si es payroll
+                if rec.type == 'payroll':
+                    for tag in rec.labour_agreement_id.ss_tag_ids:
+                        if not tag.aggregate:
+                            raise UserError(_("S.S. Tags must be aggregated!"))
+                        add2dict(items_d, tag, None, round(rec.ss_cost, 2))
+                else:
+                    ## afegm els talons si es transfer (sempre han de restar)
+                    for check in rec.payslip_check_ids:
+                        for tag in rec.labour_agreement_id.check_tag_ids:
+                            add2dict(items_d, tag, check.employee_id, round(-check.amount, 2))
+
+                #### generem lassentament
+                ## apunts
+                line_values_l = []
+                for item_d in items_d.values():
+                    tag = item_d['tag']
+
+                    ## compte
+                    values = {
+                        'account_id': tag.account_id.id,
+                    }
+
+                    # partner
                     if not tag.aggregate:
-                        raise UserError(_("S.S. Tags must be aggregated!"))
-                    add2dict(items_d, tag, None, round(rec.ss_cost, 2))
-            else:
-                ## afegm els talons si es transfer (sempre han de restar)
-                for check in rec.payslip_check_ids:
-                    for tag in rec.labour_agreement_id.check_tag_ids:
-                        add2dict(items_d, tag, check.employee_id, round(-check.amount,2))
+                        values.update({'partner_id': item_d['employee'].address_home_id.id})
 
-            #### generem lassentament
-            ## apunts
-            line_values_l = []
-            for item_d in items_d.values():
-                tag = item_d['tag']
+                    ## descripcio
+                    from_string = fields.Date.from_string
+                    date_str = '%s/%s' % (from_string(rec.date).strftime("%m"),
+                                          from_string(rec.date).strftime("%Y"))
+                    description_l = [date_str]
+                    if tag.description and tag.description.strip():
+                        description_l.append(tag.description.strip())
+                    else:
+                        if item_d['description']:
+                            if len(item_d['description']) == 1:
+                                description_l.append(list(item_d['description'])[0])
+                    if description_l:
+                        values.update({'name': ' '.join(description_l)})
 
-                ## compte
+                    # import
+                    credit_debit = tag.credit_debit
+                    if item_d['amount'] < 0:
+                        if credit_debit == 'debit':
+                            credit_debit = 'credit'
+                        else:
+                            credit_debit = 'debit'
+                    values.update({
+                        credit_debit: abs(round(item_d['amount'], 2)),
+                    })
+
+                    line_values_l.append(values)
+
+                ## assentament
                 values = {
-                    'account_id': tag.account_id.id,
+                    'date': self.date,
+                    'ref': self.name,
+                    'company_id': self.company_id.id,
+                    'journal_id': self.journal_id.id,
+                    'line_ids': [(0, False, values) for values in line_values_l]
                 }
 
-                # partner
-                if not tag.aggregate:
-                    values.update({'partner_id': item_d['employee'].address_home_id.id})
+                move = self.env['account.move'].create(values)
+                move.post()
 
-                ## descripcio
-                from_string = fields.Date.from_string
-                date_str = '%s/%s' % (from_string(rec.date).strftime("%m"),
-                                      from_string(rec.date).strftime("%Y"))
-                description_l = [date_str]
-                if tag.description and tag.description.strip():
-                    description_l.append(tag.description.strip())
-                else:
-                    if item_d['description']:
-                        if len(item_d['description']) == 1:
-                            description_l.append(list(item_d['description'])[0])
-                if description_l:
-                    values.update({'name': ' '.join(description_l)})
-
-                # import
-                credit_debit = tag.credit_debit
-                if item_d['amount'] < 0:
-                    if credit_debit == 'debit':
-                        credit_debit = 'credit'
-                    else:
-                        credit_debit = 'debit'
-                values.update({
-                    credit_debit: abs(round(item_d['amount'], 2)),
+                rec.write({
+                    'move_id': move.id,
                 })
-
-                line_values_l.append(values)
-
-            ## assentament
-            values = {
-                'date': self.date,
-                'ref': self.name,
-                'company_id': self.company_id.id,
-                'journal_id': self.journal_id.id,
-                'line_ids': [(0, False, values) for values in line_values_l]
-            }
-
-            move = self.env['account.move'].create(values)
-            move.post()
+            else:
+                rec.move_id.post()
 
             rec.write({
-                'move_id': move.id,
                 'state': 'posted'
             })
 
