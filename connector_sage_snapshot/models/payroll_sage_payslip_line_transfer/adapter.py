@@ -27,7 +27,7 @@ class PayslipLineTransferAdapter(Component):
         if snapshot_ids:
             attachment_id = self.env['ir.attachment'].search([
                 ('id', '!=', False),
-                ('company_id', '=', 1),
+                ('company_id', '=', self.backend_record.company_id.id),
                 ('res_id', '=', snapshot_ids.id),
                 ('res_model', '=', snapshot_ids._name),
                 ('res_field', '=', 'datas'),
