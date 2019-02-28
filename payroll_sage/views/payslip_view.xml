@@ -56,7 +56,7 @@
                             <tree editable="bottom">
                                 <field name="employee_id"/>
                                 <field name="name"/>
-                                <field name="amount"/>
+                                <field name="amount" sum="Total checks"/>
                             </tree>
                         </field>
                     </page>
