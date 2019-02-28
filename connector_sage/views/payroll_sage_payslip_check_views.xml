@@ -30,9 +30,8 @@
                     <field name="sage_codigo_empleado" readonly="True"/>
                     <field name="sage_ano" readonly="True"/>
                     <field name="sage_mesd" readonly="True"/>
-                    <field name="sage_codigo_convenio" readonly="True"/>
-                    <field name="sage_fecha_registro_cv" readonly="True"/>
-                    <field name="sage_fecha_cobro" readonly="True"/>
+                    <field name="sage_id_empleado" readonly="True"/>
+                    <field name="sage_orden_nom" readonly="True"/>
                     <field name="sync_date" readonly="True"/>
                 </group>
             </form>
@@ -50,9 +49,8 @@
                 <field name="sage_codigo_empleado" readonly="True"/>
                 <field name="sage_ano" readonly="True"/>
                 <field name="sage_mesd" readonly="True"/>
-                <field name="sage_codigo_convenio" readonly="True"/>
-                <field name="sage_fecha_registro_cv" readonly="True"/>
-                <field name="sage_fecha_cobro" readonly="True"/>
+                <field name="sage_id_empleado" readonly="True"/>
+                <field name="sage_orden_nom" readonly="True"/>
                 <field name="sync_date"/>
                 <button name="resync" type="object"
                         string="Resynchronize" icon="fa-refresh fa-lg"/>

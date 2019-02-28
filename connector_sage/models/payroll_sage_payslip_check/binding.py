@@ -17,6 +17,7 @@ class PayslipCheck(models.Model):
         string='Sage Bindings',
     )
 
+
 class PayslipCheckBinding(models.Model):
     _name = 'sage.payroll.sage.payslip.check'
     _inherit = 'sage.binding'
@@ -34,23 +35,16 @@ class PayslipCheckBinding(models.Model):
     sage_ano = fields.Integer(string="Año", required=True)
     sage_mesd = fields.Integer(string="MesD", required=True)
 
-    sage_codigo_convenio = fields.Integer(string="CodigoConvenio", required=True)
-    sage_fecha_registro_cv = fields.Date(string="FechaRegistroCV", required=True)
-
-    sage_fecha_cobro = fields.Date(string="FechaCobro", required=True)
+    sage_id_empleado = fields.Char(string="IdEmpleado", required=True)
+    sage_orden_nom = fields.Integer(string="OrdenNom", required=True)
 
     @job(default_channel='root.sage')
     def import_payslip_checks(self, payslip_id, backend_record):
         """ Prepare the import of payslip from Sage """
         filters = {
             'CodigoEmpresa': backend_record.sage_company_id,
-            'CodigoConvenio': payslip_id.labour_agreement_id.code,
-            'FechaRegistroCV': fields.Date.from_string(payslip_id.labour_agreement_id.registration_date_cv),
-
             'Año': fields.Date.from_string(payslip_id.date).year,
             'MesD': fields.Date.from_string(payslip_id.date).month,
-
-            'FechaCobro': fields.Date.from_string(payslip_id.payment_date),
         }
 
         self.env['sage.payroll.sage.payslip.check'].import_batch(

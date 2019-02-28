@@ -18,15 +18,15 @@ class PayslipCheckImportMapper(Component):
     _apply_on = 'sage.payroll.sage.payslip.check'
 
     direct = [
-        ('ImporteFijo', 'amount'),
+        ('Importe', 'amount'),
 
         ('CodigoEmpresa', 'sage_codigo_empresa'),
-        ('CodigoConvenio', 'sage_codigo_convenio'),
-        ('FechaRegistroCV', 'sage_fecha_registro_cv'),
         ('Año', 'sage_ano'),
         ('MesD', 'sage_mesd'),
         ('CodigoEmpleado', 'sage_codigo_empleado'),
-        ('FechaCobro', 'sage_fecha_cobro'),
+
+        ('IdEmpleado', 'sage_id_empleado'),
+        ('OrdenNom', 'sage_orden_nom'),
     ]
 
     @mapping
@@ -51,5 +51,3 @@ class PayslipCheckImportMapper(Component):
     @mapping
     def payslip_id(self, record):
         return {'payslip_id': self.backend_record.import_payslip_check_id.id}
-
-

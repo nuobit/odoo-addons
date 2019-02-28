@@ -13,35 +13,13 @@ class PayslipCheckAdapter(Component):
 
     _apply_on = 'sage.payroll.sage.payslip.check'
 
-    _sql = """select e.CodigoEmpresa, e.CodigoEmpleado,
-                     e.Año, e.MesD, e.CodigoConvenio, e.FechaRegistroCV,
-                     e.FechaCobro,
-                     sum(e.ImporteFijo) as ImporteFijo
-              from (select ec.CodigoEmpresa, ec.CodigoEmpleado, ec.OrdenNom,
-                           h.Año, h.MesD, c.CodigoConvenio, c.FechaRegistroCV,
-                           h.FechaCobro,
-                           ec.ImporteFijo
-                    from EmpleadoCobro ec, Historico h, ConvenioConcepto c
-                    where ec.CodigoFormaCobro = 'TAL' AND
-                          ec.ImporteFijo != 0  and
-                          h.CodigoEmpresa in (1, 2, 4, 5) AND
-                          h.Año >= 2018 AND
-                          h.TotalFichaHistorica in ('TD1', 'TR1') AND
-                          h.CodigoConceptoNom = c.CodigoConceptoNom AND
-                          h.CodigoEmpresa = c.CodigoEmpresa AND
-                
-                          ec.CodigoEmpresa = h.CodigoEmpresa and
-                          ec.IdEmpleado = h.IdEmpleado and
-                          ec.CodigoEmpleado = h.CodigoEmpleado 
-                    group by ec.CodigoEmpresa, ec.CodigoEmpleado, ec.OrdenNom,
-                             h.Año, h.MesD, c.CodigoConvenio, c.FechaRegistroCV,
-                             h.FechaCobro,
-                             ec.ImporteFijo
-                  ) e
-              group by e.CodigoEmpresa, e.CodigoEmpleado, e.OrdenNom,
-                       e.Año, e.MesD, e.CodigoConvenio, e.FechaRegistroCV,
-                       e.FechaCobro
+    _sql = """select ec.CodigoEmpresa, ec.CodigoEmpleado, 
+                     ec.Año, ec.MesD, CAST(ec.IdEmpleado AS char(36)) as IdEmpleado, ec.OrdenNom, 
+                     ec.Importe
+              from HistoricoRelacionesDePago ec
+              where ec.CodigoFormaCobro = 'TAL' and 
+                    ec.TipoProceso = 'MES'
     """
 
-    _id = ('CodigoEmpresa', 'CodigoEmpleado',
-           'Año', 'MesD', 'CodigoConvenio', 'FechaRegistroCV', 'FechaCobro')
+    _id = ('CodigoEmpresa', 'CodigoEmpleado', 'Año', 'MesD',
+           'IdEmpleado', 'OrdenNom')
