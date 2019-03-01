@@ -50,9 +50,9 @@ class ProductProduct(models.Model):
 
                         if product_codes_l:
                             product_codes_str = ", ".join(product_codes_l)
-                            id, name = p.name_get()[0]
+                            _id, name = p.name_get()[0]
                             products_name.append(
-                                (id, "{{{}}} {}".format(product_codes_str, name))
+                                (_id, "{{{}}} {}".format(product_codes_str, name))
                             )
                         else:
                             products_name += p.name_get()
