@@ -32,7 +32,7 @@ class PayslipLineImporter(Component):
     _inherit = 'sage.importer'
     _apply_on = ['sage.payroll.sage.payslip.line.payroll', 'sage.payroll.sage.payslip.line.transfer']
 
-    # def _import_dependencies(self):
-    #     external_id = (self.external_data['CodigoEmpresa'], self.external_data['CodigoEmpleado'])
-    #
-    #     self._import_dependency(external_id, 'sage.res.partner', always=True)
+    def _import_dependencies(self):
+        external_id = (self.external_data['CodigoEmpresa'], self.external_data['CodigoEmpleado'])
+
+        self._import_dependency(external_id, 'sage.hr.employee', always=False)
