@@ -36,4 +36,4 @@ class PayslipCheckImporter(Component):
     def _import_dependencies(self):
         external_id = (self.external_data['CodigoEmpresa'], self.external_data['CodigoEmpleado'])
 
-        self._import_dependency(external_id, 'sage.hr.employee', always=True)
+        self._import_dependency(external_id, 'sage.hr.employee', always=False)
