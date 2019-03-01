@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="product_template_view_search_inherit_product_supplier_search" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.product.supplier.search</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="seller_ids" string="Supplier product"
+                       filter_domain="['|',('seller_ids.product_code','ilike',self),('seller_ids.product_name','ilike',self)]"/>
+            </field>
+        </field>
+    </record>
+</odoo>
