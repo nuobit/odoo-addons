@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models, fields
+from collections import OrderedDict
 
 
 class LightingProductBeam(models.Model):
@@ -13,7 +14,7 @@ class LightingProductBeam(models.Model):
         valid_field = ['num', 'photometric_distribution_ids', 'dimension_ids']
         res = []
         for rec in self:
-            line = []
+            line = OrderedDict()
             for field in valid_field:
                 field_meta = self.fields_get([field], ['string', 'type'])[field]
                 datum = getattr(rec, field)
@@ -29,7 +30,7 @@ class LightingProductBeam(models.Model):
                 if field_meta['type'] != 'boolean' and not datum:
                     datum = None
 
-                line.append((field_meta['string'], datum))
+                line[field_meta['string']] = datum
 
             res.append(line)
 

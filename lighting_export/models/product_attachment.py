@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
+from collections import OrderedDict
 
 
 class LightingAttachment(models.Model):
@@ -17,7 +18,8 @@ class LightingAttachment(models.Model):
                 for pa in prod_attachment_ids:
                     pa.public = True
                     type_meta = pa.fields_get(['type_id'], ['string'])['type_id']
-                    res.append([(type_meta['string'], pa.type_id.display_name),
-                                ('URL', pa.url_get(resolution=ta.resolution)),
-                                ])
+                    res.append(OrderedDict([
+                        (type_meta['string'], pa.type_id.display_name),
+                        ('URL', pa.url_get(resolution=ta.resolution)),
+                    ]))
         return res

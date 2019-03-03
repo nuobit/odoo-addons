@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models, fields
+from collections import OrderedDict
 
 
 class LightingProductSource(models.Model):
@@ -13,7 +14,7 @@ class LightingProductSource(models.Model):
         valid_field = ['relevance', 'num', 'lampholder_id', 'line_display', 'line_ids']
         res = []
         for rec in self.sorted(lambda x: x.sequence):
-            line = []
+            line = OrderedDict()
             for field in valid_field:
                 field_meta = self.fields_get([field], ['string', 'type', 'selection'])[field]
                 datum = getattr(rec, field)
@@ -31,10 +32,10 @@ class LightingProductSource(models.Model):
                 if field_meta['type'] != 'boolean' and not datum:
                     datum = None
 
-                if not isinstance(datum, (tuple, list)):
-                    datum = [(field_meta['string'], datum)]
+                if not isinstance(datum, OrderedDict):
+                    datum = OrderedDict([(field_meta['string'], datum)])
 
-                line += datum
+                line.update(datum)
 
             res.append(line)
 
@@ -46,7 +47,7 @@ class LightingProductSourceLine(models.Model):
 
     @api.multi
     def export_name(self, template_id=None):
-        res = []
+        res = OrderedDict()
 
         field = 'color_temperature'
         metas = self.fields_get([field], ['string', 'type', 'selection'])
@@ -55,7 +56,7 @@ class LightingProductSourceLine(models.Model):
             field_data = field_data0[0]
         else:
             field_data = ' / '.join(map(lambda x: '%i' % x, field_data0))
-        res.append((metas[field]['string'], field_data))
+        res[metas[field]['string']] = field_data
 
         field = 'luminous_flux1'
         metas = self.fields_get([field], ['string', 'type', 'selection'])
@@ -68,7 +69,7 @@ class LightingProductSourceLine(models.Model):
                 pass
         else:
             field_data = ' / '.join(field_data0)
-        res.append((metas[field]['string'], field_data))
+        res[metas[field]['string']] = field_data
 
         return res
 
