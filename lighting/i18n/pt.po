@@ -2658,11 +2658,15 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_ids
 #: model:ir.ui.menu,name:lighting.product_types_menu
 msgid "Types"
 msgstr "Tipos"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
+msgid "Description"
+msgstr "Descrição"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ugr_max

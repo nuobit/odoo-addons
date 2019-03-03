@@ -820,7 +820,7 @@ class LightingProductSource(models.Model):
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
     ## computed fields
-    line_display = fields.Char(compute='_compute_line_display', string='Types')
+    line_display = fields.Char(compute='_compute_line_display', string='Description')
 
     @api.depends('line_ids')
     def _compute_line_display(self):
@@ -828,8 +828,16 @@ class LightingProductSource(models.Model):
             res = []
             for l in rec.line_ids.sorted(lambda x: x.sequence):
                 line = [l.type_id.code]
+
+                if l.is_integrated or l.is_lamp_included:
+                    if l.color_temperature:
+                        line.append("%iK" % l.color_temperature)
+                    if l.luminous_flux_display:
+                        line.append("%sLm" % l.luminous_flux_display)
+
                 if l.wattage_display:
                     line.append("(%s)" % l.wattage_display)
+
                 res.append(' '.join(line))
 
             if res != []:
