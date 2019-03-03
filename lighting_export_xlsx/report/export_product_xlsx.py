@@ -59,7 +59,7 @@ class ExportProductXlsx(models.AbstractModel):
                 if isinstance(datum, (tuple, list)):
                     subfields = []
                     for sf in datum:
-                        sf1 = [x[0] for x in sf]
+                        sf1 = sf.keys()
                         if subfields:
                             if subfields != sf1:
                                 raise Exception("Unexpected Error")
@@ -115,7 +115,7 @@ class ExportProductXlsx(models.AbstractModel):
                     num = meta['num']
                     if obj[field]:
                         for so in obj[field]:
-                            for dummy, sod in so:
+                            for dummy, sod in so.items():
                                 sheet.write(row, col, sod)
                                 col += 1
                             num -= 1
