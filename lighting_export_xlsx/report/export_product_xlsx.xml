@@ -10,6 +10,7 @@
             print_report_name="'Products XLSX report'"
             file="export_product"
             model="lighting.product"
-            attachment_use="False"/>
+            attachment_use="False"
+            menu="False"/>
 </odoo>
 
