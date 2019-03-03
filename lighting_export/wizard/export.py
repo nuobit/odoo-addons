@@ -6,6 +6,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
+
 class LightingExport(models.TransientModel):
     _name = "lighting.export"
     _description = "Export data"
@@ -19,21 +20,11 @@ class LightingExport(models.TransientModel):
 
     lang_id = fields.Many2one(comodel_name='res.lang', required=True)
 
+    output_type = fields.Selection(selection=[], string="Output type", required=True)
+
     @api.multi
-    def export_product_xlsx(self):
+    def export_product(self):
         self.ensure_one()
 
-        return {
-            'name': 'Lighting product XLSX report',
-            'model': 'lighting.product',
-            'type': 'ir.actions.report',
-            'report_name': 'lighting_export.export_product_xlsx',
-            'report_type': 'xlsx',
-            'report_file': 'export.product',
-            'data': {'interval': self.interval,
-                     'hide_empty_fields': self.hide_empty_fields,
-                     'template_id': self.template_id.id,
-                     'active_ids': self.env.context.get('active_ids'),
-                     'lang': self.lang_id.code,
-                     },
-        }
+        return getattr(self, self.output_type)()
+

@@ -4,6 +4,7 @@
 
 from odoo import api
 
+
 class LightingExportDimension():
 
     @api.multi

@@ -12,6 +12,5 @@ class IrModelFields(models.Model):
     def name_get(self):
         res = []
         for field in self:
-            #res.append((field.id, '%s (%s)' % (field.field_description, field.name)))
             res.append((field.id, '%s' % (field.field_description, )))
         return res

@@ -16,12 +16,12 @@
                 <group>
                     <field name="interval" widget="radio"/>
                 </group>
-
-                <group>
-                    <field name="hide_empty_fields"/>
+                <group col="6">
+                    <field colspan="3" name="output_type"/>
+                    <field colspan="2" name="hide_empty_fields"/>
                 </group>
                 <footer>
-                    <button string="Export" name="export_product_xlsx" type="object" default_focus="1"
+                    <button string="Export" name="export_product" type="object" default_focus="1"
                             class="btn-primary"/>
                     <button string="Cancel" class="btn-default" special="cancel"/>
                 </footer>

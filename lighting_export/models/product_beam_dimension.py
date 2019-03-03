@@ -4,7 +4,7 @@
 
 from odoo import models
 
-from .export_dimension import LightingExportDimension
+from .product_export_dimension import LightingExportDimension
 
 
 class LightingProductBeamDimension(models.Model, LightingExportDimension):
