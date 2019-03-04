@@ -17,6 +17,8 @@ class LightingExport(models.TransientModel):
 
     output_type = fields.Selection(selection_add=[('export_product_json', _('Json file (.json)'))])
 
+    pretty_print = fields.Boolean(string="Pretty print", default=True)
+
     @api.multi
     def export_product_json(self):
         self.ensure_one()
@@ -27,6 +29,7 @@ class LightingExport(models.TransientModel):
             'report_type': 'json',
             'data': {'interval': self.interval,
                      'hide_empty_fields': self.hide_empty_fields,
+                     'pretty_print': self.pretty_print,
                      'template_id': self.template_id.id,
                      'active_ids': self.env.context.get('active_ids'),
                      'lang': self.lang_id.code,

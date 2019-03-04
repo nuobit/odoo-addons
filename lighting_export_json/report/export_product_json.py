@@ -116,4 +116,8 @@ class ExportProductJson(models.AbstractModel):
             if isinstance(o, datetime.datetime):
                 return fields.Datetime.to_string(o)
 
-        return json.dumps(objects_ld, ensure_ascii=False, default=default, indent=4, sort_keys=True)
+        kwargs = {}
+        if data['pretty_print']:
+            kwargs = dict(indent=4, sort_keys=True)
+
+        return json.dumps(objects_ld, ensure_ascii=False, default=default, **kwargs)

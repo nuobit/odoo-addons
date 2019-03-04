@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="export_product_view_form_inherit_export_json" model="ir.ui.view">
+        <field name="name">export_product_view_form.inherit.export.json</field>
+        <field name="model">lighting.export</field>
+        <field name="inherit_id" ref="lighting_export.export_product_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='hide_empty_fields']" position="after">
+                <field colspan="3" name="pretty_print"
+                       attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
