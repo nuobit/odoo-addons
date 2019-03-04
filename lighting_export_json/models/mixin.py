@@ -37,8 +37,8 @@ class LightingExportJsonMixin:
             elif meta['type'] == 'many2many':
                 datum = [x.display_name for x in datum]
             elif meta['type'] == 'one2many':
-                if hasattr(datum, 'export_name'):
-                    datum = datum.export_name(template_id)
+                if hasattr(datum, 'export_json'):
+                    datum = datum.export_json(template_id)
                 else:
                     datum = None  # NOT SUPPORTED
 

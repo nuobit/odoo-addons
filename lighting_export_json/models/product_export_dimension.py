@@ -11,7 +11,7 @@ from .mixin import LightingExportJsonMixin
 class LightingProductExportDimension(LightingExportJsonMixin):
 
     @api.multi
-    def export_name(self, template_id=None):
+    def export_json(self, template_id=None):
         valid_field = ['sequence', 'type_id', 'value']
         translate_field = ['type_id']
         res = []

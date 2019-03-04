@@ -12,7 +12,7 @@ class LightingProductSource(models.Model, LightingExportJsonMixin):
     _inherit = 'lighting.product.source'
 
     @api.multi
-    def export_name(self, template_id=None):
+    def export_json(self, template_id=None):
         valid_field = ['sequence', 'relevance', 'num', 'lampholder_id', 'line_ids']
         translate_field = ['relevance']
         res = []
@@ -34,7 +34,7 @@ class LightingProductSourceLine(models.Model, LightingExportJsonMixin):
     _inherit = 'lighting.product.source.line'
 
     @api.multi
-    def export_name(self, template_id=None):
+    def export_json(self, template_id=None):
         valid_field = ['sequence', 'type_id', 'is_integrated', 'wattage', 'wattage_magnitude', 'is_max_wattage',
                        'is_lamp_included', 'color_temperature', 'luminous_flux1', 'luminous_flux2']
         translate_field = []
