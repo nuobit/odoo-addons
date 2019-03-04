@@ -8,5 +8,5 @@ class LightingProductFanWattage(models.Model):
     _inherit = 'lighting.product.fanwattage'
 
     @api.multi
-    def export_name(self, template_id=None):
+    def export_xlsx(self, template_id=None):
         return ', '.join(['%g' % x.wattage for x in self])

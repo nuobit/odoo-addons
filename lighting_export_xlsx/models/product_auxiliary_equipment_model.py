@@ -10,7 +10,7 @@ class LightingProductAuxiliaryEquipmentModel(models.Model):
     _inherit = 'lighting.product.auxiliaryequipmentmodel'
 
     @api.multi
-    def export_name(self, template_id=None):
+    def export_xlsx(self, template_id=None):
         valid_field = ['reference', 'brand_id', 'date']
         res = []
         for rec in self:

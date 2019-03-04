@@ -10,7 +10,7 @@ class LightingAttachment(models.Model):
     _inherit = 'lighting.attachment'
 
     @api.multi
-    def export_name(self, template_id=None):
+    def export_xlsx(self, template_id=None):
         res = []
         for ta in template_id.attachment_ids.sorted(lambda x: x.sequence):
             prod_attachment_ids = self.filtered(lambda x: x.type_id.id == ta.type_id.id)

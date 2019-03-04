@@ -48,8 +48,8 @@ class ExportProductXlsx(models.AbstractModel):
                 elif meta['type'] == 'many2one':
                     datum = datum.display_name
                 elif meta['type'] == 'one2many':
-                    if hasattr(datum, 'export_name'):
-                        datum = datum.export_name(template_id)
+                    if hasattr(datum, 'export_xlsx'):
+                        datum = datum.export_xlsx(template_id)
                     else:
                         datum = None  # NOT SUPPORTED
 

@@ -10,7 +10,7 @@ class LightingProductBeam(models.Model):
     _inherit = 'lighting.product.beam'
 
     @api.multi
-    def export_name(self, template_id=None):
+    def export_xlsx(self, template_id=None):
         valid_field = ['num', 'photometric_distribution_ids', 'dimension_ids']
         res = []
         for rec in self:
@@ -23,7 +23,7 @@ class LightingProductBeam(models.Model):
                 elif field_meta['type'] == 'many2many':
                     datum = ','.join([x.display_name for x in datum])
                 elif field_meta['type'] == 'one2many':
-                    datum = datum.export_name()
+                    datum = datum.export_xlsx()
                 elif field_meta['type'] == 'date':
                     datum = fields.Date.from_string(datum)
 

@@ -10,7 +10,7 @@ class LightingProductSource(models.Model):
     _inherit = 'lighting.product.source'
 
     @api.multi
-    def export_name(self, template_id=None):
+    def export_xlsx(self, template_id=None):
         valid_field = ['relevance', 'num', 'lampholder_id', 'line_display']
         res = []
         for rec in self.sorted(lambda x: x.sequence):
