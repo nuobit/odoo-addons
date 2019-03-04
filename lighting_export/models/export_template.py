@@ -46,7 +46,8 @@ class LightingExportTemplate(models.Model):
 
             max_sequence = max(rec.field_ids.mapped('sequence') or [0])
             rec.field_ids = [(0, False, {'sequence': max_sequence + i,
-                                         'field_id': x.id
+                                         'field_id': x.id,
+                                         'translate': x.translate,
                                          }) for i, x in enumerate(new_field_ids, 1)]
 
     @api.multi
@@ -80,6 +81,8 @@ class LightingExportTemplateField(models.Model):
                                string='Field', required=True)
     field_name = fields.Char(related='field_id.name', readonly=True)
     field_ttype = fields.Selection(related='field_id.ttype', readonly=True)
+
+    translate = fields.Boolean(string='Translate')
 
     label = fields.Char(string='Label', translate=True)
 
