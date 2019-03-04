@@ -4,16 +4,4 @@
 
 from . import export_template
 
-from . import product_export_dimension
-from . import product_recess_dimension
-from . import product_beam_dimension
-from . import product_fan_wattage
-
-from . import product_auxiliary_equipment_model
-from . import product_beam
-from . import product_supplier
-from . import product_source
-
-from . import product_attachment
-
 from . import ir_model
