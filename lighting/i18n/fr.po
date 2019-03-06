@@ -724,6 +724,7 @@ msgstr "Matériau du diffuseur"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_type_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_type_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_type_id
 msgid "Dimension"
 msgstr "Dimension"
 
@@ -2167,11 +2168,6 @@ msgstr "Violet"
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Quantity"
 msgstr "Quantité"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_type_id
-msgid "Recess dimension"
-msgstr "Dimension de la récréation"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recess_dimension_ids

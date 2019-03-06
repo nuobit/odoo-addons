@@ -740,7 +740,7 @@ class LightingProductRecessDimension(models.Model):
     _rec_name = 'type_id'
     _order = 'sequence'
 
-    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Recess dimension',
+    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension',
                               required=True)
     value = fields.Float(string='Value', required=True)
     sequence = fields.Integer(required=True, default=1,
