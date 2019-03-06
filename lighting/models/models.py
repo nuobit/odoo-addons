@@ -336,11 +336,11 @@ class LightingProduct(models.Model):
     lead_wires = fields.Integer(string='Lead wires supplied', help="Number of lead wires supplied",
                                 track_visibility='onchange')
     lead_wire_length = fields.Float(string='Length of the lead wire supplied (mm)', track_visibility='onchange')
-    inclination_angle_max = fields.Float(string='Maximum inclination angle (º)', track_visibility='onchange')
+    inclination_angle_max = fields.Float(string='Maximum tilt angle (º)', track_visibility='onchange')
     rotation_angle_max = fields.Float(string='Maximum rotation angle (º)', track_visibility='onchange')
-    recessing_box_included = fields.Boolean(string='Recessing box included', track_visibility='onchange')
+    recessing_box_included = fields.Boolean(string='Cut hole box included', track_visibility='onchange')
     recess_dimension_ids = fields.One2many(comodel_name='lighting.product.recessdimension',
-                                           inverse_name='product_id', string='Recess dimensions',
+                                           inverse_name='product_id', string='Cut hole dimensions',
                                            copy=True, track_visibility='onchange')
     ecorrae_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
                                           string='ECORRAE I category', track_visibility='onchange')

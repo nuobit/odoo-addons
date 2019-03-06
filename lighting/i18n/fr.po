@@ -1578,7 +1578,7 @@ msgstr "Matériaux"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_inclination_angle_max
-msgid "Maximum inclination angle (º)"
+msgid "Maximum tilt angle (º)"
 msgstr "Angle d'inclinaison maximal (º)"
 
 #. module: lighting
@@ -2175,12 +2175,12 @@ msgstr "Dimension de la récréation"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recess_dimension_ids
-msgid "Recess dimensions"
+msgid "Cut hole dimensions"
 msgstr "Dimensions de la récréation"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessing_box_included
-msgid "Recessing box included"
+msgid "Cut hole box included"
 msgstr "Boîte à encastrer incluse"
 
 #. module: lighting

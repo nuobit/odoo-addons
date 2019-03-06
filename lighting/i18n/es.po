@@ -1578,7 +1578,7 @@ msgstr "Materiales"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_inclination_angle_max
-msgid "Maximum tilting angle (º)"
+msgid "Maximum tilt angle (º)"
 msgstr "Ángulo de basculación máximo (º)"
 
 #. module: lighting
@@ -2175,12 +2175,12 @@ msgstr "Dimensión de la caja de empotrado"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recess_dimension_ids
-msgid "Recess dimensions"
+msgid "Cut hole dimensions"
 msgstr "Dimensiones de la caja de empotrado"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessing_box_included
-msgid "Recessing box included"
+msgid "Cut hole box included"
 msgstr "Incluye caja de empotrar"
 
 #. module: lighting
