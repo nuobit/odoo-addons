@@ -5,33 +5,31 @@
 from odoo import api, models
 from collections import OrderedDict
 
+from .mixin import LightingExportJsonMixin
 
-class LightingAttachment(models.Model):
+
+class LightingAttachment(models.Model, LightingExportJsonMixin):
     _inherit = 'lighting.attachment'
 
     @api.multi
     def export_json(self, template_id=None):
-        active_langs = ['en_US', 'es_ES', 'fr_FR']
+        valid_field = ['sequence', 'type_id', 'datas_fname']
+        translate_field = ['type_id']
         res = []
-        for ta in template_id.attachment_ids.sorted(lambda x: x.sequence):
-            prod_attachment_ids = self.filtered(lambda x: x.type_id.id == ta.type_id.id)
-            if prod_attachment_ids.mapped('attachment_id'):
-                attach_type_d = {}
-                for pa in prod_attachment_ids:
-                    if pa.type_id.code not in attach_type_d:
-                        attach_type_d[pa.type_id.code] = {}
-                        for lang in active_langs:
-                            if 'label' not in attach_type_d[pa.type_id.code]:
-                                attach_type_d[pa.type_id.code]['label'] = {}
-                            attach_type_d[pa.type_id.code]['label'][lang] = pa.type_id.with_context(lang=lang).name
-                    if 'value' not in attach_type_d[pa.type_id.code]:
-                        attach_type_d[pa.type_id.code]['value'] = []
+        for rec in self.sorted(lambda x: x.sequence):
+            if rec.type_id.id in template_id.attachment_ids.mapped("type_id.id"):
+                line = OrderedDict()
+                for field in valid_field:
+                    field_d = rec.get_field_d(field, template_id, translate=field in translate_field)
+                    if field_d:
+                        line[field] = field_d['value']
 
-                    attach_type_d[pa.type_id.code]['value'].append({
-                        'datas_fname': pa.datas_fname,
-                        'store_fname': pa.attachment_id.store_fname,
-                        'sequence': pa.sequence,
+                if rec.attachment_id:
+                    line.update({
+                        'store_fname': rec.attachment_id.store_fname,
                     })
-                res.append(attach_type_d)
+
+                if line:
+                    res.append(line)
 
         return res
