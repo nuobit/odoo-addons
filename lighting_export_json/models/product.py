@@ -16,26 +16,27 @@ class LightingProduct(models.Model):
                  'recess_dimension_ids.sequence')
     def _compute_recess_dimension_display(self):
         for prod in self:
-            same_uom = True
-            uoms = set()
             dims = prod.recess_dimension_ids
-            for rec in dims:
-                if rec.type_id.uom not in uoms:
-                    if not uoms:
-                        uoms.add(rec.type_id.uom)
-                    else:
-                        same_uom = False
-                        break
+            if dims:
+                same_uom = True
+                uoms = set()
+                for rec in dims:
+                    if rec.type_id.uom not in uoms:
+                        if not uoms:
+                            uoms.add(rec.type_id.uom)
+                        else:
+                            same_uom = False
+                            break
 
-            res_label = ' x '.join(['%s' % x.type_id.name for x in dims])
-            res_value = ' x '.join(['%g' % x.value for x in dims])
+                res_label = ' x '.join(['%s' % x.type_id.name for x in dims])
+                res_value = ' x '.join(['%g' % x.value for x in dims])
 
-            if same_uom:
-                res_label = '%s (%s)' % (res_label, uoms.pop())
-            else:
-                res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in dims])
+                if same_uom:
+                    res_label = '%s (%s)' % (res_label, uoms.pop())
+                else:
+                    res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in dims])
 
-            prod.recess_dimension_display = '%s: %s' % (res_label, res_value)
+                prod.recess_dimension_display = '%s: %s' % (res_label, res_value)
 
     search_material_ids = fields.Many2many(comodel_name='lighting.product.material',
                                            compute='_compute_search_material')
