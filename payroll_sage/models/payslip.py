@@ -147,7 +147,7 @@ class Payslip(models.Model):
 
                     # partner
                     if not tag.aggregate:
-                        values.update({'partner_id': item_d['employee'].address_home_id.id})
+                        values.update({'partner_id': item_d['employee'].sudo().address_home_id.id})
 
                     ## descripcio
                     from_string = fields.Date.from_string
