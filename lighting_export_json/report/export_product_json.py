@@ -119,11 +119,11 @@ class ExportProductJson(models.AbstractModel):
 
                     ## acumulem els valors
                     if not meta['translate']:
-                        #field_d['value'] = datum
+                        # field_d['value'] = datum
                         field_d = datum
                         break
                     else:
-                        #if 'value' not in field_d:
+                        # if 'value' not in field_d:
                         #    field_d['value'] = {}
                         field_d[lang] = datum
 
@@ -170,12 +170,12 @@ class ExportProductJson(models.AbstractModel):
         template_upd_d = {}
         for obj_d in objects_ld:
             if 'template' in obj_d:
-                if obj_d['template'] in template_clean_d:
-                    template_upd_d = {
-                        'reference': obj_d['template'],
-                    }
-                    if 'description' not in template_upd_d:
-                        template_upd_d['description'] = obj_d['description']
+                template_name = obj_d['template']
+                if template_name in template_clean_d:
+                    if template_name not in template_upd_d:
+                        template_upd_d[template_name] = {
+                            'description': obj_d['description']
+                        }
 
         def default(o):
             if isinstance(o, datetime.date):
