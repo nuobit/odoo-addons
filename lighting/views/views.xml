@@ -733,6 +733,7 @@
                             <tree>
                                 <field name="sequence" widget="handle"/>
                                 <field name="type_id"/>
+                                <field name="is_integrated"/>
                                 <field name="wattage_display"/>
 
                                 <field name="luminous_flux_display"/>
