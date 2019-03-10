@@ -626,6 +626,12 @@ class LightingProductDimmable(models.Model):
 
     name = fields.Char(string='Dimmable', required=True, translate=True)
 
+    product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = self.env['lighting.product'].search_count([('dimmable_ids', '=', record.id)])
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The dimmable must be unique!'),
                         ]
 

@@ -512,13 +512,32 @@
         </field>
     </record>
 
+    <!-- window action dimmable2product smart button -->
+    <record id="product_dimmable_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('dimmable_ids','=',active_id)]</field>
+        <field name="context">{'default_dimmable_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
+        </field>
+    </record>
+
     <!-- view dimmable -->
-    <record model="ir.ui.view" id="product_dimmable_form_view">
+    <record id="product_dimmable_form_view" model="ir.ui.view">
         <field name="name">product.dimmable.form</field>
         <field name="model">lighting.product.dimmable</field>
         <field name="arch" type="xml">
             <form string="Product dimmable Form">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_dimmable_action_product)d">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
                     </group>
@@ -533,6 +552,10 @@
         <field name="arch" type="xml">
             <tree string="Product dimmable Tree">
                 <field name="name"/>
+                <field name="product_count"/>
+                <button name="%(product_dimmable_action_product)d" type="action"
+                        string="Products" icon="fa-external-link"
+                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
             </tree>
         </field>
     </record>
@@ -1054,7 +1077,7 @@
     </record>
 
     <!-- window action dimmable -->
-    <record model="ir.actions.act_window" id="product_dimmable_list_action">
+    <record id="product_dimmable_list_action" model="ir.actions.act_window">
         <field name="name">Product dimmable</field>
         <field name="res_model">lighting.product.dimmable</field>
         <field name="view_type">form</field>
