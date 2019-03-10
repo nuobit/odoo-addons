@@ -1137,12 +1137,17 @@ msgid "IK"
 msgstr "IK"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ip
+#: model:ir.ui.menu,name:lighting.product_sealing_menu
+msgid "Sealings"
+msgstr "Estanqueidades"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_id
 msgid "Sealing"
 msgstr "Estanqueidad"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ip2
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing2_id
 msgid "Sealing 2"
 msgstr "Estanqueidad 2"
 
@@ -1635,6 +1640,7 @@ msgstr "Multi comida"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_name
 msgid "Name"
 msgstr "Nombre"
 
@@ -2097,6 +2103,7 @@ msgstr "Product voltage Tree"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_product_count
 msgid "Product(s)"
 msgstr "Producto(s)"
 

@@ -213,5 +213,40 @@
             <field name="code">es_ES</field>
             <field name="name">Spanish</field>
         </record>
+
+        <!-- Sealings -->
+        <record id="sealing_ip20" model="lighting.product.sealing">
+            <field name="name">IP20</field>
+        </record>
+        <record id="sealing_ip23" model="lighting.product.sealing">
+            <field name="name">IP23</field>
+        </record>
+        <record id="sealing_ip43" model="lighting.product.sealing">
+            <field name="name">IP43</field>
+        </record>
+        <record id="sealing_ip44" model="lighting.product.sealing">
+            <field name="name">IP44</field>
+        </record>
+        <record id="sealing_ip54" model="lighting.product.sealing">
+            <field name="name">IP54</field>
+        </record>
+        <record id="sealing_ip55" model="lighting.product.sealing">
+            <field name="name">IP55</field>
+        </record>
+        <record id="sealing_ip64" model="lighting.product.sealing">
+            <field name="name">IP64</field>
+        </record>
+        <record id="sealing_ip65" model="lighting.product.sealing">
+            <field name="name">IP65</field>
+        </record>
+        <record id="sealing_ip66" model="lighting.product.sealing">
+            <field name="name">IP66</field>
+        </record>
+        <record id="sealing_ip67" model="lighting.product.sealing">
+            <field name="name">IP67</field>
+        </record>
+        <record id="sealing_ip68" model="lighting.product.sealing">
+            <field name="name">IP68</field>
+        </record>
     </data>
 </odoo>

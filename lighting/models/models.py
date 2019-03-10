@@ -31,7 +31,8 @@ class LightingProduct(models.Model):
                               help="Description dynamically generated from product data",
                               translate=True, store=True)
 
-    @api.depends('type_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip', 'ip', 'ip2',
+    @api.depends('type_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip',
+                 'sealing_id', 'sealing2_id',
                  'dimmable_ids.name',
                  'source_ids.sequence',
                  'source_ids.lampholder_id.code',
@@ -62,14 +63,13 @@ class LightingProduct(models.Model):
         if self.catalog_ids:
             ip_catalogs = self.catalog_ids.filtered(lambda x: x.description_show_ip)
             if ip_catalogs:
-                data_ip = []
-                for ipx in ('ip', 'ip2'):
-                    ip = getattr(self, ipx)
-                    if ip:
-                        prefix = self.fields_get([ipx], ['string']).get(ipx).get('string')
-                        data_ip.append('%s %i' % (prefix, ip))
-                if data_ip:
-                    data.append(','.join(data_ip))
+                data_sealing = []
+                for ipx in ('sealing_id', 'sealing2_id'):
+                    sealing = getattr(self, ipx)
+                    if sealing:
+                        data_sealing.append(sealing.name)
+                if data_sealing:
+                    data.append(','.join(data_sealing))
 
         if self.dimmable_ids:
             data.append(','.join(self.dimmable_ids.sorted(lambda x: x.name).mapped('name')))
@@ -237,8 +237,13 @@ class LightingProduct(models.Model):
                                           relation='lighting_product_blade_material_rel',
                                           string='Blade material', track_visibility='onchange')
 
-    ip = fields.Integer(string="Sealing", track_visibility='onchange')
-    ip2 = fields.Integer(string="Sealing 2", track_visibility='onchange')
+    sealing_id = fields.Many2one(comodel_name='lighting.product.sealing',
+                                 ondelete='restrict',
+                                 string='Sealing', track_visibility='onchange')
+    sealing2_id = fields.Many2one(comodel_name='lighting.product.sealing',
+                                  ondelete='restrict',
+                                  string='Sealing 2', track_visibility='onchange')
+
     ik = fields.Selection(
         selection=[("%02d" % x, "%02d" % x) for x in range(11)], string='IK', track_visibility='onchange')
 

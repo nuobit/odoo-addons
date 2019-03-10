@@ -74,8 +74,8 @@
                                 <field name="reflector_material_ids" widget="many2many_tags"/>
                                 <field name="blade_material_ids" widget="many2many_tags"/>
 
-                                <field name="ip"/>
-                                <field name="ip2"/>
+                                <field name="sealing_id"/>
+                                <field name="sealing2_id"/>
                                 <field name="ik"/>
 
                                 <field name="static_pressure"/>
