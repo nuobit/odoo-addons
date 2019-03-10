@@ -1181,8 +1181,8 @@ msgstr "Tensión de entrada"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_install_location
-msgid "Installation location"
-msgstr "Ubicación de la instalación"
+msgid "Location"
+msgstr "Ubicación"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_description

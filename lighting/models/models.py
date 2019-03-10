@@ -213,7 +213,7 @@ class LightingProduct(models.Model):
                                                    ('outdoor', _('Outdoor')),
                                                    ('indoor_outdoor', _('Indoor and Outdoor')),
                                                    ('underwater', _('Underwater'))
-                                                   ], string='Installation location', track_visibility='onchange')
+                                                   ], string='Location', track_visibility='onchange')
 
     application_ids = fields.Many2many(comodel_name='lighting.product.application',
                                        relation='lighting_product_application_rel', string='Applications',
