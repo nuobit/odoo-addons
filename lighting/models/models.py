@@ -237,8 +237,8 @@ class LightingProduct(models.Model):
                                           relation='lighting_product_blade_material_rel',
                                           string='Blade material', track_visibility='onchange')
 
-    ip = fields.Integer(string="IP", track_visibility='onchange')
-    ip2 = fields.Integer(string="IP2", track_visibility='onchange')
+    ip = fields.Integer(string="Sealing", track_visibility='onchange')
+    ip2 = fields.Integer(string="Sealing 2", track_visibility='onchange')
     ik = fields.Selection(
         selection=[("%02d" % x, "%02d" % x) for x in range(11)], string='IK', track_visibility='onchange')
 

@@ -1138,13 +1138,13 @@ msgstr "IK"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ip
-msgid "IP"
-msgstr "IP"
+msgid "Sealing"
+msgstr "Estanqueidad"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ip2
-msgid "IP2"
-msgstr "IP2"
+msgid "Sealing 2"
+msgstr "Estanqueidad 2"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_catalog_description_show_ip
