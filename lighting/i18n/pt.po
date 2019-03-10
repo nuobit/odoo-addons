@@ -1168,20 +1168,6 @@ msgstr ""
 " cada produto neste catálogo"
 
 #. module: lighting
-#: code:addons/lighting/models/models.py:158
-#: selection:lighting.product,install_location:0
-#, python-format
-msgid "Indoor"
-msgstr "Interior"
-
-#. module: lighting
-#: code:addons/lighting/models/models.py:160
-#: selection:lighting.product,install_location:0
-#, python-format
-msgid "Indoor and Outdoor"
-msgstr "Interior e exterior"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_input_current
 msgid "Input current (mA)"
 msgstr "Corrente de entrada (mA)"
@@ -1192,9 +1178,10 @@ msgid "Input voltage"
 msgstr "Tensão de entrada"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_install_location
-msgid "Location"
-msgstr "Local"
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_location_ids
+#: model:ir.ui.menu,name:lighting.product_locations_menu
+msgid "Locations"
+msgstr "Locals"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_description
@@ -1649,6 +1636,7 @@ msgstr "Multi Food"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_location_name
 msgid "Name"
 msgstr "Nome"
 
@@ -1703,13 +1691,6 @@ msgstr "A pedido"
 #, python-format
 msgid "Orange"
 msgstr "laranja"
-
-#. module: lighting
-#: code:addons/lighting/models/models.py:159
-#: selection:lighting.product,install_location:0
-#, python-format
-msgid "Outdoor"
-msgstr "Exterior"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_output_current
@@ -2113,6 +2094,7 @@ msgstr "Árvore de tensão do produto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_location_product_count
 msgid "Product(s)"
 msgstr "Produtos)"
 
@@ -2703,13 +2685,6 @@ msgstr "Portas USB"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_voltage
 msgid "USB voltage"
 msgstr "Voltagem USB"
-
-#. module: lighting
-#: code:addons/lighting/models/models.py:161
-#: selection:lighting.product,install_location:0
-#, python-format
-msgid "Underwater"
-msgstr "Embaixo da agua"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_dimension_type_uom

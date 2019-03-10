@@ -209,15 +209,13 @@ class LightingProduct(models.Model):
                         ]
 
     # Description tab
-    install_location = fields.Selection(selection=[('indoor', _('Indoor')),
-                                                   ('outdoor', _('Outdoor')),
-                                                   ('indoor_outdoor', _('Indoor and Outdoor')),
-                                                   ('underwater', _('Underwater'))
-                                                   ], string='Location', track_visibility='onchange')
+    location_ids = fields.Many2many(comodel_name='lighting.product.location',
+                                    relation='lighting_product_location_rel', string='Locations',
+                                    track_visibility='onchange')
 
     installation_ids = fields.Many2many(comodel_name='lighting.product.installation',
-                                       relation='lighting_product_installation_rel', string='Installations',
-                                       track_visibility='onchange')
+                                        relation='lighting_product_installation_rel', string='Installations',
+                                        track_visibility='onchange')
 
     application_ids = fields.Many2many(comodel_name='lighting.product.application',
                                        relation='lighting_product_application_rel', string='Applications',

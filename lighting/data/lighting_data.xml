@@ -248,5 +248,16 @@
         <record id="sealing_ip68" model="lighting.product.sealing">
             <field name="name">IP68</field>
         </record>
+
+        <!-- Locations -->
+        <record id="product_location_indoor" model="lighting.product.location">
+            <field name="name">Indoor</field>
+        </record>
+        <record id="product_location_outdoor" model="lighting.product.location">
+            <field name="name">Outdoor</field>
+        </record>
+        <record id="product_location_underwater" model="lighting.product.location">
+            <field name="name">Underwater</field>
+        </record>
     </data>
 </odoo>
