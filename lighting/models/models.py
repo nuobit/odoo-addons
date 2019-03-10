@@ -215,6 +215,10 @@ class LightingProduct(models.Model):
                                                    ('underwater', _('Underwater'))
                                                    ], string='Location', track_visibility='onchange')
 
+    installation_ids = fields.Many2many(comodel_name='lighting.product.installation',
+                                       relation='lighting_product_installation_rel', string='Installations',
+                                       track_visibility='onchange')
+
     application_ids = fields.Many2many(comodel_name='lighting.product.application',
                                        relation='lighting_product_application_rel', string='Applications',
                                        track_visibility='onchange')
@@ -244,8 +248,8 @@ class LightingProduct(models.Model):
                                   ondelete='restrict',
                                   string='Sealing 2', track_visibility='onchange')
 
-    ik = fields.Selection(
-        selection=[("%02d" % x, "%02d" % x) for x in range(11)], string='IK', track_visibility='onchange')
+    ik = fields.Selection(selection=[("%02d" % x, "%02d" % x) for x in range(11)],
+                          string='IK', track_visibility='onchange')
 
     static_pressure = fields.Float(string="Static pressure (kg)", track_visibility='onchange')
     dynamic_pressure = fields.Float(string="Dynamic pressure (kg)", track_visibility='onchange')

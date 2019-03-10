@@ -7,10 +7,12 @@ from . import models
 from . import product_catalog
 from . import product_family
 from . import product_family_attachment
+
+from . import product_installation
 from . import product_type
 from . import product_application
-from . import product_sealing
 
+from . import product_sealing
 from . import product_finish
 from . import product_voltage
 

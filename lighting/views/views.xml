@@ -66,6 +66,7 @@
                         <page string="Description">
                             <group>
                                 <field name="install_location"/>
+                                <field name="installation_ids" widget="many2many_tags"/>
                                 <field name="application_ids" widget="many2many_tags"/>
                                 <field name="finish_id"/>
                                 <field name="body_material_ids" widget="many2many_tags"/>
@@ -952,6 +953,7 @@
                 <field name="ean"/>
                 <field name="catalog_ids"/>
                 <field name="family_ids"/>
+                <field name="installation_ids"/>
                 <field name="type_ids"/>
                 <field name="application_ids"/>
                 <field name="dimmable_ids"/>

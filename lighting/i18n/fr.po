@@ -78,6 +78,12 @@ msgid "Applications"
 msgstr "Applications"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_ids
+#: model:ir.ui.menu,name:lighting.product_installations_menu
+msgid "Installations"
+msgstr "Installations"
+
+#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_define_substitute_view
 msgid "Are you sure to define selected products as a substitutes?"
 msgstr "Êtes-vous sûr de définir les produits sélectionnés comme substituts?"
@@ -1641,6 +1647,7 @@ msgstr "Multi alimentaire"
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_name
 msgid "Name"
 msgstr "Nom"
 
@@ -2104,6 +2111,7 @@ msgstr "Arbre de tension produit"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_product_count
 msgid "Product(s)"
 msgstr "Des produits"
 
