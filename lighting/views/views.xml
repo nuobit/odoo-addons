@@ -65,7 +65,7 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="location_ids" widget="many2many_tags"/>
+                                <field name="location_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <field name="installation_ids" widget="many2many_tags"/>
                                 <field name="application_ids" widget="many2many_tags"/>
                                 <field name="finish_id"/>
@@ -310,7 +310,7 @@
                 <field name="description"/>
                 <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="family_ids" widget="many2many_tags"/>
-                <field name="location_ids" widget="many2many_tags"/>
+                <field name="location_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="type_ids" widget="many2many_tags"/>
                 <field name="state"/>
                 <field name="last_update"/>
