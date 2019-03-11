@@ -22,6 +22,8 @@ class LightingCatalog(models.Model):
         for record in self:
             record.product_count = self.env['lighting.product'].search_count([('catalog_ids', '=', record.id)])
 
+    color = fields.Integer(string='Color Index')
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name of catalog must be unique!'),
                         ]
 

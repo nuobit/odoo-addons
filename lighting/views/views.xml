@@ -48,7 +48,7 @@
                     </group>
                     <group>
                         <field name="ean"/>
-                        <field name="catalog_ids" widget="many2many_tags"/>
+                        <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <field name="family_ids" widget="many2many_tags"/>
                         <field name="type_ids" widget="many2many_tags"/>
                     </group>
