@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- window action color_temperature2product smart button -->
+    <record id="product_color_temperature_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('source_ids.line_ids.color_temperature_id','=',active_id)]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
+        </field>
+    </record>
+
+    <!-- view color_temperature -->
+    <record id="product_color_temperature_form_view" model="ir.ui.view">
+        <field name="name">product.color.temperature.form</field>
+        <field name="model">lighting.product.color.temperature</field>
+        <field name="arch" type="xml">
+            <form string="Color temperature Form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_color_temperature_action_product)d">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="value"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_color_temperature_tree_view" model="ir.ui.view">
+        <field name="name">product.color.temperature.tree</field>
+        <field name="model">lighting.product.color.temperature</field>
+        <field name="arch" type="xml">
+            <tree string="Color temperature Tree">
+                <field name="value"/>
+                <field name="product_count"/>
+                <button name="%(product_color_temperature_action_product)d" type="action"
+                        string="Products" icon="fa-external-link"
+                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action color_temperature -->
+    <record id="product_color_temperature_list_action" model="ir.actions.act_window">
+        <field name="name">Product color temperature</field>
+        <field name="res_model">lighting.product.color.temperature</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first color temperature
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="product_color_temperatures_menu" name="Color temperatures" parent="common_data_menu"
+              action="product_color_temperature_list_action"
+              sequence="65"/>
+</odoo>
