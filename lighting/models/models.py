@@ -29,10 +29,12 @@ class LightingProduct(models.Model):
     reference = fields.Char(string='Reference', required=True, track_visibility='onchange')
     description = fields.Char(compute='_compute_description', string='Description', readonly=True,
                               help="Description dynamically generated from product data",
-                              translate=True, store=True)
+                              translate=True, store=True, track_visibility='onchange')
 
-    @api.depends('type_ids.name', 'family_ids.name', 'catalog_ids.description_show_ip',
-                 'sealing_id', 'sealing2_id',
+    @api.depends('type_ids.name',
+                 'family_ids.name',
+                 'catalog_ids.description_show_ip',
+                 'sealing_id.name', 'sealing2_id.name',
                  'dimmable_ids.name',
                  'source_ids.sequence',
                  'source_ids.lampholder_id.code',
