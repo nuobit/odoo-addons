@@ -69,6 +69,16 @@ class LightingProductSource(models.Model, LightingExportJsonMixin):
         if wattages_s2:
             res['line_ids.wattage'] = sorted(list(wattages_s2))
 
+        # camp temp color
+        colork_s = set()
+        for line in self.mapped('line_ids'):
+            if line.is_integrated:
+                if line.color_temperature_id:
+                    colork_s.add(line.color_temperature_id.value)
+
+        if colork_s:
+            res['line_ids.color_temperature'] = sorted(list(colork_s))
+
         # camp fluxe
         fluxes_s = set()
         for line in self.mapped('line_ids'):
@@ -77,9 +87,8 @@ class LightingProductSource(models.Model, LightingExportJsonMixin):
                     flux1 = line.luminous_flux1 * line.source_id.num
                     fluxes_s.add(flux1)
                 if line.luminous_flux2:
-                    if line.luminous_flux2:
-                        flux2 = line.luminous_flux2 * line.source_id.num
-                        fluxes_s.add(flux2)
+                    flux2 = line.luminous_flux2 * line.source_id.num
+                    fluxes_s.add(flux2)
 
         if fluxes_s:
             res['line_ids.luminous_flux'] = sorted(list(fluxes_s))
