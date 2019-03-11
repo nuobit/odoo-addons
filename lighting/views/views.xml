@@ -764,10 +764,12 @@
                                 <field name="color_temperature"/>
                                 <field name="special_spectrum"/>
 
-                                <field name="efficiency_ids" widget="many2many_tags"/>
+                                <field name="efficiency_ids"
+                                       widget="many2many_tags" options="{'color_field': 'color'}"/>
 
                                 <field name="is_lamp_included"/>
-                                <field name="lamp_included_efficiency_ids" widget="many2many_tags"
+                                <field name="lamp_included_efficiency_ids"
+                                       widget="many2many_tags" options="{'color_field': 'color'}"
                                        attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
 
                             </tree>
@@ -795,13 +797,15 @@
                         <field name="wattage_magnitude"
                                attrs="{'required': [('wattage', '>', 0)]}"/>
                         <field name="is_max_wattage"/>
-                        <field name="efficiency_ids" widget="many2many_tags" colspan="3"/>
+                        <field colspan="3" name="efficiency_ids"
+                               widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </group>
 
                     <group col="4" attrs="{'invisible': [('is_integrated', '=', True)]}">
                         <group colspan="2">
                             <field name="is_lamp_included"/>
-                            <field name="lamp_included_efficiency_ids" widget="many2many_tags"
+                            <field name="lamp_included_efficiency_ids"
+                                   widget="many2many_tags" options="{'color_field': 'color'}"
                                    attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
                         </group>
                     </group>

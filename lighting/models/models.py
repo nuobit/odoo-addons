@@ -533,6 +533,8 @@ class LightingEnergyEfficiency(models.Model):
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
     name = fields.Char(string='Description', required=True)
 
+    color = fields.Integer(string='Color Index')
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The energy efficiency must be unique!'),
                         ]
 
