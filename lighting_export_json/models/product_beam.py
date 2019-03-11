@@ -11,7 +11,7 @@ from .mixin import LightingExportJsonMixin
 class LightingProductBeam(models.Model, LightingExportJsonMixin):
     _inherit = 'lighting.product.beam'
 
-    line_full_display = fields.Char(compute='_compute_line_full_display', string="Description")
+    line_full_display = fields.Char(compute='_compute_line_full_display', string="Light beam")
 
     @api.depends('num', 'photometric_distribution_ids', 'dimension_ids')
     def _compute_line_full_display(self):

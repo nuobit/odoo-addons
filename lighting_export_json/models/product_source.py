@@ -12,7 +12,7 @@ class LightingProductSource(models.Model, LightingExportJsonMixin):
     _inherit = 'lighting.product.source'
 
     ## computed fields
-    line_full_display = fields.Char(compute='_compute_line_full_display', string="Description")
+    line_full_display = fields.Char(compute='_compute_line_full_display', string="Light source")
 
     @api.depends('num', 'lampholder_id', 'lampholder_id.code', 'line_ids')
     def _compute_line_full_display(self):

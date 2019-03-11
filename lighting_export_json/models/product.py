@@ -8,7 +8,7 @@ from odoo import models, fields, api
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
-    recess_dimension_display = fields.Char(compute='_compute_recess_dimension_display', string='Cut hole dimensions')
+    recess_dimension_display = fields.Char(compute='_compute_recess_dimension_display', string='Cut hole')
 
     @api.depends('recess_dimension_ids',
                  'recess_dimension_ids.type_id',
