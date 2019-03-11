@@ -218,7 +218,8 @@
                                     <tree>
                                         <field name="sequence" widget="handle"/>
                                         <field name="num"/>
-                                        <field name="photometric_distribution_ids" widget="many2many_tags"/>
+                                        <field name="photometric_distribution_ids"
+                                               widget="many2many_tags" options="{'color_field': 'color'}"/>
                                         <field name="dimensions_display"/>
                                     </tree>
                                 </field>
@@ -849,7 +850,8 @@
                 <sheet>
                     <group>
                         <field name="num"/>
-                        <field name="photometric_distribution_ids" widget="many2many_tags"/>
+                        <field name="photometric_distribution_ids"
+                               widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <field name="dimension_ids">
                             <tree editable="bottom">
                                 <field name="sequence" widget="handle"/>

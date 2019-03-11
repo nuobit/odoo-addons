@@ -999,6 +999,8 @@ class LightingProductBeamPhotometricDistribution(models.Model):
 
     name = fields.Char(string='Description', required=True, translate=True)
 
+    color = fields.Integer(string='Color Index')
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The photometric distribution name must be unique!'),
                         ]
 
