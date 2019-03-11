@@ -53,7 +53,7 @@ class LightingProduct(models.Model):
         for rec in self:
             rec.description = rec._generate_description()
 
-    def _generate_description(self):
+    def _generate_description(self, show_variant_data=True):
         self.ensure_one()
         data = []
         if self.type_ids:
@@ -177,7 +177,7 @@ class LightingProduct(models.Model):
         if data_sources:
             data.append('+'.join(data_sources))
 
-        if self.finish_id:
+        if show_variant_data and self.finish_id:
             data.append(self.finish_id.name)
 
         if data:
