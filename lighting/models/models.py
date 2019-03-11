@@ -47,7 +47,7 @@ class LightingProduct(models.Model):
                  'source_ids.line_ids.wattage_magnitude',
                  'source_ids.line_ids.luminous_flux1',
                  'source_ids.line_ids.luminous_flux2',
-                 'source_ids.line_ids.color_temperature',
+                 'source_ids.line_ids.color_temperature_id.value',
                  'finish_id.name')
     def _compute_description(self):
         for rec in self:
@@ -112,8 +112,8 @@ class LightingProduct(models.Model):
                                 lm_str = '%ix%s' % (line.source_id.num, lm_str)
                             data_line.append(lm_str)
 
-                        if line.color_temperature:
-                            data_line.append('%sK' % line.color_temperature)
+                        if line.color_temperature_id:
+                            data_line.append('%iK' % line.color_temperature_id.value)
 
                         if data_line:
                             data_lines.append(' '.join(data_line))
@@ -148,8 +148,8 @@ class LightingProduct(models.Model):
                                         lm_str = '%ix%s' % (line.source_id.num, lm_str)
                                     data_line.append(lm_str)
 
-                                if line.color_temperature:
-                                    data_line.append('%sK' % line.color_temperature)
+                                if line.color_temperature_id:
+                                    data_line.append('%iK' % line.color_temperature_id.value)
 
                                 if data_line:
                                     data_lines.append(' '.join(data_line))
@@ -847,8 +847,8 @@ class LightingProductSource(models.Model):
                 line = [l.type_id.code]
 
                 if l.is_integrated or l.is_lamp_included:
-                    if l.color_temperature:
-                        line.append("%iK" % l.color_temperature)
+                    if l.color_temperature_id:
+                        line.append("%iK" % l.color_temperature_id.value)
                     if l.luminous_flux_display:
                         line.append("%sLm" % l.luminous_flux_display)
 
@@ -886,7 +886,8 @@ class LightingProductSourceLine(models.Model):
 
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
-    color_temperature = fields.Integer(string='Color temperature (K)')
+    color_temperature_id = fields.Many2one(string='Color temperature (K)',
+                                           comodel_name='lighting.product.color.temperature', ondelete='cascade')
 
     is_led = fields.Boolean(related='type_id.is_led')
     color_consistency = fields.Float(string='Color consistency')

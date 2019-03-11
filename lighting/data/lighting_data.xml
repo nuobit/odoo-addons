@@ -259,5 +259,46 @@
         <record id="product_location_underwater" model="lighting.product.location">
             <field name="name">Underwater</field>
         </record>
+
+        <!-- Color temperature -->
+        <record id="product_color_temperature_1700" model="lighting.product.color.temperature">
+            <field name="value">1700</field>
+        </record>
+        <record id="product_color_temperature_1850" model="lighting.product.color.temperature">
+            <field name="value">1850</field>
+        </record>
+        <record id="product_color_temperature_2400" model="lighting.product.color.temperature">
+            <field name="value">2400</field>
+        </record>
+        <record id="product_color_temperature_2550" model="lighting.product.color.temperature">
+            <field name="value">2550</field>
+        </record>
+        <record id="product_color_temperature_2700" model="lighting.product.color.temperature">
+            <field name="value">2700</field>
+        </record>
+        <record id="product_color_temperature_3000" model="lighting.product.color.temperature">
+            <field name="value">3000</field>
+        </record>
+        <record id="product_color_temperature_3200" model="lighting.product.color.temperature">
+            <field name="value">3200</field>
+        </record>
+        <record id="product_color_temperature_3350" model="lighting.product.color.temperature">
+            <field name="value">3350</field>
+        </record>
+        <record id="product_color_temperature_5000" model="lighting.product.color.temperature">
+            <field name="value">5000</field>
+        </record>
+        <record id="product_color_temperature_5500" model="lighting.product.color.temperature">
+            <field name="value">5500</field>
+        </record>
+        <record id="product_color_temperature_6000" model="lighting.product.color.temperature">
+            <field name="value">6000</field>
+        </record>
+        <record id="product_color_temperature_6200" model="lighting.product.color.temperature">
+            <field name="value">6200</field>
+        </record>
+        <record id="product_color_temperature_6500" model="lighting.product.color.temperature">
+            <field name="value">6500</field>
+        </record>
     </data>
 </odoo>

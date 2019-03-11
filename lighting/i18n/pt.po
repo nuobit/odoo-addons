@@ -85,6 +85,11 @@ msgid "Installations"
 msgstr "Instalações"
 
 #. module: lighting
+#: model:ir.ui.menu,name:lighting.product_color_temperatures_menu
+msgid "Color temperatures"
+msgstr "Temperaturas de cor"
+
+#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_define_substitute_view
 msgid "Are you sure to define selected products as a substitutes?"
 msgstr "Tem certeza de definir produtos selecionados como substitutos?"
@@ -370,7 +375,7 @@ msgid "Color consistency"
 msgstr "Consistência de cores"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_id
 msgid "Color temperature (K)"
 msgstr "Temperatura de cor (K)"
 
@@ -1641,6 +1646,11 @@ msgid "Name"
 msgstr "Nome"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_color_temperature_value
+msgid "Value"
+msgstr "Valor"
+
+#. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_usb_ports
 msgid "Number of USB ports"
 msgstr "Número de portas USB"
@@ -2095,6 +2105,7 @@ msgstr "Árvore de tensão do produto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_location_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_color_temperature_product_count
 msgid "Product(s)"
 msgstr "Produtos)"
 
