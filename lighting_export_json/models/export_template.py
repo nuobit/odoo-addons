@@ -45,7 +45,7 @@ class LightingExportTemplate(models.Model):
         if self.pretty_print:
             kwargs = dict(indent=4, sort_keys=True)
 
-        objects = self.env['lighting.product'].search([], limit=10)
+        objects = self.env['lighting.product'].search([])
         res = self.generate_data(objects, hide_empty_fields=self.hide_empty_fields)
 
         for suffix, data in res.items():
