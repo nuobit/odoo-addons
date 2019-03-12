@@ -2,7 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 import json
 
@@ -10,13 +10,19 @@ import json
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
-    recess_dimension_display = fields.Char(compute='_compute_recess_dimension_display', string='Cut hole')
+    #### auxiliary function to get non db translations
+    def _(self, string):
+        return _(string)
+
+    ######### Display Cut hole dimensions ##########
+    cut_hole_display = fields.Char(string='Cut hole',
+                                           compute='_compute_cut_hole_display')
 
     @api.depends('recess_dimension_ids',
                  'recess_dimension_ids.type_id',
                  'recess_dimension_ids.value',
                  'recess_dimension_ids.sequence')
-    def _compute_recess_dimension_display(self):
+    def _compute_cut_hole_display(self):
         for prod in self:
             dims = prod.recess_dimension_ids
             if dims:
@@ -40,7 +46,109 @@ class LightingProduct(models.Model):
 
                 prod.recess_dimension_display = '%s: %s' % (res_label, res_value)
 
-    search_material_ids = fields.Many2many(comodel_name='lighting.product.material',
+    ######### Attachments ##########
+    attachment_display = fields.Serialized(string="Attachments",
+                                           compute='_compute_attachment_display')
+
+    @api.depends('attachment_ids.datas_fname',
+                 'attachment_ids.sequence',
+                 'attachment_ids.attachment_id.store_fname',
+                 'attachment_ids.type_id.code',
+                 'attachment_ids.type_id.name',
+                 )
+    def _compute_attachment_display(self):
+        active_langs = ['en_US', 'es_ES', 'fr_FR']
+        template_id = self.env.context.get('template_id')
+        for rec in self:
+            attachment_l = []
+            for a in rec.attachment_ids.sorted(lambda x: x.sequence):
+                if template_id:
+                    if a.type_id.id not in template_id.attachment_ids.mapped('type_id.id'):
+                        continue
+
+                attachment_d = {
+                    'datas_fname': a.datas_fname,
+                    'sequence': a.sequence,
+                    'store_fname': a.attachment_id.store_fname,
+                }
+
+                type_lang_d = {}
+                for lang in active_langs:
+                    type_lang_d[lang] = a.with_context(lang=lang).type_id.display_name
+                if type_lang_d:
+                    attachment_d.update({
+                        'type_id': type_lang_d
+                    })
+
+                if attachment_d:
+                    attachment_l.append(attachment_d)
+
+            if attachment_l:
+                rec.attachment_display = json.dumps(attachment_l)
+
+    ######### Sources ##########
+    source_display = fields.Serialized(string="Light sources",
+                                       compute='_compute_source_display')
+
+    @api.depends('source_ids.line_full_display',
+                 'source_ids.sequence',
+                 )
+    def _compute_source_display(self):
+        active_langs = ['en_US', 'es_ES', 'fr_FR']
+        for rec in self:
+            source_l = []
+            for a in rec.source_ids.sorted(lambda x: x.sequence):
+                source_d = {
+                    'sequence': a.sequence,
+                }
+
+                display_lang_d = {}
+                for lang in active_langs:
+                    display_lang_d[lang] = a.with_context(lang=lang).line_full_display
+                if display_lang_d:
+                    source_d.update({
+                        'line_full_display': display_lang_d
+                    })
+
+                if source_d:
+                    source_l.append(source_d)
+
+            if source_l:
+                rec.source_display = json.dumps(source_l)
+
+    ######### Beams ##########
+    beam_display = fields.Serialized(string="Light beams",
+                                     compute='_compute_beam_display')
+
+    @api.depends('beam_ids.line_full_display',
+                 'beam_ids.sequence',
+                 )
+    def _compute_beam_display(self):
+        active_langs = ['en_US', 'es_ES', 'fr_FR']
+        for rec in self:
+            beam_l = []
+            for a in rec.beam_ids.sorted(lambda x: x.sequence):
+                beam_d = {
+                    'sequence': a.sequence,
+                }
+
+                display_lang_d = {}
+                for lang in active_langs:
+                    display_lang_d[lang] = a.with_context(lang=lang).line_full_display
+                if display_lang_d:
+                    beam_d.update({
+                        'line_full_display': display_lang_d
+                    })
+
+                if beam_d:
+                    beam_l.append(beam_d)
+
+            if beam_l:
+                rec.beam_display = json.dumps(beam_l)
+
+    ######### Search Materials ##########
+    search_material_ids = fields.Many2many(string="Search material",
+                                           comodel_name='lighting.product.material',
                                            compute='_compute_search_material')
 
     @api.depends('body_material_ids',
@@ -64,7 +172,8 @@ class LightingProduct(models.Model):
                 objs = self.env['lighting.product.material'].browse(list(materials_s))
                 rec.search_material_ids = [(4, x.id, False) for x in objs.sorted(lambda x: x.display_name)]
 
-    search_cri = fields.Serialized(string="CRI",
+    ######### Search CRI ##########
+    search_cri = fields.Serialized(string="Search CRI",
                                    compute='_compute_search_cri')
 
     @api.depends('source_ids.line_ids.cri_min')
@@ -75,3 +184,101 @@ class LightingProduct(models.Model):
                           (x.is_integrated or x.is_lamp_included)).mapped('cri_min')
 
             rec.search_cri = json.dumps(sorted(list(set(cris))))
+
+    ######### Search Beams ##########
+    search_beam_angle = fields.Serialized(string="Search beam angle",
+                                          compute='_compute_search_beam_angle')
+
+    @api.depends('beam_ids.dimension_ids.value',
+                 'beam_ids.dimension_ids.type_id',
+                 'beam_ids.dimension_ids.type_id.name',
+                 'beam_ids.dimension_ids.type_id.uom',
+                 )
+    def _compute_search_beam_angle(self):
+        for rec in self:
+            angles = rec.beam_ids.mapped('dimension_ids.value')
+            rec.search_beam_angle = json.dumps(sorted(list(set(angles))))
+
+    ######### Search Wattage ##########
+    search_wattage = fields.Serialized(string="Search wattage",
+                                       compute='_compute_search_wattage')
+
+    @api.depends('source_ids.line_ids.wattage',
+                 )
+    def _compute_search_wattage(self):
+        for rec in self:
+            w_integrated = 0
+            wattages_s = set()
+            for line in rec.source_ids.mapped('line_ids'):
+                if line.wattage:
+                    wattage = line.wattage * line.source_id.num
+                    if line.is_integrated:
+                        w_integrated += wattage
+                    else:
+                        wattages_s.add(wattage)
+
+            wattages_s2 = set()
+            for w in wattages_s:
+                wattages_s2.add(w + w_integrated)
+
+            if wattages_s2:
+                rec.search_wattage = json.dumps(sorted(list(wattages_s2)))
+
+    ######### Search Color temperature ##########
+    search_color_temperature = fields.Serialized(string="Search color temperature",
+                                                 compute='_compute_search_color_temperature')
+
+    @api.depends('source_ids.line_ids.color_temperature_id.value',
+                 )
+    def _compute_search_color_temperature(self):
+        for rec in self:
+            colork_s = set()
+            for line in rec.source_ids.mapped('line_ids'):
+                if line.is_integrated:
+                    if line.color_temperature_id:
+                        colork_s.add(line.color_temperature_id.value)
+
+            if colork_s:
+                rec.search_color_temperature = json.dumps(sorted(list(colork_s)))
+
+    ######### Search Luminoux flux ##########
+    search_luminous_flux = fields.Serialized(string="Search luminous flux",
+                                             compute='_compute_search_luminous_flux')
+
+    @api.depends('source_ids.line_ids.luminous_flux1',
+                 'source_ids.line_ids.luminous_flux2',
+                 )
+    def _compute_search_luminous_flux(self):
+        for rec in self:
+            fluxes_s = set()
+            for line in rec.source_ids.mapped('line_ids'):
+                if line.is_integrated:
+                    if line.luminous_flux1:
+                        flux1 = line.luminous_flux1 * line.source_id.num
+                        fluxes_s.add(flux1)
+                    if line.luminous_flux2:
+                        flux2 = line.luminous_flux2 * line.source_id.num
+                        fluxes_s.add(flux2)
+
+            if fluxes_s:
+                rec.search_luminous_flux = json.dumps(sorted(list(fluxes_s)))
+
+    ######### Search Source type flux ##########
+    search_source_type = fields.Serialized(string="Search source type",
+                                           compute='_compute_search_source_type')
+
+    @api.depends('source_ids.line_ids.is_integrated',
+                 'source_ids.line_ids.is_led',
+                 )
+    def _compute_search_source_type(self):
+        active_langs = ['en_US', 'es_ES', 'fr_FR']
+        for rec in self:
+            leds_integrated = rec.source_ids.mapped('line_ids').filtered(lambda x: x.is_led and x.is_integrated)
+            type_str = 'LED' if leds_integrated else 'Other'
+
+            source_type_d = {}
+            for lang in active_langs:
+                source_type_d[lang] = rec.with_context(lang=lang)._(type_str)
+
+            if source_type_d:
+                rec.search_source_type = json.dumps(source_type_d)

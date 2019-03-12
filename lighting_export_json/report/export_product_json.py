@@ -69,53 +69,27 @@ class ExportProductJson(models.AbstractModel):
         template_d = {}
         for obj in objects:
             obj_d = {}
-            search_d = {}
             for field, meta in header.items():
                 field_d = {}
                 has_value = False
                 meta_langs = sorted(meta['string'].keys(), key=lambda x: (0, x) if x == 'en_US' else (1, x))
                 for lang in meta_langs:
-                    datum = getattr(obj.with_context(lang=lang), field)
-                    search = None
+                    datum = getattr(obj.with_context(lang=lang, template_id=template_id), field)
                     if meta['type'] == 'selection':
                         datum = dict(meta['selection'][lang]).get(datum)
                     elif meta['type'] == 'boolean':
                         if meta['translate']:
                             datum = _('Yes') if datum else _('No')
                     elif meta['type'] == 'many2many':
-                        if hasattr(datum, 'export_search_json'):
-                            search = datum.export_search_json(template_id)
-
                         datum = [x.display_name for x in datum]
                     elif meta['type'] == 'many2one':
                         datum = datum.display_name
-                    elif meta['type'] == 'one2many':
-                        if hasattr(datum, 'export_search_json'):
-                            search = datum.export_search_json(template_id)
-
-                        if hasattr(datum, 'export_json'):
-                            datum = datum.export_json(template_id)
-                        else:
-                            datum = None  # NOT SUPPORTED
 
                     if meta['type'] != 'boolean' and not datum:
                         datum = None
 
                     if datum is not None:
                         has_value = True
-
-                    ## calculem els search
-                    if search:
-                        for k, v in search.items():
-                            key = '.'.join([field, k])
-                            if not meta['translate']:
-                                if key not in search_d:
-                                    search_d[key] = v
-                            else:
-                                if key not in search_d:
-                                    search_d[key] = {}
-                                if lang not in search_d[key]:
-                                    search_d[key][lang] = v
 
                     ## acumulem els valors
                     if not meta['translate']:
@@ -138,11 +112,6 @@ class ExportProductJson(models.AbstractModel):
                     obj_d[field] = field_d
 
             if obj_d:
-                # afegim els searchs
-                if search_d:
-                    for k, v in search_d.items():
-                        obj_d['search_%s' % k] = v
-
                 ## afegim a les variants
                 reference = obj_d['reference']
                 m = re.match(r'^(.+)-.{2}$', reference)

@@ -16,9 +16,54 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: lighting_export_json
-#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_recess_dimension_display
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_cut_hole_display
 msgid "Cut hole"
 msgstr "Boîte encastrée"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_attachment_display
+msgid "Attachments"
+msgstr "Les pièces jointes"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_source_display
+msgid "Light sources"
+msgstr "Sources de lumière"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_beam_display
+msgid "Light beams"
+msgstr "Faisceaux de lumière"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_beam_angle
+msgid "Search beam angle"
+msgstr "Recherche par angle de faisceau"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_color_temperature
+msgid "Search color temperature"
+msgstr "Recherche par température de couleur"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_cri
+msgid "Search CRI"
+msgstr "Recherche par CRI"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_luminous_flux
+msgid "Search luminous flux"
+msgstr "Recherche par flux lumineux"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_source_type
+msgid "Search source type"
+msgstr "Recherche par type de source de lumière"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_wattage
+msgid "Search wattage"
+msgstr "Recherche par pouvoir"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_report_lighting_export_json_export_product_json_display_name
