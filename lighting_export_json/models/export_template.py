@@ -5,8 +5,6 @@
 from odoo import api, fields, models, _, tools
 from odoo.exceptions import UserError
 
-from odoo.odoo.tools import config
-
 import os
 import json
 import datetime
@@ -27,7 +25,7 @@ class LightingExportTemplate(models.Model):
     @api.onchange('db_filestore')
     def onchange_db_filestore(self):
         if self.db_filestore:
-            self.output_base_directory = config.filestore(self._cr.dbname)
+            self.output_base_directory = tools.config.filestore(self._cr.dbname)
         else:
             self.output_base_directory = False
 
