@@ -327,7 +327,6 @@ class LightingProduct(models.Model):
     # light characteristics tab
     total_nominal_flux = fields.Float(string='Total flux (Lm)', help='Luminaire total nominal flux',
                                       track_visibility='onchange')
-    cri_min = fields.Integer(string='CRI', help='Minimum color rendering index', track_visibility='onchange')
     ugr_max = fields.Integer(string='UGR', help='Maximum unified glare rating', track_visibility='onchange')
 
     lifetime = fields.Integer(string='Lifetime (h)', track_visibility='onchange')
@@ -851,6 +850,8 @@ class LightingProductSource(models.Model):
                         line.append("%iK" % l.color_temperature_id.value)
                     if l.luminous_flux_display:
                         line.append("%sLm" % l.luminous_flux_display)
+                    if l.is_led and l.cri_min:
+                        line.append("%iCRI" % l.cri_min)
 
                 if l.wattage_display:
                     line.append("(%s)" % l.wattage_display)
@@ -888,6 +889,8 @@ class LightingProductSourceLine(models.Model):
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
     color_temperature_id = fields.Many2one(string='Color temperature (K)',
                                            comodel_name='lighting.product.color.temperature', ondelete='cascade')
+
+    cri_min = fields.Integer(string='CRI', help='Minimum color rendering index', track_visibility='onchange')
 
     is_led = fields.Boolean(related='type_id.is_led')
     color_consistency = fields.Float(string='Color consistency')

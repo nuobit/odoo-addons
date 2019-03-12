@@ -294,9 +294,9 @@ msgid "Bread"
 msgstr "Pan"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_cri_min
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_cri_min
 msgid "CRI"
-msgstr "Índice Repro. Cromática"
+msgstr "CRI"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cable_outlets
@@ -1616,7 +1616,7 @@ msgid "Meta description"
 msgstr "Metadescripción"
 
 #. module: lighting
-#: model:ir.model.fields,help:lighting.field_lighting_product_cri_min
+#: model:ir.model.fields,help:lighting.field_lighting_product_source_line_cri_min
 msgid "Minimum color rendering index"
 msgstr "Índice de reproducción de color mínimo"
 

@@ -295,7 +295,7 @@ msgid "Bread"
 msgstr "Pão"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_cri_min
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_cri_min
 msgid "CRI"
 msgstr "CRI"
 
@@ -1617,7 +1617,7 @@ msgid "Meta description"
 msgstr "Meta Descrição"
 
 #. module: lighting
-#: model:ir.model.fields,help:lighting.field_lighting_product_cri_min
+#: model:ir.model.fields,help:lighting.field_lighting_product_source_line_cri_min
 msgid "Minimum color rendering index"
 msgstr "Índice de reprodução de cor mínima"
 

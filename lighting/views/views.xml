@@ -139,7 +139,6 @@
                         <page string="Lighting">
                             <group>
                                 <field name="total_nominal_flux"/>
-                                <field name="cri_min"/>
                                 <field name="ugr_max"/>
                                 <field name="lifetime"/>
 
@@ -763,7 +762,7 @@
                                 <field name="luminous_flux_display"/>
 
                                 <field name="color_temperature_id"/>
-                                <field name="special_spectrum"/>
+                                <field name="cri_min"/>
 
                                 <field name="efficiency_ids"
                                        widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -824,6 +823,7 @@
 
                     <group string="LED specifications" attrs="{'invisible': [('is_led', '=', False)]}">
                         <field name="is_led" invisible="1"/>
+                        <field name="cri_min"/>
                         <field name="color_consistency"/>
                         <field name="special_spectrum"/>
                         <field name="led_chip_ids">
