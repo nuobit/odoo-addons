@@ -16,17 +16,7 @@ class ExportProductJson(models.AbstractModel):
     _name = 'report.lighting_export_json.export_product_json'
     _inherit = 'report.report_json.abstract'
 
-    def generate_json_report(self, data, objects):
-        return self.with_context(lang=data['lang']).generate_json_report_ctx(data, objects)
-
-    def generate_json_report_ctx(self, data, objects):
-        template_id = self.env['lighting.export.template'].browse(data.get('template_id'))
-        objects = self.env['lighting.product'].browse(data.get('active_ids'))
-        if data.get('interval') == 'all':
-            active_model = self.env.context.get('active_model')
-            active_domain = data.get('context').get('active_domain')
-            objects = self.env[active_model].search(active_domain)
-
+    def generate_data(self, objects, template_id, hide_empty_fields=True):
         active_langs = self.env['res.lang'].search([('active', '=', True)]).mapped("code")
         active_langs = ['en_US', 'es_ES', 'fr_FR']
         # active_langs.sort(lambda x: (0, x) if x == 'en_US' else (1, x))
@@ -97,7 +87,7 @@ class ExportProductJson(models.AbstractModel):
                     else:
                         field_d[lang] = datum
 
-                if has_value or not data.get('hide_empty_fields'):
+                if has_value or not hide_empty_fields:
                     obj_d[field] = field_d
 
             if obj_d:
@@ -126,6 +116,24 @@ class ExportProductJson(models.AbstractModel):
 
                     template_clean_d[k] = {'description': template_desc_d}
 
+        res = {
+            'labels': label_d,
+            'templates': template_clean_d,
+            'products': objects_ld,
+        }
+
+        return res
+
+    def generate_json_report(self, data, objects):
+        template_id = self.env['lighting.export.template'].browse(data.get('template_id'))
+        objects = self.env['lighting.product'].browse(data.get('active_ids'))
+        if data.get('interval') == 'all':
+            active_model = self.env.context.get('active_model')
+            active_domain = data.get('context').get('active_domain')
+            objects = self.env[active_model].search(active_domain)
+
+        res = self.generate_data(objects, template_id, hide_empty_fields=data.get('hide_empty_fields'))
+
         def default(o):
             if isinstance(o, datetime.date):
                 return fields.Date.to_string(o)
@@ -140,10 +148,4 @@ class ExportProductJson(models.AbstractModel):
         if data['pretty_print']:
             kwargs = dict(indent=4, sort_keys=True)
 
-        json_data = {
-            'labels': label_d,
-            'templates': template_clean_d,
-            'products': objects_ld,
-        }
-
-        return json.dumps(json_data, ensure_ascii=False, default=default, **kwargs)
+        return json.dumps(res, ensure_ascii=False, default=default, **kwargs)
