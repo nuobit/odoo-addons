@@ -66,7 +66,6 @@ class ExportProductJson(models.AbstractModel):
 
         ## generate data and gather data
         objects_ld = []
-        template_d = {}
         for obj in objects:
             obj_d = {}
             for field, meta in header.items():
@@ -93,58 +92,39 @@ class ExportProductJson(models.AbstractModel):
 
                     ## acumulem els valors
                     if not meta['translate']:
-                        # field_d['value'] = datum
                         field_d = datum
                         break
                     else:
-                        # if 'value' not in field_d:
-                        #    field_d['value'] = {}
                         field_d[lang] = datum
 
                 if has_value or not data.get('hide_empty_fields'):
-                    ## afegim els labels
-                    # for lang in meta['string'].keys():
-                    #     if 'label' not in field_d:
-                    #         field_d['label'] = {}
-                    #     field_d['label'][lang] = meta['string'][lang]
-
-                    # afegim les dades
                     obj_d[field] = field_d
 
             if obj_d:
-                ## afegim a les variants
-                reference = obj_d['reference']
-                m = re.match(r'^(.+)-.{2}$', reference)
-                if m:
-                    template_name = m.group(1)
-                    if template_name not in template_d:
-                        template_d[template_name] = []
-                    template_d[template_name].append(reference)
-
-                    ## afegim el pare a la ref actual
-                    obj_d['template'] = template_name
-
-                ## afegim l'obkecte
+                ## afegim l'objecte
                 objects_ld.append(obj_d)
 
-        # comprovem que les temlates rene  mes dun element, sino, leliminem
-        template_clean_d = {}
-        for k, v in template_d.items():
-            if len(v) > 1:
-                template_clean_d[k] = v
+        # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variants
+        if 'template' in header:
+            template_d = {}
+            for obj in objects:
+                template_name = getattr(obj, 'template', None)
+                if template_name:
+                    if template_name not in template_d:
+                        template_d[template_name] = []
+                    template_d[template_name].append(obj)
 
-        # eliminem el camp tempalte dels productes que nomes tenen un pare
-        # vol dir que no te variants o en te 1 i es el propi pare
-        # afegim la descriocio generica (sens el finish) a la template
-        template_upd_d = {}
-        for obj_d in objects_ld:
-            if 'template' in obj_d:
-                template_name = obj_d['template']
-                if template_name in template_clean_d:
-                    if template_name not in template_upd_d:
-                        template_upd_d[template_name] = {
-                            'description': obj_d['description']
-                        }
+            # comprovem que les temlates rene  mes dun element, sino, leliminem
+            # escollim un objet qualsevol o generalm al descricio sense el finish
+            template_clean_d = {}
+            for k, v in template_d.items():
+                if len(v) > 1:
+                    template_desc_d = {}
+                    for lang in active_langs:
+                        template_desc_d[lang] = v[0].with_context(lang=lang)._generate_description(
+                            show_variant_data=False)
+
+                    template_clean_d[k] = {'description': template_desc_d}
 
         def default(o):
             if isinstance(o, datetime.date):
@@ -162,7 +142,7 @@ class ExportProductJson(models.AbstractModel):
 
         json_data = {
             'labels': label_d,
-            'templates': template_upd_d,
+            'templates': template_clean_d,
             'products': objects_ld,
         }
 

@@ -16,6 +16,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_template
+msgid "Template"
+msgstr "Modèle"
+
+#. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_cut_hole_display
 msgid "Cut hole"
 msgstr "Boîte encastrée"

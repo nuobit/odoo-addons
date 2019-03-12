@@ -4,6 +4,7 @@
 
 from odoo import models, fields, api, _
 
+import re
 import json
 
 
@@ -14,9 +15,21 @@ class LightingProduct(models.Model):
     def _(self, string):
         return _(string)
 
+    ######### Template #############################
+    template = fields.Char(string='Template',
+                           compute='_compute_template')
+
+    @api.depends('reference',
+                 )
+    def _compute_template(self):
+        for rec in self:
+            m = re.match(r'^(.+)-.{2}$', rec.reference)
+            if m:
+                rec.template = m.group(1)
+
     ######### Display Cut hole dimensions ##########
     cut_hole_display = fields.Char(string='Cut hole',
-                                           compute='_compute_cut_hole_display')
+                                   compute='_compute_cut_hole_display')
 
     @api.depends('recess_dimension_ids',
                  'recess_dimension_ids.type_id',
