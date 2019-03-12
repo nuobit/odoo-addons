@@ -5,7 +5,7 @@
 {
     'name': "Lighting JSON Export",
     'description': "Lighting export data JSON",
-    'version': '11.0.0.6.1',
+    'version': '11.0.0.7.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -13,6 +13,7 @@
     'depends': ['lighting_export', 'report_json'],
     'data': [
         'report/export_product_json_reports.xml',
+        'views/export_template_views.xml',
         'wizard/export_views.xml',
     ],
     'installable': True,

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="export_template_form_view_inherit_json" model="ir.ui.view">
+        <field name="name">export.template.form.inherit.json</field>
+        <field name="model">lighting.export.template</field>
+        <field name="inherit_id" ref="lighting_export.export_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="hide_empty_fields" position="after">
+                <field name="pretty_print" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
+            </field>
+            <xpath expr="//header" position="inside">
+                <button name="action_json_export" type="object" string="Export"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
+            </xpath>
+            <xpath expr="//page[@name='config']" position="inside">
+                <group col="6" string="Output" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
+                    <group col="3" colspan="4">
+                        <field colspan="2" name="output_base_directory"/>
+                        <field colspan="1" name="db_filestore"/>
+                    </group>
+                    <newline/>
+                    <group col="2" colspan="2">
+                        <field colspan="2" name="output_directory"/>
+                        <field colspan="2" name="output_filename_prefix"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

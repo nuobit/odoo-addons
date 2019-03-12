@@ -5,3 +5,5 @@
 from . import product
 from . import product_source
 from . import product_beam
+
+from . import export_template
