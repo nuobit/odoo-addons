@@ -4,6 +4,8 @@
 
 from odoo import models, fields, api
 
+import json
+
 
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
@@ -62,9 +64,14 @@ class LightingProduct(models.Model):
                 objs = self.env['lighting.product.material'].browse(list(materials_s))
                 rec.search_material_ids = [(4, x.id, False) for x in objs.sorted(lambda x: x.display_name)]
 
-    # search_dimension_ids = fields.One2many(comodel_name='lighting.product.dimension',
-    #                                       inverse_name='product_id', compute='pepe')
-    #
-    # def pepe(self):
-    #     for rec in self:
-    #         rec.search_dimension_ids = [(0, False, {'product_id':rec.id, 'value': 78, 'sequence': 3, 'type_id': 9, 'name': 'oo'})]
+    search_cri = fields.Serialized(string="CRI",
+                                   compute='_compute_search_cri')
+
+    @api.depends('source_ids.line_ids.cri_min')
+    def _compute_search_cri(self):
+        for rec in self:
+            cris = rec.source_ids.mapped('line_ids').filtered(
+                lambda x: x.cri_min != 0 and x.is_led and
+                          (x.is_integrated or x.is_lamp_included)).mapped('cri_min')
+
+            rec.search_cri = json.dumps(sorted(list(set(cris))))
