@@ -31,7 +31,7 @@ def migrate(env, version):
                 ('source_id.product_id', '=', id),
                 ('source_id.relevance', '=', 'main'),
                 ('is_led', '=', True),
-                ('is_integrated', '=', True),
+                '|', ('is_integrated', '=', True), ('is_lamp_included', '=', True),
             ]).sorted(lambda x: (x.sequence, x.id))
             if source_line:
                 source_line[0].cri_min = cri_min
