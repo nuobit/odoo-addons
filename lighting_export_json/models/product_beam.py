@@ -18,7 +18,7 @@ class LightingProductBeam(models.Model):
                 res.append('%i x' % rec.num)
 
             if rec.photometric_distribution_ids:
-                res.append('[%s]' % ', '.join([x.display_name for x in rec.photometric_distribution_ids]))
+                res.append('%s' % ', '.join([x.display_name for x in rec.photometric_distribution_ids]))
 
             if rec.dimensions_display:
                 res.append(rec.dimensions_display)
