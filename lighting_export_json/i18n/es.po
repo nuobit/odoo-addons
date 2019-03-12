@@ -66,6 +66,11 @@ msgid "Search wattage"
 msgstr "Búsqueda por potencia"
 
 #. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_material_ids
+msgid "Search material"
+msgstr "Búsqueda por material"
+
+#. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_report_lighting_export_json_export_product_json_display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
@@ -134,11 +139,6 @@ msgstr "Producto"
 #: model:ir.actions.report,name:lighting_export_json.export_product_json_report
 msgid "Products JSON report"
 msgstr "Products JSON report"
-
-#. module: lighting_export_json
-#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_material_ids
-msgid "Search Material"
-msgstr "Search Material"
 
 #. module: lighting_export_json
 #: code:addons/lighting_export_json/models/mixin.py:30

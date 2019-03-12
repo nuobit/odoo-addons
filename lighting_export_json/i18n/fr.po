@@ -66,6 +66,11 @@ msgid "Search wattage"
 msgstr "Recherche par pouvoir"
 
 #. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_search_material_ids
+msgid "Search material"
+msgstr "Recherche par matériau"
+
+#. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_report_lighting_export_json_export_product_json_display_name
 msgid "Display Name"
 msgstr "Display Name"
