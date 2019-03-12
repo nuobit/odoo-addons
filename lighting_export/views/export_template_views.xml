@@ -9,6 +9,7 @@
         <field name="model">lighting.export.template</field>
         <field name="arch" type="xml">
             <form string="Export template Form">
+                <header/>
                 <sheet>
                     <field name="image" widget="image" class="oe_avatar"
                            options="{'preview_image': 'image_medium'}"/>
@@ -45,6 +46,17 @@
                                         <field name="resolution"/>
                                     </tree>
                                 </field>
+                            </group>
+                        </page>
+                        <page string="Config">
+                            <group col="4">
+                                <group col="2" colspan="1">
+                                    <field name="output_type"/>
+                                    <field name="hide_empty_fields"/>
+                                </group>
+                                <group col="2" colspan="1">
+                                    <field name="lang_ids" widget="many2many_checkboxes"/>
+                                </group>
                             </group>
                         </page>
                     </notebook>

@@ -30,6 +30,17 @@ class LightingExportTemplate(models.Model):
     attachment_ids = fields.One2many(comodel_name='lighting.export.template.attachment', inverse_name='template_id',
                                      string='Attachments', copy=True)
 
+    lang_ids = fields.Many2many(comodel_name='res.lang',
+                                relation='lighting_export_template_lang_rel',
+                                column1='template_id', column2='lang_id',
+                                string='Languages',
+                                domain=[('active', '=', True)],
+                                track_visibility='onchange')
+
+    hide_empty_fields = fields.Boolean(string="Hide empty fields", default=True)
+
+    output_type = fields.Selection(selection=[], string="Output type", required=True)
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The template name must be unique!'),
                         ]
 
