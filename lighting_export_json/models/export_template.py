@@ -62,7 +62,7 @@ class LightingExportTemplate(models.Model):
             parts = [self.output_base_directory]
             if self.output_directory:
                 parts.append(self.output_directory)
-                os.makedirs(os.path.join(*parts), mode=0o770, exist_ok=True)
+                os.makedirs(os.path.join(*parts), mode=0o774, exist_ok=True)
             parts.append(filename)
             path = os.path.join(*parts)
 
