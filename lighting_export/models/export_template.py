@@ -41,7 +41,7 @@ class LightingExportTemplate(models.Model):
 
     output_type = fields.Selection(selection=[], string="Output type", required=True)
 
-    domain = fields.Char(string='Domain')
+    domain = fields.Text(string='Domain')
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The template name must be unique!'),
                         ]
