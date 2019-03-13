@@ -9,10 +9,6 @@ import os
 import json
 import datetime
 
-import logging
-
-_logger = logging.getLogger(__name__)
-
 
 class LightingExportTemplate(models.Model):
     _inherit = 'lighting.export.template'
@@ -65,11 +61,9 @@ class LightingExportTemplate(models.Model):
                 json.dump(res[suffix], f, ensure_ascii=False, default=default, **kwargs)
 
     def generate_data(self, objects, hide_empty_fields=True):
-        _logger.info("Export data started...")
         active_langs = self.lang_ids.mapped('code')
 
         ## base headers with labels replaced and subset acoridng to template
-        _logger.info("Generating headers...")
         header = {}
         for line in self.field_ids.sorted(lambda x: x.sequence):
             field_name = line.field_id.name
@@ -96,17 +90,13 @@ class LightingExportTemplate(models.Model):
             if item:
                 item['translate'] = line.translate
                 header[field_name] = item
-        _logger.info("Headers successfully generated...")
 
         ### afegim els labels
-        _logger.info("Generating labels...")
         label_d = {}
         for field, meta in header.items():
             label_d[field] = meta['string']
-        _logger.info("Labels successfully generated...")
 
         ## generate data and gather data
-        _logger.info("Generating products...")
         objects_ld = []
         for obj in objects:
             obj_d = {}
@@ -146,10 +136,7 @@ class LightingExportTemplate(models.Model):
                 ## afegim l'objecte
                 objects_ld.append(obj_d)
 
-        _logger.info("Products successfully generated...")
-
         # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variants
-        _logger.info("Generating tempaltes...")
         if 'template' in header:
             template_d = {}
             for obj in objects:
@@ -170,9 +157,6 @@ class LightingExportTemplate(models.Model):
                             show_variant_data=False)
 
                     template_clean_d[k] = {'description': template_desc_d}
-        _logger.info("Templates successfully generated...")
-
-        _logger.info("Export data successfully done")
 
         res = {
             'labels': label_d,
