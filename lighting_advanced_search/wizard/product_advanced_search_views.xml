@@ -35,13 +35,15 @@
                             <field name="voltage_in_ids" widget="many2many_tags" nolabel="1"/>
                             <field name="voltage_in_op" widget="radio" options="{'horizontal': true}" nolabel="1"/>
                         </group>
+                        <group string="Sealing (IP)" col="1" colspan="1">
+                            <field name="sealing_in_ids" widget="many2many_tags" nolabel="1"/>
+                        </group>
+                        <group string="Color temperature (K)" col="1" colspan="1">
+                            <field name="color_temperature_in_ids" widget="many2many_tags" nolabel="1"/>
+                        </group>
                     </group>
                 </group>
                 <group>
-                    <group string="IP">
-                        <field name="ip_from_in"/>
-                        <field name="ip_to_in"/>
-                    </group>
                     <group string="Wattage (W)">
                         <field name="wattage_from_in"/>
                         <field name="wattage_to_in"/>
@@ -49,10 +51,6 @@
                     <group string="Luminous flux (Lm)">
                         <field name="luminous_flux_from_in"/>
                         <field name="luminous_flux_to_in"/>
-                    </group>
-                    <group string="Color temperture (K)">
-                        <field name="color_temperature_from_in"/>
-                        <field name="color_temperature_to_in"/>
                     </group>
                 </group>
 
