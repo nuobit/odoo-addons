@@ -49,12 +49,14 @@
                             </group>
                         </page>
                         <page string="Config" name="config">
-                            <group col="4">
-                                <group col="2" colspan="1">
+                            <group>
+                                <group>
                                     <field name="output_type"/>
                                     <field name="hide_empty_fields"/>
                                 </group>
-                                <group col="2" colspan="1">
+                            </group>
+                            <group>
+                                <group>
                                     <field name="lang_ids" widget="many2many_checkboxes"/>
                                 </group>
                             </group>
