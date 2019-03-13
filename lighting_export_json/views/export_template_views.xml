@@ -17,9 +17,9 @@
                         attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
             </xpath>
             <xpath expr="//page[@name='config']" position="inside">
-                <group col="6" string="Output" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
+                <group col="4" string="Output" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
                     <group col="3" colspan="4">
-                        <field colspan="2" name="output_base_directory"/>
+                        <field colspan="1" name="output_base_directory"/>
                         <field colspan="1" name="db_filestore"/>
                     </group>
                     <newline/>
