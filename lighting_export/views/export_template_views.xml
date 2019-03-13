@@ -57,6 +57,11 @@
                             </group>
                             <group>
                                 <group>
+                                    <field name="domain"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
                                     <field name="lang_ids" widget="many2many_checkboxes"/>
                                 </group>
                             </group>
