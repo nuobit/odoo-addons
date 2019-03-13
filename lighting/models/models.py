@@ -289,12 +289,13 @@ class LightingProduct(models.Model):
                                         help='Autocalculate total wattage', default=True, track_visibility='onchange')
 
     @api.depends('total_wattage_auto', 'source_ids.line_ids.wattage', 'source_ids.line_ids.type_id',
-                 'source_ids.line_ids.type_id.is_integrated')
+                 'source_ids.line_ids.type_id.is_integrated',
+                 'source_ids.line_ids.is_lamp_included')
     def _compute_total_wattage(self):
         for rec in self:
             if rec.total_wattage_auto:
                 rec.total_wattage = 0
-                line_l = rec.source_ids.mapped('line_ids').filtered(lambda x: x.type_id.is_integrated)
+                line_l = rec.source_ids.mapped('line_ids').filtered(lambda x: x.is_integrated or x.is_lamp_included)
                 for line in line_l:
                     if line.wattage <= 0:
                         raise ValidationError("%s: The source line %s has invalid wattage" % (rec.display_name,
