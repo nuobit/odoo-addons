@@ -8,6 +8,7 @@ from odoo.exceptions import UserError
 import os
 import json
 import datetime
+import ast
 
 import logging
 
@@ -49,7 +50,11 @@ class LightingExportTemplate(models.Model):
         if self.pretty_print:
             kwargs = dict(indent=4, sort_keys=True)
 
-        objects = self.env['lighting.product'].search([])
+        domain = []
+        if self.domain:
+            domain = ast.literal_eval(self.domain)
+
+        objects = self.env['lighting.product'].search(domain)
         res = self.generate_data(objects, hide_empty_fields=self.hide_empty_fields)
 
         for suffix, data in res.items():
