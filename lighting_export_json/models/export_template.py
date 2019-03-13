@@ -158,7 +158,7 @@ class LightingExportTemplate(models.Model):
         _logger.info("Products successfully generated...")
 
         # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variants
-        _logger.info("Generating tempaltes...")
+        _logger.info("Generating templates...")
         if 'template' in header:
             template_d = {}
             for obj in objects:
