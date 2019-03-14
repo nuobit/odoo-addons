@@ -449,13 +449,8 @@ msgstr "Crear el primer Producto"
 
 #. module: lighting
 #: model:ir.actions.act_window,help:lighting.product_ecorraecategory_list_action
-msgid "Create the first Product Ecorrae I category"
-msgstr "Crea la primera categoría del producto Ecorrae I"
-
-#. module: lighting
-#: model:ir.actions.act_window,help:lighting.product_ecorrae2category_list_action
-msgid "Create the first Product Ecorrae II category"
-msgstr "Crea la primera categoría del producto Ecorrae II."
+msgid "Create the first Product Ecorrae category"
+msgstr "Crea la primera categoría del producto Ecorrae"
 
 #. module: lighting
 #: model:ir.actions.act_window,help:lighting.product_beam_photodistribution_list_action
@@ -585,7 +580,6 @@ msgstr "Crea la primera tensión del producto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_define_substitute_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable_create_uid
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2category_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_create_uid
@@ -630,7 +624,6 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_define_substitute_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable_create_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2category_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_create_date
@@ -695,7 +688,6 @@ msgstr "Definir sustitutos"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_photodistribution_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_description
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2category_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_description
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_name
@@ -823,7 +815,6 @@ msgstr "Descatalogado en breve"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_display_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2category_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_display_name
@@ -902,13 +893,8 @@ msgstr "Categoría ECORRAE II"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_ecorraecategories_menu
-msgid "Ecorrae I categories"
-msgstr "Categorías Ecorrae I"
-
-#. module: lighting
-#: model:ir.ui.menu,name:lighting.product_ecorrae2categories_menu
-msgid "Ecorrae II categories"
-msgstr "Categorías Ecorrae II"
+msgid "Ecorrae categories"
+msgstr "Categorías Ecorrae"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_effective_date
@@ -1338,7 +1324,6 @@ msgstr "Idiomas"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_define_substitute___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable___last_update
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2category___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage___last_update
@@ -1382,7 +1367,6 @@ msgstr "Última Modificación en"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_define_substitute_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable_write_uid
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2category_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_write_uid
@@ -1427,7 +1411,6 @@ msgstr "Última actualización de"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_define_substitute_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable_write_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorrae2category_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_write_date
@@ -1788,33 +1771,18 @@ msgstr "Producto"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.product_ecorraecategory_list_action
-msgid "Product Ecorrae I category"
-msgstr "Producto Ecorrae categoría I"
+msgid "Product Ecorrae category"
+msgstr "Producto Ecorrae categoría"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_ecorraecategory_form_view
-msgid "Product Ecorrae I category Form"
-msgstr "Producto Ecorrae I categoría Forma"
+msgid "Product Ecorrae category Form"
+msgstr "Producto Ecorrae categoría Forma"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_ecorraecategory_tree_view
-msgid "Product Ecorrae I category Tree"
-msgstr "Producto Ecorrae I categoría Árbol"
-
-#. module: lighting
-#: model:ir.actions.act_window,name:lighting.product_ecorrae2category_list_action
-msgid "Product Ecorrae II category"
-msgstr "Categoría de producto Ecorrae II"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_ecorrae2category_form_view
-msgid "Product Ecorrae II category Form"
-msgstr "Producto Ecorrae II categoría Forma"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_ecorrae2category_tree_view
-msgid "Product Ecorrae II category Tree"
-msgstr "Producto Ecorrae II categoría Árbol"
+msgid "Product Ecorrae category Tree"
+msgstr "Producto Ecorrae categoría Árbol"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
@@ -2464,11 +2432,6 @@ msgid "The ecorrae category description must be unique!"
 msgstr "¡La descripción de la categoría ecorrae debe ser única!"
 
 #. module: lighting
-#: sql_constraint:lighting.product.ecorrae2category:0
-msgid "The ecorrae2 category description must be unique!"
-msgstr "¡La descripción de la categoría ecorrae2 debe ser única!"
-
-#. module: lighting
 #: sql_constraint:lighting.energyefficiency:0
 msgid "The energy efficiency must be unique!"
 msgstr "¡La eficiencia energética debe ser única!"
@@ -2900,11 +2863,6 @@ msgstr "iluminación.producto.dimension"
 #: model:ir.model,name:lighting.model_lighting_product_dimmable
 msgid "lighting.product.dimmable"
 msgstr "Lighting.product.dimmable"
-
-#. module: lighting
-#: model:ir.model,name:lighting.model_lighting_product_ecorrae2category
-msgid "lighting.product.ecorrae2category"
-msgstr "Lighting.product.ecorrae2category"
 
 #. module: lighting
 #: model:ir.model,name:lighting.model_lighting_product_ecorraecategory

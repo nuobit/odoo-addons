@@ -353,7 +353,7 @@ class LightingProduct(models.Model):
                                            copy=True, track_visibility='onchange')
     ecorrae_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
                                           string='ECORRAE I category', track_visibility='onchange')
-    ecorrae2_category_id = fields.Many2one(comodel_name='lighting.product.ecorrae2category', ondelete='restrict',
+    ecorrae2_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
                                            string='ECORRAE II category', track_visibility='onchange')
     ecorrae = fields.Float(string='ECORRAE I', track_visibility='onchange')
     ecorrae2 = fields.Float(string='ECORRAE II', track_visibility='onchange')
@@ -773,16 +773,6 @@ class LightingProductEcorraeCategory(models.Model):
     name = fields.Char(string='Description', required=True)
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The ecorrae category description must be unique!'),
-                        ]
-
-
-class LightingProductEcorrae2Category(models.Model):
-    _name = 'lighting.product.ecorrae2category'
-    _order = 'name'
-
-    name = fields.Char(string='Description', required=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The ecorrae2 category description must be unique!'),
                         ]
 
 

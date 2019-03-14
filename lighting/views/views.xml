@@ -667,7 +667,7 @@
         <field name="name">product.ecorraecategory.form</field>
         <field name="model">lighting.product.ecorraecategory</field>
         <field name="arch" type="xml">
-            <form string="Product Ecorrae I category Form">
+            <form string="Product Ecorrae category Form">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -681,32 +681,7 @@
         <field name="name">product.ecorraecategory.tree</field>
         <field name="model">lighting.product.ecorraecategory</field>
         <field name="arch" type="xml">
-            <tree string="Product Ecorrae I category Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
-    <!-- view product.ecorrae2category -->
-    <record model="ir.ui.view" id="product_ecorrae2category_form_view">
-        <field name="name">product.ecorrae2category.form</field>
-        <field name="model">lighting.product.ecorrae2category</field>
-        <field name="arch" type="xml">
-            <form string="Product Ecorrae II category Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_ecorrae2category_tree_view">
-        <field name="name">product.ecorrae2category.tree</field>
-        <field name="model">lighting.product.ecorrae2category</field>
-        <field name="arch" type="xml">
-            <tree string="Product Ecorrae II category Tree">
+            <tree string="Product Ecorrae category Tree">
                 <field name="name"/>
             </tree>
         </field>
@@ -1142,23 +1117,12 @@
     <!-- ============= Pysical characteristics tab ============ -->
     <!-- window action product.ecorraecategory class -->
     <record model="ir.actions.act_window" id="product_ecorraecategory_list_action">
-        <field name="name">Product Ecorrae I category</field>
+        <field name="name">Product Ecorrae category</field>
         <field name="res_model">lighting.product.ecorraecategory</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Product Ecorrae I category</p>
-        </field>
-    </record>
-
-    <!-- window action product.ecorrae2category class -->
-    <record model="ir.actions.act_window" id="product_ecorrae2category_list_action">
-        <field name="name">Product Ecorrae II category</field>
-        <field name="res_model">lighting.product.ecorrae2category</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Product Ecorrae II category</p>
+            <p class="oe_view_nocontent_create">Create the first Product Ecorrae category</p>
         </field>
     </record>
 
@@ -1284,12 +1248,8 @@
               sequence="1000"/>
 
     <!-- ============= Pysical characteristics tab ============ -->
-    <menuitem id="product_ecorraecategories_menu" name="Ecorrae I categories" parent="common_data_menu"
+    <menuitem id="product_ecorraecategories_menu" name="Ecorrae categories" parent="common_data_menu"
               action="product_ecorraecategory_list_action"
-              sequence="1000"/>
-
-    <menuitem id="product_ecorrae2categories_menu" name="Ecorrae II categories" parent="common_data_menu"
-              action="product_ecorrae2category_list_action"
               sequence="1000"/>
 
     <menuitem id="product_photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="common_data_menu"
