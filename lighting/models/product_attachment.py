@@ -86,6 +86,13 @@ class LightingAttachmentType(models.Model):
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', translate=True)
 
+    product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = self.env['lighting.product'].search_count(
+                [('attachment_ids.type_id', '=', record.id)])
+
     _sql_constraints = [('name_uniq', 'unique (code)', 'The attachment type description must be unique!'),
                         ]
 
