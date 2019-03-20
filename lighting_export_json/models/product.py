@@ -71,32 +71,32 @@ class LightingProduct(models.Model):
                  )
     def _compute_attachment_display(self):
         template_id = self.env.context.get('template_id')
-        for rec in self:
-            attachment_l = []
-            for a in rec.attachment_ids.sorted(lambda x: x.sequence):
-                if template_id:
+        if template_id:
+            for rec in self:
+                attachment_l = []
+                for a in rec.attachment_ids.sorted(lambda x: x.sequence):
                     if a.type_id.id not in template_id.attachment_ids.mapped('type_id.id'):
                         continue
 
-                attachment_d = {
-                    'datas_fname': a.datas_fname,
-                    'sequence': a.sequence,
-                    'store_fname': a.attachment_id.store_fname,
-                }
+                    attachment_d = {
+                        'datas_fname': a.datas_fname,
+                        'sequence': a.sequence,
+                        'store_fname': a.attachment_id.store_fname,
+                    }
 
-                type_lang_d = {}
-                for lang in template_id.lang_ids.mapped('code'):
-                    type_lang_d[lang] = a.with_context(lang=lang).type_id.display_name
-                if type_lang_d:
-                    attachment_d.update({
-                        'type_id': type_lang_d
-                    })
+                    type_lang_d = {}
+                    for lang in template_id.lang_ids.mapped('code'):
+                        type_lang_d[lang] = a.with_context(lang=lang).type_id.display_name
+                    if type_lang_d:
+                        attachment_d.update({
+                            'type_id': type_lang_d
+                        })
 
-                if attachment_d:
-                    attachment_l.append(attachment_d)
+                    if attachment_d:
+                        attachment_l.append(attachment_d)
 
-            if attachment_l:
-                rec.attachment_display = json.dumps(attachment_l)
+                if attachment_l:
+                    rec.attachment_display = json.dumps(attachment_l)
 
     ######### Sources ##########
     source_display = fields.Serialized(string="Light sources",
@@ -107,26 +107,27 @@ class LightingProduct(models.Model):
                  )
     def _compute_source_display(self):
         template_id = self.env.context.get('template_id')
-        for rec in self:
-            source_l = []
-            for a in rec.source_ids.sorted(lambda x: x.sequence):
-                source_d = {
-                    'sequence': a.sequence,
-                }
+        if template_id:
+            for rec in self:
+                source_l = []
+                for a in rec.source_ids.sorted(lambda x: x.sequence):
+                    source_d = {
+                        'sequence': a.sequence,
+                    }
 
-                display_lang_d = {}
-                for lang in template_id.lang_ids.mapped('code'):
-                    display_lang_d[lang] = a.with_context(lang=lang).line_full_display
-                if display_lang_d:
-                    source_d.update({
-                        'line_full_display': display_lang_d
-                    })
+                    display_lang_d = {}
+                    for lang in template_id.lang_ids.mapped('code'):
+                        display_lang_d[lang] = a.with_context(lang=lang).line_full_display
+                    if display_lang_d:
+                        source_d.update({
+                            'line_full_display': display_lang_d
+                        })
 
-                if source_d:
-                    source_l.append(source_d)
+                    if source_d:
+                        source_l.append(source_d)
 
-            if source_l:
-                rec.source_display = json.dumps(source_l)
+                if source_l:
+                    rec.source_display = json.dumps(source_l)
 
     ######### Beams ##########
     beam_display = fields.Serialized(string="Light beams",
@@ -137,26 +138,27 @@ class LightingProduct(models.Model):
                  )
     def _compute_beam_display(self):
         template_id = self.env.context.get('template_id')
-        for rec in self:
-            beam_l = []
-            for a in rec.beam_ids.sorted(lambda x: x.sequence):
-                beam_d = {
-                    'sequence': a.sequence,
-                }
+        if template_id:
+            for rec in self:
+                beam_l = []
+                for a in rec.beam_ids.sorted(lambda x: x.sequence):
+                    beam_d = {
+                        'sequence': a.sequence,
+                    }
 
-                display_lang_d = {}
-                for lang in template_id.lang_ids.mapped('code'):
-                    display_lang_d[lang] = a.with_context(lang=lang).line_full_display
-                if display_lang_d:
-                    beam_d.update({
-                        'line_full_display': display_lang_d
-                    })
+                    display_lang_d = {}
+                    for lang in template_id.lang_ids.mapped('code'):
+                        display_lang_d[lang] = a.with_context(lang=lang).line_full_display
+                    if display_lang_d:
+                        beam_d.update({
+                            'line_full_display': display_lang_d
+                        })
 
-                if beam_d:
-                    beam_l.append(beam_d)
+                    if beam_d:
+                        beam_l.append(beam_d)
 
-            if beam_l:
-                rec.beam_display = json.dumps(beam_l)
+                if beam_l:
+                    rec.beam_display = json.dumps(beam_l)
 
     ######### Search Materials ##########
     search_material_ids = fields.Many2many(string="Search material",
@@ -284,13 +286,14 @@ class LightingProduct(models.Model):
                  )
     def _compute_search_source_type(self):
         template_id = self.env.context.get('template_id')
-        for rec in self:
-            leds_integrated = rec.source_ids.mapped('line_ids').filtered(lambda x: x.is_led and x.is_integrated)
-            type_str = 'LED' if leds_integrated else 'Other'
+        if template_id:
+            for rec in self:
+                leds_integrated = rec.source_ids.mapped('line_ids').filtered(lambda x: x.is_led and x.is_integrated)
+                type_str = 'LED' if leds_integrated else 'Other'
 
-            source_type_d = {}
-            for lang in template_id.lang_ids.mapped('code'):
-                source_type_d[lang] = rec.with_context(lang=lang)._(type_str)
+                source_type_d = {}
+                for lang in template_id.lang_ids.mapped('code'):
+                    source_type_d[lang] = rec.with_context(lang=lang)._(type_str)
 
-            if source_type_d:
-                rec.search_source_type = json.dumps(source_type_d)
+                if source_type_d:
+                    rec.search_source_type = json.dumps(source_type_d)
