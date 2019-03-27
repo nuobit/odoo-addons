@@ -15,10 +15,13 @@ class PayslipCheckAdapter(Component):
 
     _sql = """select ec.CodigoEmpresa, ec.CodigoEmpleado, 
                      ec.Año, ec.MesD, CAST(ec.IdEmpleado AS char(36)) as IdEmpleado, ec.OrdenNom, 
-                     ec.Importe
-              from HistoricoRelacionesDePago ec
-              where ec.CodigoFormaCobro = 'TAL' and 
-                    ec.TipoProceso = 'MES'
+                     ec.Importe, 
+                     coalesce(en.FechaBaja, convert(datetime2, '3000-12-31 00:00:00')) as FechaBaja
+              from HistoricoRelacionesDePago ec, EmpleadoNomina en
+              where ec.CodigoEmpresa = en.CodigoEmpresa AND
+                    ec.IdEmpleado = en.IdEmpleado AND 
+                    ec.CodigoFormaCobro = 'TAL' and 
+                    ec.TipoProceso = 'MES' 
     """
 
     _id = ('CodigoEmpresa', 'CodigoEmpleado', 'Año', 'MesD',
