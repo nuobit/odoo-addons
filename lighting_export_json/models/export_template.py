@@ -181,7 +181,11 @@ class LightingExportTemplate(models.Model):
                         if lang_description:
                             template_desc_d[lang] = lang_description
                     if template_desc_d:
-                        template_clean_d[k] = {'description': template_desc_d}
+                        if k not in template_clean_d:
+                            template_clean_d[k] = {}
+                        template_clean_d[k].update({
+                            'description': template_desc_d
+                        })
 
                     ## default attach
                     products = self.env['lighting.product'].browse([p.id for p in v])
@@ -190,6 +194,8 @@ class LightingExportTemplate(models.Model):
                                             x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
                         .sorted(lambda x: x.sequence)
                     if attachment_ids:
+                        if k not in template_clean_d:
+                            template_clean_d[k] = {}
                         template_clean_d[k].update({
                             'attachment': {
                                 'datas_fname': attachment_ids[0].datas_fname,

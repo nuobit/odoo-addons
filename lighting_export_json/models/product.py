@@ -22,17 +22,15 @@ class LightingProduct(models.Model):
     @api.depends('reference',
                  )
     def _compute_template(self):
-        template_id = self.env.context.get('template_id')
-        if template_id:
-            for rec in self:
-                m = re.match(r'^(.+)-.{2}$', rec.reference)
-                if m:
-                    template_reference = m.group(1)
-                    template_reference_pattern = '%s-__' % template_reference
-                    product_count = self.env['lighting.product'].search_count([
-                        ('reference', '=like', template_reference_pattern),
-                    ])
-                    rec.template = template_reference if product_count > 1 else rec.reference
+        for rec in self:
+            m = re.match(r'^(.+)-.{2}$', rec.reference)
+            if m:
+                template_reference = m.group(1)
+                template_reference_pattern = '%s-__' % template_reference
+                product_count = self.env['lighting.product'].search_count([
+                    ('reference', '=like', template_reference_pattern),
+                ])
+                rec.template = template_reference if product_count > 1 else rec.reference
 
     ######### Display Cut hole dimensions ##########
     cut_hole_display = fields.Char(string='Cut hole',
