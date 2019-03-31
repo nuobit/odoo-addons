@@ -173,12 +173,30 @@ class LightingExportTemplate(models.Model):
             template_clean_d = {}
             for k, v in template_d.items():
                 if len(v) > 1:
+                    ## description
                     template_desc_d = {}
                     for lang in active_langs:
-                        template_desc_d[lang] = v[0].with_context(lang=lang)._generate_description(
+                        lang_description = v[0].with_context(lang=lang)._generate_description(
                             show_variant_data=False)
+                        if lang_description:
+                            template_desc_d[lang] = lang_description
+                    if template_desc_d:
+                        template_clean_d[k] = {'description': template_desc_d}
 
-                    template_clean_d[k] = {'description': template_desc_d}
+                    ## default attach
+                    products = self.env['lighting.product'].browse([p.id for p in v])
+                    attachment_ids = products.mapped('attachment_ids') \
+                        .filtered(lambda x: x.is_template_default and
+                                            x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
+                        .sorted(lambda x: x.sequence)
+                    if attachment_ids:
+                        template_clean_d[k].update({
+                            'attachment': {
+                                'datas_fname': attachment_ids[0].datas_fname,
+                                'store_fname': attachment_ids[0].attachment_id.store_fname,
+                            }
+                        })
+
         _logger.info("Templates successfully generated...")
 
         _logger.info("Export data successfully done")
