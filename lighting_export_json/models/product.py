@@ -22,10 +22,18 @@ class LightingProduct(models.Model):
     @api.depends('reference',
                  )
     def _compute_template(self):
-        for rec in self:
-            m = re.match(r'^(.+)-.{2}$', rec.reference)
-            if m:
-                rec.template = m.group(1)
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                m = re.match(r'^(.+)-.{2}$', rec.reference)
+                if m:
+                    template_reference = m.group(1)
+                    template_reference_pattern = '%s-__' % template_reference
+                    product_count = self.env['lighting.product'].search_count([
+                        ('state', '=', 'published'),
+                        ('reference', '=like', template_reference_pattern),
+                    ])
+                    rec.template = template_reference if product_count > 1 else rec.reference
 
     ######### Display Cut hole dimensions ##########
     cut_hole_display = fields.Char(string='Cut hole',
@@ -158,6 +166,32 @@ class LightingProduct(models.Model):
 
                 if beam_l:
                     rec.beam_display = json.dumps(beam_l)
+
+    ######### Template Accessories ##########
+    template_accessory_display = fields.Serialized(string="Template accessories",
+                                                   compute='_compute_template_accessory_display')
+
+    @api.depends('accessory_ids')
+    def _compute_template_accessory_display(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                if rec.accessory_ids:
+                    template_accessory_l = list(set(rec.accessory_ids.mapped('template')))
+                    rec.template_accessory_display = json.dumps(sorted(template_accessory_l))
+
+    ######### Template Subtitutes ##########
+    template_substitute_display = fields.Serialized(string="Template substitutes",
+                                                    compute='_compute_template_substitute_display')
+
+    @api.depends('substitute_ids')
+    def _compute_template_substitute_display(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                if rec.substitute_ids:
+                    template_substitute_l = list(set(rec.substitute_ids.mapped('template')))
+                    rec.template_substitute_display = json.dumps(sorted(template_substitute_l))
 
     ######### Search Materials ##########
     search_material_ids = fields.Many2many(string="Search material",
