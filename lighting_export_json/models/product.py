@@ -80,7 +80,6 @@ class LightingProduct(models.Model):
 
                     attachment_d = {
                         'datas_fname': a.datas_fname,
-                        'sequence': a.sequence,
                         'store_fname': a.attachment_id.store_fname,
                     }
 
