@@ -57,8 +57,10 @@ class LightingExportTemplate(models.Model):
         objects = self.env['lighting.product'].search(domain)
         res = self.generate_data(objects, hide_empty_fields=self.hide_empty_fields)
 
+        today_str = fields.Date.from_string(fields.Date.context_today(self)).strftime('%Y%m%d')
         for suffix, data in res.items():
-            filename = '%s.json' % (self.output_filename_prefix % suffix,)
+            base_filename = self.output_filename_prefix % dict(object=suffix, date=today_str)
+            filename = '%s.json' % base_filename
             parts = [self.output_base_directory]
             if self.output_directory:
                 parts.append(self.output_directory)
