@@ -30,7 +30,6 @@ class LightingProduct(models.Model):
                     template_reference = m.group(1)
                     template_reference_pattern = '%s-__' % template_reference
                     product_count = self.env['lighting.product'].search_count([
-                        ('state', '=', 'published'),
                         ('reference', '=like', template_reference_pattern),
                     ])
                     rec.template = template_reference if product_count > 1 else rec.reference
@@ -177,7 +176,8 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 if rec.accessory_ids:
-                    template_accessory_l = list(set(rec.accessory_ids.mapped('template')))
+                    template_accessory_published = rec.accessory_ids.filtered(lambda x: x.state == 'published')
+                    template_accessory_l = list(set(template_accessory_published.mapped('template')))
                     rec.template_accessory_display = json.dumps(sorted(template_accessory_l))
 
     ######### Template Subtitutes ##########
@@ -190,7 +190,8 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 if rec.substitute_ids:
-                    template_substitute_l = list(set(rec.substitute_ids.mapped('template')))
+                    template_substitute_published = rec.substitute_ids.filtered(lambda x: x.state == 'published')
+                    template_substitute_l = list(set(template_substitute_published.mapped('template')))
                     rec.template_substitute_display = json.dumps(sorted(template_substitute_l))
 
     ######### Search Materials ##########
