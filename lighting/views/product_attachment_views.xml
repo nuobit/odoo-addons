@@ -19,6 +19,7 @@
                         <field name="lang_id"/>
                         <field name="date"/>
                         <field name="is_default"/>
+                        <field name="is_template_default"/>
                         <field name="sequence"/>
                     </group>
                     <group>
@@ -43,6 +44,7 @@
                 <field name="lang_id"/>
                 <field name="date"/>
                 <field name="is_default"/>
+                <field name="is_template_default"/>
                 <field name="public"/>
             </tree>
         </field>

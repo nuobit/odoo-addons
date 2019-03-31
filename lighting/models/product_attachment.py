@@ -55,6 +55,8 @@ class LightingAttachment(models.Model):
     date = fields.Date(string='Date')
     is_default = fields.Boolean(string='Default')
 
+    is_template_default = fields.Boolean(string='Template default')
+
     lang_id = fields.Many2one(comodel_name='lighting.language', ondelete='restrict', string='Language')
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
