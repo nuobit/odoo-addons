@@ -73,6 +73,35 @@ class LightingProduct(models.Model):
 
                 prod.recess_dimension_display = '%s: %s' % (res_label, res_value)
 
+    ######### Finish ##########
+    finish_display = fields.Serialized(string='Finish',
+                                       compute='_compute_finish_display')
+
+    @api.depends('finish_id',
+                 'finish_id.code',
+                 'finish_id.name',
+                 'finish_id.html_color')
+    def _compute_finish_display(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                if rec.finish_id:
+                    finish_d = {}
+                    finish_lang_d = {}
+                    for lang in template_id.lang_ids.mapped('code'):
+                        finish_lang_d[lang] = rec.finish_id.with_context(lang=lang).display_name
+                    if finish_lang_d:
+                        finish_d.update({
+                            'description': finish_lang_d
+                        })
+                    if rec.finish_id.html_color:
+                        finish_d.update({
+                            'html_color': rec.finish_id.html_color
+                        })
+
+                    if finish_d:
+                        rec.finish_display = json.dumps(finish_d)
+
     ######### Attachments ##########
     attachment_display = fields.Serialized(string="Attachments",
                                            compute='_compute_attachment_display')
