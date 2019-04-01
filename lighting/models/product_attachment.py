@@ -56,6 +56,7 @@ class LightingAttachment(models.Model):
     is_default = fields.Boolean(string='Default')
 
     is_template_default = fields.Boolean(string='Template default')
+    is_bundle_default = fields.Boolean(string='Bundle default')
 
     lang_id = fields.Many2one(comodel_name='lighting.language', ondelete='restrict', string='Language')
 
