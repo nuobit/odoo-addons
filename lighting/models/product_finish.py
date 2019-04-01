@@ -13,6 +13,10 @@ class LightingProductFinish(models.Model):
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
 
+    html_color = fields.Char(string='HTML Color Index',
+                             help="Here you can set a specific HTML color index (e.g. #ff0000) "
+                                  "to display the color on the website")
+
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 
     def _compute_product_count(self):
