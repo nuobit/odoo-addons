@@ -75,6 +75,7 @@ class LightingExportTemplate(models.Model):
         _logger.info("Export data started...")
         active_langs = self.lang_ids.mapped('code')
 
+        res = {}
         ## base headers with labels replaced and subset acoridng to template
         _logger.info("Generating headers...")
         header = {}
@@ -110,6 +111,8 @@ class LightingExportTemplate(models.Model):
         label_d = {}
         for field, meta in header.items():
             label_d[field] = meta['string']
+        if label_d:
+            res.update({'labels': label_d})
         _logger.info("Labels successfully generated...")
 
         ## generate data and gather data
@@ -157,10 +160,13 @@ class LightingExportTemplate(models.Model):
             if (i % th) == 0:
                 _logger.info(" - Progress products generation %i%%" % (int(i / n * 100)))
 
+        if objects_ld:
+            res.update({'products': objects_ld})
         _logger.info("Products successfully generated...")
 
-        # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variants
-        _logger.info("Generating templates...")
+        _logger.info("Generating virtual data...")
+
+        # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variant
         if 'template' in header:
             template_d = {}
             for obj in objects:
@@ -169,6 +175,36 @@ class LightingExportTemplate(models.Model):
                     if template_name not in template_d:
                         template_d[template_name] = []
                     template_d[template_name].append(obj)
+
+            # generem els bundles agrupant cada bundle i posant dins tots els tempaltes
+            # dels requireds associats
+            bundle_d = {}
+            for template_name, objects_l in template_d.items():
+                products = self.env['lighting.product'].browse([x.id for x in objects_l])
+                is_bundle_template = any(products.mapped('is_bundle'))
+                if is_bundle_template:
+                    products_required = products.mapped('required_ids')
+                    if products_required:
+                        ## components
+                        bundle_d[template_name] = {
+                            'templates': sorted(list(set(products_required.mapped('template'))))
+                        }
+
+                        ## default attach
+                        attachment_ids = products_required.mapped('attachment_ids') \
+                            .filtered(lambda x: x.is_bundle_default and
+                                                x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
+                            .sorted(lambda x: (x.sequence, x.id))
+                        if attachment_ids:
+                            bundle_d[template_name].update({
+                                'attachment': {
+                                    'datas_fname': attachment_ids[0].datas_fname,
+                                    'store_fname': attachment_ids[0].attachment_id.store_fname,
+                                }
+                            })
+
+            if bundle_d:
+                res.update({'bundles': bundle_d})
 
             # comprovem que les temlates rene  mes dun element, sino, leliminem
             # escollim un objet qualsevol o generalm al descricio sense el finish
@@ -194,7 +230,7 @@ class LightingExportTemplate(models.Model):
                     attachment_ids = products.mapped('attachment_ids') \
                         .filtered(lambda x: x.is_template_default and
                                             x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                        .sorted(lambda x: x.sequence)
+                        .sorted(lambda x: (x.sequence, x.id))
                     if attachment_ids:
                         if k not in template_clean_d:
                             template_clean_d[k] = {}
@@ -204,15 +240,11 @@ class LightingExportTemplate(models.Model):
                                 'store_fname': attachment_ids[0].attachment_id.store_fname,
                             }
                         })
+            if template_clean_d:
+                res.update({'templates': template_clean_d})
 
-        _logger.info("Templates successfully generated...")
+        _logger.info("Virtual data successfully generated...")
 
         _logger.info("Export data successfully done")
-
-        res = {
-            'labels': label_d,
-            'templates': template_clean_d,
-            'products': objects_ld,
-        }
 
         return res
