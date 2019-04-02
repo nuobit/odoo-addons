@@ -3,11 +3,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    'name': "Stock picking price",
+    'name': "Stock picking line price",
     'summary': "Adds price on picking lines.",
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'category': 'Warehouse',
-    'version': '11.0.0.1.1',
+    'version': '11.0.0.2.0',
     'license': 'AGPL-3',
     'website': 'https://github.com/nuobit',
     'depends': [
