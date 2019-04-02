@@ -3,8 +3,8 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="stock_picking_view_form_inherit_picking_description" model="ir.ui.view">
-        <field name="name">stock.picking.form.inherit.picking.description</field>
+    <record id="stock_picking_view_form_inherit_line_description" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.line.description</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="priority" eval="25"/>

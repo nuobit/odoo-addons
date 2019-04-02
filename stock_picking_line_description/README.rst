@@ -2,9 +2,9 @@
     :target: https://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 
-=========================
-Stock picking description
-=========================
+==============================
+Stock picking line description
+==============================
 
 This module adds description on picking lines.
 
