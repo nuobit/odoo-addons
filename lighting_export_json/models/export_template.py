@@ -77,7 +77,7 @@ class LightingExportTemplate(models.Model):
 
         res = {}
         ## base headers with labels replaced and subset acoridng to template
-        _logger.info("Generating headers...")
+        _logger.info("Generating product headers...")
         header = {}
         for line in self.field_ids.sorted(lambda x: x.sequence):
             field_name = line.field_id.name
@@ -104,16 +104,16 @@ class LightingExportTemplate(models.Model):
             if item:
                 item['translate'] = line.translate
                 header[field_name] = item
-        _logger.info("Headers successfully generated...")
+        _logger.info("Product headers successfully generated...")
 
         ### afegim els labels
-        _logger.info("Generating labels...")
+        _logger.info("Generating product labels...")
         label_d = {}
         for field, meta in header.items():
             label_d[field] = meta['string']
         if label_d:
             res.update({'labels': label_d})
-        _logger.info("Labels successfully generated...")
+        _logger.info("Product labels successfully generated...")
 
         ## generate data and gather data
         _logger.info("Generating products...")
@@ -164,10 +164,9 @@ class LightingExportTemplate(models.Model):
             res.update({'products': objects_ld})
         _logger.info("Products successfully generated...")
 
-        _logger.info("Generating virtual data...")
-
         # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variant
         if 'template' in header:
+            _logger.info("Generating product virtual data...")
             template_d = {}
             for obj in objects:
                 template_name = getattr(obj, 'template', None)
@@ -252,7 +251,47 @@ class LightingExportTemplate(models.Model):
             if template_clean_d:
                 res.update({'templates': template_clean_d})
 
-        _logger.info("Virtual data successfully generated...")
+            _logger.info("Product virtual data successfully generated...")
+
+        ## generm la informacio de les families
+        if objects_ld:
+            _logger.info("Generating family data...")
+            # obtenim els ids de es fmailie sel sobjectes seleccionats
+            families = objects.mapped('family_ids')
+            if families:
+                family_ld = []
+                for family in families.sorted(lambda x: x.sequence):
+                    family_d = {}
+                    # nom
+                    family_d.update({
+                        'name': family.name,
+                    })
+                    # descricpio llarga
+                    family_descr_lang = {}
+                    for lang in active_langs:
+                        family_descr_lang[lang] = family.with_context(lang=lang).description
+                    if family_descr_lang:
+                        family_d.update({
+                            'description': family_descr_lang,
+                        })
+                    # adjunts ordenats
+                    if family.attachment_ids:
+                        attachments = family.attachment_ids \
+                            .filtered(lambda x: x.is_default) \
+                            .sorted(lambda x: (x.sequence, x.id))
+                        if attachments:
+                            family_d.update({
+                                'attachment': {
+                                    'datas_fname': attachments[0].datas_fname,
+                                    'store_fname': attachments[0].attachment_id.store_fname,
+                                },
+                            })
+
+                    family_ld.append(family_d)
+
+                res.update({'families': family_ld})
+
+            _logger.info("Family data successfully generated...")
 
         _logger.info("Export data successfully done")
 
