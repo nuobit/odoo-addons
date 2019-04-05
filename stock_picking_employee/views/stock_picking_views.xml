@@ -9,7 +9,7 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='extra']//field[@name='picking_type_code']/.." position="inside">
-                <field name="employee_ids" widget="many2many_tags"/>
+                <field name="employee_ids" attrs="{'readonly': [('state', '!=', 'draft')]}" widget="many2many_tags"/>
             </xpath>
         </field>
     </record>
