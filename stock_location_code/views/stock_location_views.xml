@@ -13,4 +13,15 @@
             </xpath>
         </field>
     </record>
+
+    <record id="stock_location_view_tree_inherit_code" model="ir.ui.view">
+        <field name="name">stock.picking.tree.inherit.code</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='usage']" position="before">
+                <field name="code"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
