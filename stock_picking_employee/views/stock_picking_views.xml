@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="stock_picking_view_form_inherit_employee" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.employee</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='extra']//field[@name='picking_type_code']/.." position="inside">
+                <field name="employee_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
