@@ -67,7 +67,7 @@
                     </group>
                     <group>
                         <field name="is_export"/>
-                        <field name="description" widget="html"/>
+                        <field name="description"/>
                     </group>
                     <group>
                         <field name="sequence"/>
