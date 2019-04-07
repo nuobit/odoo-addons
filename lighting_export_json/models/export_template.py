@@ -262,10 +262,6 @@ class LightingExportTemplate(models.Model):
                 family_ld = []
                 for family in families.sorted(lambda x: x.sequence):
                     family_d = {}
-                    # nom
-                    family_d.update({
-                        'name': family.name,
-                    })
                     # descricpio llarga
                     family_descr_lang = {}
                     for lang in active_langs:
@@ -289,9 +285,16 @@ class LightingExportTemplate(models.Model):
                                 },
                             })
 
-                    family_ld.append(family_d)
+                    # nom: si la familia te dades, afegim el nom i lafegim, sino no
+                    if family_d:
+                        family_d.update({
+                            'name': family.name,
+                        })
 
-                res.update({'families': family_ld})
+                        family_ld.append(family_d)
+
+                if family_ld:
+                    res.update({'families': family_ld})
 
             _logger.info("Family data successfully generated...")
 
