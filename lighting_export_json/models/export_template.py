@@ -269,7 +269,9 @@ class LightingExportTemplate(models.Model):
                     # descricpio llarga
                     family_descr_lang = {}
                     for lang in active_langs:
-                        family_descr_lang[lang] = family.with_context(lang=lang).description
+                        descr = family.with_context(lang=lang).description
+                        if descr:
+                            family_descr_lang[lang] = descr
                     if family_descr_lang:
                         family_d.update({
                             'description': family_descr_lang,
