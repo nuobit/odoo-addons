@@ -5,7 +5,7 @@
 
 {
     'name': 'Account Cryptocurrency',
-    'version': '10.0.0.1.0',
+    'version': '10.0.0.2.0',
     'category': 'Accounting',
     'license': 'AGPL-3',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',

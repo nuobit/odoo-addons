@@ -9,14 +9,7 @@ from odoo.tools.translate import _
 import json
 
 
-class Currency(models.Model):
-    _inherit = "res.currency"
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
 
-    rate = fields.Float(digits=(15, 9))
-    rounding = fields.Float(digits=(15, 9))
-
-
-class CurrencyRate(models.Model):
-    _inherit = "res.currency.rate"
-
-    rate = fields.Float(digits=(15, 9))
+    amount_currency = fields.Monetary(digits=(15, 9))
