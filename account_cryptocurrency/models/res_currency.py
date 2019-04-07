@@ -12,11 +12,11 @@ import json
 class Currency(models.Model):
     _inherit = "res.currency"
 
-    rate = fields.Float(digits=(15, 9))
+    rate = fields.Float(digits=(15, 15))
     rounding = fields.Float(digits=(15, 9))
 
 
 class CurrencyRate(models.Model):
     _inherit = "res.currency.rate"
 
-    rate = fields.Float(digits=(15, 9))
+    rate = fields.Float(digits=(15, 15))
