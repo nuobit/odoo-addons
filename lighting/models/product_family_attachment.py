@@ -12,6 +12,8 @@ class LightingProductFamilyAttachment(models.Model):
 
     name = fields.Text(string='Description', translate=True)
 
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+
     datas = fields.Binary(string="Document", attachment=True, required=True)
     datas_fname = fields.Char(string='Filename', required=True)
     attachment_id = fields.Many2one(comodel_name='ir.attachment',
