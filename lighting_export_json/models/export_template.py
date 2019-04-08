@@ -319,10 +319,17 @@ class LightingExportTemplate(models.Model):
 
                     # nom: si la aplicacio te dades, afegim el nom i lafegim, sino no
                     if application_d:
-                        application_d.update({
-                            'name': application.name,
-                        })
-                        application_ld.append(application_d)
+                        name_lang_d = {}
+                        for lang in active_langs:
+                            lang_name = application.with_context(lang=lang).name
+                            if lang_name:
+                                name_lang_d[lang] = lang_name
+
+                        if name_lang_d:
+                            application_d.update({
+                                'name': name_lang_d,
+                            })
+                            application_ld.append(application_d)
 
                 if application_ld:
                     res.update({'applications': application_ld})
