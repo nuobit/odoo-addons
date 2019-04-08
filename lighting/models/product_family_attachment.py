@@ -8,7 +8,8 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingProductFamilyAttachment(models.Model):
     _name = 'lighting.product.family.attachment'
-    _order = 'name'
+    _order = 'sequence'
+    _rec_name = 'datas_fname'
 
     name = fields.Text(string='Description', translate=True)
 
