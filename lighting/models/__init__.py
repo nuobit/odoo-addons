@@ -12,6 +12,7 @@ from . import product_location
 from . import product_installation
 from . import product_type
 from . import product_application
+from . import product_application_attachment
 
 from . import product_sealing
 from . import product_finish

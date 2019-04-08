@@ -3,7 +3,7 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- window action catalog2product smart button -->
+    <!-- window action application2product smart button -->
     <record id="product_application_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
@@ -24,6 +24,10 @@
             <form string="Product application Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-files-o"
+                                name="%(product_application_attachment_action)d">
+                            <field string="Attachments" name="attachment_count" widget="statinfo"/>
+                        </button>
                         <button type="action" class="oe_stat_button" icon="fa-filter"
                                 name="%(product_application_action_product)d">
                             <field string="Products" name="product_count" widget="statinfo"/>

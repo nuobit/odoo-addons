@@ -18,6 +18,17 @@ class LightingProductApplication(models.Model):
         for record in self:
             record.product_count = self.env['lighting.product'].search_count([('application_ids', '=', record.id)])
 
+    attachment_ids = fields.One2many(comodel_name='lighting.product.application.attachment',
+                                     inverse_name='application_id', string='Attachments', copy=True,
+                                     track_visibility='onchange')
+    attachment_count = fields.Integer(compute='_compute_attachment_count', string='Attachment(s)')
+
+    @api.depends('attachment_ids')
+    def _compute_attachment_count(self):
+        for record in self:
+            record.attachment_count = self.env['lighting.product.application.attachment'] \
+                .search_count([('application_id', '=', record.id)])
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The application must be unique!'),
                         ]
 
