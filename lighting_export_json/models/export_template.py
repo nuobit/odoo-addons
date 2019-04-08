@@ -253,8 +253,8 @@ class LightingExportTemplate(models.Model):
 
             _logger.info("Product virtual data successfully generated...")
 
-        ## generm la informacio de les families
         if objects_ld:
+            ## generm la informacio de les families
             _logger.info("Generating family data...")
             # obtenim els ids de es fmailie sel sobjectes seleccionats
             families = objects.mapped('family_ids')
@@ -290,13 +290,44 @@ class LightingExportTemplate(models.Model):
                         family_d.update({
                             'name': family.name,
                         })
-
                         family_ld.append(family_d)
 
                 if family_ld:
                     res.update({'families': family_ld})
 
             _logger.info("Family data successfully generated...")
+
+            ## generm la informacio de les aplicacions
+            _logger.info("Generating application data...")
+            applications = objects.mapped('application_ids')
+            if applications:
+                application_ld = []
+                for application in applications.sorted(lambda x: x.sequence):
+                    application_d = {}
+                    # adjunts ordenats
+                    if application.attachment_ids:
+                        attachments = application.attachment_ids \
+                            .filtered(lambda x: x.is_default) \
+                            .sorted(lambda x: (x.sequence, x.id))
+                        if attachments:
+                            application_d.update({
+                                'attachment': {
+                                    'datas_fname': attachments[0].datas_fname,
+                                    'store_fname': attachments[0].attachment_id.store_fname,
+                                },
+                            })
+
+                    # nom: si la aplicacio te dades, afegim el nom i lafegim, sino no
+                    if application_d:
+                        application_d.update({
+                            'name': application.name,
+                        })
+                        application_ld.append(application_d)
+
+                if application_ld:
+                    res.update({'applications': application_ld})
+
+            _logger.info("Application data successfully generated...")
 
         _logger.info("Export data successfully done")
 
