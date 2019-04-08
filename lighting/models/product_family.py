@@ -8,7 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingProductFamily(models.Model):
     _name = 'lighting.product.family'
-    _order = 'name'
+    _order = 'sequence'
 
     name = fields.Char(string='Family', required=True)
     code = fields.Char(string='Code', required=False, size=3)
