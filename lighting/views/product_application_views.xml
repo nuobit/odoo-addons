@@ -38,6 +38,9 @@
                             <field name="name" placeholder="Application"/>
                         </h1>
                     </div>
+                    <group>
+                        <field name="sequence"/>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -48,6 +51,7 @@
         <field name="model">lighting.product.application</field>
         <field name="arch" type="xml">
             <tree string="Product application Tree">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="product_count"/>
                 <button name="%(product_application_action_product)d" type="action"

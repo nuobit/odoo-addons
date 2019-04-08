@@ -8,9 +8,11 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingProductApplication(models.Model):
     _name = 'lighting.product.application'
-    _order = 'name'
+    _order = 'sequence'
 
     name = fields.Char(string='Application', required=True, translate=True)
+
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 
