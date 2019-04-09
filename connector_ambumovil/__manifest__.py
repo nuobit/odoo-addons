@@ -6,12 +6,15 @@
     'name': "Odoo-Ambumovil connector",
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'category': 'Connector',
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.1.1',
     'license': 'AGPL-3',
     'website': 'https://github.com/nuobit',
     'depends': [
         'stock',
         'stock_picking_employee',
+        'stock_picking_partner_ref',
+        'stock_picking_partner_ref',
+        'stock_location_code',
         'connector_sage',
     ],
     'data': [
