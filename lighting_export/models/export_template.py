@@ -89,6 +89,8 @@ class LightingExportTemplateField(models.Model):
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
+    sequence_aux = fields.Integer(related='sequence', string="Sequence")
+
     field_id = fields.Many2one(comodel_name='ir.model.fields', ondelete='cascade',
                                domain=[('model', '=', 'lighting.product')],
                                string='Field', required=True)
