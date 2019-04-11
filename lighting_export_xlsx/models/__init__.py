@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from . import product_export_dimension
+from . import product_dimension
 from . import product_recess_dimension
 from . import product_beam_dimension
 from . import product_fan_wattage
