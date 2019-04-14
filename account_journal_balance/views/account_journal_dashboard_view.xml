@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="account_journal_dashboard_kanban_view_inherit_journal_balance" model="ir.ui.view">
+        <field name="name">account.journal.dashboard.kanban.inherit.journal.balance</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='JournalBodyBankCash']/div[contains(@class, 'o_kanban_primary_right')]/div[1]"
+                   position="before">
+                <t t-if="dashboard.account_balance != dashboard.account_journal_balance">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <span title="Journal balance in Odoo">Balance</span>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <span>
+                                <t t-esc="dashboard.account_journal_balance"/>
+                            </span>
+                        </div>
+                    </div>
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>
