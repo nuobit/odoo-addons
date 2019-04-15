@@ -166,93 +166,93 @@ class LightingExportTemplate(models.Model):
         _logger.info("Products successfully generated...")
 
         # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variant
-        if 'template' in header:
-            _logger.info("Generating product virtual data...")
-            template_d = {}
-            for obj in objects:
-                template_name = getattr(obj, 'template', None)
-                if template_name:
-                    if template_name not in template_d:
-                        template_d[template_name] = []
-                    template_d[template_name].append(obj)
 
-            # generem els bundles agrupant cada bundle i posant dins tots els tempaltes
-            # dels requireds associats
-            bundle_d = {}
-            for template_name, objects_l in template_d.items():
-                products = self.env['lighting.product'].browse([x.id for x in objects_l])
-                is_bundle_template = any(products.mapped('is_bundle'))
-                if is_bundle_template:
-                    products_required = products.mapped('required_ids')
-                    if products_required:
-                        ## components
-                        bundle_d[template_name] = {
-                            'templates': sorted(list(set(products_required.mapped('template'))))
-                        }
+        _logger.info("Generating product virtual data...")
+        template_d = {}
+        for obj in objects:
+            template_name = getattr(obj, 'template', None)
+            if template_name:
+                if template_name not in template_d:
+                    template_d[template_name] = []
+                template_d[template_name].append(obj)
 
-                        ## default attach
-                        # first own attachments
-                        attachment_ids = products.mapped('attachment_ids') \
+        # generem els bundles agrupant cada bundle i posant dins tots els tempaltes
+        # dels requireds associats
+        bundle_d = {}
+        for template_name, objects_l in template_d.items():
+            products = self.env['lighting.product'].browse([x.id for x in objects_l])
+            is_bundle_template = any(products.mapped('is_bundle'))
+            if is_bundle_template:
+                products_required = products.mapped('required_ids')
+                if products_required:
+                    ## components
+                    bundle_d[template_name] = {
+                        'templates': sorted(list(set(products_required.mapped('template'))))
+                    }
+
+                    ## default attach
+                    # first own attachments
+                    attachment_ids = products.mapped('attachment_ids') \
+                        .filtered(lambda x: x.is_bundle_default and
+                                            x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
+                        .sorted(lambda x: (x.sequence, x.id))
+
+                    # after required attachments
+                    if not attachment_ids:
+                        attachment_ids = products_required.mapped('attachment_ids') \
                             .filtered(lambda x: x.is_bundle_default and
                                                 x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
                             .sorted(lambda x: (x.sequence, x.id))
 
-                        # after required attachments
-                        if not attachment_ids:
-                            attachment_ids = products_required.mapped('attachment_ids') \
-                                .filtered(lambda x: x.is_bundle_default and
-                                                    x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                                .sorted(lambda x: (x.sequence, x.id))
-
-                        if attachment_ids:
-                            bundle_d[template_name].update({
-                                'attachment': {
-                                    'datas_fname': attachment_ids[0].datas_fname,
-                                    'store_fname': attachment_ids[0].attachment_id.store_fname,
-                                }
-                            })
-
-            if bundle_d:
-                res.update({'bundles': bundle_d})
-
-            # comprovem que les temlates rene  mes dun element, sino, leliminem
-            # escollim un objet qualsevol o generalm al descricio sense el finish
-            template_clean_d = {}
-            for k, v in template_d.items():
-                if len(v) > 1:
-                    ## description
-                    template_desc_d = {}
-                    for lang in active_langs:
-                        lang_description = v[0].with_context(lang=lang)._generate_description(
-                            show_variant_data=False)
-                        if lang_description:
-                            template_desc_d[lang] = lang_description
-                    if template_desc_d:
-                        if k not in template_clean_d:
-                            template_clean_d[k] = {}
-                        template_clean_d[k].update({
-                            'description': template_desc_d
-                        })
-
-                    ## default attach
-                    products = self.env['lighting.product'].browse([p.id for p in v])
-                    attachment_ids = products.mapped('attachment_ids') \
-                        .filtered(lambda x: x.is_template_default and
-                                            x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                        .sorted(lambda x: (x.sequence, x.id))
                     if attachment_ids:
-                        if k not in template_clean_d:
-                            template_clean_d[k] = {}
-                        template_clean_d[k].update({
+                        bundle_d[template_name].update({
                             'attachment': {
                                 'datas_fname': attachment_ids[0].datas_fname,
                                 'store_fname': attachment_ids[0].attachment_id.store_fname,
                             }
                         })
-            if template_clean_d:
-                res.update({'templates': template_clean_d})
 
-            _logger.info("Product virtual data successfully generated...")
+        if bundle_d:
+            res.update({'bundles': bundle_d})
+
+        # comprovem que les temlates rene  mes dun element, sino, leliminem
+        # escollim un objet qualsevol o generalm al descricio sense el finish
+        template_clean_d = {}
+        for k, v in template_d.items():
+            if len(v) > 1:
+                ## description
+                template_desc_d = {}
+                for lang in active_langs:
+                    lang_description = v[0].with_context(lang=lang)._generate_description(
+                        show_variant_data=False)
+                    if lang_description:
+                        template_desc_d[lang] = lang_description
+                if template_desc_d:
+                    if k not in template_clean_d:
+                        template_clean_d[k] = {}
+                    template_clean_d[k].update({
+                        'description': template_desc_d
+                    })
+
+                ## default attach
+                products = self.env['lighting.product'].browse([p.id for p in v])
+                attachment_ids = products.mapped('attachment_ids') \
+                    .filtered(lambda x: x.is_template_default and
+                                        x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
+                    .sorted(lambda x: (x.sequence, x.id))
+                if attachment_ids:
+                    if k not in template_clean_d:
+                        template_clean_d[k] = {}
+                    template_clean_d[k].update({
+                        'attachment': {
+                            'datas_fname': attachment_ids[0].datas_fname,
+                            'store_fname': attachment_ids[0].attachment_id.store_fname,
+                        }
+                    })
+        if template_clean_d:
+            res.update({'templates': template_clean_d})
+
+        _logger.info("Product virtual data successfully generated...")
 
         if objects_ld:
             ## generm la informacio de les families
