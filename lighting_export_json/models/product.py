@@ -32,6 +32,14 @@ class LightingProduct(models.Model):
                 ])
                 rec.template = template_reference if product_count > 1 else rec.reference
 
+    template_display = fields.Char(string='Template',
+                                   compute='_compute_template_display')
+
+    def _compute_template_display(self):
+        for rec in self:
+            if rec.template != rec.reference:
+                rec.template_display = rec.template
+
     ######### Bundle #############################
     is_bundle = fields.Boolean(string='Is bundle',
                                compute='_compute_is_bundle')
