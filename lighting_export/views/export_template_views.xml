@@ -28,6 +28,8 @@
                                         <field name="field_id"/>
                                         <field name="field_name" groups="lighting.group_lighting_manager"/>
                                         <field name="field_ttype" groups="lighting.group_lighting_manager"/>
+                                        <field name="subfield_name"
+                                               attrs="{'readonly': [('field_ttype', 'not in', ('many2one', 'many2many', 'one2many'))]}"/>
                                         <field name="translate" groups="lighting.group_lighting_manager"/>
                                         <field name="label"/>
                                     </tree>

@@ -97,6 +97,8 @@ class LightingExportTemplateField(models.Model):
     field_name = fields.Char(related='field_id.name', readonly=True)
     field_ttype = fields.Selection(related='field_id.ttype', readonly=True)
 
+    subfield_name = fields.Char(string='Subfield')
+
     translate = fields.Boolean(string='Translate')
 
     label = fields.Char(string='Label', translate=True)
