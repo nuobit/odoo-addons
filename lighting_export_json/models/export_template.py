@@ -102,6 +102,7 @@ class LightingExportTemplate(models.Model):
 
                             item[k][lang] = v
             if item:
+                item['subfield'] = line.subfield_name
                 item['translate'] = line.translate
                 header[field_name] = item
         _logger.info("Product headers successfully generated...")
@@ -133,10 +134,10 @@ class LightingExportTemplate(models.Model):
                     elif meta['type'] == 'boolean':
                         if meta['translate']:
                             datum = _('Yes') if datum else _('No')
-                    elif meta['type'] == 'many2many':
-                        datum = [x.display_name for x in datum]
+                    elif meta['type'] in ('one2many', 'many2many'):
+                        datum = [getattr(x, meta['subfield'] or 'display_name') for x in datum]
                     elif meta['type'] == 'many2one':
-                        datum = datum.display_name
+                        datum = getattr(datum, meta['subfield'] or 'display_name')
 
                     if meta['type'] != 'boolean' and not datum:
                         datum = None
