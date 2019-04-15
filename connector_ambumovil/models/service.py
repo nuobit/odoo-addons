@@ -10,7 +10,9 @@ class AmbumovilService(models.AbstractModel):
 
     @api.model
     def get_ambulance_stock(self, code):
+        company_id = self.env.user.company_id.id
         quants = self.env['stock.quant'].search([
+            ('company_id', '=', company_id),
             ('location_id.code', '=', code),
             ('quantity', '>', 0),
         ])
@@ -39,15 +41,19 @@ class AmbumovilService(models.AbstractModel):
 
     @api.model
     def consume_ambulance_stock(self, code, service_num, moves, employees, validate=True):
+        company_id = self.env.user.company_id.id
+
         picking_type_id = self.env['stock.picking.type'].search([
             ('name', '=', 'Internal Transfers'),
         ], order='id asc', limit=1)
 
         src_location_id = self.env['stock.location'].search([
+            ('company_id', '=', company_id),
             ('code', '=', code),
         ])
 
         dst_location_id = self.env['stock.location'].search([
+            ('company_id', '=', company_id),
             ('code', '=', 'CONSUMOSCLIENTE'),
         ])
 
@@ -85,8 +91,11 @@ class AmbumovilService(models.AbstractModel):
 
         # empleats
         if employees:
-            sage_company_id = self.env['sage.backend'].search([]).sage_company_id
-            employee_ids = self.env['sage.hr.employee'].search([
+            sage_company_id = self.env['sage.backend'].sudo().search([
+                ('company_id', '=', company_id),
+            ]).sage_company_id
+            employee_ids = self.env['sage.hr.employee'].sudo().search([
+                ('company_id', '=', company_id),
                 ('sage_codigo_empresa', '=', sage_company_id),
                 ('sage_codigo_empleado', 'in', employees),
             ]).mapped('odoo_id.id')
