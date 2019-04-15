@@ -124,16 +124,8 @@ class LightingProduct(models.Model):
                     attachment_d = {
                         'datas_fname': a.datas_fname,
                         'store_fname': a.attachment_id.store_fname,
+                        'type': a.type_id.code,
                     }
-
-                    type_lang_d = {}
-                    for lang in template_id.lang_ids.mapped('code'):
-                        type_lang_d[lang] = a.with_context(lang=lang).type_id.display_name
-                    if type_lang_d:
-                        attachment_d.update({
-                            'type_id': type_lang_d
-                        })
-
                     if attachment_d:
                         attachment_l.append(attachment_d)
 
