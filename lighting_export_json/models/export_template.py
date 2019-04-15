@@ -304,7 +304,9 @@ class LightingExportTemplate(models.Model):
             if applications:
                 application_ld = []
                 for application in applications.sorted(lambda x: x.sequence):
-                    application_d = {}
+                    application_d = {
+                        'id': application.id,
+                    }
                     # adjunts ordenats
                     if application.attachment_ids:
                         attachments = application.attachment_ids \
@@ -318,19 +320,17 @@ class LightingExportTemplate(models.Model):
                                 },
                             })
 
-                    # nom: si la aplicacio te dades, afegim el nom i lafegim, sino no
-                    if application_d:
-                        name_lang_d = {}
-                        for lang in active_langs:
-                            lang_name = application.with_context(lang=lang).name
-                            if lang_name:
-                                name_lang_d[lang] = lang_name
+                    name_lang_d = {}
+                    for lang in active_langs:
+                        lang_name = application.with_context(lang=lang).name
+                        if lang_name:
+                            name_lang_d[lang] = lang_name
 
-                        if name_lang_d:
-                            application_d.update({
-                                'name': name_lang_d,
-                            })
-                            application_ld.append(application_d)
+                    if name_lang_d:
+                        application_d.update({
+                            'name': name_lang_d,
+                        })
+                        application_ld.append(application_d)
 
                 if application_ld:
                     res.update({'applications': application_ld})
