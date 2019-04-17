@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem id="sapb1_menu_root" parent="connector.menu_connector_root"
+              name="SAP B1" sequence="30" groups="connector.group_connector_manager"/>
+    <!-- TODO group: SAPB1 Manager -->
+
+    <menuitem id="sapb1_backend_menu_action" name="Backends"
+              parent="sapb1_menu_root" action="sapb1_backend_action"/>
+</odoo>
