@@ -1,11 +1,6 @@
-import base64
-
-import paramiko
 import re
 import datetime
 import time
-
-from hdbcli import dbapi
 
 from odoo import http
 
@@ -14,6 +9,12 @@ import werkzeug.exceptions
 import logging
 
 _logger = logging.getLogger(__name__)
+
+try:
+    import paramiko
+    from hdbcli import dbapi
+except ImportError as err:
+    _logger.debug(err)
 
 
 class SAPB1Controller(http.Controller):
