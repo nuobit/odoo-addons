@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- window action template2orderpoint smart button -->
+    <record id="orderpoint_sync_template_action_orderpoint" model="ir.actions.act_window">
+        <field name="name">Orderpoint</field>
+        <field name="res_model">stock.warehouse.orderpoint</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('sync_template_id','=',active_id)]</field>
+        <field name="context">{'default_sync_template_id': active_id}</field>
+    </record>
+
+    <record id="orderpoint_sync_template_view_tree" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.sync.template.tree</field>
+        <field name="model">stock.warehouse.orderpoint.sync.template</field>
+        <field name="arch" type="xml">
+            <tree string="Reordering Rule Sync Templates">
+                <field name="name"/>
+                <field name="warehouse_id" groups="stock.group_stock_multi_locations"/>
+                <field name="location_ids" widget="many2many_tags" groups="stock.group_stock_multi_locations"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="orderpoint_sync_template_view_form" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.sync.template.form</field>
+        <field name="model">stock.warehouse.orderpoint.sync.template</field>
+        <field name="arch" type="xml">
+            <form string="Reordering Rules Sync Templates">
+                <header>
+                    <button name="create_orderpoints" type="object" class="oe_highlight"
+                            string="Generate Reordering Rules"
+                            help="Reordering rules will be created for the selected products."/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-refresh"
+                                name="%(orderpoint_sync_template_action_orderpoint)d">
+                            <field string="Orderpoints" name="orderpoint_count" widget="statinfo"/>
+                        </button>
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="warehouse_id" groups="stock.group_stock_multi_locations"/>
+                            <field name="location_ids" widget="many2many_tags"
+                                   groups="stock.group_stock_multi_locations"/>
+                            <field name="route_ids" widget="many2many_tags"/>
+                            <field name="group_id" groups="stock.group_adv_location"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="last_update"/>
+                        <field name="status"/>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="product_uom" options="{'no_open': True, 'no_create': True}"
+                                           groups="product.group_uom"/>
+                                    <field name="product_min_qty"/>
+                                    <field name="product_max_qty"/>
+                                    <field name="qty_multiple" string="Quantity Multiple"/>
+                                    <field name="lead_days"/>
+                                    <field name="lead_type"/>
+                                    <field name="orderpoint_ids"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="orderpoint_sync_template_action" model="ir.actions.act_window">
+        <field name="name">Reordering Rule Sync Templates</field>
+        <field name="res_model">stock.warehouse.orderpoint.sync.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add a reordering rule sync template.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="orderpoint_sync_template_menu" name="Reordering Rule Sync Templates"
+              parent="stock.menu_product_in_config_stock"
+              action="orderpoint_sync_template_action"/>
+</odoo>
+
+
+
+
+
