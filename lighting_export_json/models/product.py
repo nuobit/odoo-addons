@@ -235,15 +235,10 @@ class LightingProduct(models.Model):
                                            comodel_name='lighting.product.material',
                                            compute='_compute_search_material')
 
-    @api.depends('body_material_ids',
-                 'diffusor_material_ids',
-                 'frame_material_ids',
-                 'reflector_material_ids')
+    @api.depends('body_material_ids')
     def _compute_search_material(self):
         fields = [
-            'body_material_ids', 'diffusor_material_ids',
-            'frame_material_ids', 'reflector_material_ids',
-            # 'blade_material_ids',
+            'body_material_ids'
         ]
         for rec in self:
             materials_s = set()
