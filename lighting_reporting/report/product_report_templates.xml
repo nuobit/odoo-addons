@@ -30,7 +30,7 @@
                                     <strong>EAN</strong>
                                 </td>
                                 <td>
-                                    <span t-field="doc.ip"/>
+                                    <span t-field="doc.sealing_id"/>
                                 </td>
                             </tr>
                         </table-->
@@ -45,9 +45,9 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <div t-if="doc.ip">
+                        <div t-if="doc.sealing_id">
                             <strong>IP</strong>
-                            <span t-field="doc.ip"/>
+                            <span t-field="doc.sealing_id"/>
                         </div>
                     </div>
                 </div>
