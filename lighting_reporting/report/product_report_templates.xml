@@ -23,17 +23,115 @@
                             <span t-esc="', '.join([x.name for x in doc.catalog_ids])"/>
                         </div>
 
-                        <!--table class="table table-condensed">
-                            <tr/>
+                        <div t-if="doc.family_ids">
+                            <strong>Family</strong>
+                            <span t-esc="', '.join([x.name for x in doc.family_ids])"/>
+                        </div>
+
+                        <div t-if="doc.type_ids">
+                            <strong>Types</strong>
+                            <span t-esc="', '.join([x.name for x in doc.type_ids])"/>
+                        </div>
+
+                        <div t-if="doc.location_ids">
+                            <strong>Location</strong>
+                            <span t-esc="', '.join([x.name for x in doc.location_ids])"/>
+                        </div>
+
+                        <div t-if="doc.installation_ids">
+                            <strong>Installations</strong>
+                            <span t-esc="', '.join([x.name for x in doc.installation_ids])"/>
+                        </div>
+
+                        <div t-if="doc.application_ids">
+                            <strong>Applications</strong>
+                            <span t-esc="', '.join([x.name for x in doc.application_ids])"/>
+                        </div>
+
+                        <div t-if="doc.finish_id">
+                            <strong>Finish</strong>
+                            <span t-esc="', '.join([x.name for x in doc.finish_id])"/>
+                        </div>
+
+                        <table t-if="doc.body_material_ids or doc.diffusor_material_ids or doc.frame_material_ids or doc.reflector_material_ids or doc.blade_material_ids"
+                               class="table table-condensed">
                             <tr>
                                 <td>
-                                    <strong>EAN</strong>
+                                    <strong>Material</strong>
+                                </td>
+                                <td/>
+                            </tr>
+                            <tr t-if="doc.body_material_ids">
+                                <td>
+                                    <strong>Body material</strong>
+                                </td>
+                                <td>
+                                    <span t-esc="', '.join([x.name for x in doc.body_material_ids])"/>
+                                </td>
+                            </tr>
+
+                            <tr t-if="doc.diffusor_material_ids">
+                                <td>
+                                    <strong>Diffuser material</strong>
+                                </td>
+                                <td>
+                                    <span t-esc="', '.join([x.name for x in doc.diffusor_material_ids])"/>
+                                </td>
+                            </tr>
+
+                            <tr t-if="doc.frame_material_ids">
+                                <td>
+                                    <strong>Frame material</strong>
+                                </td>
+                                <td>
+                                    <span t-esc="', '.join([x.name for x in doc.frame_material_ids])"/>
+                                </td>
+                            </tr>
+
+                            <tr t-if="doc.reflector_material_ids">
+                                <td>
+                                    <strong>Reflector material</strong>
+                                </td>
+                                <td>
+                                    <span t-esc="', '.join([x.name for x in doc.reflector_material_ids])"/>
+                                </td>
+                            </tr>
+
+                            <tr t-if="doc.blade_material_ids">
+                                <td>
+                                    <strong>Blade material</strong>
+                                </td>
+                                <td>
+                                    <span t-esc="', '.join([x.name for x in doc.blade_material_ids])"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table t-if="doc.sealing_id or doc.sealing2_id"
+                               class="table table-condensed">
+                            <tr>
+                                <td>
+                                    <strong>Sealing</strong>
+                                </td>
+                                <td/>
+                            </tr>
+                            <tr t-if="doc.sealing_id">
+                                <td>
+                                    <strong>IP</strong>
                                 </td>
                                 <td>
                                     <span t-field="doc.sealing_id"/>
                                 </td>
                             </tr>
-                        </table-->
+                            <tr t-if="doc.sealing2_id">
+                                <td>
+                                    <strong>IP2</strong>
+                                </td>
+                                <td>
+                                    <span t-field="doc.sealing2_id"/>
+                                </td>
+                            </tr>
+                        </table>
 
                     </div>
                     <div class="col-xs-5">
@@ -45,9 +143,9 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <div t-if="doc.sealing_id">
-                            <strong>IP</strong>
-                            <span t-field="doc.sealing_id"/>
+                        <div t-if="doc.ik">
+                            <strong>IK</strong>
+                            <span t-field="doc.ik"/>
                         </div>
                     </div>
                 </div>
