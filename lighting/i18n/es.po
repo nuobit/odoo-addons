@@ -75,7 +75,7 @@ msgstr "Aplicación"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_application_ids
 #: model:ir.ui.menu,name:lighting.product_applications_menu
 msgid "Applications"
-msgstr "Applicaciones"
+msgstr "Aplicaciones"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_ids
