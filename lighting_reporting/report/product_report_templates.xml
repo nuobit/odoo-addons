@@ -28,9 +28,9 @@
                             <span t-esc="', '.join([x.name for x in doc.family_ids])"/>
                         </div>
 
-                        <div t-if="doc.type_ids">
-                            <strong>Types</strong>
-                            <span t-esc="', '.join([x.name for x in doc.type_ids])"/>
+                        <div t-if="doc.category_id">
+                            <strong>Category</strong>
+                            <span t-field="doc.category_id"/>
                         </div>
 
                         <div t-if="doc.location_ids">
