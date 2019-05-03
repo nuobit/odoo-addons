@@ -113,6 +113,9 @@ access_lighting_product_supplier_user,lighting.product.supplier user,model_light
 access_lighting_product_type_guest,lighting.product.type guest,model_lighting_product_type,lighting.group_lighting_guest,1,0,0,0
 access_lighting_product_type_manager,lighting.product.type manager,model_lighting_product_type,lighting.group_lighting_manager,1,1,1,1
 access_lighting_product_type_user,lighting.product.type user,model_lighting_product_type,lighting.group_lighting_user,1,0,0,0
+access_lighting_product_category_guest,lighting.product.category guest,model_lighting_product_category,lighting.group_lighting_guest,1,0,0,0
+access_lighting_product_category_manager,lighting.product.category manager,model_lighting_product_category,lighting.group_lighting_manager,1,1,1,1
+access_lighting_product_category_user,lighting.product.category user,model_lighting_product_category,lighting.group_lighting_user,1,0,0,0
 access_lighting_product_voltage_guest,lighting.product.voltage guest,model_lighting_product_voltage,lighting.group_lighting_guest,1,0,0,0
 access_lighting_product_voltage_manager,lighting.product.voltage manager,model_lighting_product_voltage,lighting.group_lighting_manager,1,1,1,1
 access_lighting_product_voltage_user,lighting.product.voltage user,model_lighting_product_voltage,lighting.group_lighting_user,1,0,0,0

@@ -31,7 +31,7 @@ class LightingProduct(models.Model):
                               help="Description dynamically generated from product data",
                               translate=True, store=True, track_visibility='onchange')
 
-    @api.depends('type_ids.name',
+    @api.depends('category_id.name',
                  'family_ids.name',
                  'catalog_ids.description_show_ip',
                  'sealing_id.name', 'sealing2_id.name',
@@ -56,8 +56,8 @@ class LightingProduct(models.Model):
     def _generate_description(self, show_variant_data=True):
         self.ensure_one()
         data = []
-        if self.type_ids:
-            data.append(','.join(self.type_ids.sorted(lambda x: x.name).mapped('name')))
+        if self.category_id:
+            data.append(self.category_id.name)
 
         if self.family_ids:
             data.append(','.join(self.family_ids.sorted(lambda x: x.sequence).mapped('name')))
@@ -194,6 +194,10 @@ class LightingProduct(models.Model):
                                   track_visibility='onchange')
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel',
                                    string='Catalogs', track_visibility='onchange')
+
+    category_id = fields.Many2one(comodel_name='lighting.product.category',
+                                  string='Category', required=True,
+                                  ondelete='restrict', track_visibility='onchange')
     type_ids = fields.Many2many(comodel_name='lighting.product.type', relation='lighting_product_type_rel',
                                 string='Types', track_visibility='onchange')
 

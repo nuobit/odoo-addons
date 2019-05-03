@@ -1622,6 +1622,7 @@ msgstr "Multi Food"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_name
@@ -2070,6 +2071,7 @@ msgstr "Árvore de tensão do produto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_product_count
@@ -2630,6 +2632,16 @@ msgstr "Tipo"
 #: model:ir.ui.menu,name:lighting.product_types_menu
 msgid "Types"
 msgstr "Tipos"
+
+#. module: lighting
+#: model:ir.ui.menu,name:lighting.product_categories_menu
+msgid "Categories"
+msgstr "Categorias"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_id
+msgid "Category"
+msgstr "Categoria"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
