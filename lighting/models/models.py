@@ -513,6 +513,14 @@ class LightingProduct(models.Model):
                 'src': en_trl,
                 'value': non_en_trl, })
 
+    @api.multi
+    @api.constrains('reference')
+    def _check_reference_spaces(self):
+        for rec in self:
+            if rec.reference != rec.reference.strip():
+                raise ValueError(
+                    _('The reference has trailing and/or leading spaces, plese remove them before saving.'))
+
     @api.model
     def create(self, values):
         res = super().create(values)
