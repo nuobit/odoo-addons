@@ -32,7 +32,7 @@
     <!-- window action keyword2category smart button -->
     <record id="seo_keyword_action_category" model="ir.actions.act_window">
         <field name="name">Product category</field>
-        <field name="res_model">lighting.product.type</field>
+        <field name="res_model">lighting.product.category</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('seo_keyword_ids','=',active_id)]</field>
