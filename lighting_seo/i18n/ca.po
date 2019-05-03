@@ -33,7 +33,7 @@ msgstr "Creat el"
 #. module: lighting_seo
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_application_seo_description
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_family_seo_description
-#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_type_seo_description
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_category_seo_description
 msgid "Description"
 msgstr "Descripció"
 
@@ -56,7 +56,7 @@ msgstr "Keyword"
 #: model:ir.actions.act_window,name:lighting_seo.seo_keyword_action
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_application_seo_keyword_ids
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_family_seo_keyword_ids
-#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_type_seo_keyword_ids
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_category_seo_keyword_ids
 #: model:ir.ui.menu,name:lighting_seo.seo_keyword_menu
 msgid "Keywords"
 msgstr "Keywords"
@@ -90,7 +90,7 @@ msgstr "SEO keyword Tree"
 #: model:ir.ui.menu,name:lighting_seo.seo_menu
 #: model:ir.ui.view,arch_db:lighting_seo.product_application_view_form_inherit_seo
 #: model:ir.ui.view,arch_db:lighting_seo.product_family_view_form_inherit_seo
-#: model:ir.ui.view,arch_db:lighting_seo.product_type_view_form_inherit_seo
+#: model:ir.ui.view,arch_db:lighting_seo.product_category_view_form_inherit_seo
 #: model:ir.ui.view,arch_db:lighting_seo.product_view_form_inherit_seo
 msgid "SEO/SEM"
 msgstr "SEO/SEM"
@@ -104,7 +104,7 @@ msgstr "The keyword must be unique!"
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_application_seo_title
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_family_seo_title
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_seo_title
-#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_type_seo_title
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_category_seo_title
 msgid "Title"
 msgstr "Títol"
 
@@ -112,7 +112,7 @@ msgstr "Títol"
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_application_seo_url
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_family_seo_url
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_seo_url
-#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_type_seo_url
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_category_seo_url
 msgid "URL"
 msgstr "URL"
 
@@ -138,9 +138,9 @@ msgid "lighting.product.family"
 msgstr "lighting.product.family"
 
 #. module: lighting_seo
-#: model:ir.model,name:lighting_seo.model_lighting_product_type
-msgid "lighting.product.type"
-msgstr "lighting.product.type"
+#: model:ir.model,name:lighting_seo.model_lighting_product_category
+msgid "lighting.product.category"
+msgstr "lighting.product.category"
 
 #. module: lighting_seo
 #: model:ir.model,name:lighting_seo.model_lighting_seo_keyword

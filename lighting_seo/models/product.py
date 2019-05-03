@@ -92,15 +92,15 @@ class LightingProductFamily(models.Model):
             rec.meta_preview = seo_preview(rec.seo_title, rec.seo_url, rec.seo_description)
 
 
-class LightingProductType(models.Model):
-    _inherit = 'lighting.product.type'
+class LightingProductCategory(models.Model):
+    _inherit = 'lighting.product.category'
 
     seo_title = fields.Char(string='Meta title', translate=True)
     seo_url = fields.Char(string='URL')
     seo_description = fields.Char(string='Meta description', translate=True)
     seo_keyword_ids = fields.Many2many(comodel_name='lighting.seo.keyword',
-                                       relation='lighting_product_type_seo_keyword_rel',
-                                       column1='type_id', column2='keyword_id', string='Keywords')
+                                       relation='lighting_product_category_seo_keyword_rel',
+                                       column1='category_id', column2='keyword_id', string='Keywords')
 
     meta_title_length = fields.Integer(string='Meta title length', compute='_compute_lengths', readonly=True)
     meta_description_length = fields.Integer(string='Meta description length', compute='_compute_lengths',

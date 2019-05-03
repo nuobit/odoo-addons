@@ -17,14 +17,14 @@ class LightingSEOKeyword(models.Model):
 
     product_count = fields.Integer(compute='_compute_counts', string='Product(s)')
     family_count = fields.Integer(compute='_compute_counts', string='Family(s)')
-    type_count = fields.Integer(compute='_compute_counts', string='Type(s)')
+    category_count = fields.Integer(compute='_compute_counts', string='Categories(s)')
     application_count = fields.Integer(compute='_compute_counts', string='Application(s)')
     catalog_count = fields.Integer(compute='_compute_counts', string='Catalog(s)')
 
     def _compute_counts(self):
         maps = [('product_count', 'lighting.product'),
                 ('family_count', 'lighting.product.family'),
-                ('type_count', 'lighting.product.type'),
+                ('category_count', 'lighting.product.category'),
                 ('application_count', 'lighting.product.application'),
                 ('catalog_count', 'lighting.catalog'),
                 ]
@@ -38,7 +38,7 @@ class LightingSEOKeyword(models.Model):
     def _compute_all_product_count(self):
         maps = [('id', 'lighting.product'),
                 ('family_ids', 'lighting.product.family'),
-                ('type_ids', 'lighting.product.type'),
+                ('category_id', 'lighting.product.category'),
                 ('application_ids', 'lighting.product.application'),
                 ('catalog_ids', 'lighting.catalog'),
                 ]
@@ -53,7 +53,7 @@ class LightingSEOKeyword(models.Model):
     @api.multi
     def unlink(self):
         models = ['lighting.product', 'lighting.catalog', 'lighting.product.family',
-                  'lighting.product.type', 'lighting.product.application']
+                  'lighting.product.application']
 
         for m in models:
             records = self.env[m].search([('seo_keyword_ids', 'in', self.ids)])

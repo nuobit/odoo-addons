@@ -55,10 +55,10 @@
         </field>
     </record>
 
-    <record id="product_type_view_form_inherit_seo" model="ir.ui.view">
-        <field name="name">product_type_view.form.inherit.seo</field>
-        <field name="model">lighting.product.type</field>
-        <field name="inherit_id" ref="lighting.product_type_form_view"/>
+    <record id="product_category_view_form_inherit_seo" model="ir.ui.view">
+        <field name="name">product_category_view.form.inherit.seo</field>
+        <field name="model">lighting.product.category</field>
+        <field name="inherit_id" ref="lighting.product_category_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
                 <group string="SEO/SEM" col="1">
