@@ -213,6 +213,7 @@ class LightingProduct(models.Model):
     # Description tab
     location_ids = fields.Many2many(comodel_name='lighting.product.location',
                                     relation='lighting_product_location_rel', string='Locations',
+                                    required=True,
                                     track_visibility='onchange')
 
     installation_ids = fields.Many2many(comodel_name='lighting.product.installation',
