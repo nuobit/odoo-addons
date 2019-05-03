@@ -951,16 +951,17 @@
         <field name="arch" type="xml">
             <search>
                 <field name="reference" string="Product"
-                       filter_domain="['|', '|', '|', '|', '|', ('reference','ilike',self), ('description','ilike',self), ('ean','ilike',self), ('catalog_ids','ilike',self), ('family_ids','ilike',self), ('type_ids','ilike',self)]"/>
+                       filter_domain="['|', '|', '|', '|', '|', '|', ('reference','ilike',self), ('description','ilike',self), ('ean','ilike',self), ('catalog_ids','ilike',self), ('location_ids','ilike',self), ('family_ids','ilike',self), ('category_id','ilike',self)]"/>
                 <field name="attachment_ids" string="Attachment type"
                        filter_domain="[('attachment_ids.type_id.code','=',self)]"/>
                 <field name="reference"/>
                 <field name="description"/>
                 <field name="ean"/>
                 <field name="catalog_ids"/>
+                <field name="location_ids"/>
+                <field name="category_id"/>
                 <field name="family_ids"/>
                 <field name="installation_ids"/>
-                <field name="type_ids"/>
                 <field name="application_ids"/>
                 <field name="dimmable_ids"/>
                 <field name="body_material_ids" string="=Material code"
@@ -977,6 +978,8 @@
                 <group expand="0" string="Group By">
                     <filter string="State" name="groupby_state" domain="[]"
                             context="{'group_by': 'state'}"/>
+                    <filter string="Category" name="groupby_category" domain="[]"
+                            context="{'group_by': 'category_id'}"/>
                 </group>
             </search>
         </field>
