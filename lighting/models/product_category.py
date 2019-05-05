@@ -10,6 +10,7 @@ class LightingProductCategory(models.Model):
     _order = 'name'
 
     name = fields.Char(required=True, translate=True)
+    is_accessory = fields.Boolean(string="Is accessory")
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 

@@ -1188,6 +1188,7 @@ msgstr "É conduzido?"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_is_accessory
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_is_accessory
 msgid "Is accessory"
 msgstr "É acessório"
 
