@@ -532,7 +532,7 @@ class LightingProduct(models.Model):
 
             if rec.is_composite and not rec.required_ids:
                 raise ValueError(
-                    _("You cannot have a composite product without required accessories"))
+                    _("You cannot have a composite product without required accessories %s") % self.reference)
 
     @api.model
     def create(self, values):
