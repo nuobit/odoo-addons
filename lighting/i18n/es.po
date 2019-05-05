@@ -33,11 +33,6 @@ msgid "=Material code"
 msgstr "=Código de material"
 
 #. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Accessories"
-msgstr "Accesorios"
-
-#. module: lighting
 #: model:ir.actions.act_window,name:lighting.add_attachment_action
 msgid "Add attachment"
 msgstr "Añadir adjunto"
@@ -2188,16 +2183,29 @@ msgid "Remote control"
 msgstr "Control remoto"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_required_ids
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+msgid "Accessories"
+msgstr "Accesorios"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+msgid "Optional"
+msgstr "Opcionales"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_optional_ids
+msgid "Optional accessories"
+msgstr "Accesorios opcionales"
+
+#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Required"
 msgstr "Necesarios"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_optional_ids
-#: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Optional"
-msgstr "Opcionales"
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_required_ids
+msgid "Required accessories"
+msgstr "Accesorios necesarios"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_result

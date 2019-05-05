@@ -38,10 +38,24 @@ msgid "Accessories"
 msgstr "Accessoires"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_optional_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Optional"
 msgstr "Optionnel"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_optional_ids
+msgid "Optional accessories"
+msgstr "Accessoires optionnels"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+msgid "Required"
+msgstr "Obligatoires"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_required_ids
+msgid "Required accessories"
+msgstr "Accessoires requis"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.add_attachment_action
@@ -2192,12 +2206,6 @@ msgstr "Pertinence"
 #: selection:lighting.product,fan_control:0
 msgid "Remote control"
 msgstr "Télécommande"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_required_ids
-#: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Required"
-msgstr "Requis"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_result
