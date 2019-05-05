@@ -58,14 +58,16 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_action_parent_optional_accessory_product)d">
+                                name="%(product_action_parent_optional_accessory_product)d"
+                                attrs="{'invisible': [('parent_optional_accessory_product_count', '=', 0)]}">
                             <field string="P. opt. acc."
                                    name="parent_optional_accessory_product_count"
                                    help="Products where one of its optional accessories is the current product"
                                    widget="statinfo"/>
                         </button>
                         <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_action_parent_required_accessory_product)d">
+                                name="%(product_action_parent_required_accessory_product)d"
+                                attrs="{'invisible': [('parent_required_accessory_product_count', '=', 0)]}">
                             <field string="P. req. acc."
                                    name="parent_required_accessory_product_count"
                                    help="Products where one of its required accessories is the current product"
