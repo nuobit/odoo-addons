@@ -2627,7 +2627,6 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_type_ids
 #: model:ir.ui.menu,name:lighting.product_types_menu
 msgid "Types"
 msgstr "Tipos"

@@ -198,8 +198,6 @@ class LightingProduct(models.Model):
     category_id = fields.Many2one(comodel_name='lighting.product.category',
                                   string='Category', required=True,
                                   ondelete='restrict', track_visibility='onchange')
-    type_ids = fields.Many2many(comodel_name='lighting.product.type', relation='lighting_product_type_rel',
-                                string='Types', track_visibility='onchange')
 
     is_accessory = fields.Boolean(string='Is accessory', track_visibility='onchange')
     is_required = fields.Boolean(string='Is required', track_visibility='onchange')

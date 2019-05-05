@@ -50,7 +50,6 @@
                         <field name="ean"/>
                         <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <field name="category_id"/>
-                        <field name="type_ids" widget="many2many_tags"/>
                         <field name="family_ids" widget="many2many_tags"/>
                     </group>
                     <group>
@@ -312,7 +311,6 @@
                 <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="location_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="category_id"/>
-                <field name="type_ids" widget="many2many_tags"/>
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state"/>
                 <field name="last_update"/>
