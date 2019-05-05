@@ -16,12 +16,10 @@ def migrate(env, version):
 
     _logger.info("Copying Accessory data to Optional...")
 
-    products = env['lighting.product'].search([('accessory_ids', '!=', False)])
-    n = len(products)
-    th = int(n / 100) or 1
-    for i, p in enumerate(products, 1):
-        p.optional_ids = [(6, False, p.accessory_ids.mapped('id'))]
-        if (i % th) == 0:
-            _logger.info(" - Progress moving accessory data %i%%" % (int(i / n * 100)))
+    env.cr.execute(
+        "insert into lighting_product_optional_rel(product_id, optional_id) "
+        "select product_id, accessory_id "
+        "from lighting_product_accessory_rel"
+    )
 
     _logger.info("Accessory data successfully copied to Optional")
