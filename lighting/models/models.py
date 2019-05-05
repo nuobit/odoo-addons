@@ -214,7 +214,9 @@ class LightingProduct(models.Model):
     parents_brand_ids = fields.Many2many(comodel_name='lighting.catalog',
                                          compute='_compute_parents_brands',
                                          readonly=True,
-                                         string='Parents brands')
+                                         string='Parents brands',
+                                         help='Brands of the products that one of their optional and/or '
+                                              'required accessories is the current product')
 
     @api.depends('optional_ids', 'required_ids')
     def _compute_parents_brands(self):
