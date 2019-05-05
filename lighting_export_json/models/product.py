@@ -377,7 +377,9 @@ class LightingProduct(models.Model):
             for rec in self:
                 types_d = {}
                 for lang in template_id.lang_ids.mapped('code'):
-                    types_d[lang] = [rec.with_context(lang=lang).category_id.name]
+                    category_lang = rec.with_context(lang=lang).category_id.name
+                    if category_lang:
+                        types_d[lang] = [category_lang]
 
                 if types_d:
                     rec.type_ids = json.dumps(types_d)
