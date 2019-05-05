@@ -362,3 +362,22 @@ class LightingProduct(models.Model):
 
                 if source_type_d:
                     rec.search_source_type = json.dumps(source_type_d)
+
+    #################### backwards compatibility fields
+    ### they should be replaced by the actual field on lighting.product object
+
+    ######### type_ids (many2many), should be replaced by category_id (many2one)
+    type_ids = fields.Serialized(string="Types",
+                                 compute='_compute_product_types')
+
+    @api.depends('category_id')
+    def _compute_product_types(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                types_d = {}
+                for lang in template_id.lang_ids.mapped('code'):
+                    types_d[lang] = [rec.with_context(lang=lang).category_id.name]
+
+                if types_d:
+                    rec.type_ids = json.dumps(types_d)
