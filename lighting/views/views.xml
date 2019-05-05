@@ -54,10 +54,6 @@
                     </group>
                     <group>
                         <group>
-                            <field name="is_accessory"/>
-                            <field name="is_required"/>
-                        </group>
-                        <group>
                             <field name="sequence"/>
                         </group>
                     </group>
@@ -265,15 +261,19 @@
                                 <field name="marketing_comments" widget="text"/>
                             </group>
                         </page>
-                        <page string="Required">
-                            <group>
-                                <field name="required_ids" nolabel="1"/>
-                            </group>
-                        </page>
                         <page string="Accessories">
-                            <group>
-                                <field name="accessory_ids" nolabel="1"/>
-                            </group>
+                            <notebook>
+                                <page string="Recommended">
+                                    <group>
+                                        <field name="accessory_ids" nolabel="1"/>
+                                    </group>
+                                </page>
+                                <page string="Required">
+                                    <group>
+                                        <field name="required_ids" nolabel="1"/>
+                                    </group>
+                                </page>
+                            </notebook>
                         </page>
                         <page string="Substitutes">
                             <group>

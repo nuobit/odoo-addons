@@ -1187,7 +1187,6 @@ msgid "Is LED?"
 msgstr "É conduzido?"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_is_accessory
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category_is_accessory
 msgid "Is accessory"
 msgstr "É acessório"
@@ -2196,6 +2195,11 @@ msgstr "Controle remoto"
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Required"
 msgstr "Requeridos"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+msgid "Recommended"
+msgstr "Recomendados"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_result

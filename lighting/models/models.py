@@ -199,9 +199,6 @@ class LightingProduct(models.Model):
                                   string='Category', required=True,
                                   ondelete='restrict', track_visibility='onchange')
 
-    is_accessory = fields.Boolean(string='Is accessory', track_visibility='onchange')
-    is_required = fields.Boolean(string='Is required', track_visibility='onchange')
-
     last_update = fields.Date(string='Last modified on', track_visibility='onchange')
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order",
@@ -420,13 +417,13 @@ class LightingProduct(models.Model):
     # Optional accesories tab
     accessory_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_accessory_rel',
                                      column1="product_id", column2='accessory_id',
-                                     domain=[('is_accessory', '=', True)],
+                                     domain=[('category_id.is_accessory', '=', True)],
                                      string='Accessories', track_visibility='onchange')
 
     # Required accessories tab
     required_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_required_rel',
                                     column1="product_id", column2='required_id',
-                                    domain=[('is_required', '=', True)],
+                                    domain=[('category_id.is_accessory', '=', True)],
                                     string='Required', track_visibility='onchange')
 
     # Substitutes tab

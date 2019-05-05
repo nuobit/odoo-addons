@@ -1185,7 +1185,6 @@ msgid "Is LED?"
 msgstr "Est guidé?"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_is_accessory
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category_is_accessory
 msgid "Is accessory"
 msgstr "Est accessoire"
@@ -2194,6 +2193,11 @@ msgstr "Télécommande"
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Required"
 msgstr "Requis"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+msgid "Recommended"
+msgstr "Recommandé"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_result
