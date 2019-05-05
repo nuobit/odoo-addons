@@ -46,22 +46,18 @@
                         <field name="description"/>
                         <field name="description_manual"/>
                     </group>
-                    <group col="10">
-                        <group colspan="9">
-                            <field name="ean"/>
-                            <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="category_id"/>
-                            <field name="family_ids" widget="many2many_tags"/>
-                        </group>
-                        <group colspan="1">
-                            <field name="is_composite"/>
-                            <field name="parents_brand_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                        </group>
+                    <group>
+                        <field name="ean"/>
+                        <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="category_id"/>
+                        <field name="family_ids" widget="many2many_tags"/>
                     </group>
-                    <group col="8">
-                        <group colspan="2">
-                            <field name="sequence"/>
-                        </group>
+                    <group>
+                        <field name="is_composite"/>
+                        <field name="parents_brand_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    </group>
+                    <group>
+                        <field name="sequence"/>
                     </group>
                     <notebook>
                         <page string="Description">
