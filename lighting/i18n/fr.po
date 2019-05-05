@@ -33,10 +33,15 @@ msgid "=Material code"
 msgstr "= Code de l'article"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_accessory_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Accessories"
 msgstr "Accessoires"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_accessory_ids
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+msgid "Optional"
+msgstr "Optionnel"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.add_attachment_action
@@ -2193,11 +2198,6 @@ msgstr "Télécommande"
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Required"
 msgstr "Requis"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Recommended"
-msgstr "Recommandé"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_result

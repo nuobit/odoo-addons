@@ -34,7 +34,6 @@ msgid "=Material code"
 msgstr "= Código material"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_accessory_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Accessories"
 msgstr "Acessórios"
@@ -2197,9 +2196,10 @@ msgid "Required"
 msgstr "Requeridos"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_accessory_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Recommended"
-msgstr "Recomendados"
+msgid "Optional"
+msgstr "Opcionales"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_result

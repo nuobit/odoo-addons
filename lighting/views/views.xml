@@ -263,7 +263,7 @@
                         </page>
                         <page string="Accessories">
                             <notebook>
-                                <page string="Recommended">
+                                <page string="Optional">
                                     <group>
                                         <field name="accessory_ids" nolabel="1"/>
                                     </group>
