@@ -18,6 +18,32 @@
         </field>
     </record>
 
+    <!-- window action product2parentoptionalaccessoryproduct smart button -->
+    <record id="product_action_parent_optional_accessory_product" model="ir.actions.act_window">
+        <field name="name">Parent products as optional accessories</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('optional_ids','=',active_id)]</field>
+        <field name="context">{'default_optional_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product</p>
+        </field>
+    </record>
+
+    <!-- window action product2parentrequiredaccessoryproduct smart button -->
+    <record id="product_action_parent_required_accessory_product" model="ir.actions.act_window">
+        <field name="name">Parent products as required accessories</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('required_ids','=',active_id)]</field>
+        <field name="context">{'default_required_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product</p>
+        </field>
+    </record>
+
     <!-- view product -->
     <record model="ir.ui.view" id="product_form_view">
         <field name="name">product.form</field>
@@ -31,6 +57,20 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_action_parent_optional_accessory_product)d">
+                            <field string="P. opt. acc."
+                                   name="parent_optional_accessory_product_count"
+                                   help="Products where one of its optional accessories is the current product"
+                                   widget="statinfo"/>
+                        </button>
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_action_parent_required_accessory_product)d">
+                            <field string="P. req. acc."
+                                   name="parent_required_accessory_product_count"
+                                   help="Products where one of its required accessories is the current product"
+                                   widget="statinfo"/>
+                        </button>
                         <button type="action" class="oe_stat_button" icon="fa-files-o"
                                 name="%(attachment_list_action)d">
                             <field string="Attachments" name="attachment_count" widget="statinfo"/>

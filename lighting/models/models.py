@@ -453,6 +453,17 @@ class LightingProduct(models.Model):
                                     column1="product_id", column2='required_id',
                                     string='Required accessories', track_visibility='onchange')
 
+    parent_optional_accessory_product_count = fields.Integer(compute='_compute_parent_accessory_product_count')
+    parent_required_accessory_product_count = fields.Integer(compute='_compute_parent_accessory_product_count')
+
+    @api.depends('optional_ids', 'required_ids')
+    def _compute_parent_accessory_product_count(self):
+        for record in self:
+            record.parent_optional_accessory_product_count = self.env['lighting.product'] \
+                .search_count([('optional_ids', '=', record.id)])
+            record.parent_required_accessory_product_count = self.env['lighting.product'] \
+                .search_count([('required_ids', '=', record.id)])
+
     # Substitutes tab
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',
                                       column1='product_id', column2='substitute_id',
