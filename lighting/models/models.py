@@ -199,7 +199,7 @@ class LightingProduct(models.Model):
                                   string='Category', required=True,
                                   ondelete='restrict', track_visibility='onchange')
 
-    is_composite = fields.Boolean(string="Is composite")
+    is_composite = fields.Boolean(string="Is composite", default=False)
 
     @api.onchange('is_composite')
     def _onchange_is_composite(self):
@@ -532,7 +532,7 @@ class LightingProduct(models.Model):
 
             if rec.is_composite and not rec.required_ids:
                 raise ValueError(
-                    _("You cannot have a composite product without required accessories %s") % self.reference)
+                    _("You cannot have a composite product without required accessories"))
 
     @api.model
     def create(self, values):

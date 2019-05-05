@@ -16,12 +16,14 @@ def migrate(env, version):
 
     _logger.info("Populating 'Is composite' field from required_ids...")
 
-    products = env['lighting.product'].search([('required_ids', '!=', False)])
-    n = len(products)
-    th = int(n / 100) or 1
-    for i, p in enumerate(products, 1):
-        p.is_composite = True
-        if (i % th) == 0:
-            _logger.info(" - Progress populating 'Is composite' %i%%" % (int(i / n * 100)))
+    env.cr.execute(
+        """update lighting_product p
+           set is_composite = TRUE
+           where exists (
+                    select 1
+                    from lighting_product_required_rel r
+                    where r.product_id = p.id
+                 )
+        """)
 
     _logger.info("'Is composite' field successfully populated from required_ids")
