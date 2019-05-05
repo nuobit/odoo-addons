@@ -55,7 +55,7 @@
                         </group>
                         <group colspan="1">
                             <field name="is_composite"/>
-                            <field name="parents_brand_ids" widget="many2many_tags"/>
+                            <field name="parents_brand_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </group>
                     <group col="8">
