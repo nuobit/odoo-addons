@@ -429,13 +429,11 @@ class LightingProduct(models.Model):
     # Optional accesories tab
     optional_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_optional_rel',
                                     column1="product_id", column2='optional_id',
-                                    domain=[('category_id.is_accessory', '=', True)],
                                     string='Optional accessories', track_visibility='onchange')
 
     # Required accessories tab
     required_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_required_rel',
                                     column1="product_id", column2='required_id',
-                                    domain=[('category_id.is_accessory', '=', True)],
                                     string='Required accessories', track_visibility='onchange')
 
     # Substitutes tab
