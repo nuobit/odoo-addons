@@ -211,6 +211,23 @@ class LightingProduct(models.Model):
                                 "You cannot change this while the product has necessary accessories assigned")},
             }
 
+    parents_brand_ids = fields.Many2many(comodel_name='lighting.catalog',
+                                         compute='_compute_parents_brands',
+                                         readonly=True,
+                                         string='Parents brands')
+
+    @api.depends('optional_ids', 'required_ids')
+    def _compute_parents_brands(self):
+        for rec in self:
+            parents = self.env['lighting.product'].search([
+                '|',
+                ('optional_ids', '=', rec.id),
+                ('required_ids', '=', rec.id),
+            ])
+            if parents:
+                brand_ids = list(set(parents.mapped('catalog_ids.id')))
+                rec.parents_brand_ids = [(6, False, brand_ids)]
+
     last_update = fields.Date(string='Last modified on', track_visibility='onchange')
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order",
