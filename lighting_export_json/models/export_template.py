@@ -181,7 +181,7 @@ class LightingExportTemplate(models.Model):
         bundle_d = {}
         for template_name, objects_l in template_d.items():
             products = self.env['lighting.product'].browse([x.id for x in objects_l])
-            is_bundle_template = any(products.mapped('is_bundle'))
+            is_bundle_template = any(products.mapped('is_composite'))
             if is_bundle_template:
                 products_required = products.mapped('required_ids')
                 if products_required:

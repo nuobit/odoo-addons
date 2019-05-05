@@ -40,15 +40,6 @@ class LightingProduct(models.Model):
             if rec.template != rec.reference:
                 rec.template_display = rec.template
 
-    ######### Bundle #############################
-    is_bundle = fields.Boolean(string='Is bundle',
-                               compute='_compute_is_bundle')
-
-    @api.depends('required_ids')
-    def _compute_is_bundle(self):
-        for rec in self:
-            rec.is_bundle = True if rec.required_ids else False
-
     ######### Display Cut hole dimensions ##########
     cut_hole_display = fields.Char(string='Cut hole',
                                    compute='_compute_cut_hole_display')
