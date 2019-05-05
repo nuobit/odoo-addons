@@ -46,14 +46,19 @@
                         <field name="description"/>
                         <field name="description_manual"/>
                     </group>
-                    <group>
-                        <field name="ean"/>
-                        <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                        <field name="category_id"/>
-                        <field name="family_ids" widget="many2many_tags"/>
+                    <group col="10">
+                        <group colspan="9">
+                            <field name="ean"/>
+                            <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="category_id"/>
+                            <field name="family_ids" widget="many2many_tags"/>
+                        </group>
+                        <group colspan="1">
+                            <field name="is_composite"/>
+                        </group>
                     </group>
-                    <group>
-                        <group>
+                    <group col="8">
+                        <group colspan="2">
                             <field name="sequence"/>
                         </group>
                     </group>
@@ -268,7 +273,8 @@
                                         <field name="optional_ids" nolabel="1"/>
                                     </group>
                                 </page>
-                                <page string="Required">
+                                <page string="Required"
+                                      attrs="{'invisible': [('is_composite', '=', False)]}">
                                     <group>
                                         <field name="required_ids" nolabel="1"/>
                                     </group>
@@ -967,11 +973,16 @@
                         domain="[('state', '=', 'discontinued')]"/>
                 <filter string="Draft" name="draft"
                         domain="[('state', '=', 'draft')]"/>
+                <separator/>
+                <filter string="Is composite" name="is_composite"
+                        domain="[('is_composite', '=', True)]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="groupby_state" domain="[]"
                             context="{'group_by': 'state'}"/>
                     <filter string="Category" name="groupby_category" domain="[]"
                             context="{'group_by': 'category_id'}"/>
+                    <filter string="Is composite" name="groupby_is_composite" domain="[]"
+                            context="{'group_by': 'is_composite'}"/>
                 </group>
             </search>
         </field>

@@ -199,6 +199,18 @@ class LightingProduct(models.Model):
                                   string='Category', required=True,
                                   ondelete='restrict', track_visibility='onchange')
 
+    is_composite = fields.Boolean(string="Is composite")
+
+    @api.onchange('is_composite')
+    def _onchange_is_composite(self):
+        if not self.is_composite and self.required_ids:
+            self.is_composite = True
+            return {
+                'warning': {'title': "Warning",
+                            'message': _(
+                                "You cannot change this while the product has necessary accessories assigned")},
+            }
+
     last_update = fields.Date(string='Last modified on', track_visibility='onchange')
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order",
@@ -416,9 +428,9 @@ class LightingProduct(models.Model):
 
     # Optional accesories tab
     optional_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_optional_rel',
-                                     column1="product_id", column2='optional_id',
-                                     domain=[('category_id.is_accessory', '=', True)],
-                                     string='Optional accessories', track_visibility='onchange')
+                                    column1="product_id", column2='optional_id',
+                                    domain=[('category_id.is_accessory', '=', True)],
+                                    string='Optional accessories', track_visibility='onchange')
 
     # Required accessories tab
     required_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_required_rel',
@@ -508,6 +520,19 @@ class LightingProduct(models.Model):
             if rec.reference != rec.reference.strip():
                 raise ValueError(
                     _('The reference has trailing and/or leading spaces, plese remove them before saving.'))
+
+    @api.multi
+    @api.constrains('is_composite', 'required_ids')
+    def _check_composite_product(self):
+        for rec in self:
+            if not rec.is_composite and rec.required_ids:
+                raise ValueError(
+                    _("Only the composite products can have required accessories. Enable 'is_composite' "
+                      "field or remove the required accessories associated."))
+
+            if rec.is_composite and not rec.required_ids:
+                raise ValueError(
+                    _("You cannot have a composite product without required accessories"))
 
     @api.model
     def create(self, values):

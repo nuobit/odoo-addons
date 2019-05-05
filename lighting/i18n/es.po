@@ -2651,8 +2651,15 @@ msgstr "Categorías"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category_id
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Category"
 msgstr "Categoría"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_is_composite
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Is composite"
+msgstr "Es compuesto"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
