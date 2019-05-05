@@ -265,7 +265,7 @@
                             <notebook>
                                 <page string="Optional">
                                     <group>
-                                        <field name="accessory_ids" nolabel="1"/>
+                                        <field name="optional_ids" nolabel="1"/>
                                     </group>
                                 </page>
                                 <page string="Required">

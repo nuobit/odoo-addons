@@ -2196,7 +2196,7 @@ msgid "Required"
 msgstr "Requeridos"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_accessory_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_optional_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Optional"
 msgstr "Opcionales"
