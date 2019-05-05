@@ -201,7 +201,6 @@ class LightingProduct(models.Model):
 
     is_accessory = fields.Boolean(string='Is accessory', track_visibility='onchange')
     is_required = fields.Boolean(string='Is required', track_visibility='onchange')
-    is_component = fields.Boolean(string='Is component', track_visibility='onchange')
 
     last_update = fields.Date(string='Last modified on', track_visibility='onchange')
 
@@ -429,12 +428,6 @@ class LightingProduct(models.Model):
                                     column1="product_id", column2='required_id',
                                     domain=[('is_required', '=', True)],
                                     string='Required', track_visibility='onchange')
-
-    # Components tab
-    component_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_component_rel',
-                                     column1="product_id", column2='component_id',
-                                     domain=[('is_component', '=', True)],
-                                     string='Components', track_visibility='onchange')
 
     # Substitutes tab
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',

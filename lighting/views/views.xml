@@ -56,7 +56,6 @@
                         <group>
                             <field name="is_accessory"/>
                             <field name="is_required"/>
-                            <field name="is_component"/>
                         </group>
                         <group>
                             <field name="sequence"/>
@@ -274,11 +273,6 @@
                         <page string="Accessories">
                             <group>
                                 <field name="accessory_ids" nolabel="1"/>
-                            </group>
-                        </page>
-                        <page string="Components">
-                            <group>
-                                <field name="component_ids" nolabel="1"/>
                             </group>
                         </page>
                         <page string="Substitutes">
