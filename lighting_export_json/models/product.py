@@ -202,19 +202,20 @@ class LightingProduct(models.Model):
                 if beam_l:
                     rec.beam_display = json.dumps(beam_l)
 
-    ######### Template Accessories ##########
-    template_accessory_display = fields.Serialized(string="Template accessories",
-                                                   compute='_compute_template_accessory_display')
+    ######### Template Optional ##########
+    template_optional_display = fields.Serialized(string="Template optional",
+                                                  compute='_compute_template_optional_display')
 
-    @api.depends('accessory_ids')
-    def _compute_template_accessory_display(self):
+    @api.depends('optional_ids')
+    def _compute_template_optional_display(self):
         template_id = self.env.context.get('template_id')
         if template_id:
             for rec in self:
-                if rec.accessory_ids:
-                    template_accessory_published = rec.accessory_ids.filtered(lambda x: x.state == 'published')
-                    template_accessory_l = list(set(template_accessory_published.mapped('template')))
-                    rec.template_accessory_display = json.dumps(sorted(template_accessory_l))
+                if rec.optional_ids:
+                    template_optional_published = rec.optional_ids.filtered(lambda x: x.state == 'published')
+                    template_optional_l = list(set(template_optional_published.mapped('template')))
+                    if template_optional_l:
+                        rec.template_optional_display = json.dumps(sorted(template_optional_l))
 
     ######### Template Subtitutes ##########
     template_substitute_display = fields.Serialized(string="Template substitutes",
@@ -366,7 +367,7 @@ class LightingProduct(models.Model):
     #################### backwards compatibility fields
     ### they should be replaced by the actual field on lighting.product object
 
-    ######### type_ids (many2many), should be replaced by category_id (many2one)
+    ######### type_ids (many2many), should be used category_id (many2one) instead
     type_ids = fields.Serialized(string="Types",
                                  compute='_compute_product_types')
 
@@ -383,3 +384,15 @@ class LightingProduct(models.Model):
 
                 if types_d:
                     rec.type_ids = json.dumps(types_d)
+
+    ######### accessory_ids (many2many), should be replaced by optional_ids, just remove this field
+    template_accessory_display = fields.Serialized(string="Template accessories",
+                                                   compute='_compute_template_accessory_display')
+
+    @api.depends('optional_ids')
+    def _compute_template_accessory_display(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                if rec.template_optional_display:
+                    rec.template_accessory_display = json.dumps(rec.template_optional_display)
