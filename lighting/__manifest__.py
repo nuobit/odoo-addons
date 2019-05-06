@@ -19,6 +19,7 @@
         'views/product_family_attachment_views.xml',
         'views/product_family_views.xml',
         'views/product_category_views.xml',
+        'views/product_category_attachment_views.xml',
         'views/product_location_views.xml',
         'views/product_application_attachment_views.xml',
         'views/product_application_views.xml',

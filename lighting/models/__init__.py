@@ -11,6 +11,7 @@ from . import product_family_attachment
 from . import product_location
 from . import product_installation
 from . import product_category
+from . import product_category_attachment
 from . import product_application
 from . import product_application_attachment
 

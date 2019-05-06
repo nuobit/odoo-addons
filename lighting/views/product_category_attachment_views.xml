@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- window view category attachment class -->
+    <record id="product_category_attachment_form_view" model="ir.ui.view">
+        <field name="name">product.category.attachment.form</field>
+        <field name="model">lighting.product.category.attachment</field>
+        <field name="arch" type="xml">
+            <form string="Category attachment Form">
+                <sheet>
+                    <group>
+                        <field name="datas" filename="datas_fname"/>
+                        <field name="datas_fname" invisible="1"/>
+                        <field name="name"/>
+                        <field name="is_default"/>
+                        <field name="sequence"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_category_attachment_tree_view" model="ir.ui.view">
+        <field name="name">product.category.attachment.tree</field>
+        <field name="model">lighting.product.category.attachment</field>
+        <field name="arch" type="xml">
+            <tree string="Category attachment Tree">
+                <field name="sequence" widget="handle"/>
+                <field name="datas_fname"/>
+                <field name="datas" filename="datas_fname" string="Size"/>
+                <field name="name"/>
+                <field name="is_default"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action category attachment class -->
+    <record id="product_category_attachment_action" model="ir.actions.act_window">
+        <field name="name">Category attachments</field>
+        <field name="res_model">lighting.product.category.attachment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('category_id','=',active_id)]</field>
+        <field name="context">{'default_category_id': active_id}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Category attachment</p>
+        </field>
+    </record>
+</odoo>

@@ -24,6 +24,10 @@
             <form string="Product category Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-files-o"
+                                name="%(product_category_attachment_action)d">
+                            <field string="Attachments" name="attachment_count" widget="statinfo"/>
+                        </button>
                         <button type="action" class="oe_stat_button" icon="fa-filter"
                                 name="%(product_category_action_product)d">
                             <field name="product_count" widget="statinfo"/>
