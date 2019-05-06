@@ -30,6 +30,8 @@ class LightingExportTemplate(models.Model):
     attachment_ids = fields.One2many(comodel_name='lighting.export.template.attachment', inverse_name='template_id',
                                      string='Attachments', copy=True)
 
+    max_attachments = fields.Integer(string='Max. attachments', default=-1)
+
     lang_ids = fields.Many2many(comodel_name='res.lang',
                                 relation='lighting_export_template_lang_rel',
                                 column1='template_id', column2='lang_id',

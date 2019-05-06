@@ -43,6 +43,11 @@
                         </page>
                         <page string="Attachments">
                             <group>
+                                <group>
+                                    <field name="max_attachments"/>
+                                </group>
+                            </group>
+                            <group>
                                 <field name="attachment_ids" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
