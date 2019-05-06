@@ -12,6 +12,9 @@ class LightingProductCategory(models.Model):
     name = fields.Char(required=True, translate=True)
     is_accessory = fields.Boolean(string="Is accessory")
 
+    description_text = fields.Char(string='Description text', help='Text to show on a generated product description',
+                                   translate=True)
+
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 
     def _compute_product_count(self):

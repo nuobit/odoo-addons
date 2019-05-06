@@ -32,6 +32,7 @@ class LightingProduct(models.Model):
                               translate=True, store=True, track_visibility='onchange')
 
     @api.depends('category_id.name',
+                 'category_id.description_text',
                  'family_ids.name',
                  'catalog_ids.description_show_ip',
                  'sealing_id.name', 'sealing2_id.name',
@@ -57,7 +58,7 @@ class LightingProduct(models.Model):
         self.ensure_one()
         data = []
         if self.category_id:
-            data.append(self.category_id.name)
+            data.append(self.category_id.description_text or self.category_id.name)
 
         if self.family_ids:
             data.append(','.join(self.family_ids.sorted(lambda x: x.sequence).mapped('name')))
