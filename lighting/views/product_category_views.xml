@@ -39,6 +39,9 @@
                             <field name="is_accessory"/>
                             <field name="description_text"/>
                         </group>
+                        <group>
+                            <field name="sequence"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -50,6 +53,7 @@
         <field name="model">lighting.product.category</field>
         <field name="arch" type="xml">
             <tree string="Product category Tree">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="is_accessory"/>
                 <field name="description_text"/>

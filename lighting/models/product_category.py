@@ -7,13 +7,15 @@ from odoo import api, fields, models, _
 
 class LightingProductCategory(models.Model):
     _name = 'lighting.product.category'
-    _order = 'name'
+    _order = 'sequence'
 
     name = fields.Char(required=True, translate=True)
     is_accessory = fields.Boolean(string="Is accessory")
 
     description_text = fields.Char(string='Description text', help='Text to show on a generated product description',
                                    translate=True)
+
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 
