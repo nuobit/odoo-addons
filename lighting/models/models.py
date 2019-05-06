@@ -448,7 +448,7 @@ class LightingProduct(models.Model):
     # Optional accesories tab
     optional_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_optional_rel',
                                     column1="product_id", column2='optional_id',
-                                    string='Optional accessories', track_visibility='onchange')
+                                    string='Recommended accessories', track_visibility='onchange')
 
     parent_optional_accessory_product_count = fields.Integer(compute='_compute_parent_optional_accessory_product_count')
 
@@ -478,7 +478,7 @@ class LightingProduct(models.Model):
     # Required accessories tab
     required_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_required_rel',
                                     column1="product_id", column2='required_id',
-                                    string='Required accessories', track_visibility='onchange')
+                                    string='Mandatory accessories', track_visibility='onchange')
 
     parent_required_accessory_product_count = fields.Integer(compute='_compute_parent_required_accessory_product_count')
 

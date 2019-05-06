@@ -2185,29 +2185,18 @@ msgid "Remote control"
 msgstr "Controle remoto"
 
 #. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Accessories"
-msgstr "Acessórios"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Optional"
-msgstr "Opcionales"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_optional_ids
-msgid "Optional accessories"
-msgstr "Acessórios opcionais"
-
-#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Required"
-msgstr "Requeridos"
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Recommended accessories"
+msgstr "Acessórios recomendados"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_required_ids
-msgid "Required accessories"
-msgstr "Acessórios necessários"
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Mandatory accessories"
+msgstr "Acessórios obrigatórios"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_result
@@ -2665,16 +2654,6 @@ msgstr "É composto"
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Composite products"
 msgstr "Produtos compostos"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "Recommended accessories"
-msgstr "Acessórios recomendados"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "Mandatory accessories"
-msgstr "Acessórios obrigatórios"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display

@@ -33,29 +33,18 @@ msgid "=Material code"
 msgstr "= Code de l'article"
 
 #. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Accessories"
-msgstr "Accessoires"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Optional"
-msgstr "Optionnel"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_optional_ids
-msgid "Optional accessories"
-msgstr "Accessoires optionnels"
-
-#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
-msgid "Required"
-msgstr "Obligatoires"
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Recommended accessories"
+msgstr "Accessoires recommandés"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_required_ids
-msgid "Required accessories"
-msgstr "Accessoires requis"
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Mandatory accessories"
+msgstr "Accessoires obligatoires"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.add_attachment_action
@@ -2663,16 +2652,6 @@ msgstr "Est composite"
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Composite products"
 msgstr "Produits composites"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "Recommended accessories"
-msgstr "Accessoire recommandé"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "Mandatory accessories"
-msgstr "Accessoires obligatoires"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display

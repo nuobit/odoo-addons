@@ -20,7 +20,7 @@
 
     <!-- window action product2parentoptionalaccessoryproduct smart button -->
     <record id="product_action_parent_optional_accessory_product" model="ir.actions.act_window">
-        <field name="name">Parent products as optional accessories</field>
+        <field name="name">Parent products as recommended accessories</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -33,7 +33,7 @@
 
     <!-- window action product2parentrequiredaccessoryproduct smart button -->
     <record id="product_action_parent_required_accessory_product" model="ir.actions.act_window">
-        <field name="name">Parent products as required accessories</field>
+        <field name="name">Parent products as mandatory accessories</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -60,17 +60,17 @@
                         <button type="action" class="oe_stat_button" icon="fa-filter"
                                 name="%(product_action_parent_optional_accessory_product)d"
                                 attrs="{'invisible': [('parent_optional_accessory_product_count', '=', 0)]}">
-                            <field string="P. opt. acc."
+                            <field string="P. rec. acc."
                                    name="parent_optional_accessory_product_count"
-                                   help="Products where one of its optional accessories is the current product"
+                                   help="Products where one of its recommended accessories is the current product"
                                    widget="statinfo"/>
                         </button>
                         <button type="action" class="oe_stat_button" icon="fa-filter"
                                 name="%(product_action_parent_required_accessory_product)d"
                                 attrs="{'invisible': [('parent_required_accessory_product_count', '=', 0)]}">
-                            <field string="P. req. acc."
+                            <field string="P. mand. acc."
                                    name="parent_required_accessory_product_count"
-                                   help="Products where one of its required accessories is the current product"
+                                   help="Products where one of its mandatory accessories is the current product"
                                    widget="statinfo"/>
                         </button>
                         <button type="action" class="oe_stat_button" icon="fa-files-o"
@@ -305,20 +305,16 @@
                                 <field name="marketing_comments" widget="text"/>
                             </group>
                         </page>
-                        <page string="Accessories">
-                            <notebook>
-                                <page string="Optional">
-                                    <group>
-                                        <field name="optional_ids" nolabel="1"/>
-                                    </group>
-                                </page>
-                                <page string="Required"
-                                      attrs="{'invisible': [('is_composite', '=', False)]}">
-                                    <group>
-                                        <field name="required_ids" nolabel="1"/>
-                                    </group>
-                                </page>
-                            </notebook>
+                        <page string="Recommended accessories">
+                            <group>
+                                <field name="optional_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Mandatory accessories"
+                              attrs="{'invisible': [('is_composite', '=', False)]}">
+                            <group>
+                                <field name="required_ids" nolabel="1"/>
+                            </group>
                         </page>
                         <page string="Substitutes">
                             <group>
