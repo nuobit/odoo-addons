@@ -15,6 +15,7 @@
                         <field name="datas_fname" invisible="1"/>
                         <field name="name"/>
                         <field name="is_default"/>
+                        <field name="brand_id"/>
                         <field name="sequence"/>
                     </group>
                 </sheet>
@@ -32,6 +33,7 @@
                 <field name="datas" filename="datas_fname" string="Size"/>
                 <field name="name"/>
                 <field name="is_default"/>
+                <field name="brand_id"/>
             </tree>
         </field>
     </record>

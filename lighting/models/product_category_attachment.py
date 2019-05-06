@@ -35,4 +35,6 @@ class LightingProductCategoryAttachment(models.Model):
 
     is_default = fields.Boolean(string='Default')
 
+    brand_id = fields.Many2one(comodel_name='lighting.catalog', ondelete='cascade', string='Brand')
+
     category_id = fields.Many2one(comodel_name='lighting.product.category', ondelete='cascade', string='Category')
