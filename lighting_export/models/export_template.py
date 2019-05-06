@@ -99,6 +99,8 @@ class LightingExportTemplateField(models.Model):
 
     subfield_name = fields.Char(string='Subfield')
 
+    effective_field_name = fields.Char(string='Effective field name')
+
     translate = fields.Boolean(string='Translate')
 
     label = fields.Char(string='Label', translate=True)
