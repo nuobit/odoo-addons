@@ -16,7 +16,8 @@ class LightingAttachment(models.Model):
             prod_attachment_ids = self.filtered(lambda x: x.type_id.id == ta.type_id.id)
             if prod_attachment_ids.mapped('attachment_id'):
                 for pa in prod_attachment_ids:
-                    pa.public = True
+                    if not pa.public:
+                        pa.sudo().public = True
                     type_meta = pa.fields_get(['type_id'], ['string'])['type_id']
                     res.append(OrderedDict([
                         (type_meta['string'], pa.type_id.display_name),
