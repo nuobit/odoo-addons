@@ -304,21 +304,21 @@ class LightingExportTemplate(models.Model):
             _logger.info("Family data successfully generated...")
 
             ## generm la informacio de les aplicacions
-            _logger.info("Generating application data...")
-            applications = objects.mapped('application_ids')
-            if applications:
-                application_ld = []
-                for application in applications.sorted(lambda x: x.sequence):
-                    application_d = {
-                        'id': application.id,
+            _logger.info("Generating category data...")
+            categories = objects.mapped('category_id')
+            if categories:
+                category_ld = []
+                for category in categories.sorted(lambda x: x.sequence):
+                    category_d = {
+                        'id': category.id,
                     }
                     # adjunts ordenats
-                    if application.attachment_ids:
-                        attachments = application.attachment_ids \
+                    if category.attachment_ids:
+                        attachments = category.attachment_ids \
                             .filtered(lambda x: x.is_default) \
                             .sorted(lambda x: (x.sequence, x.id))
                         if attachments:
-                            application_d.update({
+                            category_d.update({
                                 'attachment': {
                                     'datas_fname': attachments[0].datas_fname,
                                     'store_fname': attachments[0].attachment_id.store_fname,
@@ -327,20 +327,21 @@ class LightingExportTemplate(models.Model):
 
                     name_lang_d = {}
                     for lang in active_langs:
-                        lang_name = application.with_context(lang=lang).name
+                        lang_name = category.with_context(lang=lang).name
                         if lang_name:
                             name_lang_d[lang] = lang_name
 
                     if name_lang_d:
-                        application_d.update({
+                        category_d.update({
                             'name': name_lang_d,
                         })
-                        application_ld.append(application_d)
+                        category_ld.append(category_d)
 
-                if application_ld:
-                    res.update({'applications': application_ld})
+                # TODO replace application by categories
+                if category_ld:
+                    res.update({'applications': category_ld})
 
-            _logger.info("Application data successfully generated...")
+            _logger.info("Category data successfully generated...")
 
         _logger.info("Export data successfully done")
 

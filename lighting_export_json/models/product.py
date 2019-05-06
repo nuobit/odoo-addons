@@ -358,32 +358,15 @@ class LightingProduct(models.Model):
     #################### backwards compatibility fields
     ### they should be replaced by the actual field on lighting.product object
 
-    ######### type_ids (many2many), should be used category_id (many2one) instead
-    type_ids = fields.Serialized(string="Types",
-                                 compute='_compute_product_types')
+    ######### category_ids (many2many) (former application_ids), should be used category_id (many2one)
+    # directly on the template instead and remove this completely
+    category_ids = fields.Many2many(string="Categories",
+                                    compute='_compute_product_categories')
 
     @api.depends('category_id')
-    def _compute_product_types(self):
+    def _compute_product_categories(self):
         template_id = self.env.context.get('template_id')
         if template_id:
             for rec in self:
-                types_d = {}
-                for lang in template_id.lang_ids.mapped('code'):
-                    category_lang = rec.with_context(lang=lang).category_id.name
-                    if category_lang:
-                        types_d[lang] = [category_lang]
-
-                if types_d:
-                    rec.type_ids = json.dumps(types_d)
-
-    ######### accessory_ids (many2many), should be replaced by optional_ids, just remove this field
-    template_accessory_display = fields.Serialized(string="Template accessories",
-                                                   compute='_compute_template_accessory_display')
-
-    @api.depends('optional_ids')
-    def _compute_template_accessory_display(self):
-        template_id = self.env.context.get('template_id')
-        if template_id:
-            for rec in self:
-                if rec.template_optional_display:
-                    rec.template_accessory_display = json.dumps(rec.template_optional_display)
+                if rec.category_id:
+                    rec.category_ids = [(6, False, [rec.category_id.id])]
