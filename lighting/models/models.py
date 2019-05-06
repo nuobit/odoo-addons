@@ -450,21 +450,60 @@ class LightingProduct(models.Model):
                                     column1="product_id", column2='optional_id',
                                     string='Optional accessories', track_visibility='onchange')
 
+    parent_optional_accessory_product_count = fields.Integer(compute='_compute_parent_optional_accessory_product_count')
+
+    @api.depends('optional_ids')
+    def _compute_parent_optional_accessory_product_count(self):
+        for record in self:
+            record.parent_optional_accessory_product_count = self.env['lighting.product'] \
+                .search_count([('optional_ids', '=', record.id)])
+
+    is_optional_accessory = fields.Boolean(string='Is recommended accessory',
+                                           compute='_compute_is_optional_accessory',
+                                           search='_search_is_optional_accessory')
+
+    @api.depends('optional_ids')
+    def _compute_is_optional_accessory(self):
+        for rec in self:
+            parent_ids = self.env['lighting.product'].search([('optional_ids', '=', rec.id)])
+            if parent_ids:
+                rec.is_optional_accessory = True
+
+    def _search_is_optional_accessory(self, operator, value):
+        ids = self.env['lighting.product'] \
+            .search([('optional_ids', '!=', False)]).mapped('optional_ids.id')
+
+        return [('id', 'in', ids)]
+
     # Required accessories tab
     required_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_required_rel',
                                     column1="product_id", column2='required_id',
                                     string='Required accessories', track_visibility='onchange')
 
-    parent_optional_accessory_product_count = fields.Integer(compute='_compute_parent_accessory_product_count')
-    parent_required_accessory_product_count = fields.Integer(compute='_compute_parent_accessory_product_count')
+    parent_required_accessory_product_count = fields.Integer(compute='_compute_parent_required_accessory_product_count')
 
-    @api.depends('optional_ids', 'required_ids')
-    def _compute_parent_accessory_product_count(self):
+    @api.depends('required_ids')
+    def _compute_parent_required_accessory_product_count(self):
         for record in self:
-            record.parent_optional_accessory_product_count = self.env['lighting.product'] \
-                .search_count([('optional_ids', '=', record.id)])
             record.parent_required_accessory_product_count = self.env['lighting.product'] \
                 .search_count([('required_ids', '=', record.id)])
+
+    is_required_accessory = fields.Boolean(string='Is required accessory',
+                                           compute='_compute_is_required_accessory',
+                                           search='_search_is_required_accessory')
+
+    @api.depends('required_ids')
+    def _compute_is_required_accessory(self):
+        for rec in self:
+            parent_ids = self.env['lighting.product'].search([('required_ids', '=', rec.id)])
+            if parent_ids:
+                rec.is_required_accessory = True
+
+    def _search_is_required_accessory(self, operator, value):
+        ids = self.env['lighting.product'] \
+            .search([('required_ids', '!=', False)]).mapped('required_ids.id')
+
+        return [('id', 'in', ids)]
 
     # Substitutes tab
     substitute_ids = fields.Many2many(comodel_name='lighting.product', relation='lighting_product_substitute_rel',

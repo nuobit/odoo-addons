@@ -1013,8 +1013,12 @@
                 <filter string="Draft" name="draft"
                         domain="[('state', '=', 'draft')]"/>
                 <separator/>
-                <filter string="Is composite" name="is_composite"
+                <filter string="Composite products" name="is_composite"
                         domain="[('is_composite', '=', True)]"/>
+                <filter string="Recommended accessories" name="recommended_accessories"
+                        domain="[('is_optional_accessory', '=', True)]"/>
+                <filter string="Mandatory accessories" name="mandatory_accessories"
+                        domain="[('is_required_accessory', '=', True)]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="groupby_state" domain="[]"
                             context="{'group_by': 'state'}"/>

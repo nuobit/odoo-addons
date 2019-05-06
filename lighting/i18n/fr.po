@@ -2660,6 +2660,21 @@ msgid "Is composite"
 msgstr "Est composite"
 
 #. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Composite products"
+msgstr "Produits composites"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Recommended accessories"
+msgstr "Accessoire recommandé"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Mandatory accessories"
+msgstr "Accessoires obligatoires"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
 msgid "Description"
 msgstr "Description"

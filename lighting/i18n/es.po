@@ -2657,9 +2657,23 @@ msgstr "Categoría"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_is_composite
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Is composite"
 msgstr "Es compuesto"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Composite products"
+msgstr "Productos compuestos"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Recommended accessories"
+msgstr "Accesorios recomendados"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Mandatory accessories"
+msgstr "Accesorios obligatorios"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
