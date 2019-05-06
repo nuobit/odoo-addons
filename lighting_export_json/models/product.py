@@ -115,21 +115,44 @@ class LightingProduct(models.Model):
         template_id = self.env.context.get('template_id')
         if template_id:
             for rec in self:
-                attachment_l = []
-                for a in rec.attachment_ids.sorted(lambda x: x.sequence):
-                    if a.type_id.id not in template_id.attachment_ids.mapped('type_id.id'):
-                        continue
+                n = template_id.max_attachments
+                if n < 0:
+                    n = len(rec.attachment_ids)
 
-                    attachment_d = {
-                        'datas_fname': a.datas_fname,
-                        'store_fname': a.attachment_id.store_fname,
-                        'type': a.type_id.code,
-                    }
-                    if attachment_d:
-                        attachment_l.append(attachment_d)
+                attachment_ids = set()
+                while n > 0:
+                    base_count = {x.type_id.id: x.max_count for x in
+                                  template_id.attachment_ids.filtered(lambda x: x.max_count != 0)}
+                    attachments = rec.attachment_ids \
+                        .filtered(lambda x: x.id not in attachment_ids and
+                                            x.type_id.id in base_count) \
+                        .sorted(lambda x: x.sequence)
+                    if not attachments:
+                        break
+                    for a in attachments:
+                        if a.type_id.id in base_count:
+                            max_count = base_count[a.type_id.id]
+                            if max_count != 0:
+                                attachment_ids.add(a.id)
+                                if max_count > 0:
+                                    base_count[a.type_id.id] -= 1
+                                n -= 1
+                                if not n:
+                                    break
 
-                if attachment_l:
-                    rec.attachment_display = json.dumps(attachment_l)
+                if attachment_ids:
+                    attachment_l = []
+                    for a in rec.attachment_ids \
+                            .filtered(lambda x: x.id in attachment_ids) \
+                            .sorted(lambda x: x.sequence):
+                        attachment_l.append({
+                            'datas_fname': a.datas_fname,
+                            'store_fname': a.attachment_id.store_fname,
+                            'type': a.type_id.code,
+                        })
+
+                    if attachment_l:
+                        rec.attachment_display = json.dumps(attachment_l)
 
     ######### Sources ##########
     source_display = fields.Serialized(string="Light sources",
