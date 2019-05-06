@@ -48,6 +48,7 @@
                                         <field name="sequence" widget="handle"/>
                                         <field name="type_id"/>
                                         <field name="resolution"/>
+                                        <field name="max_count"/>
                                     </tree>
                                 </field>
                             </group>

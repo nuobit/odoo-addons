@@ -123,6 +123,8 @@ class LightingExportTemplateAttachment(models.Model):
                               string='Type', required=True)
     resolution = fields.Char(string='Resolution')
 
+    max_count = fields.Integer(string='Max. count', default=-1)
+
     template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='cascade',
                                   string='Template', required=True)
 
