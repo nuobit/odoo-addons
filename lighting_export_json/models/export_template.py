@@ -102,6 +102,7 @@ class LightingExportTemplate(models.Model):
 
                             item[k][lang] = v
             if item:
+                item['effective_field_name'] = line.effective_field_name
                 item['subfield'] = line.subfield_name
                 item['translate'] = line.translate
                 header[field_name] = item
@@ -111,6 +112,8 @@ class LightingExportTemplate(models.Model):
         _logger.info("Generating product labels...")
         label_d = {}
         for field, meta in header.items():
+            if meta['effective_field_name']:
+                field = meta['effective_field_name']
             label_d[field] = meta['string']
         if label_d:
             res.update({'labels': label_d})
@@ -153,6 +156,8 @@ class LightingExportTemplate(models.Model):
                         field_d[lang] = datum
 
                 if has_value or not hide_empty_fields:
+                    if meta['effective_field_name']:
+                        field = meta['effective_field_name']
                     obj_d[field] = field_d
 
             if obj_d:
