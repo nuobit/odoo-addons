@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="review_security" model="ir.module.category">
+        <field name="name">Lighting Review</field>
+        <field name="description">Review security</field>
+        <field name="sequence">1010</field>
+    </record>
+
+    <record id="review_group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="review_security"/>
+    </record>
+
+    <record id="review_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="implied_ids" eval="[(6, False, [ref('lighting_review.review_group_user')])]"/>
+        <field name="category_id" ref="review_security"/>
+    </record>
+</odoo>
