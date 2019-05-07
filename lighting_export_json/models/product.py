@@ -383,7 +383,11 @@ class LightingProduct(models.Model):
                         fluxes_s.add(flux2)
 
             if fluxes_s:
-                rec.search_luminous_flux = json.dumps(sorted(list(fluxes_s)))
+                fxrange = [(0, 400), (400, 800), (800, 1200),
+                           (1200, 1600), (1600, 2000), (2000, float('inf'))]
+                flux_ranges = _values2range(fluxes_s, fxrange, magnitude='Lm')
+                if flux_ranges:
+                    rec.search_luminous_flux = json.dumps(flux_ranges)
 
     ######### Search Source type flux ##########
     search_source_type = fields.Serialized(string="Search source type",
