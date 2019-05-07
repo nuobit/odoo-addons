@@ -88,7 +88,7 @@ class LightingProduct(models.Model):
                     finish_d = {}
                     finish_lang_d = {}
                     for lang in template_id.lang_ids.mapped('code'):
-                        finish_lang_d[lang] = rec.finish_id.with_context(lang=lang).display_name
+                        finish_lang_d[lang] = rec.finish_id.with_context(lang=lang).name
                     if finish_lang_d:
                         finish_d.update({
                             'description': finish_lang_d
