@@ -370,7 +370,7 @@ class LightingProduct(models.Model):
                         colork_s.add(line.color_temperature_id.value)
 
             if colork_s:
-                krange = [(float('-inf'), 3000), (3000, 3500), (3500, 4000),
+                krange = [(0, 3000), (3000, 3500), (3500, 4000),
                           (4000, 5000), (5000, float('inf'))]
                 k_ranges = _values2range(colork_s, krange, magnitude='K')
                 if k_ranges:
