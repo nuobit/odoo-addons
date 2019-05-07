@@ -20,10 +20,14 @@ def _values2range(values, range, magnitude=None):
 
     ranges_str = []
     for min, max in sorted(ranges):
-        if max != float('inf'):
+        if min != float('-inf') and max != float('inf'):
             range = "%i - %i" % (min, max)
-        else:
+        elif min != float('-inf') and max == float('inf'):
             range = "> %i" % min
+        elif min == float('-inf') and max != float('inf'):
+            range = "< %i" % max
+        else:
+            range = '-\u221E - \u221E'
 
         if magnitude:
             range = "%s%s" % (range, magnitude)
