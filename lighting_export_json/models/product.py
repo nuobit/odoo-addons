@@ -320,7 +320,12 @@ class LightingProduct(models.Model):
     def _compute_search_beam_angle(self):
         for rec in self:
             angles = rec.beam_ids.mapped('dimension_ids.value')
-            rec.search_beam_angle = json.dumps(sorted(list(set(angles))))
+            if angles:
+                arange = [(0, 20), (20, 40), (40, 60),
+                          (60, 80), (80, 100), (100, float('inf'))]
+                a_ranges = _values2range(angles, arange, magnitude='\u00B0')
+                if a_ranges:
+                    rec.search_beam_angle = json.dumps(a_ranges)
 
     ######### Search Wattage ##########
     search_wattage = fields.Serialized(string="Search wattage",
