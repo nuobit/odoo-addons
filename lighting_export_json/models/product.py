@@ -8,6 +8,31 @@ import re
 import json
 
 
+def _values2range(values, range, magnitude=None):
+    ranges = []
+    for w in values:
+        for r in range:
+            min, max = r
+            if min <= w and w < max:
+                if r not in ranges:
+                    ranges.append(r)
+                    break
+
+    ranges_str = []
+    for min, max in sorted(ranges):
+        if max != float('inf'):
+            range = "%i - %i" % (min, max)
+        else:
+            range = "> %i" % min
+
+        if magnitude:
+            range = "%s%s" % (range, magnitude)
+
+        ranges_str.append(range)
+
+    return ranges_str
+
+
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
@@ -300,7 +325,6 @@ class LightingProduct(models.Model):
     @api.depends('source_ids.line_ids.wattage',
                  )
     def _compute_search_wattage(self):
-        WRANGE = [(0, 10), (10, 20), (20, 30), (30, 40), (40, 50), (50, float('inf'))]
         for rec in self:
             w_integrated = 0
             wattages_s = set()
@@ -317,25 +341,10 @@ class LightingProduct(models.Model):
                 wattages_s2.add(w + w_integrated)
 
             if wattages_s2:
-                wattages_ranges = []
-                for w in sorted(list(wattages_s2)):
-                    for r in WRANGE:
-                        min, max = r
-                        if min <= w and w < max:
-                            if r not in wattages_ranges:
-                                wattages_ranges.append(r)
-                                break
-
-                wattages_ranges_str = []
-                for min, max in sorted(wattages_ranges):
-                    if max != float('inf'):
-                        wattages_range = "%i - %iW" % (min, max)
-                    else:
-                        wattages_range = "> %iW" % min
-                    wattages_ranges_str.append(wattages_range)
-
-                if wattages_ranges_str:
-                    rec.search_wattage = json.dumps(wattages_ranges_str)
+                wrange = [(0, 10), (10, 20), (20, 30), (30, 40), (40, 50), (50, float('inf'))]
+                wattage_ranges = _values2range(wattages_s2, wrange, magnitude='W')
+                if wattage_ranges:
+                    rec.search_wattage = json.dumps(wattage_ranges)
 
     ######### Search Color temperature ##########
     search_color_temperature = fields.Serialized(string="Search color temperature",
