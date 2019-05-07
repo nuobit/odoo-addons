@@ -300,6 +300,7 @@ class LightingProduct(models.Model):
     @api.depends('source_ids.line_ids.wattage',
                  )
     def _compute_search_wattage(self):
+        WRANGE = [(0, 10), (10, 20), (20, 30), (30, 40), (40, 50), (50, float('inf'))]
         for rec in self:
             w_integrated = 0
             wattages_s = set()
@@ -316,7 +317,25 @@ class LightingProduct(models.Model):
                 wattages_s2.add(w + w_integrated)
 
             if wattages_s2:
-                rec.search_wattage = json.dumps(sorted(list(wattages_s2)))
+                wattages_ranges = []
+                for w in sorted(list(wattages_s2)):
+                    for r in WRANGE:
+                        min, max = r
+                        if min <= w and w < max:
+                            if r not in wattages_ranges:
+                                wattages_ranges.append(r)
+                                break
+
+                wattages_ranges_str = []
+                for min, max in sorted(wattages_ranges):
+                    if max != float('inf'):
+                        wattages_range = "%i - %iW" % (min, max)
+                    else:
+                        wattages_range = "> %iW" % min
+                    wattages_ranges_str.append(wattages_range)
+
+                if wattages_ranges_str:
+                    rec.search_wattage = json.dumps(wattages_ranges_str)
 
     ######### Search Color temperature ##########
     search_color_temperature = fields.Serialized(string="Search color temperature",
