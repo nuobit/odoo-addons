@@ -109,6 +109,7 @@ class AmbumovilService(models.AbstractModel):
 
         for move_line in picking_id.move_lines:
             product_id = move_line.product_id
+            uom_id = move_line.product_uom
             move_line_ids = []
             for m in moves9[product_id.id]:
                 move_line_id_d = {
@@ -116,7 +117,7 @@ class AmbumovilService(models.AbstractModel):
                     'location_id': src_location_id.id,
                     'location_dest_id': dst_location_id.id,
                     'qty_done': m['quantity'],
-                    'product_uom_id': obj.uom_id.id,
+                    'product_uom_id': uom_id.id,
                     'picking_id': picking_id.id,
                 }
                 if 'tracking_id' in m:
