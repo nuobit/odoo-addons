@@ -315,7 +315,6 @@ class LightingExportTemplate(models.Model):
                     # adjunts ordenats
                     if category.attachment_ids:
                         attachments = category.attachment_ids \
-                            .filtered(lambda x: x.is_default) \
                             .sorted(lambda x: (x.sequence, x.id))
                         if attachments:
                             category_d.update({
