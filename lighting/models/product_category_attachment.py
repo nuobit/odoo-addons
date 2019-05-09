@@ -37,4 +37,6 @@ class LightingProductCategoryAttachment(models.Model):
 
     brand_id = fields.Many2one(comodel_name='lighting.catalog', ondelete='cascade', string='Brand')
 
+    location_id = fields.Many2one(comodel_name='lighting.product.location', ondelete='cascade', string='Location')
+
     category_id = fields.Many2one(comodel_name='lighting.product.category', ondelete='cascade', string='Category')
