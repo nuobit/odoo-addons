@@ -69,7 +69,7 @@ class LightingExportTemplate(models.Model):
             path = os.path.join(*parts)
 
             with open(path, 'w') as f:
-                json.dump(res[suffix], f, ensure_ascii=False, default=default, **kwargs)
+                json.dump(data, f, ensure_ascii=False, default=default, **kwargs)
 
     def generate_data(self, objects, hide_empty_fields=True):
         _logger.info("Export data started...")
