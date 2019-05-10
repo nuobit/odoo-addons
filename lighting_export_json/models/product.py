@@ -48,18 +48,26 @@ class LightingProduct(models.Model):
     template = fields.Char(string='Template',
                            compute='_compute_template')
 
-    @api.depends('reference',
-                 )
+    @api.depends('reference', 'family_ids', 'family_ids.no_templates')
     def _compute_template(self):
         for rec in self:
-            m = re.match(r'^(.+)-.{2}$', rec.reference)
-            if m:
-                template_reference = m.group(1)
-                template_reference_pattern = '%s-__' % template_reference
-                product_count = self.env['lighting.product'].search_count([
-                    ('reference', '=like', template_reference_pattern),
-                ])
-                rec.template = template_reference if product_count > 1 else rec.reference
+            has_sibling = False
+            if not rec.family_ids.filtered(lambda x: x.no_templates):
+                m = re.match(r'^(.+)-.{2}$', rec.reference)
+                if m:
+                    template_reference = m.group(1)
+                    product_siblings = self.env['lighting.product'].search([
+                        ('reference', '=like', '%s-__' % template_reference),
+                        ('id', '!=', rec.id),
+                    ])
+                    for p in product_siblings:
+                        if not p.family_ids.filtered(lambda x: x.no_templates):
+                            rec.template = template_reference
+                            has_sibling = True
+                            break
+
+            if not has_sibling:
+                rec.template = rec.reference
 
     template_display = fields.Char(string='Template',
                                    compute='_compute_template_display')
