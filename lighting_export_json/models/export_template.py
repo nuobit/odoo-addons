@@ -115,8 +115,7 @@ class LightingExportTemplate(models.Model):
             if meta['effective_field_name']:
                 field = meta['effective_field_name']
             label_d[field] = meta['string']
-        if label_d:
-            res.update({'labels': label_d})
+        res.update({'labels': label_d})
         _logger.info("Product labels successfully generated...")
 
         ## generate data and gather data
@@ -166,8 +165,7 @@ class LightingExportTemplate(models.Model):
             if (i % th) == 0:
                 _logger.info(" - Progress products generation %i%%" % (int(i / n * 100)))
 
-        if objects_ld:
-            res.update({'products': objects_ld})
+        res.update({'products': objects_ld})
         _logger.info("Products successfully generated...")
 
         # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variant
@@ -217,8 +215,7 @@ class LightingExportTemplate(models.Model):
                             }
                         })
 
-        if bundle_d:
-            res.update({'bundles': bundle_d})
+        res.update({'bundles': bundle_d})
 
         # comprovem que les temlates rene  mes dun element, sino, leliminem
         # escollim un objet qualsevol o generalm al descricio sense el finish
@@ -254,8 +251,7 @@ class LightingExportTemplate(models.Model):
                             'store_fname': attachment_ids[0].attachment_id.store_fname,
                         }
                     })
-        if template_clean_d:
-            res.update({'templates': template_clean_d})
+        res.update({'templates': template_clean_d})
 
         _logger.info("Product virtual data successfully generated...")
 
@@ -298,8 +294,7 @@ class LightingExportTemplate(models.Model):
                         })
                         family_ld.append(family_d)
 
-                if family_ld:
-                    res.update({'families': family_ld})
+                res.update({'families': family_ld})
 
             _logger.info("Family data successfully generated...")
 
@@ -337,8 +332,7 @@ class LightingExportTemplate(models.Model):
                         category_ld.append(category_d)
 
                 # TODO replace application by categories
-                if category_ld:
-                    res.update({'applications': category_ld})
+                res.update({'applications': category_ld})
 
             _logger.info("Category data successfully generated...")
 
