@@ -38,9 +38,13 @@
                             <field name="name" placeholder="Category"/>
                         </h1>
                     </div>
+                    <group col="6">
+                        <group colspan="2">
+                            <field name="code"/>
+                        </group>
+                    </group>
                     <group>
                         <group>
-                            <field name="code"/>
                             <field name="description_text"/>
                             <field name="is_accessory"/>
                         </group>
@@ -61,8 +65,8 @@
         <field name="arch" type="xml">
             <tree string="Product category Tree">
                 <field name="sequence" widget="handle"/>
-                <field name="code"/>
                 <field name="name"/>
+                <field name="code"/>
                 <field name="is_accessory"/>
                 <field name="description_text"/>
                 <field name="product_count"/>
