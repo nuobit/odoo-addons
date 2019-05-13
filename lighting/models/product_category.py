@@ -9,11 +9,14 @@ class LightingProductCategory(models.Model):
     _name = 'lighting.product.category'
     _order = 'sequence'
 
+    code = fields.Char(string='Code', size=3, required=True)
+
     name = fields.Char(required=True, translate=True)
-    is_accessory = fields.Boolean(string="Is accessory")
 
     description_text = fields.Char(string='Description text', help='Text to show on a generated product description',
                                    translate=True)
+
+    is_accessory = fields.Boolean(string="Is accessory")
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
@@ -35,4 +38,5 @@ class LightingProductCategory(models.Model):
                 .search_count([('category_id', '=', record.id)])
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
+                        ('code_uniq', 'unique (code)', 'The code must be unique!')
                         ]
