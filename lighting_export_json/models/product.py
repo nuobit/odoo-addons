@@ -446,3 +446,19 @@ class LightingProduct(models.Model):
             for rec in self:
                 if rec.category_id:
                     rec.category_ids = [(6, False, [rec.category_id.id])]
+
+    ######## estat temporal
+    website_published_tmp = fields.Selection(selection=[('published', 'Published'),
+                                                        ('discontinued', 'Discontinued')],
+                                             string='Website published tmp',
+                                             compute='_compute_product_website_published_tmp')
+
+    @api.depends('website_published')
+    def _compute_product_website_published_tmp(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                if rec.website_published:
+                    rec.website_published_tmp = 'published'
+                else:
+                    rec.website_published_tmp = 'discontinued'
