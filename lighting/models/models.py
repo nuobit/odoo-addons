@@ -533,6 +533,7 @@ class LightingProduct(models.Model):
     # marketing tab
     discontinued_by_supplier = fields.Boolean(string='Discontinued by supplier', track_visibility='onchange')
     discontinued_soon = fields.Boolean(string='Discontinued soon', track_visibility='onchange')
+    discontinued = fields.Boolean(string='Discontinued', track_visibility='onchange')
     until_end_stock = fields.Boolean(string='Until end of stock', track_visibility='onchange')
     on_request = fields.Boolean(string='On request', track_visibility='onchange')
     state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State',

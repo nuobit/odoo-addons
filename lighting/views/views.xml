@@ -53,7 +53,7 @@
                 <header>
                     <field name="state" widget="statusbar"
                            clickable="True" options="{'fold_field': 'fold'}"
-                           statusbar_visible="draft,to_review,published,discontinued"/>
+                           statusbar_visible="draft,to_review,published"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -297,7 +297,7 @@
                         <page string="Marketing" id="marketing_tab">
                             <group>
                                 <field name="discontinued_by_supplier"/>
-                                <field name="discontinued_soon"/>
+                                <field name="discontinued"/>
                                 <field name="until_end_stock"/>
                                 <field name="on_request"/>
                                 <field name="state_id"/>
@@ -339,7 +339,7 @@
             <tree string="Product Tree"
                   decoration-warning="state == 'draft'"
                   decoration-info="state == 'to_review'"
-                  decoration-danger="state == 'discontinued'">
+                  decoration-danger="discontinued == True">
                 <field name="sequence" widget="handle"/>
                 <field name="reference"/>
                 <field name="description"/>
@@ -348,6 +348,7 @@
                 <field name="category_id"/>
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state"/>
+                <field name="discontinued"/>
                 <field name="last_update"/>
             </tree>
         </field>
@@ -1005,7 +1006,7 @@
                 <filter string="To review" name="to_review"
                         domain="[('state','=', 'to_review')]"/>
                 <filter string="Discontinued" name="discontinued"
-                        domain="[('state', '=', 'discontinued')]"/>
+                        domain="[('discontinued', '=', True)]"/>
                 <filter string="Draft" name="draft"
                         domain="[('state', '=', 'draft')]"/>
                 <separator/>

@@ -789,6 +789,7 @@ msgstr "Disque. des produits"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued
 #: selection:lighting.product,state:0
 msgid "Discontinued"
 msgstr "Discontinué"

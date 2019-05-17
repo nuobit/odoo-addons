@@ -23,10 +23,10 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('family_ids','=',active_id),('state', '=', 'discontinued')]</field>
+        <field name="domain">[('family_ids','=',active_id),('discontinued', '=', True)]</field>
         <field name="context">{
             'default_family_ids': [(4, active_id, False)],
-            'default_state': 'discontinued'}
+            'default_discontinued': True}
         </field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product</p>
