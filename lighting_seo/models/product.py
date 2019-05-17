@@ -35,6 +35,13 @@ def seo_preview(title, url, description):
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
+    website_published = fields.Boolean('Visible in Website', copy=False)
+
+    @api.multi
+    def website_publish_button(self):
+        self.ensure_one()
+        return self.write({'website_published': not self.website_published})
+
     seo_title = fields.Char(string='Meta title', translate=True)
     seo_url = fields.Char(string='URL')
     seo_description = fields.Char(string='Meta description', translate=True)

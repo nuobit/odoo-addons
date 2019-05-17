@@ -8,6 +8,12 @@
         <field name="model">lighting.product</field>
         <field name="inherit_id" ref="lighting.product_form_view"/>
         <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" name="website_publish_button"
+                        type="object" icon="fa-globe">
+                    <field name="website_published" widget="website_button"/>
+                </button>
+            </xpath>
             <xpath expr="//page[@id='marketing_tab']" position="inside">
                 <group string="SEO/SEM" col="1">
                     <group col="40">
