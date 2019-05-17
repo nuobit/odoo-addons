@@ -352,7 +352,7 @@
                 <field name="category_id"/>
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state"/>
-                <field name="discontinued"/>
+                <field name="discontinued" invisible="1"/>
                 <field name="novelty" invisible="1"/>
             </tree>
         </field>
