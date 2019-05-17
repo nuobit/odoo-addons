@@ -531,18 +531,14 @@ class LightingProduct(models.Model):
     mbox_height = fields.Float(string='Masterbox height (cm)', track_visibility='onchange')
 
     # marketing tab
-    new = fields.Boolean(string='New', track_visibility='onchange')
+    new = fields.Boolean(string='New')
+    novelty = fields.Boolean(string='New', track_visibility='onchange')
     cataloged = fields.Boolean(string='Cataloged', track_visibility='onchange')
     discontinued_by_supplier = fields.Boolean(string='Discontinued by supplier', track_visibility='onchange')
     until_end_stock = fields.Boolean(string='Until end of stock', track_visibility='onchange')
     discontinued = fields.Boolean(string='Discontinued', track_visibility='onchange')
 
     on_request = fields.Boolean(string='On request', track_visibility='onchange')
-
-
-    discontinued_soon = fields.Boolean(string='Discontinued soon', track_visibility='onchange')
-    state_id = fields.Many2one(comodel_name='lighting.product.state', ondelete='restrict', string='State',
-                               track_visibility='onchange')
 
     effective_date = fields.Date(string='Effective date', track_visibility='onchange')
     marketing_comments = fields.Char(string='Comments', track_visibility='onchange')
@@ -551,7 +547,6 @@ class LightingProduct(models.Model):
         ('draft', 'Draft'),
         ('to_review', 'To review'),
         ('published', 'Published'),
-        ('discontinued', 'Discontinued'),
     ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
 
     @api.multi
@@ -1169,13 +1164,3 @@ class LightingSupplier(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The supplier description must be unique!'),
                         ]
 
-
-########### marketing tab
-class LightingProductState(models.Model):
-    _name = 'lighting.product.state'
-    _order = 'name'
-
-    name = fields.Char(string='State', required=True, translate=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The state description must be unique!'),
-                        ]

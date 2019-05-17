@@ -296,7 +296,7 @@
                         </page>
                         <page string="Marketing" id="marketing_tab">
                             <group>
-                                <field name="new"/>
+                                <field name="novelty"/>
                                 <field name="cataloged"/>
                                 <field name="discontinued_by_supplier"/>
                                 <field name="until_end_stock"/>
@@ -342,7 +342,7 @@
             <tree string="Product Tree"
                   decoration-warning="state == 'draft'"
                   decoration-info="state == 'to_review'"
-                  decoration-success="new == True"
+                  decoration-success="novelty == True"
                   decoration-danger="discontinued == True">
                 <field name="sequence" widget="handle"/>
                 <field name="reference"/>
@@ -353,7 +353,7 @@
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state"/>
                 <field name="discontinued"/>
-                <field name="new" invisible="1"/>
+                <field name="novelty" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -955,32 +955,6 @@
         </field>
     </record>
 
-    <!-- ============= marketing tab ============ -->
-    <!-- view product.state -->
-    <record model="ir.ui.view" id="product_state_form_view">
-        <field name="name">product.state.form</field>
-        <field name="model">lighting.product.state</field>
-        <field name="arch" type="xml">
-            <form string="Product state Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_state_tree_view">
-        <field name="name">product.state.tree</field>
-        <field name="model">lighting.product.state</field>
-        <field name="arch" type="xml">
-            <tree string="Product state Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- ================================ SEARCH VIEWS =========================== -->
     <!-- Product Search view -->
     <record model="ir.ui.view" id="lighting_product_view">
@@ -1005,19 +979,19 @@
                 <field name="body_material_ids" string="=Material code"
                        filter_domain="['|', '|', '|', '|', ('body_material_ids.code','=ilike',self), ('diffusor_material_ids.code','=ilike',self), ('frame_material_ids.code','=ilike',self), ('reflector_material_ids.code','=ilike',self), ('blade_material_ids.code','=ilike',self)]"/>
                 <separator/>
+                <filter string="New" name="novelty"
+                        domain="[('novelty', '=', True)]"/>
+                <filter string="Cataloged" name="cataloged"
+                        domain="[('cataloged', '=', True)]"/>
+                <filter string="Discontinued" name="discontinued"
+                        domain="[('discontinued', '=', True)]"/>
+                <separator/>
                 <filter string="Draft" name="draft"
                         domain="[('state', '=', 'draft')]"/>
                 <filter string="Published" name="published"
                         domain="[('state','=', 'published')]"/>
                 <filter string="To review" name="to_review"
                         domain="[('state','=', 'to_review')]"/>
-                <separator/>
-                <filter string="New" name="new"
-                        domain="[('new', '=', True)]"/>
-                <filter string="Cataloged" name="cataloged"
-                        domain="[('cataloged', '=', True)]"/>
-                <filter string="Discontinued" name="discontinued"
-                        domain="[('discontinued', '=', True)]"/>
                 <separator/>
                 <filter string="Composite products" name="is_composite"
                         domain="[('is_composite', '=', True)]"/>
@@ -1045,7 +1019,7 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_published': 1}</field>
+        <field name="context">{'search_default_cataloged': 1}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product
             </p>
@@ -1242,18 +1216,6 @@
         </field>
     </record>
 
-    <!-- ============= marketing tab ============ -->
-    <!-- window action product.state class -->
-    <record model="ir.actions.act_window" id="product_state_list_action">
-        <field name="name">Product state</field>
-        <field name="res_model">lighting.product.state</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Product state</p>
-        </field>
-    </record>
-
     <!-- ================================ MENU =========================== -->
     <!-- ============= product menu ============ -->
     <menuitem id="products_menu" name="Products" parent="lighting_product_menu"
@@ -1330,10 +1292,5 @@
 
     <menuitem id="suppliers_menu" name="Suppliers" parent="common_data_menu"
               action="supplier_list_action"
-              sequence="1000"/>
-
-    <!-- ============= marketing tab ============ -->
-    <menuitem id="product_states_menu" name="States" parent="common_data_menu"
-              action="product_state_list_action"
               sequence="1000"/>
 </odoo>
