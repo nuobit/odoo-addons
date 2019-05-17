@@ -349,7 +349,6 @@
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state"/>
                 <field name="discontinued"/>
-                <field name="last_update"/>
             </tree>
         </field>
     </record>
@@ -1001,14 +1000,15 @@
                 <field name="body_material_ids" string="=Material code"
                        filter_domain="['|', '|', '|', '|', ('body_material_ids.code','=ilike',self), ('diffusor_material_ids.code','=ilike',self), ('frame_material_ids.code','=ilike',self), ('reflector_material_ids.code','=ilike',self), ('blade_material_ids.code','=ilike',self)]"/>
                 <separator/>
+                <filter string="Draft" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
                 <filter string="Published" name="published"
                         domain="[('state','=', 'published')]"/>
                 <filter string="To review" name="to_review"
                         domain="[('state','=', 'to_review')]"/>
+                <separator/>
                 <filter string="Discontinued" name="discontinued"
                         domain="[('discontinued', '=', True)]"/>
-                <filter string="Draft" name="draft"
-                        domain="[('state', '=', 'draft')]"/>
                 <separator/>
                 <filter string="Composite products" name="is_composite"
                         domain="[('is_composite', '=', True)]"/>
