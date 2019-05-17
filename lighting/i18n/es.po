@@ -781,6 +781,18 @@ msgid "Discontinued"
 msgstr "Descatalogado"
 
 #. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_cataloged
+msgid "Cataloged"
+msgstr "Catalogado"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_new
+msgid "New"
+msgstr "Nuevo"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued_by_supplier
 msgid "Discontinued by supplier"
 msgstr "Descatalogado por el proveedor"

@@ -296,11 +296,14 @@
                         </page>
                         <page string="Marketing" id="marketing_tab">
                             <group>
+                                <field name="new"/>
+                                <field name="cataloged"/>
                                 <field name="discontinued_by_supplier"/>
-                                <field name="discontinued"/>
                                 <field name="until_end_stock"/>
+                                <field name="discontinued"/>
+
                                 <field name="on_request"/>
-                                <field name="state_id"/>
+
                                 <field name="effective_date"/>
                                 <field name="marketing_comments" widget="text"/>
                             </group>
@@ -339,6 +342,7 @@
             <tree string="Product Tree"
                   decoration-warning="state == 'draft'"
                   decoration-info="state == 'to_review'"
+                  decoration-success="new == True"
                   decoration-danger="discontinued == True">
                 <field name="sequence" widget="handle"/>
                 <field name="reference"/>
@@ -349,6 +353,7 @@
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state"/>
                 <field name="discontinued"/>
+                <field name="new" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -1007,6 +1012,10 @@
                 <filter string="To review" name="to_review"
                         domain="[('state','=', 'to_review')]"/>
                 <separator/>
+                <filter string="New" name="new"
+                        domain="[('new', '=', True)]"/>
+                <filter string="Cataloged" name="cataloged"
+                        domain="[('cataloged', '=', True)]"/>
                 <filter string="Discontinued" name="discontinued"
                         domain="[('discontinued', '=', True)]"/>
                 <separator/>
