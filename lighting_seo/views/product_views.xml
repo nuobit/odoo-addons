@@ -35,6 +35,19 @@
         </field>
     </record>
 
+    <record id="lighting_product_view" model="ir.ui.view">
+        <field name="name">lighting.product.search.inherit.seo</field>
+        <field name="model">lighting.product</field>
+        <field name="inherit_id" ref="lighting.lighting_product_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='is_composite']" position="before">
+                <filter string="Published On Website" name="website_published"
+                        domain="[('website_published', '=', True)]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="product_family_view_form_inherit_seo" model="ir.ui.view">
         <field name="name">product_family_view.form.inherit.seo</field>
         <field name="model">lighting.product.family</field>
