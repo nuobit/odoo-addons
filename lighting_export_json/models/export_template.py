@@ -186,12 +186,21 @@ class LightingExportTemplate(models.Model):
             products = self.env['lighting.product'].browse([x.id for x in objects_l])
             is_bundle_template = any(products.mapped('is_composite'))
             if is_bundle_template:
-                products_required = products.mapped('required_ids')
+                # state
+                bundle_d[template_name] = {
+                    'enabled': any(products.mapped('website_published')),
+                }
+
+                # required products
+                domain = [('id', 'in', products.mapped('required_ids.id'))]
+                if self.domain:
+                    domain += ast.literal_eval(self.domain)
+                products_required = self.env['lighting.product'].search(domain)
                 if products_required:
                     ## components
-                    bundle_d[template_name] = {
+                    bundle_d[template_name].update({
                         'templates': sorted(list(set(products_required.mapped('template'))))
-                    }
+                    })
 
                     ## default attach
                     # first own attachments
@@ -222,6 +231,13 @@ class LightingExportTemplate(models.Model):
         template_clean_d = {}
         for k, v in template_d.items():
             if len(v) > 1:
+                products = self.env['lighting.product'].browse([p.id for p in v])
+
+                ## state
+                template_clean_d[k] = {
+                    'enabled': any(products.mapped('website_published')),
+                }
+
                 ## description
                 template_desc_d = {}
                 for lang in active_langs:
@@ -237,7 +253,6 @@ class LightingExportTemplate(models.Model):
                     })
 
                 ## default attach
-                products = self.env['lighting.product'].browse([p.id for p in v])
                 attachment_ids = products.mapped('attachment_ids') \
                     .filtered(lambda x: x.is_template_default and
                                         x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
@@ -251,6 +266,7 @@ class LightingExportTemplate(models.Model):
                             'store_fname': attachment_ids[0].attachment_id.store_fname,
                         }
                     })
+
         res.update({'templates': template_clean_d})
 
         _logger.info("Product virtual data successfully generated...")
