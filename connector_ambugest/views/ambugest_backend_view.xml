@@ -74,12 +74,12 @@
                             </p>
                             <group>
                                 <div>
-                                    <label string="Import Services since"
+                                    <label string="Import Products since"
                                            class="oe_inline"/>
-                                    <field name="import_services_since_date" class="oe_inline"
+                                    <field name="import_products_since_date" class="oe_inline"
                                            nolabel="1"/>
                                 </div>
-                                <button name="import_services_since" type="object"
+                                <button name="import_products_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
                             </group>
                             <group>
@@ -94,12 +94,12 @@
                             </group>
                             <group>
                                 <div>
-                                    <label string="Import Products since"
+                                    <label string="Import Services since"
                                            class="oe_inline"/>
-                                    <field name="import_products_since_date" class="oe_inline"
+                                    <field name="import_services_since_date" class="oe_inline"
                                            nolabel="1"/>
                                 </div>
-                                <button name="import_products_since" type="object"
+                                <button name="import_services_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
                             </group>
                         </page>

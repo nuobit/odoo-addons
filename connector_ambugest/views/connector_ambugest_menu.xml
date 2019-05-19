@@ -23,5 +23,5 @@
               parent="ambugest_external_objects_menu" action="ambugest_res_partner_action"/>
 
     <menuitem id="ambugest_external_products_menu" name="External Products" sequence="30"
-              parent="ambugest_external_objects_menu" action="ambugest_product_product_action"/>
+              parent="ambugest_external_objects_menu" action="ambugest_product_template_action"/>
 </odoo>
