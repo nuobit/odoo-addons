@@ -12,7 +12,7 @@ from ...components.adapter import api_handle_errors
 _logger = logging.getLogger(__name__)
 
 
-class Backend(models.Model):
+class AmbugestBackend(models.Model):
     _name = 'ambugest.backend'
     _inherit = 'connector.backend'
 
@@ -105,7 +105,7 @@ class Backend(models.Model):
     def import_products_since(self):
         for rec in self:
             since_date = rec.import_products_since_date
-            self.env['ambugest.product.product'].with_delay(
+            self.env['ambugest.product.template'].with_delay(
             ).import_products_since(
                 backend_record=rec, since_date=since_date)
 
@@ -123,14 +123,3 @@ class Backend(models.Model):
     def _scheduler_import_products(self, domain=None):
         self.search(domain or []).import_products_since()
 
-
-
-
-class NoModelAdapter(Component):
-    """ Used to test the connection """
-    _name = 'ambugest.adapter.test'
-    _inherit = 'ambugest.adapter'
-    _apply_on = 'ambugest.backend'
-
-    _sql = "select @@version"
-    _id = None

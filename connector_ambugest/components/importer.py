@@ -125,7 +125,18 @@ class AmbugestImporter(AbstractComponent):
             _logger.debug('%d updated from Ambugest %s', binding, external_id)
         else:
             # or we create it
-            binding = self.model.create(internal_data.values(for_create=True))
+            odoo_link_field = 'odoo_id'
+            values = internal_data.values(for_create=True)
+            if odoo_link_field in values:
+                if isinstance(values[odoo_link_field], (tuple, list)):
+                    odoo_id, overwrite = values[odoo_link_field]
+                    if not overwrite:
+                        values = internal_data.values()
+                    values.update({
+                        odoo_link_field: odoo_id
+                    })
+
+            binding = self.model.create(values)
             _logger.debug('%d created from Ambugest %s', binding, external_id)
 
         # finally, we bind both, so the next time we import
@@ -134,7 +145,7 @@ class AmbugestImporter(AbstractComponent):
         binder.bind(external_id, binding)
 
 
-class BatchImporter(AbstractComponent):
+class AmbugestBatchImporter(AbstractComponent):
     """ The role of a BatchImporter is to search for a list of
     items to import, then it can either import them directly or delay
     the import of each item separately.
@@ -157,7 +168,7 @@ class BatchImporter(AbstractComponent):
         raise NotImplementedError
 
 
-class DirectBatchImporter(AbstractComponent):
+class AmbugestDirectBatchImporter(AbstractComponent):
     """ Import the records directly, without delaying the jobs. """
 
     _name = 'ambugest.direct.batch.importer'
@@ -168,7 +179,7 @@ class DirectBatchImporter(AbstractComponent):
         self.model.import_record(self.backend_record, external_id)
 
 
-class DelayedBatchImporter(AbstractComponent):
+class AmbugestDelayedBatchImporter(AbstractComponent):
     """ Delay import of the records """
 
     _name = 'ambugest.delayed.batch.importer'

@@ -253,3 +253,12 @@ class GenericAdapter(AbstractComponent):
         return res[0][0]
 
 
+class AmbugestNoModelAdapter(AbstractComponent):
+    """ Used to test the connection """
+    _name = 'ambugest.adapter.test'
+    _inherit = 'ambugest.adapter'
+    _apply_on = 'ambugest.backend'
+
+    _sql = "select @@version"
+    _id = None
+

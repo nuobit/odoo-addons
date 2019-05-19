@@ -5,7 +5,7 @@
 from odoo.addons.component.core import AbstractComponent
 
 
-class BaseAmbugestConnectorComponent(AbstractComponent):
+class AmbugestBaseConnectorComponent(AbstractComponent):
     """ Base Ambugest Connector Component
 
     All components of this connector should inherit from it.
