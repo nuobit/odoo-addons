@@ -6,10 +6,10 @@ from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.components.mapper import mapping
 
 
-class ImportMapper(AbstractComponent):
+class AmbugestImportMapper(AbstractComponent):
     _name = 'ambugest.import.mapper'
     _inherit = ['base.import.mapper', 'base.ambugest.connector']
-    _usage = 'import.mapper'
+
 
 
 

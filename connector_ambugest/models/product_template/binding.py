@@ -9,42 +9,42 @@ from odoo.addons.queue_job.job import job
 
 
 class ProductProduct(models.Model):
-    _inherit = 'product.product'
+    _inherit = 'product.template'
 
     ambugest_bind_ids = fields.One2many(
-        comodel_name='ambugest.product.product',
+        comodel_name='ambugest.product.template',
         inverse_name='odoo_id',
         string='Ambugest Bindings',
     )
 
 
 class ProductProductBinding(models.Model):
-    _name = 'ambugest.product.product'
+    _name = 'ambugest.product.template'
     _inherit = 'ambugest.binding'
-    _inherits = {'product.product': 'odoo_id'}
+    _inherits = {'product.template': 'odoo_id'}
 
-    odoo_id = fields.Many2one(comodel_name='product.product',
+    odoo_id = fields.Many2one(comodel_name='product.template',
                               string='Product',
                               required=True,
                               ondelete='cascade')
 
-    ## composed id
-    ambugest_codigo_empresa = fields.Integer(string="CodigoEmpresa on Ambugest", required=True)
-    ambugest_codigo_empleado = fields.Integer(string="CodigoEmpleado on Ambugest", required=True)
+    ## id
+    ambugest_empresa = fields.Integer(string="Empresa on Ambugest", required=True)
+    ambugest_id = fields.Integer(string="Id on Ambugest", required=True)
 
     _sql_constraints = [
-        ('uniq', 'unique(odoo_id, ambugest_codigo_empresa, ambugest_codigo_empleado)',
-         'Empllyee with same ID on Ambugest already exists.'),
+        ('uniq', 'unique(odoo_id, ambugest_id, ambugest_empresa)',
+         'Product with same ID on Ambugest already exists.'),
     ]
 
     @job(default_channel='root.ambugest')
     def import_products_since(self, backend_record=None, since_date=None):
         """ Prepare the import of products modified on Ambugest """
         filters = {
-            'CodigoEmpresa': backend_record.ambugest_company_id,
+            'Empresa': backend_record.ambugest_company_id,
         }
         now_fmt = fields.Datetime.now()
-        self.env['ambugest.product.product'].import_batch(
+        self.env['ambugest.product.template'].import_batch(
             backend=backend_record, filters=filters)
         backend_record.import_products_since_date = now_fmt
 
