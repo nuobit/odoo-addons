@@ -10,14 +10,14 @@ class ProductProductBinder(Component):
     """ Bind records and give odoo/ambugest ids correspondence
 
     Binding models are models called ``ambugest.{normal_model}``,
-    like ``ambugest.res.partner`` or ``ambugest.product.product``.
+    like ``ambugest.res.partner`` or ``ambugest.product.template``.
     They are ``_inherits`` of the normal models and contains
     the Ambugest ID, the ID of the Ambugest Backend and the additional
     fields belonging to the Ambugest instance.
     """
-    _name = 'ambugest.product.product.binder'
-    _inherit = 'base.binder.composite'
-    _external_field = ['ambugest_codigo_empresa', 'ambugest_codigo_empleado']
+    _name = 'ambugest.product.template.binder'
+    _inherit = 'ambugest.binder'
 
-    _apply_on = 'ambugest.product.product'
+    _apply_on = 'ambugest.product.template'
 
+    _external_field = ['ambugest_empresa', 'ambugest_id']

@@ -16,15 +16,15 @@ class ProductProductBatchImporter(Component):
 
     For every partner in the list, a delayed job is created.
     """
-    _name = 'ambugest.product.product.batch.importer'
+    _name = 'ambugest.product.template.delayed.batch.importer'
     _inherit = 'ambugest.delayed.batch.importer'
-    _apply_on = 'ambugest.product.product'
+    _apply_on = 'ambugest.product.template'
 
 
 class ProductProductImporter(Component):
-    _name = 'ambugest.product.product.importer'
+    _name = 'ambugest.product.template.importer'
     _inherit = 'ambugest.importer'
-    _apply_on = 'ambugest.product.product'
+    _apply_on = 'ambugest.product.template'
 
     # def _import_dependencies(self):
     #     external_id = (self.external_data['CodigoEmpresa'], self.external_data['CodigoEmpleado'])
