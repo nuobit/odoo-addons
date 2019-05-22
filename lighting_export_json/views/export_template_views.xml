@@ -27,6 +27,9 @@
                         <field colspan="2" name="output_directory"/>
                         <field colspan="2" name="output_filename_prefix"/>
                     </group>
+                    <group col="2" colspan="2">
+                        <field colspan="2" name="auto_execute"/>
+                    </group>
                 </group>
             </xpath>
         </field>

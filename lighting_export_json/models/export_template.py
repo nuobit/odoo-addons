@@ -27,12 +27,19 @@ class LightingExportTemplate(models.Model):
     output_directory = fields.Char(string="Directory")
     output_filename_prefix = fields.Char(string="Filename prefix")
 
+    auto_execute = fields.Boolean("Auto execute")
+
     @api.onchange('db_filestore')
     def onchange_db_filestore(self):
         if self.db_filestore:
             self.output_base_directory = tools.config.filestore(self._cr.dbname)
         else:
             self.output_base_directory = False
+
+    @api.model
+    def autoexecute(self):
+        for t in self.env[self._name].search([('auto_execute', '=', True)]):
+            t.action_json_export()
 
     @api.multi
     def action_json_export(self):
