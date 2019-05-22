@@ -182,11 +182,22 @@ class LightingProduct(models.Model):
                     for a in rec.attachment_ids \
                             .filtered(lambda x: x.id in attachment_ids) \
                             .sorted(lambda x: x.sequence):
-                        attachment_l.append({
+
+                        attachment_d = {
                             'datas_fname': a.datas_fname,
                             'store_fname': a.attachment_id.store_fname,
                             'type': a.type_id.code,
-                        })
+                        }
+
+                        type_lang_d = {}
+                        for lang in template_id.lang_ids.mapped('code'):
+                            type_lang_d[lang] = a.type_id.with_context(lang=lang).name
+                        if type_lang_d:
+                            attachment_d.update({
+                                'label': type_lang_d,
+                            })
+
+                        attachment_l.append(attachment_d)
 
                     if attachment_l:
                         rec.attachment_display = json.dumps(attachment_l)
@@ -436,29 +447,29 @@ class LightingProduct(models.Model):
 
     ######### category_ids (many2many) (former application_ids), should be used category_id (many2one)
     # directly on the template instead and remove this completely
-    category_ids = fields.Many2many(string="Categories",
-                                    compute='_compute_product_categories')
-
-    @api.depends('category_id')
-    def _compute_product_categories(self):
-        template_id = self.env.context.get('template_id')
-        if template_id:
-            for rec in self:
-                if rec.category_id:
-                    rec.category_ids = [(6, False, [rec.category_id.id])]
-
-    ######## estat temporal
-    website_published_tmp = fields.Selection(selection=[('published', 'Published'),
-                                                        ('discontinued', 'Discontinued')],
-                                             string='Website published tmp',
-                                             compute='_compute_product_website_published_tmp')
-
-    @api.depends('website_published')
-    def _compute_product_website_published_tmp(self):
-        template_id = self.env.context.get('template_id')
-        if template_id:
-            for rec in self:
-                if rec.website_published:
-                    rec.website_published_tmp = 'published'
-                else:
-                    rec.website_published_tmp = 'discontinued'
+    # category_ids = fields.Many2many(string="Categories",
+    #                                 compute='_compute_product_categories')
+    #
+    # @api.depends('category_id')
+    # def _compute_product_categories(self):
+    #     template_id = self.env.context.get('template_id')
+    #     if template_id:
+    #         for rec in self:
+    #             if rec.category_id:
+    #                 rec.category_ids = [(6, False, [rec.category_id.id])]
+    #
+    # ######## estat temporal
+    # website_published_tmp = fields.Selection(selection=[('published', 'Published'),
+    #                                                     ('discontinued', 'Discontinued')],
+    #                                          string='Website published tmp',
+    #                                          compute='_compute_product_website_published_tmp')
+    #
+    # @api.depends('website_published')
+    # def _compute_product_website_published_tmp(self):
+    #     template_id = self.env.context.get('template_id')
+    #     if template_id:
+    #         for rec in self:
+    #             if rec.website_published:
+    #                 rec.website_published_tmp = 'published'
+    #             else:
+    #                 rec.website_published_tmp = 'discontinued'

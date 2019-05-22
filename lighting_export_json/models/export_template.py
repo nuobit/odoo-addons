@@ -348,7 +348,7 @@ class LightingExportTemplate(models.Model):
                         category_ld.append(category_d)
 
                 # TODO replace application by categories
-                res.update({'applications': category_ld})
+                res.update({'categories': category_ld})
 
             _logger.info("Category data successfully generated...")
 
