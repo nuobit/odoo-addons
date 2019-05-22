@@ -11,14 +11,6 @@ from odoo.addons.connector.components.mapper import (
     mapping, external_to_m2o, only_create)
 
 
-def get_reference(record):
-    reference = str(record['Odoo_Articulo']).strip()
-    if len(reference) == 9:
-        reference = '%s000%s' % (reference[:6], reference[-3:])
-
-    return reference
-
-
 class ProductProductImportMapper(Component):
     _name = 'ambugest.product.template.import.mapper'
     _inherit = 'ambugest.import.mapper'
@@ -49,7 +41,7 @@ class ProductProductImportMapper(Component):
     @only_create
     @mapping
     def default_code(self, record):
-        return {'default_code': get_reference(record)}
+        return {'default_code': record['Odoo_Articulo']}
 
     @only_create
     @mapping
@@ -108,12 +100,12 @@ class ProductProductImportMapper(Component):
         with the same internal reference """
         product = self.env['product.template'].search([
             ('company_id', '=', self.backend_record.company_id.id),
-            ('default_code', '=', get_reference(record)),
+            ('default_code', '=', record['Odoo_Articulo']),
         ])
         if product:
             if len(product) > 1:
                 raise Exception("There's more than one existing products "
-                                "with the same Internal reference %s" % get_reference(record))
+                                "with the same Internal reference %s" % record['Odoo_Articulo'])
             return {
                 'odoo_id': (product.id, False)
             }
