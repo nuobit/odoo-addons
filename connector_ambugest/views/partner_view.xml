@@ -16,6 +16,24 @@
                     <field name="ambugest_bind_ids" nolabel="1"/>
                 </group>
             </page>
+            <field name="category_id" position="after">
+                <field name="to_review"/>
+            </field>
+        </field>
+    </record>
+    
+    <record id="view_res_partner_filter" model="ir.ui.view">
+        <field name="name">res.partner.select.review</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <separator/>
+                <filter string="To review" name="to_review" domain="[('to_review','=',True)]"/>
+            </filter>
+            <group name="group_by" position="inside">
+                <filter name="toreview" string="To review" context="{'group_by' : 'to_review'}"/>
+            </group>
         </field>
     </record>
 
