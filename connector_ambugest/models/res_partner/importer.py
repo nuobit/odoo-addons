@@ -16,7 +16,7 @@ class ResPartnerBatchImporter(Component):
 
     For every partner in the list, a delayed job is created.
     """
-    _name = 'ambugest.res.partner.batch.importer'
+    _name = 'ambugest.res.partner.delayed.batch.importer'
     _inherit = 'ambugest.delayed.batch.importer'
     _apply_on = 'ambugest.res.partner'
 
