@@ -16,8 +16,8 @@ class ResPartnerBinder(Component):
     fields belonging to the Ambugest instance.
     """
     _name = 'ambugest.res.partner.binder'
-    _inherit = 'base.binder.composite'
-    _external_field = ['ambugestcodigo_empresa', 'ambugest_codigo_empleado']
+    _inherit = 'ambugest.binder'
 
     _apply_on = 'ambugest.res.partner'
 
+    _external_field = ['ambugest_empresa', 'ambugest_codiup']

@@ -21,7 +21,7 @@
             </field>
         </field>
     </record>
-    
+
     <record id="view_res_partner_filter" model="ir.ui.view">
         <field name="name">res.partner.select.review</field>
         <field name="model">res.partner</field>
@@ -45,8 +45,8 @@
                 <group>
                     <field name="backend_id"/>
                     <field name="odoo_id" readonly="True"/>
-                    <field name="ambugest_codigo_empresa" readonly="True"/>
-                    <field name="ambugest_codigo_empleado" readonly="True"/>
+                    <field name="ambugest_empresa" readonly="True"/>
+                    <field name="ambugest_codiup" readonly="True"/>
                     <field name="sync_date" readonly="True"/>
                 </group>
             </form>
@@ -60,8 +60,8 @@
             <tree string="Ambugest Partner">
                 <field name="backend_id"/>
                 <field name="odoo_id"/>
-                <field name="ambugest_codigo_empresa"/>
-                <field name="ambugest_codigo_empleado"/>
+                <field name="ambugest_empresa"/>
+                <field name="ambugest_codiup"/>
                 <field name="sync_date"/>
                 <button name="resync" type="object"
                         string="Resynchronize" icon="fa-refresh fa-lg"/>
