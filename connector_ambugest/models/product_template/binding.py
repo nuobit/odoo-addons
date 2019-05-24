@@ -6,6 +6,7 @@ from odoo import models, fields
 
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.job import job
+from odoo import exceptions
 
 
 class ProductProduct(models.Model):
