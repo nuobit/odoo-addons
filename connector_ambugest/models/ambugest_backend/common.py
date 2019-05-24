@@ -82,11 +82,10 @@ class AmbugestBackend(models.Model):
         self.write({'state': 'checked'})
 
     @api.multi
-    def import_services_since(self):
+    def import_products_since(self):
         for rec in self:
-            since_date = rec.import_products_since_date
-            self.env['ambugest.sale.order'].with_delay(
-            ).import_services_since(
+            since_date = rec.import_products_since_date.with_delay(
+            ).import_products_since(
                 backend_record=rec, since_date=since_date)
 
         return True
@@ -102,24 +101,23 @@ class AmbugestBackend(models.Model):
         return True
 
     @api.multi
-    def import_products_since(self):
+    def import_services_since(self):
         for rec in self:
             since_date = rec.import_products_since_date
-            self.env['ambugest.product.template'].with_delay(
-            ).import_products_since(
+            self.env['ambugest.sale.order'].with_delay(
+            ).import_services_since(
                 backend_record=rec, since_date=since_date)
 
         return True
 
     @api.model
-    def _scheduler_import_services(self, domain=None):
-        self.search(domain or []).import_services_since()
+    def _scheduler_import_products(self, domain=None):
+        self.search(domain or []).import_products_since()
 
     @api.model
     def _scheduler_import_customers(self, domain=None):
         self.search(domain or []).import_customers_since()
 
     @api.model
-    def _scheduler_import_products(self, domain=None):
-        self.search(domain or []).import_products_since()
-
+    def _scheduler_import_services(self, domain=None):
+        self.search(domain or []).import_services_since()
