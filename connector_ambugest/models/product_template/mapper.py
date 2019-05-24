@@ -107,5 +107,5 @@ class ProductProductImportMapper(Component):
                 raise Exception("There's more than one existing products "
                                 "with the same Internal reference %s" % record['Odoo_Articulo'])
             return {
-                'odoo_id': (product.id, False)
+                'odoo_id': (product.id, False, None)
             }
