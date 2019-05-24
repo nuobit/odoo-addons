@@ -29,19 +29,19 @@ class ResPartnerBinding(models.Model):
                               ondelete='cascade')
 
     ## composed id
-    ambugest_codigo_empresa = fields.Integer(string="CodigoEmpresa on Ambugest", required=True)
-    ambugest_codigo_empleado = fields.Integer(string="CodigoEmpleado on Ambugest", required=True)
+    ambugest_empresa = fields.Integer(string="Empresa on Ambugest", required=True)
+    ambugest_codiup = fields.Integer(string="CodiUP on Ambugest", required=True)
 
     _sql_constraints = [
-        ('ambugest_res_partner', 'unique(odoo_id, ambugest_codigo_empresa, ambugest_codigo_empleado)',
+        ('ambugest_res_partner', 'unique(odoo_id, ambugest_empresa, ambugest_codiup)',
          'Partner with same ID on Ambugest already exists.'),
     ]
 
     @job(default_channel='root.ambugest')
-    def import_contacts_since(self, backend_record=None, since_date=None):
+    def import_customers_since(self, backend_record=None, since_date=None):
         """ Prepare the import of partners modified on Ambugest """
         filters = {
-            'CodigoEmpresa': backend_record.ambugest_company_id,
+            'EMPRESA': backend_record.ambugest_company_id,
         }
         now_fmt = fields.Datetime.now()
         self.env['ambugest.res.partner'].import_batch(
