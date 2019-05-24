@@ -129,9 +129,11 @@ class AmbugestImporter(AbstractComponent):
             values = internal_data.values(for_create=True)
             if odoo_link_field in values:
                 if isinstance(values[odoo_link_field], (tuple, list)):
-                    odoo_id, overwrite = values[odoo_link_field]
+                    odoo_id, overwrite, add_fields = values[odoo_link_field]
                     if not overwrite:
                         values = internal_data.values()
+                        if add_fields:
+                            values.update(add_fields)
                     values.update({
                         odoo_link_field: odoo_id
                     })

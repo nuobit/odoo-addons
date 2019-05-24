@@ -86,7 +86,7 @@ class ResPartnerImportMapper(Component):
                 raise Exception("There's more than one existing partner "
                                 "with the same Internal reference %s" % reference)
             return {
-                'odoo_id': (partner.id, False)
+                'odoo_id': (partner.id, False, {'to_review': True})
             }
 
     # @mapping
