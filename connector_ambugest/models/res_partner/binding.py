@@ -46,6 +46,6 @@ class ResPartnerBinding(models.Model):
         now_fmt = fields.Datetime.now()
         self.env['ambugest.res.partner'].import_batch(
             backend=backend_record, filters=filters)
-        backend_record.import_partners_since_date = now_fmt
+        backend_record.import_customers_since_date = now_fmt
 
         return True
