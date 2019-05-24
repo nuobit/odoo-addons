@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ir_cron_import_products" model="ir.cron" forcecreate="True">
+        <field name="name">Ambugest - Import products</field>
+        <field name="model_id" ref="model_ambugest_backend"/>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="state">code</field>
+        <field name="code">model._scheduler_import_products()</field>
+    </record>
+
+    <record id="ir_cron_import_customers" model="ir.cron" forcecreate="True">
+        <field name="name">Ambugest - Import customers</field>
+        <field name="model_id" ref="model_ambugest_backend"/>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="state">code</field>
+        <field name="code">model._scheduler_import_customers()</field>
+    </record>
+</odoo>
