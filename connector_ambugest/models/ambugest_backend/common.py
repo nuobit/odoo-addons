@@ -84,7 +84,8 @@ class AmbugestBackend(models.Model):
     @api.multi
     def import_products_since(self):
         for rec in self:
-            since_date = rec.import_products_since_date.with_delay(
+            since_date = rec.import_products_since_date
+            self.env['ambugest.product.template'].with_delay(
             ).import_products_since(
                 backend_record=rec, since_date=since_date)
 
@@ -93,7 +94,7 @@ class AmbugestBackend(models.Model):
     @api.multi
     def import_customers_since(self):
         for rec in self:
-            since_date = rec.import_products_since_date
+            since_date = rec.import_customers_since_date
             self.env['ambugest.res.partner'].with_delay(
             ).import_customers_since(
                 backend_record=rec, since_date=since_date)
@@ -103,7 +104,7 @@ class AmbugestBackend(models.Model):
     @api.multi
     def import_services_since(self):
         for rec in self:
-            since_date = rec.import_products_since_date
+            since_date = rec.import_services_since_date
             self.env['ambugest.sale.order'].with_delay(
             ).import_services_since(
                 backend_record=rec, since_date=since_date)
@@ -111,13 +112,38 @@ class AmbugestBackend(models.Model):
         return True
 
     @api.model
-    def _scheduler_import_products(self, domain=None):
-        self.search(domain or []).import_products_since()
+    def get_current_user_company(self):
+        if self.env.user.id == self.env.ref('base.user_root').id:
+            raise exceptions.ValidationError(_("The cron user cannot be admin"))
+
+        return self.env.user.company_id
 
     @api.model
-    def _scheduler_import_customers(self, domain=None):
-        self.search(domain or []).import_customers_since()
+    def _scheduler_import_products(self):
+        company_id = self.get_current_user_company()
+
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+
+        self.search(domain).import_products_since()
 
     @api.model
-    def _scheduler_import_services(self, domain=None):
-        self.search(domain or []).import_services_since()
+    def _scheduler_import_customers(self):
+        company_id = self.get_current_user_company()
+
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+
+        self.search(domain).import_customers_since()
+
+    @api.model
+    def _scheduler_import_services(self):
+        company_id = self.get_current_user_company()
+
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+
+        self.search(domain).import_services_since()
