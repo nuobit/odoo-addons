@@ -121,7 +121,7 @@ class AmbugestImporter(AbstractComponent):
 
         if binding:
             # if yes, we update it
-            binding.write(internal_data.values())
+            binding.with_context(force_company=self.backend_record.company_id.id).write(internal_data.values())
             _logger.debug('%d updated from Ambugest %s', binding, external_id)
         else:
             # or we create it
@@ -138,7 +138,7 @@ class AmbugestImporter(AbstractComponent):
                         odoo_link_field: odoo_id
                     })
 
-            binding = self.model.create(values)
+            binding = self.model.with_context(force_company=self.backend_record.company_id.id).create(values)
             _logger.debug('%d created from Ambugest %s', binding, external_id)
 
         # finally, we bind both, so the next time we import
