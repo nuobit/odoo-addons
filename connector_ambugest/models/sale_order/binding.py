@@ -24,16 +24,29 @@ class SaleOrderBinding(models.Model):
     _inherits = {'sale.order': 'odoo_id'}
 
     odoo_id = fields.Many2one(comodel_name='sale.order',
-                              string='Service',
+                              string='Order',
                               required=True,
                               ondelete='cascade')
 
+    ambugest_order_line_ids = fields.One2many(
+        comodel_name='ambugest.sale.order.line',
+        inverse_name='ambugest_order_id',
+        string='Lines'
+    )
+
     ## composed id
-    ambugest_codigo_empresa = fields.Integer(string="CodigoEmpresa on Ambugest", required=True)
-    ambugest_codigo_empleado = fields.Integer(string="CodigoEmpleado on Ambugest", required=True)
+    ambugest_empresa = fields.Integer(string="EMPRESA on Ambugest", required=True)
+    ambugest_codiup = fields.Integer(string="Codi UP on Ambugest", required=True)
+    ambugest_fecha_servicio = fields.Date(string="Fecha_Servicio on Ambugest", required=True)
+    ambugest_codigo_servicio = fields.Integer(string="Codigo_Servicio on Ambugest", required=True)
+    ambugest_servicio_dia = fields.Integer(string="Servicio_Dia on Ambugest", required=True)
+    ambugest_servicio_ano = fields.Integer(string="Servicio_Ano on Ambugest", required=True)
 
     _sql_constraints = [
-        ('ambugest_res_partner', 'unique(odoo_id, ambugest_codigo_empresa, ambugest_codigo_empleado)',
+        ('ambugest_res_partner', 'unique(odoo_id, ambugest_empresa,'
+                                 'ambugest_codiup, ambugest_fecha_servicio,'
+                                 'ambugest_codigo_servicio, ambugest_servicio_dia,'
+                                 'ambugest_servicio_ano)',
          'Sale order with same ID on Ambugest already exists.'),
     ]
 
@@ -41,7 +54,7 @@ class SaleOrderBinding(models.Model):
     def import_services_since(self, backend_record=None, since_date=None):
         """ Prepare the import of partners modified on Ambugest """
         filters = {
-            'CodigoEmpresa': backend_record.ambugest_company_id,
+            'EMPRESA': backend_record.ambugest_company_id,
         }
         now_fmt = fields.Datetime.now()
         self.env['ambugest.sale.order'].import_batch(
