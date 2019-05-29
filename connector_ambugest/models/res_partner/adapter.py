@@ -9,7 +9,7 @@ from odoo.addons.queue_job.job import job
 
 
 class ResPartnerAdapter(Component):
-    _name = 'ambugest.partner.adapter'
+    _name = 'ambugest.res.partner.adapter'
     _inherit = 'ambugest.adapter'
     _apply_on = 'ambugest.res.partner'
 
