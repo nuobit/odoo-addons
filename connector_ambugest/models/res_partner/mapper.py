@@ -57,8 +57,8 @@ class ResPartnerImportMapper(Component):
 
     @only_create
     @mapping
-    def partner_type(self, record):
-        return {'customer': True, 'supplier': False}
+    def lang(self, record):
+        return {'lang': 'es_ES'}
 
     @only_create
     @mapping
