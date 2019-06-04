@@ -88,7 +88,7 @@ class SaleOrderImportMapper(Component):
     @mapping
     def order_date(self, record):
         return {
-            'validity_date': record['Fecha_Servicio'],
+            'date_order': record['Fecha_Servicio'],
         }
 
     @only_create
