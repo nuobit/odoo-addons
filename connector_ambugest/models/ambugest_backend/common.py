@@ -85,7 +85,7 @@ class AmbugestBackend(models.Model):
     def import_products_since(self):
         for rec in self:
             since_date = rec.import_products_since_date
-            self.env['ambugest.product.template'].with_delay(
+            self.env['ambugest.product.product'].with_delay(
             ).import_products_since(
                 backend_record=rec, since_date=since_date)
 
