@@ -7,7 +7,7 @@ from . import ambugest_binding
 
 from . import ambugest_backend
 
-from . import product_template
+from . import product_product
 from . import res_partner
 from . import sale_order
 

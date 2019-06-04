@@ -3,10 +3,10 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
 <odoo>
-    <record id="product_template_only_form_view" model="ir.ui.view">
-        <field name="name">product.template.form.view.inherit</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+    <record id="product_product_only_form_view" model="ir.ui.view">
+        <field name="name">product.product.form.view.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="groups_id"
                eval="[(4, ref('connector.group_connector_manager'))]"/>
         <field name="arch" type="xml">
@@ -20,9 +20,9 @@
         </field>
     </record>
 
-    <record id="ambugest_product_template_view_form" model="ir.ui.view">
-        <field name="name">ambugest.product.template.form</field>
-        <field name="model">ambugest.product.template</field>
+    <record id="ambugest_product_product_view_form" model="ir.ui.view">
+        <field name="name">ambugest.product.product.form</field>
+        <field name="model">ambugest.product.product</field>
         <field name="arch" type="xml">
             <form string="Ambugest Product">
                 <group>
@@ -36,9 +36,9 @@
         </field>
     </record>
 
-    <record id="ambugest_product_template_view_tree" model="ir.ui.view">
-        <field name="name">ambugest.product.template.tree</field>
-        <field name="model">ambugest.product.template</field>
+    <record id="ambugest_product_product_view_tree" model="ir.ui.view">
+        <field name="name">ambugest.product.product.tree</field>
+        <field name="model">ambugest.product.product</field>
         <field name="arch" type="xml">
             <tree string="Ambugest Product">
                 <field name="backend_id"/>
@@ -52,9 +52,9 @@
         </field>
     </record>
 
-    <record id="ambugest_product_template_action" model="ir.actions.act_window">
+    <record id="ambugest_product_product_action" model="ir.actions.act_window">
         <field name="name">Product</field>
-        <field name="res_model">ambugest.product.template</field>
+        <field name="res_model">ambugest.product.product</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>

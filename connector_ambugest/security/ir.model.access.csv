@@ -3,6 +3,6 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_ambugest_sale_order_group_user","ambugest_sale_order group_user","model_ambugest_sale_order","base.group_user",1,0,0,0
 "access_ambugest_res_partner","ambugest_res_partner connector manager","model_ambugest_res_partner","connector.group_connector_manager",1,1,1,1
 "access_ambugest_res_partner_group_user","ambugest_res_partner group_user","model_ambugest_res_partner","base.group_user",1,0,0,0
-"access_ambugest_product_template","ambugest_product_template connector manager","model_ambugest_product_template","connector.group_connector_manager",1,1,1,1
-"access_ambugest_product_template_group_user","ambugest_product_template group_user","model_ambugest_product_template","base.group_user",1,0,0,0
+"access_ambugest_product_product","ambugest_product_product connector manager","model_ambugest_product_product","connector.group_connector_manager",1,1,1,1
+"access_ambugest_product_product_group_user","ambugest_product_product group_user","model_ambugest_product_product","base.group_user",1,0,0,0
 "access_ambugest_backend","ambugest_backend connector manager","model_ambugest_backend","connector.group_connector_manager",1,1,1,1
