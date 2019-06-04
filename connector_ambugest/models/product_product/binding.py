@@ -10,21 +10,21 @@ from odoo import exceptions
 
 
 class ProductProduct(models.Model):
-    _inherit = 'product.template'
+    _inherit = 'product.product'
 
     ambugest_bind_ids = fields.One2many(
-        comodel_name='ambugest.product.template',
+        comodel_name='ambugest.product.product',
         inverse_name='odoo_id',
         string='Ambugest Bindings',
     )
 
 
 class ProductProductBinding(models.Model):
-    _name = 'ambugest.product.template'
+    _name = 'ambugest.product.product'
     _inherit = 'ambugest.binding'
-    _inherits = {'product.template': 'odoo_id'}
+    _inherits = {'product.product': 'odoo_id'}
 
-    odoo_id = fields.Many2one(comodel_name='product.template',
+    odoo_id = fields.Many2one(comodel_name='product.product',
                               string='Product',
                               required=True,
                               ondelete='cascade')
@@ -45,7 +45,7 @@ class ProductProductBinding(models.Model):
             'Empresa': backend_record.ambugest_company_id,
         }
         now_fmt = fields.Datetime.now()
-        self.env['ambugest.product.template'].import_batch(
+        self.env['ambugest.product.product'].import_batch(
             backend=backend_record, filters=filters)
         backend_record.import_products_since_date = now_fmt
 

@@ -12,9 +12,9 @@ from odoo.addons.connector.components.mapper import (
 
 
 class ProductProductImportMapper(Component):
-    _name = 'ambugest.product.template.import.mapper'
+    _name = 'ambugest.product.product.import.mapper'
     _inherit = 'ambugest.import.mapper'
-    _apply_on = 'ambugest.product.template'
+    _apply_on = 'ambugest.product.product'
 
     direct = [
         ('Id', 'ambugest_id'),
@@ -98,7 +98,7 @@ class ProductProductImportMapper(Component):
     def odoo_id(self, record):
         """ Will bind the product on a existing product
         with the same internal reference """
-        product = self.env['product.template'].search([
+        product = self.env['product.product'].search([
             ('company_id', '=', self.backend_record.company_id.id),
             ('default_code', '=', record['Odoo_Articulo']),
         ])
