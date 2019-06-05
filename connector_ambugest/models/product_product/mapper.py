@@ -90,7 +90,7 @@ class ProductProductImportMapper(Component):
     @mapping
     def list_price(self, record):
         return {
-            'list_price': 0,
+            'list_price': record['Importe'],
         }
 
     @only_create
