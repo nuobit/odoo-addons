@@ -29,4 +29,4 @@ class SaleOrderImporter(Component):
     def _import_dependencies(self):
         external_id = (self.external_data['EMPRESA'], self.external_data['CodiUP'])
 
-        self._import_dependency(external_id, 'ambugest.res.partner', always=True)
+        self._import_dependency(external_id, 'ambugest.res.partner', always=False)
