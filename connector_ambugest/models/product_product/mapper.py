@@ -88,13 +88,6 @@ class ProductProductImportMapper(Component):
 
     @only_create
     @mapping
-    def list_price(self, record):
-        return {
-            'list_price': record['Importe'],
-        }
-
-    @only_create
-    @mapping
     def odoo_id(self, record):
         """ Will bind the product on a existing product
         with the same internal reference """
