@@ -22,6 +22,7 @@ class SaleOrderLineAdapter(Component):
                     l.Codigo_Servicio = s.Codigo_Servicio and 
                     l.Servicio_Dia = s.Servicio_Dia and 
                     l.Servicio_Ano = s.Servicio_Ano and
+                    c."Activa_en_AmbuGEST" = 1 and
                     cast(c."Codi UP" as integer) >= 90000 and
                     s.Cliente = c.Cliente
     """
