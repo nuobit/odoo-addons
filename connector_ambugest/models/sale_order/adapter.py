@@ -17,7 +17,8 @@ class SaleOrderAdapter(Component):
                      s.Fecha_Servicio, s.Codigo_Servicio, s.Servicio_Dia, s.Servicio_Ano,
                      s.Fecha_Modifica
               from %(schema)s.Odoo_Servicios s, %(schema)s."Unidades productivas" c
-              where cast(c."Codi UP" as integer) >= 90000 and
+              where c."Activa_en_AmbuGEST" = 1 and
+                    cast(c."Codi UP" as integer) >= 90000 and
                     s.Cliente = c.Cliente and
                     s.Odoo_Verificado = 1
      """
