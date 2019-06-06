@@ -15,7 +15,7 @@ class SaleOrderLineAdapter(Component):
     _sql = """select c.EMPRESA,  
                      l.Fecha_Servicio, l.Codigo_Servicio, l.Servicio_Dia, l.Servicio_Ano,
                      l.Articulo,
-                     l.Cantidad, l.Importe, l.Total
+                     l.Cantidad
               from %(schema)s.Odoo_Servicios_Cargos l, %(schema)s.Odoo_Servicios s, 
                    %(schema)s."Unidades productivas" c
               where l.Fecha_Servicio = s.Fecha_Servicio and 

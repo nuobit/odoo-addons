@@ -25,8 +25,6 @@ class SaleOrderLineImportMapper(Component):
         ('Articulo', 'ambugest_articulo'),
 
         ('Cantidad', 'product_uom_qty'),
-        ('Importe', 'price_unit'),
-        ('Total', 'price_total'),
     ]
 
     @only_create
