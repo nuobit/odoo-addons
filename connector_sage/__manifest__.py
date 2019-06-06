@@ -4,7 +4,7 @@
 
 {
     'name': "Sage-Odoo connector",
-    'version': '11.0.0.8.4',
+    'version': '11.0.0.9.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',
@@ -20,7 +20,7 @@
         ],
     },
     'data': [
-        # 'data/cron.xml',
+        'data/ir_cron.xml',
         'views/sage_backend_views.xml',
         'views/hr_employee_views.xml',
         'views/res_partner_views.xml',
