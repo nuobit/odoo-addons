@@ -146,9 +146,28 @@ class SageBackend(models.Model):
         return True
 
     @api.model
-    def _scheduler_import_employees(self, domain=None):
-        self.search(domain or []).import_employees_since()
+    def get_current_user_company(self):
+        if self.env.user.id == self.env.ref('base.user_root').id:
+            raise exceptions.ValidationError(_("The cron user cannot be admin"))
+
+        return self.env.user.company_id
 
     @api.model
-    def _scheduler_import_labour_agreements(self, domain=None):
-        self.search(domain or []).import_labour_agreements_since()
+    def _scheduler_import_employees(self):
+        company_id = self.get_current_user_company()
+
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+
+        self.search(domain).import_employees_since()
+
+    @api.model
+    def _scheduler_import_labour_agreements(self):
+        company_id = self.get_current_user_company()
+
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+
+        self.search(domain).import_labour_agreements_since()
