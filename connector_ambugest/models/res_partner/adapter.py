@@ -15,7 +15,7 @@ class ResPartnerAdapter(Component):
 
     _sql = """select p."EMPRESA", p."Codi UP" as "CodiUP", p."Nom UP" as "NomUP"
               from %(schema)s."Unidades productivas" p
-              where p."Activa_en_AmbuGEST" = 1 and 
+              where p."Activa_en_AmbuGEST" = 1 and
                     cast(p."Codi UP" as integer) >= 90000
      """
     _id = ('EMPRESA', 'CodiUP')
