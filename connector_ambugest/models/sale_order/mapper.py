@@ -104,5 +104,7 @@ class SaleOrderImportMapper(Component):
     @only_create
     @mapping
     def client_order(self, record):
-        if record['Codigo_Servicio']:
-            return {'client_order_ref': str(record['Codigo_Servicio'])}
+        if record['Servicio_Ano']:
+            servicio_ano_str = str(record['Servicio_Ano']).strip()
+            if servicio_ano_str:
+                return {'client_order_ref': servicio_ano_str}
