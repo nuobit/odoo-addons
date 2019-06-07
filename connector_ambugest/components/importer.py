@@ -91,6 +91,9 @@ class AmbugestImporter(AbstractComponent):
         """
         return
 
+    def _import_finalize(self, binding):
+        return
+
     def run(self, external_id):
         ## get_data
         # this one knows how to speak to sage
@@ -140,6 +143,9 @@ class AmbugestImporter(AbstractComponent):
 
             binding = self.model.create(values)
             _logger.debug('%d created from Ambugest %s', binding, external_id)
+
+        # final updates
+        self._import_finalize(binding)
 
         # finally, we bind both, so the next time we import
         # the record, we'll update the same record instead of
