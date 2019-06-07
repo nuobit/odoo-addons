@@ -6,7 +6,7 @@
     'name': 'Sale line product description by partner',
     'summary': 'This module allows to define multiple product description '
                'by partner and use it on sales',
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.2.0',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
