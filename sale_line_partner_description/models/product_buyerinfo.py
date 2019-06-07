@@ -14,7 +14,7 @@ class ProductBuyerInfo(models.Model):
                                  domain=[('customer', '=', True)], ondelete='cascade',
                                  string='Customer', required=True)
 
-    name = fields.Text(string='Name', required=True, translate=True)
+    name = fields.Text(string='Product name', required=True, translate=True)
 
     product_id = fields.Many2one(comodel_name='product.product', required=True, ondelete='cascade')
 
