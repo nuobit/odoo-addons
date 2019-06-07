@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
             <page name="sales" position="inside">
-                <group string="Names by customer">
+                <group string="Product names by customer">
                     <field name="buyer_ids" nolabel="1">
                         <tree editable="bottom">
                             <field name="product_id" invisible="1"/>
