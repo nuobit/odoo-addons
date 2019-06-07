@@ -8,13 +8,12 @@
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
             <page name="sales" position="inside">
-                <group string="Customer descriptions">
+                <group string="Names by customer">
                     <field name="buyer_ids" nolabel="1">
-                        <tree string="Customer description" editable="bottom">
+                        <tree editable="bottom">
                             <field name="product_id" invisible="1"/>
                             <field name="partner_id"/>
                             <field name="name"/>
-                            <field name="concatenate"/>
                         </tree>
                     </field>
                 </group>

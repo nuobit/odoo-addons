@@ -36,8 +36,8 @@ msgstr "Cliente"
 
 #. module: sale_line_partner_description
 #: model:ir.ui.view,arch_db:sale_line_partner_description.product_normal_form_view
-msgid "Customer descriptions"
-msgstr "Descripciones de clientes"
+msgid "Names by customer"
+msgstr "Nombres por cliente"
 
 #. module: sale_line_partner_description
 #: model:ir.model.fields,field_description:sale_line_partner_description.field_ambugest_product_product_buyer_ids
@@ -47,13 +47,8 @@ msgstr "Clientes"
 
 #. module: sale_line_partner_description
 #: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_name
-msgid "Description"
-msgstr "Descripción"
-
-#. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_concatenate
-msgid "Concatenate"
-msgstr "Concatenar"
+msgid "Name"
+msgstr "Nombre"
 
 #. module: sale_line_partner_description
 #: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_display_name

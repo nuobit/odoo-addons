@@ -26,24 +26,21 @@ class SaleOrderLine(models.Model):
             uom=self.product_uom.id
         )
 
-        description_l = [product.name_get()[0][1]]
-
         buyer_id = product.buyer_ids. \
             filtered(lambda x: x.partner_id.id == self.order_id.partner_id.id)
         if buyer_id:
             buyer = buyer_id.with_context(
                 lang=self.order_id.partner_id.lang,
             )
-            if not buyer.concatenate:
-                description_l = [buyer.name]
-            else:
-                description_l.append(buyer.name)
-        else:
-            if product.description_sale:
-                description_l.append(product.description_sale)
+            code = product._context.get('display_default_code', True) and \
+                   getattr(product, 'default_code', False) or False
+            name = '[%s] %s' % (code, buyer.name) if code else buyer.name
 
-        self.update({
-            'name': '\n'.join(description_l),
-        })
+            if product.description_sale:
+                name += '\n' + product.description_sale
+
+            self.update({
+                'name': name,
+            })
 
         return res
