@@ -27,7 +27,10 @@ class ProductProductImportMapper(Component):
 
     @mapping
     def product_type(self, record):
-        return {'type': 'service'}
+        return {
+            'type': 'service',
+            'invoice_policy': 'order'
+        }
 
     @mapping
     def backend_id(self, record):
