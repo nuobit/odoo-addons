@@ -30,3 +30,11 @@ class SaleOrderImporter(Component):
         external_id = (self.external_data['EMPRESA'], self.external_data['CodiUP'])
 
         self._import_dependency(external_id, 'ambugest.res.partner', always=False)
+
+    def _import_finalize(self, binding):
+        sale_order = self.component(usage='binder').unwrap_binding(binding)
+        sale_order.onchange_partner_id()
+        for line in sale_order.order_line:
+            line.product_id_change()
+        sale_order.action_confirm()
+        sale_order.action_done()
