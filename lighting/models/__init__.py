@@ -5,6 +5,8 @@
 from . import models
 
 from . import product
+from . import product_template
+from . import product_attribute
 
 from . import product_catalog
 from . import product_family

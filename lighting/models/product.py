@@ -181,6 +181,11 @@ class LightingProduct(models.Model):
                                      track_visibility='onchange')
 
     ean = fields.Char(string='EAN', required=False, track_visibility='onchange')
+
+    product_tmpl_id = fields.Many2one(comodel_name='lighting.product.template',
+                                      string='Template',
+                                      ondelete='restrict', track_visibility='onchange')
+
     family_ids = fields.Many2many(comodel_name='lighting.product.family',
                                   relation='lighting_product_family_rel', string='Families',
                                   track_visibility='onchange')

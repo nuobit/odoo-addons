@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- view product attribute -->
+    <record id="product_attribute_form_view" model="ir.ui.view">
+        <field name="name">product.attribute.form</field>
+        <field name="model">lighting.product.attribute</field>
+        <field name="arch" type="xml">
+            <form string="Product attribute Form">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Product template"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="product_field_id"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_attribute_tree_view" model="ir.ui.view">
+        <field name="name">product.attribute.tree</field>
+        <field name="model">lighting.product.attribute</field>
+        <field name="arch" type="xml">
+            <tree string="Product attribute Tree">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="product_field_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action category -->
+    <record id="product_attribute_action" model="ir.actions.act_window">
+        <field name="name">Product attribute</field>
+        <field name="res_model">lighting.product.attribute</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product attribute
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="product_attribute_menu" name="Attributes" parent="common_data_menu"
+              action="product_attribute_action"
+              sequence="5"/>
+</odoo>
