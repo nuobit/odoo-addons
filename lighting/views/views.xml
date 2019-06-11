@@ -1223,7 +1223,7 @@
     <!-- ============= product menu ============ -->
     <menuitem id="products_menu" name="Products" parent="lighting_product_menu"
               action="product_list_action"
-              sequence="10"/>
+              sequence="5"/>
 
     <!-- ============= common data ============ -->
     <menuitem id="dimension_types_menu" name="Dimension types" parent="common_data_menu"

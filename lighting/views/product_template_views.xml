@@ -76,5 +76,5 @@
 
     <menuitem id="product_templates_menu" name="Product templates" parent="lighting_product_menu"
               action="product_template_action"
-              sequence="5"/>
+              sequence="10"/>
 </odoo>
