@@ -37,6 +37,7 @@
                     <field name="sage_fecha_registro_cv" readonly="True"/>
                     <field name="sage_ano" readonly="True"/>
                     <field name="sage_mesd" readonly="True"/>
+                    <field name="sage_tipo_proceso" readonly="True"/>
                     <field name="sage_codigo_empleado" readonly="True"/>
                     <field name="sage_codigo_concepto_nom" readonly="True"/>
                     <field name="sync_date" readonly="True"/>
@@ -57,6 +58,7 @@
                 <field name="sage_fecha_registro_cv" readonly="True"/>
                 <field name="sage_ano" readonly="True"/>
                 <field name="sage_mesd" readonly="True"/>
+                <field name="sage_tipo_proceso" readonly="True"/>
                 <field name="sage_codigo_empleado" readonly="True"/>
                 <field name="sage_codigo_concepto_nom" readonly="True"/>
                 <field name="sync_date"/>
