@@ -15,7 +15,9 @@ class PayslipLineTransferBinding(models.Model):
 
     _sql_constraints = [
         ('uniq',
-         'unique(odoo_id, sage_codigo_empresa, sage_codigo_convenio, sage_fecha_registro_cv, sage_ano, sage_mesd, sage_codigo_empleado, sage_codigo_concepto_nom, sage_fecha_cobro)',
+         'unique(odoo_id, sage_codigo_empresa, sage_codigo_convenio, sage_fecha_registro_cv, '
+         'sage_ano, sage_mesd, sage_tipo_proceso, '
+         'sage_codigo_empleado, sage_codigo_concepto_nom, sage_fecha_cobro)',
          'Transfer Payslip with same ID on Sage already exists.'),
     ]
 
@@ -27,8 +29,10 @@ class PayslipLineTransferBinding(models.Model):
             'CodigoConvenio': payslip_id.labour_agreement_id.code,
             'FechaRegistroCV': fields.Date.from_string(payslip_id.labour_agreement_id.registration_date_cv),
 
-            'Año': fields.Date.from_string(payslip_id.date).year,
-            'MesD': fields.Date.from_string(payslip_id.date).month,
+            'Año': payslip_id.year,
+            'MesD': ('between', (payslip_id.month_from, payslip_id.month_to)),
+
+            'TipoProceso': payslip_id.process,
 
             'FechaCobro': fields.Date.from_string(payslip_id.payment_date),
         }

@@ -23,6 +23,7 @@ class PayslipCheckImportMapper(Component):
         ('CodigoEmpresa', 'sage_codigo_empresa'),
         ('Año', 'sage_ano'),
         ('MesD', 'sage_mesd'),
+        ('TipoProceso', 'sage_tipo_proceso'),
         ('CodigoEmpleado', 'sage_codigo_empleado'),
 
         ('IdEmpleado', 'sage_id_empleado'),
