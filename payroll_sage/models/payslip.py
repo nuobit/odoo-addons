@@ -7,13 +7,33 @@ from odoo.exceptions import UserError, ValidationError
 
 from datetime import datetime
 
+PROCESS_TYPES = [
+    ('MES', 'MES'),
+    ('P01', 'P01'),
+    ('P02', 'P02'),
+    ('A01', 'A01'),
+    ('A02', 'A02'),
+    ('A03', 'A03'),
+    ('A04', 'A04'),
+    ('A05', 'A05'),
+    ('A28', 'A28'),
+    ('B0101', 'B0101'),
+    ('B0102', 'B0102'),
+    ('B0201', 'B0201'),
+    ('B0202', 'B0202'),
+]
+
 
 class Payslip(models.Model):
     _name = 'payroll.sage.payslip'
     _description = 'Payslip'
 
     name = fields.Char(string='Name', required=True)
-    date = fields.Date(string='Date', required=True)
+    entry_date = fields.Date(string='Entry date', required=True)
+
+    year = fields.Integer(string='Year', required=True)
+    month_from = fields.Integer(string='From month', required=True)
+    month_to = fields.Integer(string='To month', required=True)
 
     labour_agreement_id = fields.Many2one('payroll.sage.labour.agreement', string='Labour agreement',
                                           # domain=[('registration_date_cv', '>=')]
@@ -29,6 +49,8 @@ class Payslip(models.Model):
     ss_cost = fields.Float('S.S. cost')
 
     payment_date = fields.Date('Payment date')
+
+    process = fields.Selection(selection=PROCESS_TYPES, string='Process', required=True)
 
     note = fields.Text(string='Note')
 
@@ -151,8 +173,8 @@ class Payslip(models.Model):
 
                     ## descripcio
                     from_string = fields.Date.from_string
-                    date_str = '%s/%s' % (from_string(rec.date).strftime("%m"),
-                                          from_string(rec.date).strftime("%Y"))
+                    date_str = '%s/%s' % (from_string(rec.entry_date).strftime("%m"),
+                                          from_string(rec.entry_date).strftime("%Y"))
                     description_l = [date_str]
                     if tag.description and tag.description.strip():
                         description_l.append(tag.description.strip())
@@ -194,7 +216,7 @@ class Payslip(models.Model):
 
                 ## generem la capçalera de l'assentament
                 values = {
-                    'date': rec.date,
+                    'date': rec.entry_date,
                     'ref': rec.name,
                     'company_id': rec.company_id.id,
                     'journal_id': rec.journal_id.id,

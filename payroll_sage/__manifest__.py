@@ -4,7 +4,7 @@
 
 {
     'name': "Sage Payroll",
-    'version': '11.0.0.12.6',
+    'version': '11.0.0.13.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Human Resources',
