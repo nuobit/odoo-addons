@@ -21,4 +21,5 @@ class PayslipCheckBinder(Component):
 
     _external_field = ['sage_codigo_empresa', 'sage_codigo_empleado',
                        'sage_ano', 'sage_mesd',
+                       'sage_tipo_proceso',
                        'sage_id_empleado', 'sage_orden_nom']

@@ -24,6 +24,7 @@ class PayslipLineImportMapper(AbstractComponent):
         ('FechaRegistroCV', 'sage_fecha_registro_cv'),
         ('Año', 'sage_ano'),
         ('MesD', 'sage_mesd'),
+        ('TipoProceso', 'sage_tipo_proceso'),
         ('CodigoConceptoNom', 'sage_codigo_concepto_nom'),
         ('CodigoEmpleado', 'sage_codigo_empleado'),
     ]

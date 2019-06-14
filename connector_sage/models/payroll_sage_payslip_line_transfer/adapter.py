@@ -13,7 +13,8 @@ class PayslipLineTransferAdapter(Component):
 
     _apply_on = 'sage.payroll.sage.payslip.line.transfer'
 
-    _sql = """select n.CodigoEmpresa, n.Año, n.MesD, 
+    _sql = """select n.CodigoEmpresa, n.Año, n.MesD,
+                     n.TipoProceso,
                      n.CodigoEmpleado, n.CodigoConceptoNom, 
                      c.CodigoConvenio, c.FechaRegistroCV,  
                      n.FechaCobro,
@@ -25,12 +26,14 @@ class PayslipLineTransferAdapter(Component):
                     n.TotalFichaHistorica in ('TD1', 'TR1') AND
                     n.CodigoConceptoNom = c.CodigoConceptoNom AND
                     n.CodigoEmpresa = c.CodigoEmpresa
-              group by n.CodigoEmpresa, n.Año, n.MesD, 
+              group by n.CodigoEmpresa, n.Año, n.MesD,
+                       n.TipoProceso,
                        n.CodigoEmpleado, n.CodigoConceptoNom, 
                        c.CodigoConvenio, c.FechaRegistroCV,  
                        n.FechaCobro
               having sum(n.importenom) != 0
     """
 
-    _id = ('CodigoEmpresa', 'Año', 'MesD', 'CodigoEmpleado', 'CodigoConceptoNom',
+    _id = ('CodigoEmpresa', 'Año', 'MesD', 'TipoProceso',
+           'CodigoEmpleado', 'CodigoConceptoNom',
            'CodigoConvenio', 'FechaRegistroCV', 'FechaCobro')

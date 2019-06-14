@@ -158,8 +158,22 @@ class GenericAdapter(AbstractComponent):
             if filters:
                 where = []
                 for k, v in filters.items():
-                    where.append('%s = %%s' % k)
-                    values.append(v)
+                    if isinstance(v, (tuple, list)):
+                        op, pars = v
+                        if op == '=':
+                            where.append('%s = %%s' % k)
+                            values.append(pars)
+                        elif op == 'in':
+                            where.append('%s in %%s' % k)
+                            values.append(pars)
+                        elif op == 'between':
+                            where.append('%s between %%s and %%s' % k)
+                            values += list(pars)
+                        else:
+                            raise Exception("Operator %s not implemented" % op)
+                    else:
+                        where.append('%s = %%s' % k)
+                        values.append(v)
                 sql_l.append("where %s" % (' and '.join(where),))
 
             sql = ' '.join(sql_l)
