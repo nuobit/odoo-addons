@@ -61,6 +61,11 @@ msgid "Code"
 msgstr "Código"
 
 #. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_process
+msgid "Process"
+msgstr "Proceso"
+
+#. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_company_id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_company_id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag_company_id
@@ -107,9 +112,24 @@ msgid "Credit/Debit"
 msgstr "Debe/Haber"
 
 #. module: payroll_sage
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_date
-msgid "Date"
-msgstr "Fecha"
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_entry_date
+msgid "Entry date"
+msgstr "Fecha asiento"
+
+#. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_year
+msgid "Year"
+msgstr "Año"
+
+#. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_month_from
+msgid "From month"
+msgstr "Desde mes"
+
+#. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_month_to
+msgid "To month"
+msgstr "Hasta mes"
 
 #. module: payroll_sage
 #: code:addons/payroll_sage/models/wage_tag.py:21
