@@ -42,6 +42,7 @@ class PayslipLineBinding(models.AbstractModel):
 
     sage_ano = fields.Integer(string="Año", required=True)
     sage_mesd = fields.Integer(string="MesD", required=True)
+    sage_tipo_proceso = fields.Char(string="TipoProceso", required=True)
 
     sage_codigo_empleado = fields.Integer(string="CodigoEmpleado", required=True)
     sage_codigo_concepto_nom = fields.Integer(string="CodigoConceptoNom", required=True)

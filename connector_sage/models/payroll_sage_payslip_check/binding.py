@@ -34,17 +34,27 @@ class PayslipCheckBinding(models.Model):
 
     sage_ano = fields.Integer(string="Año", required=True)
     sage_mesd = fields.Integer(string="MesD", required=True)
+    sage_tipo_proceso = fields.Char(string="TipoProceso", required=True)
 
     sage_id_empleado = fields.Char(string="IdEmpleado", required=True)
     sage_orden_nom = fields.Integer(string="OrdenNom", required=True)
+
+    _sql_constraints = [
+        ('uniq',
+         'unique(odoo_id, sage_codigo_empresa, sage_codigo_empleado, sage_ano, '
+         'sage_mesd, sage_tipo_proceso, sage_id_empleado, sage_orden_nom)',
+         'Payroll structure with same ID on Sage already exists.'),
+    ]
 
     @job(default_channel='root.sage')
     def import_payslip_checks(self, payslip_id, backend_record):
         """ Prepare the import of payslip from Sage """
         filters = {
             'CodigoEmpresa': backend_record.sage_company_id,
-            'Año': fields.Date.from_string(payslip_id.date).year,
-            'MesD': fields.Date.from_string(payslip_id.date).month,
+            'Año': payslip_id.year,
+            'MesD': ('between', (payslip_id.month_from, payslip_id.month_to)),
+
+            'TipoProceso': payslip_id.process,
         }
 
         self.env['sage.payroll.sage.payslip.check'].import_batch(
