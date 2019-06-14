@@ -18,10 +18,16 @@ class PayslipCheckAdapter(Component):
     _inherit = 'sage.payroll.sage.payslip.check.adapter'
 
     def _exec_query(self, filters=None, fields=None, as_dict=True):
+        mes_d = filters.get('MesD')
+        if isinstance(mes_d, (tuple, list)):
+            month_from, month_to = mes_d[1]
+        else:
+            month_from, month_to = 2 * [mes_d]
         snapshot_ids = self.env['connector.sage.snapshot.database'].search([
             ('company_id', '=', self.backend_record.company_id.id),
             ('year', '=', filters.get('Año')),
-            ('month', '=', filters.get('MesD')),
+            ('month', '>=', month_from),
+            ('month', '<=', month_to),
         ])
         if snapshot_ids:
             attachment_id = self.env['ir.attachment'].search([
