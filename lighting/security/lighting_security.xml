@@ -22,5 +22,6 @@
     <record id="group_lighting_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="module_category_lighting"/>
+        <field name="implied_ids" eval="[(6, False, [ref('lighting.group_lighting_user')])]"/>
     </record>
 </odoo>
