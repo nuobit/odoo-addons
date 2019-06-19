@@ -32,7 +32,15 @@ class LightingProductReview(models.Model):
 
     @api.onchange('reviewed')
     def onchange_reviewed(self):
-        if self.reviewed:
-            self.date = fields.Datetime.now()
-        else:
+        if not self.reviewed:
             self.date = False
+
+    @api.multi
+    def write(self, values):
+        if 'reviewed' in values:
+            if values['reviewed']:
+                values.update({'date': fields.Datetime.now()})
+            else:
+                values.update({'date': None})
+        res = super().write(values)
+        return res
