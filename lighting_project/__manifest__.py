@@ -5,7 +5,7 @@
 {
     'name': "Lighting Project",
     'description': "Add lighting project portfolio",
-    'version': '11.0.0.5.1',
+    'version': '11.0.0.5.2',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',

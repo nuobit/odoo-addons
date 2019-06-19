@@ -12,11 +12,13 @@
     <record id="project_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="project_security"/>
+        <field name="implied_ids" eval="[(6, False, [ref('lighting_project.project_group_user')])]"/>
     </record>
 
     <record id="project_group_user" model="res.groups">
         <field name="name">User</field>
         <field name="category_id" ref="project_security"/>
+        <field name="implied_ids" eval="[(6, False, [ref('lighting_project.project_group_guest')])]"/>
     </record>
 
     <record id="project_group_guest" model="res.groups">

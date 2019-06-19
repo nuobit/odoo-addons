@@ -20,6 +20,7 @@
         <field name="name">product_family_view.form.inherit.project</field>
         <field name="model">lighting.product.family</field>
         <field name="inherit_id" ref="lighting.product_family_form_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('lighting_project.project_group_guest')])]"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet/div[@name='button_box']" position="inside">
                 <button type="action" class="oe_stat_button" icon="fa-filter"
@@ -34,6 +35,7 @@
         <field name="name">product_family_view.tree.inherit.project</field>
         <field name="model">lighting.product.family</field>
         <field name="inherit_id" ref="lighting.product_family_tree_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('lighting_project.project_group_guest')])]"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
                 <field name="project_count"/>
@@ -62,6 +64,7 @@
         <field name="name">catalog_view.form.inherit.project</field>
         <field name="model">lighting.catalog</field>
         <field name="inherit_id" ref="lighting.catalog_form_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('lighting_project.project_group_guest')])]"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet/div[@name='button_box']" position="inside">
                 <button type="object" class="oe_stat_button" icon="fa-filter"
@@ -76,6 +79,7 @@
         <field name="name">catalog_view.tree.inherit.project</field>
         <field name="model">lighting.catalog</field>
         <field name="inherit_id" ref="lighting.catalog_tree_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('lighting_project.project_group_guest')])]"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
                 <field name="project_count"/>
