@@ -79,7 +79,7 @@
         <field name="arch" type="xml">
             <tree string="Review package"
                   decoration-danger="pending_count != 0 and due_date and due_date &lt; estimated_date"
-                  decoration-info="pending_count != 0 and due_date and due_date &gt;= estimated_date"
+                  decoration-info="reviewed_count !=0 and pending_count != 0 and due_date and due_date &gt;= estimated_date"
                   decoration-success="reviewed_count &gt; 0 and pending_count == 0"
                   decoration-bf="reviewed_count &gt; 0 and pending_count == 0">
                 <field name="name"/>
