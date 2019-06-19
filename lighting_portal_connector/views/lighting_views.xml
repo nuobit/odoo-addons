@@ -7,6 +7,7 @@
         <field name="name">product_view_form.inherit.lighting_portal_connector</field>
         <field name="model">lighting.product</field>
         <field name="inherit_id" ref="lighting.product_form_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('lighting.group_lighting_user')])]"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <field name="external_data_available" invisible="1"/>
