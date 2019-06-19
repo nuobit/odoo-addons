@@ -14,11 +14,11 @@
                     <div class="oe_button_box" name="button_box">
                         <button type="object" class="oe_stat_button" icon="fa-thumbs-o-up"
                                 name="action_product_reviewed">
-                            <field string="Reviewed" name="product_reviewed_count" widget="statinfo"/>
+                            <field string="Reviewed" name="reviewed_count" widget="statinfo"/>
                         </button>
                         <button type="object" class="oe_stat_button" icon="fa-question"
                                 name="action_product_pending">
-                            <field string="Pending" name="product_pending_count" widget="statinfo"/>
+                            <field string="Pending" name="pending_count" widget="statinfo"/>
                         </button>
                     </div>
                     <div class="oe_title">
@@ -26,8 +26,9 @@
                             <field name="name" placeholder="Package name"/>
                         </h1>
                     </div>
-                    <group col="4">
+                    <group col="6">
                         <field name="start_date"/>
+                        <field name="due_date"/>
                         <field name="end_date"/>
                     </group>
                     <group col="4">
@@ -38,16 +39,35 @@
                     <group>
                         <field name="description"/>
                     </group>
-                    <group string="Products">
-                        <field name="review_ids" nolabel="1">
-                            <tree editable="bottom">
-                                <field name="product_id"/>
-                                <field name="reviewed"/>
-                                <field name="date"/>
-                                <field name="comment"/>
-                            </tree>
-                        </field>
-                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <group>
+                                <field name="review_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="reviewed"/>
+                                        <field name="date"/>
+                                        <field name="comment"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Stats">
+                            <group>
+                                <group>
+                                    <field name="completed_percent"/>
+                                    <field name="days"/>
+                                    <field name="velocity"/>
+                                </group>
+                                <group>
+                                    <field name="estimated_total_days"/>
+                                    <field name="estimated_date"/>
+                                    <field name="estimated_remaining_days"/>
+                                    <field name="estimated_days_late"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -58,20 +78,26 @@
         <field name="model">lighting.review.package</field>
         <field name="arch" type="xml">
             <tree string="Review package"
-                  decoration-danger="product_reviewed_percent &lt; 50"
-                  decoration-info="product_reviewed_percent >= 50 and product_pending_count != 0"
-                  decoration-success="product_reviewed_count > 0 and product_pending_count == 0"
-                  decoration-bf="product_reviewed_count > 0 and product_pending_count == 0">
+                  decoration-danger="pending_count != 0 and due_date and due_date &lt; estimated_date"
+                  decoration-info="pending_count != 0 and due_date and due_date &gt;= estimated_date"
+                  decoration-success="reviewed_count &gt; 0 and pending_count == 0"
+                  decoration-bf="reviewed_count &gt; 0 and pending_count == 0">
                 <field name="name"/>
                 <field name="start_date"/>
-                <field name="end_date"/>
+                <field name="due_date"/>
                 <field name="responsible_ids" widget="many2many_tags"/>
                 <field name="description"/>
-                <field name="product_reviewed_percent" widget="progressbar"/>
-                <field name="product_reviewed_count"/>
+                <field name="completed_percent"/>
+                <field name="days"/>
+                <field name="velocity"/>
+                <field name="estimated_total_days"/>
+                <field name="estimated_date"/>
+                <field name="estimated_remaining_days"/>
+                <field name="estimated_days_late"/>
+                <field name="reviewed_count"/>
                 <button name="action_product_reviewed" type="object"
                         icon="fa-external-link"/>
-                <field name="product_pending_count"/>
+                <field name="pending_count"/>
                 <button name="action_product_pending" type="object"
                         icon="fa-external-link"/>
             </tree>
