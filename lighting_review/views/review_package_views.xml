@@ -26,10 +26,14 @@
                             <field name="name" placeholder="Package name"/>
                         </h1>
                     </div>
-                    <group col="6">
-                        <field name="start_date"/>
-                        <field name="due_date"/>
-                        <field name="end_date"/>
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="due_date"/>
+                        </group>
                     </group>
                     <group col="4">
                         <group colspan="2">
@@ -54,8 +58,10 @@
                         </page>
                         <page string="Stats">
                             <group>
+                                <field name="completed_percent"/>
+                            </group>
+                            <group>
                                 <group>
-                                    <field name="completed_percent"/>
                                     <field name="days"/>
                                     <field name="velocity"/>
                                 </group>
