@@ -10,21 +10,24 @@ import datetime
 
 class LightingProductReview(models.Model):
     _name = 'lighting.review.package'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
     _order = 'name'
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    start_date = fields.Date(string='Start date', required=True)
-    due_date = fields.Date(string='Due date', required=True, help='Maximum completion date')
-    end_date = fields.Date(string='End date', help='Actual completion date')
+    name = fields.Char(required=True, track_visibility='onchange')
+    description = fields.Text(track_visibility='onchange')
+    start_date = fields.Date(string='Start date', required=True, track_visibility='onchange')
+    due_date = fields.Date(string='Due date', required=True, help='Maximum completion date',
+                           track_visibility='onchange')
+    end_date = fields.Date(string='End date', help='Actual completion date', track_visibility='onchange')
 
     responsible_ids = fields.Many2many(comodel_name='res.users',
                                        relation='lighting_review_package_user_rel',
-                                       string='Responsibles', required=True)
+                                       string='Responsibles', required=True, track_visibility='onchange')
 
     review_ids = fields.One2many(comodel_name='lighting.product.review',
                                  inverse_name='package_id',
-                                 string='Reviews', copy=True)
+                                 string='Reviews', copy=True, track_visibility='onchange')
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The review package name must be unique!'),
                         ]
