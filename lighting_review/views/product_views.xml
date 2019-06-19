@@ -7,13 +7,14 @@
         <field name="name">product.view.form</field>
         <field name="model">lighting.product</field>
         <field name="inherit_id" ref="lighting.product_form_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('lighting_review.review_group_user')])]"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Review">
                     <group string="Packages">
                         <field name="review_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="package_id"/>
+                                <field name="package_id" readonly="1"/>
                                 <field name="reviewed"/>
                                 <field name="date"/>
                                 <field name="comment"/>
@@ -22,6 +23,19 @@
                     </group>
                 </page>
             </xpath>
+        </field>
+    </record>
+
+    <record id="product_form_view_manager" model="ir.ui.view">
+        <field name="name">product.view.form.manager</field>
+        <field name="model">lighting.product</field>
+        <field name="inherit_id" ref="lighting.product_form_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('lighting_review.review_group_manager')])]"/>
+        <field eval="20" name="priority"/>
+        <field name="arch" type="xml">
+            <field name="package_id" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
         </field>
     </record>
 </odoo>

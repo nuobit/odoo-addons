@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_lighting_product_review_manager,lighting.product.review manager,model_lighting_product_review,lighting_review.review_group_manager,1,1,1,1
-access_lighting_product_review_user,lighting.product.review user,model_lighting_product_review,lighting_review.review_group_user,1,0,0,0
+access_lighting_product_review_user,lighting.product.review user,model_lighting_product_review,lighting_review.review_group_user,1,1,0,0
 
 access_lighting_review_package_manager,lighting.review.package manager,model_lighting_review_package,lighting_review.review_group_manager,1,1,1,1
 access_lighting_review_package_user,lighting.review.package user,model_lighting_review_package,lighting_review.review_group_user,1,0,0,0

@@ -14,7 +14,8 @@ class LightingProductReview(models.Model):
     _order = 'package_id,product_id'
 
     package_id = fields.Many2one(comodel_name='lighting.review.package',
-                                 ondelete='restrict', required=True, track_visibility='onchange')
+                                 ondelete='restrict', required=True,
+                                 track_visibility='onchange')
 
     reviewed = fields.Boolean(string='Reviewed', track_visibility='onchange')
 
