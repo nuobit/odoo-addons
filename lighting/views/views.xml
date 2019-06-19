@@ -505,31 +505,6 @@
     </record>
 
     <!-- ============= Electrical characteristics tab ============ -->
-    <!-- view protection clas -->
-    <record model="ir.ui.view" id="product_protectionclass_form_view">
-        <field name="name">product.protectionclass.form</field>
-        <field name="model">lighting.product.protectionclass</field>
-        <field name="arch" type="xml">
-            <form string="Protection class Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_protectionclass_tree_view">
-        <field name="name">product.protectionclass.tree</field>
-        <field name="model">lighting.product.protectionclass</field>
-        <field name="arch" type="xml">
-            <tree string="Protection class Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- view frequency -->
     <record model="ir.ui.view" id="product_frequency_form_view">
         <field name="name">product.frequency.form</field>
@@ -1066,18 +1041,6 @@
     </record>
 
     <!-- ============= Electrical characteristics tab ============ -->
-    <!-- window action protection class -->
-    <record model="ir.actions.act_window" id="product_protectionclass_list_action">
-        <field name="name">Protection class</field>
-        <field name="res_model">lighting.product.protectionclass</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Protection class
-            </p>
-        </field>
-    </record>
-
     <!-- window action frequency -->
     <record model="ir.actions.act_window" id="product_frequency_list_action">
         <field name="name">Product frequency</field>
@@ -1240,10 +1203,6 @@
               sequence="1000"/>
 
     <!-- ============= Electrical characteristics tab ============ -->
-    <menuitem id="product_protectionclasses_menu" name="Protection classes" parent="common_data_menu"
-              action="product_protectionclass_list_action"
-              sequence="1000"/>
-
     <menuitem id="product_frequencies_menu" name="Frequencies" parent="common_data_menu"
               action="product_frequency_list_action"
               sequence="1000"/>

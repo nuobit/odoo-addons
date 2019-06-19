@@ -24,6 +24,8 @@ from . import product_finish
 from . import product_voltage
 from . import product_color_temperature
 
+from . import product_protectionclass
+
 from . import product_attachment
 
 from . import product_source_type
