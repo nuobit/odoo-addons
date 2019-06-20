@@ -93,16 +93,6 @@ class LightingProductMaterial(models.Model):
 
 
 ###### Electrical characteristics tab
-class LightingProductFrequency(models.Model):
-    _name = 'lighting.product.frequency'
-    _order = 'name'
-
-    name = fields.Char(string='Frequency', required=True, translate=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The frequency must be unique!'),
-                        ]
-
-
 class LightingProductDimmable(models.Model):
     _name = 'lighting.product.dimmable'
     _order = 'name'

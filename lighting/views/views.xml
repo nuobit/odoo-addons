@@ -505,31 +505,6 @@
     </record>
 
     <!-- ============= Electrical characteristics tab ============ -->
-    <!-- view frequency -->
-    <record model="ir.ui.view" id="product_frequency_form_view">
-        <field name="name">product.frequency.form</field>
-        <field name="model">lighting.product.frequency</field>
-        <field name="arch" type="xml">
-            <form string="Product frequency Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_frequency_tree_view">
-        <field name="name">product.frequency.tree</field>
-        <field name="model">lighting.product.frequency</field>
-        <field name="arch" type="xml">
-            <tree string="Product frequency Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- window action dimmable2product smart button -->
     <record id="product_dimmable_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
@@ -1041,18 +1016,6 @@
     </record>
 
     <!-- ============= Electrical characteristics tab ============ -->
-    <!-- window action frequency -->
-    <record model="ir.actions.act_window" id="product_frequency_list_action">
-        <field name="name">Product frequency</field>
-        <field name="res_model">lighting.product.frequency</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product frequency
-            </p>
-        </field>
-    </record>
-
     <!-- window action dimmable -->
     <record id="product_dimmable_list_action" model="ir.actions.act_window">
         <field name="name">Product dimmable</field>
@@ -1203,10 +1166,6 @@
               sequence="1000"/>
 
     <!-- ============= Electrical characteristics tab ============ -->
-    <menuitem id="product_frequencies_menu" name="Frequencies" parent="common_data_menu"
-              action="product_frequency_list_action"
-              sequence="1000"/>
-
     <menuitem id="product_dimmables_menu" name="Dimmables" parent="common_data_menu"
               action="product_dimmable_list_action"
               sequence="1000"/>

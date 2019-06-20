@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- window action frequency2product smart button -->
+    <record id="product_frequency_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('frequency_id','=',active_id)]</field>
+        <field name="context">{'frequency_id': active_id}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
+        </field>
+    </record>
+
+    <!-- view frequency -->
+    <record id="product_frequency_form_view" model="ir.ui.view">
+        <field name="name">product.frequency.form</field>
+        <field name="model">lighting.product.frequency</field>
+        <field name="arch" type="xml">
+            <form string="Product frequency Form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_frequency_action_product)d">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_frequency_tree_view" model="ir.ui.view">
+        <field name="name">product.frequency.tree</field>
+        <field name="model">lighting.product.frequency</field>
+        <field name="arch" type="xml">
+            <tree string="Product frequency Tree">
+                <field name="name"/>
+                <field name="product_count"/>
+                <button name="%(product_frequency_action_product)d" type="action"
+                        string="Products" icon="fa-external-link"
+                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action frequency -->
+    <record id="product_frequency_list_action" model="ir.actions.act_window">
+        <field name="name">Product frequency</field>
+        <field name="res_model">lighting.product.frequency</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product frequency
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="product_frequencies_menu" name="Frequencies" parent="common_data_menu"
+              action="product_frequency_list_action"
+              sequence="1000"/>
+</odoo>
