@@ -680,31 +680,6 @@
         </field>
     </record>
 
-    <!-- view photobiologicalriskgroup -->
-    <record model="ir.ui.view" id="product_photobiologicalriskgroup_form_view">
-        <field name="name">product.photobiologicalriskgroup.form</field>
-        <field name="model">lighting.product.photobiologicalriskgroup</field>
-        <field name="arch" type="xml">
-            <form string="Product photobiological risk group Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_photobiologicalriskgroup_tree_view">
-        <field name="name">product.photobiologicalriskgroup.tree</field>
-        <field name="model">lighting.product.photobiologicalriskgroup</field>
-        <field name="arch" type="xml">
-            <tree string="Product photobiological risk group Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- ============= sources tab ============ -->
     <!-- view product.source -->
     <record model="ir.ui.view" id="product_source_form_view">
@@ -1086,17 +1061,6 @@
         </field>
     </record>
 
-    <!-- window action photobiologicalriskgroup class -->
-    <record model="ir.actions.act_window" id="product_photobiologicalriskgroup_list_action">
-        <field name="name">Product photobiological risk group</field>
-        <field name="res_model">lighting.product.photobiologicalriskgroup</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Photobiological risk group</p>
-        </field>
-    </record>
-
     <!-- ============= sources tab ============ -->
     <!-- window action product.beam.photodistribution class -->
     <record model="ir.actions.act_window" id="product_beam_photodistribution_list_action">
@@ -1190,10 +1154,6 @@
     <!-- ============= Pysical characteristics tab ============ -->
     <menuitem id="product_ecorraecategories_menu" name="Ecorrae categories" parent="common_data_menu"
               action="product_ecorraecategory_list_action"
-              sequence="1000"/>
-
-    <menuitem id="product_photobiologicalriskgrous_menu" name="Photobiological risk groups" parent="common_data_menu"
-              action="product_photobiologicalriskgroup_list_action"
               sequence="1000"/>
 
     <!-- ============= beams tab ============ -->

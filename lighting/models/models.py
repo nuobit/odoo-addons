@@ -245,16 +245,6 @@ class LightingProductEcorraeCategory(models.Model):
                         ]
 
 
-class LightingProductPhotobiologicalRiskGroup(models.Model):
-    _name = 'lighting.product.photobiologicalriskgroup'
-    _order = 'name'
-
-    name = fields.Char(string='Description', required=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The photobiological risk group description must be unique!'),
-                        ]
-
-
 class LightingProductFanWattage(models.Model):
     _name = 'lighting.product.fanwattage'
     _rec_name = 'wattage'
