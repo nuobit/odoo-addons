@@ -654,32 +654,6 @@
         </field>
     </record>
 
-    <!-- ============= Physical characteristics tab ============ -->
-    <!-- view product.ecorraecategory -->
-    <record model="ir.ui.view" id="product_ecorraecategory_form_view">
-        <field name="name">product.ecorraecategory.form</field>
-        <field name="model">lighting.product.ecorraecategory</field>
-        <field name="arch" type="xml">
-            <form string="Product Ecorrae category Form">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_ecorraecategory_tree_view">
-        <field name="name">product.ecorraecategory.tree</field>
-        <field name="model">lighting.product.ecorraecategory</field>
-        <field name="arch" type="xml">
-            <tree string="Product Ecorrae category Tree">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- ============= sources tab ============ -->
     <!-- view product.source -->
     <record model="ir.ui.view" id="product_source_form_view">
@@ -1049,18 +1023,6 @@
         </field>
     </record>
 
-    <!-- ============= Pysical characteristics tab ============ -->
-    <!-- window action product.ecorraecategory class -->
-    <record model="ir.actions.act_window" id="product_ecorraecategory_list_action">
-        <field name="name">Product Ecorrae category</field>
-        <field name="res_model">lighting.product.ecorraecategory</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first Product Ecorrae category</p>
-        </field>
-    </record>
-
     <!-- ============= sources tab ============ -->
     <!-- window action product.beam.photodistribution class -->
     <record model="ir.actions.act_window" id="product_beam_photodistribution_list_action">
@@ -1149,11 +1111,6 @@
     <!-- ============= Lighting characteristics tab ============ -->
     <menuitem id="product_ledbrands_menu" name="LED brands" parent="common_data_menu"
               action="product_ledbrand_list_action"
-              sequence="1000"/>
-
-    <!-- ============= Pysical characteristics tab ============ -->
-    <menuitem id="product_ecorraecategories_menu" name="Ecorrae categories" parent="common_data_menu"
-              action="product_ecorraecategory_list_action"
               sequence="1000"/>
 
     <!-- ============= beams tab ============ -->

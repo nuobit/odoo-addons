@@ -235,16 +235,6 @@ class LightingProductRecessDimension(models.Model):
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
 
-class LightingProductEcorraeCategory(models.Model):
-    _name = 'lighting.product.ecorraecategory'
-    _order = 'name'
-
-    name = fields.Char(string='Description', required=True)
-
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The ecorrae category description must be unique!'),
-                        ]
-
-
 class LightingProductFanWattage(models.Model):
     _name = 'lighting.product.fanwattage'
     _rec_name = 'wattage'

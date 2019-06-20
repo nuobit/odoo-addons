@@ -27,6 +27,7 @@ from . import product_color_temperature
 from . import product_protectionclass
 from . import product_frequency
 from . import product_photobiologicalriskgroup
+from . import product_ecorraecategory
 
 from . import product_attachment
 
