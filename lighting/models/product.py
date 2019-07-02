@@ -182,8 +182,8 @@ class LightingProduct(models.Model):
 
     ean = fields.Char(string='EAN', required=False, track_visibility='onchange')
 
-    product_tmpl_id = fields.Many2one(comodel_name='lighting.product.template',
-                                      string='Template',
+    product_group_id = fields.Many2one(comodel_name='lighting.product.group',
+                                      string='Group',
                                       ondelete='restrict', track_visibility='onchange')
 
     family_ids = fields.Many2many(comodel_name='lighting.product.family',

@@ -5,11 +5,11 @@
 from odoo import api, fields, models, _
 
 
-class LightingProductTemplate(models.Model):
-    _name = 'lighting.product.template'
+class LightingProductGroup(models.Model):
+    _name = 'lighting.product.group'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'sequence,name'
-    _description = 'Product template'
+    _description = 'Product group'
 
     name = fields.Char(required=True, track_visibility='onchange')
 
@@ -18,13 +18,13 @@ class LightingProductTemplate(models.Model):
                               track_visibility='onchange')
 
     attribute_ids = fields.Many2many(comodel_name='lighting.product.attribute',
-                                     relation='lighting_product_template_attribute_rel',
-                                     column1='product_tmpl_id', column2='attribute_id',
+                                     relation='lighting_product_group_attribute_rel',
+                                     column1='group_id', column2='attribute_id',
                                      string='Attributes',
                                      required=True,
                                      track_visibility='onchange')
     product_ids = fields.One2many(comodel_name='lighting.product',
-                                  inverse_name='product_tmpl_id', string='Variants')
+                                  inverse_name='product_group_id', string='Products')
 
     def _compute_attachment(self):
         for rec in self:
@@ -44,7 +44,7 @@ class LightingProductTemplate(models.Model):
 
     def _compute_product_count(self):
         for rec in self:
-            rec.product_count = self.env['lighting.product'].search_count([('product_tmpl_id', '=', rec.id)])
+            rec.product_count = self.env['lighting.product'].search_count([('product_group_id', '=', rec.id)])
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name must be unique!'),
                         ]

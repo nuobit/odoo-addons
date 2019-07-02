@@ -3,32 +3,32 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- window action product_template2product smart button -->
-    <record id="product_template_action_product" model="ir.actions.act_window">
+    <!-- window action product_group2product smart button -->
+    <record id="product_group_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('product_tmpl_id','=',active_id)]</field>
-        <field name="context">{'default_product_tmpl_id': active_id}</field>
+        <field name="domain">[('product_group_id','=',active_id)]</field>
+        <field name="context">{'default_product_group_id': active_id}</field>
     </record>
 
-    <!-- view product template -->
-    <record id="product_template_form_view" model="ir.ui.view">
-        <field name="name">product.template.form</field>
-        <field name="model">lighting.product.template</field>
+    <!-- view product group -->
+    <record id="product_group_form_view" model="ir.ui.view">
+        <field name="name">product.group.form</field>
+        <field name="model">lighting.product.group</field>
         <field name="arch" type="xml">
             <form string="Catalog Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_template_action_product)d">
+                                name="%(product_group_action_product)d">
                             <field string="Products" name="product_count" widget="statinfo"/>
                         </button>
                     </div>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Product template"/>
+                            <field name="name" placeholder="Product group"/>
                         </h1>
                     </div>
                     <group>
@@ -46,35 +46,35 @@
         </field>
     </record>
 
-    <record id="product_template_tree_view" model="ir.ui.view">
-        <field name="name">product.tempalte.tree</field>
-        <field name="model">lighting.product.template</field>
+    <record id="product_group_tree_view" model="ir.ui.view">
+        <field name="name">product.group.tree</field>
+        <field name="model">lighting.product.group</field>
         <field name="arch" type="xml">
-            <tree string="Product template Tree">
+            <tree string="Product group Tree">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="attribute_ids" widget="many2many_tags"/>
                 <field name="product_count"/>
-                <button name="%(product_template_action_product)d" type="action"
+                <button name="%(product_group_action_product)d" type="action"
                         string="Products" icon="fa-external-link"
                         attrs="{'invisible': [('product_count', '=', 0)]}"/>
             </tree>
         </field>
     </record>
 
-    <!-- window action product templates -->
-    <record id="product_template_action" model="ir.actions.act_window">
-        <field name="name">Product templates</field>
-        <field name="res_model">lighting.product.template</field>
+    <!-- window action product group -->
+    <record id="product_group_action" model="ir.actions.act_window">
+        <field name="name">Product group</field>
+        <field name="res_model">lighting.product.group</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product template
+            <p class="oe_view_nocontent_create">Create the first product group
             </p>
         </field>
     </record>
 
-    <menuitem id="product_templates_menu" name="Product templates" parent="lighting_product_menu"
-              action="product_template_action"
+    <menuitem id="product_groups_menu" name="Product groups" parent="lighting_product_menu"
+              action="product_group_action"
               sequence="10"/>
 </odoo>

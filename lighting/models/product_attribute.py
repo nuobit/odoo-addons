@@ -30,7 +30,7 @@ class LightingProductAttribute(models.Model):
 
     @api.multi
     def unlink(self):
-        records = self.env['lighting.product.template'].search([('attribute_ids', 'in', self.ids)])
+        records = self.env['lighting.product.group'].search([('attribute_ids', 'in', self.ids)])
         if records:
             raise exceptions.UserError(_("You are trying to delete a record that is still referenced!"))
         return super().unlink()
