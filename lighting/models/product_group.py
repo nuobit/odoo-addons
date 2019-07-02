@@ -98,7 +98,7 @@ class LightingProductGroup(models.Model):
 
     def action_product(self):
         return {
-            'name': _('Products'),
+            'name': self.complete_name,
             'type': 'ir.actions.act_window',
             'res_model': 'lighting.product',
             'views': [(False, 'tree'), (False, 'form')],
