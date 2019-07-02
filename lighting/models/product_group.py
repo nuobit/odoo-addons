@@ -51,7 +51,7 @@ class LightingProductGroup(models.Model):
 
     def _compute_attachment(self):
         for rec in self:
-            pictures = rec.product_ids.mapped('attachment_ids') \
+            pictures = rec.flat_product_ids.mapped('attachment_ids') \
                 .filtered(lambda x: x.type_id.code == 'F') \
                 .sorted(lambda x: (x.product_id.sequence, x.sequence))
             if pictures:
