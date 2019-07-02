@@ -183,8 +183,8 @@ class LightingProduct(models.Model):
     ean = fields.Char(string='EAN', required=False, track_visibility='onchange')
 
     product_group_id = fields.Many2one(comodel_name='lighting.product.group',
-                                      string='Group',
-                                      ondelete='restrict', track_visibility='onchange')
+                                       string='Group',
+                                       ondelete='restrict', track_visibility='onchange')
 
     family_ids = fields.Many2many(comodel_name='lighting.product.family',
                                   relation='lighting_product_family_rel', string='Families',
@@ -598,6 +598,13 @@ class LightingProduct(models.Model):
             if rec.is_composite and not rec.required_ids:
                 raise ValueError(
                     _("You cannot have a composite product without required accessories"))
+
+    @api.constrains('product_group_id')
+    def _check_product_group(self):
+        if self.product_group_id.child_ids:
+            raise ValueError(
+                _(
+                    "You cannot assign products to a grup with childs. The group must not have childs and be empty or already contain products"))
 
     @api.model
     def create(self, values):

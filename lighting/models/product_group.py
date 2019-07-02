@@ -22,7 +22,7 @@ class LightingProductGroup(models.Model):
     def _compute_complete_name(self):
         for rec in self:
             if rec.parent_id:
-                rec.complete_name = '%s/%s' % (rec.parent_id.complete_name, rec.name)
+                rec.complete_name = '%s / %s' % (rec.parent_id.complete_name, rec.name)
             else:
                 rec.complete_name = rec.name
 
@@ -40,8 +40,11 @@ class LightingProductGroup(models.Model):
 
     parent_id = fields.Many2one(comodel_name='lighting.product.group', string='Parent',
                                 index=True, ondelete='cascade')
-    child_id = fields.One2many(comodel_name='lighting.product.group', inverse_name='parent_id',
-                               string='Child Groups')
+    child_ids = fields.One2many(comodel_name='lighting.product.group', inverse_name='parent_id',
+                                string='Child Groups')
+
+    _sql_constraints = [('name_uniq', 'unique (name)', 'The name must be unique!'),
+                        ]
 
     picture_id = fields.Many2one(comodel_name='lighting.attachment',
                                  compute='_compute_attachment')
@@ -57,11 +60,27 @@ class LightingProductGroup(models.Model):
     picture_datas = fields.Binary(related='picture_id.datas', string='Picture', readonly=True)
     picture_datas_fname = fields.Char(related='picture_id.datas_fname', readonly=True)
 
+    flat_product_ids = fields.Many2many(comodel_name='lighting.product', compute='_compute_flat_products')
+
+    def _get_flat_products(self):
+        self.ensure_one()
+        if not self.child_ids:
+            return self.product_ids
+        else:
+            products = self.env['lighting.product']
+            for ch in self.child_ids:
+                products += ch._get_flat_products()
+            return products
+
+    def _compute_flat_products(self):
+        for rec in self:
+            rec.flat_product_ids = rec._get_flat_products()
+
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 
     def _compute_product_count(self):
         for rec in self:
-            rec.product_count = self.env['lighting.product'].search_count([('product_group_id', '=', rec.id)])
+            rec.product_count = len(rec.flat_product_ids)
 
     @api.constrains('parent_id')
     def _check_group_recursion(self):
@@ -69,5 +88,20 @@ class LightingProductGroup(models.Model):
             raise ValidationError(_('Error ! You cannot create recursive groups.'))
         return True
 
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The name must be unique!'),
-                        ]
+    @api.constrains('parent_id')
+    def _check_parent_without_products(self):
+        if self.parent_id:
+            if self.parent_id.product_ids:
+                raise ValidationError(
+                    _('Error ! The parent contains products and a parent with products cannot also have childs'))
+        return True
+
+    def action_product(self):
+        return {
+            'name': _('Products'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product',
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', self.flat_product_ids.mapped('id'))],
+            'context': {'default_product_group_id': self.id},
+        }
