@@ -15,6 +15,14 @@
                                 name="action_product">
                             <field string="Products" name="product_count" widget="statinfo"/>
                         </button>
+                        <button type="object" class="oe_stat_button" icon="fa-filter"
+                                name="action_flat_product">
+                            <field string="Products (flat)" name="flat_product_count" widget="statinfo"/>
+                        </button>
+                        <button type="object" class="oe_stat_button" icon="fa-filter"
+                                name="action_grouped_product">
+                            <field string="Products (grpd.)" name="grouped_product_count" widget="statinfo"/>
+                        </button>
                     </div>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
@@ -22,49 +30,62 @@
                             <field name="name"/>
                         </h1>
                     </div>
-                    <group col="2">
-                        <field name="parent_id" class="oe_inline"/>
-                    </group>
-
                     <group>
-                        <field name="sequence"/>
-                    </group>
-                    <group>
-                        <field name="picture_datas" filename="picture_datas_fname"/>
-                        <field name="picture_datas_fname" invisible="1"/>
-                    </group>
-                    <group string="Attributes" col="8">
-                        <group colspan="2" col="2">
-                            <field name="use_category_attributes" colspan="2"/>
-                        </group>
-                        <group colspan="6">
-                            <field name="group_attribute_ids" widget="many2many_tags"
-                                   attrs="{'invisible': [('use_category_attributes', '=', True)]}"/>
-                            <field name="attribute_ids" widget="many2many_tags"
-                                   attrs="{'invisible': [('use_category_attributes', '=', False)]}"/>
-                        </group>
-                    </group>
-                    <group groups="base.group_no_one">
                         <group>
-                            <button type="object" class="oe_stat_button"
-                                    name="pepe" string="Get pro">
-                            </button>
+                            <field name="level"/>
+                            <field name="parent_id"/>
+                            <field name="has_childs"/>
                         </group>
                     </group>
-                    <group groups="base.group_no_one">
-                        <field name="text_debug"/>
-                    </group>
-                    <group string="Common fields" col="8">
-                        <group colspan="2" col="2">
-                            <field name="use_category_fields" colspan="2"/>
-                        </group>
-                        <group colspan="6">
-                            <field name="group_field_ids" widget="many2many_tags"
-                                   attrs="{'invisible': [('use_category_fields', '=', True)]}"/>
-                            <field name="field_ids" widget="many2many_tags"
-                                   attrs="{'invisible': [('use_category_fields', '=', False)]}"/>
+                    <group>
+                        <group>
+                            <field name="sequence" colspan="2"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Attributes">
+                            <group col="8">
+                                <group colspan="2" col="2">
+                                    <field name="use_category_attributes" colspan="2"/>
+                                </group>
+                                <group colspan="6">
+                                    <field name="group_attribute_ids" widget="many2many_tags"
+                                           attrs="{'invisible': [('use_category_attributes', '=', True)]}"/>
+                                    <field name="attribute_ids" widget="many2many_tags"
+                                           attrs="{'invisible': [('use_category_attributes', '=', False)]}"/>
+                                </group>
+                            </group>
+                            <group string="Debug" groups="base.group_no_one" col="2">
+                                <group colspan="2">
+                                    <button type="object"
+                                            name="run_test" string="Run Test"/>
+                                </group>
+                                <group colspan="2">
+                                    <field name="test_output"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Common fields">
+                            <group col="8">
+                                <group colspan="2" col="2">
+                                    <field name="use_category_fields" colspan="2"/>
+                                </group>
+                                <group colspan="6">
+                                    <field name="group_field_ids" widget="many2many_tags"
+                                           attrs="{'invisible': [('use_category_fields', '=', True)]}"/>
+                                    <field name="field_ids" widget="many2many_tags"
+                                           attrs="{'invisible': [('use_category_fields', '=', False)]}"/>
+                                </group>
+                            </group>
+                            <group colspan="8" col="2">
+                                <field name="common_product_id"/>
+                            </group>
+                            <group>
+                                <field name="picture_datas" filename="picture_datas_fname"/>
+                                <field name="picture_datas_fname" invisible="1"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -77,13 +98,28 @@
             <tree string="Product group Tree">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="level"/>
+                <field name="parent_id"/>
+                <field name="has_childs"/>
                 <field name="complete_name"/>
                 <field name="attribute_ids" widget="many2many_tags"/>
                 <field name="field_ids" widget="many2many_tags"/>
-                <field name="product_count"/>
+                <field name="product_count" attrs="{'invisible': [('product_count', '=', 0)]}"/>
                 <button name="action_product" type="object"
                         string="Products" icon="fa-external-link"
                         attrs="{'invisible': [('product_count', '=', 0)]}"/>
+                <field name="flat_product_count" attrs="{'invisible': [('flat_product_count', '=', 0)]}"/>
+                <button name="action_flat_product" type="object"
+                        string="Products (flat)" icon="fa-external-link"
+                        attrs="{'invisible': [('flat_product_count', '=', 0)]}"/>
+                <field name="grouped_product_count" attrs="{'invisible': [('grouped_product_count', '=', 0)]}"/>
+                <button name="action_grouped_product" type="object"
+                        string="Products (grpd.)" icon="fa-external-link"
+                        attrs="{'invisible': [('grouped_product_count', '=', 0)]}"/>
+                <field name="common_product_id" attrs="{'invisible': [('common_product_id', '=', False)]}"/>
+                <button name="action_common_product" type="object"
+                        string="Product (common)" icon="fa-external-link"
+                        attrs="{'invisible': [('common_product_id', '=', False)]}"/>
             </tree>
         </field>
     </record>

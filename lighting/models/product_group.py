@@ -36,7 +36,7 @@ class LightingProductGroup(models.Model):
                               track_visibility='onchange')
 
     ## attributes
-    use_category_attributes = fields.Boolean(string='Use category attributes')
+    use_category_attributes = fields.Boolean(string='Use category attributes', track_visibility='onchange')
     group_attribute_ids = fields.Many2many(comodel_name='ir.model.fields',
                                            relation='lighting_product_group_field_attribute_rel',
                                            column1='group_id', column2='field_id',
@@ -58,12 +58,13 @@ class LightingProductGroup(models.Model):
                     (6, False, [x.id for x in rec.flat_product_ids.mapped('category_id.attribute_ids')])]
 
     ## common fields
-    use_category_fields = fields.Boolean(string='Use category fields')
+    use_category_fields = fields.Boolean(string='Use category fields', track_visibility='onchange')
     group_field_ids = fields.Many2many(comodel_name='ir.model.fields',
                                        relation='lighting_product_group_field_field_rel',
                                        column1='group_id', column2='field_id',
                                        domain=_get_domain,
-                                       string='Fields')
+                                       string='Fields',
+                                       track_visibility='onchange')
 
     field_ids = fields.Many2many(comodel_name='ir.model.fields',
                                  string='Fields',
@@ -81,27 +82,35 @@ class LightingProductGroup(models.Model):
     product_ids = fields.One2many(comodel_name='lighting.product',
                                   inverse_name='product_group_id', string='Products')
 
-    parent_id = fields.Many2one(comodel_name='lighting.product.group', string='Parent',
-                                index=True, ondelete='cascade')
-    child_ids = fields.One2many(comodel_name='lighting.product.group', inverse_name='parent_id',
-                                string='Child Groups')
+    product_count = fields.Integer(compute='_compute_product_count', string='Products')
 
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The name must be unique!'),
-                        ]
-
-    picture_id = fields.Many2one(comodel_name='lighting.attachment',
-                                 compute='_compute_attachment')
-
-    def _compute_attachment(self):
+    def _compute_product_count(self):
         for rec in self:
-            pictures = rec.flat_product_ids.mapped('attachment_ids') \
-                .filtered(lambda x: x.type_id.code == 'F') \
-                .sorted(lambda x: (x.product_id.sequence, x.sequence))
-            if pictures:
-                rec.picture_id = pictures[0]
+            rec.product_count = len(rec.product_ids)
 
-    picture_datas = fields.Binary(related='picture_id.datas', string='Picture', readonly=True)
-    picture_datas_fname = fields.Char(related='picture_id.datas_fname', readonly=True)
+    parent_id = fields.Many2one(comodel_name='lighting.product.group', string='Parent',
+                                index=True, ondelete='cascade', track_visibility='onchange')
+    child_ids = fields.One2many(comodel_name='lighting.product.group', inverse_name='parent_id',
+                                string='Child Groups', track_visibility='onchange')
+
+    level = fields.Integer(string='Level', readonly=True, compute='_compute_level')
+
+    def _get_level(self):
+        self.ensure_one()
+        if not self.parent_id:
+            return 0
+        else:
+            return self.parent_id._get_level() + 1
+
+    def _compute_level(self):
+        for rec in self:
+            rec.level = rec._get_level()
+
+    has_childs = fields.Boolean(string='Has childs', compute='_compute_has_childs')
+
+    def _compute_has_childs(self):
+        for rec in self:
+            rec.has_childs = bool(rec.child_ids)
 
     flat_product_ids = fields.Many2many(comodel_name='lighting.product', compute='_compute_flat_products')
 
@@ -119,11 +128,60 @@ class LightingProductGroup(models.Model):
         for rec in self:
             rec.flat_product_ids = rec._get_flat_products()
 
-    product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+    flat_product_count = fields.Integer(compute='_compute_flat_product_count', string='Products (flat)')
 
-    def _compute_product_count(self):
+    def _compute_flat_product_count(self):
         for rec in self:
-            rec.product_count = len(rec.flat_product_ids)
+            rec.flat_product_count = len(rec.flat_product_ids)
+
+    grouped_product_ids = fields.Many2many(comodel_name='lighting.product', compute='_compute_grouped_products')
+
+    def _get_grouped_products(self):
+        self.ensure_one()
+        products = self.env['lighting.product']
+        if not self.child_ids:
+            if self.product_ids:
+                products = self.product_ids.sorted(lambda x: x.sequence)[0]
+        else:
+            for ch in self.child_ids:
+                products += ch._get_grouped_products()
+
+        return products
+
+    def _compute_grouped_products(self):
+        for rec in self:
+            rec.grouped_product_ids = rec._get_grouped_products()
+
+    grouped_product_count = fields.Integer(compute='_compute_grouped_product_count', string='Products (grpd.)')
+
+    def _compute_grouped_product_count(self):
+        for rec in self:
+            rec.grouped_product_count = len(rec.grouped_product_ids)
+
+    common_product_id = fields.Many2one(comodel_name='lighting.product', readonly=True,
+                                        compute='_compute_common_product')
+
+    def _compute_common_product(self):
+        for rec in self:
+            if rec.grouped_product_ids:
+                rec.common_product_id = rec.grouped_product_ids.sorted(lambda x: x.sequence)[0]
+
+    picture_id = fields.Many2one(comodel_name='lighting.attachment',
+                                 compute='_compute_attachment')
+
+    def _compute_attachment(self):
+        for rec in self:
+            pictures = rec.common_product_id.attachment_ids \
+                .filtered(lambda x: x.type_id.code == 'F') \
+                .sorted(lambda x: (x.product_id.sequence, x.sequence))
+            if pictures:
+                rec.picture_id = pictures[0]
+
+    picture_datas = fields.Binary(related='picture_id.datas', string='Picture', readonly=True)
+    picture_datas_fname = fields.Char(related='picture_id.datas_fname', readonly=True)
+
+    _sql_constraints = [('name_uniq', 'unique (name)', 'The name must be unique!'),
+                        ]
 
     @api.onchange('use_category_attributes')
     def onchange_use_category_attributes(self):
@@ -171,7 +229,17 @@ class LightingProductGroup(models.Model):
 
     def action_product(self):
         return {
-            'name': self.complete_name,
+            'name': _('Products of %s') % self.complete_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product',
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', self.product_ids.mapped('id'))],
+            'context': {'default_product_group_id': self.id},
+        }
+
+    def action_flat_product(self):
+        return {
+            'name': _('Flat products below %s') % self.complete_name,
             'type': 'ir.actions.act_window',
             'res_model': 'lighting.product',
             'views': [(False, 'tree'), (False, 'form')],
@@ -179,20 +247,38 @@ class LightingProductGroup(models.Model):
             'context': {'default_product_group_id': self.id},
         }
 
-    text_debug = fields.Text()
+    def action_grouped_product(self):
+        return {
+            'name': _('Grouped products of %s') % self.complete_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product',
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', self.grouped_product_ids.mapped('id'))],
+            'context': {'default_product_group_id': self.id},
+        }
 
-    def pepe(self):
+    def action_common_product(self):
+        return {
+            'name': _('Common product of %s') % self.complete_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product',
+            'views': [(False, 'form'), (False, 'tree')],
+            'domain': [('id', 'in', self.common_product_id)],
+            'context': {'default_product_group_id': self.id},
+        }
+
+    test_output = fields.Text(readonly=True)
+
+    def run_test(self):
         a = []
-        for p in self.flat_product_ids:
+        for p in self.grouped_product_ids:
             p_d = {}
             for attr in self.attribute_ids:
-                #p = p.with_context(lang='fr_FR')
+                # p = p.with_context(lang='fr_FR')
                 p_d[attr.name] = getattr(p, attr.name)
             a.append({p.reference: p_d})
 
         t = {self.name: a}
         import json
         kwargs = dict(indent=4, sort_keys=True)
-        res = json.dumps(t, ensure_ascii=False, **kwargs)
-
-        self.text_debug = res
+        self.test_output = json.dumps(t, ensure_ascii=False, **kwargs)
