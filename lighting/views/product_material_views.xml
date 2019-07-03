@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- window action material2product smart button -->
+    <record id="product_material_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">['|', '|', '|', '|', ('body_material_ids','=',active_id),
+            ('diffusor_material_ids','=',active_id), ('frame_material_ids','=',active_id),
+            ('reflector_material_ids','=',active_id), ('blade_material_ids','=',active_id)]
+        </field>
+        <field name="context">{
+            'default_body_material_ids': [(4, active_id, False)],
+            'default_diffusor_material_ids': [(4, active_id, False)],
+            'default_frame_material_ids': [(4, active_id, False)],
+            'default_reflector_material_ids': [(4, active_id, False)],
+            'default_blade_material_ids': [(4, active_id, False)]}
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product</p>
+        </field>
+    </record>
+
+    <!-- view material -->
+    <record id="product_material_form_view" model="ir.ui.view">
+        <field name="name">product.material.form</field>
+        <field name="model">lighting.product.material</field>
+        <field name="arch" type="xml">
+            <form string="Product material Form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" icon="fa-filter"
+                                name="%(product_material_action_product)d">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_material_tree_view" model="ir.ui.view">
+        <field name="name">product.material.tree</field>
+        <field name="model">lighting.product.material</field>
+        <field name="arch" type="xml">
+            <tree string="Product material Tree">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="product_count"/>
+                <button name="%(product_material_action_product)d" type="action"
+                        string="Products" icon="fa-external-link"
+                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action material -->
+    <record model="ir.actions.act_window" id="product_material_list_action">
+        <field name="name">Product material</field>
+        <field name="res_model">lighting.product.material</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first material
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="product_materials_menu" name="Materials" parent="common_data_menu"
+              action="product_material_list_action"
+              sequence="1000"/>
+</odoo>
