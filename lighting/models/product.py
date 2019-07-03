@@ -545,7 +545,7 @@ class LightingProduct(models.Model):
     ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
 
     ## display fields
-    cut_hole_display = fields.Char(string='Cut hole',
+    cut_hole_display = fields.Char(string='Cut hole Display',
                                    compute='_compute_cut_hole_display')
 
     @api.depends('recess_dimension_ids',
@@ -554,9 +554,9 @@ class LightingProduct(models.Model):
                  'recess_dimension_ids.sequence')
     def _compute_cut_hole_display(self):
         for rec in self:
-            rec.cut_hole_display = rec.recess_dimension_ids.get_dimension_display()
+            rec.cut_hole_display = rec.recess_dimension_ids.get_display()
 
-    dimension_display = fields.Char(string='Dimension',
+    dimension_display = fields.Char(string='Dimension Display',
                                     compute='_compute_dimension_display')
 
     @api.depends('dimension_ids',
@@ -565,8 +565,45 @@ class LightingProduct(models.Model):
                  'dimension_ids.sequence')
     def _compute_dimension_display(self):
         for rec in self:
-            rec.dimension_display = rec.dimension_ids.get_dimension_display()
+            rec.dimension_display = rec.dimension_ids.get_display()
 
+    body_material_display = fields.Char(string='Body material Display',
+                                        compute='_compute_body_material_display')
+
+    @api.depends('body_material_ids',
+                 'body_material_ids.name')
+    def _compute_body_material_display(self):
+        for rec in self:
+            rec.body_material_display = rec.body_material_ids.get_display()
+
+    diffuser_material_display = fields.Char(string='Diffuser material Display',
+                                            compute='_compute_diffuser_material_display')
+
+    @api.depends('diffusor_material_ids',
+                 'diffusor_material_ids.name')
+    def _compute_diffuser_material_display(self):
+        for rec in self:
+            rec.diffuser_material_display = rec.diffusor_material_ids.get_display()
+
+    frame_material_display = fields.Char(string='Frame material Display',
+                                         compute='_compute_frame_material_display')
+
+    @api.depends('frame_material_ids',
+                 'frame_material_ids.name')
+    def _compute_frame_material_display(self):
+        for rec in self:
+            rec.frame_material_display = rec.frame_material_ids.get_display()
+
+    installation_display = fields.Char(string='Installation Display',
+                                       compute='_compute_installation_display')
+
+    @api.depends('installation_ids',
+                 'installation_ids.name')
+    def _compute_installation_display(self):
+        for rec in self:
+            rec.installation_display = rec.installation_ids.get_display()
+
+    # aux functions
     def _update_computed_description(self):
         for lang in self.env['res.lang'].search([('code', '!=', self.env.lang)]):
             en_trl = self.with_context(lang='en_US')._generate_description()
@@ -591,6 +628,7 @@ class LightingProduct(models.Model):
                 'src': en_trl,
                 'value': non_en_trl, })
 
+    # inherites base functions
     @api.multi
     @api.constrains('reference')
     def _check_reference_spaces(self):

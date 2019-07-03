@@ -2,6 +2,8 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import json
+
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
@@ -20,6 +22,23 @@ class LightingProductInstallation(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The installation must be unique!'),
                         ]
+
+    @api.multi
+    def get_data(self):
+        res = []
+        if self:
+            res = [x.name for x in self]
+        return res
+
+    @api.multi
+    def get_json(self):
+        return json.dumps(self.get_data())
+
+    @api.multi
+    def get_display(self):
+        if self:
+            return ', '.join(self.get_data())
+        return False
 
     @api.multi
     def unlink(self):

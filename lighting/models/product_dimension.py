@@ -20,7 +20,7 @@ class LightingProductAbstractDimension(models.AbstractModel):
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
     @api.multi
-    def get_dimension_display(self):
+    def get_display(self):
         if self:
             same_uom = True
             uoms = set()
