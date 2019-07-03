@@ -77,38 +77,6 @@ class LightingProduct(models.Model):
             if rec.template != rec.reference:
                 rec.template_display = rec.template
 
-    ######### Display Cut hole dimensions ##########
-    cut_hole_display = fields.Char(string='Cut hole',
-                                   compute='_compute_cut_hole_display')
-
-    @api.depends('recess_dimension_ids',
-                 'recess_dimension_ids.type_id',
-                 'recess_dimension_ids.value',
-                 'recess_dimension_ids.sequence')
-    def _compute_cut_hole_display(self):
-        for prod in self:
-            dims = prod.recess_dimension_ids
-            if dims:
-                same_uom = True
-                uoms = set()
-                for rec in dims:
-                    if rec.type_id.uom not in uoms:
-                        if not uoms:
-                            uoms.add(rec.type_id.uom)
-                        else:
-                            same_uom = False
-                            break
-
-                res_label = ' x '.join(['%s' % x.type_id.name for x in dims])
-                res_value = ' x '.join(['%g' % x.value for x in dims])
-
-                if same_uom:
-                    res_label = '%s (%s)' % (res_label, uoms.pop())
-                else:
-                    res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in dims])
-
-                prod.recess_dimension_display = '%s: %s' % (res_label, res_value)
-
     ######### Finish ##########
     finish_display = fields.Serialized(string='Finish',
                                        compute='_compute_finish_display')
