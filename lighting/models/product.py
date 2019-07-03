@@ -556,6 +556,17 @@ class LightingProduct(models.Model):
         for rec in self:
             rec.cut_hole_display = rec.recess_dimension_ids.get_dimension_display()
 
+    dimension_display = fields.Char(string='Dimension',
+                                    compute='_compute_dimension_display')
+
+    @api.depends('dimension_ids',
+                 'dimension_ids.type_id',
+                 'dimension_ids.value',
+                 'dimension_ids.sequence')
+    def _compute_dimension_display(self):
+        for rec in self:
+            rec.dimension_display = rec.dimension_ids.get_dimension_display()
+
     def _update_computed_description(self):
         for lang in self.env['res.lang'].search([('code', '!=', self.env.lang)]):
             en_trl = self.with_context(lang='en_US')._generate_description()
