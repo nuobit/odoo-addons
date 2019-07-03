@@ -378,6 +378,37 @@ class LightingProduct(models.Model):
     recess_dimension_ids = fields.One2many(comodel_name='lighting.product.recessdimension',
                                            inverse_name='product_id', string='Cut hole dimensions',
                                            copy=True, track_visibility='onchange')
+    cut_hole_display = fields.Char(string='Cut hole',
+                                   compute='_compute_cut_hole_display')
+
+    @api.depends('recess_dimension_ids',
+                 'recess_dimension_ids.type_id',
+                 'recess_dimension_ids.value',
+                 'recess_dimension_ids.sequence')
+    def _compute_cut_hole_display(self):
+        for prod in self:
+            dims = prod.recess_dimension_ids
+            if dims:
+                same_uom = True
+                uoms = set()
+                for rec in dims:
+                    if rec.type_id.uom not in uoms:
+                        if not uoms:
+                            uoms.add(rec.type_id.uom)
+                        else:
+                            same_uom = False
+                            break
+
+                res_label = ' x '.join(['%s' % x.type_id.name for x in dims])
+                res_value = ' x '.join(['%g' % x.value for x in dims])
+
+                if same_uom:
+                    res_label = '%s (%s)' % (res_label, uoms.pop())
+                else:
+                    res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in dims])
+
+                prod.cut_hole_display = '%s: %s' % (res_label, res_value)
+
     ecorrae_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
                                           string='ECORRAE I category', track_visibility='onchange')
     ecorrae2_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
