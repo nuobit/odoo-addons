@@ -262,8 +262,9 @@ class LightingProductGroup(models.Model):
             'name': _('Common product of %s') % self.complete_name,
             'type': 'ir.actions.act_window',
             'res_model': 'lighting.product',
-            'views': [(False, 'form'), (False, 'tree')],
-            'domain': [('id', 'in', self.common_product_id)],
+            'views': [(False, 'form')],
+            'view_type': 'form',
+            'res_id': self.common_product_id.id,
             'context': {'default_product_group_id': self.id},
         }
 
