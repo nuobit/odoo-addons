@@ -17,6 +17,8 @@ from . import product_category
 from . import product_category_attachment
 from . import product_application
 from . import product_application_attachment
+from . import product_dimension
+from . import product_dimension_type
 
 from . import product_sealing
 from . import product_finish

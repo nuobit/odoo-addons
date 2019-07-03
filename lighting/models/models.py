@@ -39,27 +39,6 @@ class LightingEnergyEfficiency(models.Model):
         return super(LightingEnergyEfficiency, self).unlink()
 
 
-class LightingDimensionType(models.Model):
-    _name = 'lighting.dimension.type'
-    _order = 'name'
-
-    name = fields.Char(string='Name', required=True, translate=True)
-    uom = fields.Char(string='Uom', help='Unit of mesure')
-    description = fields.Char(string='Internal description')
-
-    _sql_constraints = [('name_uniq', 'unique (name, uom)', 'The dimension name must be unique!'),
-                        ]
-
-    @api.multi
-    def name_get(self):
-        vals = []
-        for record in self:
-            name = '%s (%s)' % (record.name, record.uom)
-            vals.append((record.id, name))
-
-        return vals
-
-
 ########### description tab
 class LightingProductMaterial(models.Model):
     _name = 'lighting.product.material'
@@ -207,34 +186,6 @@ class LightingProductLedBrand(models.Model):
 
 
 ###########  Physical characteristics tab
-class LightingProductDimension(models.Model):
-    _name = 'lighting.product.dimension'
-    _rec_name = 'type_id'
-    _order = 'sequence'
-
-    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension',
-                              required=True)
-    value = fields.Float(string='Value', required=True)
-    sequence = fields.Integer(required=True, default=1,
-                              help="The sequence field is used to define order in which the dimension lines are sorted")
-
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
-
-
-class LightingProductRecessDimension(models.Model):
-    _name = 'lighting.product.recessdimension'
-    _rec_name = 'type_id'
-    _order = 'sequence'
-
-    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension',
-                              required=True)
-    value = fields.Float(string='Value', required=True)
-    sequence = fields.Integer(required=True, default=1,
-                              help="The sequence field is used to define order in which the recess dimension lines are sorted")
-
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
-
-
 class LightingProductFanWattage(models.Model):
     _name = 'lighting.product.fanwattage'
     _rec_name = 'wattage'
