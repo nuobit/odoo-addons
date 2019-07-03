@@ -25,15 +25,35 @@
                     <group col="2">
                         <field name="parent_id" class="oe_inline"/>
                     </group>
-                    <group>
-                        <field name="attribute_ids" widget="many2many_tags"/>
-                    </group>
+
                     <group>
                         <field name="sequence"/>
                     </group>
                     <group>
                         <field name="picture_datas" filename="picture_datas_fname"/>
                         <field name="picture_datas_fname" invisible="1"/>
+                    </group>
+                    <group string="Attributes" col="8">
+                        <group colspan="2" col="2">
+                            <field name="use_category_attributes" colspan="2"/>
+                        </group>
+                        <group colspan="6">
+                            <field name="group_attribute_ids" widget="many2many_tags"
+                                   attrs="{'invisible': [('use_category_attributes', '=', True)]}"/>
+                            <field name="attribute_ids" widget="many2many_tags"
+                                   attrs="{'invisible': [('use_category_attributes', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <group string="Common fields" col="8">
+                        <group colspan="2" col="2">
+                            <field name="use_category_fields" colspan="2"/>
+                        </group>
+                        <group colspan="6">
+                            <field name="group_field_ids" widget="many2many_tags"
+                                   attrs="{'invisible': [('use_category_fields', '=', True)]}"/>
+                            <field name="field_ids" widget="many2many_tags"
+                                   attrs="{'invisible': [('use_category_fields', '=', False)]}"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -49,6 +69,7 @@
                 <field name="name"/>
                 <field name="complete_name"/>
                 <field name="attribute_ids" widget="many2many_tags"/>
+                <field name="field_ids" widget="many2many_tags"/>
                 <field name="product_count"/>
                 <button name="action_product" type="object"
                         string="Products" icon="fa-external-link"

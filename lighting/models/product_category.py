@@ -9,6 +9,11 @@ class LightingProductCategory(models.Model):
     _name = 'lighting.product.category'
     _order = 'sequence'
 
+    @api.model
+    def _get_domain(self):
+        model_id = self.env.ref('lighting.model_lighting_product').id
+        return [('model_id', '=', model_id)]
+
     code = fields.Char(string='Code', size=3, required=True)
 
     name = fields.Char(required=True, translate=True)
@@ -19,6 +24,18 @@ class LightingProductCategory(models.Model):
     is_accessory = fields.Boolean(string="Is accessory")
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+
+    attribute_ids = fields.Many2many(comodel_name='ir.model.fields',
+                                     relation='lighting_product_category_field_attribute_rel',
+                                     column1='category_id', column2='field_id',
+                                     domain=_get_domain,
+                                     string='Attributes')
+
+    field_ids = fields.Many2many(comodel_name='ir.model.fields',
+                                 relation='lighting_product_category_field_field_rel',
+                                 column1='category_id', column2='field_id',
+                                 domain=_get_domain,
+                                 string='Fields')
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 

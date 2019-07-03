@@ -54,6 +54,16 @@
                             <field name="sequence"/>
                         </group>
                     </group>
+                    <group>
+                        <group>
+                            <field name="attribute_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="field_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
                 </sheet>
             </form>
         </field>
