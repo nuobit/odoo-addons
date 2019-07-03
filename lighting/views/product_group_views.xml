@@ -44,6 +44,16 @@
                                    attrs="{'invisible': [('use_category_attributes', '=', False)]}"/>
                         </group>
                     </group>
+                    <group groups="base.group_no_one">
+                        <group>
+                            <button type="object" class="oe_stat_button"
+                                    name="pepe" string="Get pro">
+                            </button>
+                        </group>
+                    </group>
+                    <group groups="base.group_no_one">
+                        <field name="text_debug"/>
+                    </group>
                     <group string="Common fields" col="8">
                         <group colspan="2" col="2">
                             <field name="use_category_fields" colspan="2"/>

@@ -178,3 +178,21 @@ class LightingProductGroup(models.Model):
             'domain': [('id', 'in', self.flat_product_ids.mapped('id'))],
             'context': {'default_product_group_id': self.id},
         }
+
+    text_debug = fields.Text()
+
+    def pepe(self):
+        a = []
+        for p in self.flat_product_ids:
+            p_d = {}
+            for attr in self.attribute_ids:
+                #p = p.with_context(lang='fr_FR')
+                p_d[attr.name] = getattr(p, attr.name)
+            a.append({p.reference: p_d})
+
+        t = {self.name: a}
+        import json
+        kwargs = dict(indent=4, sort_keys=True)
+        res = json.dumps(t, ensure_ascii=False, **kwargs)
+
+        self.text_debug = res
