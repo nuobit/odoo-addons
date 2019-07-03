@@ -553,28 +553,8 @@ class LightingProduct(models.Model):
                  'recess_dimension_ids.value',
                  'recess_dimension_ids.sequence')
     def _compute_cut_hole_display(self):
-        for prod in self:
-            dims = prod.recess_dimension_ids
-            if dims:
-                same_uom = True
-                uoms = set()
-                for rec in dims:
-                    if rec.type_id.uom not in uoms:
-                        if not uoms:
-                            uoms.add(rec.type_id.uom)
-                        else:
-                            same_uom = False
-                            break
-
-                res_label = ' x '.join(['%s' % x.type_id.name for x in dims])
-                res_value = ' x '.join(['%g' % x.value for x in dims])
-
-                if same_uom:
-                    res_label = '%s (%s)' % (res_label, uoms.pop())
-                else:
-                    res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in dims])
-
-                prod.cut_hole_display = '%s: %s' % (res_label, res_value)
+        for rec in self:
+            rec.cut_hole_display = rec.recess_dimension_ids.get_dimension_display()
 
     def _update_computed_description(self):
         for lang in self.env['res.lang'].search([('code', '!=', self.env.lang)]):
