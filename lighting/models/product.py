@@ -378,37 +378,6 @@ class LightingProduct(models.Model):
     recess_dimension_ids = fields.One2many(comodel_name='lighting.product.recessdimension',
                                            inverse_name='product_id', string='Cut hole dimensions',
                                            copy=True, track_visibility='onchange')
-    cut_hole_display = fields.Char(string='Cut hole',
-                                   compute='_compute_cut_hole_display')
-
-    @api.depends('recess_dimension_ids',
-                 'recess_dimension_ids.type_id',
-                 'recess_dimension_ids.value',
-                 'recess_dimension_ids.sequence')
-    def _compute_cut_hole_display(self):
-        for prod in self:
-            dims = prod.recess_dimension_ids
-            if dims:
-                same_uom = True
-                uoms = set()
-                for rec in dims:
-                    if rec.type_id.uom not in uoms:
-                        if not uoms:
-                            uoms.add(rec.type_id.uom)
-                        else:
-                            same_uom = False
-                            break
-
-                res_label = ' x '.join(['%s' % x.type_id.name for x in dims])
-                res_value = ' x '.join(['%g' % x.value for x in dims])
-
-                if same_uom:
-                    res_label = '%s (%s)' % (res_label, uoms.pop())
-                else:
-                    res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in dims])
-
-                prod.cut_hole_display = '%s: %s' % (res_label, res_value)
-
     ecorrae_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
                                           string='ECORRAE I category', track_visibility='onchange')
     ecorrae2_category_id = fields.Many2one(comodel_name='lighting.product.ecorraecategory', ondelete='restrict',
@@ -575,15 +544,37 @@ class LightingProduct(models.Model):
         ('published', 'Published'),
     ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
 
-    @api.multi
-    def copy(self, default=None):
-        self.ensure_one()
-        default = dict(default or {},
-                       reference=_('%s (copy)') % self.reference,
-                       ean=False,
-                       )
+    ## display fields
+    cut_hole_display = fields.Char(string='Cut hole',
+                                   compute='_compute_cut_hole_display')
 
-        return super(LightingProduct, self).copy(default)
+    @api.depends('recess_dimension_ids',
+                 'recess_dimension_ids.type_id',
+                 'recess_dimension_ids.value',
+                 'recess_dimension_ids.sequence')
+    def _compute_cut_hole_display(self):
+        for prod in self:
+            dims = prod.recess_dimension_ids
+            if dims:
+                same_uom = True
+                uoms = set()
+                for rec in dims:
+                    if rec.type_id.uom not in uoms:
+                        if not uoms:
+                            uoms.add(rec.type_id.uom)
+                        else:
+                            same_uom = False
+                            break
+
+                res_label = ' x '.join(['%s' % x.type_id.name for x in dims])
+                res_value = ' x '.join(['%g' % x.value for x in dims])
+
+                if same_uom:
+                    res_label = '%s (%s)' % (res_label, uoms.pop())
+                else:
+                    res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in dims])
+
+                prod.cut_hole_display = '%s: %s' % (res_label, res_value)
 
     def _update_computed_description(self):
         for lang in self.env['res.lang'].search([('code', '!=', self.env.lang)]):
@@ -633,9 +624,8 @@ class LightingProduct(models.Model):
     @api.constrains('product_group_id')
     def _check_product_group(self):
         if self.product_group_id.child_ids:
-            raise ValueError(
-                _(
-                    "You cannot assign products to a grup with childs. The group must not have childs and be empty or already contain products"))
+            raise ValueError(_("You cannot assign products to a grup with childs. "
+                               "The group must not have childs and be empty or already contain products"))
 
     @api.model
     def create(self, values):
@@ -654,3 +644,13 @@ class LightingProduct(models.Model):
             self._update_computed_description()
 
         return res
+
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = dict(default or {},
+                       reference=_('%s (copy)') % self.reference,
+                       ean=False,
+                       )
+
+        return super(LightingProduct, self).copy(default)
