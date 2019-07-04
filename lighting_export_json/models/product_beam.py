@@ -8,20 +8,39 @@ from odoo import api, models, fields, _
 class LightingProductBeam(models.Model):
     _inherit = 'lighting.product.beam'
 
-    line_full_display = fields.Char(compute='_compute_line_full_display')
-
-    @api.depends('num', 'photometric_distribution_ids', 'dimension_ids')
-    def _compute_line_full_display(self):
-        for rec in self:
-            res = []
+    def get_beam(self):
+        res = []
+        for rec in self.sorted(lambda x: x.sequence):
+            bm = []
             if rec.num > 1:
-                res.append('%i x' % rec.num)
+                bm.append('%ix' % rec.num)
 
             if rec.photometric_distribution_ids:
-                res.append('%s' % ', '.join([x.display_name for x in rec.photometric_distribution_ids]))
+                bm.append(', '.join([x.display_name for x in rec.photometric_distribution_ids]))
 
-            if rec.dimensions_display:
-                res.append(rec.dimensions_display)
+            dimension_display = rec.dimension_ids.get_display()
+            if dimension_display:
+                bm.append(dimension_display)
 
-            if res:
-                rec.line_full_display = ' '.join(res)
+            if bm:
+                res.append(' '.join(bm))
+
+        if not any(res):
+            return None
+        return res
+
+    def get_beam_angle(self):
+        res = []
+        for src in self.sorted(lambda x: x.sequence):
+            angl = []
+            for d in src.dimension_ids.sorted(lambda x: x.sequence):
+                if d.value and d.type_id.uom == 'º':
+                    angl.append('%g%s' % (d.value, d.type_id.uom))
+            ang_v = None
+            if angl:
+                ang_v = '/'.join(angl)
+            res.append(ang_v)
+
+        if not any(res):
+            return None
+        return res
