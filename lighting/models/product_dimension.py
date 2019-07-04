@@ -17,8 +17,6 @@ class LightingProductAbstractDimension(models.AbstractModel):
     sequence = fields.Integer(required=True, default=1,
                               help="The sequence field is used to define order in which the dimension lines are sorted")
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
-
     @api.multi
     def get_display(self):
         if self:
@@ -49,7 +47,11 @@ class LightingProductDimension(models.Model):
     _name = 'lighting.product.dimension'
     _inherit = 'lighting.product.dimension.abstract'
 
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
+
 
 class LightingProductRecessDimension(models.Model):
     _name = 'lighting.product.recessdimension'
     _inherit = 'lighting.product.dimension.abstract'
+
+    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')

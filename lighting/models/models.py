@@ -351,11 +351,7 @@ class LightingProductBeam(models.Model):
     @api.depends('dimension_ids')
     def _compute_dimensions_display(self):
         for rec in self:
-            res = []
-            for dimension in rec.dimension_ids.sorted(lambda x: x.sequence):
-                res.append('%s: %g' % (dimension.type_id.display_name, dimension.value))
-
-            rec.dimensions_display = ', '.join(res)
+            rec.dimensions_display = rec.dimension_ids.get_display()
 
 
 class LightingProductBeamPhotometricDistribution(models.Model):
@@ -379,13 +375,7 @@ class LightingProductBeamPhotometricDistribution(models.Model):
 
 class LightingProductBeamDimension(models.Model):
     _name = 'lighting.product.beam.dimension'
-    _order = 'sequence'
-
-    type_id = fields.Many2one(comodel_name='lighting.dimension.type', ondelete='restrict', string='Dimension',
-                              required=True)
-    value = fields.Float(string='Value', required=True)
-    sequence = fields.Integer(required=True, default=1,
-                              help="The sequence field is used to define order in which the dimension lines are sorted")
+    _inherit = 'lighting.product.dimension.abstract'
 
     beam_id = fields.Many2one(comodel_name='lighting.product.beam', ondelete='cascade', string='Beam')
 

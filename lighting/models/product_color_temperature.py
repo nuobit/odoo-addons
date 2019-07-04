@@ -22,3 +22,10 @@ class LightingProductColorTemperature(models.Model):
 
     _sql_constraints = [('name_uniq', 'unique (value)', 'The color temperature must be unique!'),
                         ]
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for rec in self:
+            res.append((rec.id, '%iK' % rec.value))
+        return res

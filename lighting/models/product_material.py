@@ -29,23 +29,6 @@ class LightingProductMaterial(models.Model):
                         ]
 
     @api.multi
-    def get_data(self):
-        res = []
-        if self:
-            res = [x.name for x in self]
-        return res
-
-    @api.multi
-    def get_json(self):
-        return json.dumps(self.get_data())
-
-    @api.multi
-    def get_display(self):
-        if self:
-            return ', '.join(self.get_data())
-        return False
-
-    @api.multi
     def unlink(self):
         fields = ['body_material_ids', 'diffusor_material_ids', 'frame_material_ids',
                   'reflector_material_ids', 'blade_material_ids']

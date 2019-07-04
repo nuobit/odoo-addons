@@ -24,23 +24,6 @@ class LightingProductInstallation(models.Model):
                         ]
 
     @api.multi
-    def get_data(self):
-        res = []
-        if self:
-            res = [x.name for x in self]
-        return res
-
-    @api.multi
-    def get_json(self):
-        return json.dumps(self.get_data())
-
-    @api.multi
-    def get_display(self):
-        if self:
-            return ', '.join(self.get_data())
-        return False
-
-    @api.multi
     def unlink(self):
         records = self.env['lighting.product'].search([('installation_ids', 'in', self.ids)])
         if records:
