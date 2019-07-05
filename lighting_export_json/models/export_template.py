@@ -207,17 +207,15 @@ class LightingExportTemplate(models.Model):
             if group not in groups_d[group.level]:
                 groups_d[group.level][group] = {}
 
-            if not group.child_ids:
-                groups_d[group.level][group].update(child)
+            groups_d[group.level][group].update(child)
+
+            if not group.child_ids:  # is a LEAF
+                child0 = list(child.keys())[0]
             else:
-                child9 = {}
-                for k, v_d in child.items():
-                    k0, v0 = list(v_d.items())[0]
-                    child9[k] = v0 or k0
-                groups_d[group.level][group].update(child9)
+                child0 = list(child.values())[0]
 
             if group.parent_id:
-                group_classify(groups_d, group.parent_id, groups_d[group.level])
+                group_classify(groups_d, group.parent_id, {group: child0})
 
         group_hierarchy_d = {}
         for obj in objects:
