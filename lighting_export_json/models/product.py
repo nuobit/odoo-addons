@@ -6,6 +6,7 @@ from odoo import models, fields, api, _
 
 import re
 import json
+import ast
 
 
 def _values2range(values, range, magnitude=None):
@@ -43,41 +44,6 @@ class LightingProduct(models.Model):
     #### auxiliary function to get non db translations
     def _(self, string):
         return _(string)
-
-    ############### Char Tempalte fields ################################
-
-    ## Template
-    template = fields.Char(string='Template',
-                           compute='_compute_template')
-
-    @api.depends('reference', 'family_ids', 'family_ids.no_templates')
-    def _compute_template(self):
-        for rec in self:
-            has_sibling = False
-            if not rec.family_ids.filtered(lambda x: x.no_templates):
-                m = re.match(r'^(.+)-.{2}$', rec.reference)
-                if m:
-                    template_reference = m.group(1)
-                    product_siblings = self.env['lighting.product'].search([
-                        ('reference', '=like', '%s-__' % template_reference),
-                        ('id', '!=', rec.id),
-                    ])
-                    for p in product_siblings:
-                        if not p.family_ids.filtered(lambda x: x.no_templates):
-                            rec.template = template_reference
-                            has_sibling = True
-                            break
-
-            if not has_sibling:
-                rec.template = rec.reference
-
-    json_display_template = fields.Char(string='Template JSON Display',
-                                        compute='_compute_json_display_template')
-
-    def _compute_json_display_template(self):
-        for rec in self:
-            if rec.template != rec.reference:
-                rec.json_display_template = rec.template
 
     ############### Display fields ################################
 
@@ -291,34 +257,61 @@ class LightingProduct(models.Model):
             for rec in self:
                 rec.json_display_dimension = rec.dimension_ids.get_display()
 
-    ## Display Template Optional
-    json_display_template_optional = fields.Serialized(string="Template optional JSON Display",
-                                                       compute='_compute_json_display_template_optional')
+    ## Display Optional products
+    json_display_optional = fields.Serialized(string="Optional JSON Display",
+                                              compute='_compute_json_display_optional')
 
     @api.depends('optional_ids')
-    def _compute_json_display_template_optional(self):
+    def _compute_json_display_optional(self):
         template_id = self.env.context.get('template_id')
         if template_id:
             for rec in self:
                 if rec.optional_ids:
-                    template_optional_published = rec.optional_ids.filtered(lambda x: x.state == 'published')
-                    template_optional_l = list(set(template_optional_published.mapped('template')))
-                    if template_optional_l:
-                        rec.json_display_template_optional = json.dumps(sorted(template_optional_l))
+                    domain = [('id', 'in', rec.optional_ids.mapped('id'))]
+                    if template_id.domain:
+                        domain += ast.literal_eval(template_id.domain)
 
-    ## Display Template Subtitutes
-    json_display_template_substitute = fields.Serialized(string="Template substitutes JSON Display",
-                                                         compute='_compute_json_display_template_substitute')
+                    finish_attribute = 'json_display_finish'
+
+                    product_optional = self.env['lighting.product'].search(domain)
+                    product_l = []
+                    for r in product_optional:
+                        if r.product_group_id and \
+                                r.product_group_id.attribute_ids.mapped('name') == [finish_attribute]:
+                            product_l.append({r.product_group_id.name: r.product_group_id.level})
+                        else:
+                            product_l.append({r.reference: None})
+
+                    if product_l:
+                        rec.json_display_optional = json.dumps(product_l)
+
+    ## Display Subtitutes
+    json_display_substitute = fields.Serialized(string="Substitute JSON Display",
+                                                compute='_compute_json_display_substitute')
 
     @api.depends('substitute_ids')
-    def _compute_json_display_template_substitute(self):
+    def _compute_json_display_substitute(self):
         template_id = self.env.context.get('template_id')
         if template_id:
             for rec in self:
                 if rec.substitute_ids:
-                    template_substitute_published = rec.substitute_ids.filtered(lambda x: x.state == 'published')
-                    template_substitute_l = list(set(template_substitute_published.mapped('template')))
-                    rec.json_display_template_substitute = json.dumps(sorted(template_substitute_l))
+                    domain = [('id', 'in', rec.substitute_ids.mapped('id'))]
+                    if template_id.domain:
+                        domain += ast.literal_eval(template_id.domain)
+
+                    finish_attribute = 'json_display_finish'
+
+                    product_substitute = self.env['lighting.product'].search(domain)
+                    product_l = []
+                    for r in product_substitute:
+                        if r.product_group_id and \
+                                r.product_group_id.attribute_ids.mapped('name') == [finish_attribute]:
+                            product_l.append({r.product_group_id.name: r.product_group_id.level})
+                        else:
+                            product_l.append({r.reference: None})
+
+                    if product_l:
+                        rec.json_display_substitute = json.dumps(product_l)
 
     ##################### Search fields ##################################
 
