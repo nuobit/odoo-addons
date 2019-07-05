@@ -267,8 +267,7 @@ class LightingExportTemplate(models.Model):
                     }
                     group_data_d[level][group.name]['attribute'] = product_wrap_d
 
-        for level, group_d in group_data_d.items():
-            res.update({'group%i' % level: group_d})
+        res.update({'groups': group_data_d})
         _logger.info("Group data successfully generated...")
 
         if objects_ld:
