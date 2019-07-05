@@ -313,6 +313,24 @@ class LightingProduct(models.Model):
                     if product_l:
                         rec.json_display_substitute = json.dumps(product_l)
 
+    ## Display First Product Photo
+    json_display_photo = fields.Serialized(string="Photo JSON Display",
+                                           compute='_compute_json_display_photo')
+
+    def _compute_json_display_photo(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                pictures = rec.attachment_ids \
+                    .filtered(lambda x: x.type_id.code == 'F') \
+                    .sorted(lambda x: (x.product_id.sequence, x.sequence))
+                if pictures:
+                    attachment_d = {
+                        'datas_fname': pictures[0].datas_fname,
+                        'store_fname': pictures[0].attachment_id.store_fname,
+                    }
+                    rec.json_display_photo = json.dumps(attachment_d)
+
     ##################### Search fields ##################################
 
     ## Search Materials
