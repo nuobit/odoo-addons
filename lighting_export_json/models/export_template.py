@@ -258,9 +258,8 @@ class LightingExportTemplate(models.Model):
                     for a in attributes:
                         if a in objects_d[product.reference]:
                             product_data[a] = objects_d[product.reference][a]
-                    if product_data:
-                        label = product.reference if is_leaf else child.name
-                        product_d[label] = product_data
+                    label = product.reference if is_leaf else child.name
+                    product_d[label] = product_data
                 if product_d:
                     if group.name not in group_data_d[level]:
                         group_data_d[level][group.name] = {}
