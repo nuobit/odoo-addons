@@ -204,7 +204,7 @@ class LightingExportTemplate(models.Model):
             if group.level not in groups_d:
                 groups_d[group.level] = {}
 
-            if group.name not in groups_d[group.level]:
+            if group not in groups_d[group.level]:
                 groups_d[group.level][group] = {}
 
             if not group.child_ids:
