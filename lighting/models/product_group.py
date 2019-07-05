@@ -166,20 +166,6 @@ class LightingProductGroup(models.Model):
             if rec.grouped_product_ids:
                 rec.common_product_id = rec.grouped_product_ids.sorted(lambda x: x.sequence)[0]
 
-    picture_id = fields.Many2one(comodel_name='lighting.attachment',
-                                 compute='_compute_attachment')
-
-    def _compute_attachment(self):
-        for rec in self:
-            pictures = rec.common_product_id.attachment_ids \
-                .filtered(lambda x: x.type_id.code == 'F') \
-                .sorted(lambda x: (x.product_id.sequence, x.sequence))
-            if pictures:
-                rec.picture_id = pictures[0]
-
-    picture_datas = fields.Binary(related='picture_id.datas', string='Picture', readonly=True)
-    picture_datas_fname = fields.Char(related='picture_id.datas_fname', readonly=True)
-
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name must be unique!'),
                         ]
 

@@ -80,10 +80,6 @@
                             <group colspan="8" col="2">
                                 <field name="common_product_id"/>
                             </group>
-                            <group>
-                                <field name="picture_datas" filename="picture_datas_fname"/>
-                                <field name="picture_datas_fname" invisible="1"/>
-                            </group>
                         </page>
                     </notebook>
                 </sheet>
