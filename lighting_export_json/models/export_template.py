@@ -78,6 +78,53 @@ class LightingExportTemplate(models.Model):
             with open(path, 'w') as f:
                 json.dump(data, f, ensure_ascii=False, default=default, **kwargs)
 
+    def get_efective_field_name(self, field_name):
+        field = self.field_ids.filtered(lambda x: x.field_name == field_name)
+        if not field:
+            raise Exception("Unexpected, the field %s is not defined on template" % field_name)
+        if field.effective_field_name:
+            return field.effective_field_name
+
+        return field_name
+
+    def generate_dict(self, obj, header, hide_empty_fields=True):
+        obj_d = {}
+        for field, meta in header.items():
+            field_d = {}
+            has_value = False
+            meta_langs = sorted(meta['string'].keys(), key=lambda x: (0, x) if x == 'en_US' else (1, x))
+            for lang in meta_langs:
+                datum = getattr(obj.with_context(lang=lang, template_id=self), field)
+                if meta['type'] == 'selection':
+                    datum = dict(meta['selection'][lang]).get(datum)
+                elif meta['type'] == 'boolean':
+                    if meta['translate']:
+                        datum = _('Yes') if datum else _('No')
+                elif meta['type'] in ('one2many', 'many2many'):
+                    datum = [getattr(x, meta['subfield'] or 'display_name') for x in datum]
+                elif meta['type'] == 'many2one':
+                    datum = getattr(datum, meta['subfield'] or 'display_name')
+
+                if meta['type'] != 'boolean' and not datum:
+                    datum = None
+
+                if datum is not None:
+                    has_value = True
+
+                ## acumulem els valors
+                if not meta['translate']:
+                    field_d = datum
+                    break
+                else:
+                    field_d[lang] = datum
+
+            if has_value or not hide_empty_fields:
+                if meta['effective_field_name']:
+                    field = meta['effective_field_name']
+                obj_d[field] = field_d
+
+        return obj_d
+
     def generate_data(self, objects, hide_empty_fields=True):
         _logger.info("Export data started...")
         active_langs = self.lang_ids.mapped('code')
@@ -113,7 +160,7 @@ class LightingExportTemplate(models.Model):
                 item['subfield'] = line.subfield_name
                 item['translate'] = line.translate
                 header[field_name] = item
-        _logger.info("Product headers successfully generated...")
+        _logger.info("Product headers successfully generated.")
 
         ### afegim els labels
         _logger.info("Generating product labels...")
@@ -123,7 +170,7 @@ class LightingExportTemplate(models.Model):
                 field = meta['effective_field_name']
             label_d[field] = meta['string']
         res.update({'labels': label_d})
-        _logger.info("Product labels successfully generated...")
+        _logger.info("Product labels successfully generated.")
 
         ## generate data and gather data
         _logger.info("Generating products...")
@@ -131,41 +178,7 @@ class LightingExportTemplate(models.Model):
         th = int(n / 100) or 1
         objects_ld = []
         for i, obj in enumerate(objects, 1):
-            obj_d = {}
-            for field, meta in header.items():
-                field_d = {}
-                has_value = False
-                meta_langs = sorted(meta['string'].keys(), key=lambda x: (0, x) if x == 'en_US' else (1, x))
-                for lang in meta_langs:
-                    datum = getattr(obj.with_context(lang=lang, template_id=self), field)
-                    if meta['type'] == 'selection':
-                        datum = dict(meta['selection'][lang]).get(datum)
-                    elif meta['type'] == 'boolean':
-                        if meta['translate']:
-                            datum = _('Yes') if datum else _('No')
-                    elif meta['type'] in ('one2many', 'many2many'):
-                        datum = [getattr(x, meta['subfield'] or 'display_name') for x in datum]
-                    elif meta['type'] == 'many2one':
-                        datum = getattr(datum, meta['subfield'] or 'display_name')
-
-                    if meta['type'] != 'boolean' and not datum:
-                        datum = None
-
-                    if datum is not None:
-                        has_value = True
-
-                    ## acumulem els valors
-                    if not meta['translate']:
-                        field_d = datum
-                        break
-                    else:
-                        field_d[lang] = datum
-
-                if has_value or not hide_empty_fields:
-                    if meta['effective_field_name']:
-                        field = meta['effective_field_name']
-                    obj_d[field] = field_d
-
+            obj_d = self.generate_dict(obj, header, hide_empty_fields)
             if obj_d:
                 objects_ld.append(obj_d)
 
@@ -175,108 +188,91 @@ class LightingExportTemplate(models.Model):
         res.update({'products': objects_ld})
         _logger.info("Products successfully generated...")
 
-        # cerqeum tots el sproductes de nou i generm la llista de tempaltes i les seves variant
+        _logger.info("Generating dictionary of products...")
+        objects_d = {}
+        for obj in objects_ld:
+            key = obj['reference']
+            if key in objects_d:
+                raise Exception("Unexpected!! The key %s is duplicated!" % key)
+            objects_d[key] = obj
+        _logger.info("Dictionary of products successfully generated.")
 
-        _logger.info("Generating product virtual data...")
-        template_d = {}
+        # clasiiquem esl grups per nivell
+        _logger.info("Classifying Groups by level...")
+
+        def group_classify(groups_d, group, child):
+            if group.level not in groups_d:
+                groups_d[group.level] = {}
+
+            if group.name not in groups_d[group.level]:
+                groups_d[group.level][group] = {}
+
+            if not group.child_ids:
+                groups_d[group.level][group].update(child)
+            else:
+                child9 = {}
+                for k, v_d in child.items():
+                    k0, v0 = list(v_d.items())[0]
+                    child9[k] = v0 or k0
+                groups_d[group.level][group].update(child9)
+
+            if group.parent_id:
+                group_classify(groups_d, group.parent_id, groups_d[group.level])
+
+        group_hierarchy_d = {}
         for obj in objects:
-            template_name = getattr(obj, 'template', None)
-            if template_name:
-                if template_name not in template_d:
-                    template_d[template_name] = []
-                template_d[template_name].append(obj)
+            if obj.product_group_id:
+                group_classify(group_hierarchy_d, obj.product_group_id, {obj: None})
+        _logger.info("Groups successfully classificated by level.")
 
-        # generem els bundles agrupant cada bundle i posant dins tots els tempaltes
-        # dels requireds associats
-        bundle_d = {}
-        for template_name, objects_l in template_d.items():
-            products = self.env['lighting.product'].browse([x.id for x in objects_l])
-            is_bundle_template = any(products.mapped('is_composite'))
-            if is_bundle_template:
-                # state
-                bundle_d[template_name] = {
-                    'enabled': any(products.mapped('website_published')),
-                }
+        ## generem les dades de cada nivell
+        _logger.info("Generating Group data....")
+        group_data_d = {}
+        for level, group_d in group_hierarchy_d.items():
+            if level not in group_data_d:
+                group_data_d[level] = {}
 
-                # required products
-                domain = [('id', 'in', products.mapped('required_ids.id'))]
-                if self.domain:
-                    domain += ast.literal_eval(self.domain)
-                products_required = self.env['lighting.product'].search(domain)
-                if products_required:
-                    ## components
-                    bundle_d[template_name].update({
-                        'templates': sorted(list(set(products_required.mapped('template'))))
-                    })
+            for group, childs in group_d.items():
+                ## calculem els camp comuns
+                k, v = list(childs.items())[0]
+                product = v or k
 
-                    ## default attach
-                    # first own attachments
-                    attachment_ids = products.mapped('attachment_ids') \
-                        .filtered(lambda x: x.is_bundle_default and
-                                            x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                        .sorted(lambda x: (x.sequence, x.id))
+                product_data = {}
+                fields = [self.get_efective_field_name(x.name) for x in group.field_ids]
+                for f in fields:
+                    if f in objects_d[product.reference]:
+                        product_data[f] = objects_d[product.reference][f]
+                if product_data:
+                    if group.name not in group_data_d[level]:
+                        group_data_d[level][group.name] = {}
+                    group_data_d[level][group.name]['common'] = product_data
 
-                    # after required attachments
-                    if not attachment_ids:
-                        attachment_ids = products_required.mapped('attachment_ids') \
-                            .filtered(lambda x: x.is_bundle_default and
-                                                x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                            .sorted(lambda x: (x.sequence, x.id))
+                ## calculem els atributs
+                product_d = {}
+                attributes = [self.get_efective_field_name(x.name) for x in group.attribute_ids]
+                for child, data in childs.items():
+                    # si es un grup o un producte final (leaf)
+                    is_leaf = not data
+                    product = child if is_leaf else data
+                    product_data = {}
+                    for a in attributes:
+                        if a in objects_d[product.reference]:
+                            product_data[a] = objects_d[product.reference][a]
+                    if product_data:
+                        label = product.reference if is_leaf else child.name
+                        product_d[label] = product_data
+                if product_d:
+                    if group.name not in group_data_d[level]:
+                        group_data_d[level][group.name] = {}
+                    product_wrap_d = {
+                        'group_level': None if is_leaf else child.level,
+                        'data': product_d,
+                    }
+                    group_data_d[level][group.name]['attribute'] = product_wrap_d
 
-                    if attachment_ids:
-                        bundle_d[template_name].update({
-                            'attachment': {
-                                'datas_fname': attachment_ids[0].datas_fname,
-                                'store_fname': attachment_ids[0].attachment_id.store_fname,
-                            }
-                        })
-
-        res.update({'bundles': bundle_d})
-
-        # comprovem que les temlates rene  mes dun element, sino, leliminem
-        # escollim un objet qualsevol o generalm al descricio sense el finish
-        template_clean_d = {}
-        for k, v in template_d.items():
-            if len(v) > 1:
-                products = self.env['lighting.product'].browse([p.id for p in v])
-
-                ## state
-                template_clean_d[k] = {
-                    'enabled': any(products.mapped('website_published')),
-                }
-
-                ## description
-                template_desc_d = {}
-                for lang in active_langs:
-                    lang_description = v[0].with_context(lang=lang)._generate_description(
-                        show_variant_data=False)
-                    if lang_description:
-                        template_desc_d[lang] = lang_description
-                if template_desc_d:
-                    if k not in template_clean_d:
-                        template_clean_d[k] = {}
-                    template_clean_d[k].update({
-                        'description': template_desc_d
-                    })
-
-                ## default attach
-                attachment_ids = products.mapped('attachment_ids') \
-                    .filtered(lambda x: x.is_template_default and
-                                        x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                    .sorted(lambda x: (x.sequence, x.id))
-                if attachment_ids:
-                    if k not in template_clean_d:
-                        template_clean_d[k] = {}
-                    template_clean_d[k].update({
-                        'attachment': {
-                            'datas_fname': attachment_ids[0].datas_fname,
-                            'store_fname': attachment_ids[0].attachment_id.store_fname,
-                        }
-                    })
-
-        res.update({'templates': template_clean_d})
-
-        _logger.info("Product virtual data successfully generated...")
+        for level, group_d in group_data_d.items():
+            res.update({'group%i' % level: group_d})
+        _logger.info("Group data successfully generated...")
 
         if objects_ld:
             ## generm la informacio de les families
@@ -357,6 +353,73 @@ class LightingExportTemplate(models.Model):
                 res.update({'categories': category_ld})
 
             _logger.info("Category data successfully generated...")
+
+        _logger.info("Generating product bundles...")
+
+        finish_attribute = 'json_display_finish'
+        group_d = {}
+        for obj in objects:
+            group_id = getattr(obj, 'product_group_id', None)
+            if group_id:
+                if group_id.attribute_ids.mapped('name') == [finish_attribute]:
+                    if group_id not in group_d:
+                        group_d[group_id] = []
+                    group_d[group_id].append(obj)
+
+        # generem els bundles agrupant cada bundle i posant dins tots els tempaltes
+        # dels requireds associats
+        bundle_d = {}
+        for group_id, objects_l in group_d.items():
+            products = self.env['lighting.product'].browse([x.id for x in objects_l])
+            is_bundle_template = any(products.mapped('is_composite'))
+            if is_bundle_template:
+                group_d = {}
+                # state
+                group_d['enabled'] = any(products.mapped('website_published'))
+                # required products
+                domain = [('id', 'in', products.mapped('required_ids.id'))]
+                if self.domain:
+                    domain += ast.literal_eval(self.domain)
+                products_required = self.env['lighting.product'].search(domain)
+                if products_required:
+                    ## components/accessories
+                    accessory_l = []
+                    for r in products_required:
+                        if r.product_group_id and \
+                                group_id.attribute_ids.mapped('name') == [finish_attribute]:
+                            accessory_l.append({r.product_group_id.name: r.product_group_id.level})
+                        else:
+                            accessory_l.append({r.reference: None})
+                    if accessory_l:
+                        group_d['accessory'] = accessory_l
+
+                    ## default attach
+                    # first own attachments
+                    attachment_ids = products.mapped('attachment_ids') \
+                        .filtered(lambda x: x.is_bundle_default and
+                                            x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
+                        .sorted(lambda x: (x.sequence, x.id))
+
+                    # after required attachments
+                    if not attachment_ids:
+                        attachment_ids = products_required.mapped('attachment_ids') \
+                            .filtered(lambda x: x.is_bundle_default and
+                                                x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
+                            .sorted(lambda x: (x.sequence, x.id))
+
+                    if attachment_ids:
+                        group_d['attachment'] = {
+                            'datas_fname': attachment_ids[0].datas_fname,
+                            'store_fname': attachment_ids[0].attachment_id.store_fname,
+                        }
+                if group_d:
+                    bundle_d[group_id.name] = {
+                        'group_level': group_id.level,
+                        'data': group_d,
+                    }
+
+        res.update({'bundles': bundle_d})
+        _logger.info("Product bundles generated.")
 
         _logger.info("Export data successfully done")
 
