@@ -98,6 +98,12 @@ class LightingProductGroup(models.Model):
     child_ids = fields.One2many(comodel_name='lighting.product.group', inverse_name='parent_id',
                                 string='Child Groups', track_visibility='onchange')
 
+    child_count = fields.Integer(compute='_compute_child_count', string='Childs')
+
+    def _compute_child_count(self):
+        for rec in self:
+            rec.child_count = len(rec.child_ids)
+
     level = fields.Integer(string='Level', readonly=True, compute='_compute_level')
 
     def _get_level(self):
@@ -110,12 +116,6 @@ class LightingProductGroup(models.Model):
     def _compute_level(self):
         for rec in self:
             rec.level = rec._get_level()
-
-    has_childs = fields.Boolean(string='Has childs', compute='_compute_has_childs')
-
-    def _compute_has_childs(self):
-        for rec in self:
-            rec.has_childs = bool(rec.child_ids)
 
     flat_product_ids = fields.Many2many(comodel_name='lighting.product', compute='_compute_flat_products')
 
@@ -217,6 +217,16 @@ class LightingProductGroup(models.Model):
                 raise ValidationError(
                     _('Error ! The parent contains products and a parent with products cannot also have childs'))
         return True
+
+    def action_child(self):
+        return {
+            'name': _('Childs of %s') % self.complete_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product.group',
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', self.child_ids.mapped('id'))],
+            'context': {'default_parent_id': self.id},
+        }
 
     def action_product(self):
         return {

@@ -12,6 +12,10 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button type="object" class="oe_stat_button" icon="fa-filter"
+                                name="action_child">
+                            <field string="Childs" name="child_count" widget="statinfo"/>
+                        </button>
+                        <button type="object" class="oe_stat_button" icon="fa-filter"
                                 name="action_product">
                             <field string="Products" name="product_count" widget="statinfo"/>
                         </button>
@@ -34,7 +38,6 @@
                         <group>
                             <field name="level"/>
                             <field name="parent_id"/>
-                            <field name="has_childs"/>
                         </group>
                     </group>
                     <group>
@@ -101,9 +104,12 @@
                 <field name="name"/>
                 <field name="level"/>
                 <field name="parent_id"/>
-                <field name="has_childs"/>
                 <field name="complete_name"/>
                 <field name="type_ids" widget="many2many_tags"/>
+                <field name="child_count" attrs="{'invisible': [('child_count', '=', 0)]}"/>
+                <button name="action_child" type="object"
+                        string="Childs" icon="fa-external-link"
+                        attrs="{'invisible': [('child_count', '=', 0)]}"/>
                 <field name="product_count" attrs="{'invisible': [('product_count', '=', 0)]}"/>
                 <button name="action_product" type="object"
                         string="Products" icon="fa-external-link"
