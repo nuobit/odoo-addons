@@ -20,6 +20,10 @@ class LightingProductGroupType(models.Model):
         for record in self:
             record.group_count = self.env['lighting.product.group'].search_count([('type_ids', '=', record.id)])
 
+    _sql_constraints = [('name_uniq', 'unique (name)', 'The name must be unique!'),
+                        ('code_uniq', 'unique (code)', 'The code must be unique!'),
+                        ]
+
     @api.multi
     def unlink(self):
         records = self.env['lighting.product'].search([('type_ids', 'in', self.ids)])
