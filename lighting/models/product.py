@@ -4,8 +4,8 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from lxml import etree
 
+import re
 from collections import OrderedDict
 
 
@@ -251,6 +251,26 @@ class LightingProduct(models.Model):
                                        track_visibility='onchange')
     finish_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish',
                                 track_visibility='onchange')
+
+    finish_prefix = fields.Char(string='Finish prefix', compute='_compute_finish_prefix')
+
+    def _compute_finish_prefix(self):
+        for rec in self:
+            has_sibling = False
+            m = re.match(r'^(.+)-.{2}$', rec.reference)
+            if m:
+                prefix = m.group(1)
+                product_siblings = self.search([
+                    ('reference', '=like', '%s-__' % prefix),
+                    ('id', '!=', rec.id),
+                ])
+                for p in product_siblings:
+                    rec.finish_prefix = prefix
+                    has_sibling = True
+                    break
+
+            if not has_sibling:
+                rec.finish_prefix = rec.reference
 
     body_material_ids = fields.Many2many(comodel_name='lighting.product.material',
                                          relation='lighting_product_body_material_rel',
