@@ -39,6 +39,11 @@
                     </group>
                     <group>
                         <group>
+                            <field name="type_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
                             <field name="sequence" colspan="2"/>
                         </group>
                     </group>

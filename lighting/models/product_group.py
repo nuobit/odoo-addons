@@ -31,6 +31,11 @@ class LightingProductGroup(models.Model):
             else:
                 rec.complete_name = rec.name
 
+    type_ids = fields.Many2many(comodel_name='lighting.product.group.type',
+                                relation='lighting_product_group_group_type_rel',
+                                column1='group_id', column2='type_id',
+                                string='Types')
+
     sequence = fields.Integer(required=True, default=1,
                               help="The sequence field is used to define order",
                               track_visibility='onchange')

@@ -4,6 +4,7 @@
 
 from . import product
 from . import product_group
+from . import product_group_type
 
 from . import product_catalog
 from . import product_family
