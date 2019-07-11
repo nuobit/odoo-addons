@@ -103,8 +103,7 @@
                 <field name="parent_id"/>
                 <field name="has_childs"/>
                 <field name="complete_name"/>
-                <field name="attribute_ids" widget="many2many_tags"/>
-                <field name="field_ids" widget="many2many_tags"/>
+                <field name="type_ids" widget="many2many_tags"/>
                 <field name="product_count" attrs="{'invisible': [('product_count', '=', 0)]}"/>
                 <button name="action_product" type="object"
                         string="Products" icon="fa-external-link"
