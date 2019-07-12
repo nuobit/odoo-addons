@@ -173,8 +173,8 @@ class LightingExportTemplate(models.Model):
         _logger.info("Product labels successfully generated.")
 
         ############## SIMPLE PRODUCTS ################
-        _logger.info("Generating products...")
         n = len(objects)
+        _logger.info("Generating %i products..." % n)
         th = int(n / 100) or 1
         objects_ld = []
         for i, obj in enumerate(objects, 1):
