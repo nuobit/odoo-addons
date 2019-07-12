@@ -81,7 +81,7 @@ class LightingExportTemplate(models.Model):
     def get_efective_field_name(self, field_name):
         field = self.field_ids.filtered(lambda x: x.field_name == field_name)
         if not field:
-            raise Exception("Unexpected, the field %s is not defined on template" % field_name)
+            raise UserError("Unexpected, the field %s is not defined on template" % field_name)
         if field.effective_field_name:
             return field.effective_field_name
 
@@ -193,7 +193,7 @@ class LightingExportTemplate(models.Model):
         for obj in objects_ld:
             key = obj['reference']
             if key in objects_d:
-                raise Exception("Unexpected!! The key %s is duplicated!" % key)
+                raise UserError("Unexpected!! The key %s is duplicated!" % key)
             objects_d[key] = obj
         _logger.info("Dictionary of products successfully generated.")
 
