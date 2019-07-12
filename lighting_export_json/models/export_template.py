@@ -363,20 +363,20 @@ class LightingExportTemplate(models.Model):
                 if f in objects_d[product.reference]:
                     product_data[f] = objects_d[product.reference][f]
 
-            if product_data:
-                group_d.update({
-                    'common_attribute': product_data,
-                })
-
-            ## description
+            # description (is a common field too)
             group_desc_d = {}
             for lang in active_langs:
                 lang_description = product.with_context(lang=lang).category_id.name
                 if lang_description:
                     group_desc_d[lang] = ' '.join(filter(lambda x: x, [lang_description, group.name]))
             if group_desc_d:
-                group_d.update({
+                product_data.update({
                     'description': group_desc_d,
+                })
+
+            if product_data:
+                group_d.update({
+                    'common_attribute': product_data,
                 })
 
             if group_d:
