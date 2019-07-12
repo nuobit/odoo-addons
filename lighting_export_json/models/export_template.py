@@ -61,8 +61,9 @@ class LightingExportTemplate(models.Model):
         if self.domain:
             domain = ast.literal_eval(self.domain)
 
-        objects = self.env['lighting.product'].search(domain)
-        res = self.generate_data(objects, hide_empty_fields=self.hide_empty_fields)
+        objects_rs = self.env['lighting.product'].search(domain)
+        object_ids = objects_rs.mapped('id')
+        res = self.generate_data(object_ids, hide_empty_fields=self.hide_empty_fields)
 
         today_str = fields.Date.from_string(fields.Date.context_today(self)).strftime('%Y%m%d')
         for suffix, data in res.items():
@@ -125,7 +126,7 @@ class LightingExportTemplate(models.Model):
 
         return obj_d
 
-    def generate_data(self, objects, hide_empty_fields=True):
+    def generate_data(self, object_ids, hide_empty_fields=True):
         _logger.info("Export data started...")
         active_langs = self.lang_ids.mapped('code')
 
@@ -137,8 +138,8 @@ class LightingExportTemplate(models.Model):
             field_name = line.field_id.name
             item = {}
             for lang in active_langs:
-                item_lang = objects.with_context(lang=lang).fields_get([field_name],
-                                                                       ['type', 'string', 'selection'])
+                item_lang = self.env['lighting.product']. \
+                    with_context(lang=lang).fields_get([field_name], ['type', 'string', 'selection'])
                 if item_lang:
                     meta = item_lang[field_name]
                     for k, v in meta.items():
@@ -173,11 +174,12 @@ class LightingExportTemplate(models.Model):
         _logger.info("Product labels successfully generated.")
 
         ############## SIMPLE PRODUCTS ################
-        n = len(objects)
+        n = len(object_ids)
         _logger.info("Generating %i products..." % n)
         th = int(n / 100) or 1
         objects_ld = []
-        for i, obj in enumerate(objects, 1):
+        for i, object_id in enumerate(object_ids, 1):
+            obj = self.env['lighting.product'].browse(object_id)
             obj_d = self.generate_dict(obj, header, hide_empty_fields)
             if obj_d:
                 objects_ld.append(obj_d)
@@ -202,7 +204,8 @@ class LightingExportTemplate(models.Model):
         ## auxiliar per agrupar referneeicas amb el mateix finish
         _logger.info("Generating dictionary of groups by finish...")
         template_d = {}
-        for obj in objects:
+        for obj_id in object_ids:
+            obj = self.env['lighting.product'].browse(obj_id)
             template_name = getattr(obj, 'finish_group_name', None)
             if template_name:
                 if template_name not in template_d:
@@ -213,7 +216,8 @@ class LightingExportTemplate(models.Model):
         ## auxiliar per agrupar referneeicas amb el mateixa photo
         _logger.info("Generating dictionary of groups by photo...")
         photo_group_d = {}
-        for obj in objects:
+        for obj_id in object_ids:
+            obj = self.env['lighting.product'].browse(obj_id)
             group_id = getattr(obj, 'photo_group_id', None)
             if group_id:
                 if group_id not in photo_group_d:
@@ -386,6 +390,7 @@ class LightingExportTemplate(models.Model):
             ## generm la informacio de les families
             _logger.info("Generating family data...")
             # obtenim els ids de es fmailie sel sobjectes seleccionats
+            objects = self.env['lighting.product'].browse(object_ids)
             families = objects.mapped('family_ids')
             if families:
                 family_ld = []
@@ -429,6 +434,7 @@ class LightingExportTemplate(models.Model):
         if objects_ld:
             ## generm la informacio de les categories
             _logger.info("Generating category data...")
+            objects = self.env['lighting.product'].browse(object_ids)
             categories = objects.mapped('category_id')
             if categories:
                 category_ld = []
