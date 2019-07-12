@@ -38,6 +38,16 @@ def _values2range(values, range, magnitude=None):
     return ranges_str
 
 
+def get_group_type(group, typ):
+    if typ in group.mapped('type_ids.code'):
+        return group
+    else:
+        if group.parent_id:
+            return get_group_type(group.parent_id, typ)
+
+    return None
+
+
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
@@ -45,7 +55,35 @@ class LightingProduct(models.Model):
     def _(self, string):
         return _(string)
 
+    ############### Auxiliar fields ###############################
+    finish_group_name = fields.Char(string='Finish group name',
+                                    compute='_compute_finish_group_name')
+
+    def _compute_finish_group_name(self):
+        for rec in self:
+            if 'FINISH' in rec.product_group_id.type_ids.mapped('code'):
+                rec.finish_group_name = rec.product_group_id.name
+            else:
+                rec.finish_group_name = rec.reference
+
+    photo_group_id = fields.Many2one(comodel_name='lighting.product.group',
+                                     string='Photo group',
+                                     compute='_compute_foto_group')
+
+    def _compute_foto_group(self):
+        for rec in self:
+            if rec.product_group_id:
+                rec.photo_group_id = get_group_type(rec.product_group_id, 'PHOTO')
+
     ############### Display fields ################################
+
+    json_display_finish_group_name = fields.Char(string='Finish group name JSON Display',
+                                                 compute='_compute_json_display_finish_group_name')
+
+    def _compute_json_display_finish_group_name(self):
+        for rec in self:
+            if rec.finish_group_name != rec.reference:
+                rec.json_display_finish_group_name = rec.finish_group_name
 
     ## Display Finish
     json_display_finish = fields.Serialized(string='Finish JSON Display',
@@ -267,23 +305,10 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 if rec.optional_ids:
-                    domain = [('id', 'in', rec.optional_ids.mapped('id'))]
-                    if template_id.domain:
-                        domain += ast.literal_eval(template_id.domain)
-
-                    finish_attribute = 'json_display_finish'
-
-                    product_optional = self.env['lighting.product'].search(domain)
-                    product_l = []
-                    for r in product_optional:
-                        if r.product_group_id and \
-                                r.product_group_id.attribute_ids.mapped('name') == [finish_attribute]:
-                            product_l.append({r.product_group_id.name: r.product_group_id.level})
-                        else:
-                            product_l.append({r.reference: None})
-
-                    if product_l:
-                        rec.json_display_optional = json.dumps(product_l)
+                    template_optional_published = rec.optional_ids.filtered(lambda x: x.state == 'published')
+                    template_optional_l = list(set(template_optional_published.mapped('finish_group_name')))
+                    if template_optional_l:
+                        rec.json_display_optional = json.dumps(sorted(template_optional_l))
 
     ## Display Subtitutes
     json_display_substitute = fields.Serialized(string="Substitute JSON Display",
@@ -295,41 +320,25 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 if rec.substitute_ids:
-                    domain = [('id', 'in', rec.substitute_ids.mapped('id'))]
-                    if template_id.domain:
-                        domain += ast.literal_eval(template_id.domain)
-
-                    finish_attribute = 'json_display_finish'
-
-                    product_substitute = self.env['lighting.product'].search(domain)
-                    product_l = []
-                    for r in product_substitute:
-                        if r.product_group_id and \
-                                r.product_group_id.attribute_ids.mapped('name') == [finish_attribute]:
-                            product_l.append({r.product_group_id.name: r.product_group_id.level})
-                        else:
-                            product_l.append({r.reference: None})
-
-                    if product_l:
-                        rec.json_display_substitute = json.dumps(product_l)
+                    template_substitute_published = rec.substitute_ids.filtered(lambda x: x.state == 'published')
+                    template_substitute_l = list(set(template_substitute_published.mapped('finish_group_name')))
+                    rec.json_display_substitute = json.dumps(sorted(template_substitute_l))
 
     ## Display First Product Photo
     json_display_photo = fields.Serialized(string="Photo JSON Display",
                                            compute='_compute_json_display_photo')
 
     def _compute_json_display_photo(self):
-        template_id = self.env.context.get('template_id')
-        if template_id:
-            for rec in self:
-                pictures = rec.attachment_ids \
-                    .filtered(lambda x: x.type_id.code == 'F') \
-                    .sorted(lambda x: (x.product_id.sequence, x.sequence))
-                if pictures:
-                    attachment_d = {
-                        'datas_fname': pictures[0].datas_fname,
-                        'store_fname': pictures[0].attachment_id.store_fname,
-                    }
-                    rec.json_display_photo = json.dumps(attachment_d)
+        for rec in self:
+            pictures = rec.attachment_ids \
+                .filtered(lambda x: x.type_id.code == 'F') \
+                .sorted(lambda x: (x.product_id.sequence, x.sequence))
+            if pictures:
+                attachment_d = {
+                    'datas_fname': pictures[0].datas_fname,
+                    'store_fname': pictures[0].attachment_id.store_fname,
+                }
+                rec.json_display_photo = json.dumps(attachment_d)
 
     ##################### Search fields ##################################
 
