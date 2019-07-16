@@ -444,16 +444,23 @@ class LightingExportTemplate(models.Model):
                     }
                     # adjunts ordenats
                     if category.attachment_ids:
+                        attach_brand_d = {}
                         attachments = category.attachment_ids \
                             .sorted(lambda x: (x.sequence, x.id))
-                        if attachments:
+                        for a in attachments:
+                            brand = a.brand_id.name
+                            if brand not in attach_brand_d:
+                                attach_brand_d[brand] = {
+                                    'datas_fname': a.datas_fname,
+                                    'store_fname': a.attachment_id.store_fname,
+                                }
+
+                        if attach_brand_d:
                             category_d.update({
-                                'attachment': {
-                                    'datas_fname': attachments[0].datas_fname,
-                                    'store_fname': attachments[0].attachment_id.store_fname,
-                                },
+                                'attachment': attach_brand_d
                             })
 
+                    # nom de la categoria
                     name_lang_d = {}
                     for lang in active_langs:
                         lang_name = category.with_context(lang=lang).name
