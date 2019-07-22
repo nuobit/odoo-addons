@@ -190,7 +190,7 @@ class LightingProduct(models.Model):
                                   relation='lighting_product_family_rel', string='Families',
                                   track_visibility='onchange')
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel',
-                                   string='Catalogs', track_visibility='onchange')
+                                   string='Catalogs', required=True, track_visibility='onchange')
 
     category_id = fields.Many2one(comodel_name='lighting.product.category',
                                   string='Category', required=True,
