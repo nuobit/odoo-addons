@@ -442,22 +442,45 @@ class LightingExportTemplate(models.Model):
                     category_d = {
                         'id': category.id,
                     }
-                    # adjunts ordenats
                     if category.attachment_ids:
-                        attach_brand_d = {}
-                        attachments = category.attachment_ids \
+                        category_attach_d = {}
+                        # brands
+                        brand_attach_d = {}
+                        brand_attachments = category.attachment_ids \
+                            .filtered(lambda x: x.brand_id) \
                             .sorted(lambda x: (x.sequence, x.id))
-                        for a in attachments:
+                        for a in brand_attachments:
                             brand = a.brand_id.name
-                            if brand not in attach_brand_d:
-                                attach_brand_d[brand] = {
+                            if brand not in brand_attach_d:
+                                brand_attach_d[brand] = {
                                     'datas_fname': a.datas_fname,
                                     'store_fname': a.attachment_id.store_fname,
                                 }
+                        if brand_attach_d:
+                            category_attach_d.update({
+                                'catalog': brand_attach_d,
+                            })
 
-                        if attach_brand_d:
+                        # location
+                        location_attach_d = {}
+                        location_attachments = category.attachment_ids \
+                            .filtered(lambda x: not x.brand_id) \
+                            .sorted(lambda x: (x.sequence, x.id))
+                        if location_attachments:
+                            a = location_attachments[0]
+                            location_attach_d = {
+                                'datas_fname': a.datas_fname,
+                                'store_fname': a.attachment_id.store_fname,
+                            }
+                        if location_attach_d:
+                            category_attach_d.update({
+                                'location': location_attach_d,
+                            })
+
+                        # category attach
+                        if category_attach_d:
                             category_d.update({
-                                'attachment': attach_brand_d
+                                'attachment': category_attach_d,
                             })
 
                     # nom de la categoria
