@@ -11,6 +11,14 @@ from odoo.addons.connector.components.mapper import (
     mapping, external_to_m2o, only_create)
 
 
+def nullif(field):
+    def modifier(self, record, to_attr):
+        value = record[field]
+        return value and value.strip() or None
+
+    return modifier
+
+
 class SaleOrderImportMapper(Component):
     _name = 'ambugest.sale.order.import.mapper'
     _inherit = 'ambugest.import.mapper'
@@ -23,6 +31,18 @@ class SaleOrderImportMapper(Component):
         ('Codigo_Servicio', 'ambugest_codigo_servicio'),
         ('Servicio_Dia', 'ambugest_servicio_dia'),
         ('Servicio_Ano', 'ambugest_servicio_ano'),
+
+        (nullif('Num_Contrato'), 'contract_number'),
+        (nullif('Nombre_Asegurado'), 'insured_name'),
+        (nullif('DNI_Asegurado'), 'insured_ident_cardnum'),
+        (nullif('Num_Asegurado'), 'policy_number'),
+        (nullif('Referencia_autorizacion'), 'auth_number'),
+
+        (nullif('Matricula'), 'plate_number'),
+        ('Servicio_Ano', 'service_number'),
+        ('Fecha_Servicio', 'service_date'),
+        (nullif('Origen'), 'origin'),
+        (nullif('Destino'), 'destination'),
     ]
 
     def _get_order_lines(self, record, model_name):
@@ -108,3 +128,12 @@ class SaleOrderImportMapper(Component):
             servicio_ano_str = str(record['Servicio_Ano']).strip()
             if servicio_ano_str:
                 return {'client_order_ref': servicio_ano_str}
+
+    @only_create
+    @mapping
+    def service_direction(self, record):
+        if record['Servicio_de_vuelta']:
+            if record['Servicio_de_vuelta'] == 1:
+                return {'service_direction': 'return'}
+            else:
+                return {'service_direction': 'going'}
