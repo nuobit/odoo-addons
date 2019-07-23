@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.ambugest.form</field>
+        <field name="sequence" eval="10"/>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Ambugest">
+                    <group>
+                        <group string="Patient data">
+                            <field name="contract_number"/>
+                            <field name="insured_name"/>
+                            <field name="insured_ident_cardnum"/>
+                            <field name="policy_number"/>
+                            <field name="auth_number"/>
+                        </group>
+                        <group string="Service data">
+                            <field name="plate_number"/>
+                            <field name="service_number"/>
+                            <field name="service_date"/>
+                            <field name="origin"/>
+                            <field name="destination"/>
+                            <field name="service_direction"
+                                   widget="radio" options="{'horizontal': true}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

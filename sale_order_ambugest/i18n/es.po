@@ -1,0 +1,111 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_order_ambugest
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-23 16:58+0000\n"
+"PO-Revision-Date: 2019-07-23 16:58+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_order_ambugest
+#: model:ir.ui.view,arch_db:sale_order_ambugest.view_order_form
+msgid "Ambugest"
+msgstr "Ambugest"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_auth_number
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_auth_number
+msgid "Authorization Number"
+msgstr "Nº Autorización"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_contract_number
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_contract_number
+msgid "Contract number"
+msgstr "Código contrato"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_destination
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_destination
+msgid "Destination"
+msgstr "Destino"
+
+#. module: sale_order_ambugest
+#: code:addons/sale_order_ambugest/models/sale_order.py:26
+#: selection:sale.order,service_direction:0
+#, python-format
+msgid "Going"
+msgstr "Ida"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_insured_ident_cardnum
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_insured_ident_cardnum
+msgid "Insured identity card number"
+msgstr "DNI"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_insured_name
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_insured_name
+msgid "Insured person's name"
+msgstr "Nombre"
+
+#. module: sale_order_ambugest
+#: model:ir.ui.view,arch_db:sale_order_ambugest.view_order_form
+msgid "Patient data"
+msgstr "Datos del paciente"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_plate_number
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_plate_number
+msgid "Plate"
+msgstr "Matrícula"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_policy_number
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_policy_number
+msgid "Policy number"
+msgstr "Poliza"
+
+#. module: sale_order_ambugest
+#: model:ir.model,name:sale_order_ambugest.model_sale_order
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: sale_order_ambugest
+#: code:addons/sale_order_ambugest/models/sale_order.py:26
+#: selection:sale.order,service_direction:0
+#, python-format
+msgid "Return"
+msgstr "Vuelta"
+
+#. module: sale_order_ambugest
+#: model:ir.ui.view,arch_db:sale_order_ambugest.view_order_form
+msgid "Service data"
+msgstr "Datos del servicio"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_service_date
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_service_date
+msgid "Service date"
+msgstr "Fecha del servicio"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_service_direction
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_service_direction
+msgid "Service direction"
+msgstr "Sentido del servicio"
+
+#. module: sale_order_ambugest
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_service_number
+#: model:ir.model.fields,field_description:sale_order_ambugest.field_sale_order_service_number
+msgid "Service number"
+msgstr "Nº servicio"
+
