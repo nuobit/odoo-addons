@@ -19,7 +19,7 @@ class SaleOrder(models.Model):
 
     # service data
     plate_number = fields.Char(string="Plate")
-    service_number = fields.Char(string="Service number")
+    service_number = fields.Integer(string="Service number")
     service_date = fields.Date(string="Service date")
     origin = fields.Char(string="Origin")
     destination = fields.Char(string="Destination")

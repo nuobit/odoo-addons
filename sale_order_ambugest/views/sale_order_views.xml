@@ -13,20 +13,22 @@
                 <page string="Ambugest">
                     <group>
                         <group string="Patient data">
-                            <field name="contract_number"/>
-                            <field name="insured_name"/>
-                            <field name="insured_ident_cardnum"/>
-                            <field name="policy_number"/>
-                            <field name="auth_number"/>
+                            <field name="contract_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="insured_name" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="insured_ident_cardnum"
+                                   attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="policy_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="auth_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
                         </group>
                         <group string="Service data">
-                            <field name="plate_number"/>
-                            <field name="service_number"/>
-                            <field name="service_date"/>
-                            <field name="origin"/>
-                            <field name="destination"/>
+                            <field name="plate_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="service_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="service_date" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="origin" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="destination" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
                             <field name="service_direction"
-                                   widget="radio" options="{'horizontal': true}"/>
+                                   widget="radio" options="{'horizontal': true}"
+                                   attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
                         </group>
                     </group>
                 </page>

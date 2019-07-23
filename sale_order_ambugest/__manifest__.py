@@ -5,7 +5,7 @@
 {
     'name': 'Sale Order Ambugest',
     'summary': 'This module adds Ambugest specific data to sale orders',
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.1.1',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
