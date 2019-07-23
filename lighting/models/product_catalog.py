@@ -22,8 +22,6 @@ class LightingCatalog(models.Model):
         for record in self:
             record.product_count = self.env['lighting.product'].search_count([('catalog_ids', '=', record.id)])
 
-    color = fields.Integer(string='Color Index')
-
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary(
         "Image", attachment=True,
@@ -38,6 +36,12 @@ class LightingCatalog(models.Model):
         help="Small-sized image of the product. It is automatically "
              "resized as a 64x64px image, with aspect ratio preserved. "
              "Use this field anywhere a small image is required.")
+
+    html_color = fields.Char(string='HTML Color Index',
+                             help="Here you can set a specific HTML color index (e.g. #ff0000) "
+                                  "to display the color on the website")
+
+    color = fields.Integer(string='Color Index')
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name of catalog must be unique!'),
                         ]

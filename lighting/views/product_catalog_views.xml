@@ -36,6 +36,11 @@
                         </h1>
                     </div>
                     <group>
+                        <group>
+                            <field name="html_color"/>
+                        </group>
+                    </group>
+                    <group>
                         <field name="description_show_ip"/>
                     </group>
                 </sheet>
