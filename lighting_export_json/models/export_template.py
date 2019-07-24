@@ -277,7 +277,7 @@ class LightingExportTemplate(models.Model):
         _logger.info("Bundle products successfully generated...")
 
         ############## CONFIGURABLES (by finish) ################
-        _logger.info("Generating configurable products (grouped by finiah)...")
+        _logger.info("Generating configurable products (grouped by finish)...")
 
         # comprovem que les temlates rene  mes dun element, sino, leliminem
         # escollim un objet qualsevol o generalm al descricio sense el finish
@@ -366,7 +366,8 @@ class LightingExportTemplate(models.Model):
             # description (is a common field too)
             group_desc_d = {}
             for lang in active_langs:
-                lang_description = product.with_context(lang=lang).category_id.name
+                category_id = product.with_context(lang=lang).category_id
+                lang_description = category_id.description_text or category_id.name
                 if lang_description:
                     group_desc_d[lang] = ' '.join(filter(lambda x: x, [lang_description, group.name]))
             if group_desc_d:
