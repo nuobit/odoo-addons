@@ -3,7 +3,7 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <data noupdate="1" forcecreate="0">
+    <data noupdate="1">
         <!-- Energy efficiency -->
         <record id="energyefficiency_a_plusplus" model="lighting.energyefficiency">
             <field name="sequence">10</field>
@@ -247,6 +247,16 @@
         </record>
         <record id="sealing_ip68" model="lighting.product.sealing">
             <field name="name">IP68</field>
+        </record>
+
+        <!-- Locations -->
+        <record id="product_location_indoor" model="lighting.product.location">
+            <field name="name">Indoor</field>
+            <field name="code">IN</field>
+        </record>
+        <record id="product_location_outdoor" model="lighting.product.location">
+            <field name="name">Outdoor</field>
+            <field name="code">OUT</field>
         </record>
 
         <!-- Color temperature -->
