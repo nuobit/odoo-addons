@@ -12,6 +12,10 @@ class LightingProductLocation(models.Model):
 
     name = fields.Char(string='Name', required=True, translate=True)
 
+    code = fields.Char(string='Code', size=5, required=True)
+
+    description_text = fields.Char(string='Description text', help='Text to show', translate=True)
+
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 
     def _compute_product_count(self):
