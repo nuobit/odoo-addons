@@ -249,17 +249,6 @@
             <field name="name">IP68</field>
         </record>
 
-        <!-- Locations -->
-        <record id="product_location_indoor" model="lighting.product.location">
-            <field name="name">Indoor</field>
-        </record>
-        <record id="product_location_outdoor" model="lighting.product.location">
-            <field name="name">Outdoor</field>
-        </record>
-        <record id="product_location_underwater" model="lighting.product.location">
-            <field name="name">Underwater</field>
-        </record>
-
         <!-- Color temperature -->
         <record id="product_color_temperature_1700" model="lighting.product.color.temperature">
             <field name="value">1700</field>
