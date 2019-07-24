@@ -14,7 +14,7 @@ class LightingProductCategory(models.Model):
         model_id = self.env.ref('lighting.model_lighting_product').id
         return [('model_id', '=', model_id)]
 
-    code = fields.Char(string='Code', size=3, required=True)
+    code = fields.Char(string='Code', size=5, required=True)
 
     name = fields.Char(required=True, translate=True)
 
