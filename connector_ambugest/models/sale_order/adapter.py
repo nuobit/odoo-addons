@@ -25,5 +25,6 @@ class SaleOrderAdapter(Component):
                     cast(c."Codi UP" as integer) >= 90000 and
                     s.Cliente = c.Cliente and
                     s.Odoo_Verificado = 1
+                    and s.Codigo_Servicio = 3740002
      """
     _id = ('EMPRESA', 'CodiUP', 'Fecha_Servicio', 'Codigo_Servicio', 'Servicio_Dia', 'Servicio_Ano')
