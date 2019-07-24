@@ -11,5 +11,6 @@ class AmbugestImportMapper(AbstractComponent):
     _inherit = ['base.import.mapper', 'base.ambugest.connector']
 
 
-
-
+class AmbugestImportMapChild(AbstractComponent):
+    _name = 'ambugest.map.child.import'
+    _inherit = ['base.map.child.import', 'base.ambugest.connector']

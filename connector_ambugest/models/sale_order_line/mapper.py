@@ -8,7 +8,7 @@ from odoo import _
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
-    mapping, external_to_m2o, only_create)
+    mapping, external_to_m2o, only_create, convert)
 
 
 class SaleOrderLineImportMapper(Component):
@@ -24,7 +24,7 @@ class SaleOrderLineImportMapper(Component):
         ('Servicio_Ano', 'ambugest_servicio_ano'),
         ('Articulo', 'ambugest_articulo'),
 
-        ('Cantidad', 'product_uom_qty'),
+        (convert('Cantidad', float), 'product_uom_qty'),
     ]
 
     @only_create
