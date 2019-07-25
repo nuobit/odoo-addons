@@ -3,6 +3,13 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+    <template id="report_assets_common_lighting_reporting_fonts"
+              name="Lighting reporting QWeb fonts" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link href="/lighting_reporting/static/src/less/styles.less" rel="stylesheet" type="text/less"/>
+        </xpath>
+    </template>
+
     <template id="external_layout_lighting">
         <!-- Multicompany -->
         <t t-if="not o and doc">
@@ -17,38 +24,18 @@
         </t>
 
         <div class="header">
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="text-right">
-                        <t t-foreach="doc.catalog_ids" t-as="c">
-                            <img style="max-width:20%;"
-                                 t-attf-src="data:image/*;base64,{{c.image}}"/>
-                        </t>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div t-attf-style="border-bottom: 2px solid {{ brand_color }};">
+                            <t t-foreach="doc.catalog_ids" t-as="c">
+                                <img style="max-width:10%;"
+                                     t-attf-src="data:image/*;base64,{{c.image}}"/>
+                            </t>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-            <!--div class="row">
-                <div class="col-xs-3 mb4">
-                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"
-                         style="max-height: 45px;"/>
-                </div>
-                <div class="col-xs-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
-            </div>
-            <div t-if="company.logo or company.report_header" class="row zero_min_height">
-                <div class="col-xs-12">
-                    <div style="border-bottom: 1px solid black;"/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-6" name="company_address">
-                    <span t-field="company.partner_id"
-                          t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
-                          style="border-bottom: 1px solid black; display:inline-block;"/>
-                </div>
-            </div-->
         </div>
 
         <div class="article o_report_layout_standard">
@@ -58,7 +45,7 @@
         <div class="footer">
             <div class="text-center">
                 <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"
-                     style="max-height: 45px;"/>
+                     style="max-height: 30px;"/>
 
                 <ul class="list-unstyled small mt4">
                     <li t-if="company.street or company.street2">
@@ -91,686 +78,458 @@
             <t t-set="brand_color" t-value="'#%s' % doc.catalog_ids[0].html_color"/>
             <div class="page">
                 <div class="oe_structure"/>
-                <div class="row">
-                    <div class="col-xs-4">
-                        <div class="row">
-                            <div class="text-center">
-                                <t t-set="images"
-                                   t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'F' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
-                                <img style="max-width:90%;"
-                                     t-attf-src="data:image/*;base64,{{images and images[0].datas}}"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="text-center">
-                                <t t-set="images"
-                                   t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'E' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
-                                <img style="max-width:90%;"
-                                     t-attf-src="data:image/*;base64,{{images and images[0].datas}}"/>
-                            </div>
-                        </div>
-                    </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-5">
 
-                    <div class="col-xs-8">
-                        <div class="row">
-                            <h1 t-field="doc.reference"/>
-                            <h4 t-field="doc.description"/>
-
-                            <div t-if="doc.category_id">
-                                <strong>Category</strong>
-                                <span t-field="doc.category_id"/>
+                            <t t-set="fimages"
+                               t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'F' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
+                            <div t-if="fimages" class="row">
+                                <div class="col-xs-12">
+                                    <img class="img-responsive"
+                                         t-attf-src="data:image/*;base64,{{fimages[0].datas}}"/>
+                                </div>
                             </div>
 
-                            <div t-if="doc.family_ids">
-                                <strong>Family</strong>
-                                <span t-esc="', '.join([x.name for x in doc.family_ids])"/>
+                            <t t-set="eimages"
+                               t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'E' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
+                            <div t-if="eimages" class="row">
+                                <div class="col-xs-12">
+                                    <img class="img-responsive"
+                                         t-attf-src="data:image/*;base64,{{eimages[0].datas}}"/>
+                                </div>
+                            </div>
+
+                            <t t-set="qimages"
+                               t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'Q' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
+                            <t t-set="cimages"
+                               t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'C' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
+                            <div t-if="qimages or cimages" class="row">
+                                <div t-if="qimages" class="col-xs-6">
+                                    <img class="img-responsive"
+                                         t-attf-src="data:image/*;base64,{{qimages[0].datas}}"/>
+                                </div>
+                                <div t-if="cimages" class="col-xs-6">
+                                    <img class="img-responsive"
+                                         t-attf-src="data:image/*;base64,{{cimages[0].datas}}"/>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <t t-set="efimages"
+                                       t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'EF' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
+                                    <div t-if="efimages" class="row">
+                                        <div class="col-xs-12">
+                                            <img class="img-responsive"
+                                                 t-attf-src="data:image/*;base64,{{efimages[0].datas}}"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="col-xs-7">
+                            <h3 class="mt0 mb4" t-field="doc.reference"/>
+                            <div class="row mb0">
+                                <div class="col-xs-12">
+                                    <div t-attf-style="border-bottom: 2px solid {{ brand_color }};">
+                                        <h5 class="mb4">General data</h5>
+                                    </div>
+                                    <table class="table table-condensed mb0">
 
-                        <div class="row">
-                            <div t-attf-style="border-top: 3px solid {{ brand_color }};">
-                                <table class="table table-condensed">
-                                    <tr t-if="doc.location_ids">
-                                        <td>
-                                            <strong>Location</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="', '.join([x.name for x in doc.location_ids])"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.finish_id">
-                                        <td>
-                                            <strong>Finish</strong>
-                                        </td>
-                                        <td>
-                                            <span t-field="doc.finish_id"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.application_ids">
-                                        <td>
-                                            <strong>Applications</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="', '.join([x.name for x in doc.application_ids])"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.dimension_ids">
-                                        <td>
-                                            <strong>Dimensions</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="doc.dimension_ids.get_display()"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.installation_ids">
-                                        <td>
-                                            <strong>Installation</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="', '.join([x.name for x in doc.installation_ids])"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.body_material_ids">
-                                        <td>
-                                            <strong>Body material</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="', '.join([x.name for x in doc.body_material_ids])"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.diffusor_material_ids">
-                                        <td>
-                                            <strong>Diffuser material</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="', '.join([x.name for x in doc.diffusor_material_ids])"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.frame_material_ids">
-                                        <td>
-                                            <strong>Frame material</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="', '.join([x.name for x in doc.frame_material_ids])"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.reflector_material_ids">
-                                        <td>
-                                            <strong>Reflector material</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="', '.join([x.name for x in doc.reflector_material_ids])"/>
-                                        </td>
-                                    </tr>
-                                    <tr t-if="doc.blade_material_ids">
-                                        <td>
-                                            <strong>Blade material</strong>
-                                        </td>
-                                        <td>
-                                            <span t-esc="', '.join([x.name for x in doc.blade_material_ids])"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div t-attf-style="border-bottom: 3px solid {{ brand_color }};">
-                            <h3>Technical specifications</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <table class="table table-condensed">
-                            <tr t-if="doc.source_ids">
-                                <td>
-                                    <strong>Sources</strong>
-                                </td>
-                                <td>
-                                    <ul class="list-unstyled">
-                                        <t t-foreach="doc.get_sheet_sources()" t-as="s">
-                                            <li t-esc="s"/>
-                                        </t>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.source_ids">
-                                <td>
-                                    <strong>Beams</strong>
-                                </td>
-                                <td>
-                                    <ul class="list-unstyled">
-                                        <t t-foreach="doc.get_sheet_beams()" t-as="b">
-                                            <li t-esc="b"/>
-                                        </t>
-                                    </ul>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <table class="table table-condensed">
-                            <!-- Description -->
-                            <tr t-if="doc.sealing_id">
-                                <td>
-                                    <strong>IP</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.sealing_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.sealing2_id">
-                                <td>
-                                    <strong>IP2</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.sealing2_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.ik">
-                                <td>
-                                    <strong>IK</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.ik"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.ik">
-                                <td>
-                                    <strong>IK</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.ik"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.static_pressure">
-                                <td>
-                                    <strong>Static pressure (Kg)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.static_pressure"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.dynamic_pressure">
-                                <td>
-                                    <strong>Dinamic pressure (Km/h)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.dynamic_pressure"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <strong>Corrosion resistance</strong>
-                                </td>
-                                <td>
-                                    <t t-if="doc.corrosion_resistance">
-                                        <i class="fa fa-check fa-lg" style="color:#28A409;"/>
-                                    </t>
-                                    <t t-if="not doc.corrosion_resistance">
-                                        <i class="fa fa-times fa-lg" style="color:#DC1A0C;"/>
-                                    </t>
-                                </td>
-                            </tr>
-
-                            <!-- Electric -->
-                            <tr t-if="doc.protection_class_id">
-                                <td>
-                                    <strong>Protection class</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.protection_class_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.frequency_id">
-                                <td>
-                                    <strong>Frequency</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.frequency_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.dimmable_ids">
-                                <td>
-                                    <strong>Dimmable</strong>
-                                </td>
-                                <td>
-                                    <span t-esc="', '.join([x.name for x in doc.dimmable_ids])"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.input_voltage_id">
-                                <td>
-                                    <strong>Input voltage</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.input_voltage_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.input_current">
-                                <td>
-                                    <strong>Input current (mA)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.input_current"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.output_voltage_id">
-                                <td>
-                                    <strong>Output voltage</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.output_voltage_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.output_current">
-                                <td>
-                                    <strong>Output current (mA)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.output_current"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.power_factor_min">
-                                <td>
-                                    <strong>Minimum power factor</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.power_factor_min"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.power_factor_min">
-                                <td>
-                                    <strong>Minimum power factor</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.power_factor_min"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.auxiliary_equipment_ids">
-                                <td>
-                                    <strong>Auxiliary gear</strong>
-                                </td>
-                                <td>
-                                    <span t-esc="', '.join([x.name for x in doc.auxiliary_equipment_ids])"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.usb_ports">
-                                <td>
-                                    <strong>USB</strong>
-                                </td>
-                                <td>
-                                    <table class="table table-condensed">
-                                        <tr>
+                                        <tr t-if="doc.category_id">
                                             <td>
-                                                <strong>Ports</strong>
+                                                <strong>Category</strong>
                                             </td>
                                             <td>
-                                                <span t-field="doc.usb_ports"/>
+                                                <span t-field="doc.category_id"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.usb_voltage">
+                                        <tr t-if="doc.family_ids">
                                             <td>
-                                                <strong>Voltage</strong>
+                                                <strong>Family</strong>
                                             </td>
                                             <td>
-                                                <span t-field="doc.usb_voltage"/>
+                                                <span t-esc="', '.join([x.name for x in doc.family_ids])"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.usb_current">
+                                        <tr t-if="doc.finish_id">
                                             <td>
-                                                <strong>Current</strong>
+                                                <strong>Finish</strong>
                                             </td>
                                             <td>
-                                                <span t-field="doc.usb_current"/>
+                                                <span t-field="doc.finish_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.installation_ids">
+                                            <td>
+                                                <strong>Installation</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.installation_ids])"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.body_material_ids">
+                                            <td>
+                                                <strong>Body material</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.body_material_ids])"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.diffusor_material_ids">
+                                            <td>
+                                                <strong>Diffuser material</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.diffusor_material_ids])"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.frame_material_ids">
+                                            <td>
+                                                <strong>Frame material</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.frame_material_ids])"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.reflector_material_ids">
+                                            <td>
+                                                <strong>Reflector material</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.reflector_material_ids])"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.blade_material_ids">
+                                            <td>
+                                                <strong>Blade material</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.blade_material_ids])"/>
                                             </td>
                                         </tr>
                                     </table>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.sensor_ids">
-                                <td>
-                                    <strong>Sensors</strong>
-                                </td>
-                                <td>
-                                    <span t-esc="', '.join([x.name for x in doc.sensor_ids])"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.battery_autonomy">
-                                <td>
-                                    <strong>Battery autonomy (h)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.battery_autonomy"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.battery_charge_time">
-                                <td>
-                                    <strong>Battery charge time (h)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.battery_charge_time"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.surface_temperature">
-                                <td>
-                                    <strong>Surface temperature (ºC)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.surface_temperature"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.operating_temperature_min">
-                                <td>
-                                    <strong>Minimum operating temperature (ºC)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.operating_temperature_min"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.operating_temperature_max">
-                                <td>
-                                    <strong>Maximum operating temperature (ºC)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.operating_temperature_max"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.glow_wire_temperature">
-                                <td>
-                                    <strong>Glow wire temperature (ºC)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.glow_wire_temperature"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.power_switches">
-                                <td>
-                                    <strong>Power switches</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.power_switches"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.power_switches">
-                                <td>
-                                    <strong>Power switches</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.power_switches"/>
-                                </td>
-                            </tr>
-
-                            <!-- Lighting -->
-                            <tr t-if="doc.total_nominal_flux">
-                                <td>
-                                    <strong>Total flux (Lm)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.total_nominal_flux"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.ugr_max">
-                                <td>
-                                    <strong>UGR</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.ugr_max"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.lifetime">
-                                <td>
-                                    <strong>Lifetime (h)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.lifetime"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.led_lifetime_l">
-                                <td>
-                                    <strong>LED lifetime L</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.led_lifetime_l"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.led_lifetime_b">
-                                <td>
-                                    <strong>LED lifetime B</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.led_lifetime_b"/>
-                                </td>
-                            </tr>
-
-
-                        </table>
-                    </div>
-                    <div class="col-xs-6">
-                        <table class="table table-condensed">
-
-                            <!-- Physical -->
-                            <tr t-if="doc.weight">
-                                <td>
-                                    <strong>Weight (Kg)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.weight"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.cable_outlets">
-                                <td>
-                                    <strong>Cable outlets</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.cable_outlets"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.lead_wires">
-                                <td>
-                                    <strong>Lead wires</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.lead_wires"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.lead_wire_length">
-                                <td>
-                                    <strong>Lead wire length (mm)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.lead_wire_length"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.inclination_angle_max">
-                                <td>
-                                    <strong>Maximum tilt angle (º)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.inclination_angle_max"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.rotation_angle_max">
-                                <td>
-                                    <strong>Maximum rotation angle (º)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.rotation_angle_max"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.recessing_box_included">
-                                <td>
-                                    <strong>Cut hole box included</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.recessing_box_included"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.recess_dimension_ids">
-                                <td>
-                                    <strong>Cut hole dimensions</strong>
-                                </td>
-                                <td>
-                                    <span t-esc="doc.recess_dimension_ids.get_display()"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.ecorrae_category_id">
-                                <td>
-                                    <strong>ECORAEE I category</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.ecorrae_category_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.ecorrae">
-                                <td>
-                                    <strong>ECORAEE</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.ecorrae"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.ecorrae2_category_id">
-                                <td>
-                                    <strong>ECORAEE II category</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.ecorrae2_category_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.ecorrae2">
-                                <td>
-                                    <strong>ECORAEE II</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.ecorrae2"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.periodic_maintenance">
-                                <td>
-                                    <strong>Periodic maintenance</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.periodic_maintenance"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.anchorage_included">
-                                <td>
-                                    <strong>Anchorage included</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.anchorage_included"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.post_included">
-                                <td>
-                                    <strong>Post included</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.post_included"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.post_with_inspection_chamber">
-                                <td>
-                                    <strong>Post with inspection chamber</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.post_with_inspection_chamber"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.emergency_light">
-                                <td>
-                                    <strong>Emergency light</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.emergency_light"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.average_emergency_time">
-                                <td>
-                                    <strong>Average emergency time (h)</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.average_emergency_time"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.flammable_surfaces">
-                                <td>
-                                    <strong>Flammable surfaces</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.flammable_surfaces"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.photobiological_risk_group_id">
-                                <td>
-                                    <strong>Photobiological risk group</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.photobiological_risk_group_id"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.mechanical_screwdriver">
-                                <td>
-                                    <strong>Electric screwdriver</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.mechanical_screwdriver"/>
-                                </td>
-                            </tr>
-                            <tr t-if="doc.mechanical_screwdriver">
-                                <td>
-                                    <strong>Electric screwdriver</strong>
-                                </td>
-                                <td>
-                                    <span t-field="doc.mechanical_screwdriver"/>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="row" style="page-break-inside: avoid;">
-                    <t t-set="qimages"
-                       t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'Q' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
-                    <t t-set="cimages"
-                       t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'C' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
-                    <t t-if="qimages or cimages">
-                        <div class="col-xs-6">
-                            <div t-attf-style="border-bottom: 3px solid {{ brand_color }};">
-                                <h3>Photometric data</h3>
+                                </div>
                             </div>
-                            <div>
-                                <t t-if="qimages">
-                                    <img style="max-width:40%"
-                                         t-attf-src="data:image/*;base64,{{qimages[0].datas}}"/>
-                                </t>
-                                <t t-if="cimages">
-                                    <img style="max-width:40%"
-                                         t-attf-src="data:image/*;base64,{{cimages[0].datas}}"/>
-                                </t>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div t-attf-style="border-bottom: 2px solid {{ brand_color }};">
+                                        <h5 class="mb4">Light sources and beams</h5>
+                                    </div>
+
+                                    <table class="table table-condensed mb0">
+                                        <tr t-if="doc.source_ids">
+                                            <td>
+                                                <strong>Sources</strong>
+                                            </td>
+                                            <td>
+                                                <ul class="list-unstyled mb0">
+                                                    <t t-foreach="doc.get_sheet_sources()" t-as="s">
+                                                        <li t-esc="s"/>
+                                                    </t>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.source_ids">
+                                            <td>
+                                                <strong>Lamp included</strong>
+                                            </td>
+                                            <td>
+                                                <span t-if="doc.get_included_lamps()">
+                                                    Yes
+                                                </span>
+                                                <span t-if="not doc.get_included_lamps()">
+                                                    No
+                                                </span>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.beam_ids">
+                                            <td>
+                                                <strong>Beams</strong>
+                                            </td>
+                                            <td>
+                                                <ul class="list-unstyled mb0">
+                                                    <t t-foreach="doc.get_sheet_beams()" t-as="b">
+                                                        <li t-esc="b"/>
+                                                    </t>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div t-attf-style="border-bottom: 2px solid {{ brand_color }};">
+                                        <h5 class="mb4">General technical data</h5>
+                                    </div>
+                                    <table class="table table-condensed mb0">
+                                        <!-- Description -->
+                                        <tr t-if="doc.dimension_ids">
+                                            <td>
+                                                <strong>Dimensions</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="doc.dimension_ids.get_display()"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.sealing_id">
+                                            <td>
+                                                <strong>IP</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.sealing_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.sealing2_id">
+                                            <td>
+                                                <strong>IP2</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.sealing2_id"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.ik">
+                                            <td>
+                                                <strong>IK</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.ik"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.static_pressure">
+                                            <td>
+                                                <strong>Static pressure (Kg)</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.static_pressure"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.dynamic_pressure">
+                                            <td>
+                                                <strong>Dinamic pressure (Km/h)</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.dynamic_pressure"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Corrosion resistance</strong>
+                                            </td>
+                                            <td>
+                                                <t t-if="doc.corrosion_resistance">
+                                                    <i class="fa fa-check fa-lg" style="color:#28A409;"/>
+                                                </t>
+                                                <t t-if="not doc.corrosion_resistance">
+                                                    <i class="fa fa-times fa-lg" style="color:#DC1A0C;"/>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <!-- Electric -->
+                                        <tr t-if="doc.protection_class_id">
+                                            <td>
+                                                <strong>Protection class</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.protection_class_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.frequency_id">
+                                            <td>
+                                                <strong>Frequency</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.frequency_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.dimmable_ids">
+                                            <td>
+                                                <strong>Dimmable</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.dimmable_ids])"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.input_voltage_id">
+                                            <td>
+                                                <strong>Input voltage</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.input_voltage_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.input_current">
+                                            <td>
+                                                <strong>Input current (mA)</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.input_current"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.output_voltage_id">
+                                            <td>
+                                                <strong>Output voltage</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.output_voltage_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.output_current">
+                                            <td>
+                                                <strong>Output current (mA)</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.output_current"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.auxiliary_equipment_ids">
+                                            <td>
+                                                <strong>Auxiliary gear</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.auxiliary_equipment_ids])"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.usb_ports">
+                                            <td>
+                                                <strong>USB</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="doc.get_usb()"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.sensor_ids">
+                                            <td>
+                                                <strong>Sensors</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join([x.name for x in doc.sensor_ids])"/>
+                                            </td>
+                                        </tr>
+                                        <!-- Physical -->
+                                        <tr t-if="doc.weight">
+                                            <td>
+                                                <strong>Weight (Kg)</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.weight"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.cable_outlets">
+                                            <td>
+                                                <strong>Cable outlets</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.cable_outlets"/>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr t-if="doc.recessing_box_included">
+                                            <td>
+                                                <strong>Cut hole box included</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.recessing_box_included"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.recess_dimension_ids">
+                                            <td>
+                                                <strong>Cut hole dimensions</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="doc.recess_dimension_ids.get_display()"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.ecorrae_category_id">
+                                            <td>
+                                                <strong>ECORAEE I</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.ecorrae_category_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.ecorrae2_category_id">
+                                            <td>
+                                                <strong>ECORAEE II</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.ecorrae2_category_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.anchorage_included">
+                                            <td>
+                                                <strong>Anchorage included</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.anchorage_included"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.post_included">
+                                            <td>
+                                                <strong>Post included</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.post_included"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.post_with_inspection_chamber">
+                                            <td>
+                                                <strong>Post with inspection chamber</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.post_with_inspection_chamber"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.emergency_light">
+                                            <td>
+                                                <strong>Emergency light</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.emergency_light"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.mechanical_screwdriver">
+                                            <td>
+                                                <strong>Electric screwdriver</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.mechanical_screwdriver"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="doc.fan_blades">
+                                            <td>
+                                                <strong>Fan blades</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="doc.fan_blades"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-if="doc.fan_wattage_ids">
+                                            <td>
+                                                <strong>Fan wattages</strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="', '.join(['%gW' % x.wattage for x in doc.fan_wattage_ids])"/>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </t>
-                    <div class="col-xs-5">
-                        <div t-attf-style="border-bottom: 3px solid {{ brand_color }};">
-                            <h3>Energy label</h3>
-                        </div>
-                        <div>
-                            <t t-set="images"
-                               t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'EF' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
-                            <img style="max-width:30%"
-                                 t-attf-src="data:image/*;base64,{{images and images[0].datas}}"/>
-                        </div>
+                        <div class="oe_structure"/>
                     </div>
                 </div>
-                <div class="oe_structure"/>
             </div>
         </t>
     </template>

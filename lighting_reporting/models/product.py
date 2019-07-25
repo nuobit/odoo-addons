@@ -42,14 +42,39 @@ class LightingProduct(models.Model):
         res = []
         for b in self.beam_ids:
             b_res = []
-            s_beam = b.get_beam()
-            if s_beam:
-                b_res.append(s_beam[0])
+            s_angle = b.get_beam_angle()
+            if s_angle:
+                b_res.append(s_angle[0])
+
+            s_phm = b.get_beam_photometric_distribution()
+            if s_phm:
+                b_res.append(s_phm[0])
 
             if b_res:
-                res.append(' '.join(b_res))
+                res.append(' - '.join(b_res))
 
         return res
+
+    def get_included_lamps(self):
+        return self.source_ids.mapped('line_ids'). \
+            filtered(lambda x: x.is_lamp_included).mapped('type_id.code')
+
+    def get_usb(self):
+        res = []
+        if self.usb_ports:
+            res.append("%gx" % self.usb_ports)
+
+            if self.usb_voltage:
+                res.append("%gV" % self.usb_voltage)
+
+            if self.usb_current:
+                res.append("%gmA" % self.usb_current)
+
+
+            if res:
+                return ' '.join(res)
+
+        return None
 
 
 class LightingAttachment(models.Model):
