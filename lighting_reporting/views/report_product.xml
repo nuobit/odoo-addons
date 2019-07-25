@@ -737,22 +737,27 @@
                 </div>
 
                 <div class="row" style="page-break-inside: avoid;">
-                    <div class="col-xs-6">
-                        <div t-attf-style="border-bottom: 3px solid {{ brand_color }};">
-                            <h3>Photometric data</h3>
+                    <t t-set="qimages"
+                       t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'Q' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
+                    <t t-set="cimages"
+                       t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'C' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
+                    <t t-if="qimages or cimages">
+                        <div class="col-xs-6">
+                            <div t-attf-style="border-bottom: 3px solid {{ brand_color }};">
+                                <h3>Photometric data</h3>
+                            </div>
+                            <div>
+                                <t t-if="qimages">
+                                    <img style="max-width:40%"
+                                         t-attf-src="data:image/*;base64,{{qimages[0].datas}}"/>
+                                </t>
+                                <t t-if="cimages">
+                                    <img style="max-width:40%"
+                                         t-attf-src="data:image/*;base64,{{cimages[0].datas}}"/>
+                                </t>
+                            </div>
                         </div>
-                        <div>
-                            <t t-set="images"
-                               t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'Q' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
-                            <img style="max-width:40%"
-                                 t-attf-src="data:image/*;base64,{{images and images[0].datas}}"/>
-
-                            <t t-set="images"
-                               t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'C' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
-                            <img style="max-width:40%"
-                                 t-attf-src="data:image/*;base64,{{images and images[0].datas}}"/>
-                        </div>
-                    </div>
+                    </t>
                     <div class="col-xs-5">
                         <div t-attf-style="border-bottom: 3px solid {{ brand_color }};">
                             <h3>Energy label</h3>
