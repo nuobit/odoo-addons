@@ -470,6 +470,16 @@ class LightingProductBeam(models.Model):
             rec.dimensions_display = rec.dimension_ids.get_display()
 
     # aux display functions
+    def get_beam_photometric_distribution(self):
+        res = []
+        for rec in self.sorted(lambda x: x.sequence):
+            if rec.photometric_distribution_ids:
+                res.append(', '.join([x.display_name for x in rec.photometric_distribution_ids]))
+
+        if not any(res):
+            return None
+        return res
+
     def get_beam(self):
         res = []
         for rec in self.sorted(lambda x: x.sequence):
@@ -478,7 +488,7 @@ class LightingProductBeam(models.Model):
                 bm.append('%ix' % rec.num)
 
             if rec.photometric_distribution_ids:
-                bm.append(', '.join([x.display_name for x in rec.photometric_distribution_ids]))
+                bm.append(rec.get_beam_photometric_distribution()[0])
 
             dimension_display = rec.dimension_ids.get_display()
             if dimension_display:
