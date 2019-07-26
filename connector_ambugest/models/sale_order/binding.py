@@ -2,9 +2,8 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields
+from odoo import api, models, fields
 
-from odoo.addons.component.core import Component
 from odoo.addons.queue_job.job import job
 
 
@@ -57,8 +56,14 @@ class SaleOrderBinding(models.Model):
             'EMPRESA': backend_record.ambugest_company_id,
         }
         now_fmt = fields.Datetime.now()
-        self.env['ambugest.sale.order'].import_batch(
-            backend=backend_record, filters=filters)
+        self.import_batch(backend=backend_record, filters=filters)
         backend_record.import_services_since_date = now_fmt
 
         return True
+
+    @api.multi
+    def export_order_data(self):
+        self.ensure_one()
+        with self.backend_id.work_on(self._name) as work:
+            exporter = work.component(usage='record.exporter')
+            return exporter.run(self)
