@@ -13,22 +13,22 @@
                 <page string="Service detail">
                     <group>
                         <group string="Patient data">
-                            <field name="contract_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
-                            <field name="insured_name" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="contract_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="insured_name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="insured_ident_cardnum"
-                                   attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
-                            <field name="policy_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
-                            <field name="auth_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="policy_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="auth_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group string="Service data">
-                            <field name="plate_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
-                            <field name="service_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
-                            <field name="service_date" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
-                            <field name="origin" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
-                            <field name="destination" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                            <field name="plate_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="service_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="service_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="origin" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="destination" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="service_direction"
                                    widget="radio" options="{'horizontal': true}"
-                                   attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
                 </page>
