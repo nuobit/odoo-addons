@@ -9,7 +9,7 @@ from odoo.addons.connector.exception import NetworkRetryableError
 
 from contextlib import contextmanager
 from requests.exceptions import HTTPError, RequestException, ConnectionError
-import base64
+import random
 import logging
 
 from functools import partial
@@ -215,6 +215,64 @@ class GenericAdapter(AbstractComponent):
 
         return res and res[0] or []
 
+    def write(self, id, values_d):
+        """ Update records on the external system """
+        _logger.debug(
+            'method write, sql %s id %s, values %s',
+            self._sql, id, values_d)
+
+        if not values_d:
+            return 0
+
+        # check if schema exists to avoid injection
+        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        if not schema_exists:
+            raise pymssql.InternalError("The schema %s does not exist" % self.schema)
+
+        # get id fieldnames and values
+        id_d = dict(zip(self._id, id))
+
+        # fix same field on set and on where, change set fields
+        qset_map_d = {}
+        for k, v in values_d.items():
+            if k in id_d:
+                while True:
+                    k9 = '%s%i' % (k, random.randint(0, 999))
+                    if k9 not in values_d and k9 not in id_d:
+                        qset_map_d[k] = (k9, v)
+                        break
+            else:
+                qset_map_d[k] = (k, v)
+
+        # get the set data
+        qset_l = []
+        for k, (k9, v) in qset_map_d.items():
+            qset_l.append('%(field)s = %%(%(field9)s)s' % dict(field=k, field9=k9))
+        qset = "%s" % (', '.join(qset_l),)
+
+        # prepare the sql with base strucrture
+        sql = self._sql_update % dict(schema=self.schema, qset=qset)
+
+        # prepare params
+        params = dict(id_d)
+        for _, (k9, v) in qset_map_d.items():
+            params[k9] = v
+
+        conn = self.conn()
+        cr = conn.cursor()
+        cr.execute(sql, params)
+        count = cr.rowcount
+        if count == 0:
+            raise Exception(_("Nothing updated with ID: %s") % (id_d,))
+        elif count > 1:
+            conn.rollback()
+            raise pymssql.IntegrityError("Unexpected error: Returned more the one rows: with ID: %s" % (id_d,))
+        conn.commit()
+        cr.close()
+        conn.close()
+
+        return count
+
     def create(self, attributes=None):
         """ Create a record on the external system """
         _logger.debug(
@@ -226,20 +284,6 @@ class GenericAdapter(AbstractComponent):
         if self._export_node_name_res:
             return res['sage'][self._export_node_name_res]['id']
         return None
-
-    def write(self, id, attributes=None):
-        """ Update records on the external system """
-        attributes['id'] = id
-        _logger.debug(
-            'method write, model %s, attributes %s',
-            self._sage_model,
-            attributes
-        )
-        res = self.client.edit(
-            self._sage_model, {self._export_node_name: attributes})
-        if self._export_node_name_res:
-            return res['sage'][self._export_node_name_res]['id']
-        return res
 
     def delete(self, resource, ids):
         _logger.debug('method delete, model %s, ids %s',
@@ -261,4 +305,3 @@ class AmbugestNoModelAdapter(AbstractComponent):
 
     _sql = "select @@version"
     _id = None
-
