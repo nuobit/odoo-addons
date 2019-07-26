@@ -32,15 +32,33 @@ class SaleOrderLine(models.Model):
             buyer = buyer_id.with_context(
                 lang=self.order_id.partner_id.lang,
             )
-            code = product._context.get('display_default_code', True) and \
-                   getattr(product, 'default_code', False) or False
-            name = '[%s] %s' % (code, buyer.name) if code else buyer.name
+
+            if buyer.code:
+                code = buyer.code
+            else:
+                code = product._context.get('display_default_code', True) and \
+                       getattr(product, 'default_code', False) or False
+
+            if buyer.name:
+                name = buyer.name
+            else:
+                name = product.name
+
+            name_l = []
+            if code:
+                name_l.append('[%s]' % code)
+            if name:
+                name_l.append(name)
+
+            if name_l:
+                name_l = [' '.join(name_l)]
 
             if product.description_sale:
-                name += '\n' + product.description_sale
+                name_l.append(product.description_sale)
 
-            self.update({
-                'name': name,
-            })
+            if name_l:
+                self.update({
+                    'name': '\n'.join(name_l),
+                })
 
         return res
