@@ -7,7 +7,7 @@ Sale product description by partner
 ===================================
 
 * This module allows you to define multiple product description
-  by partner and use it on sales
+  and code by partner and use it on sales
 
 Bug Tracker
 ===========

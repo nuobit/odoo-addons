@@ -14,10 +14,18 @@ class ProductBuyerInfo(models.Model):
                                  domain=[('customer', '=', True)], ondelete='cascade',
                                  string='Customer', required=True)
 
-    name = fields.Text(string='Product name', required=True, translate=True)
+    code = fields.Char(string='Product code')
+
+    name = fields.Text(string='Product name', translate=True)
 
     product_id = fields.Many2one(comodel_name='product.product', required=True, ondelete='cascade')
 
     _sql_constraints = [
         ('buyerinfo_uniq', 'unique(product_id, partner_id)', "Already exists this same line!"),
     ]
+
+    @api.constrains('code', 'name')
+    def _check_code_name(self):
+        for rec in self:
+            if not rec.code and not rec.name:
+                raise ValidationError(_("If you're not gonna define code and name, you better remove the entire line"))

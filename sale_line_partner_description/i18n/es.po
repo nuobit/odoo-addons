@@ -51,6 +51,11 @@ msgid "Product name"
 msgstr "Nombre del producto"
 
 #. module: sale_line_partner_description
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_code
+msgid "Product code"
+msgstr "Código del producto"
+
+#. module: sale_line_partner_description
 #: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
