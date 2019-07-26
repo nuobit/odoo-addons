@@ -25,6 +25,22 @@ class SaleOrderAdapter(Component):
                     cast(c."Codi UP" as integer) >= 90000 and
                     s.Cliente = c.Cliente and
                     s.Odoo_Verificado = 1
-                    and s.Codigo_Servicio = 3740002
      """
+
+    _sql_update = """update s
+                     set %(qset)s
+                     from %(schema)s.Odoo_Servicios s, %(schema)s."Unidades productivas" c
+                     where c."Activa_en_AmbuGEST" = 1 and
+                           cast(c."Codi UP" as integer) >= 90000 and
+                           s.Cliente = c.Cliente and
+                           s.Odoo_Verificado = 1 and
+
+                           c.EMPRESA = %%(EMPRESA)s and
+                           c."Codi UP" = %%(CodiUP)s and
+                           s.Fecha_Servicio = %%(Fecha_Servicio)s and
+                           s.Codigo_Servicio = %%(Codigo_Servicio)s and
+                           s.Servicio_Dia = %%(Servicio_Dia)s and
+                           s.Servicio_Ano = %%(Servicio_Ano)s
+         """
+
     _id = ('EMPRESA', 'CodiUP', 'Fecha_Servicio', 'Codigo_Servicio', 'Servicio_Dia', 'Servicio_Ano')
