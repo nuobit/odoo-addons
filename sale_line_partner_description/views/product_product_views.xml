@@ -13,6 +13,7 @@
                         <tree editable="bottom">
                             <field name="product_id" invisible="1"/>
                             <field name="partner_id"/>
+                            <field name="code"/>
                             <field name="name"/>
                         </tree>
                     </field>
