@@ -10,7 +10,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Ambugest">
+                <page string="Service detail">
                     <group>
                         <group string="Patient data">
                             <field name="contract_number" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>

@@ -17,8 +17,8 @@ msgstr ""
 
 #. module: sale_order_ambugest
 #: model:ir.ui.view,arch_db:sale_order_ambugest.view_order_form
-msgid "Ambugest"
-msgstr "Ambugest"
+msgid "Service detail"
+msgstr "Detalle servicio"
 
 #. module: sale_order_ambugest
 #: model:ir.model.fields,field_description:sale_order_ambugest.field_ambugest_sale_order_auth_number
