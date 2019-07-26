@@ -94,6 +94,20 @@ class AmbugestImporter(AbstractComponent):
     def _import_finalize(self, binding):
         return
 
+    def _must_skip(self):
+        """ Hook called right after we read the data from the backend.
+
+        If the method returns a message giving a reason for the
+        skipping, the import will be interrupted and the message
+        recorded in the job (if the import is called directly by the
+        job, not by dependencies).
+
+        If it returns None, the import will continue normally.
+
+        :returns: None | str | unicode
+        """
+        return
+
     def run(self, external_id):
         ## get_data
         # this one knows how to speak to sage
@@ -107,11 +121,13 @@ class AmbugestImporter(AbstractComponent):
         ## get_binding
         # this one knows how to link sage/odoo records
         binder = self.component(usage='binder')
+
         # find if the sage id already exists in odoo
         binding = binder.to_internal(external_id)
 
-        # if not force and self._is_uptodate(binding):
-        #     return _('Already up-to-date.')
+        skip = self._must_skip(binding)
+        if skip:
+            return skip
 
         # import the missing linked resources
         self._import_dependencies()
