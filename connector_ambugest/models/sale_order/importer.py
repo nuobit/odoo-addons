@@ -26,6 +26,20 @@ class SaleOrderImporter(Component):
     _inherit = 'ambugest.importer'
     _apply_on = 'ambugest.sale.order'
 
+    def _must_skip(self, binding):
+        if not binding:
+            return None
+
+        order = self.component(usage='binder').unwrap_binding(binding)
+        if order.state != 'draft':
+            state_option = dict(
+                order.fields_get(['state'], ['selection'])
+                    .get('state').get('selection'))
+
+            return _('The Order %s is %s -> Update not allowed' % (order.name, state_option[order.state]))
+
+        return None
+
     def _import_dependencies(self):
         external_id = (self.external_data['EMPRESA'], self.external_data['CodiUP'])
 
