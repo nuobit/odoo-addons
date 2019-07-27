@@ -2,11 +2,11 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-===================
-Sale Order Ambugest
-===================
+==================
+Sale order Service
+==================
 
-* This module adds Ambugest specific data to sale orders
+* This module adds Service specific data to sale orders
 
 Bug Tracker
 ===========

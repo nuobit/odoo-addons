@@ -3,9 +3,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    'name': 'Sale Order Ambugest',
-    'summary': 'This module adds Ambugest specific data to sale orders',
-    'version': '11.0.0.1.3',
+    'name': 'Sale order Service',
+    'summary': 'This module adds Service specific data to sale orders',
+    'version': '11.0.0.2.0',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
