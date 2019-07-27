@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.service.form</field>
+        <field name="sequence" eval="10"/>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Service detail">
+                    <group>
+                        <group string="Patient data">
+                            <field name="contract_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="insured_name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="insured_ident_cardnum"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="policy_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="auth_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group string="Service data">
+                            <field name="plate_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="service_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="service_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="origin" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="destination" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="service_direction"
+                                   widget="radio" options="{'horizontal': true}"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
