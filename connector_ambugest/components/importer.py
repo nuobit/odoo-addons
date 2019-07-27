@@ -94,7 +94,7 @@ class AmbugestImporter(AbstractComponent):
     def _import_finalize(self, binding):
         return
 
-    def _must_skip(self):
+    def _must_skip(self, binding):
         """ Hook called right after we read the data from the backend.
 
         If the method returns a message giving a reason for the
