@@ -255,7 +255,7 @@ class GenericAdapter(AbstractComponent):
 
         # prepare params
         params = dict(id_d)
-        for _, (k9, v) in qset_map_d.items():
+        for k, (k9, v) in qset_map_d.items():
             params[k9] = v
 
         conn = self.conn()
