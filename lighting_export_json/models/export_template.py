@@ -344,7 +344,7 @@ class LightingExportTemplate(models.Model):
 
             ## products
             group_d.update({
-                'product': sorted(products.mapped('reference')),
+                'product': sorted(list(set(products.mapped('finish_group_name')))),
             })
 
             ## attributes
