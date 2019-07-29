@@ -26,13 +26,14 @@
         <div class="header">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div t-attf-style="border-bottom: 2px solid {{ brand_color }};">
-                            <t t-foreach="doc.catalog_ids" t-as="c">
-                                <img style="max-width:10%;"
-                                     t-attf-src="data:image/*;base64,{{c.image}}"/>
-                            </t>
-                        </div>
+                    <div class="col-xs-7">
+                        <t t-foreach="doc.catalog_ids" t-as="c">
+                            <img style="max-width:10%;"
+                                 t-attf-src="data:image/*;base64,{{c.image}}"/>
+                        </t>
+                    </div>
+                    <div class="col-xs-5">
+                        <h4 class="text-right" t-attf-style="color: {{ brand_color }};">Data sheet</h4>
                     </div>
                 </div>
             </div>
@@ -116,7 +117,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-xs-4">
+                                <div class="col-xs-offset-3 col-xs-5">
                                     <t t-set="efimages"
                                        t-value="doc.attachment_ids.filtered(lambda x: x.type_id.code == 'EF' and x.attachment_id.index_content == 'image').sorted(lambda x: (x.sequence, x.id))"/>
                                     <div t-if="efimages" class="row">
@@ -263,7 +264,7 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div t-attf-style="border-bottom: 2px solid {{ brand_color }};">
-                                        <h5 class="mb4">General technical data</h5>
+                                        <h5 class="mb4">Technical data</h5>
                                     </div>
                                     <table class="table table-condensed mb0">
                                         <!-- Description -->
