@@ -15,3 +15,11 @@ class SaleOrder(models.Model):
             self._event('on_confirm_order').notify(rec)
 
         return True
+
+    @api.multi
+    def action_cancel(self):
+        for rec in self:
+            super(SaleOrder, rec).action_cancel()
+            self._event('on_cancel_order').notify(rec)
+
+        return True
