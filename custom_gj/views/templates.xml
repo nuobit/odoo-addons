@@ -16,7 +16,7 @@
                 <strong t-field="o.partner_id.name" style="font-size: larger;"/>
             </div>
             <div t-field="o.partner_id.street"/>
-            <div t-if="o.partner_id.street2" t-field="company.partner_id.street2"/>
+            <div t-if="o.partner_id.street2" t-field="o.partner_id.street2"/>
             <div>
                 <span t-if="o.partner_id.zip" t-field="o.partner_id.zip"/>
                 <span t-if="o.partner_id.city" t-field="o.partner_id.city"/>
