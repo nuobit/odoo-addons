@@ -24,7 +24,8 @@ class SaleOrderAdapter(Component):
               where c."Activa_en_AmbuGEST" = 1 and
                     cast(c."Codi UP" as integer) >= 90000 and
                     s.Cliente = c.Cliente and
-                    s.Odoo_Verificado = 1
+                    s.Odoo_Verificado = 1 and
+                    s.Odoo_Numero_Albaran is null
      """
 
     _sql_update = """update s
@@ -33,7 +34,6 @@ class SaleOrderAdapter(Component):
                      where c."Activa_en_AmbuGEST" = 1 and
                            cast(c."Codi UP" as integer) >= 90000 and
                            s.Cliente = c.Cliente and
-                           s.Odoo_Verificado = 1 and
 
                            c.EMPRESA = %%(EMPRESA)s and
                            c."Codi UP" = %%(CodiUP)s and
