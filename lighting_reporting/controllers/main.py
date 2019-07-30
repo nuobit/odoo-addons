@@ -23,7 +23,7 @@ class ProductDatasheetController(http.Controller):
                 ('code', '=', lang),
             ])
             if len(lang_id) == 0:
-                return werkzeug.exceptions.InternalServerError('The %s language does not exist' % lang)
+                return werkzeug.exceptions.NotFound('The %s language does not exist' % lang)
             elif len(lang_id) > 1:
                 return werkzeug.exceptions.InternalServerError('More than one language found with code %s' % lang)
 
@@ -33,13 +33,13 @@ class ProductDatasheetController(http.Controller):
                 ('reference', '=', reference),
             ])
             if len(product_id) == 0:
-                return werkzeug.exceptions.InternalServerError(
+                return werkzeug.exceptions.NotFound(
                     'The product with reference %s does not exist' % reference)
             elif len(product_id) > 1:
                 return werkzeug.exceptions.InternalServerError(
                     'More than one product found with reference %s' % reference)
         else:
-            return werkzeug.exceptions.InternalServerError('A reference must be provided')
+            return werkzeug.exceptions.BadRequest('A reference must be provided')
 
         # generate report
         pdf = http.request.env.ref('lighting_reporting.action_report_product'). \
