@@ -347,6 +347,13 @@ class LightingExportTemplate(models.Model):
                 'product': sorted(list(set(products.mapped('finish_group_name')))),
             })
 
+            ## catalog
+            catalog_ids = products.mapped('catalog_ids')
+            if catalog_ids:
+                group_d.update({
+                    'catalog': sorted(list(set(catalog_ids.mapped('name')))),
+                })
+
             ## attributes
             if group.attribute_ids:
                 attributes = [self.get_efective_field_name(x.name) for x in group.attribute_ids]
