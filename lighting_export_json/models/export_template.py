@@ -240,6 +240,13 @@ class LightingExportTemplate(models.Model):
                     'enabled': any(products.mapped('website_published')),
                 }
 
+                # name
+                photo_groups = products.mapped('photo_group_id')
+                if photo_groups:
+                    bundle_d[template_name] = {
+                        'name': photo_groups[0].name,
+                    }
+
                 # required products
                 domain = [('id', 'in', products.mapped('required_ids.id'))]
                 if self.domain:
@@ -340,55 +347,57 @@ class LightingExportTemplate(models.Model):
 
         groups_d = {}
         for group, products in photo_group_d.items():
-            group_d = {}
+            # if the group does not contain any bundle
+            if not any(products.mapped('is_composite')):
+                group_d = {}
 
-            ## products
-            group_d.update({
-                'product': sorted(list(set(products.mapped('finish_group_name')))),
-            })
-
-            ## catalog
-            catalog_ids = products.mapped('catalog_ids')
-            if catalog_ids:
+                ## products
                 group_d.update({
-                    'catalog': sorted(list(set(catalog_ids.mapped('name')))),
+                    'product': sorted(list(set(products.mapped('finish_group_name')))),
                 })
 
-            ## attributes
-            if group.attribute_ids:
-                attributes = [self.get_efective_field_name(x.name) for x in group.attribute_ids]
-                group_d.update({
-                    'product_attribute': sorted(attributes),
-                })
+                ## catalog
+                catalog_ids = products.mapped('catalog_ids')
+                if catalog_ids:
+                    group_d.update({
+                        'catalog': sorted(list(set(catalog_ids.mapped('name')))),
+                    })
 
-            ## common fields
-            product = products[0]
-            group_id = product.product_group_id
-            product_data = {}
-            fields = [self.get_efective_field_name(x.name) for x in group_id.field_ids]
-            for f in fields:
-                if f in objects_d[product.reference]:
-                    product_data[f] = objects_d[product.reference][f]
+                ## attributes
+                if group.attribute_ids:
+                    attributes = [self.get_efective_field_name(x.name) for x in group.attribute_ids]
+                    group_d.update({
+                        'product_attribute': sorted(attributes),
+                    })
 
-            # description (is a common field too)
-            group_desc_d = {}
-            for lang in active_langs:
-                category_id = product.with_context(lang=lang).category_id
-                lang_description = category_id.description_text or category_id.name
-                if lang_description:
-                    group_desc_d[lang] = ' '.join(filter(lambda x: x, [lang_description, group.name]))
-            if group_desc_d:
-                product_data.update({
-                    'description': group_desc_d,
-                })
+                ## common fields
+                product = products[0]
+                group_id = product.product_group_id
+                product_data = {}
+                fields = [self.get_efective_field_name(x.name) for x in group_id.field_ids]
+                for f in fields:
+                    if f in objects_d[product.reference]:
+                        product_data[f] = objects_d[product.reference][f]
 
-            if product_data:
-                group_d.update({
-                    'common_attribute': product_data,
-                })
+                # description (is a common field too)
+                group_desc_d = {}
+                for lang in active_langs:
+                    category_id = product.with_context(lang=lang).category_id
+                    lang_description = category_id.description_text or category_id.name
+                    if lang_description:
+                        group_desc_d[lang] = ' '.join(filter(lambda x: x, [lang_description, group.name]))
+                if group_desc_d:
+                    product_data.update({
+                        'description': group_desc_d,
+                    })
 
-            if group_d:
-                groups_d[group.name] = group_d
+                if product_data:
+                    group_d.update({
+                        'common_attribute': product_data,
+                    })
+
+                if group_d:
+                    groups_d[group.name] = group_d
 
         res.update({'groups': groups_d})
         _logger.info("Product groups successfully generated...")
