@@ -243,9 +243,9 @@ class LightingExportTemplate(models.Model):
                 # name
                 photo_groups = products.mapped('photo_group_id')
                 if photo_groups:
-                    bundle_d[template_name] = {
+                    bundle_d[template_name].update({
                         'name': photo_groups[0].name,
-                    }
+                    })
 
                 # required products
                 domain = [('id', 'in', products.mapped('required_ids.id'))]
