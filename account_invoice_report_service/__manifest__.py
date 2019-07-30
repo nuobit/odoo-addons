@@ -5,7 +5,7 @@
 {
     'name': "Service invoice report",
     'description': """Service invoice report""",
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.1.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Accounting',
@@ -15,8 +15,8 @@
         'sale_order_service',
     ],
     'data': [
-        'report/report.xml',
         'data/data.xml',
+        'report/report.xml',
         'views/report_invoice_service.xml',
         'views/account_invoice_views.xml',
     ],
