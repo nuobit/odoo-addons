@@ -31,8 +31,8 @@ msgstr "<strong>Código cliente:</strong>"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
-msgid "<strong>Date:</strong>"
-msgstr "<strong>Fecha:</strong>"
+msgid "<strong>Invoice date:</strong>"
+msgstr "<strong>Fecha factura:</strong>"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -226,3 +226,18 @@ msgstr "<span>(vuelta)</span>"
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>(going)</span>"
 msgstr "<span>(ida)</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>from invoice date</span>"
+msgstr "<span>fecha factura</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>Maturity dates:</span>"
+msgstr "<span>Fechas de vencimiento:</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>Maturity date:</span>"
+msgstr "<span>Fecha de vencimiento:</span>"
