@@ -202,3 +202,27 @@ msgstr "Factura de proveedor"
 msgid "Vendor Credit Note"
 msgstr "Rectificativa de proveedor"
 
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>Round trip</span>"
+msgstr "<span>Ida y vuelta</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>Only return</span>"
+msgstr "<span>Solo vuelta</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>One way</span>"
+msgstr "<span>Solo ida</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>(return)</span>"
+msgstr "<span>(vuelta)</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>(going)</span>"
+msgstr "<span>(ida)</span>"
