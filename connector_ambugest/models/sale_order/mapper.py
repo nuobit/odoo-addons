@@ -173,6 +173,8 @@ class SaleOrderImportMapper(Component):
     def order_date(self, record):
         return {
             'date_order': record['Fecha_Servicio'],
+            'confirmation_date': record['Fecha_Servicio'],
+            'validity_date': record['Fecha_Servicio'],
         }
 
     @only_create
@@ -196,8 +198,12 @@ class SaleOrderImportMapper(Component):
     @only_create
     @mapping
     def service_direction(self, record):
-        if record['Servicio_de_vuelta']:
-            if record['Servicio_de_vuelta'] == 1:
-                return {'service_direction': 'return'}
-            else:
-                return {'service_direction': 'going'}
+        values = {
+            'return_service': bool(record['Servicio_de_vuelta']),
+        }
+        if record['Codigo_Ida_y_Vuelta']:
+            values.update({
+                'round_trip_code': record['Codigo_Ida_y_Vuelta'],
+            })
+
+        return values
