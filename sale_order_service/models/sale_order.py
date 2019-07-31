@@ -23,5 +23,5 @@ class SaleOrder(models.Model):
     service_date = fields.Date(string="Service date")
     origin = fields.Char(string="Origin")
     destination = fields.Char(string="Destination")
-    service_direction = fields.Selection(selection=[('going', _('Going')), ('return', _('Return'))],
-                                         string="Service direction")
+    round_trip_code = fields.Integer(string="Round trip code")
+    return_service = fields.Boolean(string="Return service")
