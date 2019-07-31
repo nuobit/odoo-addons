@@ -18,7 +18,7 @@ class AmbumovilService(models.AbstractModel):
         ])
 
         product_stock_ld = []
-        for q in quants:
+        for q in quants.sorted(lambda x: (x.product_id.name, x.product_id.default_code, x.id)):
             quant_d = {
                 'product_id': q.product_id.id,
                 'product_name': q.product_id.name,
