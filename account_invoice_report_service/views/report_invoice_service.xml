@@ -37,7 +37,7 @@
         </div>
 
         <div class="footer">
-            <div class="text-center" style="font-size: 8px;">
+            <div class="text-center" style="font-size: 10px;">
                 <ul class="list-unstyled mt4 mb4">
                     <li>
                         <span t-field="company.name"/>
@@ -152,9 +152,9 @@
                                                 <table class="ris-table1">
                                                     <thead>
                                                         <tr>
-                                                            <th width="15%">Contract number</th>
-                                                            <th width="40%" class="text-left">Name</th>
-                                                            <th width="15%">ID number</th>
+                                                            <th width="16%">Contract number</th>
+                                                            <th width="10%">ID number</th>
+                                                            <th width="44%">Name</th>
                                                             <th width="15">Policy</th>
                                                             <th width="15%">Authorization num.</th>
                                                         </tr>
@@ -174,12 +174,12 @@
                                                 <table class="ris-table1">
                                                     <thead>
                                                         <tr>
-                                                            <th width="10%">Plate</th>
-                                                            <th width="10%">Service num.</th>
+                                                            <th width="8%">Plate</th>
+                                                            <th width="8%">Service num.</th>
                                                             <th width="10%">Service date</th>
                                                             <th width="30%">Origin</th>
                                                             <th width="30%">Destination</th>
-                                                            <th width="10%"/>
+                                                            <th width="14%"/>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -190,8 +190,8 @@
                                                 <table class="ris-table1">
                                                     <thead>
                                                         <tr>
-                                                            <th width="30%"/>
-                                                            <th width="40%">Description</th>
+                                                            <th width="26%"/>
+                                                            <th width="44%">Description</th>
                                                             <th width="10%" class="text-right">Quantity</th>
                                                             <th width="10%" class="text-right">Unit Price</th>
                                                             <th width="10%" class="text-right">Amount</th>
@@ -218,14 +218,14 @@
                                                     <table class="ris-table3">
                                                         <tbody>
                                                             <tr>
-                                                                <td width="15%">
+                                                                <td width="16%">
                                                                     <span t-field="order.contract_number"/>
                                                                 </td>
-                                                                <td width="40%">
-                                                                    <span t-field="order.insured_name"/>
-                                                                </td>
-                                                                <td width="15%">
+                                                                <td width="10%">
                                                                     <span t-field="order.insured_ident_cardnum"/>
+                                                                </td>
+                                                                <td width="44%">
+                                                                    <span t-field="order.insured_name"/>
                                                                 </td>
                                                                 <td width="15%">
                                                                     <span t-field="order.policy_number"/>
@@ -243,10 +243,10 @@
                                                     <table class="ris-table3">
                                                         <tbody>
                                                             <tr>
-                                                                <td width="10%">
+                                                                <td width="8%">
                                                                     <span t-field="order.plate_number"/>
                                                                 </td>
-                                                                <td width="10%">
+                                                                <td width="8%">
                                                                     <span t-field="order.service_number"/>
                                                                 </td>
                                                                 <td width="10%">
@@ -258,8 +258,24 @@
                                                                 <td width="30%">
                                                                     <span t-field="order.destination"/>
                                                                 </td>
-                                                                <td width="10%" class="text-right">
-                                                                    <span t-field="order.service_direction"/>
+                                                                <td width="14%" class="text-right">
+                                                                    <t t-if="order.round_trip_code">
+                                                                        <span>Round trip</span>
+                                                                        <t t-if="order.return_service">
+                                                                            <span>(return)</span>
+                                                                        </t>
+                                                                        <t t-if="not order.return_service">
+                                                                            <span>(going)</span>
+                                                                        </t>
+                                                                    </t>
+                                                                    <t t-if="not order.round_trip_code">
+                                                                        <t t-if="order.return_service">
+                                                                            <span>Only return</span>
+                                                                        </t>
+                                                                        <t t-if="not order.return_service">
+                                                                            <span>One way</span>
+                                                                        </t>
+                                                                    </t>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -275,8 +291,8 @@
                                                             <tbody>
                                                                 <t t-foreach="invoice_lines" t-as="il">
                                                                     <tr>
-                                                                        <td width="30%"/>
-                                                                        <td width="40%">
+                                                                        <td width="26%"/>
+                                                                        <td width="44%">
                                                                             <span t-field="il.name"/>
                                                                         </td>
                                                                         <td width="10%" class="text-right">

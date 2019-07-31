@@ -21,19 +21,45 @@ class AccountInvoice(models.Model):
             if iline.sale_line_ids:
                 for oline in iline.sale_line_ids:
                     if iline in ilines_trace:
-                        raise Exception(_("Not implemented case: The same invoice line belongs to different orders"))
-                    ilines_trace += iline
+                        raise ValidationError(
+                            _("Not implemented case: The same invoice line belongs to different orders"))
+                    ilines_trace |= iline
                     order = oline.order_id
                     if order not in order_d:
                         order_d[order] = self.env['account.invoice.line']
-                    order_d[order] += iline
+                    order_d[order] |= iline
             else:
                 no_order += iline
 
-        # sorting
+        # grouping by round trip code
+        order_rt_date_l = []
+        order_rt_d = {}
+        for order in order_d:
+            rt_code = order.round_trip_code
+            if rt_code:
+                if rt_code not in order_rt_d:
+                    order_rt_d[rt_code] = self.env['sale.order']
+                order_rt_d[rt_code] |= order
+            else:
+                order_rt_date_l.append((order, order))
+
+        # sort round trip classified orders by return_service
+        for dummy, orders in order_rt_d.items():
+            going_order = orders.filtered(lambda x: not x.return_service)
+            if going_order:
+                going_order = going_order[0]
+            else:
+                going_order = orders.sorted(lambda x: x.service_date)[0]
+
+            for o in orders:
+                order_rt_date_l.append((going_order, o))
+
+        # sort and join with lines w/o orders
         order_sorted_l = []
-        for order, ilines in sorted(order_d.items(), key=lambda x: (x[0].confirmation_date, x[0].service_number)):
-            order_sorted_l.append((order, ilines.sorted(lambda x: (x.sequence, x.id))))
+        for dummy, order in sorted(order_rt_date_l, key=lambda x: (x[0].service_date, x[0].service_number,
+                                                                   x[1].round_trip_code, x[1].return_service,
+                                                                   x[1].service_number)):
+            order_sorted_l.append((order, order_d[order].sorted(lambda x: (x.sequence, x.id))))
 
         if no_order:
             order_sorted_l.append((None, no_order.sorted(lambda x: (x.sequence, x.id))))
