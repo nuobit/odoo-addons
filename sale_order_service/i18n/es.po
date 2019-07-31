@@ -39,13 +39,6 @@ msgid "Destination"
 msgstr "Destino"
 
 #. module: sale_order_service
-#: code:addons/sale_order_service/models/sale_order.py:26
-#: selection:sale.order,service_direction:0
-#, python-format
-msgid "Going"
-msgstr "Ida"
-
-#. module: sale_order_service
 #: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_insured_ident_cardnum
 #: model:ir.model.fields,field_description:sale_order_service.field_sale_order_insured_ident_cardnum
 msgid "Insured identity card number"
@@ -80,13 +73,6 @@ msgid "Quotation"
 msgstr "Presupuesto"
 
 #. module: sale_order_service
-#: code:addons/sale_order_service/models/sale_order.py:26
-#: selection:sale.order,service_direction:0
-#, python-format
-msgid "Return"
-msgstr "Vuelta"
-
-#. module: sale_order_service
 #: model:ir.ui.view,arch_db:sale_order_service.view_order_form
 msgid "Service data"
 msgstr "Datos del servicio"
@@ -98,10 +84,16 @@ msgid "Service date"
 msgstr "Fecha del servicio"
 
 #. module: sale_order_service
-#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_service_direction
-#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_service_direction
-msgid "Service direction"
-msgstr "Sentido del servicio"
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_return_service
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_return_service
+msgid "Return service"
+msgstr "Servicio de vuelta"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_round_trip_code
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_round_trip_code
+msgid "Round trip code"
+msgstr "Código de ida y vuelta"
 
 #. module: sale_order_service
 #: model:ir.model.fields,field_description:sale_order_service.field_servicet_sale_order_service_number
