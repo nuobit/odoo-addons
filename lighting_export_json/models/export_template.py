@@ -332,11 +332,11 @@ class LightingExportTemplate(models.Model):
                 group_id = product.product_group_id
 
                 ## merge common fields with attributes from the category
-                fields = group_id.field_ids
-                fields |= product.category_id.attribute_ids
+                field_ids = group_id.field_ids
+                field_ids |= product.category_id.attribute_ids
 
                 product_data = {}
-                fields = [self.get_efective_field_name(x.name) for x in fields]
+                fields = [self.get_efective_field_name(x.name) for x in field_ids]
                 for f in fields:
                     if f in objects_d[product.reference]:
                         product_data[f] = objects_d[product.reference][f]
