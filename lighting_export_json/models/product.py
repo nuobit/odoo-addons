@@ -4,9 +4,8 @@
 
 from odoo import models, fields, api, _
 
-import re
+import datetime
 import json
-import ast
 
 
 def _values2range(values, range, magnitude=None):
@@ -128,36 +127,27 @@ class LightingProduct(models.Model):
         template_id = self.env.context.get('template_id')
         if template_id:
             for rec in self:
-                n = template_id.max_attachments
-                if n < 0:
-                    n = len(rec.attachment_ids)
+                # map attach type with order
+                attachment_order_d = {x.type_id: x.sequence for x in template_id.attachment_ids}
 
-                attachment_ids = set()
-                while n > 0:
-                    base_count = {x.type_id.id: x.max_count for x in
-                                  template_id.attachment_ids.filtered(lambda x: x.max_count != 0)}
-                    attachments = rec.attachment_ids \
-                        .filtered(lambda x: x.id not in attachment_ids and
-                                            x.type_id.id in base_count) \
-                        .sorted(lambda x: x.sequence)
-                    if not attachments:
-                        break
-                    for a in attachments:
-                        if a.type_id.id in base_count:
-                            max_count = base_count[a.type_id.id]
-                            if max_count != 0:
-                                attachment_ids.add(a.id)
-                                if max_count > 0:
-                                    base_count[a.type_id.id] -= 1
-                                n -= 1
-                                if not n:
-                                    break
+                # classify
+                attachment_type_d = {}
+                for a in rec.attachment_ids:
+                    attach_type = a.type_id
+                    if attach_type in attachment_order_d:
+                        if attach_type not in attachment_type_d:
+                            attachment_type_d[attach_type] = self.env['lighting.attachment']
+                        attachment_type_d[attach_type] |= a
 
-                if attachment_ids:
+                # final attachment sort and formatting
+                if attachment_type_d:
                     attachment_l = []
-                    for a in rec.attachment_ids \
-                            .filtered(lambda x: x.id in attachment_ids) \
-                            .sorted(lambda x: x.sequence):
+                    for dummy, attachs in sorted(attachment_type_d.items(), key=lambda x: attachment_order_d[x[0]]):
+                        a = attachs.filtered(lambda x: x.date)
+                        if a:
+                            a = a.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)[0]
+                        else:
+                            a = attachs.sorted(lambda x: (x.sequence, x.id))[0]
 
                         attachment_d = {
                             'datas_fname': a.datas_fname,
