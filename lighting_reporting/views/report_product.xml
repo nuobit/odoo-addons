@@ -320,17 +320,12 @@
                                                 <span t-field="doc.dynamic_pressure"/>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr t-if="doc.corrosion_resistance is not None">
                                             <td>
                                                 <strong>Corrosion resistance</strong>
                                             </td>
                                             <td>
-                                                <t t-if="doc.corrosion_resistance">
-                                                    <i class="fa fa-check fa-lg" style="color:#28A409;"/>
-                                                </t>
-                                                <t t-if="not doc.corrosion_resistance">
-                                                    <i class="fa fa-times fa-lg" style="color:#DC1A0C;"/>
-                                                </t>
+                                                <span t-field="doc.corrosion_resistance"/>
                                             </td>
                                         </tr>
                                         <!-- Electric -->
@@ -434,7 +429,7 @@
                                         </tr>
 
 
-                                        <tr t-if="doc.recessing_box_included">
+                                        <tr t-if="doc.recessing_box_included is not None">
                                             <td>
                                                 <strong>Cut hole box included</strong>
                                             </td>
@@ -468,7 +463,7 @@
                                                 <span t-field="doc.ecorrae2_category_id"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.anchorage_included">
+                                        <tr t-if="doc.anchorage_included is not None">
                                             <td>
                                                 <strong>Anchorage included</strong>
                                             </td>
@@ -476,7 +471,7 @@
                                                 <span t-field="doc.anchorage_included"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.post_included">
+                                        <tr t-if="doc.post_included is not None">
                                             <td>
                                                 <strong>Post included</strong>
                                             </td>
@@ -484,7 +479,7 @@
                                                 <span t-field="doc.post_included"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.post_with_inspection_chamber">
+                                        <tr t-if="doc.post_with_inspection_chamber is not None">
                                             <td>
                                                 <strong>Post with inspection chamber</strong>
                                             </td>
@@ -492,7 +487,7 @@
                                                 <span t-field="doc.post_with_inspection_chamber"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.emergency_light">
+                                        <tr t-if="doc.emergency_light is not None">
                                             <td>
                                                 <strong>Emergency light</strong>
                                             </td>
@@ -500,7 +495,7 @@
                                                 <span t-field="doc.emergency_light"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.mechanical_screwdriver">
+                                        <tr t-if="doc.mechanical_screwdriver is not None">
                                             <td>
                                                 <strong>Electric screwdriver</strong>
                                             </td>
