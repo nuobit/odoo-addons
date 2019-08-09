@@ -16,6 +16,36 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: lighting
+#: code:addons/lighting/models/product.py:12
+#: selection:lighting.product,anchorage_included:0
+#: selection:lighting.product,corrosion_resistance:0
+#: selection:lighting.product,emergency_light:0
+#: selection:lighting.product,flammable_surfaces:0
+#: selection:lighting.product,mechanical_screwdriver:0
+#: selection:lighting.product,periodic_maintenance:0
+#: selection:lighting.product,post_included:0
+#: selection:lighting.product,post_with_inspection_chamber:0
+#: selection:lighting.product,recessing_box_included:0
+#, python-format
+msgid "Yes"
+msgstr "Sí"
+
+#. module: lighting
+#: code:addons/lighting/models/product.py:13
+#: selection:lighting.product,anchorage_included:0
+#: selection:lighting.product,corrosion_resistance:0
+#: selection:lighting.product,emergency_light:0
+#: selection:lighting.product,flammable_surfaces:0
+#: selection:lighting.product,mechanical_screwdriver:0
+#: selection:lighting.product,periodic_maintenance:0
+#: selection:lighting.product,post_included:0
+#: selection:lighting.product,post_with_inspection_chamber:0
+#: selection:lighting.product,recessing_box_included:0
+#, python-format
+msgid "No"
+msgstr "No"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_discontinued_product_percent
 msgid "% Discontinued product(s)"
 msgstr "% Producto(s) descatalogado(s)"

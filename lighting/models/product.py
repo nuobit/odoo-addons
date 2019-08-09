@@ -8,6 +8,11 @@ from odoo.exceptions import UserError, ValidationError
 import re
 from collections import OrderedDict
 
+YESNO = [
+    ('Y', _('Yes')),
+    ('N', _('No')),
+]
+
 
 class LightingProduct(models.Model):
     _name = 'lighting.product'
@@ -301,7 +306,7 @@ class LightingProduct(models.Model):
     static_pressure = fields.Float(string="Static pressure (kg)", track_visibility='onchange')
     dynamic_pressure = fields.Float(string="Dynamic pressure (kg)", track_visibility='onchange')
     dynamic_pressure_velocity = fields.Float(string="Dynamic pressure (km/h)", track_visibility='onchange')
-    corrosion_resistance = fields.Boolean(string="Corrosion resistance", track_visibility='onchange')
+    corrosion_resistance = fields.Selection(selection=YESNO, string="Corrosion resistance", track_visibility='onchange')
     technical_comments = fields.Char(string='Technical comments', track_visibility='onchange')
 
     # electrical characteristics tab
@@ -394,7 +399,8 @@ class LightingProduct(models.Model):
     lead_wire_length = fields.Float(string='Length of the lead wire supplied (mm)', track_visibility='onchange')
     inclination_angle_max = fields.Float(string='Maximum tilt angle (º)', track_visibility='onchange')
     rotation_angle_max = fields.Float(string='Maximum rotation angle (º)', track_visibility='onchange')
-    recessing_box_included = fields.Boolean(string='Cut hole box included', track_visibility='onchange')
+    recessing_box_included = fields.Selection(selection=YESNO, string='Cut hole box included',
+                                              track_visibility='onchange')
     recess_dimension_ids = fields.One2many(comodel_name='lighting.product.recessdimension',
                                            inverse_name='product_id', string='Cut hole dimensions',
                                            copy=True, track_visibility='onchange')
@@ -405,22 +411,24 @@ class LightingProduct(models.Model):
     ecorrae = fields.Float(string='ECORRAE I', track_visibility='onchange')
     ecorrae2 = fields.Float(string='ECORRAE II', track_visibility='onchange')
 
-    periodic_maintenance = fields.Boolean(string='Periodic maintenance', track_visibility='onchange')
-    anchorage_included = fields.Boolean(string='Anchorage included', track_visibility='onchange')
-    post_included = fields.Boolean(string='Post included', track_visibility='onchange')
-    post_with_inspection_chamber = fields.Boolean(string='Post with inspection chamber', track_visibility='onchange')
+    periodic_maintenance = fields.Selection(selection=YESNO, string='Periodic maintenance', track_visibility='onchange')
+    anchorage_included = fields.Selection(selection=YESNO, string='Anchorage included', track_visibility='onchange')
+    post_included = fields.Selection(selection=YESNO, string='Post included', track_visibility='onchange')
+    post_with_inspection_chamber = fields.Selection(selection=YESNO, string='Post with inspection chamber',
+                                                    track_visibility='onchange')
 
-    emergency_light = fields.Boolean(string='Emergency light', help="Luminarie with emergency light",
-                                     track_visibility='onchange')
+    emergency_light = fields.Selection(selection=YESNO, string='Emergency light', help="Luminarie with emergency light",
+                                       track_visibility='onchange')
     average_emergency_time = fields.Float(string='Average emergency time (h)', track_visibility='onchange')
 
-    flammable_surfaces = fields.Boolean(string='Flammable surfaces', track_visibility='onchange')
+    flammable_surfaces = fields.Selection(selection=YESNO, string='Flammable surfaces', track_visibility='onchange')
 
     photobiological_risk_group_id = fields.Many2one(comodel_name='lighting.product.photobiologicalriskgroup',
                                                     ondelete='restrict',
                                                     string='Photobiological risk group', track_visibility='onchange')
 
-    mechanical_screwdriver = fields.Boolean(string='Electric screwdriver', track_visibility='onchange')
+    mechanical_screwdriver = fields.Selection(selection=YESNO, string='Electric screwdriver',
+                                              track_visibility='onchange')
 
     fan_blades = fields.Integer(string='Fan blades', help='Number of fan blades', track_visibility='onchange')
     fan_control = fields.Selection(selection=[('remote', 'Remote control'), ('wall', 'Wall control')],
