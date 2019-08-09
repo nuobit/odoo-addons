@@ -5,6 +5,28 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
+from PIL import Image, ImageChops
+import io
+import base64
+
+
+def autocrop(im, bgcolor):
+    if im.mode != "RGB":
+        if im.mode in ('P'):
+            im = im.convert("RGBA")
+            im2 = Image.new('RGB', im.size, bgcolor)
+            im2.paste(im, (0, 0), im)
+            im = im2
+        im = im.convert("RGB")
+
+    bg = Image.new("RGB", im.size, bgcolor)
+
+    diff = ImageChops.difference(im, bg)
+    bbox = diff.getbbox()
+    if bbox:
+        return im.crop(bbox)
+    return None  # no contents
+
 
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
@@ -70,7 +92,6 @@ class LightingProduct(models.Model):
             if self.usb_current:
                 res.append("%gmA" % self.usb_current)
 
-
             if res:
                 return ' '.join(res)
 
@@ -80,3 +101,17 @@ class LightingProduct(models.Model):
 class LightingAttachment(models.Model):
     _inherit = 'lighting.attachment'
 
+    def get_cropped_image(self):
+        datas = base64.decodebytes(self.datas)
+        im = Image.open(io.BytesIO(datas))
+
+        im_cropped = autocrop(im, (255, 255, 255))
+        if not im_cropped:
+            return self.datas
+
+        in_mem_file = io.BytesIO()
+        im_cropped.save(in_mem_file, format=im.format)
+
+        datas_cropped = base64.b64encode(in_mem_file.getvalue())
+
+        return datas_cropped
