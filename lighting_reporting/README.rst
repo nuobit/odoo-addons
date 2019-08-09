@@ -6,7 +6,7 @@
 Lighting Reporting
 ==================
 
-* Product data sheet
+* Product datasheet
 
 Bug Tracker
 ===========

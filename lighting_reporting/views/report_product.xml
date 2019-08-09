@@ -33,7 +33,7 @@
                         </t>
                     </div>
                     <div class="col-xs-5">
-                        <h4 class="text-right" t-attf-style="color: {{ brand_color }};">Data sheet</h4>
+                        <h4 class="text-right" t-attf-style="color: {{ brand_color }};">Datasheet</h4>
                     </div>
                 </div>
             </div>

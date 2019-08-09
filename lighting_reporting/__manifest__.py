@@ -4,8 +4,8 @@
 
 {
     'name': "Lighting Reporting",
-    'description': """* Product data sheet""",
-    'version': '11.0.0.9.3',
+    'description': """* Product datasheet""",
+    'version': '11.0.0.10.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -19,6 +19,7 @@
         'lighting',
     ],
     'data': [
+        'wizard/datasheet_wizard_views.xml',
         'report/report.xml',
         'views/report_product.xml',
         'views/product_views.xml',

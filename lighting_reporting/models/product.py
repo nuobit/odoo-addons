@@ -31,10 +31,6 @@ def autocrop(im, bgcolor):
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
-    @api.multi
-    def print_product(self):
-        return self.env.ref('lighting_reporting.action_report_product').report_action(self)
-
     def get_sheet_sources(self):
         res = []
         for s in self.source_ids:

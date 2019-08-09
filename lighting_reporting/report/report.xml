@@ -20,9 +20,10 @@
     </record>
 
     <report id="action_report_product"
-            string="Product data sheet"
+            string="Datasheet"
             model="lighting.product"
             report_type="qweb-pdf"
+            menu="False"
             file="lighting_reporting.report_product"
             name="lighting_reporting.report_product"
             paperformat="lighting_reporting.paperformat_product_sheet"

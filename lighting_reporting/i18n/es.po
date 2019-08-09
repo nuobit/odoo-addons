@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-30 08:27+0000\n"
-"PO-Revision-Date: 2019-07-30 08:27+0000\n"
+"POT-Creation-Date: 2019-08-11 18:01+0000\n"
+"PO-Revision-Date: 2019-08-11 18:01+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,62 +18,62 @@ msgstr ""
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Anchorage included</strong>"
-msgstr "<strong>Anchorage included</strong>"
+msgstr "<strong>Anclaje incluido</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Auxiliary gear</strong>"
-msgstr "<strong>Auxiliary gear</strong>"
+msgstr "<strong>Equipo auxiliar</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Beams</strong>"
-msgstr "<strong>Beams</strong>"
+msgstr "<strong>Haces</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Blade material</strong>"
-msgstr "<strong>Blade material</strong>"
+msgstr "<strong>Material de las aspas</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Body material</strong>"
-msgstr "<strong>Body material</strong>"
+msgstr "<strong>Material del cuerpo</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Cable outlets</strong>"
-msgstr "<strong>Cable outlets</strong>"
+msgstr "<strong>Salidas de cable</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Category</strong>"
-msgstr "<strong>Category</strong>"
+msgstr "<strong>Categoría</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Corrosion resistance</strong>"
-msgstr "<strong>Corrosion resistance</strong>"
+msgstr "<strong>Resistente a la corrosión</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Cut hole box included</strong>"
-msgstr "<strong>Cut hole box included</strong>"
+msgstr "<strong>Caja de empotrar incluida</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Cut hole dimensions</strong>"
-msgstr "<strong>Cut hole dimensions</strong>"
+msgstr "<strong>Dimensiones de la caja de empotrado</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Diffuser material</strong>"
-msgstr "<strong>Diffuser material</strong>"
+msgstr "<strong>Material del difusor</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Dimensions</strong>"
-msgstr "<strong>Dimensions</strong>"
+msgstr "<strong>Dimensiones</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -83,7 +83,7 @@ msgstr "<strong>Dimmable</strong>"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Dinamic pressure (Km/h)</strong>"
-msgstr "<strong>Dinamic pressure (Km/h)</strong>"
+msgstr "<strong>Presión dinámica (Km/h)</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -98,12 +98,12 @@ msgstr "<strong>ECORAEE II</strong>"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Electric screwdriver</strong>"
-msgstr "<strong>Electric screwdriver</strong>"
+msgstr "<strong>Destornillador eléctrico</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Emergency light</strong>"
-msgstr "<strong>Emergency light</strong>"
+msgstr "<strong>Luz de emergencia</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -113,12 +113,12 @@ msgstr "<strong>Familia</strong>"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Fan blades</strong>"
-msgstr "<strong>Fan blades</strong>"
+msgstr "<strong>Número de aspas</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Fan wattages</strong>"
-msgstr "<strong>Fan wattages</strong>"
+msgstr "<strong>Potencias del ventilador</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -163,57 +163,57 @@ msgstr "<strong>Voltaje de entrada</strong>"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Installation</strong>"
-msgstr "<strong>Installation</strong>"
+msgstr "<strong>Instalación</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Lamp included</strong>"
-msgstr "<strong>Lamp included</strong>"
+msgstr "<strong>Lámpara incluida</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Output current (mA)</strong>"
-msgstr "<strong>Output current (mA)</strong>"
+msgstr "<strong>Corriente de salida (mA)</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Output voltage</strong>"
-msgstr "<strong>Output voltage</strong>"
+msgstr "<strong>Tensión de salida</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Post included</strong>"
-msgstr "<strong>Post included</strong>"
+msgstr "<strong>Poste incluido</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Post with inspection chamber</strong>"
-msgstr "<strong>Post with inspection chamber</strong>"
+msgstr "<strong>Poste con registro</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Protection class</strong>"
-msgstr "<strong>Protection class</strong>"
+msgstr "<strong>Clase eléctrica</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Reflector material</strong>"
-msgstr "<strong>Reflector material</strong>"
+msgstr "<strong>Material del reflector</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Sensors</strong>"
-msgstr "<strong>Sensors</strong>"
+msgstr "<strong>Sensores</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Sources</strong>"
-msgstr "<strong>Sources</strong>"
+msgstr "<strong>Fuentes</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Static pressure (Kg)</strong>"
-msgstr "<strong>Static pressure (Kg)</strong>"
+msgstr "<strong>Presión estática (Kg)</strong>"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -223,37 +223,71 @@ msgstr "<strong>USB</strong>"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "<strong>Weight (Kg)</strong>"
-msgstr "<strong>Weight (Kg)</strong>"
+msgstr "<strong>Peso (Kg)</strong>"
 
 #. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.product_datasheet_wizard_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: lighting_reporting
+#: model:ir.actions.report,name:lighting_reporting.action_report_product
 #: model:ir.ui.view,arch_db:lighting_reporting.external_layout_lighting
-msgid "Data sheet"
-msgstr "Data sheet"
+msgid "Datasheet"
+msgstr "Ficha técnica"
 
 #. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_display_name
 #: model:ir.model.fields,field_description:lighting_reporting.field_report_lighting_reporting_report_product_display_name
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr "Nombre a Mostrar"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "General data"
-msgstr "General data"
+msgstr "Datos generales"
 
 #. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_id
 #: model:ir.model.fields,field_description:lighting_reporting.field_report_lighting_reporting_report_product_id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr "ID"
 
 #. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_lang_id
+msgid "Language"
+msgstr "Idioma"
+
+#. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard___last_update
 #: model:ir.model.fields,field_description:lighting_reporting.field_report_lighting_reporting_report_product___last_update
 msgid "Last Modified on"
-msgstr "Última modificación en"
+msgstr "Última Modificación en"
+
+#. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_write_uid
+msgid "Last Updated by"
+msgstr "Última Actualización por"
+
+#. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_write_date
+msgid "Last Updated on"
+msgstr "Última Actualización el"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Light sources and beams"
-msgstr "Light sources and beams"
+msgstr "Fuentes y haces de luz"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -261,15 +295,31 @@ msgid "No"
 msgstr "No"
 
 #. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.product_datasheet_wizard_view
+msgid "Ok"
+msgstr "Ok"
+
+#. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.external_layout_lighting
 msgid "Page:\n"
 "                    <span class=\"page\"/>\n"
 "                    /\n"
 "                    <span class=\"topage\"/>"
-msgstr "Page:\n"
+msgstr "Página:\n"
 "                    <span class=\"page\"/>\n"
 "                    /\n"
 "                    <span class=\"topage\"/>"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.product_view_form_inherit_lighting_reporting
+msgid "Print datasheet"
+msgstr "Imprimir ficha técnica"
+
+#. module: lighting_reporting
+#: model:ir.actions.act_window,name:lighting_reporting.product_datasheet_wizard_action
+#: model:ir.ui.view,arch_db:lighting_reporting.product_datasheet_wizard_view
+msgid "Print product datasheet"
+msgstr "Imprimir ficha técnica de producto"
 
 #. module: lighting_reporting
 #: model:ir.model,name:lighting_reporting.model_lighting_product
@@ -278,18 +328,14 @@ msgstr "Producto"
 
 #. module: lighting_reporting
 #: model:ir.actions.report,name:lighting_reporting.action_report_product
-msgid "Product data sheet"
-msgstr "Ficha de producto"
-
-#. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.product_view_form_inherit_lighting_reporting
-msgid "Product data sheet (beta)"
-msgstr "Product data sheet (beta)"
+msgid "Product datasheet"
+msgstr "Ficha técnica de producto"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Technical data"
-msgstr "Technical data"
+msgstr "Datos técnicos"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.external_layout_lighting
@@ -299,15 +345,7 @@ msgstr "Tel."
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Yes"
-msgstr "Si"
+msgstr "Sí"
 
-#. module: lighting_reporting
-#: model:ir.model,name:lighting_reporting.model_lighting_attachment
-msgid "lighting.attachment"
-msgstr "iluminación.attachment"
 
-#. module: lighting_reporting
-#: model:ir.model,name:lighting_reporting.model_report_lighting_reporting_report_product
-msgid "report.lighting_reporting.report_product"
-msgstr "report.lighting_reporting.report_product"
 
