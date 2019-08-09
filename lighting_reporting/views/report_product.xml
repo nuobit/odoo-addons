@@ -320,7 +320,7 @@
                                                 <span t-field="doc.dynamic_pressure"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.corrosion_resistance is not None">
+                                        <tr t-if="doc.corrosion_resistance">
                                             <td>
                                                 <strong>Corrosion resistance</strong>
                                             </td>
@@ -429,7 +429,7 @@
                                         </tr>
 
 
-                                        <tr t-if="doc.recessing_box_included is not None">
+                                        <tr t-if="doc.recessing_box_included">
                                             <td>
                                                 <strong>Cut hole box included</strong>
                                             </td>
@@ -463,7 +463,7 @@
                                                 <span t-field="doc.ecorrae2_category_id"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.anchorage_included is not None">
+                                        <tr t-if="doc.anchorage_included">
                                             <td>
                                                 <strong>Anchorage included</strong>
                                             </td>
@@ -471,7 +471,7 @@
                                                 <span t-field="doc.anchorage_included"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.post_included is not None">
+                                        <tr t-if="doc.post_included">
                                             <td>
                                                 <strong>Post included</strong>
                                             </td>
@@ -479,7 +479,7 @@
                                                 <span t-field="doc.post_included"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.post_with_inspection_chamber is not None">
+                                        <tr t-if="doc.post_with_inspection_chamber">
                                             <td>
                                                 <strong>Post with inspection chamber</strong>
                                             </td>
@@ -487,7 +487,7 @@
                                                 <span t-field="doc.post_with_inspection_chamber"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.emergency_light is not None">
+                                        <tr t-if="doc.emergency_light">
                                             <td>
                                                 <strong>Emergency light</strong>
                                             </td>
@@ -495,7 +495,7 @@
                                                 <span t-field="doc.emergency_light"/>
                                             </td>
                                         </tr>
-                                        <tr t-if="doc.mechanical_screwdriver is not None">
+                                        <tr t-if="doc.mechanical_screwdriver">
                                             <td>
                                                 <strong>Electric screwdriver</strong>
                                             </td>
