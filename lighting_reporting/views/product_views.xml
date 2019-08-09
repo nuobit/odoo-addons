@@ -14,28 +14,4 @@
             </xpath>
         </field>
     </record>
-
-    <record id="attachment_form_view_inherit_lighting_reporting" model="ir.ui.view">
-        <field name="name">lighting.attachment.form.inherit</field>
-        <field name="model">lighting.attachment</field>
-        <field name="inherit_id" ref="lighting.attachment_form_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <group>
-                    <field name="show_in_data_sheet"/>
-                </group>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="attachment_tree_view_inherit_lighting_reporting" model="ir.ui.view">
-        <field name="name">lighting.attachment.tree.inherit</field>
-        <field name="model">lighting.attachment</field>
-        <field name="inherit_id" ref="lighting.attachment_tree_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
-                <field name="show_in_data_sheet"/>
-            </xpath>
-        </field>
-    </record>
 </odoo>

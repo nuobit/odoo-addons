@@ -287,11 +287,6 @@ msgid "Product data sheet (beta)"
 msgstr "Product data sheet (beta)"
 
 #. module: lighting_reporting
-#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_attachment_show_in_data_sheet
-msgid "Show in data sheet"
-msgstr "Show in data sheet"
-
-#. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Technical data"
 msgstr "Technical data"

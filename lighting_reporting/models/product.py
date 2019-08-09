@@ -80,4 +80,3 @@ class LightingProduct(models.Model):
 class LightingAttachment(models.Model):
     _inherit = 'lighting.attachment'
 
-    show_in_data_sheet = fields.Boolean(string='Show in data sheet')
