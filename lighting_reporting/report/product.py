@@ -10,9 +10,12 @@ class ProductReport(models.AbstractModel):
 
     @api.model
     def get_report_values(self, docids, data=None):
-        model = data['model']
-        docids = data['ids']
-        lang = data['lang']
+        model = 'lighting.product'
+        lang = self.env.lang
+        if data:
+            model = data['model']
+            docids = data['ids']
+            lang = data['lang']
 
         docs = self.env[model].with_context(lang=lang).browse(docids)
 
