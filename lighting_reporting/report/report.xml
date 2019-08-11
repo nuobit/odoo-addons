@@ -20,7 +20,7 @@
     </record>
 
     <report id="action_report_product"
-            string="Datasheet"
+            string="Print datasheet"
             model="lighting.product"
             report_type="qweb-pdf"
             menu="False"

@@ -536,7 +536,7 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <!--t t-call="lighting_portal_product_report.report_portalproduct" t-lang="doc.partner_id.lang"/-->
-                <t t-call="lighting_reporting.report_product_document"/>
+                <t t-call="lighting_reporting.report_product_document" t-lang="lang"/>
             </t>
         </t>
     </template>

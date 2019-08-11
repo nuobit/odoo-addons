@@ -22,7 +22,8 @@
     </record>
 
     <act_window id="product_datasheet_wizard_action"
-                name="Print product datasheet"
+                name="Print datasheet"
                 res_model="lighting.reporting.product.datasheet.wizard"
-                view_mode="form" target="new"/>
+                src_model="lighting.product" key2="client_action_multi"
+                view_type="form" view_mode="form" target="new"/>
 </odoo>
