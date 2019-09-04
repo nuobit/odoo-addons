@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models, fields, api
+from odoo.tools.float_utils import float_round
 
 
 class AmbumovilService(models.AbstractModel):
@@ -17,12 +18,13 @@ class AmbumovilService(models.AbstractModel):
             ('quantity', '>', 0),
         ])
 
+        rounding = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         product_stock_ld = []
         for q in quants.sorted(lambda x: (x.product_id.name, x.product_id.default_code, x.id)):
             quant_d = {
                 'product_id': q.product_id.id,
                 'product_name': q.product_id.name,
-                'quantity': q.quantity,
+                'quantity': float_round(q.quantity, precision_digits=rounding),
             }
             if q.product_id.default_code:
                 quant_d.update({
