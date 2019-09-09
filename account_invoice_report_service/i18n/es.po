@@ -91,6 +91,11 @@ msgstr "Destino"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>Invoice</span>"
+msgstr "<span>Factura</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Draft Invoice</span>"
 msgstr "<span>Factura borrador</span>"
 
