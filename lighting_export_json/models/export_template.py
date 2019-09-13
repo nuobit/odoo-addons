@@ -466,6 +466,7 @@ class LightingExportTemplate(models.Model):
                     }
                     if category.attachment_ids:
                         category_attach_d = {}
+
                         # brands
                         brand_attach_d = {}
                         brand_attachments = category.attachment_ids \
@@ -486,7 +487,7 @@ class LightingExportTemplate(models.Model):
                         # location
                         location_attach_d = {}
                         location_attachments = category.attachment_ids \
-                            .filtered(lambda x: not x.brand_id) \
+                            .filtered(lambda x: x.location_id) \
                             .sorted(lambda x: (x.sequence, x.id))
                         if location_attachments:
                             a = location_attachments[0]
@@ -498,6 +499,22 @@ class LightingExportTemplate(models.Model):
                             category_attach_d.update({
                                 'location': location_attach_d,
                             })
+
+                        # global
+                        if not category_attach_d:
+                            global_attach_d = {}
+                            global_attachments = category.attachment_ids \
+                                .sorted(lambda x: (x.sequence, x.id))
+                            if global_attachments:
+                                a = global_attachments[0]
+                                global_attach_d = {
+                                    'datas_fname': a.datas_fname,
+                                    'store_fname': a.attachment_id.store_fname,
+                                }
+                            if global_attach_d:
+                                category_attach_d.update({
+                                    None: global_attach_d,
+                                })
 
                         # category attach
                         if category_attach_d:
