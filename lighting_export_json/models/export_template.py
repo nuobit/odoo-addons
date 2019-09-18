@@ -345,7 +345,7 @@ class LightingExportTemplate(models.Model):
 
                 ## merge common fields with attributes from the category
                 field_ids = group_id.field_ids
-                field_ids |= product.category_id.attribute_ids
+                field_ids |= product.category_id.root_id.attribute_ids
 
                 product_data = {}
                 fields = [self.get_efective_field_name(x.name) for x in field_ids]
@@ -399,7 +399,7 @@ class LightingExportTemplate(models.Model):
                 # description (is a common field too)
                 group_desc_d = {}
                 for lang in active_langs:
-                    category_id = product.with_context(lang=lang).category_id
+                    category_id = product.with_context(lang=lang).category_id.root_id
                     lang_description = category_id.description_text or category_id.name
                     if lang_description:
                         group_desc_d[lang] = ' '.join(filter(lambda x: x, [lang_description, group.name]))
@@ -469,7 +469,7 @@ class LightingExportTemplate(models.Model):
             ## generm la informacio de les categories
             _logger.info("Generating category data...")
             objects = self.env['lighting.product'].browse(object_ids)
-            categories = objects.mapped('category_id')
+            categories = objects.mapped('category_id.root_id')
             if categories:
                 category_ld = []
                 for category in categories.sorted(lambda x: x.sequence):
