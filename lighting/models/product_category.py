@@ -8,7 +8,9 @@ from odoo import api, fields, models, _
 class LightingProductCategory(models.Model):
     _name = 'lighting.product.category'
     _inherit = 'lighting.tree.mixin'
-    _order = 'sequence'
+    _parent_name = 'parent_id'
+    _rec_name = 'complete_name'
+    _order = 'sequence,name'
 
     @api.model
     def _get_domain(self):
@@ -27,18 +29,8 @@ class LightingProductCategory(models.Model):
     child_ids = fields.One2many(comodel_name='lighting.product.category', inverse_name='parent_id',
                                 string='Child Categories', track_visibility='onchange')
 
-    def action_child(self):
-        return {
-            'name': _('Childs of %s') % self.complete_name,
-            'type': 'ir.actions.act_window',
-            'res_model': 'lighting.product.category',
-            'views': [(False, 'tree'), (False, 'form')],
-            'domain': [('id', 'in', self.child_ids.mapped('id'))],
-            'context': {'default_parent_id': self.id},
-        }
-
     root_id = fields.Many2one(comodel_name='lighting.product.category',
-                              string='Root',
+                              readonly=True, string='Root',
                               compute='_compute_root')
 
     def _compute_root(self):
@@ -61,11 +53,36 @@ class LightingProductCategory(models.Model):
                                  domain=_get_domain,
                                  string='Fields')
 
+    product_ids = fields.One2many(comodel_name='lighting.product',
+                                  inverse_name='category_id', string='Products')
+
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 
     def _compute_product_count(self):
-        for record in self:
-            record.product_count = self.env['lighting.product'].search_count([('category_id', '=', record.id)])
+        for rec in self:
+            rec.product_count = len(rec.product_ids)
+
+    flat_product_ids = fields.Many2many(comodel_name='lighting.product', compute='_compute_flat_products')
+
+    def _get_flat_products(self):
+        self.ensure_one()
+        if not self.child_ids:
+            return self.product_ids
+        else:
+            products = self.env['lighting.product']
+            for ch in self.child_ids:
+                products += ch._get_flat_products()
+            return products
+
+    def _compute_flat_products(self):
+        for rec in self:
+            rec.flat_product_ids = rec._get_flat_products()
+
+    flat_product_count = fields.Integer(compute='_compute_flat_product_count', string='Products (flat)')
+
+    def _compute_flat_product_count(self):
+        for rec in self:
+            rec.flat_product_count = len(rec.flat_product_ids)
 
     attachment_ids = fields.One2many(comodel_name='lighting.product.category.attachment',
                                      inverse_name='category_id', string='Attachments', copy=True,
@@ -81,3 +98,23 @@ class LightingProductCategory(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
                         ('code_uniq', 'unique (code)', 'The code must be unique!')
                         ]
+
+    def action_child(self):
+        return {
+            'name': _('Childs of %s') % self.complete_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product.category',
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', self.child_ids.mapped('id'))],
+            'context': {'default_parent_id': self.id},
+        }
+
+    def action_flat_product(self):
+        return {
+            'name': _('Flat products below %s') % self.complete_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product',
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', self.flat_product_ids.mapped('id'))],
+            'context': {'default_category_id': self.id},
+        }

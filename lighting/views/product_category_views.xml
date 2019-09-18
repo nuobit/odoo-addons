@@ -36,6 +36,10 @@
                                 name="%(product_category_action_product)d">
                             <field name="product_count" widget="statinfo"/>
                         </button>
+                        <button type="object" class="oe_stat_button" icon="fa-filter"
+                                name="action_flat_product">
+                            <field string="Products (flat)" name="flat_product_count" widget="statinfo"/>
+                        </button>
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -51,6 +55,7 @@
                         <group>
                             <field name="level"/>
                             <field name="parent_id"/>
+                            <field name="root_id"/>
                         </group>
                     </group>
                     <group>
@@ -88,14 +93,23 @@
                 <field name="name"/>
                 <field name="code"/>
                 <field name="level"/>
+                <field name="root_id"/>
                 <field name="parent_id"/>
                 <field name="complete_name"/>
                 <field name="is_accessory"/>
                 <field name="description_text"/>
+                <field name="child_count" attrs="{'invisible': [('child_count', '=', 0)]}"/>
+                <button name="action_child" type="object"
+                        string="Childs" icon="fa-external-link"
+                        attrs="{'invisible': [('child_count', '=', 0)]}"/>
                 <field name="product_count"/>
                 <button name="%(product_category_action_product)d" type="action"
                         icon="fa-external-link"
                         attrs="{'invisible': [('product_count', '=', 0)]}"/>
+                <field name="flat_product_count" attrs="{'invisible': [('flat_product_count', '=', 0)]}"/>
+                <button name="action_flat_product" type="object"
+                        string="Products (flat)" icon="fa-external-link"
+                        attrs="{'invisible': [('flat_product_count', '=', 0)]}"/>
             </tree>
         </field>
     </record>
