@@ -555,11 +555,14 @@ class LightingProduct(models.Model):
     mbox_height = fields.Float(string='Masterbox height (cm)', track_visibility='onchange')
 
     # marketing tab
-    novelty = fields.Boolean(string='New', track_visibility='onchange')
-    cataloged = fields.Boolean(string='Cataloged', track_visibility='onchange')
-    discontinued_by_supplier = fields.Boolean(string='Discontinued by supplier', track_visibility='onchange')
-    until_end_stock = fields.Boolean(string='Until end of stock', track_visibility='onchange')
-    discontinued = fields.Boolean(string='Discontinued', track_visibility='onchange')
+    state_marketing = fields.Selection([
+        ('N', 'New'),
+        ('C', 'Cataloged'),
+        ('DS', 'Discontinued by supplier'),
+        ('ES', 'Until end of stock'),
+        ('D', 'Discontinued'),
+        ('H', 'Historical'),
+    ], string='Marketing status', track_visibility='onchange')
 
     on_request = fields.Boolean(string='On request', track_visibility='onchange')
 

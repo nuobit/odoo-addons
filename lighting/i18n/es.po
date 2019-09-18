@@ -894,6 +894,54 @@ msgid "Draft"
 msgstr "Borrador"
 
 #. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state:0
+msgid "To review"
+msgstr "Para revisar"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state:0
+msgid "Published"
+msgstr "Publicado"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "New"
+msgstr "Nuevo"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Cataloged"
+msgstr "Catalogado"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Discontinued by supplier"
+msgstr "Discontinuado por el proveedor"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Until end of stock"
+msgstr "Hasta fin de existencias"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Discontinued"
+msgstr "Descatalogado"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Historical"
+msgstr "Histórico"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dynamic_pressure
 msgid "Dynamic pressure (kg)"
 msgstr "Presión dinámica (kg)"
@@ -2167,12 +2215,6 @@ msgid "Public"
 msgstr "Público"
 
 #. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-#: selection:lighting.product,state:0
-msgid "Published"
-msgstr "Publicado"
-
-#. module: lighting
 #: code:addons/lighting/models/models.py:709
 #: selection:lighting.product.source.line,special_spectrum:0
 #, python-format
@@ -2344,6 +2386,12 @@ msgid "State"
 msgstr "Estado"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_state_marketing
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Marketing status"
+msgstr "Estado de Marketing"
+
+#. module: lighting
 #: model:ir.ui.menu,name:lighting.product_states_menu
 msgid "States"
 msgstr "Estados"
@@ -2356,6 +2404,7 @@ msgstr "Presión estática (Kg)"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_state
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_state
+#: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Status"
 msgstr "Estado"
 
@@ -2629,12 +2678,6 @@ msgstr "El tipo debe ser único!"
 #: sql_constraint:lighting.product.fanwattage:0
 msgid "There are duplicated wattages on the same product!"
 msgstr "¡Hay potencias duplicados en el mismo producto!"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-#: selection:lighting.product,state:0
-msgid "To review"
-msgstr "Para revisar"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_count

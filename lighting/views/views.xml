@@ -299,12 +299,9 @@
                         </page>
                         <page string="Marketing" id="marketing_tab">
                             <group>
-                                <field name="novelty"/>
-                                <field name="cataloged"/>
-                                <field name="discontinued_by_supplier"/>
-                                <field name="until_end_stock"/>
-                                <field name="discontinued"/>
-
+                                <field name="state_marketing" string="Status"/>
+                            </group>
+                            <group>
                                 <field name="on_request"/>
 
                                 <field name="effective_date"/>
@@ -345,8 +342,8 @@
             <tree string="Product Tree"
                   decoration-warning="state == 'draft'"
                   decoration-info="state == 'to_review'"
-                  decoration-success="novelty == True"
-                  decoration-danger="discontinued == True">
+                  decoration-success="state_marketing == 'N'"
+                  decoration-danger="state_marketing == 'D'">
                 <field name="sequence" widget="handle"/>
                 <field name="reference"/>
                 <field name="description"/>
@@ -355,8 +352,7 @@
                 <field name="category_id"/>
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state"/>
-                <field name="discontinued" invisible="1"/>
-                <field name="novelty" invisible="1"/>
+                <field name="state_marketing"/>
             </tree>
         </field>
     </record>
@@ -794,11 +790,11 @@
                        filter_domain="['|', '|', '|', '|', ('body_material_ids.code','=ilike',self), ('diffusor_material_ids.code','=ilike',self), ('frame_material_ids.code','=ilike',self), ('reflector_material_ids.code','=ilike',self), ('blade_material_ids.code','=ilike',self)]"/>
                 <separator/>
                 <filter string="New" name="novelty"
-                        domain="[('novelty', '=', True)]"/>
+                        domain="[('state_marketing', '=', 'N')]"/>
                 <filter string="Cataloged" name="cataloged"
-                        domain="[('cataloged', '=', True)]"/>
+                        domain="[('state_marketing', '=', 'C')]"/>
                 <filter string="Discontinued" name="discontinued"
-                        domain="[('discontinued', '=', True)]"/>
+                        domain="[('state_marketing', '=', 'D')]"/>
                 <separator/>
                 <filter string="Draft" name="draft"
                         domain="[('state', '=', 'draft')]"/>
@@ -816,6 +812,8 @@
                 <group expand="0" string="Group By">
                     <filter string="State" name="groupby_state" domain="[]"
                             context="{'group_by': 'state'}"/>
+                    <filter string="Marketing status" name="groupby_state_marketing" domain="[]"
+                            context="{'group_by': 'state_marketing'}"/>
                     <filter string="Category" name="groupby_category" domain="[]"
                             context="{'group_by': 'category_id'}"/>
                     <filter string="Is composite" name="groupby_is_composite" domain="[]"

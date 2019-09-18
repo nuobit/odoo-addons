@@ -30,7 +30,7 @@ class LightingProductFamily(models.Model):
             percent = 0
             if record.product_count != 0:
                 discontinued_product_count = self.env['lighting.product'].search_count(
-                    [('family_ids', '=', record.id), ('discontinued', '=', True)])
+                    [('family_ids', '=', record.id), ('state_marketing', '=', 'D')])
                 percent = discontinued_product_count / record.product_count * 100
             record.discontinued_product_percent = percent
 
