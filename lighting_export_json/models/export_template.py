@@ -96,16 +96,28 @@ class LightingExportTemplate(models.Model):
             meta_langs = sorted(meta['string'].keys(), key=lambda x: (0, x) if x == 'en_US' else (1, x))
             for lang in meta_langs:
                 datum = getattr(obj.with_context(lang=lang, template_id=self), field)
+                subfield = meta['subfield'] or 'display_name'
                 if meta['type'] == 'selection':
                     datum = dict(meta['selection'][lang]).get(datum)
                 elif meta['type'] == 'boolean':
                     if meta['translate']:
                         datum = _('Yes') if datum else _('No')
                 elif meta['type'] in ('one2many', 'many2many'):
-                    datum = [getattr(x, meta['subfield'] or 'display_name') for x in datum]
+                    datum1 = []
+                    for x in datum:
+                        value_l = x.mapped(subfield)
+                        if value_l:
+                            if len(value_l) > 1:
+                                raise Exception("The subfield %s value must return a singleton" % subfield)
+                            datum1.append(value_l[0])
+                    if datum1:
+                        datum = datum1
                 elif meta['type'] == 'many2one':
-                    datum = getattr(datum, meta['subfield'] or 'display_name')
-
+                    value_l = datum.mapped(subfield)
+                    if value_l:
+                        if len(value_l) > 1:
+                            raise Exception("The subfield %s value must return a singleton" % subfield)
+                        datum = value_l[0]
                 if meta['type'] != 'boolean' and not datum:
                     datum = None
 
