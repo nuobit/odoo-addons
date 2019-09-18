@@ -24,6 +24,10 @@
             <form string="Product category Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button type="object" class="oe_stat_button" icon="fa-filter"
+                                name="action_child">
+                            <field string="Childs" name="child_count" widget="statinfo"/>
+                        </button>
                         <button type="action" class="oe_stat_button" icon="fa-files-o"
                                 name="%(product_category_attachment_action)d">
                             <field string="Attachments" name="attachment_count" widget="statinfo"/>
@@ -41,6 +45,12 @@
                     <group col="6">
                         <group colspan="2">
                             <field name="code"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="level"/>
+                            <field name="parent_id"/>
                         </group>
                     </group>
                     <group>
@@ -77,6 +87,9 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="code"/>
+                <field name="level"/>
+                <field name="parent_id"/>
+                <field name="complete_name"/>
                 <field name="is_accessory"/>
                 <field name="description_text"/>
                 <field name="product_count"/>

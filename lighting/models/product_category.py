@@ -7,6 +7,7 @@ from odoo import api, fields, models, _
 
 class LightingProductCategory(models.Model):
     _name = 'lighting.product.category'
+    _inherit = 'lighting.tree.mixin'
     _order = 'sequence'
 
     @api.model
@@ -20,6 +21,29 @@ class LightingProductCategory(models.Model):
 
     description_text = fields.Char(string='Description text', help='Text to show on a generated product description',
                                    translate=True)
+
+    parent_id = fields.Many2one(comodel_name='lighting.product.category', string='Parent',
+                                index=True, ondelete='cascade', track_visibility='onchange')
+    child_ids = fields.One2many(comodel_name='lighting.product.category', inverse_name='parent_id',
+                                string='Child Categories', track_visibility='onchange')
+
+    def action_child(self):
+        return {
+            'name': _('Childs of %s') % self.complete_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product.category',
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', self.child_ids.mapped('id'))],
+            'context': {'default_parent_id': self.id},
+        }
+
+    root_id = fields.Many2one(comodel_name='lighting.product.category',
+                              string='Root',
+                              compute='_compute_root')
+
+    def _compute_root(self):
+        for rec in self:
+            rec.root_id = rec._get_root()
 
     is_accessory = fields.Boolean(string="Is accessory")
 
