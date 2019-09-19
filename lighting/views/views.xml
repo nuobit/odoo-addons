@@ -298,14 +298,27 @@
                             </group>
                         </page>
                         <page string="Marketing" id="marketing_tab">
-                            <group>
-                                <field name="state_marketing" string="Status"/>
-                            </group>
-                            <group>
-                                <field name="on_request"/>
+                            <group attrs="{'invisible': [('state', '!=', 'published')]}" col="2">
+                                <group colspan="2">
+                                    <group>
+                                        <field name="state_marketing" string="Status"/>
+                                    </group>
+                                    <group>
+                                        <field name="on_request"/>
 
-                                <field name="effective_date"/>
-                                <field name="marketing_comments" widget="text"/>
+                                        <field name="effective_date"/>
+                                    </group>
+                                </group>
+                                <group colspan="2">
+                                    <field name="marketing_comments" widget="text"/>
+                                </group>
+                            </group>
+                            <group attrs="{'invisible': [('state', '=', 'published')]}" col="2">
+                                <div>
+                                    <p>The product is not yet approved to be able to define the marketing properties.
+                                        Please approve the product first.
+                                    </p>
+                                </div>
                             </group>
                         </page>
                         <page string="Recommended accessories">
