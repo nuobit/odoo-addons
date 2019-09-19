@@ -8,7 +8,7 @@ from odoo import api, fields, models, _
 class LightingTreeMixin(models.AbstractModel):
     _name = 'lighting.tree.mixin'
 
-    complete_name = fields.Char('Complete Name', compute='_compute_complete_name', store=True)
+    complete_name = fields.Char('Complete Name', compute='_compute_complete_name')
 
     @api.depends('name', 'parent_id.complete_name')
     def _compute_complete_name(self):

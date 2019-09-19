@@ -9,7 +9,6 @@ class LightingProductCategory(models.Model):
     _name = 'lighting.product.category'
     _inherit = 'lighting.tree.mixin'
     _parent_name = 'parent_id'
-    _rec_name = 'complete_name'
     _order = 'sequence,name'
 
     @api.model
