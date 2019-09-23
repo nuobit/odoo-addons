@@ -1,0 +1,33 @@
+# This file contains the translation of the following modules:
+#	* stock_inventory_require_tracking
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-23 18:14+0000\n"
+"PO-Revision-Date: 2019-09-23 18:14+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_inventory_require_tracking
+#: model:ir.model,name:stock_inventory_require_tracking.model_stock_inventory
+msgid "Inventory"
+msgstr "Inventario"
+
+#. module: stock_inventory_require_tracking
+#: code:addons/stock_inventory_require_tracking/models/models.py:23
+#, python-format
+msgid "The product (%s) has no tracking defined, therefore you don't need to enter any tracking number."
+msgstr "El producto (%s) no tiene seguimento definido, por tanto no es necesario introducir ningún número de seguimiento."
+
+#. module: stock_inventory_require_tracking
+#: code:addons/stock_inventory_require_tracking/models/models.py:17
+#, python-format
+msgid "The product (%s) has tracking defined (%s), therefore it's necessary to enter the corresponding tracking number."
+msgstr "El producto (%s) tiene seguimiento definido (%s), por tanto es necesario introducir el correspondiente número de seguimiento."
+
