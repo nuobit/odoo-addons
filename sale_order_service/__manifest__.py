@@ -5,7 +5,7 @@
 {
     'name': 'Sale order Service',
     'summary': 'This module adds Service specific data to sale orders',
-    'version': '11.0.0.2.1',
+    'version': '11.0.0.2.2',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
