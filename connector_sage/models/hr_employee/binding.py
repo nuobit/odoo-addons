@@ -33,7 +33,7 @@ class HrEmployeeBinding(models.Model):
     sage_codigo_empleado = fields.Integer(string="CodigoEmpleado", required=True)
 
     _sql_constraints = [
-        ('uniq', 'unique(odoo_id, sage_codigo_empresa, sage_codigo_empleado)',
+        ('uniq', 'unique(sage_codigo_empresa, sage_codigo_empleado)',
          'Empllyee with same ID on Sage already exists.'),
     ]
 

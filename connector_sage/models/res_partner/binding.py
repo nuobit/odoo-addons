@@ -33,7 +33,7 @@ class ResPartnerBinding(models.Model):
     sage_codigo_empleado = fields.Integer(string="CodigoEmpleado", required=True)
 
     _sql_constraints = [
-        ('sage_res_partner', 'unique(odoo_id, sage_codigo_empresa, sage_codigo_empleado)',
+        ('sage_res_partner', 'unique(sage_codigo_empresa, sage_codigo_empleado)',
          'Partner with same ID on Sage already exists.'),
     ]
 
