@@ -34,7 +34,7 @@ class ProductProductBinding(models.Model):
     ambugest_id = fields.Integer(string="Id on Ambugest", required=True)
 
     _sql_constraints = [
-        ('uniq', 'unique(odoo_id, ambugest_id, ambugest_empresa)',
+        ('uniq', 'unique(ambugest_id, ambugest_empresa)',
          'Product with same ID on Ambugest already exists.'),
     ]
 

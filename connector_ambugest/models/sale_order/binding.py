@@ -42,7 +42,7 @@ class SaleOrderBinding(models.Model):
     ambugest_servicio_ano = fields.Integer(string="Servicio_Ano on Ambugest", required=True)
 
     _sql_constraints = [
-        ('ambugest_res_partner', 'unique(odoo_id, ambugest_empresa,'
+        ('ambugest_res_partner', 'unique(ambugest_empresa,'
                                  'ambugest_codiup, ambugest_fecha_servicio,'
                                  'ambugest_codigo_servicio, ambugest_servicio_dia,'
                                  'ambugest_servicio_ano)',
