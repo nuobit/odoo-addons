@@ -34,4 +34,33 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.service.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">
+                    ['|','|','|','|','|','|','|',('name','ilike',self),('client_order_ref','ilike',self),('partner_id','child_of',self),
+                    ('contract_number','ilike',self),('insured_name','ilike',self),('insured_ident_cardnum','ilike',self),('policy_number','ilike',self),('auth_number','ilike',self)]
+                </attribute>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="contract_number"/>
+                <field name="insured_name"/>
+                <field name="insured_ident_cardnum"/>
+                <field name="policy_number"/>
+                <field name="auth_number"/>
+            </field>
+            <xpath expr="//group" position="inside">
+                <filter string="Contract number" domain="[]" context="{'group_by':'contract_number'}"/>
+                <filter string="Insured person's name" domain="[]" context="{'group_by':'insured_name'}"/>
+                <filter string="Insured identity card number" domain="[]"
+                        context="{'group_by':'insured_ident_cardnum'}"/>
+                <filter string="Policy number" domain="[]" context="{'group_by':'policy_number'}"/>
+                <filter string="Authorization Number" domain="[]" context="{'group_by':'auth_number'}"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

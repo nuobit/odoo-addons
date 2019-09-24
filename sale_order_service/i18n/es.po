@@ -1,4 +1,3 @@
-# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* sale_order_service
 #
@@ -23,12 +22,14 @@ msgstr "Detalle servicio"
 #. module: sale_order_service
 #: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_auth_number
 #: model:ir.model.fields,field_description:sale_order_service.field_sale_order_auth_number
+#: model:ir.ui.view,arch_db:sale_order_service.view_sales_order_filter
 msgid "Authorization Number"
 msgstr "Nº Autorización"
 
 #. module: sale_order_service
 #: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_contract_number
 #: model:ir.model.fields,field_description:sale_order_service.field_sale_order_contract_number
+#: model:ir.ui.view,arch_db:sale_order_service.view_sales_order_filter
 msgid "Contract number"
 msgstr "Código contrato"
 
@@ -41,12 +42,14 @@ msgstr "Destino"
 #. module: sale_order_service
 #: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_insured_ident_cardnum
 #: model:ir.model.fields,field_description:sale_order_service.field_sale_order_insured_ident_cardnum
+#: model:ir.ui.view,arch_db:sale_order_service.view_sales_order_filter
 msgid "Insured identity card number"
 msgstr "DNI"
 
 #. module: sale_order_service
 #: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_insured_name
 #: model:ir.model.fields,field_description:sale_order_service.field_sale_order_insured_name
+#: model:ir.ui.view,arch_db:sale_order_service.view_sales_order_filter
 msgid "Insured person's name"
 msgstr "Nombre"
 
@@ -64,6 +67,7 @@ msgstr "Matrícula"
 #. module: sale_order_service
 #: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_policy_number
 #: model:ir.model.fields,field_description:sale_order_service.field_sale_order_policy_number
+#: model:ir.ui.view,arch_db:sale_order_service.view_sales_order_filter
 msgid "Policy number"
 msgstr "Poliza"
 
