@@ -1,0 +1,103 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_order_service
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-23 16:58+0000\n"
+"PO-Revision-Date: 2019-07-23 16:58+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_order_service
+#: model:ir.ui.view,arch_db:sale_order_service.view_order_form
+msgid "Service detail"
+msgstr "Detall del servei"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_auth_number
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_auth_number
+msgid "Authorization Number"
+msgstr "Núm. d'autorització"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_contract_number
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_contract_number
+msgid "Contract number"
+msgstr "Num. de contracte"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_destination
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_destination
+msgid "Destination"
+msgstr "Destinació"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_insured_ident_cardnum
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_insured_ident_cardnum
+msgid "Insured identity card number"
+msgstr "DNI"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_insured_name
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_insured_name
+msgid "Insured person's name"
+msgstr "Nom"
+
+#. module: sale_order_service
+#: model:ir.ui.view,arch_db:sale_order_service.view_order_form
+msgid "Patient data"
+msgstr "Dades del pacient"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_plate_number
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_plate_number
+msgid "Plate"
+msgstr "Matrícula"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_policy_number
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_policy_number
+msgid "Policy number"
+msgstr "Pòlissa"
+
+#. module: sale_order_service
+#: model:ir.model,name:sale_order_service.model_sale_order
+msgid "Quotation"
+msgstr "Pressupost"
+
+#. module: sale_order_service
+#: model:ir.ui.view,arch_db:sale_order_service.view_order_form
+msgid "Service data"
+msgstr "Dades del servei"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_service_date
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_service_date
+msgid "Service date"
+msgstr "Data del servei"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_return_service
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_return_service
+msgid "Return service"
+msgstr "Servei de tornada"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_service_sale_order_round_trip_code
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_round_trip_code
+msgid "Round trip code"
+msgstr "Codi d'anada i tornada"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_servicet_sale_order_service_number
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order_service_number
+msgid "Service number"
+msgstr "Num. servei"
+
