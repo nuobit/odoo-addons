@@ -33,7 +33,7 @@ class ResPartnerBinding(models.Model):
     ambugest_codiup = fields.Integer(string="CodiUP on Ambugest", required=True)
 
     _sql_constraints = [
-        ('ambugest_res_partner', 'unique(odoo_id, ambugest_empresa, ambugest_codiup)',
+        ('ambugest_res_partner', 'unique(ambugest_empresa, ambugest_codiup)',
          'Partner with same ID on Ambugest already exists.'),
     ]
 

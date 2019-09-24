@@ -52,7 +52,7 @@ class SaleOrderLineBinding(models.Model):
     ambugest_articulo = fields.Integer(string="Articulo on Ambugest", required=True)
 
     _sql_constraints = [
-        ('ambugest_res_partner', 'unique(odoo_id, ambugest_empresa, ambugest_fecha_servicio,'
+        ('ambugest_res_partner', 'unique(ambugest_empresa, ambugest_fecha_servicio,'
                                  'ambugest_codigo_servicio, ambugest_servicio_dia,'
                                  'ambugest_servicio_ano, ambugest_articulo)',
          'Sale order line with same ID on Ambugest already exists.'),
