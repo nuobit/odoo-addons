@@ -12,7 +12,7 @@ class PayslipLinePayrollBinding(models.Model):
 
     _sql_constraints = [
         ('uniq',
-         'unique(odoo_id, sage_codigo_empresa, sage_codigo_convenio, sage_fecha_registro_cv, '
+         'unique(sage_codigo_empresa, sage_codigo_convenio, sage_fecha_registro_cv, '
          'sage_ano, sage_mesd, sage_tipo_proceso, '
          'sage_codigo_empleado, sage_codigo_concepto_nom)',
          'Payroll Payslip with same ID on Sage already exists.'),

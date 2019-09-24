@@ -41,7 +41,7 @@ class PayslipCheckBinding(models.Model):
 
     _sql_constraints = [
         ('uniq',
-         'unique(odoo_id, sage_codigo_empresa, sage_codigo_empleado, sage_ano, '
+         'unique(sage_codigo_empresa, sage_codigo_empleado, sage_ano, '
          'sage_mesd, sage_tipo_proceso, sage_id_empleado, sage_orden_nom)',
          'Payroll structure with same ID on Sage already exists.'),
     ]
