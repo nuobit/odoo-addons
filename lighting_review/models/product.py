@@ -11,4 +11,4 @@ class LightingProduct(models.Model):
 
     review_ids = fields.One2many(comodel_name='lighting.product.review',
                                  inverse_name='product_id',
-                                 string='Reviews', copy=True)
+                                 string='Reviews')
