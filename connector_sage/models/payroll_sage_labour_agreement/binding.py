@@ -41,7 +41,7 @@ class PayrollSageLabourAgreementBinding(models.Model):
 
     _sql_constraints = [
         ('uniq',
-         'unique(odoo_id, sage_codigo_empresa, sage_codigo_convenio, sage_fecha_registro_cv)',
+         'unique(sage_codigo_empresa, sage_codigo_convenio, sage_fecha_registro_cv)',
          'Payroll structure with same ID on Sage already exists.'),
     ]
 
