@@ -5,7 +5,7 @@
 {
     'name': "Lighting Advanced Search",
     'description': "Lighting advanced product search",
-    'version': '11.0.0.2.4',
+    'version': '11.0.0.2.3',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
