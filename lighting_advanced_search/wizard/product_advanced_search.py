@@ -172,7 +172,11 @@ class LightingProductAdvancedSearch(models.TransientModel):
                 domain_not_in_tmp = ['|'] * (len(domain_not_in_tmp) - 1) + domain_not_in_tmp
 
             attachment_ids = self.env['lighting.attachment'].search(domain_not_in_tmp)
-            domain_not_in = [('id', 'not in', attachment_ids.mapped('product_id.id'))]
+            products_not_in = self.env['lighting.product'].search([
+                ('id', 'not in', attachment_ids.mapped('product_id.id'))
+            ])
+
+            domain_not_in = [('id', 'in', products_not_in.mapped('id'))]
 
             domain += domain_not_in
 
