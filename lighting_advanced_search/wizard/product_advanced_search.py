@@ -112,6 +112,11 @@ class LightingProductAdvancedSearch(models.TransientModel):
     def advanced_search(self):
         domain = []
 
+        # selected products
+        active_ids = self.env.context.get('active_ids')
+        if active_ids:
+            domain += [('id', 'in', active_ids)]
+
         # application
         domain += prepare_in_domain(['application_ids'], self.application_in_ids, self.application_in_op)
 

@@ -76,7 +76,8 @@
     <act_window id="product_advanced_search_action"
                 name="Advanced search"
                 res_model="lighting.product.advanced.search"
-                view_mode="form" target="new" view_type="form"/>
+                src_model="lighting.product" key2="client_action_multi"
+                view_type="form" view_mode="form" target="new"/>
 
     <menuitem id="product_advanced_search_menu"
               name="Advanced search"
