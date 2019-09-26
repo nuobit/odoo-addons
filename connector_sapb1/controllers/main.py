@@ -18,17 +18,17 @@ except ImportError as err:
 
 
 class SAPB1Controller(http.Controller):
-    @http.route(['/sapb1/doc/<string:doctype>/r/C<int:cardcodenum>/<int:docnum>',
+    @http.route(['/sapb1/doc/<string:doctype>/r/C<string:cardcodenum>/<int:docnum>',
                  ], type='http', auth="user")
     def download_doc_refund(self, doctype=None, cardcodenum=None, docnum=None):
         if doctype == 'order':
             return werkzeug.exceptions.UnprocessableEntity('An order cannot be refundable')
         return self.download_doc(doctype=doctype, cardcodenum=cardcodenum, docnum=docnum, refund=True)
 
-    @http.route(['/sapb1/doc/<string:doctype>/C<int:cardcodenum>/<int:docnum>',
+    @http.route(['/sapb1/doc/<string:doctype>/C<string:cardcodenum>/<int:docnum>',
                  ], type='http', auth="user")
     def download_doc(self, doctype=None, cardcodenum=None, docnum=None, refund=False):
-        cardcode = "C%i" % cardcodenum
+        cardcode = "C%s" % cardcodenum
         backend = http.request.env['sapb1.backend'].sudo().search([
             ('active', '=', True),
         ], limit=1, order='sequence,id')
