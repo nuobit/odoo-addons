@@ -36,6 +36,11 @@
                     </div>
                     <group>
                         <group>
+                            <field name="alt_name"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
                             <field name="level"/>
                             <field name="parent_id"/>
                         </group>

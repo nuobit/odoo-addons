@@ -21,6 +21,8 @@ class LightingProductGroup(models.Model):
 
     name = fields.Char(required=True, track_visibility='onchange')
 
+    alt_name = fields.Char('Alternate name', track_visibility='onchange')
+
     complete_name = fields.Char('Complete Name', compute='_compute_complete_name', store=True)
 
     @api.depends('name', 'parent_id.complete_name')
