@@ -237,7 +237,7 @@ class LightingExportTemplate(models.Model):
                 photo_group_d[group_id] += obj
         _logger.info("Dictionary of groups by photo successfully generated.")
 
-        ############## CONFIGURABLES (by finish) ################
+        ############## BUNDLES (by finish) ################
         _logger.info("Generating bundle products...")
 
         # generem els bundles agrupant cada bundle i posant dins tots els tempaltes
@@ -256,7 +256,7 @@ class LightingExportTemplate(models.Model):
                 photo_groups = products.mapped('photo_group_id')
                 if photo_groups:
                     bundle_d[template_name].update({
-                        'name': photo_groups[0].name,
+                        'name': photo_groups[0].alt_name or photo_groups[0].name,
                     })
 
                 # required products
@@ -399,10 +399,11 @@ class LightingExportTemplate(models.Model):
                 # description (is a common field too)
                 group_desc_d = {}
                 for lang in active_langs:
-                    category_id = product.with_context(lang=lang).category_id.root_id
+                    category_id = product.with_context(lang=lang).category_id
                     lang_description = category_id.description_text or category_id.name
                     if lang_description:
-                        group_desc_d[lang] = ' '.join(filter(lambda x: x, [lang_description, group.name]))
+                        group_desc_d[lang] = ' '.join(filter(lambda x: x,
+                                                             [lang_description, group.alt_name or group.name]))
                 if group_desc_d:
                     product_data.update({
                         'description': group_desc_d,
