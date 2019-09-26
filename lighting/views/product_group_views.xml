@@ -107,6 +107,7 @@
             <tree string="Product group Tree">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="alt_name"/>
                 <field name="level"/>
                 <field name="parent_id"/>
                 <field name="complete_name"/>
