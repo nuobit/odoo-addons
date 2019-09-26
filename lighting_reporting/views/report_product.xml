@@ -76,7 +76,7 @@
     <template id="report_product_document">
         <t t-call="lighting_reporting.external_layout_lighting">
             <!--t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/-->
-            <t t-set="brand_color" t-value="'#%s' % doc.catalog_ids[0].html_color"/>
+            <t t-set="brand_color" t-value="'#%s' % (doc.catalog_ids and doc.catalog_ids[0].html_color or 'aaaaaa',)"/>
             <div class="page">
                 <div class="oe_structure"/>
                 <div class="container-fluid">
@@ -89,7 +89,7 @@
                                 <div t-if="fimages" class="row mb32">
                                     <div class="col-xs-12">
                                         <img class="img-responsive"
-                                             t-attf-src="data:image/*;base64,{{fimages[0].get_cropped_image()}}"/>
+                                             t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
                                     </div>
                                 </div>
 
@@ -98,7 +98,7 @@
                                 <div t-if="eimages" class="row mb32">
                                     <div class="col-xs-12">
                                         <img class="img-responsive"
-                                             t-attf-src="data:image/*;base64,{{eimages[0].get_cropped_image()}}"/>
+                                             t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
                                     </div>
                                 </div>
 
@@ -109,11 +109,11 @@
                                 <div t-if="qimages or cimages" class="row mb32">
                                     <div t-if="qimages" class="col-xs-6">
                                         <img class="img-responsive"
-                                             t-attf-src="data:image/*;base64,{{qimages[0].get_cropped_image()}}"/>
+                                             t-attf-src="data:image/*;base64,{{qimages[0].get_optimized_image()}}"/>
                                     </div>
                                     <div t-if="cimages" class="col-xs-6">
                                         <img class="img-responsive"
-                                             t-attf-src="data:image/*;base64,{{cimages[0].get_cropped_image()}}"/>
+                                             t-attf-src="data:image/*;base64,{{cimages[0].get_optimized_image()}}"/>
                                     </div>
                                 </div>
 
@@ -124,7 +124,7 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <img class="img-responsive"
-                                                     t-attf-src="data:image/*;base64,{{efimages[0].get_cropped_image()}}"/>
+                                                     t-attf-src="data:image/*;base64,{{efimages[0].get_optimized_image()}}"/>
                                             </div>
                                         </div>
                                     </div>

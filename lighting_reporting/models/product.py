@@ -28,6 +28,20 @@ def autocrop(im, bgcolor):
     return None  # no contents
 
 
+def expand2square(im, bgcolor):
+    width, height = im.size
+    if width == height:
+        return im
+    elif width > height:
+        result = Image.new(im.mode, (width, width), bgcolor)
+        result.paste(im, (0, (width - height) // 2))
+        return result
+    else:
+        result = Image.new(im.mode, (height, height), bgcolor)
+        result.paste(im, ((height - width) // 2, 0))
+        return result
+
+
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
@@ -97,16 +111,18 @@ class LightingProduct(models.Model):
 class LightingAttachment(models.Model):
     _inherit = 'lighting.attachment'
 
-    def get_cropped_image(self):
+    def get_optimized_image(self):
         datas = base64.decodebytes(self.datas)
         im = Image.open(io.BytesIO(datas))
 
-        im_cropped = autocrop(im, (255, 255, 255))
-        if not im_cropped:
+        im9 = autocrop(im, (255, 255, 255))
+        if not im9:
             return self.datas
 
+        im99 = expand2square(im9, (255, 255, 255))
+
         in_mem_file = io.BytesIO()
-        im_cropped.save(in_mem_file, format=im.format)
+        im99.save(in_mem_file, format=im.format)
 
         datas_cropped = base64.b64encode(in_mem_file.getvalue())
 
