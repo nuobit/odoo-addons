@@ -9,6 +9,7 @@ class LightingProductCategory(models.Model):
     _name = 'lighting.product.category'
     _inherit = 'lighting.tree.mixin'
     _parent_name = 'parent_id'
+    _rec_name = 'complete_name'
     _order = 'sequence,name'
 
     @api.model
@@ -145,7 +146,7 @@ class LightingProductCategory(models.Model):
             record.attachment_count = self.env['lighting.product.category.attachment'] \
                 .search_count([('category_id', '=', record.id)])
 
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The type must be unique!'),
+    _sql_constraints = [('name_uniq', 'unique (parent_id,name)', 'The type must be unique by parent!'),
                         ('code_uniq', 'unique (code)', 'The code must be unique!')
                         ]
 
