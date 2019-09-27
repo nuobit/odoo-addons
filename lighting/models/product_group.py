@@ -62,7 +62,7 @@ class LightingProductGroup(models.Model):
                 rec.attribute_ids = rec.group_attribute_ids
             else:
                 rec.attribute_ids = [
-                    (6, False, [x.id for x in rec.flat_product_ids.mapped('category_id.attribute_ids')])]
+                    (6, False, [x.id for x in rec.flat_product_ids.mapped('category_id.effective_attribute_ids')])]
 
     ## common fields
     use_category_fields = fields.Boolean(string='Use category fields', track_visibility='onchange')
@@ -84,7 +84,7 @@ class LightingProductGroup(models.Model):
                 rec.field_ids = rec.group_field_ids
             else:
                 rec.field_ids = [
-                    (6, False, [x.id for x in rec.flat_product_ids.mapped('category_id.field_ids')])]
+                    (6, False, [x.id for x in rec.flat_product_ids.mapped('category_id.effective_field_ids')])]
 
     product_ids = fields.One2many(comodel_name='lighting.product',
                                   inverse_name='product_group_id', string='Products')
@@ -278,7 +278,6 @@ class LightingProductGroup(models.Model):
         for p in self.grouped_product_ids:
             p_d = {}
             for attr in self.attribute_ids:
-                # p = p.with_context(lang='fr_FR')
                 p_d[attr.name] = getattr(p, attr.name)
             a.append({p.reference: p_d})
 

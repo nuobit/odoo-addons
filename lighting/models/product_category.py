@@ -40,18 +40,69 @@ class LightingProductCategory(models.Model):
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
+    #### attributes
     attribute_ids = fields.Many2many(comodel_name='ir.model.fields',
                                      relation='lighting_product_category_field_attribute_rel',
                                      column1='category_id', column2='field_id',
                                      domain=_get_domain,
                                      string='Attributes')
 
+    inherit_attributes = fields.Boolean(string='Inherit attributes')
+    effective_attribute_ids = fields.Many2many(comodel_name='ir.model.fields',
+                                               string='Effective attributes', readonly=True,
+                                               compute='_compute_effective_attributes')
+
+    def _get_parents_attributes(self):
+        self.ensure_one()
+        if not self.inherit_attributes:
+            return self.attribute_ids
+        else:
+            if not self.parent_id:
+                return self.attribute_ids
+            else:
+                return self.attribute_ids | self.parent_id._get_parents_attributes()
+
+    def _compute_effective_attributes(self):
+        for rec in self:
+            rec.effective_attribute_ids = rec._get_parents_attributes()
+
+    @api.onchange('inherit_attributes', 'attribute_ids')
+    def onchange_attribute_ids(self):
+        if self.inherit_attributes:
+            self._compute_effective_attributes()
+
+    #### fields
     field_ids = fields.Many2many(comodel_name='ir.model.fields',
                                  relation='lighting_product_category_field_field_rel',
                                  column1='category_id', column2='field_id',
                                  domain=_get_domain,
                                  string='Fields')
 
+    inherit_fields = fields.Boolean(string='Inherit fields')
+    effective_field_ids = fields.Many2many(comodel_name='ir.model.fields',
+                                           string='Effective fields', readonly=True,
+                                           compute='_compute_effective_fields')
+
+    def _get_parents_fields(self):
+        self.ensure_one()
+        if not self.inherit_fields:
+            return self.field_ids
+        else:
+            if not self.parent_id:
+                return self.field_ids
+            else:
+                return self.field_ids | self.parent_id._get_parents_fields()
+
+    def _compute_effective_fields(self):
+        for rec in self:
+            rec.effective_field_ids = rec._get_parents_fields()
+
+    @api.onchange('inherit_fields', 'field_ids')
+    def onchange_field_ids(self):
+        if self.inherit_fields:
+            self._compute_effective_fields()
+
+    #### products
     product_ids = fields.One2many(comodel_name='lighting.product',
                                   inverse_name='category_id', string='Products')
 
