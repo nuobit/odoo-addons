@@ -64,13 +64,13 @@ class SaleOrderBinding(models.Model):
     @api.multi
     def export_order_data(self, clear=False):
         self.ensure_one()
-        with self.backend_id.work_on(self._name) as work:
+        with self.backend_id.sudo().work_on(self._name) as work:
             exporter = work.component(usage='record.exporter')
             return exporter.run_order_data(self, clear)
 
     @api.multi
     def export_invoice_data(self, invoice, clear=False):
         self.ensure_one()
-        with self.backend_id.work_on(self._name) as work:
+        with self.backend_id.sudo().work_on(self._name) as work:
             exporter = work.component(usage='record.exporter')
             return exporter.run_invoice_data(self, invoice, clear)
