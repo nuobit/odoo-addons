@@ -141,6 +141,22 @@ class LightingProductGroup(models.Model):
         for rec in self:
             rec.flat_product_count = len(rec.flat_product_ids)
 
+    flat_category_ids = fields.Many2many(comodel_name='lighting.product.category', string='Categories (flat)',
+                                         readonly=True,
+                                         compute='_compute_flat_categories')
+
+    def _compute_flat_categories(self):
+        for rec in self:
+            rec.flat_category_ids = rec.flat_product_ids.mapped('category_id')
+
+    unique_category = fields.Boolean(string='Unique category', compute='_compute_unique_category')
+
+    def _compute_unique_category(self):
+        for rec in self:
+            rec.unique_category = len(rec.flat_category_ids) == 1
+
+        return [('name', operator, value)]
+
     grouped_product_ids = fields.Many2many(comodel_name='lighting.product', compute='_compute_grouped_products')
 
     def _get_grouped_products(self):
