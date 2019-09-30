@@ -107,6 +107,23 @@ class LightingProduct(models.Model):
 
         return None
 
+    def get_datasheet_url(self):
+        self.ensure_one()
+        url = "{}/web/datasheet/{}/{}".format(
+            self.env['ir.config_parameter'].sudo().get_param('web.base.url'),
+            self.env.context.get('lang'),
+            self.reference,
+        )
+        return url
+
+    def get_attachments_by_type(self, atype, only_images=True):
+        attachments = self.attachment_ids.filtered(
+            lambda x: x.type_id.code == atype and
+                      (not only_images or x.attachment_id.index_content == 'image')
+        ).sorted(lambda x: (x.sequence, x.id))
+
+        return attachments
+
 
 class LightingAttachment(models.Model):
     _inherit = 'lighting.attachment'

@@ -17,6 +17,7 @@
     },
     'depends': [
         'lighting',
+        'lighting_seo',
     ],
     'data': [
         'wizard/datasheet_wizard_views.xml',
