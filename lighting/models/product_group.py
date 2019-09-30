@@ -25,6 +25,8 @@ class LightingProductGroup(models.Model):
 
     complete_name = fields.Char('Complete Name', compute='_compute_complete_name', store=True)
 
+    description = fields.Text(string='Description', translate=True)
+
     @api.depends('name', 'parent_id.complete_name')
     def _compute_complete_name(self):
         for rec in self:

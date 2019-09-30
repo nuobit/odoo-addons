@@ -46,6 +46,9 @@
                         </group>
                     </group>
                     <group>
+                        <field name="description"/>
+                    </group>
+                    <group>
                         <group>
                             <field name="type_ids" widget="many2many_tags"/>
                         </group>
