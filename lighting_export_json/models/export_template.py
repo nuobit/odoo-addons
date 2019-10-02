@@ -271,19 +271,17 @@ class LightingExportTemplate(models.Model):
                     })
 
                     ## default attach
+                    attachment_order_d = {x.type_id: x.sequence for x in self.attachment_ids}
                     # first own attachments
                     attachment_ids = products.mapped('attachment_ids') \
-                        .filtered(lambda x: x.is_bundle_default and
-                                            x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                        .sorted(lambda x: (x.sequence, x.id))
+                        .filtered(lambda x: x.type_id in attachment_order_d.keys()) \
+                        .sorted(lambda x: (attachment_order_d[x.type_id], x.sequence, x.id))
 
                     # after required attachments
                     if not attachment_ids:
                         attachment_ids = products_required.mapped('attachment_ids') \
-                            .filtered(lambda x: x.is_bundle_default and
-                                                x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                            .sorted(lambda x: (x.sequence, x.id))
-
+                            .filtered(lambda x: x.type_id in attachment_order_d.keys()) \
+                            .sorted(lambda x: (attachment_order_d[x.type_id], x.sequence, x.id))
                     if attachment_ids:
                         bundle_d[template_name].update({
                             'attachment': {
@@ -325,10 +323,10 @@ class LightingExportTemplate(models.Model):
                     })
 
                 ## default attach
+                attachment_order_d = {x.type_id: x.sequence for x in self.attachment_ids}
                 attachment_ids = products.mapped('attachment_ids') \
-                    .filtered(lambda x: x.is_template_default and
-                                        x.type_id.id in self.attachment_ids.mapped('type_id.id')) \
-                    .sorted(lambda x: (x.sequence, x.id))
+                    .filtered(lambda x: x.type_id in attachment_order_d.keys()) \
+                    .sorted(lambda x: (attachment_order_d[x.type_id], x.sequence, x.id))
                 if attachment_ids:
                     if k not in template_clean_d:
                         template_clean_d[k] = {}
