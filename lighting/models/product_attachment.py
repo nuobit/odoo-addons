@@ -85,6 +85,7 @@ class LightingAttachmentType(models.Model):
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', translate=True)
+    is_image = fields.Boolean(string='Is image', default=False)
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 

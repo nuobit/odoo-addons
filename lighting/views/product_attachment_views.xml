@@ -78,6 +78,7 @@
                     <group>
                         <field name="code"/>
                         <field name="name"/>
+                        <field name="is_image"/>
                     </group>
                 </sheet>
             </form>
@@ -91,6 +92,7 @@
             <tree string="Attachment type Tree">
                 <field name="code"/>
                 <field name="name"/>
+                <field name="is_image"/>
                 <field name="product_count"/>
                 <button name="%(product_attachment_type_action_product)d" type="action"
                         string="Products" icon="fa-external-link"
