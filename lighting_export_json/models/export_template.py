@@ -274,13 +274,15 @@ class LightingExportTemplate(models.Model):
                     attachment_order_d = {x.type_id: x.sequence for x in self.attachment_ids}
                     # first own attachments
                     attachment_ids = products.mapped('attachment_ids') \
-                        .filtered(lambda x: x.type_id in attachment_order_d.keys()) \
+                        .filtered(lambda x: x.type_id.is_image and
+                                            x.type_id in attachment_order_d.keys()) \
                         .sorted(lambda x: (attachment_order_d[x.type_id], x.sequence, x.id))
 
                     # after required attachments
                     if not attachment_ids:
                         attachment_ids = products_required.mapped('attachment_ids') \
-                            .filtered(lambda x: x.type_id in attachment_order_d.keys()) \
+                            .filtered(lambda x: x.type_id.is_image and
+                                                x.type_id in attachment_order_d.keys()) \
                             .sorted(lambda x: (attachment_order_d[x.type_id], x.sequence, x.id))
                     if attachment_ids:
                         bundle_d[template_name].update({
@@ -325,7 +327,8 @@ class LightingExportTemplate(models.Model):
                 ## default attach
                 attachment_order_d = {x.type_id: x.sequence for x in self.attachment_ids}
                 attachment_ids = products.mapped('attachment_ids') \
-                    .filtered(lambda x: x.type_id in attachment_order_d.keys()) \
+                    .filtered(lambda x: x.type_id.is_image and
+                                        x.type_id in attachment_order_d.keys()) \
                     .sorted(lambda x: (attachment_order_d[x.type_id], x.sequence, x.id))
                 if attachment_ids:
                     if k not in template_clean_d:
