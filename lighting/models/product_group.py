@@ -157,8 +157,6 @@ class LightingProductGroup(models.Model):
         for rec in self:
             rec.unique_category = len(rec.flat_category_ids) == 1
 
-        return [('name', operator, value)]
-
     grouped_product_ids = fields.Many2many(comodel_name='lighting.product', compute='_compute_grouped_products')
 
     def _get_grouped_products(self):
