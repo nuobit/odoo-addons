@@ -366,7 +366,7 @@ class LightingExportTemplate(models.Model):
         groups_d = {}
         for group, products in photo_group_d.items():
             # if the group does not contain any bundle
-            if not any(products.mapped('is_composite')):
+            if not any(products.mapped('is_composite')) and not any(products.mapped('is_required_accessory')):
                 group_d = {}
 
                 ## products
