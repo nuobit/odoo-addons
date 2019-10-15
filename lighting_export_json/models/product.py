@@ -324,17 +324,20 @@ class LightingProduct(models.Model):
             attachment_order_d = {x.type_id: x.sequence for x in template_id.attachment_ids}
             for rec in self:
                 if rec.product_group_id:
-                    attachment_ids = rec.product_group_id.flat_product_ids.mapped('attachment_ids') \
-                        .filtered(lambda x: x.type_id.is_image and
-                                            x.type_id in attachment_order_d.keys()) \
-                        .sorted(lambda x: (attachment_order_d[x.type_id], x.product_id.sequence,
-                                           x.sequence, x.id))
-                    if attachment_ids:
-                        attachment_d = {
-                            'datas_fname': attachment_ids[0].datas_fname,
-                            'store_fname': attachment_ids[0].attachment_id.store_fname,
-                        }
-                        rec.json_display_photo = json.dumps(attachment_d)
+                    attachment_ids = rec.product_group_id.flat_product_ids.mapped('attachment_ids')
+                else:
+                    attachment_ids = rec.attachment_ids
+
+                images = attachment_ids.filtered(lambda x: x.type_id.is_image and
+                                                           x.type_id in attachment_order_d.keys())
+                if images:
+                    images = images.sorted(lambda x: (attachment_order_d[x.type_id],
+                                                      x.product_id.sequence, x.sequence, x.id))
+                    attachment_d = {
+                        'datas_fname': images[0].datas_fname,
+                        'store_fname': images[0].attachment_id.store_fname,
+                    }
+                    rec.json_display_photo = json.dumps(attachment_d)
 
     ##################### Search fields ##################################
 
