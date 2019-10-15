@@ -341,7 +341,7 @@ class LightingExportTemplate(models.Model):
                     })
 
                 ### common attributes
-                product = products[0]
+                product = products[0].with_context(template_id=self)
                 group_id = product.product_group_id
 
                 ## merge common fields with attributes from the category
@@ -389,7 +389,7 @@ class LightingExportTemplate(models.Model):
                     })
 
                 ## common fields
-                product = products[0]
+                product = products[0].with_context(template_id=self)
                 group_id = product.product_group_id
                 product_data = {}
                 fields = [self.get_efective_field_name(x.name) for x in group_id.field_ids]

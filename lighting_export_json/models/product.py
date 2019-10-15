@@ -319,16 +319,22 @@ class LightingProduct(models.Model):
                                            compute='_compute_json_display_photo')
 
     def _compute_json_display_photo(self):
-        for rec in self:
-            pictures = rec.attachment_ids \
-                .filtered(lambda x: x.type_id.code == 'F') \
-                .sorted(lambda x: (x.product_id.sequence, x.sequence))
-            if pictures:
-                attachment_d = {
-                    'datas_fname': pictures[0].datas_fname,
-                    'store_fname': pictures[0].attachment_id.store_fname,
-                }
-                rec.json_display_photo = json.dumps(attachment_d)
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            attachment_order_d = {x.type_id: x.sequence for x in template_id.attachment_ids}
+            for rec in self:
+                if rec.product_group_id:
+                    attachment_ids = rec.product_group_id.flat_product_ids.mapped('attachment_ids') \
+                        .filtered(lambda x: x.type_id.is_image and
+                                            x.type_id in attachment_order_d.keys()) \
+                        .sorted(lambda x: (attachment_order_d[x.type_id], x.product_id.sequence,
+                                           x.sequence, x.id))
+                    if attachment_ids:
+                        attachment_d = {
+                            'datas_fname': attachment_ids[0].datas_fname,
+                            'store_fname': attachment_ids[0].attachment_id.store_fname,
+                        }
+                        rec.json_display_photo = json.dumps(attachment_d)
 
     ##################### Search fields ##################################
 
