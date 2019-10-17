@@ -178,6 +178,8 @@ class LightingAttachment(models.Model):
             resized_images = get_preview_images(rec.datas, rec.type_id.is_image)
             rec.write(resized_images)
 
+        return True
+
 
 class LightingAttachmentType(models.Model):
     _name = 'lighting.attachment.type'

@@ -401,6 +401,9 @@
                                     <field name="description"/>
                                 </div>
                                 <div class="o_kanban_tags_section">
+                                    <field name="catalog_ids"/>
+                                </div>
+                                <div class="o_kanban_tags_section">
                                     <field name="family_ids"/>
                                 </div>
                             </div>
