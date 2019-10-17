@@ -12,7 +12,7 @@ from odoo.tools import pycompat
 
 
 def get_resized_images(base64_source, medium_name='image_medium', small_name='image_small',
-                       medium_size=(128, 128), small_size=(64, 64),
+                       medium_size=(500, 500), small_size=(64, 64),
                        encoding='base64', filetype=None):
     if isinstance(base64_source, pycompat.text_type):
         base64_source = base64_source.encode('ascii')
@@ -175,8 +175,9 @@ class LightingAttachment(models.Model):
     @api.multi
     def regenerate_preview(self):
         for rec in self:
-            resized_images = get_preview_images(rec.datas, rec.type_id.is_image)
-            rec.write(resized_images)
+            if rec.datas:
+                resized_images = get_preview_images(rec.datas, rec.type_id.is_image)
+                rec.write(resized_images)
 
         return True
 
