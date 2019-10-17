@@ -2,13 +2,51 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, tools
 from odoo.exceptions import UserError, ValidationError
+from odoo.modules import get_module_resource
+
+import base64
+
+from odoo.tools import pycompat
+
+
+def get_resized_images(base64_source, medium_name='image_medium', small_name='image_small',
+                       medium_size=(128, 128), small_size=(64, 64),
+                       encoding='base64', filetype=None):
+    if isinstance(base64_source, pycompat.text_type):
+        base64_source = base64_source.encode('ascii')
+
+    return_dict = dict()
+    return_dict[medium_name] = tools.image_resize_image(base64_source, medium_size, encoding, filetype, True)
+    return_dict[small_name] = tools.image_resize_image(base64_source, small_size, encoding, filetype, True)
+
+    return return_dict
+
+
+def get_preview_images(datas, is_image=True):
+    resized_images = {}
+    if is_image:
+        try:
+            resized_images = get_resized_images(datas)
+        except IOError:
+            img_path = get_module_resource('web', 'static/src/img', 'placeholder.png')
+            if img_path:
+                with open(img_path, 'rb') as f:
+                    return get_resized_images(base64.b64encode(f.read()))
+    else:
+        img_path = get_module_resource('lighting', 'static/src/img', 'doc.png')
+        if img_path:
+            with open(img_path, 'rb') as f:
+                resized_images = get_resized_images(
+                    base64.b64encode(f.read()))
+
+    return resized_images
 
 
 class LightingAttachment(models.Model):
     _name = 'lighting.attachment'
-    _order = 'type_id,sequence,id'
+    _order = 'sequence,id'
 
     def _sequence_default(self):
         max_sequence = self.env['lighting.attachment'] \
@@ -26,6 +64,38 @@ class LightingAttachment(models.Model):
 
     datas = fields.Binary(string="Document", attachment=True, required=True)
     datas_fname = fields.Char(string='Filename', required=True)
+    datas_size = fields.Char(string='Size', compute="_compute_datas_size", store=True)
+
+    @api.depends('datas')
+    def _compute_datas_size(self):
+        for rec in self:
+            size = rec.attachment_id.file_size
+            if size < 1000:
+                magn = 'Bytes'
+            else:
+                size /= 1000
+                if size < 1000:
+                    magn = 'Kb'
+                else:
+                    size /= 1000
+                    magn = 'Mb'
+
+            if size - int(size) == 0.0:
+                rec.datas_size = "{:d} {}".format(int(size), magn)
+            else:
+                rec.datas_size = "{:.2f} {}".format(size, magn)
+
+    image_small = fields.Binary("Small-sized image", attachment=True, store=True, compute="_compute_images")
+    image_medium = fields.Binary("Medium-sized image", attachment=True, store=True, compute="_compute_images")
+
+    @api.depends('datas', 'type_id', 'type_id.is_image')
+    def _compute_images(self):
+        for rec in self:
+            if rec.id:
+                resized_images = get_preview_images(rec.datas, rec.type_id.is_image)
+                rec.image_medium = resized_images['image_medium']
+                rec.image_small = resized_images['image_small']
+
     attachment_id = fields.Many2one(comodel_name='ir.attachment',
                                     compute='_compute_ir_attachment', readonly=True)
 
@@ -78,10 +148,49 @@ class LightingAttachment(models.Model):
 
         return '/'.join(pattern_l) % (base_url, self.attachment_id.checksum, self.datas_fname)
 
+    @api.multi
+    def get_main_image_attachments(self):
+        images = self.filtered(lambda x: x.type_id.is_image)
+        if images:
+            images = images.sorted(lambda x: (x.type_id.sequence, x.sequence, x.id))
+
+        return images
+
+    @api.multi
+    def get_main_resized_images(self):
+        for im in self.get_main_image_attachments():
+            imageb64 = self.env['ir.attachment']._file_read(im.attachment_id.store_fname)
+            try:
+                return get_resized_images(imageb64)
+            except IOError:
+                continue
+
+        img_path = get_module_resource('web', 'static/src/img', 'placeholder.png')
+        if img_path:
+            with open(img_path, 'rb') as f:
+                return get_resized_images(base64.b64encode(f.read()))
+
+        return {}
+
+    @api.multi
+    def regenerate_preview(self):
+        for rec in self:
+            resized_images = get_preview_images(rec.datas, rec.type_id.is_image)
+            rec.write(resized_images)
+
 
 class LightingAttachmentType(models.Model):
     _name = 'lighting.attachment.type'
-    _order = 'code'
+    _order = 'sequence,code'
+
+    def _sequence_default(self):
+        max_sequence = self.env['lighting.attachment.type'] \
+            .search([], order='sequence desc', limit=1).sequence
+
+        return max_sequence + 1
+
+    sequence = fields.Integer(required=True, default=_sequence_default,
+                              help="The sequence field is used to define order")
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', translate=True)

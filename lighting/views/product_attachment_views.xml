@@ -10,7 +10,12 @@
         <field name="model">lighting.attachment</field>
         <field name="arch" type="xml">
             <form string="Attachment Form">
+                <header>
+                    <button name="regenerate_preview" string="Regenerate preview"
+                            type="object" groups="base.group_no_one"/>
+                </header>
                 <sheet>
+                    <field name="image_medium" class="oe_avatar" widget="image" readonly="1"/>
                     <group>
                         <field name="type_id"/>
                         <field name="datas" filename="datas_fname"/>
@@ -38,7 +43,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="type_id"/>
                 <field name="datas_fname"/>
-                <field name="datas" filename="datas_fname" string="Size"/>
+                <field name="datas_size" string="Size"/>
                 <field name="name"/>
                 <field name="lang_id"/>
                 <field name="date"/>
@@ -48,9 +53,50 @@
         </field>
     </record>
 
+    <record id="attachment_kanban_view" model="ir.ui.view">
+        <field name="name">attachment.kanban</field>
+        <field name="model">lighting.attachment</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban">
+                <field name="id"/>
+                <field name="datas_fname"/>
+                <field name="type_id"/>
+                <field name="image_medium"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <t t-if="record.image_medium.raw_value">
+                                    <img t-att-src="kanban_image('lighting.attachment', 'image_medium', record.id.raw_value)"/>
+                                </t>
+                                <t t-if="!record.image_medium.raw_value">
+                                    <img t-att-src='_s + "/web/static/src/img/placeholder.png"'/>
+                                </t>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="datas_fname"/>
+                                </strong>
+                                <div>
+                                    <field name="type_id"/>
+                                </div>
+                                <div>
+                                    <field name="lang_id"/>
+                                </div>
+                                <div>
+                                    <field name="date"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
 
     <!-- ================== attachment.type model =========================== -->
-    <!-- window action installation2product smart button -->
+    <!-- window action attachment2product smart button -->
     <record id="product_attachment_type_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
@@ -90,6 +136,7 @@
         <field name="model">lighting.attachment.type</field>
         <field name="arch" type="xml">
             <tree string="Attachment type Tree">
+                <field name="sequence" widget="handle"/>
                 <field name="code"/>
                 <field name="name"/>
                 <field name="is_image"/>
