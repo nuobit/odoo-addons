@@ -879,6 +879,8 @@
                             context="{'group_by': 'state_marketing'}"/>
                     <filter string="Category" name="groupby_category" domain="[]"
                             context="{'group_by': 'category_id'}"/>
+                    <filter string="Group" name="groupby_group" domain="[]"
+                            context="{'group_by': 'product_group_id'}"/>
                     <filter string="Is composite" name="groupby_is_composite" domain="[]"
                             context="{'group_by': 'is_composite'}"/>
                 </group>
