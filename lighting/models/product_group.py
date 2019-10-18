@@ -251,7 +251,7 @@ class LightingProductGroup(models.Model):
             'name': _('Products of %s') % self.complete_name,
             'type': 'ir.actions.act_window',
             'res_model': 'lighting.product',
-            'views': [(False, 'tree'), (False, 'form')],
+            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
             'domain': [('id', 'in', self.product_ids.mapped('id'))],
             'context': {'default_product_group_id': self.id},
         }
@@ -261,7 +261,7 @@ class LightingProductGroup(models.Model):
             'name': _('Flat products below %s') % self.complete_name,
             'type': 'ir.actions.act_window',
             'res_model': 'lighting.product',
-            'views': [(False, 'tree'), (False, 'form')],
+            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
             'domain': [('id', 'in', self.flat_product_ids.mapped('id'))],
             'context': {'default_product_group_id': self.id},
         }
@@ -271,7 +271,7 @@ class LightingProductGroup(models.Model):
             'name': _('Grouped products of %s') % self.complete_name,
             'type': 'ir.actions.act_window',
             'res_model': 'lighting.product',
-            'views': [(False, 'tree'), (False, 'form')],
+            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
             'domain': [('id', 'in', self.grouped_product_ids.mapped('id'))],
             'context': {'default_product_group_id': self.id},
         }
