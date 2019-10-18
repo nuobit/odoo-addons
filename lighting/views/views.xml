@@ -406,7 +406,10 @@
                                 <div class="o_kanban_tags_section">
                                     <field name="family_ids"/>
                                 </div>
-                                <div class="o_kanban_tags_section">
+                                <div>
+                                    <field name="product_group_id"/>
+                                </div>
+                                <div>
                                     <field name="category_id"/>
                                 </div>
                             </div>
