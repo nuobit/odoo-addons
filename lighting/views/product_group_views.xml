@@ -146,6 +146,33 @@
         </field>
     </record>
 
+    <!-- Group search view -->
+    <record id="product_group_search_view" model="ir.ui.view">
+        <field name="name">product.group.search</field>
+        <field name="model">lighting.product.group</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Group"
+                       filter_domain="[('complete_name','ilike',self)]"/>
+                <field name="complete_name"/>
+                <field name="name"/>
+                <field name="parent_id" string="Parent"
+                       filter_domain="[('parent_id.name','ilike',self)]"/>
+                <field name="parent_id" string="=Parent"
+                       filter_domain="[('parent_id.name','=',self)]"/>
+                <field name="type_ids"/>
+                <filter string="Empty groups" name="empty_groups"
+                        domain="[('product_ids', '=', False),('child_ids', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Parent" name="groupby_parent" domain="[]"
+                            context="{'group_by': 'parent_id'}"/>
+                    <filter string="Alternate name" name="groupby_alt_name" domain="[]"
+                            context="{'group_by': 'alt_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- window action product group -->
     <record id="product_group_action" model="ir.actions.act_window">
         <field name="name">Product group</field>
