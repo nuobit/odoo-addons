@@ -151,11 +151,32 @@ class LightingProductGroup(models.Model):
         for rec in self:
             rec.flat_category_ids = rec.flat_product_ids.mapped('category_id')
 
-    unique_category = fields.Boolean(string='Unique category', compute='_compute_unique_category')
+    unique_category = fields.Boolean(string='Unique category',
+                                     compute='_compute_unique_category',
+                                     search='_search_unique_category')
 
     def _compute_unique_category(self):
         for rec in self:
             rec.unique_category = len(rec.flat_category_ids) == 1
+
+    def _search_unique_category(self, operator, value):
+        ids = []
+        for g in self.env['lighting.product.group'].search([]):
+            if len(g.flat_category_ids) > 1:
+                ids.append(g.id)
+
+        maps = {
+            ('=', True): 'not in',
+            ('=', False): 'in',
+            ('!=', True): 'in',
+            ('!=', False): 'not in',
+
+        }
+        operator = maps.get((operator, value))
+        if operator:
+            return [('id', operator, ids)]
+
+        return []
 
     grouped_product_ids = fields.Many2many(comodel_name='lighting.product', compute='_compute_grouped_products')
 

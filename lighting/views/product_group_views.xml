@@ -161,8 +161,10 @@
                 <field name="parent_id" string="=Parent"
                        filter_domain="[('parent_id.name','=',self)]"/>
                 <field name="type_ids"/>
-                <filter string="Empty groups" name="empty_groups"
+                <filter string="Empty" name="empty_groups"
                         domain="[('product_ids', '=', False),('child_ids', '=', False)]"/>
+                <filter string="Multiple categories" name="group_mutiple_categories"
+                        domain="[('unique_category', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Parent" name="groupby_parent" domain="[]"
                             context="{'group_by': 'parent_id'}"/>
