@@ -116,12 +116,11 @@
                   decoration-danger="len(flat_category_ids) > 1">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-                <field name="alt_name"/>
                 <field name="level"/>
                 <field name="parent_id"/>
                 <field name="complete_name"/>
+                <field name="flat_category_ids" widget="many2many_tags"/>
                 <field name="type_ids" widget="many2many_tags"/>
-                <field name="flat_category_ids" invisible="1"/>
                 <field name="child_count" attrs="{'invisible': [('child_count', '=', 0)]}"/>
                 <button name="action_child" type="object"
                         string="Childs" icon="fa-external-link"
@@ -134,10 +133,6 @@
                 <button name="action_flat_product" type="object"
                         string="Products (flat)" icon="fa-external-link"
                         attrs="{'invisible': [('flat_product_count', '=', 0)]}"/>
-                <field name="grouped_product_count" attrs="{'invisible': [('grouped_product_count', '=', 0)]}"/>
-                <button name="action_grouped_product" type="object"
-                        string="Products (grpd.)" icon="fa-external-link"
-                        attrs="{'invisible': [('grouped_product_count', '=', 0)]}"/>
                 <field name="common_product_id" attrs="{'invisible': [('common_product_id', '=', False)]}"/>
                 <button name="action_common_product" type="object"
                         string="Product (common)" icon="fa-external-link"
