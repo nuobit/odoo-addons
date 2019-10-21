@@ -253,18 +253,11 @@ class LightingExportTemplate(models.Model):
                 }
 
                 # bundle name
-                group_name = None
-                photo_groups = products.mapped('photo_group_id')
-                if photo_groups:
-                    group_name = photo_groups[0].alt_name or photo_groups[0].name
-
                 bundle_name_d = {}
                 for lang in active_langs:
-                    category_id = products[0].with_context(lang=lang).category_id
-                    lang_category_name = category_id.description_text or category_id.name
-                    lang_bundle_name_l = list(filter(lambda x: x, [lang_category_name, group_name]))
-                    if lang_bundle_name_l:
-                        bundle_name_d[lang] = ' '.join(lang_bundle_name_l)
+                    lang_group_description = products[0].with_context(lang=lang).group_description
+                    if lang_group_description:
+                        bundle_name_d[lang] = lang_group_description
 
                 if bundle_name_d:
                     if 'es_ES' in bundle_name_d:
@@ -413,11 +406,10 @@ class LightingExportTemplate(models.Model):
                 # description (is a common field too)
                 group_desc_d = {}
                 for lang in active_langs:
-                    category_id = product.with_context(lang=lang).category_id
-                    lang_description = category_id.description_text or category_id.name
-                    if lang_description:
-                        group_desc_d[lang] = ' '.join(filter(lambda x: x,
-                                                             [lang_description, group.alt_name or group.name]))
+                    lang_group_description = product.with_context(lang=lang).group_description
+                    if lang_group_description:
+                        group_desc_d[lang] = lang_group_description
+
                 if group_desc_d:
                     product_data.update({
                         'description': group_desc_d,

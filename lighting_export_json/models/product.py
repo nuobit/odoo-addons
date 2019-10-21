@@ -74,6 +74,36 @@ class LightingProduct(models.Model):
             if rec.product_group_id:
                 rec.photo_group_id = get_group_type(rec.product_group_id, 'PHOTO')
 
+    group_description = fields.Char(string="Group description",
+                                    compute="_compute_group_description")
+
+    def _compute_group_description(self):
+        for rec in self:
+            description_l = filter(lambda x: x, [
+                rec.category_id and rec.category_id.description_text or rec.category_id.name,
+                rec.photo_group_id and rec.photo_group_id.alt_name or rec.photo_group_id.name,
+            ])
+
+            description = ' '.join(description_l)
+            if description:
+                rec.group_description = description
+
+    group_description_tmp = fields.Char(string="Group description TMP",
+                                        compute="_compute_group_description_tmp")
+
+    def _compute_group_description_tmp(self):
+        for rec in self:
+            found = False
+            for fam in rec.family_ids.mapped('name'):
+                if fam in ('Omo', 'Adna', 'Piro'):
+                    found = True
+                    break
+
+            if found:
+                rec.group_description_tmp = rec.group_description
+            else:
+                rec.group_description_tmp = rec.description
+
     ############### Display fields ################################
 
     json_display_finish_group_name = fields.Char(string='Finish group name JSON Display',
