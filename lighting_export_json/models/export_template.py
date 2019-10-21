@@ -252,12 +252,25 @@ class LightingExportTemplate(models.Model):
                     'enabled': any(products.mapped('website_published')),
                 }
 
-                # name
+                # bundle name
+                group_name = None
                 photo_groups = products.mapped('photo_group_id')
                 if photo_groups:
-                    bundle_d[template_name].update({
-                        'name': photo_groups[0].alt_name or photo_groups[0].name,
-                    })
+                    group_name = photo_groups[0].alt_name or photo_groups[0].name
+
+                bundle_name_d = {}
+                for lang in active_langs:
+                    category_id = products[0].with_context(lang=lang).category_id
+                    lang_category_name = category_id.description_text or category_id.name
+                    lang_bundle_name_l = list(filter(lambda x: x, [lang_category_name, group_name]))
+                    if lang_bundle_name_l:
+                        bundle_name_d[lang] = ' '.join(lang_bundle_name_l)
+
+                if bundle_name_d:
+                    if 'es_ES' in bundle_name_d:
+                        bundle_d[template_name].update({
+                            'name': bundle_name_d['es_ES'],
+                        })
 
                 # required products
                 domain = [('id', 'in', products.mapped('required_ids.id'))]
