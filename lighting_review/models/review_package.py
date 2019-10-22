@@ -32,6 +32,12 @@ class LightingProductReview(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The review package name must be unique!'),
                         ]
 
+    product_count = fields.Integer(string='Product(s)', compute='_compute_product_count')
+
+    def _compute_product_count(self):
+        for rec in self:
+            rec.product_count = len(rec.review_ids)
+
     reviewed_count = fields.Integer(string='Reviewed product(s)', compute='_compute_reviewed_count')
     pending_count = fields.Integer(string='Pending product(s)', compute='_compute_reviewed_count')
 
@@ -120,12 +126,22 @@ class LightingProductReview(models.Model):
 
                     rec.estimated_days_late = days_late * abs
 
+    def action_products(self):
+        return {
+            'name': _('Pack products'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'lighting.product',
+            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', self.review_ids.mapped('product_id.id'))],
+            'context': {'default_review_ids': [(0, False, {'package_id': self.id})]},
+        }
+
     def action_product_reviewed(self):
         return {
             'name': _('Reviewed products'),
             'type': 'ir.actions.act_window',
             'res_model': 'lighting.product',
-            'views': [(False, 'tree'), (False, 'form')],
+            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
             'domain': [('id', 'in', self.review_ids.filtered(lambda x: x.reviewed).mapped('product_id.id'))],
             'context': {'default_review_ids': [(0, False, {'package_id': self.id, 'reviewed': True})]},
         }
@@ -135,7 +151,7 @@ class LightingProductReview(models.Model):
             'name': _('Pending products'),
             'type': 'ir.actions.act_window',
             'res_model': 'lighting.product',
-            'views': [(False, 'tree'), (False, 'form')],
+            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
             'domain': [('id', 'in', self.review_ids.filtered(lambda x: not x.reviewed).mapped('product_id.id'))],
             'context': {'default_review_ids': [(0, False, {'package_id': self.id, 'reviewed': False})]},
         }

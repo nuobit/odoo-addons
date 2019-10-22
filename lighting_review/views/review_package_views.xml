@@ -12,6 +12,10 @@
                 <header/>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button type="object" class="oe_stat_button" icon="fa-filter"
+                                name="action_products">
+                            <field string="Products" name="product_count" widget="statinfo"/>
+                        </button>
                         <button type="object" class="oe_stat_button" icon="fa-thumbs-o-up"
                                 name="action_product_reviewed">
                             <field string="Reviewed" name="reviewed_count" widget="statinfo"/>
@@ -105,6 +109,9 @@
                 <field name="estimated_date"/>
                 <field name="estimated_remaining_days"/>
                 <field name="estimated_days_late"/>
+                <field name="product_count"/>
+                <button name="action_products" type="object"
+                        icon="fa-external-link"/>
                 <field name="reviewed_count"/>
                 <button name="action_product_reviewed" type="object"
                         icon="fa-external-link"/>

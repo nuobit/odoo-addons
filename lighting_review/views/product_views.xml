@@ -3,6 +3,7 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+    <!-- Product Form view -->
     <record id="product_form_view" model="ir.ui.view">
         <field name="name">product.view.form</field>
         <field name="model">lighting.product</field>
@@ -36,6 +37,26 @@
             <field name="package_id" position="attributes">
                 <attribute name="readonly">0</attribute>
             </field>
+        </field>
+    </record>
+
+    <!-- Product Search view -->
+    <record model="ir.ui.view" id="lighting_product_view">
+        <field name="name">lighting.product.search</field>
+        <field name="model">lighting.product</field>
+        <field name="inherit_id" ref="lighting.lighting_product_view"/>
+        <field name="arch" type="xml">
+            <field name="body_material_ids" position="after">
+                <field name="review_ids" string="Review package"
+                       filter_domain="[('review_ids.package_id.name','ilike',self)]"/>
+            </field>
+            <filter name="mandatory_accessories" position="after">
+                <separator/>
+                <filter string="Reviewed" name="reviewed"
+                        domain="[('review_ids', '!=', False), ('review_ids.reviewed', '=', True)]"/>
+                <filter string="Not reviewed" name="not_reviewed"
+                        domain="[('review_ids', '!=', False),('review_ids.reviewed', '=', False)]"/>
+            </filter>
         </field>
     </record>
 </odoo>
