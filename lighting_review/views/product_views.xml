@@ -54,7 +54,7 @@
                 <separator/>
                 <filter string="Reviewed" name="reviewed"
                         domain="[('review_ids', '!=', False), ('review_ids.reviewed', '=', True)]"/>
-                <filter string="Not reviewed" name="not_reviewed"
+                <filter string="To review" name="to_review"
                         domain="[('review_ids', '!=', False),('review_ids.reviewed', '=', False)]"/>
             </filter>
         </field>
