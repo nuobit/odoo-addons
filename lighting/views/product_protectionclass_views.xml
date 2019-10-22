@@ -8,7 +8,7 @@
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('protection_class_id','=',active_id)]</field>
         <field name="context">{'protection_class_id': active_id}</field>
         <field name="help" type="html">

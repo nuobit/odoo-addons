@@ -8,7 +8,7 @@
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="domain">['|',
             ('source_ids.lampholder_id','=',active_id),
             ('source_ids.lampholder_technical_id','=',active_id)]
