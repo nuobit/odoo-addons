@@ -260,6 +260,7 @@ class LightingExportTemplate(models.Model):
                         bundle_name_d[lang] = lang_group_description
 
                 if bundle_name_d:
+                    # temporary solution to not break integration
                     if 'es_ES' in bundle_name_d:
                         bundle_d[template_name].update({
                             'name': bundle_name_d['es_ES'],

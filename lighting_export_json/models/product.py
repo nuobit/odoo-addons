@@ -88,22 +88,6 @@ class LightingProduct(models.Model):
             if description:
                 rec.group_description = description
 
-    group_description_tmp = fields.Char(string="Group description TMP",
-                                        compute="_compute_group_description_tmp")
-
-    def _compute_group_description_tmp(self):
-        for rec in self:
-            found = False
-            for fam in rec.family_ids.mapped('name'):
-                if fam in ('Omo', 'Adna', 'Piro'):
-                    found = True
-                    break
-
-            if found:
-                rec.group_description_tmp = rec.group_description
-            else:
-                rec.group_description_tmp = rec.description
-
     ############### Display fields ################################
 
     json_display_finish_group_name = fields.Char(string='Finish group name JSON Display',
