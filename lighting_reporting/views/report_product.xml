@@ -142,12 +142,12 @@
                             </div>
                         </t>
                         <t t-if="not doc.seo_description">
-                            <t t-set="families"
+                            <t t-set="family_descriptions"
                                t-value="filter(lambda x: x and x.strip() or None, doc.family_ids.mapped('description'))"/>
-                            <t t-if="families">
+                            <t t-if="family_descriptions">
                                 <div class="nl-family-description">
-                                    <t t-foreach="families" t-as="f">
-                                        <p t-esc="f"/>
+                                    <t t-foreach="family_descriptions" t-as="fdesc">
+                                        <p t-esc="fdesc"/>
                                     </t>
                                 </div>
                             </t>
@@ -571,112 +571,114 @@
                         <t t-set="oacc">RECOMMENDED ACCESSORIES</t>
                         <t t-foreach="[(racc, doc.required_ids), (oacc, doc.optional_ids)]"
                            t-as="accessory_data">
-                            <p t-esc="accessory_data[0]" class="nl-section-title"/>
-                            <t t-foreach="accessory_data[1]" t-as="acc">
-                                <div class="nl-accessory clearfix">
-                                    <div class="nl-accessory-images">
-                                        <t t-set="fimages" t-value="acc.get_attachments_by_type('F')"/>
-                                        <t t-if="fimages">
-                                            <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
-                                        </t>
-                                    </div>
-                                    <div class="nl-accessory-images">
-                                        <t t-set="eimages" t-value="acc.get_attachments_by_type('E')"/>
-                                        <t t-if="eimages">
-                                            <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
-                                        </t>
-                                    </div>
-                                    <div class="nl-accessory-main-data">
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <span class="nl-accessory-reference" t-field="acc.reference"/>
-                                            </li>
-                                            <li>
-                                                <span class="nl-accessory-description" t-field="acc.description"/>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="nl-accessory-data">
-                                        <table class="nl-table-data nl-accessory-data">
-                                            <t t-if="acc.reference[0] == 'A'">
-                                                <tr t-if="acc.body_material_ids">
-                                                    <td>
-                                                        Material
-                                                    </td>
-                                                    <td>
-                                                        <span t-esc="', '.join([x.name for x in acc.body_material_ids])"/>
-                                                    </td>
-                                                </tr>
-                                                <tr t-if="acc.finish_id">
-                                                    <td>
-                                                        Finish
-                                                    </td>
-                                                    <td>
-                                                        <span t-field="acc.finish_id"/>
-                                                    </td>
-                                                </tr>
+                            <t t-if="accessory_data[1]">
+                                <p t-esc="accessory_data[0]" class="nl-section-title"/>
+                                <t t-foreach="accessory_data[1]" t-as="acc">
+                                    <div class="nl-accessory clearfix">
+                                        <div class="nl-accessory-images">
+                                            <t t-set="fimages" t-value="acc.get_attachments_by_type('F')"/>
+                                            <t t-if="fimages">
+                                                <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
                                             </t>
-                                            <t t-if="acc.reference[0] != 'A'">
-                                                <tr t-if="acc.input_voltage_id">
-                                                    <td>
-                                                        Input voltage
-                                                    </td>
-                                                    <td>
-                                                        <span t-field="acc.input_voltage_id"/>
-                                                    </td>
-                                                </tr>
-                                                <tr t-if="acc.frequency_id">
-                                                    <td>
-                                                        Frequency
-                                                    </td>
-                                                    <td>
-                                                        <span t-field="acc.frequency_id"/>
-                                                    </td>
-                                                </tr>
-                                                <tr t-if="acc.output_current">
-                                                    <td>
-                                                        Output current (mA)
-                                                    </td>
-                                                    <td>
-                                                        <span t-field="acc.output_current"/>
-                                                    </td>
-                                                </tr>
-                                                <tr t-if="acc.total_wattage">
-                                                    <td>
-                                                        Wattage (W)
-                                                    </td>
-                                                    <td>
-                                                        <span t-field="acc.total_wattage"/>
-                                                    </td>
-                                                </tr>
-                                                <tr t-if="acc.sealing_id">
-                                                    <td>
-                                                        IP
-                                                    </td>
-                                                    <td>
-                                                        <span t-field="acc.sealing_id"/>
-                                                    </td>
-                                                </tr>
-                                                <tr t-if="acc.protection_class_id">
-                                                    <td>
-                                                        Protection class
-                                                    </td>
-                                                    <td>
-                                                        <span t-field="acc.protection_class_id"/>
-                                                    </td>
-                                                </tr>
-                                                <tr t-if="acc.dimmable_ids">
-                                                    <td>
-                                                        Dimmable
-                                                    </td>
-                                                    <td>
-                                                        <span t-esc="', '.join([x.name for x in acc.dimmable_ids])"/>
-                                                    </td>
-                                                </tr>
+                                        </div>
+                                        <div class="nl-accessory-images">
+                                            <t t-set="eimages" t-value="acc.get_attachments_by_type('E')"/>
+                                            <t t-if="eimages">
+                                                <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
                                             </t>
-                                        </table>
+                                        </div>
+                                        <div class="nl-accessory-main-data">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <span class="nl-accessory-reference" t-field="acc.reference"/>
+                                                </li>
+                                                <li>
+                                                    <span class="nl-accessory-description" t-field="acc.description"/>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="nl-accessory-data">
+                                            <table class="nl-table-data nl-accessory-data">
+                                                <t t-if="acc.reference[0] == 'A'">
+                                                    <tr t-if="acc.body_material_ids">
+                                                        <td>
+                                                            Material
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="', '.join([x.name for x in acc.body_material_ids])"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-if="acc.finish_id">
+                                                        <td>
+                                                            Finish
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="acc.finish_id"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                                <t t-if="acc.reference[0] != 'A'">
+                                                    <tr t-if="acc.input_voltage_id">
+                                                        <td>
+                                                            Input voltage
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="acc.input_voltage_id"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-if="acc.frequency_id">
+                                                        <td>
+                                                            Frequency
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="acc.frequency_id"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-if="acc.output_current">
+                                                        <td>
+                                                            Output current (mA)
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="acc.output_current"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-if="acc.total_wattage">
+                                                        <td>
+                                                            Wattage (W)
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="acc.total_wattage"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-if="acc.sealing_id">
+                                                        <td>
+                                                            IP
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="acc.sealing_id"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-if="acc.protection_class_id">
+                                                        <td>
+                                                            Protection class
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="acc.protection_class_id"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-if="acc.dimmable_ids">
+                                                        <td>
+                                                            Dimmable
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="', '.join([x.name for x in acc.dimmable_ids])"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
+                                </t>
                             </t>
                         </t>
                     </div>
