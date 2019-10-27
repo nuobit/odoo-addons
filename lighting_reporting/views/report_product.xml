@@ -136,16 +136,23 @@
 
                     <div class="nl-layout-data">
                         <!-- long description -->
-                        <div t-if="doc.seo_description or f.description" class="nl-family-description">
-                            <t t-if="doc.seo_description">
+                        <t t-if="doc.seo_description">
+                            <div class="nl-family-description">
                                 <p t-field="doc.seo_description"/>
+                            </div>
+                        </t>
+                        <t t-if="not doc.seo_description">
+                            <t t-set="families"
+                               t-value="filter(lambda x: x and x.strip() or None, doc.family_ids.mapped('description'))"/>
+                            <t t-if="families">
+                                <div class="nl-family-description">
+                                    <t t-foreach="families" t-as="f">
+                                        <p t-field="f.description"/>
+                                    </t>
+                                </div>
                             </t>
-                            <t t-if="not doc.seo_description">
-                                <t t-foreach="doc.family_ids" t-as="f">
-                                    <p t-field="f.description"/>
-                                </t>
-                            </t>
-                        </div>
+                        </t>
+
                         <!-- general data -->
                         <p class="nl-section-title">GENERAL DATA</p>
                         <table class="nl-table-data nl-main-data">
