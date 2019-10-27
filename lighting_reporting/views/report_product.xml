@@ -147,7 +147,7 @@
                             <t t-if="families">
                                 <div class="nl-family-description">
                                     <t t-foreach="families" t-as="f">
-                                        <p t-esc="f.description"/>
+                                        <p t-esc="f"/>
                                     </t>
                                 </div>
                             </t>
