@@ -15,11 +15,11 @@ class AccountTax(models.Model):
         string='Prorrate type',
     )
 
-    def _get_prorrate_ratio(self, date):
+    def _get_prorrate_ratio(self, date, company):
         date = date or fields.Date.context_today(self)
 
         prorrate_map = self.env['aeat.map.special.prorrate.year'].search([
-            ('company_id', '=', self.env.user.company_id.id),
+            ('company_id', '=', company.id),
             ('year', '=', fields.Date.from_string(date).year),
         ])
         if not prorrate_map:
