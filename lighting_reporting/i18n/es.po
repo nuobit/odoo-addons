@@ -172,6 +172,16 @@ msgid "RECOMMENDED ACCESSORIES"
 msgstr "ACCESORIOS RECOMENDADOS"
 
 #. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "COMPLEMENTARY IMAGES"
+msgstr "IMÁGENES COMPLEMENTARIAS"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "PRODUCTS OF THE SAME FAMILY"
+msgstr "PRODUCTOS DE LA MISMA FAMILIA"
+
+#. module: lighting_reporting
 #: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_id
 #: model:ir.model.fields,field_description:lighting_reporting.field_report_lighting_reporting_report_product_id
 msgid "ID"

@@ -50,11 +50,6 @@ th, td {
   margin: 0;
 }
 
-// debug
-//img {
-//  border: 1px dashed black;
-//}
-
 // global settings
 div.page {
   page-break-after: always;
@@ -87,7 +82,6 @@ div.footer {
   font-family: 'Raleway';
   font-size: 11px; // 7pt
   font-weight: 700; // bold
-  margin-top: 36px;
   margin-bottom: 10px;
 }
 
@@ -143,7 +137,7 @@ div.footer {
 
 .nl-brand-header-pages {
   position: absolute;
-  top: 14px;
+  top: 13px;
   right: 0;
   font-family: 'Raleway';
   font-size: 14px; // 8pt
@@ -202,19 +196,23 @@ div.footer {
 }
 
 // family description
-.nl-family-description p {
-  font-family: 'Raleway';
-  font-size: 10px; // 7pt
-  line-height: 16px; // 10pt
-  text-align: justify;
-  text-justify: inter-word;
-  border: 0;
-  padding: 0;
+.nl-family-description {
+  margin-bottom: 36px;
+  p {
+    font-family: 'Raleway';
+    font-size: 10px; // 7pt
+    line-height: 16px; // 10pt
+    text-align: justify;
+    text-justify: inter-word;
+    border: 0;
+    padding: 0;
+  }
 }
 
 // table data
 .nl-layout-data .nl-table-data.nl-main-data {
   width: 465px;
+  margin-bottom: 36px;
 }
 
 .nl-layout-data .nl-table-data.nl-main-data td:nth-child(1) {
@@ -225,6 +223,7 @@ div.footer {
 .nl-photometric-images {
   border-top: 1px solid #918f8f;
   padding-top: 13px;
+  margin-bottom: 36px;
 }
 
 .nl-photometric-images > div {
@@ -238,17 +237,13 @@ div.footer {
 }
 
 ////////// BODY ACCESSORIES PAGE ///////////////
-
 // layout
 .nl-layout-accessories {
-  //border: 1px solid blue;
-  //display: table;
-  //table-layout: fixed;
   width: 100%;
+  margin-bottom: 36px;
 }
 
 .nl-layout-accessories .nl-accessory {
-  //display: table-row;
   padding-top: 7px;
   padding-bottom: 7px;
   border-top: 1px solid #918f8f;
@@ -308,6 +303,61 @@ div.footer {
   width: 168px;
 }
 
+////////// COMPLEMENTARY IMAGES AND GROUP SAME FAMILY PRODUCTS PAGE ///////////////
+// complementary images
+.nl-complementary-images {
+  margin-bottom: 36px;
+}
+
+.nl-complementary-images {
+  //outline: 1px solid mediumvioletred;
+  border-top: 1px solid #918f8f;
+  padding-top: 18px;
+}
+
+.nl-complementary-images .nl-complementary-row-images:nth-last-child(n+2) {
+  margin-bottom: 44px;
+}
+
+.nl-complementary-images .nl-complementary-row-images > div {
+  float: left;
+  width: 221px;
+  img {
+    width: 100%;
+  }
+}
+
+.nl-complementary-images .nl-complementary-row-images > div:nth-child(n+2) {
+  margin-left: 44px;
+}
+
+/////// groups same fmaily
+.nl-layout-groups-same-family {
+  margin-bottom: 36px;
+}
+
+.nl-groups-same-family-table > thead th {
+  border-bottom: 1px solid #918f8f;
+}
+
+.nl-groups-same-family-table > tbody td {
+  padding-top: 13px;
+  img {
+    width: 110px;
+  }
+  .nl-group-name {
+    margin-top: 9px;
+    margin-bottom: 0px;
+    font-family: 'Helvetica Light';
+    font-weight: 300;
+    font-size: 18px; // 10pt
+  }
+}
+
+.nl-groups-same-family-table > tbody td:nth-last-child(n+2) {
+  width: 128px; // 110px + 18px
+}
+
 ////////// FOOTER ///////////////
 .nl-footer {
   //border: 1px solid blue;
@@ -345,6 +395,7 @@ div.footer {
   margin-top: 7px;
 }
 
-
-
-
+//// debug
+//img {
+//  border: 1px dashed black;
+//}

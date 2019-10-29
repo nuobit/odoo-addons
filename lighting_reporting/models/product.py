@@ -42,6 +42,13 @@ def expand2square(im, bgcolor):
         return result
 
 
+def chunks(li, n):
+    if not li:
+        return
+    yield li[:n]
+    yield from chunks(li[n:], n)
+
+
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
@@ -117,12 +124,62 @@ class LightingProduct(models.Model):
         return url
 
     def get_attachments_by_type(self, atype, only_images=True):
-        attachments = self.attachment_ids.filtered(
-            lambda x: x.type_id.code == atype and
-                      (not only_images or x.attachment_id.index_content == 'image')
-        ).sorted(lambda x: (x.sequence, x.id))
+        attachments = self.env['lighting.attachment']
+        for rec in self:
+            attachments |= rec.attachment_ids.filtered(
+                lambda x: x.type_id.code == atype and
+                          (not only_images or x.attachment_id.index_content == 'image')
+            ).sorted(lambda x: (x.sequence, x.id))
 
         return attachments
+
+    def get_complementary_fp_images(self, groupsof=None):
+        # FP's current product
+        attachments = self.get_attachments_by_type('FP')
+
+        # FP's required accessories
+        attachments |= self.required_ids.get_attachments_by_type('FP')
+
+        # FP's same family
+        attachments |= self.search([
+            ('id', '!=', self.id),
+            ('family_ids', 'in', self.family_ids.mapped('id')),
+        ]).get_attachments_by_type('FP')
+
+        attachments = attachments.sorted(lambda x: (
+            x.product_id != self,
+            x.product_id not in self.required_ids,
+            x.product_id.sequence,
+            x.sequence,
+        ))
+
+        if not groupsof:
+            groupsof = len(attachments)
+
+        return list(chunks(attachments, groupsof))
+
+    def get_complementary_fa_images(self, groupsof=None):
+        # FA's current product
+        attachments = self.get_attachments_by_type('FA')[2:]
+
+        if not groupsof:
+            groupsof = len(attachments)
+
+        return list(chunks(attachments, groupsof))
+
+    def get_groups_same_family(self, groupsof=None):
+        groups = self.search([
+            ('id', '!=', self.id),
+            ('family_ids', 'in', self.family_ids.mapped('id')),
+        ]).mapped('product_group_id') \
+            .get_parent_group_by_type('PHOTO') \
+            .filtered(lambda x: self not in x.flat_product_ids) \
+            .sorted(lambda x: x.name)
+
+        if not groupsof:
+            groupsof = len(groups)
+
+        return list(chunks(groups, groupsof))
 
 
 class LightingAttachment(models.Model):
