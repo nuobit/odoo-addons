@@ -159,11 +159,12 @@ class LightingAttachment(models.Model):
     @api.multi
     def get_main_resized_images(self):
         for im in self.get_main_image_attachments():
-            imageb64 = self.env['ir.attachment']._file_read(im.attachment_id.store_fname)
-            try:
-                return get_resized_images(imageb64)
-            except IOError:
-                continue
+            if im.attachment_id.store_fname:
+                imageb64 = self.env['ir.attachment']._file_read(im.attachment_id.store_fname)
+                try:
+                    return get_resized_images(imageb64)
+                except IOError:
+                    continue
 
         img_path = get_module_resource('web', 'static/src/img', 'placeholder.png')
         if img_path:
