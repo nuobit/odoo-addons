@@ -213,6 +213,36 @@ class LightingProductGroup(models.Model):
     _sql_constraints = [('name_uniq', 'unique (name)', 'The name must be unique!'),
                         ]
 
+    def get_parent_group_by_type_aux(self, typ):
+        self.ensure_one()
+        if typ in self.mapped('type_ids.code'):
+            return self
+        else:
+            if self.parent_id:
+                return self.parent_id.get_parent_group_by_type_aux(typ)
+
+        return self.env[self._name]
+
+    def get_parent_group_by_type(self, typ):
+        groups = self.env['lighting.product.group']
+        for rec in self:
+            groups |= rec.get_parent_group_by_type_aux(typ)
+
+        return groups
+
+    def get_default_group_image(self):
+        self.ensure_one()
+        attachments = self.mapped('flat_product_ids') \
+            .mapped('attachment_ids') \
+            .filtered(lambda x: x.type_id.code == 'F' and
+                                x.attachment_id.index_content == 'image') \
+            .sorted(lambda x: (x.sequence, x.id))
+
+        if attachments:
+            return attachments[0]
+
+        return self.env['lighting.attachment']
+    
     @api.onchange('use_category_attributes')
     def onchange_use_category_attributes(self):
         if self.use_category_attributes:
