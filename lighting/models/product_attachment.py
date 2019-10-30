@@ -138,13 +138,16 @@ class LightingAttachment(models.Model):
 
         return vals
 
-    def url_get(self, resolution=None):
+    def url_get(self, resolution=None, set_public=False):
         self.ensure_one()
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         pattern_l = ['%s/web/image/h/%s']
         if resolution:
             pattern_l.append(resolution)
         pattern_l.append('%s')
+
+        if set_public and not self.attachment_id.public:
+            self.sudo().attachment_id.public = True
 
         return '/'.join(pattern_l) % (base_url, self.attachment_id.checksum, self.datas_fname)
 
