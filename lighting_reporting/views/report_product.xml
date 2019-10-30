@@ -58,7 +58,9 @@
             <div class="nl-external-wrap">
                 <div class="nl-footer clearfix">
                     <div class="nl-footer-company-logo">
-                        <img t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
+                        <a t-att-href="company.website">
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
+                        </a>
                     </div>
                     <div class="nl-footer-company-address">
                         <ul class="list-unstyled">
@@ -91,11 +93,19 @@
                                 <span t-field="doc.write_date"/>
                             </li>
                             <li>
-                                <a t-att-href="doc.get_datasheet_url()" t-esc="doc.get_datasheet_url()"
-                                   target="_blank"/>
+                                <a t-att-href="doc.get_datasheet_url()" target="_blank"
+                                   t-esc="doc.get_datasheet_url()"/>
                             </li>
                         </ul>
                     </div>
+                </div>
+
+                <div>
+                    <a href="https://www.google.com/" target="_blank"
+                       style="position: absolute; width: 589.5px; height: 401.062px; left: 117px; top: 218.25px;">
+                    </a>
+                    <img src="https://media.gettyimages.com/photos/closeup-of-fish-over-white-background-picture-id931270318?s=612x612"
+                         style="position: absolute; width: 589.5px; height: 401.062px; opacity: 1; z-index: 3; transform: rotate(0deg); left: 117px; top: 218.25px;"/>
                 </div>
             </div>
         </div>
@@ -110,24 +120,25 @@
                     <div class="nl-layout-main-images">
                         <t t-set="fimages" t-value="doc.get_attachments_by_type('F')"/>
                         <div t-if="fimages" class="mb32">
-                            <a href="fimages[0].url">
-                                <img class="img-responsive"
-                                     t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
+                            <a t-att-href="fimages[0].url_get(set_public=True)" target="_blank">
+                                <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
                             </a>
                         </div>
 
                         <t t-set="eimages" t-value="doc.get_attachments_by_type('E')"/>
                         <div t-if="eimages" class="mb32">
-                            <img class="img-responsive"
-                                 t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
+                            <a t-att-href="eimages[0].url_get(set_public=True)" target="_blank">
+                                <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
+                            </a>
                         </div>
 
                         <t t-set="faimages" t-value="doc.get_attachments_by_type('FA')"/>
                         <t t-if="faimages">
                             <t t-foreach="faimages[:2]" t-as="fai">
                                 <div class="mb32">
-                                    <img class="img-responsive"
-                                         t-attf-src="data:image/*;base64,{{fai.get_optimized_image()}}"/>
+                                    <a t-att-href="fai.url_get(set_public=True)" target="_blank">
+                                        <img t-attf-src="data:image/*;base64,{{fai.get_optimized_image()}}"/>
+                                    </a>
                                 </div>
                             </t>
                         </t>
@@ -541,7 +552,7 @@
                                     <t t-foreach="cimages" t-as="cimg">
                                         <div>
                                             <t t-if="affiles">
-                                                <a t-att-href="affiles[0].url" target="_blank">
+                                                <a t-att-href="affiles[0].url_get(set_public=True)" target="_blank">
                                                     <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image()}}"/>
                                                 </a>
                                             </t>
@@ -553,7 +564,9 @@
                                 </t>
                                 <t t-foreach="qimages" t-as="qimg">
                                     <div>
-                                        <img t-attf-src="data:image/*;base64,{{qimg.get_optimized_image()}}"/>
+                                        <a t-att-href="qimg.url_get(set_public=True)" target="_blank">
+                                            <img t-attf-src="data:image/*;base64,{{qimg.get_optimized_image()}}"/>
+                                        </a>
                                     </div>
                                 </t>
                             </div>
@@ -577,13 +590,17 @@
                                         <div class="nl-accessory-images">
                                             <t t-set="fimages" t-value="acc.get_attachments_by_type('F')"/>
                                             <t t-if="fimages">
-                                                <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
+                                                <a t-att-href="fimages[0].url_get(set_public=True)" target="_blank">
+                                                    <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
+                                                </a>
                                             </t>
                                         </div>
                                         <div class="nl-accessory-images">
                                             <t t-set="eimages" t-value="acc.get_attachments_by_type('E')"/>
                                             <t t-if="eimages">
-                                                <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
+                                                <a t-att-href="eimages[0].url_get(set_public=True)" target="_blank">
+                                                    <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
+                                                </a>
                                             </t>
                                         </div>
                                         <div class="nl-accessory-main-data">
@@ -698,7 +715,9 @@
                                     <div class="nl-complementary-row-images clearfix">
                                         <t t-foreach="cimgs" t-as="cimg">
                                             <div>
-                                                <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image()}}"/>
+                                                <a t-att-href="cimg.url_get(set_public=True)" target="_blank">
+                                                    <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image()}}"/>
+                                                </a>
                                             </div>
                                         </t>
                                     </div>

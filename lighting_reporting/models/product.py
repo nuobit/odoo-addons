@@ -137,22 +137,6 @@ class LightingProduct(models.Model):
         # FP's current product
         attachments = self.get_attachments_by_type('FP')
 
-        # FP's required accessories
-        attachments |= self.required_ids.get_attachments_by_type('FP')
-
-        # FP's same family
-        attachments |= self.search([
-            ('id', '!=', self.id),
-            ('family_ids', 'in', self.family_ids.mapped('id')),
-        ]).get_attachments_by_type('FP')
-
-        attachments = attachments.sorted(lambda x: (
-            x.product_id != self,
-            x.product_id not in self.required_ids,
-            x.product_id.sequence,
-            x.sequence,
-        ))
-
         if not groupsof:
             groupsof = len(attachments)
 
@@ -173,8 +157,9 @@ class LightingProduct(models.Model):
             ('family_ids', 'in', self.family_ids.mapped('id')),
         ]).mapped('product_group_id') \
             .get_parent_group_by_type('PHOTO') \
-            .filtered(lambda x: self not in x.flat_product_ids) \
-            .sorted(lambda x: x.name)
+            .filtered(lambda x: self not in x.flat_product_ids and
+                                not all(x.flat_category_ids.mapped('root_id.is_accessory'))
+                      ).sorted(lambda x: x.name)
 
         if not groupsof:
             groupsof = len(groups)
