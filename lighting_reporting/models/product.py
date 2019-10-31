@@ -158,6 +158,7 @@ class LightingProduct(models.Model):
         ]).mapped('product_group_id') \
             .get_parent_group_by_type('PHOTO') \
             .filtered(lambda x: self not in x.flat_product_ids and
+                                set(x.flat_product_ids.mapped('state_marketing')) & {'N', 'C'} and
                                 not all(x.flat_category_ids.mapped('root_id.is_accessory'))
                       ).sorted(lambda x: x.name)
 
