@@ -643,6 +643,18 @@ class LightingProduct(models.Model):
             raise ValueError(_("You cannot assign products to a grup with childs. "
                                "The group must not have childs and be empty or already contain products"))
 
+    @api.multi
+    @api.constrains('optional_ids', 'required_ids')
+    def _check_composite_product(self):
+        for rec in self:
+            if rec in rec.required_ids:
+                raise ValueError(
+                    _("The current reference cannot be defined as a required accessory"))
+
+            if rec in rec.optional_ids:
+                raise ValueError(
+                    _("The current reference cannot be defined as a recomended accessory"))
+
     @api.model
     def create(self, values):
         res = super().create(values)
