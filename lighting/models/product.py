@@ -621,7 +621,7 @@ class LightingProduct(models.Model):
     def _check_reference_spaces(self):
         for rec in self:
             if rec.reference != rec.reference.strip():
-                raise ValueError(
+                raise ValidationError(
                     _('The reference has trailing and/or leading spaces, plese remove them before saving.'))
 
     @api.multi
@@ -629,30 +629,30 @@ class LightingProduct(models.Model):
     def _check_composite_product(self):
         for rec in self:
             if not rec.is_composite and rec.required_ids:
-                raise ValueError(
+                raise ValidationError(
                     _("Only the composite products can have required accessories. Enable 'is_composite' "
                       "field or remove the required accessories associated."))
 
             if rec.is_composite and not rec.required_ids:
-                raise ValueError(
+                raise ValidationError(
                     _("You cannot have a composite product without required accessories"))
 
     @api.constrains('product_group_id')
     def _check_product_group(self):
         if self.product_group_id.child_ids:
-            raise ValueError(_("You cannot assign products to a grup with childs. "
-                               "The group must not have childs and be empty or already contain products"))
+            raise ValidationError(_("You cannot assign products to a grup with childs. "
+                                    "The group must not have childs and be empty or already contain products"))
 
     @api.multi
     @api.constrains('optional_ids', 'required_ids')
     def _check_composite_product(self):
         for rec in self:
             if rec in rec.required_ids:
-                raise ValueError(
+                raise ValidationError(
                     _("The current reference cannot be defined as a required accessory"))
 
             if rec in rec.optional_ids:
-                raise ValueError(
+                raise ValidationError(
                     _("The current reference cannot be defined as a recomended accessory"))
 
     @api.model
