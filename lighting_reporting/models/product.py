@@ -98,6 +98,12 @@ class LightingProduct(models.Model):
         return self.source_ids.mapped('line_ids'). \
             filtered(lambda x: x.is_lamp_included).mapped('type_id.code')
 
+    @api.multi
+    def filter_by_catalogued(self):
+        return self.filtered(
+            lambda x: x.state_marketing in ('N', 'C')
+        )
+
     def get_usb(self):
         res = []
         if self.usb_ports:
@@ -158,7 +164,7 @@ class LightingProduct(models.Model):
         ]).mapped('product_group_id') \
             .get_parent_group_by_type('PHOTO') \
             .filtered(lambda x: self not in x.flat_product_ids and
-                                set(x.flat_product_ids.mapped('state_marketing')) & {'N', 'C'} and
+                                x.flat_product_ids.filter_by_catalogued() and
                                 not all(x.flat_category_ids.mapped('root_id.is_accessory'))
                       ).sorted(lambda x: x.name)
 

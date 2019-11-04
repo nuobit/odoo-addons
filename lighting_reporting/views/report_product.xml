@@ -581,7 +581,7 @@
                     <div class="nl-layout-accessories">
                         <t t-set="racc">REQUIRED ACCESSORIES</t>
                         <t t-set="oacc">RECOMMENDED ACCESSORIES</t>
-                        <t t-foreach="[(racc, doc.required_ids), (oacc, doc.optional_ids)]"
+                        <t t-foreach="[(racc, doc.required_ids.filter_by_catalogued()), (oacc, doc.optional_ids.filter_by_catalogued())]"
                            t-as="accessory_data">
                             <t t-if="accessory_data[1]">
                                 <div t-esc="accessory_data[0]" class="nl-section-title"/>
