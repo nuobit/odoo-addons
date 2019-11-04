@@ -177,7 +177,10 @@ class LightingProduct(models.Model):
 class LightingAttachment(models.Model):
     _inherit = 'lighting.attachment'
 
-    def get_optimized_image(self):
+    def get_optimized_image(self, enabled=False):
+        if not enabled:
+            return self.datas
+
         datas = base64.decodebytes(self.datas)
         im = Image.open(io.BytesIO(datas))
 
