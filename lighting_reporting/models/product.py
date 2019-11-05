@@ -101,7 +101,7 @@ class LightingProduct(models.Model):
     @api.multi
     def filter_by_catalogued(self):
         return self.filtered(
-            lambda x: x.state_marketing in ('N', 'C')
+            lambda x: x.state_marketing in ('N', 'C', 'ES')
         )
 
     def get_usb(self):
