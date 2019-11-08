@@ -222,7 +222,7 @@ class LightingProduct(models.Model):
 
     def _inverse_category_complete_name(self):
         for rec in self:
-            if rec.category_complete_name:
+            if rec.category_completename:
                 category_leafs = self.env['lighting.product.category']. \
                     get_leaf_from_complete_name(rec.category_completename)
                 if category_leafs:
