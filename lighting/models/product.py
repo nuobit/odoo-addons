@@ -216,6 +216,22 @@ class LightingProduct(models.Model):
                                   string='Category', required=True,
                                   ondelete='restrict', track_visibility='onchange')
 
+    category_complete_name = fields.Char(string='Category complete name',
+                                         inverse='_inverse_category_complete_name')
+
+    def _inverse_category_complete_name(self):
+        for rec in self:
+            if rec.category_complete_name:
+                category_leafs = self.env['lighting.product.category']. \
+                    get_leaf_from_complete_name(rec.category_complete_name)
+                if category_leafs:
+                    rec.category_id = category_leafs[0]
+                else:
+                    raise ValidationError(
+                        _("Category with complete name '%s' does not exist") % rec.category_complete_name)
+            else:
+                rec.category_id = False
+
     is_composite = fields.Boolean(string="Is composite", default=False)
 
     @api.onchange('is_composite')
