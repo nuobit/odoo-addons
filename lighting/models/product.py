@@ -216,7 +216,7 @@ class LightingProduct(models.Model):
                                   string='Category', required=True,
                                   ondelete='restrict', track_visibility='onchange')
 
-    category_complete_name = fields.Char(string='Category complete name',
+    category_complete_name = fields.Char(string='Category (complete name)',
                                          inverse='_inverse_category_complete_name')
 
     def _inverse_category_complete_name(self):

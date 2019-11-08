@@ -80,6 +80,12 @@ msgid "Already exists an attachment with the same type"
 msgstr "Ya existe un archivo adjunto con el mismo tipo."
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_group_alt_name
+#: model:ir.ui.view,arch_db:lighting.product_group_search_view
+msgid "Alternate name"
+msgstr "Nombre alternativo"
+
+#. module: lighting
 #: selection:lighting.product.voltage,current_type:0
 msgid "Alternating"
 msgstr "Alterna"
@@ -2729,6 +2735,11 @@ msgstr "Categorías"
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Category"
 msgstr "Categoría"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_complete_name_28519
+msgid "Category (complete name)"
+msgstr "Categoría (nombre completo)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_is_composite
