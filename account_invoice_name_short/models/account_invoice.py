@@ -65,7 +65,7 @@ def group_by_ranges(root, values):
     return res
 
 
-def short_long_delimited_string(value):
+def shorten_long_delimited_string(value):
     k_vals = []
     for k, v in group_by_root(value).items():
         k_vals += group_by_ranges(k, v)
@@ -73,7 +73,7 @@ def short_long_delimited_string(value):
     return ', '.join(k_vals)
 
 
-def short_long_string(value, max=1000):
+def shorten_long_string(value, max=1000):
     name_l = [value[:max]]
     if len(value) > max:
         name_l.append('(...)')
@@ -81,25 +81,31 @@ def short_long_string(value, max=1000):
     return ' '.join(name_l)
 
 
+def shorten_long_vals(vals):
+    vals_new = {}
+    if vals:
+        if 'name' in vals and vals['name'] and vals['name'].strip():
+            vals_new['name'] = shorten_long_string(
+                shorten_long_delimited_string(vals['name'])
+            )
+
+        if 'origin' in vals and vals['origin'] and vals['origin'].strip():
+            vals_new['origin'] = shorten_long_delimited_string(vals['origin'])
+
+    return vals_new
+
+
 class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 
     @api.multi
     def write(self, vals):
-        if 'name' in vals:
-            vals['name'] = short_long_string(vals['name'])
-
-        if 'origin' in vals:
-            vals['origin'] = short_long_delimited_string(vals['origin'])
+        vals.update(shorten_long_vals(vals))
 
         return super().write(vals)
 
     @api.model
     def create(self, vals):
-        if 'name' in vals:
-            vals['name'] = short_long_string(vals['name'])
-
-        if 'origin' in vals:
-            vals['origin'] = short_long_delimited_string(vals['origin'])
+        vals.update(shorten_long_vals(vals))
 
         return super().create(vals)
