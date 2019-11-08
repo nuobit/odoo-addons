@@ -58,7 +58,7 @@ class LightingTreeMixin(models.AbstractModel):
 
     @api.model
     def get_leaf_from_complete_name(self, complete_name):
-        def complete_name_to_leaf_aux(parent, childs):
+        def complete_name_to_leaf(parent, childs):
             if not childs:
                 return parent
             else:
@@ -68,12 +68,12 @@ class LightingTreeMixin(models.AbstractModel):
                 ])
                 leafs = self.env[self._name]
                 for node in nodes:
-                    leafs += complete_name_to_leaf_aux(node, childs[1:])
+                    leafs += complete_name_to_leaf(node, childs[1:])
 
                 return leafs
 
-        return complete_name_to_leaf_aux(self.env[self._name],
-                                         complete_name.split(' / '))
+        return complete_name_to_leaf(self.env[self._name],
+                                     complete_name.split(' / '))
 
     # childs
     child_count = fields.Integer(compute='_compute_child_count', string='Childs')
