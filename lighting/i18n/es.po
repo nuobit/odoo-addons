@@ -2737,7 +2737,7 @@ msgid "Category"
 msgstr "Categoría"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_complete_name_28519
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_completename
 msgid "Category (complete name)"
 msgstr "Categoría (nombre completo)"
 

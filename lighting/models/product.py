@@ -216,7 +216,7 @@ class LightingProduct(models.Model):
                                   string='Category', required=True,
                                   ondelete='restrict', track_visibility='onchange')
 
-    category_complete_name = fields.Char(string='Category (complete name)',
+    category_completename = fields.Char(string='Category (complete name)',
                                          store=False,
                                          inverse='_inverse_category_complete_name')
 
@@ -224,12 +224,12 @@ class LightingProduct(models.Model):
         for rec in self:
             if rec.category_complete_name:
                 category_leafs = self.env['lighting.product.category']. \
-                    get_leaf_from_complete_name(rec.category_complete_name)
+                    get_leaf_from_complete_name(rec.category_completename)
                 if category_leafs:
                     rec.category_id = category_leafs[0]
                 else:
                     raise ValidationError(
-                        _("Category with complete name '%s' does not exist") % rec.category_complete_name)
+                        _("Category with complete name '%s' does not exist") % rec.category_completename)
             else:
                 rec.category_id = False
 
