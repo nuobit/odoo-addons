@@ -588,6 +588,7 @@ class LightingProduct(models.Model):
 
     # marketing tab
     state_marketing = fields.Selection([
+        ('O', 'Online'),
         ('N', 'New'),
         ('C', 'Cataloged'),
         ('DS', 'Discontinued by supplier'),
