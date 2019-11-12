@@ -25,13 +25,19 @@
 
         <!-- HEADER -->
         <div class="header">
-            <t t-set="brand_color" t-value="'#%s' % (doc.catalog_ids and doc.catalog_ids[0].html_color or 'aaaaaa',)"/>
+            <t t-set="brand_color"
+               t-value="'#%s' % (len(doc.catalog_ids) != 1 and '000000' or doc.catalog_ids[0].html_color, )"/>
             <div class="nl-external-wrap-header">
                 <div class="nl-brand-header">
                     <div class="nl-brand-header-brand">
-                        <t t-foreach="doc.catalog_ids" t-as="c">
-                            <img t-attf-src="data:image/*;base64,{{c.image}}"/>
-                        </t>
+                        <a t-att-href="company.website">
+                            <t t-if="len(doc.catalog_ids) != 1">
+                                <img t-att-src="'data:image/*;base64,%s' % to_text(company.logo)"/>
+                            </t>
+                            <t t-if="len(doc.catalog_ids) == 1">
+                                <img t-attf-src="data:image/*;base64,{{doc.catalog_ids[0].image}}"/>
+                            </t>
+                        </a>
                     </div>
                     <div class="nl-brand-header-ribbon" t-attf-style="background:{{ brand_color }};">
                     </div>
@@ -59,7 +65,7 @@
                 <div class="nl-footer clearfix">
                     <div class="nl-footer-company-logo">
                         <a t-att-href="company.website">
-                            <img t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
+                            <img t-att-src="'data:image/*;base64,%s' % to_text(company.logo)"/>
                         </a>
                     </div>
                     <div class="nl-footer-company-address">
