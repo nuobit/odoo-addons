@@ -591,7 +591,6 @@ class LightingProduct(models.Model):
         ('O', 'Online'),
         ('N', 'New'),
         ('C', 'Cataloged'),
-        ('DS', 'Discontinued by supplier'),
         ('ES', 'Until end of stock'),
         ('D', 'Discontinued'),
         ('H', 'Historical'),

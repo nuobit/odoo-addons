@@ -837,11 +837,6 @@ msgid "New"
 msgstr "New"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued_by_supplier
-msgid "Discontinued by supplier"
-msgstr "Discontinué Par fournisseur"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued_soon
 msgid "Discontinued soon"
 msgstr "Discontinued bientôt"

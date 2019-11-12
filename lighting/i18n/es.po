@@ -829,16 +829,6 @@ msgid "New"
 msgstr "Nuevo"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued_by_supplier
-msgid "Discontinued by supplier"
-msgstr "Descatalogado por el proveedor"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued_soon
-msgid "Discontinued soon"
-msgstr "Descatalogado en breve"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_assembler_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_display_name
@@ -922,12 +912,6 @@ msgstr "Nuevo"
 #: selection:lighting.product,state_marketing:0
 msgid "Cataloged"
 msgstr "Catalogado"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-#: selection:lighting.product,state_marketing:0
-msgid "Discontinued by supplier"
-msgstr "Discontinuado por el proveedor"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
