@@ -583,7 +583,7 @@
                             <div class="nl-section-title">NOTES</div>
                             <table class="nl-table-data nl-note-data">
                                 <tbody>
-                                    <t t-foreach="doc.note_ids" t-as="note">
+                                    <t t-foreach="doc.note_ids.sorted(lambda x: x.sequence)" t-as="note">
                                         <tr>
                                             <td>
                                                 <p t-field="note.note_id.name"/>
