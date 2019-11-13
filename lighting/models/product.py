@@ -217,8 +217,8 @@ class LightingProduct(models.Model):
                                   ondelete='restrict', track_visibility='onchange')
 
     category_completename = fields.Char(string='Category (complete name)',
-                                         store=False,
-                                         inverse='_inverse_category_complete_name')
+                                        store=False,
+                                        inverse='_inverse_category_complete_name')
 
     def _inverse_category_complete_name(self):
         for rec in self:
@@ -490,6 +490,12 @@ class LightingProduct(models.Model):
     def _compute_beam_count(self):
         for rec in self:
             rec.beam_count = sum(rec.beam_ids.mapped('num'))
+
+    # notes tab
+    note_ids = fields.One2many(comodel_name='lighting.product.notes',
+                               inverse_name='product_id',
+                               string='Notes', copy=True,
+                               track_visibility='onchange')
 
     # Attachment tab
     attachment_ids = fields.One2many(comodel_name='lighting.attachment',

@@ -268,6 +268,16 @@
                                 </field>
                             </group>
                         </page>
+                        <page string="Notes">
+                            <group string="Notes">
+                                <field name="note_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="note_id"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
                         <page string="Logistics">
                             <group>
                                 <field name="tariff_item"/>

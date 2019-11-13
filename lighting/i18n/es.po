@@ -1700,6 +1700,7 @@ msgstr "Multi comida"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_location_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_note_name
 msgid "Name"
 msgstr "Nombre"
 
@@ -1707,6 +1708,19 @@ msgstr "Nombre"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_color_temperature_value
 msgid "Value"
 msgstr "Valor"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_note_ids
+#: model:ir.ui.menu,name:lighting.product_notes_menu
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+#: model:ir.actions.act_window,name:lighting.product_note_list_action
+msgid "Notes"
+msgstr "Notas"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_notes_note_id
+msgid "Note"
+msgstr "Nota"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_usb_ports
@@ -1841,6 +1855,7 @@ msgstr "Interruptores de encendido"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_product_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_product_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_product_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_notes_product_id
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Product"
 msgstr "Producto"
@@ -2150,6 +2165,7 @@ msgstr "Product voltage Tree"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_location_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_color_temperature_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_note_product_count
 msgid "Product(s)"
 msgstr "Producto(s)"
 
@@ -2159,6 +2175,7 @@ msgstr "Producto(s)"
 #: model:ir.ui.menu,name:lighting.products_menu
 #: model:ir.ui.view,arch_db:lighting.catalog_form_view
 #: model:ir.ui.view,arch_db:lighting.catalog_tree_view
+#: model:ir.ui.view,arch_db:lighting.product_note_tree_view
 #: model:ir.ui.view,arch_db:lighting.product_application_form_view
 #: model:ir.ui.view,arch_db:lighting.product_application_tree_view
 #: model:ir.ui.view,arch_db:lighting.product_family_form_view
@@ -2324,8 +2341,15 @@ msgstr "Sensores"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_sequence
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_sequence
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_sequence
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_notes_sequence
 msgid "Sequence"
 msgstr "Secuencia"
+
+#. module: lighting
+#: model:ir.actions.act_window,help:lighting.product_note_action_product
+#: model:ir.actions.act_window,help:lighting.product_note_list_action
+msgid "Create the first note"
+msgstr "Crea la primera nota"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.attachment_tree_view
