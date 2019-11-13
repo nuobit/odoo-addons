@@ -163,6 +163,11 @@ msgstr "DATOS GENERALES"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "NOTES"
+msgstr "NOTAS"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "REQUIRED ACCESSORIES"
 msgstr "ACCESORIOS NECESARIOS"
 

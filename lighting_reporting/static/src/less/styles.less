@@ -100,6 +100,13 @@ div.footer {
   vertical-align: middle;
 }
 
+.nl-table-data td p {
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
 .nl-table-data td:nth-child(1) {
   font-family: 'Raleway Medium';
   font-weight: 500; // medium
@@ -213,9 +220,11 @@ div.footer {
 }
 
 // table data
-.nl-layout-data .nl-table-data.nl-main-data {
-  width: 465px;
-  margin-bottom: 36px;
+.nl-layout-data {
+  .nl-table-data.nl-main-data, .nl-table-data.nl-note-data {
+    width: 465px;
+    margin-bottom: 30px;
+  }
 }
 
 .nl-layout-data .nl-table-data.nl-main-data td:nth-child(1) {
@@ -408,7 +417,7 @@ div.footer {
 //}
 
 .fake-link {
-    display: inline-block;
-    width: 100px;                    // wide enough to cover the real link
-    height: 50px;                    // high enough to cover the real link
+  display: inline-block;
+  width: 100px; // wide enough to cover the real link
+  height: 50px; // high enough to cover the real link
 }
