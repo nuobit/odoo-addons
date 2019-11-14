@@ -127,14 +127,14 @@
                         <t t-set="fimages" t-value="doc.get_attachments_by_type('F')"/>
                         <div t-if="fimages" class="mb32">
                             <a t-att-href="fimages[0].url_get(set_public=True)" target="_blank">
-                                <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image(False)}}"/>
+                                <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
                             </a>
                         </div>
 
                         <t t-set="eimages" t-value="doc.get_attachments_by_type('E')"/>
                         <div t-if="eimages" class="mb32">
                             <a t-att-href="eimages[0].url_get(set_public=True)" target="_blank">
-                                <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image(False)}}"/>
+                                <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
                             </a>
                         </div>
 
@@ -143,7 +143,7 @@
                             <t t-foreach="faimages[:2]" t-as="fai">
                                 <div class="mb32">
                                     <a t-att-href="fai.url_get(set_public=True)" target="_blank">
-                                        <img t-attf-src="data:image/*;base64,{{fai.get_optimized_image(False)}}"/>
+                                        <img t-attf-src="data:image/*;base64,{{fai.get_optimized_image()}}"/>
                                     </a>
                                 </div>
                             </t>
@@ -559,11 +559,11 @@
                                         <div>
                                             <t t-if="affiles">
                                                 <a t-att-href="affiles[0].url_get(set_public=True)" target="_blank">
-                                                    <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image(False)}}"/>
+                                                    <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image()}}"/>
                                                 </a>
                                             </t>
                                             <t t-if="not affiles">
-                                                <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image(False)}}"/>
+                                                <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image()}}"/>
                                             </t>
                                         </div>
                                     </t>
@@ -571,7 +571,7 @@
                                 <t t-foreach="qimages" t-as="qimg">
                                     <div>
                                         <a t-att-href="qimg.url_get(set_public=True)" target="_blank">
-                                            <img t-attf-src="data:image/*;base64,{{qimg.get_optimized_image(False)}}"/>
+                                            <img t-attf-src="data:image/*;base64,{{qimg.get_optimized_image()}}"/>
                                         </a>
                                     </div>
                                 </t>
@@ -613,7 +613,7 @@
                                             <t t-set="fimages" t-value="acc.get_attachments_by_type('F')"/>
                                             <t t-if="fimages">
                                                 <a t-att-href="fimages[0].url_get(set_public=True)" target="_blank">
-                                                    <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image(False)}}"/>
+                                                    <img t-attf-src="data:image/*;base64,{{fimages[0].get_optimized_image()}}"/>
                                                 </a>
                                             </t>
                                         </div>
@@ -621,7 +621,7 @@
                                             <t t-set="eimages" t-value="acc.get_attachments_by_type('E')"/>
                                             <t t-if="eimages">
                                                 <a t-att-href="eimages[0].url_get(set_public=True)" target="_blank">
-                                                    <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image(False)}}"/>
+                                                    <img t-attf-src="data:image/*;base64,{{eimages[0].get_optimized_image()}}"/>
                                                 </a>
                                             </t>
                                         </div>
@@ -738,7 +738,7 @@
                                         <t t-foreach="cimgs" t-as="cimg">
                                             <div>
                                                 <a t-att-href="cimg.url_get(set_public=True)" target="_blank">
-                                                    <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image(False)}}"/>
+                                                    <img t-attf-src="data:image/*;base64,{{cimg.get_optimized_image()}}"/>
                                                 </a>
                                             </div>
                                         </t>
@@ -763,7 +763,7 @@
                                             <t t-foreach="sfgrps" t-as="sfgrp">
                                                 <t t-set="gimg" t-value="sfgrp.get_default_group_image()"/>
                                                 <td t-if="gimg">
-                                                    <img t-attf-src="data:image/*;base64,{{gimg.get_optimized_image(False)}}"/>
+                                                    <img t-attf-src="data:image/*;base64,{{gimg.get_optimized_image()}}"/>
                                                     <div class="nl-group-name" t-esc="sfgrp.alt_name or sfgrp.name"/>
                                                 </td>
                                             </t>
