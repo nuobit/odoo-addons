@@ -10,7 +10,12 @@
     </record>
 
     <record id="topbar_group_hide" model="res.groups">
-        <field name="name">Hide non-lighting top bar icons and menus</field>
+        <field name="name">Hide non-lighting top bar menus</field>
+        <field name="category_id" ref="topbar_security"/>
+    </record>
+
+    <record id="topbar_icons_group_hide" model="res.groups">
+        <field name="name">Hide non-lighting top bar icons</field>
         <field name="category_id" ref="topbar_security"/>
     </record>
 </odoo>
