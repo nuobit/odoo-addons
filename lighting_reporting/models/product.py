@@ -76,6 +76,12 @@ def chunks(li, n):
 class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
+    datasheet_generation_date = fields.Datetime(compute='_compute_datasheet_generation_date')
+
+    def _compute_datasheet_generation_date(self):
+        for rec in self:
+            rec.datasheet_generation_date = fields.Datetime.now()
+
     def get_sheet_sources(self):
         res = []
         for s in self.source_ids:
@@ -210,8 +216,8 @@ class LightingAttachment(models.Model):
 
         im99 = resize(im, (500, None), by_side_long=True, allow_scale=False)
 
-        #sharpener = ImageEnhance.Sharpness(im7)
-        #im99 = sharpener.enhance(2.0)
+        # sharpener = ImageEnhance.Sharpness(im7)
+        # im99 = sharpener.enhance(2.0)
 
         # im9 = autocrop(im7, (255, 255, 255))
         # if not im9:

@@ -96,7 +96,7 @@
                         <ul class="list-unstyled">
                             <li>We reserve the right to change product specifications</li>
                             <li>
-                                <span t-field="doc.write_date"/>
+                                <span t-field="doc.datasheet_generation_date"/>
                             </li>
                             <li>
                                 <a t-att-href="doc.get_datasheet_url()" target="_blank"
