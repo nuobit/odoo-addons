@@ -84,7 +84,7 @@ class LightingProduct(models.Model):
 
     def get_sheet_sources(self):
         res = []
-        for s in self.source_ids:
+        for s in self.source_ids.sorted(lambda x: x.sequence):
             s_res = []
             s_type = s.get_source_type()
             if s_type:

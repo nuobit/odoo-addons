@@ -337,6 +337,11 @@ msgstr "Fuentes"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Energy efficiency"
+msgstr "Eficiencia energética"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Static pressure (Kg)"
 msgstr "Presión estática (Kg)"
 

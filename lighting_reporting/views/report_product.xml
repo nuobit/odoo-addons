@@ -263,6 +263,21 @@
                                     </ul>
                                 </td>
                             </tr>
+                            <tr t-if="doc.source_ids.get_energy_efficiency()">
+                                <td>
+                                    Energy efficiency
+                                </td>
+                                <td>
+                                    <ul class="list-unstyled mb0">
+                                        <t t-foreach="doc.source_ids.sorted(lambda x: x.sequence)" t-as="s">
+                                            <t t-set="ef" t-value="s.get_energy_efficiency()"/>
+                                            <t t-if="ef">
+                                                <li t-esc="', '.join(ef.mapped('name'))"/>
+                                            </t>
+                                        </t>
+                                    </ul>
+                                </td>
+                            </tr>
                             <t t-set="is_lamp_included" t-value="doc.get_is_lamp_included()"/>
                             <tr t-if="is_lamp_included is not None">
                                 <td>
