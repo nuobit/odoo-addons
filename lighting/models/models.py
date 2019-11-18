@@ -393,6 +393,13 @@ class LightingProductSourceLine(models.Model):
 
     source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
+    @api.multi
+    @api.constrains('type_id')
+    def _check_integrated_vs_lamp_included(self):
+        for rec in self:
+            if rec.type_id.is_integrated:
+                rec.is_lamp_included = False
+
     # aux display fucnitons
     def get_source_type(self):
         res = self.sorted(lambda x: x.sequence) \
