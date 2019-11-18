@@ -263,20 +263,20 @@
                                     </ul>
                                 </td>
                             </tr>
-                            <tr t-if="doc.source_ids">
+                            <t t-set="is_lamp_included" t-value="doc.get_is_lamp_included()"/>
+                            <tr t-if="is_lamp_included is not None">
                                 <td>
                                     Lamp included
                                 </td>
                                 <td>
-                                    <span t-if="doc.get_included_lamps()">
+                                    <span t-if="is_lamp_included">
                                         Yes
                                     </span>
-                                    <span t-if="not doc.get_included_lamps()">
+                                    <span t-if="not is_lamp_included">
                                         No
                                     </span>
                                 </td>
                             </tr>
-
                             <tr t-if="doc.beam_ids">
                                 <td>
                                     Beams

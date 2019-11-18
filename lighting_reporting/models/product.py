@@ -124,9 +124,14 @@ class LightingProduct(models.Model):
 
         return res
 
-    def get_included_lamps(self):
-        return self.source_ids.mapped('line_ids'). \
-            filtered(lambda x: x.is_lamp_included).mapped('type_id.code')
+    def get_is_lamp_included(self):
+        line_ids = self.source_ids.mapped('line_ids')
+        integrated_line_ids = line_ids.filtered(lambda x: x.is_integrated)
+        lamp_included_line_ids = line_ids.filtered(lambda x: not x.is_integrated).mapped('is_lamp_included')
+        if integrated_line_ids:
+            return any(lamp_included_line_ids) or None
+        else:
+            return any(lamp_included_line_ids)
 
     @api.multi
     def filter_by_catalogued(self):
