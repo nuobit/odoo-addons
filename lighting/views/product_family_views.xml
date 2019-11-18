@@ -9,7 +9,7 @@
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('family_ids','=',active_id)]</field>
         <field name="context">{'default_family_ids': [(4, active_id, False)]}</field>
         <field name="help" type="html">
@@ -22,7 +22,7 @@
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('family_ids','=',active_id),('state_marketing', '=', 'D')]</field>
         <field name="context">{
             'default_family_ids': [(4, active_id, False)],

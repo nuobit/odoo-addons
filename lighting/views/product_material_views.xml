@@ -8,7 +8,7 @@
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="domain">['|', '|', '|', '|', ('body_material_ids','=',active_id),
             ('diffusor_material_ids','=',active_id), ('frame_material_ids','=',active_id),
             ('reflector_material_ids','=',active_id), ('blade_material_ids','=',active_id)]
