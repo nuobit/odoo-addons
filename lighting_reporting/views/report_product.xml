@@ -346,18 +346,20 @@
 
                             <tr t-if="doc.static_pressure">
                                 <td>
-                                    Static pressure (Kg)
+                                    Static pressure
                                 </td>
                                 <td>
                                     <span t-field="doc.static_pressure"/>
+                                    <span>Kg</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.dynamic_pressure">
                                 <td>
-                                    Dinamic pressure (Km/h)
+                                    Dinamic pressure
                                 </td>
                                 <td>
                                     <span t-field="doc.dynamic_pressure"/>
+                                    <span>Km/h</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.corrosion_resistance">
@@ -383,6 +385,7 @@
                                 </td>
                                 <td>
                                     <span t-field="doc.frequency_id"/>
+                                    <span>Hz</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.dimmable_ids">
@@ -399,14 +402,16 @@
                                 </td>
                                 <td>
                                     <span t-field="doc.input_voltage_id"/>
+                                    <span>V</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.input_current">
                                 <td>
-                                    Input current (mA)
+                                    Input current
                                 </td>
                                 <td>
                                     <span t-field="doc.input_current"/>
+                                    <span>mA</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.output_voltage_id">
@@ -415,14 +420,16 @@
                                 </td>
                                 <td>
                                     <span t-field="doc.output_voltage_id"/>
+                                    <span>V</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.output_current">
                                 <td>
-                                    Output current (mA)
+                                    Output current
                                 </td>
                                 <td>
                                     <span t-field="doc.output_current"/>
+                                    <span>mA</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.auxiliary_equipment_ids">
@@ -453,10 +460,11 @@
                             <!-- Physical -->
                             <tr t-if="doc.weight">
                                 <td>
-                                    Weight (Kg)
+                                    Weight
                                 </td>
                                 <td>
                                     <span t-field="doc.weight"/>
+                                    <span>Kg</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.cable_outlets">

@@ -1,4 +1,3 @@
-# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* lighting_reporting
 #
@@ -97,8 +96,8 @@ msgstr "Dimmable"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "Dinamic pressure (Km/h)"
-msgstr "Presión dinámica (Km/h)"
+msgid "Dinamic pressure"
+msgstr "Presión dinámica"
 
 #. module: lighting_reporting
 #: model:ir.model.fields,field_description:lighting_reporting.field_lighting_reporting_product_datasheet_wizard_display_name
@@ -214,8 +213,8 @@ msgstr "IP2"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "Input current (mA)"
-msgstr "Corriente de entrada (mA)"
+msgid "Input current"
+msgstr "Corriente de entrada"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -275,8 +274,8 @@ msgstr "Ok"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "Output current (mA)"
-msgstr "Corriente de salida (mA)"
+msgid "Output current"
+msgstr "Corriente de salida"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -342,8 +341,8 @@ msgstr "Eficiencia energética"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "Static pressure (Kg)"
-msgstr "Presión estática (Kg)"
+msgid "Static pressure"
+msgstr "Presión estática"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -357,8 +356,8 @@ msgstr "USB"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "Wattage (W)"
-msgstr "Potencia (W)"
+msgid "Wattage"
+msgstr "Potencia"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.external_layout_lighting
@@ -367,8 +366,8 @@ msgstr "Nos reservamos el derecho de cambiar las especificaicones de producto"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "Weight (Kg)"
-msgstr "Peso (Kg)"
+msgid "Weight"
+msgstr "Peso"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
