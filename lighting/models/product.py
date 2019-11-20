@@ -700,8 +700,16 @@ class LightingProduct(models.Model):
     @api.multi
     def copy(self, default=None):
         self.ensure_one()
+        reference_tmp = None
+        i = 0
+        while True:
+            reference_tmp = '%s (copy%s)' % (self.reference, i and (' %i' % i) or '')
+            product_ids = self.env[self._name].search([('reference', '=', reference_tmp)])
+            if len(product_ids) == 0:
+                break
+            i += 1
         default = dict(default or {},
-                       reference=_('%s (copy)') % self.reference,
+                       reference=reference_tmp,
                        ean=False,
                        )
 

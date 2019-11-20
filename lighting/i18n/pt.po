@@ -51,13 +51,6 @@ msgid "% Discontinued product(s)"
 msgstr "% Produtos fora de linha)"
 
 #. module: lighting
-#: code:addons/lighting/models/models.py:377
-#: code:addons/lighting/models/models.py:378
-#, python-format
-msgid "%s (copy)"
-msgstr "% s (cópia)"
-
-#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "=Material code"
 msgstr "= Código material"
