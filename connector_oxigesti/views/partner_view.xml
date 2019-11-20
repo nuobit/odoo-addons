@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="res_partner_view_form_connector_oxigesti" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="connector.view_partner_connector_form"/>
+        <field name="arch" type="xml">
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="Oxigesti Bindings">
+                    <field name="oxigesti_bind_ids" nolabel="1"/>
+                </group>
+            </page>
+        </field>
+    </record>
+
+    <record id="oxigesti_res_partner_view_form" model="ir.ui.view">
+        <field name="name">oxigesti.res.partner.form</field>
+        <field name="model">oxigesti.res.partner</field>
+        <field name="arch" type="xml">
+            <form string="Oxigesti Partner">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="oxigesti_codigo_mutua" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="oxigesti_res_partner_view_tree" model="ir.ui.view">
+        <field name="name">oxigesti.res.partner.tree</field>
+        <field name="model">oxigesti.res.partner</field>
+        <field name="arch" type="xml">
+            <tree string="Oxigesti Partner">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="oxigesti_codigo_mutua"/>
+                <field name="sync_date"/>
+                <button name="resync" type="object"
+                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="oxigesti_res_partner_action" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">oxigesti.res.partner</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem id="oxigesti_menu_root" parent="connector.menu_connector_root"
+              name="Oxigesti" sequence="10" groups="connector.group_connector_manager"/>
+    <!-- TODO group: Oxigesti Manager -->
+
+    <menuitem id="oxigesti_backend_menu_action" name="Backends"
+              parent="oxigesti_menu_root" action="oxigesti_backend_action"/>
+
+
+    <!-- TODO: Implement security strategy groups="odoo_base.group_oc_manager" -->
+    <menuitem id="oxigesti_external_objects_menu" name="External Objects"
+              parent="oxigesti_menu_root"
+              sequence="100"/>
+
+    <!--menuitem id="oxigesti_external_products_menu" name="External Products" sequence="10"
+              parent="oxigesti_external_objects_menu" action="oxigesti_product_product_action"/-->
+
+    <menuitem id="oxigesti_external_partners_menu" name="External Customers" sequence="20"
+              parent="oxigesti_external_objects_menu" action="oxigesti_res_partner_action"/>
+
+    <!--enuitem id="oxigesti_external_sales_orders_menu" name="External Services" sequence="30"
+              parent="oxigesti_external_objects_menu" action="oxigesti_sale_order_action"/-->
+</odoo>
