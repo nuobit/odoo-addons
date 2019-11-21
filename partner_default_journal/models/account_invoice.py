@@ -13,9 +13,9 @@ class AccountInvoice(models.Model):
         if 'journal_id' not in vals and 'partner_id' in vals and 'type' in vals:
             partner_id = self.env['res.partner'].browse(vals['partner_id'])
             if partner_id.sale_journal_id and vals['type'] in ('out_invoice', 'out_refund'):
-                vals['journal_id'] = self.partner_id.sale_journal_id
+                vals['journal_id'] = self.partner_id.sale_journal_id.id
             elif partner_id.purchase_journal_id and vals['type'] in ('in_invoice', 'in_refund'):
-                vals['journal_id'] = self.partner_id.purchase_journal_id
+                vals['journal_id'] = self.partner_id.purchase_journal_id.id
 
         invoice = super(AccountInvoice, self).create(vals)
 
@@ -31,7 +31,8 @@ class AccountInvoice(models.Model):
             self.journal_id = self.partner_id.purchase_journal_id
 
         if not self.partner_id.sale_journal_id and not self.partner_id.purchase_journal_id:
-            default_journal = self.with_context(type=self.type)._default_journal()
+            default_journal = self.with_context(type=self.type,
+                                                company_id=self.company_id.id)._default_journal()
             if default_journal != self.journal_id:
                 self.journal_id = default_journal
 
