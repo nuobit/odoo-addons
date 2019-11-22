@@ -218,8 +218,12 @@ class LightingProduct(models.Model):
                                   ondelete='restrict', track_visibility='onchange')
 
     category_completename = fields.Char(string='Category (complete name)',
-                                        store=False,
+                                        compute='_compute_category_complete_name',
                                         inverse='_inverse_category_complete_name')
+
+    def _compute_category_complete_name(self):
+        for rec in self:
+            rec.category_completename = rec.category_id and rec.category_id.complete_name or False
 
     def _inverse_category_complete_name(self):
         for rec in self:
@@ -700,14 +704,15 @@ class LightingProduct(models.Model):
     @api.multi
     def copy(self, default=None):
         self.ensure_one()
-        reference_tmp = None
-        i = 0
+
+        ## generate non duplicated new reference
+        reference_tmp = self.reference
         while True:
-            reference_tmp = '%s (copy%s)' % (self.reference, i and (' %i' % i) or '')
             product_ids = self.env[self._name].search([('reference', '=', reference_tmp)])
             if len(product_ids) == 0:
                 break
-            i += 1
+            reference_tmp = '%s (copy)' % reference_tmp
+
         default = dict(default or {},
                        reference=reference_tmp,
                        ean=False,
