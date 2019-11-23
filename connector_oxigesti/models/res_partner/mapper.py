@@ -63,7 +63,7 @@ class ResPartnerImportMapper(Component):
     @only_create
     @mapping
     def ref(self, record):
-        return {'ref': record['Codigo_Cliente_Logic']}
+        return {'ref': record['Codigo_Cliente_Logic'] or 'OXI%i' % record['Codigo_Mutua']}
 
     @only_create
     @mapping
@@ -71,15 +71,15 @@ class ResPartnerImportMapper(Component):
         """ Will bind the record on a existing partner
         with the same internal reference """
         reference = record['Codigo_Cliente_Logic']
-
-        partner = self.env['res.partner'].search([
-            ('company_id', '=', self.backend_record.company_id.id),
-            ('ref', '=', reference),
-        ])
-        if partner:
-            if len(partner) > 1:
-                raise Exception("There's more than one existing partner "
-                                "with the same Internal reference %s" % reference)
-            return {
-                'odoo_id': (partner.id, False, {'to_review': True})
-            }
+        if reference:
+            partner = self.env['res.partner'].search([
+                ('company_id', '=', self.backend_record.company_id.id),
+                ('ref', '=', reference),
+            ])
+            if partner:
+                if len(partner) > 1:
+                    raise Exception("There's more than one existing partner "
+                                    "with the same Internal reference %s" % reference)
+                return {
+                    'odoo_id': (partner.id, False, {'to_review': True})
+                }
