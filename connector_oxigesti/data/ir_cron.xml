@@ -6,7 +6,7 @@
         <field name="active" eval="False"/>
         <!-- Mandatory to define a explicit user on record from the frontend,
              DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="< not base.user_root>"/-->
+        <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
@@ -15,33 +15,33 @@
         <field name="code">model._scheduler_import_customers()</field>
     </record>
 
-    <record id="ir_cron_import_oxigesti_products" model="ir.cron" forcecreate="True">
-        <field name="name">Oxigesti - Import products</field>
-        <field name="model_id" ref="model_oxigesti_backend"/>
-        <field name="active" eval="False"/>
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="< not base.user_root>"/-->
-        <field name="interval_number">1</field>
-        <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False"/>
-        <field name="state">code</field>
-        <field name="code">model._scheduler_import_products()</field>
-    </record>
+<!--    <record id="ir_cron_import_oxigesti_products" model="ir.cron" forcecreate="True">-->
+<!--        <field name="name">Oxigesti - Import products</field>-->
+<!--        <field name="model_id" ref="model_oxigesti_backend"/>-->
+<!--        <field name="active" eval="False"/>-->
+<!--        &lt;!&ndash; Mandatory to define a explicit user on record from the frontend,-->
+<!--             DON'T USE admin (base.user_root) &ndash;&gt;-->
+<!--        &lt;!&ndash;field name="user_id" ref="<not base.user_root>"/&ndash;&gt;-->
+<!--        <field name="interval_number">1</field>-->
+<!--        <field name="interval_type">days</field>-->
+<!--        <field name="numbercall">-1</field>-->
+<!--        <field name="doall" eval="False"/>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">model._scheduler_import_products()</field>-->
+<!--    </record>-->
 
-    <record id="ir_cron_import_oxigesti_services" model="ir.cron" forcecreate="True">
-        <field name="name">Oxigesti - Import services</field>
-        <field name="model_id" ref="model_oxigesti_backend"/>
-        <field name="active" eval="False"/>
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="< not base.user_root>"/-->
-        <field name="interval_number">1</field>
-        <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False"/>
-        <field name="state">code</field>
-        <field name="code">model._scheduler_import_services()</field>
-    </record>
+<!--    <record id="ir_cron_import_oxigesti_services" model="ir.cron" forcecreate="True">-->
+<!--        <field name="name">Oxigesti - Import services</field>-->
+<!--        <field name="model_id" ref="model_oxigesti_backend"/>-->
+<!--        <field name="active" eval="False"/>-->
+<!--        &lt;!&ndash; Mandatory to define a explicit user on record from the frontend,-->
+<!--             DON'T USE admin (base.user_root) &ndash;&gt;-->
+<!--        &lt;!&ndash;field name="user_id" ref="<not base.user_root>"/&ndash;&gt;-->
+<!--        <field name="interval_number">1</field>-->
+<!--        <field name="interval_type">days</field>-->
+<!--        <field name="numbercall">-1</field>-->
+<!--        <field name="doall" eval="False"/>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">model._scheduler_import_services()</field>-->
+<!--    </record>-->
 </odoo>
