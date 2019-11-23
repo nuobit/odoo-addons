@@ -15,5 +15,6 @@ class ResPartnerAdapter(Component):
 
     _sql = """select c.Codigo_Mutua, c.Nombre_Mutua, c.Codigo_Cliente_Logic
               from %(schema)s.Mutuas_y_Clientes c
+              where nullif(ltrim(rtrim(c.Nombre_Mutua)), '') is not null
      """
     _id = ('Codigo_Mutua',)
