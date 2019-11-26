@@ -43,6 +43,11 @@ msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: lighting_seo
+#: model:ir.model.fields,field_description:lighting_seo.field_lighting_product_website_published
+msgid "Published on Website"
+msgstr "Publicado en el Website"
+
+#. module: lighting_seo
 #: model:ir.model.fields,field_description:lighting_seo.field_lighting_seo_keyword_id
 msgid "ID"
 msgstr "ID"
