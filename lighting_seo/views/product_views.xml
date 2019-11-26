@@ -48,6 +48,17 @@
         </field>
     </record>
 
+    <record id="product_tree_view" model="ir.ui.view">
+        <field name="name">product.tree.website</field>
+        <field name="model">lighting.product</field>
+        <field name="inherit_id" ref="lighting.product_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="state_marketing" position="after">
+                <field name="website_published"/>
+            </field>
+        </field>
+    </record>
+
     <record id="product_family_view_form_inherit_seo" model="ir.ui.view">
         <field name="name">product_family_view.form.inherit.seo</field>
         <field name="model">lighting.product.family</field>
