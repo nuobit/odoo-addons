@@ -192,9 +192,6 @@
         <record id="product_source_lampholder_rx7s" model="lighting.product.source.lampholder">
             <field name="code">RX7s</field>
         </record>
-        <record id="product_source_lampholder_na" model="lighting.product.source.lampholder">
-            <field name="code">-</field>
-        </record>
 
         <!-- Languages -->
         <record id="language_en_us" model="lighting.language">
