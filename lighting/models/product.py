@@ -79,13 +79,8 @@ class LightingProduct(models.Model):
         if self.catalog_ids:
             ip_catalogs = self.catalog_ids.filtered(lambda x: x.description_show_ip)
             if ip_catalogs:
-                data_sealing = []
-                for ipx in ('sealing_id', 'sealing2_id'):
-                    sealing = getattr(self, ipx)
-                    if sealing:
-                        data_sealing.append(sealing.name)
-                if data_sealing:
-                    data.append(','.join(data_sealing))
+                if self.sealing_id:
+                    data.append(self.sealing_id.name)
 
         if self.dimmable_ids:
             data.append(','.join(self.dimmable_ids.sorted(lambda x: x.name).mapped('name')))
