@@ -276,6 +276,11 @@ msgid "Rechargeable"
 msgstr "Rechargeable"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_output_voltage
+msgid "Battery output voltage (V)"
+msgstr "Tension de sortie de la batterie (V)"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_charge_time
 msgid "Battery charge time (h)"
 msgstr "Cycle de charge (h)"
