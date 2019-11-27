@@ -73,7 +73,8 @@ class LightingProduct(models.Model):
             data.append(self.category_id.description_text or self.category_id.name)
 
         if self.family_ids:
-            data.append(','.join(self.family_ids.sorted(lambda x: x.sequence).mapped('name')))
+            data.append(','.join(map(lambda x: x.upper(),
+                                     self.family_ids.sorted(lambda x: x.sequence).mapped('name'))))
 
         if self.catalog_ids:
             ip_catalogs = self.catalog_ids.filtered(lambda x: x.description_show_ip)
@@ -319,7 +320,7 @@ class LightingProduct(models.Model):
                 rec.finish_prefix = rec.reference
 
     finish2_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish 2',
-                                track_visibility='onchange')
+                                 track_visibility='onchange')
 
     body_material_ids = fields.Many2many(comodel_name='lighting.product.material',
                                          relation='lighting_product_body_material_rel',
