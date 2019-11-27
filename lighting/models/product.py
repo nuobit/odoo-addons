@@ -116,7 +116,7 @@ class LightingProduct(models.Model):
                             if lm:
                                 data_lm.append('%i' % lm)
                         if data_lm != []:
-                            lm_str = '%sLm' % '-'.join(data_lm)
+                            lm_str = '%slm' % '-'.join(data_lm)
                             if (line.source_id.num or 1) > 1:
                                 lm_str = '%ix%s' % (line.source_id.num, lm_str)
                             data_line.append(lm_str)
@@ -152,7 +152,7 @@ class LightingProduct(models.Model):
                                     if lm:
                                         data_lm.append('%i' % lm)
                                 if data_lm != []:
-                                    lm_str = '%sLm' % '-'.join(data_lm)
+                                    lm_str = '%slm' % '-'.join(data_lm)
                                     if (line.source_id.num or 1) > 1:
                                         lm_str = '%ix%s' % (line.source_id.num, lm_str)
                                     data_line.append(lm_str)
@@ -418,7 +418,7 @@ class LightingProduct(models.Model):
     glow_wire_temperature = fields.Float(string='Glow wire temperature (ºC)', track_visibility='onchange')
 
     # light characteristics tab
-    total_nominal_flux = fields.Float(string='Total flux (Lm)', help='Luminaire total nominal flux',
+    total_nominal_flux = fields.Float(string='Total flux (lm)', help='Luminaire total nominal flux',
                                       track_visibility='onchange')
     ugr_max = fields.Integer(string='UGR', help='Maximum unified glare rating', track_visibility='onchange')
 

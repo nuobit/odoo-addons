@@ -208,7 +208,7 @@ class LightingProductSource(models.Model):
                     if l.color_temperature_id:
                         line.append("%iK" % l.color_temperature_id.value)
                     if l.luminous_flux_display:
-                        line.append("%sLm" % l.luminous_flux_display)
+                        line.append("%slm" % l.luminous_flux_display)
                     if l.is_led and l.cri_min:
                         line.append("%iCRI" % l.cri_min)
 
@@ -311,8 +311,8 @@ class LightingProductSourceLine(models.Model):
                         rec.source_id.product_id.display_name,
                         rec.type_id.display_name))
 
-    luminous_flux1 = fields.Integer(string='Luminous flux 1 (Lm)')
-    luminous_flux2 = fields.Integer(string='Luminous flux 2 (Lm)')
+    luminous_flux1 = fields.Integer(string='Luminous flux 1 (lm)')
+    luminous_flux2 = fields.Integer(string='Luminous flux 2 (lm)')
     color_temperature_id = fields.Many2one(string='Color temperature (K)',
                                            comodel_name='lighting.product.color.temperature', ondelete='cascade')
 
@@ -376,7 +376,7 @@ class LightingProductSourceLine(models.Model):
         for rec in self:
             rec.wattage_display = rec.prepare_wattage_str()
 
-    luminous_flux_display = fields.Char(compute='_compute_luminous_flux_display', string='Luminous flux (Lm)')
+    luminous_flux_display = fields.Char(compute='_compute_luminous_flux_display', string='Luminous flux (lm)')
 
     @api.depends('luminous_flux1', 'luminous_flux2')
     def _compute_luminous_flux_display(self):
@@ -418,7 +418,7 @@ class LightingProductSourceLine(models.Model):
     def get_luminous_flux(self):
         res = []
         for line in self.sorted(lambda x: x.sequence):
-            lm_l = ['%iLm' % x for x in
+            lm_l = ['%ilm' % x for x in
                     filter(lambda x: x, [line.luminous_flux1, line.luminous_flux2])]
             if lm_l:
                 res.append('-'.join(lm_l))

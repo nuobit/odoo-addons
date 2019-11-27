@@ -1526,18 +1526,18 @@ msgstr "Luminarie com luz de emergência"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux_display
-msgid "Luminous flux (Lm)"
-msgstr "Fluxo luminoso (Lm)"
+msgid "Luminous flux (lm)"
+msgstr "Fluxo luminoso (lm)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux1
-msgid "Luminous flux 1 (Lm)"
-msgstr "Fluxo Luminoso 1 (Lm)"
+msgid "Luminous flux 1 (lm)"
+msgstr "Fluxo Luminoso 1 (lm)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux2
-msgid "Luminous flux 2 (Lm)"
-msgstr "Fluxo Luminoso 2 (Lm)"
+msgid "Luminous flux 2 (lm)"
+msgstr "Fluxo Luminoso 2 (lm)"
 
 #. module: lighting
 #: selection:lighting.product.source,relevance:0
@@ -2636,8 +2636,8 @@ msgstr "Feixes totais"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_total_nominal_flux
-msgid "Total flux (Lm)"
-msgstr "Fluxo total (Lm)"
+msgid "Total flux (lm)"
+msgstr "Fluxo total (lm)"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_total_wattage
