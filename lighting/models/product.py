@@ -402,9 +402,10 @@ class LightingProduct(models.Model):
     power_switches = fields.Integer(string='Power switches', help="Number of power switches",
                                     track_visibility='onchange')
 
-    usb_ports = fields.Integer(string='USB ports', help="Number of USB ports", track_visibility='onchange')
-    usb_voltage = fields.Float(string='USB voltage', track_visibility='onchange')
-    usb_current = fields.Float(string='USB current', track_visibility='onchange')
+    usb_ports = fields.Integer(string='USB ports charging devices', help="Number of USB charging ports",
+                               track_visibility='onchange')
+    usb_voltage = fields.Float(string='USB charging voltage (V)', track_visibility='onchange')
+    usb_current = fields.Float(string='USB charging current (mA)', track_visibility='onchange')
 
     sensor_ids = fields.Many2many(comodel_name='lighting.product.sensor', relation='lighting_product_sensor_rel',
                                   string='Sensors', track_visibility='onchange')

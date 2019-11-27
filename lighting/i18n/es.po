@@ -1731,11 +1731,6 @@ msgid "Note"
 msgstr "Nota"
 
 #. module: lighting
-#: model:ir.model.fields,help:lighting.field_lighting_product_usb_ports
-msgid "Number of USB ports"
-msgstr "Número de puertos USB"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_num
 msgid "Number of beams"
 msgstr "Número de haces"
@@ -2783,19 +2778,24 @@ msgid "URL"
 msgstr "URL"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_current
-msgid "USB current"
-msgstr "Corriente USB"
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_ports
+msgid "USB ports charging devices"
+msgstr "Puertos USB carga dispositivos"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_ports
-msgid "USB ports"
-msgstr "Puertos USB"
+#: model:ir.model.fields,help:lighting.field_lighting_product_usb_ports
+msgid "Number of USB charging ports"
+msgstr "Número de puertos USB de carga"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_voltage
-msgid "USB voltage"
-msgstr "Voltaje USB"
+msgid "USB charging voltage (V)"
+msgstr "Voltaje de carga USB (V)"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_current
+msgid "USB charging current (mA)"
+msgstr "Corriente de carga USB (mA)"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_dimension_type_uom
