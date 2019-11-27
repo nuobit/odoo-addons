@@ -271,6 +271,11 @@ msgid "Battery autonomy (h)"
 msgstr "Batterie d'autonomie (h)"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_rechargeable_type
+msgid "Rechargeable"
+msgstr "Rechargeable"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_charge_time
 msgid "Battery charge time (h)"
 msgstr "Cycle de charge (h)"
@@ -2745,6 +2750,16 @@ msgstr "Utilisateur"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_value
 msgid "Value"
 msgstr "Valeur"
+
+#. module: lighting
+#: selection:lighting.product,rechargeable_type:0
+msgid "Solar"
+msgstr "Solaire"
+
+#. module: lighting
+#: selection:lighting.product,rechargeable_type:0
+msgid "With charger"
+msgstr "Avec chargeur"
 
 #. module: lighting
 #: selection:lighting.product.source.line,special_spectrum:0

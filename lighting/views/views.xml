@@ -172,6 +172,7 @@
                             </group>
                             <group>
                                 <field name="sensor_ids" widget="many2many_tags"/>
+                                <field name="rechargeable_type"/>
                                 <field name="battery_autonomy"/>
                                 <field name="battery_charge_time"/>
                                 <field name="surface_temperature"/>

@@ -409,6 +409,8 @@ class LightingProduct(models.Model):
     sensor_ids = fields.Many2many(comodel_name='lighting.product.sensor', relation='lighting_product_sensor_rel',
                                   string='Sensors', track_visibility='onchange')
 
+    rechargeable_type = fields.Selection(selection=[('solar', 'Solar'), ('charger', 'With charger')],
+                                         string='Rechargeable', track_visibility='onchange')
     battery_autonomy = fields.Float(string='Battery autonomy (h)', track_visibility='onchange')
     battery_charge_time = fields.Float(string='Battery charge time (h)', track_visibility='onchange')
     surface_temperature = fields.Float(string='Surface temperature (ºC)', track_visibility='onchange')
