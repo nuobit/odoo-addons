@@ -442,10 +442,35 @@
                             </tr>
                             <tr t-if="doc.usb_ports">
                                 <td>
-                                    USB
+                                    USB ports charging devices
                                 </td>
                                 <td>
                                     <span t-esc="doc.get_usb()"/>
+                                </td>
+                            </tr>
+                            <tr t-if="doc.rechargeable_type">
+                                <td>
+                                    Rechargeable
+                                </td>
+                                <td>
+                                    <span t-field="doc.rechargeable_type"/>
+                                </td>
+                            </tr>
+                            <tr t-if="doc.charger_connector_type_id">
+                                <td>
+                                    Charger connector type
+                                </td>
+                                <td>
+                                    <span t-field="doc.charger_connector_type_id"/>
+                                </td>
+                            </tr>
+                            <tr t-if="doc.battery_output_voltage">
+                                <td>
+                                    Battery output voltage
+                                </td>
+                                <td>
+                                    <span t-field="doc.battery_output_voltage"/>
+                                    <span>V</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.sensor_ids">
@@ -674,6 +699,14 @@
                                                         </td>
                                                         <td>
                                                             <span t-field="acc.finish_id"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-if="acc.finish2_id">
+                                                        <td>
+                                                            Finish 2
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="acc.finish2_id"/>
                                                         </td>
                                                     </tr>
                                                 </t>

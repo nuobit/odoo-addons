@@ -147,6 +147,21 @@ msgstr "Acabado"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Finish 2"
+msgstr "Acabado 2"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Rechargeable"
+msgstr "Recargable"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Battery output voltage"
+msgstr "Tensión de salida batería"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Frame material"
 msgstr "Material del marco"
 
@@ -351,8 +366,13 @@ msgstr "DATOS TÉCNICOS"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "USB"
-msgstr "USB"
+msgid "USB ports charging devices"
+msgstr "Puertos USB carga dispositivos"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Charger connector type"
+msgstr "Tipo conector cargador"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
