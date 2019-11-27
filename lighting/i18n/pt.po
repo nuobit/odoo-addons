@@ -2111,6 +2111,7 @@ msgstr "Árvore de tensão do produto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_location_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_color_temperature_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_connectortype_product_count
 msgid "Product(s)"
 msgstr "Produtos)"
 
@@ -2136,6 +2137,8 @@ msgstr "Produtos)"
 #: model:ir.ui.view,arch_db:lighting.product_type_tree_view
 #: model:ir.ui.view,arch_db:lighting.product_voltage_form_view
 #: model:ir.ui.view,arch_db:lighting.product_voltage_tree_view
+#: model:ir.ui.view,arch_db:lighting.product_connectortype_form_view
+#: model:ir.ui.view,arch_db:lighting.product_connectortype_tree_view
 msgid "Products"
 msgstr "Produtos"
 
@@ -2729,6 +2732,16 @@ msgstr "Tensão de carregamento USB (V)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_current
 msgid "USB charging current (mA)"
 msgstr "Corrente de carregamento USB (mA)"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_charger_connector_type_id
+msgid "Charger connector type"
+msgstr "Tipo de conector do carregador"
+
+#. module: lighting
+#: model:ir.actions.act_window,name:lighting.product_connectortype_list_action
+msgid "Connector types"
+msgstr "Tipos de conectores"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_dimension_type_uom

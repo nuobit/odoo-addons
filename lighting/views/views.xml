@@ -169,6 +169,7 @@
                                        attrs="{'invisible': [('usb_ports', '=', 0)], 'required': [('usb_ports', '!=', 0)]}"/>
                                 <field name="usb_current"
                                        attrs="{'invisible': [('usb_ports', '=', 0)], 'required': [('usb_ports', '!=', 0)]}"/>
+                                <field name="charger_connector_type_id"/>
                             </group>
                             <group>
                                 <field name="sensor_ids" widget="many2many_tags"/>

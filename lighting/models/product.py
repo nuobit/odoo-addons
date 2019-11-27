@@ -407,6 +407,10 @@ class LightingProduct(models.Model):
     usb_voltage = fields.Float(string='USB charging voltage (V)', track_visibility='onchange')
     usb_current = fields.Float(string='USB charging current (mA)', track_visibility='onchange')
 
+    charger_connector_type_id = fields.Many2one(comodel_name='lighting.product.connectortype',
+                                                ondelete='restrict',
+                                                string='Charger connector type', track_visibility='onchange')
+
     sensor_ids = fields.Many2many(comodel_name='lighting.product.sensor', relation='lighting_product_sensor_rel',
                                   string='Sensors', track_visibility='onchange')
 
