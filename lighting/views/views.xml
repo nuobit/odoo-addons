@@ -205,7 +205,6 @@
                                     </tree>
                                 </field>
                                 <field name="cable_outlets"/>
-                                <field name="lead_wires"/>
                                 <field name="lead_wire_length"/>
                                 <field name="inclination_angle_max"/>
                                 <field name="rotation_angle_max"/>

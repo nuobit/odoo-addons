@@ -448,7 +448,6 @@
                                     <span t-esc="doc.get_usb()"/>
                                 </td>
                             </tr>
-
                             <tr t-if="doc.sensor_ids">
                                 <td>
                                     Sensors

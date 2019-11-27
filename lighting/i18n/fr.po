@@ -1501,11 +1501,6 @@ msgid "Last purchase date"
 msgstr "Date de dernier achat"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_lead_wires
-msgid "Lead wires supplied"
-msgstr "Fils de plomb fournis"
-
-#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Length (cm)"
 msgstr "Longueur (cm)"
@@ -1701,11 +1696,6 @@ msgstr "Nombre de sorties de câble"
 #: model:ir.model.fields,help:lighting.field_lighting_product_fan_blades
 msgid "Number of fan blades"
 msgstr "Nombre de pales de ventilateur"
-
-#. module: lighting
-#: model:ir.model.fields,help:lighting.field_lighting_product_lead_wires
-msgid "Number of lead wires supplied"
-msgstr "Nombre de câbles fournis"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_power_switches
