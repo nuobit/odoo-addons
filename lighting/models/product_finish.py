@@ -21,7 +21,8 @@ class LightingProductFinish(models.Model):
 
     def _compute_product_count(self):
         for record in self:
-            record.product_count = self.env['lighting.product'].search_count([('finish_id', '=', record.id)])
+            record.product_count = self.env['lighting.product'].search_count(
+                ['|', ('finish_id', '=', record.id), ('finish2_id', '=', record.id)])
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The finish name must be unique!'),
                         ('code_uniq', 'unique (code)', 'The finish code must be unique!'),

@@ -1054,6 +1054,11 @@ msgid "Finish"
 msgstr "Acabado"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish2_id
+msgid "Finish 2"
+msgstr "Acabado 2"
+
+#. module: lighting
 #: model:ir.ui.menu,name:lighting.product_finishes_menu
 msgid "Finishes"
 msgstr "Acabados"

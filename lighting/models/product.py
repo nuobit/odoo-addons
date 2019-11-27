@@ -60,7 +60,8 @@ class LightingProduct(models.Model):
                  'source_ids.line_ids.luminous_flux1',
                  'source_ids.line_ids.luminous_flux2',
                  'source_ids.line_ids.color_temperature_id.value',
-                 'finish_id.name')
+                 'finish_id.name',
+                 'finish2_id.name')
     def _compute_description(self):
         for rec in self:
             rec.description = rec._generate_description()
@@ -192,6 +193,9 @@ class LightingProduct(models.Model):
         if show_variant_data and self.finish_id:
             data.append(self.finish_id.name)
 
+        if self.finish2_id:
+            data.append(self.finish2_id.name)
+
         if data:
             return ' '.join(data)
         else:
@@ -313,6 +317,9 @@ class LightingProduct(models.Model):
 
             if not has_sibling:
                 rec.finish_prefix = rec.reference
+
+    finish2_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish 2',
+                                track_visibility='onchange')
 
     body_material_ids = fields.Many2many(comodel_name='lighting.product.material',
                                          relation='lighting_product_body_material_rel',
