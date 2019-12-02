@@ -13,7 +13,7 @@ class ERTransitController(http.Controller):
                  ], type='http', auth="public")
     def tracking_data(self, tracking_number=None):
         remote_ip = http.request.httprequest.environ['REMOTE_ADDR']
-        ertransit_backend = http.request.env['ertransit.backend'].search([
+        ertransit_backend = http.request.env['ertransit.backend'].sudo().search([
             ('active', '=', True),
             ('state', '=', 'checked'),
         ]).sorted(lambda x: x.sequence)
