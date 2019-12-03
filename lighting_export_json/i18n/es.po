@@ -18,7 +18,7 @@ msgstr ""
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_cut_hole_display
 msgid "Cut hole"
-msgstr "Caja de empotrar"
+msgstr "Empotramiento"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_beam_display
