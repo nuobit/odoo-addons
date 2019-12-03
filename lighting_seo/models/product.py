@@ -44,7 +44,7 @@ class LightingProduct(models.Model):
 
     seo_title = fields.Char(string='Meta title', translate=True)
     seo_url = fields.Char(string='URL')
-    seo_description = fields.Char(string='Meta description', translate=True)
+    seo_description = fields.Text(string='Meta description', translate=True)
     seo_keyword_ids = fields.Many2many(comodel_name='lighting.seo.keyword',
                                        relation='lighting_product_seo_keyword_rel',
                                        column1='product_id', column2='keyword_id', string='Keywords')
