@@ -98,20 +98,12 @@
                             <li>
                                 <span t-field="doc.datasheet_generation_date"/>
                             </li>
-                            <li>
+                            <!--li>
                                 <a t-att-href="doc.get_datasheet_url()" target="_blank"
                                    t-esc="doc.get_datasheet_url()"/>
-                            </li>
+                            </li-->
                         </ul>
                     </div>
-                </div>
-
-                <div>
-                    <a href="https://www.google.com/" target="_blank"
-                       style="position: absolute; width: 589.5px; height: 401.062px; left: 117px; top: 218.25px;">
-                    </a>
-                    <img src="https://media.gettyimages.com/photos/closeup-of-fish-over-white-background-picture-id931270318?s=612x612"
-                         style="position: absolute; width: 589.5px; height: 401.062px; opacity: 1; z-index: 3; transform: rotate(0deg); left: 117px; top: 218.25px;"/>
                 </div>
             </div>
         </div>
