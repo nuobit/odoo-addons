@@ -293,8 +293,11 @@
                                 </td>
                             </tr>
                             <tr t-if="doc.beam_ids">
-                                <td>
+                                <td t-if="doc.beam_count > 1">
                                     Beams
+                                </td>
+                                <td t-if="doc.beam_count == 1">
+                                    Beam
                                 </td>
                                 <td>
                                     <ul class="list-unstyled mb0">
