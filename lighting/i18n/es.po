@@ -2233,7 +2233,7 @@ msgstr "Cantidad"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recess_dimension_ids
 msgid "Cut hole dimensions"
-msgstr "Dimensiones de la caja de empotrado"
+msgstr "Dimensiones de empotramiento"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessing_box_included
