@@ -142,7 +142,7 @@ class LightingProduct(models.Model):
     def get_usb(self):
         res = []
         if self.usb_ports:
-            res.append("%g" % self.usb_ports)
+            res.append("(%g)" % self.usb_ports)
 
         res_usbv = []
         if self.usb_voltage:
@@ -154,7 +154,19 @@ class LightingProduct(models.Model):
             res.append(' '.join(res_usbv))
 
         if res:
-            return 'x'.join(res)
+            return ' x '.join(res)
+
+        return None
+
+    def get_operating_temperature_range(self):
+        res = []
+        if self.operating_temperature_min:
+            res.append("%i" % self.operating_temperature_min)
+        if self.operating_temperature_max:
+            res.append("%i" % self.operating_temperature_max)
+
+        if res:
+            return '%s ºC' % ' - '.join(res)
 
         return None
 

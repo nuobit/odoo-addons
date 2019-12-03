@@ -112,6 +112,16 @@ msgstr "Nombre a Mostrar"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "ECORAEE category I"
+msgstr "Categoría ECORAEE I"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "ECORAEE category II"
+msgstr "Categoría ECORAEE II"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "ECORAEE I"
 msgstr "ECORAEE I"
 
@@ -119,6 +129,31 @@ msgstr "ECORAEE I"
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "ECORAEE II"
 msgstr "ECORAEE II"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Periodic maintenance"
+msgstr "Mantenimiento periódico"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Average emergency time"
+msgstr "Tiempo promedio de emergencia"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Flammable surfaces"
+msgstr "Superficies inflamables"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Photobiological risk group"
+msgstr "Grupo de riesgo fotobiológico"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Fan control"
+msgstr "Control del ventilador"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -162,8 +197,68 @@ msgstr "Recargable"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "Battery output voltage"
-msgstr "Tensión de salida batería"
+msgid "Rechargeable"
+msgstr "Recargable"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Battery charge time"
+msgstr "Ciclo de carga"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Battery autonomy"
+msgstr "Autonomía de la batería"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Surface temperature"
+msgstr "Temperatura superficial"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Operating temperature range"
+msgstr "Rango de temperatura de funcionamiento"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Glow wire temperature"
+msgstr "Temperatura del hilo incandescente"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Power switches"
+msgstr "Interruptores"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Lifetime"
+msgstr "Horas de vida"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "LED lifetime L"
+msgstr "LED de duración L"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "LED lifetime B"
+msgstr "LED de duración B"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Lead wire length"
+msgstr "Longitud del cable conductor"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Tilt angle"
+msgstr "Ángulo de basculación"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Rotation angle"
+msgstr "Ángulo de rotación"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
@@ -243,6 +338,11 @@ msgstr "Voltaje de entrada"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Location"
+msgstr "Ubicación"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Installation"
 msgstr "Instalación"
 
@@ -301,6 +401,26 @@ msgstr "Corriente de salida"
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Output voltage"
 msgstr "Tensión de salida"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Power factor"
+msgstr "Factor de potencia"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Auxiliary equipment brands"
+msgstr "Marcas de los equipos auxiliares"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Auxiliary equipment brand"
+msgstr "Marca del equipo auxiliar"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Alternative auxiliary equipment"
+msgstr "Equipo auxiliar alternativo"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
