@@ -88,7 +88,7 @@ class LightingProductAuxiliaryEquipmentModel(models.Model):
     reference = fields.Char(string='Reference')
     brand_id = fields.Many2one(comodel_name='lighting.product.auxiliaryequipmentbrand',
                                ondelete='restrict', string='Brand', required=True)
-    date = fields.Date(string='Date')
+    date = fields.Date(string='Date', required=True)
 
     product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
 
