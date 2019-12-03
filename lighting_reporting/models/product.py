@@ -142,16 +142,19 @@ class LightingProduct(models.Model):
     def get_usb(self):
         res = []
         if self.usb_ports:
-            res.append("%gx" % self.usb_ports)
+            res.append("%g" % self.usb_ports)
 
-            if self.usb_voltage:
-                res.append("%gV" % self.usb_voltage)
+        res_usbv = []
+        if self.usb_voltage:
+            res_usbv.append("%gV" % self.usb_voltage)
+        if self.usb_current:
+            res_usbv.append("%gmA" % self.usb_current)
 
-            if self.usb_current:
-                res.append("%gmA" % self.usb_current)
+        if res_usbv:
+            res.append(' '.join(res_usbv))
 
-            if res:
-                return ' '.join(res)
+        if res:
+            return 'x'.join(res)
 
         return None
 
