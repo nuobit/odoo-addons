@@ -24,3 +24,10 @@ class LightingETIMValue(models.Model):
             vals.append((record.id, name))
 
         return vals
+
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        if args is None:
+            args = []
+        recs = self.search(['|', ('code', operator, name), ('name', operator, name)] + args, limit=limit)
+        return recs.name_get()
