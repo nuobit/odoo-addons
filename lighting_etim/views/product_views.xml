@@ -12,7 +12,9 @@
                 <page string="ETIM">
                     <group>
                         <field name="class_id"/>
-                        <field name="feature_ids"/>
+                    </group>
+                    <group string="Features">
+                        <field name="feature_ids" nolabel="1"/>
                     </group>
                 </page>
             </xpath>

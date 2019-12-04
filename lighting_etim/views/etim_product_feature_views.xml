@@ -38,6 +38,7 @@
             <tree string="Product Etim Feature tree">
                 <field name="feature_id"/>
                 <field name="value_str"/>
+                <field name="unit_id"/>
             </tree>
         </field>
     </record>
