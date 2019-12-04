@@ -12,7 +12,7 @@
                 <sheet>
                     <group>
                         <field name="feature_id" domain="[('id', 'in', product_class_feature_ids)]"/>
-                        <field name="feature_type" invisible="1"/>
+                        <field name="feature_type"/>
 
                         <field name="unit_id" attrs="{'invisible': [('has_unit', '=', False)]}"/>
                         <field name="has_unit" invisible="1"/>
@@ -37,7 +37,7 @@
         <field name="arch" type="xml">
             <tree string="Product Etim Feature tree">
                 <field name="feature_id"/>
-                <field name="value"/>
+                <field name="value_str"/>
             </tree>
         </field>
     </record>

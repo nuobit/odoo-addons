@@ -5,11 +5,14 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
+import json
+
 
 class LightingProductETIMFeature(models.Model):
     _name = 'lighting.etim.product.feature'
 
-    feature_id = fields.Many2one(comodel_name='lighting.etim.feature', ondelete='restrict', string='Feature')
+    feature_id = fields.Many2one(comodel_name='lighting.etim.feature', ondelete='restrict',
+                                 string='Feature', required=True)
 
     @api.onchange('feature_id')
     def feature_id_change(self):
@@ -42,25 +45,50 @@ class LightingProductETIMFeature(models.Model):
     r1_value = fields.Float('Value 1')
     r2_value = fields.Float('Value 2')
 
-    value = fields.Char(compute='_compute_value', string='Value', readonly=True)
+    value = fields.Serialized(compute='_compute_value', inverse='_inverse_value')
 
     @api.depends('feature_id', 'a_value_id', 'l_value', 'n_value', 'r1_value', 'r2_value')
     def _compute_value(self):
         for rec in self:
             if rec.feature_id.type == 'A':
-                rec.value = rec.a_value_id.display_name
+                rec.value = json.dumps(rec.a_value_id.id)
             elif rec.feature_id.type == 'L':
-                rec.value = 'True' if rec.l_value else 'False'
+                rec.value = json.dumps(rec.l_value)
             elif rec.feature_id.type == 'N':
-                rec.value = str(rec.n_value)
+                rec.value = json.dumps(rec.n_value)
             elif rec.feature_id.type == 'R':
-                range_str = []
-                if rec.r1_value:
-                    range_str.append(str(rec.r1_value))
-                if rec.r2_value:
-                    range_str.append(str(rec.r2_value))
-                if range_str != []:
-                    rec.value = ' - '.join(range_str)
+                rec.value = json.dumps([rec.r1_value, rec.r2_value])
+            else:
+                raise ValidationError(_("Type %s not valid!") % rec.feature_id.type)
+
+    def _inverse_value(self):
+        for rec in self:
+            if rec.feature_id.type == 'A':
+                rec.a_value_id = rec.value
+            elif rec.feature_id.type == 'L':
+                rec.l_value = rec.value
+            elif rec.feature_id.type == 'N':
+                rec.n_value = rec.value
+            elif rec.feature_id.type == 'R':
+                rec.r1_value, rec.r2_value = rec.value
+            else:
+                raise ValidationError(_("Type %s not valid!") % rec.feature_id.type)
+
+    value_str = fields.Char(compute='_compute_value_str', string='Value', readonly=True)
+
+    @api.depends('value')
+    def _compute_value_str(self):
+        for rec in self:
+            if rec.feature_id.type == 'A':
+                rec.value_str = self.env['lighting.etim.feature'].browse(rec.value).display_name
+            elif rec.feature_id.type == 'L':
+                rec.value_str = str(rec.value)
+            elif rec.feature_id.type == 'N':
+                rec.value_str = str(rec.value)
+            elif rec.feature_id.type == 'R':
+                range_str = [str(x) for x in rec.value]
+                if range_str:
+                    rec.value_str = ' - '.join(range_str)
 
     product_class_id = fields.Many2one(related='product_id.class_id', readonly=True)
     # @api.onchange('product_class_id')
