@@ -32,6 +32,23 @@
         </field>
     </record>
 
+    <record id="etim_unit_search_view" model="ir.ui.view">
+        <field name="name">lighting.etim.unit.search</field>
+        <field name="model">lighting.etim.unit</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code" string="Unit"
+                       filter_domain="['|', ('code','ilike',self), ('name','ilike',self)]"/>
+                <field name="code"/>
+                <field name="name" string="Description"/>
+                <group expand="0" string="Group By">
+                    <filter string="Abbreviation" name="groupby_abbreviation" domain="[]"
+                            context="{'group_by': 'abbreviation'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- window action etim.unit -->
     <record id="etim_unit_list_action" model="ir.actions.act_window">
         <field name="name">ETIM Unit</field>
