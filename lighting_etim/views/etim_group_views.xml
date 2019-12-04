@@ -30,6 +30,19 @@
         </field>
     </record>
 
+    <record id="etim_group_search_view" model="ir.ui.view">
+        <field name="name">lighting.etim.group.search</field>
+        <field name="model">lighting.etim.group</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code" string="Group"
+                       filter_domain="['|', ('code','ilike',self), ('name','ilike',self)]"/>
+                <field name="code"/>
+                <field name="name" string="Description"/>
+            </search>
+        </field>
+    </record>
+
     <!-- window action etim.group -->
     <record id="etim_group_list_action" model="ir.actions.act_window">
         <field name="name">ETIM Group</field>
