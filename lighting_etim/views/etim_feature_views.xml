@@ -32,6 +32,32 @@
         </field>
     </record>
 
+    <record id="etim_feature_search_view" model="ir.ui.view">
+        <field name="name">lighting.etim.feature.search</field>
+        <field name="model">lighting.etim.feature</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code" string="Feature"
+                       filter_domain="['|', ('code','ilike',self), ('name','ilike',self)]"/>
+                <field name="code"/>
+                <field name="name" string="Description"/>
+                <separator/>
+                <filter string="Alphanumeric" name="alphanumeric"
+                        domain="[('type', '=', 'A')]"/>
+                <filter string="Logical" name="logical"
+                        domain="[('type', '=', 'L')]"/>
+                <filter string="Numeric" name="numeric"
+                        domain="[('type', '=', 'N')]"/>
+                <filter string="Range" name="range"
+                        domain="[('type', '=', 'R')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Type" name="groupby_type" domain="[]"
+                            context="{'group_by': 'type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- window action etim.feature -->
     <record id="etim_feature_list_action" model="ir.actions.act_window">
         <field name="name">ETIM Feature</field>
