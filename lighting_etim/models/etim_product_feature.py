@@ -7,6 +7,20 @@ from odoo.exceptions import UserError, ValidationError
 
 import json
 
+VALUE_DETAIL_HELP = """With this field more precise information on the color of a product defined in the ETIM model can be made avail-
+able if necessary and useful. Especially in the product range of Domestic switching devices, Luminaries, Cable ducts or Small
+household appliances the indication is important and should be transmitted by the manufacturer in the ETIM BMEcat.
+So here are meant all alphanumeric features in ETIM that have the word "colour" (or "color") in their names.
+e.g. Color of a cover frame for domestic switching devices
+<FEATURE>
+<FNAME>EF000007</FNAME>
+<FVALUE>EV000080</FVALUE>
+<FVALUE_DETAILS>azure blue</FVALUE_DETAILS>
+</FEATURE>
+EF000007 = "Colour"
+EV000080 = "Blue"
+"""
+
 
 class LightingProductETIMFeature(models.Model):
     _name = 'lighting.etim.product.feature'
@@ -75,6 +89,18 @@ class LightingProductETIMFeature(models.Model):
                 rec.r1_value, rec.r2_value = rec.value
             else:
                 raise ValidationError(_("Type %s not valid!") % rec.feature_id.type)
+
+    unassignable = fields.Boolean(string='Unassignable', default=False)
+    ua_value_detail = fields.Selection(selection=[
+        ('NA', _('Not applicable')),
+        ('MV', _('Missing value')),
+        ('UN', _('Unknown')),
+    ], string="Value detail",
+        help="NA - Not applicable (this feature is not applicable in the context of a product in this class)\n"
+             "MV - Missing value (an alphanumeric feature is relevant, but no correct value exists in this ETIM version)\n"
+             "UN - Unknown (currently, the data supplier is not able to deliver a specific value; but basically it is possible)")
+
+    value_detail = fields.Char(string='Value detail', help=VALUE_DETAIL_HELP)
 
     value_str = fields.Char(compute='_compute_value_str', string='Value', readonly=True)
 

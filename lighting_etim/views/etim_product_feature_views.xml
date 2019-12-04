@@ -17,11 +17,24 @@
                         <field name="unit_id" attrs="{'invisible': [('has_unit', '=', False)]}"/>
                         <field name="has_unit" invisible="1"/>
 
-                        <field name="a_value_id" attrs="{'invisible': [('feature_type', '!=', 'A')]}"/>
-                        <field name="l_value" attrs="{'invisible': [('feature_type', '!=', 'L')]}"/>
-                        <field name="n_value" attrs="{'invisible': [('feature_type', '!=', 'N')]}"/>
-                        <field name="r1_value" attrs="{'invisible': [('feature_type', '!=', 'R')]}"/>
-                        <field name="r2_value" attrs="{'invisible': [('feature_type', '!=', 'R')]}"/>
+                        <field name="unassignable" attrs="{'invisible': [('feature_type', '=', False)]}"/>
+
+                        <field name="a_value_id"
+                               attrs="{'invisible': ['|', ('unassignable', '=', True), ('feature_type', '!=', 'A')], 'required': [('feature_type', '=', 'A'), ('unassignable', '=', False)]}"/>
+                        <field name="l_value"
+                               attrs="{'invisible': ['|', ('unassignable', '=', True), ('feature_type', '!=', 'L')], 'required': [('feature_type', '=', 'L'), ('unassignable', '=', False)]}"/>
+                        <field name="n_value"
+                               attrs="{'invisible': ['|', ('unassignable', '=', True), ('feature_type', '!=', 'N')], 'required': [('feature_type', '=', 'N'), ('unassignable', '=', False)]}"/>
+                        <field name="r1_value"
+                               attrs="{'invisible': ['|', ('unassignable', '=', True), ('feature_type', '!=', 'R')], 'required': [('feature_type', '=', 'R'), ('unassignable', '=', False)]}"/>
+                        <field name="r2_value"
+                               attrs="{'invisible': ['|', ('unassignable', '=', True), ('feature_type', '!=', 'R')], 'required': [('feature_type', '=', 'R'), ('unassignable', '=', False)]}"/>
+
+                        <field name="value_detail"
+                               attrs="{'invisible': ['|', ('unassignable', '=', True), ('feature_type', '=', False)]}"/>
+
+                        <field name="ua_value_detail"
+                               attrs="{'invisible': ['|', ('unassignable', '=', False), ('feature_type', '=', False)]}"/>
 
                         <field name="product_class_id" invisible="1"/>
                         <field name="product_class_feature_ids" invisible="1"/>
@@ -39,6 +52,7 @@
                 <field name="feature_id"/>
                 <field name="value_str"/>
                 <field name="unit_id"/>
+                <field name="unassignable"/>
             </tree>
         </field>
     </record>
