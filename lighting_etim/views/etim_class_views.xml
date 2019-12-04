@@ -56,6 +56,34 @@
         </field>
     </record>
 
+    <record id="etim_class_search_view" model="ir.ui.view">
+        <field name="name">lighting.etim.class.search</field>
+        <field name="model">lighting.etim.class</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code" string="Class"
+                       filter_domain="['|', ('code','ilike',self), ('name','ilike',self)]"/>
+                <field name="code"/>
+                <field name="name" string="Description"/>
+                <field name="group_id" string="Group"
+                       filter_domain="[('group_id.code','ilike',self)]"/>
+                <separator/>
+                <filter string="Changed" name="changed"
+                        domain="[('change_code', '=', 'Changed')]"/>
+                <filter string="Deleted" name="deleted"
+                        domain="[('change_code', '=', 'Deleted')]"/>
+                <filter string="New" name="new"
+                        domain="[('change_code', '=', 'New')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Group" name="groupby_group" domain="[]"
+                            context="{'group_by': 'group_id'}"/>
+                    <filter string="Change code" name="groupby_change_code" domain="[]"
+                            context="{'group_by': 'change_code'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- window action etim.class -->
     <record id="etim_class_list_action" model="ir.actions.act_window">
         <field name="name">ETIM Class</field>
