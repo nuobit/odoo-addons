@@ -8,6 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingETIMClassFeature(models.Model):
     _name = 'lighting.etim.class.feature'
+    _order = 'sequence'
 
     sequence = fields.Integer("Order", required=True, default=1)
 
@@ -24,6 +25,7 @@ class LightingETIMClassFeature(models.Model):
 
 class LightingETIMClassFeatureValue(models.Model):
     _name = 'lighting.etim.class.feature.value'
+    _order = 'sequence'
 
     sequence = fields.Integer("Order", required=True, default=1)
 

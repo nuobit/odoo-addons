@@ -8,6 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingETIMValue(models.Model):
     _name = 'lighting.etim.value'
+    _order = 'code'
 
     code = fields.Char("Code", required=True)
     name = fields.Char("Description", required=True, translate=True)

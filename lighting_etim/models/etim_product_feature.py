@@ -10,9 +10,11 @@ import json
 
 class LightingProductETIMFeature(models.Model):
     _name = 'lighting.etim.product.feature'
+    _order = 'feature_code'
 
     feature_id = fields.Many2one(comodel_name='lighting.etim.feature', ondelete='restrict',
                                  string='Feature', required=True)
+    feature_code = fields.Char(related='feature_id.code', readonly=True, store=True)
 
     @api.onchange('feature_id')
     def feature_id_change(self):
