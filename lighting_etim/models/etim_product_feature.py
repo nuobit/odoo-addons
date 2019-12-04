@@ -80,7 +80,7 @@ class LightingProductETIMFeature(models.Model):
     def _compute_value_str(self):
         for rec in self:
             if rec.feature_id.type == 'A':
-                rec.value_str = self.env['lighting.etim.feature'].browse(rec.value).display_name
+                rec.value_str = self.env['lighting.etim.value'].browse(rec.value).display_name
             elif rec.feature_id.type == 'L':
                 rec.value_str = str(rec.value)
             elif rec.feature_id.type == 'N':
