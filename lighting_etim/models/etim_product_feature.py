@@ -31,8 +31,8 @@ class LightingProductETIMFeature(models.Model):
     @api.depends('feature_id')
     def _compute_has_unit(self):
         for rec in self:
-            unit_ids = self.product_id.class_id.feature_ids.filtered(
-                lambda x: x['feature_id'] == self.feature_id).unit_id
+            unit_ids = rec.product_id.class_id.feature_ids.filtered(
+                lambda x: x['feature_id'] == rec.feature_id).unit_id
 
             rec.has_unit = len(unit_ids) != 0
 
