@@ -147,6 +147,11 @@ msgstr "Superficies inflamables"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "ETIM class"
+msgstr "Clase ETIM"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Photobiological risk group"
 msgstr "Grupo de riesgo fotobiológico"
 

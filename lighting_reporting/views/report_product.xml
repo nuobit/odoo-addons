@@ -245,6 +245,14 @@
                                         <span t-esc="', '.join([x.name for x in doc.blade_material_ids])"/>
                                     </td>
                                 </tr>
+                                <tr t-if="doc.class_id">
+                                    <td>
+                                        ETIM class
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.class_id.code"/>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
