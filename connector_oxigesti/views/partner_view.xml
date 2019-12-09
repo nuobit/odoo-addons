@@ -27,7 +27,7 @@
                 <group>
                     <field name="backend_id"/>
                     <field name="odoo_id" readonly="True"/>
-                    <field name="oxigesti_codigo_mutua" readonly="True"/>
+                    <field name="external_id_display" readonly="True"/>
                     <field name="sync_date" readonly="True"/>
                 </group>
             </form>
@@ -41,7 +41,7 @@
             <tree string="Oxigesti Partner">
                 <field name="backend_id"/>
                 <field name="odoo_id"/>
-                <field name="oxigesti_codigo_mutua"/>
+                <field name="external_id_display" readonly="True"/>
                 <field name="sync_date"/>
                 <button name="resync" type="object"
                         string="Resynchronize" icon="fa-refresh fa-lg"/>

@@ -6,16 +6,16 @@ from odoo.addons.component.core import Component
 from odoo import tools
 
 
-class ResPartnerBinder(Component):
+class ProductProductBinder(Component):
     """ Bind records and give odoo/oxigesti ids correspondence
 
     Binding models are models called ``oxigesti.{normal_model}``,
-    like ``oxigesti.res.partner`` or ``oxigesti.res.partner``.
+    like ``oxigesti.res.partner`` or ``oxigesti.product.product``.
     They are ``_inherits`` of the normal models and contains
     the Oxigesti ID, the ID of the Oxigesti Backend and the additional
     fields belonging to the Oxigesti instance.
     """
-    _name = 'oxigesti.res.partner.binder'
+    _name = 'oxigesti.product.product.binder'
     _inherit = 'oxigesti.binder'
 
-    _apply_on = 'oxigesti.res.partner'
+    _apply_on = 'oxigesti.product.product'
