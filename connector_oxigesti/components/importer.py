@@ -53,7 +53,7 @@ class OxigestiImporter(AbstractComponent):
         """ Import a dependency.
 
         The importer class is a class or subclass of
-        :class:`SageImporter`. A specific class can be defined.
+        :class:`OxigestiImporter`. A specific class can be defined.
 
         :param external_id: id of the related binding to import
         :param binding_model: name of the binding model for the relation
@@ -176,7 +176,6 @@ class OxigestiBatchImporter(AbstractComponent):
     """
     _name = 'oxigesti.batch.importer'
     _inherit = ['base.importer', 'base.oxigesti.connector']
-    _usage = 'batch.importer'
 
     def run(self, filters=None):
         """ Run the synchronization """
@@ -197,6 +196,7 @@ class OxigestiDirectBatchImporter(AbstractComponent):
 
     _name = 'oxigesti.direct.batch.importer'
     _inherit = 'oxigesti.batch.importer'
+    _usage = 'direct.batch.importer'
 
     def _import_record(self, external_id):
         """ Import the record directly """
@@ -208,6 +208,7 @@ class OxigestiDelayedBatchImporter(AbstractComponent):
 
     _name = 'oxigesti.delayed.batch.importer'
     _inherit = 'oxigesti.batch.importer'
+    _usage = 'delayed.batch.importer'
 
     def _import_record(self, external_id, job_options=None):
         """ Delay the import of the records"""

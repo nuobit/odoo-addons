@@ -16,12 +16,19 @@
               parent="oxigesti_menu_root"
               sequence="100"/>
 
-    <!--menuitem id="oxigesti_external_products_menu" name="External Products" sequence="10"
-              parent="oxigesti_external_objects_menu" action="oxigesti_product_product_action"/-->
-
-    <menuitem id="oxigesti_external_partners_menu" name="External Customers" sequence="20"
+    <menuitem id="oxigesti_external_partners_menu" name="External Customers" sequence="10"
               parent="oxigesti_external_objects_menu" action="oxigesti_res_partner_action"/>
 
-    <!--enuitem id="oxigesti_external_sales_orders_menu" name="External Services" sequence="30"
+    <menuitem id="oxigesti_external_products_menu" name="External Products" sequence="20"
+              parent="oxigesti_external_objects_menu" action="oxigesti_product_product_action"/>
+
+    <menuitem id="oxigesti_external_products_by_customer_menu" name="External Products by customer" sequence="30"
+              parent="oxigesti_external_objects_menu" action="oxigesti_product_buyerinfo_action"/>
+
+    <menuitem id="oxigesti_external_product_prices_by_customer_menu" name="External Product prices by customer"
+              sequence="40"
+              parent="oxigesti_external_objects_menu" action="oxigesti_product_pricelist_item_action"/>
+
+    <!--menuitem id="oxigesti_external_sales_orders_menu" name="External Services" sequence="30"
               parent="oxigesti_external_objects_menu" action="oxigesti_sale_order_action"/-->
 </odoo>

@@ -16,9 +16,9 @@ class ResPartnerImportMapper(Component):
     _inherit = 'oxigesti.import.mapper'
     _apply_on = 'oxigesti.res.partner'
 
-    direct = [
-        ('Codigo_Mutua', 'oxigesti_codigo_mutua'),
-    ]
+    # direct = [
+    #     ('Codigo_Mutua', 'oxigesti_codigo_mutua'),
+    # ]
 
     @mapping
     def backend_id(self, record):
@@ -60,10 +60,9 @@ class ResPartnerImportMapper(Component):
     def to_review(self, record):
         return {'to_review': True}
 
-    @only_create
     @mapping
     def ref(self, record):
-        return {'ref': record['Codigo_Cliente_Logic'] or 'OXI%i' % record['Codigo_Mutua']}
+        return {'ref': record['Codigo_Cliente_Logic']}
 
     @only_create
     @mapping

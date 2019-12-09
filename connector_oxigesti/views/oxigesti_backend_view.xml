@@ -69,16 +69,6 @@
                                 new records to review
                                 in the menu 'Connectors > Checkpoint'.
                             </p>
-                            <!--group>
-                                <div>
-                                    <label string="Import Products since"
-                                           class="oe_inline"/>
-                                    <field name="import_products_since_date" class="oe_inline"
-                                           nolabel="1"/>
-                                </div>
-                                <button name="import_products_since" type="object"
-                                        class="oe_highlight" string="Import in background"/>
-                            </group-->
                             <group>
                                 <div>
                                     <label string="Import Customers since"
@@ -88,6 +78,36 @@
                                 </div>
                                 <button name="import_customers_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
+                            </group>
+                            <group>
+                                <div>
+                                    <label string="Export Products since"
+                                           class="oe_inline"/>
+                                    <field name="export_products_since_date" class="oe_inline"
+                                           nolabel="1"/>
+                                </div>
+                                <button name="export_products_since" type="object"
+                                        class="oe_highlight" string="Export in background"/>
+                            </group>
+                            <group>
+                                <div>
+                                    <label string="Export Products by customer since"
+                                           class="oe_inline"/>
+                                    <field name="export_products_by_customer_since_date" class="oe_inline"
+                                           nolabel="1"/>
+                                </div>
+                                <button name="export_products_by_customer_since" type="object"
+                                        class="oe_highlight" string="Export in background"/>
+                            </group>
+                            <group>
+                                <div>
+                                    <label string="Export Product prices by customer since"
+                                           class="oe_inline"/>
+                                    <field name="export_product_prices_by_customer_since_date" class="oe_inline"
+                                           nolabel="1"/>
+                                </div>
+                                <button name="export_product_prices_by_customer_since" type="object"
+                                        class="oe_highlight" string="Export in background"/>
                             </group>
                             <!--group>
                                 <div>

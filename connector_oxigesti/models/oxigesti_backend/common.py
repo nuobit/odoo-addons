@@ -57,9 +57,11 @@ class OxigestiBackend(models.Model):
         default='draft'
     )
 
-    #import_services_since_date = fields.Datetime('Import Services since')
+    # import_services_since_date = fields.Datetime('Import Services since')
     import_customers_since_date = fields.Datetime('Import Customers since')
-    #import_products_since_date = fields.Datetime('Import Products since')
+    export_products_since_date = fields.Datetime('Export Products since')
+    export_products_by_customer_since_date = fields.Datetime('Export Products by customer since')
+    export_product_prices_by_customer_since_date = fields.Datetime('Export Product prices by customer since')
 
     @api.multi
     def button_reset_to_draft(self):
@@ -79,22 +81,42 @@ class OxigestiBackend(models.Model):
         self._check_connection()
         self.write({'state': 'checked'})
 
-    # @api.multi
-    # def import_products_since(self):
-    #     for rec in self:
-    #         since_date = rec.import_products_since_date
-    #         self.env['oxigesti.product.product'].with_delay(
-    #         ).import_products_since(
-    #             backend_record=rec, since_date=since_date)
-    #
-    #     return True
-
     @api.multi
     def import_customers_since(self):
         for rec in self:
             since_date = rec.import_customers_since_date
             self.env['oxigesti.res.partner'].with_delay(
             ).import_customers_since(
+                backend_record=rec, since_date=since_date)
+
+        return True
+
+    @api.multi
+    def export_products_since(self):
+        for rec in self:
+            since_date = rec.export_products_by_customer_since_date
+            self.env['oxigesti.product.product'].with_delay(
+            ).export_products_since(
+                backend_record=rec, since_date=since_date)
+
+        return True
+
+    @api.multi
+    def export_products_by_customer_since(self):
+        for rec in self:
+            since_date = rec.export_products_by_customer_since_date
+            self.env['oxigesti.product.buyerinfo'].with_delay(
+            ).export_products_by_customer_since(
+                backend_record=rec, since_date=since_date)
+
+        return True
+
+    @api.multi
+    def export_product_prices_by_customer_since(self):
+        for rec in self:
+            since_date = rec.export_product_prices_by_customer_since_date
+            self.env['oxigesti.product.pricelist.item'].with_delay(
+            ).export_product_prices_by_customer_since(
                 backend_record=rec, since_date=since_date)
 
         return True
@@ -116,16 +138,6 @@ class OxigestiBackend(models.Model):
 
         return self.env.user.company_id
 
-    # @api.model
-    # def _scheduler_import_products(self):
-    #     company_id = self.get_current_user_company()
-    #
-    #     domain = [
-    #         ('company_id', '=', company_id.id)
-    #     ]
-    #
-    #     self.search(domain).import_products_since()
-
     @api.model
     def _scheduler_import_customers(self):
         company_id = self.get_current_user_company()
@@ -135,6 +147,16 @@ class OxigestiBackend(models.Model):
         ]
 
         self.search(domain).import_customers_since()
+
+    @api.model
+    def _scheduler_export_products(self):
+        company_id = self.get_current_user_company()
+
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+
+        self.search(domain).import_export_since()
 
     # @api.model
     # def _scheduler_import_services(self):
