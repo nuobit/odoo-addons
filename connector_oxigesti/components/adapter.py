@@ -123,11 +123,13 @@ class GenericAdapter(AbstractComponent):
     def _escape(self, s):
         return s.replace("'", "").replace('"', "")
 
-    def _exec_sql(self, sql, params, as_dict=False):
+    def _exec_sql(self, sql, params, as_dict=False, commit=False):
         conn = self.conn()
         cr = conn.cursor(as_dict=as_dict)
         cr.execute(sql, params)
         res = cr.fetchall()
+        if commit:
+            conn.commit()
         cr.close()
         conn.close()
 
@@ -263,33 +265,65 @@ class GenericAdapter(AbstractComponent):
         cr.execute(sql, params)
         count = cr.rowcount
         if count == 0:
-            raise Exception(_("Nothing updated with ID: %s") % (id_d,))
+            raise Exception(_("Impossible to update external record with ID '%s': "
+                              "Register not found on Backend") % (id_d,))
         elif count > 1:
             conn.rollback()
-            raise pymssql.IntegrityError("Unexpected error: Returned more the one rows: with ID: %s" % (id_d,))
+            raise pymssql.IntegrityError("Unexpected error: Returned more the one row with ID: %s" % (id_d,))
         conn.commit()
         cr.close()
         conn.close()
 
         return count
 
-    def create(self, attributes=None):
+    def create(self, values_d):
         """ Create a record on the external system """
         _logger.debug(
             'method create, model %s, attributes %s',
-            self._sage_model, attributes)
-        res = self.client.add(self._sage_model, {
-            self._export_node_name: attributes
-        })
-        if self._export_node_name_res:
-            return res['sage'][self._export_node_name_res]['id']
-        return None
+            self._name, values_d)
+
+        if not values_d:
+            return 0
+
+        # check if schema exists to avoid injection
+        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        if not schema_exists:
+            raise pymssql.InternalError("The schema %s does not exist" % self.schema)
+
+        # build the sql parts
+        fields, params, phvalues = [], [], []
+        for k, v in values_d.items():
+            fields.append(k)
+            params.append(v)
+            if isinstance(v, str):
+                phvalues.append('%s')
+            elif isinstance(v, (int, float)):
+                phvalues.append('%d')
+            else:
+                raise NotImplementedError("Type %s" % type(v))
+
+        # build retvalues
+        retvalues = ['inserted.%s' % x for x in self._id]
+
+        # prepare the sql with base structure
+        sql = self._sql_insert % dict(schema=self.schema,
+                                      fields=', '.join(fields),
+                                      phvalues=', '.join(phvalues),
+                                      retvalues=', '.join(retvalues))
+
+        # executem la insercio
+        res = self._exec_sql(sql, tuple(params), commit=True)
+        if not res:
+            raise Exception(_("Unexpected!! Nothing created: %s") % (values_d,))
+        elif len(res) > 1:
+            raise Exception("Unexpected!!: Returned more the one row:%s -  %s" % (res, values_d,))
+
+        return res[0]
 
     def delete(self, resource, ids):
         _logger.debug('method delete, model %s, ids %s',
                       resource, ids)
-        # Delete a record(s) on the external system
-        return self.client.delete(resource, ids)
+        raise NotImplementedError
 
     def get_version(self):
         res = self._exec_query(as_dict=False)
