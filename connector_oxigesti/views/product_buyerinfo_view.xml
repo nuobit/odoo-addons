@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="oxigesti_product_buyerinfo_view_form" model="ir.ui.view">
+        <field name="name">oxigesti.product.buyerinfo.form</field>
+        <field name="model">oxigesti.product.buyerinfo</field>
+        <field name="arch" type="xml">
+            <form string="Oxigesti Products by customer">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="external_id_display" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="oxigesti_product_buyerinfo_view_tree" model="ir.ui.view">
+        <field name="name">oxigesti.product.buyerinfo.tree</field>
+        <field name="model">oxigesti.product.buyerinfo</field>
+        <field name="arch" type="xml">
+            <tree string="Oxigesti Products by customer">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="external_id_display" readonly="True"/>
+                <field name="sync_date"/>
+                <button name="resync" type="object"
+                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="oxigesti_product_buyerinfo_action" model="ir.actions.act_window">
+        <field name="name">Products by customer</field>
+        <field name="res_model">oxigesti.product.buyerinfo</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

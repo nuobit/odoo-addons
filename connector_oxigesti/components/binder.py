@@ -16,3 +16,5 @@ class OxigestiModelBinder(AbstractComponent):
     """
     _name = 'oxigesti.binder'
     _inherit = ['base.binder.composite', 'base.oxigesti.connector']
+
+    _bind_ids_field = 'oxigesti_bind_ids'
