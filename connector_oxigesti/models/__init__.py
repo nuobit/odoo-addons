@@ -8,4 +8,6 @@ from . import oxigesti_binding
 from . import oxigesti_backend
 
 from . import res_partner
-
+from . import product_product
+from . import product_buyerinfo
+from . import product_pricelist_item
