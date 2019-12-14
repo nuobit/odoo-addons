@@ -24,6 +24,22 @@ class ProductBuyerInfo(models.Model):
         ('buyerinfo_uniq', 'unique(product_id, partner_id)', "Already exists this same line!"),
     ]
 
+    @api.multi
+    def name_get(self):
+        vals = []
+        for record in self:
+            key_name = '%s - %s' % (
+                record.partner_id.display_name,
+                record.product_id.display_name,
+            )
+            data_name_l = ['[%s]' % record.code or '']
+            if record.name:
+                data_name_l.append(record.name)
+
+            vals.append((record.id, '%s: %s' % (key_name, ' '.join(data_name_l))))
+
+        return vals
+
     @api.constrains('code', 'name')
     def _check_code_name(self):
         for rec in self:
