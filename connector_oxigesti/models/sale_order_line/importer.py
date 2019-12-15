@@ -25,7 +25,7 @@ class SaleOrderLineBatchImporter(Component):
 class SaleOrderLineImporter(Component):
     _name = 'oxigesti.sale.order.line.importer'
     _inherit = 'oxigesti.importer'
-    
+
     _apply_on = 'oxigesti.sale.order.line'
 
     def _import_dependencies(self):
