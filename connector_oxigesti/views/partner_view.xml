@@ -4,7 +4,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
 <odoo>
     <record id="res_partner_view_form_connector_oxigesti" model="ir.ui.view">
-        <field name="name">res.partner.form</field>
+        <field name="name">res.partner.oxigesti.connector.form</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="connector.view_partner_connector_form"/>
         <field name="arch" type="xml">
