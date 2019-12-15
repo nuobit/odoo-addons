@@ -9,4 +9,5 @@ from odoo import tools
 class ProductBuyerinfoBinder(Component):
     _name = 'oxigesti.product.buyerinfo.binder'
     _inherit = 'oxigesti.binder'
+
     _apply_on = 'oxigesti.product.buyerinfo'

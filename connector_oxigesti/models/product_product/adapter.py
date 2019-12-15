@@ -11,6 +11,7 @@ from odoo.addons.queue_job.job import job
 class ProductProductAdapter(Component):
     _name = 'oxigesti.product.product'
     _inherit = 'oxigesti.adapter'
+
     _apply_on = 'oxigesti.product.product'
 
     _sql = """select a.Id, a.Articulo, a.Familia, a.CodigoAlternativo, a,Importe, a.DescripcionArticulo

@@ -14,6 +14,7 @@ from odoo.addons.connector.components.mapper import (
 class ResPartnerImportMapper(Component):
     _name = 'oxigesti.res.partner.import.mapper'
     _inherit = 'oxigesti.import.mapper'
+
     _apply_on = 'oxigesti.res.partner'
 
     # direct = [

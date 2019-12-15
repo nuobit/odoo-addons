@@ -23,8 +23,7 @@ class ProductPricelistItemBatchExporter(Component):
     def run(self, domain=[]):
         """ Run the batch synchronization """
         binder = self.binder_for(self.model._name)
-        domain += [('ref', 'in', ('430003837', '430003091'))]
-        for p in self.env['res.partner'].search(domain):  # , limit=30):
+        for p in self.env['res.partner'].search(domain):
             for pl in p.property_product_pricelist.item_ids.filtered(
                     lambda x: x.applied_on == '1_product' and x.compute_price == 'fixed'):
                 binding = binder.wrap_binding(pl, binding_extra_vals={
@@ -36,6 +35,7 @@ class ProductPricelistItemBatchExporter(Component):
 class ProductPricelistItemExporter(Component):
     _name = 'oxigesti.product.pricelist.item.exporter'
     _inherit = 'oxigesti.exporter'
+
     _apply_on = 'oxigesti.product.pricelist.item'
 
     def _export_dependencies(self):

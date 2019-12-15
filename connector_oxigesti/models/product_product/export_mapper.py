@@ -38,7 +38,7 @@ from odoo.addons.connector.components.mapper import (
 #                'Servicio_Ano', 'Articulo']
 #         external_id = tuple([map_record.source[x] for x in key])
 #
-#         binder = self.binder_for('ambugest.sale.order.line')
+#         binder = self.binder_for('oxigesti.sale.order.line')
 #         ambugest_order_line = binder.to_internal(external_id, unwrap=False)
 #
 #         if ambugest_order_line:
@@ -71,18 +71,37 @@ from odoo.addons.connector.components.mapper import (
 #
 #         return ops
 
+def nullif(field):
+    def modifier(self, record, to_attr):
+        value = record[field]
+        return value and value.strip() or None
+
+    return modifier
+
 
 class ProductProductExportMapper(Component):
     _name = 'oxigesti.product.product.export.mapper'
     _inherit = 'oxigesti.export.mapper'
+
     _apply_on = 'oxigesti.product.product'
 
     direct = [
         ('id', 'Id'),
-        ('default_code', 'Articulo'),
-        ('barcode', 'CodigoAlternativo'),
+        (nullif('barcode'), 'CodigoAlternativo'),
         ('list_price', 'Importe'),
     ]
+
+    @mapping
+    def Articulo(self, record):
+        default_code = (record.default_code and
+                        record.default_code.strip() and
+                        record.default_code or None)
+        if not default_code:
+            raise AssertionError("The Odoo product with ID %i and Name '%s' "
+                                 "has no Internal reference. "
+                                 "Please assign one and requeue the job." % (record.id, record.name))
+
+        return {'Articulo': default_code}
 
     @changed_by('name')
     @mapping
@@ -90,5 +109,5 @@ class ProductProductExportMapper(Component):
         return {'DescripcionArticulo': record.name[:250]}
 
     @mapping
-    def familia(self, record):
+    def Familia(self, record):
         return {'Familia': 0}

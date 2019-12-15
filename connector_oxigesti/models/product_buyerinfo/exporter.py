@@ -18,12 +18,14 @@ class ProductBuyerinfoBatchExporter(Component):
     """
     _name = 'oxigesti.product.buyerinfo.delayed.batch.exporter'
     _inherit = 'oxigesti.delayed.batch.exporter'
+
     _apply_on = 'oxigesti.product.buyerinfo'
 
 
 class ProductBuyerinfoExporter(Component):
     _name = 'oxigesti.product.buyerinfo.exporter'
     _inherit = 'oxigesti.exporter'
+
     _apply_on = 'oxigesti.product.buyerinfo'
 
     def _export_dependencies(self):

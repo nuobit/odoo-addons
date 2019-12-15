@@ -295,7 +295,7 @@ class GenericAdapter(AbstractComponent):
         for k, v in values_d.items():
             fields.append(k)
             params.append(v)
-            if isinstance(v, str):
+            if v is None or isinstance(v, str):
                 phvalues.append('%s')
             elif isinstance(v, (int, float)):
                 phvalues.append('%d')

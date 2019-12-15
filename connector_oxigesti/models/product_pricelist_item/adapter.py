@@ -10,6 +10,7 @@ from odoo.addons.component.core import Component
 class ProductPricelistItemAdapter(Component):
     _name = 'oxigesti.product.pricelist.item.adapter'
     _inherit = 'oxigesti.adapter'
+
     _apply_on = 'oxigesti.product.pricelist.item'
 
     _sql = """select b.IdArticulo, b.IdCliente, b.Importe

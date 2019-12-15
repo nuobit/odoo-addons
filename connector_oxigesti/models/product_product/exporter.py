@@ -16,10 +16,12 @@ class ProductProductBatchExporter(Component):
     """
     _name = 'oxigesti.product.product.delayed.batch.exporter'
     _inherit = 'oxigesti.delayed.batch.exporter'
+
     _apply_on = 'oxigesti.product.product'
 
 
 class ProductProductExporter(Component):
     _name = 'oxigesti.product.product.exporter'
     _inherit = 'oxigesti.exporter'
+
     _apply_on = 'oxigesti.product.product'
