@@ -4,7 +4,7 @@
 
 {
     'name': "Ambugest-Odoo connector",
-    'version': '11.0.0.14.0',
+    'version': '11.0.0.14.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',
@@ -12,7 +12,7 @@
     'depends': [
         'partner_review',
         'sale_order_service',
-        'connector',
+        'connector_common',
         'l10n_es',
     ],
     'external_dependencies': {
