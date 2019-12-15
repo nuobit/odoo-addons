@@ -1,4 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_oxigesti_sale_order","oxigesti_sale_order connector manager","model_oxigesti_sale_order","connector.group_connector_manager",1,1,1,1
+"access_oxigesti_sale_order_group_user","oxigesti_sale_order group_user","model_oxigesti_sale_order","base.group_user",1,0,0,0
+"access_oxigesti_sale_order_line","oxigesti_sale_order_line connector manager","model_oxigesti_sale_order_line","connector.group_connector_manager",1,1,1,1
+"access_oxigesti_sale_order_line_group_user","oxigesti_sale_order_line group_user","model_oxigesti_sale_order_line","base.group_user",1,0,0,0
 "access_oxigesti_res_partner","oxigesti_res_partner connector manager","model_oxigesti_res_partner","connector.group_connector_manager",1,1,1,1
 "access_oxigesti_res_partner_group_user","oxigesti_res_partner group_user","model_oxigesti_res_partner","base.group_user",1,0,0,0
 "access_oxigesti_product_product","oxigesti_product_product connector manager","model_oxigesti_product_product","connector.group_connector_manager",1,1,1,1

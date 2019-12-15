@@ -109,7 +109,7 @@
                                 <button name="export_product_prices_by_customer_since" type="object"
                                         class="oe_highlight" string="Export in background"/>
                             </group>
-                            <!--group>
+                            <group>
                                 <div>
                                     <label string="Import Services since"
                                            class="oe_inline"/>
@@ -118,7 +118,7 @@
                                 </div>
                                 <button name="import_services_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
-                            </group-->
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
