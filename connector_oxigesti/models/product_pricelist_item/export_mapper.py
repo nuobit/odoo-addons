@@ -14,6 +14,7 @@ from odoo.addons.connector.components.mapper import (
 class ProductPricelistItemExportMapper(Component):
     _name = 'oxigesti.product.pricelist.item.export.mapper'
     _inherit = 'oxigesti.export.mapper'
+
     _apply_on = 'oxigesti.product.pricelist.item'
 
     direct = [

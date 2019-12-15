@@ -57,12 +57,6 @@ class OxigestiBackend(models.Model):
         default='draft'
     )
 
-    # import_services_since_date = fields.Datetime('Import Services since')
-    import_customers_since_date = fields.Datetime('Import Customers since')
-    export_products_since_date = fields.Datetime('Export Products since')
-    export_products_by_customer_since_date = fields.Datetime('Export Products by customer since')
-    export_product_prices_by_customer_since_date = fields.Datetime('Export Product prices by customer since')
-
     @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
@@ -80,6 +74,12 @@ class OxigestiBackend(models.Model):
     def button_check_connection(self):
         self._check_connection()
         self.write({'state': 'checked'})
+
+    import_services_since_date = fields.Datetime('Import Services since')
+    import_customers_since_date = fields.Datetime('Import Customers since')
+    export_products_since_date = fields.Datetime('Export Products since')
+    export_products_by_customer_since_date = fields.Datetime('Export Products by customer since')
+    export_product_prices_by_customer_since_date = fields.Datetime('Export Product prices by customer since')
 
     @api.multi
     def import_customers_since(self):
@@ -121,15 +121,15 @@ class OxigestiBackend(models.Model):
 
         return True
 
-    # @api.multi
-    # def import_services_since(self):
-    #     for rec in self:
-    #         since_date = rec.import_services_since_date
-    #         self.env['oxigesti.sale.order'].with_delay(
-    #         ).import_services_since(
-    #             backend_record=rec, since_date=since_date)
-    #
-    #     return True
+    @api.multi
+    def import_services_since(self):
+        for rec in self:
+            since_date = rec.import_services_since_date
+            self.env['oxigesti.sale.order'].with_delay(
+            ).import_services_since(
+                backend_record=rec, since_date=since_date)
+
+        return True
 
     @api.model
     def get_current_user_company(self):

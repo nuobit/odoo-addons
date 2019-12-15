@@ -14,6 +14,7 @@ from odoo.addons.connector.components.mapper import (
 class ProductBuyerExportMapper(Component):
     _name = 'oxigesti.product.buyerinfo.export.mapper'
     _inherit = 'oxigesti.export.mapper'
+
     _apply_on = 'oxigesti.product.buyerinfo'
 
     direct = [
