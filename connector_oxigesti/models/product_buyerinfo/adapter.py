@@ -10,6 +10,7 @@ from odoo.addons.component.core import Component
 class ProductBuyerinfoAdapter(Component):
     _name = 'oxigesti.product.buyerinfo.adapter'
     _inherit = 'oxigesti.adapter'
+
     _apply_on = 'oxigesti.product.buyerinfo'
 
     _sql = """select b.IdArticulo, b.IdCliente, b.Descripcion_Cliente
