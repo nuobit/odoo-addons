@@ -4,19 +4,18 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
 <odoo>
     <record id="product_product_only_form_view" model="ir.ui.view">
-        <field name="name">product.product.form.view.inherit</field>
+        <field name="name">product.product.oxigesti.connector.form</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view"/>
-        <field name="groups_id"
-               eval="[(4, ref('connector.group_connector_manager'))]"/>
+        <field name="inherit_id" ref="connector_common.view_product_product_connector_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook" position="inside">
-                <page string="Connectors">
-                    <group string="Oxigesti Bindings">
-                        <field name="oxigesti_bind_ids" nolabel="1"/>
-                    </group>
-                </page>
-            </xpath>
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="Oxigesti Bindings">
+                    <field name="oxigesti_bind_ids" nolabel="1"/>
+                </group>
+            </page>
         </field>
     </record>
 
