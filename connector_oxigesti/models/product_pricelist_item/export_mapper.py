@@ -37,14 +37,15 @@ class ProductPricelistItemExportMapper(Component):
 
     @mapping
     def IdCliente(self, record):
+        partner_id = record.odoo_partner_id
         binder = self.binder_for('oxigesti.res.partner')
-        external_id = binder.to_external(record.odoo_partner_id, wrap=True)
+        external_id = binder.to_external(partner_id, wrap=True)
         if not external_id:
             display_name_l = []
-            if record.partner_id.ref:
-                display_name_l.append('[%s]' % record.partner_id.ref)
-            if record.partner_id.name:
-                display_name_l.append(record.partner_id.name)
+            if partner_id.ref:
+                display_name_l.append('[%s]' % partner_id.ref)
+            if partner_id.name:
+                display_name_l.append(partner_id.name)
             display_name = ' '.join(display_name_l)
             raise AssertionError("%s: There's no bond between Odoo partner '%s' and "
                                  "Oxigesti partner so the Oxigesti ID cannot be obtained. "
