@@ -29,8 +29,8 @@ class ProductBuyerExportMapper(Component):
                 "%s: There's no bond between Odoo product '%s' and "
                 "Oxigesti product so the Oxigesti ID cannot be obtained. "
                 "At this stage, the Oxigesti product should have been linked via "
-                "ProductProduct._export_dependencies. "
-                "If not, it's that this product "
+                "ProductProduct._export_dependencies, "
+                "if not, then this product "
                 "does not exist in Oxigesti." % (record, record.product_id.display_name,))
 
         return {'IdArticulo': external_id[0]}
@@ -50,8 +50,8 @@ class ProductBuyerExportMapper(Component):
             raise AssertionError("%s: There's no bond between Odoo partner '%s' and "
                                  "Oxigesti partner so the Oxigesti ID cannot be obtained. "
                                  "At this stage, the Oxigesti partner should have been linked via "
-                                 "ResPartner._import_dependencies. "
-                                 "If not, it's that this partner "
+                                 "ResPartner._import_dependencies, "
+                                 "if not, then this partner "
                                  "does not exist in Oxigesti." % (record, display_name,))
 
         return {'IdCliente': external_id[0]}
