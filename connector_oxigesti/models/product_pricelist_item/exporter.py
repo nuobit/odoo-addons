@@ -24,7 +24,7 @@ class ProductPricelistItemBatchExporter(Component):
         """ Run the batch synchronization """
         domain += [
             ('is_company', '=', True),
-            ('is_customer', '=', True),
+            ('customer', '=', True),
         ]
 
         binder = self.binder_for(self.model._name)
