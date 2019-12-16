@@ -26,8 +26,12 @@ class ProductBuyerExportMapper(Component):
         binder = self.binder_for('oxigesti.product.product')
         external_id = binder.to_external(record.product_id, wrap=True)
         assert external_id, (
-                "Product %s should have been imported in "
-                "ProductProduct._export_dependencies" % (record.product_id,))
+                "%s: There's no bond between Odoo product '%s' and "
+                "Oxigesti product so the Oxigesti ID cannot be obtained."
+                "At this stage, the Oxigesti product should have been linked via "
+                "ProductProduct._export_dependencies. "
+                "If not, it's that this product "
+                "does not exist in the Backend." % (record, record.product_id.display_name,))
 
         return {'IdArticulo': external_id[0]}
 
@@ -35,10 +39,18 @@ class ProductBuyerExportMapper(Component):
     def IdCliente(self, record):
         binder = self.binder_for('oxigesti.res.partner')
         external_id = binder.to_external(record.partner_id, wrap=True)
-        assert external_id, (
-                "Partner %s should have been imported in "
-                "ResPartner._import_dependencies. "
-                "If not probably this partner with code '%s' "
-                "does not exist on Backend" % (record.partner_id, record.partner_id.ref))
+        if not external_id:
+            display_name_l = []
+            if record.partner_id.ref:
+                display_name_l.append('[%s]' % record.partner_id.ref)
+            if record.partner_id.name:
+                display_name_l.append(record.partner_id.name)
+            display_name = ' '.join(display_name_l)
+            raise AssertionError("%s: There's no bond between Odoo partner '%s' and "
+                                 "Oxigesti partner so the Oxigesti ID cannot be obtained."
+                                 "At this stage, the Oxigesti partner should have been linked via "
+                                 "ResPartner._import_dependencies. "
+                                 "If not, it's that this partner "
+                                 "does not exist in the Backend." % (record, display_name,))
 
         return {'IdCliente': external_id[0]}
