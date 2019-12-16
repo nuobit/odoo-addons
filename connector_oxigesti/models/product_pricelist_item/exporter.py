@@ -22,6 +22,11 @@ class ProductPricelistItemBatchExporter(Component):
 
     def run(self, domain=[]):
         """ Run the batch synchronization """
+        domain += [
+            ('is_company', '=', True),
+            ('is_customer', '=', True),
+        ]
+
         binder = self.binder_for(self.model._name)
         for p in self.env['res.partner'].search(domain):
             for pl in p.property_product_pricelist.item_ids.filtered(
