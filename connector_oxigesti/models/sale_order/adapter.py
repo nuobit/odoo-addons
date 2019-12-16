@@ -18,7 +18,7 @@ class SaleOrderAdapter(Component):
                      s.Fecha_Modifica, 
                      s.Odoo_Verificado
               from %(schema)s.Odoo_Servicios s
-              where /*s.Odoo_Verificado = 1 and*/
+              where s.Odoo_Verificado = 1 and
                     s.Odoo_Numero_Albaran is null
             """
 
