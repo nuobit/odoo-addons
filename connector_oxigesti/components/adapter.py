@@ -160,6 +160,14 @@ class GenericAdapter(AbstractComponent):
             if filters:
                 where = []
                 for k, operator, v in filters:
+                    if v is None:
+                        if operator == '=':
+                            operator = 'is'
+                        elif operator == '!=':
+                            operator = 'is not'
+                        else:
+                            raise Exception("Operator '%s' is not implemented on NULL values" % operator)
+
                     where.append('%s %s %%s' % (k, operator))
                     values.append(v)
                 sql_l.append("where %s" % (' and '.join(where),))

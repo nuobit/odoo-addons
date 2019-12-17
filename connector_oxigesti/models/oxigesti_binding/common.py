@@ -19,6 +19,8 @@ def idhash(external_id):
                 raise Exception("Unexpected")
         elif isinstance(e, str):
             e9 = e
+        elif e is None:
+            pass
         else:
             raise Exception("Unexpected type for a key: type %" % type(e))
 
