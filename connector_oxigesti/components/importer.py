@@ -91,7 +91,7 @@ class OxigestiImporter(AbstractComponent):
         """
         return
 
-    def _import_finalize(self, binding):
+    def _after_import(self, binding):
         return
 
     def _must_skip(self, binding):
@@ -160,13 +160,12 @@ class OxigestiImporter(AbstractComponent):
             binding = self.model.create(values)
             _logger.debug('%d created from Oxigesti %s', binding, external_id)
 
-        # final updates
-        self._import_finalize(binding)
-
         # finally, we bind both, so the next time we import
         # the record, we'll update the same record instead of
         # creating a new one
         binder.bind(external_id, binding)
+
+        self._after_import(binding)
 
 
 class OxigestiBatchImporter(AbstractComponent):
