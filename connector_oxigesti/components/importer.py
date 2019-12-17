@@ -24,6 +24,7 @@ class OxigestiImporter(AbstractComponent):
     """ Base importer for Oxigesti """
     _name = 'oxigesti.importer'
     _inherit = ['base.importer', 'base.oxigesti.connector']
+
     _usage = 'record.importer'
 
     # def _is_uptodate(self, binding):
@@ -133,11 +134,12 @@ class OxigestiImporter(AbstractComponent):
         self._import_dependencies()
 
         ## map_data
-        # this one knows how to convert sage data to odoo data
+        # this one knows how to convert backend data to odoo data
         mapper = self.component(usage='import.mapper')
         # convert to odoo data
         internal_data = mapper.map_record(self.external_data)
 
+        # persist data
         if binding:
             # if yes, we update it
             binding.write(internal_data.values())
@@ -165,6 +167,7 @@ class OxigestiImporter(AbstractComponent):
         # creating a new one
         binder.bind(external_id, binding)
 
+        # last update
         self._after_import(binding)
 
 
@@ -195,6 +198,7 @@ class OxigestiDirectBatchImporter(AbstractComponent):
 
     _name = 'oxigesti.direct.batch.importer'
     _inherit = 'oxigesti.batch.importer'
+
     _usage = 'direct.batch.importer'
 
     def _import_record(self, external_id):
@@ -207,6 +211,7 @@ class OxigestiDelayedBatchImporter(AbstractComponent):
 
     _name = 'oxigesti.delayed.batch.importer'
     _inherit = 'oxigesti.batch.importer'
+
     _usage = 'delayed.batch.importer'
 
     def _import_record(self, external_id, job_options=None):
