@@ -15,7 +15,8 @@ class ResPartnerAdapter(Component):
     _apply_on = 'oxigesti.res.partner'
 
     _sql = """select c.Codigo_Mutua, c.Nombre_Mutua, 
-                     coalesce(c.Codigo_Cliente_Logic, 'OXI' + convert(varchar, c.Codigo_Mutua)) as Codigo_Cliente_Logic
+                     coalesce(c.Codigo_Cliente_Logic, 'OXI' + convert(varchar, c.Codigo_Mutua)) as Codigo_Cliente_Logic,
+                     c.Fecha_Ultimo_Cambio
               from %(schema)s.Mutuas_y_Clientes c
               where nullif(ltrim(rtrim(c.Nombre_Mutua)), '') is not null
      """
