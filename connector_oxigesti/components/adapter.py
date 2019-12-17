@@ -159,8 +159,8 @@ class GenericAdapter(AbstractComponent):
 
             if filters:
                 where = []
-                for k, v in filters.items():
-                    where.append('%s = %%s' % k)
+                for k, operator, v in filters:
+                    where.append('%s %s %%s' % (k, operator))
                     values.append(v)
                 sql_l.append("where %s" % (' and '.join(where),))
 
@@ -168,7 +168,8 @@ class GenericAdapter(AbstractComponent):
 
         res = self._exec_sql(sql, tuple(values), as_dict=as_dict)
 
-        if self._id and set(self._id).issubset(set(filters)):
+        filter_keys_s = {e[0] for e in filters}
+        if self._id and set(self._id).issubset(filter_keys_s):
             self._check_uniq(res)
 
         return res
@@ -208,9 +209,9 @@ class GenericAdapter(AbstractComponent):
             'method read, sql %s id %s, attributes %s',
             self._sql, id, attributes)
 
-        id_d = dict(zip(self._id, id))
+        filters = list(zip(self._id, ['='] * len(self._id), id))
 
-        res = self._exec_query(filters=id_d)
+        res = self._exec_query(filters=filters)
 
         if len(res) > 1:
             raise pymssql.IntegrityError("Unexpected error: Returned more the one rows:\n%s" % ('\n'.join(res),))
