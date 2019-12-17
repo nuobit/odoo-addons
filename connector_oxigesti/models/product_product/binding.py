@@ -35,8 +35,9 @@ class ProductProductBinding(models.Model):
         """ Prepare the batch export of products modified on Odoo """
         domain = [
             ('company_id', '=', backend_record.company_id.id),
-            ('sale_ok', '=', True),
         ]
+        if since_date:
+            domain += [('write_date', '>', since_date)]
         now_fmt = fields.Datetime.now()
         self.export_batch(backend=backend_record, domain=domain)
         backend_record.export_products_since_date = now_fmt
