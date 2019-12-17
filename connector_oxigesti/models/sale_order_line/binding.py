@@ -43,19 +43,6 @@ class SaleOrderLineBinding(models.Model):
                                         ondelete='cascade',
                                         index=True)
 
-    # @job(default_channel='root.oxigesti')
-    # def import_services_since(self, backend_record=None, since_date=None):
-    #     """ Prepare the import of partners modified on Oxigesti """
-    #     filters = {
-    #         'EMPRESA': backend_record.oxigesti_company_id,
-    #     }
-    #     now_fmt = fields.Datetime.now()
-    #     self.env['oxigesti.sale.order'].import_batch(
-    #         backend=backend_record, filters=filters)
-    #     backend_record.import_services_since_date = now_fmt
-    #
-    #     return True
-
     @api.model
     def create(self, vals):
         oxigesti_order_id = vals['oxigesti_order_id']

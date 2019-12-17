@@ -24,6 +24,7 @@ class OxigestiExporter(AbstractComponent):
     """ Base Exporter for Oxigesti """
     _name = 'oxigesti.exporter'
     _inherit = ['generic.exporter', 'base.oxigesti.connector']
+
     _usage = 'record.exporter'
 
     def run(self, relation, *args, **kwargs):
@@ -143,6 +144,7 @@ class OxigestiDirectBatchExporter(AbstractComponent):
 
     _name = 'oxigesti.direct.batch.exporter'
     _inherit = 'oxigesti.batch.exporter'
+
     _usage = 'direct.batch.exporter'
 
     def _export_record(self, relation):
@@ -155,6 +157,7 @@ class OxigestiDelayedBatchExporter(AbstractComponent):
 
     _name = 'oxigesti.delayed.batch.exporter'
     _inherit = 'oxigesti.batch.exporter'
+
     _usage = 'delayed.batch.exporter'
 
     def _export_record(self, relation, job_options=None):
