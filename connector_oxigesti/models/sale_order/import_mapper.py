@@ -80,9 +80,9 @@ class SaleOrderImportMapper(Component):
 
     def _get_order_lines(self, record, model_name):
         adapter = self.component(usage='backend.adapter', model_name=model_name)
-        lines = adapter.search(filters={
-            'Codigo_Servicio': record['Codigo_Servicio'],
-        })
+        lines = adapter.search(filters=[
+            ('Codigo_Servicio', '=', record['Codigo_Servicio']),
+        ])
 
         return lines
 

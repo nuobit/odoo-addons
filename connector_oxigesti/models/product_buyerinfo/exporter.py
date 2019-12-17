@@ -38,11 +38,11 @@ class ProductBuyerinfoExporter(Component):
         else:
             importer = self.component(usage='direct.batch.importer',
                                       model_name=binding_model)
-            importer.run(filters={
-                'Codigo_Cliente_Logic': self.binding.partner_id.ref and \
-                                        self.binding.partner_id.ref.strip() and \
-                                        self.binding.partner_id.ref or None
-            })
+            importer.run(filters=[
+                ('Codigo_Cliente_Logic', '=', self.binding.partner_id.ref and \
+                 self.binding.partner_id.ref.strip() and \
+                 self.binding.partner_id.ref or None),
+            ])
 
         ## product
         binder = self.binder_for('oxigesti.product.product')

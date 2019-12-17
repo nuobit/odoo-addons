@@ -44,9 +44,11 @@ class ProductPricelistItemBinding(models.Model):
     def export_product_prices_by_customer_since(self, backend_record=None, since_date=None):
         """ Prepare the batch export of product prices by customer modified on Odoo """
         domain = [('company_id', '=', backend_record.company_id.id)]
+        if since_date:
+            domain += [('write_date', '>', since_date)]
         now_fmt = fields.Datetime.now()
         self.export_batch(backend=backend_record, domain=domain)
-        backend_record.export_products_by_customer_since_date = now_fmt
+        backend_record.export_product_prices_by_customer_since_date = now_fmt
 
         return True
 
