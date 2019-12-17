@@ -47,6 +47,8 @@ class OxigestiBackend(models.Model):
         string='Company',
     )
 
+    warehouse_id = fields.Many2one(comodel_name='stock.warehouse', string="Warehouse")
+
     active = fields.Boolean(
         string='Active',
         default=True

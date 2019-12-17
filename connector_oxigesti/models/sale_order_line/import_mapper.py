@@ -18,13 +18,6 @@ class SaleOrderLineImportMapper(Component):
     _apply_on = 'oxigesti.sale.order.line'
 
     direct = [
-        # ('EMPRESA', 'ambugest_empresa'),
-        # ('Fecha_Servicio', 'ambugest_fecha_servicio'),
-        # ('Codigo_Servicio', 'ambugest_codigo_servicio'),
-        # ('Servicio_Dia', 'ambugest_servicio_dia'),
-        # ('Servicio_Ano', 'ambugest_servicio_ano'),
-        # ('Articulo', 'ambugest_articulo'),
-
         (convert('Cantidad', float), 'product_uom_qty'),
     ]
 
