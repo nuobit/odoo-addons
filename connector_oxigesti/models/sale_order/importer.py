@@ -48,7 +48,9 @@ class SaleOrderImporter(Component):
         self._import_dependency(external_id, 'oxigesti.res.partner', always=False)
 
     def _import_finalize(self, binding):
-        sale_order = self.component(usage='binder').unwrap_binding(binding)
+        ## order validation
+        binder = self.component(usage='binder')
+        sale_order = binder.unwrap_binding(binding)
         sale_order.onchange_partner_id()
         for line in sale_order.order_line:
             line.product_id_change()

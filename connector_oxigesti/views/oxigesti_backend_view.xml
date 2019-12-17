@@ -46,7 +46,7 @@
                         <field name="version" colspan="4"/>
                     </group>
                     <notebook attrs="{'invisible':[('state', 'in', ['draft'])]}">
-                        <page name="import" string="Imports">
+                        <page name="synchronizers" string="Synchronizers">
                             <p class="oe_grey oe_inline">
                                 By clicking on the buttons,
                                 you will initiate the
@@ -118,6 +118,11 @@
                                 </div>
                                 <button name="import_services_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
+                            </group>
+                        </page>
+                        <page name="additional_data" string="Additional data">
+                            <group>
+                                <field name="warehouse_id"/>
                             </group>
                         </page>
                     </notebook>
