@@ -23,15 +23,16 @@ class ProductBuyerExportMapper(Component):
 
     @mapping
     def IdArticulo(self, record):
+        product_id = record.product_id
         binder = self.binder_for('oxigesti.product.product')
-        external_id = binder.to_external(record.product_id, wrap=True)
+        external_id = binder.to_external(product_id, wrap=True)
         assert external_id, (
                 "%s: There's no bond between Odoo product '%s' and "
                 "Oxigesti product so the Oxigesti ID cannot be obtained. "
                 "At this stage, the Oxigesti product should have been linked via "
                 "ProductProduct._export_dependencies, "
                 "if not, then this product '%s' "
-                "does not exist in Oxigesti." % (record, record.product_id.display_name, record.default_code))
+                "does not exist in Oxigesti." % (record, product_id.display_name, product_id.default_code))
 
         return {'IdArticulo': external_id[0]}
 
@@ -52,6 +53,6 @@ class ProductBuyerExportMapper(Component):
                                  "At this stage, the Oxigesti partner should have been linked via "
                                  "ResPartner._import_dependencies, "
                                  "if not, then this partner '%s' "
-                                 "does not exist in Oxigesti." % (record, display_name, record.ref))
+                                 "does not exist in Oxigesti." % (record, display_name, partner_id.ref))
 
         return {'IdCliente': external_id[0]}
