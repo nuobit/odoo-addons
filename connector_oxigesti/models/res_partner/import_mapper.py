@@ -17,10 +17,6 @@ class ResPartnerImportMapper(Component):
 
     _apply_on = 'oxigesti.res.partner'
 
-    # direct = [
-    #     ('Codigo_Mutua', 'oxigesti_codigo_mutua'),
-    # ]
-
     @mapping
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}

@@ -65,6 +65,7 @@ class CRUDAdapter(AbstractComponent):
     """ External Records Adapter for Oxigesti """
     _name = 'oxigesti.crud.adapter'
     _inherit = ['base.backend.adapter', 'base.oxigesti.connector']
+
     _usage = 'backend.adapter'
 
     def __init__(self, environment):
@@ -189,6 +190,9 @@ class GenericAdapter(AbstractComponent):
             if id_t in uniq:
                 raise pymssql.IntegrityError("Unexpected error: ID duplicated: %s - %s" % (self._id, id_t))
             uniq.add(id_t)
+
+    def id2dict(self, id):
+        return dict(zip(self._id, id))
 
     ########## exposed methods
 

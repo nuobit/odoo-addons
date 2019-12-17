@@ -43,11 +43,32 @@ class SaleOrderImporter(Component):
         return None
 
     def _import_dependencies(self):
+        # customer
         external_id = (self.external_data['Cliente'],)
-
         self._import_dependency(external_id, 'oxigesti.res.partner', always=False)
 
+        # products
+        adapter = self.component(usage='backend.adapter',
+                                 model_name='oxigesti.sale.order.line')
+        oxigesti_cargos_servicio = adapter.search(filters=[
+            ('Codigo_Servicio', '=', self.external_data['Codigo_Servicio']),
+        ])
+        oxigesti_idarticulos = [str(adapter.id2dict(x)['Articulo'])
+                                for x in oxigesti_cargos_servicio]
+
+        exporter = self.component(usage='direct.batch.exporter',
+                                  model_name='oxigesti.product.product')
+        exporter.run(domain=[
+            ('company_id', '=', self.backend_record.company_id.id),
+            ('default_code', 'in', oxigesti_idarticulos),
+        ])
+
     def _after_import(self, binding):
+        ## rebind the lines, for the sync date
+        binder = self.binder_for('oxigesti.sale.order.line')
+        for line in binding.oxigesti_order_line_ids:
+            binder.bind(line.external_id, line)
+
         ## order validation
         binder = self.component(usage='binder')
         sale_order = binder.unwrap_binding(binding)

@@ -9,13 +9,24 @@ from odoo.addons.connector.exception import (IDMissingInBackend,
                                              RetryableJobError)
 
 
-class ProductProductBatchExporter(Component):
+class ProductProductDelayedBatchExporter(Component):
     """ Export the Oxigesti Product.
 
     For every product in the list, a delayed job is created.
     """
     _name = 'oxigesti.product.product.delayed.batch.exporter'
     _inherit = 'oxigesti.delayed.batch.exporter'
+
+    _apply_on = 'oxigesti.product.product'
+
+
+class ProductProductDirectBatchExporter(Component):
+    """ Export the Oxigesti Product.
+
+    For every product in the list, execute inmediately.
+    """
+    _name = 'oxigesti.product.product.direct.batch.exporter'
+    _inherit = 'oxigesti.direct.batch.exporter'
 
     _apply_on = 'oxigesti.product.product'
 
