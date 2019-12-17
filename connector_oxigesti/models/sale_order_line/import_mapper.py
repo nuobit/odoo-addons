@@ -26,6 +26,13 @@ class SaleOrderLineImportMapper(Component):
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 
+    @only_create
+    @mapping
+    def external_id(self, record):
+        adapter = self.component(usage='backend.adapter')
+        external_id = [record[f] for f in adapter._id]
+        return {'external_id': external_id}
+
     @mapping
     def product(self, record):
         oxigesti_articulo = str(record['Articulo'])
