@@ -160,3 +160,9 @@ class SaleOrderImportMapper(Component):
     def client_order(self, record):
         if record['Codigo_Servicio']:
             return {'client_order_ref': str(record['Codigo_Servicio']).strip()}
+
+    @only_create
+    @mapping
+    def warehouse_id(self, record):
+        if self.backend_record.warehouse_id:
+            return {'warehouse_id': self.backend_record.warehouse_id.id}
