@@ -13,7 +13,7 @@ class SaleOrderLineAdapter(Component):
 
     _apply_on = 'oxigesti.sale.order.line'
 
-    _sql = """select l.Codigo_Servicio, l.Articulo, nullif(trim(l.Partida),'') as Partida,
+    _sql = """select l.Codigo_Servicio, l.Articulo, nullif(rtrim(ltrim(l.Partida)),'') as Partida,
                      l.Cantidad
               from %(schema)s.Odoo_Servicios_Cargos l
 
