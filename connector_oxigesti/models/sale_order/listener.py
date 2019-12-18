@@ -14,7 +14,7 @@ class SaleOrderListener(Component):
 
     def on_confirm_order(self, record):
         record.ensure_one()
-        binding = record.ambugest_bind_ids
+        binding = record.oxigesti_bind_ids
         if binding:
             binding.ensure_one()
             # exportem el numero de comanda i la dta
@@ -22,7 +22,7 @@ class SaleOrderListener(Component):
 
     def on_cancel_order(self, record):
         record.ensure_one()
-        binding = record.ambugest_bind_ids
+        binding = record.oxigesti_bind_ids
         if binding:
             binding.ensure_one()
             # exportem el numero de comanda i la dta
