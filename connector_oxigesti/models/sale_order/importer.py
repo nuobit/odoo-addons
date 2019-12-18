@@ -77,3 +77,54 @@ class SaleOrderImporter(Component):
             line.product_id_change()
         sale_order.action_confirm()
         sale_order.action_done()
+
+        ## picking validation
+        binder = self.binder_for('oxigesti.sale.order.line')
+        adapter = self.component(usage='backend.adapter',
+                                 model_name='oxigesti.sale.order.line')
+        picking_id = None
+        for order_line_id in binding.oxigesti_order_line_ids.filtered(lambda x: x.move_ids):
+            if len(order_line_id.move_ids) > 1:
+                raise AssertionError("The order line '%s' has more than one move lines. "
+                                     "It should be exactly 1. " % (order_line_id,))
+            move_id = order_line_id.move_ids
+            if move_id.move_line_ids:
+                raise AssertionError("The movement '%s' already has lines. "
+                                     "It should be empty before inserting the new data" % (move_id,))
+            if not picking_id:
+                picking_id = move_id.picking_id
+            else:
+                if picking_id != move_id.picking_id:
+                    raise Exception("Unexpected error! The same order contains lines "
+                                    "belonging to a different picking '%s' and '%s'" % (
+                                        picking_id.name, move_id.picking_id.name
+                                    ))
+            move_line_id_d = {
+                'product_id': move_id.product_id.id,
+                'location_id': move_id.location_id.id,
+                'location_dest_id': move_id.location_dest_id.id,
+                'qty_done': move_id.product_uom_qty,
+                'product_uom_id': move_id.product_uom.id,
+                'picking_id': picking_id.id,
+            }
+            external_id = binder.to_external(order_line_id)
+            tracking_name = adapter.id2dict(external_id)['Partida']
+            if tracking_name:
+                Lot = self.env['stock.production.lot']
+                lot_id = Lot.search([
+                    ('company_id', '=', self.backend_record.company_id.id),
+                    ('product_id', '=', move_id.product_id.id),
+                    ('name', '=', tracking_name),
+                ])
+                if not lot_id:
+                    lot_id = Lot.create({
+                        'company_id': self.backend_record.company_id.id,
+                        'product_id': move_id.product_id.id,
+                        'name': tracking_name,
+                    })
+                move_line_id_d.update({
+                    'lot_id': lot_id.id,
+                })
+            move_id.move_line_ids = [(0, False, move_line_id_d)]
+
+        picking_id.button_validate()
