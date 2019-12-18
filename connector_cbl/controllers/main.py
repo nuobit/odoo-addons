@@ -19,17 +19,21 @@ class CBLController(http.Controller):
         ]).sorted(lambda x: x.sequence)
 
         if not cbl_backend:
-            raise werkzeug.exceptions.InternalServerError("No configuration found")
+            return werkzeug.exceptions.InternalServerError("No configuration found")
 
         er = CBL(username=cbl_backend.username,
                  password=cbl_backend.password)
 
         _logger.info("Asking %s CBL shipment... from %s" % (tracking_number, remote_ip))
         if not er.login():
-            raise werkzeug.exceptions.Unauthorized()
+            return werkzeug.exceptions.Unauthorized()
+
         data = er.filter_by_refcte(tracking_number)
+        if not data:
+            return werkzeug.exceptions.NotFound("There's no data with tracking number '%s'" % tracking_number)
+
         # if not er.logout():
-        #    raise werkzeug.exceptions.InternalServerError("Logout not successful")
+        #    return werkzeug.exceptions.InternalServerError("Logout not successful")
         _logger.info("CBL shipment %s successfully retrieved from %s." % (tracking_number, remote_ip))
 
         return http.request.render('connector_cbl.index', {'expeditions': data})

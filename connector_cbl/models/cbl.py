@@ -115,7 +115,12 @@ class CBL:
 
         # parse the page
         tree = etree.HTML(res.text.encode())
-        elem_table = xpath1(tree, "//div[@id='CONSENV_RES']//table")
+        elem_table_l = tree.xpath("//div[@id='CONSENV_RES']//table")
+        if len(elem_table_l) == 0:
+            return []
+        elif len(elem_table_l) > 1:
+            raise Exception("Unexpected content CONSENV_RES")
+        elem_table = elem_table_l[0]
 
         result_ld = []
         input_detail_l = elem_table.xpath("//tr/td/input[contains(@onclick, 'MuestraDetalleConsulta')]")
