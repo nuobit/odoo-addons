@@ -116,12 +116,21 @@ class SaleOrderImporter(Component):
                     ('product_id', '=', move_id.product_id.id),
                     ('name', '=', tracking_name),
                 ])
+                picking_type_id = binding.warehouse_id.out_type_id
                 if not lot_id:
+                    if not picking_type_id.use_create_lots:
+                        raise Exception("The creation of Lot/Serial number is "
+                                        "not allowed in this operation type")
                     lot_id = Lot.create({
                         'company_id': self.backend_record.company_id.id,
                         'product_id': move_id.product_id.id,
                         'name': tracking_name,
                     })
+                else:
+                    if not picking_type_id.use_existing_lots:
+                        raise Exception("The use of existing Lot/Serial number is "
+                                        "not allowed in this operation type")
+
                 move_line_id_d.update({
                     'lot_id': lot_id.id,
                 })
