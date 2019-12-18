@@ -6,7 +6,7 @@ from odoo import api, fields, models, _
 from odoo.addons.component.core import Component
 
 
-class AmbugestAccountInvoiceListener(Component):
+class OXigestiAccountInvoiceListener(Component):
     _name = 'oxigesti.account.invoice.listener'
     _inherit = 'base.event.listener'
 
@@ -15,7 +15,7 @@ class AmbugestAccountInvoiceListener(Component):
     def on_validate_invoice(self, record):
         record.ensure_one()
         for order in record.invoice_line_ids.mapped('sale_line_ids.order_id'):
-            binding = order.ambugest_bind_ids
+            binding = order.oxigesti_bind_ids
             if binding:
                 binding.ensure_one()
                 # exportem el numero de factura i la data
@@ -24,7 +24,7 @@ class AmbugestAccountInvoiceListener(Component):
     def on_cancel_invoice(self, record):
         record.ensure_one()
         for order in record.invoice_line_ids.mapped('sale_line_ids.order_id'):
-            binding = order.ambugest_bind_ids
+            binding = order.oxigesti_bind_ids
             if binding:
                 binding.ensure_one()
                 # esborrem el numero de factura i la data
