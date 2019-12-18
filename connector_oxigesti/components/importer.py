@@ -27,28 +27,6 @@ class OxigestiImporter(AbstractComponent):
 
     _usage = 'record.importer'
 
-    # def _is_uptodate(self, binding):
-    #     """Return True if the import should be skipped because
-    #     it is already up-to-date in OpenERP"""
-    #     assert self.sage_record
-    #     if not self.sage_record.get('updated_at'):
-    #         return  # no update date on Sage, always import it.
-    #     if not binding:
-    #         return  # it does not exist so it should not be skipped
-    #     sync = binding.sync_date
-    #     if not sync:
-    #         return
-    #     from_string = fields.Datetime.from_string
-    #     sync_date = from_string(sync)
-    #     sage_date = from_string(self.sage_record['updated_at'])
-    #     # if the last synchronization date is greater than the last
-    #     # update in sage, we skip the import.
-    #     # Important: at the beginning of the exporters flows, we have to
-    #     # check if the sage_date is more recent than the sync_date
-    #     # and if so, schedule a new import. If we don't do that, we'll
-    #     # miss changes done in Sage
-    #     return sage_date < sync_date
-
     def _import_dependency(self, external_id, binding_model,
                            importer=None, always=False):
         """ Import a dependency.
