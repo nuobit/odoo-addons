@@ -44,9 +44,6 @@
                             <p>
                                 <h3 t-esc="e['Referencia']"/>
                             </p>
-                            <p>
-                                <h4>Detalles</h4>
-                            </p>
                             <form>
                                 <fieldset disabled="disabled">
                                     <div class="form-row">
