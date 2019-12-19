@@ -127,17 +127,7 @@ class ExportProductXlsx(models.AbstractModel):
                     sheet.write(row, col, obj[meta['string']])
                     col += 1
                 else:
-                    num = meta['num']
                     for k in meta['subfields']:
                         sheet.write(row, col, obj.get(k))
                         col += 1
-                    num -= 1
-
-                    # if obj[field]:
-                    #     for so in obj[field]:
-                    #         for dummy, sod in so.items():
-                    #             sheet.write(row, col, sod)
-                    #             col += 1
-                    #         num -= 1
-                    col += num * len(meta['subfields'])
             row += 1
