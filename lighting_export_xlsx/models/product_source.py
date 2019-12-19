@@ -38,7 +38,11 @@ class LightingProductSource(models.Model):
         SourceLine = self.env[self._name].line_ids
         field = 'cri_min'
         meta = SourceLine.fields_get([field], ['string'])[field]
-        datum = [str(x) for x in self.line_ids.get_cri() if x]
+        cri_l = self.line_ids.get_cri()
+        if cri_l:
+            datum = [str(x) for x in cri_l if x]
+        else:
+            datum = None
         return {meta['string']: datum and '/'.join(datum) or None}
 
     @property
