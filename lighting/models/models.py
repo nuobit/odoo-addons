@@ -415,6 +415,13 @@ class LightingProductSourceLine(models.Model):
             return None
         return res
 
+    def get_cri(self):
+        res = self.sorted(lambda x: x.sequence) \
+            .mapped('cri_min')
+        if not res:
+            return None
+        return res
+
     def get_luminous_flux(self):
         res = []
         for line in self.sorted(lambda x: x.sequence):
