@@ -58,21 +58,39 @@ class ExportProductXlsx(models.AbstractModel):
 
                 if isinstance(datum, (tuple, list)):
                     subfields = []
-                    for sf in datum:
-                        sf1 = sf.keys()
+                    for i, sf in enumerate(datum, 1):
+                        ## update x als headers
+                        sf1 = list(sf.keys())
                         if subfields:
-                            if subfields != sf1:
+                            if set(subfields) != set(sf1):
                                 raise Exception("Unexpected Error")
                         else:
                             subfields = sf1
 
+                        ## afegim dades
+                        fnam = '%s' % meta['string']
+                        if len(datum) > 1:
+                            fnam += '%i' % i
+                        for k, v in sf.items():
+                            sfkey = '%s/%s' % (fnam, k)
+                            if sfkey in obj_d:
+                                raise Exception("The subfield '%s' is duplicated" % sfkey)
+                            obj_d[sfkey] = v
+
+                            if not meta['subfields']:
+                                meta['subfields'] = []
+                            if sfkey not in meta['subfields']:
+                                meta['subfields'].append(sfkey)
+
                     meta['num'] = max(meta['num'], len(datum))
-                    meta['subfields'] = subfields
                 else:
+                    fkey = meta['string']
+                    if fkey in obj_d:
+                        raise Exception("The field '%s' is duplicated" % fkey)
+                    obj_d[fkey] = datum
+
                     if not meta['num'] and datum:
                         meta['num'] = 1
-
-                obj_d[field] = datum
 
             objects_ld.append(obj_d)
 
@@ -84,12 +102,8 @@ class ExportProductXlsx(models.AbstractModel):
             if not meta['subfields']:
                 xlsx_header.append(meta['string'])
             else:
-                for i in range(1, meta['num'] + 1):
-                    field1 = [meta['string']]
-                    if meta['num'] > 1:
-                        field1.append('%i' % i)
-                    for sf in meta['subfields']:
-                        xlsx_header.append('%s/%s' % (''.join(field1), sf))
+                for sf in meta['subfields']:
+                    xlsx_header.append(sf)
 
         ## write to xlsx
         sheet = workbook.add_worksheet(template_id.display_name)
@@ -108,16 +122,22 @@ class ExportProductXlsx(models.AbstractModel):
             for field, meta in header:
                 if not meta['num'] and data.get('hide_empty_fields'):
                     continue
+
                 if not meta['subfields']:
-                    sheet.write(row, col, obj[field])
+                    sheet.write(row, col, obj[meta['string']])
                     col += 1
                 else:
                     num = meta['num']
-                    if obj[field]:
-                        for so in obj[field]:
-                            for dummy, sod in so.items():
-                                sheet.write(row, col, sod)
-                                col += 1
-                            num -= 1
+                    for k in meta['subfields']:
+                        sheet.write(row, col, obj.get(k))
+                        col += 1
+                    num -= 1
+
+                    # if obj[field]:
+                    #     for so in obj[field]:
+                    #         for dummy, sod in so.items():
+                    #             sheet.write(row, col, sod)
+                    #             col += 1
+                    #         num -= 1
                     col += num * len(meta['subfields'])
             row += 1
