@@ -68,9 +68,7 @@ class ExportProductXlsx(models.AbstractModel):
                             subfields = sf1
 
                         ## afegim dades
-                        fnam = '%s' % meta['string']
-                        if len(datum) > 1:
-                            fnam += '%i' % i
+                        fnam = '%s%i' % (meta['string'], i)
                         for k, v in sf.items():
                             sfkey = '%s/%s' % (fnam, k)
                             if sfkey in obj_d:
