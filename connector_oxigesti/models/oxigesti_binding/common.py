@@ -73,19 +73,11 @@ class OxigestiBinding(models.AbstractModel):
     ]
 
     @api.model
-    def import_batch(self, backend, filters={}):
+    def import_batch(self, backend, filters=[]):
         """ Prepare the batch import of records modified on Oxigesti """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='delayed.batch.importer')
             return importer.run(filters=filters)
-
-    @job(default_channel='root.oxigesti')
-    @api.model
-    def import_record(self, backend, external_id):
-        """ Import a Oxigesti record """
-        with backend.work_on(self._name) as work:
-            importer = work.component(usage='record.importer')
-            return importer.run(external_id)
 
     @api.model
     def export_batch(self, backend, domain=[]):
@@ -93,6 +85,14 @@ class OxigestiBinding(models.AbstractModel):
         with backend.work_on(self._name) as work:
             exporter = work.component(usage='delayed.batch.exporter')
             return exporter.run(domain=domain)
+
+    @job(default_channel='root.oxigesti')
+    @api.model
+    def import_record(self, backend, external_id):
+        """ Import Oxigesti record """
+        with backend.work_on(self._name) as work:
+            importer = work.component(usage='record.importer')
+            return importer.run(external_id)
 
     @job(default_channel='root.oxigesti')
     @api.model

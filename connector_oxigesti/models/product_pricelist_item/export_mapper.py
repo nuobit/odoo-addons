@@ -21,8 +21,9 @@ class ProductPricelistItemExportMapper(Component):
         ('fixed_price', 'Importe'),
     ]
 
+    @only_create
     @mapping
-    def IdArticulo(self, record):
+    def CodigoArticulo(self, record):
         product_id = record.product_tmpl_id.product_variant_id
         binder = self.binder_for('oxigesti.product.product')
         external_id = binder.to_external(product_id, wrap=True)
@@ -34,10 +35,11 @@ class ProductPricelistItemExportMapper(Component):
                 "if not, then this product '%s' "
                 "does not exist in Oxigesti." % (record, product_id.display_name, product_id.default_code))
 
-        return {'IdArticulo': external_id[0]}
+        return {'CodigoArticulo': external_id[0]}
 
+    @only_create
     @mapping
-    def IdCliente(self, record):
+    def Codigo_Mutua(self, record):
         partner_id = record.odoo_partner_id
         binder = self.binder_for('oxigesti.res.partner')
         external_id = binder.to_external(partner_id, wrap=True)
@@ -55,4 +57,4 @@ class ProductPricelistItemExportMapper(Component):
                                  "if not, then this partner '%s' "
                                  "does not exist in Oxigesti." % (record, display_name, partner_id.ref))
 
-        return {'IdCliente': external_id[0]}
+        return {'Codigo_Mutua': external_id[0]}

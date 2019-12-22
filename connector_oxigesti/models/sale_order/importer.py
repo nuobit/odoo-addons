@@ -44,7 +44,7 @@ class SaleOrderImporter(Component):
 
     def _import_dependencies(self):
         # customer
-        external_id = (self.external_data['Cliente'],)
+        external_id = (self.external_data['Codigo_Mutua'],)
         self._import_dependency(external_id, 'oxigesti.res.partner', always=False)
 
         # products
@@ -53,14 +53,14 @@ class SaleOrderImporter(Component):
         oxigesti_cargos_servicio = adapter.search(filters=[
             ('Codigo_Servicio', '=', self.external_data['Codigo_Servicio']),
         ])
-        oxigesti_idarticulos = [str(adapter.id2dict(x)['Articulo'])
-                                for x in oxigesti_cargos_servicio]
+        oxigesti_codigos_articulo = [adapter.id2dict(x)['CodigoArticulo']
+                                     for x in oxigesti_cargos_servicio]
 
         exporter = self.component(usage='direct.batch.exporter',
                                   model_name='oxigesti.product.product')
         exporter.run(domain=[
             ('company_id', '=', self.backend_record.company_id.id),
-            ('default_code', 'in', oxigesti_idarticulos),
+            ('default_code', 'in', oxigesti_codigos_articulo),
         ])
 
     def _after_import(self, binding):
