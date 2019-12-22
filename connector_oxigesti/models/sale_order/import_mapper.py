@@ -35,7 +35,7 @@ class SaleOrderImportMapChild(Component):
         :param options: dict of options, herited from the main mapper
 
         """
-        key = ['Codigo_Servicio', 'Articulo', 'Partida']
+        key = ['Codigo_Servicio', 'CodigoArticulo', 'Partida']
         external_id = tuple([map_record.source[x] for x in key])
 
         binder = self.binder_for('oxigesti.sale.order.line')
@@ -92,7 +92,6 @@ class SaleOrderImportMapper(Component):
         assert self._map_child_usage is not None, "_map_child_usage required"
 
         source = map_record.source
-        # TODO patch ImportMapper in connector to support callable
         if callable(from_attr):
             child_records = from_attr(self, source, model_name)
         else:
@@ -126,7 +125,7 @@ class SaleOrderImportMapper(Component):
     @only_create
     @mapping
     def partner(self, record):
-        external_id = (record['Cliente'],)
+        external_id = (record['Codigo_Mutua'],)
 
         binder = self.binder_for('oxigesti.res.partner')
         partner = binder.to_internal(external_id, unwrap=True)
