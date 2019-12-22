@@ -157,7 +157,7 @@ class OxigestiBatchImporter(AbstractComponent):
     _name = 'oxigesti.batch.importer'
     _inherit = ['base.importer', 'base.oxigesti.connector']
 
-    def run(self, filters=None):
+    def run(self, filters=[]):
         """ Run the synchronization """
         record_ids = self.backend_adapter.search(filters)
         for record_id in record_ids:

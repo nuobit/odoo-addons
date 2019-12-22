@@ -35,7 +35,7 @@ class SaleOrderBinding(models.Model):
 
     @job(default_channel='root.oxigesti')
     def import_services_since(self, backend_record=None, since_date=None):
-        """ Prepare the import of partners modified on Oxigesti """
+        """ Prepare the batch import of services created on Oxigesti """
         now_fmt = fields.Datetime.now()
         self.import_batch(backend=backend_record)
         backend_record.import_services_since_date = now_fmt

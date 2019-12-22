@@ -84,7 +84,7 @@ class CRUDAdapter(AbstractComponent):
             self.backend_record.database,
         )
 
-    def search(self, model, filters=None):
+    def search(self, model, filters=[]):
         """ Search records according to some criterias
         and returns a list of ids """
         raise NotImplementedError
@@ -93,7 +93,7 @@ class CRUDAdapter(AbstractComponent):
         """ Returns the information of a record """
         raise NotImplementedError
 
-    def search_read(self, filters=None):
+    def search_read(self, filters=[]):
         """ Search records according to some criterias
         and returns their information"""
         raise NotImplementedError
@@ -136,7 +136,7 @@ class GenericAdapter(AbstractComponent):
 
         return res
 
-    def _exec_query(self, filters=None, fields=None, as_dict=True):
+    def _exec_query(self, filters=[], fields=None, as_dict=True):
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
         if not schema_exists:
@@ -196,7 +196,7 @@ class GenericAdapter(AbstractComponent):
 
     ########## exposed methods
 
-    def search(self, filters=None):
+    def search(self, filters=[]):
         """ Search records according to some criterias
         and returns a list of ids
 

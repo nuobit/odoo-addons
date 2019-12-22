@@ -26,28 +26,30 @@ class ProductProductExportMapper(Component):
     _apply_on = 'oxigesti.product.product'
 
     direct = [
-        ('id', 'Id'),
         (nullif('barcode'), 'CodigoAlternativo'),
         ('list_price', 'Importe'),
     ]
 
+    @only_create
     @mapping
-    def Articulo(self, record):
+    def CodigoArticulo(self, record):
         default_code = (record.default_code and
                         record.default_code.strip() and
                         record.default_code or None)
-        if not default_code:
+        if default_code:
+            if record.default_code != record.default_code.strip():
+                raise AssertionError("The Odoo product with Name '%s' has Internal reference "
+                                     " with leading or trailing spaces '%s'. "
+                                     "Please remove these spaces and requeue the job." % (
+                                         record.name, record.default_code))
+        else:
             raise AssertionError("The Odoo product with ID %i and Name '%s' "
                                  "has no Internal reference. "
                                  "Please assign one and requeue the job." % (record.id, record.name))
 
-        return {'Articulo': default_code}
+        return {'CodigoArticulo': record.default_code}
 
     @changed_by('name')
     @mapping
     def DescripcionArticulo(self, record):
         return {'DescripcionArticulo': record.name[:250]}
-
-    @mapping
-    def Familia(self, record):
-        return {'Familia': 0}
