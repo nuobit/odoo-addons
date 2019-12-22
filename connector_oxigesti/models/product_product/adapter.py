@@ -14,14 +14,14 @@ class ProductProductAdapter(Component):
 
     _apply_on = 'oxigesti.product.product'
 
-    _sql = """select a.Id, a.Articulo, a.Familia, a.CodigoAlternativo, a,Importe, a.DescripcionArticulo
+    _sql = """select a.CodigoArticulo, a.DescripcionArticulo, a.Familia, a.CodigoAlternativo, a.Importe
               from %(schema)s.Odoo_Articulos_Generales a
            """
 
     _sql_update = """update s
                      set %(qset)s
                      from %(schema)s.Odoo_Articulos_Generales s
-                     where s.Id = %%(Id)s
+                     where s.CodigoArticulo = %%(CodigoArticulo)s
          """
 
     _sql_insert = """insert into %(schema)s.Odoo_Articulos_Generales 
@@ -30,4 +30,4 @@ class ProductProductAdapter(Component):
                      values (%(phvalues)s)
          """
 
-    _id = ('Id',)
+    _id = ('CodigoArticulo',)

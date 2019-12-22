@@ -13,15 +13,15 @@ class ProductBuyerinfoAdapter(Component):
 
     _apply_on = 'oxigesti.product.buyerinfo'
 
-    _sql = """select b.IdArticulo, b.IdCliente, b.Descripcion_Cliente
+    _sql = """select b.CodigoArticulo, b.Codigo_Mutua, b.Descripcion_Cliente
               from %(schema)s.Odoo_Articulos_por_Clientes b
             """
 
     _sql_update = """update s
                      set %(qset)s
                      from %(schema)s.Odoo_Articulos_por_Clientes s
-                     where s.IdArticulo = %%(IdArticulo)s and
-                           s.IdCliente = %%(IdCliente)s
+                     where s.CodigoArticulo = %%(CodigoArticulo)s and
+                           s.Codigo_Mutua = %%(Codigo_Mutua)s
                 """
 
     _sql_insert = """insert into %(schema)s.Odoo_Articulos_por_Clientes 
@@ -30,4 +30,4 @@ class ProductBuyerinfoAdapter(Component):
                      values (%(phvalues)s)
                 """
 
-    _id = ('IdArticulo', 'IdCliente')
+    _id = ('CodigoArticulo', 'Codigo_Mutua')
