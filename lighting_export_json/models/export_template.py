@@ -55,7 +55,7 @@ class LightingExportTemplate(models.Model):
 
         kwargs = {}
         if self.pretty_print:
-            kwargs = dict(indent=4, sort_keys=True)
+            kwargs = dict(indent=4, sort_keys=False)
 
         domain = []
         if self.domain:
@@ -487,7 +487,7 @@ class LightingExportTemplate(models.Model):
                     if category.attachment_ids:
                         category_attach_d = {}
 
-                        # brands
+                        # brands OLD
                         brand_attach_d = {}
                         brand_attachments = category.attachment_ids \
                             .filtered(lambda x: x.brand_id) \
@@ -504,7 +504,7 @@ class LightingExportTemplate(models.Model):
                                 'catalog': brand_attach_d,
                             })
 
-                        # location
+                        # location OLD
                         location_attach_d = {}
                         location_attachments = category.attachment_ids \
                             .filtered(lambda x: x.location_id) \
@@ -536,10 +536,50 @@ class LightingExportTemplate(models.Model):
                                     None: global_attach_d,
                                 })
 
-                        # category attach
+                        # category attach OLD
                         if category_attach_d:
                             category_d.update({
                                 'attachment': category_attach_d,
+                            })
+
+                        category_attach_d = {}
+
+                        # brands NEW
+                        brand_attach_d = {}
+                        brand_attachments = category.attachment_ids \
+                            .sorted(lambda x: (x.sequence, x.id))
+                        for a in brand_attachments:
+                            brand = not a.brand_default and a.brand_id.name or None
+                            if brand not in brand_attach_d:
+                                brand_attach_d[brand] = {
+                                    'datas_fname': a.datas_fname,
+                                    'store_fname': a.attachment_id.store_fname,
+                                }
+                        if brand_attach_d:
+                            category_attach_d.update({
+                                'catalog': brand_attach_d,
+                            })
+
+                        # location NEW
+                        location_attachments = category.attachment_ids \
+                            .sorted(lambda x: (x.sequence, x.id))
+                        location_attach_d = {}
+                        for la in location_attachments:
+                            location_code = not la.location_default and la.location_id.code or None
+                            if location_code not in location_attach_d:
+                                location_attach_d[location_code] = {
+                                    'datas_fname': a.datas_fname,
+                                    'store_fname': a.attachment_id.store_fname,
+                                }
+                        if location_attach_d:
+                            category_attach_d.update({
+                                'location': location_attach_d,
+                            })
+
+                        # category attach NEW
+                        if category_attach_d:
+                            category_d.update({
+                                'attachmentNEW': category_attach_d,
                             })
 
                     # nom de la categoria
