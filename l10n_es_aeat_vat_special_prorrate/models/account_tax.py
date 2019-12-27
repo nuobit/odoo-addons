@@ -31,6 +31,25 @@ class AccountTax(models.Model):
 
         return prorrate_ratio
 
+    @api.multi
+    def _get_non_deductible_percent(self, date, company):
+        value = 0
+        for rec in self:
+            if rec.amount_type == 'percent':
+                if not rec.account_id:
+                    tax_percent = rec.amount
+                    if rec.prorrate_type:
+                        tax_percent *= rec._get_prorrate_ratio(date, company)
+                    value += tax_percent
+            elif rec.amount_type == 'group':
+                for tax_child in rec.children_tax_ids:
+                    value += tax_child._get_non_deductible_percent(date, company)
+            else:
+                raise NotImplementedError(
+                    "Tax type '%s' not suported yet" % rec.amount_type)
+
+        return value
+
     @api.one
     @api.constrains('prorrate_type', 'amount_type', 'price_include')
     def _check_prorrate(self):
