@@ -256,10 +256,14 @@ msgid "Service date"
 msgstr "Fecha servicio"
 
 #. module: account_invoice_report_service
-#: model:ir.actions.report,name:account_invoice_report_service.action_report_invoice_delivery
 #: model:ir.actions.report,name:account_invoice_report_service.action_report_invoice_service
 msgid "Service invoice"
 msgstr "Factura de servicio"
+
+#. module: account_invoice_report_service
+#: model:ir.actions.report,name:account_invoice_report_service.action_report_invoice_delivery
+msgid "Service delivery invoice"
+msgstr "Factura de servicio de entrega"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
