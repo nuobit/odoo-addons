@@ -17,7 +17,9 @@
     'data': [
         'data/data.xml',
         'report/report.xml',
+        'views/res_company_views.xml',
         'views/report_invoice_service.xml',
+        'views/report_invoice_delivery.xml',
         'views/account_invoice_views.xml',
     ],
     'installable': True,
