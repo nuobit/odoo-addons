@@ -12,4 +12,13 @@
             paperformat="account_invoice_report_service.paperformat_report_invoice_service"
             attachment_use="True"
             attachment="'Service invoice - %s' % (object.invoice_number, )"/>
+    <report id="action_report_invoice_delivery"
+            string="Service invoice"
+            print_report_name="'Service invoice - %s' % (object.invoice_number, )"
+            name="account_invoice_report_service.report_invoice_delivery"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            paperformat="account_invoice_report_service.paperformat_report_invoice_service"
+            attachment_use="True"
+            attachment="'Service invoice - %s' % (object.invoice_number, )"/>
 </odoo>
