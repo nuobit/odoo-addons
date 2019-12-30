@@ -107,8 +107,13 @@ class SaleOrderImporter(Component):
                     'product_uom_id': move_id.product_uom.id,
                     'picking_id': picking_id.id,
                 }
+
                 external_id = binder.to_external(order_line_id)
                 tracking_name = adapter.id2dict(external_id)['Partida']
+
+                if not tracking_name and move_id.product_id.tracking == 'lot':
+                    tracking_name = '999'
+
                 if tracking_name:
                     Lot = self.env['stock.production.lot']
                     lot_id = Lot.search([
