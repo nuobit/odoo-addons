@@ -24,7 +24,8 @@ class ProductPricelistItemExportMapper(Component):
     @only_create
     @mapping
     def CodigoArticulo(self, record):
-        product_id = record.product_tmpl_id.product_variant_id
+        product_id = record.with_context(active_test=False) \
+            .product_tmpl_id.product_variant_id
         binder = self.binder_for('oxigesti.product.product')
         external_id = binder.to_external(product_id, wrap=True)
         assert external_id, (
@@ -40,7 +41,7 @@ class ProductPricelistItemExportMapper(Component):
     @only_create
     @mapping
     def Codigo_Mutua(self, record):
-        partner_id = record.odoo_partner_id
+        partner_id = record.with_context(active_test=False).odoo_partner_id
         binder = self.binder_for('oxigesti.res.partner')
         external_id = binder.to_external(partner_id, wrap=True)
         if not external_id:

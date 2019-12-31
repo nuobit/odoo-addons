@@ -32,21 +32,22 @@ class ProductBuyerinfoExporter(Component):
         ### partner
         binder = self.binder_for('oxigesti.res.partner')
         binding_model = binder.model._name
-        external_id = binder.to_external(self.binding.partner_id, wrap=True)
+        partner_id = self.binding.with_context(active_test=False).partner_id
+        external_id = binder.to_external(partner_id, wrap=True)
         if external_id:
             self._import_dependency(external_id, binding_model, always=False)
         else:
             importer = self.component(usage='direct.batch.importer',
                                       model_name=binding_model)
             importer.run(filters=[
-                ('Codigo_Cliente_Logic', '=', self.binding.partner_id.ref and \
-                 self.binding.partner_id.ref.strip() and \
-                 self.binding.partner_id.ref or None),
+                ('Codigo_Cliente_Logic', '=', partner_id.ref and \
+                 partner_id.ref.strip() and \
+                 partner_id.ref or None),
             ])
 
         ## product
         binder = self.binder_for('oxigesti.product.product')
-        relation = self.binding.product_id
+        relation = self.binding.with_context(active_test=False).product_id
         if not binder.to_external(self.binding.product_id, wrap=True):
             exporter = self.component(usage='record.exporter',
                                       model_name=binder.model._name)
