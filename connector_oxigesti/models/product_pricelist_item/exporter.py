@@ -58,21 +58,23 @@ class ProductPricelistItemExporter(Component):
         ### partner
         binder = self.binder_for('oxigesti.res.partner')
         binding_model = binder.model._name
-        external_id = binder.to_external(self.binding.odoo_partner_id, wrap=True)
+        odoo_partner_id = self.binding.with_context(active_test=False).odoo_partner_id
+        external_id = binder.to_external(odoo_partner_id, wrap=True)
         if external_id:
             self._import_dependency(external_id, binding_model, always=False)
         else:
             importer = self.component(usage='direct.batch.importer',
                                       model_name=binding_model)
             importer.run(filters=[
-                ('Codigo_Cliente_Logic', '=', self.binding.odoo_partner_id.ref and \
-                 self.binding.odoo_partner_id.ref.strip() and \
-                 self.binding.odoo_partner_id.ref or None),
+                ('Codigo_Cliente_Logic', '=', odoo_partner_id.ref and \
+                 odoo_partner_id.ref.strip() and \
+                 odoo_partner_id.ref or None),
             ])
 
         ## product
         binder = self.binder_for('oxigesti.product.product')
-        relation = self.binding.product_tmpl_id.product_variant_id
+        relation = self.binding.with_context(active_test=False) \
+            .product_tmpl_id.product_variant_id
         if not binder.to_external(relation, wrap=True):
             exporter = self.component(usage='record.exporter',
                                       model_name=binder.model._name)
