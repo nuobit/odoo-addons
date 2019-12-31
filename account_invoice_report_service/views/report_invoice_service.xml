@@ -145,11 +145,11 @@
                                 <table class="ris-table0">
                                     <thead>
                                         <tr>
-                                            <th class="text-left" colspan="6">
-                                                <h6 style="border-bottom: 1px solid #0d9697;margin-top:1px;margin-bottom:4px;">
+                                            <td class="text-left" colspan="6">
+                                                <div style="border-bottom: 1px solid #0d9697;margin-top:1px;margin-bottom:4px;">
                                                     Patient data
-                                                </h6>
-                                            </th>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>
@@ -167,11 +167,11 @@
                                             </th>
                                         </tr>
                                         <tr>
-                                            <th class="text-left" colspan="6">
-                                                <h6 style="border-bottom: 1px solid #0d9697;margin-top:1px;margin-bottom:4px;">
+                                            <td class="text-left" colspan="6">
+                                                <div style="border-bottom: 1px solid #0d9697;margin-top:1px;margin-bottom:4px;">
                                                     Service data
-                                                </h6>
-                                            </th>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>
