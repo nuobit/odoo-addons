@@ -14,7 +14,6 @@ class SaleOrder(models.Model):
 
     def action_invoice_create(self, grouped=False, final=False):
         return super(SaleOrder, self.filtered(
-            lambda x: not x.sale_invoicing_exclude_from_invoicing and
-                      not x.partner_id.sale_invoicing_exclude_from_invoicing)
+            lambda x: not x.sale_invoicing_exclude_from_invoicing)
                      ).action_invoice_create(
             grouped=grouped, final=final)

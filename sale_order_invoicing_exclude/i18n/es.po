@@ -15,7 +15,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_order_invoicing_exclude_partner
-#: model:ir.model.fields,field_description:sale_order_invoicing_exclude.field_res_partner_sale_invoicing_exclude_from_invoicing
 #: model:ir.model.fields,field_description:sale_order_invoicing_exclude.field_sale_order_sale_invoicing_exclude_from_invoicing
 msgid "Exclude from invoicing"
 msgstr "Excluir de la facturación"
