@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <!-- window action batch2invoice smart button -->
+    <record id="account_invoice_batch_invoice_action" model="ir.actions.act_window">
+        <field name="name">Invoices</field>
+        <field name="res_model">account.invoice</field>
+        <field name="context">{
+            'default_type': 'out_invoice',
+            'type':'out_invoice',
+            'journal_type': 'sale',
+            }
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Invoice batch</p>
+        </field>
+    </record>
+
+    <record id="account_invoice_batch_invoice_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="account.invoice_tree"/>
+        <field name="act_window_id" ref="account_invoice_batch_invoice_action"/>
+    </record>
+
+    <record id="account_invoice_batch_invoice_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account.invoice_form"/>
+        <field name="act_window_id" ref="account_invoice_batch_invoice_action"/>
+    </record>
+
+    <!-- Invoice batch -->
+    <record id="account_invoice_batch_view_form" model="ir.ui.view">
+        <field name="name">Invoice batch form</field>
+        <field name="model">account.invoice.batch</field>
+        <field name="arch" type="xml">
+            <form string="Invoice batch">
+                <header>
+                    <button type="action" name="%(account_invoice_batch_process_batch_action)s"
+                            class="btn btn-primary" string="Process batch"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <div>
+                            <button type="object" name="account_invoice_batch_all_invoice_action"
+                                    class="oe_stat_button" icon="fa-list">
+                                <field name="invoice_count" string="All" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div>
+                            <button type="object" name="account_invoice_batch_draft_invoice_action"
+                                    class="oe_stat_button" icon="fa-times">
+                                <field name="draft_invoice_count" string="Draft" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div>
+                            <button type="object" name="account_invoice_batch_unsent_invoice_action"
+                                    class="oe_stat_button" icon="fa-exclamation">
+                                <field name="unsent_invoice_count" string="Unsent"
+                                       widget="statinfo"/>
+                            </button>
+                            <button type="object" name="account_invoice_batch_sent_invoice_action"
+                                    class="oe_stat_button" icon="fa-check">
+                                <field name="sent_invoice_count" string="Sent" widget="statinfo"/>
+                            </button>
+                        </div>
+                    </div>
+                    <group col="4">
+                        <field name="date"/>
+                        <field name="company_id"/>
+                    </group>
+                    <group>
+                        <field name="name" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="account_invoice_batch_view_tree" model="ir.ui.view">
+        <field name="name">Invoice batch tree</field>
+        <field name="model">account.invoice.batch</field>
+        <field name="arch" type="xml">
+            <tree string="Invoice batches"
+                  decoration-warning="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and draft_invoice_count"
+                  decoration-info="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and not draft_invoice_count and sent_invoice_count != invoice_count"
+                  decoration-success="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and sent_invoice_count == invoice_count"
+                  decoration-danger="draft_invoice_count + unsent_invoice_count + sent_invoice_count != invoice_count">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="invoice_count" string="All"/>
+                <button type="object" name="account_invoice_batch_all_invoice_action"
+                        string="All" icon="fa-external-link"
+                        attrs="{'invisible': [('invoice_count', '=', 0)]}"/>
+                <field name="draft_invoice_count"/>
+                <button type="object" name="account_invoice_batch_draft_invoice_action"
+                        string="Draft" icon="fa-external-link"
+                        attrs="{'invisible': [('draft_invoice_count', '=', 0)]}"/>
+                <field name="unsent_invoice_count"/>
+                <button type="object" name="account_invoice_batch_unsent_invoice_action"
+                        string="Unsent" icon="fa-external-link"
+                        attrs="{'invisible': [('unsent_invoice_count', '=', 0)]}"/>
+                <field name="sent_invoice_count"/>
+                <button type="object" name="account_invoice_batch_sent_invoice_action"
+                        string="Sent" icon="fa-external-link"
+                        attrs="{'invisible': [('sent_invoice_count', '=', 0)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="account_invoice_batch_action" model="ir.actions.act_window">
+        <field name="name">Invoice batches</field>
+        <field name="res_model">account.invoice.batch</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='acc_purchase']" position="after">
+                <group string="Invoice batches">
+                    <field name="invoice_batch_sending_method"/>
+                    <field name="invoice_batch_email_partner_id"
+                           options="{'no_create': True, 'no_create_edit':True}"
+                           attrs="{'invisible': [('invoice_batch_sending_method', '!=', 'email')],
+                               'required': [('invoice_batch_sending_method', '=', 'email')]}"/>
+                </group>
+                <newline/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
