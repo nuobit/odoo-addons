@@ -72,14 +72,18 @@ class AccountInvoiceBatchProcess(models.TransientModel):
 
         # email
         if self.invoice_batch_sending_email:
-            invoices = invoices.filtered(
-                lambda x: x.invoice_batch_sending_method == 'email')
-            invoices.message_post_with_template(
-                self.invoice_batch_sending_email_template_id.id,
-                message_type='email',
-                composition_mode='mass_mail',
-            )
-            invoices.write({'sent': True})
+            for inv in invoices.filtered(
+                    lambda x: x.invoice_batch_sending_method == 'email'):
+                if not inv.sent:
+                    try:
+                        inv.message_post_with_template(
+                            self.invoice_batch_sending_email_template_id.id,
+                            message_type='email',
+                            composition_mode='mass_mail',
+                        )
+                        inv.sent = True
+                    except:
+                        pass
 
         # pdf
         if self.invoice_batch_sending_pdf:
