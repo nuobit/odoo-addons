@@ -27,17 +27,6 @@ msgid "All"
 msgstr "Todas"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_ambugest_res_partner_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_oxigesti_res_partner_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_users_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_sage_res_partner_invoice_batch_email_partner_id
-#: model:ir.model,name:account_invoice_batches.model_res_partner
-msgid "Contact"
-msgstr "Contacto"
-
-#. module: account_invoice_batches
 #: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
 msgid "Cancel"
 msgstr "Cancelar"
@@ -51,6 +40,27 @@ msgstr "Compañías"
 #: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_company_id
 msgid "Company"
 msgstr "Compañía"
+
+#. module: account_invoice_batches
+#: model:ir.model,name:account_invoice_batches.model_res_partner
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_ambugest_res_partner_invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_oxigesti_res_partner_invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner_invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_users_invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sage_res_partner_invoice_batch_email_partner_id
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: account_invoice_batches
+#: model:ir.ui.view,arch_db:account_invoice_batches.view_sale_advance_payment_inv
+msgid "Create and View Batch"
+msgstr "Crear y ver lote"
+
+#. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv_invoice_batch_create
+msgid "Create invoice batch"
+msgstr "Crear lote de facturación"
 
 #. module: account_invoice_batches
 #: model:ir.actions.act_window,help:account_invoice_batches.account_invoice_batch_invoice_action
@@ -175,8 +185,8 @@ msgid "Invoice batches"
 msgstr "Lotes de facturación"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_invoice_count
 #: model:ir.actions.act_window,name:account_invoice_batches.account_invoice_batch_invoice_action
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_invoice_count
 #: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_invoice_ids
 msgid "Invoices"
 msgstr "Facturas"
@@ -198,16 +208,6 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
-
-#. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_ambugest_res_partner_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_oxigesti_res_partner_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_users_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_sage_res_partner_invoice_batch_sending_method
-msgid "Method"
-msgstr "Método"
 
 #. module: account_invoice_batches
 #: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:27
@@ -248,7 +248,18 @@ msgid "Quotation"
 msgstr "Presupuesto"
 
 #. module: account_invoice_batches
+#: model:ir.model,name:account_invoice_batches.model_sale_advance_payment_inv
+msgid "Sales Advance Payment Invoice"
+msgstr "Ventas. Anticipo pago factura"
+
+#. module: account_invoice_batches
 #: model:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_invoice_batch_sending_method
+#: model:ir.model.fields,field_description:account_invoice_batches.field_ambugest_res_partner_invoice_batch_sending_method
+#: model:ir.model.fields,field_description:account_invoice_batches.field_oxigesti_res_partner_invoice_batch_sending_method
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner_invoice_batch_sending_method
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_users_invoice_batch_sending_method
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sage_res_partner_invoice_batch_sending_method
 msgid "Sending method"
 msgstr "Método de envío"
 

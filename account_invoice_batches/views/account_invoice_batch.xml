@@ -87,7 +87,7 @@
             <tree string="Invoice batches"
                   decoration-warning="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and draft_invoice_count"
                   decoration-info="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and not draft_invoice_count and sent_invoice_count != invoice_count"
-                  decoration-success="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and sent_invoice_count == invoice_count"
+                  decoration-success="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and sent_invoice_count == invoice_count and invoice_count != 0"
                   decoration-danger="draft_invoice_count + unsent_invoice_count + sent_invoice_count != invoice_count">
                 <field name="date"/>
                 <field name="name"/>

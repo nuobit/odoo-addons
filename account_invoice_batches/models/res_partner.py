@@ -12,7 +12,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     invoice_batch_sending_method = fields.Selection(selection=BATCH_SENDING_METHODS,
-                                                    string='Method',
+                                                    string='Sending method',
                                                     track_visibility='onchange')
     invoice_batch_email_partner_id = fields.Many2one(comodel_name='res.partner',
                                                      domain="[('id', 'child_of', active_id), ('email', '!=', False)]",
