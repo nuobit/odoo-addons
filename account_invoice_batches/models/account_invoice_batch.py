@@ -104,6 +104,7 @@ class AccountInvoiceBatch(models.Model):
 
     def account_invoice_batch_all_invoice_action(self):
         return self.account_invoice_batch_invoice_action(
+            domain=[],
             name='All',
         )
 
