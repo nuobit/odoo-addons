@@ -15,7 +15,7 @@ class AccountInvoice(models.Model):
                                        ondelete='restrict', string='Invoice batch',
                                        track_visibility='onchange')
     invoice_batch_sending_method = fields.Selection(selection=BATCH_SENDING_METHODS,
-                                                    string='Method', track_visibility='onchange')
+                                                    string='Sending method', track_visibility='onchange')
     invoice_batch_email_partner_id = fields.Many2one(comodel_name='res.partner',
                                                      domain="[('id', 'child_of', partner_id), ('email', '!=', False)]",
                                                      ondelete='restrict',
