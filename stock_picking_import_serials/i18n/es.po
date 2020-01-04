@@ -237,6 +237,12 @@ msgid "There's no data in input file"
 msgstr "No hay datos en el fichero de entrada"
 
 #. module: stock_picking_import_serials
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:141
+#, python-format
+msgid "There's no lines with product '%s'"
+msgstr "No existe ninguna linea con el producto '%s'"
+
+#. module: stock_picking_import_serials
 #: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:89
 #, python-format
 msgid "There's not enough serial numbers in input file so there's picking lines with operations without serial number:"
