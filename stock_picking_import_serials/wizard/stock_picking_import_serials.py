@@ -137,6 +137,9 @@ class StockPickingImportSerials(models.TransientModel):
 
             # get lines of the picking lines
             product_move_lines = picking.move_lines.filtered(lambda x: x.product_id.id == product.id)
+            if not product_move_lines:
+                raise UserError(_("There's no lines with product '%s'") % default_code)
+
             detail_move_lines = product_move_lines.mapped('move_line_ids')
             if not detail_move_lines:
                 raise UserError(_("The line with the product '%s' has no detail movements created") % default_code)
