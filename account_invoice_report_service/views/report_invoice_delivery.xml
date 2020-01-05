@@ -80,7 +80,32 @@
                                 <table class="rid-table-1">
                                     <tbody>
                                         <tr>
-                                            <td width="60%">
+                                            <td width="60%"/>
+                                            <td>
+                                                <div>
+                                                    <div style="font-size: 14px;">
+                                                        <strong t-field="o.partner_id.name"/>
+                                                    </div>
+                                                    <div style="font-size: 12px;">
+                                                        <div t-if="o.partner_id.street"
+                                                             t-field="o.partner_id.street"/>
+                                                        <div t-if="o.partner_id.street2"
+                                                             t-field="o.partner_id.street2"/>
+                                                        <div>
+                                                            <span t-if="o.partner_id.zip"
+                                                                  t-field="o.partner_id.zip"/>
+                                                            <span t-if="o.partner_id.city"
+                                                                  t-field="o.partner_id.city"/>
+                                                            <span t-if="o.partner_id.country_id">(<span
+                                                                    t-field="o.partner_id.country_id"/>)
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
                                                 <h2>
                                                     <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">
                                                         <span>Invoice</span>
@@ -107,28 +132,6 @@
                                                 <div t-if="o.partner_id.vat" class="mt4">
                                                     <strong t-esc="o.company_id.country_id.vat_label or 'CIF'"/>:
                                                     <span t-field="o.partner_id.vat"/>
-                                                </div>
-                                            </td>
-                                            <td class="customer_address" width="40%">
-                                                <div>
-                                                    <div style="font-size: 14px;">
-                                                        <strong t-field="o.partner_id.name"/>
-                                                    </div>
-                                                    <div style="font-size: 12px;">
-                                                        <div t-if="o.partner_id.street"
-                                                             t-field="o.partner_id.street"/>
-                                                        <div t-if="o.partner_id.street2"
-                                                             t-field="o.partner_id.street2"/>
-                                                        <div>
-                                                            <span t-if="o.partner_id.zip"
-                                                                  t-field="o.partner_id.zip"/>
-                                                            <span t-if="o.partner_id.city"
-                                                                  t-field="o.partner_id.city"/>
-                                                            <span t-if="o.partner_id.country_id">(<span
-                                                                    t-field="o.partner_id.country_id"/>)
-                                                            </span>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
