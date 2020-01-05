@@ -12,4 +12,24 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.exclude.invoicing.filter.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="before">
+                <separator/>
+                <filter string="Excluded from invoicing" name="sale_invoicing_exclude_from_invoicing"
+                        domain="[('sale_invoicing_exclude_from_invoicing', '=', 'True')]"/>
+                <filter string="Included in invoicing" name="sale_invoicing_exclude_from_invoicing"
+                        domain="[('sale_invoicing_exclude_from_invoicing', '!=', 'True')]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <separator/>
+                <filter name="sale_invoicing_exclude_from_invoicing" string="Excluded from invoicing"
+                        context="{'group_by':'sale_invoicing_exclude_from_invoicing'}"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
