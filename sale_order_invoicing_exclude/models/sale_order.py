@@ -10,6 +10,8 @@ class SaleOrder(models.Model):
 
     sale_invoicing_exclude_from_invoicing = fields.Boolean(
         string="Exclude from invoicing",
+        default=False,
+        track_visibility='onchange',
     )
 
     def action_invoice_create(self, grouped=False, final=False):
