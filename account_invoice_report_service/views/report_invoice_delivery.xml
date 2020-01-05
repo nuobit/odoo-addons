@@ -207,7 +207,7 @@
                                                                                t-as="iln">
                                                                                 <div t-esc="iln"/>
                                                                             </t>
-                                                                            <t t-set="lots"
+                                                                            <!--t t-set="lots"
                                                                                t-value="il.get_line_lots()"/>
                                                                             <div t-if="lots">
                                                                                 <span t-if="il.product_id.tracking == 'lot'">
@@ -217,7 +217,7 @@
                                                                                     Serial numbers:
                                                                                 </span>
                                                                                 <span t-esc="', '.join(lots)"/>
-                                                                            </div>
+                                                                            </div-->
                                                                         </td>
                                                                         <td width="13%" class="text-right">
                                                                             <span t-field="il.quantity"/>
