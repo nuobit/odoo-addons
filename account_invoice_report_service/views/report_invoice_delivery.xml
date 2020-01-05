@@ -207,17 +207,19 @@
                                                                                t-as="iln">
                                                                                 <div t-esc="iln"/>
                                                                             </t>
-                                                                            <!--t t-set="lots"
-                                                                               t-value="il.get_line_lots()"/>
-                                                                            <div t-if="lots">
-                                                                                <span t-if="il.product_id.tracking == 'lot'">
-                                                                                    Lots:
-                                                                                </span>
-                                                                                <span t-if="il.product_id.tracking == 'serial'">
-                                                                                    Serial numbers:
-                                                                                </span>
-                                                                                <span t-esc="', '.join(lots)"/>
-                                                                            </div-->
+                                                                            <!--t t-if="il.product_id.tracking in ('lot', 'serial')">
+                                                                                <t t-set="lots"
+                                                                                   t-value="il.get_line_lots()"/>
+                                                                                <div t-if="lots">
+                                                                                    <span t-if="il.product_id.tracking == 'lot'">
+                                                                                        Lots:
+                                                                                    </span>
+                                                                                    <span t-if="il.product_id.tracking == 'serial'">
+                                                                                        Serial numbers:
+                                                                                    </span>
+                                                                                    <span t-esc="', '.join(lots)"/>
+                                                                                </div>
+                                                                            </t-->
                                                                         </td>
                                                                         <td width="13%" class="text-right">
                                                                             <span t-field="il.quantity"/>
