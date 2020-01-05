@@ -48,6 +48,7 @@
                     </li>
                     <li t-if="company.street or company.street2">
                         <span t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"/>
+                        -
                         <span t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"/>
                     </li>
                     <li>
