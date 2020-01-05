@@ -19,4 +19,14 @@ msgstr ""
 msgid "Exclude from invoicing"
 msgstr "Excluir de la facturación"
 
+#. module: sale_order_invoicing_exclude
+#: model:ir.ui.view,arch_db:sale_order_invoicing_exclude.view_sales_order_filter
+msgid "Excluded from invoicing"
+msgstr "Excluido de la facturación"
+
+#. module: sale_order_invoicing_exclude
+#: model:ir.ui.view,arch_db:sale_order_invoicing_exclude.view_sales_order_filter
+msgid "Included in invoicing"
+msgstr "Incluido en la facturación"
+
 
