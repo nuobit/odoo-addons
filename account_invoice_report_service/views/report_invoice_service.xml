@@ -80,8 +80,32 @@
                                 <table class="ris-table-1">
                                     <tbody>
                                         <tr>
-                                            <td width="60%"/>
-                                            <td>
+                                            <td width="60%">
+                                                <h2 class="mt0">
+                                                    <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">
+                                                        <span>Invoice</span>
+                                                    </span>
+                                                    <span t-if="o.type == 'out_invoice' and o.state == 'draft'">
+                                                        <span>Draft Invoice</span>
+                                                    </span>
+                                                    <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">
+                                                        <span>Cancelled Invoice</span>
+                                                    </span>
+                                                    <span t-if="o.type == 'out_refund'">Credit Note</span>
+                                                    <span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
+                                                    <span t-if="o.type == 'in_invoice'">Vendor Bill</span>
+                                                    <span t-field="o.number"/>
+                                                </h2>
+                                                <div t-if="o.date_invoice">
+                                                    <strong>Invoice date:</strong>
+                                                    <span t-field="o.date_invoice"/>
+                                                </div>
+                                                <div t-if="o.partner_id.ref" class="mt4">
+                                                    <strong>Customer code:</strong>
+                                                    <span t-field="o.partner_id.ref"/>
+                                                </div>
+                                            </td>
+                                            <td class="customer_address" width="40%">
                                                 <div>
                                                     <p>
                                                         <div style="font-size: 14px;">
@@ -107,33 +131,6 @@
                                                         <t t-esc="o.company_id.country_id.vat_label or 'CIF'"/>:
                                                         <span t-field="o.partner_id.vat"/>
                                                     </p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <h2 class="mt0">
-                                                    <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">
-                                                        <span>Invoice</span>
-                                                    </span>
-                                                    <span t-if="o.type == 'out_invoice' and o.state == 'draft'">
-                                                        <span>Draft Invoice</span>
-                                                    </span>
-                                                    <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">
-                                                        <span>Cancelled Invoice</span>
-                                                    </span>
-                                                    <span t-if="o.type == 'out_refund'">Credit Note</span>
-                                                    <span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
-                                                    <span t-if="o.type == 'in_invoice'">Vendor Bill</span>
-                                                    <span t-field="o.number"/>
-                                                </h2>
-                                                <div t-if="o.date_invoice">
-                                                    <strong>Invoice date:</strong>
-                                                    <span t-field="o.date_invoice"/>
-                                                </div>
-                                                <div t-if="o.partner_id.ref" class="mt4">
-                                                    <strong>Customer code:</strong>
-                                                    <span t-field="o.partner_id.ref"/>
                                                 </div>
                                             </td>
                                         </tr>
