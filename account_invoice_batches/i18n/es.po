@@ -223,7 +223,7 @@ msgstr "Más de una compañia encontrada. Los datos seleccionados deben pertenec
 #: selection:res.partner,invoice_batch_sending_method:0
 #, python-format
 msgid "PDF"
-msgstr "PDF"
+msgstr "Impresión"
 
 #. module: account_invoice_batches
 #: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
