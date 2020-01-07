@@ -37,7 +37,7 @@
             <xpath expr="//group" position="before">
                 <separator/>
                 <filter string="PDF" name="pdf"
-                        domain="[('invoice_batch_sending_method', '=', 'PDF')]"/>
+                        domain="[('invoice_batch_sending_method', '=', 'pdf')]"/>
                 <filter string="E-mail" name="email"
                         domain="[('invoice_batch_sending_method', '=', 'email')]"/>
                 <filter string="Factura-e" name="facturae"
