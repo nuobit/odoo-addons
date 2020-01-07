@@ -117,7 +117,6 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         if invoices_pdf:
             if not self.company_id.report_service_id:
                 raise UserError(_("There's no report defined on invoice company"))
-            if invoices_pdf:
-                report_action = self.company_id.report_service_id.report_action(invoices_pdf)
-                invoices_pdf.write({'sent': True})
-                return report_action
+            report_action = self.company_id.report_service_id.report_action(invoices_pdf)
+            invoices_pdf.write({'sent': True})
+            return report_action
