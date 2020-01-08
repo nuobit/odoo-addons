@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <data noupdate="1">
+        <record id="stock_picking_report_delivery_note_paperformat" model="report.paperformat">
+            <field name="name">Delivery note</field>
+            <!--field name="default" eval="True"/-->
+            <field name="format">A4</field>
+            <!--field name="page_height">80</field>
+            <field name="page_width">175</field-->
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">24</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">22</field>
+            <field name="dpi">90</field>
+        </record>
+    </data>
+
+    <data>
+        <report id="stock_picking_report_delivery_note_action"
+                string="Delivery note with prices"
+                print_report_name="'Delivery note with prices %s' % (object.name, )"
+                name="stock_picking_report_delivery_note.stock_picking_report_delivery_note"
+                model="stock.picking"
+                report_type="qweb-pdf"
+                paperformat="stock_picking_report_delivery_note.stock_picking_report_delivery_note_paperformat"/>
+    </data>
+</odoo>
+
+        <!--
+        file="stock.report_picking_operations"
+                        attachment_use="True"
+                        attachment="'Service invoice - %s' % (object.invoice_number, )"/
+
+
+                        -->
