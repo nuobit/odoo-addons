@@ -15,8 +15,7 @@
             </xpath>
             <xpath expr="//footer" position="before">
                 <group>
-                    <field name="invoice_batch_create"
-                           attrs="{'invisible': [('count','&lt;=',1)]}"/>
+                    <field name="invoice_batch_create"/>
                 </group>
             </xpath>
         </field>
