@@ -29,9 +29,9 @@ except ImportError:
     extract_msg = None
 
 try:
-    import smb
+    import smb.SMBConnection as smbconn
 except ImportError:
-    smb = None
+    smbconn = None
 
 
 class SaleOrderEmailSource(models.Model):
@@ -53,7 +53,7 @@ class SaleOrderEmailSource(models.Model):
     @api.multi
     def get_data(self):
         # get connection
-        conn = smb.SMBConnection(self.user, self.password, 'odoo', self.host, use_ntlm_v2=True)
+        conn = smbconn.SMBConnection(self.user, self.password, 'odoo', self.host, use_ntlm_v2=True)
         ok = conn.connect(self.ip)
         if not ok:
             raise UserError(_("Cannot connect to ip %s") % self.ip)
