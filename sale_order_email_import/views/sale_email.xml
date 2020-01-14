@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- form view -->
+    <record id="sale_order_email_form_view" model="ir.ui.view">
+        <field name="name">sale.order.email.form</field>
+        <field name="model">sale.order.email</field>
+        <field name="arch" type="xml">
+            <form string="Sale order email Form">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="subject"/>
+                        </h1>
+                    </div>
+                    <group col="4">
+                        <field name="email_from"/>
+                        <field name="date"/>
+                    </group>
+                    <group col="4">
+                        <field name="datas" filename="datas_fname"/>
+                        <field name="datas_fname" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="message_id"/>
+                    </group>
+                    <group>
+                        <field name="body"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- tree view -->
+    <record id="sale_order_email_tree_view" model="ir.ui.view">
+        <field name="name">sale.order.email.tree</field>
+        <field name="model">sale.order.email</field>
+        <field name="arch" type="xml">
+            <tree string="Sale order email Tree">
+                <field name="name"/>
+                <field name="email_from"/>
+                <field name="date"/>
+                <field name="datas_fname"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- search view -->
+    <record id="sale_order_email_search_view" model="ir.ui.view">
+        <field name="name">sale.order.email.search</field>
+        <field name="model">sale.order.email</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="E-mails"
+                       filter_domain="['|', '|', ('name','ilike',self), ('email_from','ilike',self), ('datas_fname','ilike',self)]"/>
+                <field name="name"/>
+                <field name="email_from"/>
+                <field name="date"/>
+                <field name="datas_fname"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="From" name="groupby_email_from"
+                            context="{'group_by': 'email_from'}"/>
+                    <filter string="Date" name="groupby_date"
+                            context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- window action -->
+    <record id="sale_order_email_action" model="ir.actions.act_window">
+        <field name="name">Sale order emails</field>
+        <field name="res_model">sale.order.email</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first e-mail order
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="sale_order_email_main_menu" name="E-mail orders"
+              parent="sale.sale_order_menu"
+              sequence="100"/>
+
+    <menuitem id="sale_order_email_menu" name="Orders"
+              parent="sale_order_email_main_menu"
+              action="sale_order_email_action" sequence="10"/>
+</odoo>

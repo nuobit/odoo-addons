@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- form view -->
+    <record id="sale_order_email_source_form_view" model="ir.ui.view">
+        <field name="name">sale.order.email.source.form</field>
+        <field name="model">sale.order.email.source</field>
+        <field name="arch" type="xml">
+            <form string="Sale order email source Form">
+                <header>
+                    <button type="object" name="get_data"
+                            class="btn btn-primary" string="Get data"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="host"/>
+                        <field name="ip"/>
+                        <field name="resource"/>
+                        <field name="folder"/>
+                    </group>
+                    <group>
+                        <field name="domain"/>
+                        <field name="user"/>
+                        <field name="password" password="1"/>
+                    </group>
+                    <group>
+                        <field name="sequence"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- tree view -->
+    <record id="sale_order_email_source_tree_view" model="ir.ui.view">
+        <field name="name">sale.order.email.source.tree</field>
+        <field name="model">sale.order.email.source</field>
+        <field name="arch" type="xml">
+            <tree string="Sale order email source Tree">
+                <field name="sequence" widget="handle"/>
+                <field name="host"/>
+                <field name="resource"/>
+                <field name="folder"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action -->
+    <record id="sale_order_email_source_action" model="ir.actions.act_window">
+        <field name="name">Sale order email sources</field>
+        <field name="res_model">sale.order.email.source</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first e-mail order source
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="sale_order_email_source_menu" name="E-mail order sources" parent="sale.menu_sales_config"
+              action="sale_order_email_source_action" sequence="100"/>
+
+    <!-- server action -->
+    <record id="sale_order_email_source_server_action" model="ir.actions.server">
+        <field name="name">Get e-mail orders</field>
+        <field name="condition">True</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_sale_order_email_source"/>
+        <field name="state">code</field>
+        <field name="code">model.get_all_data()</field>
+    </record>
+
+    <menuitem id="sale_order_email_get_menu" name="Get orders" parent="sale_order_email_main_menu"
+              action="sale_order_email_source_server_action" sequence="20"/>
+</odoo>
