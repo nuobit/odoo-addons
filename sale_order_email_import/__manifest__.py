@@ -7,7 +7,7 @@
     'summary': "Get emails from a remote folder and register them.",
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'category': 'Sales',
-    'version': '11.0.1.0.1',
+    'version': '11.0.1.0.2',
     'license': 'AGPL-3',
     'website': 'https://github.com/nuobit',
     'depends': [

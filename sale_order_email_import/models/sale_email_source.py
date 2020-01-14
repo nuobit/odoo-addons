@@ -16,6 +16,15 @@ import base64
 
 try:
     import extract_msg
+
+
+    # workaround for https://github.com/mattgwwalker/msg-extractor/blob/6fd92d74562425e79487fba56c5e1ae5caaf6681/extract_msg/attachment.py#L46
+    class AttachmentMod(extract_msg.Attachment):
+        def __init__(self, msg, dir_):
+            try:
+                super().__init__(msg, dir_)
+            except NotImplementedError:
+                pass
 except ImportError:
     extract_msg = None
 
@@ -23,15 +32,6 @@ try:
     import smb
 except ImportError:
     smb = None
-
-
-# workaround for https://github.com/mattgwwalker/msg-extractor/blob/6fd92d74562425e79487fba56c5e1ae5caaf6681/extract_msg/attachment.py#L46
-class AttachmentMod(extract_msg.Attachment):
-    def __init__(self, msg, dir_):
-        try:
-            super().__init__(msg, dir_)
-        except NotImplementedError:
-            pass
 
 
 class SaleOrderEmailSource(models.Model):
