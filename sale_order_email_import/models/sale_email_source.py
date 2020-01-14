@@ -14,8 +14,15 @@ import locale
 
 import base64
 
-import extract_msg
-from smb.SMBConnection import SMBConnection
+try:
+    import extract_msg
+except ImportError:
+    extract_msg = None
+
+try:
+    import smb
+except ImportError:
+    smb = None
 
 
 # workaround for https://github.com/mattgwwalker/msg-extractor/blob/6fd92d74562425e79487fba56c5e1ae5caaf6681/extract_msg/attachment.py#L46
@@ -46,7 +53,7 @@ class SaleOrderEmailSource(models.Model):
     @api.multi
     def get_data(self):
         # get connection
-        conn = SMBConnection(self.user, self.password, 'odoo', self.host, use_ntlm_v2=True)
+        conn = smb.SMBConnection(self.user, self.password, 'odoo', self.host, use_ntlm_v2=True)
         ok = conn.connect(self.ip)
         if not ok:
             raise UserError(_("Cannot connect to ip %s") % self.ip)
