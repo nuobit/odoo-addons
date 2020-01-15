@@ -57,6 +57,7 @@ class ResPartnerImportMapper(Component):
     def to_review(self, record):
         return {'to_review': True}
 
+    @only_create
     @mapping
     def ref(self, record):
         return {'ref': record['Codigo_Cliente_Logic']}
