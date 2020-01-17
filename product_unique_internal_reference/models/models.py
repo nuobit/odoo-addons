@@ -14,7 +14,7 @@ class ProductProduct(models.Model):
     def _check_default_code(self):
         for record in self:
             if record.default_code:
-                default_code = self.search([
+                default_code = self.with_context(active_test=False).search([
                     ('product_tmpl_id.company_id', '=', record.product_tmpl_id.company_id.id),
                     ('default_code', '=', record.default_code),
                     ('id', '!=', record.id),
@@ -22,6 +22,6 @@ class ProductProduct(models.Model):
 
                 if default_code:
                     raise ValidationError(
-                        _("Error! The Default Code %s already exists" %
+                        _("Error! The Default Code %s already exists. Check also the archived ones." %
                           record.default_code)
                     )
