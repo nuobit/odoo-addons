@@ -5,7 +5,7 @@
 {
     'name': 'Product unique internal reference',
     'summary': 'This module ensures that you enter a Unique Internal Reference (default_code) for your Products',
-    'version': '11.0.0.2.0',
+    'version': '11.0.0.2.1',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
