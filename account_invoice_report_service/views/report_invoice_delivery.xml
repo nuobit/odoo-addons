@@ -178,7 +178,7 @@
                                                                         <span t-field="order.client_order_ref"/>
                                                                     </td>
                                                                     <td width="19%" class="text-right">
-                                                                        <span t-field="order.confirmation_date"
+                                                                        <span t-field="order.date_order"
                                                                               t-field-options="{'widget': 'date'}"/>
                                                                     </td>
                                                                     <td width="41%"/>
