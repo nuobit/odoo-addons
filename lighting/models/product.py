@@ -368,10 +368,10 @@ class LightingProduct(models.Model):
     auxiliary_equipment_model_alt = fields.Char(string='Alternative auxiliary gear code', track_visibility='onchange')
     input_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage',
                                        ondelete='restrict', string='Input voltage', track_visibility='onchange')
-    input_current = fields.Float(string='Input current (mA)', track_visibility='onchange')
+    input_current = fields.Integer(string='Input current (mA)', track_visibility='onchange')
     output_voltage_id = fields.Many2one(comodel_name='lighting.product.voltage',
                                         ondelete='restrict', string='Output voltage', track_visibility='onchange')
-    output_current = fields.Float(string='Output current (mA)', track_visibility='onchange')
+    output_current = fields.Integer(string='Output current (mA)', track_visibility='onchange')
 
     total_wattage = fields.Float(compute='_compute_total_wattage',
                                  inverse='_inverse_total_wattage',
