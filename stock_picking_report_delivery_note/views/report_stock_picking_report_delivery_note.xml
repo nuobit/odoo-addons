@@ -23,7 +23,7 @@
             <t t-set="company" t-value="res_company"/>
         </t>
 
-        <div class="header">
+        <div class="header sprdn-header">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-6">
@@ -33,11 +33,11 @@
             </div>
         </div>
 
-        <div class="article o_report_layout_standard">
+        <div class="article o_report_layout_standard sprdn-body">
             <t t-raw="0"/>
         </div>
 
-        <div class="footer">
+        <div class="footer sprdn-footer">
             <div class="text-center" style="font-size: 10px;">
                 <ul class="list-unstyled mt4 mb4">
                     <li>
