@@ -31,9 +31,9 @@ class LightingProductVoltage(models.Model):
             if voltage_l:
                 record.name = ''.join(voltage_l)
 
-    voltage1 = fields.Integer(string="Voltage 1 (V)", required=True)
+    voltage1 = fields.Float(string="Voltage 1 (V)", required=True)
     voltage2_check = fields.Boolean(string="Voltage 2 check")
-    voltage2 = fields.Integer(string="Voltage 2 (V)", required=False, default=None)
+    voltage2 = fields.Float(string="Voltage 2 (V)", required=False, default=None)
 
     @api.onchange('voltage2_check')
     def _onchange_voltage2_check(self):
