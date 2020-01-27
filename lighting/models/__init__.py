@@ -4,6 +4,8 @@
 
 from . import tree
 
+from .import ir_translation
+
 from . import product
 from . import product_group
 from . import product_group_type
