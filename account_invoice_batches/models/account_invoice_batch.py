@@ -83,21 +83,22 @@ class AccountInvoiceBatch(models.Model):
         if name:
             action['name'] = action['display_name'] = name
 
-        domain += [
+        domain1 = domain + [
             ('invoice_batch_id', '=', self.id),
         ]
         domain_action = action['domain'] and action['domain'].replace('\n', '')
         domain_action = domain_action and literal_eval(domain_action) or []
-        domain_action += domain
+        domain_action += domain1
         action['domain'] = domain_action
 
-        context.update({
+        context1 = dict(context)
+        context1.update({
             'search_default_invoice_batch_sending_method': True,
             'default_invoice_batch_id': self.id,
         })
         context_action = action['context'] and action['context'].replace('\n', '')
         context_action = context_action and literal_eval(context_action) or {}
-        context_action.update(context)
+        context_action.update(context1)
         action['context'] = context_action
 
         return action
