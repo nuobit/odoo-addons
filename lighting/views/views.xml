@@ -372,7 +372,8 @@
                   decoration-warning="state == 'draft'"
                   decoration-info="state == 'to_review'"
                   decoration-success="state_marketing == 'N'"
-                  decoration-danger="state_marketing in ('ES', 'D', 'H')">
+                  decoration-danger="state_marketing in ('ES', 'D')"
+                  decoration-muted="state_marketing == 'H'">
                 <field name="sequence" widget="handle"/>
                 <field name="reference"/>
                 <field name="description"/>
