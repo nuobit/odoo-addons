@@ -278,6 +278,11 @@ msgid "Battery charge time (h)"
 msgstr "Ciclo de carga (h)"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_charge_capacity
+msgid "Battery charge capacity (mAH)"
+msgstr "Capacidad de carga batería (mAH)"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_beam_id
 msgid "Beam"
 msgstr "Haz"

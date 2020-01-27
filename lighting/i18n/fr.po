@@ -286,6 +286,11 @@ msgid "Battery charge time (h)"
 msgstr "Cycle de charge (h)"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_charge_capacity
+msgid "Battery charge capacity (mAH)"
+msgstr "Battery charge capacity (mAH)"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_beam_id
 msgid "Beam"
 msgstr "Faisceau"

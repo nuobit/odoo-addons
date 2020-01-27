@@ -418,6 +418,7 @@ class LightingProduct(models.Model):
                                          string='Rechargeable', track_visibility='onchange')
     battery_autonomy = fields.Float(string='Battery autonomy (h)', track_visibility='onchange')
     battery_charge_time = fields.Float(string='Battery charge time (h)', track_visibility='onchange')
+    battery_charge_capacity = fields.Integer(string='Battery charge capacity (mAH)', track_visibility='onchange')
     battery_output_voltage = fields.Float(string='Battery output voltage (V)', digits=(5, 1),
                                           track_visibility='onchange')
     surface_temperature = fields.Float(string='Surface temperature (ºC)', track_visibility='onchange')

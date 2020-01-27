@@ -176,6 +176,7 @@
                                 <field name="rechargeable_type"/>
                                 <field name="battery_autonomy"/>
                                 <field name="battery_charge_time"/>
+                                <field name="battery_charge_capacity"/>
                                 <field name="battery_output_voltage"/>
                                 <field name="surface_temperature"/>
                                 <field name="operating_temperature_min"/>
