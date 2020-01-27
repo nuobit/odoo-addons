@@ -17,10 +17,10 @@ class LightingProductVoltage(models.Model):
         for record in self:
             voltage_l = []
             if record.voltage1 != 0:
-                voltage_l.append('%i' % record.voltage1)
+                voltage_l.append('%g' % record.voltage1)
 
             if record.voltage2_check and record.voltage2 != 0:
-                voltage_l.append('-%i' % record.voltage2)
+                voltage_l.append('-%g' % record.voltage2)
 
             if voltage_l:
                 voltage_l.append('V')
