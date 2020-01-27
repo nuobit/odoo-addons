@@ -28,5 +28,6 @@ class IrTranslation(models.Model):
                     products = self.env['lighting.product'].search([
                         ('.'.join(dmodelpath), 'in', [self.res_id])
                     ])
-                    products._compute_description()
+                    products.with_context(lang=self.lang,
+                                          trl_lang_description_update=True)._compute_description()
                     break

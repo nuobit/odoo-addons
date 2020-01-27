@@ -699,7 +699,8 @@ class LightingProduct(models.Model):
         if res.description == 'false':
             res.description = False
         if 'description' in values:
-            res._update_computed_description()
+            if not self.env.context.get('trl_lang_description_update'):
+                res._update_computed_description()
 
         return res
 
@@ -707,7 +708,8 @@ class LightingProduct(models.Model):
     def write(self, values):
         res = super().write(values)
         if 'description' in values:
-            self._update_computed_description()
+            if not self.env.context.get('trl_lang_description_update'):
+                self._update_computed_description()
 
         return res
 
