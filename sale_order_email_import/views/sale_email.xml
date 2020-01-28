@@ -29,8 +29,8 @@
                         <field name="message_id"/>
                         <field name="source_id"/>
                     </group>
-                    <group>
-                        <field name="body"/>
+                    <group string="Body">
+                        <field name="body" nolabel="1"/>
                     </group>
                 </sheet>
             </form>
