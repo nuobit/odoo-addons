@@ -204,9 +204,9 @@ class SaleOrderEmailSource(models.Model):
         error_message = []
         filenames = set()
         for source_name, errors in source_errors.items():
-            error_message.append("%s\n%s\n" % (source_name, '=' * 40))
+            error_message.append("%s\n%s\n" % (source_name, '=' * 50))
             if 'duplicated_files' in errors:
-                error_message.append(_("Duplicated files\n%s\n") % ('-' * 20,))
+                error_message.append(_("Duplicated files\n%s\n") % ('-' * 30,))
                 error_duplicated_files = dict(sorted(errors['duplicated_files'].items(), key=lambda x: x[0]))
                 for fok, frest in error_duplicated_files.items():
                     error_message.append("%s = %s" % (fok, ', '.join(sorted(frest))))
@@ -214,14 +214,14 @@ class SaleOrderEmailSource(models.Model):
                 error_message.append("\n")
 
             if 'filename_format_error' in errors:
-                error_message.append(_("Filename format error\n%s\n") % ('-' * 20,))
+                error_message.append(_("Filename format error\n%s\n") % ('-' * 30,))
                 for f in sorted(errors['filename_format_error']):
                     error_message.append(f)
                     filenames |= set([f])
                 error_message.append("\n")
 
             if 'duplicated_numbers' in errors:
-                error_message.append(_("Duplicated numbers\n%s\n") % ('-' * 20,))
+                error_message.append(_("Duplicated numbers\n%s\n") % ('-' * 30,))
                 error_duplicated_numbers = dict(sorted(errors['duplicated_numbers'].items(), key=lambda x: x[0]))
                 for fok, frest in error_duplicated_numbers.items():
                     error_message.append("%s ~ %s" % (fok, ', '.join(sorted(frest))))
@@ -229,21 +229,21 @@ class SaleOrderEmailSource(models.Model):
                 error_message.append("\n")
 
             if 'wrong_format_file' in errors:
-                error_message.append(_("Wrong format\n%s\n") % ('-' * 20,))
+                error_message.append(_("Wrong format\n%s\n") % ('-' * 30,))
                 for f in sorted(errors['wrong_format_file']):
                     error_message.append(f)
                     filenames |= set([f])
                 error_message.append("\n")
 
             if 'message_id_not_found' in errors:
-                error_message.append(_("Message-Id not found\n%s\n") % ('-' * 20,))
+                error_message.append(_("Message-Id not found\n%s\n") % ('-' * 30,))
                 for f in sorted(errors['message_id_not_found']):
                     error_message.append(f)
                     filenames |= set([f])
                 error_message.append("\n")
 
             if 'email_wrong_format' in errors:
-                error_message.append(_("Wrong e-mail format\n%s\n") % ('-' * 20,))
+                error_message.append(_("Wrong e-mail format\n%s\n") % ('-' * 30,))
                 for f in sorted(errors['email_wrong_format']):
                     error_message.append(f)
                     filenames |= set([f])
