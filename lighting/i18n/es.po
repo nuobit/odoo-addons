@@ -913,6 +913,12 @@ msgstr "Publicado"
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state_marketing:0
+msgid "Online"
+msgstr "Online"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
 msgid "New"
 msgstr "Nuevo"
 

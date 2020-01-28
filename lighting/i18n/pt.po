@@ -2165,6 +2165,42 @@ msgid "Published"
 msgstr "Publicados"
 
 #. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Online"
+msgstr "Online"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "New"
+msgstr "Novo"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Cataloged"
+msgstr "Catalogado"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Until end of stock"
+msgstr "Até o final do estoque"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Discontinued"
+msgstr "Interrompido"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
+msgid "Historical"
+msgstr "Histórico"
+
+#. module: lighting
 #: code:addons/lighting/models/models.py:709
 #: selection:lighting.product.source.line,special_spectrum:0
 #, python-format
