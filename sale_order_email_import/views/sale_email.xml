@@ -12,12 +12,14 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="subject"/>
+                            <field name="number" placeholder="Number"/>
                         </h1>
                     </div>
                     <group col="4">
+                        <field name="email_name"/>
                         <field name="email_from"/>
                         <field name="date"/>
+                        <field name="name" placeholder="subject"/>
                     </group>
                     <group col="4">
                         <field name="datas" filename="datas_fname"/>
@@ -25,6 +27,7 @@
                     </group>
                     <group>
                         <field name="message_id"/>
+                        <field name="source_id"/>
                     </group>
                     <group>
                         <field name="body"/>
@@ -40,10 +43,12 @@
         <field name="model">sale.order.email</field>
         <field name="arch" type="xml">
             <tree string="Sale order email Tree">
-                <field name="name"/>
+                <field name="number"/>
+                <field name="email_name"/>
                 <field name="email_from"/>
                 <field name="date"/>
-                <field name="datas_fname"/>
+                <field name="name"/>
+                <field name="source_id"/>
             </tree>
         </field>
     </record>
@@ -55,17 +60,24 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" string="E-mails"
-                       filter_domain="['|', '|', ('name','ilike',self), ('email_from','ilike',self), ('datas_fname','ilike',self)]"/>
-                <field name="name"/>
+                       filter_domain="['|', '|', '|', '|', '|', ('number','ilike',self), ('name','ilike',self), ('email_name','ilike',self), ('email_from','ilike',self), ('datas_fname','ilike',self), ('source_id.name','ilike',self)]"/>
+                <field name="number"/>
+                <field name="email_name"/>
                 <field name="email_from"/>
                 <field name="date"/>
+                <field name="name"/>
                 <field name="datas_fname"/>
+                <field name="source_id"/>
                 <separator/>
                 <group expand="0" string="Group By">
+                    <filter string="Domain" name="groupby_email_domain"
+                            context="{'group_by': 'email_domain'}"/>
                     <filter string="From" name="groupby_email_from"
                             context="{'group_by': 'email_from'}"/>
                     <filter string="Date" name="groupby_date"
                             context="{'group_by': 'date'}"/>
+                    <filter string="Source" name="groupby_source_id"
+                            context="{'group_by': 'source_id'}"/>
                 </group>
             </search>
         </field>

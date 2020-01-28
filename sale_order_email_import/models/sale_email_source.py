@@ -5,14 +5,19 @@
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 
-from odoo.addons.queue_job.job import job
-
 import tempfile
 import email.utils
+import email.header
 import pytz
 import locale
 
+import re
+
 import base64
+
+import logging
+
+_logger = logging.getLogger(__name__)
 
 try:
     import extract_msg
@@ -36,8 +41,8 @@ except ImportError:
 
 class SaleOrderEmailSource(models.Model):
     _name = 'sale.order.email.source'
-    _rec_name = 'folder'
 
+    name = fields.Char(string='Name', required=True)
     host = fields.Char(string='Host', required=True)
     ip = fields.Char(string='IP address', required=True)
 
@@ -50,8 +55,18 @@ class SaleOrderEmailSource(models.Model):
 
     sequence = fields.Integer()
 
+    active = fields.Boolean(default=True,
+                            help="The active field allows you to hide the source without removing it.")
+
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', 'The name must be unique!'),
+    ]
+
     @api.multi
     def get_data(self):
+        if not self.active:
+            raise UserError("The source is archived, re-enable it to use it.")
+
         # get connection
         conn = smbconn.SMBConnection(self.user, self.password, 'odoo', self.host, use_ntlm_v2=True)
         ok = conn.connect(self.ip)
@@ -68,9 +83,12 @@ class SaleOrderEmailSource(models.Model):
             existing_filenames = self.env['sale.order.email'].search([
                 ('datas_fname', 'in', all_filenames),
             ]).mapped('datas_fname')
-            new_filenames = set(all_filenames) - set(existing_filenames)
+            new_filenames = sorted(list(set(all_filenames) - set(existing_filenames)))
 
-            for filename in new_filenames:
+            pending_files = {}
+            N = len(new_filenames)
+            _logger.info("Found %i new files on source '%s'" % (N, self.name))
+            for i, filename in enumerate(new_filenames, 1):
                 f = files_ndx[filename]
                 file_path = '%s/%s' % (self.folder, f.filename)
 
@@ -82,28 +100,83 @@ class SaleOrderEmailSource(models.Model):
 
                 loc = locale.getlocale()
                 locale.setlocale(locale.LC_ALL, 'C')
-                msg = extract_msg.Message(file_content, attachmentClass=AttachmentMod)
+                try:
+                    msg = extract_msg.Message(file_content, attachmentClass=AttachmentMod)
+                except:
+                    raise
                 locale.setlocale(locale.LC_ALL, loc)
 
-                sale_order_email = self.env['sale.order.email'].search_count([
+                sale_order_email_count = self.env['sale.order.email'].search_count([
                     ('message_id', '=', msg.message_id),
                 ])
-                if not sale_order_email:
-                    self.env['sale.order.email'].create({
-                        'name': msg.subject,
-                        'email_from': msg.sender,
-                        'date': email.utils.parsedate_to_datetime(msg.date) \
-                            .astimezone(pytz.UTC) \
-                            .replace(tzinfo=None),
-                        'body': msg.body,
-                        'datas': base64.b64encode(file_content),
-                        'datas_fname': f.filename,
-                        'message_id': msg.message_id,
-                    })
+                if not sale_order_email_count:
+                    m = re.match(r'^.*gnx *([0-9]+)[^.]*\..+$', f.filename.lower())
+                    if not m:
+                        if msg.message_id not in pending_files:
+                            pending_files[msg.message_id] = []
+                        pending_files[msg.message_id].append(f.filename)
+                        _logger.info("%s/%s filename format error, "
+                                     "postponing process (%i/%i)" % (self.name, f.filename, i, N))
+                    else:
+                        if msg.message_id in pending_files:
+                            del pending_files[msg.message_id]
+                        number = m.group(1)
+
+                        sender = email.header.make_header(
+                            email.header.decode_header(msg.sender)).__str__()
+                        sender = sender.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
+                        m = re.match(r'^ *(.*?) *<(.+)> *$', sender)
+                        if m:
+                            sender_name, sender_email = m.groups()
+                        else:
+                            m = re.match(r'^ *([^@]+@.+) *$', sender)
+                            if not m:
+                                raise UserError("Incorrect e-mail format '%s' in file '%s'" % (msg.sender, f.filename))
+                            sender_name, sender_email = None, m.group(1)
+
+                        self.env['sale.order.email'].create({
+                            'number': number,
+                            'name': msg.subject,
+                            'email_name': sender_name,
+                            'email_from': sender_email.lower(),
+                            'date': email.utils.parsedate_to_datetime(msg.date) \
+                                .astimezone(pytz.UTC) \
+                                .replace(tzinfo=None),
+                            'body': msg.body and msg.body.strip() or None,
+                            'datas': base64.b64encode(file_content),
+                            'datas_fname': f.filename,
+                            'message_id': msg.message_id,
+                            'source_id': self.id,
+                        })
+                        _logger.info("%s/%s imported successfully (%i/%i)" % (self.name, f.filename, i, N))
+                else:
+                    sale_order_email = self.env['sale.order.email'].search([
+                        ('message_id', '=', msg.message_id),
+                    ])
+                    _logger.info("%s/%s already exists with another filename '%s' "
+                                 "but the same message_id '%s' (%i/%i)" % (
+                                     self.name, f.filename, sorted(sale_order_email.mapped('datas_fname')),
+                                     msg.message_id, i, N))
+
+            if pending_files:
+                pending_files1 = {i: sorted(v) for i, (k, v) in enumerate(pending_files.items())}
+                raise UserError("Filenames with incorrect format: %s" % pending_files1)
 
         conn.close()
 
     @api.model
     def get_all_data(self):
-        for s in self.env['sale.order.email.source'].search([]):
+        sources = self.env['sale.order.email.source'].search([])
+        if not sources:
+            raise UserError("There's no sources defined or they're not enabled.")
+        for s in sources:
             s.get_data()
+
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = dict(default or {},
+                       name=_('%s (copy)') % self.name,
+                       )
+
+        return super().copy(default)
