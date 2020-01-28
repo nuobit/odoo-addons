@@ -48,6 +48,7 @@
                 <field name="email_name"/>
                 <field name="date"/>
                 <field name="name"/>
+                <field name="datas_fname"/>
                 <field name="source_id"/>
             </tree>
         </field>
