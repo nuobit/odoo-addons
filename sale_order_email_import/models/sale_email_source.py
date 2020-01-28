@@ -124,7 +124,7 @@ class SaleOrderEmailSource(models.Model):
                         ])
                         if sale_order_email_number:
                             errors.setdefault('duplicated_numbers', {}) \
-                                .setdefault(number, []).append(f.filename)
+                                .setdefault(sale_order_email_number.datas_fname, []).append(f.filename)
 
                     if not msg.message_id:
                         errors.setdefault('message_id_not_found', []).append(f.filename)
