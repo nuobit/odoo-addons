@@ -253,6 +253,14 @@
                                         <span t-field="doc.class_id.code"/>
                                     </td>
                                 </tr>
+                                <tr t-if="doc.ean">
+                                    <td>
+                                        EAN
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.ean"/>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
