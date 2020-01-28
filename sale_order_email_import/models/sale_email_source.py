@@ -71,7 +71,7 @@ class SaleOrderEmailSource(models.Model):
         conn = smbconn.SMBConnection(self.user, self.password, 'odoo', self.host, use_ntlm_v2=True)
         ok = conn.connect(self.ip, port=self.port)
         if not ok:
-            raise UserError(_("Cannot connect to ip %s") % self.ip)
+            raise UserError(_("Cannot connect to ip %s on port %i") % (self.ip, self.port))
 
         errors = {}
 
