@@ -145,7 +145,7 @@ class SaleOrderEmailSource(models.Model):
                             sender = sender.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
 
                             sender_name, sender_email = None, None
-                            m = re.match(r'^ *(.*?) *<([.@]+)> *$', sender)
+                            m = re.match(r'^ *(.*?) *<([^@]+@[^@]+)> *$', sender)
                             if m:
                                 sender_name, sender_email = m.groups()
                             else:
