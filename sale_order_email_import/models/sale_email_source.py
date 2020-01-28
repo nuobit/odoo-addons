@@ -254,7 +254,7 @@ class SaleOrderEmailSource(models.Model):
                         filenames |= set([f])
                     message.append("\n")
 
-                message.append("\nTotal files with errors: %i" % len(filenames))
+                message.append("Files with errors: %i" % len(filenames))
         else:
             message.append(_('No errors nor warnings!'))
 
