@@ -45,6 +45,7 @@ class SaleOrderEmailSource(models.Model):
     name = fields.Char(string='Name', required=True)
     host = fields.Char(string='Host', required=True)
     ip = fields.Char(string='IP address', required=True)
+    port = fields.Integer(string='Port', default=139, required=True)
 
     resource = fields.Char(string='Resource', required=True)
     folder = fields.Char(string='Folder', required=True)
@@ -69,7 +70,7 @@ class SaleOrderEmailSource(models.Model):
 
         # get connection
         conn = smbconn.SMBConnection(self.user, self.password, 'odoo', self.host, use_ntlm_v2=True)
-        ok = conn.connect(self.ip)
+        ok = conn.connect(self.ip, port=self.port)
         if not ok:
             raise UserError(_("Cannot connect to ip %s") % self.ip)
 

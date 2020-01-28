@@ -29,6 +29,7 @@
                     <group>
                         <field name="host"/>
                         <field name="ip"/>
+                        <field name="port"/>
                         <field name="resource"/>
                         <field name="folder"/>
                     </group>
