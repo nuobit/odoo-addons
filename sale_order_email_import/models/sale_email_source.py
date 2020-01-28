@@ -11,6 +11,7 @@ import email.header
 import pytz
 import locale
 
+import psycopg2
 import re
 
 import base64
@@ -63,16 +64,16 @@ class SaleOrderEmailSource(models.Model):
         ('name_uniq', 'unique (name)', 'The name must be unique!'),
     ]
 
-    @api.multi
-    def get_data(self):
-        if not self.active:
-            raise UserError("The source is archived, re-enable it to use it.")
+    def execute(self):
+        self.ensure_one()
 
         # get connection
         conn = smbconn.SMBConnection(self.user, self.password, 'odoo', self.host, use_ntlm_v2=True)
         ok = conn.connect(self.ip, port=self.port)
         if not ok:
             raise UserError(_("Cannot connect to ip %s") % self.ip)
+
+        errors = {}
 
         # get file list
         files = conn.listPath(self.resource, self.folder)
@@ -86,7 +87,6 @@ class SaleOrderEmailSource(models.Model):
             ]).mapped('datas_fname')
             new_filenames = sorted(list(set(all_filenames) - set(existing_filenames)))
 
-            pending_files = {}
             N = len(new_filenames)
             _logger.info("Found %i new files on source '%s'" % (N, self.name))
             for i, filename in enumerate(new_filenames, 1):
@@ -101,77 +101,168 @@ class SaleOrderEmailSource(models.Model):
 
                 loc = locale.getlocale()
                 locale.setlocale(locale.LC_ALL, 'C')
+                msg = None
                 try:
                     msg = extract_msg.Message(file_content, attachmentClass=AttachmentMod)
                 except:
-                    raise
+                    errors.setdefault('wrong_format_file', []).append(f.filename)
+
                 locale.setlocale(locale.LC_ALL, loc)
 
-                sale_order_email_count = self.env['sale.order.email'].search_count([
-                    ('message_id', '=', msg.message_id),
-                ])
-                if not sale_order_email_count:
+                if msg:
+                    number = None
                     m = re.match(r'^.*gnx *([0-9]+)[^.]*\..+$', f.filename.lower())
                     if not m:
-                        if msg.message_id not in pending_files:
-                            pending_files[msg.message_id] = []
-                        pending_files[msg.message_id].append(f.filename)
-                        _logger.info("%s/%s filename format error, "
-                                     "postponing process (%i/%i)" % (self.name, f.filename, i, N))
+                        errors.setdefault('filename_format_error', []).append(f.filename)
                     else:
-                        if msg.message_id in pending_files:
-                            del pending_files[msg.message_id]
                         number = m.group(1)
 
-                        sender = email.header.make_header(
-                            email.header.decode_header(msg.sender)).__str__()
-                        sender = sender.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
-                        m = re.match(r'^ *(.*?) *<(.+)> *$', sender)
-                        if m:
-                            sender_name, sender_email = m.groups()
-                        else:
-                            m = re.match(r'^ *([^@]+@.+) *$', sender)
-                            if not m:
-                                raise UserError("Incorrect e-mail format '%s' in file '%s'" % (msg.sender, f.filename))
-                            sender_name, sender_email = None, m.group(1)
+                    if number:
+                        sale_order_email_number = self.env['sale.order.email'].search([
+                            ('source_id', '=', self.id),
+                            ('number', '=', number),
+                        ])
+                        if sale_order_email_number:
+                            errors.setdefault('duplicated_numbers', {}) \
+                                .setdefault(number, []).append(f.filename)
 
-                        self.env['sale.order.email'].create({
-                            'number': number,
-                            'name': msg.subject,
-                            'email_name': sender_name,
-                            'email_from': sender_email.lower(),
-                            'date': email.utils.parsedate_to_datetime(msg.date) \
-                                .astimezone(pytz.UTC) \
-                                .replace(tzinfo=None),
-                            'body': msg.body and msg.body.strip() or None,
-                            'datas': base64.b64encode(file_content),
-                            'datas_fname': f.filename,
-                            'message_id': msg.message_id,
-                            'source_id': self.id,
-                        })
-                        _logger.info("%s/%s imported successfully (%i/%i)" % (self.name, f.filename, i, N))
-                else:
-                    sale_order_email = self.env['sale.order.email'].search([
-                        ('message_id', '=', msg.message_id),
-                    ])
-                    _logger.info("%s/%s already exists with another filename '%s' "
-                                 "but the same message_id '%s' (%i/%i)" % (
-                                     self.name, f.filename, sorted(sale_order_email.mapped('datas_fname')),
-                                     msg.message_id, i, N))
+                    if not msg.message_id:
+                        errors.setdefault('message_id_not_found', []).append(f.filename)
+                    else:
+                        message_id = msg.message_id.strip()
 
-            if pending_files:
-                pending_files1 = {i: sorted(v) for i, (k, v) in enumerate(pending_files.items())}
-                raise UserError("Filenames with incorrect format: %s" % pending_files1)
+                        sale_order_email_message = self.env['sale.order.email'].search([
+                            ('message_id', '=', message_id),
+                        ])
+                        if sale_order_email_message:
+                            errors.setdefault('duplicated_files', {}) \
+                                .setdefault(sale_order_email_message.datas_fname, []) \
+                                .append(f.filename)
+
+                        if not sale_order_email_message and number and not sale_order_email_number:
+                            sender = email.header.make_header(
+                                email.header.decode_header(msg.sender)).__str__()
+                            sender = sender.replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
+                            m = re.match(r'^ *(.*?) *<(.+)> *$', sender)
+
+                            sender_name, sender_email = None, None
+                            if m:
+                                sender_name, sender_email = m.groups()
+                            else:
+                                m = re.match(r'^ *([^@]+@.+) *$', sender)
+                                if not m:
+                                    errors.setdefault('email_wrong_format', []).append(f.filename)
+                                else:
+                                    sender_email = m.group(1)
+
+                            if sender_email:
+                                self.env['sale.order.email'].create({
+                                    'number': number,
+                                    'name': msg.subject and msg.subject.strip() or None,
+                                    'email_name': sender_name,
+                                    'email_from': sender_email.lower(),
+                                    'date': email.utils.parsedate_to_datetime(msg.date) \
+                                        .astimezone(pytz.UTC) \
+                                        .replace(tzinfo=None),
+                                    'body': msg.body and msg.body.strip() or None,
+                                    'datas': base64.b64encode(file_content),
+                                    'datas_fname': f.filename,
+                                    'message_id': message_id,
+                                    'source_id': self.id,
+                                })
+
+                _logger.info("%s/%s (%i/%i)" % (self.name, f.filename, i, N))
 
         conn.close()
 
+        return errors
+
+    @api.multi
+    def get_data(self):
+        if not self.active:
+            raise UserError("The source is archived, re-enable it to use it.")
+
+        return self.with_context(active_id=self.id).get_all_data()
+
     @api.model
     def get_all_data(self):
-        sources = self.env['sale.order.email.source'].search([])
+        active_id = self.env.context.get('active_id')
+        if active_id:
+            sources = self.env['sale.order.email.source'].browse(active_id)
+        else:
+            sources = self.env['sale.order.email.source'].search([])
         if not sources:
             raise UserError("There's no sources defined or they're not enabled.")
-        for s in sources:
-            s.get_data()
+
+        source_errors = {}
+        for s in sources.sorted(lambda x: x.sequence):
+            source_error = s.execute()
+            if source_error:
+                source_errors[s.name] = source_error
+
+        # generate error message
+        error_message = []
+        filenames = {}
+        for source_name, errors in source_errors.items():
+            error_message.append("%s\n%s\n" % (source_name, '=' * 40))
+            if 'duplicated_files' in errors:
+                error_message.append(_("Duplicated files\n%s\n") % ('-' * 20,))
+                error_duplicated_files = dict(sorted(errors['duplicated_files'].items(), key=lambda x: x[0]))
+                for fok, frest in error_duplicated_files.items():
+                    error_message.append("%s = %s" % (fok, ', '.join(sorted(frest))))
+                    filenames += set(frest)
+                error_message.append("\n")
+
+            if 'filename_format_error' in errors:
+                error_message.append(_("Filename format error\n%s\n") % ('-' * 20,))
+                for f in sorted(errors['filename_format_error']):
+                    error_message.append(f)
+                    filenames += set([f])
+                error_message.append("\n")
+
+            if 'duplicated_numbers' in errors:
+                error_message.append(_("Duplicated numbers\n%s\n") % ('-' * 20,))
+                error_duplicated_numbers = dict(sorted(errors['duplicated_numbers'].items(), key=lambda x: x[0]))
+                for fok, frest in error_duplicated_numbers.items():
+                    error_message.append("%s ~ %s" % (fok, ', '.join(sorted(frest))))
+                    filenames += set(frest)
+                error_message.append("\n")
+
+            if 'wrong_format_file' in errors:
+                error_message.append(_("Wrong format\n%s\n") % ('-' * 20,))
+                for f in sorted(errors['wrong_format_file']):
+                    error_message.append(f)
+                    filenames += set([f])
+                error_message.append("\n")
+
+            if 'message_id_not_found' in errors:
+                error_message.append(_("Message-Id not found\n%s\n") % ('-' * 20,))
+                for f in sorted(errors['message_id_not_found']):
+                    error_message.append(f)
+                    filenames += set([f])
+                error_message.append("\n")
+
+            if 'email_wrong_format' in errors:
+                error_message.append(_("Wrong e-mail format\n%s\n") % ('-' * 20,))
+                for f in sorted(errors['email_wrong_format']):
+                    error_message.append(f)
+                    filenames += set([f])
+                error_message.append("\n")
+
+            error_message.append("\n\nTotal files with errors: %i" % len(filenames))
+
+        result_wizard = self.env['sale.order.email.import.result'].create({
+            'errors': '%s' % (error_message and '\n'.join(error_message) or _('No errors nor warnings!'),),
+        })
+
+        return {
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_model': 'sale.order.email.import.result',
+            'res_id': result_wizard.id,
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+        }
 
     @api.multi
     def copy(self, default=None):

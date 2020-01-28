@@ -44,8 +44,8 @@
         <field name="arch" type="xml">
             <tree string="Sale order email Tree">
                 <field name="number"/>
-                <field name="email_name"/>
                 <field name="email_from"/>
+                <field name="email_name"/>
                 <field name="date"/>
                 <field name="name"/>
                 <field name="source_id"/>

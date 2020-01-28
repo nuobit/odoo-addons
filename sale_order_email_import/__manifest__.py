@@ -21,6 +21,7 @@
     },
     'data': [
         'security/ir.model.access.csv',
+        'wizard/sale_email_import_result.xml',
         'views/sale_email.xml',
         'views/sale_email_source.xml',
     ],

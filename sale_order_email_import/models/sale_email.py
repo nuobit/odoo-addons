@@ -42,8 +42,6 @@ class SaleOrderEmail(models.Model):
 
     _sql_constraints = [
         ('message_id_uniq', 'unique (message_id)', 'The message ID must be unique!'),
-        ('message_datas_fname_uniq', 'unique (message_id, datas_fname)',
-         'The filename must be unique for each message ID!'),
         ('source_number_uniq', 'unique (source_id, number)',
          'The number must be unique for each source!'),
         ('source_datas_fname_uniq', 'unique (source_id, datas_fname)',
