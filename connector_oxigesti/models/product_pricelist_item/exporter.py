@@ -34,14 +34,27 @@ class ProductPricelistItemBatchExporter(Component):
                 since_date = fields.Datetime.from_string(value)
             else:
                 domain.append(e)
-
+        partner_adapter = self.component(usage='backend.adapter',
+                                         model_name='oxigesti.res.partner')
+        partner_binder = self.binder_for('oxigesti.res.partner')
         binder = self.binder_for(self.model._name)
         for p in self.env['res.partner'].search(domain):
+            partner_external_id = partner_binder.to_external(p, wrap=True)
             for pl in p.property_product_pricelist.item_ids.filtered(
                     lambda x: (not since_date or
-                               fields.Datetime.from_string(x.write_date) > since_date) and
+                               fields.Datetime.from_string(x.write_date) > since_date or
+                               fields.Datetime.from_string(p.write_date) > since_date) and
                               x.applied_on == '1_product' and
                               x.compute_price == 'fixed'):
+                if pl.product_tmpl_id.default_code and partner_external_id:
+                    external_id = [pl.product_tmpl_id.default_code,
+                                   partner_adapter.id2dict(partner_external_id)['Codigo_Mutua']]
+                    binding = binder.to_internal(external_id)
+                    if binding and binding.odoo_id != pl:
+                        old_binding = binder._find_binding(pl, binding_extra_vals={'odoo_partner_id': p.id})
+                        if old_binding:
+                            old_binding.unlink()
+                        binding.odoo_id = pl
                 binding = binder.wrap_binding(pl, binding_extra_vals={
                     'odoo_partner_id': p.id,
                 })
