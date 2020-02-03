@@ -408,8 +408,8 @@ msgstr "Código de barras"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_consistency
-msgid "Color consistency"
-msgstr "Consistencia del color"
+msgid "Color consistency (SDCM)"
+msgstr "Consistencia del color (SDCM)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_id

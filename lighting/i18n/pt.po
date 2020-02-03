@@ -397,8 +397,8 @@ msgstr "Barra de código"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_consistency
-msgid "Color consistency"
-msgstr "Consistência de cores"
+msgid "Color consistency (SDCM)"
+msgstr "Consistência de cores (SDCM)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_id

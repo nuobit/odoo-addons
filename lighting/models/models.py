@@ -319,7 +319,7 @@ class LightingProductSourceLine(models.Model):
     cri_min = fields.Integer(string='CRI', help='Minimum color rendering index', track_visibility='onchange')
 
     is_led = fields.Boolean(related='type_id.is_led')
-    color_consistency = fields.Float(string='Color consistency')
+    color_consistency = fields.Float(string='Color consistency (SDCM)')
     special_spectrum = fields.Selection(selection=[
         ('meat', 'Meat'), ('fashion', 'Fashion'),
         ('multifood', 'Multi Food'), ('bread', 'Bread'),
