@@ -16,30 +16,47 @@ class SaleAdvancePaymentInv(models.TransientModel):
                                           default=True)
 
     @api.multi
+    def _create_invoice(self, order, so_line, amount):
+        invoice = super(SaleAdvancePaymentInv, self)._create_invoice(order, so_line, amount)
+        if invoice:
+            batch_id = self.env.context.get('batch_id')
+            if batch_id:
+                values = {
+                    'invoice_batch_id': batch_id,
+                }
+                if invoice.partner_id.invoice_batch_sending_method:
+                    values['invoice_batch_sending_method'] = invoice.partner_id.invoice_batch_sending_method
+                if invoice.partner_id.invoice_batch_email_partner_id:
+                    values['invoice_batch_email_partner_id'] = invoice.partner_id.invoice_batch_email_partner_id.id
+
+                invoice.write(values)
+
+        return invoice
+
+    @api.multi
     def create_invoices(self):
+        if not self.invoice_batch_create:
+            return super(SaleAdvancePaymentInv, self).create_invoices()
+
+        invoice_batch = self.env['account.invoice.batch'].create({
+            'date': fields.Datetime.now(),
+        })
+
+        self = self.with_context(batch_id=invoice_batch.id)
         res = super(SaleAdvancePaymentInv, self).create_invoices()
 
-        if self.invoice_batch_create:
-            sale_orders = self.env['sale.order'].browse(self._context.get('active_ids', []))
-            invoices = sale_orders.mapped('invoice_ids')
-            if invoices:
-                invoice_batch = self.env['account.invoice.batch'].create({
-                    'date': fields.Datetime.now(),
-                    'invoice_ids': [(6, False, [x.id for x in invoices])]
-                })
+        invoices = self.env['account.invoice'].search([
+            ('invoice_batch_id', '=', invoice_batch.id)
+        ])
+        if not invoices:
+            raise UserError(_('There is no invoiceable line.'))
 
-                for invoice in invoices:
-                    if invoice.partner_id.invoice_batch_sending_method:
-                        invoice.invoice_batch_sending_method = invoice.partner_id.invoice_batch_sending_method
-                    if invoice.partner_id.invoice_batch_email_partner_id:
-                        invoice.invoice_batch_email_partner_id = invoice.partner_id.invoice_batch_email_partner_id
+        if self._context.get('open_batch', False):
+            action = self.env.ref('account_invoice_batches.account_invoice_batch_action').read()[0]
+            action['views'] = [
+                (self.env.ref('account_invoice_batches.account_invoice_batch_view_form').id, 'form')]
+            action['res_id'] = invoice_batch.id
 
-                if self._context.get('open_batch', False):
-                    action = self.env.ref('account_invoice_batches.account_invoice_batch_action').read()[0]
-                    action['views'] = [
-                        (self.env.ref('account_invoice_batches.account_invoice_batch_view_form').id, 'form')]
-                    action['res_id'] = invoice_batch.id
-
-                    return action
+            return action
 
         return res
