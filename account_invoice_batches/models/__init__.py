@@ -7,4 +7,5 @@ from . import res_config_settings
 from . import common
 from . import res_partner
 from . import account_invoice
+from . import sale
 from . import account_invoice_batch
