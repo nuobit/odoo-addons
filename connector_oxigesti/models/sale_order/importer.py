@@ -144,8 +144,7 @@ class SaleOrderImporter(Component):
             picking_id.button_validate()
         except:
             sale_order.action_cancel()
-            import traceback
-            sale_order.note = traceback.format_exc()
+            sale_order.unlink()
             raise
 
         sale_order.action_done()
