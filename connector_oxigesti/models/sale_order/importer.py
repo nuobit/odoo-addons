@@ -78,73 +78,75 @@ class SaleOrderImporter(Component):
         sale_order.action_confirm()
 
         ## picking validation
-        try:
-            binder = self.binder_for('oxigesti.sale.order.line')
-            adapter = self.component(usage='backend.adapter',
-                                     model_name='oxigesti.sale.order.line')
-            picking_id = None
-            for order_line_id in binding.oxigesti_order_line_ids.filtered(lambda x: x.move_ids):
-                if len(order_line_id.move_ids) > 1:
-                    raise AssertionError("The order line '%s' has more than one move lines. "
-                                         "It should be exactly 1. " % (order_line_id,))
-                move_id = order_line_id.move_ids
-                if move_id.move_line_ids:
-                    raise AssertionError("The movement '%s' already has lines. "
-                                         "It should be empty before inserting the new data" % (move_id,))
-                if not picking_id:
-                    picking_id = move_id.picking_id
-                else:
-                    if picking_id != move_id.picking_id:
-                        raise AssertionError("Unexpected error! The same order contains lines "
-                                             "belonging to a different picking '%s' and '%s'" % (
-                                                 picking_id.name, move_id.picking_id.name
-                                             ))
-                move_line_id_d = {
-                    'product_id': move_id.product_id.id,
-                    'location_id': move_id.location_id.id,
-                    'location_dest_id': move_id.location_dest_id.id,
-                    'qty_done': move_id.product_uom_qty,
-                    'product_uom_id': move_id.product_uom.id,
-                    'picking_id': picking_id.id,
-                }
-
-                external_id = binder.to_external(order_line_id)
-                tracking_name = adapter.id2dict(external_id)['Partida']
-
-                if not tracking_name and move_id.product_id.tracking == 'lot':
-                    tracking_name = '999'
-
-                if tracking_name:
-                    Lot = self.env['stock.production.lot']
-                    lot_id = Lot.search([
-                        ('company_id', '=', self.backend_record.company_id.id),
-                        ('product_id', '=', move_id.product_id.id),
-                        ('name', '=', tracking_name),
-                    ])
-                    picking_type_id = binding.warehouse_id.out_type_id
-                    if not lot_id:
-                        if not picking_type_id.use_create_lots:
-                            raise AssertionError("The creation of Lot/Serial number is "
-                                                 "not allowed in this operation type")
-                        lot_id = Lot.create({
-                            'company_id': self.backend_record.company_id.id,
-                            'product_id': move_id.product_id.id,
-                            'name': tracking_name,
-                        })
+        stock_order_lines = binding.oxigesti_order_line_ids.filtered(lambda x: x.move_ids)
+        if stock_order_lines:
+            try:
+                binder = self.binder_for('oxigesti.sale.order.line')
+                adapter = self.component(usage='backend.adapter',
+                                         model_name='oxigesti.sale.order.line')
+                picking_id = None
+                for order_line_id in stock_order_lines:
+                    if len(order_line_id.move_ids) > 1:
+                        raise AssertionError("The order line '%s' has more than one move lines. "
+                                             "It should be exactly 1. " % (order_line_id,))
+                    move_id = order_line_id.move_ids
+                    if move_id.move_line_ids:
+                        raise AssertionError("The movement '%s' already has lines. "
+                                             "It should be empty before inserting the new data" % (move_id,))
+                    if not picking_id:
+                        picking_id = move_id.picking_id
                     else:
-                        if not picking_type_id.use_existing_lots:
-                            raise AssertionError("The use of existing Lot/Serial number is "
-                                                 "not allowed in this operation type")
+                        if picking_id != move_id.picking_id:
+                            raise AssertionError("Unexpected error! The same order contains lines "
+                                                 "belonging to a different picking '%s' and '%s'" % (
+                                                     picking_id.name, move_id.picking_id.name
+                                                 ))
+                    move_line_id_d = {
+                        'product_id': move_id.product_id.id,
+                        'location_id': move_id.location_id.id,
+                        'location_dest_id': move_id.location_dest_id.id,
+                        'qty_done': move_id.product_uom_qty,
+                        'product_uom_id': move_id.product_uom.id,
+                        'picking_id': picking_id.id,
+                    }
 
-                    move_line_id_d.update({
-                        'lot_id': lot_id.id,
-                    })
-                move_id.move_line_ids = [(0, False, move_line_id_d)]
+                    external_id = binder.to_external(order_line_id)
+                    tracking_name = adapter.id2dict(external_id)['Partida']
 
-            picking_id.button_validate()
-        except:
-            sale_order.action_cancel()
-            sale_order.unlink()
-            raise
+                    if not tracking_name and move_id.product_id.tracking == 'lot':
+                        tracking_name = '999'
+
+                    if tracking_name:
+                        Lot = self.env['stock.production.lot']
+                        lot_id = Lot.search([
+                            ('company_id', '=', self.backend_record.company_id.id),
+                            ('product_id', '=', move_id.product_id.id),
+                            ('name', '=', tracking_name),
+                        ])
+                        picking_type_id = binding.warehouse_id.out_type_id
+                        if not lot_id:
+                            if not picking_type_id.use_create_lots:
+                                raise AssertionError("The creation of Lot/Serial number is "
+                                                     "not allowed in this operation type")
+                            lot_id = Lot.create({
+                                'company_id': self.backend_record.company_id.id,
+                                'product_id': move_id.product_id.id,
+                                'name': tracking_name,
+                            })
+                        else:
+                            if not picking_type_id.use_existing_lots:
+                                raise AssertionError("The use of existing Lot/Serial number is "
+                                                     "not allowed in this operation type")
+
+                        move_line_id_d.update({
+                            'lot_id': lot_id.id,
+                        })
+                    move_id.move_line_ids = [(0, False, move_line_id_d)]
+
+                picking_id.button_validate()
+            except:
+                sale_order.action_cancel()
+                sale_order.unlink()
+                raise
 
         sale_order.action_done()
