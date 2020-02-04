@@ -36,7 +36,7 @@ class SaleOrderLineImportMapper(Component):
     @mapping
     def product(self, record):
         oxigesti_articulo = record['CodigoArticulo']
-        binding = self.env['oxigesti.product.product'].search([
+        binding = self.env['oxigesti.product.product'].with_context(active_test=False).search([
             ('company_id', '=', self.backend_record.company_id.id),
             ('default_code', '=', oxigesti_articulo),
         ])
