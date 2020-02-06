@@ -7,6 +7,7 @@ import time
 from odoo import api, fields, models, _
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
+from odoo.addons.queue_job.job import job
 
 
 class SaleAdvancePaymentInv(models.TransientModel):
@@ -14,6 +15,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
 
     invoice_batch_create = fields.Boolean(string='Create invoice batch',
                                           default=True)
+    in_background = fields.Boolean(string='In background', default=False)
 
     @api.multi
     def _create_invoice(self, order, so_line, amount):
@@ -33,23 +35,51 @@ class SaleAdvancePaymentInv(models.TransientModel):
 
         return invoice
 
+    @job
+    def create_invoice_group(self, order_group, invoice_batch=None):
+        context = {'active_ids': order_group.mapped('id')}
+        if invoice_batch:
+            context.update({
+                'batch_id': invoice_batch.id,
+            })
+        self = self.with_context(**context)
+        return super(SaleAdvancePaymentInv, self).create_invoices()
+
     @api.multi
     def create_invoices(self):
-        if not self.invoice_batch_create:
+        if not self.in_background and not self.invoice_batch_create:
             return super(SaleAdvancePaymentInv, self).create_invoices()
 
-        invoice_batch = self.env['account.invoice.batch'].create({
-            'date': fields.Datetime.now(),
-        })
+        invoice_batch = None
+        if self.invoice_batch_create:
+            invoice_batch = self.env['account.invoice.batch'].create({
+                'date': fields.Datetime.now(),
+            })
 
-        self = self.with_context(batch_id=invoice_batch.id)
-        res = super(SaleAdvancePaymentInv, self).create_invoices()
+        if self.in_background:
+            sale_orders = self.env['sale.order'].browse(self._context.get('active_ids', []))
+            order_groups = {}
+            for order in sale_orders:
+                group_key = order._get_sale_invoicing_group_key()
+                if group_key not in order_groups:
+                    order_groups[group_key] = order
+                else:
+                    order_groups[group_key] += order
 
-        invoices = self.env['account.invoice'].search([
-            ('invoice_batch_id', '=', invoice_batch.id)
-        ])
-        if not invoices:
-            raise UserError(_('There is no invoiceable line.'))
+            for order_group in order_groups.values():
+                self.with_delay().create_invoice_group(order_group, invoice_batch)
+
+            res = {'type': 'ir.actions.act_window_close'}
+        else:
+            if invoice_batch:
+                self = self.with_context(batch_id=invoice_batch.id)
+            res = super(SaleAdvancePaymentInv, self).create_invoices()
+
+            invoices = self.env['account.invoice'].search([
+                ('invoice_batch_id', '=', invoice_batch.id)
+            ])
+            if not invoices:
+                raise UserError(_('There is no invoiceable line.'))
 
         if self._context.get('open_batch', False):
             action = self.env.ref('account_invoice_batches.account_invoice_batch_action').read()[0]
