@@ -168,6 +168,11 @@ msgid "Invoice"
 msgstr "Factura"
 
 #. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv_in_background
+msgid "In background"
+msgstr "En segundo plano"
+
+#. module: account_invoice_batches
 #: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_invoice_batch_id
 #: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
 #: model:ir.ui.view,arch_db:account_invoice_batches.invoice_form
