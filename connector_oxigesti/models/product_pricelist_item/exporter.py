@@ -45,7 +45,8 @@ class ProductPricelistItemBatchExporter(Component):
                                fields.Datetime.from_string(x.write_date) > since_date or
                                fields.Datetime.from_string(p.write_date) > since_date) and
                               x.applied_on == '1_product' and
-                              x.compute_price == 'fixed'):
+                              x.compute_price == 'fixed' and
+                              x.sudo().product_tmpl_id.company_id == p.company_id):
                 if pl.product_tmpl_id.default_code and partner_external_id:
                     external_id = [pl.product_tmpl_id.default_code,
                                    partner_adapter.id2dict(partner_external_id)['Codigo_Mutua']]
