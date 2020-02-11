@@ -82,7 +82,7 @@ msgstr "Caja de empotrar incluida"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Cut hole dimensions"
-msgstr "Dimensiones de la caja de empotrado"
+msgstr "Dimensiones de empotramiento"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document

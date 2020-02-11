@@ -82,7 +82,7 @@ msgstr "Boîte de trou cut inclus"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Cut hole dimensions"
-msgstr "Dimensions des trous découpés"
+msgstr "Dimensions des trous de coupe"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document

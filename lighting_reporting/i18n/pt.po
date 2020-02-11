@@ -82,7 +82,7 @@ msgstr "Caixa furo corte incluído"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Cut hole dimensions"
-msgstr "Dimensões buraco cortado"
+msgstr "Dimensões do furo de corte"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
