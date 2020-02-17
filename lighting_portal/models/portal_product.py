@@ -5,12 +5,14 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
+
 class LightingPortalProduct(models.Model):
     _name = 'lighting.portal.product'
     _rec_name = 'reference'
     _order = 'reference'
 
     reference = fields.Char(string='Reference', required=True)
+    barcode = fields.Char(string='Barcode')
     description = fields.Char(string='Description')
     catalog = fields.Char(string='Catalog')
     qty_available = fields.Integer(string='Quantity available')

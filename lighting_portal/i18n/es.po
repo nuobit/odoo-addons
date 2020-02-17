@@ -26,6 +26,11 @@ msgid "Allows customers to get data on a restricted environment"
 msgstr "Permite a los clientes consultar datos en un entorno restringido"
 
 #. module: lighting_portal
+#: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_barcode
+msgid "Barcode"
+msgstr "Código de barras"
+
+#. module: lighting_portal
 #: model:ir.model.fields,field_description:lighting_portal.field_lighting_portal_product_catalog
 #: model:ir.ui.view,arch_db:lighting_portal.portal_product_view_search
 msgid "Catalog"

@@ -5,7 +5,7 @@
 {
     'name': "Lighting Portal",
     'description': "Lighting Portal",
-    'version': '11.0.0.4.0',
+    'version': '11.0.0.5.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -15,6 +15,6 @@
         'security/portal_security.xml',
         'security/ir.model.access.csv',
         'views/portal_views.xml',
-        ],
+    ],
     'installable': True,
 }
