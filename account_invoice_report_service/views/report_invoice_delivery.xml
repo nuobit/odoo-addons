@@ -144,8 +144,16 @@
                                 <table class="rid-table0">
                                     <thead>
                                         <tr>
+                                            <th width="10%"/>
+                                            <th width="14%">Document no.</th>
+                                            <th width="13%" class="text-right">Service no.</th>
+                                            <th width="13%" class="text-right">Customer ref.</th>
+                                            <th width="9%" class="text-right">Date</th>
+                                            <th colspan="4" width="41%"/>
+                                        </tr>
+                                        <tr>
                                             <th width="10%">Item</th>
-                                            <th width="49%">Description</th>
+                                            <th colspan="4" width="49%">Description</th>
                                             <th width="13%" class="text-right">Quantity</th>
                                             <th width="10%" class="text-right">Unit Price</th>
                                             <th width="8%" class="text-right">Discount</th>
@@ -170,21 +178,21 @@
                                                         <table class="rid-table3">
                                                             <tbody>
                                                                 <tr>
-                                                                    <td width="10"/>
-                                                                    <td width="15%">
+                                                                    <td width="10%"/>
+                                                                    <td width="14%">
                                                                         <span t-field="order.name"/>
                                                                     </td>
-                                                                    <td width="13%">
+                                                                    <td width="13%" class="text-right">
                                                                         <t t-if="order.service_number">
                                                                             <span t-esc="str(order.service_number)"/>
                                                                         </t>
                                                                     </td>
-                                                                    <td width="13%">
+                                                                    <td width="13%" class="text-right">
                                                                         <t t-if="order.client_order_ref">
                                                                             <span t-field="order.client_order_ref"/>
                                                                         </t>
                                                                     </td>
-                                                                    <td width="8%" class="text-right">
+                                                                    <td width="9%" class="text-right">
                                                                         <span t-field="order.date_order"
                                                                               t-field-options="{'widget': 'date'}"/>
                                                                     </td>
