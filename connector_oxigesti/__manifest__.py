@@ -4,7 +4,7 @@
 
 {
     'name': "Oxigesti-Odoo connector",
-    'version': '11.0.0.7.11',
+    'version': '11.0.0.8.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',
@@ -12,6 +12,7 @@
     'depends': [
         'connector_common',
         'partner_review',
+        'sale_order_service',
         'sale_line_partner_description',
         'stock',
     ],
