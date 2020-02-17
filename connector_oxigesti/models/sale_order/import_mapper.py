@@ -156,9 +156,16 @@ class SaleOrderImportMapper(Component):
 
     @only_create
     @mapping
-    def client_order(self, record):
+    def service_number(self, record):
         if record['Codigo_Servicio']:
-            return {'client_order_ref': str(record['Codigo_Servicio']).strip()}
+            return {'service_number': record['Codigo_Servicio']}
+
+    @only_create
+    @mapping
+    def client_order(self, record):
+        referencia_de_la_mutua = record['Referencia_de_la_Mutua']
+        if referencia_de_la_mutua and referencia_de_la_mutua.strip():
+            return {'client_order_ref': referencia_de_la_mutua.strip()}
 
     @only_create
     @mapping
