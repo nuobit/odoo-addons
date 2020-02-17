@@ -175,7 +175,7 @@
                                                                         <span t-field="order.name"/>
                                                                     </td>
                                                                     <td width="15%">
-                                                                        <span t-field="order.client_order_ref"/>
+                                                                        <span t-field="order.service_number"/>
                                                                     </td>
                                                                     <td width="19%" class="text-right">
                                                                         <span t-field="order.date_order"
