@@ -31,7 +31,8 @@ class ProductDatasheetController(http.Controller):
 
         # generate report
         report = http.request.env.ref('lighting_portal.action_report_product_xml')
-        product_ids = http.request.env['lighting.portal.product'].search([]).mapped('id')
+        product_ids = http.request.env['lighting.portal.product'].search([]) \
+            .sorted(lambda x: x.reference).mapped('id')
         xml_products = report.with_context(lang=lang).render_qweb_xml(product_ids, {})[0]
 
         # return report
