@@ -134,9 +134,19 @@ msgid "Credit Note"
 msgstr "Rectificativa"
 
 #. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+msgid "Customer ref."
+msgstr "Ref. cliente"
+
+#. module: account_invoice_report_service
 #: model:account.payment.method,name:account_invoice_report_service.customer_transfer_inbound
 msgid "Customer transfer"
 msgstr "Transferencia de cliente"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+msgid "Date"
+msgstr "Fecha"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
@@ -153,6 +163,11 @@ msgstr "Destino"
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 msgid "Discount"
 msgstr "Descuento"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+msgid "Document no."
+msgstr "Nº documento"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -266,8 +281,9 @@ msgid "Service delivery invoice"
 msgstr "Factura de servicio de entrega"
 
 #. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
-msgid "Service num."
+msgid "Service no."
 msgstr "Nº servicio"
 
 #. module: account_invoice_report_service

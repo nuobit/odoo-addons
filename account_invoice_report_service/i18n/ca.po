@@ -114,7 +114,7 @@ msgstr "Import"
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Authorization num."
-msgstr "Nº autorizació"
+msgstr "Núm. autorizació"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
@@ -134,9 +134,19 @@ msgid "Credit Note"
 msgstr "Rectificativa"
 
 #. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+msgid "Customer ref."
+msgstr "Ref. client"
+
+#. module: account_invoice_report_service
 #: model:account.payment.method,name:account_invoice_report_service.customer_transfer_inbound
 msgid "Customer transfer"
 msgstr "Transferència de client"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+msgid "Date"
+msgstr "Data"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
@@ -153,6 +163,11 @@ msgstr "Destinació"
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 msgid "Discount"
 msgstr "Descompte"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+msgid "Document no."
+msgstr "Núm document"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -232,7 +247,7 @@ msgstr "Imprimir factura de servei"
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 msgid "Item"
-msgstr "article"
+msgstr "Article"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
@@ -266,9 +281,10 @@ msgid "Service delivery invoice"
 msgstr "Factura de servei d'entrega"
 
 #. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
-msgid "Service num."
-msgstr "Nº servei"
+msgid "Service no."
+msgstr "Núm. servei"
 
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_delivery
