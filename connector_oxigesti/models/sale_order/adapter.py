@@ -15,6 +15,7 @@ class SaleOrderAdapter(Component):
     _apply_on = 'oxigesti.sale.order'
 
     _sql = """select s.Codigo_Servicio, s.Codigo_Mutua, s.Fecha_Servicio, 
+                     s.Referencia_de_la_Mutua,
                      s.Fecha_Modifica, 
                      s.Odoo_Verificado
               from %(schema)s.Odoo_Servicios s
