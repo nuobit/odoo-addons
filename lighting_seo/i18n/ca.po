@@ -117,6 +117,12 @@ msgid "URL"
 msgstr "URL"
 
 #. module: lighting_seo
+#: code:addons/lighting_seo/models/product.py:81
+#, python-format
+msgid "You cannot publish on the website discontinued or historical products"
+msgstr "No és possible publicar al lloc web productes descatalogats o històrics"
+
+#. module: lighting_seo
 #: code:addons/lighting_seo/models/seo_keyword.py:26
 #, python-format
 msgid "You are trying to delete a record that is still referenced by '%s' model!"

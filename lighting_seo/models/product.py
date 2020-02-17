@@ -2,7 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 
 
 def seo_preview(title, url, description):
@@ -42,6 +42,12 @@ class LightingProduct(models.Model):
         self.ensure_one()
         return self.write({'website_published': not self.website_published})
 
+    @api.onchange('state_marketing')
+    def onchange_state_marketing(self):
+        if self.state_marketing in ('D', 'H'):
+            if self.website_published:
+                self.website_published = False
+
     seo_title = fields.Char(string='Meta title', translate=True)
     seo_url = fields.Char(string='URL')
     seo_description = fields.Text(string='Meta description', translate=True)
@@ -67,6 +73,12 @@ class LightingProduct(models.Model):
     def _compute_preview(self):
         for rec in self:
             rec.meta_preview = seo_preview(rec.seo_title, rec.seo_url, rec.seo_description)
+
+    @api.constrains('state_marketing', 'website_published')
+    def check_state_published(self):
+        if self.website_published:
+            if self.state_marketing in ('D', 'H'):
+                raise ValueError(_("You cannot publish on the website discontinued or historical products"))
 
 
 class LightingProductFamily(models.Model):
