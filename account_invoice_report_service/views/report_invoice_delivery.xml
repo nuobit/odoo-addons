@@ -174,10 +174,17 @@
                                                                     <td width="15%">
                                                                         <span t-field="order.name"/>
                                                                     </td>
-                                                                    <td width="15%">
-                                                                        <span t-field="order.service_number"/>
+                                                                    <td width="13%">
+                                                                        <t t-if="order.service_number">
+                                                                            <span t-field="order.service_number"/>
+                                                                        </t>
                                                                     </td>
-                                                                    <td width="19%" class="text-right">
+                                                                    <td width="13%">
+                                                                        <t t-if="order.client_order_ref">
+                                                                            <span t-field="order.client_order_ref"/>
+                                                                        </t>
+                                                                    </td>
+                                                                    <td width="8%" class="text-right">
                                                                         <span t-field="order.date_order"
                                                                               t-field-options="{'widget': 'date'}"/>
                                                                     </td>
