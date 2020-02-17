@@ -8,12 +8,13 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class LightingPortalConnectorSync(models.TransientModel):
     _name = "lighting.portal.connector.sync"
 
     @api.model
     def synchronize(self, ids=None, context=None, reference=None):
-        if not reference:_logger.info('Start syncronization')
+        if not reference: _logger.info('Start syncronization')
         settings = self.env['lighting.portal.connector.settings'].search([]).sorted(lambda x: x.sequence)
         if settings:
             settings = settings[0]
@@ -42,7 +43,7 @@ class LightingPortalConnectorSync(models.TransientModel):
         self.synchronize_products(cursor, settings['schema'], last_update, reference=reference)
 
         ########## Syncronize ATP
-        #self.synchronize_atp(cursor, settings['schema'], last_update, reference=reference)
+        # self.synchronize_atp(cursor, settings['schema'], last_update, reference=reference)
 
         cursor.close()
         conn.close()
@@ -80,11 +81,13 @@ class LightingPortalConnectorSync(models.TransientModel):
                                1 AS "IsKit"
                         FROM product_capacity pc
                     )
-                    SELECT pm."ItemCode" as "reference", sum(pm."Available") AS "qty_available", 
-                           (CASE WHEN sum(pm."IsKit") > 0 THEN 'Y' ELSE 'N' END) AS "is_kit"
-                    FROM product_merged pm
-                    WHERE (:reference is null OR pm."ItemCode" = :reference)
-                    GROUP BY pm."ItemCode"
+                    SELECT pm."ItemCode" as "reference", p."CodeBars" as "barcode",
+                           sum(pm."Available") AS "qty_available"
+                           /*,(CASE WHEN sum(pm."IsKit") > 0 THEN 'Y' ELSE 'N' END) AS "is_kit"*/
+                    FROM product_merged pm, %(schema)s.OITM p
+                    WHERE pm."ItemCode" = p."ItemCode" and
+                          (:reference is null OR pm."ItemCode" = :reference)
+                    GROUP BY pm."ItemCode", p."CodeBars"
                 """ % dict(schema=schema)
 
         cursor.execute(stmnt, {'reference': reference})
@@ -124,7 +127,8 @@ class LightingPortalConnectorSync(models.TransientModel):
         # clean residual portal products
         if not reference:
             pim_product_references = self.env['lighting.product'].search([]).mapped("reference")
-            portal_product_orphan_ids = self.env['lighting.portal.product'].search([('reference', 'not in', pim_product_references)])
+            portal_product_orphan_ids = self.env['lighting.portal.product'].search(
+                [('reference', 'not in', pim_product_references)])
             portal_product_orphan_ids.unlink()
 
     @api.model

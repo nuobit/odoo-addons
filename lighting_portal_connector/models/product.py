@@ -62,7 +62,7 @@ class LightingProduct(models.Model):
         result = cursor.fetchone()
         if result is not None:
             result_d = dict(zip(header, result))
-            #TODO deal with more than one occurrence
+            # TODO deal with more than one occurrence
 
             for field in ext_fields:
                 setattr(self, 'ext_%s' % field.lower(), result_d[field])

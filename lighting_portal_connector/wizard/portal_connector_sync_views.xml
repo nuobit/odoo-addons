@@ -22,9 +22,9 @@
     </record>
 
     <act_window id="portal_connector_action_sync"
-           name="Synchronize"
-            res_model="lighting.portal.connector.sync"
-            view_mode="form" target="new" view_type="form"/>
+                name="Synchronize"
+                res_model="lighting.portal.connector.sync"
+                view_mode="form" target="new" view_type="form"/>
 
     <menuitem id="portal_connector_sync_menu"
               name="Synchronize"

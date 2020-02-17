@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding='UTF-8'?>
 <odoo>
-	<record id="portal_connector_sync_cron" model="ir.cron">
+    <record id="portal_connector_sync_cron" model="ir.cron">
         <field name="name">Portal Connector sync: Synchronize data</field>
         <field name="model_id" ref="model_lighting_portal_connector_sync"/>
         <field name="state">code</field>

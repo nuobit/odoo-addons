@@ -8,6 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingPortalConnectorSettings(models.Model):
     _name = 'lighting.portal.connector.settings'
+    _order = 'sequence'
 
     sequence = fields.Integer(required=True, default=1,
                               help="The sequence field is used to define the priority of settngs")
@@ -24,7 +25,7 @@ class LightingPortalConnectorSettings(models.Model):
     def name_get(self):
         vals = []
         for record in self:
-            name = '%s@%s:%i' % (record.username, record.host, record.port, )
+            name = '%s@%s:%i' % (record.username, record.host, record.port,)
 
             vals.append((record.id, name))
 

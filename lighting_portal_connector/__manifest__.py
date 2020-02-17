@@ -5,7 +5,7 @@
 {
     'name': "Lighting Portal Connector",
     'description': "Lighting Portal Connector",
-    'version': '11.0.0.3.2',
+    'version': '11.0.0.4.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -19,6 +19,6 @@
         'views/portal_connector_views.xml',
         'wizard/portal_connector_sync_views.xml',
         'data/portal_connector_data.xml',
-        ],
+    ],
     'installable': True,
 }
