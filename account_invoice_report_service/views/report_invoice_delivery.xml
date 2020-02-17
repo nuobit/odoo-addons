@@ -176,7 +176,7 @@
                                                                     </td>
                                                                     <td width="13%">
                                                                         <t t-if="order.service_number">
-                                                                            <span t-field="order.service_number"/>
+                                                                            <span t-esc="str(order.service_number)"/>
                                                                         </t>
                                                                     </td>
                                                                     <td width="13%">
