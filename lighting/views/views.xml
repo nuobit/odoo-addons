@@ -369,10 +369,12 @@
         <field name="model">lighting.product</field>
         <field name="arch" type="xml">
             <tree string="Product Tree"
-                  decoration-warning="state == 'draft'"
-                  decoration-info="state == 'to_review'"
-                  decoration-success="state_marketing == 'N'"
-                  decoration-danger="state_marketing in ('ES', 'D')"
+                  decoration-bf="state == 'draft'"
+                  decoration-it="state == 'to_review'"
+                  decoration-success="state_marketing == 'O'"
+                  decoration-info="state_marketing == 'N'"
+                  decoration-warning="state_marketing == 'ES'"
+                  decoration-danger="state_marketing == 'D'"
                   decoration-muted="state_marketing == 'H'">
                 <field name="sequence" widget="handle"/>
                 <field name="reference"/>
