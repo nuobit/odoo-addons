@@ -9,7 +9,7 @@ from odoo.addons.queue_job.job import job
 
 
 class ProductProductAdapter(Component):
-    _name = 'oxigesti.product.product'
+    _name = 'oxigesti.product.product.adapter'
     _inherit = 'oxigesti.adapter'
 
     _apply_on = 'oxigesti.product.product'
