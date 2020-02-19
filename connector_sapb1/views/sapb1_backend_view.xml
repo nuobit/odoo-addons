@@ -26,6 +26,9 @@
                     <h1>
                         <field name="name" class="oe_inline" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     </h1>
+                    <group>
+                        <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    </group>
                     <group string="Database">
                         <field name="db_host" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         <field name="db_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -73,6 +76,16 @@
                                 new records to review
                                 in the menu 'Connectors > Checkpoint'.
                             </p>
+                            <group>
+                                <div>
+                                    <label string="Import Products since"
+                                           class="oe_inline"/>
+                                    <field name="import_products_since_date" class="oe_inline"
+                                           nolabel="1"/>
+                                </div>
+                                <button name="import_products_since" type="object"
+                                        class="oe_highlight" string="Import in background"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>

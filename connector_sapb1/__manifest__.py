@@ -5,7 +5,7 @@
 {
     'name': "Connector SAP B1",
     'description': "SAP Business One connector",
-    'version': '11.0.0.1.2',
+    'version': '11.0.0.2.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',
@@ -18,11 +18,15 @@
     },
     'depends': [
         'connector',
+        'lighting',
     ],
     'data': [
-        'views/backend_views.xml',
-        'views/menus.xml',
         'security/ir.model.access.csv',
+        'security/connector_sapb1.xml',
+        'data/ir_cron.xml',
+        'views/sapb1_backend_view.xml',
+        'views/lighting_product_view.xml',
+        'views/connector_sapb1_menu.xml',
     ],
     'installable': True,
 }

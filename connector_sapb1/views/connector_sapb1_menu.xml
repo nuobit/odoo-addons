@@ -9,4 +9,14 @@
 
     <menuitem id="sapb1_backend_menu_action" name="Backends"
               parent="sapb1_menu_root" action="sapb1_backend_action"/>
+
+    <!-- TODO: Implement security strategy groups="odoo_base.group_oc_manager" -->
+    <menuitem id="sapb1_external_objects_menu" name="External Objects"
+              parent="sapb1_menu_root"
+              sequence="100"/>
+
+    <menuitem id="sapb1_external_products_menu" name="External Products"
+              parent="sapb1_external_objects_menu"
+              action="sapb1_lighting_product_action"
+              sequence="10"/>
 </odoo>
