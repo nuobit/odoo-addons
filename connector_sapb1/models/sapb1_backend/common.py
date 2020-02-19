@@ -14,6 +14,7 @@ class SapB1Backend(models.Model):
     _inherit = 'connector.backend'
 
     _description = 'SAP B1 Backend Configuration'
+    _order = 'sequence'
 
     @api.model
     def _select_state(self):
@@ -24,6 +25,15 @@ class SapB1Backend(models.Model):
     name = fields.Char('Name', required=True)
 
     sequence = fields.Integer('Sequence', required=True, default=1)
+
+    company_id = fields.Many2one(
+        comodel_name='res.company',
+        index=True,
+        required=True,
+        default=lambda self: self.env['res.company']._company_default_get(
+            'sapb1.backend'),
+        string='Company',
+    )
 
     # fileserver
     fileserver_host = fields.Char('Server', required=True)
@@ -71,3 +81,33 @@ class SapB1Backend(models.Model):
     def button_check_connection(self):
         self._check_connection()
         self.write({'state': 'checked'})
+
+    # data attributes
+    import_products_since_date = fields.Datetime('Import Products since')
+
+    # data methods
+    @api.multi
+    def import_products_since(self):
+        for rec in self:
+            since_date = fields.Datetime.from_string(rec.import_products_since_date)
+            self.env['sapb1.lighting.product'].with_delay(
+            ).import_products_since(
+                backend_record=rec, since_date=since_date)
+
+        return True
+
+    # Scheduler methods
+    @api.model
+    def get_current_user_company(self):
+        if self.env.user.id == self.env.ref('base.user_root').id:
+            raise exceptions.ValidationError(_("The cron user cannot be admin"))
+
+        return self.env.user.company_id
+
+    @api.model
+    def _scheduler_import_products(self):
+        company_id = self.get_current_user_company()
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+        self.search(domain).import_products_since()
