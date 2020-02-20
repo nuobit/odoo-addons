@@ -20,6 +20,8 @@ class IrTranslation(models.Model):
 
         if self.source == self.source.capitalize():
             trl = trl.capitalize()
+        else:
+            trl = trl.lower()
 
         self.value = trl
         self.state = 'translated'
@@ -31,6 +33,8 @@ class IrTranslation(models.Model):
 
         if self.value == self.value.capitalize():
             trl = trl.capitalize()
+        else:
+            trl = trl.lower()
 
         self.source = trl
         self.state = 'translated'
