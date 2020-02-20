@@ -5,17 +5,21 @@
 {
     'name': "Translation auto",
     'description': "Translates ir.translation literals automagically using external resources",
-    'version': '11.0.0.1.4',
+    'version': '11.0.0.1.5',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://www.nuobit.com',
-    'depends': ['base'],
+    'depends': [
+        'base',
+    ],
     'data': [
         'views/ir_translation_views.xml',
     ],
     'external_dependencies': {
-        'python': ['translate'],
+        'python': [
+            'googletrans',
+        ],
     },
     'installable': True,
 }

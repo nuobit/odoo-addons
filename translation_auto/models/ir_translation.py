@@ -5,7 +5,7 @@
 from odoo import fields, models
 
 try:
-    from py_translator import Translator
+    from googletrans import Translator
 except ImportError:
     pass
 
@@ -20,8 +20,6 @@ class IrTranslation(models.Model):
 
         if self.source == self.source.capitalize():
             trl = trl.capitalize()
-        else:
-            trl = trl.lower()
 
         self.value = trl
         self.state = 'translated'
@@ -33,8 +31,6 @@ class IrTranslation(models.Model):
 
         if self.value == self.value.capitalize():
             trl = trl.capitalize()
-        else:
-            trl = trl.lower()
 
         self.source = trl
         self.state = 'translated'
