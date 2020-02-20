@@ -5,7 +5,7 @@
 {
     'name': "Translation auto",
     'description': "Translates ir.translation literals automagically using external resources",
-    'version': '11.0.0.1.3',
+    'version': '11.0.0.1.4',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -15,7 +15,7 @@
         'views/ir_translation_views.xml',
     ],
     'external_dependencies': {
-        'python': ['py_translator'],
+        'python': ['translate'],
     },
     'installable': True,
 }
