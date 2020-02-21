@@ -608,6 +608,9 @@ class LightingProduct(models.Model):
     mbox_width = fields.Float(string='Masterbox width (cm)', track_visibility='onchange')
     mbox_height = fields.Float(string='Masterbox height (cm)', track_visibility='onchange')
 
+    # inventory tab
+    stock_available = fields.Float(string="Available stock", readonly=True, track_visibility='onchange')
+
     # marketing tab
     state_marketing = fields.Selection([
         ('O', 'Online'),

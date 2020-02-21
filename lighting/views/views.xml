@@ -313,6 +313,11 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Inventory">
+                            <group>
+                                <field name="stock_available"/>
+                            </group>
+                        </page>
                         <page string="Marketing" id="marketing_tab">
                             <group attrs="{'invisible': [('state', '!=', 'published')]}" col="2">
                                 <group colspan="2">
