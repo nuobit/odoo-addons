@@ -390,6 +390,7 @@
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state" invisible="1"/>
                 <field name="state_marketing"/>
+                <field name="stock_available"/>
             </tree>
         </field>
     </record>

@@ -101,6 +101,12 @@ msgid "Applications"
 msgstr "Aplicaciones"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_available
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Available stock"
+msgstr "Stock disponible"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_ids
 #: model:ir.ui.menu,name:lighting.product_installations_menu
 msgid "Installations"
