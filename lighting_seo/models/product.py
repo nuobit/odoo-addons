@@ -76,9 +76,9 @@ class LightingProduct(models.Model):
 
     @api.constrains('state_marketing', 'website_published')
     def check_state_published(self):
-        if self.website_published:
-            if self.state_marketing in ('D', 'H'):
-                raise ValueError(_("You cannot publish on the website discontinued or historical products"))
+        if self.state_marketing in ('D', 'H'):
+            if self.website_published:
+                self.website_published = False
 
 
 class LightingProductFamily(models.Model):
