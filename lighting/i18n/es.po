@@ -1269,6 +1269,11 @@ msgid "Input voltage"
 msgstr "Tensión de entrada"
 
 #. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_form_view
+msgid "Inventory"
+msgstr "Inventario"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_location_ids
 #: model:ir.ui.menu,name:lighting.product_locations_menu
 msgid "Locations"

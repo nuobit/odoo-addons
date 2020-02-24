@@ -610,7 +610,8 @@ class LightingProduct(models.Model):
 
     # inventory tab
     stock_available = fields.Float(string="Available stock", readonly=True,
-                                   required=True, default=0, track_visibility='onchange')
+                                   required=True, default=0,
+                                   copy=False, track_visibility='onchange')
 
     @api.onchange('state_marketing', 'stock_available')
     def onchange_stock_available(self):
