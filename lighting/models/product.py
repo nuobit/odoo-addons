@@ -611,6 +611,11 @@ class LightingProduct(models.Model):
     # inventory tab
     stock_available = fields.Float(string="Available stock", readonly=True, track_visibility='onchange')
 
+    @api.onchange('state_marketing', 'stock_available')
+    def onchange_stock_available(self):
+        if self.state_marketing == 'ES' and self.stock_available == 0:
+            self.state_marketing = 'H'
+
     # marketing tab
     state_marketing = fields.Selection([
         ('O', 'Online'),
@@ -696,6 +701,12 @@ class LightingProduct(models.Model):
             if rec in rec.optional_ids:
                 raise ValidationError(
                     _("The current reference cannot be defined as a recomended accessory"))
+
+    @api.constrains('state_marketing', 'stock_available')
+    def check_stock_available(self):
+        for rec in self:
+            if rec.state_marketing == 'ES' and rec.stock_available == 0:
+                rec.state_marketing = 'H'
 
     @api.model
     def create(self, values):
