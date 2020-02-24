@@ -76,9 +76,10 @@ class LightingProduct(models.Model):
 
     @api.constrains('state_marketing', 'website_published')
     def check_state_published(self):
-        if self.state_marketing in ('D', 'H'):
-            if self.website_published:
-                self.website_published = False
+        for rec in self:
+            if rec.state_marketing in ('D', 'H'):
+                if rec.website_published:
+                    rec.website_published = False
 
 
 class LightingProductFamily(models.Model):
