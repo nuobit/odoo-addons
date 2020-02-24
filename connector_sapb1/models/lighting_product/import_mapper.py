@@ -51,6 +51,23 @@ class LigthingProductImportMapper(Component):
         if record['Available']:
             return {'stock_available': record['Available']}
 
+    @mapping
+    def dimensions(self, record):
+        values = {}
+        if record['SWeight1']:
+            values['ibox_weight'] = record['SWeight1']
+        if record['SVolume']:
+            values['ibox_volume'] = record['SVolume']
+        if record['SLength1']:
+            values['ibox_length'] = record['SLength1']
+        if record['SWidth1']:
+            values['ibox_width'] = record['SWidth1']
+        if record['SHeight1']:
+            values['ibox_height'] = record['SHeight1']
+
+        if values:
+            return values
+
     @only_create
     @mapping
     def state_marketing_state(self, record):

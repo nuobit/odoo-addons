@@ -18,6 +18,7 @@ class LightingProductAdapter(Component):
                         SELECT p."ItemCode", p."ItemName", p."CodeBars", p."AvgPrice", 
                                p."ItmsGrpCod", p."U_U_familia", p."U_U_aplicacion",
                                p."U_ACC_Obsmark",
+                               p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
                                to_varchar(COALESCE(to_date(p."UpdateDate"), TO_DATE('1900-12-31', 
                                                    'YYYY-MM-DD'))) AS "UpdateDate_str",
                                COALESCE(REPLACE_REGEXPR('([0-9]{2})([0-9]{2})([0-9]{2})' 
@@ -30,6 +31,7 @@ class LightingProductAdapter(Component):
                         SELECT p."ItemCode", p."ItemName", p."CodeBars", p."AvgPrice",
                                g."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
                                p."U_ACC_Obsmark", 
+                               p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
                                to_timestamp(concat(p."UpdateDate_str", concat(' ', p."UpdateTS_str")), 
                                            'YYYY-MM-DD HH24:MI:SS') AS "UpdateDateTime"
                         FROM product0 p, %(schema)s.OITB g
@@ -45,7 +47,8 @@ class LightingProductAdapter(Component):
                     product as (
                         SELECT p."ItemCode", p."ItemName", p."CodeBars", p."AvgPrice",
                                p."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
-                               p."U_ACC_Obsmark", 
+                               p."U_ACC_Obsmark",
+                               p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
                                (CASE WHEN s."Available" < 0 THEN 0 ELSE s."Available" END) AS "Available",
                                (CASE WHEN SECONDS_BETWEEN(s."updateDate", p."UpdateDateTime") > 0 THEN p."UpdateDateTime"
                                 ELSE s."updateDate" END) AS "UpdateDateTime"
