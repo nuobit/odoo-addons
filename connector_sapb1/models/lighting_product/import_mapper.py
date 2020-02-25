@@ -31,11 +31,6 @@ class LigthingProductImportMapper(Component):
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 
-    # @only_create
-    # @mapping
-    # def company_id(self, record):
-    #     return {'company_id': self.backend_record.company_id.id}
-
     @mapping
     def description_manual(self, record):
         if record['ItemName'] and record['ItemName'].strip():
@@ -175,12 +170,14 @@ class LigthingProductImportMapper(Component):
                     raise Exception(_("The other variants have more than one category '%s', "
                                       "it's not possible to infer the category.") % (category,))
         else:
+            complete_name = aplicacion
+            m = re.match(r'^([^/]+) *\/ *(.+)$', aplicacion)
+            if m:
+                complete_name = ' / '.join(m.groups())
+
             category = self.env['lighting.product.category'] \
                 .with_context(lang='es_ES') \
-                .search([
-                ('parent_id', '=', False),
-                ('name', '=ilike', aplicacion),
-            ])
+                .search([('complete_name', '=ilike', complete_name)])
             if len(category) > 1:
                 raise Exception(_("Multiple Category %s found") % (', '.join(category.mapped('name')),))
 
