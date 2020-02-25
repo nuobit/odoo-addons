@@ -15,10 +15,11 @@ class LightingProductAdapter(Component):
     _sql_search = r""""""
 
     _sql_read = r"""WITH product0 AS (
-                        SELECT p."ItemCode", p."ItemName", p."CodeBars", p."AvgPrice", 
+                        SELECT p."ItemCode", p."ItemName", p."CodeBars", p."AvgPrice",
                                p."ItmsGrpCod", p."U_U_familia", p."U_U_aplicacion",
                                p."U_ACC_Obsmark",
                                p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
+                               p."LastPurDat",
                                to_varchar(COALESCE(to_date(p."UpdateDate"), TO_DATE('1900-12-31', 
                                                    'YYYY-MM-DD'))) AS "UpdateDate_str",
                                COALESCE(REPLACE_REGEXPR('([0-9]{2})([0-9]{2})([0-9]{2})' 
@@ -32,14 +33,17 @@ class LightingProductAdapter(Component):
                                g."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
                                p."U_ACC_Obsmark", 
                                p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
+                               p."LastPurDat",
                                to_timestamp(concat(p."UpdateDate_str", concat(' ', p."UpdateTS_str")), 
                                            'YYYY-MM-DD HH24:MI:SS') AS "UpdateDateTime"
                         FROM product0 p, %(schema)s.OITB g
                         WHERE p."ItmsGrpCod" = g."ItmsGrpCod" 
                     ),
                     stock AS (
-		   	            SELECT pw."ItemCode",
-		  	                   pw."OnHand" - pw."IsCommited" AS "Available",
+                        SELECT pw."ItemCode",
+                               pw."OnHand", pw."IsCommited", pw."OnOrder",
+                               pw."OnHand" - pw."IsCommited" AS "Available",
+                               pw."AvgPrice", pw."StockValue",
 			                   pw."updateDate" 
 			            FROM %(schema)s.OITW pw
 			            WHERE pw."WhsCode" = '00'
@@ -49,7 +53,9 @@ class LightingProductAdapter(Component):
                                p."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
                                p."U_ACC_Obsmark",
                                p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
+                               s."OnHand",  s."IsCommited", s."OnOrder",
                                (CASE WHEN s."Available" < 0 THEN 0 ELSE s."Available" END) AS "Available",
+                               s."StockValue", p."LastPurDat",
                                (CASE WHEN SECONDS_BETWEEN(s."updateDate", p."UpdateDateTime") > 0 THEN p."UpdateDateTime"
                                 ELSE s."updateDate" END) AS "UpdateDateTime"
                         FROM product1 p, stock s

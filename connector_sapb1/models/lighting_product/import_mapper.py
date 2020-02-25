@@ -43,8 +43,32 @@ class LigthingProductImportMapper(Component):
 
     @mapping
     def stock(self, record):
+        values = {}
         if record['Available']:
-            return {'stock_available': record['Available']}
+            values['stock_available'] = record['Available']
+
+        if record['OnHand']:
+            values['stock_onhand'] = record['OnHand']
+
+        if record['IsCommited']:
+            values['qty_commited'] = record['IsCommited']
+
+        if record['OnOrder']:
+            values['qty_onorder'] = record['OnOrder']
+
+        if record['AvgPrice']:
+            values['avg_cost'] = record['AvgPrice']
+
+        if record['StockValue']:
+            values['stock_value'] = record['StockValue']
+
+        if values:
+            return values
+
+    @mapping
+    def last_purchase_date(self, record):
+        if record['LastPurDat']:
+            return {'last_purchase_date': record['LastPurDat']}
 
     @mapping
     def dimensions(self, record):
