@@ -612,6 +612,24 @@ class LightingProduct(models.Model):
     stock_available = fields.Float(string="Available stock", readonly=True,
                                    required=True, default=0,
                                    copy=False, track_visibility='onchange')
+    stock_onhand = fields.Float(string="On hand stock", readonly=True,
+                                required=True, default=0,
+                                copy=False, track_visibility='onchange')
+    qty_commited = fields.Float(string="Commited quantity", readonly=True,
+                                required=True, default=0,
+                                copy=False, track_visibility='onchange')
+    qty_onorder = fields.Float(string="On order quantity", readonly=True,
+                               required=True, default=0,
+                               copy=False, track_visibility='onchange')
+
+    avg_cost = fields.Float(string="Average cost", readonly=True,
+                            required=True, default=0,
+                            copy=False, track_visibility='onchange')
+    stock_value = fields.Float(string="Stock value", readonly=True,
+                                   required=True, default=0,
+                                   copy=False, track_visibility='onchange')
+    last_purchase_date = fields.Date(string="Last purchase date", readonly=True,
+                                     default=0, copy=False, track_visibility='onchange')
 
     @api.onchange('state_marketing', 'stock_available')
     def onchange_stock_available(self):

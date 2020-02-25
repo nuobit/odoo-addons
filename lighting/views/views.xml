@@ -317,6 +317,15 @@
                             <group>
                                 <field name="stock_available"/>
                             </group>
+                            <group>
+                                <field name="stock_onhand"/>
+                                <field name="qty_commited"/>
+                                <field name="qty_onorder"/>
+                            </group>
+                            <group>
+                                <field name="avg_cost"/>
+                                <field name="last_purchase_date"/>
+                            </group>
                         </page>
                         <page string="Marketing" id="marketing_tab">
                             <group attrs="{'invisible': [('state', '!=', 'published')]}" col="2">

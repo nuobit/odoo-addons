@@ -101,6 +101,12 @@ msgid "Available stock"
 msgstr "Estoque disponível"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_avg_cost
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Average cost"
+msgstr "Average cost"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_ids
 #: model:ir.ui.menu,name:lighting.product_installations_menu
 msgid "Installations"
@@ -253,11 +259,6 @@ msgid "Average emergency time (h)"
 msgstr "Tempo médio de emergência (h)"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_avgprice
-msgid "Average price"
-msgstr "Preço médio"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_autonomy
 msgid "Battery autonomy (h)"
 msgstr "Autonomia da bateria (h)"
@@ -397,11 +398,6 @@ msgid "Code"
 msgstr "Código"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_codebars
-msgid "Code bar"
-msgstr "Barra de código"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_consistency
 msgid "Color consistency (SDCM)"
 msgstr "Consistência de cores (SDCM)"
@@ -415,6 +411,12 @@ msgstr "Temperatura de cor (K)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_marketing_comments
 msgid "Comments"
 msgstr "Comentários"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_qty_commited
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Commited quantity"
+msgstr "Commited quantity"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.common_data_menu
@@ -749,11 +751,6 @@ msgid "Description show IP"
 msgstr "Descrição show IP"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_description_text
-msgid "Description text"
-msgstr "Texto descritivo"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_diffusor_material_ids
 msgid "Diffuser material"
 msgstr "Material difusor"
@@ -980,11 +977,6 @@ msgid "Error"
 msgstr "Erro"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_external_data_available
-msgid "External Data Available"
-msgstr "Dados Externos Disponíveis"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_ids
 #: model:ir.ui.menu,name:lighting.product_families_menu
 msgid "Families"
@@ -1046,11 +1038,6 @@ msgstr "Peixe"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_flammable_surfaces
 msgid "Flammable surfaces"
 msgstr "Superfícies inflamáveis"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_frgnname
-msgid "Foreign name"
-msgstr "Nome estrangeiro"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frame_material_ids
@@ -1278,11 +1265,6 @@ msgid "It already exists another voltage with the same parameters"
 msgstr "Já existe outra voltagem com os mesmos parâmetros"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_itemname
-msgid "Item name"
-msgstr "Nome do item"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_seo_keyword_ids
 msgid "Keywords"
 msgstr "Palavras-chave"
@@ -1494,7 +1476,7 @@ msgid "Last modified on"
 msgstr "Última modificação em"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_lastpurdat
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_last_purchase_date
 msgid "Last purchase date"
 msgstr "Data da última compra"
 
@@ -1706,9 +1688,10 @@ msgid "Number of sources"
 msgstr "Número de fontes"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_onhand
-msgid "On hand"
-msgstr "Na mão"
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_qty_onorder
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "On order quantity"
+msgstr "On order quantity"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_on_request
@@ -2176,6 +2159,12 @@ msgid "Published"
 msgstr "Publicados"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_onhand
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "On hand stock"
+msgstr "On hand stock"
+
+#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state_marketing:0
 msgid "Online"
@@ -2284,31 +2273,6 @@ msgid "Result"
 msgstr "Resultado"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_sheight1
-msgid "S Height 1"
-msgstr "S Altura 1"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_slength1
-msgid "S Length 1"
-msgstr "S Comprimento 1"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_svolume
-msgid "S Volume"
-msgstr "Volume S"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_sweight1
-msgid "S Weight 1"
-msgstr "S peso 1"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_swidth1
-msgid "S Width 1"
-msgstr "S Largura 1"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_name
 msgid "Sensor"
 msgstr "Sensor"
@@ -2399,7 +2363,7 @@ msgid "Status"
 msgstr "Status"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_stockvalue
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_value
 msgid "Stock value"
 msgstr "Valor do estoque"
 

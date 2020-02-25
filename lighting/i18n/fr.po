@@ -112,7 +112,13 @@ msgstr "Applications"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_available
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Available stock"
-msgstr "Stock disponible"
+msgstr "Available stock"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_avg_cost
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Average cost"
+msgstr "Average cost"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_ids
@@ -267,11 +273,6 @@ msgid "Average emergency time (h)"
 msgstr "Temps moyen d'éclairage de secours (h)"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_avgprice
-msgid "Average price"
-msgstr "Prix ​​moyen"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_battery_autonomy
 msgid "Battery autonomy (h)"
 msgstr "Batterie d'autonomie (h)"
@@ -416,11 +417,6 @@ msgid "Code"
 msgstr "Code"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_codebars
-msgid "Code bar"
-msgstr "Barre de code"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_consistency
 msgid "Color consistency (SDCM)"
 msgstr "Consistance chromatique (SDCM)"
@@ -434,6 +430,12 @@ msgstr "Température de couleur (K)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_marketing_comments
 msgid "Comments"
 msgstr "Remarques"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_qty_commited
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Commited quantity"
+msgstr "Commited quantity"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.common_data_menu
@@ -1066,11 +1068,6 @@ msgid "Flammable surfaces"
 msgstr "Surfaces inflammables"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_frgnname
-msgid "Foreign name"
-msgstr "Nom étranger"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frame_material_ids
 msgid "Frame material"
 msgstr "Matériau du cadre"
@@ -1296,11 +1293,6 @@ msgid "It already exists another voltage with the same parameters"
 msgstr "Il existe déjà une autre tension avec les mêmes paramètres"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_itemname
-msgid "Item name"
-msgstr "Nom de l'article"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_seo_keyword_ids
 msgid "Keywords"
 msgstr "Mots clés"
@@ -1512,7 +1504,7 @@ msgid "Last modified on"
 msgstr "Dernière modification le"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_lastpurdat
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_last_purchase_date
 msgid "Last purchase date"
 msgstr "Date de dernier achat"
 
@@ -1724,9 +1716,10 @@ msgid "Number of sources"
 msgstr "Nombre de sources"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_onhand
-msgid "On hand"
-msgstr "À portée de main"
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_qty_onorder
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "On order quantity"
+msgstr "On order quantity"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_on_request
@@ -2194,6 +2187,12 @@ msgid "Published"
 msgstr "Publié"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_onhand
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "On hand stock"
+msgstr "On hand stock"
+
+#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state_marketing:0
 msgid "Online"
@@ -2288,31 +2287,6 @@ msgid "Result"
 msgstr "Résultat"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_sheight1
-msgid "S Height 1"
-msgstr "S Hauteur 1"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_slength1
-msgid "S Length 1"
-msgstr "S Longueur 1"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_svolume
-msgid "S Volume"
-msgstr "Volume S"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_sweight1
-msgid "S Weight 1"
-msgstr "S Poids 1"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_swidth1
-msgid "S Width 1"
-msgstr "S Largeur 1"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sensor_name
 msgid "Sensor"
 msgstr "Capteur"
@@ -2403,7 +2377,7 @@ msgid "Status"
 msgstr "État"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ext_stockvalue
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_value
 msgid "Stock value"
 msgstr "Valeur de l'action"
 
