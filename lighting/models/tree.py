@@ -51,6 +51,12 @@ class LightingTreeMixin(models.AbstractModel):
             elif operator == 'ilike':
                 if value.lower() in complete_name.lower():
                     node_ids.append(node.id)
+            elif operator == '=like':
+                if value == complete_name:
+                    node_ids.append(node.id)
+            elif operator == '=ilike':
+                if value.lower() == complete_name.lower():
+                    node_ids.append(node.id)
             else:
                 raise UserError(_("Operator %s not implemented") % operator)
 
