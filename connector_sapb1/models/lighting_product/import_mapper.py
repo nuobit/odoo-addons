@@ -76,7 +76,7 @@ class LigthingProductImportMapper(Component):
         if record['SWeight1']:
             values['ibox_weight'] = record['SWeight1']
         if record['SVolume']:
-            values['ibox_volume'] = record['SVolume']
+            values['ibox_volume'] = record['SVolume'] * 1000
         if record['SLength1']:
             values['ibox_length'] = record['SLength1']
         if record['SWidth1']:
