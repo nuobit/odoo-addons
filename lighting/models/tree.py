@@ -21,7 +21,7 @@ class LightingTreeMixin(models.AbstractModel):
             if not parent_id:
                 return child_ids
             else:
-                return get_node_ancestors_chain(parent_id.parent_id, child_ids | parent_id)
+                return get_node_ancestors_chain(parent_id.parent_id, parent_id | child_ids)
 
         return ' / '.join(
             get_node_ancestors_chain(self, self.env[self._name]).mapped('name')
