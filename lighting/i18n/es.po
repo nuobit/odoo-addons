@@ -1048,11 +1048,6 @@ msgid "Error"
 msgstr "Error"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_external_data_available
-msgid "External Data Available"
-msgstr "Datos externos disponibles"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_ids
 #: model:ir.ui.menu,name:lighting.product_families_menu
 msgid "Families"
