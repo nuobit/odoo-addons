@@ -61,7 +61,7 @@ class LightingProductAdapter(Component):
                         FROM product1 p, stock s
                         WHERE p."ItemCode" = s."ItemCode" and
                               p."U_ACC_Obsmark" IN ('Novedades', 'Catalogado', 'Descatalogado', 
-                                                   'Fe Digital', 'Histórico', 'Especiales') and
+                                                   'Fe Digital', 'Histórico') and
                               p."ItmsGrpNam" in ('Cristher', 'Dopo', 'Exo', 'Indeluz', 'Accesorios')
                     )
                     select %(fields)s
