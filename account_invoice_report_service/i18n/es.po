@@ -84,6 +84,12 @@ msgstr "<span>fecha factura</span>"
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span>on</span>"
+msgstr "<span>sobre</span>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Customer code:</strong>"
 msgstr "<strong>Código cliente:</strong>"
 
