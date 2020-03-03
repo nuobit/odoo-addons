@@ -72,6 +72,7 @@
     <template id="report_invoice_delivery_document">
         <t t-call="account_invoice_report_service.external_layout_invoice_delivery">
             <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <t t-set="delivery_lines_by_order" t-value="o.get_delivery_lines_by_order()"/>
             <div class="page rid-page">
                 <table class="rid-table-2 mb16" name="invoice_line_table">
                     <thead>
@@ -143,7 +144,7 @@
                             <th>
                                 <table class="rid-table0">
                                     <thead>
-                                        <tr>
+                                        <tr t-if="list(filter(None, [x[0] for x in delivery_lines_by_order]))">
                                             <th width="10%"/>
                                             <th width="14%">Document no.</th>
                                             <th width="13%" class="text-right">Service no.</th>
@@ -165,42 +166,40 @@
                         </tr>
                     </thead>
                     <tbody class="invoice_tbody">
-                        <t t-foreach="o.get_delivery_lines_by_order()" t-as="l">
+                        <t t-foreach="delivery_lines_by_order" t-as="l">
                             <t t-set="order" t-value="l[0]"/>
                             <t t-set="invoice_lines" t-value="l[1]"/>
                             <tr>
                                 <td>
                                     <table class="rid-table2">
                                         <tbody>
-                                            <tr>
+                                            <tr t-if="order" class="rid-tr2-order-header">
                                                 <td>
-                                                    <t t-if="order">
-                                                        <table class="rid-table3">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td width="10%"/>
-                                                                    <td width="14%">
-                                                                        <span t-field="order.name"/>
-                                                                    </td>
-                                                                    <td width="13%" class="text-right">
-                                                                        <t t-if="order.service_number">
-                                                                            <span t-esc="str(order.service_number)"/>
-                                                                        </t>
-                                                                    </td>
-                                                                    <td width="13%" class="text-right">
-                                                                        <t t-if="order.client_order_ref">
-                                                                            <span t-field="order.client_order_ref"/>
-                                                                        </t>
-                                                                    </td>
-                                                                    <td width="9%" class="text-right">
-                                                                        <span t-field="order.date_order"
-                                                                              t-field-options="{'widget': 'date'}"/>
-                                                                    </td>
-                                                                    <td width="41%"/>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </t>
+                                                    <table class="rid-table3">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="10%"/>
+                                                                <td width="14%">
+                                                                    <span t-field="order.name"/>
+                                                                </td>
+                                                                <td width="13%" class="text-right">
+                                                                    <t t-if="order.service_number">
+                                                                        <span t-esc="str(order.service_number)"/>
+                                                                    </t>
+                                                                </td>
+                                                                <td width="13%" class="text-right">
+                                                                    <t t-if="order.client_order_ref">
+                                                                        <span t-field="order.client_order_ref"/>
+                                                                    </t>
+                                                                </td>
+                                                                <td width="9%" class="text-right">
+                                                                    <span t-field="order.date_order"
+                                                                          t-field-options="{'widget': 'date'}"/>
+                                                                </td>
+                                                                <td width="41%"/>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </td>
                                             </tr>
                                             <t t-if="invoice_lines">
