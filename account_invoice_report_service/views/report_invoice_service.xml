@@ -109,7 +109,8 @@
                                                 <div>
                                                     <p>
                                                         <div style="font-size: 14px;">
-                                                            <strong t-field="o.partner_id.name"/>
+                                                            <t t-set="partner" t-value="o.partner_id.parent_id or o.partner_id"/>
+                                                            <strong t-field="partner.name"/>
                                                         </div>
                                                         <div style="font-size: 12px;">
                                                             <div t-if="o.partner_id.street"
