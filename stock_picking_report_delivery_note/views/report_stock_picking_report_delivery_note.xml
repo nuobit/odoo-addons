@@ -127,8 +127,12 @@
                                         <tr>
                                             <td colspan="2">
                                                 <div class="row mt16 mb16" id="informations">
+                                                    <div t-if="o.origin" class="col-xs-2">
+                                                        <strong>Origin</strong>
+                                                        <p t-field="o.origin"/>
+                                                    </div>
                                                     <div t-if="o.date_done"
-                                                         class="col-xs-3">
+                                                         class="col-xs-2">
                                                         <strong>Delivery note date</strong>
                                                         <p t-field="o.date_done" t-field-options="{'widget': 'date'}"/>
                                                     </div>
@@ -137,7 +141,7 @@
                                                         <p t-field="o.sale_id.client_order_ref"/>
                                                     </div>
                                                     <div t-if="o.partner_id.ref"
-                                                         class="col-xs-3">
+                                                         class="col-xs-2">
                                                         <strong>Customer code</strong>
                                                         <p t-field="o.partner_id.ref"/>
                                                     </div>

@@ -51,6 +51,11 @@ msgstr "<strong>Fecha albarán</strong>"
 
 #. module: stock_picking_report_delivery_note
 #: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.stock_picking_report_delivery_note_document
+msgid "<strong>Origin</strong>"
+msgstr "<strong>Origen</strong>"
+
+#. module: stock_picking_report_delivery_note
+#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.stock_picking_report_delivery_note_document
 msgid "<strong>Payment terms</strong>"
 msgstr "<strong>Plazo de pago</strong>"
 
