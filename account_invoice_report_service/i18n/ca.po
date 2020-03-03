@@ -90,6 +90,12 @@ msgstr "<span>sobre</span>"
 #. module: account_invoice_report_service
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 #: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<strong>Comment:</strong>"
+msgstr "<strong>Comentari:</strong>"
+
+#. module: account_invoice_report_service
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Customer code:</strong>"
 msgstr "<strong>Codi client:</strong>"
 
