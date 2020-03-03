@@ -92,8 +92,8 @@ class StockPickingImportSerials(models.TransientModel):
         sheet = book.sheet_by_index(0)
 
         LAST_COLUMN = 2
-        if sheet.nrows < LAST_COLUMN + 1:
-            raise UserError(_("Incorrect format file, the number of columns must be 2"))
+        if sheet.ncols < LAST_COLUMN:
+            raise UserError(_("Incorrect format file, the number of columns must be 2 minimum"))
 
         # group serials by product
         product_serial = {}
