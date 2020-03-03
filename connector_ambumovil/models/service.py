@@ -22,9 +22,14 @@ class AmbumovilService(models.AbstractModel):
         rounding = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         product_stock_ld = []
         for q in quants.sorted(lambda x: (x.product_id.name, x.product_id.default_code, x.id)):
+            product_name = q.product_id.name
+            if q.product_id.attribute_value_ids:
+                product_name = ' '.join([
+                    product_name, ' '.join(q.product_id.attribute_value_ids.mapped('name'))])
+
             quant_d = {
                 'product_id': q.product_id.id,
-                'product_name': q.product_id.name,
+                'product_name': product_name,
                 'quantity': float_round(q.quantity, precision_digits=rounding),
             }
             if q.product_id.default_code:
