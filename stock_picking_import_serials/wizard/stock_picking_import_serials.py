@@ -169,6 +169,9 @@ class StockPickingImportSerials(models.TransientModel):
             else:
                 tracking_numbers_paired, tracking_numbers_rest = tns_pending[:dmls_n], tns_pending[dmls_n:]
                 for tracking_number, line in zip(tracking_numbers_paired, dmls_pending):
+                    # qty_done is always 1 on serial
+                    line.qty_done = 1
+
                     # find/create lot
                     lot_id = self.env['stock.production.lot'].search([
                         ('company_id', '=', picking.company_id.id),
