@@ -16,6 +16,7 @@ class AmbumovilService(models.AbstractModel):
             ('company_id', '=', company_id),
             ('location_id.code', '=', code),
             ('quantity', '>', 0),
+            ('product_id.asset_category_id', '=', False),
         ])
 
         rounding = self.env['decimal.precision'].precision_get('Product Unit of Measure')
@@ -71,6 +72,9 @@ class AmbumovilService(models.AbstractModel):
         move_lines = []
         for product_id, pmoves in moves9.items():
             obj = self.env['product.product'].browse(product_id)
+            if obj.asset_category_id:
+                raise Exception("You cannot consume an asset. %s [%s]"
+                                % (obj, obj.default_code))
             move_lines.append({
                 'product_id': obj.id,
                 'product_uom': obj.uom_id.id,
