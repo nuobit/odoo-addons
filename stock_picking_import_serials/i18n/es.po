@@ -124,8 +124,8 @@ msgstr "Importar números de serie"
 #. module: stock_picking_import_serials
 #: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:103
 #, python-format
-msgid "Incorrect format file, the number of columns must be 2"
-msgstr "Archivo con formato incorrecto, el número de columnas debe ser 2"
+msgid "Incorrect format file, the number of columns must be 2 minimum"
+msgstr "Archivo con formato incorrecto, el número de columnas debe ser 2 como mínimo"
 
 #. module: stock_picking_import_serials
 #: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials___last_update
