@@ -81,14 +81,14 @@ class AccountInvoice(models.Model):
 
         # sort and join with lines w/o orders
         order_sorted_l = []
+        if no_order:
+            order_sorted_l.append((None, no_order.sorted(lambda x: (x.sequence, x.id))))
+
         for order, invoice_lines in sorted(order_d.items(),
                                            key=lambda x: (x[0].date_order,
                                                           x[0].client_order_ref,
                                                           x[0].service_number)):
             order_sorted_l.append((order, order_d[order].sorted(lambda x: (x.sequence, x.id))))
-
-        if no_order:
-            order_sorted_l.append((None, no_order.sorted(lambda x: (x.sequence, x.id))))
 
         return order_sorted_l
 
