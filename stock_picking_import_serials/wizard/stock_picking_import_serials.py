@@ -26,7 +26,7 @@ def _get_cell(sheet, row_index, col_index, ctype, nullable=False):
     if ctype == current_ctype == xlrd.XL_CELL_TEXT:
         value = value.strip() or None
         if not nullable and not value:
-            raise UserError(_("Null value in cell '%s'") % cellname)
+            raise UserError(_("Null value in cell %s") % cellname)
     elif ctype == current_ctype == xlrd.XL_CELL_NUMBER:
         pass
     else:
@@ -34,7 +34,7 @@ def _get_cell(sheet, row_index, col_index, ctype, nullable=False):
             current_ctype = MAP_TYPES[current_ctype]
         if ctype in MAP_TYPES:
             ctype = MAP_TYPES[ctype]
-        raise UserError(_("Wrong format in cell '%s'. Expected '%s', found '%s'") % (
+        raise UserError(_("Wrong format in cell %s. Expected %s, found %s") % (
             cellname, ctype, current_ctype))
 
     return value
@@ -115,7 +115,7 @@ class StockPickingImportSerials(models.TransientModel):
                     product_serial[default_code] = [tracking_number]
                 else:
                     if tracking_number in product_serial[default_code]:
-                        raise UserError(_("The tracking number '%s' duplicated") % tracking_number)
+                        raise UserError(_("The tracking number %s duplicated") % tracking_number)
                     product_serial[default_code].append(tracking_number)
 
         if not product_serial:
@@ -129,26 +129,26 @@ class StockPickingImportSerials(models.TransientModel):
                 ('default_code', '=', default_code),
             ])
             if not product:
-                raise UserError(_("The product '%s' does not exist") % default_code)
+                raise UserError(_("The product %s does not exist") % default_code)
             if len(product) > 1:
-                raise UserError(_("There's more than one product with reference '%s'") % default_code)
+                raise UserError(_("There's more than one product with reference %s") % default_code)
             if product.tracking != 'serial':
-                raise UserError(_("The product '%s' has no 'serial' tracking type") % default_code)
+                raise UserError(_("The product %s has no 'serial' tracking type") % default_code)
 
             # get lines of the picking lines
             product_move_lines = picking.move_lines.filtered(lambda x: x.product_id.id == product.id)
             if not product_move_lines:
-                raise UserError(_("There's no lines with product '%s'") % default_code)
+                raise UserError(_("There's no lines with product %s") % default_code)
 
             detail_move_lines = product_move_lines.mapped('move_line_ids')
             if not detail_move_lines:
-                raise UserError(_("The line with the product '%s' has no detail movements created") % default_code)
+                raise UserError(_("The line with the product %s has no detail movements created") % default_code)
 
             # classify already imported and pending
             dmls_pending, tns_imported = self.env['stock.move.line'], []
             for dml in detail_move_lines.sorted(lambda x: (x.move_id.sequence, x.id)):
                 if dml.product_uom_qty != 1:
-                    raise UserError(_("The line with the product '%s' must have quantity 1") % default_code)
+                    raise UserError(_("The line with the product %s must have quantity 1") % default_code)
                 if not dml.lot_id:
                     dmls_pending += dml
                 else:
