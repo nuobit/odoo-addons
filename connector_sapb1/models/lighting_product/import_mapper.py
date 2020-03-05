@@ -51,13 +51,13 @@ class LigthingProductImportMapper(Component):
         capacity_qty = record['Capacity'] > 0 and record['Capacity'] or 0
         values['capacity_qty'] = capacity_qty
 
-        available_qty = record['OnHand'] or 0 - record['IsCommited'] or 0
-        values['available_qty'] = available_qty > 0 and available_qty or 0 + capacity_qty
+        available_qty = (record['OnHand'] or 0) - (record['IsCommited'] or 0)
+        values['available_qty'] = (available_qty > 0 and available_qty or 0) + capacity_qty
 
         values['onorder_qty'] = record['OnOrder']
 
         values['stock_future_date'] = record['ShipDate']
-        values['stock_future_qty'] = record['ShipDate'] and (available_qty + record['OnOrder'] or 0) or 0
+        values['stock_future_qty'] = record['ShipDate'] and (available_qty + (record['OnOrder'] or 0)) or 0
 
         if values:
             return values
