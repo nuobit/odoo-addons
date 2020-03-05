@@ -44,23 +44,20 @@ class LigthingProductImportMapper(Component):
     @mapping
     def stock(self, record):
         values = {}
-        if record['Available']:
-            values['stock_available'] = record['Available']
 
-        if record['OnHand']:
-            values['stock_onhand'] = record['OnHand']
+        values['onhand_qty'] = record['OnHand']
+        values['commited_qty'] = record['IsCommited']
 
-        if record['IsCommited']:
-            values['qty_commited'] = record['IsCommited']
+        capacity_qty = record['Capacity'] > 0 and record['Capacity'] or 0
+        values['capacity_qty'] = capacity_qty
 
-        if record['OnOrder']:
-            values['qty_onorder'] = record['OnOrder']
+        available_qty = record['OnHand'] or 0 - record['IsCommited'] or 0
+        values['available_qty'] = available_qty > 0 and available_qty or 0 + capacity_qty
 
-        if record['AvgPrice']:
-            values['avg_cost'] = record['AvgPrice']
+        values['onorder_qty'] = record['OnOrder']
 
-        if record['StockValue']:
-            values['stock_value'] = record['StockValue']
+        values['stock_future_date'] = record['ShipDate']
+        values['stock_future_qty'] = record['ShipDate'] and (available_qty + record['OnOrder'] or 0) or 0
 
         if values:
             return values
@@ -73,17 +70,11 @@ class LigthingProductImportMapper(Component):
     @mapping
     def dimensions(self, record):
         values = {}
-        if record['SWeight1']:
-            values['ibox_weight'] = record['SWeight1']
-        if record['SVolume']:
-            values['ibox_volume'] = record['SVolume'] * 1000
-        if record['SLength1']:
-            values['ibox_length'] = record['SLength1']
-        if record['SWidth1']:
-            values['ibox_width'] = record['SWidth1']
-        if record['SHeight1']:
-            values['ibox_height'] = record['SHeight1']
-
+        values['ibox_weight'] = record['SWeight1']
+        values['ibox_volume'] = record['SVolume'] * 1000
+        values['ibox_length'] = record['SLength1']
+        values['ibox_width'] = record['SWidth1']
+        values['ibox_height'] = record['SHeight1']
         if values:
             return values
 
