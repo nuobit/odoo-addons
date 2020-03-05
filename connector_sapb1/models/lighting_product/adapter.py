@@ -47,6 +47,7 @@ class LightingProductAdapter(Component):
                                            'YYYY-MM-DD HH24:MI:SS') AS "UpdateDateTime"
                         FROM oitm_updatetime u, %(schema)s.OITM p
                         WHERE u."ItemCode" = p."ItemCode" AND
+                              u."ItemCode" NOT LIKE_REGEXPR '^.+\..+$' AND
                               p."U_ACC_Obsmark" IN ('Novedades', 'Catalogado', 'Descatalogado',
                                                     'Fe Digital', 'Histórico') and
                               p."ItmsGrpCod" IN (107, 108, 109, 111, 110) -- Cristher, Dopo, Exo, Indeluz, Accesorios
