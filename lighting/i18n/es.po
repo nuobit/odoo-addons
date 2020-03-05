@@ -128,7 +128,7 @@ msgstr "Capacidad"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_onorder_qty
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "On order"
-msgstr "Pedido"
+msgstr "Solicitado"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_future_qty
