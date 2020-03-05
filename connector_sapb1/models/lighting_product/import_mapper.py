@@ -97,7 +97,7 @@ class LigthingProductImportMapper(Component):
     def _get_sibling_reference(self, reference, pattern):
         m = re.match(pattern, reference)
         if not m:
-            raise Exception(_("Reference format unexpected '%s'") % reference)
+            return None
 
         reference_prefix = m.group(1)
         references = self.env['lighting.product'].search([
