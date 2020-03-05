@@ -152,7 +152,7 @@ class LigthingProductImportMapper(Component):
             if not families:
                 references = self._get_sibling_reference(item_code, "^([^-]+)-.+$")
                 if not references:
-                    references = self._get_sibling_reference(item_code, "^([0-9]{3})[A-Z]-.+$")
+                    references = self._get_sibling_reference(item_code, "^([A-Z0-9][0-9]{2})[A-Z]-.+$")
                 if references:
                     reference_groups = {}
                     for r in references:
