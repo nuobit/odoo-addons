@@ -609,31 +609,35 @@ class LightingProduct(models.Model):
     mbox_height = fields.Float(string='Masterbox height (cm)', track_visibility='onchange')
 
     # inventory tab
-    stock_available = fields.Float(string="Available stock", readonly=True,
-                                   required=True, default=0,
-                                   copy=False, track_visibility='onchange')
-    stock_onhand = fields.Float(string="On hand stock", readonly=True,
+    onhand_qty = fields.Float(string="On hand", readonly=True,
+                              required=True, default=0,
+                              copy=False, track_visibility='onchange')
+    commited_qty = fields.Float(string="Commited", readonly=True,
                                 required=True, default=0,
                                 copy=False, track_visibility='onchange')
-    qty_commited = fields.Float(string="Commited quantity", readonly=True,
+    available_qty = fields.Float(string="Available", readonly=True,
+                                 required=True, default=0,
+                                 copy=False, track_visibility='onchange')
+
+    capacity_qty = fields.Float(string="Capacity", readonly=True,
                                 required=True, default=0,
                                 copy=False, track_visibility='onchange')
-    qty_onorder = fields.Float(string="On order quantity", readonly=True,
+
+    onorder_qty = fields.Float(string="On order", readonly=True,
                                required=True, default=0,
                                copy=False, track_visibility='onchange')
 
-    avg_cost = fields.Float(string="Average cost", readonly=True,
-                            required=True, default=0,
-                            copy=False, track_visibility='onchange')
-    stock_value = fields.Float(string="Stock value", readonly=True,
-                                   required=True, default=0,
-                                   copy=False, track_visibility='onchange')
+    stock_future_qty = fields.Float(string="Future stock", readonly=True,
+                                    required=True, default=0,
+                                    copy=False, track_visibility='onchange')
+    stock_future_date = fields.Date(string="Future stock date", readonly=True,
+                                    copy=False, track_visibility='onchange')
     last_purchase_date = fields.Date(string="Last purchase date", readonly=True,
-                                     default=0, copy=False, track_visibility='onchange')
+                                     copy=False, track_visibility='onchange')
 
-    @api.onchange('state_marketing', 'stock_available')
-    def onchange_stock_available(self):
-        if self.state_marketing == 'ES' and self.stock_available == 0:
+    @api.onchange('state_marketing', 'available_qty')
+    def onchange_available_qty(self):
+        if self.state_marketing == 'ES' and self.available_qty == 0:
             self.state_marketing = 'H'
 
     # marketing tab
@@ -722,10 +726,10 @@ class LightingProduct(models.Model):
                 raise ValidationError(
                     _("The current reference cannot be defined as a recomended accessory"))
 
-    @api.constrains('state_marketing', 'stock_available')
-    def check_stock_available(self):
+    @api.constrains('state_marketing', 'available_qty')
+    def check_available_qty(self):
         for rec in self:
-            if rec.state_marketing == 'ES' and rec.stock_available == 0:
+            if rec.state_marketing == 'ES' and rec.available_qty == 0:
                 rec.state_marketing = 'H'
 
     @api.model

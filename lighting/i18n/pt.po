@@ -95,16 +95,46 @@ msgid "Applications"
 msgstr "Aplicações"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_available
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_available_qty
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "Available stock"
-msgstr "Estoque disponível"
+msgid "Available"
+msgstr "Available"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_avg_cost
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_onhand_qty
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "Average cost"
-msgstr "Average cost"
+msgid "On hand"
+msgstr "On hand"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_commited_qty
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Commited"
+msgstr "Commited"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_capacity_qty
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Capacity"
+msgstr "Capacity"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_onorder_qty
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "On order"
+msgstr "On order"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_future_qty
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Future stock"
+msgstr "Future stock"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_future_date
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Future stock date"
+msgstr "Future stock date"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_ids
@@ -2361,11 +2391,6 @@ msgstr "Pressão estática (kg)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_state
 msgid "Status"
 msgstr "Status"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_value
-msgid "Stock value"
-msgstr "Valor do estoque"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_substitute_ids

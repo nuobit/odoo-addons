@@ -314,17 +314,27 @@
                             </group>
                         </page>
                         <page string="Inventory">
-                            <group>
-                                <field name="stock_available"/>
-                            </group>
-                            <group>
-                                <field name="stock_onhand"/>
-                                <field name="qty_commited"/>
-                                <field name="qty_onorder"/>
-                            </group>
-                            <group>
-                                <field name="avg_cost"/>
-                                <field name="last_purchase_date"/>
+                            <group colspan="4">
+                                <group col="2">
+                                    <group>
+                                        <field name="available_qty"/>
+                                    </group>
+                                    <group>
+                                        <field name="onhand_qty"/>
+                                        <field name="commited_qty"/>
+                                        <field name="onorder_qty"/>
+                                        <field name="capacity_qty"/>
+                                    </group>
+                                </group>
+                                <group col="2">
+                                    <group>
+                                        <field name="stock_future_qty"/>
+                                        <field name="stock_future_date"/>
+                                    </group>
+                                    <group>
+                                        <field name="last_purchase_date"/>
+                                    </group>
+                                </group>
                             </group>
                         </page>
                         <page string="Marketing" id="marketing_tab">
@@ -399,7 +409,7 @@
                 <field name="family_ids" widget="many2many_tags"/>
                 <field name="state" invisible="1"/>
                 <field name="state_marketing"/>
-                <field name="stock_available"/>
+                <field name="available_qty"/>
             </tree>
         </field>
     </record>
