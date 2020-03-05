@@ -638,7 +638,7 @@ class LightingProduct(models.Model):
     @api.onchange('state_marketing', 'available_qty')
     def onchange_available_qty(self):
         if self.state_marketing == 'ES' and self.available_qty == 0:
-            self.state_marketing = 'H'
+            self.state_marketing = 'D'
 
     # marketing tab
     state_marketing = fields.Selection([
@@ -730,7 +730,7 @@ class LightingProduct(models.Model):
     def check_available_qty(self):
         for rec in self:
             if rec.state_marketing == 'ES' and rec.available_qty == 0:
-                rec.state_marketing = 'H'
+                rec.state_marketing = 'D'
 
     @api.model
     def create(self, values):
