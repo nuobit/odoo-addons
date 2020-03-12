@@ -655,7 +655,7 @@ class LightingProduct(models.Model):
     effective_date = fields.Date(string='Effective date', track_visibility='onchange')
 
     price = fields.Float(string='Price')
-    cost = fields.Float(string='Cost')
+    cost = fields.Float(string='Cost', groups='lighting.group_lighting_user')
 
     marketing_comments = fields.Char(string='Comments', track_visibility='onchange')
 
