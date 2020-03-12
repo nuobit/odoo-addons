@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import re
+import decimal
 
 from odoo import _
 
@@ -66,6 +67,23 @@ class LigthingProductImportMapper(Component):
     def last_purchase_date(self, record):
         if record['LastPurDat']:
             return {'last_purchase_date': record['LastPurDat']}
+
+    @mapping
+    def price(self, record):
+        return {'price': record['Price']}
+
+    @mapping
+    def cost(self, record):
+        raw_cost = record['Cost'] and record['Cost'].strip() or None
+        if not raw_cost:
+            cost = 0
+        else:
+            m = re.match(r'^ *([0-9]+(?:\.[0-9]+)?)(?: *EUR *)? *$', raw_cost)
+            if not m:
+                raise ValueError("Cost format unexpected '%s'" % record['Cost'])
+            cost = decimal.Decimal(m.group(1))
+
+        return {'cost': cost}
 
     @mapping
     def dimensions(self, record):
