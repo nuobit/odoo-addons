@@ -157,18 +157,22 @@ class LightingProductAdapter(Component):
                         GROUP BY s."ItemCode"
                     ),
                     product as (
-                    SELECT p."ItemCode", p."ItemName",
-                           p."CodeBars",
-                           g."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
-                           p."U_ACC_Obsmark",
-                           p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
-                           s."OnHand",  s."IsCommited", s."OnOrder", s."ShipDate", s."Capacity",
-                           p."AvgPrice", p."LastPurDat",
-                           (CASE WHEN SECONDS_BETWEEN(s."UpdateDateTime", p."UpdateDateTime") > 0 THEN p."UpdateDateTime"
-                            ELSE s."UpdateDateTime" END) AS "UpdateDateTime"
-                    FROM product_virtual_stock_all s, oitm_base p, %(schema)s.OITB g
-                    WHERE s."ItemCode" = p."ItemCode" AND
-                          p."ItmsGrpCod" = g."ItmsGrpCod"
+                        SELECT p."ItemCode", p."ItemName",
+                               p."CodeBars",
+                               g."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
+                               p."U_ACC_Obsmark",
+                               p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
+                               s."OnHand",  s."IsCommited", s."OnOrder", s."ShipDate", s."Capacity",
+                               p."AvgPrice", p."LastPurDat", p."U_U_pcompra18" AS "Cost",
+                               COALESCE(t."Price", 0) as "Price",
+                               (CASE WHEN SECONDS_BETWEEN(s."UpdateDateTime", p."UpdateDateTime") > 0 THEN p."UpdateDateTime"
+                                ELSE s."UpdateDateTime" END) AS "UpdateDateTime"
+                        FROM product_virtual_stock_all s,
+                             oitm_base p
+                                LEFT JOIN %(schema)s.ITM1 t ON t."PriceList" = 11 AND p."ItemCode" = t."ItemCode",
+                             %(schema)s.OITB g
+                        WHERE s."ItemCode" = p."ItemCode" AND
+                              p."ItmsGrpCod" = g."ItmsGrpCod"
                     )
                     select %(fields)s
                     from product
