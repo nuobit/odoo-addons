@@ -1042,6 +1042,16 @@ msgid "Effective date"
 msgstr "Fecha efectiva"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_price
+msgid "Price"
+msgstr "PVP"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_cost
+msgid "Cost"
+msgstr "Coste"
+
+#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Electrics"
 msgstr "Eléctrico"

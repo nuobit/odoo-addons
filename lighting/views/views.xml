@@ -345,8 +345,13 @@
                                     </group>
                                     <group>
                                         <field name="on_request"/>
-
                                         <field name="effective_date"/>
+                                    </group>
+                                </group>
+                                <group colspan="2">
+                                    <group>
+                                        <field name="price"/>
+                                        <field name="cost"/>
                                     </group>
                                 </group>
                                 <group colspan="2">

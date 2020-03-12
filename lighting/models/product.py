@@ -653,6 +653,10 @@ class LightingProduct(models.Model):
     on_request = fields.Boolean(string='On request', track_visibility='onchange')
 
     effective_date = fields.Date(string='Effective date', track_visibility='onchange')
+
+    price = fields.Float(string='Price')
+    cost = fields.Float(string='Cost')
+
     marketing_comments = fields.Char(string='Comments', track_visibility='onchange')
 
     state = fields.Selection([
