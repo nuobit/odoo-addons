@@ -34,13 +34,13 @@ class LigthingProductImportMapper(Component):
 
     @mapping
     def description_manual(self, record):
-        if record['ItemName'] and record['ItemName'].strip():
-            return {'description_manual': record['ItemName'].strip()}
+        return {'description_manual': record['ItemName'] and
+                                      record['ItemName'].strip() or None}
 
     @mapping
-    def ean(self, record):
-        if record['CodeBars'] and record['CodeBars'].strip():
-            return {'ean': record['CodeBars'].strip()}
+    def ean_codebar(self, record):
+        return {'ean': record['CodeBars'] and
+                       record['CodeBars'].strip() or None}
 
     @mapping
     def stock(self, record):
@@ -60,13 +60,11 @@ class LigthingProductImportMapper(Component):
         values['stock_future_date'] = record['ShipDate']
         values['stock_future_qty'] = record['ShipDate'] and (available_qty + (record['OnOrder'] or 0)) or 0
 
-        if values:
-            return values
+        return values
 
     @mapping
     def last_purchase_date(self, record):
-        if record['LastPurDat']:
-            return {'last_purchase_date': record['LastPurDat']}
+        return {'last_purchase_date': record['LastPurDat']}
 
     @mapping
     def price(self, record):
@@ -93,8 +91,7 @@ class LigthingProductImportMapper(Component):
         values['ibox_length'] = record['SLength1']
         values['ibox_width'] = record['SWidth1']
         values['ibox_height'] = record['SHeight1']
-        if values:
-            return values
+        return values
 
     @only_create
     @mapping
@@ -109,6 +106,7 @@ class LigthingProductImportMapper(Component):
                 }
 
         return {
+            'state_marketing': None,
             'state': 'draft',
         }
 
