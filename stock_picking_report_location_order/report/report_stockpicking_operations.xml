@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_picking" inherit_id="stock.report_picking">
+        <xpath expr="//tr[@t-as='move']" position="attributes">
+            <attribute name="t-foreach">
+                o.move_lines.sorted(key=lambda m: (m.move_line_ids.mapped('location_id.name')[0],
+                m.product_id.default_code, m.product_id.id))
+            </attribute>
+        </xpath>
+        <xpath expr="//tr[@t-as='ml']" position="attributes">
+            <attribute name="t-foreach">
+                move.move_line_ids.sorted(key=lambda ml: (ml.location_id.name, ml.location_id.id))
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
+
