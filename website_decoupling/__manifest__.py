@@ -5,7 +5,7 @@
 {
     'name': 'Website decoupling',
     'summary': 'This module decouples the website from the ERP appearance',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.1.0',
     'category': 'Website',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://github.com/nuobit',
@@ -14,6 +14,7 @@
         'website',
     ],
     'data': [
+        'security/website_decoupling_security.xml',
         'views/website_templates.xml',
         'views/website_decoupling_templates.xml',
     ],

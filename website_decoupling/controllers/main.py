@@ -25,7 +25,8 @@ class WebsiteDecoupled(Website):
 
     @http.route('/', type='http', auth="public", website=True)
     def index(self, **kw):
-        if self._is_erp_host():
+        if self._is_erp_host() and not http.request.env.user.has_group(
+                'website_decoupling.group_website_decoupling_bypass'):
             return http.local_redirect('/web', query=http.request.params, keep_hash=True)
         else:
             return super(WebsiteDecoupled, self).index(**kw)
