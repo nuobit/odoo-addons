@@ -163,7 +163,12 @@ class LightingProductAdapter(Component):
                                p."U_ACC_Obsmark",
                                p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
                                s."OnHand",  s."IsCommited", s."OnOrder", s."ShipDate", s."Capacity",
-                               p."AvgPrice", p."LastPurDat", p."U_U_pcompra18" AS "Cost",
+                               p."AvgPrice", p."LastPurDat",
+                               coalesce(p."U_U_pcompra18",
+                                  coalesce(p."U_U_pcompra17",
+                                      coalesce(p."U_U_pcompra16",
+                                          coalesce(p."U_U_pcompra15",
+                                              p."U_U_pcompra14")))) AS "Cost",
                                COALESCE(t."Price", 0) as "Price",
                                (CASE WHEN SECONDS_BETWEEN(s."UpdateDateTime", p."UpdateDateTime") > 0 THEN p."UpdateDateTime"
                                 ELSE s."UpdateDateTime" END) AS "UpdateDateTime"
