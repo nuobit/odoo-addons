@@ -4,7 +4,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_template_only_form_view" model="ir.ui.view">
-        <field name="name">product.template.bike.data</field>
+        <field name="name">product.template.bike.data.form</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
@@ -21,6 +21,58 @@
                         <field name="is_electric_bike"/>
                     </group>
                 </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_tree_view" model="ir.ui.view">
+        <field name="name">product.template.bike.data.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="bike_year"/>
+                <field name="bike_type"/>
+                <field name="is_electric_bike"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_template_search_view" model="ir.ui.view">
+        <field name="name">product.template.bike.data.search</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">
+                    ['|', '|', '|', '|', '|', '|',
+                    ('default_code', 'ilike', self), ('product_variant_ids.default_code', 'ilike', self),
+                    ('name', 'ilike', self), ('barcode', 'ilike', self), ('product_variant_ids.barcode', 'ilike', self),
+                    ('bike_year', 'ilike', self), ('bike_type', 'ilike', self)]
+                </attribute>
+            </field>
+
+            <field name="categ_id" position="after">
+                <field name="bike_year"/>
+                <field name="bike_type"/>
+                <field name="is_electric_bike"/>
+                <separator/>
+            </field>
+
+            <filter name="services" position="before">
+                <filter string="Electric Bikes" name="is_electric_bike" domain="[('is_electric_bike','=',True)]"/>
+                <filter string="Non-electric Bikes" name="is_nonelectric_bike"
+                        domain="[('is_electric_bike','=',False)]"/>
+                <separator/>
+            </filter>
+
+            <xpath expr="/search/*[last()]" position="after">
+                <group expand="0" string="Group By">
+                    <filter string="Year" name="bike_year" domain="[]" context="{'group_by':'bike_year'}"/>
+                    <filter string="Type" name="bike_type" domain="[]" context="{'group_by':'bike_type'}"/>
+                    <filter string="Electric" name="is_electric_bike" domain="[]"
+                            context="{'group_by':'is_electric_bike'}"/>
+                </group>
             </xpath>
         </field>
     </record>

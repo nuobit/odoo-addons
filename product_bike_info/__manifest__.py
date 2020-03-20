@@ -5,12 +5,14 @@
 {
     'name': "Product Bike info",
     'description': "This module adds field for bike data",
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://github.com/nuobit',
-    'depends': ['product'],
+    'depends': [
+        'product',
+    ],
     'data': [
         'views/product_template_views.xml',
     ],
