@@ -45,18 +45,19 @@
         <field name="arch" type="xml">
             <field name="name" position="attributes">
                 <attribute name="filter_domain">
-                    ['|', '|', '|', '|', '|', '|',
+                    ['|', '|', '|', '|', '|', '|', '|',
                     ('default_code', 'ilike', self), ('product_variant_ids.default_code', 'ilike', self),
                     ('name', 'ilike', self), ('barcode', 'ilike', self), ('product_variant_ids.barcode', 'ilike', self),
+                    ('seller_ids.name.name', 'ilike', self),
                     ('bike_year', 'ilike', self), ('bike_type', 'ilike', self)]
                 </attribute>
             </field>
 
             <field name="categ_id" position="after">
+                <field name="seller_ids" filter_domain="[('seller_ids.name.name', 'ilike', self)]"/>
                 <field name="bike_year"/>
                 <field name="bike_type"/>
                 <field name="is_electric_bike"/>
-                <separator/>
             </field>
 
             <filter name="services" position="before">
