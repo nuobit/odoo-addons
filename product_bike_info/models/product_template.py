@@ -16,6 +16,6 @@ BIKE_TYPES = [
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    bike_type = fields.Selection(selection=BIKE_TYPES)
+    bike_type = fields.Selection(selection=BIKE_TYPES, string="Type")
     is_electric_bike = fields.Boolean(string='Is electric?')
     bike_year = fields.Integer(string='Year')
