@@ -202,7 +202,7 @@ class LightingProduct(models.Model):
                                                        compute='_compute_json_display_color_temperature')
 
     @api.depends('source_ids', 'source_ids.line_ids',
-                 'source_ids.line_ids.color_temperature_id',
+                 'source_ids.line_ids.color_temperature_ids',
                  'source_ids.sequence')
     def _compute_json_display_color_temperature(self):
         template_id = self.env.context.get('template_id')
@@ -440,15 +440,25 @@ class LightingProduct(models.Model):
     json_search_color_temperature = fields.Serialized(string="Color temperature JSON Search",
                                                       compute='_compute_json_search_color_temperature')
 
-    @api.depends('source_ids.line_ids.color_temperature_id.value',
-                 )
+    @api.depends(
+        'source_ids.line_ids.color_temperature_ids',
+        'source_ids.line_ids.color_temperature_ids.value',
+    )
     def _compute_json_search_color_temperature(self):
         for rec in self:
             colork_s = set()
             for line in rec.source_ids.mapped('line_ids'):
                 if line.is_integrated:
-                    if line.color_temperature_id:
-                        colork_s.add(line.color_temperature_id.value)
+                    if line.color_temperature_ids:
+                        if line.is_color_temperature_tunable and len(line.color_temperature_ids) > 1:
+                            tunable_range = line.color_temperature_ids.sorted(lambda x: x.value).mapped('value')
+                            values = self.env['lighting.product.color.temperature'].search([
+                                ('value', '>=', tunable_range[0]),
+                                ('value', '<=', tunable_range[-1]),
+                            ]).mapped('value')
+                        else:
+                            values = line.color_temperature_ids.mapped('value')
+                        colork_s |= set(values)
 
             if colork_s:
                 krange = [(0, 3000), (3000, 3500), (3500, 4000),
