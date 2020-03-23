@@ -38,6 +38,7 @@ class LightingProduct(models.Model):
                 rec.image_medium = resized_images['image_medium']
                 rec.image_small = resized_images['image_small']
 
+    description_updated = fields.Boolean(default=False)
     description = fields.Char(compute='_compute_description', string='Description', readonly=True,
                               help="Description dynamically generated from product data",
                               translate=True, store=True, track_visibility='onchange')
@@ -64,6 +65,7 @@ class LightingProduct(models.Model):
                  'finish2_id.name')
     def _compute_description(self):
         for rec in self:
+            rec.description_updated = True
             rec.description = rec._generate_description()
 
     def _generate_description(self, show_variant_data=True):
@@ -739,16 +741,24 @@ class LightingProduct(models.Model):
     @api.model
     def create(self, values):
         res = super().create(values)
-        if res.description == 'false':
-            res.description = False
-        if 'description' in values:
-            if not self.env.context.get('trl_lang_description_update'):
+
+        for lang in map(lambda x: x.code != 'en_US' and x.code or None, self.env['res.lang'].search([])):
+            if res.with_context(lang=lang).description == 'false':
+                res.with_context(lang=lang).description = False
+
+        if res.description_updated:
+            if not res.env.context.get('trl_lang_description_update'):
                 res._update_computed_description()
 
         return res
 
     @api.multi
     def write(self, values):
+        if 'description' not in values:
+            if values.get('description_updated'):
+                del values['description_updated']
+                values['description'] = self.description
+
         res = super().write(values)
         if 'description' in values:
             if not self.env.context.get('trl_lang_description_update'):

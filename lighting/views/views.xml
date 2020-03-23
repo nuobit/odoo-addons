@@ -87,6 +87,7 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="description_updated" invisible="1"/>
                         <field name="description"/>
                         <field name="description_manual"/>
                     </group>
