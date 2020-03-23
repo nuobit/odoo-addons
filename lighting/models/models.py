@@ -313,8 +313,6 @@ class LightingProductSourceLine(models.Model):
 
     luminous_flux1 = fields.Integer(string='Luminous flux 1 (lm)')
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (lm)')
-    color_temperature_id = fields.Many2one(string='Color temperature (K)',
-                                           comodel_name='lighting.product.color.temperature', ondelete='cascade')
 
     color_temperature_ids = fields.Many2many(string='Color temperature (K)',
                                              comodel_name='lighting.product.color.temperature',
