@@ -135,7 +135,7 @@ class LightingProductAdvancedSearch(models.TransientModel):
         domain += prepare_in_domain(['sealing_id'], self.sealing_in_ids, 'or')
 
         # Color temperature
-        domain += prepare_in_domain(['source_ids.line_ids.color_temperature_id'], self.color_temperature_in_ids, 'or')
+        domain += prepare_in_domain(['source_ids.line_ids.color_temperature_ids'], self.color_temperature_in_ids, 'or')
 
         # wattage
         if self.wattage_from_in:
