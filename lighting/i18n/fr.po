@@ -452,9 +452,15 @@ msgid "Color consistency (SDCM)"
 msgstr "Consistance chromatique (SDCM)"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_display
 msgid "Color temperature (K)"
 msgstr "Température de couleur (K)"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_color_temperature_tunable
+msgid "Tunable"
+msgstr "Tunable"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_marketing_comments

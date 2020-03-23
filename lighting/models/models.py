@@ -205,8 +205,8 @@ class LightingProductSource(models.Model):
                 line = [l.type_id.code]
 
                 if l.is_integrated or l.is_lamp_included:
-                    if l.color_temperature_id:
-                        line.append("%iK" % l.color_temperature_id.value)
+                    if l.color_temperature_ids:
+                        line.append(l.color_temperature_display)
                     if l.luminous_flux_display:
                         line.append("%slm" % l.luminous_flux_display)
                     if l.is_led and l.cri_min:
@@ -247,7 +247,7 @@ class LightingProductSource(models.Model):
             src_k = src.line_ids.get_color_temperature()
             k_l = None
             if src_k:
-                k_l = '/'.join(src_k)
+                k_l = ','.join(src_k)
             res.append(k_l)
 
         if not any(res):
@@ -315,6 +315,33 @@ class LightingProductSourceLine(models.Model):
     luminous_flux2 = fields.Integer(string='Luminous flux 2 (lm)')
     color_temperature_id = fields.Many2one(string='Color temperature (K)',
                                            comodel_name='lighting.product.color.temperature', ondelete='cascade')
+
+    color_temperature_ids = fields.Many2many(string='Color temperature (K)',
+                                             comodel_name='lighting.product.color.temperature',
+                                             relation='lighting_product_source_line_color_temperature_rel',
+                                             column1='source_line_id', column2='color_temperature_id')
+    is_color_temperature_tunable = fields.Boolean(string='Tunable', default=False)
+
+    @api.onchange('color_temperature_ids', 'is_color_temperature_tunable')
+    def _onchange_is_color_temperature_ids_tunable(self):
+        if len(self.color_temperature_ids) > 2:
+            if self.is_color_temperature_tunable:
+                color_temps_ord = self.color_temperature_ids.sorted(lambda x: x.value)
+                self.color_temperature_ids = [
+                    (6, False, (color_temps_ord[0] | color_temps_ord[-1]).mapped('id'))]
+        elif len(self.color_temperature_ids) < 2:
+            if self.is_color_temperature_tunable:
+                self.is_color_temperature_tunable = False
+
+    color_temperature_display = fields.Char(string='Color temperature (K)',
+                                            compute='_compute_color_temperature_display')
+
+    def _compute_color_temperature_display(self):
+        for rec in self:
+            if rec.color_temperature_ids:
+                rec.color_temperature_display = (rec.is_color_temperature_tunable and '-' or '/') \
+                    .join(['%iK' % x.value for x in
+                           rec.color_temperature_ids.sorted(lambda y: y.value)])
 
     cri_min = fields.Integer(string='CRI', help='Minimum color rendering index', track_visibility='onchange')
 
@@ -400,6 +427,13 @@ class LightingProductSourceLine(models.Model):
             if rec.type_id.is_integrated:
                 rec.is_lamp_included = False
 
+    @api.multi
+    @api.constrains('color_temperature_ids', 'is_color_temperature_tunable')
+    def _check_color_temperature_ids_tunable(self):
+        if self.is_color_temperature_tunable and self.color_temperature_ids and \
+                len(self.color_temperature_ids) != 2:
+            raise ValidationError(_("A tunable source must have exactly 2 color temperatures"))
+
     # aux display fucnitons
     def get_source_type(self):
         res = self.sorted(lambda x: x.sequence) \
@@ -409,8 +443,9 @@ class LightingProductSourceLine(models.Model):
         return res
 
     def get_color_temperature(self):
-        res = self.sorted(lambda x: x.sequence) \
-            .mapped('color_temperature_id.display_name')
+        res = self.filtered(lambda x: x.color_temperature_ids) \
+            .sorted(lambda x: x.sequence) \
+            .mapped('color_temperature_display')
         if not res:
             return None
         return res

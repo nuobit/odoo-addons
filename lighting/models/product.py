@@ -62,7 +62,9 @@ class LightingProduct(models.Model):
                  'source_ids.line_ids.luminous_flux1',
                  'source_ids.line_ids.luminous_flux2',
                  'source_ids.line_ids.special_spectrum',
-                 'source_ids.line_ids.color_temperature_id.value',
+                 'source_ids.line_ids.is_color_temperature_tunable',
+                 'source_ids.line_ids.color_temperature_ids',
+                 'source_ids.line_ids.color_temperature_ids.value',
                  'finish_id.name',
                  'finish2_id.name')
     def _compute_description(self):
@@ -125,8 +127,8 @@ class LightingProduct(models.Model):
                                 lm_str = '%ix%s' % (line.source_id.num, lm_str)
                             data_line.append(lm_str)
 
-                        if line.color_temperature_id:
-                            data_line.append('%iK' % line.color_temperature_id.value)
+                        if line.color_temperature_ids:
+                            data_line.append(line.color_temperature_display)
                         else:
                             if line.is_led and line.special_spectrum:
                                 special_spectrum_option = dict(
@@ -167,8 +169,8 @@ class LightingProduct(models.Model):
                                         lm_str = '%ix%s' % (line.source_id.num, lm_str)
                                     data_line.append(lm_str)
 
-                                if line.color_temperature_id:
-                                    data_line.append('%iK' % line.color_temperature_id.value)
+                                if line.color_temperature_ids:
+                                    data_line.append(line.color_temperature_display)
                                 else:
                                     if line.is_led and line.special_spectrum:
                                         special_spectrum_option = dict(

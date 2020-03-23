@@ -18,7 +18,7 @@ class LightingProductColorTemperature(models.Model):
     def _compute_product_count(self):
         for record in self:
             record.product_count = self.env['lighting.product'].search_count(
-                [('source_ids.line_ids.color_temperature_id', '=', record.id)])
+                [('source_ids.line_ids.color_temperature_ids', '=', record.id)])
 
     _sql_constraints = [('name_uniq', 'unique (value)', 'The color temperature must be unique!'),
                         ]
@@ -29,3 +29,10 @@ class LightingProductColorTemperature(models.Model):
         for rec in self:
             res.append((rec.id, '%iK' % rec.value))
         return res
+
+    @api.multi
+    def unlink(self):
+        records = self.env['lighting.product.source.line'].search([('color_temperature_ids', 'in', self.ids)])
+        if records:
+            raise UserError(_("You are trying to delete a record that is still referenced!"))
+        return super().unlink()

@@ -9,7 +9,7 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('source_ids.line_ids.color_temperature_id','=',active_id)]</field>
+        <field name="domain">[('source_ids.line_ids.color_temperature_ids','=',active_id)]</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Product</p>
         </field>
