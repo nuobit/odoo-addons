@@ -28,7 +28,7 @@ class LightingProductSource(models.Model):
     @property
     def xlsx_color_temperature(self):
         SourceLine = self.env[self._name].line_ids
-        field = 'color_temperature_id'
+        field = 'color_temperature_ids'
         meta = SourceLine.fields_get([field], ['string'])[field]
         datum = self.line_ids.get_color_temperature()
         return {meta['string']: datum and '/'.join(datum) or None}
