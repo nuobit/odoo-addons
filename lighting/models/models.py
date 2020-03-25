@@ -334,6 +334,7 @@ class LightingProductSourceLine(models.Model):
     color_temperature_display = fields.Char(string='Color temperature (K)',
                                             compute='_compute_color_temperature_display')
 
+    @api.depends('color_temperature_ids', 'color_temperature_ids.value')
     def _compute_color_temperature_display(self):
         for rec in self:
             if rec.color_temperature_ids:
