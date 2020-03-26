@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="quality_partner_document_view_form" model="ir.ui.view">
+        <field name="name">quality.partner.document.view.form</field>
+        <field name="model">quality.partner.document</field>
+        <field name="arch" type="xml">
+            <form string="Quality partner Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="document_type_id"
+                                   domain="[('id', 'in', partner_class_mandatory_document_type_ids)]"/>
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="datas" filename="datas_fname"/>
+                        <field name="datas_fname" invisible="1"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <field name="partner_quality_classification_id" invisible="1"/>
+                    <field name="partner_class_mandatory_document_type_ids" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="quality_partner_document_view_tree" model="ir.ui.view">
+        <field name="name">quality.partner.document.view.tree</field>
+        <field name="model">quality.partner.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="document_type_id"/>
+                <field name="date"/>
+                <field name="datas_fname"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
