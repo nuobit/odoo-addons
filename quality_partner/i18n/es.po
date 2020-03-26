@@ -1,0 +1,338 @@
+# This file contains the translation of the following modules:
+#	* quality_partner
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-26 20:14+0000\n"
+"PO-Revision-Date: 2020-03-26 20:14+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_ambugest_res_partner_quality_classification_id
+#: model:ir.model.fields,field_description:quality_partner.field_oxigesti_res_partner_quality_classification_id
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_partner_quality_classification_id
+#: model:ir.model.fields,field_description:quality_partner.field_res_partner_quality_classification_id
+#: model:ir.model.fields,field_description:quality_partner.field_res_users_quality_classification_id
+#: model:ir.model.fields,field_description:quality_partner.field_sage_res_partner_quality_classification_id
+msgid "Classification"
+msgstr "Clasificación"
+
+#. module: quality_partner
+#: model:ir.actions.act_window,name:quality_partner.quality_partner_classification_list_action
+#: model:ir.ui.menu,name:quality_partner.quality_partner_classification_menu
+msgid "Classifications"
+msgstr "Clasificaciones"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_code
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_code
+msgid "Code"
+msgstr "Código"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_complete_name
+#: model:ir.model.fields,field_description:quality_partner.field_quality_tree_mixin_complete_name
+msgid "Complete Name"
+msgstr "Nombre completo"
+
+#. module: quality_partner
+#: model:ir.model,name:quality_partner.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: quality_partner
+#: model:ir.actions.act_window,help:quality_partner.quality_partner_classification_list_action
+msgid "Create the first classification"
+msgstr "Crear la primera classificación"
+
+#. module: quality_partner
+#: model:ir.actions.act_window,help:quality_partner.quality_partner_document_type_list_action
+msgid "Create the first document type"
+msgstr "Crear el primer tipo de documento"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_create_uid
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_create_uid
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_create_date
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_create_date
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/quality_partner_classification.py:10
+#: selection:quality.partner.classification,level_type:0
+#, python-format
+msgid "Criticality"
+msgstr "Criticidad"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/quality_partner_classification.py:11
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_description
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_description
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_description
+#: selection:quality.partner.classification,level_type:0
+#, python-format
+msgid "Description"
+msgstr "Descripción"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_display_name
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_display_name
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_display_name
+#: model:ir.model.fields,field_description:quality_partner.field_quality_tree_mixin_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_document_type_id
+msgid "Document type"
+msgstr "Tipo de documento"
+
+#. module: quality_partner
+#: model:ir.actions.act_window,name:quality_partner.quality_partner_document_type_list_action
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_document_type_ids
+#: model:ir.ui.menu,name:quality_partner.quality_partner_document_type_menu
+msgid "Document types"
+msgstr "Tipos de documento"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_ambugest_res_partner_quality_document_ids
+#: model:ir.model.fields,field_description:quality_partner.field_oxigesti_res_partner_quality_document_ids
+#: model:ir.model.fields,field_description:quality_partner.field_res_partner_quality_document_ids
+#: model:ir.model.fields,field_description:quality_partner.field_res_users_quality_document_ids
+#: model:ir.model.fields,field_description:quality_partner.field_sage_res_partner_quality_document_ids
+#: model:ir.ui.view,arch_db:quality_partner.view_partner_form
+msgid "Documents"
+msgstr "Documentos"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_datas
+msgid "File"
+msgstr "Fichero"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_datas_fname
+msgid "Filename"
+msgstr "Nombre del fichero"
+
+#. module: quality_partner
+#: model:res.groups,name:quality_partner.quality_partner_group_guest
+msgid "Guest"
+msgstr "Invitado"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_id
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_id
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_id
+#: model:ir.model.fields,field_description:quality_partner.field_quality_tree_mixin_id
+msgid "ID"
+msgstr "ID"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/res_partner.py:25
+#, python-format
+msgid "If there's documents submitted, the classification can not be null"
+msgstr "If there's documents submitted, the classification can not be null"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification___last_update
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document___last_update
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type___last_update
+#: model:ir.model.fields,field_description:quality_partner.field_quality_tree_mixin___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_write_uid
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_write_uid
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_write_date
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_write_date
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_level
+#: model:ir.model.fields,field_description:quality_partner.field_quality_tree_mixin_level
+msgid "Level"
+msgstr "Nivel"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_level_type
+msgid "Level type"
+msgstr "Tipo de nivel"
+
+#. module: quality_partner
+#: model:res.groups,name:quality_partner.quality_partner_group_manager
+msgid "Manager"
+msgstr "Responsable"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_mandatory_document_type_ids
+msgid "Mandatory document types"
+msgstr "Mandatory document types"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_name
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_name
+#: model:ir.ui.view,arch_db:quality_partner.quality_partner_classification_view_form
+#: model:ir.ui.view,arch_db:quality_partner.quality_partner_document_type_view_form
+msgid "Name"
+msgstr "Nombre"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/res_partner.py:31
+#, python-format
+msgid "Not all mandatory document types are submitted"
+msgstr "Not all mandatory document types are submitted"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/tree.py:69
+#, python-format
+msgid "Operator %s not implemented"
+msgstr "Operator %s not implemented"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_parent_id
+msgid "Parent"
+msgstr "Padre"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_partner_id
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_partner_class_mandatory_document_type_ids
+msgid "Partner Class Mandatory Document Type"
+msgstr "Partner Class Mandatory Document Type"
+
+#. module: quality_partner
+#: model:ir.module.category,description:quality_partner.quality_partner_security
+msgid "Partner Quality security"
+msgstr "Partner Quality security"
+
+#. module: quality_partner
+#: model:ir.module.category,name:quality_partner.quality_partner_security
+#: model:ir.ui.menu,name:quality_partner.quality_partner_menu
+msgid "Partner quality"
+msgstr "Calidad de empresas"
+
+#. module: quality_partner
+#: model:ir.ui.view,arch_db:quality_partner.view_partner_form
+msgid "Quality"
+msgstr "Calidad"
+
+#. module: quality_partner
+#: model:ir.ui.view,arch_db:quality_partner.quality_partner_document_type_view_form
+#: model:ir.ui.view,arch_db:quality_partner.quality_partner_document_view_form
+msgid "Quality partner Form"
+msgstr "Quality partner Form"
+
+#. module: quality_partner
+#: model:ir.ui.view,arch_db:quality_partner.quality_partner_classification_view_form
+msgid "Quality partner classification Form"
+msgstr "Quality partner classification Form"
+
+#. module: quality_partner
+#: model:ir.ui.view,arch_db:quality_partner.quality_partner_classification_view_tree
+msgid "Quality partner classification Tree"
+msgstr "Quality partner classification Tree"
+
+#. module: quality_partner
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification_sequence
+#: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document_type_sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: quality_partner
+#: model:ir.ui.view,arch_db:quality_partner.view_partner_form
+msgid "Supplier classification"
+msgstr "Clasificación del proveedor"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/quality_partner_classification.py:98
+#, python-format
+msgid "The parent cannot be the same as current record"
+msgstr "The parent cannot be the same as current record"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/res_partner.py:34
+#, python-format
+msgid "There're documents submitted that are not mandatory for the classification selected"
+msgstr "There're documents submitted that are not mandatory for the classification selected"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/quality_partner_classification.py:9
+#: selection:quality.partner.classification,level_type:0
+#, python-format
+msgid "Type"
+msgstr "Tipo"
+
+#. module: quality_partner
+#: model:res.groups,name:quality_partner.quality_partner_group_user
+msgid "User"
+msgstr "Usuario"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/quality_partner_classification.py:101
+#, python-format
+msgid "Wrong inheritance, the level type selected it's not compatible with the selected parent"
+msgstr "Wrong inheritance, the level type selected it's not compatible with the selected parent"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/quality_partner_document_type.py:23
+#: code:addons/quality_partner/models/quality_partner_document_type.py:26
+#, python-format
+msgid "You are trying to delete a record that is still referenced!"
+msgstr "You are trying to delete a record that is still referenced!"
+
+#. module: quality_partner
+#: code:addons/quality_partner/models/quality_partner_classification.py:92
+#, python-format
+msgid "You must provide a document types for the level type selected"
+msgstr "You must provide a document types for the level type selected"
+
+#. module: quality_partner
+#: model:ir.model,name:quality_partner.model_quality_partner_classification
+msgid "quality.partner.classification"
+msgstr "quality.partner.classification"
+
+#. module: quality_partner
+#: model:ir.model,name:quality_partner.model_quality_partner_document
+msgid "quality.partner.document"
+msgstr "quality.partner.document"
+
+#. module: quality_partner
+#: model:ir.model,name:quality_partner.model_quality_partner_document_type
+msgid "quality.partner.document.type"
+msgstr "quality.partner.document.type"
+
+#. module: quality_partner
+#: model:ir.model,name:quality_partner.model_quality_tree_mixin
+msgid "quality.tree.mixin"
+msgstr "quality.tree.mixin"
+
