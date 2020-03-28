@@ -243,7 +243,7 @@ class LightingProduct(models.Model):
     description_manual = fields.Char(string='Description (manual)', help='Manual description', translate=True,
                                      track_visibility='onchange')
 
-    ean = fields.Char(string='EAN', required=False, track_visibility='onchange')
+    ean = fields.Char(string='EAN', required=False, readonly=True, track_visibility='onchange')
 
     product_group_id = fields.Many2one(comodel_name='lighting.product.group',
                                        string='Group',
@@ -697,8 +697,9 @@ class LightingProduct(models.Model):
 
     effective_date = fields.Date(string='Effective date', track_visibility='onchange')
 
-    price = fields.Float(string='Price')
-    cost = fields.Float(string='Cost', groups='lighting.group_lighting_user')
+    price = fields.Float(string='Price', readonly=True, track_visibility='onchange')
+    cost = fields.Float(string='Cost', readonly=True, groups='lighting.group_lighting_user',
+                        track_visibility='onchange')
 
     marketing_comments = fields.Char(string='Comments', track_visibility='onchange')
 
