@@ -9,11 +9,15 @@ from odoo.tools.safe_eval import safe_eval
 
 import re
 from collections import OrderedDict
+import logging
+
+_logger = logging.getLogger(__name__)
 
 YESNO = [
     ('Y', _('Yes')),
     ('N', _('No')),
 ]
+
 
 class LightingProduct(models.Model):
     _name = 'lighting.product'
