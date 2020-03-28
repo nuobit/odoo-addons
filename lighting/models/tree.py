@@ -48,8 +48,14 @@ class LightingTreeMixin(models.AbstractModel):
             elif operator == 'like':
                 if value in complete_name:
                     node_ids.append(node.id)
+            elif operator == 'not like':
+                if value not in complete_name:
+                    node_ids.append(node.id)
             elif operator == 'ilike':
                 if value.lower() in complete_name.lower():
+                    node_ids.append(node.id)
+            elif operator == 'not ilike':
+                if value.lower() not in complete_name.lower():
                     node_ids.append(node.id)
             elif operator == '=like':
                 if value == complete_name:
