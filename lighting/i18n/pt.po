@@ -787,6 +787,11 @@ msgid "Description show IP"
 msgstr "Descrição show IP"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_catalog_description_show_ip_domain
+msgid "Show IP condition"
+msgstr "Show IP condition"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_diffusor_material_ids
 msgid "Diffuser material"
 msgstr "Material difusor"

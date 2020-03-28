@@ -5,6 +5,8 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
+from odoo.tools.safe_eval import safe_eval
+
 import re
 from collections import OrderedDict
 
@@ -12,7 +14,6 @@ YESNO = [
     ('Y', _('Yes')),
     ('N', _('No')),
 ]
-
 
 class LightingProduct(models.Model):
     _name = 'lighting.product'
@@ -47,7 +48,9 @@ class LightingProduct(models.Model):
                  'category_id.description_text',
                  'family_ids.name',
                  'catalog_ids.description_show_ip',
-                 'sealing_id.name', 'sealing2_id.name',
+                 'catalog_ids.description_show_ip_condition',
+                 'sealing_id',
+                 'sealing_id.name',
                  'dimmable_ids.name',
                  'source_ids.sequence',
                  'source_ids.lampholder_id.code',
@@ -73,6 +76,7 @@ class LightingProduct(models.Model):
             rec.description = rec._generate_description()
 
     def _generate_description(self, show_variant_data=True):
+        _logger.info(_("Generating description for %s") % self.reference)
         self.ensure_one()
         data = []
         if self.category_id:
@@ -82,11 +86,28 @@ class LightingProduct(models.Model):
             data.append(','.join(map(lambda x: x.upper(),
                                      self.family_ids.sorted(lambda x: x.sequence).mapped('name'))))
 
-        if self.catalog_ids:
-            ip_catalogs = self.catalog_ids.filtered(lambda x: x.description_show_ip)
-            if ip_catalogs:
-                if self.sealing_id:
-                    data.append(self.sealing_id.name)
+        if self.sealing_id:
+            sealing_id = self.sealing_id
+            for catalog in self.catalog_ids:
+                if catalog.description_show_ip:
+                    if self.sealing_id:
+                        break
+                else:
+                    ip_condition = catalog.description_show_ip_condition and \
+                                   catalog.description_show_ip_condition.strip() or None
+                    if not ip_condition:
+                        break
+                    else:
+                        try:
+                            expr = ip_condition % dict(value="'%s'" % self.sealing_id.name)
+                            if safe_eval(expr):
+                                break
+                        except ValueError as e:
+                            raise UserError(_("Incorrect format expression: %s") % expr)
+            else:
+                sealing_id = None
+            if sealing_id:
+                data.append(sealing_id.name)
 
         if self.dimmable_ids:
             data.append(','.join(self.dimmable_ids.sorted(lambda x: x.name).mapped('name')))

@@ -795,7 +795,12 @@ msgstr "Descripción generada dinámicamente a partir de datos del producto."
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_description_show_ip
 msgid "Description show IP"
-msgstr "Descripción show IP"
+msgstr "Mostrar IP en la Descripción"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_catalog_description_show_ip_domain
+msgid "Show IP condition"
+msgstr "Condición para mostrar IP"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_description_text
