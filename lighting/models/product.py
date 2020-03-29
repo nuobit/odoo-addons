@@ -130,9 +130,7 @@ class LightingProduct(models.Model):
                 else:
                     ip_condition = catalog.description_show_ip_condition and \
                                    catalog.description_show_ip_condition.strip() or None
-                    if not ip_condition:
-                        break
-                    else:
+                    if ip_condition:
                         try:
                             expr = ip_condition % dict(value="'%s'" % self.sealing_id.name)
                             if safe_eval(expr):
