@@ -79,16 +79,47 @@ class LightingProduct(models.Model):
             rec.description_updated = True
             rec.description = rec._generate_description()
 
+    @api.multi
+    def _update_computed_descriptions(self, exclude_lang=[]):
+        for rec in self:
+            en_trl = rec.with_context(lang=None)._generate_description()
+            self.env.cr.execute('select description from lighting_product where id=%s', (rec.id,))
+            if self.env.cr.fetchone()[0] != en_trl:
+                self.env.cr.execute('update lighting_product set description=%s where id=%s', (en_trl, rec.id,))
+            for lang in self.env['res.lang'].search([('code', 'not in', exclude_lang + ['en_US'])]):
+                non_en_trl = rec.with_context(lang=lang.code)._generate_description()
+                values = {
+                    'state': 'translated',
+                    'src': en_trl,
+                    'value': non_en_trl,
+                }
+                trl = self.env['ir.translation'].search([
+                    ('name', '=', 'lighting.product,description'),
+                    ('lang', '=', lang.code),
+                    ('res_id', '=', rec.id),
+                ])
+                if not trl:
+                    values.update({
+                        'name': 'lighting.product,description',
+                        'type': 'model',
+                        'lang': lang.code,
+                        'res_id': rec.id,
+                    })
+                    self.env['ir.translation'].create(values)
+                else:
+                    if trl.state != 'translated' or trl.src != en_trl or trl.value != non_en_trl:
+                        trl.with_context(lang=None).write(values)
+
     def _generate_description(self, show_variant_data=True):
-        _logger.info(_("Generating description for %s") % self.reference)
         self.ensure_one()
+        _logger.info(_("Generating %s description for %s") % (self.env.lang or 'en_US', self.reference))
         data = []
         if self.category_id:
             data.append(self.category_id.description_text or self.category_id.name)
 
         if self.family_ids:
             data.append(','.join(map(lambda x: x.upper(),
-                                     self.family_ids.sorted(lambda x: x.sequence).mapped('name'))))
+                                     self.family_ids.sorted(lambda x: (x.sequence, x.name)).mapped('name'))))
 
         if self.sealing_id:
             sealing_id = self.sealing_id
@@ -709,31 +740,6 @@ class LightingProduct(models.Model):
         ('published', 'Published'),
     ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
 
-    # aux functions
-    def _update_computed_description(self):
-        for lang in self.env['res.lang'].search([('code', '!=', self.env.lang)]):
-            en_trl = self.with_context(lang='en_US')._generate_description()
-            non_en_trl = self.with_context(lang=lang.code)._generate_description()
-            trl = self.env['ir.translation'].search([
-                ('name', '=', 'lighting.product,description'),
-                ('lang', '=', lang.code),
-                ('res_id', '=', self.id)
-            ])
-            if not trl and lang.code != 'en_US':
-                trl = self.env['ir.translation'].create({
-                    'name': 'lighting.product,description',
-                    'type': 'model',
-                    'lang': lang.code,
-                    'res_id': self.id,
-                })
-
-            self.env.cr.execute('update lighting_product set description=%s where id=%s', (en_trl, self.id,))
-            trl.with_context(lang=None).write({
-                'state': 'translated',
-                # 'source': en_trl,
-                'src': en_trl,
-                'value': non_en_trl, })
-
     # inherites base functions
     @api.multi
     @api.constrains('reference')
@@ -780,33 +786,9 @@ class LightingProduct(models.Model):
             if rec.state_marketing == 'ES' and rec.available_qty == 0:
                 rec.state_marketing = 'D'
 
-    @api.model
-    def create(self, values):
-        res = super().create(values)
-
-        for lang in map(lambda x: x.code != 'en_US' and x.code or None, self.env['res.lang'].search([])):
-            if res.with_context(lang=lang).description == 'false':
-                res.with_context(lang=lang).description = False
-
-        if res.description_updated:
-            if not res.env.context.get('trl_lang_description_update'):
-                res._update_computed_description()
-
-        return res
-
-    @api.multi
-    def write(self, values):
-        if 'description' not in values:
-            if values.get('description_updated'):
-                del values['description_updated']
-                values['description'] = self.description
-
-        res = super().write(values)
-        if 'description' in values:
-            if not self.env.context.get('trl_lang_description_update'):
-                self._update_computed_description()
-
-        return res
+    @api.constrains('description')
+    def check_description_updated(self):
+        self._update_computed_descriptions(exclude_lang=[self.env.lang])
 
     @api.multi
     def copy(self, default=None):
