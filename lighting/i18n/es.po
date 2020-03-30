@@ -1682,7 +1682,7 @@ msgstr "Flujo nominal (lm)"
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_flux_menu
 msgid "Luminous fluxes"
-msgstr "Flujos luminosos"
+msgstr "Flujos lumínicos"
 
 #. module: lighting
 #: selection:lighting.product.source,relevance:0
