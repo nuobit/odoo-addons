@@ -93,20 +93,22 @@ class LightingProductAdvancedSearch(models.TransientModel):
                                       relation='lighting_product_advanced_search_sealing_in_rel',
                                       column1='advanced_search_id',
                                       column2='sealing_id')
-    # Color_temperature search
+    # Color temperature search
     color_temperature_in_ids = fields.Many2many(string='Color temperature',
                                                 comodel_name='lighting.product.color.temperature',
                                                 relation='lighting_product_advanced_search_color_temperature_in_rel',
                                                 column1='advanced_search_id',
                                                 column2='color_temperature_id')
+    # Luminous flux search
+    flux_in_ids = fields.Many2many(string='Luminous flux',
+                                   comodel_name='lighting.product.flux',
+                                   relation='lighting_product_advanced_search_flux_in_rel',
+                                   column1='advanced_search_id',
+                                   column2='flux_id')
 
     # wattage
     wattage_from_in = fields.Float(string='From')
     wattage_to_in = fields.Float(string='To')
-
-    # luminous flux
-    luminous_flux_from_in = fields.Integer(string='From')
-    luminous_flux_to_in = fields.Integer(string='To')
 
     @api.multi
     def advanced_search(self):
@@ -135,7 +137,11 @@ class LightingProductAdvancedSearch(models.TransientModel):
         domain += prepare_in_domain(['sealing_id'], self.sealing_in_ids, 'or')
 
         # Color temperature
-        domain += prepare_in_domain(['source_ids.line_ids.color_temperature_ids'], self.color_temperature_in_ids, 'or')
+        domain += prepare_in_domain(['source_ids.line_ids.color_temperature_flux_ids.color_temperature_id'],
+                                    self.color_temperature_in_ids, 'or')
+
+        # luminous flux
+        domain += prepare_in_domain(['source_ids.line_ids.color_temperature_flux_ids.flux_id'], self.flux_in_ids, 'or')
 
         # wattage
         if self.wattage_from_in:
@@ -144,14 +150,6 @@ class LightingProductAdvancedSearch(models.TransientModel):
                            ('source_ids.line_ids.wattage', '<=', self.wattage_to_in)]
             else:
                 domain += [('source_ids.line_ids.wattage', '=', self.wattage_in)]
-
-        # luminous fllux
-        if self.luminous_flux_from_in:
-            if self.luminous_flux_to_in:
-                domain += [('source_ids.line_ids.luminous_flux1', '>=', self.luminous_flux_from_in),
-                           ('source_ids.line_ids.luminous_flux1', '<=', self.luminous_flux_to_in)]
-            else:
-                domain += [('source_ids.line_ids.luminous_flux1', '=', self.luminous_flux_from_in)]
 
         # attachment
         domain_in = []

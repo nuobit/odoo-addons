@@ -44,16 +44,14 @@
                     </group>
                 </group>
                 <group>
+                    <group string="Luminous flux (Lm)">
+                        <field name="flux_in_ids" widget="many2many_tags" nolabel="1"/>
+                    </group>
                     <group string="Wattage (W)">
                         <field name="wattage_from_in"/>
                         <field name="wattage_to_in"/>
                     </group>
-                    <group string="Luminous flux (Lm)">
-                        <field name="luminous_flux_from_in"/>
-                        <field name="luminous_flux_to_in"/>
-                    </group>
                 </group>
-
                 <group string="Attachment type">
                     <group string="With types">
                         <field name="attachment_type_in_ids" widget="many2many_tags"/>
