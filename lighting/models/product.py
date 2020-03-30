@@ -81,16 +81,19 @@ class LightingProduct(models.Model):
 
     @api.multi
     def _update_computed_descriptions(self, exclude_lang=[]):
+        exclude_lang = list(map(lambda x: x or 'en_US', exclude_lang))
         for rec in self:
-            en_trl = rec.with_context(lang=None)._generate_description()
             self.env.cr.execute('select description from lighting_product where id=%s', (rec.id,))
-            if self.env.cr.fetchone()[0] != en_trl:
-                self.env.cr.execute('update lighting_product set description=%s where id=%s', (en_trl, rec.id,))
+            en_trl = self.env.cr.fetchone()[0]
+            if 'en_US' not in exclude_lang:
+                en_trl1 = rec.with_context(lang=None)._generate_description()
+                if en_trl1 != en_trl:
+                    en_trl = en_trl1
+                    self.env.cr.execute('update lighting_product set description=%s where id=%s', (en_trl, rec.id,))
             for lang in self.env['res.lang'].search([('code', 'not in', exclude_lang + ['en_US'])]):
                 non_en_trl = rec.with_context(lang=lang.code)._generate_description()
                 values = {
                     'state': 'translated',
-                    'src': en_trl,
                     'value': non_en_trl,
                 }
                 trl = self.env['ir.translation'].search([
@@ -104,10 +107,15 @@ class LightingProduct(models.Model):
                         'type': 'model',
                         'lang': lang.code,
                         'res_id': rec.id,
+                        'src': en_trl,
                     })
                     self.env['ir.translation'].create(values)
                 else:
                     if trl.state != 'translated' or trl.src != en_trl or trl.value != non_en_trl:
+                        if 'en_US' not in exclude_lang:
+                            values.update({
+                                'src': en_trl,
+                            })
                         trl.with_context(lang=None).write(values)
 
     def _generate_description(self, show_variant_data=True):
