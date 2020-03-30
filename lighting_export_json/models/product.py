@@ -202,7 +202,9 @@ class LightingProduct(models.Model):
                                                        compute='_compute_json_display_color_temperature')
 
     @api.depends('source_ids', 'source_ids.line_ids',
-                 'source_ids.line_ids.color_temperature_ids',
+                 'source_ids.line_ids.color_temperature_flux_ids',
+                 'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
+                 'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
                  'source_ids.sequence')
     def _compute_json_display_color_temperature(self):
         template_id = self.env.context.get('template_id')
@@ -215,8 +217,11 @@ class LightingProduct(models.Model):
                                                    compute='_compute_json_display_luminous_flux')
 
     @api.depends('source_ids', 'source_ids.line_ids',
-                 'source_ids.line_ids.luminous_flux1',
-                 'source_ids.line_ids.luminous_flux2',
+                 'source_ids.line_ids.color_temperature_flux_ids',
+                 'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
+                 'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
+                 'source_ids.line_ids.color_temperature_flux_ids.flux_id',
+                 'source_ids.line_ids.color_temperature_flux_ids.flux_id.value',
                  'source_ids.sequence')
     def _compute_json_display_luminous_flux(self):
         template_id = self.env.context.get('template_id')
@@ -441,23 +446,25 @@ class LightingProduct(models.Model):
                                                       compute='_compute_json_search_color_temperature')
 
     @api.depends(
-        'source_ids.line_ids.color_temperature_ids',
-        'source_ids.line_ids.color_temperature_ids.value',
+        'source_ids.line_ids.color_temperature_flux_ids',
+        'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
+        'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
     )
     def _compute_json_search_color_temperature(self):
         for rec in self:
             colork_s = set()
             for line in rec.source_ids.mapped('line_ids'):
                 if line.is_integrated:
-                    if line.color_temperature_ids:
-                        if line.is_color_temperature_tunable and len(line.color_temperature_ids) > 1:
-                            tunable_range = line.color_temperature_ids.sorted(lambda x: x.value).mapped('value')
+                    if line.color_temperature_flux_ids:
+                        if line.is_color_temperature_flux_tunable and len(line.color_temperature_flux_ids) > 1:
+                            tunable_range = line.color_temperature_flux_ids.sorted(
+                                lambda x: x.color_temperature_id.value).mapped('color_temperature_id.value')
                             values = self.env['lighting.product.color.temperature'].search([
                                 ('value', '>=', tunable_range[0]),
                                 ('value', '<=', tunable_range[-1]),
                             ]).mapped('value')
                         else:
-                            values = line.color_temperature_ids.mapped('value')
+                            values = line.color_temperature_flux_ids.mapped('color_temperature_id.value')
                         colork_s |= set(values)
 
             if colork_s:
@@ -471,25 +478,33 @@ class LightingProduct(models.Model):
     json_search_luminous_flux = fields.Serialized(string="Luminous flux JSON Search",
                                                   compute='_compute_json_search_luminous_flux')
 
-    @api.depends('source_ids.line_ids.luminous_flux1',
-                 'source_ids.line_ids.luminous_flux2',
+    @api.depends('source_ids.line_ids.color_temperature_flux_ids',
+                 'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
+                 'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
+                 'source_ids.line_ids.color_temperature_flux_ids.flux_id',
+                 'source_ids.line_ids.color_temperature_flux_ids.flux_id.value',
                  )
     def _compute_json_search_luminous_flux(self):
         for rec in self:
             fluxes_s = set()
             for line in rec.source_ids.mapped('line_ids'):
                 if line.is_integrated:
-                    if line.luminous_flux1:
-                        flux1 = line.luminous_flux1 * line.source_id.num
-                        fluxes_s.add(flux1)
-                    if line.luminous_flux2:
-                        flux2 = line.luminous_flux2 * line.source_id.num
-                        fluxes_s.add(flux2)
+                    if line.color_temperature_flux_ids:
+                        if line.is_color_temperature_flux_tunable and len(line.color_temperature_flux_ids) > 1:
+                            tunable_range = line.color_temperature_flux_ids \
+                                .sorted(lambda x: x.flux_id.value).mapped('flux_id.value')
+                            values = self.env['lighting.product.flux'].search([
+                                ('value', '>=', tunable_range[0]),
+                                ('value', '<=', tunable_range[-1]),
+                            ]).mapped('value')
+                        else:
+                            values = line.color_temperature_flux_ids.mapped('flux_id.value')
+                        fluxes_s |= set(map(lambda x: x * line.source_id.num, values))
 
             if fluxes_s:
                 fxrange = [(0, 400), (400, 800), (800, 1200),
                            (1200, 1600), (1600, 2000), (2000, float('inf'))]
-                flux_ranges = _values2range(fluxes_s, fxrange, magnitude='Lm')
+                flux_ranges = _values2range(fluxes_s, fxrange, magnitude='lm')
                 if flux_ranges:
                     rec.json_search_luminous_flux = json.dumps(flux_ranges)
 
