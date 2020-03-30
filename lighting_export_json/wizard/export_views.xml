@@ -11,6 +11,8 @@
             <xpath expr="//field[@name='hide_empty_fields']" position="after">
                 <field colspan="3" name="pretty_print"
                        attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
+                <field colspan="3" name="sort_keys"
+                       attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
             </xpath>
         </field>
     </record>

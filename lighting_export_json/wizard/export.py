@@ -18,6 +18,9 @@ class LightingExport(models.TransientModel):
     output_type = fields.Selection(selection_add=[('export_product_json', _('Json file (.json)'))])
 
     pretty_print = fields.Boolean(string="Pretty print", default=True)
+    sort_keys = fields.Boolean(string="Sort keys",
+                               help='If sort_keys is true (default: False), then the '
+                                    'output of dictionaries will be sorted by key.', default=True)
 
     @api.multi
     def export_product_json(self):

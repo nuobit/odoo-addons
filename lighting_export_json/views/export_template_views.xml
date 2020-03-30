@@ -10,6 +10,7 @@
         <field name="arch" type="xml">
             <field name="hide_empty_fields" position="after">
                 <field name="pretty_print" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
+                <field name="sort_keys" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
             </field>
             <xpath expr="//header" position="inside">
                 <button name="action_json_export" type="object" string="Export"

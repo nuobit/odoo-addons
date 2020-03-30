@@ -21,6 +21,9 @@ class LightingExportTemplate(models.Model):
     output_type = fields.Selection(selection_add=[('export_product_json', _('Json file (.json)'))])
 
     pretty_print = fields.Boolean(string="Pretty print", default=True)
+    sort_keys = fields.Boolean(string="Sort keys",
+                               help='If sort_keys is true (default: False), then the '
+                                    'output of dictionaries will be sorted by key.', default=True)
 
     output_base_directory = fields.Char(string="Base directory")
     db_filestore = fields.Boolean(string="Database filestore")
@@ -55,7 +58,9 @@ class LightingExportTemplate(models.Model):
 
         kwargs = {}
         if self.pretty_print:
-            kwargs = dict(indent=4, sort_keys=False)
+            kwargs.update(dict(indent=4))
+        if self.sort_keys:
+            kwargs.update(dict(sort_keys=True))
 
         domain = []
         if self.domain:
