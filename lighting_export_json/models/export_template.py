@@ -67,7 +67,7 @@ class LightingExportTemplate(models.Model):
             domain = ast.literal_eval(self.domain)
 
         objects_rs = self.env['lighting.product'].search(domain)
-        object_ids = objects_rs.mapped('id')
+        object_ids = objects_rs.sorted(lambda x: x.reference).mapped('id')
         res = self.generate_data(object_ids, hide_empty_fields=self.hide_empty_fields)
 
         today_str = fields.Date.from_string(fields.Date.context_today(self)).strftime('%Y%m%d')
