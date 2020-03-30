@@ -66,12 +66,11 @@ class LightingProduct(models.Model):
                  'source_ids.line_ids.is_lamp_included',
                  'source_ids.line_ids.wattage',
                  'source_ids.line_ids.wattage_magnitude',
-                 'source_ids.line_ids.luminous_flux1',
-                 'source_ids.line_ids.luminous_flux2',
                  'source_ids.line_ids.special_spectrum',
-                 'source_ids.line_ids.is_color_temperature_tunable',
-                 'source_ids.line_ids.color_temperature_ids',
-                 'source_ids.line_ids.color_temperature_ids.value',
+                 'source_ids.line_ids.is_color_temperature_flux_tunable',
+                 'source_ids.line_ids.color_temperature_flux_ids',
+                 'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
+                 'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
                  'finish_id.name',
                  'finish2_id.name')
     def _compute_description(self):
@@ -178,18 +177,7 @@ class LightingProduct(models.Model):
                         if wattage_total_display:
                             data_line.append(wattage_total_display)
 
-                        data_lm = []
-                        for lmx in ('luminous_flux1', 'luminous_flux2'):
-                            lm = getattr(line, lmx)
-                            if lm:
-                                data_lm.append('%i' % lm)
-                        if data_lm != []:
-                            lm_str = '%slm' % '-'.join(data_lm)
-                            if (line.source_id.num or 1) > 1:
-                                lm_str = '%ix%s' % (line.source_id.num, lm_str)
-                            data_line.append(lm_str)
-
-                        if line.color_temperature_ids:
+                        if line.color_temperature_flux_ids:
                             data_line.append(line.color_temperature_display)
                         else:
                             if line.is_led and line.special_spectrum:
@@ -220,18 +208,7 @@ class LightingProduct(models.Model):
                                 if wattage_total_display:
                                     data_line.append(wattage_total_display)
 
-                                data_lm = []
-                                for lmx in ('luminous_flux1', 'luminous_flux2'):
-                                    lm = getattr(line, lmx)
-                                    if lm:
-                                        data_lm.append('%i' % lm)
-                                if data_lm != []:
-                                    lm_str = '%slm' % '-'.join(data_lm)
-                                    if (line.source_id.num or 1) > 1:
-                                        lm_str = '%ix%s' % (line.source_id.num, lm_str)
-                                    data_line.append(lm_str)
-
-                                if line.color_temperature_ids:
+                                if line.color_temperature_flux_ids:
                                     data_line.append(line.color_temperature_display)
                                 else:
                                     if line.is_led and line.special_spectrum:

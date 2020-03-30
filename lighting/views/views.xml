@@ -695,9 +695,9 @@
                                 <field name="is_integrated"/>
                                 <field name="wattage_display"/>
 
+                                <field name="color_temperature_display"/>
                                 <field name="luminous_flux_display"/>
 
-                                <field name="color_temperature_display"/>
                                 <field name="cri_min"/>
 
                                 <field name="efficiency_ids"
@@ -745,19 +745,17 @@
                         </group>
                     </group>
 
-                    <group col="4"
+                    <group col="6"
                            attrs="{'invisible': [('is_integrated', '=', False), ('is_lamp_included', '=', False)]}">
-                        <group colspan="4" col="4">
-                            <field name="color_temperature_ids" widget="many2many_tags"/>
-                            <field name="is_color_temperature_tunable"/>
-                        </group>
-                        <group colspan="4"/>
-                        <group colspan="4" col="4">
-                            <field name="luminous_flux1" colspan="2"/>
-                            <field name="luminous_flux2" colspan="2"/>
-                        </group>
+                        <field name="color_temperature_flux_ids" colspan="4">
+                            <tree editable="bottom">
+                                <field name="color_temperature_id"/>
+                                <field name="flux_id"/>
+                            </tree>
+                        </field>
+                        <field name="is_color_temperature_flux_tunable" colspan="2"/>
                     </group>
-
+                    
                     <group string="LED specifications" attrs="{'invisible': [('is_led', '=', False)]}">
                         <field name="is_led" invisible="1"/>
                         <field name="cri_min"/>

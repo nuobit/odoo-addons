@@ -205,10 +205,9 @@ class LightingProductSource(models.Model):
                 line = [l.type_id.code]
 
                 if l.is_integrated or l.is_lamp_included:
-                    if l.color_temperature_ids:
+                    if l.color_temperature_flux_ids:
                         line.append(l.color_temperature_display)
-                    if l.luminous_flux_display:
-                        line.append("%slm" % l.luminous_flux_display)
+                        line.append(l.luminous_flux_display)
                     if l.is_led and l.cri_min:
                         line.append("%iCRI" % l.cri_min)
 
@@ -311,36 +310,57 @@ class LightingProductSourceLine(models.Model):
                         rec.source_id.product_id.display_name,
                         rec.type_id.display_name))
 
-    luminous_flux1 = fields.Integer(string='Luminous flux 1 (lm)')
-    luminous_flux2 = fields.Integer(string='Luminous flux 2 (lm)')
+    color_temperature_flux_ids = fields.One2many(string='Color temperature (K)/Flux (lm)',
+                                                 comodel_name='lighting.product.source.line.color.temperature.flux',
+                                                 inverse_name='source_line_id')
 
+    is_color_temperature_flux_tunable = fields.Boolean(string='Tunable', default=False)
+
+    @api.onchange('color_temperature_flux_ids', 'is_color_temperature_flux_tunable')
+    def _onchange_is_color_temperature_flux_ids_tunable(self):
+        if len(self.color_temperature_flux_ids) > 2:
+            if self.is_color_temperature_flux_tunable:
+                color_temp_fluxs_ord = self.color_temperature_flux_ids.sorted(lambda x: x.color_temperature_id.value)
+                self.color_temperature_flux_ids = [
+                    (6, False, (color_temp_fluxs_ord[0] | color_temp_fluxs_ord[-1]).mapped('id'))]
+        elif len(self.color_temperature_flux_ids) < 2:
+            if self.is_color_temperature_flux_tunable:
+                self.is_color_temperature_flux_tunable = False
+
+    color_temperature_display = fields.Char(string='Color temperature (K)',
+                                            compute='_compute_color_temperature_flux_display')
+
+    luminous_flux_display = fields.Char(string='Luminous flux (lm)',
+                                        compute='_compute_color_temperature_flux_display')
+
+    @api.depends('color_temperature_flux_ids',
+                 'color_temperature_flux_ids.color_temperature_id',
+                 'color_temperature_flux_ids.color_temperature_id.value',
+                 'color_temperature_flux_ids.flux_id',
+                 'color_temperature_flux_ids.flux_id.value',
+                 'is_color_temperature_flux_tunable',
+                 'source_id')
+    def _compute_color_temperature_flux_display(self):
+        for rec in self:
+            if rec.color_temperature_flux_ids:
+                rec.color_temperature_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
+                    .join(['%iK' % x.color_temperature_id.value for x in
+                           rec.color_temperature_flux_ids.sorted(lambda y: y.color_temperature_id.value)])
+                rec.luminous_flux_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
+                    .join(['%ilm' % x.flux_id.value for x in
+                           rec.color_temperature_flux_ids.sorted(lambda y: y.flux_id.value)])
+
+    ############## to remove
     color_temperature_ids = fields.Many2many(string='Color temperature (K)',
                                              comodel_name='lighting.product.color.temperature',
                                              relation='lighting_product_source_line_color_temperature_rel',
                                              column1='source_line_id', column2='color_temperature_id')
-    is_color_temperature_tunable = fields.Boolean(string='Tunable', default=False)
+    is_color_temperature_tunable = fields.Boolean(string='Tunableold', default=False)
 
-    @api.onchange('color_temperature_ids', 'is_color_temperature_tunable')
-    def _onchange_is_color_temperature_ids_tunable(self):
-        if len(self.color_temperature_ids) > 2:
-            if self.is_color_temperature_tunable:
-                color_temps_ord = self.color_temperature_ids.sorted(lambda x: x.value)
-                self.color_temperature_ids = [
-                    (6, False, (color_temps_ord[0] | color_temps_ord[-1]).mapped('id'))]
-        elif len(self.color_temperature_ids) < 2:
-            if self.is_color_temperature_tunable:
-                self.is_color_temperature_tunable = False
+    luminous_flux1 = fields.Integer(string='Luminous flux 1 (lm)')
+    luminous_flux2 = fields.Integer(string='Luminous flux 2 (lm)')
 
-    color_temperature_display = fields.Char(string='Color temperature (K)',
-                                            compute='_compute_color_temperature_display')
-
-    @api.depends('color_temperature_ids', 'color_temperature_ids.value')
-    def _compute_color_temperature_display(self):
-        for rec in self:
-            if rec.color_temperature_ids:
-                rec.color_temperature_display = (rec.is_color_temperature_tunable and '-' or '/') \
-                    .join(['%iK' % x.value for x in
-                           rec.color_temperature_ids.sorted(lambda y: y.value)])
+    ###############
 
     cri_min = fields.Integer(string='CRI', help='Minimum color rendering index', track_visibility='onchange')
 
@@ -402,21 +422,6 @@ class LightingProductSourceLine(models.Model):
         for rec in self:
             rec.wattage_display = rec.prepare_wattage_str()
 
-    luminous_flux_display = fields.Char(compute='_compute_luminous_flux_display', string='Luminous flux (lm)')
-
-    @api.depends('luminous_flux1', 'luminous_flux2')
-    def _compute_luminous_flux_display(self):
-        for rec in self:
-            res = []
-            if rec.luminous_flux1:
-                res.append(float2text(rec.luminous_flux1))
-
-            if rec.luminous_flux2:
-                res.append(float2text(rec.luminous_flux2))
-
-            if res != []:
-                rec.luminous_flux_display = "-".join(res)
-
     source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
     @api.multi
@@ -427,11 +432,11 @@ class LightingProductSourceLine(models.Model):
                 rec.is_lamp_included = False
 
     @api.multi
-    @api.constrains('color_temperature_ids', 'is_color_temperature_tunable')
-    def _check_color_temperature_ids_tunable(self):
-        if self.is_color_temperature_tunable and self.color_temperature_ids and \
-                len(self.color_temperature_ids) != 2:
-            raise ValidationError(_("A tunable source must have exactly 2 color temperatures"))
+    @api.constrains('color_temperature_flux_ids', 'is_color_temperature_flux_tunable')
+    def _check_color_temperature_flux_ids_tunable(self):
+        if self.is_color_temperature_flux_tunable and self.color_temperature_flux_ids and \
+                len(self.color_temperature_flux_ids) != 2:
+            raise ValidationError(_("A tunable source must have exactly 2 pairs color temperature/luminous flux"))
 
     # aux display fucnitons
     def get_source_type(self):
@@ -442,9 +447,17 @@ class LightingProductSourceLine(models.Model):
         return res
 
     def get_color_temperature(self):
-        res = self.filtered(lambda x: x.color_temperature_ids) \
+        res = self.filtered(lambda x: x.color_temperature_flux_ids) \
             .sorted(lambda x: x.sequence) \
             .mapped('color_temperature_display')
+        if not res:
+            return None
+        return res
+
+    def get_luminous_flux(self):
+        res = self.filtered(lambda x: x.color_temperature_flux_ids) \
+            .sorted(lambda x: x.sequence) \
+            .mapped('luminous_flux_display')
         if not res:
             return None
         return res
@@ -452,18 +465,6 @@ class LightingProductSourceLine(models.Model):
     def get_cri(self):
         res = self.sorted(lambda x: x.sequence) \
             .mapped('cri_min')
-        if not res:
-            return None
-        return res
-
-    def get_luminous_flux(self):
-        res = []
-        for line in self.sorted(lambda x: x.sequence):
-            lm_l = ['%ilm' % x for x in
-                    filter(lambda x: x, [line.luminous_flux1, line.luminous_flux2])]
-            if lm_l:
-                res.append('-'.join(lm_l))
-
         if not res:
             return None
         return res

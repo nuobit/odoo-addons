@@ -433,13 +433,17 @@ msgid "Color consistency (SDCM)"
 msgstr "Consistência de cores (SDCM)"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_ids
+msgid "Color temperature (K)/Flux (lm)"
+msgstr "Color temperature (K)/Flux (lm)"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_display
 msgid "Color temperature (K)"
 msgstr "Temperatura de cor (K)"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_color_temperature_tunable
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_color_temperature_flux_tunable
 msgid "Tunable"
 msgstr "Tunable"
 
@@ -1577,16 +1581,6 @@ msgstr "Luminarie com luz de emergência"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux_display
 msgid "Luminous flux (lm)"
 msgstr "Fluxo luminoso (lm)"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux1
-msgid "Luminous flux 1 (lm)"
-msgstr "Fluxo Luminoso 1 (lm)"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux2
-msgid "Luminous flux 2 (lm)"
-msgstr "Fluxo Luminoso 2 (lm)"
 
 #. module: lighting
 #: selection:lighting.product.source,relevance:0

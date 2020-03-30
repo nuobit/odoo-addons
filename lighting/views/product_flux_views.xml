@@ -3,28 +3,28 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- window action color_temperature2product smart button -->
-    <record id="product_color_temperature_action_product" model="ir.actions.act_window">
+    <!-- window action flux2product smart button -->
+    <record id="product_flux_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('source_ids.line_ids.color_temperature_flux_ids.color_temperature_id','=',active_id)]</field>
+        <field name="domain">[('source_ids.line_ids.color_temperature_flux_ids.flux_id','in',[active_id])]</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Product</p>
         </field>
     </record>
 
-    <!-- view color_temperature -->
-    <record id="product_color_temperature_form_view" model="ir.ui.view">
-        <field name="name">product.color.temperature.form</field>
-        <field name="model">lighting.product.color.temperature</field>
+    <!-- view flux -->
+    <record id="product_flux_form_view" model="ir.ui.view">
+        <field name="name">product.flux.form</field>
+        <field name="model">lighting.product.flux</field>
         <field name="arch" type="xml">
-            <form string="Color temperature Form">
+            <form string="Flux Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_color_temperature_action_product)d">
+                                name="%(product_flux_action_product)d">
                             <field string="Products" name="product_count" widget="statinfo"/>
                         </button>
                     </div>
@@ -36,33 +36,33 @@
         </field>
     </record>
 
-    <record id="product_color_temperature_tree_view" model="ir.ui.view">
-        <field name="name">product.color.temperature.tree</field>
-        <field name="model">lighting.product.color.temperature</field>
+    <record id="product_flux_tree_view" model="ir.ui.view">
+        <field name="name">product.flux.tree</field>
+        <field name="model">lighting.product.flux</field>
         <field name="arch" type="xml">
-            <tree string="Color temperature Tree">
+            <tree string="Flux Tree">
                 <field name="value"/>
                 <field name="product_count"/>
-                <button name="%(product_color_temperature_action_product)d" type="action"
+                <button name="%(product_flux_action_product)d" type="action"
                         string="Products" icon="fa-external-link"
                         attrs="{'invisible': [('product_count', '=', 0)]}"/>
             </tree>
         </field>
     </record>
 
-    <!-- window action color_temperature -->
-    <record id="product_color_temperature_list_action" model="ir.actions.act_window">
-        <field name="name">Product color temperature</field>
-        <field name="res_model">lighting.product.color.temperature</field>
+    <!-- window action flux -->
+    <record id="product_flux_list_action" model="ir.actions.act_window">
+        <field name="name">Product flux</field>
+        <field name="res_model">lighting.product.flux</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first color temperature
+            <p class="oe_view_nocontent_create">Create the first flux
             </p>
         </field>
     </record>
 
-    <menuitem id="product_color_temperatures_menu" name="Color temperatures" parent="common_data_menu"
-              action="product_color_temperature_list_action"
-              sequence="65"/>
+    <menuitem id="product_flux_menu" name="Luminous fluxes" parent="common_data_menu"
+              action="product_flux_list_action"
+              sequence="66"/>
 </odoo>
