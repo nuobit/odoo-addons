@@ -504,7 +504,7 @@ class LightingProduct(models.Model):
             if fluxes_s:
                 fxrange = [(0, 400), (400, 800), (800, 1200),
                            (1200, 1600), (1600, 2000), (2000, float('inf'))]
-                flux_ranges = _values2range(fluxes_s, fxrange, magnitude='lm')
+                flux_ranges = _values2range(fluxes_s, fxrange, magnitude='Lm')
                 if flux_ranges:
                     rec.json_search_luminous_flux = json.dumps(flux_ranges)
 
