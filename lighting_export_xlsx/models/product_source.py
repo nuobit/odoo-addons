@@ -28,7 +28,7 @@ class LightingProductSource(models.Model):
     @property
     def xlsx_color_temperature(self):
         datum = self.line_ids.get_color_temperature()
-        return {_('Color temperature'): datum and '/'.join(datum) or None}
+        return {_('Color temperature'): datum and ', '.join(datum) or None}
 
     @property
     def xlsx_cri(self):
@@ -40,12 +40,12 @@ class LightingProductSource(models.Model):
             datum = [str(x) for x in cri_l if x]
         else:
             datum = None
-        return {meta['string']: datum and '/'.join(datum) or None}
+        return {meta['string']: datum and ', '.join(datum) or None}
 
     @property
     def xlsx_luminous_flux(self):
         datum = self.line_ids.get_luminous_flux()
-        return {_('Flux'): datum and '/'.join(datum) or None}
+        return {_('Flux'): datum and ', '.join(datum) or None}
 
     @api.multi
     def export_xlsx(self, template_id=None):

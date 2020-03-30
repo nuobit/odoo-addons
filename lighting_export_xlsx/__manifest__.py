@@ -5,7 +5,7 @@
 {
     'name': "Lighting XLSX Export",
     'description': "Lighting export data XLSX",
-    'version': '11.0.0.2.10',
+    'version': '11.0.0.2.11',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
