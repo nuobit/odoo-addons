@@ -56,6 +56,12 @@ msgid "=Material code"
 msgstr "=Código de material"
 
 #. module: lighting
+#: code:addons/lighting/models/models.py:439
+#, python-format
+msgid "A tunable source must have exactly 2 pairs color temperature/luminous flux"
+msgstr "A tunable source must have exactly 2 pairs color temperature/luminous flux"
+
+#. module: lighting
 #: model:ir.actions.act_window,name:lighting.add_attachment_action
 msgid "Add attachment"
 msgstr "Añadir adjunto"
@@ -198,6 +204,9 @@ msgstr "Adjuntar múltiples archivos"
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.attachment_list_action
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_attachment_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_application_attachment_attachment_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment_attachment_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment_attachment_id
 msgid "Attachment"
 msgstr "Adjunto"
 
@@ -233,12 +242,21 @@ msgid "Attachment types"
 msgstr "Tipos de adjunto"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_application_attachment_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_attachment_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment_count
 msgid "Attachment(s)"
 msgstr "Adjunto(s)"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_application_attachment_ids
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_attachment_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment_ids
+#: model:ir.ui.view,arch_db:lighting.product_application_form_view
+#: model:ir.ui.view,arch_db:lighting.product_category_form_view
+#: model:ir.ui.view,arch_db:lighting.product_family_form_view
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Attachments"
 msgstr "Adjuntos"
@@ -430,10 +448,15 @@ msgstr "Cerrar"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_code
 #: model:ir.model.fields,field_description:lighting.field_lighting_language_code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_group_type_code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_location_code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_material_code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_code
+#: model:ir.ui.view,arch_db:lighting.product_family_search_view
 #: model:ir.ui.view,arch_db:lighting.product_finish_form_view
 msgid "Code"
 msgstr "Código"
@@ -450,6 +473,8 @@ msgstr "Temperatura de color (K)/Flujo (lm)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_display
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_color_temperature_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_ids
 msgid "Color temperature (K)"
 msgstr "Temperatura de color (K)"
 
@@ -1650,8 +1675,14 @@ msgstr "Luminarie con luz de emergencia."
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux_display
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_flux_id
 msgid "Luminous flux (lm)"
 msgstr "Flujo nominal (lm)"
+
+#. module: lighting
+#: model:ir.ui.menu,name:lighting.product_flux_menu
+msgid "Luminous fluxes"
+msgstr "Flujos luminosos"
 
 #. module: lighting
 #: selection:lighting.product.source,relevance:0

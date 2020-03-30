@@ -27,11 +27,8 @@ class LightingProductSource(models.Model):
 
     @property
     def xlsx_color_temperature(self):
-        SourceLine = self.env[self._name].line_ids
-        field = 'color_temperature_ids'
-        meta = SourceLine.fields_get([field], ['string'])[field]
         datum = self.line_ids.get_color_temperature()
-        return {meta['string']: datum and '/'.join(datum) or None}
+        return {_('Color temperature'): datum and '/'.join(datum) or None}
 
     @property
     def xlsx_cri(self):
@@ -48,7 +45,7 @@ class LightingProductSource(models.Model):
     @property
     def xlsx_luminous_flux(self):
         datum = self.line_ids.get_luminous_flux()
-        return {'Flux': datum and '/'.join(datum) or None}
+        return {_('Flux'): datum and '/'.join(datum) or None}
 
     @api.multi
     def export_xlsx(self, template_id=None):

@@ -1,0 +1,66 @@
+# This file contains the translation of the following modules:
+#	* lighting_export_xlsx
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-30 15:39+0000\n"
+"PO-Revision-Date: 2020-03-30 15:39+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_export_xlsx
+#: code:addons/lighting_export_xlsx/models/product_source.py:31
+#, python-format
+msgid "Color temperature"
+msgstr "Temperatura de color"
+
+#. module: lighting_export_xlsx
+#: model:ir.model.fields,field_description:lighting_export_xlsx.field_report_lighting_export_xlsx_export_product_xlsx_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: lighting_export_xlsx
+#: code:addons/lighting_export_xlsx/wizard/export.py:11
+#, python-format
+msgid "Excel file (.xlsx)"
+msgstr "Fichero Excel (.xlsx)"
+
+#. module: lighting_export_xlsx
+#: model:ir.model,name:lighting_export_xlsx.model_lighting_export
+msgid "Export data"
+msgstr "Exportar datos"
+
+#. module: lighting_export_xlsx
+#: code:addons/lighting_export_xlsx/models/product_source.py:48
+#, python-format
+msgid "Flux"
+msgstr "Flujo"
+
+#. module: lighting_export_xlsx
+#: model:ir.model.fields,field_description:lighting_export_xlsx.field_report_lighting_export_xlsx_export_product_xlsx___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: lighting_export_xlsx
+#: code:addons/lighting_export_xlsx/report/export_product_xlsx.py:47
+#, python-format
+msgid "No"
+msgstr "No"
+
+#. module: lighting_export_xlsx
+#: model:ir.actions.report,name:lighting_export_xlsx.export_product_xlsx
+msgid "Products XLSX report"
+msgstr "Products XLSX report"
+
+#. module: lighting_export_xlsx
+#: code:addons/lighting_export_xlsx/report/export_product_xlsx.py:47
+#, python-format
+msgid "Yes"
+msgstr "Sí"
+
