@@ -991,9 +991,19 @@ msgid "Price"
 msgstr "Price"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_price_currency_id
+msgid "Price currency"
+msgstr "Price currency"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cost
 msgid "Cost"
 msgstr "Cost"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_cost_currency_id
+msgid "Cost currency"
+msgstr "Cost currency"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view

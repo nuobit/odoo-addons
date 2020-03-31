@@ -1087,9 +1087,19 @@ msgid "Price"
 msgstr "PVP"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_price_currency_id
+msgid "Price currency"
+msgstr "Moneda del PVP"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cost
 msgid "Cost"
 msgstr "Coste"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_cost_currency_id
+msgid "Cost currency"
+msgstr "Moneda del coste"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
