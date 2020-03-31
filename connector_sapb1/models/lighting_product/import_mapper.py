@@ -66,22 +66,26 @@ class LigthingProductImportMapper(Component):
     def last_purchase_date(self, record):
         return {'last_purchase_date': record['LastPurDat']}
 
+    def _get_currency_id_by_name(self, name):
+        price_currency_id = None
+        if name:
+            price_currency = self.env['res.currency'].search([
+                ('name', '=', name),
+            ])
+            if price_currency:
+                price_currency_id = price_currency.id
+
+        return price_currency_id
+
     @mapping
     def price(self, record):
-        return {'price': record['Price']}
+        return {'price': record['Price'],
+                'price_currency_id': self._get_currency_id_by_name(record['Currency'])}
 
     @mapping
     def cost(self, record):
-        raw_cost = record['Cost'] and record['Cost'].strip() or None
-        if not raw_cost:
-            cost = 0
-        else:
-            m = re.match(r'^ *([0-9]+(?:\.[0-9]+)?)(?: *EUR *)? *$', raw_cost)
-            if not m:
-                raise ValueError("Cost format unexpected '%s'" % record['Cost'])
-            cost = decimal.Decimal(m.group(1))
-
-        return {'cost': cost}
+        return {'cost': record['PurchasePrice'],
+                'cost_currency_id': self._get_currency_id_by_name(record['PurchasePriceCurrency'])}
 
     @mapping
     def dimensions(self, record):

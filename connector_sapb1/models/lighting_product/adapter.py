@@ -52,6 +52,23 @@ class LightingProductAdapter(Component):
                                                     'Fe Digital', 'Histórico') and
                               p."ItmsGrpCod" IN (107, 108, 109, 111, 110) -- Cristher, Dopo, Exo, Indeluz, Accesorios
                     ),
+                    -- purchase pricelist
+                    purchase_price1 AS (
+                        SELECT pl."ItemCode", pl."PriceList", pl."Price", NULLIF(trim(pl."Currency"),'') AS "Currency"
+                        FROM %(schema)s.ITM1 pl
+                        WHERE pl."PriceList" IN (12, 13) AND
+                              pl."Price"!=0 AND NULLIF(trim(pl."Currency"),'') IS NOT NULL
+                    ),
+                    purchase_price AS (
+                        SELECT p."ItemCode", p."Price" AS "PurchasePrice", p."Currency" AS "PurchasePriceCurrency"
+                        FROM purchase_price1 p
+                        WHERE NOT EXISTS (
+                                SELECT p0.*
+                                FROM purchase_price1 p0
+                                WHERE p0."ItemCode" = p."ItemCode" AND
+                                      p0."PriceList" < p."PriceList"
+                            )
+                    ),
                     -- future stock
                     pending_base AS (
                         SELECT lc."ItemCode",
@@ -164,17 +181,14 @@ class LightingProductAdapter(Component):
                                p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
                                s."OnHand",  s."IsCommited", s."OnOrder", s."ShipDate", s."Capacity",
                                p."AvgPrice", p."LastPurDat",
-                               coalesce(p."U_U_pcompra18",
-                                  coalesce(p."U_U_pcompra17",
-                                      coalesce(p."U_U_pcompra16",
-                                          coalesce(p."U_U_pcompra15",
-                                              p."U_U_pcompra14")))) AS "Cost",
-                               COALESCE(t."Price", 0) as "Price",
+                               COALESCE(pp."PurchasePrice", 0) AS "PurchasePrice", pp."PurchasePriceCurrency",
+                               COALESCE(t."Price", 0) as "Price", NULLIF(trim(t."Currency"),'') AS "Currency",
                                (CASE WHEN SECONDS_BETWEEN(s."UpdateDateTime", p."UpdateDateTime") > 0 THEN p."UpdateDateTime"
                                 ELSE s."UpdateDateTime" END) AS "UpdateDateTime"
                         FROM product_virtual_stock_all s,
                              oitm_base p
-                                LEFT JOIN %(schema)s.ITM1 t ON t."PriceList" = 11 AND p."ItemCode" = t."ItemCode",
+                                LEFT JOIN %(schema)s.ITM1 t ON t."PriceList" = 11 AND p."ItemCode" = t."ItemCode"
+                                LEFT JOIN purchase_price pp ON p."ItemCode" = pp."ItemCode",
                              %(schema)s.OITB g
                         WHERE s."ItemCode" = p."ItemCode" AND
                               p."ItmsGrpCod" = g."ItmsGrpCod"
