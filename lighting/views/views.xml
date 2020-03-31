@@ -351,8 +351,12 @@
                                 </group>
                                 <group colspan="2">
                                     <group>
-                                        <field name="price"/>
-                                        <field name="cost"/>
+                                        <field name="price_currency_id" invisible="1"/>
+                                        <field name="price" widget="monetary"
+                                               options="{'currency_field': 'price_currency_id'}"/>
+                                        <field name="cost_currency_id" invisible="1"/>
+                                        <field name="cost" widget="monetary"
+                                               options="{'currency_field': 'cost_currency_id'}"/>
                                     </group>
                                 </group>
                                 <group colspan="2">
@@ -755,7 +759,7 @@
                         </field>
                         <field name="is_color_temperature_flux_tunable" colspan="2"/>
                     </group>
-                    
+
                     <group string="LED specifications" attrs="{'invisible': [('is_led', '=', False)]}">
                         <field name="is_led" invisible="1"/>
                         <field name="cri_min"/>
