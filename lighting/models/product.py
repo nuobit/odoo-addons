@@ -715,7 +715,6 @@ class LightingProduct(models.Model):
     price_currency_id = fields.Many2one(string='Price currency',
                                         comodel_name='res.currency',
                                         readonly=True,
-                                        groups='lighting.group_lighting_user',
                                         track_visibility='onchange')
 
     cost = fields.Float(string='Cost', readonly=True, groups='lighting.group_lighting_user',
