@@ -238,7 +238,7 @@
                                                                         </td>
                                                                         <td width="13%" class="text-right">
                                                                             <span t-field="il.quantity"/>
-                                                                            <span class="units" t-field="il.uom_id"
+                                                                            <span class="rid-units" t-field="il.uom_id"
                                                                                   groups="product.group_uom"/>
                                                                         </td>
                                                                         <td width="10%" class="text-right">
