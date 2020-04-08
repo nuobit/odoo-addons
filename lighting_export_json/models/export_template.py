@@ -39,6 +39,15 @@ class LightingExportTemplate(models.Model):
         else:
             self.output_base_directory = False
 
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = dict(default or {},
+                       name='%s (copy)' % self.name,
+                       )
+
+        return super().copy(default)
+
     @api.model
     def autoexecute(self):
         for t in self.env[self._name].search([('auto_execute', '=', True)]):
