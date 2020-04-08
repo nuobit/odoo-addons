@@ -111,6 +111,7 @@ class LightingExportTemplate(models.Model):
             for lang in meta_langs:
                 datum = getattr(obj.with_context(lang=lang, template_id=self), field)
                 subfield = meta['subfield'] or 'display_name'
+                order_field = 'sequence'
                 if meta['type'] == 'selection':
                     datum = dict(meta['selection'][lang]).get(datum)
                 elif meta['type'] == 'boolean':
@@ -118,7 +119,7 @@ class LightingExportTemplate(models.Model):
                         datum = _('Yes') if datum else _('No')
                 elif meta['type'] in ('one2many', 'many2many'):
                     datum1 = []
-                    for x in datum:
+                    for x in datum.sorted(lambda x: order_field not in x or x[order_field]):
                         value_l = x.mapped(subfield)
                         if value_l:
                             if len(value_l) > 1:
