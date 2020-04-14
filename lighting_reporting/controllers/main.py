@@ -12,9 +12,10 @@ _logger = logging.getLogger(__name__)
 
 
 class ProductDatasheetController(http.Controller):
-    def generate_lighting_report(self, product, lang=None):
+    def generate_lighting_report(self, product_id, lang_id=None):
+        lang = lang_id and lang_id.code or None
         pdf = http.request.env.ref('lighting_reporting.action_report_product'). \
-            with_context(lang=lang).render_qweb_pdf([product.id])[0]
+            with_context(lang=lang).render_qweb_pdf([product_id.id])[0]
         pdfhttpheaders = [
             ('Content-Type', 'application/pdf'),
             ('Content-Length', len(pdf)),
@@ -26,6 +27,7 @@ class ProductDatasheetController(http.Controller):
                  ], type='http', auth="user")
     def download_datasheet(self, lang=None, reference=None):
         # lang check
+        lang_id = None
         if lang is not None:
             lang_id = http.request.env['res.lang'].search([
                 ('active', '=', True),
@@ -50,4 +52,4 @@ class ProductDatasheetController(http.Controller):
         else:
             return werkzeug.exceptions.BadRequest('A reference must be provided')
 
-        return self.generate_lighting_report(product_id, lang)
+        return self.generate_lighting_report(product_id, lang_id)
