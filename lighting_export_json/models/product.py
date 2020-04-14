@@ -143,6 +143,7 @@ class LightingProduct(models.Model):
             for rec in self:
                 # map attach type with order
                 attachment_order_d = {x.type_id: x.sequence for x in template_id.attachment_ids}
+                attachment_max_d = {x.type_id: x.max_count for x in template_id.attachment_ids}
 
                 # classify
                 attachment_type_d = {}
@@ -156,28 +157,31 @@ class LightingProduct(models.Model):
                 # final attachment sort and formatting
                 if attachment_type_d:
                     attachment_l = []
-                    for dummy, attachs in sorted(attachment_type_d.items(), key=lambda x: attachment_order_d[x[0]]):
-                        a = attachs.filtered(lambda x: x.date)
-                        if a:
-                            a = a.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)[0]
+                    for attach_type, attachs in sorted(attachment_type_d.items(),
+                                                       key=lambda x: attachment_order_d[x[0]]):
+                        max_count = attachment_max_d[attach_type]
+                        attachs_date = attachs.filtered(lambda x: x.date)
+                        if attachs_date:
+                            attachs_date = a.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)[:max_count]
                         else:
-                            a = attachs.sorted(lambda x: (x.sequence, x.id))[0]
+                            attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))[:max_count]
 
-                        attachment_d = {
-                            'datas_fname': a.datas_fname,
-                            'store_fname': a.attachment_id.store_fname,
-                            'type': a.type_id.code,
-                        }
+                        for a in attachs_date:
+                            attachment_d = {
+                                'datas_fname': a.datas_fname,
+                                'store_fname': a.attachment_id.store_fname,
+                                'type': a.type_id.code,
+                            }
 
-                        type_lang_d = {}
-                        for lang in template_id.lang_ids.mapped('code'):
-                            type_lang_d[lang] = a.type_id.with_context(lang=lang).name
-                        if type_lang_d:
-                            attachment_d.update({
-                                'label': type_lang_d,
-                            })
+                            type_lang_d = {}
+                            for lang in template_id.lang_ids.mapped('code'):
+                                type_lang_d[lang] = a.type_id.with_context(lang=lang).name
+                            if type_lang_d:
+                                attachment_d.update({
+                                    'label': type_lang_d,
+                                })
 
-                        attachment_l.append(attachment_d)
+                            attachment_l.append(attachment_d)
 
                     if attachment_l:
                         rec.json_display_attachment = json.dumps(attachment_l)
