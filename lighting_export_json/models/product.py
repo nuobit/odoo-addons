@@ -159,14 +159,13 @@ class LightingProduct(models.Model):
                     attachment_l = []
                     for attach_type, attachs in sorted(attachment_type_d.items(),
                                                        key=lambda x: attachment_order_d[x[0]]):
-                        max_count = attachment_max_d[attach_type]
                         attachs_date = attachs.filtered(lambda x: x.date)
                         if attachs_date:
-                            attachs_date = a.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)[:max_count]
+                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)
                         else:
-                            attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))[:max_count]
+                            attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
 
-                        for a in attachs_date:
+                        for a in attachs_date[:attachment_max_d[attach_type]]:
                             attachment_d = {
                                 'datas_fname': a.datas_fname,
                                 'store_fname': a.attachment_id.store_fname,
