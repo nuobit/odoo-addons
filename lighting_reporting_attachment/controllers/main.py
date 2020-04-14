@@ -23,7 +23,7 @@ class ProductDatasheetAttachmentController(ProductDatasheetController):
         attachments = attachments_selected.filtered(
             lambda x: (
                     (not lang_id and (not x.lang_id or x.lang_id.code == default_lang)) or
-                    (lang_id and lang_id.code == x.lang_id.code)
+                    (lang_id and (not x.lang_id or lang_id.code == x.lang_id.code))
             ))
 
         if not attachments:
@@ -31,7 +31,7 @@ class ProductDatasheetAttachmentController(ProductDatasheetController):
                 "The product %s has no datasheet in %s" % (
                     product_id.reference, lang_id and lang_id.code or default_lang))
 
-        attachment = attachments.sorted(lambda x: (x.sequence, x.id))[0]
+        attachment = attachments.sorted(lambda x: (not x.lang_id and 1 or 0, x.sequence, x.id))[0]
         pdf = base64.b64decode(attachment.datas)
 
         pdfhttpheaders = [
