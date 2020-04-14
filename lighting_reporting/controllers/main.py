@@ -1,6 +1,6 @@
-import re
-import datetime
-import time
+# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+# Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import http
 
@@ -12,6 +12,15 @@ _logger = logging.getLogger(__name__)
 
 
 class ProductDatasheetController(http.Controller):
+    def generate_lighting_report(self, product, lang=None):
+        pdf = http.request.env.ref('lighting_reporting.action_report_product'). \
+            with_context(lang=lang).render_qweb_pdf([product.id])[0]
+        pdfhttpheaders = [
+            ('Content-Type', 'application/pdf'),
+            ('Content-Length', len(pdf)),
+        ]
+        return http.request.make_response(pdf, headers=pdfhttpheaders)
+
     @http.route(['/web/datasheet/<string:reference>',
                  '/web/datasheet/<string:lang>/<string:reference>',
                  ], type='http', auth="user")
@@ -41,11 +50,4 @@ class ProductDatasheetController(http.Controller):
         else:
             return werkzeug.exceptions.BadRequest('A reference must be provided')
 
-        # generate report
-        pdf = http.request.env.ref('lighting_reporting.action_report_product'). \
-            with_context(lang=lang).render_qweb_pdf([product_id.id])[0]
-        pdfhttpheaders = [
-            ('Content-Type', 'application/pdf'),
-            ('Content-Length', len(pdf)),
-        ]
-        return http.request.make_response(pdf, headers=pdfhttpheaders)
+        return self.generate_lighting_report(product_id, lang)

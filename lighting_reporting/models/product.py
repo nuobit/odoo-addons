@@ -82,6 +82,10 @@ class LightingProduct(models.Model):
         for rec in self:
             rec.datasheet_generation_date = fields.Datetime.now()
 
+    def product_datasheet_wizard(self):
+        action = self.env.ref('lighting_reporting.product_datasheet_wizard_action').read()[0]
+        return action
+
     def get_sheet_sources(self):
         res = []
         for s in self.source_ids.sorted(lambda x: x.sequence):
