@@ -312,7 +312,8 @@ class LightingProductSourceLine(models.Model):
 
     color_temperature_flux_ids = fields.One2many(string='Color temperature (K)/Flux (lm)',
                                                  comodel_name='lighting.product.source.line.color.temperature.flux',
-                                                 inverse_name='source_line_id')
+                                                 inverse_name='source_line_id',
+                                                 copy=True)
 
     is_color_temperature_flux_tunable = fields.Boolean(string='Tunable', default=False)
 
