@@ -50,6 +50,7 @@ class LightingProductAdapter(Component):
                               u."ItemCode" NOT LIKE_REGEXPR '^.+\..+$' AND
                               p."U_ACC_Obsmark" IN ('Novedades', 'Catalogado', 'Descatalogado',
                                                     'Fe Digital', 'Histórico') and
+                              COALESCE(p."U_U_especiales", 'N') = 'N' AND
                               p."ItmsGrpCod" IN (107, 108, 109, 111, 110) -- Cristher, Dopo, Exo, Indeluz, Accesorios
                     ),
                     -- purchase pricelist
