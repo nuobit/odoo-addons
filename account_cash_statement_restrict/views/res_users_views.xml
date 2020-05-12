@@ -8,9 +8,11 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
-            <field name="action_id" position="after" groups="account.group_account_manager">
-                <field name="journal_id"/>
-            </field>
+            <xpath expr="//field[@name='action_id']/.." position="after">
+                <group>
+                    <field name="journal_id"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>
