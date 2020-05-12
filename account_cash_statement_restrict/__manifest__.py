@@ -4,7 +4,7 @@
 
 {
     'name': "Cash statement restrict",
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.1.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -16,6 +16,7 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/account_journal_dashboard_views.xml',
         #'views/account_views.xml',
         'views/res_users_views.xml',
         'views/menu.xml',
