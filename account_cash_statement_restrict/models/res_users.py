@@ -8,6 +8,4 @@ from odoo import api, fields, models, _
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'cash')])
-
-
+    journal_id = fields.Many2one('account.journal', string='Cash journal', domain=[('type', '=', 'cash')])
