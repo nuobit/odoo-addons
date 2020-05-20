@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_lighting_portal_connector_settings_manager,lighting.portal.connector.settings manager,model_lighting_portal_connector_settings,lighting_portal_connector.portal_connector_group_manager,1,1,1,1

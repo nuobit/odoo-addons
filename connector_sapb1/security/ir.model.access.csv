@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-"access_sapb1_lighting_product","sapb1_lighting_product connector manager","model_sapb1_lighting_product","connector.group_connector_manager",1,1,1,1
-"access_sapb1_lighting_product_group_user","sapb1_lighting_product group_user","model_sapb1_lighting_product","base.group_user",1,0,0,0
-"access_sapb1_backend_manager","sapb1_backend connector manager","model_sapb1_backend","connector.group_connector_manager",1,1,1,1

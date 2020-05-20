@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_lighting_seo_keyword_guest,lighting.seo.keyword guest,model_lighting_seo_keyword,lighting.group_lighting_guest,1,0,0,0
-access_lighting_seo_keyword_manager,lighting.seo.keyword manager,model_lighting_seo_keyword,lighting.group_lighting_manager,1,1,1,1
-access_lighting_seo_keyword_user,lighting.seo.keyword user,model_lighting_seo_keyword,lighting.group_lighting_user,1,0,0,0
