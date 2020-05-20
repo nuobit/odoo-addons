@@ -32,6 +32,22 @@ class LightingProductAdapter(Component):
                         FROM opor_updatetime u, %(schema)s.OPOR c
                         WHERE u."DocEntry" = c."DocEntry"
                     ),
+                    oitt_updatetime AS (
+                        SELECT c."Code",
+                               to_varchar(COALESCE(to_date(c."UpdateDate"), TO_DATE('1900-12-31',
+                                                   'YYYY-MM-DD'))) AS "UpdateDate_str",
+                               COALESCE(REPLACE_REGEXPR('([0-9]{2})([0-9]{2})([0-9]{2})'
+                                                        IN lpad(to_varchar(c."UpdateTime"), 6, '0')
+                                                        WITH '\1:\2:\3'), '00:00:00') AS "UpdateTS_str"
+                        FROM %(schema)s.OITT c
+                    ),
+                    oitt_base AS (
+                        SELECT c.*,
+                               to_timestamp(concat(u."UpdateDate_str", concat(' ', u."UpdateTS_str")),
+                                           'YYYY-MM-DD HH24:MI:SS') AS "UpdateDateTime"
+                        FROM oitt_updatetime u, %(schema)s.OITT c
+                        WHERE u."Code" = c."Code"
+                    ),
                     oitm_updatetime AS (
                         SELECT u."ItemCode",
                                to_varchar(COALESCE(to_date(u."UpdateDate"), TO_DATE('1900-12-31',
@@ -127,9 +143,12 @@ class LightingProductAdapter(Component):
                         select lml."Father" AS "ItemCode",
                                min(round((ps."OnHand"- ps."IsCommited") / lml."Quantity",
                                              0, ROUND_DOWN)) AS "Capacity",
-                               max(ps."UpdateDateTime") as "UpdateDateTime"
-                        from %(schema)s.ITT1 lml, stock_current ps
-                        WHERE lml."Code" = ps."ItemCode" AND
+                               max(CASE WHEN SECONDS_BETWEEN(ps."UpdateDateTime", c."UpdateDateTime") > 0
+                                   THEN c."UpdateDateTime"
+                                   ELSE ps."UpdateDateTime" END) AS "UpdateDateTime"
+                        from %(schema)s.ITT1 lml, oitt_base c, stock_current ps
+                        WHERE lml."Father" = c."Code" AND
+                              lml."Code" = ps."ItemCode" AND
                               lml."Warehouse" = ps."WhsCode" AND
                               lml."Quantity" != 0
                         GROUP BY lml."Father"
