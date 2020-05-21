@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<scenario>
+    <id>scanner_scenario_inventory_extended</id>
+    <model_id>product.product</model_id>
+    <name>Inventory extended</name>
+    <sequence>130</sequence>
+    <parent_id>stock_scanner.scanner_scenario_stock</parent_id>
+    <active>True</active>
+    <type>scenario</type>
+    <Step id="scanner_scenario_step_inventory_extended_product_quantity" name="Product quantity" step_back="True"
+          step_stop="False" step_start="False"/>
+    <Step id="scanner_scenario_step_inventory_extended_location_selection" name="Location selection" step_back="True"
+          step_stop="False" step_start="False"/>
+    <Step id="scanner_scenario_step_inventory_extended_unknown_location" name="Unknown location" step_back="False"
+          step_stop="False" step_start="False"/>
+    <Step id="scanner_scenario_step_inventory_extended_end_confirm" name="End confirm" step_back="False"
+          step_stop="False"
+          step_start="False"/>
+    <Step id="scanner_scenario_step_inventory_extended_done" name="Done" step_back="False" step_stop="True"
+          step_start="False"/>
+    <Step id="scanner_scenario_step_inventory_extended_unknown_product" name="Unknown product" step_back="False"
+          step_stop="False" step_start="False"/>
+    <Step id="scanner_scenario_step_inventory_extended_product_code" name="Product code" step_back="True"
+          step_stop="False"
+          step_start="True"/>
+    <Transition id="scanner_scenario_transition_inventory_extended_return" name="Return" sequence="0" tracer=""
+                to_id="scanner_scenario_step_inventory_extended_product_code" transition_type="keyboard"
+                condition="not m"
+                from_id="scanner_scenario_step_inventory_extended_end_confirm"/>
+    <Transition id="scanner_scenario_transition_inventory_extended_end" name="End" sequence="0" tracer=""
+                to_id="scanner_scenario_step_inventory_extended_done" transition_type="keyboard" condition="m"
+                from_id="scanner_scenario_step_inventory_extended_end_confirm"/>
+    <Transition id="scanner_scenario_transition_inventory_extended_location_selection_ok" name="Location selection OK"
+                sequence="0" tracer="location" to_id="scanner_scenario_step_inventory_extended_product_code"
+                transition_type="keyboard"
+                condition="env['stock.location'].search(['|', '&amp;', ('barcode', '!=', False), ('barcode', '=', m), '&amp;', ('barcode', '=', False), ('name', '=', m)])"
+                from_id="scanner_scenario_step_inventory_extended_location_selection"/>
+    <Transition id="scanner_scenario_transition_inventory_extended_location_selection_nok" name="Location selection NOK"
+                sequence="10" tracer="" to_id="scanner_scenario_step_inventory_extended_unknown_location"
+                transition_type="keyboard"
+                condition="not env['stock.location'].search(['|', '&amp;', ('barcode', '!=', False), ('barcode', '=', m), '&amp;', ('barcode', '=', False), ('name', '=', m)])"
+                from_id="scanner_scenario_step_inventory_extended_location_selection"/>
+    <Transition id="scanner_scenario_transition_inventory_extended_product_selection_ok" name="Product selection OK"
+                sequence="10" tracer="" to_id="scanner_scenario_step_inventory_extended_product_quantity"
+                transition_type="keyboard"
+                condition="model.search(['|', '&amp;', ('barcode', '!=', False), ('barcode', '=', m), '&amp;', ('barcode', '=', False), ('default_code', '=', m)])"
+                from_id="scanner_scenario_step_inventory_extended_product_code"/>
+    <Transition id="scanner_scenario_transition_inventory_extended_product_selection_nok" name="Product selection NOK"
+                sequence="20" tracer="" to_id="scanner_scenario_step_inventory_extended_unknown_product"
+                transition_type="keyboard"
+                condition="not model.search(['|', '&amp;', ('barcode', '!=', False), ('barcode', '=', m), '&amp;', ('barcode', '=', False), ('default_code', '=', m)])"
+                from_id="scanner_scenario_step_inventory_extended_product_code"/>
+    <Transition id="scanner_scenario_transition_inventory_extended_next_product" name="Next product" sequence="0"
+                tracer=""
+                to_id="scanner_scenario_step_inventory_extended_location_selection" transition_type="keyboard"
+                condition="True"
+                from_id="scanner_scenario_step_inventory_extended_product_quantity"/>
+    <Transition id="scanner_scenario_transition_inventory_extended_go_end" name="Go end" sequence="0" tracer=""
+                to_id="scanner_scenario_step_inventory_extended_end_confirm" transition_type="keyboard"
+                condition="m == ''"
+                from_id="scanner_scenario_step_inventory_extended_product_code"/>
+</scenario>
