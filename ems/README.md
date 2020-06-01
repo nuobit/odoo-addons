@@ -1,7 +1,0 @@
-EMS
-===
-
-* Organize EMS sessions
-
-
-
