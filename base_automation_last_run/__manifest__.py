@@ -8,7 +8,7 @@
                "on automated actions.",
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'category': 'Automation',
-    'version': '11.0.1.0.0',
+    'version': '12.0.1.0.0',
     'license': 'AGPL-3',
     'website': 'https://github.com/nuobit',
     'depends': [
