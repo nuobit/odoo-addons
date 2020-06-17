@@ -6,7 +6,8 @@
     <template id="report_picking" inherit_id="stock.report_picking">
         <xpath expr="//tr[@t-as='move']" position="attributes">
             <attribute name="t-foreach">
-                o.move_lines.sorted(key=lambda m: (m.move_line_ids.mapped('location_id.name')[0],
+                o.move_lines.sorted(key=lambda m:
+                (m.move_line_ids and m.move_line_ids.mapped('location_id.name')[0] or '\xff\xff\xff',
                 m.product_id.default_code, m.product_id.id))
             </attribute>
         </xpath>
