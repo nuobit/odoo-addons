@@ -11,7 +11,7 @@
 
         <xpath expr="//span[text()='Description']/parent::th" position="after">
             <th t-if="lineswithlots" class="text-left">
-                <span>Lot/Serial</span>
+                <span>Lot/Serial Number</span>
             </th>
         </xpath>
 
