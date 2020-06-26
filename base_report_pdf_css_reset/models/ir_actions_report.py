@@ -12,7 +12,7 @@ class IrActionsReport(models.Model):
 
     @api.multi
     def _prepare_html(self, html):
-        bodies, html_ids, header, footer, specific_paperformat_args = super()._prepare_html(html)
+        bodies, res_ids, header, footer, specific_paperformat_args = super()._prepare_html(html)
 
         if self.env.context.get('no_paddings', False):
             bodies_tmp = []
@@ -34,4 +34,4 @@ class IrActionsReport(models.Model):
 
             bodies = bodies_tmp
 
-        return bodies, html_ids, header, footer, specific_paperformat_args
+        return bodies, res_ids, header, footer, specific_paperformat_args
