@@ -1,0 +1,241 @@
+# This file contains the translation of the following modules:
+#	* barcodes_gs1_label
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-26 16:42+0000\n"
+"PO-Revision-Date: 2020-06-26 16:42+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_barcode_type
+msgid "Barcode type"
+msgstr "Barcode type"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_border_color
+msgid "Border color"
+msgstr "Color de borde"
+
+#. module: barcodes_gs1_label
+#: model:ir.ui.view,arch_db:barcodes_gs1_label.barcodes_option_wizard_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: barcodes_gs1_label
+#: model:ir.ui.view,arch_db:barcodes_gs1_label.barcodes_option_wizard_view
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_label_copies
+msgid "Copies"
+msgstr "Copias"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_display_name
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_report_barcodes_gs1_label_report_gs1_barcode_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: barcodes_gs1_label
+#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:27
+#, python-format
+msgid "Expected data to be passed to the report"
+msgstr "Expected data to be passed to the report"
+
+#. module: barcodes_gs1_label
+#: selection:barcodes.gs1.label.options.wizard,barcode_type:0
+msgid "GS1-128"
+msgstr "GS1-128"
+
+#. module: barcodes_gs1_label
+#: selection:barcodes.gs1.label.options.wizard,barcode_type:0
+msgid "GS1-Datamatrix"
+msgstr "GS1-Datamatrix"
+
+#. module: barcodes_gs1_label
+#: model:ir.ui.view,arch_db:barcodes_gs1_label.barcodes_option_wizard_view
+msgid "General"
+msgstr "General"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_id
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_report_barcodes_gs1_label_report_gs1_barcode_id
+msgid "ID"
+msgstr "ID"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_label_height
+msgid "Label height (mm)"
+msgstr "Alto etiqueta (mm)"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_label_width
+msgid "Label width (mm)"
+msgstr "Ancho etiqueta (mm)"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard___last_update
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_report_barcodes_gs1_label_report_gs1_barcode___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: barcodes_gs1_label
+#: model:ir.model,name:barcodes_gs1_label.model_stock_production_lot
+msgid "Lot/Serial"
+msgstr "Lote/Nº de serie"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_page_cols_max
+msgid "Max columns per page"
+msgstr "Max. columnas por página"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_page_max_labels
+msgid "Max labels per page"
+msgstr "Max. etiquetas por página"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_page_rows_max
+msgid "Max rows per page"
+msgstr "Max. filas por página"
+
+#. module: barcodes_gs1_label
+#: model:ir.ui.view,arch_db:barcodes_gs1_label.barcodes_option_wizard_view
+msgid "Ok"
+msgstr "Aceptar"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_paperformat_id
+msgid "Paper format"
+msgstr "Formato de papel"
+
+#. module: barcodes_gs1_label
+#: model:ir.ui.view,arch_db:barcodes_gs1_label.product_normal_form_view
+#: model:ir.ui.view,arch_db:barcodes_gs1_label.view_production_lot_form
+msgid "Print GS1 barcode"
+msgstr "Imprimir código de barras GS1"
+
+#. module: barcodes_gs1_label
+#: model:ir.ui.view,arch_db:barcodes_gs1_label.barcodes_option_wizard_view
+#: model:ir.actions.act_window,name:barcodes_gs1_label.barcodes_lot_option_wizard_view_action
+#: model:ir.actions.act_window,name:barcodes_gs1_label.barcodes_product_option_wizard_view_action
+#: model:ir.actions.report,name:barcodes_gs1_label.action_report_lot_gs1_barcodes
+#: model:ir.actions.report,name:barcodes_gs1_label.action_report_product_gs1_barcodes
+msgid "Print GS1 barcodes"
+msgstr "Imprimir códigos de barras GS1"
+
+#. module: barcodes_gs1_label
+#: model:ir.model,name:barcodes_gs1_label.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_sheet_height
+msgid "Sheet height (mm)"
+msgstr "Alto página (mm)"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_sheet_width
+msgid "Sheet width (mm)"
+msgstr "Ancho página (mm)"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_show_borders
+msgid "Show borders"
+msgstr "Mostrar bordes"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_start_col
+msgid "Start column"
+msgstr "Columna inicial"
+
+#. module: barcodes_gs1_label
+#: code:addons/barcodes_gs1_label/wizard/options_wizard.py:91
+#, python-format
+msgid "Start column should be between %i and %i"
+msgstr "Start column should be between %i and %i"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_start_row
+msgid "Start row"
+msgstr "Fila inicial"
+
+#. module: barcodes_gs1_label
+#: code:addons/barcodes_gs1_label/wizard/options_wizard.py:93
+#, python-format
+msgid "Start row should be between %i and %i"
+msgstr "Start row should be between %i and %i"
+
+#. module: barcodes_gs1_label
+#: code:addons/barcodes_gs1_label/wizard/options_wizard.py:95
+#, python-format
+msgid "The number of copies must be greater than 0"
+msgstr "The number of copies must be greater than 0"
+
+#. module: barcodes_gs1_label
+#: code:addons/barcodes_gs1_label/wizard/options_wizard.py:46
+#, python-format
+msgid "The paperformat '%s' has no format defined"
+msgstr "The paperformat '%s' has no format defined"
+
+#. module: barcodes_gs1_label
+#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:96
+#, python-format
+msgid "Unexpected model '%s'"
+msgstr "Unexpected model '%s'"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_with_stock
+msgid "With stock only"
+msgstr "Solo con stock"
+
+#. module: barcodes_gs1_label
+#: code:addons/barcodes_gs1_label/wizard/options_wizard.py:58
+#, python-format
+msgid "Wrong paperformat definition '%s', cannot extract sheet sizes from it"
+msgstr "Wrong paperformat definition '%s', cannot extract sheet sizes from it"
+
+#. module: barcodes_gs1_label
+#: model:ir.model,name:barcodes_gs1_label.model_barcodes_gs1_label_options_wizard
+msgid "barcodes.gs1.label.options.wizard"
+msgstr "barcodes.gs1.label.options.wizard"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_px_mm_rate_correction
+msgid "px/mm rate correction"
+msgstr "Corrección ratio px/mm"
+
+#. module: barcodes_gs1_label
+#: model:ir.model,name:barcodes_gs1_label.model_report_barcodes_gs1_label_report_gs1_barcode
+msgid "report.barcodes_gs1_label.report_gs1_barcode"
+msgstr "report.barcodes_gs1_label.report_gs1_barcode"
+

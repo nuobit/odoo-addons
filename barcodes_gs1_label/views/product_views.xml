@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product_normal_form_view.inherit.barcodes_gs1_label</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="print_gs1_barcode_wizard" string="Print GS1 barcode"
+                        type="object" class="o_sale_print"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_assets_common"
+              name="Barcodes report styles" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link href="/barcodes_gs1_label/static/src/less/styles.less" rel="stylesheet" type="text/less"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout">
+        <div class="article bgp-paddingless">
+            <t t-raw="0"/>
+        </div>
+    </template>
+
+    <!-- BODY -->
+    <template id="report_gs1_barcode_document">
+        <t t-call="barcodes_gs1_label.external_layout">
+            <t t-foreach="docs" t-as="page_docs">
+                <div class="page bgp-page">
+                    <div class="bgp-container clearfix"
+                         t-attf-style="width: {{layout['container_width']}}px;padding-top: {{ layout['container_top'] }}px;">
+                        <t t-foreach="zip(layout['label_heights']*len(page_docs), page_docs)" t-as="hc">
+                            <t t-foreach="zip(layout['label_widths'], hc[1])" t-as="wc">
+                                <div class="bgp-cell"
+                                     t-attf-style="width:{{wc[0]}}px;height:{{hc[0]}}px;{{ layout['show_borders'] and 'border:1px solid %s;' % layout['border_color'] or None }}">
+                                    <t t-if="wc[1]">
+                                        <t t-if="wc[1]['barcode_values']">
+                                            <div t-if="barcode_type == 'gs1-datamatrix'"
+                                                 class="bgp-gs1-datamatrix">
+                                                <div class="bgp-barcode-img">
+                                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
+                                                         t-attf-class="bgp-img"/>
+                                                </div>
+                                                <div class="bgp-barcode-text">
+                                                    <ul class="list-unstyled">
+                                                        <t t-foreach="wc[1]['barcode_values'].items()" t-as="bv">
+                                                            <li t-esc="'(%s)%s' % bv"/>
+                                                        </t>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div t-if="barcode_type == 'gs1-128'" class="bgp-gs1-128">
+                                                <div class="bgp-barcode-img">
+                                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
+                                                         t-attf-class="bgp-img"/>
+                                                </div>
+                                                <div class="bgp-barcode-text text-center">
+                                                    <span t-esc="''.join(['(%s)%s' % bv for bv in wc[1]['barcode_values'].items()])"/>
+                                                </div>
+                                            </div>
+                                        </t>
+                                        <div class="text-center">
+                                            <ul class="list-unstyled">
+                                                <li t-esc="wc[1]['default_code']"/>
+                                                <li t-esc="wc[1]['name']" class="bgp-description"/>
+                                            </ul>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_gs1_barcode">
+        <t t-call="web.html_container">
+            <t t-call="barcodes_gs1_label.report_gs1_barcode_document"/>
+        </t>
+    </template>
+</odoo>
