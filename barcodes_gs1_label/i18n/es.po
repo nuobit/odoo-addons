@@ -17,12 +17,12 @@ msgstr ""
 #. module: barcodes_gs1_label
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_barcode_type
 msgid "Barcode type"
-msgstr "Barcode type"
+msgstr "Tipo de código de barras"
 
 #. module: barcodes_gs1_label
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_border_color
 msgid "Border color"
-msgstr "Color de borde"
+msgstr "Color del borde"
 
 #. module: barcodes_gs1_label
 #: model:ir.ui.view,arch_db:barcodes_gs1_label.barcodes_option_wizard_view
