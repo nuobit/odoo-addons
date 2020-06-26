@@ -22,7 +22,7 @@ class ReportGS1Barcode(models.AbstractModel):
     _name = 'report.barcodes_gs1_label.report_gs1_barcode'
 
     @api.model
-    def get_report_values(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
         if not data:
             raise UserError(_("Expected data to be passed to the report"))
 
