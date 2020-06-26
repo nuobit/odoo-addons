@@ -6,7 +6,7 @@
     'name': "Barcodes GS1 label",
     'description': "Generate GS1 labels enabling barcode GS1 printing "
                    "on products and lot/serial",
-    'version': '11.0.1.0.1',
+    'version': '12.0.1.0.0',
     'license': 'AGPL-3',
     'category': 'Tools',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
