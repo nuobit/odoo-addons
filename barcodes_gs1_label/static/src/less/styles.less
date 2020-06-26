@@ -1,0 +1,76 @@
+.bgp-page {
+  page-break-after: always;
+  //border:1px solid red;
+}
+
+.bgp-container {
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: content-box;
+  //border:1px solid green;
+}
+
+.bgp-cell {
+  overflow: hidden;
+  float: left;
+  padding-top: 0.8%;
+  padding-left: 1px;
+  padding-right: 1px;
+  box-sizing: border-box;
+  //border: 1px solid blue;
+}
+
+.bgp-gs1-datamatrix {
+  height: 70%;
+  margin-left: 3%;
+  margin-right: 3%;
+  //border: 1px solid green;
+
+  .bgp-barcode-img {
+    float: left;
+
+    .bgp-img {
+      height: 100%;
+    }
+  }
+
+  .bgp-barcode-text {
+    overflow: hidden;
+    font-size: small;
+    padding-left: 2%;
+
+    li {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+  }
+}
+
+.bgp-gs1-128 {
+  height: 60%;
+  //border: 1px solid green;
+
+  .bgp-barcode-img {
+    height: 70%;
+    //border: 1px solid red;
+
+    .bgp-img {
+      height: 100%;
+      max-width: 100%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      //border: 1px solid blue;
+    }
+  }
+
+  .bgp-barcode-text {
+    overflow: hidden;
+    font-size: x-small;
+  }
+}
+
+.bgp-description {
+  font-size: 40%;
+}
+
