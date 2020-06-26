@@ -4,17 +4,21 @@
 
 from odoo import models, api
 
-import pystrich.datamatrix as dmx
-import pystrich.code128 as c128
+try:
+    import pystrich.datamatrix as dmx
+    import pystrich.code128 as c128
 
 
-class DataMatrixRendererMod(dmx.DataMatrixRenderer):
-    def add_border(self, colour=1):
-        self.quiet_zone = 0
-        return super().add_border(colour=colour)
+    class DataMatrixRendererMod(dmx.DataMatrixRenderer):
+        def add_border(self, colour=1):
+            self.quiet_zone = 0
+            return super().add_border(colour=colour)
 
 
-dmx.DataMatrixRenderer = DataMatrixRendererMod
+    dmx.DataMatrixRenderer = DataMatrixRendererMod
+
+except ImportError:
+    pass
 
 
 class IrActionsReport(models.Model):
