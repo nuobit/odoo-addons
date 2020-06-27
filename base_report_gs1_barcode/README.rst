@@ -12,7 +12,7 @@ Usage
 =====
 
 The separator expected at the beginning of the barcode string and between
-variable length AI's is r'\\F'
+variable length AI's is r'\F'
 
 Installation
 ============
