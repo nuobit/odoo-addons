@@ -5,7 +5,7 @@
 {
     'name': 'Report GS1 barcodes',
     'summary': 'This module adds a GS1-128 and GS1-Datamatrix barcode format support',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'category': 'Reporting',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://github.com/nuobit',
