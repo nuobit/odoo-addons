@@ -4,7 +4,7 @@
 
 {
     'name': 'Sale order task autoassign',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.2',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Project',
@@ -15,10 +15,10 @@
                "and respecting the resources and leaves.",
     'depends': [
         'sale_timesheet',
+        'product_service_time',
         'project_timeline_calendar',
     ],
     'data': [
-        'views/product_views.xml',
     ],
     'installable': True,
 }
