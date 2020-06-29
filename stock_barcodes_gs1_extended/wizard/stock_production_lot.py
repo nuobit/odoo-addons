@@ -1,0 +1,41 @@
+# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+# Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+from odoo import models
+
+
+class WizStockBarcodesNewLot(models.TransientModel):
+    _inherit = 'wiz.stock.barcodes.new.lot'
+    _description = 'Wizard to create new lot from barcode scanner'
+
+    def on_barcode_scanned(self, barcode):
+        try:
+            barcode_decoded = self._decode_barcode(barcode)
+        except Exception:
+            return super().on_barcode_scanned(barcode)
+
+        contained_product_barcode = barcode_decoded.get('02', False)
+        if contained_product_barcode:
+            return super().on_barcode_scanned(barcode)
+
+        lot_barcode = barcode_decoded.get('10', False)
+        serial_barcode = barcode_decoded.get('21', False)
+        if not lot_barcode and not serial_barcode:
+            return
+
+        product_barcode = barcode_decoded.get('01', False)
+        if product_barcode:
+            product = self.env['product.product'].search([
+                ('barcode', '=', product_barcode),
+            ])
+            if product and self.product_id != product:
+                self.product_id = product
+
+        if self.product_id:
+            if self.product_id.tracking == 'serial':
+                if serial_barcode:
+                    self.lot_name = serial_barcode
+            elif self.product_id.tracking == 'lot':
+                if lot_barcode:
+                    self.lot_name = lot_barcode
