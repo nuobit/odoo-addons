@@ -58,7 +58,7 @@ class SaleOrderLine(models.Model):
         res = super(SaleOrderLine, self)._timesheet_create_task_prepare_values(project)
 
         if not self.product_id.service_time:
-            raise UserError(_("The product %s has no time defined") % self.product_id.display_name)
+            return res
 
         # initial date_start
         now = fields.datetime.now().replace(second=0, microsecond=0)
