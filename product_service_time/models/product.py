@@ -21,7 +21,7 @@ class ProductProduct(models.Model):
     @api.constrains('service_time')
     def _check_service_time(self):
         for record in self:
-            if record.service_time <= 0:
+            if record.service_time < 0:
                 raise ValidationError(_(
-                    'Time must be greater than 0.'
+                    'Time cannot be negative.'
                 ))
