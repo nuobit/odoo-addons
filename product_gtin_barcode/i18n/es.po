@@ -1,0 +1,39 @@
+# This file contains the translation of the following modules:
+#	* product_gtin_barcode
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-16 15:00+0000\n"
+"PO-Revision-Date: 2020-07-16 15:00+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_gtin_barcode
+#: code:addons/product_gtin_barcode/models/models.py:36
+#, python-format
+msgid "A GTIN barcode must contain numeric digits only"
+msgstr "Un código de barras GTIN debe contener solo dígitos numéricos"
+
+#. module: product_gtin_barcode
+#: code:addons/product_gtin_barcode/models/models.py:40
+#, python-format
+msgid "A GTIN barcode must have the following lengths %s"
+msgstr "Un código de barras GTIN debe tener las siguientes longitudes %s"
+
+#. module: product_gtin_barcode
+#: model:ir.model,name:product_gtin_barcode.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: product_gtin_barcode
+#: code:addons/product_gtin_barcode/models/models.py:44
+#, python-format
+msgid "Wrong check digit! The last digit should be %d"
+msgstr "¡Dígito de verificación incorrecto! El último dígito debería ser %d"
+
