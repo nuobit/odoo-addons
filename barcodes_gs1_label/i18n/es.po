@@ -219,6 +219,11 @@ msgid "With stock only"
 msgstr "Solo con stock"
 
 #. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard_show_price
+msgid "Show price"
+msgstr "Mostrar precio"
+
+#. module: barcodes_gs1_label
 #: code:addons/barcodes_gs1_label/wizard/options_wizard.py:58
 #, python-format
 msgid "Wrong paperformat definition '%s', cannot extract sheet sizes from it"

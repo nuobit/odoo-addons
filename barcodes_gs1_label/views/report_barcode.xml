@@ -53,11 +53,26 @@
                                                 </div>
                                             </div>
                                         </t>
-                                        <div class="text-center">
-                                            <ul class="list-unstyled">
-                                                <li t-esc="wc[1]['default_code']"/>
-                                                <li t-esc="wc[1]['name']" class="bgp-description"/>
-                                            </ul>
+                                        <div class="bgp-product">
+                                            <div t-if="show_price">
+                                                <div class="clearfix">
+                                                    <div style="float:left;">
+                                                        <span t-field="wc[1]['product'].default_code"/>
+                                                    </div>
+                                                    <div style="float:right;">
+                                                        <span t-field="wc[1]['product'].lst_price"
+                                                              t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"
+                                                              class="bgp-price"/>
+                                                    </div>
+                                                </div>
+                                                <div class="text-left">
+                                                    <div t-field="wc[1]['product'].name" class="bgp-description"/>
+                                                </div>
+                                            </div>
+                                            <div t-if="not show_price" class="text-center">
+                                                <div t-field="wc[1]['product'].default_code"/>
+                                                <div t-field="wc[1]['product'].name" class="bgp-description"/>
+                                            </div>
                                         </div>
                                     </t>
                                 </div>
