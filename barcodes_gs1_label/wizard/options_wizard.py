@@ -21,6 +21,8 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
 
     with_stock = fields.Boolean(string='With stock only', default=True)
 
+    show_price = fields.Boolean(string='Show price', default=False)
+
     label_copies = fields.Integer(string='Copies', default=1, required=True)
 
     barcode_type = fields.Selection(string='Barcode type',
@@ -123,6 +125,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             'model': model,
             'lang_id': 1,
             'with_stock': self.with_stock,
+            'show_price': self.show_price,
             'barcode_type': self.barcode_type,
             'layout': {
                 'container_top': int(padding_height_mm * mm_px_rate / 2),

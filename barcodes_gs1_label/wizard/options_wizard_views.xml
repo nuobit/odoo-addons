@@ -23,6 +23,7 @@
                         </group>
                         <group>
                             <field name="with_stock"/>
+                            <field name="show_price"/>
                         </group>
                     </page>
                     <page string="Configuration">
