@@ -31,6 +31,7 @@ class ReportGS1Barcode(models.AbstractModel):
 
         barcode_type = data['barcode_type']
         with_stock = data['with_stock']
+        show_price = data['show_price']
 
         cols = data['layout']['cols']
         start_cell = data['layout']['start_cell']
@@ -51,10 +52,8 @@ class ReportGS1Barcode(models.AbstractModel):
                 if doc.tracking == 'none':
                     if not with_stock or quants:
                         docs1.append({
-                            'name': doc.name,
-                            'tracking': doc.tracking,
-                            'barcode': doc.barcode,
-                            'default_code': doc.default_code,
+                            'product': doc,
+                            'lot': None,
                         })
                 elif doc.tracking in ('lot', 'serial'):
                     if not with_stock:
@@ -65,11 +64,8 @@ class ReportGS1Barcode(models.AbstractModel):
 
                     for l in lots.sorted(lambda x: x.name):
                         docs1.append({
-                            'name': doc.name,
-                            'tracking': doc.tracking,
-                            'barcode': doc.barcode,
-                            'tracking_code': l.name,
-                            'default_code': doc.default_code,
+                            'product': doc,
+                            'lot': l,
                         })
         elif model == 'stock.production.lot':
             for doc in self.env[model].browse(docids) \
@@ -86,24 +82,22 @@ class ReportGS1Barcode(models.AbstractModel):
 
                 if not with_stock or quants_count:
                     docs1.append({
-                        'name': doc.product_id.name,
-                        'tracking': doc.product_id.tracking,
-                        'barcode': doc.product_id.barcode,
-                        'tracking_code': doc.name,
-                        'default_code': doc.product_id.default_code,
+                        'product': doc.product_id,
+                        'lot': doc,
                     })
         else:
             raise UserError(_("Unexpected model '%s'") % model)
 
         docs = []
         for doc in docs1:
+            product, lot = doc['product'], doc['lot']
             gas1_barcode = {}
-            if doc['barcode']:
-                gas1_barcode['01'] = doc['barcode']
-            if doc['tracking'] == 'lot':
-                gas1_barcode['10'] = doc['tracking_code']
-            elif doc['tracking'] == 'serial':
-                gas1_barcode['21'] = doc['tracking_code']
+            if product.barcode:
+                gas1_barcode['01'] = product.barcode
+            if product.tracking == 'lot':
+                gas1_barcode['10'] = lot.name
+            elif product.tracking == 'serial':
+                gas1_barcode['21'] = lot.name
             doc['barcode_values'] = gas1_barcode
 
             barcode_string_l = []
@@ -115,7 +109,7 @@ class ReportGS1Barcode(models.AbstractModel):
                     barcode_string_l.append(ai + value)
             doc['barcode_string'] = r'\F' + ''.join(barcode_string_l)
 
-            if doc['tracking'] in ('none', 'lot') and label_copies > 1:
+            if product.tracking in ('none', 'lot') and label_copies > 1:
                 docs += [doc] * label_copies
             else:
                 docs.append(doc)
@@ -128,6 +122,7 @@ class ReportGS1Barcode(models.AbstractModel):
 
         return {
             'docs': docs_page_rows,
+            'show_price': show_price,
             'barcode_type': barcode_type,
             'layout': data['layout'],
         }
