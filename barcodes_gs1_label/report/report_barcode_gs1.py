@@ -91,23 +91,17 @@ class ReportGS1Barcode(models.AbstractModel):
         docs = []
         for doc in docs1:
             product, lot = doc['product'], doc['lot']
-            gas1_barcode = {}
+            gs1_barcode = {}
             if product.barcode:
-                gas1_barcode['01'] = product.barcode
+                gs1_barcode['01'] = product.barcode.rjust(14, '0')
             if product.tracking == 'lot':
-                gas1_barcode['10'] = lot.name
+                gs1_barcode['10'] = lot.name
             elif product.tracking == 'serial':
-                gas1_barcode['21'] = lot.name
-            doc['barcode_values'] = gas1_barcode
+                gs1_barcode['21'] = lot.name
+            doc['barcode_values'] = gs1_barcode
 
-            barcode_string_l = []
-            for ai, value in gas1_barcode.items():
-                if ai == '01':
-                    gtin = value.rjust(14, '0')
-                    barcode_string_l.append(ai + gtin)
-                else:
-                    barcode_string_l.append(ai + value)
-            doc['barcode_string'] = r'\F' + ''.join(barcode_string_l)
+            doc['barcode_string'] = r'\F' + ''.join(
+                map(lambda x: x[0] + x[1], gs1_barcode.items()))
 
             if product.tracking in ('none', 'lot') and label_copies > 1:
                 docs += [doc] * label_copies
