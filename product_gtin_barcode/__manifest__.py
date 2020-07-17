@@ -6,7 +6,7 @@
     'name': 'Product GTIN barcode',
     'summary': 'This module ensures that you enter a '
                'GTIN Barcode for your Products',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.0.1',
     'category': 'Sales',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
