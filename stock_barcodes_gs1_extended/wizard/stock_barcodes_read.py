@@ -4,6 +4,8 @@
 
 from odoo import models, _
 
+import re
+
 
 class WizStockBarcodesRead(models.AbstractModel):
     _inherit = 'wiz.stock.barcodes.read'
@@ -30,13 +32,34 @@ class WizStockBarcodesRead(models.AbstractModel):
             product_barcode = barcode_decoded.get('240', False)
 
         if product_barcode:
-            product = self.env['product.product'].search(
-                self._barcode_domain(product_barcode))
+            m = re.match(r'^0*([0-9]+)$', product_barcode)
+            if not m:
+                self._set_messagge_info(
+                    'not_found', _('Barcode %s is not a GTIN') % product_barcode)
+                return False
+            product_barcode_trim = m.group(1)
+
+            product = self.env['product.product'].search([
+                ('company_id', '=', self.env.user.company_id.id),
+                ('barcode', '=like', '%' + product_barcode_trim),
+            ])
             if not product:
                 self._set_messagge_info(
-                    'not_found', _('Barcode for product not found'))
+                    'not_found', _('Barcode for product %s not found') % product.display_name)
                 return False
             else:
+                if len(product) != 1:
+                    self._set_messagge_info(
+                        'more_match',
+                        _('More than one products found '
+                          'for that barcode: %s') % product.mapped('display_name'))
+                    return False
+                m = re.match(r'^0*(%s)$' % product_barcode_trim, product.barcode)
+                if not m:
+                    self._set_messagge_info(
+                        'not_found', _('Barcode for product %s not found') % product.display_name)
+                    return False
+
                 processed = True
                 self.action_product_scaned_post(product)
 
