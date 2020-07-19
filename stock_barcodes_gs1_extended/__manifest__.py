@@ -6,7 +6,7 @@
     "name": "Stock Barcodes GS1 Extended",
     "summary": "This module extends barcode reader interface to allow to "
                "read more GS1 barcodes.",
-    "version": "11.0.1.0.0",
+    "version": "11.0.1.0.1",
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://github.com/nuobit',
     "license": "AGPL-3",
