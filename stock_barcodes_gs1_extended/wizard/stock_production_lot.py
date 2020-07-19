@@ -4,6 +4,8 @@
 
 from odoo import models
 
+import re
+
 
 class WizStockBarcodesNewLot(models.TransientModel):
     _inherit = 'wiz.stock.barcodes.new.lot'
@@ -25,12 +27,33 @@ class WizStockBarcodesNewLot(models.TransientModel):
             return
 
         product_barcode = barcode_decoded.get('01', False)
+        if not product_barcode:
+            # Sometimes the product does not yet have a GTIN. In this case
+            # try the AI 240 'Additional product identification assigned
+            # by the manufacturer'.
+            product_barcode = barcode_decoded.get('240', False)
+
         if product_barcode:
+            m = re.match(r'^0*([0-9]+)$', product_barcode)
+            if not m:
+                return
+            product_barcode_trim = m.group(1)
+
             product = self.env['product.product'].search([
-                ('barcode', '=', product_barcode),
+                ('company_id', '=', self.env.user.company_id.id),
+                ('barcode', '=like', '%' + product_barcode_trim),
             ])
-            if product and self.product_id != product:
-                self.product_id = product
+            if not product:
+                return
+            else:
+                if len(product) != 1:
+                    return
+                m = re.match(r'^0*(%s)$' % product_barcode_trim, product.barcode)
+                if not m:
+                    return
+
+                if product and self.product_id != product:
+                    self.product_id = product
 
         if self.product_id:
             if self.product_id.tracking == 'serial':
