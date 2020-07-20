@@ -79,10 +79,16 @@ class WizStockBarcodesRead(models.AbstractModel):
                 ('product_id', '=', self.product_id.id),
             ])
             if not lot:
-                lot = self.env['stock.production.lot'].create({
-                    'name': tracking_code,
-                    'product_id': self.product_id.id,
-                })
+                if self.picking_type_id.use_create_lots:
+                    lot = self.env['stock.production.lot'].create({
+                        'name': tracking_code,
+                        'product_id': self.product_id.id,
+                    })
+                else:
+                    self._set_messagge_info(
+                        'not_found', _('Lot/Serial number %s not found') % tracking_code)
+                    return False
+
             self.lot_id = lot
             processed = True
 
