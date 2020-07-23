@@ -10,6 +10,7 @@ BIKE_TYPES = [
     ('mountain', _("Mountain")),
     ('road', _("Road")),
     ('urban', _("Urban")),
+    ('route', _("Route")),
 ]
 
 
