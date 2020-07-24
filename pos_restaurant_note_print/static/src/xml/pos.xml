@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<templates xml:space="preserve">
+    <t t-extend="PosTicket">
+        <t t-jquery="t[t-esc='orderline.get_product().display_name']" t-operation='after'>
+            <t t-if="orderline.get_note()">
+                <t t-esc="orderline.get_note()"/>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="XmlReceipt">
+        <t t-jquery="t[t-if='simple']" t-operation='append'>
+            <t t-if="line.note">
+                <line indent='1'>
+                    <t t-esc='line.note'/>
+                </line>
+            </t>
+        </t>
+
+        <t t-jquery="t[t-if='!simple']" t-operation='append'>
+            <t t-if="line.note">
+                <line indent='1'>
+                    <t t-esc='line.note'/>
+                </line>
+            </t>
+        </t>
+    </t>
+</templates>
