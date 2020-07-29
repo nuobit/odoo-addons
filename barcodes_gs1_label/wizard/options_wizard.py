@@ -26,7 +26,10 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     label_copies = fields.Integer(string='Copies', default=1, required=True)
 
     barcode_type = fields.Selection(string='Barcode type',
-                                    selection=[('gs1-128', 'GS1-128'), ('gs1-datamatrix', 'GS1-Datamatrix')],
+                                    selection=[('gs1-128', 'GS1-128'),
+                                               ('gs1-datamatrix', 'GS1-Datamatrix'),
+                                               ('ean13-code128', 'EAN13 + Code128'),
+                                               ],
                                     required=True, default='gs1-datamatrix')
 
     def _default_paperformat_id(self):
