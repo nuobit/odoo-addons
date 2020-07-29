@@ -2,11 +2,11 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-==================
-Barcodes GS1 label
-==================
+==============
+Barcodes label
+==============
 
-Generate GS1 labels enabling barcode GS1 printing on products and lot/serial
+Generate labels enabling barcode printing on products and lot/serial
 
 
 Bug Tracker
