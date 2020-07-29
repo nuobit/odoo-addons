@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="before">
                 <header>
-                    <button name="print_gs1_barcode_wizard" string="Print GS1 barcode"
+                    <button name="print_gs1_barcode_wizard" string="Print barcode"
                             type="object" class="o_sale_print"/>
                 </header>
             </xpath>

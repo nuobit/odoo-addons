@@ -4,7 +4,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="paperformat_gs1_barcodes" model="report.paperformat">
-        <field name="name">GS1 Barcodes A4 Portrait</field>
+        <field name="name">Barcodes A4 Portrait</field>
         <!--field name="default" eval="True"/-->
         <field name="format">A4</field>
         <!--field name="page_height">80</field>
@@ -20,22 +20,22 @@
     </record>
 
     <report id="action_report_product_gs1_barcodes"
-            string="Print GS1 barcodes"
+            string="Print barcodes"
             model="product.product"
             report_type="qweb-pdf"
             menu="False"
             file="barcodes_gs1_label.report_gs1_barcode"
             name="barcodes_gs1_label.report_gs1_barcode"
             paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
-            print_report_name="'GS1 Barcodes - %s' % (object.default_code, )"/>
+            print_report_name="'Barcodes - %s' % (object.default_code, )"/>
 
     <report id="action_report_lot_gs1_barcodes"
-            string="Print GS1 barcodes"
+            string="Print barcodes"
             model="stock.production.lot"
             report_type="qweb-pdf"
             menu="False"
             file="barcodes_gs1_label.report_gs1_barcode"
             name="barcodes_gs1_label.report_gs1_barcode"
             paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
-            print_report_name="'GS1 Barcodes - %s' % (object.name, )"/>
+            print_report_name="'Barcodes - %s' % (object.name, )"/>
 </odoo>
