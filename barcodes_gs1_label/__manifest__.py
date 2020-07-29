@@ -3,10 +3,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    'name': "Barcodes GS1 label",
-    'description': "Generate GS1 labels enabling barcode GS1 printing "
+    'name': "Barcodes label",
+    'description': "Generate barcode labels enabling barcode printing "
                    "on products and lot/serial",
-    'version': '12.0.2.0.0',
+    'version': '12.0.2.0.1',
     'license': 'AGPL-3',
     'category': 'Tools',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',

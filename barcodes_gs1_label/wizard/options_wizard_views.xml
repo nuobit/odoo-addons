@@ -7,7 +7,7 @@
         <field name="name">barcodes.option.wizard.form</field>
         <field name="model">barcodes.gs1.label.options.wizard</field>
         <field name="arch" type="xml">
-            <form string="Print GS1 barcodes">
+            <form string="Print barcodes">
                 <header/>
                 <notebook>
                     <page string="General">
@@ -60,13 +60,13 @@
     </record>
 
     <act_window id="barcodes_product_option_wizard_view_action"
-                name="Print GS1 barcodes"
+                name="Print barcodes"
                 res_model="barcodes.gs1.label.options.wizard"
                 src_model="product.product" key2="client_action_multi"
                 view_type="form" view_mode="form" target="new"/>
 
     <act_window id="barcodes_lot_option_wizard_view_action"
-                name="Print GS1 barcodes"
+                name="Print barcodes"
                 res_model="barcodes.gs1.label.options.wizard"
                 src_model="stock.production.lot" key2="client_action_multi"
                 view_type="form" view_mode="form" target="new"/>

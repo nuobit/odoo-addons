@@ -141,8 +141,8 @@ msgstr "Formato de papel"
 #. module: barcodes_gs1_label
 #: model:ir.ui.view,arch_db:barcodes_gs1_label.product_normal_form_view
 #: model:ir.ui.view,arch_db:barcodes_gs1_label.view_production_lot_form
-msgid "Print GS1 barcode"
-msgstr "Imprimir código de barras GS1"
+msgid "Print barcode"
+msgstr "Imprimir código de barras"
 
 #. module: barcodes_gs1_label
 #: model:ir.ui.view,arch_db:barcodes_gs1_label.barcodes_option_wizard_view
@@ -150,8 +150,8 @@ msgstr "Imprimir código de barras GS1"
 #: model:ir.actions.act_window,name:barcodes_gs1_label.barcodes_product_option_wizard_view_action
 #: model:ir.actions.report,name:barcodes_gs1_label.action_report_lot_gs1_barcodes
 #: model:ir.actions.report,name:barcodes_gs1_label.action_report_product_gs1_barcodes
-msgid "Print GS1 barcodes"
-msgstr "Imprimir códigos de barras GS1"
+msgid "Print barcodes"
+msgstr "Imprimir códigos de barras"
 
 #. module: barcodes_gs1_label
 #: model:ir.model,name:barcodes_gs1_label.model_product_product
