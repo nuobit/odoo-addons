@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 def chunks(li, n, padding=False):
@@ -91,17 +91,25 @@ class ReportGS1Barcode(models.AbstractModel):
         docs = []
         for doc in docs1:
             product, lot = doc['product'], doc['lot']
-            gs1_barcode = {}
-            if product.barcode:
-                gs1_barcode['01'] = product.barcode.rjust(14, '0')
-            if product.tracking == 'lot':
-                gs1_barcode['10'] = lot.name
-            elif product.tracking == 'serial':
-                gs1_barcode['21'] = lot.name
-            doc['barcode_values'] = gs1_barcode
 
-            doc['barcode_string'] = r'\F' + ''.join(
-                map(lambda x: x[0] + x[1], gs1_barcode.items()))
+            if barcode_type in ('gs1-128', 'gs1-datamatrix'):
+                gs1_barcode = {}
+                if product.barcode:
+                    gs1_barcode['01'] = product.barcode.rjust(14, '0')
+                if product.tracking == 'lot':
+                    gs1_barcode['10'] = lot.name
+                elif product.tracking == 'serial':
+                    gs1_barcode['21'] = lot.name
+                doc['barcode_values'] = gs1_barcode
+
+                doc['barcode_string'] = r'\F' + ''.join(
+                    map(lambda x: x[0] + x[1], gs1_barcode.items()))
+            elif barcode_type == 'ean13-code128':
+                ean_barcode = (product.barcode, product.tracking != 'none' and lot.name or None)
+                if ean_barcode != (None, None):
+                    doc['barcode_values'] = ean_barcode
+            else:
+                raise ValidationError(_("Unknown barcode type %s") % barcode_type)
 
             if product.tracking in ('none', 'lot') and label_copies > 1:
                 docs += [doc] * label_copies
