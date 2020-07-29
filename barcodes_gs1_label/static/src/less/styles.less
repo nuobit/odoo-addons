@@ -70,19 +70,57 @@
   }
 }
 
+.bgp-ean13-code128 {
+  height: 70%;
+  //border: 1px solid blueviolet;
+
+  .bgp-barcode-img {
+    height: 41%;
+    //border: 1px solid red;
+
+    .bgp-img {
+      height: 100%;
+      max-width: 100%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      //border: 1px solid blue;
+    }
+  }
+
+  .bgp-barcode-text {
+    margin-top: -1%;
+    height: 12%;
+    overflow: hidden;
+    font-size: 35%;
+    //border: 1px solid orange;
+  }
+}
+
 .bgp-product {
   padding-left: 3%;
   padding-right: 1%;
   box-sizing: border-box;
+  //border: 1px solid red;
 
-  .bgp-description {
-    font-size: 45%;
+  .bgp-sku {
+    font-size: 80%;
     //white-space: nowrap;
     //overflow: hidden;
     //text-overflow: ellipsis;
+    //border: 1px solid green;
+  }
+
+  .bgp-description {
+    font-size: 50%; //45
+    //white-space: nowrap;
+    //overflow: hidden;
+    //text-overflow: ellipsis;
+    //border: 1px solid blue;
   }
 
   .bgp-price {
     font-size: 85%;
+    //border: 1px solid orange;
   }
 }
