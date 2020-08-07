@@ -91,6 +91,14 @@ class OxigestiImporter(AbstractComponent):
         ## get_data
         # this one knows how to speak to sage
         backend_adapter = self.component(usage='backend.adapter')
+
+        lock_name = 'import({}, {}, {}, {})'.format(
+            self.backend_record._name,
+            self.backend_record.id,
+            self.work.model_name,
+            external_id,
+        )
+
         # read external data from sage
         try:
             self.external_data = backend_adapter.read(external_id)
@@ -107,6 +115,11 @@ class OxigestiImporter(AbstractComponent):
         skip = self._must_skip(binding)
         if skip:
             return skip
+
+        # Keep a lock on this import until the transaction is committed
+        # The lock is kept since we have detected that the informations
+        # will be updated into Odoo
+        self.advisory_lock_or_retry(lock_name, retry_seconds=10)
 
         # import the missing linked resources
         self._import_dependencies()
