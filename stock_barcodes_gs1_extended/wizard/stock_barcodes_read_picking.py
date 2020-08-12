@@ -19,7 +19,7 @@ class WizStockBarcodesReadPicking(models.TransientModel):
 
     def _prepare_stock_moves_domain(self):
         domain = super(WizStockBarcodesReadPicking, self)._prepare_stock_moves_domain()
-        domain.append([
+        domain.append(
             ('picking_id.picking_type_id', '=', self.picking_type_id.id),
-        ])
+        )
         return domain
