@@ -79,7 +79,8 @@ class WizStockBarcodesRead(models.AbstractModel):
                 ('product_id', '=', self.product_id.id),
             ])
             if not lot:
-                if self.inventory_id or self.picking_type_id.use_create_lots:
+                if ('inventory_id' in self and self.inventory_id) or \
+                        ('picking_type_id' in self and self.picking_type_id.use_create_lots):
                     lot = self.env['stock.production.lot'].create({
                         'name': tracking_code,
                         'product_id': self.product_id.id,
