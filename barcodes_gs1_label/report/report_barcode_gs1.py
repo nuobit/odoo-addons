@@ -40,7 +40,7 @@ class ReportGS1Barcode(models.AbstractModel):
 
         docs1 = []
         if model == 'product.product':
-            for doc in self.env[model].browse(docids).sorted(lambda x: x.default_code):
+            for doc in self.env[model].browse(docids).sorted(lambda x: x.default_code or ''):
                 quants = self.env['stock.quant']
                 if with_stock:
                     quants = self.env['stock.quant'].search([
@@ -70,7 +70,7 @@ class ReportGS1Barcode(models.AbstractModel):
         elif model == 'stock.production.lot':
             for doc in self.env[model].browse(docids) \
                     .filtered(lambda x: x.product_id.tracking in ('lot', 'serial')) \
-                    .sorted(lambda x: x.product_id.default_code):
+                    .sorted(lambda x: x.product_id.default_code or ''):
                 quants_count = 0
                 if with_stock:
                     quants_count = bool(self.env['stock.quant'].search_count([
