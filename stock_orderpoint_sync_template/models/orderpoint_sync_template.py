@@ -44,6 +44,15 @@ class OrderpointSyncTemplate(models.Model):
 
     orderpoint_count = fields.Integer(compute='_compute_orderpoint_count', string='Orderpoint(s)')
 
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = dict(default or {},
+                       name=_('%s (copy)') % self.name,
+                       )
+
+        return super().copy(default)
+
     def _compute_orderpoint_count(self):
         for rec in self:
             rec.orderpoint_count = self.env['stock.warehouse.orderpoint'].search_count([
