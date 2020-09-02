@@ -54,7 +54,7 @@
                                             </div>
                                             <div t-if="barcode_type == 'ean13-code128'" class="bgp-ean13-code128">
                                                 <div t-if="wc[1]['barcode_values'][0]" class="bgp-barcode-img">
-                                                    <img t-att-src="'/report/barcode/?type=EAN13&amp;value=%s&amp;height=%s' % (wc[1]['barcode_values'][0], 100)"
+                                                    <img t-att-src="'/report/barcode/?type=UPCA&amp;value=%s&amp;height=%s' % (wc[1]['barcode_values'][0], 100)"
                                                          t-attf-class="bgp-img"/>
                                                 </div>
                                                 <div class="bgp-barcode-text text-center">
