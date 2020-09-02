@@ -105,9 +105,8 @@ class ReportGS1Barcode(models.AbstractModel):
                 doc['barcode_string'] = r'\F' + ''.join(
                     map(lambda x: x[0] + x[1], gs1_barcode.items()))
             elif barcode_type == 'ean13-code128':
-                ean_barcode = (product.barcode, product.tracking != 'none' and lot.name or None)
-                if ean_barcode != (None, None):
-                    doc['barcode_values'] = ean_barcode
+                doc['barcode_values'] = (product.barcode or None,
+                                         product.tracking != 'none' and lot.name or None)
             else:
                 raise ValidationError(_("Unknown barcode type %s") % barcode_type)
 
