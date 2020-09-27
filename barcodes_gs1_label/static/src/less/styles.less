@@ -1,126 +1,273 @@
+//// GLOBAL
+
 .bgp-page {
   page-break-after: always;
   //border:1px solid red;
+
+  .bgp-container {
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: content-box;
+
+    .bgp-cell {
+      overflow: hidden;
+      float: left;
+      padding-left: 1px;
+      padding-right: 1px;
+      box-sizing: border-box;
+    }
+  }
 }
 
-.bgp-container {
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: content-box;
-  //border:1px solid green;
-}
-
-.bgp-cell {
-  overflow: hidden;
-  float: left;
-  padding-top: 0.8%;
-  padding-left: 1px;
-  padding-right: 1px;
-  box-sizing: border-box;
-  //border: 1px solid blue;
-}
-
+//// GS1 DATAMATRIX
 .bgp-gs1-datamatrix {
-  height: 60%;
   margin-left: 3%;
   margin-right: 1%;
-  //border: 1px solid green;
 
-  .bgp-barcode-img {
-    float: left;
+  .bgp-barcode {
+    height: 60%;
 
-    .bgp-img {
-      height: 100%;
+    .bgp-barcode-img {
+      float: left;
+
+      .bgp-img {
+        height: 100%;
+      }
+    }
+
+    .bgp-barcode-text {
+      overflow: hidden;
+      font-size: small;
+      padding-left: 2%;
+
+      li {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
     }
   }
 
-  .bgp-barcode-text {
-    overflow: hidden;
-    font-size: small;
-    padding-left: 2%;
-
-    li {
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-    }
+  .bgp-product {
+    height: 40%;
   }
 }
 
+//// GS1 CODE128
 .bgp-gs1-128 {
-  height: 60%;
   //border: 1px solid green;
 
-  .bgp-barcode-img {
-    height: 70%;
-    //border: 1px solid red;
-
-    .bgp-img {
-      height: 100%;
-      max-width: 100%;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      //border: 1px solid blue;
-    }
-  }
-
-  .bgp-barcode-text {
-    overflow: hidden;
-    font-size: x-small;
-  }
-}
-
-.bgp-ean13-code128 {
-  height: 70%;
-  //border: 1px solid blueviolet;
-
-  .bgp-barcode-img {
-    height: 41%;
-    //border: 1px solid red;
-
-    .bgp-img {
-      height: 100%;
-      max-width: 100%;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      //border: 1px solid blue;
-    }
-  }
-
-  .bgp-barcode-text {
-    margin-top: -1%;
-    height: 12%;
-    overflow: hidden;
-    font-size: 35%;
-    //border: 1px solid orange;
-  }
-}
-
-.bgp-product {
-  padding-left: 3%;
-  padding-right: 1%;
-  box-sizing: border-box;
-  //border: 1px solid red;
-
-  .bgp-sku {
-    font-size: 80%;
-    //white-space: nowrap;
-    //overflow: hidden;
-    //text-overflow: ellipsis;
+  .bgp-barcode {
+    height: 50%;
     //border: 1px solid green;
+
+    .bgp-barcode-img {
+      height: 80%;
+      //border: 1px solid purple;
+
+      .bgp-img {
+        height: 100%;
+        max-width: 100%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+
+      }
+    }
+
+    .bgp-barcode-text {
+      height: 20%;
+      //border: 1px solid blue;
+      overflow: hidden;
+
+      p {
+        font-size: 45%;
+        line-height: 90%;
+        //border: 1px solid coral;
+      }
+    }
   }
 
-  .bgp-description {
-    font-size: 50%; //45
-    //white-space: nowrap;
-    //overflow: hidden;
-    //text-overflow: ellipsis;
-    //border: 1px solid blue;
+  .bgp-product {
+    margin-left: 3%;
+    margin-right: 1%;
+    height: 50%;
+  }
+}
+
+//// GS1 CODE128/GS1 DATAMATRIX COMMON
+.bgp-gs1-datamatrix, .bgp-gs1-128 {
+  height: 100%;
+  padding-top: 3%;
+  //border: 1px solid green;
+
+  .bgp-product {
+    box-sizing: border-box;
+    //border: 1px solid red;
+
+    p {
+      margin: 0;
+      padding: 0;
+      //border: 1px solid darkslategrey;
+    }
+
+    .bgp-sku, .bgp-price {
+      height: 50%;
+    }
+
+    .bgp-sku {
+      //border: 1px solid green;
+
+      p {
+        font-size: 75%;
+        //line-height: 90%;
+      }
+    }
+
+    .bgp-price {
+      //border: 1px solid orange;
+
+      p {
+        font-size: 80%;
+      }
+    }
+
+    .bgp-description {
+      height: 50%;
+      //border: 1px solid blue;
+
+      p {
+        font-size: 50%;
+        //line-height: 95%;
+      }
+    }
+  }
+}
+
+//// EAN13 + CODE128
+.bgp-ean13-code128 {
+  height: 100%;
+  margin-left: 2%;
+  margin-top: 1%;
+
+  // product data
+  .bgp-product {
+    height: 48%;
+    margin: 0;
+    padding: 0;
+    //border: 1px solid red;
+
+    .bgp-logo-img {
+      width: 35%;
+      height: 100%;
+      position: relative;
+      float: left;
+      //border: 1px solid green;
+
+      .bgp-img {
+        max-height: 100%;
+        max-width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        //border: 1px solid coral;
+      }
+    }
+
+    .bgp-product-data {
+      width: 65%;
+      height: 100%;
+      padding-left: 1.5%;
+      padding-right: 1%;
+      float: left;
+      //border: 1px solid deepskyblue;
+
+      p {
+        margin: 0;
+        padding: 0;
+        //border: 1px solid darkslategrey;
+      }
+
+      .bgp-product-sku {
+        height: 20%;
+        //border: 1px solid darkseagreen;
+
+        p {
+          font-size: 30%;
+        }
+      }
+
+      .bgp-product-description {
+        height: 50%;
+        overflow: hidden;
+        position: relative;
+        //border: 1px solid darkseagreen;
+
+        .bgp-description {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: table;
+
+          p {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 40%;
+            line-height: 117%;
+          }
+        }
+      }
+
+      .bgp-product-price {
+        height: 30%;
+        //border: 1px solid darkseagreen;
+
+        p {
+          font-size: 68%;
+          line-height: 93%;
+        }
+      }
+    }
   }
 
-  .bgp-price {
-    font-size: 85%;
-    //border: 1px solid orange;
+  // barcode data
+  .bgp-product-barcode, .bgp-lot-barcode {
+    height: 26%;
+    //border: 1px solid red;
+
+    .bgp-barcode-img {
+      height: 76%;
+      width: 100%;
+      //border: 1px solid green;
+
+      .bgp-img {
+        height: 100%;
+        width: 100%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        //border: 1px solid blue;
+      }
+    }
+
+    .bgp-barcode-text {
+      //margin-top: -1%;
+      height: 24%;
+      overflow: hidden;
+      //border: 1px solid orange;
+
+      p {
+        margin: 0;
+        padding: 0;
+        //line-height: 70%;
+        font-size: 25%;
+        //border: 1px solid lawngreen;
+      }
+    }
   }
 }

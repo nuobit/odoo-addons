@@ -21,9 +21,10 @@
                         <group>
                             <field name="label_copies"/>
                         </group>
-                        <group>
-                            <field name="with_stock"/>
+                        <group col="4">
+                            <field name="with_stock"/><newline/>
                             <field name="show_price"/>
+                            <field name="show_price_currency" attrs="{'invisible': [('show_price', '=', False)] }"/>
                         </group>
                     </page>
                     <page string="Configuration">
