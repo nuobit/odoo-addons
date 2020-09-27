@@ -16,6 +16,127 @@
         </div>
     </template>
 
+    <!-- layout gs1datamatrix1 -->
+    <template id="layout_gs1datamatrix1">
+        <div class="bgp-gs1-datamatrix">
+            <div class="bgp-barcode">
+                <div class="bgp-barcode-img">
+                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
+                         t-attf-class="bgp-img"/>
+                </div>
+                <div class="bgp-barcode-text">
+                    <ul class="list-unstyled">
+                        <t t-foreach="barcode_values.items()" t-as="bv">
+                            <li t-esc="'(%s)%s' % bv"/>
+                        </t>
+                    </ul>
+                </div>
+            </div>
+            <t t-call="barcodes_gs1_label.layout_gs1productdata"/>
+        </div>
+    </template>
+
+    <!-- layout gs1code1281 -->
+    <template id="layout_gs1code1281">
+        <div class="bgp-gs1-128">
+            <div class="bgp-barcode">
+                <div class="bgp-barcode-img">
+                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
+                         t-attf-class="bgp-img"/>
+                </div>
+                <div class="bgp-barcode-text text-center">
+                    <p t-esc="''.join(['(%s)%s' % bv for bv in barcode_values.items()])"/>
+                </div>
+            </div>
+            <t t-call="barcodes_gs1_label.layout_gs1productdata"/>
+        </div>
+    </template>
+
+    <!-- layout gs1productdata -->
+    <template id="layout_gs1productdata">
+        <div class="bgp-product">
+            <div t-if="show_price">
+                <div class="clearfix">
+                    <div class="bgp-sku" style="float: left;">
+                        <p t-field="wc[1]['product'].default_code"/>
+                    </div>
+                    <div class="bgp-price" style="float: right;">
+                        <p t-field="wc[1]['product'].lst_price"
+                              t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"/>
+                    </div>
+                </div>
+                <div class="text-left bgp-description">
+                    <p t-field="wc[1]['product'].name"/>
+                </div>
+            </div>
+            <div t-if="not show_price" class="text-center">
+                <div class="bgp-sku">
+                    <p t-field="wc[1]['product'].default_code"/>
+                </div>
+                <div class="bgp-description">
+                    <p t-field="wc[1]['product'].name"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- layout ean13code1281 -->
+    <template id="layout_ean13code1281">
+        <div class="bgp-ean13-code128">
+            <!-- product barcode -->
+            <div class="bgp-product-barcode">
+                <t t-if="barcode_values[0]">
+                    <div class="bgp-barcode-img">
+                        <img t-att-src="'/report/barcode/?type=UPCA&amp;value=%s&amp;height=%s' % (barcode_values[0], 80)"
+                             t-attf-class="bgp-img"/>
+                    </div>
+                    <div class="bgp-barcode-text text-center">
+                        <p t-esc="barcode_values[0]"/>
+                    </div>
+                </t>
+            </div>
+
+            <!-- logo + product data -->
+            <div class="bgp-product">
+                <div class="bgp-logo-img">
+                    <t t-set="company" t-value="wc[1]['product'].company_id or wc[1]['product'].env.user.company_id"/>
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" t-attf-class="bgp-img"
+                         alt="Logo"/>
+                </div>
+                <div class="bgp-product-data">
+                    <div t-if="wc[1]['product'].default_code" class="text-center bgp-product-sku">
+                        <p t-field="wc[1]['product'].default_code"/>
+                    </div>
+                    <div class="bgp-product-description">
+                        <div class="bgp-description">
+                            <p t-field="wc[1]['product'].name"/>
+                        </div>
+                    </div>
+                    <div class="text-center bgp-product-price">
+                        <t t-if="show_price">
+                            <p t-if="not show_price_currency" t-field="wc[1]['product'].lst_price"/>
+                            <p t-if="show_price_currency" t-field="wc[1]['product'].lst_price"
+                               t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!-- serial/lot barcode -->
+            <div class="bgp-lot-barcode">
+                <t t-if="barcode_values[1]">
+                    <div class="bgp-barcode-img">
+                        <img t-att-src="'/report/barcode/?type=Code128&amp;value=%s&amp;height=%s' % (barcode_values[1], 80)"
+                             t-attf-class="bgp-img"/>
+                    </div>
+                    <div class="bgp-barcode-text text-center">
+                        <p t-esc="barcode_values[1]"/>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </template>
+
     <!-- BODY -->
     <template id="report_gs1_barcode_document">
         <t t-call="barcodes_gs1_label.external_layout">
@@ -28,70 +149,17 @@
                                 <div class="bgp-cell"
                                      t-attf-style="width:{{wc[0]}}px;height:{{hc[0]}}px;{{ layout['show_borders'] and 'border:1px solid %s;' % layout['border_color'] or None }}">
                                     <t t-if="wc[1]">
-                                        <t t-if="wc[1]['barcode_values']">
-                                            <div t-if="barcode_type == 'gs1-datamatrix'"
-                                                 class="bgp-gs1-datamatrix">
-                                                <div class="bgp-barcode-img">
-                                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
-                                                         t-attf-class="bgp-img"/>
-                                                </div>
-                                                <div class="bgp-barcode-text">
-                                                    <ul class="list-unstyled">
-                                                        <t t-foreach="wc[1]['barcode_values'].items()" t-as="bv">
-                                                            <li t-esc="'(%s)%s' % bv"/>
-                                                        </t>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div t-if="barcode_type == 'gs1-128'" class="bgp-gs1-128">
-                                                <div class="bgp-barcode-img">
-                                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
-                                                         t-attf-class="bgp-img"/>
-                                                </div>
-                                                <div class="bgp-barcode-text text-center">
-                                                    <span t-esc="''.join(['(%s)%s' % bv for bv in wc[1]['barcode_values'].items()])"/>
-                                                </div>
-                                            </div>
-                                            <div t-if="barcode_type == 'ean13-code128'" class="bgp-ean13-code128">
-                                                <div t-if="wc[1]['barcode_values'][0]" class="bgp-barcode-img">
-                                                    <img t-att-src="'/report/barcode/?type=UPCA&amp;value=%s&amp;height=%s' % (wc[1]['barcode_values'][0], 100)"
-                                                         t-attf-class="bgp-img"/>
-                                                </div>
-                                                <div class="bgp-barcode-text text-center">
-                                                    <span t-esc="wc[1]['barcode_values'][0]"/>
-                                                </div>
-                                                <div t-if="wc[1]['barcode_values'][1]" class="bgp-barcode-img">
-                                                    <div>
-                                                        <img t-att-src="'/report/barcode/?type=Code128&amp;value=%s&amp;height=%s' % (wc[1]['barcode_values'][1], 100)"
-                                                             t-attf-class="bgp-img"/>
-                                                    </div>
-                                                </div>
-                                                <div class="bgp-barcode-text text-center">
-                                                    <span t-esc="wc[1]['barcode_values'][1]"/>
-                                                </div>
-                                            </div>
+                                        <t t-set="barcode_values" t-value="wc[1]['barcode_values']"/>
+                                        <t t-if="barcode_type in ('gs1-datamatrix', 'gs1-128')">
+                                            <t t-if="barcode_values">
+                                                <t t-if="barcode_type == 'gs1-datamatrix'"
+                                                   t-call="barcodes_gs1_label.layout_gs1datamatrix1"/>
+                                                <t t-if="barcode_type == 'gs1-128'"
+                                                   t-call="barcodes_gs1_label.layout_gs1code1281"/>
+                                            </t>
                                         </t>
-                                        <div class="bgp-product">
-                                            <div t-if="show_price">
-                                                <div class="clearfix">
-                                                    <div style="float:left;">
-                                                        <span t-field="wc[1]['product'].default_code" class="bgp-sku"/>
-                                                    </div>
-                                                    <div style="float:right;">
-                                                        <span t-field="wc[1]['product'].lst_price"
-                                                              t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"
-                                                              class="bgp-price"/>
-                                                    </div>
-                                                </div>
-                                                <div class="text-left">
-                                                    <div t-field="wc[1]['product'].name" class="bgp-description"/>
-                                                </div>
-                                            </div>
-                                            <div t-if="not show_price" class="text-center">
-                                                <div t-field="wc[1]['product'].default_code"/>
-                                                <div t-field="wc[1]['product'].name" class="bgp-description"/>
-                                            </div>
-                                        </div>
+                                        <t t-if="barcode_type == 'ean13-code128'"
+                                           t-call="barcodes_gs1_label.layout_ean13code1281"/>
                                     </t>
                                 </div>
                             </t>

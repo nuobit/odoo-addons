@@ -32,6 +32,7 @@ class ReportGS1Barcode(models.AbstractModel):
         barcode_type = data['barcode_type']
         with_stock = data['with_stock']
         show_price = data['show_price']
+        show_price_currency = data['show_price_currency']
 
         cols = data['layout']['cols']
         start_cell = data['layout']['start_cell']
@@ -124,6 +125,7 @@ class ReportGS1Barcode(models.AbstractModel):
         return {
             'docs': docs_page_rows,
             'show_price': show_price,
+            'show_price_currency': show_price_currency,
             'barcode_type': barcode_type,
             'layout': data['layout'],
         }
