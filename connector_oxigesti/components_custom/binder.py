@@ -217,3 +217,6 @@ class BinderComposite(AbstractComponent):
             self._external_field: external_id,
             self._sync_date_field: now_fmt,
         })
+
+    def _get_external_id(self, binding):
+        return None
