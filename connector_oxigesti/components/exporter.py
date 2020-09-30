@@ -28,26 +28,8 @@ class OxigestiExporter(AbstractComponent):
     _usage = 'record.exporter'
 
     def run(self, relation, *args, **kwargs):
-        """ Run the synchronization
-
-        :param relation: record to export (normal or binding)
-        """
-        self.binding = self.binder.wrap_binding(relation)
-
-        self.external_id = self.binder.to_external(self.binding)
-
-        result = self._run(*args, **kwargs)
-
-        self.binder.bind(self.external_id, self.binding)
-        # Commit so we keep the external ID when there are several
-        # exports (due to dependencies) and one of them fails.
-        # The commit will also release the lock acquired on the binding
-        # record
-        if not odoo.tools.config['test_enable']:
-            self.env.cr.commit()  # noqa
-
-        self._after_export()
-        return result
+        binding = self.binder.wrap_binding(relation)
+        return super(OxigestiExporter, self).run(binding, *args, **kwargs)
 
     def _import_dependency(self, external_id, binding_model,
                            importer=None, always=False):
@@ -88,9 +70,6 @@ class OxigestiExporter(AbstractComponent):
         """ Flow of the synchronization, implemented in inherited classes"""
         assert self.binding
 
-        if not self.external_id:
-            fields = None  # should be created with all the fields
-
         if self._has_to_skip():
             return
 
@@ -103,18 +82,35 @@ class OxigestiExporter(AbstractComponent):
 
         map_record = self._map_data()
 
+        operation = None
+
+        # link if already exists on backend
+        if not self.external_id:
+            computed_external_id = self.binder._get_external_id(self.binding)
+            if computed_external_id:
+                external_record = self.backend_adapter.read(computed_external_id)
+                if external_record:
+                    self.external_id = computed_external_id
+                    operation = _('linked and updated')
+
+        if not self.external_id:
+            fields = None  # should be created with all the fields
+
         if self.external_id:
             record = self._update_data(map_record, fields=fields)
             if not record:
                 return _('Nothing to export.')
             self._update(record)
+            if not operation:
+                operation = _('updated')
         else:
             record = self._create_data(map_record, fields=fields)
             if not record:
                 return _('Nothing to export.')
             self.external_id = self._create(record)
+            operation = _('created')
 
-        return _('Record exported with ID %s on Backend.') % (self.external_id,)
+        return _('Export successful: Record %s with ID %s on Backend.') % (operation, self.external_id,)
 
 
 class OxigestiBatchExporter(AbstractComponent):

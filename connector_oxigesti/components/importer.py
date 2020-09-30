@@ -109,7 +109,7 @@ class OxigestiImporter(AbstractComponent):
         # this one knows how to link sage/odoo records
         binder = self.component(usage='binder')
 
-        # find if the sage id already exists in odoo
+        # find if the external id already exists in odoo
         binding = binder.to_internal(external_id)
 
         skip = self._must_skip(binding)

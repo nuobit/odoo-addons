@@ -19,3 +19,13 @@ class ProductProductBinder(Component):
     _inherit = 'oxigesti.binder'
 
     _apply_on = 'oxigesti.product.product'
+
+    def _get_external_id(self, binding):
+        if not self._is_binding(binding):
+            raise Exception("The source object %s must be a binding" % binding._name)
+
+        external_id = None
+        if binding.odoo_id.default_code:
+            external_id = [binding.odoo_id.default_code]
+
+        return external_id

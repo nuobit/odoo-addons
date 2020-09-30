@@ -32,7 +32,7 @@ class ProductBuyerExportMapper(Component):
                 "Oxigesti product so the Oxigesti ID cannot be obtained. "
                 "At this stage, the Oxigesti product should have been linked via "
                 "ProductProduct._export_dependencies, "
-                "if not, then this product '%s' "
+                "if not, then this product with code '%s' "
                 "does not exist in Oxigesti." % (record, product_id.display_name, product_id.default_code))
 
         return {'CodigoArticulo': external_id[0]}
@@ -54,7 +54,7 @@ class ProductBuyerExportMapper(Component):
                                  "Oxigesti partner so the Oxigesti ID cannot be obtained. "
                                  "At this stage, the Oxigesti partner should have been linked via "
                                  "ResPartner._import_dependencies, "
-                                 "if not, then this partner '%s' "
+                                 "if not, then this partner with code '%s' "
                                  "does not exist in Oxigesti." % (record, display_name, partner_id.ref))
 
         return {'Codigo_Mutua': external_id[0]}
