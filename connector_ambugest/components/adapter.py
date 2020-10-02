@@ -263,7 +263,8 @@ class GenericAdapter(AbstractComponent):
         cr.execute(sql, params)
         count = cr.rowcount
         if count == 0:
-            raise Exception(_("Nothing updated with ID: %s") % (id_d,))
+            raise Exception(_("The record does not exist in %s: %s") % (
+                self.backend_record.name, id_d))
         elif count > 1:
             conn.rollback()
             raise pymssql.IntegrityError("Unexpected error: Returned more the one rows: with ID: %s" % (id_d,))
