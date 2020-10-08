@@ -78,7 +78,7 @@ class SaleOrderLine(models.Model):
         for r in resources:
             duration_task = int(round(base_duration / (r.time_efficiency / 100)))
             duration_td = datetime.timedelta(minutes=duration_task)
-            cint = TzInterval(base_date_start, base_date_start + duration_td, tz=r.tz)
+            cint = TzInterval(base_date_start, base_date_start + duration_td)
 
             # check durations: if it's ever possible to fit the cint duration
             # on at least one day, if not, stop searching going forward and throw an error
