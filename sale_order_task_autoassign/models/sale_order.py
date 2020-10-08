@@ -67,10 +67,13 @@ class SaleOrderLine(models.Model):
         base_duration = int(round(self.product_id.service_time * 60))
 
         # check resources availability
-        resources = self.env['resource.resource'].search([
+        domain = [
             ('user_id.active', '!=', False),
             ('resource_type', '=', 'user'),
-        ])
+        ]
+        if project.resource_calendar_id:
+            domain.append(('calendar_id', '=', project.resource_calendar_id.id))
+        resources = self.env['resource.resource'].search(domain)
         if not resources:
             raise UserError(_("There's no active resources"))
 
