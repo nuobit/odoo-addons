@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="aeat_vat_special_prorrate_tax_map_view_form" model="ir.ui.view">
+        <field name="name">aeat.vat.special.prorrate.tax.map.view.form</field>
+        <field name="model">aeat.vat.special.prorrate.tax.map</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="4">
+                        <field name="src_tax_id"/>
+                        <field name="src_tax_name"/>
+                        <field name="tgt_tax_id"/>
+                        <field name="tgt_tax_name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="aeat_vat_special_prorrate_tax_map_view_tree" model="ir.ui.view">
+        <field name="name">aeat.vat.special.prorrate.tax.map.type.view.tree</field>
+        <field name="model">aeat.vat.special.prorrate.tax.map</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="src_tax_id"/>
+                <field name="src_tax_name"/>
+                <field name="tgt_tax_id"/>
+                <field name="tgt_tax_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="aeat_vat_special_prorrate_tax_map_action" model="ir.actions.act_window">
+        <field name="name">Capital good tax map</field>
+        <field name="res_model">aeat.vat.special.prorrate.tax.map</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="aeat_vat_special_prorrate_tax_map_menu"
+              parent="l10n_es_aeat.menu_l10n_es_aeat_config"
+              action="aeat_vat_special_prorrate_tax_map_action"
+              name="Capital good tax map"/>
+</odoo>
