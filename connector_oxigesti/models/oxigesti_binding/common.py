@@ -44,12 +44,17 @@ class OxigestiBinding(models.AbstractModel):
     external_id = fields.Serialized(default=None)
 
     external_id_display = fields.Char(string='Oxigesti ID', compute='_compute_external_id_display',
-                                      search='_search_external_id_display')
+                                      inverse='_inverse_external_id_display',
+                                      search='_search_external_id_display', readonly=False)
 
     @api.depends('external_id')
     def _compute_external_id_display(self):
         for rec in self:
             rec.external_id_display = rec.external_id and json.dumps(rec.external_id) or None
+
+    def _inverse_external_id_display(self):
+        for rec in self:
+            rec.external_id = rec.external_id_display or None
 
     def _search_external_id_display(self, operator, value):
         return [
