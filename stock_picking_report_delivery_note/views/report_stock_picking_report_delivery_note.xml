@@ -214,7 +214,7 @@
                                                           groups="product.group_uom"/>
                                                 </td>
                                                 <td width="12%" class="text-right">
-                                                    <span t-if="l.sale_line_id" t-field="l.sale_line_id.price_unit"/>
+                                                    <span t-if="l.sale_line_id" t-field="l.sale_price_unit"/>
                                                 </td>
                                                 <td width="10%" class="text-right">
                                                     <t t-if="l.sale_line_id">
