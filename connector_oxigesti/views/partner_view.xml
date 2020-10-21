@@ -57,6 +57,7 @@
         <field name="groups_id" eval="[(6, 0, [ref('connector.group_connector_manager')])]"/>
         <field name="arch" type="xml">
             <field name="backend_id" position="attributes">
+                <attribute name="readonly">0</attribute>
                 <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
             </field>
             <field name="odoo_id" position="attributes">
