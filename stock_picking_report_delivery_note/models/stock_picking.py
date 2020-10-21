@@ -40,9 +40,9 @@ class Picking(models.Model):
         self.ensure_one()
         res = {}
         for line in self.move_lines:
-            price_reduce = line.sale_line_id.price_unit * (1.0 - line.sale_line_id.discount / 100.0)
-            taxes = line.sale_line_id.tax_id.compute_all(price_reduce, quantity=line.quantity_done,
-                                                         product=line.product_id, partner=self.partner_id)['taxes']
+            taxes = line.sale_line_id.tax_id.compute_all(
+                line.sale_price_unit, quantity=line.quantity_done,
+                product=line.product_id, partner=self.partner_id)['taxes']
             for tax in line.sale_line_id.tax_id:
                 group = tax.tax_group_id
                 res.setdefault(group, {'amount': 0.0, 'base': 0.0})
