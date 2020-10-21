@@ -77,6 +77,17 @@ class ResPartnerImportMapper(Component):
                 if len(partner) > 1:
                     raise Exception("There's more than one existing partner "
                                     "with the same Internal reference %s" % reference)
+
+                # check if exists another binding with the same partner
+                other_binding = self.model.with_context(active_test=False).search([
+                    ('backend_id', '=', self.backend_record.id),
+                    ('odoo_id', '=', partner.id),
+                ])
+                if other_binding:
+                    raise Exception(_("Already exists a binding with the partner: '%s' "
+                                      "but with another external id: '%s'.\n"
+                                      "This could be caused by a duplicated external reference on the backend") % (
+                                        partner.name, other_binding.external_id_display))
                 return {
                     'odoo_id': (partner.id, False, {'to_review': True})
                 }
