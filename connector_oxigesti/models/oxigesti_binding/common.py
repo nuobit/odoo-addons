@@ -34,6 +34,8 @@ class OxigestiBinding(models.AbstractModel):
     _inherit = 'external.binding'
     _description = 'oxigesti Binding (abstract)'
 
+    active = fields.Boolean(default=True)
+
     backend_id = fields.Many2one(
         comodel_name='oxigesti.backend',
         string='Oxigesti Backend',
