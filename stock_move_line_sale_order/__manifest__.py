@@ -11,7 +11,7 @@
     'category': 'Custom',
     'website': 'https://github.com/nuobit',
     'depends': [
-        'stock',
+        'sale_stock',
     ],
     'data': [
         'views/stock_move_line_views.xml',
