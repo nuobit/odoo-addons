@@ -10,8 +10,7 @@ import random
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-from ..lib.task import TaskList, Task, UserTasks
-from ..lib.tzinterval import TzInterval
+from .tools import TzInterval, TaskList, Task, UserTasks
 
 _logger = logging.getLogger(__name__)
 
