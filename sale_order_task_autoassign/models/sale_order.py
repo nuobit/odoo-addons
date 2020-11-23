@@ -33,8 +33,9 @@ class SaleOrder(models.Model):
 
         # initial date_start
         now = fields.datetime.now().replace(second=0, microsecond=0)
-        quarters = now.minute / 15
-        base_date_start = now + datetime.timedelta(minutes=round((math.ceil(quarters) - quarters) * 15))
+        date_ref = self.date_order > now and self.date_order or now
+        quarters = date_ref.minute / 15
+        base_date_start = date_ref + datetime.timedelta(minutes=round((math.ceil(quarters) - quarters) * 15))
 
         # tasks to allocate
         tasks_to_allocate = TaskList([
