@@ -6,7 +6,7 @@
     "name": "POS sale order note line",
     "summary": "This module extends the functionality of pos restaurant and quotation"
                "to allow the pos order line notes to be copied to the sale order.",
-    "version": "12.0.1.0.1",
+    "version": "12.0.1.0.2",
     "development_status": "Beta",
     "category": "Point of sale",
     "website": "https://github.com/nuobit",

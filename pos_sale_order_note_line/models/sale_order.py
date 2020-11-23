@@ -29,6 +29,6 @@ class SaleOrder(models.Model):
             line_description_l.append(line_note)
 
         if line_description_l:
-            line_data['name'] = '\n'.join(line_description_l)
+            line_data['name'] = ' | '.join(line_description_l)
 
         return res
