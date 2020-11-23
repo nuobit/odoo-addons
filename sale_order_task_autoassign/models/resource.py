@@ -80,10 +80,11 @@ class ResourceResource(models.Model):
                     if not overlaped_tasks:
                         # check database overlapped tasks
                         if excluded_db:
-                            for t in excluded_db[self.user_id.id]:
-                                if t.date_end > cint.date_start and t.date_start < cint.date_end:
-                                    overlaped_tasks = t.date_end
-                                    break
+                            if self.user_id.id in excluded_db:
+                                for t in excluded_db[self.user_id.id]:
+                                    if t.date_end > cint.date_start and t.date_start < cint.date_end:
+                                        overlaped_tasks = t.date_end
+                                        break
 
                     if overlaped_tasks:
                         return self.find_next_available(cint.copy(overlaped_tasks), excluded=excluded,
