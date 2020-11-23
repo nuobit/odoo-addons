@@ -6,7 +6,7 @@ from odoo import models
 
 import datetime
 
-from odoo.addons.sale_order_task_autoassign.lib.tzinterval import TzInterval
+from .tools import TzInterval
 
 
 class ResourceResource(models.Model):
