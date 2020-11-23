@@ -45,43 +45,43 @@ class SaleOrder(models.Model):
             ) for task in self.tasks_ids.filtered(
                 lambda x: x.sale_line_id.product_id.service_time > 0)
         ])
+        if tasks_to_allocate:
+            # get resource candidates for that tasks
+            domain = [
+                ('user_id.active', '!=', False),
+                ('resource_type', '=', 'user'),
+                ('calendar_id.attendance_ids', '!=', False),
+            ]
+            calendar_ids = self.tasks_ids.mapped('project_id.resource_calendar_id.id')
+            if calendar_ids:
+                domain.append(('calendar_id', 'in', calendar_ids))
+            resources = self.env['resource.resource'].search(domain)
+            if not resources:
+                raise UserError(_("No active resources found"))
 
-        # get resource candidates for that tasks
-        domain = [
-            ('user_id.active', '!=', False),
-            ('resource_type', '=', 'user'),
-            ('calendar_id.attendance_ids', '!=', False),
-        ]
-        calendar_ids = self.tasks_ids.mapped('project_id.resource_calendar_id.id')
-        if calendar_ids:
-            domain.append(('calendar_id', 'in', calendar_ids))
-        resources = self.env['resource.resource'].search(domain)
-        if not resources:
-            raise UserError(_("There's no active resources"))
+            # calculate the tasks by user
+            max_it = int(self.env['ir.config_parameter'].get_param('sale_order_task_autoassign.max_it', 200))
+            _logger.info("Maximum iterations established to %i" % max_it)
+            candidate_usertasks = self._allocate_tasks(tasks_to_allocate, resources, max_it=max_it)
+            if not candidate_usertasks:
+                raise UserError(_("No available resources found, cannot validate the order"))
 
-        # calculate the tasks by user
-        max_it = int(self.env['ir.config_parameter'].get_param('sale_order_task_autoassign.max_it', 200))
-        _logger.info("Maximum iterations established to %i" % max_it)
-        candidate_usertasks = self._allocate_tasks(tasks_to_allocate, resources, max_it=max_it)
-        if not candidate_usertasks:
-            raise UserError(_("No candidates found, cannot validate order"))
+            # choose only one of the candidates
+            t = random.randrange(0, len(candidate_usertasks))
+            resource_id, ctasklist = list(candidate_usertasks.tasks.items())[t]
+            user = candidate_usertasks.resources[resource_id].user_id
+            for e in ctasklist.tasks:
+                task = e.obj
+                task.write({
+                    'user_id': user.id,
+                    'date_start': e.start,
+                    'date_end': e.end,
+                })
 
-        # choose only one of the candidates
-        t = random.randrange(0, len(candidate_usertasks))
-        resource_id, ctasklist = list(candidate_usertasks.tasks.items())[t]
-        user = candidate_usertasks.resources[resource_id].user_id
-        for e in ctasklist.tasks:
-            task = e.obj
-            task.write({
-                'user_id': user.id,
-                'date_start': e.start,
-                'date_end': e.end,
-            })
-
-        # assign the deadline of each task
-        tasks = self.tasks_ids.filtered(lambda x: x.date_end)
-        if tasks:
-            self.tasks_ids.write({'date_deadline': max(tasks.mapped('date_end'))})
+            # assign the deadline of each task
+            tasks = self.tasks_ids.filtered(lambda x: x.date_end)
+            if tasks:
+                self.tasks_ids.write({'date_deadline': max(tasks.mapped('date_end'))})
 
         return result
 
