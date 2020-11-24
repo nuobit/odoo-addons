@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_l10n_es_aeat_report_form" model="ir.ui.view">
+        <field name="model">l10n.es.aeat.mod303.report</field>
+        <field name="inherit_id" ref="l10n_es_aeat.view_l10n_es_aeat_report_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="button_first_prorrate_regularitzation" type="object" string="1st prorrate regularization"
+                        states="draft" icon="fa-cogs"/>
+                <button name="button_second_investment_goods_regularitzation" type="object"
+                        string="2nd investment goods regularization"
+                        states="draft" icon="fa-cogs"/>
+                <button name="button_second_investment_goods_regularization_send_SII" type="object"
+                        string="Send 2nd investment goods regularization SII"
+                        states="draft" icon="fa-cogs"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

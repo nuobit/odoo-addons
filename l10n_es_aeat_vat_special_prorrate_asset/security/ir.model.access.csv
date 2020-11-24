@@ -1,5 +1,7 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_aeat_vat_special_prorrate_capital_good_type_user","Aeat VAT special prorrate capital good type - Account User","model_aeat_vat_special_prorrate_capital_good_type","account.group_account_invoice",1,0,0,0
-"access_aeat_vat_special_prorrate_capital_good_type_manager","Aeat VAT special prorrate capital good type - Account Manager","model_aeat_vat_special_prorrate_capital_good_type","account.group_account_manager",1,1,1,1
+"access_aeat_vat_special_prorrate_investment_good_type_user","Aeat VAT special prorrate investment good type - Account User","model_aeat_vat_special_prorrate_investment_good_type","account.group_account_invoice",1,0,0,0
+"access_aeat_vat_special_prorrate_investment_good_type_manager","Aeat VAT special prorrate investment good type - Account Manager","model_aeat_vat_special_prorrate_investment_good_type","account.group_account_manager",1,1,1,1
+"access_aeat_vat_special_prorrate_investment_good_regularization_user","Aeat VAT special prorrate investment good regularization - Account User","model_aeat_vat_special_prorrate_investment_good_regularization","account.group_account_invoice",1,0,0,0
+"access_aeat_vat_special_prorrate_investment_good_regularization_manager","Aeat VAT special prorrate investment good regularization - Account Manager","model_aeat_vat_special_prorrate_investment_good_regularization","account.group_account_manager",1,1,1,1
 "access_aeat_vat_special_prorrate_tax_map_user","Aeat VAT special prorrate tax map - Account User","model_aeat_vat_special_prorrate_tax_map","account.group_account_invoice",1,0,0,0
 "access_aeat_vat_special_prorrate_tax_map_manager","Aeat VAT special prorrate tax map - Account Manager","model_aeat_vat_special_prorrate_tax_map","account.group_account_manager",1,1,1,1

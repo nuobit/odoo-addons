@@ -10,5 +10,5 @@ from odoo.tools.translate import _
 class ProductCategory(models.Model):
     _inherit = "product.category"
 
-    capital_good_type = fields.Many2one(comodel_name='aeat.vat.special.prorrate.capital.good.type',
-                                        ondelete='restrict')
+    investment_good_type = fields.Many2one(comodel_name='aeat.vat.special.prorrate.investment.good.type',
+                                           ondelete='restrict')

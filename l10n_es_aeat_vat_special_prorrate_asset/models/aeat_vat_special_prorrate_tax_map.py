@@ -41,4 +41,4 @@ class AEATVatspecialProrrateTaxMap(models.Model):
         for rec in self:
             if rec.tax_from_id == rec.tax_to_id:
                 raise ValidationError(_('You cannot hav a tax mapped to itself.'))
-        #TODO: check that there's no circular mappings
+        # TODO: check that there's no circular mappings

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_account_asset_asset_form" model="ir.ui.view">
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_asset_form"/>
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="start_date_use"/>
+                <field name="cancellation_date"/>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="partner_vat"/>
+            </field>
+            <field name="invoice_id" position="after">
+                <field name="partner_ref"/>
+                <field name="invoice_date"/>
+            </field>
+            <xpath expr="//notebook" position="inside">
+                <page string="Investment good">
+                    <notebook>
+                        <page string="General">
+                            <group col="4">
+                                <group>
+                                    <field name="investment_good_type" string="Type"
+                                           options="{'no_create': True, 'no_open': True}"
+                                           class="oe_inline"/>
+                                    <field name="investment_good_affectacion" string="Affectation"
+                                           class="oe_inline"/>
+
+                                    <field name="tax_id"
+                                           options="{'no_create': True, 'no_open': True}"
+                                           class="oe_inline"/>
+                                    <field name="tax_base"
+                                           class="oe_inline"/>
+                                </group>
+                            </group>
+                            <group col="4">
+                                <group>
+                                    <field name="temp_prorrate_percent" class="oe_inline"/>
+                                    <field name="final_prorrate_percent" class="oe_inline"/>
+                                </group>
+                                <group>
+                                    <field name="temp_deductible_prorrate_amount" widget="monetary"
+                                           class="oe_inline"/>
+                                    <field name="temp_nondeductible_prorrate_amount" widget="monetary"
+                                           class="oe_inline"/>
+
+                                    <field name="final_deductible_prorrate_amount" widget="monetary"
+                                           class="oe_inline"/>
+                                    <field name="final_nondeductible_prorrate_amount" widget="monetary"
+                                           class="oe_inline"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Regularizations">
+                            <field name="regularization_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="year"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
