@@ -3,9 +3,9 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo noupdate="1">
-    <record id="aeat_vat_special_prorrate_capital_good_type_rule_company" model="ir.rule">
-        <field name="name">Aeat VAT special prorrate capital goods multi-company rule</field>
-        <field name="model_id" ref="model_aeat_vat_special_prorrate_capital_good_type"/>
+    <record id="aeat_vat_special_prorrate_investment_good_type_rule_company" model="ir.rule">
+        <field name="name">Aeat VAT special prorrate investment goods multi-company rule</field>
+        <field name="model_id" ref="model_aeat_vat_special_prorrate_investment_good_type"/>
         <field name="domain_force">[('company_id', 'child_of', [user.company_id.id])]
         </field>
     </record>
