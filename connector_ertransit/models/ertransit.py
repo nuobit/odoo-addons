@@ -51,7 +51,7 @@ class ERTransit:
         self.password = password
 
     def login(self):
-        url = 'http://b2b.ertransit.com/portal/transkalweb/login.xhtml'
+        url = 'https://b2b.ertransit.com/portal/transkalweb/login.xhtml'
 
         ## obtenim el javax.faces
         res = self.session.get(url, params={'loc': 'es'})
@@ -72,7 +72,7 @@ class ERTransit:
         return not self.is_login_page(res)
 
     def filter_by_reffra(self, reffra):
-        url = 'http://b2b.ertransit.com/portal/transkalweb/listaNotaCarga.xhtml'
+        url = 'https://b2b.ertransit.com/portal/transkalweb/listaNotaCarga.xhtml'
         data = {
             'formFiltro': 'formFiltro',
             'formFiltro:filtroNombreCliente': '52974',
@@ -112,7 +112,7 @@ class ERTransit:
         return result_ld
 
     def logout(self):
-        url = 'http://b2b.ertransit.com/portal/transkalweb/listaNotaCarga.xhtml'
+        url = 'https://b2b.ertransit.com/portal/transkalweb/listaNotaCarga.xhtml'
 
         data = {
             'j_idt98': 'j_idt98',
