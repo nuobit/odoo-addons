@@ -15,7 +15,7 @@
         <t t-jquery="t[t-if='simple']" t-operation='append'>
             <t t-if="line.note">
                 <line indent='1'>
-                    <t t-esc='line.note'/>
+                    <left><t t-esc='line.note'/></left>
                 </line>
             </t>
         </t>
@@ -23,7 +23,7 @@
         <t t-jquery="t[t-if='!simple']" t-operation='append'>
             <t t-if="line.note">
                 <line indent='1'>
-                    <t t-esc='line.note'/>
+                    <left><t t-esc='line.note'/></left>
                 </line>
             </t>
         </t>
