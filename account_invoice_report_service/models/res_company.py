@@ -13,6 +13,5 @@ class ResCompany(models.Model):
         comodel_name='ir.actions.report',
         domain=[
             ('model', '=', 'account.invoice'),
-            ('report_name', '=like', 'account_invoice_report_service.%'),
         ]
     )
