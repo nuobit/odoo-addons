@@ -20,14 +20,9 @@ class Location(models.Model):
             if putaway_strategy:
                 putaway_location = putaway_strategy.putaway_apply(product)
                 if putaway_strategy.exclude_internal_operations:
-                    active_model, active_id = [
-                        self.env.context.get(x) for x in ['active_model', 'active_id']]
-                    if active_model in ['stock.picking.type', 'stock.picking']:
-                        picking_type = self.env[active_model].browse(active_id)
-                        if active_model == 'stock.picking':
-                            picking_type = picking_type.picking_type_id
-                    else:
-                        raise UserError(_("Active model '%s' not expected") % active_model)
+                    picking_type = self.env.context.get('stock_picking_type')
+                    if not picking_type:
+                        raise UserError(_("No picking type defined in context"))
                     if picking_type.code == 'internal':
                         putaway_location = self.env['stock.location']
             current_location = current_location.location_id
