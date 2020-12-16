@@ -50,11 +50,11 @@ odoo.define('pos_product_pack.pos_product_pack', function (require) {
                 for (var i = 0; i < orderlines.length; i++) {
                     var orderline = orderlines[i];
                     if (orderline.product.id !== this.product.id) {
-                        if (quantity === 'remove') {
-                            to_remove.push(orderline);
-                        } else {
-                            var pack_line = this.pos.pack_line_by_parent_product[this.product.id][orderline.product.id];
-                            if (pack_line) {
+                        var pack_line = this.pos.pack_line_by_parent_product[this.product.id][orderline.product.id];
+                        if (pack_line) {
+                            if (quantity === 'remove') {
+                                to_remove.push(orderline);
+                            } else {
                                 orderline.set_quantity(pack_line.quantity * quantity, true);
                             }
                         }
