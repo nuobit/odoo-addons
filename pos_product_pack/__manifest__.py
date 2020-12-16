@@ -4,7 +4,7 @@
 
 {
     'name': 'POS product pack',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.2',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Point of Sale',
