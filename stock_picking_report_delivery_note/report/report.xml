@@ -6,10 +6,7 @@
     <data noupdate="1">
         <record id="stock_picking_report_delivery_note_paperformat" model="report.paperformat">
             <field name="name">Delivery note</field>
-            <!--field name="default" eval="True"/-->
             <field name="format">A4</field>
-            <!--field name="page_height">80</field>
-            <field name="page_width">175</field-->
             <field name="orientation">Portrait</field>
             <field name="margin_top">30</field>
             <field name="margin_bottom">24</field>
@@ -25,17 +22,9 @@
         <report id="stock_picking_report_delivery_note_action"
                 string="Delivery note with prices"
                 print_report_name="'Delivery note with prices %s' % (object.name, )"
-                name="stock_picking_report_delivery_note.stock_picking_report_delivery_note"
+                name="stock_picking_report_delivery_note.sprdn"
                 model="stock.picking"
                 report_type="qweb-pdf"
                 paperformat="stock_picking_report_delivery_note.stock_picking_report_delivery_note_paperformat"/>
     </data>
 </odoo>
-
-        <!--
-        file="stock.report_picking_operations"
-                        attachment_use="True"
-                        attachment="'Service invoice - %s' % (object.invoice_number, )"/
-
-
-                        -->

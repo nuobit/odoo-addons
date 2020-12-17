@@ -23,11 +23,12 @@
             <t t-set="company" t-value="res_company"/>
         </t>
 
-        <div class="header sprdn-header">
+        <div class="header sprdn-header"  t-attf-style="height: {{ header_max_height }}px;">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-6">
-                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
+                        <img t-if="company.logo" class="img-responsive"
+                             t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
                     </div>
                 </div>
             </div>
@@ -69,7 +70,7 @@
         </div>
     </template>
 
-    <template id="stock_picking_report_delivery_note_document">
+    <template id="sprdn_document">
         <t t-call="stock_picking_report_delivery_note.stock_picking_report_delivery_note_external_layout">
             <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
             <div class="page">
@@ -301,10 +302,10 @@
         </t>
     </template>
 
-    <template id="stock_picking_report_delivery_note">
+    <template id="sprdn">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="stock_picking_report_delivery_note.stock_picking_report_delivery_note_document"
+                <t t-call="stock_picking_report_delivery_note.sprdn_document"
                    t-lang="o.partner_id.lang"/>
             </t>
         </t>
