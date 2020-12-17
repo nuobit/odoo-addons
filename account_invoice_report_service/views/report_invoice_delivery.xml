@@ -23,11 +23,12 @@
             <t t-set="company" t-value="res_company"/>
         </t>
 
-        <div class="header">
+        <div class="header rid-header" t-attf-style="height: {{ header_max_height }}px;">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-6">
-                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
+                        <img t-if="company.logo" class="img-responsive"
+                             t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
                     </div>
                 </div>
             </div>
