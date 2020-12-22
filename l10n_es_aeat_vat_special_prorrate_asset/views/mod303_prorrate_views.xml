@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_l10n_es_aeat_prorrate_report_form" model="ir.ui.view">
+        <field name="name">l10n.es.aeat.mod303.prorrate.report.form</field>
+        <field name="model">l10n.es.aeat.mod303.prorrate.report</field>
+        <field name="arch" type="xml">
+            <form string="Prorrate settings" create="0">
+                <header>
+                    <button name="button_send_sii_investment_goods_regularization" type="object"
+                            string="Send SII investment goods regularization"
+                            icon="fa-cogs"/>
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="final_prorrate,first_reg,second_reg,send_sii"/>
+                </header>
+                <sheet>
+                    <group string="Final prorrate">
+                        <group>
+                            <field name="map_prorrate_year_id" invisible="1"/>
+                            <field name="temp_prorrate_percent" class="oe_inline"/>
+                            <field name="final_prorrate_percent" class="oe_inline"/>
+                        </group>
+                        <group>
+                            <field name="move_date" class="oe_inline"/>
+                        </group>
+                        <group>
+                            <button name="button_calculate_final_prorrate" type="object"
+                                    string="Compute"
+                                    class="oe_highlight"/>
+                        </group>
+                    </group>
+                    <group string="1st regularization final prorrate">
+                        <group>
+                            <field name="first_reg_positive_adjust_account_id"/>
+                            <field name="first_reg_negative_adjust_account_id"/>
+                            <field name="first_reg_ref"/>
+                        </group>
+                        <group>
+                            <field name="first_reg_move_id"/>
+                            <field name="first_reg_amount" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                        <group>
+                            <button name="button_first_regularization_final_prorrate" type="object"
+                                    string="Compute"
+                                    class="oe_highlight"/>
+                        </group>
+                    </group>
+                    <group string="2nd regularization investment goods prorrate">
+                        <group>
+                            <field name="second_reg_positive_adjust_account_id"/>
+                            <field name="second_reg_negative_adjust_account_id"/>
+                            <field name="second_reg_ref"/>
+                        </group>
+                        <group>
+                            <field name="second_reg_move_id"/>
+                            <field name="second_reg_amount" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                        <group>
+                            <button name="button_second_regularization_investment_goods_prorrate" type="object"
+                                    string="Compute"
+                                    class="oe_highlight"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

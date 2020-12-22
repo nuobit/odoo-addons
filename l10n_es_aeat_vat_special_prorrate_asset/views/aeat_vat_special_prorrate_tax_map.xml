@@ -34,7 +34,7 @@
     </record>
 
     <record id="aeat_vat_special_prorrate_tax_map_action" model="ir.actions.act_window">
-        <field name="name">Capital good tax map</field>
+        <field name="name">Investment good tax map</field>
         <field name="res_model">aeat.vat.special.prorrate.tax.map</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -43,5 +43,5 @@
     <menuitem id="aeat_vat_special_prorrate_tax_map_menu"
               parent="l10n_es_aeat.menu_l10n_es_aeat_config"
               action="aeat_vat_special_prorrate_tax_map_action"
-              name="Capital good tax map"/>
+              name="Investment good tax map"/>
 </odoo>

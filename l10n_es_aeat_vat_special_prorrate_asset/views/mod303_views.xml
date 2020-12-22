@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_l10n_es_aeat_report_form" model="ir.ui.view">
+        <field name="model">l10n.es.aeat.mod303.report</field>
+        <field name="inherit_id" ref="l10n_es_aeat.view_l10n_es_aeat_report_form"/>
+        <field name="arch" type="xml">
+            <group name="group_other_parameters" position="inside">
+                <label for="vat_prorrate_type"
+                       attrs="{'invisible': [('period_type', 'not in', ['4T', '12'])]}"/>
+                <div class="oe_inline">
+                    <field name="vat_prorrate_type" class="oe_inline"
+                           attrs="{'invisible': [('period_type', 'not in', ['4T', '12'])]}"/>
+                    <button name="prorrate_config_action"
+                            type="object"
+                            class="oe_inline oe_highlight oe_link"
+                            string="Settings"
+                            attrs="{'invisible': ['|', ('vat_prorrate_type', '=', 'none'), ('period_type', 'not in', ['4T', '12'])]}"/>
+                </div>
+            </group>
+            <field name="total_deducir" position="before">
+                <field name="casilla_43"
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"
+                       attrs="{'invisible': ['|', ('vat_prorrate_type', '=', 'none'), ('period_type', 'not in', ['4T', '12'])]}"
+                />
+                <field name="casilla_44"
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"
+                       attrs="{'invisible': ['|', ('vat_prorrate_type', '=', 'none'), ('period_type', 'not in', ['4T', '12'])]}"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

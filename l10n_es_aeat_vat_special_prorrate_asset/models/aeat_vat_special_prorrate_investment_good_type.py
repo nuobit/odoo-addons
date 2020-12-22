@@ -7,8 +7,8 @@ from odoo.exceptions import ValidationError
 from odoo.tools.translate import _
 
 
-class AEATVatspecialProrrateCapitalGoodType(models.Model):
-    _name = 'aeat.vat.special.prorrate.capital.good.type'
+class AEATVatspecialProrrateInvestmentType(models.Model):
+    _name = 'aeat.vat.special.prorrate.investment.good.type'
 
     name = fields.Char(string="Name", required=True, translate=True)
 
@@ -24,7 +24,7 @@ class AEATVatspecialProrrateCapitalGoodType(models.Model):
 
     _sql_constraints = [
         ('unique_name', 'unique(name, company_id)',
-         'Capital good name must be unique'),
+         'Investment good name must be unique'),
     ]
 
     @api.multi

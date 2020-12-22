@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+<!--    &lt;!&ndash; ACCOUNT TAGS &ndash;&gt;-->
+<!--    &lt;!&ndash; Regularización prorrata definitiva &ndash;&gt;-->
+<!--    <record id="mod_303_44" model="account.account.tag">-->
+<!--        <field name="name">mod303[44]</field>-->
+<!--        <field name="applicability">taxes</field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; Regularización prorrata bienes de inversión &ndash;&gt;-->
+<!--    <record id="mod_303_43" model="account.account.tag">-->
+<!--        <field name="name">mod303[43]</field>-->
+<!--        <field name="applicability">taxes</field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; ACCOUNT TAXES &ndash;&gt;-->
+<!--    &lt;!&ndash; Regularización prorrata definitiva &ndash;&gt;-->
+<!--    <record id="account_tax_template_p_prd44_iva" model="account.tax.template">-->
+<!--        <field name="description">P_PRD44_IVA</field>-->
+<!--        <field name="type_tax_use">purchase</field>-->
+<!--        <field name="name">Regularización prorrata definitiva</field>-->
+<!--        <field name="chart_template_id" ref="l10n_es.account_chart_template_common"/>-->
+<!--        <field name="amount" eval="0"/>-->
+<!--        <field name="amount_type">percent</field>-->
+<!--        <field name="tax_group_id" ref="account.tax_group_taxes"/>-->
+<!--        <field name="tag_ids" eval="[(6, False, [ref('mod_303_44')])]"/>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; Regularización prorrata bienes de inversión &ndash;&gt;-->
+<!--    <record id="account_tax_template_p_prd43_iva" model="account.tax.template">-->
+<!--        <field name="description">P_PRD43_IVA</field>-->
+<!--        <field name="type_tax_use">purchase</field>-->
+<!--        <field name="name">Regularización prorrata bienes de inversión</field>-->
+<!--        <field name="chart_template_id" ref="l10n_es.account_chart_template_common"/>-->
+<!--        <field name="amount" eval="0"/>-->
+<!--        <field name="amount_type">percent</field>-->
+<!--        <field name="tax_group_id" ref="account.tax_group_taxes"/>-->
+<!--        <field name="tag_ids" eval="[(6, False, [ref('mod_303_43')])]"/>-->
+<!--    </record>-->
+</odoo>

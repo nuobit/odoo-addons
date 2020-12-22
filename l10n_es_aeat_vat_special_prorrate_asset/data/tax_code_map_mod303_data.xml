@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+<!--    <record id="l10n_es_aeat_mod303.aeat_mod303_map_line_43" model="l10n.es.aeat.map.tax.line">-->
+<!--        <field name="move_type">all</field>-->
+<!--        <field name="field_type">amount</field>-->
+<!--        <field name="sum_type">both</field>-->
+<!--        <field name="inverse" eval="False"/>-->
+<!--        <field name="tax_ids"-->
+<!--               eval="[(6, False, [ref('account_tax_template_p_prd43_iva')])]"/>-->
+<!--    </record>-->
+<!--    <record id="l10n_es_aeat_mod303.aeat_mod303_map_line_44" model="l10n.es.aeat.map.tax.line">-->
+<!--        <field name="move_type">all</field>-->
+<!--        <field name="field_type">amount</field>-->
+<!--        <field name="sum_type">both</field>-->
+<!--        <field name="inverse" eval="False"/>-->
+<!--        <field name="tax_ids"-->
+<!--               eval="[(6, False, [ref('account_tax_template_p_prd44_iva')])]"/>-->
+<!--    </record>-->
+</odoo>

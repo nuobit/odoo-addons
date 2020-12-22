@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <group name="first" position="after">
                 <group col="2">
-                    <field name="capital_good_type" options="{'no_create': True, 'no_open': True}"
+                    <field name="investment_good_type" options="{'no_create': True, 'no_open': True}"
                            class="oe_inline"/>
                 </group>
             </group>
@@ -21,7 +21,7 @@
         <field name="inherit_id" ref="product.product_category_list_view"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
-                <field name="capital_good_type"/>
+                <field name="investment_good_type"/>
             </xpath>
         </field>
     </record>

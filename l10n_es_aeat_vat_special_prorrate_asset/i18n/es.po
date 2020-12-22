@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-13 16:07+0000\n"
-"PO-Revision-Date: 2020-10-13 16:07+0000\n"
+"POT-Creation-Date: 2020-11-24 23:00+0000\n"
+"PO-Revision-Date: 2020-11-24 23:00+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,87 +15,193 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_product_category_capital_good_type
-msgid "Capital Good Type"
-msgstr "Tipo de bien de inversión"
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_l10n_es_aeat_report_form
+msgid "Compute final prorrate"
+msgstr "Calcular prorrata definitiva"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: sql_constraint:aeat.vat.special.prorrate.capital.good.type:0
-msgid "Capital good name must be unique"
-msgstr "Capital good name must be unique"
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_l10n_es_aeat_report_form
+msgid "1st regularization final prorrate"
+msgstr "1ª regularización prorrata definitiva"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.actions.act_window,name:l10n_es_aeat_vat_special_prorrate_asset.aeat_vat_special_prorrate_tax_map_action
-#: model:ir.ui.menu,name:l10n_es_aeat_vat_special_prorrate_asset.aeat_vat_special_prorrate_tax_map_menu
-msgid "Capital good tax map"
-msgstr "Bienes de inversión - Mapeo de impuestos "
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_l10n_es_aeat_report_form
+msgid "2nd regularization investment goods prorrate"
+msgstr "2ª regularización prorrata bienes de inversion"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.actions.act_window,name:l10n_es_aeat_vat_special_prorrate_asset.aeat_vat_special_prorrate_capital_good_type_action
-#: model:ir.ui.menu,name:l10n_es_aeat_vat_special_prorrate_asset.aeat_vat_special_prorrate_capital_good_type_menu
-msgid "Capital good types"
-msgstr "Bienes de inversión - Tipos"
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_l10n_es_aeat_report_form
+msgid "Send SII investment goods regularization"
+msgstr "Envío SII regularización bienes de inversión"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_company_id
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate_asset.model_l10n_es_aeat_mod303_report
+msgid "AEAT 303 Report"
+msgstr "Declaración AEAT 303"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_account_asset_asset_form
+msgid "Affectation"
+msgstr "Afectación"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_amount
+msgid "Amount"
+msgstr "Importe"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate_asset.model_account_asset_asset
+msgid "Asset/Revenue Recognition"
+msgstr "Aceptación de pagos/Ingresos"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_cancellation_date
+msgid "Cancellation date"
+msgstr "Fecha de baja"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_company_id
 msgid "Company"
 msgstr "Compañía"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_create_uid
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_create_uid
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_create_uid
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_create_date
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_create_date
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_create_date
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_create_date
 msgid "Created on"
 msgstr "Creado el"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_display_name
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_id
+#: selection:account.asset.asset,investment_good_affectacion:0
+#: code:addons/l10n_es_aeat_vat_special_prorrate_asset/models/account_asset_asset.py:16
+#, python-format
+msgid "Exempt"
+msgstr "Exenta"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_final_deductible_prorrate_amount
+msgid "Final deductible prorrate amount"
+msgstr "Cuota prorrata deducible definitiva"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_final_nondeductible_prorrate_amount
+msgid "Final non-deductible prorrate amount"
+msgstr "Cuota prorrata no deducible definitiva"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_final_prorrate_percent
+msgid "Final prorrate (%)"
+msgstr "Prorrata definitva (%)"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_account_asset_asset_form
+msgid "General"
+msgstr "General"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_id
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_id
 msgid "ID"
 msgstr "ID"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type___last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_investment_good_id
+msgid "Investment Good"
+msgstr "Bien de inversión"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_investment_good_affectacion
+msgid "Investment Good Affectacion"
+msgstr "Afectación del bien de inversión"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_investment_good_type
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_product_category_investment_good_type
+msgid "Investment Good Type"
+msgstr "Tipo de bien de inversión"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_account_asset_asset_form
+msgid "Investment good"
+msgstr "Bien de inversión"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: sql_constraint:aeat.vat.special.prorrate.investment.good.type:0
+msgid "Investment good name must be unique"
+msgstr "Investment good name must be unique"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.actions.act_window,name:l10n_es_aeat_vat_special_prorrate_asset.aeat_vat_special_prorrate_tax_map_action
+#: model:ir.ui.menu,name:l10n_es_aeat_vat_special_prorrate_asset.aeat_vat_special_prorrate_tax_map_menu
+msgid "Investment good tax map"
+msgstr "Bienes de inversión - Mapeo de impuestos "
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.actions.act_window,name:l10n_es_aeat_vat_special_prorrate_asset.aeat_vat_special_prorrate_investment_good_type_action
+#: model:ir.ui.menu,name:l10n_es_aeat_vat_special_prorrate_asset.aeat_vat_special_prorrate_investment_good_type_menu
+msgid "Investment good types"
+msgstr "Bienes de inversión - Tipos"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_invoice_date
+msgid "Invoice Date"
+msgstr "Fecha de la factura"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,help:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_invoice_date
+msgid "Keep empty to use the current date"
+msgstr "Dejarlo vacío para utilizar la fecha actual."
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization___last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type___last_update
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map___last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_write_uid
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_write_uid
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_write_uid
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_write_date
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_write_date
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_write_date
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_name
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_name
 msgid "Name"
 msgstr "Nombre"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_capital_good_type_period
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_type_period
 msgid "Period (years)"
 msgstr "Periodo (años)"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: code:addons/l10n_es_aeat_vat_special_prorrate_asset/models/aeat_vat_special_prorrate_capital_good_type.py:38
+#: code:addons/l10n_es_aeat_vat_special_prorrate_asset/models/aeat_vat_special_prorrate_investment_good_type.py:38
 #, python-format
 msgid "Period must be greater than 0."
 msgstr "Period must be greater than 0."
@@ -106,13 +212,25 @@ msgid "Product Category"
 msgstr "Categoría de producto"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_src_tax_name
-msgid "Source tax"
-msgstr "Impuesto origen"
+#: selection:account.asset.asset,investment_good_affectacion:0
+#: code:addons/l10n_es_aeat_vat_special_prorrate_asset/models/account_asset_asset.py:16
+#, python-format
+msgid "Prorrate (temporary)"
+msgstr "Prorrata (provisional)"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_tgt_tax_name
-msgid "Target tax"
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_regularization_ids
+msgid "Regularization"
+msgstr "Regularización"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_account_asset_asset_form
+msgid "Regularizations"
+msgstr "Regularizaciones"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_src_tax_name
+msgid "Source tax"
 msgstr "Impuesto origen"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
@@ -121,14 +239,86 @@ msgid "Source tax code"
 msgstr "Código impuesto origen"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_start_date_use
+msgid "Start date use"
+msgstr "Fecha de inicio de uso"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: selection:account.asset.asset,investment_good_affectacion:0
+#: code:addons/l10n_es_aeat_vat_special_prorrate_asset/models/account_asset_asset.py:16
+#, python-format
+msgid "Subject"
+msgstr "Sujeta"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_partner_vat
+msgid "TIN"
+msgstr "NIF"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_tgt_tax_name
+msgid "Target tax"
+msgstr "Impuesto origen"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_tax_map_tgt_tax_id
 msgid "Target tax code"
 msgstr "Código impuesto destino"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_tax_id
+msgid "Tax"
+msgstr "Impuesto"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,help:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_partner_vat
+msgid "Tax Identification Number. Fill it if the company is subjected to taxes. Used by the some of the legal statements."
+msgstr "Número de identificación fiscal. Llénelo si la compañía está sujeta a impuestos. Usado por algunos documentos legales."
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_tax_base
+msgid "Tax base"
+msgstr "Base del impuesto"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
 #: sql_constraint:aeat.vat.special.prorrate.tax.map:0
 msgid "Tax map must be unique"
 msgstr "Tax map must be unique"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_temp_deductible_prorrate_amount
+msgid "Temporary deductible prorrate amount"
+msgstr "Cuota prorrata deducible provisional"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_temp_nondeductible_prorrate_amount
+msgid "Temporary non-deductible prorrate amount"
+msgstr "Cuota prorrata no deducible provisional"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_temp_prorrate_percent
+msgid "Temporary prorrate (%)"
+msgstr "Prorrata provisional (%)"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,help:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_partner_ref
+msgid "The partner reference of this invoice."
+msgstr "La referencia de asociado para esta factura."
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate_asset.view_account_asset_asset_form
+msgid "Type"
+msgstr "Tipo"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_account_asset_asset_partner_ref
+msgid "Vendor Reference"
+msgstr "Referencia de proveedor"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate_asset.field_aeat_vat_special_prorrate_investment_good_regularization_year
+msgid "Year"
+msgstr "Año"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
 #: code:addons/l10n_es_aeat_vat_special_prorrate_asset/models/aeat_vat_special_prorrate_tax_map.py:43
@@ -137,9 +327,14 @@ msgid "You cannot hav a tax mapped to itself."
 msgstr "You cannot hav a tax mapped to itself."
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
-#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate_asset.model_aeat_vat_special_prorrate_capital_good_type
-msgid "aeat.vat.special.prorrate.capital.good.type"
-msgstr "aeat.vat.special.prorrate.capital.good.type"
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate_asset.model_aeat_vat_special_prorrate_investment_good_regularization
+msgid "aeat.vat.special.prorrate.investment.good.regularization"
+msgstr "aeat.vat.special.prorrate.investment.good.regularization"
+
+#. module: l10n_es_aeat_vat_special_prorrate_asset
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate_asset.model_aeat_vat_special_prorrate_investment_good_type
+msgid "aeat.vat.special.prorrate.investment.good.type"
+msgstr "aeat.vat.special.prorrate.investment.good.type"
 
 #. module: l10n_es_aeat_vat_special_prorrate_asset
 #: model:ir.model,name:l10n_es_aeat_vat_special_prorrate_asset.model_aeat_vat_special_prorrate_tax_map
