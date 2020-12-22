@@ -132,6 +132,11 @@ msgid "Tax %"
 msgstr "Impuesto %"
 
 #. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_tax_final_percentage
+msgid "Final tax %"
+msgstr "Impuesto definitivo %"
+
+#. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_year
 msgid "Year"
 msgstr "Año"
