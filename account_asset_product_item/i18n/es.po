@@ -1,0 +1,53 @@
+# This file contains the translation of the following modules:
+#	* account_asset_product_item
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-22 14:15+0000\n"
+"PO-Revision-Date: 2020-12-22 14:15+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_asset_product_item
+#: model:ir.model,name:account_asset_product_item.model_account_asset_category
+msgid "Asset category"
+msgstr "Categoría de activo"
+
+#. module: account_asset_product_item
+#: model:ir.model,name:account_asset_product_item.model_account_asset_asset
+msgid "Asset/Revenue Recognition"
+msgstr "Aceptación de pagos/Ingresos"
+
+#. module: account_asset_product_item
+#: model:ir.model.fields,help:account_asset_product_item.field_account_asset_category_asset_product_item
+msgid "By default during the validation of an invoice, an asset is created by invoice line as long as an accounting entry is created by invoice line. With this setting, an accounting entry will be created by product item. So, there will be an asset by product item."
+msgstr "By default during the validation of an invoice, an asset is created by invoice line as long as an accounting entry is created by invoice line. With this setting, an accounting entry will be created by product item. So, there will be an asset by product item."
+
+#. module: account_asset_product_item
+#: model:ir.model.fields,field_description:account_asset_product_item.field_account_asset_category_asset_product_item
+msgid "Create an asset by product item"
+msgstr "Crear un activo por cada unidad de producto"
+
+#. module: account_asset_product_item
+#: model:ir.model,name:account_asset_product_item.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Línea de factura"
+
+#. module: account_asset_product_item
+#: code:addons/account_asset_product_item/models/account_invoice.py:14
+#, python-format
+msgid "Only UOM's with category 'Unit' are supported"
+msgstr "Only UOM's with category 'Unit' are supported"
+
+#. module: account_asset_product_item
+#: code:addons/account_asset_product_item/models/account_invoice.py:19
+#, python-format
+msgid "The quantity must be an integer, not %s"
+msgstr "The quantity must be an integer, not %s"
+
