@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+
+<odoo>
+    <record id="journal_ledger_wizard" model="ir.ui.view">
+        <field name="name">Journal Ledger with number filter</field>
+        <field name="model">journal.ledger.report.wizard</field>
+        <field name="inherit_id" ref="account_financial_report.journal_ledger_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[group[field[@name='date_range_id']]]/group[2]" position="inside">
+                <field name="number_from"/>
+                <field name="number_to"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
