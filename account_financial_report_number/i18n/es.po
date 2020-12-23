@@ -1,0 +1,39 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* account_financial_report_number
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-23 18:06+0000\n"
+"PO-Revision-Date: 2020-12-23 18:06+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_financial_report_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard_number_from
+#: model:ir.model.fields,field_description:account_financial_report_number.field_report_journal_ledger_number_from
+msgid "From number"
+msgstr "Desde número"
+
+#. module: account_financial_report_number
+#: model:ir.model,name:account_financial_report_number.model_journal_ledger_report_wizard
+msgid "Journal Ledger Report Wizard"
+msgstr "Asistente de informe de Libro Diario"
+
+#. module: account_financial_report_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard_number_to
+#: model:ir.model.fields,field_description:account_financial_report_number.field_report_journal_ledger_number_to
+msgid "To number"
+msgstr "Hasta número"
+
+#. module: account_financial_report_number
+#: model:ir.model,name:account_financial_report_number.model_report_journal_ledger
+msgid "report_journal_ledger"
+msgstr "informe_libro_diario"
+
