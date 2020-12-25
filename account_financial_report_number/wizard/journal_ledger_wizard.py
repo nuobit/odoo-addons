@@ -8,6 +8,18 @@ from odoo import api, fields, models
 class JournalLedgerReportWizard(models.TransientModel):
     _inherit = 'journal.ledger.report.wizard'
 
+    date_from = fields.Date(
+        required=False
+    )
+    date_to = fields.Date(
+        required=False
+    )
+
+    filter_by_number = fields.Boolean(
+        string="Filter by entry number",
+        default=False
+    )
+
     number_from = fields.Char(
         string="From number",
         required=False
@@ -23,5 +35,6 @@ class JournalLedgerReportWizard(models.TransientModel):
         values.update({
             'number_from': self.number_from,
             'number_to': self.number_to,
+            'filter_by_number': self.filter_by_number,
         })
         return values
