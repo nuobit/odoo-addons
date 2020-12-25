@@ -6,14 +6,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-23 18:06+0000\n"
-"PO-Revision-Date: 2020-12-23 18:06+0000\n"
+"POT-Creation-Date: 2020-12-25 00:22+0000\n"
+"PO-Revision-Date: 2020-12-25 00:22+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: account_financial_report_number
+#: code:addons/account_financial_report_number/report/journal_ledger.py:52
+#: code:addons/account_financial_report_number/report/journal_ledger.py:73
+#, python-format
+msgid "At least from number should be entered"
+msgstr "At least from number should be entered"
+
+#. module: account_financial_report_number
+#: model:ir.ui.view,arch_db:account_financial_report_number.journal_ledger_wizard
+msgid "Entry number"
+msgstr "Número de asiento"
+
+#. module: account_financial_report_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard_filter_by_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_report_journal_ledger_filter_by_number
+msgid "Filter by entry number"
+msgstr "Filtar por número de asiento"
 
 #. module: account_financial_report_number
 #: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard_number_from
