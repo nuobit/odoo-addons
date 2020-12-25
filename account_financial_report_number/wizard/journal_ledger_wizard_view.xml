@@ -9,10 +9,46 @@
         <field name="model">journal.ledger.report.wizard</field>
         <field name="inherit_id" ref="account_financial_report.journal_ledger_wizard"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[group[field[@name='date_range_id']]]/group[2]" position="inside">
-                <field name="number_from"/>
-                <field name="number_to"/>
+            <xpath expr="//group[field[@name='company_id']]" position="after">
+                <group>
+                    <field name="filter_by_number"/>
+                </group>
+
+                <separator string="Entry number"
+                           attrs="{'invisible': [('filter_by_number', '!=', True)]}"/>
+                <group attrs="{'invisible': [('filter_by_number', '!=', True)]}">
+                    <group>
+                        <field name="number_from"
+                               attrs="{'required': [('filter_by_number', '=', True)]}"/>
+                        <field name="number_to"/>
+                    </group>
+                </group>
             </xpath>
+
+            <xpath expr="//group[group[field[@name='date_range_id']]]/preceding-sibling::separator[1]"
+                   position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('filter_by_number', '=', True)]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//group[group[field[@name='date_range_id']]]" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('filter_by_number', '=', True)]}
+                </attribute>
+            </xpath>
+
+            <field name="date_from" position="attributes">
+                <attribute name="attrs">
+                    {'required': [('filter_by_number', '!=', True)]}
+                </attribute>
+            </field>
+
+            <field name="date_to" position="attributes">
+                <attribute name="attrs">
+                    {'required': [('filter_by_number', '!=', True)]}
+                </attribute>
+            </field>
         </field>
     </record>
 </odoo>
