@@ -9,5 +9,5 @@ class AccountAssetAsset(models.Model):
     _inherit = 'account.asset.asset'
 
     invoice_line_id = fields.Many2one(comodel_name='account.invoice.line',
-                                      ondelete='restrict',
+                                      ondelete='set null',
                                       readonly=True)
