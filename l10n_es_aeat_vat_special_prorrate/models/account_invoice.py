@@ -23,9 +23,9 @@ class AccountInvoice(models.Model):
             tax = self.env['account.tax'].browse(tax_d['tax_id'])
             if tax.prorrate_type:
                 if (tax.amount_type == 'percent' and not tax.price_include):
-                    base_amount = tax_d['base'] * tax._get_prorrate_ratio(
+                    base_amount = tax_d['base'] * tax.get_prorrate_ratio(
                         self.date or self.date_invoice,
-                        self.company_id or self.env.user.company_id
+                        self.company_id.id or self.env.user.company_id.id
                     )
                     tax_d['base'] = round(base_amount, prec)
                     tax_d['amount'] = round(base_amount * tax.amount / 100, prec)
