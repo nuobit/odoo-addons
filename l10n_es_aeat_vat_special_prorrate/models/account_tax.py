@@ -15,11 +15,11 @@ class AccountTax(models.Model):
         string='Prorrate type',
     )
 
-    def _get_prorrate_ratio(self, date, company):
+    def get_prorrate_ratio(self, date, company_id):
         date = date or fields.Date.context_today(self)
 
         prorrate_map = self.env['aeat.map.special.prorrate.year'].search([
-            ('company_id', '=', company.id),
+            ('company_id', '=', company_id),
             ('year', '=', fields.Date.from_string(date).year),
         ])
         if not prorrate_map:
@@ -32,18 +32,18 @@ class AccountTax(models.Model):
         return prorrate_ratio
 
     @api.multi
-    def _get_non_deductible_percent(self, date, company):
+    def get_non_deductible_percent(self, date, company_id):
         value = 0
         for rec in self:
             if rec.amount_type == 'percent':
                 if not rec.account_id:
                     tax_percent = rec.amount
                     if rec.prorrate_type:
-                        tax_percent *= rec._get_prorrate_ratio(date, company)
+                        tax_percent *= rec.get_prorrate_ratio(date, company_id)
                     value += tax_percent
             elif rec.amount_type == 'group':
                 for tax_child in rec.children_tax_ids:
-                    value += tax_child._get_non_deductible_percent(date, company)
+                    value += tax_child.get_non_deductible_percent(date, company_id)
             else:
                 raise NotImplementedError(
                     "Tax type '%s' not suported yet" % rec.amount_type)
