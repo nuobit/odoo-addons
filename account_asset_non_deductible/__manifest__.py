@@ -5,7 +5,7 @@
 {
     'name': 'Non-deductible asset value',
     'summary': 'Adds a non-deductible tax amount to the asset value',
-    'version': '11.0.1.2.0',
+    'version': '11.0.1.2.1',
     'category': 'Accounting',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://github.com/nuobit',
