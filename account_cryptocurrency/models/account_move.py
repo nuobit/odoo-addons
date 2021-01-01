@@ -13,3 +13,12 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     amount_currency = fields.Monetary(digits=(15, 9))
+
+    @api.multi
+    @api.constrains('amount_currency', 'debit', 'credit')
+    def _check_currency_amount(self):
+        for line in self:
+            # If account have a second currency, don't apply constraint
+            if line.account_id.currency_id:
+                continue
+            super(AccountMoveLine, line)._check_currency_amount()
