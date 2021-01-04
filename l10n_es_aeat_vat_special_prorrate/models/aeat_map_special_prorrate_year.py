@@ -22,7 +22,7 @@ class MapSpecialProrrateYear(models.Model):
 
     map_prorrate_next_year_id = fields.Many2one(comodel_name='aeat.map.special.prorrate.year',
                                                 ondelete='restrict',
-                                                required=True, readonly=True, store=True)
+                                                required=False, readonly=True, store=True)
 
     tax_final_percentage = fields.Float(string="Final tax %", readonly=True,
                                         related='map_prorrate_next_year_id.tax_percentage')
