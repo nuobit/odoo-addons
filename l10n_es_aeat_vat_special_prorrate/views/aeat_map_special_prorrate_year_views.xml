@@ -8,6 +8,17 @@
         <field name="model">aeat.map.special.prorrate.year</field>
         <field name="arch" type="xml">
             <form string="Aeat VAT special prorrate map">
+                <header>
+                    <button name="compute_prorrate" type="object" string="Compute"
+                            states="temporary" class="oe_highlight"/>
+                    <button name="close_prorrate" type="object" string="Close"
+                            states="finale" class="oe_highlight"/>
+                    <button name="compute_prorrate" type="object" string="Recompute"
+                            states="finale"/>
+                    <button name="set_temporary" type="object" string="Set to Temporary"
+                            states="finale"/>
+                    <field name="state" widget="statusbar" clickable="False"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -15,8 +26,10 @@
                         </group>
                         <group>
                             <field name="tax_percentage"/>
+                            <field name="tax_final_percentage_aux"
+                                   states="finale"/>
                             <field name="tax_final_percentage"
-                                   attrs="{'invisible': [('tax_final_percentage', '=', 0)]}"/>
+                                   states="closed"/>
                         </group>
                     </group>
                 </sheet>
@@ -32,6 +45,7 @@
                 <field name="year"/>
                 <field name="tax_percentage"/>
                 <field name="tax_final_percentage"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
