@@ -5,14 +5,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-04 21:32+0000\n"
-"PO-Revision-Date: 2021-01-04 21:32+0000\n"
+"POT-Creation-Date: 2021-01-05 16:27+0000\n"
+"PO-Revision-Date: 2021-01-05 16:27+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+msgid "1st regularization final prorrate"
+msgstr "1ª regularización prorrata definitiva"
 
 #. module: l10n_es_aeat_vat_special_prorrate
 #: sql_constraint:aeat.map.special.prorrate.year:0
@@ -33,7 +38,7 @@ msgid "Close"
 msgstr "Cerrar"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:35
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:42
 #: selection:aeat.map.special.prorrate.year,state:0
 #, python-format
 msgid "Closed"
@@ -60,6 +65,16 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_currency_id
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_move_date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: l10n_es_aeat_vat_special_prorrate
 #: selection:account.tax,prorrate_type:0
 #: code:addons/l10n_es_aeat_vat_special_prorrate/models/account_tax.py:14
 #, python-format
@@ -74,15 +89,15 @@ msgstr "Nombre mostrado"
 #. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_tax_final_percentage
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_tax_final_percentage_aux
-msgid "Final tax %"
-msgstr "Impuesto definitivo %"
+msgid "Final %"
+msgstr "Definitva %"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:34
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:41
 #: selection:aeat.map.special.prorrate.year,state:0
 #, python-format
 msgid "Finale"
-msgstr "Final"
+msgstr "Definitiva"
 
 #. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_id
@@ -107,16 +122,26 @@ msgid "Invoice"
 msgstr "Factura"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:85
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:92
 #, python-format
 msgid "It's not possible to delete a closed prorrate map"
 msgstr "It's not possible to delete a closed prorrate map"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:196
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:206
 #, python-format
 msgid "It's not possible to recompute a closed prorrate"
 msgstr "It's not possible to recompute a closed prorrate"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_journal_id
+msgid "Journal"
+msgstr "Diario"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_move_id
+msgid "Journal Entry"
+msgstr "Asiento contable"
 
 #. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year___last_update
@@ -134,6 +159,11 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,help:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_move_id
+msgid "Link to the first regularization final prorrate journal entry"
+msgstr "Link to the first regularization final prorrate journal entry"
+
+#. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_map_prorrate_next_year_id
 msgid "Map Prorrate Next Year"
 msgstr "Map Prorrate Next Year"
@@ -143,6 +173,11 @@ msgstr "Map Prorrate Next Year"
 #, python-format
 msgid "Multiple taxes with the same prorrate type under same parent is not suported"
 msgstr "Multiple taxes with the same prorrate type under same parent is not suported"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_negative_adjust_account_id
+msgid "Negative adjustment account"
+msgstr "Negative adjustment account"
 
 #. module: l10n_es_aeat_vat_special_prorrate
 #: selection:account.tax,prorrate_type:0
@@ -158,6 +193,21 @@ msgid "Only suported 'percent' type with price not included"
 msgstr "Only suported 'percent' type with price not included"
 
 #. module: l10n_es_aeat_vat_special_prorrate
+#: model:account.tax,description:l10n_es_aeat_vat_special_prorrate.5_account_tax_template_p_prd43_iva
+msgid "P_PRD43_IVA"
+msgstr "P_PRD43_IVA"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:account.tax,description:l10n_es_aeat_vat_special_prorrate.5_account_tax_template_p_prd44_iva
+msgid "P_PRD44_IVA"
+msgstr "P_PRD44_IVA"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_positive_adjust_account_id
+msgid "Positive adjustment account"
+msgstr "Positive adjustment account"
+
+#. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_account_tax_prorrate_type
 msgid "Prorrate type"
 msgstr "Tipo de prorrata"
@@ -166,6 +216,21 @@ msgstr "Tipo de prorrata"
 #: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
 msgid "Recompute"
 msgstr "Recalcular"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_ref
+msgid "Reference"
+msgstr "Referencia"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:account.tax,name:l10n_es_aeat_vat_special_prorrate.5_account_tax_template_p_prd43_iva
+msgid "Regularización prorrata bienes de inversión"
+msgstr "Regularización prorrata bienes de inversión"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:account.tax,name:l10n_es_aeat_vat_special_prorrate.5_account_tax_template_p_prd44_iva
+msgid "Regularización prorrata definitiva"
+msgstr "Regularización prorrata definitiva"
 
 #. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
@@ -183,19 +248,31 @@ msgid "Tax"
 msgstr "Impuesto"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_tax_percentage
-msgid "Tax %"
-msgstr "Impuesto %"
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:285
+#, python-format
+msgid "Tax '%s' not found on current company"
+msgstr "Tax '%s' not found on current company"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:33
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:311
+#, python-format
+msgid "Tax of type %s not supported"
+msgstr "Tax of type %s not supported"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:40
 #: selection:aeat.map.special.prorrate.year,state:0
 #, python-format
 msgid "Temporary"
 msgstr "Provisional"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:223
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_tax_percentage
+msgid "Temporary %"
+msgstr "Provisional %"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:233
 #, python-format
 msgid "The final prorrate computed should be greater than zero"
 msgstr "The final prorrate computed should be greater than zero"
@@ -206,25 +283,25 @@ msgid "The map prorrate must have one next prorrate only"
 msgstr "The map prorrate must have one next prorrate only"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:209
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:219
 #, python-format
 msgid "The previous state to be able to close a prorrate should be 'Finale', not '%s'"
 msgstr "The previous state to be able to close a prorrate should be 'Finale', not '%s'"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:200
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:210
 #, python-format
 msgid "The prorrate of previous year must be closed before compute the new one"
 msgstr "The prorrate of previous year must be closed before compute the new one"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:73
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:80
 #, python-format
 msgid "The year of the next linked map prorrata must be the next chronological year"
 msgstr "The year of the next linked map prorrata must be the next chronological year"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:79
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:86
 #, python-format
 msgid "The year of the previous linked map prorrata must be the previous chronological year"
 msgstr "The year of the previous linked map prorrata must be the previous chronological year"
