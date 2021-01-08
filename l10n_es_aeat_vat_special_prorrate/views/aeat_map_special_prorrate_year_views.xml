@@ -9,6 +9,7 @@
         <field name="arch" type="xml">
             <form string="Aeat VAT special prorrate map">
                 <header>
+                    <button name="fix_taxes" type="object" string="Fix Taxes" />
                     <button
                         name="compute_prorrate"
                         type="object"
@@ -40,6 +41,7 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="company_id" />
                             <field name="year" />
                         </group>
                         <group>
@@ -48,6 +50,38 @@
                             <field name="tax_final_percentage" states="closed" />
                         </group>
                     </group>
+                    <notebook>
+                        <page string="1st regularization final prorrate">
+                            <group>
+                                <group>
+                                    <field name="prorrate_reg_ref" />
+                                    <field
+                                        name="prorrate_reg_positive_adjust_account_id"
+                                    />
+                                    <field
+                                        name="prorrate_reg_negative_adjust_account_id"
+                                    />
+                                </group>
+                                <group>
+                                    <field name="prorrate_reg_move_date" />
+                                    <field name="prorrate_reg_journal_id" />
+                                    <field
+                                        name="prorrate_reg_move_id"
+                                        attrs="{'invisible': [('prorrate_reg_move_id', '=', False)]}"
+                                    />
+                                </group>
+                                <group>
+                                    <button
+                                        name="compute_prorrate_regularization"
+                                        type="object"
+                                        string="Compute"
+                                        class="oe_highlight"
+                                        attrs="{'invisible': [('prorrate_reg_move_id', '!=', False)]}"
+                                    />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
