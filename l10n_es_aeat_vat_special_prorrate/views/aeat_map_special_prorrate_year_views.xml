@@ -40,6 +40,7 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="company_id" />
                             <field name="year" />
                         </group>
                         <group>
@@ -48,6 +49,38 @@
                             <field name="tax_final_percentage" states="closed" />
                         </group>
                     </group>
+                    <notebook>
+                        <page string="1st regularization final prorrate">
+                            <group>
+                                <group>
+                                    <field name="prorrate_reg_ref" />
+                                    <field
+                                        name="prorrate_reg_positive_adjust_account_id"
+                                    />
+                                    <field
+                                        name="prorrate_reg_negative_adjust_account_id"
+                                    />
+                                </group>
+                                <group>
+                                    <field name="prorrate_reg_move_date" />
+                                    <field name="prorrate_reg_journal_id" />
+                                    <field
+                                        name="prorrate_reg_move_id"
+                                        attrs="{'invisible': [('prorrate_reg_move_id', '=', False)]}"
+                                    />
+                                </group>
+                                <group>
+                                    <button
+                                        name="compute_prorrate_regularization"
+                                        type="object"
+                                        string="Compute"
+                                        class="oe_highlight"
+                                        attrs="{'invisible': [('prorrate_reg_move_id', '!=', False)]}"
+                                    />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -69,6 +102,7 @@
     <record id="action_aeat_map_special_prorrate_year" model="ir.actions.act_window">
         <field name="name">Aeat VAT special prorrate map</field>
         <field name="res_model">aeat.map.special.prorrate.year</field>
+        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 

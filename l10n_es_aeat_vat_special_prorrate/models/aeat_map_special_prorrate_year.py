@@ -18,8 +18,20 @@ class MapSpecialProrrateYear(models.Model):
         required=True,
         default=lambda self: self.env.company,
     )
-    year = fields.Integer(string="Year", required=True)
-    tax_percentage = fields.Float(string="Tax %", required=True)
+    def _default_year(self):
+        last = self.search(
+            [("company_id", "=", self.env.user.company_id.id)],
+            order="company_id,year desc",
+            limit=1,
+        )
+        return (
+            last
+            and last.year + 1
+            or fields.Date.from_string(fields.Date.context_today(self)).year
+        )
+
+    year = fields.Integer(string="Year", default=_default_year, required=True)
+    tax_percentage = fields.Float(string="Temporary %", required=True)
 
     map_prorrate_next_year_id = fields.Many2one(
         comodel_name="aeat.map.special.prorrate.year",
@@ -75,7 +87,7 @@ class MapSpecialProrrateYear(models.Model):
 
     @api.depends("year", "tax_percentage")
     def name_get(self):
-        to_percent_str = lambda x: (x.is_integer() and "%i%%" or "%.2f%%") % x  # noqa
+        to_percent_str = lambda x: (x.is_integer() and "%i%%" or "%.2f%%") % x
         result = []
         for rec in self:
             name = [to_percent_str(rec.tax_percentage)]
@@ -109,6 +121,20 @@ class MapSpecialProrrateYear(models.Model):
                         "the previous chronological year"
                     )
                 )
+
+    # @api.model
+    # def create(self, vals):
+    #     # company_id = vals.get('company_id', self.env.user.company_id.id)
+    #     # print("--------------", vals)
+    #     # if not vals.get('prorrate_reg_move_date'):
+    #     #     vals['prorrate_reg_move_date'] = '%i-12-31' % vals['year']
+    #     # if not vals.get('prorrate_reg_positive_adjust_account_id'):
+    #     #     vals['prorrate_reg_positive_adjust_account_id'] = \
+    #     #         self.env.ref('l10n_es.%i_account_common_6391' % company_id).id
+    #     # if not vals.get('prorrate_reg_negative_adjust_account_id'):
+    #     #     vals['prorrate_reg_negative_adjust_account_id'] = \
+    #     #         self.env.ref('l10n_es.%i_account_common_6341' % company_id).id
+    #     return super(MapSpecialProrrateYear, self).create(vals)
 
     def unlink(self):
         for rec in self:
@@ -207,24 +233,33 @@ class MapSpecialProrrateYear(models.Model):
         date_to = "%s-12-31" % self.year
 
         # Get base amount for taxed operations
-        MapLine = self.env["l10n.es.aeat.map.tax.line"]
-        map_line = MapLine.new(
-            {
-                "move_type": "all",
-                "field_type": "base",
-                "sum_type": "both",
-                "exigible_type": "yes",
-            }
-        )
+        taxed_taxes_codes = [
+            'S_IVA4B', 'S_IVA4S',
+            'S_IVA10B', 'S_IVA10S',
+            'S_IVA21B', 'S_IVA21S', 'S_IVA21ISP',
+        ]
+        MapLine = self.env['l10n.es.aeat.map.tax.line']
+        map_line = MapLine.new({
+            'move_type': 'all',
+            'field_type': 'base',
+            'sum_type': 'both',
+            'exigible_type': 'yes',
+        })
         move_lines = self._get_tax_lines(
+            taxed_taxes_codes, date_from, date_to, map_line,
+        )
+        taxed = sum(move_lines.mapped("credit")) - sum(move_lines.mapped("debit"))
+        # Get base amount of exempt operations
+        move_lines = self._get_tax_lines(
+            ["S_IVA0"],
             date_from,
             date_to,
             map_line,
         )
-        taxed = sum(move_lines.mapped("credit")) - sum(move_lines.mapped("debit"))
+        exempt = sum(move_lines.mapped("credit")) - sum(move_lines.mapped("debit"))
 
         # compute final prorrate percentage performing ceiling operation
-        prorrate_percent = math.ceil(taxed / taxed * 100)
+        prorrate_percent = math.ceil(taxed / (taxed + exempt) * 100)
 
         return prorrate_percent
 
@@ -283,3 +318,185 @@ class MapSpecialProrrateYear(models.Model):
     def set_temporary(self):
         self.tax_final_percentage_aux = False
         self.state = "temporary"
+
+    # prorrate regularitzation
+    @api.onchange("year")
+    def _onchange_year(self):
+        if self.year != 0:
+            self.prorrate_reg_move_date = "%i-12-31" % self.year
+
+    prorrate_reg_move_date = fields.Date(string="Date")
+
+    prorrate_reg_positive_adjust_account_id = fields.Many2one(
+        comodel_name="account.account",
+        string="Positive adjustment account",
+        domain=[("deprecated", "=", False)],
+    )
+    prorrate_reg_negative_adjust_account_id = fields.Many2one(
+        comodel_name="account.account",
+        string="Negative adjustment account",
+        domain=[("deprecated", "=", False)],
+    )
+
+    @api.model
+    def _default_journal(self):
+        return self.env["account.journal"].search([("code", "=", "MISC")], limit=1)
+
+    prorrate_reg_journal_id = fields.Many2one(
+        comodel_name="account.journal",
+        string="Journal",
+        default=_default_journal,
+        domain=[("type", "=", "general")],
+    )
+    prorrate_reg_ref = fields.Char(
+        string="Reference", default="Regularización prorrata definitiva"
+    )
+    prorrate_reg_move_id = fields.Many2one(
+        comodel_name="account.move",
+        string="Journal Entry",
+        readonly=True,
+        index=True,
+        ondelete="set null",
+        copy=False,
+        help="Link to the first regularization final prorrate journal entry",
+    )
+
+    def compute_prorrate_regularization(self):
+        self.ensure_one()
+
+        if self.prorrate_reg_move_id:
+            return
+
+        date_from = "%s-01-01" % self.year
+        date_to = "%s-12-31" % self.year
+
+        # TODO: put this as configurable from the UI
+        target_tax_name = "P_PRD44_IVA"
+        target_tax_id = self.env["account.tax"].search(
+            [
+                ("description", "=", target_tax_name),
+                ("company_id", "child_of", self.company_id.id),
+            ]
+        )
+        if not target_tax_id:
+            raise ValidationError(
+                _("Tax '%s' not found on current company") % target_tax_name
+            )
+
+        # TODO: put these as configurable from the UI
+        taxes_codes = (
+            self.env["account.tax"]
+            .search(
+                [
+                    ("company_id", "child_of", self.company_id.id),
+                    ("amount_type", "!=", "group"),
+                    ("prorrate_type", "=", "deductible"),
+                ]
+            )
+            .mapped("description")
+        )
+
+        MapLine = self.env["l10n.es.aeat.map.tax.line"]
+        map_line = MapLine.new(
+            {
+                "move_type": "all",
+                "field_type": "amount",
+                "sum_type": "both",
+                "exigible_type": "yes",
+            }
+        )
+        move_lines = self._get_tax_lines(
+            taxes_codes,
+            date_from,
+            date_to,
+            map_line,
+        )
+
+        line_values = []
+        for line in move_lines:
+            # compute prorrate difference
+            tax_id = line.tax_line_id
+            if tax_id.amount_type != "percent":
+                raise ValidationError(
+                    _("Tax of type %s not supported") % tax_id.amount_type
+                )
+
+            round_curr = line.move_id.currency_id.round
+            prorrated_tax_amount = line.balance  # round_curr(line.debit - line.credit)
+            tax_amount = prorrated_tax_amount / (self.tax_percentage / 100)
+            round_curr(tax_amount / (tax_id.amount / 100))
+            new_prorrated_tax_amount = round_curr(
+                tax_amount * self.tax_final_percentage / 100
+            )
+
+            diff = round_curr(new_prorrated_tax_amount - prorrated_tax_amount)
+            if diff == 0:
+                continue
+
+            # build journal item
+            # common
+            values_common = {
+                "company_id": line.company_id.id,
+                "partner_id": line.partner_id.id,
+                "invoice_id": line.invoice_id.id,
+                "tax_exigible": line.tax_exigible,
+            }
+
+            # tax
+            values_tax = dict(values_common)
+            values_tax.update(
+                {
+                    "account_id": line.account_id.id,
+                    "name": line.name,
+                    "tax_line_id": target_tax_id.id,
+                    "debit": diff > 0 and diff or 0,
+                    "credit": diff < 0 and abs(diff) or 0,
+                }
+            )
+            line_values.append(values_tax)
+
+            # adjust
+            values_adj = dict(values_common)
+            values_adj.update(
+                {
+                    "account_id": diff > 0
+                    and self.prorrate_reg_positive_adjust_account_id.id
+                    or self.prorrate_reg_negative_adjust_account_id.id,
+                    "name": "%s - %s" % (self.prorrate_reg_ref, line.name),
+                    "debit": diff < 0 and abs(diff) or 0,
+                    "credit": diff > 0 and diff or 0,
+                }
+            )
+            # values_adj.update({
+            #     'tax_ids': [(6, 0, [parent_tax.id] + parent_tax.children_tax_ids.ids)],
+            # })
+
+            # TODO comteps i etiqe analitycs en el compte 63xx
+            # values.update({
+            #     'analytic_account_id': line.analytic_account_id.id,
+            #     'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.mapped('id'))],
+            # })
+
+            line_values.append(values_adj)
+
+            # invoice_line_id = self.find_invoice_line(line, base, parent_tax)
+            # asset_id = self.find_asset(invoice_line_id)
+
+        ## generem la capçalera de l'assentament
+        values = {
+            "date": self.prorrate_reg_move_date,
+            "ref": self.prorrate_reg_ref,
+            "company_id": self.company_id.id,
+            "journal_id": self.prorrate_reg_journal_id.id,
+            "move_type": "other",
+            "line_ids": [(0, False, lv) for lv in line_values],
+        }
+
+        ## creem el moviment
+        move = self.env["account.move"].create(values)
+        move.post()
+        self.write(
+            {
+                "prorrate_reg_move_id": move.id,
+            }
+        )
