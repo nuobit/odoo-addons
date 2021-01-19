@@ -108,6 +108,8 @@ class ReportGS1Barcode(models.AbstractModel):
             elif barcode_type == 'ean13-code128':
                 doc['barcode_values'] = (product.barcode or None,
                                          product.tracking != 'none' and lot.name or None)
+            elif barcode_type == 'ean13':
+                doc['barcode_values'] = product.barcode or None
             else:
                 raise ValidationError(_("Unknown barcode type %s") % barcode_type)
 

@@ -21,7 +21,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
 
     with_stock = fields.Boolean(string='With stock only', default=True)
 
-    show_price = fields.Boolean(string='Show price', default=False)
+    show_price = fields.Boolean(string='Show price', default=True)
 
     show_price_currency = fields.Boolean(string='Show currency', default=False)
 
@@ -31,8 +31,9 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                                     selection=[('gs1-128', 'GS1-128'),
                                                ('gs1-datamatrix', 'GS1-Datamatrix'),
                                                ('ean13-code128', 'EAN13 + Code128'),
+                                               ('ean13', 'EAN13'),
                                                ],
-                                    required=True, default='gs1-datamatrix')
+                                    required=True, default='ean13')
 
     def _default_paperformat_id(self):
         return self.env.ref('barcodes_gs1_label.paperformat_gs1_barcodes')
@@ -69,7 +70,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                 rec.sheet_height = int(m.group(2))
 
     label_width = fields.Float(string='Label width (mm)', required=True, default=52.5)
-    label_height = fields.Float(string='Label height (mm)', required=True, default=29.7)
+    label_height = fields.Float(string='Label height (mm)', required=True, default=21.5)
 
     page_rows_max = fields.Integer(string='Max rows per page', required=True, readonly=True,
                                    compute="_compute_page_label_count")
