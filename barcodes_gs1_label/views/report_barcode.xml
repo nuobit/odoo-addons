@@ -137,6 +137,50 @@
         </div>
     </template>
 
+    <!-- layout ean13 -->
+    <template id="layout_ean13">
+        <div class="bgp-ean13">
+            <!-- product barcode -->
+            <div class="bgp-product-barcode">
+                <t t-if="barcode_values">
+                    <div class="bgp-barcode-img">
+                        <img t-att-src="'/report/barcode/?type=UPCA&amp;value=%s&amp;height=%s' % (barcode_values, 80)"
+                             t-attf-class="bgp-img"/>
+                    </div>
+                    <div class="bgp-barcode-text text-center">
+                        <p t-esc="barcode_values"/>
+                    </div>
+                </t>
+            </div>
+
+            <!-- logo + product data -->
+            <div class="bgp-product">
+                <div class="bgp-logo-img">
+                    <t t-set="company" t-value="wc[1]['product'].company_id or wc[1]['product'].env.user.company_id"/>
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" t-attf-class="bgp-img"
+                         alt="Logo"/>
+                </div>
+                <div class="bgp-product-data">
+                    <div t-if="wc[1]['product'].default_code" class="text-center bgp-product-sku">
+                        <p t-field="wc[1]['product'].default_code"/>
+                    </div>
+                    <div class="bgp-product-description">
+                        <div class="bgp-description">
+                            <p t-field="wc[1]['product'].name"/>
+                        </div>
+                    </div>
+                    <div class="text-center bgp-product-price">
+                        <t t-if="show_price">
+                            <p t-if="not show_price_currency" t-field="wc[1]['product'].lst_price"/>
+                            <p t-if="show_price_currency" t-field="wc[1]['product'].lst_price"
+                               t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
     <!-- BODY -->
     <template id="report_gs1_barcode_document">
         <t t-call="barcodes_gs1_label.external_layout">
@@ -160,6 +204,8 @@
                                         </t>
                                         <t t-if="barcode_type == 'ean13-code128'"
                                            t-call="barcodes_gs1_label.layout_ean13code1281"/>
+                                        <t t-if="barcode_type == 'ean13'"
+                                           t-call="barcodes_gs1_label.layout_ean13"/>
                                     </t>
                                 </div>
                             </t>
