@@ -70,7 +70,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                 rec.sheet_height = int(m.group(2))
 
     label_width = fields.Float(string='Label width (mm)', required=True, default=52.5)
-    label_height = fields.Float(string='Label height (mm)', required=True, default=21.5)
+    label_height = fields.Float(string='Label height (mm)', required=True, default=21.2)
 
     page_rows_max = fields.Integer(string='Max rows per page', required=True, readonly=True,
                                    compute="_compute_page_label_count")
