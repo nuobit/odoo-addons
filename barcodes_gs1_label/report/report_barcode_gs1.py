@@ -31,6 +31,7 @@ class ReportGS1Barcode(models.AbstractModel):
 
         barcode_type = data['barcode_type']
         with_stock = data['with_stock']
+        stock_location_ids = data['stock_location_ids']
         show_price = data['show_price']
         show_price_currency = data['show_price_currency']
 
@@ -47,41 +48,51 @@ class ReportGS1Barcode(models.AbstractModel):
                     quants = self.env['stock.quant'].search([
                         ('product_id', '=', doc.id),
                         ('location_id.usage', '=', 'internal'),
+                        ('location_id', 'in', stock_location_ids),
                         ('quantity', '>', 0),
                     ])
-
                 if doc.tracking == 'none':
-                    if not with_stock or quants:
-                        docs1.append({
-                            'product': doc,
-                            'lot': None,
-                        })
+                    label = {'product': doc, 'lot': None}
+                    if with_stock:
+                        for q in quants:
+                            docs1 += [label] * int(q.quantity)
+                    else:
+                        docs1.append(label)
                 elif doc.tracking in ('lot', 'serial'):
-                    if not with_stock:
+                    if with_stock:
+                        for q in quants.sorted(lambda x: x.lot_id.name):
+                            docs1 += [{
+                                'product': doc,
+                                'lot': q.lot_id,
+                            }] * int(q.quantity)
+                    else:
                         lots = self.env['stock.production.lot'].search([
                             ('product_id', '=', doc.id)])
-                    else:
-                        lots = quants.mapped('lot_id')
-
-                    for l in lots.sorted(lambda x: x.name):
-                        docs1.append({
-                            'product': doc,
-                            'lot': l,
-                        })
+                        for l in lots.sorted(lambda x: x.name):
+                            docs1.append({
+                                'product': doc,
+                                'lot': l,
+                            })
         elif model == 'stock.production.lot':
             for doc in self.env[model].browse(docids) \
                     .filtered(lambda x: x.product_id.tracking in ('lot', 'serial')) \
                     .sorted(lambda x: x.product_id.default_code or ''):
-                quants_count = 0
+                quants = self.env['stock.quant']
                 if with_stock:
-                    quants_count = bool(self.env['stock.quant'].search_count([
+                    quants = self.env['stock.quant'].search([
                         ('product_id', '=', doc.product_id.id),
                         ('location_id.usage', '=', 'internal'),
+                        ('location_id', 'in', stock_location_ids),
                         ('lot_id', '=', doc.id),
                         ('quantity', '>', 0),
-                    ]))
-
-                if not with_stock or quants_count:
+                    ])
+                if with_stock:
+                    for q in quants.sorted(lambda x: x.lot_id.name):
+                        docs1 += [{
+                            'product': doc.product_id,
+                            'lot': doc,
+                        }] * int(q.quantity)
+                else:
                     docs1.append({
                         'product': doc.product_id,
                         'lot': doc,
