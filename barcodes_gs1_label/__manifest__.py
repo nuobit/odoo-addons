@@ -6,7 +6,7 @@
     'name': "Barcodes label",
     'description': "Generate barcode labels enabling barcode printing "
                    "on products and lot/serial",
-    'version': '12.0.2.2.2',
+    'version': '12.0.2.3.0',
     'license': 'AGPL-3',
     'category': 'Tools',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',

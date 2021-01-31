@@ -23,7 +23,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
 
     show_price = fields.Boolean(string='Show price', default=True)
 
-    show_price_currency = fields.Boolean(string='Show currency', default=False)
+    show_price_currency = fields.Boolean(string='Show currency', default=True)
 
     label_copies = fields.Integer(string='Copies', default=1, required=True)
 
@@ -34,6 +34,16 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                                                ('ean13', 'EAN13'),
                                                ],
                                     required=True, default='ean13')
+
+    def _default_location_ids(self):
+        return self.env['stock.location'].search([
+            ('usage', '=', 'internal'),
+        ])
+
+    stock_location_ids = fields.Many2many(string="Locations",
+                                          comodel_name='stock.location',
+                                          domain=[('usage', '=', 'internal')],
+                                          default=_default_location_ids)
 
     def _default_paperformat_id(self):
         return self.env.ref('barcodes_gs1_label.paperformat_gs1_barcodes')
@@ -131,6 +141,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             'model': model,
             'lang_id': 1,
             'with_stock': self.with_stock,
+            'stock_location_ids': self.stock_location_ids.ids,
             'show_price': self.show_price,
             'show_price_currency': self.show_price_currency,
             'barcode_type': self.barcode_type,
