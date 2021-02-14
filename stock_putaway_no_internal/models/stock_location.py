@@ -9,6 +9,9 @@ from odoo.exceptions import UserError
 class Location(models.Model):
     _inherit = "stock.location"
 
+    def _excluded_picking_types(self):
+        return ['internal']
+
     def get_putaway_strategy(self, product):
         putaway_location = super().get_putaway_strategy(product)
         if self.usage == 'view':
@@ -20,10 +23,10 @@ class Location(models.Model):
             if putaway_strategy:
                 putaway_location = putaway_strategy.putaway_apply(product)
                 if putaway_strategy.exclude_internal_operations:
-                    picking_type = self.env.context.get('stock_picking_type')
-                    if not picking_type:
+                    picking_type_code = self.env.context.get('stock_picking_type_code')
+                    if not picking_type_code:
                         raise UserError(_("No picking type defined in context"))
-                    if picking_type.code == 'internal':
+                    if picking_type_code in self._excluded_picking_types():
                         putaway_location = self.env['stock.location']
             current_location = current_location.location_id
         return putaway_location
