@@ -5,3 +5,4 @@
 from . import tools
 from . import sale_order
 from . import resource
+from . import project
