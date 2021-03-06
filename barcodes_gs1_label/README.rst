@@ -6,7 +6,7 @@
 Barcodes label
 ==============
 
-Generate labels enabling barcode printing on products and lot/serial
+Generate labels enabling barcode printing on products, lot/serial and pickings.
 
 
 Bug Tracker
