@@ -5,8 +5,8 @@
 {
     'name': "Barcodes label",
     'description': "Generate barcode labels enabling barcode printing "
-                   "on products and lot/serial",
-    'version': '12.0.2.3.0',
+                   "on products, lot/serial and picking",
+    'version': '12.0.2.4.0',
     'license': 'AGPL-3',
     'category': 'Tools',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
@@ -22,6 +22,7 @@
         'views/report_barcode.xml',
         'views/product_views.xml',
         'views/stock_production_lot_views.xml',
+        'views/stock_picking_views.xml',
     ],
     'installable': True,
     'development_status': 'Beta',
