@@ -10,6 +10,7 @@ import re
 MAP_MODEL_REPORT = {
     'product.product': 'barcodes_gs1_label.action_report_product_gs1_barcodes',
     'stock.production.lot': 'barcodes_gs1_label.action_report_lot_gs1_barcodes',
+    'stock.picking': 'barcodes_gs1_label.action_report_picking_gs1_barcodes',
 }
 
 

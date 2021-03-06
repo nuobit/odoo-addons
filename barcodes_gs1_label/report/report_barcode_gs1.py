@@ -97,6 +97,23 @@ class ReportGS1Barcode(models.AbstractModel):
                         'product': doc.product_id,
                         'lot': doc,
                     })
+        if model == 'stock.picking':
+            qty_tracking = {}
+            for ml in self.env[model].browse(docids) \
+                    .mapped('move_ids_without_package').mapped('move_line_ids') \
+                    .filtered(lambda x: x.state == 'done'):
+                qty_tracking.setdefault(ml.product_id, {}) \
+                    .setdefault(ml.lot_id, 0)
+                qty_tracking[ml.product_id][ml.lot_id] += ml.qty_done
+            for product, lot_qty in sorted(qty_tracking.items(),
+                                           key=lambda x: x[0].default_code or ''):
+                for lot, qty in sorted(lot_qty.items(),
+                                       key=lambda x: x[0].name or ''):
+                    if qty > 0:
+                        docs1 += [{
+                            'product': product,
+                            'lot': lot or None,
+                        }] * int(qty)
         else:
             raise UserError(_("Unexpected model '%s'") % model)
 
@@ -118,7 +135,8 @@ class ReportGS1Barcode(models.AbstractModel):
                     map(lambda x: x[0] + x[1], gs1_barcode.items()))
             elif barcode_type == 'ean13-code128':
                 doc['barcode_values'] = (product.barcode or None,
-                                         product.tracking != 'none' and lot.name or None)
+                                         product.tracking != 'none' and
+                                         lot and lot.name or None)
             elif barcode_type == 'ean13':
                 doc['barcode_values'] = product.barcode or None
             else:

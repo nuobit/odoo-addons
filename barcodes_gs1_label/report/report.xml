@@ -38,4 +38,14 @@
             name="barcodes_gs1_label.report_gs1_barcode"
             paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
             print_report_name="'Barcodes - %s' % (object.name, )"/>
+
+    <report id="action_report_picking_gs1_barcodes"
+            string="Print barcodes"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            menu="False"
+            file="barcodes_gs1_label.report_gs1_barcode"
+            name="barcodes_gs1_label.report_gs1_barcode"
+            paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
+            print_report_name="'Barcodes - %s' % (object.name, )"/>
 </odoo>
