@@ -62,7 +62,7 @@
                     </div>
                     <div class="bgp-price" style="float: right;">
                         <p t-field="wc[1]['product'].lst_price"
-                              t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"/>
+                           t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"/>
                     </div>
                 </div>
                 <div class="text-left bgp-description">

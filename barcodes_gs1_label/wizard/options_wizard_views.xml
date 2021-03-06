@@ -73,4 +73,10 @@
                 res_model="barcodes.gs1.label.options.wizard"
                 src_model="stock.production.lot" key2="client_action_multi"
                 view_type="form" view_mode="form" target="new"/>
+
+    <act_window id="barcodes_picking_option_wizard_view_action"
+                name="Print barcodes"
+                res_model="barcodes.gs1.label.options.wizard"
+                src_model="stock.picking" key2="client_action_multi"
+                view_type="form" view_mode="form" target="new"/>
 </odoo>
