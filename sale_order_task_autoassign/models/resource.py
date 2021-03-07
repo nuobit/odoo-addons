@@ -45,7 +45,7 @@ class ResourceResource(models.Model):
                     return dint
         return None
 
-    def find_next_available(self, cint, excluded=None, excluded_db=None):
+    def find_next_available(self, cint, project):
         """ get the next free periode after (cint) of the resource (r) """
         self.ensure_one()
         if not self.calendar_id.attendance_ids:
@@ -56,7 +56,7 @@ class ResourceResource(models.Model):
             cint1_date_start_tz = (cint.date_start_tz(self.tz) + datetime.timedelta(days=1)) \
                 .replace(minute=0, hour=0)
             cint1 = TzInterval(cint1_date_start_tz, cint.duration, tz=self.tz)
-            return self.find_next_available(cint1, excluded=excluded, excluded_db=excluded_db)
+            return self.find_next_available(cint1, project)
         else:
             if cint.is_included(att):
                 # global and user leaves
@@ -66,34 +66,22 @@ class ResourceResource(models.Model):
                             gint = TzInterval(gl.date_from, gl.date_to,
                                               base_tz=self.calendar_id.tz, to_tz=self.tz)
                             if cint.is_overlaped(gint):
-                                return self.find_next_available(cint.copy(gint.date_end), excluded=excluded,
-                                                                excluded_db=excluded_db)
+                                return self.find_next_available(cint.copy(gint.date_end), project)
                 else:
-                    # check overlaps
-                    overlaped_tasks = False
-                    if excluded:
-                        for e in excluded.tasks:
-                            if cint.is_overlaped(e.interval):
-                                overlaped_tasks = e.end
-                                break
-
-                    if not overlaped_tasks:
-                        # check database overlapped tasks
-                        if excluded_db:
-                            if self.user_id.id in excluded_db:
-                                for t in excluded_db[self.user_id.id]:
-                                    if t.date_end > cint.date_start and t.date_start < cint.date_end:
-                                        overlaped_tasks = t.date_end
-                                        break
-
+                    overlaped_tasks = self.env['project.task'].search([
+                        ('project_id', '=', project.id),
+                        ('user_id', '=', self.user_id.id),
+                        ('date_start', '!=', False),
+                        ('date_end', '!=', False),
+                        ('date_end', '>', cint.date_start),
+                        ('date_start', '<', cint.date_end),
+                    ], order='date_start', limit=1)
                     if overlaped_tasks:
-                        return self.find_next_available(cint.copy(overlaped_tasks), excluded=excluded,
-                                                        excluded_db=excluded_db)
+                        return self.find_next_available(cint.copy(overlaped_tasks[0].date_end), project)
                     else:
                         return cint
             else:
                 if cint.starts_before(att):
-                    return self.find_next_available(cint.copy(att.date_start), excluded=excluded,
-                                                    excluded_db=excluded_db)
+                    return self.find_next_available(cint.copy(att.date_start), project)
                 else:
-                    return self.find_next_available(cint.copy(att.date_end), excluded=excluded, excluded_db=excluded_db)
+                    return self.find_next_available(cint.copy(att.date_end), project)
