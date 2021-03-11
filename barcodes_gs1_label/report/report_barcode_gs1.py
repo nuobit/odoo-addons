@@ -97,7 +97,7 @@ class ReportGS1Barcode(models.AbstractModel):
                         'product': doc.product_id,
                         'lot': doc,
                     })
-        if model == 'stock.picking':
+        elif model == 'stock.picking':
             qty_tracking = {}
             for ml in self.env[model].browse(docids) \
                     .mapped('move_ids_without_package').mapped('move_line_ids') \
