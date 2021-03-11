@@ -27,9 +27,6 @@ class SaleOrder(models.Model):
             if tasks:
                 order.expected_date = max(tasks.mapped('date_end'))
 
-    def _prepare_valid_tasks(self):
-        return self.tasks_ids
-
     def _free_time_selection(self, free_time_by_user, project):
         now = fields.datetime.now().replace(tzinfo=None)
         tasks_per_user = self.env['project.task'].read_group([
@@ -47,26 +44,27 @@ class SaleOrder(models.Model):
             random.randrange(100),
         ))[0]
 
+    def _prepare_main_tasks(self):
+        return self.tasks_ids
+
     @api.multi
     def _action_confirm(self):
         result = super(SaleOrder, self)._action_confirm()
 
-        valid_tasks = self._prepare_valid_tasks()
-        if not valid_tasks:
+        if not self.tasks_ids:
             return result
 
-        # find main task and update according to the rest of tasks
-        all_tasks = valid_tasks.sorted(
+        main_tasks = self._prepare_main_tasks().sorted(
             lambda x: x.sale_line_id.product_id.service_time * x.sale_line_id.product_uom_qty)
-        all_task_duration_h = sum([
+        main_tasks_duration_h = sum([
             x.sale_line_id.product_id.service_time * x.sale_line_id.product_uom_qty
-            for x in all_tasks])
-        main_task = all_tasks[-1]
-        other_tasks = (all_tasks - main_task).sorted(
+            for x in main_tasks])
+        longest_task = main_tasks[-1]
+        other_tasks = (self.tasks_ids - longest_task).sorted(
             lambda x: (x.sale_line_id.sequence, x.sale_line_id.id)
         )
-        main_task.write({
-            'name': main_task.name,
+        longest_task.write({
+            'name': longest_task.name,
             'description': '\n'.join(['<p>- %s</p>' % x.sale_line_id.name for x in other_tasks]),
         })
         other_tasks.write({
@@ -79,7 +77,7 @@ class SaleOrder(models.Model):
         date_ref = self.date_order > now and self.date_order or now
         quarters = date_ref.minute / 15
         base_date_start = date_ref + datetime.timedelta(minutes=round((math.ceil(quarters) - quarters) * 15))
-        base_duration = int(round(all_task_duration_h * 60))
+        base_duration = int(round(main_tasks_duration_h * 60))
 
         # check resources availability
         domain = [
@@ -115,22 +113,22 @@ class SaleOrder(models.Model):
                 continue
 
             # find available date slot
-            rint = r.find_next_available(cint, main_task.project_id)
+            rint = r.find_next_available(cint, longest_task.project_id)
             if rint:
                 free_time_by_user[r.user_id.id] = rint
 
         if not free_time_by_user:
             raise UserError(_("No candidates found, cannot validate order"))
-        available_user_time = self._free_time_selection(free_time_by_user, main_task.project_id)
+        available_user_time = self._free_time_selection(free_time_by_user, longest_task.project_id)
 
-        main_task.update({
+        longest_task.update({
             'user_id': available_user_time[0],
             'date_start': available_user_time[1].date_start,
             'date_end': available_user_time[1].date_end,
         })
 
         # assign the deadline of main task
-        if main_task.date_end:
-            main_task.write({'date_deadline': main_task.date_end})
+        if longest_task.date_end:
+            longest_task.write({'date_deadline': longest_task.date_end})
 
         return result
