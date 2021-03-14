@@ -17,6 +17,28 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
+    _order = 'name desc, date_order desc, id desc'
+
+    task_user_id = fields.Many2one(
+        string='Assigned to',
+        comodel_name='res.users',
+        ondelete='restrict',
+        compute='_compute_task_user_id',
+        search='_search_task_user_id',
+        readonly=True,
+    )
+
+    def _compute_task_user_id(self):
+        for rec in self:
+            if rec.tasks_ids:
+                rec.task_user_id = rec.tasks_ids[0].user_id
+
+    def _search_task_user_id(self, op, value):
+        tasks = self.env['project.task'].search([
+            ('sale_line_id', '!=', False),
+            ('user_id.name', op, value)
+        ])
+        return [('id', 'in', tasks.mapped('sale_line_id.order_id').ids)]
 
     @api.multi
     @api.depends('order_line.customer_lead', 'confirmation_date', 'order_line.state')
