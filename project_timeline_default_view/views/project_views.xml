@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_project_kanban" model="ir.ui.view">
+        <field name="name">project.project.kanban.inherit.default.view</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//a[@class='o_project_kanban_box']" position="attributes">
+                <attribute name="name">action_project_task</attribute>
+                <attribute name="type">object</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.project.form.inherit.default.view</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options_active']" position="inside">
+                <div>
+                    <field name="default_timeline_view" class="oe_inline"/>
+                    <label for="default_timeline_view"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
