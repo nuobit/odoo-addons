@@ -4,7 +4,7 @@
 
 {
     'name': 'Sale order task autoassign',
-    'version': '12.0.1.1.1',
+    'version': '12.0.1.1.2',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Project',
@@ -20,6 +20,7 @@
     ],
     'data': [
         'views/project_views.xml',
+        'views/sale_views.xml',
     ],
     'installable': True,
 }
