@@ -17,7 +17,7 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-    _order = 'name desc, date_order desc, id desc'
+    _order = 'id desc'
 
     task_user_id = fields.Many2one(
         string='Assigned to',
