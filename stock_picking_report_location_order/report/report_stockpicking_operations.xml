@@ -8,7 +8,7 @@
             <attribute name="t-foreach">
                 o.move_lines.sorted(key=lambda m:
                 (m.move_line_ids and m.move_line_ids.mapped('location_id.name')[0] or '\xff\xff\xff',
-                m.product_id.default_code, m.product_id.id))
+                m.product_id.default_code or '\xff\xff\xff', m.product_id.id))
             </attribute>
         </xpath>
         <xpath expr="//tr[@t-as='ml']" position="attributes">
