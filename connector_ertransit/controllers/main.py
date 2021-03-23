@@ -38,7 +38,8 @@ class ERTransitController(http.Controller):
         lines = []
         for e in data:
             if e['Ref. Fra.']:
-                if tracking_number in e['Ref. Fra.'].split(','):
+                if tracking_number in e['Ref. Fra.'].split(',') or \
+                        tracking_number in e['Ref. Fra.'].split(' '):
                     l = []
                     for f in headers:
                         l.append(e[f])
