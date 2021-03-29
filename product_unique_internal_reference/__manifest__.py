@@ -4,8 +4,9 @@
 
 {
     "name": "Product unique internal reference",
-    "summary": "This module ensures that you enter a Unique Internal Reference (default_code) for your Products",
-    "version": "11.0.0.2.2",
+    "summary": "This module ensures that you enter a "
+    "Unique Internal Reference (default_code) for your Products",
+    "version": "12.0.1.0.0",
     "category": "Sales",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/OCA/pms",
@@ -13,7 +14,6 @@
     "depends": [
         "product",
     ],
-    "pre_init_hook": "pre_init_hook_internal_reference_check",
+    "pre_init_hook": "internal_reference_duplicate_check",
     "installable": True,
-    "auto_install": False,
 }
