@@ -24,7 +24,8 @@ Credits
 Contributors
 ------------
 
-* Eric Antones <eantones@nuobit.com>
+* `NuoBiT Solutions, S.L.`:
+    * Eric Antones <eantones@nuobit.com>
 
 
 
