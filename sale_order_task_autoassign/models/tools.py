@@ -1,16 +1,21 @@
 import datetime
+
 import pytz
 
 
 class TzInterval:
     def __init__(self, date_start, date_end, tz=None, base_tz=None, to_tz=None):
-        """ if tz is none it means that the date_start and date_end are in naive utc-> no need to convert to utc
-            if tz is not none means date_start and date_end are in naive tz -> convert to naive utc
+        """if tz is none it means that the date_start and date_end are
+        in naive utc-> no need to convert to utc
+         if tz is not none means date_start and
+         date_end are in naive tz -> convert to naive utc
         """
-        ## date start
+        # date start
         self.date_start = date_start or datetime.datetime(1900, 1, 1, 0, 0, 0)
         if type(date_start) is datetime.date:
-            self.date_start = datetime.datetime.combine(self.date_start, datetime.datetime.min.time())
+            self.date_start = datetime.datetime.combine(
+                self.date_start, datetime.datetime.min.time()
+            )
             if not tz:
                 if base_tz:
                     self.date_start = self._tz_local_to_utc(self.date_start, base_tz)
@@ -20,14 +25,16 @@ class TzInterval:
         if base_tz and to_tz:
             self.date_start = self._tz_utc_swap(self.date_start, base_tz, to_tz)
 
-        ## date end
+        # date end
         if isinstance(date_end, datetime.timedelta):
             self.date_end = self.date_start + date_end
         else:
             self.date_end = date_end or datetime.datetime(3000, 1, 1, 0, 0, 0)
             if type(date_end) is datetime.date:
                 self.date_end = datetime.datetime.combine(
-                    self.date_end + datetime.timedelta(days=1), datetime.datetime.min.time())
+                    self.date_end + datetime.timedelta(days=1),
+                    datetime.datetime.min.time(),
+                )
                 if not tz:
                     if base_tz:
                         self.date_end = self._tz_local_to_utc(self.date_end, base_tz)
@@ -37,30 +44,31 @@ class TzInterval:
         if base_tz and to_tz:
             self.date_end = self._tz_utc_swap(self.date_end, base_tz, to_tz)
 
-        ## duration
+        # duration
         self.duration = self.date_end - self.date_start
 
     def is_included(self, other):
         """ returns if current interval (self) is fully included on interval (other)"""
-        return self.date_end <= other.date_end and \
-               self.date_start >= other.date_start
+        return self.date_end <= other.date_end and self.date_start >= other.date_start
 
     def is_overlaped(self, other):
         """ returnsw if interval (other) and current one (self) are overlapped """
-        return self.date_end > other.date_start and \
-               other.date_end > self.date_start
+        return self.date_end > other.date_start and other.date_end > self.date_start
 
     def update_start(self, date_start):
         self.date_start = date_start
         self.date_end = date_start + self.duration
 
-    def update_duration(self, duration, delta='minutes'):
+    def update_duration(self, duration, delta="minutes"):
         self.duration = datetime.timedelta(**{delta: duration})
         self.date_end = self.date_start + self.duration
 
     def _date_tz(self, date, tz):
-        return date.replace(tzinfo=pytz.utc) \
-            .astimezone(pytz.timezone(tz)).replace(tzinfo=None)
+        return (
+            date.replace(tzinfo=pytz.utc)
+            .astimezone(pytz.timezone(tz))
+            .replace(tzinfo=None)
+        )
 
     def date_start_tz(self, tz):
         return self._date_tz(self.date_start, tz)
@@ -68,6 +76,7 @@ class TzInterval:
     def weekday(self, tz):
         return self.date_start_tz(tz).weekday()
 
+    # pylint: disable=W8106
     def copy(self, date_start=None):
         nint = TzInterval(self.date_start, self.date_end)
         if date_start:
@@ -84,26 +93,26 @@ class TzInterval:
         return t
 
     def _tz_utc_swap(self, dt, base_tz, to_tz):
-        '''
+        """
         :param dt: naive datetime in UTC
         :param base_tz: timezone base from which dt was calculated
         :param to_tz: timezone to convert
         :return: naive datetime in UTC
-        '''
+        """
         t = pytz.utc.localize(dt)
         t = t.astimezone(pytz.timezone(base_tz))
         t = t.replace(tzinfo=None)
         return self._tz_local_to_utc(t, to_tz)
 
     def __str__(self):
-        return "[%s, %s)" % (self.date_start, self.date_end)
+        return "[{}, {})".format(self.date_start, self.date_end)
 
     def __repr__(self):
         return self.__str__()
 
 
 class Task:
-    def __init__(self, obj, start, end=None, duration=None, delta='minutes'):
+    def __init__(self, obj, start, end=None, duration=None, delta="minutes"):
         self.obj = obj
         if not end:
             if duration:
@@ -132,13 +141,11 @@ class Task:
 
     def is_included(self, other):
         """ returns if current task (self) is fully included on task (other)"""
-        return self.end <= other.end and \
-               self.start >= other.start
+        return self.end <= other.end and self.start >= other.start
 
     def is_overlaped(self, other):
         """ returnsw if task (other) and current one (self) are overlapped """
-        return self.end > other.start and \
-               other.end > self.start
+        return self.end > other.start and other.end > self.start
 
     def update_start(self, start):
         self.interval.update_start(start)
@@ -148,26 +155,28 @@ class Task:
 
     def get_duration_float(self, magnitude):
         res = float(int(self.interval.duration.seconds))
-        if magnitude == 'seconds':
+        if magnitude == "seconds":
             pass
-        elif magnitude == 'minutes':
+        elif magnitude == "minutes":
             res /= 60
-        elif magnitude == 'hours':
+        elif magnitude == "hours":
             res /= 60 * 60
         else:
             raise Exception("Magnitude %s not implemented" % magnitude)
 
         return res
 
-    def update_duration(self, duration, delta='minutes', is_rate=False):
+    def update_duration(self, duration, delta="minutes", is_rate=False):
         if not is_rate:
             self.interval.update_duration(duration, delta=delta)
         else:
             if duration != 1:
                 self.interval.update_duration(
                     int(round(self.interval.duration.seconds / duration)),
-                    delta='seconds')
+                    delta="seconds",
+                )
 
+    # pylint: disable=W8106
     def copy(self, start=None, duration=None):
         nint = Task(self.obj, self.start, self.end)
         if start:
@@ -177,7 +186,12 @@ class Task:
         return nint
 
     def __str__(self):
-        return "%s:[%s, %s)|%i" % (self.obj, self.start, self.end, self.duration.seconds / 60)
+        return "%s:[%s, %s)|%i" % (
+            self.obj,
+            self.start,
+            self.end,
+            self.duration.seconds / 60,
+        )
 
     def __repr__(self):
         return self.__str__()
@@ -195,7 +209,7 @@ class TaskList:
         self.tasks = tasks
 
     def rotate_split(self, i):
-        return self.tasks[i], self.__class__(self.tasks[:i] + self.tasks[i + 1:])
+        return self.tasks[i], self.__class__(self.tasks[:i] + self.tasks[i + 1 :])
 
     @property
     def start(self):
@@ -209,6 +223,7 @@ class TaskList:
         if not isinstance(tsk, Task):
             raise Exception("The tasks must be of task class")
 
+    # pylint: disable=W8106
     def copy(self):
         return self.__class__(self.tasks[:])
 
@@ -330,6 +345,7 @@ class UserTasks:
 
         return c9
 
+    # pylint: disable=W8106
     def copy(self):
         d = {}
         for k, v in self.tasks.items():
@@ -347,17 +363,17 @@ class UserTasks:
         if not isinstance(other, self.__class__):
             return NotImplemented
 
-        if op == '=':
+        if op == "=":
             return self.end == other.end
-        elif op == '!=':
+        elif op == "!=":
             return self.end != other.end
-        elif op == '>':
+        elif op == ">":
             return self.end > other.end
-        elif op == '>=':
+        elif op == ">=":
             return self.end >= other.end
-        elif op == '<':
+        elif op == "<":
             return self.end < other.end
-        elif op == '<=':
+        elif op == "<=":
             return self.end <= other.end
         else:
             raise Exception("op %s not expecte" % op)
