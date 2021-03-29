@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -8,75 +8,103 @@
         <field name="model">barcodes.gs1.label.options.wizard</field>
         <field name="arch" type="xml">
             <form string="Print barcodes">
-                <header/>
+                <header />
                 <notebook>
                     <page string="General">
                         <group>
-                            <field name="barcode_type"/>
+                            <field name="barcode_type" />
                         </group>
                         <group>
-                            <field name="start_row"/>
-                            <field name="start_col"/>
+                            <field name="start_row" />
+                            <field name="start_col" />
                         </group>
                         <group>
-                            <field name="label_copies"/>
+                            <field name="label_copies" />
                         </group>
                         <group col="4">
-                            <field name="with_stock"/>
-                            <field name="stock_location_ids" widget="many2many_tags"
-                                   attrs="{'invisible': [('with_stock', '=', False)], 'required': [('with_stock', '=', True)]}"/>
-                            <field name="show_price"/>
-                            <field name="show_price_currency" attrs="{'invisible': [('show_price', '=', False)] }"/>
+                            <field name="with_stock" />
+                            <field
+                                name="stock_location_ids"
+                                widget="many2many_tags"
+                                attrs="{'invisible': [('with_stock', '=', False)], 'required': [('with_stock', '=', True)]}"
+                            />
+                            <field name="show_price" />
+                            <field
+                                name="show_price_currency"
+                                attrs="{'invisible': [('show_price', '=', False)] }"
+                            />
                         </group>
                     </page>
                     <page string="Configuration">
                         <group>
-                            <field name="paperformat_id"/>
-                            <field name="sheet_width"/>
-                            <field name="sheet_height"/>
+                            <field name="paperformat_id" />
+                            <field name="sheet_width" />
+                            <field name="sheet_height" />
                         </group>
                         <group>
-                            <field name="label_width"/>
-                            <field name="label_height"/>
+                            <field name="label_width" />
+                            <field name="label_height" />
 
-                            <field name="page_cols_max"/>
-                            <field name="page_rows_max"/>
-                            <field name="page_max_labels"/>
+                            <field name="page_cols_max" />
+                            <field name="page_rows_max" />
+                            <field name="page_max_labels" />
                         </group>
                         <group>
-                            <field name="show_borders"/>
-                            <field name="border_color"
-                                   attrs="{'required': [('show_borders', '=', True)], 'invisible': [('show_borders', '!=', True)]}"/>
+                            <field name="show_borders" />
+                            <field
+                                name="border_color"
+                                attrs="{'required': [('show_borders', '=', True)], 'invisible': [('show_borders', '!=', True)]}"
+                            />
                         </group>
                         <group>
-                            <field name="px_mm_rate_correction"/>
+                            <field name="px_mm_rate_correction" />
                         </group>
                     </page>
                 </notebook>
                 <footer>
-                    <button string="Ok" name="print_product_barcodes" type="object" default_focus="1"
-                            class="btn-primary"/>
-                    <button string="Cancel" class="btn-default" special="cancel"/>
+                    <button
+                        string="Ok"
+                        name="print_product_barcodes"
+                        type="object"
+                        default_focus="1"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>
         </field>
     </record>
 
-    <act_window id="barcodes_product_option_wizard_view_action"
-                name="Print barcodes"
-                res_model="barcodes.gs1.label.options.wizard"
-                src_model="product.product" key2="client_action_multi"
-                view_type="form" view_mode="form" target="new"/>
+    <act_window
+        id="barcodes_product_option_wizard_view_action"
+        name="Print barcodes"
+        res_model="barcodes.gs1.label.options.wizard"
+        src_model="product.product"
+        key2="client_action_multi"
+        view_type="form"
+        view_mode="form"
+        target="new"
+    />
 
-    <act_window id="barcodes_lot_option_wizard_view_action"
-                name="Print barcodes"
-                res_model="barcodes.gs1.label.options.wizard"
-                src_model="stock.production.lot" key2="client_action_multi"
-                view_type="form" view_mode="form" target="new"/>
+    <act_window
+        id="barcodes_lot_option_wizard_view_action"
+        name="Print barcodes"
+        res_model="barcodes.gs1.label.options.wizard"
+        src_model="stock.production.lot"
+        key2="client_action_multi"
+        view_type="form"
+        view_mode="form"
+        target="new"
+    />
 
-    <act_window id="barcodes_picking_option_wizard_view_action"
-                name="Print barcodes"
-                res_model="barcodes.gs1.label.options.wizard"
-                src_model="stock.picking" key2="client_action_multi"
-                view_type="form" view_mode="form" target="new"/>
+    <act_window
+        id="barcodes_picking_option_wizard_view_action"
+        name="Print barcodes"
+        res_model="barcodes.gs1.label.options.wizard"
+        src_model="stock.picking"
+        key2="client_action_multi"
+        view_type="form"
+        view_mode="form"
+        target="new"
+    />
 </odoo>
