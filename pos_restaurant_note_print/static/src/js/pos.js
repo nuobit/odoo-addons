@@ -2,10 +2,10 @@
    Eric Antones <eantones@nuobit.com>
    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) */
 
-odoo.define('pos_restaurant_note_print.pos_restaurant_note_print', function (require) {
+odoo.define("pos_restaurant_note_print.pos_restaurant_note_print", function (require) {
     "use strict";
 
-    var module = require('point_of_sale.models');
+    var module = require("point_of_sale.models");
 
     var _super_orderline = module.Orderline.prototype;
     module.Orderline = module.Orderline.extend({
