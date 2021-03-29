@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,20 +6,26 @@
     <record id="view_task_form2" model="ir.ui.view">
         <field name="name">project.task.form.timeline.calendar</field>
         <field name="model">project.task</field>
-        <field name="priority" eval="20"/>
-        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="priority" eval="100" />
+        <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_assign']/.." position="after">
                 <group>
-                    <span name="date_start_placeholder" invisible="1"/>
-                    <span name="date_end_placeholder" invisible="1"/>
+                    <span name="date_start_placeholder" invisible="1" />
+                    <span name="date_end_placeholder" invisible="1" />
                 </group>
             </xpath>
-            <xpath expr="(//field[@name='date_start'] | //span[@name='date_start_placeholder'])[1]" position="replace">
-                <field name="date_start"/>
+            <xpath
+                expr="(//field[@name='date_start'] | //span[@name='date_start_placeholder'])[1]"
+                position="replace"
+            >
+                <field name="date_start" />
             </xpath>
-            <xpath expr="(//field[@name='date_end'] | //span[@name='date_end_placeholder'])[1]" position="replace">
-                <field name="date_end"/>
+            <xpath
+                expr="(//field[@name='date_end'] | //span[@name='date_end_placeholder'])[1]"
+                position="replace"
+            >
+                <field name="date_end" />
             </xpath>
         </field>
     </record>
@@ -27,7 +33,7 @@
     <record id="view_task_calendar" model="ir.ui.view">
         <field name="name">project.task.calendar.timeline.calendar</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_calendar"/>
+        <field name="inherit_id" ref="project.view_task_calendar" />
         <field name="arch" type="xml">
             <xpath expr="//calendar" position="attributes">
                 <attribute name="date_start">date_start</attribute>
