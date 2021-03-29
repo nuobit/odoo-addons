@@ -9,19 +9,17 @@ import odoo.addons.decimal_precision as dp
 
 
 class ProductProduct(models.Model):
-    _inherit = 'product.product'
+    _inherit = "product.product"
 
     service_time = fields.Float(
-        string='Service Time',
-        digits=dp.get_precision('Product UoM'),
-        help='Time to complete this service.',
+        string="Service Time",
+        digits=dp.get_precision("Product UoM"),
+        help="Time to complete this service.",
     )
 
     @api.multi
-    @api.constrains('service_time')
+    @api.constrains("service_time")
     def _check_service_time(self):
         for record in self:
             if record.service_time < 0:
-                raise ValidationError(_(
-                    'Time cannot be negative.'
-                ))
+                raise ValidationError(_("Time cannot be negative."))
