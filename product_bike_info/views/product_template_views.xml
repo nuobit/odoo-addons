@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,19 +6,19 @@
     <record id="product_template_only_form_view" model="ir.ui.view">
         <field name="name">product.template.bike.data.form</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Bike data">
                     <group>
                         <group>
-                            <field name="bike_year"/>
-                            <newline/>
+                            <field name="bike_year" />
+                            <newline />
                         </group>
                     </group>
                     <group col="4">
-                        <field name="bike_type"/>
-                        <field name="is_electric_bike"/>
+                        <field name="bike_type" />
+                        <field name="is_electric_bike" />
                     </group>
                 </page>
             </xpath>
@@ -28,12 +28,12 @@
     <record id="product_template_tree_view" model="ir.ui.view">
         <field name="name">product.template.bike.data.tree</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="inherit_id" ref="product.product_template_tree_view" />
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <field name="bike_year"/>
-                <field name="bike_type"/>
-                <field name="is_electric_bike"/>
+                <field name="bike_year" />
+                <field name="bike_type" />
+                <field name="is_electric_bike" />
             </field>
         </field>
     </record>
@@ -41,7 +41,7 @@
     <record id="product_template_search_view" model="ir.ui.view">
         <field name="name">product.template.bike.data.search</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="inherit_id" ref="product.product_template_search_view" />
         <field name="arch" type="xml">
             <field name="name" position="attributes">
                 <attribute name="filter_domain">
@@ -54,25 +54,49 @@
             </field>
 
             <field name="categ_id" position="after">
-                <field name="seller_ids" filter_domain="[('seller_ids.name.name', 'ilike', self)]"/>
-                <field name="bike_year"/>
-                <field name="bike_type"/>
-                <field name="is_electric_bike"/>
+                <field
+                    name="seller_ids"
+                    filter_domain="[('seller_ids.name.name', 'ilike', self)]"
+                />
+                <field name="bike_year" />
+                <field name="bike_type" />
+                <field name="is_electric_bike" />
             </field>
 
             <filter name="services" position="before">
-                <filter string="Electric Bikes" name="is_electric_bike" domain="[('is_electric_bike','=',True)]"/>
-                <filter string="Non-electric Bikes" name="is_nonelectric_bike"
-                        domain="[('is_electric_bike','=',False)]"/>
-                <separator/>
+                <filter
+                    string="Electric Bikes"
+                    name="is_electric_bike"
+                    domain="[('is_electric_bike','=',True)]"
+                />
+                <filter
+                    string="Non-electric Bikes"
+                    name="is_nonelectric_bike"
+                    domain="[('is_electric_bike','=',False)]"
+                />
+                <separator />
             </filter>
 
             <xpath expr="/search/*[last()]" position="after">
                 <group expand="0" string="Group By">
-                    <filter string="Year" name="bike_year" domain="[]" context="{'group_by':'bike_year'}"/>
-                    <filter string="Type" name="bike_type" domain="[]" context="{'group_by':'bike_type'}"/>
-                    <filter string="Electric" name="is_electric_bike" domain="[]"
-                            context="{'group_by':'is_electric_bike'}"/>
+                    <filter
+                        string="Year"
+                        name="bike_year"
+                        domain="[]"
+                        context="{'group_by':'bike_year'}"
+                    />
+                    <filter
+                        string="Type"
+                        name="bike_type"
+                        domain="[]"
+                        context="{'group_by':'bike_type'}"
+                    />
+                    <filter
+                        string="Electric"
+                        name="is_electric_bike"
+                        domain="[]"
+                        context="{'group_by':'is_electric_bike'}"
+                    />
                 </group>
             </xpath>
         </field>
