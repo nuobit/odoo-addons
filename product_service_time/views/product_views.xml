@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,12 +6,14 @@
     <record id="product_normal_form_view" model="ir.ui.view">
         <field name="name">product.product.form.inherit.project.task.duration</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//page[@name='general_information']/group" position="inside">
-                <group name="group_service"
-                       attrs="{'invisible': [('type', '!=', 'service')]}">
-                    <field name="service_time" widget="float_time" class="oe_inline"/>
+                <group
+                    name="group_service"
+                    attrs="{'invisible': [('type', '!=', 'service')]}"
+                >
+                    <field name="service_time" widget="float_time" class="oe_inline" />
                 </group>
             </xpath>
         </field>
@@ -20,11 +22,15 @@
     <record id="product_variant_easy_edit_view" model="ir.ui.view">
         <field name="name">product.variant.form.inherit.project.task.duration</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='active']" position="after">
-                <field name="service_time" widget="float_time"
-                       class="oe_inline" attrs="{'invisible': [('type', '!=', 'service')]}"/>
+                <field
+                    name="service_time"
+                    widget="float_time"
+                    class="oe_inline"
+                    attrs="{'invisible': [('type', '!=', 'service')]}"
+                />
             </xpath>
         </field>
     </record>
@@ -32,10 +38,10 @@
     <record id="product_product_tree_view" model="ir.ui.view">
         <field name="name">product.product.tree.inherit.project.task.duration</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
         <field name="arch" type="xml">
             <tree position="inside">
-                <field name="service_time" widget="float_time"/>
+                <field name="service_time" widget="float_time" />
             </tree>
         </field>
     </record>
@@ -43,12 +49,14 @@
     <record id="product_template_only_form_view" model="ir.ui.view">
         <field name="name">product.template.form.inherit.project.task.duration</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//page[@name='general_information']/group" position="inside">
-                <group name="group_service"
-                       attrs="{'invisible': ['|', ('type', '!=', 'service'), ('product_variant_count', '&gt;', 1)]}">
-                    <field name="service_time" widget="float_time" class="oe_inline"/>
+                <group
+                    name="group_service"
+                    attrs="{'invisible': ['|', ('type', '!=', 'service'), ('product_variant_count', '&gt;', 1)]}"
+                >
+                    <field name="service_time" widget="float_time" class="oe_inline" />
                 </group>
             </xpath>
         </field>
