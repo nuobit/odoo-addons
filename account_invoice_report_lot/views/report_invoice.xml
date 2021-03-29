@@ -1,12 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <template id="report_invoice_document" inherit_id="account.report_invoice_document">
         <table name="invoice_line_table" position="before">
-            <t t-set="lineswithlots"
-               t-value="any(o.invoice_line_ids.mapped('move_line_ids.move_line_ids').filtered('lot_id'))"/>
+            <t
+                t-set="lineswithlots"
+                t-value="any(o.invoice_line_ids.mapped('move_line_ids.move_line_ids').filtered('lot_id'))"
+            />
         </table>
 
         <xpath expr="//span[text()='Description']/parent::th" position="after">
@@ -17,10 +19,13 @@
 
         <td name="account_invoice_line_name" position="after">
             <td t-if="lineswithlots">
-                <t t-set="line_lots" t-value="line.move_line_ids.mapped('move_line_ids').filtered('lot_id')"/>
+                <t
+                    t-set="line_lots"
+                    t-value="line.move_line_ids.mapped('move_line_ids').filtered('lot_id')"
+                />
                 <ul t-if="line_lots" class="list-unstyled">
                     <t t-foreach="line_lots" t-as="lline">
-                        <li t-esc="lline.lot_id.name"/>
+                        <li t-esc="lline.lot_id.name" />
                     </t>
                 </ul>
             </td>
