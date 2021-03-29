@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -15,37 +15,43 @@
         <field name="margin_left">0</field>
         <field name="margin_right">0</field>
         <field name="header_spacing">0</field>
-        <field name="header_line" eval="False"/>
+        <field name="header_line" eval="False" />
         <field name="dpi">90</field>
     </record>
 
-    <report id="action_report_product_gs1_barcodes"
-            string="Print barcodes"
-            model="product.product"
-            report_type="qweb-pdf"
-            menu="False"
-            file="barcodes_gs1_label.report_gs1_barcode"
-            name="barcodes_gs1_label.report_gs1_barcode"
-            paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
-            print_report_name="'Barcodes - %s' % (object.default_code, )"/>
+    <report
+        id="action_report_product_gs1_barcodes"
+        string="Print barcodes"
+        model="product.product"
+        report_type="qweb-pdf"
+        menu="False"
+        file="barcodes_gs1_label.report_gs1_barcode"
+        name="barcodes_gs1_label.report_gs1_barcode"
+        paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
+        print_report_name="'Barcodes - %s' % (object.default_code, )"
+    />
 
-    <report id="action_report_lot_gs1_barcodes"
-            string="Print barcodes"
-            model="stock.production.lot"
-            report_type="qweb-pdf"
-            menu="False"
-            file="barcodes_gs1_label.report_gs1_barcode"
-            name="barcodes_gs1_label.report_gs1_barcode"
-            paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
-            print_report_name="'Barcodes - %s' % (object.name, )"/>
+    <report
+        id="action_report_lot_gs1_barcodes"
+        string="Print barcodes"
+        model="stock.production.lot"
+        report_type="qweb-pdf"
+        menu="False"
+        file="barcodes_gs1_label.report_gs1_barcode"
+        name="barcodes_gs1_label.report_gs1_barcode"
+        paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
+        print_report_name="'Barcodes - %s' % (object.name, )"
+    />
 
-    <report id="action_report_picking_gs1_barcodes"
-            string="Print barcodes"
-            model="stock.picking"
-            report_type="qweb-pdf"
-            menu="False"
-            file="barcodes_gs1_label.report_gs1_barcode"
-            name="barcodes_gs1_label.report_gs1_barcode"
-            paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
-            print_report_name="'Barcodes - %s' % (object.name, )"/>
+    <report
+        id="action_report_picking_gs1_barcodes"
+        string="Print barcodes"
+        model="stock.picking"
+        report_type="qweb-pdf"
+        menu="False"
+        file="barcodes_gs1_label.report_gs1_barcode"
+        name="barcodes_gs1_label.report_gs1_barcode"
+        paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
+        print_report_name="'Barcodes - %s' % (object.name, )"
+    />
 </odoo>
