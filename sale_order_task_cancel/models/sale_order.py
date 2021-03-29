@@ -2,7 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, models
+from odoo import api, models
 
 
 class SaleOrder(models.Model):
@@ -10,6 +10,6 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_cancel(self):
-        self.tasks_ids.write({'sale_line_id': False})
+        self.tasks_ids.write({"sale_line_id": False})
         self.tasks_ids.unlink()
         return super(SaleOrder, self).action_cancel()
