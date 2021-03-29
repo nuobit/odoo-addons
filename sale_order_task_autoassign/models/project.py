@@ -13,6 +13,5 @@ class Project(models.Model):
     _inherit = "project.project"
 
     department_ids = fields.Many2many(
-        comodel_name='hr.department',
-        string='Departments'
+        comodel_name="hr.department", string="Departments"
     )
