@@ -1,1 +1,4 @@
 stock-logistics-workflow
+product-pack
+project
+stock-logistics-barcode
