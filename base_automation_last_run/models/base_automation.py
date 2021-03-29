@@ -10,6 +10,6 @@ _logger = logging.getLogger(__name__)
 
 
 class BaseAutomation(models.Model):
-    _inherit = 'base.automation'
+    _inherit = "base.automation"
 
     last_run = fields.Datetime(readonly=False, copy=False)
