@@ -4,7 +4,7 @@
 
 {
     "name": "POS product service time",
-    "version": "12.0.1.0.1",
+    "version": "12.0.1.0.3",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Point of Sale",
