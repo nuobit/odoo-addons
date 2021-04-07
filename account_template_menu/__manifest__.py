@@ -6,9 +6,8 @@
     'name': 'Account Template Menu',
     'summary': "This module adds menu entries *Account Chart Templates*, *Account Templates*, "
                "*Account Tax Templates* and *Account Fiscal Pôsition Templates* under "
-               "*Accounting > Configuration > Accounting*, because these menu entries "
-               "doesn't exists in the official *account* module of Odoo 11.",
-    'version': '11.0.1.0.0',
+               "*Accounting > Configuration > Accounting*",
+    'version': '11.0.1.0.1',
     'category': 'Accounting',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://github.com/nuobit',
