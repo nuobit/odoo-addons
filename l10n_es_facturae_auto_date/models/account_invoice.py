@@ -46,42 +46,19 @@ class AccountInvoice(models.Model):
     def write(self, vals):
         for rec in self:
             facturae = vals.get('facturae', rec.facturae)
-            date_invoice = vals.get('date_invoice', rec.date_invoice)
-            if date_invoice and facturae:
+            if facturae:
                 if not vals.get('facturae_start_date') and not vals.get('facturae_end_date'):
-                    if not rec.facturae_start_date and not rec.facturae_end_date:
+                    facturae_start_date, facturae_end_date = False, False
+                    date_invoice = vals.get('date_invoice', rec.date_invoice)
+                    if date_invoice:
                         facturae_start_date, facturae_end_date = \
                             self._get_facturae_dates(date_invoice)
-                        vals1 = {
-                            'facturae_start_date': facturae_start_date,
-                            'facturae_end_date': facturae_end_date,
-                        }
+                    vals1 = {}
+                    if rec.facturae_start_date != facturae_start_date:
+                        vals1['facturae_start_date'] = facturae_start_date
+                    if rec.facturae_end_date != facturae_end_date:
+                        vals1['facturae_end_date'] = facturae_end_date
+                    if vals1:
                         super(AccountInvoice, rec).write(vals1)
-
-        # for rec in self:
-        #     facturae = vals.get('facturae', rec.facturae)
-        #     if 'date_invoice' not in vals:
-        #         if rec.date_invoice and facturae:
-        #             if 'facturae_start_date' not in vals and 'facturae_end_date' not in vals:
-        #                 if not rec.facturae_start_date and not rec.facturae_end_date:
-        #                     facturae_start_date, facturae_end_date = \
-        #                         self._get_facturae_dates(rec.date_invoice)
-        #                     vals1 = {
-        #                         'facturae_start_date': facturae_start_date,
-        #                         'facturae_end_date': facturae_end_date,
-        #                     }
-        #                     super(AccountInvoice, rec).write(vals1)
-        #     else:
-        #         date_invoice = vals.get('date_invoice')
-        #         if date_invoice and facturae:
-        #             if 'facturae_start_date' not in vals and 'facturae_end_date' not in vals:
-        #                 if not rec.facturae_start_date and not rec.facturae_end_date:
-        #                     facturae_start_date, facturae_end_date = \
-        #                         self._get_facturae_dates(date_invoice)
-        #                     vals1 = {
-        #                         'facturae_start_date': facturae_start_date,
-        #                         'facturae_end_date': facturae_end_date,
-        #                     }
-        #                     super(AccountInvoice, rec).write(vals1)
 
         return super(AccountInvoice, self).write(vals)
