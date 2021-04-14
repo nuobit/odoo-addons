@@ -7,7 +7,7 @@
         <table name="invoice_line_table" position="before">
             <t
                 t-set="lineswithlots"
-                t-value="any(o.invoice_line_ids.mapped('move_line_ids.move_line_ids').filtered('lot_id'))"
+                t-value="any(o.invoice_line_ids.mapped('move_line_ids.move_line_ids').filtered(lambda x: x.lot_id and x.qty_done != 0 and x.state=='done'))"
             />
         </table>
 
@@ -21,7 +21,7 @@
             <td t-if="lineswithlots">
                 <t
                     t-set="line_lots"
-                    t-value="line.move_line_ids.mapped('move_line_ids').filtered('lot_id')"
+                    t-value="line.move_line_ids.mapped('move_line_ids').filtered(lambda x: x.lot_id and x.qty_done != 0 and x.state=='done')"
                 />
                 <ul t-if="line_lots" class="list-unstyled">
                     <t t-foreach="line_lots" t-as="lline">
