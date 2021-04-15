@@ -6,7 +6,7 @@ from odoo import api, models
 
 
 class ResPartner(models.Model):
-    _inherit = 'res.partner'
+    _inherit = "res.partner"
 
     @api.multi
     def name_get(self):
@@ -15,12 +15,12 @@ class ResPartner(models.Model):
         for partner in self:
             name = orig_name[partner.id]
             if partner.vat:
-                name = "%s (%s)" % (name, partner.vat)
+                name = "{} ({})".format(name, partner.vat)
 
             result.append((partner.id, name))
 
         return result
 
-    @api.depends('vat')
+    @api.depends("vat")
     def _compute_display_name(self):
         super()._compute_display_name()
