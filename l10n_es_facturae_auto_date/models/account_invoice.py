@@ -23,42 +23,43 @@ class AccountInvoice(models.Model):
 
     @api.onchange('date_invoice')
     def onchange_date_invoice(self):
-        if self.facturae and self.date_invoice:
+        partner_id = self.partner_id.parent_id or self.partner_id
+        if self.facturae and self.date_invoice and partner_id.facturae_auto_dates:
             self.facturae_start_date, self.facturae_end_date = \
                 self._get_facturae_dates(self.date_invoice)
         else:
             self.facturae_start_date = False
             self.facturae_end_date = False
 
-    @api.model
     def create(self, vals):
-        if not vals.get('facturae_start_date') and not vals.get('facturae_end_date'):
-            facturae, date_invoice = vals.get('facturae'), vals.get('date_invoice')
-            if facturae and date_invoice:
-                facturae_start_date, facturae_end_date = \
-                    self._get_facturae_dates(date_invoice)
-                vals.update({
-                    'facturae_start_date': facturae_start_date,
-                    'facturae_end_date': facturae_end_date,
-                })
+        partner_id = vals.get('partner_id')
+        if partner_id:
+            partner = self.env['res.partner'].browse(partner_id)
+            partner = partner.parent_id or partner
+            facturae = vals.get('facturae', partner.facturae)
+            auto_date = vals.get('facturae_auto_dates', partner.facturae_auto_dates)
+            if facturae and auto_date:
+                date_invoice = vals.get('date_invoice')
+                if date_invoice:
+                    if vals.get('facturae_start_date') != False and vals.get('facturae_end_date') != False:
+                        vals['facturae_start_date'], vals['facturae_end_date'] = \
+                            self._get_facturae_dates(date_invoice)
+
         return super(AccountInvoice, self).create(vals)
 
     def write(self, vals):
         for rec in self:
             facturae = vals.get('facturae', rec.facturae)
-            if facturae:
-                if not vals.get('facturae_start_date') and not vals.get('facturae_end_date'):
-                    facturae_start_date, facturae_end_date = False, False
-                    date_invoice = vals.get('date_invoice', rec.date_invoice)
-                    if date_invoice:
-                        facturae_start_date, facturae_end_date = \
-                            self._get_facturae_dates(date_invoice)
-                    vals1 = {}
-                    if rec.facturae_start_date != facturae_start_date:
-                        vals1['facturae_start_date'] = facturae_start_date
-                    if rec.facturae_end_date != facturae_end_date:
-                        vals1['facturae_end_date'] = facturae_end_date
-                    if vals1:
-                        super(AccountInvoice, rec).write(vals1)
+            auto_date = vals.get('facturae_auto_dates',
+                                 (rec.partner_id.parent_id or rec.partner_id).facturae_auto_dates)
+            if facturae and auto_date:
+                date_invoice = vals.get('date_invoice')
+                if date_invoice is not None:
+                    if vals.get('facturae_start_date') != False and vals.get('facturae_end_date') != False:
+                        if date_invoice:
+                            vals['facturae_start_date'], vals['facturae_end_date'] = \
+                                self._get_facturae_dates(date_invoice)
+                        else:
+                            vals['facturae_start_date'], vals['facturae_end_date'] = False, False
 
         return super(AccountInvoice, self).write(vals)
