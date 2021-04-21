@@ -28,6 +28,7 @@ class TestAccountInvoice(SavepointCase):
 
     def test_01(self):
         # ACT
+        self.partner.facturae_auto_dates = True
         date_invoice = datetime.date(2021, 4, 1)
         invoice = self.env['account.invoice'].create({
             'partner_id': self.partner.id,
@@ -50,6 +51,7 @@ class TestAccountInvoice(SavepointCase):
 
     def test_02(self):
         # ARRANGE
+        self.partner.facturae_auto_dates = True
         date_invoice = datetime.date(2021, 4, 13)
         invoice = self.env['account.invoice'].create({
             'partner_id': self.partner.id,
@@ -76,6 +78,7 @@ class TestAccountInvoice(SavepointCase):
 
     def test_03(self):
         # ARRANGE
+        self.partner.facturae_auto_dates = True
         date_invoice = datetime.date(2021, 4, 13)
         invoice = self.env['account.invoice'].create({
             'partner_id': self.partner.id,
@@ -96,6 +99,7 @@ class TestAccountInvoice(SavepointCase):
 
     def test_04(self):
         # ARRANGE
+        self.partner.facturae_auto_dates = True
         date_invoice = datetime.date(2021, 4, 13)
         invoice = self.env['account.invoice'].create({
             'partner_id': self.partner.id,
@@ -115,33 +119,4 @@ class TestAccountInvoice(SavepointCase):
             [fields.Date.from_string(x) for x in
              [invoice.facturae_start_date, invoice.facturae_end_date]],
             [None, None],
-            'The FacturaE start and end dates does not match to the invoice date')
-
-    def test_05(self):
-        # ARRANGE
-        date_invoice = datetime.date(2021, 4, 13)
-        invoice = self.env['account.invoice'].create({
-            'partner_id': self.partner.id,
-            'date_invoice': fields.Date.to_string(date_invoice),
-        })
-        # force partner onchange to populate 'factuare' field
-        invoice._onchange_partner_id()
-
-        # ACT
-        invoice.write({
-            'facturae_start_date': False,
-            'facturae_end_date': False
-        })
-        invoice.name = 'Test Reference'
-
-        # ASSERT
-        _, month_days = calendar.monthrange(date_invoice.year, date_invoice.month)
-        expected_values = [
-            datetime.date(date_invoice.year, date_invoice.month, 1),
-            datetime.date(date_invoice.year, date_invoice.month, month_days)
-        ]
-        self.assertEqual(
-            [fields.Date.from_string(x) for x in
-             [invoice.facturae_start_date, invoice.facturae_end_date]],
-            expected_values,
             'The FacturaE start and end dates does not match to the invoice date')
