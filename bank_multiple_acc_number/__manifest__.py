@@ -4,8 +4,9 @@
 
 {
     "name": "Bank multiple account number",
-    "summary": "This module allows to have more than one bank account number per different partners",
-    "version": "11.0.1.0.1",
+    "summary": """This module allows to have more than one
+    bank account number per different partners""",
+    "version": "12.0.1.0.0",
     "category": "Banking",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/OCA/pms",

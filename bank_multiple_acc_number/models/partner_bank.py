@@ -10,7 +10,7 @@ from odoo.tools.translate import _
 class ResPartnerBank(models.Model):
     _inherit = "res.partner.bank"
 
-    @api.constrains("acc_number", "partner_id", "partner_id")
+    @api.constrains("acc_number", "partner_id")
     def check_acc_number_vat(self):
         for rec in self:
             partner_bank = self.env["res.partner.bank"].search_count(
@@ -24,7 +24,8 @@ class ResPartnerBank(models.Model):
             if partner_bank:
                 raise ValidationError(
                     _(
-                        "Account number must be unique for partners with a different VAT number"
+                        """Account number must be unique for
+                        partners with a different VAT number"""
                     )
                 )
 
