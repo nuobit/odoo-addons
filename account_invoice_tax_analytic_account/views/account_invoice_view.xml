@@ -3,7 +3,7 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="invoice_supplier_form" model="ir.ui.view">
+    <record id="account_invoice_supplier_tax_analytic_account_form" model="ir.ui.view">
         <field name="name">account.invoice.supplier.tax.analytic.account.form</field>
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_supplier_form" />
@@ -14,7 +14,7 @@
         </field>
     </record>
 
-    <record id="invoice_form" model="ir.ui.view">
+    <record id="account_invoice_tax_analytic_account_form" model="ir.ui.view">
         <field name="name">account.invoice.tax.analytic.account.form</field>
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_form" />
