@@ -31,6 +31,7 @@ class AccountInvoice(models.Model):
             self.facturae_start_date = False
             self.facturae_end_date = False
 
+    @api.model
     def create(self, vals):
         partner_id = vals.get('partner_id')
         if partner_id:
@@ -47,6 +48,7 @@ class AccountInvoice(models.Model):
 
         return super(AccountInvoice, self).create(vals)
 
+    @api.multi
     def write(self, vals):
         for rec in self:
             facturae = vals.get('facturae', rec.facturae)
