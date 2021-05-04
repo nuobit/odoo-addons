@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="1">
+    <record id="account_project_task_state_cron" model="ir.cron">
+        <field name="name">Invoice Project Task State</field>
+        <field name="model_id" ref="model_account_invoice" />
+        <field name="state">code</field>
+        <field name="code">model.archive_paid_invoices(days=10)</field>
+        <field name="interval_number">12</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False" />
+    </record>
+</odoo>
