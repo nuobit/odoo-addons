@@ -6,7 +6,8 @@
 Account tax invoice analytic
 ============================
 
-* This module allows to add analytic account manually on invoice taxes.
+* This module allows to add an analytic account and
+  analytic tags manually to invoice taxes.
 
 
 Bug Tracker
