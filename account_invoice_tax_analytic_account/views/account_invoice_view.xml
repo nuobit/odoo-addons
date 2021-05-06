@@ -10,6 +10,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tax_line_ids']/tree" position="inside">
                 <field name="origin_account_analytic_id" invisible="1" />
+                <field name="origin_analytic_tag_ids" invisible="1" />
             </xpath>
         </field>
     </record>
@@ -21,6 +22,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tax_line_ids']/tree" position="inside">
                 <field name="origin_account_analytic_id" invisible="1" />
+                <field name="origin_analytic_tag_ids" invisible="1" />
             </xpath>
         </field>
     </record>
