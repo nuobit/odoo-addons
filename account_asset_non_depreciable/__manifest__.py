@@ -5,13 +5,13 @@
 {
     'name': 'Non-depreciable Assets Management',
     'summary': 'This module allows a non-depreciable asset on invoice line.',
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.2.0',
     'category': 'Accounting',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
     'license': 'AGPL-3',
     'depends': [
-        'account_asset',
+        'account_asset_hook',
     ],
     'installable': True,
     'auto_install': False,
