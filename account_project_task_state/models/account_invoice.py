@@ -20,7 +20,17 @@ class AccountInvoice(models.Model):
             ("open", "paid"): "parking",
         }.get((self.state, vals.get("state")))
         if meta_type:
+            default_deposit_product_id = (
+                self.env["ir.config_parameter"]
+                .sudo()
+                .get_param("sale.default_deposit_product_id")
+            )
             for rec in self:
+                if default_deposit_product_id:
+                    if set(rec.invoice_line_ids.mapped("product_id").ids) == {
+                        int(default_deposit_product_id)
+                    }:
+                        continue
                 for order in rec.mapped("invoice_line_ids.sale_line_ids.order_id"):
                     for task in order.tasks_ids:
                         task_type = self.env["project.task.type"].search(
