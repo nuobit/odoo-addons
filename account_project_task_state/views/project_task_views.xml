@@ -6,12 +6,15 @@
     <record id="view_task_search_form" model="ir.ui.view">
         <field name="name">project.task.form.inherit.stage.state</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_search_form"/>
+        <field name="inherit_id" ref="project.view_task_search_form" />
         <field name="arch" type="xml">
             <xpath expr="//group" position="before">
-                <separator/>
-                <filter string="Tasks in Progress" name="not_done"
-                        domain="[('stage_id.meta_type', '=', False)]"/>
+                <separator />
+                <filter
+                    string="Tasks in Progress"
+                    name="in_progress"
+                    domain="[('stage_id.meta_type', '=', False)]"
+                />
             </xpath>
         </field>
     </record>
