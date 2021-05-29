@@ -15,19 +15,7 @@ class SaleReport(models.Model):
     )
 
     def _query(self, with_clause="", fields=None, groupby="", from_clause=""):
-        if fields is None:
-            fields = {}
-        fields = {
-            **fields,
-            "type": ",t.type",
-        }
-        groupby += ",t.type"
-
-        res = super(SaleReport, self)._query(
-            with_clause=with_clause,
-            fields=fields,
-            groupby=groupby,
-            from_clause=from_clause,
-        )
-
-        return res
+        fields = fields or {}
+        fields["type"] = ", t.type as type"
+        groupby += ", t.type"
+        return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
