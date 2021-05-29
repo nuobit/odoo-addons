@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_order_product_search" model="ir.ui.view">
+        <field name="name">sale.report.search.inherit.product.type</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="type"/>
+            </field>
+            <filter name="Product" position="after">
+                <filter string="Product Type" name="product_type" context="{'group_by':'type'}"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
