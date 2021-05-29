@@ -7,7 +7,7 @@
     "summary": "This module adds a product_type field to "
     "'Sales -> Reporting -> Sale' in order to "
     "be able to filter and group for this field.",
-    "version": "12.0.1.0.1",
+    "version": "12.0.1.0.2",
     "category": "Reporting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/OCA/pms",
