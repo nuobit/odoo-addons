@@ -5,7 +5,7 @@
 {
     'name': 'MRP Repair Employee',
     'summary': 'This module adds a comment field in the contract and propagates it to the comment field of the invoice',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.0.1',
     'category': 'Contract Management',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://www.nuobit.com',
