@@ -8,10 +8,12 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="account.view_partner_property_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='property_account_payable_id']" position="after">
+            <group name="sale" position="inside">
                 <field name="sale_journal_id" options="{'no_create_edit': True}" />
+            </group>
+            <group name="purchase" position="inside">
                 <field name="purchase_journal_id" options="{'no_create_edit': True}" />
-            </xpath>
+            </group>
         </field>
     </record>
 </odoo>

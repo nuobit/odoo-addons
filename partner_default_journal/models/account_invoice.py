@@ -41,7 +41,7 @@ class AccountInvoice(models.Model):
 
         if (
             not self.partner_id.sale_journal_id
-            or not self.partner_id.purchase_journal_id
+            and not self.partner_id.purchase_journal_id
         ):
             default_journal = self.with_context(
                 type=self.type, company_id=self.company_id.id
