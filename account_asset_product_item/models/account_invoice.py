@@ -36,8 +36,12 @@ class AccountInvoiceLine(models.Model):
                         if i == num_items:
                             value = last_value
                         super(AccountInvoiceLine, self.with_context(
-                            update_asset_values={'value': value})).asset_create()
+                            update_asset_values={
+                                **self.env.context.get('update_asset_values', {}),
+                                'value': value})).asset_create()
                     return True
             super(AccountInvoiceLine, self.with_context(
-                update_asset_values={'value': base_value})).asset_create()
+                update_asset_values={
+                    **self.env.context.get('update_asset_values', {}),
+                    'value': base_value})).asset_create()
         return True
