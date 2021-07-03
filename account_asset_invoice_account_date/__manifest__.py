@@ -6,7 +6,7 @@
     'name': 'Account Asset Invoice Account Date',
     'summary': 'This module creates the assets from the invoice using '
                'the accounting date instead of the invoice date.',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.0.1',
     'category': 'Accounting',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'website': 'https://github.com/nuobit',

@@ -13,6 +13,7 @@ class AccountInvoiceLine(models.Model):
     def _prepare_asset_values(self):
         if self.invoice_id.date and self.invoice_id.date != self.invoice_id.date_invoice:
             self = self.with_context(update_asset_values={
+                **self.env.context.get('update_asset_values', {}),
                 'date': self.invoice_id.date
             })
         return super(AccountInvoiceLine, self)._prepare_asset_values()
