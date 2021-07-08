@@ -2,7 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import api, models
 
 
 class AccountInvoice(models.Model):
@@ -16,12 +16,12 @@ class AccountInvoice(models.Model):
                 "out_invoice",
                 "out_refund",
             ):
-                vals["journal_id"] = self.partner_id.sale_journal_id.id
+                vals["journal_id"] = partner_id.sale_journal_id.id
             elif partner_id.purchase_journal_id and vals["type"] in (
                 "in_invoice",
                 "in_refund",
             ):
-                vals["journal_id"] = self.partner_id.purchase_journal_id.id
+                vals["journal_id"] = partner_id.purchase_journal_id.id
 
         invoice = super(AccountInvoice, self).create(vals)
 
