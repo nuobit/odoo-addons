@@ -4,7 +4,8 @@
 
 {
     "name": "Partner default journal",
-    "version": "11.0.0.1.2",
+    "summary": "Set Default Sale and Purchase Journal on partner.",
+    "version": "12.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Accounting",
