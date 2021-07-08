@@ -8,10 +8,10 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="account.view_partner_property_form" />
         <field name="arch" type="xml">
-            <group name="acc_sale" position="inside">
+            <group name="sale" position="inside">
                 <field name="sale_journal_id" options="{'no_create_edit': True}" />
             </group>
-            <group name="acc_purchase" position="inside">
+            <group name="purchase" position="inside">
                 <field name="purchase_journal_id" options="{'no_create_edit': True}" />
             </group>
         </field>
