@@ -10,7 +10,7 @@
     "category": "Product",
     "website": "https://github.com/OCA/pms",
     "summary": "This module hides the cost from the product tree view and "
-               "moves it to purchase tab on the form view.",
+    "moves it to purchase tab on the form view.",
     "depends": [
         "product",
     ],
