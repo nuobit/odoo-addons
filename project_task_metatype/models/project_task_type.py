@@ -9,7 +9,14 @@ from odoo.exceptions import ValidationError
 class ProjectTaskType(models.Model):
     _inherit = "project.task.type"
 
-    meta_type = fields.Selection(selection=[("done", "Done"), ("parking", "Parking")])
+    meta_type = fields.Selection(
+        selection=[
+            ("done", "Done"),
+            ("parking", "Parking"),
+            ("bring_in", "Bring In"),
+            ("in_place", "In Place"),
+        ]
+    )
 
     @api.constrains("project_ids", "meta_type")
     def _check_meta_type_duplicated(self):
