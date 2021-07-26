@@ -48,6 +48,38 @@ class SaleOrder(models.Model):
             if tasks:
                 order.expected_date = max(tasks.mapped("date_end"))
 
+    def _get_stage(self, task):
+        meta_type = None
+        if task.bike_location == "bring_in":
+            meta_type = "bring_in"
+        elif task.bike_location == "in_shop":
+            meta_type = "in_place"
+
+        ProjectTaskType = self.env["project.task.type"]
+        if meta_type:
+            task_type = ProjectTaskType.search(
+                [
+                    ("project_ids", "in", task.project_id.id),
+                    ("meta_type", "=", meta_type),
+                ]
+            )
+            if task_type:
+                if len(task_type) > 1:
+                    raise UserError(
+                        _(
+                            "The project '%s' has defined "
+                            "more than one stage %s of type '%s'"
+                        )
+                        % (
+                            task.project_id.name,
+                            task_type.mapped("name"),
+                            meta_type,
+                        )
+                    )
+                return task_type
+
+        return ProjectTaskType
+
     def _free_time_selection(self, free_time_by_user, project):
         now = fields.datetime.now().replace(tzinfo=None)
         tasks_per_user = self.env["project.task"].read_group(
@@ -177,5 +209,10 @@ class SaleOrder(models.Model):
         # assign the deadline of main task
         if longest_task.date_end:
             longest_task.write({"date_deadline": longest_task.date_end})
+
+        # set the stage according to bike_location
+        stage = self._get_stage(longest_task)
+        if stage:
+            longest_task.stage_id = stage
 
         return result
