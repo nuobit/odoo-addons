@@ -4,7 +4,7 @@
 
 {
     "name": "Sale order task autoassign",
-    "version": "12.0.1.1.4",
+    "version": "12.0.1.1.5",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Project",
@@ -14,7 +14,8 @@
     "assigns the task to availableresources avoiding collisions "
     "and respecting the resources and leaves.",
     "depends": [
-        "sale_timesheet",
+        "project_task_bike_location",
+        "project_task_metatype",
         "product_service_time",
         "project_timeline_calendar",
     ],
