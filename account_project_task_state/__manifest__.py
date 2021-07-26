@@ -4,7 +4,7 @@
 
 {
     "name": "Account Project Task State",
-    "version": "12.0.1.0.3",
+    "version": "12.0.1.1.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Accounting",
@@ -12,14 +12,12 @@
     "summary": "This module links the invoice and payment state "
     "to related task state.",
     "depends": [
-        "project",
+        "project_task_metatype",
         "sale",
         "account",
     ],
     "data": [
         "data/account_project_task_state_cron.xml",
-        "views/project_task_views.xml",
-        "views/project_task_type_views.xml",
     ],
     "installable": True,
 }
