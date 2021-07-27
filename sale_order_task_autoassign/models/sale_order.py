@@ -210,9 +210,20 @@ class SaleOrder(models.Model):
         if longest_task.date_end:
             longest_task.write({"date_deadline": longest_task.date_end})
 
-        # set the stage according to bike_location
-        stage = self._get_stage(longest_task)
-        if stage:
-            longest_task.stage_id = stage
+        # bike_location
+        if longest_task.bike_location != "na":
+            bike_location_map = dict(
+                longest_task.fields_get("bike_location", "selection")["bike_location"][
+                    "selection"
+                ]
+            )
+            longest_task.name = " | ".join(
+                [longest_task.name, bike_location_map[longest_task.bike_location]]
+            )
+
+            # set the stage according to bike_location
+            stage = self._get_stage(longest_task)
+            if stage:
+                longest_task.stage_id = stage
 
         return result
