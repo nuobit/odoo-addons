@@ -4,7 +4,7 @@
 
 {
     'name': "Odoo connector to share common behaviour across several connectors.",
-    'version': '11.0.0.1.0',
+    'version': '11.0.0.2.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',
@@ -12,9 +12,11 @@
     'depends': [
         'connector',
         'sale',
+        'stock',
     ],
     'data': [
         'views/product_product_view.xml',
+        'views/stock_production_lot_view.xml',
         'views/sale_order_view.xml',
     ],
     'installable': True,
