@@ -3,10 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
-from odoo.addons.component.core import Component
 
 from odoo import models, fields, api, exceptions, _
-
 from ...components.adapter import api_handle_errors
 
 _logger = logging.getLogger(__name__)
@@ -81,6 +79,7 @@ class OxigestiBackend(models.Model):
     export_products_since_date = fields.Datetime('Export Products since')
     export_products_by_customer_since_date = fields.Datetime('Export Products by customer since')
     export_product_prices_by_customer_since_date = fields.Datetime('Export Product prices by customer since')
+    export_stock_production_lot_since_date = fields.Datetime('Export Lots since')
     import_services_since_date = fields.Datetime('Import Services since')
 
     # Backend data methods
@@ -120,6 +119,16 @@ class OxigestiBackend(models.Model):
             since_date = rec.export_product_prices_by_customer_since_date
             self.env['oxigesti.product.pricelist.item'].with_delay(
             ).export_product_prices_by_customer_since(
+                backend_record=rec, since_date=since_date)
+
+        return True
+
+    @api.multi
+    def export_stock_production_lot_since(self):
+        for rec in self:
+            since_date = rec.export_stock_production_lot_since_date
+            self.env['oxigesti.stock.production.lot'].with_delay(
+            ).export_stock_production_lot_since(
                 backend_record=rec, since_date=since_date)
 
         return True
@@ -173,6 +182,14 @@ class OxigestiBackend(models.Model):
             ('company_id', '=', company_id.id)
         ]
         self.search(domain).export_product_prices_by_customer_since()
+
+    @api.model
+    def _scheduler_export_stock_production_lot(self):
+        company_id = self.get_current_user_company()
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+        self.search(domain).export_stock_production_lot_since()
 
     @api.model
     def _scheduler_import_services(self):

@@ -11,4 +11,6 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_oxigesti_product_buyerinfo_group_user","oxigesti_product_buyerinfo group_user","model_oxigesti_product_buyerinfo","base.group_user",1,0,0,0
 "access_oxigesti_product_pricelist_item","oxigesti_product_pricelist_item connector manager","model_oxigesti_product_pricelist_item","connector.group_connector_manager",1,1,1,1
 "access_oxigesti_product_pricelist_item_group_user","oxigesti_product_pricelist_item group_user","model_oxigesti_product_pricelist_item","base.group_user",1,0,0,0
+"access_oxigesti_stock_production_lot","oxigesti_stock_production_lot connector manager","model_oxigesti_stock_production_lot","connector.group_connector_manager",1,1,1,1
+"access_oxigesti_stock_production_lot_group_user","oxigesti_stock_production_lot group_user","model_oxigesti_stock_production_lot","base.group_user",1,0,0,0
 "access_oxigesti_backend","oxigesti_backend connector manager","model_oxigesti_backend","connector.group_connector_manager",1,1,1,1

@@ -101,6 +101,16 @@
                             </group>
                             <group>
                                 <div>
+                                    <label string="Export Lots since"
+                                           class="oe_inline"/>
+                                    <field name="export_stock_production_lot_since_date" class="oe_inline"
+                                           nolabel="1"/>
+                                </div>
+                                <button name="export_stock_production_lot_since" type="object"
+                                        class="oe_highlight" string="Export in background"/>
+                            </group>
+                            <group>
+                                <div>
                                     <label string="Export Product prices by customer since"
                                            class="oe_inline"/>
                                     <field name="export_product_prices_by_customer_since_date" class="oe_inline"

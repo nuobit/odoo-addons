@@ -86,6 +86,7 @@ class OxigestiBinding(models.AbstractModel):
             importer = work.component(usage='delayed.batch.importer')
             return importer.run(filters=filters)
 
+    @job(default_channel='root.oxigesti.batch')
     @api.model
     def export_batch(self, backend, domain=[]):
         """ Prepare the batch export of records modified on Odoo """
