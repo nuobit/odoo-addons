@@ -29,6 +29,10 @@
               sequence="40"
               parent="oxigesti_external_objects_menu" action="oxigesti_product_pricelist_item_action"/>
 
-    <menuitem id="oxigesti_external_sales_orders_menu" name="External Services" sequence="50"
+    <menuitem id="oxigesti_external_stock_production_lot_menu" name="External Lots"
+              sequence="50"
+              parent="oxigesti_external_objects_menu" action="oxigesti_stock_production_lot_action"/>
+
+    <menuitem id="oxigesti_external_sales_orders_menu" name="External Services" sequence="100"
               parent="oxigesti_external_objects_menu" action="oxigesti_sale_order_action"/>
 </odoo>
