@@ -2,13 +2,10 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import re
-
 from odoo import _
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import (
-    mapping, external_to_m2o, only_create)
+from odoo.exceptions import ValidationError
 
 
 class SaleOrderBatchImporter(Component):
@@ -29,17 +26,27 @@ class SaleOrderImporter(Component):
     _apply_on = 'oxigesti.sale.order'
 
     def _must_skip(self, binding):
-        if not binding:
-            return None
-
-        order = self.component(usage='binder').unwrap_binding(binding)
-        if order.state != 'draft':
-            state_option = dict(
-                order.fields_get(['state'], ['selection'])
-                    .get('state').get('selection'))
-
-            return _('The Order %s is %s -> Update not allowed' % (order.name, state_option[order.state]))
-
+        odoo_num_alb = self.external_data['Odoo_Numero_Albaran'] or None
+        if binding:
+            order = self.component(usage='binder').unwrap_binding(binding)
+            if order.name != odoo_num_alb:
+                raise ValidationError(
+                    _("Inconsistent state: The Odoo sale order number on Oxigesti '%s' "
+                      "is different than the one it's been trying to update on Odoo '%s'") % (
+                        odoo_num_alb, order.name))
+            if order.state != 'draft':
+                state_option = dict(
+                    order.fields_get(['state'], ['selection'])
+                        .get('state').get('selection'))
+                return _("The Order %s is already imported and is in state '%s' -> Update not allowed" % (
+                    order.name, state_option[order.state]))
+        else:
+            if odoo_num_alb:
+                raise ValidationError(
+                    _("Inconsistent state: No binding found on Odoo but "
+                      "there's Odoo_Numero_Albaran on Oxigesti '%s'") % (
+                        odoo_num_alb
+                    ))
         return None
 
     def _import_dependencies(self):
