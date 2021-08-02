@@ -3,18 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
-from contextlib import closing, contextmanager
-from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.queue_job.exception import NothingToDoJob
-
-import odoo
 from odoo import _
-
-from odoo.addons.queue_job.exception import (
-    RetryableJobError,
-    FailedJobError,
-)
-
 from odoo.addons.component.core import AbstractComponent
 
 _logger = logging.getLogger(__name__)
@@ -46,7 +36,7 @@ class OxigestiExporter(AbstractComponent):
         :type importer_component: Component
         :param always: if True, the record is updated even if it already
                        exists, note that it is still skipped if it has
-                       not been modified on Sage since the last
+                       not been modified on Oxigesti since the last
                        update. When False, it will import it only when
                        it does not yet exist.
         :type always: boolean

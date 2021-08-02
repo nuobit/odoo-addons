@@ -4,9 +4,6 @@
 
 from odoo import models, fields, api
 
-from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import job
-
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -33,7 +30,7 @@ class SaleOrderLineBinding(models.Model):
         string='Backend',
         readonly=True,
         store=True,
-        # override 'sage.binding', can't be INSERTed if True:
+        # override 'oxigesti.binding', can't be inserted if True:
         required=False,
     )
 

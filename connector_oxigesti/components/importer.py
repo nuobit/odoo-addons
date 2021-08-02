@@ -32,7 +32,7 @@ class OxigestiImporter(AbstractComponent):
         :type importer_component: Component
         :param always: if True, the record is updated even if it already
                        exists, note that it is still skipped if it has
-                       not been modified on Sage since the last
+                       not been modified on Oxigesti since the last
                        update. When False, it will import it only when
                        it does not yet exist.
         :type always: boolean
@@ -79,7 +79,7 @@ class OxigestiImporter(AbstractComponent):
 
     def run(self, external_id):
         ## get_data
-        # this one knows how to speak to sage
+        # this one knows how to speak to Oxigesti
         backend_adapter = self.component(usage='backend.adapter')
 
         lock_name = 'import({}, {}, {}, {})'.format(
@@ -89,13 +89,13 @@ class OxigestiImporter(AbstractComponent):
             external_id,
         )
 
-        # read external data from sage
+        # read external data from Oxigesti
         self.external_data = backend_adapter.read(external_id)
         if not self.external_data:
             return _('Record with ID %s does not exist in Oxigesti') % (external_id,)
 
         ## get_binding
-        # this one knows how to link sage/odoo records
+        # this one knows how to link Oxigesti/odoo records
         binder = self.component(usage='binder')
 
         # find if the external id already exists in odoo
