@@ -137,6 +137,7 @@ class OxigestiBackend(models.Model):
     def import_services_since(self):
         for rec in self:
             since_date = fields.Datetime.from_string(rec.import_services_since_date)
+            rec.import_services_since_date = fields.Datetime.now()
             self.env['oxigesti.sale.order'].with_delay(
             ).import_services_since(
                 backend_record=rec, since_date=since_date)
