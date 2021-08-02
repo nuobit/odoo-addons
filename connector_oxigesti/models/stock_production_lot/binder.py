@@ -15,7 +15,7 @@ class StockProductionLotBinder(Component):
         if not self._is_binding(binding):
             raise Exception("The source object %s must be a binding" % binding._name)
 
-        product_binder = self.binder_for('oxigesti.res.partner')
+        product_binder = self.binder_for('oxigesti.product.product')
         product_external_id = product_binder.to_external(binding.odoo_id.product_id, wrap=True)
 
         external_id = None
