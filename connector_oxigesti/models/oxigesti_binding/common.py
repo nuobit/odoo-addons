@@ -2,12 +2,12 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields, api
-from odoo.addons.queue_job.job import job, related_action
-from odoo.addons.connector.exception import RetryableJobError
-
-import json
 import hashlib
+import json
+
+from odoo import models, fields, api, _
+from odoo.addons.queue_job.job import job
+from odoo.exceptions import ValidationError
 
 
 def idhash(external_id):
@@ -70,13 +70,50 @@ class OxigestiBinding(models.AbstractModel):
     @api.depends('external_id')
     def _compute_external_id_hash(self):
         for rec in self:
-            rec.external_id_hash = rec.external_id and idhash(rec.external_id) or None
+            if not rec.external_id:
+                rec.external_id_hash = None
+                continue
+
+            external_id_hash = idhash(rec.external_id)
+            other = self.search([
+                ('id', '!=', rec.id),
+                ('backend_id', '=', rec.backend_id.id),
+                ('external_id_hash', '=', external_id_hash),
+            ])
+            if other:
+                with other.backend_id.work_on(other._name) as work:
+                    binder = work.component(usage='binder')
+                other_computed_external_id = binder._get_external_id(other)
+                other_computed_external_id_hash = other_computed_external_id and idhash(
+                    other_computed_external_id) or None
+                active = 'active' not in other.odoo_id or other.odoo_id.active
+                if external_id_hash == other_computed_external_id_hash:
+                    raise ValidationError(
+                        _("Already exists another record %s with the same external_id %s (%s)%s.\n"
+                          "If the existing record is and old record, please remove its binding and try again.") % (
+                            other.odoo_id, rec.external_id, external_id_hash,
+                            not active and ' but archived' or ''
+                        ))
+                else:
+                    raise ValidationError(
+                        _("Exists another record %s with the same external_id %s (%s)%s on binding but different "
+                          "ID fields values %s.\n"
+                          "This error occurs because the ID fields values were changed on the other record after "
+                          "it was linked to the backend.\n"
+                          "You cannot change the values on ID fields if the record has bindings. "
+                          "Please remove the binding on the other record and try again.") % (
+                            other.odoo_id, rec.external_id, external_id_hash,
+                            not active and ' but archived' or '',
+                            other_computed_external_id,
+                        ))
+
+            rec.external_id_hash = external_id_hash
 
     _sql_constraints = [
         ('oxigesti_external_uniq', 'unique(backend_id, external_id_hash)',
-         'An ODoo record with same ID already exists on Oxigesti.'),
+         'An Odoo record with same ID already exists on Oxigesti.'),
         ('oxigesti_odoo_uniq', 'unique(backend_id, odoo_id)',
-         'An ODoo record with same ID already exists on Oxigesti.'),
+         'An Odoo record with same ID already exists on Oxigesti.'),
     ]
 
     @api.model
@@ -106,6 +143,12 @@ class OxigestiBinding(models.AbstractModel):
     @api.model
     def export_record(self, backend, relation):
         """ Export Odoo record """
+        if not self.search_count([('id', '=', relation.id)]):
+            raise ValidationError(
+                _("Record %s has been deleted on Odoo and cannot be exported to Oxigesti anymore.") % (
+                    relation
+                ))
+
         with backend.work_on(self._name) as work:
             exporter = work.component(usage='record.exporter')
             return exporter.run(relation)
