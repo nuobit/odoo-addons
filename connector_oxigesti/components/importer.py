@@ -3,18 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
-from contextlib import closing, contextmanager
-from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.queue_job.exception import NothingToDoJob
-
-import odoo
 from odoo import _
-
-from odoo.addons.queue_job.exception import (
-    RetryableJobError,
-    FailedJobError,
-)
-
 from odoo.addons.component.core import AbstractComponent
 
 _logger = logging.getLogger(__name__)
@@ -100,10 +90,9 @@ class OxigestiImporter(AbstractComponent):
         )
 
         # read external data from sage
-        try:
-            self.external_data = backend_adapter.read(external_id)
-        except IDMissingInBackend:
-            return _('Record does no longer exist in Oxigesti')
+        self.external_data = backend_adapter.read(external_id)
+        if not self.external_data:
+            return _('Record with ID %s does not exist in Oxigesti') % (external_id,)
 
         ## get_binding
         # this one knows how to link sage/odoo records
