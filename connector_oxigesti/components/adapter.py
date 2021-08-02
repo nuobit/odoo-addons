@@ -2,17 +2,17 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo.addons.component.core import AbstractComponent
+import logging
+import random
+from contextlib import contextmanager
+from functools import partial
+
+from requests.exceptions import HTTPError, RequestException, ConnectionError
 
 from odoo import exceptions, _
+from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import NetworkRetryableError
-
-from contextlib import contextmanager
-from requests.exceptions import HTTPError, RequestException, ConnectionError
-import random
-import logging
-
-from functools import partial
+from odoo.exceptions import ValidationError
 
 try:
     import pymssql
@@ -325,7 +325,22 @@ class GenericAdapter(AbstractComponent):
                                       retvalues=', '.join(retvalues))
 
         # executem la insercio
-        res = self._exec_sql(sql, tuple(params), commit=True)
+        res = None
+        try:
+            res = self._exec_sql(sql, tuple(params), commit=True)
+        except pymssql.IntegrityError as e:
+            # Workaround: Because of Microsoft SQL Server removes the spaces on varchars on comparisions
+            # where the varchar belongs to a PK or UK. This produces a no existent IntegrityViolation,
+            # so we need to make user aware of that in order to solve the issue.
+            if e.args[0] == 2627:
+                raise ValidationError(
+                    "%s\nThis can be caused by a Microsoft SQL Server missbehaviour where a field belonging to a PK or "
+                    "UK cannot have trailing spaces."
+                    "If it has any then a fake IntegrityViolation can be thrown. Please check that there's no other "
+                    "record on the database with the same key fields but with/without trailing spaces, "
+                    "then fix it and try again." % (e,))
+            raise
+
         if not res:
             raise Exception(_("Unexpected!! Nothing created: %s") % (values_d,))
         elif len(res) > 1:
