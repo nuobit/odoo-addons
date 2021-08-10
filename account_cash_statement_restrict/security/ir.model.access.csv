@@ -6,3 +6,4 @@ access_account_move_cashier,account.move.cashier,account.model_account_move,grou
 access_account_move_line_cashier,account.move.line.cashier,account.model_account_move_line,group_cashier,1,1,0,0
 access_account_bank_statement_cashbox_cashier,account.bank.statement.cashbox.cashier,account.model_account_bank_statement_cashbox,group_cashier,1,1,1,1
 access_account_cashbox_line_cashier,account.cashbox.line.cashier,account.model_account_cashbox_line,group_cashier,1,1,1,1
+access_account_bank_statement_closebalance_cashier,account.bank.statement.closebalance.cashier,account.model_account_bank_statement_closebalance,group_cashier,1,1,1,1
