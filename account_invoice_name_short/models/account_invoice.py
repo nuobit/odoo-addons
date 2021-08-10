@@ -2,17 +2,16 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models, _
-from odoo.exceptions import UserError
-
 import re
 from collections import OrderedDict
+
+from odoo import api, models
 
 
 def group_by_root(values):
     names_d = OrderedDict()
-    for i, n in enumerate(values.split(', ')):
-        m = re.match(r'^(.*?)([0-9]+)$', n)
+    for _i, n in enumerate(values.split(", ")):
+        m = re.match(r"^(.*?)([0-9]+)$", n)
         if m:
             root, num = m.group(1) or None, m.group(2)
             if root not in names_d:
@@ -50,15 +49,15 @@ def group_by_ranges(root, values):
     gv = group_by_consecutives(values)
     res = []
     for g in gv:
-        root_str = root or ''
+        root_str = root or ""
         if len(g) == 1:
             tu = root_str + g[0][0]
         else:
             hh = [root_str + x for x in [g[0][0], g[-1][0]]]
             if len(g) == 2:
-                tu = ', '.join(hh)
+                tu = ", ".join(hh)
             else:
-                tu = ' - '.join(hh)
+                tu = " - ".join(hh)
 
         res.append(tu)
 
@@ -70,27 +69,27 @@ def shorten_long_delimited_string(value):
     for k, v in group_by_root(value).items():
         k_vals += group_by_ranges(k, v)
 
-    return ', '.join(k_vals)
+    return ", ".join(k_vals)
 
 
 def shorten_long_string(value, max=1000):
     name_l = [value[:max]]
     if len(value) > max:
-        name_l.append('(...)')
+        name_l.append("(...)")
 
-    return ' '.join(name_l)
+    return " ".join(name_l)
 
 
 def shorten_long_vals(vals):
     vals_new = {}
     if vals:
-        if 'name' in vals and vals['name'] and vals['name'].strip():
-            vals_new['name'] = shorten_long_string(
-                shorten_long_delimited_string(vals['name'])
+        if "name" in vals and vals["name"] and vals["name"].strip():
+            vals_new["name"] = shorten_long_string(
+                shorten_long_delimited_string(vals["name"])
             )
 
-        if 'origin' in vals and vals['origin'] and vals['origin'].strip():
-            vals_new['origin'] = shorten_long_delimited_string(vals['origin'])
+        if "origin" in vals and vals["origin"] and vals["origin"].strip():
+            vals_new["origin"] = shorten_long_delimited_string(vals["origin"])
 
     return vals_new
 
