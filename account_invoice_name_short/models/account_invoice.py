@@ -5,7 +5,8 @@
 import re
 from collections import OrderedDict
 
-from odoo import api, models
+from odoo import _, api, models
+from odoo.exceptions import UserError
 
 
 def group_by_root(values):
@@ -19,8 +20,7 @@ def group_by_root(values):
             names_d[root].append((num, int(num)))
         else:
             if n in names_d:
-                raise Exception("ja existeix %s" % n)
-
+                raise UserError(_("Already exists") + " %s" % n)
     return names_d
 
 
@@ -36,12 +36,9 @@ def group_by_consecutives(values):
                 group = [(t, n)]
         else:
             group.append((t, n))
-
         ant = n
-
     if group:
         groups.append(group)
-
     return groups
 
 
@@ -58,9 +55,7 @@ def group_by_ranges(root, values):
                 tu = ", ".join(hh)
             else:
                 tu = " - ".join(hh)
-
         res.append(tu)
-
     return res
 
 
@@ -68,43 +63,43 @@ def shorten_long_delimited_string(value):
     k_vals = []
     for k, v in group_by_root(value).items():
         k_vals += group_by_ranges(k, v)
-
     return ", ".join(k_vals)
 
 
-def shorten_long_string(value, max=1000):
-    name_l = [value[:max]]
-    if len(value) > max:
+def shorten_long_string(value, max_value=1000):
+    name_l = [value[:max_value]]
+    if len(value) > max_value:
         name_l.append("(...)")
-
     return " ".join(name_l)
 
 
 def shorten_long_vals(vals):
     vals_new = {}
     if vals:
-        if "name" in vals and vals["name"] and vals["name"].strip():
-            vals_new["name"] = shorten_long_string(
-                shorten_long_delimited_string(vals["name"])
+        if "ref" in vals and vals["ref"]:
+            vals_new["ref"] = shorten_long_string(
+                shorten_long_delimited_string(vals["ref"].strip())
             )
-
-        if "origin" in vals and vals["origin"] and vals["origin"].strip():
-            vals_new["origin"] = shorten_long_delimited_string(vals["origin"])
-
+        if "payment_reference" in vals and vals["payment_reference"]:
+            vals_new["payment_reference"] = shorten_long_string(
+                shorten_long_delimited_string(vals["payment_reference"].strip())
+            )
+        if "invoice_origin" in vals and vals["invoice_origin"]:
+            vals_new["invoice_origin"] = shorten_long_delimited_string(
+                vals["invoice_origin"].strip()
+            )
     return vals_new
 
 
-class AccountInvoice(models.Model):
-    _inherit = "account.invoice"
+class AccountMove(models.Model):
+    _inherit = "account.move"
 
-    @api.multi
     def write(self, vals):
         vals.update(shorten_long_vals(vals))
-
         return super().write(vals)
 
-    @api.model
-    def create(self, vals):
-        vals.update(shorten_long_vals(vals))
-
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals.update(shorten_long_vals(vals))
+        return super().create(vals_list)
