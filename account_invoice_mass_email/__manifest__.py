@@ -4,9 +4,9 @@
 
 {
     "name": "Mass Email Invoices",
-    "description": "Sending multiple invoices by email.",
+    "summary": "Sending multiple invoices by email.",
     "category": "Accounting",
-    "version": "11.0.0.1.0",
+    "version": "14.0.1.0.0",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
