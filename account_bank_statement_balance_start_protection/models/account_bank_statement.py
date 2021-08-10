@@ -10,13 +10,13 @@ class AccountBankStatement(models.Model):
 
     disable_balance_start = fields.Boolean()  # compute="_disable_balance_start")
 
-    @api.model
-    def create(self, vals):
-        vals.update({"disable_balance_start": True})
-        result = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals.update({"disable_balance_start": True})
+        result = super().create(vals_list)
         return result
 
-    @api.multi
     def write(self, vals):
         vals.update({"disable_balance_start": True})
         result = super().write(vals)

@@ -4,8 +4,8 @@
 
 {
     "name": "Cash statement balance start protection",
-    "description": "Cash statement balance start protection",
-    "version": "11.0.0.1.0",
+    "summary": "Cash statement balance start protection",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Custom",
