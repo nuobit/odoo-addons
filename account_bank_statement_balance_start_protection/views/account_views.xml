@@ -14,24 +14,16 @@
             <xpath expr="//field[@name='balance_start']" position="attributes">
                 <attribute
                     name="attrs"
-                >{'readonly':[('disable_balance_start', '!=', False),('journal_type','=','cash')]}</attribute>
+                >{'readonly':['|',('state', '=', 'confirm'),'&amp;',('disable_balance_start', '!=', False),('journal_type','=','cash')]}</attribute>
             </xpath>
 
-            <xpath
-                expr="//field[@name='balance_start']/parent::div//button[1]"
-                position="attributes"
-            >
-                <attribute
-                    name="attrs"
-                >{'invisible': ['|','|','|',('state','!=','open'),('journal_type','!=','cash'),('cashbox_start_id','!=',False),('disable_balance_start', '!=', False)]}</attribute>
-            </xpath>
             <xpath
                 expr="//field[@name='balance_start']/parent::div//button[@name='open_cashbox_id']"
                 position="attributes"
             >
                 <attribute
                     name="attrs"
-                >{'invisible': ['|','|','|',('state','!=','open'),('journal_type','!=','cash'),('cashbox_start_id', '=', False),('disable_balance_start', '!=', False)]}</attribute>
+                >{'invisible': ['|','|',('state','!=','open'),('journal_type','!=','cash'),('disable_balance_start', '!=', False)]}</attribute>
             </xpath>
         </field>
     </record>
