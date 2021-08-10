@@ -11,37 +11,20 @@
         <field name="model">account.bank.statement</field>
         <field name="inherit_id" ref="account.view_bank_statement_form" />
         <field name="arch" type="xml">
-            <button
-                name="%(account.action_bank_reconcile_bank_statements)d"
-                position="attributes"
-            >
-                <attribute name="attrs">
-                    {'invisible':['|','|',('all_lines_reconciled','=',True),('line_ids','=',[]),
-                    ('state', 'not in', ('open', 'close'))]}
-                </attribute>
-            </button>
-            <button name="check_confirm_bank" position="before">
+            <button name="button_validate_or_action" position="before">
                 <button
                     name="close_bank"
                     string="Close"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible':['|',('line_ids','=',[]),('state', 'not in', ('open'))]}"
+                    attrs="{'invisible':['|',('line_ids','=',[]),('state', 'not in', ('open', 'posted'))]}"
                 />
             </button>
-            <button name="check_confirm_bank" position="attributes">
-                <attribute name="attrs">
-                    {'invisible':['|','|',('all_lines_reconciled','=',True),('line_ids','=',[]),
-                    ('state', 'not in', ('open', 'close'))]}
-                </attribute>
-            </button>
             <field name="state" position="attributes">
-                <attribute name="statusbar_visible">open,close,confirm</attribute>
+                <attribute
+                    name="statusbar_visible"
+                >open,posted,close,confirm</attribute>
             </field>
-
-            <xpath expr="//field[@name='journal_type']/.." position="attributes">
-                <attribute name="readonly">1</attribute>
-            </xpath>
 
         </field>
     </record>
