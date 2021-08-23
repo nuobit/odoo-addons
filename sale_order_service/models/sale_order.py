@@ -2,13 +2,11 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models, fields
-from odoo.exceptions import ValidationError
-from odoo.tools.translate import _
+from odoo import fields, models
 
 
 class SaleOrder(models.Model):
-    _inherit = 'sale.order'
+    _inherit = "sale.order"
 
     # patient data
     contract_number = fields.Char(string="Contract number")
