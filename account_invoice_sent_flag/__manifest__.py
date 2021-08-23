@@ -4,9 +4,9 @@
 
 {
     "name": "Account invoice sent flag",
-    "description": 'This module shows the "sent" flag on invoices and adds a filter',
+    "summary": 'This module shows the "is_move_sent" flag on invoices and adds a filter',
     "category": "Accounting",
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
