@@ -1,33 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_order_form" model="ir.ui.view">
         <field name="name">sale.order.service.form</field>
-        <field name="sequence" eval="10"/>
+        <field name="sequence" eval="10" />
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Service detail">
                     <group>
                         <group string="Patient data">
-                            <field name="contract_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="insured_name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="insured_ident_cardnum"
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="policy_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="auth_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field
+                                name="contract_number"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="insured_name"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="insured_ident_cardnum"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="policy_number"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="auth_number"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                         <group string="Service data">
-                            <field name="plate_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="service_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="service_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="origin" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="destination" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="round_trip_code" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="return_service" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field
+                                name="plate_number"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_number"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_date"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="origin"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="destination"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="round_trip_code"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="return_service"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                     </group>
                 </page>
@@ -38,7 +73,7 @@
     <record id="view_sales_order_filter" model="ir.ui.view">
         <field name="name">sale.order.service.search.inherit</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
         <field name="arch" type="xml">
             <field name="name" position="attributes">
                 <attribute name="filter_domain">
@@ -47,20 +82,39 @@
                 </attribute>
             </field>
             <field name="partner_id" position="after">
-                <field name="service_number"/>
-                <field name="contract_number"/>
-                <field name="insured_name"/>
-                <field name="insured_ident_cardnum"/>
-                <field name="policy_number"/>
-                <field name="auth_number"/>
+                <field name="service_number" />
+                <field name="contract_number" />
+                <field name="insured_name" />
+                <field name="insured_ident_cardnum" />
+                <field name="policy_number" />
+                <field name="auth_number" />
             </field>
             <xpath expr="//group" position="inside">
-                <filter string="Contract number" domain="[]" context="{'group_by':'contract_number'}"/>
-                <filter string="Insured person's name" domain="[]" context="{'group_by':'insured_name'}"/>
-                <filter string="Insured identity card number" domain="[]"
-                        context="{'group_by':'insured_ident_cardnum'}"/>
-                <filter string="Policy number" domain="[]" context="{'group_by':'policy_number'}"/>
-                <filter string="Authorization Number" domain="[]" context="{'group_by':'auth_number'}"/>
+                <filter
+                    string="Contract number"
+                    domain="[]"
+                    context="{'group_by':'contract_number'}"
+                />
+                <filter
+                    string="Insured person's name"
+                    domain="[]"
+                    context="{'group_by':'insured_name'}"
+                />
+                <filter
+                    string="Insured identity card number"
+                    domain="[]"
+                    context="{'group_by':'insured_ident_cardnum'}"
+                />
+                <filter
+                    string="Policy number"
+                    domain="[]"
+                    context="{'group_by':'policy_number'}"
+                />
+                <filter
+                    string="Authorization Number"
+                    domain="[]"
+                    context="{'group_by':'auth_number'}"
+                />
             </xpath>
         </field>
     </record>
