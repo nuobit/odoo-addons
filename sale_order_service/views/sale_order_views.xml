@@ -5,7 +5,7 @@
 <odoo>
     <record id="view_order_form" model="ir.ui.view">
         <field name="name">sale.order.service.form</field>
-        <field name="sequence" eval="10" />
+        <field name="priority" eval="10" />
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
@@ -91,26 +91,31 @@
             </field>
             <xpath expr="//group" position="inside">
                 <filter
+                    name="contract_number"
                     string="Contract number"
                     domain="[]"
                     context="{'group_by':'contract_number'}"
                 />
                 <filter
+                    name="insured_name"
                     string="Insured person's name"
                     domain="[]"
                     context="{'group_by':'insured_name'}"
                 />
                 <filter
+                    name="insured_ident_cardnum"
                     string="Insured identity card number"
                     domain="[]"
                     context="{'group_by':'insured_ident_cardnum'}"
                 />
                 <filter
+                    name="policy_number"
                     string="Policy number"
                     domain="[]"
                     context="{'group_by':'policy_number'}"
                 />
                 <filter
+                    name="auth_number"
                     string="Authorization Number"
                     domain="[]"
                     context="{'group_by':'auth_number'}"
