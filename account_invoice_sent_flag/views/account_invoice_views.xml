@@ -1,34 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="invoice_form" model="ir.ui.view">
-        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="inherit_id" ref="account.invoice_form" />
         <field name="name">account.invoice.form.inherit</field>
         <field name="model">account.invoice</field>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='other_info']//field[@name='move_id']/.." position="inside">
-                <field name="sent"/>
+            <xpath
+                expr="//page[@name='other_info']//field[@name='move_id']/.."
+                position="inside"
+            >
+                <field name="sent" />
             </xpath>
         </field>
     </record>
 
     <record id="view_account_invoice_filter" model="ir.ui.view">
-        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="inherit_id" ref="account.view_account_invoice_filter" />
         <field name="name">account.invoice.filter.inherit</field>
         <field name="model">account.invoice</field>
         <field name="arch" type="xml">
             <xpath expr="//group" position="before">
-                <separator/>
-                <filter string="Sent" name="sent"
-                        domain="[('sent', '=', True)]"/>
-                <filter string="Not sent" name="not_sent"
-                        domain="[('sent', '=', False)]"/>
+                <separator />
+                <filter string="Sent" name="sent" domain="[('sent', '=', True)]" />
+                <filter
+                    string="Not sent"
+                    name="not_sent"
+                    domain="[('sent', '=', False)]"
+                />
             </xpath>
             <xpath expr="//group" position="inside">
-                <filter name="sent" string="Sent"
-                        context="{'group_by':'sent'}"/>
+                <filter name="sent" string="Sent" context="{'group_by':'sent'}" />
             </xpath>
         </field>
     </record>
