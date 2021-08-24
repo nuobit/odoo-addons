@@ -23,7 +23,16 @@ class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
     @api.model
-    def barcode(self, barcode_type, value, width=600, height=100, humanreadable=0):
+    def barcode(
+        self,
+        barcode_type,
+        value,
+        width=600,
+        height=100,
+        humanreadable=0,
+        quiet=1,
+        mask=None,
+    ):
         if barcode_type == "gs1-128":
             data = value.replace(r"\F", "\xf1")
             encoder = c128.Code128Encoder(
@@ -41,4 +50,6 @@ class IrActionsReport(models.Model):
                 width=width,
                 height=height,
                 humanreadable=humanreadable,
+                quiet=quiet,
+                mask=mask,
             )
