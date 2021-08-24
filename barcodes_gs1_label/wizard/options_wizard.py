@@ -19,15 +19,10 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
 
     start_row = fields.Integer(string="Start row", default=1)
     start_col = fields.Integer(string="Start column", default=1)
-
     with_stock = fields.Boolean(string="With stock only", default=True)
-
     show_price = fields.Boolean(string="Show price", default=True)
-
     show_price_currency = fields.Boolean(string="Show currency", default=True)
-
     label_copies = fields.Integer(string="Copies", default=1, required=True)
-
     barcode_type = fields.Selection(
         string="Barcode type",
         selection=[
@@ -61,24 +56,19 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         string="Paper format",
         comodel_name="report.paperformat",
         required=True,
-        readonly=True,
         default=_default_paperformat_id,
     )
-
     sheet_width = fields.Integer(
         string="Sheet width (mm)",
         required=True,
-        readonly=True,
         compute="_compute_sheet_sizes",
     )
     sheet_height = fields.Integer(
         string="Sheet height (mm)",
         required=True,
-        readonly=True,
         compute="_compute_sheet_sizes",
     )
 
-    @api.multi
     @api.depends("paperformat_id")
     def _compute_sheet_sizes(self):
         for rec in self:
@@ -114,27 +104,22 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
 
     label_width = fields.Float(string="Label width (mm)", required=True, default=52.5)
     label_height = fields.Float(string="Label height (mm)", required=True, default=21.2)
-
     page_rows_max = fields.Integer(
         string="Max rows per page",
         required=True,
-        readonly=True,
         compute="_compute_page_label_count",
     )
     page_cols_max = fields.Integer(
         string="Max columns per page",
         required=True,
-        readonly=True,
         compute="_compute_page_label_count",
     )
     page_max_labels = fields.Integer(
         string="Max labels per page",
         required=True,
-        readonly=True,
         compute="_compute_page_label_count",
     )
 
-    @api.multi
     @api.depends("sheet_width", "sheet_height", "label_width", "label_height")
     def _compute_page_label_count(self):
         for rec in self:
@@ -145,11 +130,9 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     px_mm_rate_correction = fields.Float(
         string="px/mm rate correction", required=True, default=1.25
     )
-
     show_borders = fields.Boolean(string="Show borders", default=False)
     border_color = fields.Char(string="Border color", default="#e5e5e5")
 
-    @api.multi
     def print_product_barcodes(self):
         # checks
         if self.start_col < 1 or self.start_col > self.page_cols_max:
@@ -164,9 +147,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             raise UserError(_("The number of copies must be greater than 0"))
 
         model = self.env.context.get("active_model")
-
         mm_px_rate = self.paperformat_id.dpi / 25.4 * self.px_mm_rate_correction
-
         max_width_mm = self.label_width * self.page_cols_max
         widths_px = [int(self.label_width * mm_px_rate)] * self.page_cols_max
         diff = int(max_width_mm * mm_px_rate - sum(widths_px))
@@ -176,7 +157,6 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             i = (i + 1) % self.page_cols_max
             diff -= 1
         padding_width_mm = self.sheet_width - max_width_mm
-
         max_height_mm = self.label_height * self.page_rows_max
         heights_px = [int(self.label_height * mm_px_rate)] * self.page_rows_max
         diff = int(max_height_mm * mm_px_rate - sum(heights_px))
@@ -212,7 +192,6 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                 "border_color": self.border_color,
             },
         }
-
         return (
             self.env.ref(MAP_MODEL_REPORT[model])
             .with_context(no_paddings=True)

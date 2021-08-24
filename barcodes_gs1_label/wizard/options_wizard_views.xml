@@ -75,36 +75,33 @@
         </field>
     </record>
 
-    <act_window
+    <record
         id="barcodes_product_option_wizard_view_action"
-        name="Print barcodes"
-        res_model="barcodes.gs1.label.options.wizard"
-        src_model="product.product"
-        key2="client_action_multi"
-        view_type="form"
-        view_mode="form"
-        target="new"
-    />
+        model="ir.actions.act_window"
+    >
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_product_product" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 
-    <act_window
-        id="barcodes_lot_option_wizard_view_action"
-        name="Print barcodes"
-        res_model="barcodes.gs1.label.options.wizard"
-        src_model="stock.production.lot"
-        key2="client_action_multi"
-        view_type="form"
-        view_mode="form"
-        target="new"
-    />
+    <record id="barcodes_lot_option_wizard_view_action" model="ir.actions.act_window">
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_stock_production_lot" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 
-    <act_window
+    <record
         id="barcodes_picking_option_wizard_view_action"
-        name="Print barcodes"
-        res_model="barcodes.gs1.label.options.wizard"
-        src_model="stock.picking"
-        key2="client_action_multi"
-        view_type="form"
-        view_mode="form"
-        target="new"
-    />
+        model="ir.actions.act_window"
+    >
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_stock_picking" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 </odoo>

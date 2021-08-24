@@ -19,39 +19,44 @@
         <field name="dpi">90</field>
     </record>
 
-    <report
-        id="action_report_product_gs1_barcodes"
-        string="Print barcodes"
-        model="product.product"
-        report_type="qweb-pdf"
-        menu="False"
-        file="barcodes_gs1_label.report_gs1_barcode"
-        name="barcodes_gs1_label.report_gs1_barcode"
-        paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
-        print_report_name="'Barcodes - %s' % (object.default_code, )"
-    />
+    <record id="action_report_product_gs1_barcodes" model="ir.actions.report">
+        <field name="name">Print barcodes</field>
+        <field name="model">product.product</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">barcodes_gs1_label.report_gs1_barcode</field>
+        <field name="report_name">barcodes_gs1_label.report_gs1_barcode</field>
+        <field
+            name="paperformat_id"
+            ref="barcodes_gs1_label.paperformat_gs1_barcodes"
+        />
+        <field
+            name="print_report_name"
+        >'Barcodes - %s' % (object.default_code, )</field>
+    </record>
 
-    <report
-        id="action_report_lot_gs1_barcodes"
-        string="Print barcodes"
-        model="stock.production.lot"
-        report_type="qweb-pdf"
-        menu="False"
-        file="barcodes_gs1_label.report_gs1_barcode"
-        name="barcodes_gs1_label.report_gs1_barcode"
-        paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
-        print_report_name="'Barcodes - %s' % (object.name, )"
-    />
+    <record id="action_report_lot_gs1_barcodes" model="ir.actions.report">
+        <field name="name">Print barcodes</field>
+        <field name="model">stock.production.lot</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">barcodes_gs1_label.report_gs1_barcode</field>
+        <field name="report_name">barcodes_gs1_label.report_gs1_barcode</field>
+        <field
+            name="paperformat_id"
+            ref="barcodes_gs1_label.paperformat_gs1_barcodes"
+        />
+        <field name="print_report_name">'Barcodes - %s' % (object.name, )</field>
+    </record>
 
-    <report
-        id="action_report_picking_gs1_barcodes"
-        string="Print barcodes"
-        model="stock.picking"
-        report_type="qweb-pdf"
-        menu="False"
-        file="barcodes_gs1_label.report_gs1_barcode"
-        name="barcodes_gs1_label.report_gs1_barcode"
-        paperformat="barcodes_gs1_label.paperformat_gs1_barcodes"
-        print_report_name="'Barcodes - %s' % (object.name, )"
-    />
+    <record id="action_report_picking_gs1_barcodes" model="ir.actions.report">
+        <field name="name">Print barcodes</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">barcodes_gs1_label.report_gs1_barcode</field>
+        <field name="report_name">barcodes_gs1_label.report_gs1_barcode</field>
+        <field
+            name="paperformat_id"
+            ref="barcodes_gs1_label.paperformat_gs1_barcodes"
+        />
+        <field name="print_report_name">'Barcodes - %s' % (object.name, )</field>
+    </record>
 </odoo>
