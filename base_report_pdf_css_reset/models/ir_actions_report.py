@@ -4,13 +4,12 @@
 
 import lxml.html
 
-from odoo import api, models
+from odoo import models
 
 
 class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
-    @api.multi
     def _prepare_html(self, html):
         (
             bodies,
@@ -19,7 +18,6 @@ class IrActionsReport(models.Model):
             footer,
             specific_paperformat_args,
         ) = super()._prepare_html(html)
-
         if self.env.context.get("no_paddings", False):
             bodies_tmp = []
             for body in bodies:
@@ -35,9 +33,6 @@ class IrActionsReport(models.Model):
                         del elem.attrib["class"]
                     else:
                         elem.attrib["class"] = " ".join(classes_tmp)
-
                     bodies_tmp.append(lxml.html.tostring(root))
-
             bodies = bodies_tmp
-
         return bodies, res_ids, header, footer, specific_paperformat_args
