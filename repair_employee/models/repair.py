@@ -6,11 +6,10 @@ from odoo import fields, models
 
 
 class Repair(models.Model):
-    _inherit = "mrp.repair"
+    _inherit = "repair.order"
 
     employee_id = fields.Many2one(
         comodel_name="hr.employee",
-        required=True,
         ondelete="restrict",
         domain="['|',('company_id', '=', False), ('company_id', '=', company_id)]",
     )
