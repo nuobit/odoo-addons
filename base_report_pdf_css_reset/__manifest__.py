@@ -6,7 +6,7 @@
     "name": "Report PDF CSS reset",
     "summary": "This module enables you with the capability to reset the default "
     "paddings on the pdf minimal_layout template",
-    "version": "12.0.1.0.1",
+    "version": "14.0.1.0.0",
     "category": "Reporting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
