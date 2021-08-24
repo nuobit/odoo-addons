@@ -10,9 +10,9 @@
     >
         <xpath expr="." position="inside">
             <link
-                href="/barcodes_gs1_label/static/src/less/styles.less"
+                href="/barcodes_gs1_label/static/src/scss/styles.scss"
                 rel="stylesheet"
-                type="text/less"
+                type="text/scss"
             />
         </xpath>
     </template>

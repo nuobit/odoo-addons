@@ -21,8 +21,8 @@ def chunks(li, n, padding=False):
 class ReportGS1Barcode(models.AbstractModel):
     _name = "report.barcodes_gs1_label.report_gs1_barcode"
 
-    @api.model  # noqa: C901
-    def _get_report_values(self, docids, data=None):
+    @api.model
+    def _get_report_values(self, docids, data=None):  # noqa: C901
         if not data:
             raise UserError(_("Expected data to be passed to the report"))
 
