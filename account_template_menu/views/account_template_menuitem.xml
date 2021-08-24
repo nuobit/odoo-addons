@@ -17,9 +17,16 @@
         sequence="10"
     />
 
+    <record id="action_account_template_form" model="ir.actions.act_window">
+        <field name="name">Account Templates</field>
+        <field name="res_model">account.account.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="account.view_account_template_search" />
+    </record>
+
     <menuitem
         id="account_account_template_menu"
-        action="account.action_account_template_form"
+        action="action_account_template_form"
         parent="account_template_menu"
         sequence="20"
     />
@@ -31,9 +38,27 @@
         sequence="30"
     />
 
+    <record
+        id="action_account_fiscal_position_template_form"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Fiscal Position</field>
+        <field name="res_model">account.fiscal.position.template</field>
+        <field name="view_mode">tree,form</field>
+        <field
+            name="search_view_id"
+            ref="account.view_account_position_template_search"
+        />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new fiscal position
+            </p>
+        </field>
+    </record>
+
     <menuitem
         id="account_fiscal_position_template_menu"
-        action="account.action_account_fiscal_position_template_form"
+        action="action_account_fiscal_position_template_form"
         parent="account_template_menu"
         sequence="40"
     />
