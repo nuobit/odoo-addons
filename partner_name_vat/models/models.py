@@ -9,15 +9,9 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     def name_get(self):
-        result = []
-        orig_name = dict(super().name_get())
-        for partner in self:
-            name = orig_name[partner.id]
-            if partner.vat:
-                name = "{} ({})".format(name, partner.vat)
-
-            result.append((partner.id, name))
-
+        ctx = dict(self.env.context)
+        ctx["show_vat"] = True
+        result = super(ResPartner, self.with_context(**ctx)).name_get()
         return result
 
     @api.depends("vat")
