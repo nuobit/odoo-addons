@@ -9,11 +9,9 @@
     "version": "12.0.1.0.1",
     "category": "Reporting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
-    "depends": [
-        "base",
-    ],
+    "depends": ["base"],
     "installable": True,
     "development_status": "Beta",
     "maintainers": ["eantones"],
