@@ -1,13 +1,14 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* partner_default_journal
+# 	* partner_default_journal
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-24 16:21+0000\n"
-"PO-Revision-Date: 2019-09-24 16:21+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2021-12-16 12:37+0000\n"
+"PO-Revision-Date: 2021-12-16 12:37+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,9 +16,45 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: partner_default_journal
-#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner_purchase_journal_id
-#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner_sale_journal_id
+#: model:ir.model,name:partner_default_journal.model_res_partner
+msgid "Contact"
+msgstr "Contacte"
+
+#. module: partner_default_journal
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner__purchase_journal_id
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner__sale_journal_id
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_users__purchase_journal_id
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_users__sale_journal_id
 msgid "Default journal"
 msgstr "Diari per defecte"
 
+#. module: partner_default_journal
+#: model:ir.model.fields,field_description:partner_default_journal.field_account_move__display_name
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner__display_name
+#: model:ir.model.fields,field_description:partner_default_journal.field_sale_order__display_name
+msgid "Display Name"
+msgstr "Nom a mostrar"
 
+#. module: partner_default_journal
+#: model:ir.model.fields,field_description:partner_default_journal.field_account_move__id
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner__id
+#: model:ir.model.fields,field_description:partner_default_journal.field_sale_order__id
+msgid "ID"
+msgstr ""
+
+#. module: partner_default_journal
+#: model:ir.model,name:partner_default_journal.model_account_move
+msgid "Journal Entry"
+msgstr "Assentament comptable"
+
+#. module: partner_default_journal
+#: model:ir.model.fields,field_description:partner_default_journal.field_account_move____last_update
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner____last_update
+#: model:ir.model.fields,field_description:partner_default_journal.field_sale_order____last_update
+msgid "Last Modified on"
+msgstr "Última modificació el "
+
+#. module: partner_default_journal
+#: model:ir.model,name:partner_default_journal.model_sale_order
+msgid "Sales Order"
+msgstr "Comanda de venda"
