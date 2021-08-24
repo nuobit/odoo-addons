@@ -8,11 +8,9 @@
     "version": "12.0.1.0.0",
     "category": "Web",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
-    "depends": [
-        "base",
-    ],
+    "depends": ["base"],
     "post_init_hook": "post_init_hook_vat_update",
     "uninstall_hook": "uninstall_hook_vat_remove",
     "installable": True,
