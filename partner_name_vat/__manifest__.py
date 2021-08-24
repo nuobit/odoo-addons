@@ -5,7 +5,7 @@
 {
     "name": "Partner name with vat",
     "summary": "This module concatenates vat number to partner name on display_name",
-    "version": "12.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Web",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",

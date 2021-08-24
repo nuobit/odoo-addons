@@ -7,17 +7,13 @@ from odoo import SUPERUSER_ID, api
 
 def post_init_hook_vat_update(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})
-    env["res.partner"].search([])._compute_display_name()
+    env["res.partner"].with_context(active_test=False).search(
+        []
+    )._compute_display_name()
 
 
 def uninstall_hook_vat_remove(cr, registry):
-    cr.execute(
-        "update res_partner p "
-        "set display_name = (case when p.vat is null then p.display_name "
-        "     else replace(p.display_name, ' (' || p.vat || ')', '') end)"
-    )
-
-    # TODO: do it with api
-    # env = api.Environment(cr, SUPERUSER_ID, {})
-    # if 'res.partner' in env:
-    #     env['res.partner'].search([])._compute_display_name()
+    env = api.Environment(cr, SUPERUSER_ID, {})
+    env["res.partner"].with_context(active_test=False).search(
+        []
+    )._compute_display_name()
