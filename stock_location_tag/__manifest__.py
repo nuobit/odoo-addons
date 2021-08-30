@@ -7,7 +7,7 @@
     "summary": "This module adds tags on location",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "category": "Warehouse",
-    "version": "11.0.0.1.1",
+    "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
