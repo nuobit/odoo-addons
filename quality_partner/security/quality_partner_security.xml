@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -11,18 +11,24 @@
 
     <record id="quality_partner_group_guest" model="res.groups">
         <field name="name">Guest</field>
-        <field name="category_id" ref="quality_partner_security"/>
+        <field name="category_id" ref="quality_partner_security" />
     </record>
 
     <record id="quality_partner_group_user" model="res.groups">
         <field name="name">User</field>
-        <field name="implied_ids" eval="[(6, False, [ref('quality_partner.quality_partner_group_guest')])]"/>
-        <field name="category_id" ref="quality_partner_security"/>
+        <field
+            name="implied_ids"
+            eval="[(6, False, [ref('quality_partner.quality_partner_group_guest')])]"
+        />
+        <field name="category_id" ref="quality_partner_security" />
     </record>
 
     <record id="quality_partner_group_manager" model="res.groups">
         <field name="name">Manager</field>
-        <field name="implied_ids" eval="[(6, False, [ref('quality_partner.quality_partner_group_user')])]"/>
-        <field name="category_id" ref="quality_partner_security"/>
+        <field
+            name="implied_ids"
+            eval="[(6, False, [ref('quality_partner.quality_partner_group_user')])]"
+        />
+        <field name="category_id" ref="quality_partner_security" />
     </record>
 </odoo>

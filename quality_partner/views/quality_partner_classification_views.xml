@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -11,26 +11,29 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Name"/>
+                            <field name="name" placeholder="Name" />
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="code"/>
+                            <field name="code" />
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="parent_id"/>
+                            <field name="parent_id" />
                         </group>
                     </group>
                     <group col="4">
-                        <field name="level_type"/>
-                        <field name="document_type_ids" widget="many2many_tags"
-                               attrs="{'invisible': [('level_type', '!=', 'criticality')], 'required': [('level_type', '=', 'criticality')]}"/>
+                        <field name="level_type" />
+                        <field
+                            name="document_type_ids"
+                            widget="many2many_tags"
+                            attrs="{'invisible': [('level_type', '!=', 'criticality')], 'required': [('level_type', '=', 'criticality')]}"
+                        />
                     </group>
                     <group>
-                        <field name="description"/>
+                        <field name="description" />
                     </group>
                 </sheet>
             </form>
@@ -42,16 +45,19 @@
         <field name="model">quality.partner.classification</field>
         <field name="arch" type="xml">
             <tree string="Quality partner classification Tree">
-                <field name="complete_name"/>
-                <field name="name"/>
-                <field name="code"/>
-                <field name="level_type"/>
-                <field name="document_type_ids" widget="many2many_tags"/>
+                <field name="complete_name" />
+                <field name="name" />
+                <field name="code" />
+                <field name="level_type" />
+                <field name="document_type_ids" widget="many2many_tags" />
             </tree>
         </field>
     </record>
 
-    <record id="quality_partner_classification_list_action" model="ir.actions.act_window">
+    <record
+        id="quality_partner_classification_list_action"
+        model="ir.actions.act_window"
+    >
         <field name="name">Classifications</field>
         <field name="res_model">quality.partner.classification</field>
         <field name="view_type">form</field>
@@ -62,8 +68,11 @@
         </field>
     </record>
 
-    <menuitem id="quality_partner_classification_menu" name="Classifications"
-              parent="quality_partner.quality_partner_menu"
-              action="quality_partner_classification_list_action"
-              sequence="10"/>
+    <menuitem
+        id="quality_partner_classification_menu"
+        name="Classifications"
+        parent="quality_partner.quality_partner_menu"
+        action="quality_partner_classification_list_action"
+        sequence="10"
+    />
 </odoo>
