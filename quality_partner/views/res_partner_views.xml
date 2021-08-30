@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,21 +6,29 @@
     <record id="view_partner_form" model="ir.ui.view">
         <field name="name">quality.res.partner.form</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="groups_id" eval="[(6, False, [ref('quality_partner_group_guest')])]"/>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field
+            name="groups_id"
+            eval="[(6, False, [ref('quality_partner_group_guest')])]"
+        />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Quality" attrs="{'invisible': [('supplier', '=', False), ('is_company', '=', True)]}">
+                <page
+                    string="Quality"
+                    attrs="{'invisible': [('supplier', '=', False), ('is_company', '=', True)]}"
+                >
                     <notebook>
                         <page string="Supplier classification">
                             <group>
                                 <group>
-                                    <field name="quality_classification_id"
-                                           attrs="{'required': [('quality_document_ids', '!=', [])]}"/>
+                                    <field
+                                        name="quality_classification_id"
+                                        attrs="{'required': [('quality_document_ids', '!=', [])]}"
+                                    />
                                 </group>
                             </group>
                             <group string="Documents">
-                                <field name="quality_document_ids" nolabel="1"/>
+                                <field name="quality_document_ids" nolabel="1" />
                             </group>
                         </page>
                     </notebook>
