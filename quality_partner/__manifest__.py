@@ -5,14 +5,12 @@
 {
     "name": "Quality partner",
     "summary": "This module adds the logic to classify and evaluate the partner performance",
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Website",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
-    "depends": [
-        "base",
-    ],
+    "depends": ["purchase"],
     "data": [
         "security/quality_partner_security.xml",
         "security/ir.model.access.csv",
