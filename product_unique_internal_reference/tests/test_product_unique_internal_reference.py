@@ -266,7 +266,7 @@ class TestProductUniqueInternalReference(SavepointCase):
                         0,
                         {
                             "attribute_id": attribute.id,
-                            "value_ids": [(6, 0, attribute.value_ids.mapped("id"))],
+                            "value_ids": [(6, 0, attribute.value_ids.ids)],
                         },
                     )
                 ],
@@ -336,7 +336,7 @@ class TestProductUniqueInternalReference(SavepointCase):
                         0,
                         {
                             "attribute_id": attribute1.id,
-                            "value_ids": [(6, 0, attribute1.value_ids.mapped("id"))],
+                            "value_ids": [(6, 0, attribute1.value_ids.ids)],
                         },
                     )
                 ],
@@ -366,7 +366,7 @@ class TestProductUniqueInternalReference(SavepointCase):
                         0,
                         {
                             "attribute_id": attribute2.id,
-                            "value_ids": [(6, 0, attribute2.value_ids.mapped("id"))],
+                            "value_ids": [(6, 0, attribute2.value_ids.ids)],
                         },
                     )
                 ],
@@ -433,7 +433,7 @@ class TestProductUniqueInternalReference(SavepointCase):
                         0,
                         {
                             "attribute_id": attribute1.id,
-                            "value_ids": [(6, 0, attribute1.value_ids.mapped("id"))],
+                            "value_ids": [(6, 0, attribute1.value_ids.ids)],
                         },
                     )
                 ],
@@ -463,7 +463,7 @@ class TestProductUniqueInternalReference(SavepointCase):
                         0,
                         {
                             "attribute_id": attribute2.id,
-                            "value_ids": [(6, 0, attribute2.value_ids.mapped("id"))],
+                            "value_ids": [(6, 0, attribute2.value_ids.ids)],
                         },
                     )
                 ],
@@ -523,7 +523,7 @@ class TestProductUniqueInternalReference(SavepointCase):
                         0,
                         {
                             "attribute_id": attribute1.id,
-                            "value_ids": [(6, 0, attribute1.value_ids.mapped("id"))],
+                            "value_ids": [(6, 0, attribute1.value_ids.ids)],
                         },
                     )
                 ],
