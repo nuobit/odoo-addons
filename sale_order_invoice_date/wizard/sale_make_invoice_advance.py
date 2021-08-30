@@ -2,18 +2,20 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 
 
 class SaleAdvancePaymentInv(models.TransientModel):
     _inherit = "sale.advance.payment.inv"
 
-    date_invoice = fields.Date(string='Invoice date')
+    date_invoice = fields.Date(string="Invoice date")
 
     @api.multi
     def _create_invoice(self, order, so_line, amount):
-        invoice = super(SaleAdvancePaymentInv, self)._create_invoice(order, so_line, amount)
-        invoice.write({'date_invoice': self.date_invoice})
+        invoice = super(SaleAdvancePaymentInv, self)._create_invoice(
+            order, so_line, amount
+        )
+        invoice.write({"date_invoice": self.date_invoice})
         return invoice
 
     @api.multi
@@ -22,5 +24,3 @@ class SaleAdvancePaymentInv(models.TransientModel):
             self = self.with_context(date_invoice=self.date_invoice)
 
         return super(SaleAdvancePaymentInv, self).create_invoices()
-
-        return res
