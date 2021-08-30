@@ -12,16 +12,17 @@
                 expr="//field[@name='order_line']/tree/field[@name='invoice_lines']"
                 position="after"
             >
-                <field name="move_ids" invisible="1" />
+                <field name="invoice_lines" invisible="1" widget="many2many_tags" />
+                <field name="move_ids" invisible="1" widget="many2many_tags" />
             </xpath>
             <xpath
                 expr="//field[@name='order_line']/tree/field[@name='product_uom']"
                 position="attributes"
             >
                 <attribute name="attrs">{'readonly': [
-                    ('state', 'in', ('purchase', 'done', 'cancel')),
-                    '|', ('invoice_lines', '!=', []), ('move_ids', '!=', [])
-                    ]}
+                    '|', '|', ('state', 'in', ('purchase', 'done', 'cancel')),
+                    ('invoice_lines', '!=', []), ('move_ids', '!=', [])
+                    ], 'required': [('display_type', '=', False)]}
                 </attribute>
             </xpath>
         </field>
