@@ -2,9 +2,9 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from dateutil import relativedelta
 
-from odoo.addons import decimal_precision as dp
+from odoo import _, fields, models
 
 
 class OrderpointSyncTemplate(models.Model):
@@ -53,9 +53,7 @@ class OrderpointSyncTemplate(models.Model):
         "Company",
         required=True,
         readonly=True,
-        default=lambda self: self.env["res.company"]._company_default_get(
-            "stock.warehouse.orderpoint"
-        ),
+        default=lambda self: self.env.company,
     )
 
     last_update = fields.Datetime(readonly=True)
@@ -71,7 +69,6 @@ class OrderpointSyncTemplate(models.Model):
         compute="_compute_orderpoint_count", string="Orderpoint(s)"
     )
 
-    @api.multi
     def copy(self, default=None):
         self.ensure_one()
         default = dict(
@@ -87,18 +84,17 @@ class OrderpointSyncTemplate(models.Model):
                 [("sync_template_line_id.sync_template_id", "=", rec.id)]
             )
 
-    @api.multi
-    def create_orderpoints(self):  # flake8: noqa: C901
-        def generate_orderpoint(rec, lc):
+    def create_orderpoints(self):  # noqa: C901
+        def generate_orderpoint(record, lc):
             created, updated, deleted = 0, 0, 0
             child_ids = self.env["stock.location"].search(
-                [("company_id", "=", rec.company_id.id), ("location_id", "=", lc.id)]
+                [("company_id", "=", record.company_id.id), ("location_id", "=", lc.id)]
             )
             if not child_ids:
                 # generate reordering rules for the location and for every product
-                for p in rec.line_ids:
+                for p in record.line_ids:
                     ######
-                    tmp_location_ids = set(rec.location_ids.mapped("id"))
+                    tmp_location_ids = set(record.location_ids.mapped("id"))
 
                     to_update = {}
                     pending = []
@@ -126,12 +122,12 @@ class OrderpointSyncTemplate(models.Model):
                     for location_id, op in to_update.items():
                         changed = False
                         # company
-                        if op.company_id.id != rec.company_id.id:
-                            op.company_id = rec.company_id.id
+                        if op.company_id.id != record.company_id.id:
+                            op.company_id = record.company_id.id
                             changed = True
                         # warehouse
-                        if op.warehouse_id.id != rec.warehouse_id.id:
-                            op.warehouse_id = rec.warehouse_id.id
+                        if op.warehouse_id.id != record.warehouse_id.id:
+                            op.warehouse_id = record.warehouse_id.id
                             changed = True
                         # location
                         if op.location_id.id != location_id:
@@ -152,11 +148,13 @@ class OrderpointSyncTemplate(models.Model):
                         if op.qty_multiple != p.qty_multiple:
                             op.qty_multiple = p.qty_multiple
                             changed = True
-                        if op.lead_days != p.lead_days:
-                            op.lead_days = p.lead_days
-                            changed = True
-                        if op.lead_type != p.lead_type:
-                            op.lead_type = p.lead_type
+                        lead_days, dummy = op.rule_ids._get_lead_days(op.product_id)
+                        lead_days_date = (
+                            fields.Date.today()
+                            + relativedelta.relativedelta(days=lead_days)
+                        )
+                        if op.lead_days_date != lead_days_date:
+                            op.lead_days_date = lead_days_date
                             changed = True
 
                         if changed:
@@ -175,23 +173,21 @@ class OrderpointSyncTemplate(models.Model):
                                 0,
                                 False,
                                 {
-                                    "company_id": rec.company_id.id,
+                                    "company_id": record.company_id.id,
                                     "location_id": location_id,
-                                    "warehouse_id": rec.warehouse_id.id,
-                                    "group_id": rec.group_id,
+                                    "warehouse_id": record.warehouse_id.id,
+                                    "group_id": record.group_id,
                                     "product_id": p.product_id.id,
                                     "product_min_qty": p.product_min_qty,
                                     "product_max_qty": p.product_max_qty,
                                     "qty_multiple": p.qty_multiple,
-                                    "lead_days": p.lead_days,
-                                    "lead_type": p.lead_type,
                                 },
                             )
                         ]
                         created += 1
             else:
                 for c in child_ids:
-                    crt, upd, dele = generate_orderpoint(rec, c)
+                    crt, upd, dele = generate_orderpoint(record, c)
                     created += crt
                     updated += upd
                     deleted += dele
@@ -210,11 +206,11 @@ class OrderpointSyncTemplate(models.Model):
             # routes
             radded, pupdated = 0, 0
             if rec.route_ids:
-                for p in rec.line_ids:
+                for line in rec.line_ids:
                     changed = False
                     for r in rec.route_ids:
-                        if r.id not in p.product_id.route_ids.mapped("id"):
-                            p.product_id.route_ids = [(4, r.id, False)]
+                        if r.id not in line.product_id.route_ids.mapped("id"):
+                            line.product_id.route_ids = [(4, r.id, False)]
                             changed = True
                             radded += 1
 
@@ -238,6 +234,7 @@ class OrderpointSyncTemplate(models.Model):
 
 class OrderpointSyncTemplateLine(models.Model):
     _name = "stock.warehouse.orderpoint.sync.template.line"
+    _description = "Minimum Inventory Rule sync template lines"
 
     product_id = fields.Many2one(
         "product.product",
@@ -248,7 +245,7 @@ class OrderpointSyncTemplateLine(models.Model):
     )
 
     product_uom = fields.Many2one(
-        "product.uom",
+        "uom.uom",
         "Product Unit of Measure",
         related="product_id.uom_id",
         readonly=True,
@@ -258,38 +255,25 @@ class OrderpointSyncTemplateLine(models.Model):
 
     product_min_qty = fields.Float(
         "Minimum Quantity",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         required=True,
         help="When the virtual stock goes below the Min Quantity specified for this field,"
         " Odoo generates a procurement to bring the forecasted quantity to the Max Quantity.",
     )
     product_max_qty = fields.Float(
         "Maximum Quantity",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         required=True,
         help="When the virtual stock goes below the Min Quantity, Odoo generates a procurement"
         " to bring the forecasted quantity to the Quantity specified as Max Quantity.",
     )
     qty_multiple = fields.Float(
         "Qty Multiple",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         default=1,
         required=True,
         help="The procurement quantity will be rounded up to this multiple. If it is 0, "
         "the exact quantity will be used.",
-    )
-
-    lead_days = fields.Integer(
-        "Lead Time",
-        default=1,
-        help="Number of days after the orderpoint is triggered to receive the products"
-        " or to order to the vendor",
-    )
-    lead_type = fields.Selection(
-        [("net", "Day(s) to get the products"), ("supplier", "Day(s) to purchase")],
-        "Lead Type",
-        required=True,
-        default="supplier",
     )
 
     orderpoint_ids = fields.One2many(
