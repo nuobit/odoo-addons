@@ -9,6 +9,7 @@ from odoo.tools.translate import _
 
 class ProductBuyerInfo(models.Model):
     _name = "product.buyerinfo"
+    _description = "Buyer Info"
 
     partner_id = fields.Many2one(
         comodel_name="res.partner",
@@ -34,7 +35,6 @@ class ProductBuyerInfo(models.Model):
         ),
     ]
 
-    @api.multi
     def name_get(self):
         vals = []
         for record in self:
