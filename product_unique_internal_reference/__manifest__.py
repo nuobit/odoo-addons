@@ -6,7 +6,7 @@
     "name": "Product unique internal reference",
     "summary": "This module ensures that you enter a "
     "Unique Internal Reference (default_code) for your Products",
-    "version": "12.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Sales",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
