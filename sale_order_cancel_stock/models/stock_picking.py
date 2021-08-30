@@ -2,13 +2,12 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models
+from odoo import models
 
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
-    @api.multi
     def action_cancel(self):
         if not self.env.context.get("from_order"):
             return super(StockPicking, self).action_cancel()
@@ -43,7 +42,5 @@ class StockPicking(models.Model):
             return super(StockPicking, self).action_cancel()
 
         self.mapped("move_lines").filtered(lambda x: x.state != "done")._action_cancel()
-
         self.write({"is_locked": True})
-
         return True
