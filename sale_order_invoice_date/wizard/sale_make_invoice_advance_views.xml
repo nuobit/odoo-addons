@@ -11,7 +11,7 @@
             <xpath expr="//field[@name='advance_payment_method']/.." position="after">
                 <group>
                     <group>
-                        <field name="date_invoice" />
+                        <field name="invoice_date" />
                     </group>
                 </group>
             </xpath>
