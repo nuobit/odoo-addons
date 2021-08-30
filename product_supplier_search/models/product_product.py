@@ -13,7 +13,6 @@ class ProductProduct(models.Model):
         products_name = super().name_search(
             name=name, args=args, operator=operator, limit=limit
         )
-
         if name:
             if (
                 not self._context.get("partner_id")
@@ -56,5 +55,4 @@ class ProductProduct(models.Model):
                             )
                         else:
                             products_name += p.name_get()
-
         return products_name
