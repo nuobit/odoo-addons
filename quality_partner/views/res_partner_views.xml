@@ -12,12 +12,15 @@
             eval="[(6, False, [ref('quality_partner_group_guest')])]"
         />
         <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <field name="supplier_rank" invisible="1" />
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page
                     string="Quality"
-                    attrs="{'invisible': [('supplier', '=', False), ('is_company', '=', True)]}"
+                    attrs="{'invisible': [('supplier_rank', '&lt;=', 0), ('is_company', '=', True)]}"
                 >
-                    <notebook>
+                    <notebook colspan="4">
                         <page string="Supplier classification">
                             <group>
                                 <group>
