@@ -10,12 +10,12 @@ from odoo.tools.safe_eval import safe_eval
 def map_op(op):
     if op == "=":
         op = "=="
-
     return op
 
 
 class QualityTreeMixin(models.AbstractModel):
     _name = "quality.tree.mixin"
+    _description = "Quality Tree Mixin"
 
     # complete_name
     complete_name = fields.Char(
@@ -71,7 +71,6 @@ class QualityTreeMixin(models.AbstractModel):
                     node_ids.append(node.id)
             else:
                 raise UserError(_("Operator %s not implemented") % operator)
-
         return [("id", "in", node_ids)]
 
     @api.model
@@ -89,7 +88,6 @@ class QualityTreeMixin(models.AbstractModel):
                 leafs = self.env[self._name]
                 for node in nodes:
                     leafs += complete_name_to_leaf(node, childs[1:])
-
                 return leafs
 
         return complete_name_to_leaf(self.env[self._name], complete_name.split(" / "))
@@ -120,7 +118,6 @@ class QualityTreeMixin(models.AbstractModel):
             level = node._get_level()
             if safe_eval("%s %s %s" % (level, map_op(operator), value)):
                 node_ids.append((node.id, level))
-
         return [("id", "in", node_ids)]
 
     # root
