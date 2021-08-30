@@ -8,11 +8,12 @@
     "order lines that don't have any invoice or stock move linked.",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "category": "Purchases",
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
         "purchase",
+        "purchase_stock",
     ],
     "data": [
         "views/purchase_views.xml",
