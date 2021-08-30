@@ -6,7 +6,7 @@ import io
 import logging
 from math import ceil
 
-from odoo import api, models
+from odoo import models
 
 _logger = logging.getLogger(__name__)
 
@@ -22,11 +22,10 @@ def chunks(lst, n):
         yield lst[i : i + n]
 
 
-class Report(models.Model):
+class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
-    @api.multi
-    def render_qweb_pdf(self, res_ids=None, data=None):
+    def _render_qweb_pdf(self, res_ids=None, data=None):
         ir_config = self.env["ir.config_parameter"].sudo()
         chunk_threshold = int(
             ir_config.get_param("qweb.report.pdf.chunk.threshold", 50)
@@ -39,9 +38,7 @@ class Report(models.Model):
             or len(res_ids) <= chunk_threshold
             or len(res_ids) <= chunk_size
         ):
-            pdf_content, _ = super(Report, self).render_qweb_pdf(
-                res_ids=res_ids, data=data
-            )
+            pdf_content, _ = super()._render_qweb_pdf(res_ids=res_ids, data=data)
         else:
             chunk_count = ceil(len(res_ids) / chunk_size)
             _logger.info(
@@ -51,7 +48,7 @@ class Report(models.Model):
             pdf_merger = PdfFileMerger()
             for i, res_ids_chunk in enumerate(chunks(res_ids, chunk_size), 1):
                 _logger.info("Processing chunk %i of %i..." % (i, chunk_count))
-                pdf_content_chunk, _ = super(Report, self).render_qweb_pdf(
+                pdf_content_chunk, _ = super()._render_qweb_pdf(
                     res_ids=res_ids_chunk, data=data
                 )
 
