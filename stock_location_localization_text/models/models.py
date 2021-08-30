@@ -8,6 +8,6 @@ from odoo import fields, models
 class Location(models.Model):
     _inherit = "stock.location"
 
-    posx = fields.Char(default=None)
-    posy = fields.Char(default=None)
-    posz = fields.Char(default=None)
+    posx = fields.Char("Corridor (X)", default=None)
+    posy = fields.Char("Shelves (Y)", default=None)
+    posz = fields.Char("Height (Z)", default=None)
