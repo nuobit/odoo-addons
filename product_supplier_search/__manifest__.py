@@ -6,7 +6,7 @@
     "name": "Product supplier search",
     "summary": "Search products by supplier reference on "
     "selection fields and tree product view",
-    "version": "12.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Purchases",
     "author": "NuoBiT Solutions,S.L.,Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
