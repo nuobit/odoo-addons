@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ResPartner(models.Model):
@@ -12,7 +13,7 @@ class ResPartner(models.Model):
         comodel_name="quality.partner.classification",
         string="Classification",
         domain=[("level_type", "=", "description")],
-        on_delete="restrict",
+        ondelete="restrict",
     )
     quality_document_ids = fields.One2many(
         comodel_name="quality.partner.document",
@@ -29,7 +30,7 @@ class ResPartner(models.Model):
         for rec in self:
             if not rec.quality_classification_id:
                 if rec.quality_document_ids:
-                    raise ValueError(
+                    raise ValidationError(
                         _(
                             "If there's documents submitted, "
                             "the classification can not be null"
@@ -44,11 +45,11 @@ class ResPartner(models.Model):
                         "document_type_id"
                     )
                     if mandatory_document_ids - submitted_document_ids:
-                        raise ValueError(
+                        raise ValidationError(
                             _("Not all mandatory document types are submitted")
                         )
                     if submitted_document_ids - mandatory_document_ids:
-                        raise ValueError(
+                        raise ValidationError(
                             _(
                                 "There're documents submitted that are not "
                                 "mandatory for the classification selected"
