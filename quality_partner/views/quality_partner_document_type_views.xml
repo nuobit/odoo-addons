@@ -46,7 +46,6 @@
     >
         <field name="name">Document types</field>
         <field name="res_model">quality.partner.document.type</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first document type
