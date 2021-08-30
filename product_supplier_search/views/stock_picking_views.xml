@@ -9,19 +9,28 @@
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <xpath
-                expr="//field[@name='move_line_ids_without_package']/tree/field[@name='product_id']"
-                position="attributes"
-            >
-                <attribute name="context">
-                    {'picking_type_code': parent.picking_type_code, 'partner_id': parent.partner_id}
-                </attribute>
-            </xpath>
-            <xpath
                 expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']"
                 position="attributes"
             >
                 <attribute name="context">
-                    {'picking_type_code': parent.picking_type_code, 'partner_id': parent.partner_id}
+                    {'picking_type_code': parent.picking_type_code, 'partner_id': parent.partner_id, 'default_type': 'product'}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_stock_move_line_detailed_operation_tree" model="ir.ui.view">
+        <field
+            name="name"
+        >stock.move.line.operations.tree.inherit.supplier.search</field>
+        <field name="model">stock.move.line</field>
+        <field
+            name="inherit_id"
+            ref="stock.view_stock_move_line_detailed_operation_tree"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_id']" position="attributes">
+                <attribute name="context">
+                    {'picking_type_code': parent.picking_type_code, 'partner_id': parent.partner_id, 'default_type': 'product'}
                 </attribute>
             </xpath>
         </field>
