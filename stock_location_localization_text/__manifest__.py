@@ -6,7 +6,7 @@
     "name": "Stock location localization text",
     "summary": "This module allows to use non numeric values for localization "
     "coordinates in stock locations",
-    "version": "11.0.0.1.0",
+    "version": "14.0.1.0.0",
     "category": "Warehouse",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
@@ -16,4 +16,7 @@
     ],
     "installable": True,
     "auto_install": False,
+    "data": [
+        "views/stock_location_views.xml",
+    ],
 }
