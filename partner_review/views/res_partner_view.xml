@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,24 +6,32 @@
     <record id="view_partner_form" model="ir.ui.view">
         <field name="name">res.partner.form.view</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <field name="category_id" position="after">
-                <field name="to_review"/>
+                <field name="to_review" />
             </field>
         </field>
     </record>
     <record id="view_res_partner_filter" model="ir.ui.view">
         <field name="name">res.partner.filter.review</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
         <field name="arch" type="xml">
             <filter name="inactive" position="after">
-                <separator/>
-                <filter string="To review" name="to_review" domain="[('to_review','=',True)]"/>
+                <separator />
+                <filter
+                    string="To review"
+                    name="to_review"
+                    domain="[('to_review','=',True)]"
+                />
             </filter>
             <group name="group_by" position="inside">
-                <filter name="toreview" string="To review" context="{'group_by' : 'to_review'}"/>
+                <filter
+                    name="toreview"
+                    string="To review"
+                    context="{'group_by' : 'to_review'}"
+                />
             </group>
         </field>
     </record>
