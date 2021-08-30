@@ -10,7 +10,6 @@
     >
         <field name="name">Orderpoint</field>
         <field name="res_model">stock.warehouse.orderpoint</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('sync_template_id','=',active_id)]</field>
         <field name="context">{'default_sync_template_id': active_id}</field>
@@ -117,8 +116,6 @@
                                         name="qty_multiple"
                                         string="Quantity Multiple"
                                     />
-                                    <field name="lead_days" />
-                                    <field name="lead_type" />
                                     <field name="orderpoint_ids" />
                                 </tree>
                             </field>
