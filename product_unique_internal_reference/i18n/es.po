@@ -1,13 +1,14 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* product_unique_internal_reference
+# 	* product_unique_internal_reference
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-17 17:48+0000\n"
-"PO-Revision-Date: 2020-01-17 17:48+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2021-12-16 14:21+0000\n"
+"PO-Revision-Date: 2021-12-16 14:21+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,19 +16,95 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: product_unique_internal_reference
-#: code:addons/product_unique_internal_reference/hooks.py:32
+#: code:addons/product_unique_internal_reference/hooks.py:0
 #, python-format
 msgid "Conflicting internal references exist: %s, "
 msgstr "Existe un conflicto de referencias internas: %s, "
 
 #. module: product_unique_internal_reference
-#: code:addons/product_unique_internal_reference/models/product_product.py:25
+#: model:ir.model.fields,field_description:product_unique_internal_reference.field_product_product__display_name
+#: model:ir.model.fields,field_description:product_unique_internal_reference.field_product_template__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: product_unique_internal_reference
+#: code:addons/product_unique_internal_reference/models/product_product.py:0
 #, python-format
-msgid "Error! The Default Code %s already exists. Check also the archived ones."
-msgstr "Error! La referencia interna %s ya existe. Comprobar también los productos archivados."
+msgid ""
+"Error! The Default Code %s already exists. Check also the archived ones."
+msgstr ""
+"Error! La referencia interna %s ya existe. Comprobar también los productos "
+"archivados."
+
+#. module: product_unique_internal_reference
+#: model:ir.model.fields,field_description:product_unique_internal_reference.field_product_product__id
+#: model:ir.model.fields,field_description:product_unique_internal_reference.field_product_template__id
+msgid "ID"
+msgstr ""
+
+#. module: product_unique_internal_reference
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#, python-format
+msgid ""
+"It has been possible to change the template Internal Reference existing a "
+"variant with the same one"
+msgstr ""
+
+#. module: product_unique_internal_reference
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#, python-format
+msgid ""
+"It has been possible to create a product template on one company and another"
+" without company with the same Internal Reference"
+msgstr ""
+
+#. module: product_unique_internal_reference
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#, python-format
+msgid ""
+"It has been possible to create a product template when a variant of another "
+"template has the same Internal Reference"
+msgstr ""
+
+#. module: product_unique_internal_reference
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#, python-format
+msgid ""
+"It has been possible to create a product variant when a variant of another "
+"template has the same Internal Reference"
+msgstr ""
+
+#. module: product_unique_internal_reference
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#, python-format
+msgid ""
+"It has been possible to create two product templates with the same Internal "
+"Reference"
+msgstr ""
+
+#. module: product_unique_internal_reference
+#: model:ir.model.fields,field_description:product_unique_internal_reference.field_product_product____last_update
+#: model:ir.model.fields,field_description:product_unique_internal_reference.field_product_template____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
 
 #. module: product_unique_internal_reference
 #: model:ir.model,name:product_unique_internal_reference.model_product_product
 msgid "Product"
 msgstr "Producto"
 
+#. module: product_unique_internal_reference
+#: model:ir.model,name:product_unique_internal_reference.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: product_unique_internal_reference
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
+#, python-format
+msgid ""
+"The Internal References are not equal, this should have not raised an "
+"Exception"
+msgstr ""
