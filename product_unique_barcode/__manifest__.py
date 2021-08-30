@@ -5,7 +5,7 @@
 {
     "name": "Product unique barcode",
     "summary": "This module ensures that you enter a Unique Barcode for your Products",
-    "version": "11.0.0.2.1",
+    "version": "14.0.1.0.0",
     "category": "Sales",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
