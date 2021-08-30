@@ -21,7 +21,7 @@
             <form>
                 <sheet>
                     <group>
-                        <group col="4">
+                        <group col="2">
                             <field name="name" />
                             <field name="company_id" />
                         </group>
