@@ -49,12 +49,10 @@
         </field>
     </record>
 
-    <act_window
-        id="stock_picking_import_serials_action"
-        name="Import serial numbers"
-        res_model="stock.picking.import.serials"
-        view_mode="form"
-        target="new"
-        view_type="form"
-    />
+    <record id="stock_picking_import_serials_action" model="ir.actions.act_window">
+        <field name="name">Import serial numbers</field>
+        <field name="res_model">stock.picking.import.serials</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 </odoo>
