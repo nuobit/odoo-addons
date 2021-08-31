@@ -1,16 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_picking_form" model="ir.ui.view">
         <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button type="action" name="%(stock_picking_import_serials_action)s"
-                        class="btn btn-default" string="Import serial numbers"
-                        attrs="{'invisible': ['|', ('picking_type_code', '!=', 'incoming'), ('state', 'not in', ('draft', 'waiting', 'confirmed', 'assigned'))]}"/>
+                <button
+                    type="action"
+                    name="%(stock_picking_import_serials_action)s"
+                    class="btn btn-default"
+                    string="Import serial numbers"
+                    attrs="{'invisible': ['|', ('picking_type_code', '!=', 'incoming'), ('state', 'not in', ('draft', 'waiting', 'confirmed', 'assigned'))]}"
+                />
             </xpath>
         </field>
     </record>
