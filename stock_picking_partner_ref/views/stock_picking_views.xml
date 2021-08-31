@@ -30,18 +30,18 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_internal_search" />
         <field name="arch" type="xml">
-            <xpath expr="/search/field[@name='name']" position="replace">
-                <field
-                    name="name"
-                    string="Picking List"
-                    filter_domain="['|','|',('name','ilike', self),('origin','ilike',self),('partner_ref','ilike',self)]"
-                />
+            <xpath expr="/search/field[@name='name']" position="attributes">
+                <attribute name="string">Picking List</attribute>
+                <attribute
+                    name="filter_domain"
+                >['|','|',('name','ilike', self),('origin','ilike',self),('partner_ref','ilike',self)]</attribute>
             </xpath>
             <xpath expr="/search/field[@name='product_id']" position="after">
                 <field name="partner_ref" />
             </xpath>
             <xpath expr="/search/group" position="inside">
                 <filter
+                    name="partner_reference"
                     string="Partner reference"
                     domain="[]"
                     context="{'group_by':'partner_ref'}"
