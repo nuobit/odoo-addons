@@ -7,8 +7,6 @@ import re
 from odoo import _, fields, models
 from odoo.exceptions import UserError
 
-from odoo.addons import decimal_precision as dp
-
 
 class StockMove(models.Model):
     _inherit = "stock.move"
@@ -18,24 +16,23 @@ class StockMove(models.Model):
             uom_rate = uom.factor_inv
             if uom.uom_type == "smaller":
                 uom_rate = 1 / uom_rate
-
             return uom_rate
 
+        if not uom_from or not uom_to:
+            return 1
         if uom_from == uom_to:
             return 1
-
         if uom_from.category_id != uom_to.category_id:
             raise UserError(
                 _("Cannot convert the units of the product %s")
                 % (self.product_id.default_code or self.product_id.name)
             )
-
         return _get_uom_rate(uom_from) / _get_uom_rate(uom_to)
 
     sale_price_unit = fields.Float(
         "Sale unit price",
         compute="_compute_sale_price_unit",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
     )
 
     def _compute_sale_price_unit(self):
@@ -85,7 +82,6 @@ class StockMove(models.Model):
         m = re.match(r"^ *\[([^]]+)\] *(.*)$", name, flags=re.DOTALL)
         if not m:
             return None, name
-
         return m.groups()
 
     def get_product_codes(self):
@@ -96,22 +92,18 @@ class StockMove(models.Model):
         )
         if buyer and buyer.code:
             customer_ref = buyer.code
-
         return default_code, customer_ref
 
     def get_splited_line_description(self):
         if not self.product_id:
             return self.name
-
         line_partner_ref, line_name = self._extract_product_code(self.name)
         default_code, customer_ref = self.get_product_codes()
         if line_partner_ref:
             if default_code:
                 if line_partner_ref == default_code:
                     return line_name
-
             if customer_ref:
                 if line_partner_ref == customer_ref:
                     return line_name
-
         return self.name

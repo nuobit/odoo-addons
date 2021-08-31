@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
-from odoo import api, models
+from odoo import models
 
 
 class Picking(models.Model):
@@ -22,7 +22,6 @@ class Picking(models.Model):
             "total": amount_untaxed + amount_tax,
         }
 
-    @api.multi
     def _get_tax_amount_by_group(self):
         self.ensure_one()
         res = {}
@@ -42,5 +41,4 @@ class Picking(models.Model):
                         res[group]["base"] += t["base"]
         res = sorted(res.items(), key=lambda l: l[0].sequence)
         res = [(val[0].name, val[1]["amount"], val[1]["base"], len(res)) for val in res]
-
         return res

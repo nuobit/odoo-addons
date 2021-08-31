@@ -6,9 +6,9 @@
     <template id="report_assets_common" inherit_id="web.report_assets_common">
         <xpath expr="." position="inside">
             <link
-                href="/stock_picking_report_delivery_note/static/src/less/stock_picking_report_delivery_note.less"
+                href="/stock_picking_report_delivery_note/static/src/scss/stock_picking_report_delivery_note.scss"
                 rel="stylesheet"
-                type="text/less"
+                type="text/scss"
             />
         </xpath>
     </template>
@@ -165,27 +165,24 @@
                                                     class="row mt16 mb16"
                                                     id="informations"
                                                 >
-                                                    <div
-                                                        t-if="o.origin"
-                                                        class="col-xs-2"
-                                                    >
+                                                    <div t-if="o.origin" class="col-2">
                                                         <strong>Origin</strong>
                                                         <p t-field="o.origin" />
                                                     </div>
                                                     <div
                                                         t-if="o.date_done"
-                                                        class="col-xs-2"
+                                                        class="col-2"
                                                     >
                                                         <strong
                                                         >Delivery note date</strong>
                                                         <p
                                                             t-field="o.date_done"
-                                                            t-field-options="{'widget': 'date'}"
+                                                            t-options="{'widget': 'date'}"
                                                         />
                                                     </div>
                                                     <div
                                                         t-if="o.sale_id.client_order_ref"
-                                                        class="col-xs-3"
+                                                        class="col-3"
                                                     >
                                                         <strong
                                                         >Customer reference</strong>
@@ -195,7 +192,7 @@
                                                     </div>
                                                     <div
                                                         t-if="o.partner_id.ref"
-                                                        class="col-xs-2"
+                                                        class="col-2"
                                                     >
                                                         <strong>Customer code</strong>
                                                         <p t-field="o.partner_id.ref" />
@@ -203,7 +200,7 @@
                                                     <div
                                                         name="payment_term"
                                                         t-if="o.sale_id.payment_term_id"
-                                                        class="col-xs-3"
+                                                        class="col-3"
                                                     >
                                                         <strong>Payment terms</strong>
                                                         <p
@@ -329,7 +326,7 @@
                             t-set="tax_amount_by_group"
                             t-value="list(filter(lambda x: x[1], o._get_tax_amount_by_group()))"
                         />
-                        <div class="col-xs-4 pull-right">
+                        <div class="col-4 ml-auto">
                             <table
                                 class="table table-condensed"
                                 style="min-width: 250px;max-width: 400px;"
@@ -394,6 +391,7 @@
                                     </td>
                                     <td class="text-right">
                                         <span
+                                            t-if="o.sale_id.pricelist_id.currency_id"
                                             t-esc="picking_amounts['total']"
                                             t-options='{"widget": "monetary", "display_currency": o.sale_id.pricelist_id.currency_id}'
                                         />

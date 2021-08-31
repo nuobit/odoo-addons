@@ -22,14 +22,23 @@
     </data>
 
     <data>
-        <report
+        <record
             id="stock_picking_report_delivery_note_action"
-            string="Delivery note with prices"
-            print_report_name="'Delivery note with prices %s' % (object.name, )"
-            name="stock_picking_report_delivery_note.sprdn"
-            model="stock.picking"
-            report_type="qweb-pdf"
-            paperformat="stock_picking_report_delivery_note.stock_picking_report_delivery_note_paperformat"
-        />
+            model="ir.actions.report"
+        >
+            <field name="name">Delivery note with prices</field>
+            <field
+                name="print_report_name"
+            >'Delivery note with prices %s' % (object.name, )</field>
+            <field name="report_name">stock_picking_report_delivery_note.sprdn</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field
+                name="paperformat_id"
+                ref="stock_picking_report_delivery_note.stock_picking_report_delivery_note_paperformat"
+            />
+            <field name="binding_model_id" ref="stock.model_stock_picking" />
+            <field name="binding_type">report</field>
+        </record>
     </data>
 </odoo>
