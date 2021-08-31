@@ -6,7 +6,7 @@ import base64
 
 import xlrd
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 MAP_TYPES = {
@@ -64,6 +64,7 @@ class MsgLog:
 
 class StockPickingImportSerials(models.TransientModel):
     _name = "stock.picking.import.serials"
+    _description = "Stock Picking Import Serials"
 
     datas = fields.Binary(string="File", attachment=True, required=True)
     datas_fname = fields.Char(string="Filename", required=True)
@@ -82,15 +83,16 @@ class StockPickingImportSerials(models.TransientModel):
         copy=False,
     )
 
-    @api.multi
     def import_serials(self):  # noqa: C901
         self.ensure_one()
 
         msglog = MsgLog(
             {
                 "MoreSerialsThanLines": _(
-                    "Not all serial numbers have been assigned. There are more serial numbers "
-                    "in the file than picking lines without them.\nSerial numbers not assigned:"
+                    "Not all serial numbers have been assigned. "
+                    "There are more serial numbers "
+                    "in the file than picking lines without them.\n"
+                    "Serial numbers not assigned:"
                 ),
                 "MoreLinesThanSerials": _(
                     "There's not enough serial numbers in input file so there's "
@@ -128,7 +130,6 @@ class StockPickingImportSerials(models.TransientModel):
                         raise UserError(
                             _("The fields on the header row must not be null")
                         )
-                header = list(map(lambda x: str(x), row_values))
             else:
                 default_code = _get_cell(sheet, row_index, 0, xlrd.XL_CELL_TEXT)
                 tracking_number = _get_cell(sheet, row_index, 1, xlrd.XL_CELL_TEXT)
@@ -226,8 +227,10 @@ class StockPickingImportSerials(models.TransientModel):
                     if not lot_id:
                         if not picking.picking_type_id.use_create_lots:
                             raise UserError(
-                                "The creation of Lot/Serial number is "
-                                "not allowed in this operation type"
+                                _(
+                                    "The creation of Lot/Serial number is "
+                                    "not allowed in this operation type"
+                                )
                             )
                         lot_id = self.env["stock.production.lot"].create(
                             {
@@ -239,8 +242,10 @@ class StockPickingImportSerials(models.TransientModel):
                     else:
                         if not picking.picking_type_id.use_existing_lots:
                             raise UserError(
-                                "The use of existing Lot/Serial number is "
-                                "not allowed in this operation type"
+                                _(
+                                    "The use of existing Lot/Serial number is "
+                                    "not allowed in this operation type"
+                                )
                             )
 
                     line.lot_id = lot_id
