@@ -5,7 +5,7 @@
 {
     "name": "Stock picking import serials",
     "summary": "Import serial numbers to a stock picking from spreadsheet file",
-    "version": "11.0.1.0.4",
+    "version": "14.0.1.0.0",
     "category": "Warehouse Management",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
@@ -19,6 +19,7 @@
         ],
     },
     "data": [
+        "security/ir.model.access.csv",
         "wizard/stock_picking_import_serials.xml",
         "views/stock_picking_views.xml",
     ],
