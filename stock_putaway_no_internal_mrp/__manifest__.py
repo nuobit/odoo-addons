@@ -6,7 +6,7 @@
     "name": "Putaway strategy no internal for MRP",
     "summary": "Allow to exclude putaway strategies "
     "if they are applied on an manufacturing operations",
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Warehouse Management",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
@@ -15,7 +15,6 @@
         "mrp",
         "stock_putaway_no_internal",
     ],
-    "data": [],
     "installable": True,
     "development_status": "Beta",
     "maintainers": ["eantones"],
