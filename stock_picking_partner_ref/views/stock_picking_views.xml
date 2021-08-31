@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,10 +6,10 @@
     <record id="stock_picking_view_form_inherit_partner_ref" model="ir.ui.view">
         <field name="name">stock.picking.form.inherit.partner.ref</field>
         <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="partner_ref"/>
+                <field name="partner_ref" />
             </xpath>
         </field>
     </record>
@@ -17,10 +17,10 @@
     <record id="stock_picking_view_tree_inherit_partner_ref" model="ir.ui.view">
         <field name="name">stock.picking.tree.inherit.partner.ref</field>
         <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="inherit_id" ref="stock.vpicktree" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="partner_ref"/>
+                <field name="partner_ref" />
             </xpath>
         </field>
     </record>
@@ -28,17 +28,24 @@
     <record id="stock_picking_view_search_inherit_partner_ref" model="ir.ui.view">
         <field name="name">stock.picking.search.inherit.partner.ref</field>
         <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="inherit_id" ref="stock.view_picking_internal_search" />
         <field name="arch" type="xml">
             <xpath expr="/search/field[@name='name']" position="replace">
-                <field name="name" string="Picking List"
-                       filter_domain="['|','|',('name','ilike', self),('origin','ilike',self),('partner_ref','ilike',self)]"/>
+                <field
+                    name="name"
+                    string="Picking List"
+                    filter_domain="['|','|',('name','ilike', self),('origin','ilike',self),('partner_ref','ilike',self)]"
+                />
             </xpath>
             <xpath expr="/search/field[@name='product_id']" position="after">
-                <field name="partner_ref"/>
+                <field name="partner_ref" />
             </xpath>
             <xpath expr="/search/group" position="inside">
-                <filter string="Partner reference" domain="[]" context="{'group_by':'partner_ref'}"/>
+                <filter
+                    string="Partner reference"
+                    domain="[]"
+                    context="{'group_by':'partner_ref'}"
+                />
             </xpath>
         </field>
     </record>
