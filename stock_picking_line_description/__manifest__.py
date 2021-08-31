@@ -7,7 +7,7 @@
     "summary": "Adds description on picking lines.",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "category": "Warehouse",
-    "version": "11.0.0.2.0",
+    "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
