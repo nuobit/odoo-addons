@@ -4,8 +4,8 @@
 
 {
     "name": "Stock picking report location order",
-    "description": "Sort report picking lines by location",
-    "version": "11.0.1.0.2",
+    "summary": "Sort report picking lines by location",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Warehouse",
