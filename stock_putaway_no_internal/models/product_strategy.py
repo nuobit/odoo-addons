@@ -6,7 +6,8 @@ from odoo import fields, models
 
 
 class PutAwayStrategy(models.Model):
-    _inherit = 'product.putaway'
+    _inherit = "product.putaway"
 
-    exclude_internal_operations = fields.Boolean(string='Exclude internal operations',
-                                                 default=False)
+    exclude_internal_operations = fields.Boolean(
+        string="Exclude internal operations", default=False
+    )
