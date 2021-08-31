@@ -7,9 +7,10 @@ from odoo import api, models
 
 class StockPickingReport(models.AbstractModel):
     _name = "report.stock_picking_report_delivery_note.sprdn"
+    _description = "Stock Picking Report Delivery Note"
 
     @api.model
-    def get_report_values(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
         report_obj = self.env["ir.actions.report"]
         report = report_obj._get_report_from_name(
             "stock_picking_report_delivery_note.sprdn"
@@ -25,5 +26,4 @@ class StockPickingReport(models.AbstractModel):
             "docs": docs,
             "header_max_height": header_max_height,
         }
-
         return data

@@ -1,13 +1,14 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* stock_picking_report_delivery_note
+# 	* stock_picking_report_delivery_note
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-08 20:26+0000\n"
-"PO-Revision-Date: 2020-01-08 20:26+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2021-12-16 16:19+0000\n"
+"PO-Revision-Date: 2021-12-16 16:19+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,69 +16,80 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model:ir.actions.report,print_report_name:stock_picking_report_delivery_note.stock_picking_report_delivery_note_action
+msgid "'Delivery note with prices %s' % (object.name, )"
+msgstr ""
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "<span>Cancelled delivery note</span>"
 msgstr "<span>Albarà cancel·lat<span>"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "<span>Delivery note</span>"
 msgstr "<span>Albarà</span>"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "<span>Draft delivery note</span>"
 msgstr "<span>Albarà esborrany</span>"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "<span>Pending delivery note</span>"
 msgstr "<span>Albarà pendent</span>"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "<span>on</span>"
 msgstr "<span>sobre</span>"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "<strong>Customer code</strong>"
-msgstr "<strong>Codi cliente</strong>"
+msgstr "<strong>Codi client</strong>"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
-msgid "<strong>Delivery note date</strong>"
-msgstr "<strong>Data albarà</strong>"
-
-#. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
-msgid "<strong>Origin</strong>"
-msgstr "<strong>Origen</strong>"
-
-#. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
-msgid "<strong>Payment terms</strong>"
-msgstr "<strong>Termini de pagament</strong>"
-
-#. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
-msgid "<strong>Subtotal</strong>"
-msgstr "<strong>Subtotal</strong>"
-
-#. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
-msgid "<strong>Total</strong>"
-msgstr "<strong>Total</strong>"
-
-#. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "<strong>Customer reference</strong>"
 msgstr "<strong>Referència client</strong>"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+msgid "<strong>Delivery note date</strong>"
+msgstr "<strong>Data albarà</strong>"
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+msgid "<strong>Origin</strong>"
+msgstr "<strong>Origen</strong>"
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+msgid "<strong>Payment terms</strong>"
+msgstr "<strong>Termini de pagament</strong>"
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+msgid "<strong>Subtotal</strong>"
+msgstr "<strong>Subtotal</strong>"
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+msgid "<strong>Total</strong>"
+msgstr "<strong>Total</strong>"
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "Amount"
 msgstr "Import"
+
+#. module: stock_picking_report_delivery_note
+#: code:addons/stock_picking_report_delivery_note/models/stock_move.py:0
+#, python-format
+msgid "Cannot convert the units of the product %s"
+msgstr ""
 
 #. module: stock_picking_report_delivery_note
 #: model:ir.actions.report,name:stock_picking_report_delivery_note.stock_picking_report_delivery_note_action
@@ -85,48 +97,81 @@ msgid "Delivery note with prices"
 msgstr "Albarà valorat"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "Description"
 msgstr "Descripció"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
-msgid "Ref./Ref.cli."
-msgstr "Ref./Ref.cli."
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_report_stock_picking_report_delivery_note_sprdn__display_name
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_stock_move__display_name
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_stock_picking__display_name
+msgid "Display Name"
+msgstr "Nom a mostrar"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_report_stock_picking_report_delivery_note_sprdn__id
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_stock_move__id
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_stock_picking__id
+msgid "ID"
+msgstr ""
+
+#. module: stock_picking_report_delivery_note
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_report_stock_picking_report_delivery_note_sprdn____last_update
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_stock_move____last_update
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_stock_picking____last_update
+msgid "Last Modified on"
+msgstr "Última modificació el "
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "Lots:"
 msgstr "Lots:"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.stock_picking_report_delivery_note_external_layout
-msgid "Page\n"
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.stock_picking_report_delivery_note_external_layout
+msgid ""
+"Page\n"
 "                    <span class=\"page\"/>\n"
 "                    of\n"
 "                    <span class=\"topage\"/>"
-msgstr "Pàgina\n"
+msgstr ""
+"Pàgina\n"
 "                    <span class=\"page\"/>\n"
 "                    de\n"
 "                    <span class=\"topage\"/>"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "Quantity"
 msgstr "Quantitat"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+msgid "Ref./Ref.cli."
+msgstr "Ref./Ref.cli."
+
+#. module: stock_picking_report_delivery_note
+#: model:ir.model.fields,field_description:stock_picking_report_delivery_note.field_stock_move__sale_price_unit
+msgid "Sale unit price"
+msgstr ""
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "Serial numbers:"
 msgstr "Números de sèrie:"
 
 #. module: stock_picking_report_delivery_note
 #: model:ir.model,name:stock_picking_report_delivery_note.model_stock_move
 msgid "Stock Move"
-msgstr "Movimient d'existèncias"
+msgstr "Moviment d'existències"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.stock_picking_report_delivery_note_external_layout
+#: model:ir.model,name:stock_picking_report_delivery_note.model_report_stock_picking_report_delivery_note_sprdn
+msgid "Stock Picking Report Delivery Note"
+msgstr ""
+
+#. module: stock_picking_report_delivery_note
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.stock_picking_report_delivery_note_external_layout
 msgid "Tel."
 msgstr "Tel."
 
@@ -136,7 +181,6 @@ msgid "Transfer"
 msgstr "Transferir"
 
 #. module: stock_picking_report_delivery_note
-#: model:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
+#: model_terms:ir.ui.view,arch_db:stock_picking_report_delivery_note.sprdn_document
 msgid "Unit Price"
 msgstr "Preu"
-
