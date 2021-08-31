@@ -14,14 +14,17 @@
         max-height: 100%;
     }
 }
-
-.sprdn-basetable {
+@mixin sprdn-max-width {
     width: 100%;
     max-width: 100%;
 }
 
+.sprdn-basetable {
+    @include sprdn-max-width;
+}
+
 .sprdn-table-1 {
-    .sprdn-basetable;
+    @include sprdn-max-width;
     margin-bottom: 5px;
 }
 
@@ -30,19 +33,19 @@
 }
 
 .sprdn-table-2 {
-    .sprdn-basetable;
+    @include sprdn-max-width;
 }
 
 .sprdn-table0 {
-    .sprdn-basetable;
+    @include sprdn-max-width;
 }
 
 .sprdn-table1 {
-    .sprdn-basetable;
+    @include sprdn-max-width;
 }
 
 .sprdn-table2 {
-    .sprdn-basetable;
+    @include sprdn-max-width;
 }
 
 .sprdn-table3 > thead > tr > th {

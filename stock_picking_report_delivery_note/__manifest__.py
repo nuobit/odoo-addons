@@ -4,8 +4,8 @@
 
 {
     "name": "Stock picking delivery note",
-    "description": """Stock picking delivery note""",
-    "version": "11.0.1.0.6",
+    "summary": """Stock picking delivery note""",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Warehouse",
