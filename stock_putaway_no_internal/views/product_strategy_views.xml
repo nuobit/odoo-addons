@@ -3,12 +3,12 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="view_putaway" model="ir.ui.view">
-        <field name="name">product.putaway.exclude.picking.type.form.method</field>
-        <field name="model">product.putaway</field>
-        <field name="inherit_id" ref="stock.view_putaway" />
+    <record id="stock_putaway_list" model="ir.ui.view">
+        <field name="name">stock.putaway.rule.exclude.picking.type.tree.method</field>
+        <field name="model">stock.putaway.rule</field>
+        <field name="inherit_id" ref="stock.stock_putaway_list" />
         <field name="arch" type="xml">
-            <field name="name" position="after">
+            <field name="company_id" position="before">
                 <field name="exclude_internal_operations" />
             </field>
         </field>
