@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -9,27 +9,43 @@
         <field name="arch" type="xml">
             <form string="Aeat VAT special prorrate map">
                 <header>
-                    <button name="compute_prorrate" type="object" string="Compute"
-                            states="temporary" class="oe_highlight"/>
-                    <button name="close_prorrate" type="object" string="Close"
-                            states="finale" class="oe_highlight"/>
-                    <button name="compute_prorrate" type="object" string="Recompute"
-                            states="finale"/>
-                    <button name="set_temporary" type="object" string="Set to Temporary"
-                            states="finale"/>
-                    <field name="state" widget="statusbar" clickable="False"/>
+                    <button
+                        name="compute_prorrate"
+                        type="object"
+                        string="Compute"
+                        states="temporary"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="close_prorrate"
+                        type="object"
+                        string="Close"
+                        states="finale"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="compute_prorrate"
+                        type="object"
+                        string="Recompute"
+                        states="finale"
+                    />
+                    <button
+                        name="set_temporary"
+                        type="object"
+                        string="Set to Temporary"
+                        states="finale"
+                    />
+                    <field name="state" widget="statusbar" clickable="False" />
                 </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="year"/>
+                            <field name="year" />
                         </group>
                         <group>
-                            <field name="tax_percentage"/>
-                            <field name="tax_final_percentage_aux"
-                                   states="finale"/>
-                            <field name="tax_final_percentage"
-                                   states="closed"/>
+                            <field name="tax_percentage" />
+                            <field name="tax_final_percentage_aux" states="finale" />
+                            <field name="tax_final_percentage" states="closed" />
                         </group>
                     </group>
                 </sheet>
@@ -42,10 +58,10 @@
         <field name="model">aeat.map.special.prorrate.year</field>
         <field name="arch" type="xml">
             <tree string="Aeat VAT special prorrate map">
-                <field name="year"/>
-                <field name="tax_percentage"/>
-                <field name="tax_final_percentage"/>
-                <field name="state"/>
+                <field name="year" />
+                <field name="tax_percentage" />
+                <field name="tax_final_percentage" />
+                <field name="state" />
             </tree>
         </field>
     </record>
@@ -57,8 +73,10 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_aeat_map_special_prorrate_year"
-              parent="l10n_es_aeat.menu_l10n_es_aeat_config"
-              action="action_aeat_map_special_prorrate_year"
-              name="Aeat VAT special prorrate map"/>
+    <menuitem
+        id="menu_aeat_map_special_prorrate_year"
+        parent="l10n_es_aeat.menu_l10n_es_aeat_config"
+        action="action_aeat_map_special_prorrate_year"
+        name="Aeat VAT special prorrate map"
+    />
 </odoo>
