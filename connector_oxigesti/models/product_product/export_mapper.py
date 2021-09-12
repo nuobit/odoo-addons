@@ -53,3 +53,11 @@ class ProductProductExportMapper(Component):
     @mapping
     def DescripcionArticulo(self, record):
         return {'DescripcionArticulo': record.name[:250]}
+
+    @mapping
+    def Categoria(self, record):
+        # TODO: define default language on backend record and get
+        #  the language from there
+        category = record.with_context(lang='es_ES').categ_id
+        m = re.match(r'^ *([0-9]+) *- *', category.name)
+        return {'Categoria': m and int(m.group(1)) or None}
