@@ -4,9 +4,7 @@
 
 from odoo import models, fields, api
 
-from odoo.addons.component.core import Component
 from odoo.addons.queue_job.job import job
-from odoo import exceptions
 
 
 class ProductProduct(models.Model):
@@ -37,7 +35,10 @@ class ProductProductBinding(models.Model):
             ('company_id', '=', backend_record.company_id.id),
         ]
         if since_date:
-            domain += [('write_date', '>', since_date)]
+            domain += [
+                '|', ('write_date', '>', since_date),
+                ('product_tmpl_id.write_date', '>', since_date)
+            ]
         now_fmt = fields.Datetime.now()
         self.export_batch(backend=backend_record, domain=domain)
         backend_record.export_products_since_date = now_fmt
