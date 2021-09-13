@@ -47,6 +47,9 @@ class OxigestiBackend(models.Model):
 
     warehouse_id = fields.Many2one(comodel_name='stock.warehouse', string="Warehouse")
 
+    lang_id = fields.Many2one(comodel_name='res.lang', string="Language",
+                              default=lambda self: self.env.ref('base.lang_es'), required=True)
+
     active = fields.Boolean(
         string='Active',
         default=True
