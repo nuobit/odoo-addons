@@ -4,11 +4,9 @@
 
 import re
 
-from odoo import _
-
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
-    mapping, external_to_m2o, only_create, changed_by)
+    mapping, only_create, changed_by)
 
 
 def nullif(field):
@@ -52,12 +50,12 @@ class ProductProductExportMapper(Component):
     @changed_by('name')
     @mapping
     def DescripcionArticulo(self, record):
-        return {'DescripcionArticulo': record.name[:250]}
+        return {'DescripcionArticulo': record.with_context(
+            lang=self.backend_record.lang_id.code).name[:250]}
 
+    @changed_by('categ_id')
     @mapping
     def Categoria(self, record):
-        # TODO: define default language on backend record and get
-        #  the language from there
-        category = record.with_context(lang='es_ES').categ_id
+        category = record.with_context(lang=self.backend_record.lang_id.code).categ_id
         m = re.match(r'^ *([0-9]+) *- *', category.name)
         return {'Categoria': m and int(m.group(1)) or None}
