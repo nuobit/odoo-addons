@@ -2,8 +2,6 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import re
-
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
     mapping, only_create, changed_by)
@@ -56,6 +54,4 @@ class ProductProductExportMapper(Component):
     @changed_by('categ_id')
     @mapping
     def Categoria(self, record):
-        category = record.with_context(lang=self.backend_record.lang_id.code).categ_id
-        m = re.match(r'^ *([0-9]+) *- *', category.name)
-        return {'Categoria': m and int(m.group(1)) or None}
+        return {'Categoria': record.categ_id.id}
