@@ -3,9 +3,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
-from odoo.addons.queue_job.exception import NothingToDoJob
+
 from odoo import _
 from odoo.addons.component.core import AbstractComponent
+from odoo.addons.queue_job.exception import NothingToDoJob
 
 _logger = logging.getLogger(__name__)
 
@@ -114,7 +115,7 @@ class OxigestiBatchExporter(AbstractComponent):
     def run(self, domain=[]):
         """ Run the batch synchronization """
         relation_model = self.binder_for(self.model._name).unwrap_model()
-        for relation in self.env[relation_model].search(domain):
+        for relation in self.env[relation_model].with_context(active_test=False).search(domain):
             self._export_record(relation)
 
     def _export_record(self, external_id):
