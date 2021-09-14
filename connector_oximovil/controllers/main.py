@@ -108,6 +108,7 @@ class OxiMovilController(http.Controller):
             'id': product.id,
             'code': product.default_code,
             'description': product.with_context(lang='es_ES').name,
+            'category_id': product.categ_id.id,
             'category': product.with_context(lang='es_ES').categ_id.name,
         }
 
