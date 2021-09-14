@@ -348,10 +348,39 @@ class GenericAdapter(AbstractComponent):
 
         return res[0]
 
-    def delete(self, resource, ids):
-        _logger.debug('method delete, model %s, ids %s',
-                      resource, ids)
-        raise NotImplementedError
+    def delete(self, _id):
+        """
+            Delete the record with _id
+        """
+        _logger.debug('method delete, model %s, is %s',
+                      self._name, _id)
+
+        # check if schema exists to avoid injection
+        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        if not schema_exists:
+            raise pymssql.InternalError("The schema %s does not exist" % self.schema)
+
+        # prepare the sql with base strucrture
+        sql = self._sql_delete % dict(schema=self.schema)
+
+        # get id fieldnames and values
+        params = dict(zip(self._id, _id))
+
+        conn = self.conn()
+        cr = conn.cursor()
+        cr.execute(sql, params)
+        count = cr.rowcount
+        if count == 0:
+            raise Exception(_("Impossible to delete external record with ID '%s': "
+                              "Register not found on Backend") % (params,))
+        elif count > 1:
+            conn.rollback()
+            raise pymssql.IntegrityError("Unexpected error: Returned more the one row with ID: %s" % (params,))
+        conn.commit()
+        cr.close()
+        conn.close()
+
+        return count
 
     def get_version(self):
         res = self._exec_query(as_dict=False)

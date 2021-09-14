@@ -2,10 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields
-
 from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import job
 
 
 class ProductProductAdapter(Component):
@@ -28,6 +25,10 @@ class ProductProductAdapter(Component):
                          (%(fields)s)
                      output %(retvalues)s
                      values (%(phvalues)s)
+         """
+
+    _sql_delete = """delete from %(schema)s.Odoo_Articulos_Generales
+                     where CodigoArticulo = %%(CodigoArticulo)s
          """
 
     _id = ('CodigoArticulo',)
