@@ -143,12 +143,11 @@ class OxigestiBinding(models.AbstractModel):
     @api.model
     def export_record(self, backend, relation):
         """ Export Odoo record """
-        if not relation.search_count([('id', '=', relation.id)]):
+        if not relation.with_context(active_test=False).search_count([('id', '=', relation.id)]):
             raise ValidationError(
                 _("Record %s has been deleted on Odoo and cannot be exported to Oxigesti anymore.") % (
                     relation
                 ))
-
         with backend.work_on(self._name) as work:
             exporter = work.component(usage='record.exporter')
             return exporter.run(relation)
