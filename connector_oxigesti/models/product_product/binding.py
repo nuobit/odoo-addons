@@ -16,6 +16,18 @@ class ProductProduct(models.Model):
         string='Oxigesti Bindings',
     )
 
+    @api.multi
+    def unlink(self):
+        to_remove = {}
+        for record in self:
+            to_remove[record.id] = [
+                (binding.backend_id.id, binding._name, binding.external_id) for binding in record.oxigesti_bind_ids
+            ]
+        result = super(ProductProduct, self).unlink()
+        for bindings_data in to_remove.values():
+            self._event('on_record_post_unlink').notify(bindings_data)
+        return result
+
 
 class ProductProductBinding(models.Model):
     _name = 'oxigesti.product.product'
