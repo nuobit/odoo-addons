@@ -55,3 +55,8 @@ class ProductProductExportMapper(Component):
     @mapping
     def Categoria(self, record):
         return {'Categoria': record.categ_id.id}
+
+    @changed_by('active')
+    @mapping
+    def Archivado(self, record):
+        return {'Archivado': not (record.active and record.product_tmpl_id.active)}
