@@ -69,7 +69,6 @@
     <record id="action_aeat_map_special_prorrate_year" model="ir.actions.act_window">
         <field name="name">Aeat VAT special prorrate map</field>
         <field name="res_model">aeat.map.special.prorrate.year</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 

@@ -38,7 +38,6 @@ class AccountTax(models.Model):
 
         return prorrate_ratio
 
-    @api.multi
     def get_non_deductible_percent(self, date, company_id):
         value = 0
         for rec in self:
@@ -58,29 +57,30 @@ class AccountTax(models.Model):
 
         return value
 
-    @api.one
     @api.constrains("prorrate_type", "amount_type", "price_include")
     def _check_prorrate(self):
-        if self.prorrate_type:
-            if self.amount_type != "percent" or self.price_include:
-                raise ValidationError(
-                    _(
-                        "If a tax has prorrate, it's only suported 'percent' type "
-                        "with price not included"
-                    )
-                )
-
-            parent_ids = self.env["account.tax"].search(
-                [("children_tax_ids", "=", self.id)]
-            )
-            for parent_id in parent_ids:
-                sibling_dup = parent_id.children_tax_ids.filtered(
-                    lambda x: x.id != self.id and x.prorrate_type == self.prorrate_type
-                )
-                if sibling_dup:
+        for tax in self:
+            if tax.prorrate_type:
+                if tax.amount_type != "percent" or tax.price_include:
                     raise ValidationError(
                         _(
-                            "Multiple taxes with the same prorrate type "
-                            "under same parent is not suported"
+                            "If a tax has prorrate, it's only suported 'percent' type "
+                            "with price not included"
                         )
                     )
+
+                parent_ids = tax.env["account.tax"].search(
+                    [("children_tax_ids", "=", tax.id)]
+                )
+                for parent_id in parent_ids:
+                    sibling_dup = parent_id.children_tax_ids.filtered(
+                        lambda x: x.id != tax.id
+                        and x.prorrate_type == tax.prorrate_type
+                    )
+                    if sibling_dup:
+                        raise ValidationError(
+                            _(
+                                "Multiple taxes with the same prorrate type "
+                                "under same parent is not suported"
+                            )
+                        )
