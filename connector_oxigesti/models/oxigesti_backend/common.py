@@ -80,6 +80,7 @@ class OxigestiBackend(models.Model):
 
     import_customers_since_date = fields.Datetime('Import Customers since')
     export_products_since_date = fields.Datetime('Export Products since')
+    export_product_categories_since_date = fields.Datetime('Export Product Categories since')
     export_products_by_customer_since_date = fields.Datetime('Export Products by customer since')
     export_product_prices_by_customer_since_date = fields.Datetime('Export Product prices by customer since')
     export_stock_production_lot_since_date = fields.Datetime('Export Lots since')
@@ -102,6 +103,16 @@ class OxigestiBackend(models.Model):
             since_date = rec.export_products_since_date
             self.env['oxigesti.product.product'].with_delay(
             ).export_products_since(
+                backend_record=rec, since_date=since_date)
+
+        return True
+
+    @api.multi
+    def export_product_categories_since(self):
+        for rec in self:
+            since_date = rec.export_product_categories_since_date
+            self.env['oxigesti.product.category'].with_delay(
+            ).export_product_categories_since(
                 backend_record=rec, since_date=since_date)
 
         return True
@@ -170,6 +181,10 @@ class OxigestiBackend(models.Model):
             ('company_id', '=', company_id.id)
         ]
         self.search(domain).export_products_since()
+
+    @api.model
+    def _scheduler_export_product_categories(self):
+        self.search([]).export_product_categories_since()
 
     @api.model
     def _scheduler_export_products_by_customer(self):

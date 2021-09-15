@@ -54,7 +54,17 @@ class ProductProductExportMapper(Component):
     @changed_by('categ_id')
     @mapping
     def Categoria(self, record):
-        return {'Categoria': record.categ_id.id}
+        category = record.categ_id
+        binder = self.binder_for('oxigesti.product.category')
+        external_id = binder.to_external(category, wrap=True)
+        assert external_id, (
+                "%s: There's no bond between Odoo category and "
+                "Oxigesti category, so the Oxigesti ID cannot be obtained. "
+                "At this stage, the Oxigesti category should have been linked via "
+                "ProductCategory._export_dependencies. "
+                "If not, then this category %s (%s) does not exist in Oxigesti." % (
+                    category, category, category.display_name))
+        return {'Categoria': external_id[0]}
 
     @changed_by('active')
     @mapping

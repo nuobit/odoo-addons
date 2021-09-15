@@ -7,6 +7,8 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_oxigesti_res_partner_group_user","oxigesti_res_partner group_user","model_oxigesti_res_partner","base.group_user",1,0,0,0
 "access_oxigesti_product_product","oxigesti_product_product connector manager","model_oxigesti_product_product","connector.group_connector_manager",1,1,1,1
 "access_oxigesti_product_product_group_user","oxigesti_product_product group_user","model_oxigesti_product_product","base.group_user",1,0,0,0
+"access_oxigesti_product_category","oxigesti_product_category connector manager","model_oxigesti_product_category","connector.group_connector_manager",1,1,1,1
+"access_oxigesti_product_category_group_user","oxigesti_product_category group_user","model_oxigesti_product_category","base.group_user",1,0,0,0
 "access_oxigesti_product_buyerinfo","oxigesti_product_buyerinfo connector manager","model_oxigesti_product_buyerinfo","connector.group_connector_manager",1,1,1,1
 "access_oxigesti_product_buyerinfo_group_user","oxigesti_product_buyerinfo group_user","model_oxigesti_product_buyerinfo","base.group_user",1,0,0,0
 "access_oxigesti_product_pricelist_item","oxigesti_product_pricelist_item connector manager","model_oxigesti_product_pricelist_item","connector.group_connector_manager",1,1,1,1
