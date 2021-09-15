@@ -10,12 +10,13 @@ from odoo.tools.translate import _
 
 class MapSpecialProrrateYear(models.Model):
     _name = "aeat.map.special.prorrate.year"
+    _description = "Aeat VAT special prorrate map"
 
     company_id = fields.Many2one(
         comodel_name="res.company",
         string="Company",
         required=True,
-        default=lambda self: self.env.user.company_id.id,
+        default=lambda self: self.env.company,
     )
     year = fields.Integer(string="Year", required=True)
     tax_percentage = fields.Float(string="Tax %", required=True)
@@ -74,7 +75,7 @@ class MapSpecialProrrateYear(models.Model):
 
     @api.depends("year", "tax_percentage")
     def name_get(self):
-        to_percent_str = lambda x: (x.is_integer() and "%i%%" or "%.2f%%") % x
+        to_percent_str = lambda x: (x.is_integer() and "%i%%" or "%.2f%%") % x  # noqa
         result = []
         for rec in self:
             name = [to_percent_str(rec.tax_percentage)]
@@ -109,7 +110,6 @@ class MapSpecialProrrateYear(models.Model):
                     )
                 )
 
-    @api.multi
     def unlink(self):
         for rec in self:
             if rec.state == "closed":
@@ -124,33 +124,46 @@ class MapSpecialProrrateYear(models.Model):
     # business logic
     # compute final prorrate
     # extracted from "l10n.es.aeat.report.tax.mapping"
-    @api.multi
     def _get_partner_domain(self):
         return []
 
+    # extracted from "l10n.es.aeat.report"
+    def get_taxes_from_templates(self, tax_templates):
+        company = self.company_id or self.env.user.company_id
+        return company.get_taxes_from_templates(tax_templates)
+
+    # extracted from "l10n.es.aeat.report"
+    def get_account_from_template(self, account_template):
+        company = self.company_id or self.env.user.company_id
+        return company.get_account_from_template(account_template)
+
     # extracted from "l10n.es.aeat.report.tax.mapping"
-    @api.multi
-    def _get_move_line_domain(self, codes, date_start, date_end, map_line):
+    def _get_move_line_domain(self, date_start, date_end, map_line):
         self.ensure_one()
-        tax_model = self.env["account.tax"]
-        taxes = tax_model.search(
-            [
-                ("description", "in", codes),
-                ("company_id", "child_of", self.company_id.id),
-            ]
-        )
+        if map_line != map_line._origin:
+            taxes = self.env["account.tax.template"].browse(
+                [x._origin.id for x in map_line.tax_ids]
+            )
+        else:
+            taxes = map_line.tax_ids
+        taxes = self.get_taxes_from_templates(taxes)
         move_line_domain = [
             ("company_id", "child_of", self.company_id.id),
             ("date", ">=", date_start),
             ("date", "<=", date_end),
+            ("parent_state", "=", "posted"),
         ]
         if map_line.move_type == "regular":
             move_line_domain.append(
-                ("move_id.move_type", "in", ("receivable", "payable", "liquidity"))
+                ("move_id.financial_type", "in", ("receivable", "payable", "liquidity"))
             )
         elif map_line.move_type == "refund":
             move_line_domain.append(
-                ("move_id.move_type", "in", ("receivable_refund", "payable_refund"))
+                (
+                    "move_id.financial_type",
+                    "in",
+                    ("receivable_refund", "payable_refund"),
+                )
             )
         if map_line.field_type == "base":
             move_line_domain.append(("tax_ids", "in", taxes.ids))
@@ -162,6 +175,9 @@ class MapSpecialProrrateYear(models.Model):
                 ("tax_line_id", "in", taxes.ids),
                 ("tax_ids", "in", taxes.ids),
             ]
+        if map_line.account_id:
+            account = self.get_account_from_template(map_line.account_id)
+            move_line_domain.append(("account_id", "in", account.ids))
         if map_line.sum_type == "debit":
             move_line_domain.append(("debit", ">", 0))
         elif map_line.sum_type == "credit":
@@ -174,21 +190,14 @@ class MapSpecialProrrateYear(models.Model):
         return move_line_domain
 
     # extracted from "l10n.es.aeat.report.tax.mapping"
-    def _get_tax_lines(self, codes, date_start, date_end, map_line):
+    def _get_tax_lines(self, date_start, date_end, map_line):
         """Get the move lines for the codes and periods associated
-
-        :param codes: List of strings for the tax codes
         :param date_start: Start date of the period
-        :param date_stop: Stop date of the period
+        :param date_end: Stop date of the period
         :param map_line: Mapping line record
         :return: Move lines recordset that matches the criteria.
         """
-        domain = self._get_move_line_domain(
-            codes,
-            date_start,
-            date_end,
-            map_line,
-        )
+        domain = self._get_move_line_domain(date_start, date_end, map_line)
         return self.env["account.move.line"].search(domain)
 
     def _compute_prorrate_percent(self):
@@ -198,15 +207,6 @@ class MapSpecialProrrateYear(models.Model):
         date_to = "%s-12-31" % self.year
 
         # Get base amount for taxed operations
-        taxed_taxes_codes = [
-            "S_IVA4B",
-            "S_IVA4S",
-            "S_IVA10B",
-            "S_IVA10S",
-            "S_IVA21B",
-            "S_IVA21S",
-            "S_IVA21ISP",
-        ]
         MapLine = self.env["l10n.es.aeat.map.tax.line"]
         map_line = MapLine.new(
             {
@@ -217,23 +217,14 @@ class MapSpecialProrrateYear(models.Model):
             }
         )
         move_lines = self._get_tax_lines(
-            taxed_taxes_codes,
             date_from,
             date_to,
             map_line,
         )
         taxed = sum(move_lines.mapped("credit")) - sum(move_lines.mapped("debit"))
-        # Get base amount of exempt operations
-        move_lines = self._get_tax_lines(
-            ["S_IVA0"],
-            date_from,
-            date_to,
-            map_line,
-        )
-        exempt = sum(move_lines.mapped("credit")) - sum(move_lines.mapped("debit"))
 
         # compute final prorrate percentage performing ceiling operation
-        prorrate_percent = math.ceil(taxed / (taxed + exempt) * 100)
+        prorrate_percent = taxed != 0 and math.ceil(taxed / taxed * 100) or 0.0
 
         return prorrate_percent
 
@@ -241,9 +232,7 @@ class MapSpecialProrrateYear(models.Model):
         self.ensure_one()
 
         if self.state == "close":
-            raise ValidationError(
-                _("It's not possible to recompute a closed prorrate") % self.state
-            )
+            raise ValidationError(_("It's not possible to recompute a closed prorrate"))
 
         prorrate_map_previous_year = self.get_by_ukey(self.company_id.id, self.year - 1)
         if prorrate_map_previous_year and prorrate_map_previous_year.state != "closed":
@@ -261,7 +250,8 @@ class MapSpecialProrrateYear(models.Model):
         if self.state not in ("finale",):
             raise ValidationError(
                 _(
-                    "The previous state to be able to close a prorrate should be 'Finale', not '%s'"
+                    "The previous state to be able to close a prorrate "
+                    "should be 'Finale', not '%s'"
                 )
                 % self.state
             )
@@ -274,10 +264,12 @@ class MapSpecialProrrateYear(models.Model):
             )
         else:
             self.map_prorrate_next_year_id = self.create(
-                {
-                    "year": self.year + 1,
-                    "tax_percentage": self.tax_final_percentage_aux,
-                }
+                [
+                    {
+                        "year": self.year + 1,
+                        "tax_percentage": self.tax_final_percentage_aux,
+                    }
+                ]
             )
         self.state = "closed"
 
