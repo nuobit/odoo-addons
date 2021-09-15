@@ -2,11 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import odoo
-
 from odoo.addons.component.core import Component
-from odoo.addons.connector.exception import (IDMissingInBackend,
-                                             RetryableJobError)
 
 
 class ProductProductDelayedBatchExporter(Component):
@@ -36,3 +32,12 @@ class ProductProductExporter(Component):
     _inherit = 'oxigesti.exporter'
 
     _apply_on = 'oxigesti.product.product'
+
+    def _export_dependencies(self):
+        ## category
+        binder = self.binder_for('oxigesti.product.category')
+        relation = self.binding.with_context(active_test=False).categ_id
+        if not binder.to_external(relation, wrap=True):
+            exporter = self.component(usage='record.exporter',
+                                      model_name=binder.model._name)
+            exporter.run(relation)
