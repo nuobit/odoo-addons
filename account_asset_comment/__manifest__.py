@@ -5,16 +5,13 @@
 {
     "name": "Account Asset comment",
     "summary": "This module adds a comment field in the assets",
-    "version": "11.0.0.1.0",
+    "version": "14.0.1.0.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
-        "account_asset",
-    ],
-    "data": [
-        "views/account_asset_view.xml",
+        "account_asset_management",
     ],
     "installable": True,
     "auto_install": False,
