@@ -2,10 +2,10 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models, fields
+from odoo import fields, models
 
 
 class AccountAssetAsset(models.Model):
-    _inherit = 'account.asset.asset'
+    _inherit = "account.asset.asset"
 
-    comment = fields.Text('Comment')
+    comment = fields.Text("Comment")
