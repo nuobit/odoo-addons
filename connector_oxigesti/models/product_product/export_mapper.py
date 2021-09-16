@@ -69,4 +69,4 @@ class ProductProductExportMapper(Component):
     @changed_by('active')
     @mapping
     def Archivado(self, record):
-        return {'Archivado': not (record.active and record.product_tmpl_id.active)}
+        return {'Archivado': not (record.odoo_id.active and record.odoo_id.product_tmpl_id.active)}
