@@ -28,4 +28,8 @@ class ProductCategoryAdapter(Component):
                      values (%(phvalues)s)
                 """
 
+    _sql_delete = """delete from %(schema)s.Odoo_Articulos_Categorias
+                     where Id = %%(Id)s
+         """
+
     _id = ('Id',)
