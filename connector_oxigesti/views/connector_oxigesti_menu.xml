@@ -22,7 +22,7 @@
     <menuitem id="oxigesti_external_products_menu" name="External Products" sequence="20"
               parent="oxigesti_external_objects_menu" action="oxigesti_product_product_action"/>
 
-    <menuitem id="oxigesti_external_products_menu" name="External Product Categories" sequence="25"
+    <menuitem id="oxigesti_external_product_categories_menu" name="External Product Categories" sequence="25"
               parent="oxigesti_external_objects_menu" action="oxigesti_product_category_action"/>
 
     <menuitem id="oxigesti_external_products_by_customer_menu" name="External Products by customer" sequence="30"
