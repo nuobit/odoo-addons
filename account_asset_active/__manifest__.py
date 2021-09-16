@@ -5,13 +5,13 @@
 {
     "name": "Asset active button",
     "summary": 'This module adds a "Active" button',
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
-        "account_asset",
+        "account_asset_management",
     ],
     "data": [
         "views/account_asset_view.xml",
