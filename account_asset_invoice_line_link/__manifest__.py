@@ -5,7 +5,7 @@
 {
     "name": "Asset invoice line link",
     "summary": "Adds a link between assets and invoice lines",
-    "version": "11.0.1.0.2",
+    "version": "14.0.1.0.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
