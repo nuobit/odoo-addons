@@ -6,7 +6,7 @@
 Assets by product item
 ======================
 
-* This module allows to create as many assets as the quantity on
+This module allows to create as many assets as the quantity on
 the invoice line.
 
 

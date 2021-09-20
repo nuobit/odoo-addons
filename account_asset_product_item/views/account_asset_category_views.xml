@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_account_asset_category_form" model="ir.ui.view">
         <field name="model">account.asset.category</field>
-        <field name="inherit_id" ref="account_asset.view_account_asset_category_form"/>
+        <field name="inherit_id" ref="account_asset.view_account_asset_category_form" />
         <field name="arch" type="xml">
             <xpath expr="//group[field[@name='open_asset']]" position="inside">
-                <field name="asset_product_item"/>
+                <field name="asset_product_item" />
             </xpath>
         </field>
     </record>
