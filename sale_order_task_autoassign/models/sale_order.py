@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import datetime
@@ -8,7 +8,7 @@ import math
 import random
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from .tools import TzInterval
 
@@ -47,38 +47,6 @@ class SaleOrder(models.Model):
             tasks = order.tasks_ids.filtered(lambda x: x.date_end)
             if tasks:
                 order.expected_date = max(tasks.mapped("date_end"))
-
-    def _get_stage(self, task):
-        meta_type = None
-        if task.bike_location == "bring_in":
-            meta_type = "bring_in"
-        elif task.bike_location == "in_shop":
-            meta_type = "in_place"
-
-        ProjectTaskType = self.env["project.task.type"]
-        if meta_type:
-            task_type = ProjectTaskType.search(
-                [
-                    ("project_ids", "in", task.project_id.id),
-                    ("meta_type", "=", meta_type),
-                ]
-            )
-            if task_type:
-                if len(task_type) > 1:
-                    raise UserError(
-                        _(
-                            "The project '%s' has defined "
-                            "more than one stage %s of type '%s'"
-                        )
-                        % (
-                            task.project_id.name,
-                            task_type.mapped("name"),
-                            meta_type,
-                        )
-                    )
-                return task_type
-
-        return ProjectTaskType
 
     def _free_time_selection(self, free_time_by_user, project):
         now = fields.datetime.now().replace(tzinfo=None)
@@ -222,8 +190,59 @@ class SaleOrder(models.Model):
             )
 
             # set the stage according to bike_location
-            stage = self._get_stage(longest_task)
+            meta_type = None
+            if longest_task.bike_location == "bring_in":
+                meta_type = "bring_in"
+            elif longest_task.bike_location == "in_shop":
+                meta_type = "in_place"
+            stage = self._get_stage_by_metatype(longest_task.project_id, meta_type)
             if stage:
                 longest_task.stage_id = stage
+        return result
 
+    def _get_stage_by_metatype(self, project, meta_type):
+        task_type = self.env["project.task.type"].search(
+            [
+                ("project_ids", "in", project.ids),
+                ("meta_type", "=", meta_type),
+            ]
+        )
+        if not task_type:
+            raise ValidationError(_("Theres no stages with metatype %s" % meta_type))
+
+        if len(task_type) > 1:
+            raise UserError(
+                _("The project '%s' has defined " "more than one stage %s of type '%s'")
+                % (
+                    project.name,
+                    task_type.mapped("name"),
+                    meta_type,
+                )
+            )
+        return task_type
+
+    def write(self, values):
+        if "bike_location" in values:
+            for task in self.tasks_ids:
+                if values["bike_location"] in ("bring_in", "in_shop"):
+                    new_meta_type = {
+                        ("bring_in", "in_place"): "bring_in",
+                        ("in_shop", "bring_in"): "in_place",
+                    }.get((values["bike_location"], task.stage_id.meta_type))
+
+                    if new_meta_type:
+                        stage = self._get_stage_by_metatype(
+                            task.project_id, new_meta_type
+                        )
+                        task.stage_id = stage
+
+                elif values["bike_location"] == "na":
+                    raise UserError(
+                        _("The bike location is mandatory if the sale order has tasks")
+                    )
+                else:
+                    raise ValidationError(
+                        _("select field '%s' is not defined" % values["bike_location"])
+                    )
+        result = super().write(values)
         return result
