@@ -11,7 +11,7 @@
             <field name="payment_term_id" position="after">
                 <field
                     name="bike_location"
-                    attrs="{'readonly': [('state', '!=', 'draft')]}"
+                    attrs="{'readonly': [('state', 'not in', ('draft','sent','sale'))]}"
                 />
             </field>
         </field>
