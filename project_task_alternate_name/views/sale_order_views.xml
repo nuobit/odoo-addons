@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">view.order.form.inherit.alternate.name</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <field name="require_payment" position="after">
+                <field
+                    name="alternate_name"
+                    attrs="{'invisible': [('alternate_name','=',False)]}"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>
