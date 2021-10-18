@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">product.template.product.form.inherit.alternate.name</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <field name="categ_id" position="after">
+                <field name="is_service_description" invisible="1" />
+                <field
+                    name="service_description_type"
+                    attrs="{'invisible': [('is_service_description','=',False)], 'required': [('is_service_description','=',True)]}"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>
