@@ -226,14 +226,5 @@ class SaleOrder(models.Model):
                             task.project_id, new_meta_type
                         )
                         task.stage_id = stage
-
-                elif values["bike_location"] == "na":
-                    raise UserError(
-                        _("The bike location is mandatory if the sale order has tasks")
-                    )
-                else:
-                    raise ValidationError(
-                        _("select field '%s' is not defined" % values["bike_location"])
-                    )
         result = super().write(values)
         return result
