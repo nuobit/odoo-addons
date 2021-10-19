@@ -1,4 +1,5 @@
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models
@@ -10,6 +11,10 @@ class ProjectTask(models.Model):
     def name_get(self):
         result = []
         for rec in self:
-            name = rec.sale_order_id.alternate_name or rec.name
+            name = (
+                rec.sale_order_id.bike_location != "na"
+                and rec.sale_order_id.alternate_name
+                or rec.name
+            )
             result.append((rec.id, name))
         return result
