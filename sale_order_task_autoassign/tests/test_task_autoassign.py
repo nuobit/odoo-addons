@@ -4,7 +4,7 @@
 
 import datetime
 
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError
 from odoo.tests import TransactionCase
 
 
@@ -179,13 +179,15 @@ class TestTaskAutoassign(TransactionCase):
             }
         )
         saleorder1.action_confirm()
+        stage1 = saleorder1.tasks_ids.stage_id
 
-        # ACT & ASSERT
-        try:
-            with self.assertRaises(UserError):
-                saleorder1.bike_location = "na"
-        except AssertionError:
-            self.fail("This test should fail with an UserError but it works correctly")
+        # ACT
+        saleorder1.bike_location = "na"
+
+        # ASSERT
+        self.assertEqual(
+            stage1, saleorder1.tasks_ids.stage_id, "Stage have changed ant it shouldn't"
+        )
 
     def test_change_stage_on_sale_order_when_meta_type_dont_exist(self):
         """
