@@ -10,7 +10,7 @@
     "category": "Accounting",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit",
     "depends": ["account"],
     "data": [
         "views/account_invoice_view.xml",
