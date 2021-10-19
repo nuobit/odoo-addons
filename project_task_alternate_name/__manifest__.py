@@ -7,7 +7,7 @@
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "license": "AGPL-3",
     "category": "Project",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit",
     "summary": "This module generates a name based on partner, description,"
     "sale order name and the bike location."
     "It's shown on project calendar view.",
