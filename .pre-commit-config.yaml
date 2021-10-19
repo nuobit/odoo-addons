@@ -31,7 +31,7 @@ repos:
       # update the NOT INSTALLABLE ADDONS section above
       - id: oca-update-pre-commit-excluded-addons
       - id: oca-fix-manifest-website
-        args: ["https://github.com/OCA/pms"]
+        args: ["https://github.com/nuobit"]
   - repo: https://github.com/myint/autoflake
     rev: v1.4
     hooks:
