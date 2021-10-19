@@ -180,15 +180,6 @@ class SaleOrder(models.Model):
 
         # bike_location
         if longest_task.bike_location != "na":
-            bike_location_map = dict(
-                longest_task.fields_get("bike_location", "selection")["bike_location"][
-                    "selection"
-                ]
-            )
-            longest_task.name = " | ".join(
-                [longest_task.name, bike_location_map[longest_task.bike_location]]
-            )
-
             # set the stage according to bike_location
             meta_type = None
             if longest_task.bike_location == "bring_in":
