@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Product",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit",
     "summary": "This module adds a field to products and product variants "
     "of type service which allows to define the time required to "
     "complete the service.",
