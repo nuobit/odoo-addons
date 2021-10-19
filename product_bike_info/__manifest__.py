@@ -9,7 +9,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Custom",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit",
     "depends": [
         "product",
     ],
