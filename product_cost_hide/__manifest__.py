@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Product",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit",
     "summary": "This module hides the cost from the product tree view and "
     "moves it to purchase tab on the form view.",
     "depends": [
