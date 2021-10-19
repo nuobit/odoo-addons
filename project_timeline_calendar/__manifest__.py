@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Project",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit",
     "summary": "This module adds a new calendar view on project tasks and places "
     "the tasks from the start and end date point of view, allowing to "
     "move them and change its duration.",
