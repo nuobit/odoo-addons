@@ -10,7 +10,7 @@
     "license": "AGPL-3",
     "category": "Tools",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/OCA/pms",
+    "website": "https://github.com/nuobit",
     "depends": [
         "stock",
         "base_report_gs1_barcode",
