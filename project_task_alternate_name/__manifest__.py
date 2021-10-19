@@ -3,7 +3,7 @@
 
 {
     "name": "Project task alternate name",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "license": "AGPL-3",
     "category": "Project",
