@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record
+        id="project.act_project_project_2_project_task_all"
+        model="ir.actions.act_window"
+    >
+        <field
+            name="domain"
+        > [('stage_id.meta_type', 'not in', ['done', 'cancel'])]</field>
+    </record>
+</odoo>
