@@ -4,6 +4,9 @@
 
 import datetime
 
+import pytz
+
+from odoo import fields
 from odoo.exceptions import ValidationError
 from odoo.tests import TransactionCase
 
@@ -324,4 +327,220 @@ class TestTaskAutoassign(TransactionCase):
             saleorder1.tasks_ids.stage_id,
             stage1,
             "Expected 'In place', other result found",
+        )
+
+    def test_date_consistency_in_sale_order(self):
+
+        # ARRANGE:
+
+        project1 = self.env["project.project"].create(
+            {
+                "name": "project1",
+            }
+        )
+        product1 = self.env["product.product"].create(
+            {
+                "name": "product1",
+                "type": "service",
+                "service_tracking": "task_global_project",
+                "project_id": project1.id,
+            }
+        )
+        partner1 = self.env["res.partner"].create(
+            {
+                "name": "partner1",
+            }
+        )
+        saleorder1 = self.env["sale.order"].create(
+            {
+                "partner_id": partner1.id,
+                "order_line": [
+                    (
+                        0,
+                        False,
+                        {
+                            "product_id": product1.id,
+                        },
+                    )
+                ],
+            }
+        )
+        saleorder1.action_confirm()
+
+        # ACT
+        saleorder1.tasks_ids.write(
+            {
+                "date_end": datetime.datetime(2021, 11, 11, 8, 8, 8),
+                "date_deadline": datetime.date(2022, 1, 1),
+            }
+        )
+
+        # ASSERT
+
+        self.assertEqual(
+            saleorder1.expected_date,
+            datetime.datetime(2021, 11, 11, 8, 8, 8),
+            "Error 1.1",
+        )
+
+    def test_date_consistency_in_sale_order_date_end_is_false(self):
+        # ARRANGE:
+
+        project1 = self.env["project.project"].create(
+            {
+                "name": "project1",
+            }
+        )
+
+        product1 = self.env["product.product"].create(
+            {
+                "name": "product1",
+                "type": "service",
+                "service_tracking": "task_global_project",
+                "project_id": project1.id,
+            }
+        )
+        partner1 = self.env["res.partner"].create(
+            {
+                "name": "partner1",
+            }
+        )
+        saleorder1 = self.env["sale.order"].create(
+            {
+                "partner_id": partner1.id,
+                "order_line": [
+                    (
+                        0,
+                        False,
+                        {
+                            "product_id": product1.id,
+                        },
+                    )
+                ],
+            }
+        )
+        saleorder1.action_confirm()
+        # ACT
+        saleorder1.tasks_ids.write(
+            {
+                "date_end": False,
+                "date_deadline": datetime.date(2022, 1, 1),
+            }
+        )
+
+        # ASSERT
+
+        self.assertEqual(
+            saleorder1.expected_date,
+            pytz.timezone(self.env.user.tz)
+            .localize(fields.datetime(2022, 1, 1, 0, 0, 0))
+            .astimezone(pytz.utc)
+            .replace(tzinfo=None),
+            "Error 1.2",
+        )
+
+    def test_date_consistency_in_sale_order_date_deadline_is_false(self):
+        # ARRANGE:
+
+        project1 = self.env["project.project"].create(
+            {
+                "name": "project1",
+            }
+        )
+
+        product1 = self.env["product.product"].create(
+            {
+                "name": "product1",
+                "type": "service",
+                "service_tracking": "task_global_project",
+                "project_id": project1.id,
+            }
+        )
+        partner1 = self.env["res.partner"].create(
+            {
+                "name": "partner1",
+            }
+        )
+        saleorder1 = self.env["sale.order"].create(
+            {
+                "partner_id": partner1.id,
+                "order_line": [
+                    (
+                        0,
+                        False,
+                        {
+                            "product_id": product1.id,
+                        },
+                    )
+                ],
+            }
+        )
+        saleorder1.action_confirm()
+        # ACT
+        saleorder1.tasks_ids.write(
+            {
+                "date_end": datetime.datetime(2021, 11, 11, 8, 8, 8),
+                "date_deadline": False,
+            }
+        )
+
+        # ASSERT
+
+        self.assertEqual(
+            saleorder1.expected_date,
+            datetime.datetime(2021, 11, 11, 8, 8, 8),
+            "Error 1.3",
+        )
+
+    def test_date_consistency_in_sale_order_date_deadline_and_date_end_are_false(self):
+        # ARRANGE:
+
+        project1 = self.env["project.project"].create(
+            {
+                "name": "project1",
+            }
+        )
+
+        product1 = self.env["product.product"].create(
+            {
+                "name": "product1",
+                "type": "service",
+                "service_tracking": "task_global_project",
+                "project_id": project1.id,
+            }
+        )
+        partner1 = self.env["res.partner"].create(
+            {
+                "name": "partner1",
+            }
+        )
+        saleorder1 = self.env["sale.order"].create(
+            {
+                "partner_id": partner1.id,
+                "order_line": [
+                    (
+                        0,
+                        False,
+                        {
+                            "product_id": product1.id,
+                        },
+                    )
+                ],
+            }
+        )
+        saleorder1.action_confirm()
+
+        # ACT
+        saleorder1.tasks_ids.write(
+            {
+                "date_end": False,
+                "date_deadline": False,
+            }
+        )
+
+        # ASSERT
+
+        self.assertFalse(
+            saleorder1.expected_date,
+            "Error 1.4",
         )
