@@ -7,6 +7,8 @@ import logging
 import math
 import random
 
+import pytz
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -40,13 +42,34 @@ class SaleOrder(models.Model):
         return [("id", "in", tasks.mapped("sale_line_id.order_id").ids)]
 
     @api.multi
-    @api.depends("order_line.customer_lead", "confirmation_date", "order_line.state")
+    @api.depends(
+        "order_line.customer_lead",
+        "confirmation_date",
+        "order_line.state",
+        "tasks_ids.date_end",
+        "tasks_ids.date_deadline",
+    )
     def _compute_expected_date(self):
         super(SaleOrder, self)._compute_expected_date()
         for order in self:
             tasks = order.tasks_ids.filtered(lambda x: x.date_end)
             if tasks:
                 order.expected_date = max(tasks.mapped("date_end"))
+            else:
+                tasks = order.tasks_ids.filtered(lambda x: x.date_deadline)
+                if tasks:
+                    order.expected_date = (
+                        pytz.timezone(self.env.user.tz)
+                        .localize(
+                            fields.Datetime.to_datetime(
+                                max(tasks.mapped("date_deadline"))
+                            )
+                        )
+                        .astimezone(pytz.utc)
+                        .replace(tzinfo=None)
+                    )
+                else:
+                    order.expected_date = False
 
     def _free_time_selection(self, free_time_by_user, project):
         now = fields.datetime.now().replace(tzinfo=None)
