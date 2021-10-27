@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="stock_picking_views" model="ir.ui.view">
+        <field name="name">stock.picking.views</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="partner_ref" />
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_picking_tree" model="ir.ui.view">
+        <field name="name">stock.picking.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree" />
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="partner_ref" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_picking_internal_search_filter_ref" model="ir.ui.view">
+        <field name="name">view.picking.internal.search.filter.ref</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <filter
+                    string="Vendor Reference"
+                    name="partner_ref"
+                    domain="[]"
+                    context="{'group_by':'partner_ref'}"
+                />
+            </xpath>
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">['|','|',('name','ilike',
+                    self),('origin','ilike',self),('partner_ref','ilike',self)]</attribute>
+            </field>
+            <field name="group_id" position="after">
+                <field name="partner_ref" />
+            </field>
+        </field>
+    </record>
+</odoo>
