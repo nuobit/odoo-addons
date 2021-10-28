@@ -3,17 +3,15 @@
 
 {
     "name": "Project Task hide tasks",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "license": "AGPL-3",
     "category": "Project",
     "website": "https://github.com/nuobit",
     "summary": "This module hides the tasks when their stage is done or canceled.",
     "depends": [
-        "project_task_metatype",
+        "project",
     ],
-    "data": [
-        "views/project_task_views.xml",
-    ],
+    "data": ["views/project_task_views.xml", "views/project_task_type_views.xml"],
     "installable": True,
 }
