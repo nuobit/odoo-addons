@@ -4,8 +4,6 @@
         id="project.act_project_project_2_project_task_all"
         model="ir.actions.act_window"
     >
-        <field
-            name="domain"
-        > [('stage_id.meta_type', 'not in', ['done', 'cancel'])]</field>
+        <field name="domain"> [('stage_id.hide_tasks_in_calendar', '=', False)]</field>
     </record>
 </odoo>
