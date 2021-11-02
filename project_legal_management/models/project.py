@@ -9,13 +9,9 @@ class Project(models.Model):
     _inherit = 'project.project'
 
     lm_date = fields.Date(string="Date")
-    lm_employee_ids = fields.Many2many(comodel_name="hr.employee", string="Employees")
+    lm_employee_ids = fields.Many2many(string="Employees", comodel_name="hr.employee")
     lm_expedient_number = fields.Char(string="Expedient Number")
-    lm_issue_ids = fields.Many2many(comodel_name="lm.issue", string="Issues")
-    lm_resolution_id = fields.Many2one(comodel_name="lm.resolution", string="Resolution")
+    lm_issue_ids = fields.Many2many(string="Issues", comodel_name="lm.issue")
+    lm_resolution_id = fields.Many2one(string="Resolution", comodel_name="lm.resolution")
     lm_amount = fields.Float(string="Amount")
-    lm_probability_id = fields.Many2one(comodel_name="lm.probability", string="Probability")
-
-
-
-
+    lm_probability_id = fields.Many2one(string="Probability", comodel_name="lm.probability")

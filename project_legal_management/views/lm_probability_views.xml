@@ -2,8 +2,8 @@
 <!-- Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="lm_probability_form_view" model="ir.ui.view">
-        <field name="name">lm.probability.form.view</field>
+    <record id="lm_probability_view_form" model="ir.ui.view">
+        <field name="name">lm.probability.view.form</field>
         <field name="model">lm.probability</field>
         <field name="arch" type="xml">
             <form string="Probability Form">
@@ -20,9 +20,8 @@
             </form>
         </field>
     </record>
-
-    <record id="lm_probability_tree" model="ir.ui.view">
-        <field name="name">project.legal.management.lm.probability.tree</field>
+    <record id="lm_probability_view_tree" model="ir.ui.view">
+        <field name="name">lm.probability.view.tree</field>
         <field name="model">lm.probability</field>
         <field name="arch" type="xml">
             <tree string="Issues">
@@ -31,15 +30,12 @@
             </tree>
         </field>
     </record>
-
-    <record id="project_probability_list_action" model="ir.actions.act_window">
+    <record id="lm_probability_action_list" model="ir.actions.act_window">
         <field name="name">Probability</field>
         <field name="res_model">lm.probability</field>
         <field name="view_mode">tree,form</field>
     </record>
-
-    <menuitem id="lm_probability_menu" name="Probability" parent="menu_project_legal_management"
-              action="project_probability_list_action"
+    <menuitem id="lm_probability_action" name="Probability" parent="project_legal_management_menu_config"
+              action="lm_probability_action_list"
               sequence="85"/>
-
 </odoo>

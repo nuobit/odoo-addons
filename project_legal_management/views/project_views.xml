@@ -3,7 +3,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="edit_project" model="ir.ui.view">
-        <field name="name">project_project_form_page_other_info</field>
+        <field name="name">edit_project_legal_management</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
@@ -24,7 +24,6 @@
             </xpath>
         </field>
     </record>
-
-    <menuitem id="menu_project_legal_management" name="Legal Management" parent="project.menu_main_pm"
+    <menuitem id="project_legal_management_menu_config" name="Legal Management" parent="project.menu_main_pm"
               sequence="200" groups="project.group_project_manager"/>
 </odoo>

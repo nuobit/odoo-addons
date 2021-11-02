@@ -10,7 +10,7 @@ class LMTreeMixin(models.AbstractModel):
     _name = 'lm.tree.mixin'
 
     # complete_name
-    complete_name = fields.Char('Complete Name',
+    complete_name = fields.Char(string='Complete Name',
                                 compute='_compute_complete_name',
                                 search='_search_complete_name')
 

@@ -3,7 +3,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_project" model="ir.ui.view">
-        <field name="name">view.project</field>
+        <field name="name">view.project.legal.management</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project"/>
         <field name="arch" type="xml">
@@ -18,13 +18,11 @@
             </xpath>
         </field>
     </record>
-
     <record id="project.open_view_project_all" model="ir.actions.act_window">
         <field name="view_mode">kanban,form,tree</field>
     </record>
-
-    <record id="view_project_project_filter_legal_management_fields" model="ir.ui.view">
-        <field name="name">view.project.project.filter.legal.management.fields</field>
+    <record id="view_project_project_filter" model="ir.ui.view">
+        <field name="name">view.project.project.filter.legal.management</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project_project_filter"/>
         <field name="arch" type="xml">
@@ -51,6 +49,4 @@
             </xpath>
         </field>
     </record>
-
 </odoo>
-

@@ -21,12 +21,6 @@ msgstr ""
 msgid "Amount"
 msgstr "Importe"
 
-#. module: project_legal_management
-#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_complete_chain_ids
-#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_complete_chain_ids
-#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_complete_chain_ids
-msgid "Complete Chain"
-msgstr "Cadena completa"
 
 #. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_complete_name
@@ -34,7 +28,7 @@ msgstr "Cadena completa"
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_complete_name
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_tree_mixin_complete_name
 msgid "Complete Name"
-msgstr "Nombre completo"
+msgstr "Nombre Completo"
 
 #. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_create_uid
@@ -62,7 +56,7 @@ msgstr "Fecha"
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_display_name
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_tree_mixin_display_name
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr "Nombre Mostrado"
 
 #. module: project_legal_management
 #: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter_legal_management_fields
@@ -81,17 +75,12 @@ msgid "Expedient Number"
 msgstr "Nº Expediente"
 
 #. module: project_legal_management
-#: model:ir.actions.act_window,help:project_legal_management.project_issue_list_action
-msgid "HI"
-msgstr "HI"
-
-#. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_id
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_id
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_id
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_tree_mixin_id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr "ID"
 
 #. module: project_legal_management
 #: model:ir.actions.act_window,name:project_legal_management.project_issue_list_action
@@ -111,7 +100,7 @@ msgstr "Asuntos"
 #. module: project_legal_management
 #: model:ir.ui.view,arch_db:project_legal_management.lm_issue_form_view
 msgid "Issues Form"
-msgstr "Asuntos"
+msgstr "Formulario de Asuntos"
 
 #. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_issue___last_update
@@ -151,12 +140,12 @@ msgstr "Nombre"
 #: code:addons/project_legal_management/models/tree.py:77
 #, python-format
 msgid "Operator %s not implemented"
-msgstr "Error"
+msgstr "Operador %s no implementado"
 
 #. module: project_legal_management
 #: model:ir.ui.view,arch_db:project_legal_management.edit_project
 msgid "Other Information"
-msgstr "Otra información"
+msgstr "Otra Información"
 
 #. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_parent_id
@@ -176,7 +165,7 @@ msgstr "Probabilidad"
 #. module: project_legal_management
 #: model:ir.ui.view,arch_db:project_legal_management.lm_probability_form_view
 msgid "Probability Form"
-msgstr "Probabilidad"
+msgstr "Formulario de Probabilidades"
 
 #. module: project_legal_management
 #: model:ir.model,name:project_legal_management.model_project_project
@@ -186,7 +175,7 @@ msgstr "Proyecto"
 #. module: project_legal_management
 #: model:ir.ui.view,arch_db:project_legal_management.edit_project
 msgid "Provision"
-msgstr "Provision"
+msgstr "Provisión"
 
 #. module: project_legal_management
 #: model:ir.actions.act_window,name:project_legal_management.project_resolution_list_action
@@ -200,24 +189,3 @@ msgstr "Resolución"
 #: model:ir.ui.view,arch_db:project_legal_management.lm_resolution_form_view
 msgid "Resolution Form"
 msgstr "Resolución"
-
-#. module: project_legal_management
-#: model:ir.model,name:project_legal_management.model_lm_issue
-msgid "lm.issue"
-msgstr "lm.issue"
-
-#. module: project_legal_management
-#: model:ir.model,name:project_legal_management.model_lm_probability
-msgid "lm.probability"
-msgstr "lm.probability"
-
-#. module: project_legal_management
-#: model:ir.model,name:project_legal_management.model_lm_resolution
-msgid "lm.resolution"
-msgstr "lm.resolution"
-
-#. module: project_legal_management
-#: model:ir.model,name:project_legal_management.model_lm_tree_mixin
-msgid "lm.tree.mixin"
-msgstr "lm.tree.mixin"
-
