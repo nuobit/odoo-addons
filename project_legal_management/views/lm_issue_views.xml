@@ -30,12 +30,12 @@
             </tree>
         </field>
     </record>
-    <record id="lm_issue_action_list" model="ir.actions.act_window">
+    <record id="lm_issue_action" model="ir.actions.act_window">
         <field name="name">Issue</field>
         <field name="res_model">lm.issue</field>
         <field name="view_mode">tree,form</field>
     </record>
     <menuitem id="lm_issue_menu" name="Issues" parent="project_legal_management_menu_config"
-              action="lm_issue_action_list"
+              action="lm_issue_action"
               sequence="203"/>
 </odoo>

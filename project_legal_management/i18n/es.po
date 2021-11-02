@@ -188,4 +188,4 @@ msgstr "Resolución"
 #. module: project_legal_management
 #: model:ir.ui.view,arch_db:project_legal_management.lm_resolution_form_view
 msgid "Resolution Form"
-msgstr "Resolución"
+msgstr "Formulario de Resoluciones"

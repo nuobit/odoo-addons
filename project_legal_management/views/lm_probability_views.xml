@@ -30,12 +30,12 @@
             </tree>
         </field>
     </record>
-    <record id="lm_probability_action_list" model="ir.actions.act_window">
+    <record id="lm_probability_action" model="ir.actions.act_window">
         <field name="name">Probability</field>
         <field name="res_model">lm.probability</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="lm_probability_action" name="Probability" parent="project_legal_management_menu_config"
-              action="lm_probability_action_list"
+    <menuitem id="lm_probability_menu" name="Probability" parent="project_legal_management_menu_config"
+              action="lm_probability_action"
               sequence="85"/>
 </odoo>
