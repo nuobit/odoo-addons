@@ -14,7 +14,9 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="parent_id"/>
+                        <group>
+                            <field name="parent_id"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -24,14 +26,14 @@
         <field name="name">lm.issue.view.tree</field>
         <field name="model">lm.issue</field>
         <field name="arch" type="xml">
-            <tree string="Issues">
+            <tree string="Issue Tree">
                 <field name="name"/>
                 <field name="parent_id"/>
             </tree>
         </field>
     </record>
     <record id="lm_issue_action" model="ir.actions.act_window">
-        <field name="name">Issue</field>
+        <field name="name">Issues</field>
         <field name="res_model">lm.issue</field>
         <field name="view_mode">tree,form</field>
     </record>

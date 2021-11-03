@@ -14,7 +14,9 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="parent_id"/>
+                        <group>
+                            <field name="parent_id"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -24,18 +26,18 @@
         <field name="name">lm.probability.view.tree</field>
         <field name="model">lm.probability</field>
         <field name="arch" type="xml">
-            <tree string="Issues">
+            <tree string="Probability Tree">
                 <field name="name"/>
                 <field name="parent_id"/>
             </tree>
         </field>
     </record>
     <record id="lm_probability_action" model="ir.actions.act_window">
-        <field name="name">Probability</field>
+        <field name="name">Probabilities</field>
         <field name="res_model">lm.probability</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="lm_probability_menu" name="Probability" parent="project_legal_management_menu_config"
+    <menuitem id="lm_probability_menu" name="Probabilities" parent="project_legal_management_menu_config"
               action="lm_probability_action"
               sequence="85"/>
 </odoo>

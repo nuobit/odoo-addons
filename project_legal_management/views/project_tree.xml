@@ -42,7 +42,7 @@
             <xpath expr="//group" position="before">
                 <field name="lm_date" string="Date"/>
                 <field name="lm_employee_ids" string="Employee"/>
-                <field name="lm_issue_ids" string="Issue"/>
+                <field name="lm_issue_ids" string="Issues"/>
                 <field name="lm_resolution_id" string="Resolution"/>
                 <field name="lm_probability_id" string="Probability"/>
                 <field name="lm_expedient_number" string="Expedient Number"/>

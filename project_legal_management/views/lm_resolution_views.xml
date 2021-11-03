@@ -14,7 +14,9 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="parent_id"/>
+                        <group>
+                            <field name="parent_id"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -24,18 +26,18 @@
         <field name="name">lm.resolution.view.tree</field>
         <field name="model">lm.resolution</field>
         <field name="arch" type="xml">
-            <tree string="Issues">
+            <tree string="Resolution Tree">
                 <field name="name"/>
                 <field name="parent_id"/>
             </tree>
         </field>
     </record>
     <record id="lm_resolution_action" model="ir.actions.act_window">
-        <field name="name">Resolution</field>
+        <field name="name">Resolutions</field>
         <field name="res_model">lm.resolution</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="lm_resolution_menu" name="Resolution" parent="project_legal_management_menu_config"
+    <menuitem id="lm_resolution_menu" name="Resolutions" parent="project_legal_management_menu_config"
               action="lm_resolution_action"
               sequence="90"/>
 </odoo>
