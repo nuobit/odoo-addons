@@ -101,38 +101,7 @@ class SaleOrder(models.Model):
     def _prepare_main_tasks(self):
         return self.tasks_ids
 
-    @api.multi
-    def _action_confirm(self):
-        result = super(SaleOrder, self)._action_confirm()
-
-        if not self.tasks_ids:
-            return result
-
-        main_tasks = self._prepare_main_tasks().sorted(
-            lambda x: x.sale_line_id.product_id.service_time
-            * x.sale_line_id.product_uom_qty
-        )
-        main_tasks_duration_h = sum(
-            [
-                x.sale_line_id.product_id.service_time * x.sale_line_id.product_uom_qty
-                for x in main_tasks
-            ]
-        )
-        longest_task = main_tasks[-1]
-        other_tasks = (self.tasks_ids - longest_task).sorted(
-            lambda x: (x.sale_line_id.sequence, x.sale_line_id.id)
-        )
-        longest_task.write(
-            {
-                "name": longest_task.name,
-                "description": "\n".join(
-                    ["<p>- %s</p>" % x.sale_line_id.name for x in other_tasks]
-                ),
-            }
-        )
-        other_tasks.write({"sale_line_id": False})
-        other_tasks.unlink()
-
+    def _calculate_available_user_time(self, duration_h, project_id):
         # initial date_start
         now = fields.datetime.now().replace(second=0, microsecond=0)
         date_ref = self.date_order > now and self.date_order or now
@@ -140,7 +109,7 @@ class SaleOrder(models.Model):
         base_date_start = date_ref + datetime.timedelta(
             minutes=round((math.ceil(quarters) - quarters) * 15)
         )
-        base_duration = int(round(main_tasks_duration_h * 60))
+        base_duration = int(round(duration_h * 60))
 
         # check resources availability
         domain = [
@@ -179,14 +148,58 @@ class SaleOrder(models.Model):
                 continue
 
             # find available date slot
-            rint = r.find_next_available(cint, longest_task.project_id)
+            rint = r.find_next_available(cint, project_id)
             if rint:
                 free_time_by_user[r.user_id.id] = rint
 
         if not free_time_by_user:
             raise UserError(_("No candidates found, cannot validate order"))
-        available_user_time = self._free_time_selection(
-            free_time_by_user, longest_task.project_id
+        available_user_time = self._free_time_selection(free_time_by_user, project_id)
+        return available_user_time
+
+    @api.multi
+    def _action_confirm(self):
+        existing_task = self.with_context(active_test=False).tasks_ids
+        if existing_task:
+            raise ValidationError(
+                _(
+                    "Inconsistent data: Tasks %s already exists and cannot "
+                    "be overwritten. Please, delete this task before create it again"
+                    % existing_task.mapped("name")
+                )
+            )
+        result = super(SaleOrder, self)._action_confirm()
+
+        if not self.tasks_ids:
+            return result
+
+        main_tasks = self._prepare_main_tasks().sorted(
+            lambda x: x.sale_line_id.product_id.service_time
+            * x.sale_line_id.product_uom_qty
+        )
+        main_tasks_duration_h = sum(
+            [
+                x.sale_line_id.product_id.service_time * x.sale_line_id.product_uom_qty
+                for x in main_tasks
+            ]
+        )
+        longest_task = main_tasks[-1]
+        other_tasks = (self.tasks_ids - longest_task).sorted(
+            lambda x: (x.sale_line_id.sequence, x.sale_line_id.id)
+        )
+        longest_task.write(
+            {
+                "name": longest_task.name,
+                "description": "\n".join(
+                    ["<p>- %s</p>" % x.sale_line_id.name for x in other_tasks]
+                ),
+            }
+        )
+        other_tasks.write({"sale_line_id": False})
+        other_tasks.unlink()
+
+        available_user_time = self._calculate_available_user_time(
+            main_tasks_duration_h, longest_task.project_id
         )
 
         longest_task.update(
