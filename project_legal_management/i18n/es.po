@@ -1,0 +1,181 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* project_legal_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-03 10:52+0000\n"
+"PO-Revision-Date: 2021-11-03 10:52+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_amount
+#: model:ir.ui.view,arch_db:project_legal_management.view_project
+msgid "Amount"
+msgstr "Importe"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_complete_name
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_complete_name
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_complete_name
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_tree_mixin_complete_name
+msgid "Complete Name"
+msgstr "Nombre Completo"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_create_uid
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_create_uid
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_create_date
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_create_date
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_date
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
+msgid "Date"
+msgstr "Fecha"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_display_name
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_display_name
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_display_name
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_tree_mixin_display_name
+msgid "Display Name"
+msgstr "Nombre Mostrado"
+
+#. module: project_legal_management
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_employee_ids
+msgid "Employees"
+msgstr "Empleados"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_expedient_number
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
+msgid "Expedient Number"
+msgstr "Nº Expediente"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_id
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_id
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_id
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_tree_mixin_id
+msgid "ID"
+msgstr "ID"
+
+#. module: project_legal_management
+#: model:ir.actions.act_window,name:project_legal_management.lm_issue_action
+#: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_issue_ids
+#: model:ir.ui.menu,name:project_legal_management.lm_issue_menu
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
+msgid "Issues"
+msgstr "Asuntos"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue___last_update
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability___last_update
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution___last_update
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_tree_mixin___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_write_uid
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_write_uid
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_write_date
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_write_date
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: project_legal_management
+#: model:ir.ui.menu,name:project_legal_management.project_legal_management_menu_config
+msgid "Legal Management"
+msgstr "Gestión Jurídica"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_name
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_name
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: project_legal_management
+#: code:addons/project_legal_management/models/tree.py:77
+#, python-format
+msgid "Operator %s not implemented"
+msgstr "Operador %s no implementado"
+
+#. module: project_legal_management
+#: model:ir.ui.view,arch_db:project_legal_management.edit_project
+msgid "Other Information"
+msgstr "Otra Información"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_parent_id
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_probability_parent_id
+#: model:ir.model.fields,field_description:project_legal_management.field_lm_resolution_parent_id
+msgid "Parent"
+msgstr "Padre"
+
+#. module: project_legal_management
+#: model:ir.actions.act_window,name:project_legal_management.lm_probability_action
+#: model:ir.ui.menu,name:project_legal_management.lm_probability_menu
+msgid "Probabilities"
+msgstr "Probabilidades"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_probability_id
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
+msgid "Probability"
+msgstr "Probabilidad"
+
+#. module: project_legal_management
+#: model:ir.ui.view,arch_db:project_legal_management.lm_probability_view_form
+msgid "Probability Form"
+msgstr "Formulario de Probabilidades"
+
+#. module: project_legal_management
+#: model:ir.model,name:project_legal_management.model_project_project
+msgid "Project"
+msgstr "Proyecto"
+
+#. module: project_legal_management
+#: model:ir.ui.view,arch_db:project_legal_management.edit_project
+msgid "Provision"
+msgstr "Provisión"
+
+#. module: project_legal_management
+#: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_resolution_id
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
+msgid "Resolution"
+msgstr "Resolución"
+
+#. module: project_legal_management
+#: model:ir.actions.act_window,name:project_legal_management.lm_resolution_action
+#: model:ir.ui.menu,name:project_legal_management.lm_resolution_menu
+msgid "Resolutions"
+msgstr "Resoluciones"
