@@ -9,17 +9,17 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page name="other_info" string="Other Information">
-                        <group col="4">
-                            <field name="lm_date"/>
-                            <field name="lm_employee_ids" widget="many2many_tags"/>
-                            <field name="lm_expedient_number"/>
-                            <field name="lm_issue_ids" widget="many2many_tags"/>
-                            <field name="lm_resolution_id"/>
-                        </group>
-                        <group  col="4" string="Provision">
-                            <field name="lm_amount"/>
-                            <field name="lm_probability_id"/>
-                        </group>
+                    <group col="4">
+                        <field name="lm_date"/>
+                        <field name="lm_employee_ids" widget="many2many_tags"/>
+                        <field name="lm_expedient_number"/>
+                        <field name="lm_issue_ids" widget="many2many_tags"/>
+                        <field name="lm_resolution_id"/>
+                    </group>
+                    <group col="4" string="Provision">
+                        <field name="lm_amount"/>
+                        <field name="lm_probability_id"/>
+                    </group>
                 </page>
             </xpath>
         </field>
