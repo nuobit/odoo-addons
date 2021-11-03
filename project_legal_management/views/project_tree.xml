@@ -10,7 +10,7 @@
             <xpath expr="//tree" position="inside">
                 <field name="lm_expedient_number"/>
                 <field name="lm_date"/>
-                <field name="lm_employee_ids"/>
+                <field name="lm_employee_ids" widget="many2many_tags"/>
                 <field name="lm_issue_ids" widget="many2many_tags"/>
                 <field name="lm_amount" sum="Amount"/>
                 <field name="lm_probability_id"/>

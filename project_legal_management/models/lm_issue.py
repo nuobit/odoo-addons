@@ -10,7 +10,7 @@ class LMIssue(models.Model):
     _parent_name = 'parent_id'
     _inherit = 'lm.tree.mixin'
 
-    name = fields.Char()
+    name = fields.Char(required=True)
     parent_id = fields.Many2one(comodel_name='lm.issue')
 
     complete_chain_ids = fields.Many2many(

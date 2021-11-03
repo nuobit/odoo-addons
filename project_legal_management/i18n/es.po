@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-29 16:39+0000\n"
-"PO-Revision-Date: 2021-10-29 16:39+0000\n"
+"POT-Creation-Date: 2021-11-03 08:33+0000\n"
+"PO-Revision-Date: 2021-11-03 08:33+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,6 @@ msgstr ""
 #: model:ir.ui.view,arch_db:project_legal_management.view_project
 msgid "Amount"
 msgstr "Importe"
-
 
 #. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_lm_issue_complete_name
@@ -46,7 +45,7 @@ msgstr "Creado en"
 
 #. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_date
-#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter_legal_management_fields
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
 msgid "Date"
 msgstr "Fecha"
 
@@ -59,7 +58,7 @@ msgid "Display Name"
 msgstr "Nombre Mostrado"
 
 #. module: project_legal_management
-#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter_legal_management_fields
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
 msgid "Employee"
 msgstr "Empleado"
 
@@ -70,7 +69,7 @@ msgstr "Empleados"
 
 #. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_expedient_number
-#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter_legal_management_fields
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
 msgid "Expedient Number"
 msgstr "Nº Expediente"
 
@@ -83,22 +82,22 @@ msgid "ID"
 msgstr "ID"
 
 #. module: project_legal_management
-#: model:ir.actions.act_window,name:project_legal_management.project_issue_list_action
-#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter_legal_management_fields
+#: model:ir.actions.act_window,name:project_legal_management.lm_issue_action
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
 msgid "Issue"
 msgstr "Asunto"
 
 #. module: project_legal_management
 #: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_issue_ids
 #: model:ir.ui.menu,name:project_legal_management.lm_issue_menu
-#: model:ir.ui.view,arch_db:project_legal_management.lm_issue_tree
-#: model:ir.ui.view,arch_db:project_legal_management.lm_probability_tree
-#: model:ir.ui.view,arch_db:project_legal_management.lm_resolution_tree
+#: model:ir.ui.view,arch_db:project_legal_management.lm_issue_view_tree
+#: model:ir.ui.view,arch_db:project_legal_management.lm_probability_view_tree
+#: model:ir.ui.view,arch_db:project_legal_management.lm_resolution_view_tree
 msgid "Issues"
 msgstr "Asuntos"
 
 #. module: project_legal_management
-#: model:ir.ui.view,arch_db:project_legal_management.lm_issue_form_view
+#: model:ir.ui.view,arch_db:project_legal_management.lm_issue_view_form
 msgid "Issues Form"
 msgstr "Formulario de Asuntos"
 
@@ -125,7 +124,7 @@ msgid "Last Updated on"
 msgstr "Última actualización en"
 
 #. module: project_legal_management
-#: model:ir.ui.menu,name:project_legal_management.menu_project_legal_management
+#: model:ir.ui.menu,name:project_legal_management.project_legal_management_menu_config
 msgid "Legal Management"
 msgstr "Gestión Jurídica"
 
@@ -155,15 +154,15 @@ msgid "Parent"
 msgstr "Padre"
 
 #. module: project_legal_management
-#: model:ir.actions.act_window,name:project_legal_management.project_probability_list_action
+#: model:ir.actions.act_window,name:project_legal_management.lm_probability_action
 #: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_probability_id
 #: model:ir.ui.menu,name:project_legal_management.lm_probability_menu
-#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter_legal_management_fields
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
 msgid "Probability"
 msgstr "Probabilidad"
 
 #. module: project_legal_management
-#: model:ir.ui.view,arch_db:project_legal_management.lm_probability_form_view
+#: model:ir.ui.view,arch_db:project_legal_management.lm_probability_view_form
 msgid "Probability Form"
 msgstr "Formulario de Probabilidades"
 
@@ -178,14 +177,14 @@ msgid "Provision"
 msgstr "Provisión"
 
 #. module: project_legal_management
-#: model:ir.actions.act_window,name:project_legal_management.project_resolution_list_action
+#: model:ir.actions.act_window,name:project_legal_management.lm_resolution_action
 #: model:ir.model.fields,field_description:project_legal_management.field_project_project_lm_resolution_id
 #: model:ir.ui.menu,name:project_legal_management.lm_resolution_menu
-#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter_legal_management_fields
+#: model:ir.ui.view,arch_db:project_legal_management.view_project_project_filter
 msgid "Resolution"
 msgstr "Resolución"
 
 #. module: project_legal_management
-#: model:ir.ui.view,arch_db:project_legal_management.lm_resolution_form_view
+#: model:ir.ui.view,arch_db:project_legal_management.lm_resolution_view_form
 msgid "Resolution Form"
 msgstr "Formulario de Resoluciones"
