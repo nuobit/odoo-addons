@@ -9,7 +9,7 @@ class Task(models.Model):
     _inherit = "project.task"
 
     @api.multi
-    @api.constrains("date_start", "date_start", "user_id", "project_id")
+    @api.constrains("date_start", "date_end", "user_id", "project_id")
     def check_ovelap(self):
         for task in self:
             overlaped_tasks = self.search(
