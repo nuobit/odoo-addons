@@ -212,7 +212,7 @@ class SaleOrder(models.Model):
 
         # assign the deadline of main task
         if longest_task.date_end:
-            longest_task.write({"date_deadline": longest_task.date_end})
+            longest_task.write({"date_deadline": longest_task.date_end.date()})
 
         # bike_location
         if longest_task.bike_location != "na":
