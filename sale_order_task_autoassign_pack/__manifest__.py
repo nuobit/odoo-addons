@@ -13,6 +13,7 @@
     "depends": [
         "sale_order_task_autoassign",
         "product_pack",
+        "sale_product_pack",
     ],
     "installable": True,
 }
