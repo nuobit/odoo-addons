@@ -8,7 +8,8 @@
     "license": "AGPL-3",
     "category": "Project",
     "website": "https://github.com/nuobit",
-    "summary": "This module hides the tasks when their stage is done or canceled.",
+    "summary": "This module adds a check box to indicate in which states we want "
+    "the tasks to be hidden in the calendar view.",
     "depends": [
         "project",
     ],

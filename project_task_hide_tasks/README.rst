@@ -6,7 +6,8 @@
 Project Task Hide tasks
 =======================
 
-This module adds a metatype for task stages.
+This module adds a check box to indicate in which
+states we want the tasks to be hidden in the calendar view.
 
 Bug Tracker
 ===========
