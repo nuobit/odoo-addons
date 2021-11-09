@@ -60,13 +60,13 @@ class SaleOrder(models.Model):
                 if tasks:
                     order.expected_date = (
                         pytz.timezone(self.env.user.tz)
-                        .localize(
+                            .localize(
                             fields.Datetime.to_datetime(
                                 max(tasks.mapped("date_deadline"))
                             )
                         )
-                        .astimezone(pytz.utc)
-                        .replace(tzinfo=None)
+                            .astimezone(pytz.utc)
+                            .replace(tzinfo=None)
                     )
                 else:
                     order.expected_date = False
@@ -157,6 +157,7 @@ class SaleOrder(models.Model):
 
     @api.multi
     def _action_confirm(self):
+
         existing_task = self.with_context(active_test=False).tasks_ids
         if existing_task:
             raise ValidationError(
@@ -167,10 +168,14 @@ class SaleOrder(models.Model):
                 )
             )
         result = super(SaleOrder, self)._action_confirm()
-
+        print(self.tasks_ids)
         if not self.tasks_ids:
             return result
 
+        self._update_tasks()
+        return result
+
+    def _update_tasks(self):
         project_task = {}
         for task in self._prepare_main_tasks():
             project = task.project_id
@@ -179,10 +184,10 @@ class SaleOrder(models.Model):
             else:
                 project_task[project] = task
 
-        for v in project_task.items():
+        for k, v in project_task.items():
             main_tasks = v.sorted(
                 lambda x: x.sale_line_id.product_id.service_time
-                * x.sale_line_id.product_uom_qty
+                          * x.sale_line_id.product_uom_qty
             )
 
             main_tasks_duration_h = sum(
@@ -192,6 +197,7 @@ class SaleOrder(models.Model):
                     for x in main_tasks
                 ]
             )
+
             longest_task = main_tasks[-1]
             other_tasks = (main_tasks - longest_task).sorted(
                 lambda x: (x.sale_line_id.sequence, x.sale_line_id.id)
@@ -209,8 +215,6 @@ class SaleOrder(models.Model):
             available_user_time = self._calculate_available_user_time(
                 main_tasks_duration_h, longest_task.project_id
             )
-            # print("values:",v.mapped("sale_line_id.product_id.name"))
-            # print(available_user_time)
             longest_task.update(
                 {
                     "user_id": available_user_time[0],
@@ -221,7 +225,7 @@ class SaleOrder(models.Model):
 
             # assign the deadline of main task
             if longest_task.date_end:
-                longest_task.write({"date_deadline": longest_task.date_end})
+                longest_task.write({"date_deadline": longest_task.date_end.date()})
 
             # bike_location
             if longest_task.bike_location != "na":
@@ -234,68 +238,6 @@ class SaleOrder(models.Model):
                 stage = self._get_stage_by_metatype(longest_task.project_id, meta_type)
                 if stage:
                     longest_task.stage_id = stage
-        return result
-
-        #
-        #
-        #
-        #
-        #
-        # main_tasks = self._prepare_main_tasks().sorted(
-        #     lambda x: x.sale_line_id.product_id.service_time
-        #               * x.sale_line_id.product_uom_qty
-        # )
-        #
-        # main_tasks_duration_h = sum(
-        #     [
-        #         x.sale_line_id.product_id.service_time *
-        #         x.sale_line_id.product_uom_qty
-        #         for x in main_tasks
-        #     ]
-        # )
-        # longest_task = main_tasks[-1]
-        # other_tasks = (self.tasks_ids - longest_task).sorted(
-        #     lambda x: (x.sale_line_id.sequence, x.sale_line_id.id)
-        # )
-        # longest_task.write(
-        #     {
-        #         "name": longest_task.name,
-        #         "description": "\n".join(
-        #             ["<p>- %s</p>" % x.sale_line_id.name for x in other_tasks]
-        #         ),
-        #     }
-        # )
-        # other_tasks.write({"sale_line_id": False})
-        # other_tasks.unlink()
-        #
-        # available_user_time = self._calculate_available_user_time(
-        #     main_tasks_duration_h, longest_task.project_id
-        # )
-        #
-        # longest_task.update(
-        #     {
-        #         "user_id": available_user_time[0],
-        #         "date_start": available_user_time[1].date_start,
-        #         "date_end": available_user_time[1].date_end,
-        #     }
-        # )
-        #
-        # # assign the deadline of main task
-        # if longest_task.date_end:
-        #     longest_task.write({"date_deadline": longest_task.date_end})
-        #
-        # # bike_location
-        # if longest_task.bike_location != "na":
-        #     # set the stage according to bike_location
-        #     meta_type = None
-        #     if longest_task.bike_location == "bring_in":
-        #         meta_type = "bring_in"
-        #     elif longest_task.bike_location == "in_shop":
-        #         meta_type = "in_place"
-        #     stage = self._get_stage_by_metatype(longest_task.project_id, meta_type)
-        #     if stage:
-        #         longest_task.stage_id = stage
-        # return result
 
     def _get_stage_by_metatype(self, project, meta_type):
         task_type = self.env["project.task.type"].search(
@@ -318,7 +260,89 @@ class SaleOrder(models.Model):
             )
         return task_type
 
+    def _update_tasks_by_product(self, old_tasks):
+        project_old_task = {}
+        for task in old_tasks:
+            if task.id in project_old_task:
+                raise ValidationError(_("2 tasks in the same project in the same SO"))
+            else:
+                project_old_task[task.id] = [task.date_end - task.date_start, task.description]
+
+        project_task = {}
+        new_tasks=self._prepare_main_tasks()
+        for task in new_tasks:
+            if task in old_tasks:
+                task.pop()
+
+        for task in self._prepare_main_tasks():
+            project = task.project_id
+            if project in project_task:
+                project_task[project] |= task
+            else:
+                project_task[project] = task
+
+
+        for k, v in project_task.items():
+            main_tasks = v.sorted(
+                lambda x: x.sale_line_id.product_id.service_time
+                          * x.sale_line_id.product_uom_qty
+            )
+
+            main_tasks_duration_h = sum(
+                [
+                    x.sale_line_id.product_id.service_time
+                    * x.sale_line_id.product_uom_qty
+                    for x in main_tasks
+                ]
+            )
+            if main_tasks_duration_h == 0:
+                main_tasks.write({"sale_line_id": False})
+                main_tasks.unlink()
+                # raise ValidationError(_("Invoices need duration"))
+            else:
+                longest_task = main_tasks[-1]
+                other_tasks = (main_tasks - longest_task).sorted(
+                    lambda x: (x.sale_line_id.sequence, x.sale_line_id.id)
+                )
+                longest_task.write(
+                    {
+                        "name": longest_task.name,
+                        "description": "\n".join(
+                            ["<p>- %s</p>" % x.sale_line_id.name for x in other_tasks]
+                        ),
+                    }
+                )
+                other_tasks.write({"sale_line_id": False})
+                other_tasks.unlink()
+                available_user_time = self._calculate_available_user_time(
+                    main_tasks_duration_h, longest_task.project_id
+                )
+                longest_task.update(
+                    {
+                        "user_id": available_user_time[0],
+                        "date_start": available_user_time[1].date_start,
+                        "date_end": available_user_time[1].date_end,
+                    }
+                )
+
+                # assign the deadline of main task
+                if longest_task.date_end:
+                    longest_task.write({"date_deadline": longest_task.date_end.date()})
+
+                # bike_location
+                if longest_task.bike_location != "na":
+                    # set the stage according to bike_location
+                    meta_type = None
+                    if longest_task.bike_location == "bring_in":
+                        meta_type = "bring_in"
+                    elif longest_task.bike_location == "in_shop":
+                        meta_type = "in_place"
+                    stage = self._get_stage_by_metatype(longest_task.project_id, meta_type)
+                    if stage:
+                        longest_task.stage_id = stage
+
     def write(self, values):
+        old_tasks = self.tasks_ids
         if "bike_location" in values:
             for task in self.tasks_ids:
                 if values["bike_location"] in ("bring_in", "in_shop"):
@@ -334,30 +358,14 @@ class SaleOrder(models.Model):
                         task.stage_id = stage
         result = super().write(values)
 
-        # proj_hour = {}
         # if "order_line" in values:
-        #     for lines in self.order_line:
-        #         proj_id = lines.product_id.project_id
-        #         line_time = lines.product_id.service_time * lines.product_uom_qty
-        #         if proj_id in proj_hour:
-        #             proj_hour[proj_id] += line_time
-        #         else:
-        #             proj_hour[proj_id] = line_time
-
-        # for k, v in proj_hour.items():
-        #     available_user_time = self._calculate_available_user_time(v, k)
-        #     longest_task.update(
-        #         {
-        #             "user_id": available_user_time[0],
-        #             "date_start": available_user_time[1].date_start,
-        #             "date_end": available_user_time[1].date_end,
-        #         }
-        #     )
-        #
-        #     # assign the deadline of main task
-        #     if longest_task.date_end:
-        #         longest_task.write({"date_deadline": longest_task.date_end})
-        #
-        # a = 1
+        #     self._update_tasks_by_product(old_tasks)
 
         return result
+
+# class SaleOrderLine(models.Model):
+#     _inherit="sale.order.line"
+#     def write(self,values):
+#         return super().write(values)
+#         if "order_line" in values:
+#             self._update_tasks()
