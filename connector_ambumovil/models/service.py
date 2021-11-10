@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models, fields, api
@@ -48,21 +48,25 @@ class AmbumovilService(models.AbstractModel):
         return product_stock_ld
 
     @api.model
-    def consume_ambulance_stock(self, code, service_num, moves, employees, validate=True):
+    def consume_ambulance_stock(self, code, service_num, moves, employees, refund=False, validate=True):
         company_id = self.env.user.company_id.id
-
         picking_type_id = self.env['stock.picking.type'].search([
             ('name', '=', 'Internal Transfers'),
         ], order='id asc', limit=1)
 
+        if not refund:
+            code_src, code_dst = code, 'CONSUMOSCLIENTE'
+        else:
+            code_src, code_dst = 'CONSUMOSCLIENTE', code
+
         src_location_id = self.env['stock.location'].search([
             ('company_id', '=', company_id),
-            ('code', '=', code),
+            ('code', '=', code_src),
         ])
 
         dst_location_id = self.env['stock.location'].search([
             ('company_id', '=', company_id),
-            ('code', '=', 'CONSUMOSCLIENTE'),
+            ('code', '=', code_dst),
         ])
 
         ## tractem els movs
