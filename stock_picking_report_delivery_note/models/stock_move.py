@@ -25,7 +25,7 @@ class StockMove(models.Model):
 
         if uom_from.category_id != uom_to.category_id:
             raise UserError(_("Cannot convert the units of the product %s") % (
-                    self.product_id.defaul_code or self.product_id.name))
+                    self.product_id.default_code or self.product_id.name))
 
         return _get_uom_rate(uom_from) / _get_uom_rate(uom_to)
 
@@ -52,9 +52,10 @@ class StockMove(models.Model):
 
     def get_line_lots(self):
         if self.product_id.tracking in ('lot', 'serial'):
-            return self.mapped('move_line_ids.lot_id') \
-                .sorted(lambda x: x.name).mapped('name')
-
+            lots=[]
+            for l in self.move_line_ids:
+                lots.append("%s (%s %s)" % (l.lot_id.name,str(l.product_qty),l.product_uom_id.name))
+            return lots
         return None
 
     def _extract_product_code(self, name):
