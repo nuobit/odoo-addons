@@ -52,9 +52,11 @@ class StockMove(models.Model):
 
     def get_line_lots(self):
         if self.product_id.tracking in ('lot', 'serial'):
-            lots=[]
+            lots = []
             for l in self.move_line_ids:
-                lots.append("%s (%s %s)" % (l.lot_id.name,str(l.product_qty),l.product_uom_id.name))
+                qty = {'assigned': l.product_qty, 'done': l.qty_done}
+                if l.state in qty:
+                    lots.append("%s (%s %s)" % (l.lot_id.name, str(qty[l.state]), l.product_uom_id.name))
             return lots
         return None
 
