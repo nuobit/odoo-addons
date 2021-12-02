@@ -1,23 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <menuitem id="menu_root" name="Sage payroll"
-              web_icon="payroll_sage,static/description/appicon.png"
-              sequence="46"/>
+    <menuitem
+        id="menu_root"
+        name="Sage payroll"
+        web_icon="payroll_sage,static/description/appicon.png"
+        sequence="46"
+    />
 
 
-    <menuitem id="menu_sage_payroll" parent="menu_root"
-              name="Sage payroll" sequence="10"/>
+    <menuitem
+        id="menu_sage_payroll"
+        parent="menu_root"
+        name="Sage payroll"
+        sequence="10"
+    />
 
 
-    <menuitem id="payslip_menu_action" name="Payslip" sequence="10"
-              parent="menu_sage_payroll" action="payslip_action"/>
+    <menuitem
+        id="payslip_menu_action"
+        name="Payslip"
+        sequence="10"
+        parent="menu_sage_payroll"
+        action="payslip_action"
+    />
 
-    <menuitem id="labour_agreement_menu_action" name="Labour agreement" sequence="20"
-              parent="menu_sage_payroll" action="labour_agreement_action"/>
+    <menuitem
+        id="labour_agreement_menu_action"
+        name="Labour agreement"
+        sequence="20"
+        parent="menu_sage_payroll"
+        action="labour_agreement_action"
+    />
 
-    <menuitem id="wage_tag_menu_action" name="Wage tag" sequence="30"
-              parent="menu_sage_payroll" action="wage_tag_action"/>
+    <menuitem
+        id="wage_tag_menu_action"
+        name="Wage tag"
+        sequence="30"
+        parent="menu_sage_payroll"
+        action="wage_tag_action"
+    />
 </odoo>
