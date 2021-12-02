@@ -7,7 +7,7 @@ Project legal management
 ========================
 
 * This module adds the necessary fields to work with
-the legal management in the project module
+  the legal management in the project module
 
 Bug Tracker
 ===========

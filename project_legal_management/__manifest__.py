@@ -5,7 +5,7 @@
     "name": "Project legal management",
     "summary": "This module adds the necessary fields to work with "
     "the legal management in the project module",
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Project",
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "website": "https://github.com/nuobit/odoo-addons",

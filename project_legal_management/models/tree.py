@@ -16,7 +16,6 @@ class LMTreeMixin(models.AbstractModel):
         search="_search_complete_name",
     )
 
-    @api.multi
     def name_get(self):
         vals = []
         for record in self:
@@ -49,34 +48,22 @@ class LMTreeMixin(models.AbstractModel):
                 rec.complete_name = rec.name
 
     def _search_complete_name(self, operator, value):
+        operation_mapping = {
+            "=": lambda x, y: x == y,
+            "!=": lambda x, y: x != y,
+            "like": lambda x, y: x in y,
+            "not like": lambda x, y: x not in y,
+            "ilike": lambda x, y: x.lower() in y.lower(),
+            "not ilike": lambda x, y: x.lower() not in y.lower(),
+            "=like": lambda x, y: x == y,
+            "=ilike": lambda x, y: x.lower() == y.lower(),
+        }
+        if operator not in operation_mapping:
+            raise UserError(_("Operator %s not implemented") % operator)
         node_ids = []
         for node in self.env[self._name].search([]):
             complete_name = node.get_complete_name()
-            if operator == "=":
-                if value == complete_name:
-                    node_ids.append(node.id)
-            elif operator == "!=":
-                if value != complete_name:
-                    node_ids.append(node.id)
-            elif operator == "like":
-                if value in complete_name:
-                    node_ids.append(node.id)
-            elif operator == "not like":
-                if value not in complete_name:
-                    node_ids.append(node.id)
-            elif operator == "ilike":
-                if value.lower() in complete_name.lower():
-                    node_ids.append(node.id)
-            elif operator == "not ilike":
-                if value.lower() not in complete_name.lower():
-                    node_ids.append(node.id)
-            elif operator == "=like":
-                if value == complete_name:
-                    node_ids.append(node.id)
-            elif operator == "=ilike":
-                if value.lower() == complete_name.lower():
-                    node_ids.append(node.id)
-            else:
-                raise UserError(_("Operator %s not implemented") % operator)
+            if operation_mapping[operator](value, complete_name):
+                node_ids.append(node.id)
 
         return [("id", "in", node_ids)]
