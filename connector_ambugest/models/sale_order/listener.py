@@ -2,14 +2,13 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models, _
 from odoo.addons.component.core import Component
 
 
 class AmbugestSaleOrderListener(Component):
-    _name = 'ambugest.sale.order.listener'
-    _inherit = 'base.event.listener'
-    _apply_on = ['sale.order']
+    _name = "ambugest.sale.order.listener"
+    _inherit = "base.event.listener"
+    _apply_on = ["sale.order"]
 
     def on_confirm_order(self, record):
         record.ensure_one()
