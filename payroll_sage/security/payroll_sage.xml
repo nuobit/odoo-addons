@@ -1,26 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo noupdate="1">
     <record id="labour_agreement_company_rule" model="ir.rule">
         <field name="name">Payroll sage Labour agreement multi-company rule</field>
-        <field name="model_id" ref="model_payroll_sage_labour_agreement"/>
-        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]
+        <field name="model_id" ref="model_payroll_sage_labour_agreement" />
+        <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]
         </field>
     </record>
 
     <record id="payslip_company_rule" model="ir.rule">
         <field name="name">Payroll sage Payslip multi-company rule</field>
-        <field name="model_id" ref="model_payroll_sage_payslip"/>
-        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]
+        <field name="model_id" ref="model_payroll_sage_payslip" />
+        <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]
         </field>
     </record>
 
     <record id="wage_tag_company_rule" model="ir.rule">
         <field name="name">Payroll sage labour agreement multi-company rule</field>
-        <field name="model_id" ref="model_payroll_sage_wage_tag"/>
-        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]
+        <field name="model_id" ref="model_payroll_sage_wage_tag" />
+        <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]
         </field>
     </record>
 </odoo>
