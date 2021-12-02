@@ -2,7 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models, api
+from odoo import api, models
 
 
 class AccountInvoice(models.Model):
@@ -13,7 +13,7 @@ class AccountInvoice(models.Model):
         res = True
         for rec in self:
             res &= super(AccountInvoice, rec).action_invoice_open()
-            self._event('on_validate_invoice').notify(rec)
+            self._event("on_validate_invoice").notify(rec)
 
         return res
 
@@ -22,6 +22,6 @@ class AccountInvoice(models.Model):
         res = True
         for rec in self:
             res &= super(AccountInvoice, rec).action_invoice_cancel()
-            self._event('on_cancel_invoice').notify(rec)
+            self._event("on_cancel_invoice").notify(rec)
 
         return res
