@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!---->
 <odoo>
     <!-- window action wage_tag2wage_type_line smart button -->
     <record id="wage_tag_action_wage_type_line" model="ir.actions.act_window">
@@ -21,26 +22,34 @@
         <field name="model">payroll.sage.wage.tag</field>
         <field name="arch" type="xml">
             <form string="Wage Tag">
-                <header/>
+                <header />
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(wage_tag_action_wage_type_line)d">
-                            <field string="Wage type" name="wage_type_line_count" widget="statinfo"/>
+                        <button
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="%(wage_tag_action_wage_type_line)d"
+                        >
+                            <field
+                                string="Wage type"
+                                name="wage_type_line_count"
+                                widget="statinfo"
+                            />
                         </button>
                     </div>
                     <group col="4">
-                        <field name="code"/>
-                        <field name="type"/>
-                        <field name="account_id"/>
-                        <field name="credit_debit"/>
-                        <field name="aggregate"/>
-                        <field name="negative_withholding"/>
-                        <field name="description"/>
-                        <field name="company_id"/>
+                        <field name="code" />
+                        <field name="type" />
+                        <field name="account_id" />
+                        <field name="credit_debit" />
+                        <field name="aggregate" />
+                        <field name="negative_withholding" />
+                        <field name="description" />
+                        <field name="company_id" />
                     </group>
                     <group>
-                        <field name="note"/>
+                        <field name="note" />
                     </group>
                 </sheet>
             </form>
@@ -52,14 +61,14 @@
         <field name="model">payroll.sage.wage.tag</field>
         <field name="arch" type="xml">
             <tree string="Wage Tag">
-                <field name="sequence" widget="handle"/>
-                <field name="code"/>
-                <field name="type"/>
-                <field name="account_id"/>
-                <field name="credit_debit"/>
-                <field name="aggregate"/>
-                <field name="negative_withholding"/>
-                <field name="description"/>
+                <field name="sequence" widget="handle" />
+                <field name="code" />
+                <field name="type" />
+                <field name="account_id" />
+                <field name="credit_debit" />
+                <field name="aggregate" />
+                <field name="negative_withholding" />
+                <field name="description" />
             </tree>
         </field>
     </record>
