@@ -1,20 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_project" model="ir.ui.view">
         <field name="name">view.project.legal.management</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.view_project"/>
+        <field name="inherit_id" ref="project.view_project" />
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
-                <field name="lm_expedient_number"/>
-                <field name="lm_date"/>
-                <field name="lm_employee_ids" widget="many2many_tags"/>
-                <field name="lm_issue_ids" widget="many2many_tags"/>
-                <field name="lm_amount" sum="Amount"/>
-                <field name="lm_probability_id"/>
-                <field name="lm_resolution_id"/>
+                <field name="lm_expedient_number" />
+                <field name="lm_date" />
+                <field name="lm_employee_ids" widget="many2many_tags" />
+                <field name="lm_issue_ids" widget="many2many_tags" />
+                <field name="lm_amount" sum="Amount" />
+                <field name="lm_probability_id" />
+                <field name="lm_resolution_id" />
             </xpath>
         </field>
     </record>
@@ -24,13 +24,25 @@
     <record id="view_project_project_filter" model="ir.ui.view">
         <field name="name">view.project.project.filter.legal.management</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="inherit_id" ref="project.view_project_project_filter" />
         <field name="arch" type="xml">
             <xpath expr="//group" position="inside">
-                <filter string="Date" name="Date" context="{'group_by':'lm_date'}"/>
-                <filter string="Expedient Number" name="Expedient Number" context="{'group_by':'lm_expedient_number'}"/>
-                <filter string="Resolution" name="Resolution" context="{'group_by':'lm_resolution_id'}"/>
-                <filter string="Probability" name="Probability" context="{'group_by':'lm_probability_id'}"/>
+                <filter string="Date" name="Date" context="{'group_by':'lm_date'}" />
+                <filter
+                    string="Expedient Number"
+                    name="Expedient Number"
+                    context="{'group_by':'lm_expedient_number'}"
+                />
+                <filter
+                    string="Resolution"
+                    name="Resolution"
+                    context="{'group_by':'lm_resolution_id'}"
+                />
+                <filter
+                    string="Probability"
+                    name="Probability"
+                    context="{'group_by':'lm_probability_id'}"
+                />
             </xpath>
             <field name="name" position="attributes">
                 <attribute name="filter_domain">['|','|','|','|','|',('lm_date','ilike',
@@ -40,12 +52,12 @@
                 </attribute>
             </field>
             <xpath expr="//group" position="before">
-                <field name="lm_date" string="Date"/>
-                <field name="lm_employee_ids" string="Employee"/>
-                <field name="lm_issue_ids" string="Issues"/>
-                <field name="lm_resolution_id" string="Resolution"/>
-                <field name="lm_probability_id" string="Probability"/>
-                <field name="lm_expedient_number" string="Expedient Number"/>
+                <field name="lm_date" string="Date" />
+                <field name="lm_employee_ids" string="Employee" />
+                <field name="lm_issue_ids" string="Issues" />
+                <field name="lm_resolution_id" string="Resolution" />
+                <field name="lm_probability_id" string="Probability" />
+                <field name="lm_expedient_number" string="Expedient Number" />
             </xpath>
         </field>
     </record>
