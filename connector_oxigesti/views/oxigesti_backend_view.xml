@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -10,41 +10,92 @@
         <field name="arch" type="xml">
             <form string="Oxigesti Backend">
                 <header>
-                    <button name="button_check_connection" type="object" class="oe_highlight"
-                            string="Check Connection" attrs="{'invisible':[('state', 'not in', ['draft'])]}"/>
-                    <button name="button_reset_to_draft" type="object"
-                            string="Reset To draft Connection" attrs="{'invisible':[('state', 'in', ['draft'])]}"/>
-                    <field name="state" widget="statusbar" readonly="1"/>
+                    <button
+                        name="button_check_connection"
+                        type="object"
+                        class="oe_highlight"
+                        string="Check Connection"
+                        attrs="{'invisible':[('state', 'not in', ['draft'])]}"
+                    />
+                    <button
+                        name="button_reset_to_draft"
+                        type="object"
+                        string="Reset To draft Connection"
+                        attrs="{'invisible':[('state', 'in', ['draft'])]}"
+                    />
+                    <field name="state" widget="statusbar" readonly="1" />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" type="object" name="toggle_active"
-                                icon="fa-archive">
-                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        <button
+                            class="oe_stat_button"
+                            type="object"
+                            name="toggle_active"
+                            icon="fa-archive"
+                        >
+                            <field
+                                name="active"
+                                widget="boolean_button"
+                                options='{"terminology": "archive"}'
+                            />
                         </button>
                     </div>
                     <h1>
-                        <field name="name" class="oe_inline" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field
+                            name="name"
+                            class="oe_inline"
+                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                        />
                     </h1>
                     <group col="4">
-                        <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="lang_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field
+                            name="company_id"
+                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                        />
+                        <field
+                            name="lang_id"
+                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                        />
                     </group>
                     <group>
                         <group col="4">
-                            <field name="server" colspan="4" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="port" colspan="4" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="database" colspan="4" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="schema" colspan="4" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field
+                                name="server"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="port"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="database"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="schema"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                         <group col="4">
-                            <field name="username" colspan="4" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="password" password="True" colspan="4"
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field
+                                name="username"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="password"
+                                password="True"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                     </group>
                     <group>
-                        <field name="version" colspan="4"/>
+                        <field name="version" colspan="4" />
                     </group>
                     <notebook attrs="{'invisible':[('state', 'in', ['draft'])]}">
                         <page name="synchronizers" string="Synchronizers">
@@ -72,78 +123,141 @@
                             </p>
                             <group>
                                 <div>
-                                    <label string="Import Customers since"
-                                           class="oe_inline"/>
-                                    <field name="import_customers_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <label
+                                        string="Import Customers since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="import_customers_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
                                 </div>
-                                <button name="import_customers_since" type="object"
-                                        class="oe_highlight" string="Import in background"/>
+                                <button
+                                    name="import_customers_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import in background"
+                                />
                             </group>
                             <group>
                                 <div>
-                                    <label string="Export Products since"
-                                           class="oe_inline"/>
-                                    <field name="export_products_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <label
+                                        string="Export Products since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="export_products_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
                                 </div>
-                                <button name="export_products_since" type="object"
-                                        class="oe_highlight" string="Export in background"/>
+                                <button
+                                    name="export_products_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
                             </group>
                             <group>
                                 <div>
-                                    <label string="Export Product Categories since"
-                                           class="oe_inline"/>
-                                    <field name="export_product_categories_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <label
+                                        string="Export Product Categories since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="export_product_categories_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
                                 </div>
-                                <button name="export_product_categories_since" type="object"
-                                        class="oe_highlight" string="Export in background"/>
+                                <button
+                                    name="export_product_categories_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
                             </group>
                             <group>
                                 <div>
-                                    <label string="Export Products by customer since"
-                                           class="oe_inline"/>
-                                    <field name="export_products_by_customer_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <label
+                                        string="Export Products by customer since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="export_products_by_customer_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
                                 </div>
-                                <button name="export_products_by_customer_since" type="object"
-                                        class="oe_highlight" string="Export in background"/>
+                                <button
+                                    name="export_products_by_customer_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
                             </group>
                             <group>
                                 <div>
-                                    <label string="Export Lots since"
-                                           class="oe_inline"/>
-                                    <field name="export_stock_production_lot_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <label
+                                        string="Export Lots since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="export_stock_production_lot_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
                                 </div>
-                                <button name="export_stock_production_lot_since" type="object"
-                                        class="oe_highlight" string="Export in background"/>
+                                <button
+                                    name="export_stock_production_lot_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
                             </group>
                             <group>
                                 <div>
-                                    <label string="Export Product prices by customer since"
-                                           class="oe_inline"/>
-                                    <field name="export_product_prices_by_customer_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <label
+                                        string="Export Product prices by customer since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="export_product_prices_by_customer_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
                                 </div>
-                                <button name="export_product_prices_by_customer_since" type="object"
-                                        class="oe_highlight" string="Export in background"/>
+                                <button
+                                    name="export_product_prices_by_customer_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
                             </group>
                             <group>
                                 <div>
-                                    <label string="Import Services since"
-                                           class="oe_inline"/>
-                                    <field name="import_services_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <label
+                                        string="Import Services since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="import_services_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
                                 </div>
-                                <button name="import_services_since" type="object"
-                                        class="oe_highlight" string="Import in background"/>
+                                <button
+                                    name="import_services_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import in background"
+                                />
                             </group>
                         </page>
                         <page name="additional_data" string="Additional data">
                             <group>
-                                <field name="warehouse_id"/>
+                                <field name="warehouse_id" />
                             </group>
                         </page>
                     </notebook>
@@ -157,12 +271,12 @@
         <field name="model">oxigesti.backend</field>
         <field name="arch" type="xml">
             <tree string="Oxigesti Backend">
-                <field name="name"/>
-                <field name="company_id"/>
-                <field name="server"/>
-                <field name="port"/>
-                <field name="database"/>
-                <field name="schema"/>
+                <field name="name" />
+                <field name="company_id" />
+                <field name="server" />
+                <field name="port" />
+                <field name="database" />
+                <field name="schema" />
             </tree>
         </field>
     </record>
