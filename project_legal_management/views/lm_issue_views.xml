@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
@@ -10,12 +10,12 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name"/>
+                            <field name="name" />
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="parent_id"/>
+                            <field name="parent_id" />
                         </group>
                     </group>
                 </sheet>
@@ -27,8 +27,8 @@
         <field name="model">lm.issue</field>
         <field name="arch" type="xml">
             <tree string="Issue Tree">
-                <field name="name"/>
-                <field name="parent_id"/>
+                <field name="name" />
+                <field name="parent_id" />
             </tree>
         </field>
     </record>
@@ -37,7 +37,11 @@
         <field name="res_model">lm.issue</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="lm_issue_menu" name="Issues" parent="project_legal_management_menu_config"
-              action="lm_issue_action"
-              sequence="203"/>
+    <menuitem
+        id="lm_issue_menu"
+        name="Issues"
+        parent="project_legal_management_menu_config"
+        action="lm_issue_action"
+        sequence="203"
+    />
 </odoo>

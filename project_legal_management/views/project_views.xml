@@ -1,29 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="edit_project" model="ir.ui.view">
         <field name="name">edit_project_legal_management</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="inherit_id" ref="project.edit_project" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page name="other_info" string="Other Information">
                     <group col="4">
-                        <field name="lm_date"/>
-                        <field name="lm_employee_ids" widget="many2many_tags"/>
-                        <field name="lm_expedient_number"/>
-                        <field name="lm_issue_ids" widget="many2many_tags"/>
-                        <field name="lm_resolution_id"/>
+                        <field name="lm_date" />
+                        <field name="lm_employee_ids" widget="many2many_tags" />
+                        <field name="lm_expedient_number" />
+                        <field name="lm_issue_ids" widget="many2many_tags" />
+                        <field name="lm_resolution_id" />
                     </group>
                     <group col="4" string="Provision">
-                        <field name="lm_amount"/>
-                        <field name="lm_probability_id"/>
+                        <field name="lm_amount" />
+                        <field name="lm_probability_id" />
                     </group>
                 </page>
             </xpath>
         </field>
     </record>
-    <menuitem id="project_legal_management_menu_config" name="Legal Management" parent="project.menu_main_pm"
-              sequence="200" groups="project.group_project_manager"/>
+    <menuitem
+        id="project_legal_management_menu_config"
+        name="Legal Management"
+        parent="project.menu_main_pm"
+        sequence="200"
+        groups="project.group_project_manager"
+    />
 </odoo>
