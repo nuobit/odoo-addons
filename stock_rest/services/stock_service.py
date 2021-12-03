@@ -71,6 +71,8 @@ class LotService(Component):
                 'code': l.name,
                 'product_id': l.product_id.id,
                 'product_code': l.product_id.default_code or None,
+                'category_id': l.product_id.categ_id.id,
+                'category_name': l.product_id.categ_id.name or None,
             })
         return {'rows': data}
 
@@ -86,6 +88,8 @@ class LotService(Component):
             'code': {"type": "string", "required": True},
             'product_id': {"type": "integer", "required": True},
             'product_code': {"type": "string", "required": True, "nullable": True},
+            'category_id': {"type": "integer", "required": True},
+            'category_name': {"type": "string", "required": True, "nullable": False},
         }
         return {
             "rows": {

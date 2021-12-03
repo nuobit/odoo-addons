@@ -6,7 +6,7 @@
     'name': "Stock REST",
     'author': 'NuoBiT Solutions, S.L.',
     'category': 'Stock',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.0.1',
     'license': 'AGPL-3',
     'website': 'https://github.com/nuobit',
     'depends': [
