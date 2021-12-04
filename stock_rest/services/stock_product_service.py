@@ -11,9 +11,9 @@ class ProductService(Component):
     _name = "product.service"
     _usage = "products"
     _description = """
-    Product Services
-    Access to Product services
-"""
+        Product Services
+        Access to Product services
+    """
 
     def search(self, code=None, location_code=None):
         # get current user

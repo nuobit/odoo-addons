@@ -6,7 +6,7 @@
     'name': "Stock REST",
     'author': 'NuoBiT Solutions, S.L.',
     'category': 'Stock',
-    'version': '11.0.1.0.3',
+    'version': '11.0.1.0.4',
     'license': 'AGPL-3',
     'website': 'https://github.com/nuobit',
     'depends': [
@@ -14,6 +14,8 @@
         'connector_sage',
         'base_rest'
     ],
-    'data': [],
+    'data': [
+        'views/stock_picking_views.xml',
+    ],
     'installable': True,
 }
