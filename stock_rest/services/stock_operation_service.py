@@ -72,9 +72,10 @@ class OperationService(Component):
         moves = []
         for product_id in moves_by_product.keys():
             obj = self.env['product.product'].browse(product_id)
-            if obj.asset_category_id and not kwargs.get('asset', False):
-                raise Exception("You cannot consume an asset. %s [%s]"
-                                % (obj, obj.default_code))
+            if obj.sudo().asset_category_id and not kwargs['asset']:
+                raise ValidationError("You cannot consume an asset. %s [%s]. "
+                                      "Add the parameter 'asset=true' to the call to force it" % (
+                                          obj.id, obj.default_code))
             moves.append({
                 'product_id': obj.id,
                 'product_uom': obj.uom_id.id,
@@ -120,6 +121,7 @@ class OperationService(Component):
             "source": {"type": "string", "required": True, "empty": False},
             "destination": {"type": "string", "required": True, "empty": False},
             "validate": {"type": "boolean", "default": True},
+            "asset": {"type": "boolean", "default": False},
             "products": {
                 "type": "list",
                 "required": True,
