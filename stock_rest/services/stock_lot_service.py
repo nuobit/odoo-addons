@@ -2,11 +2,8 @@
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import logging
 from odoo.addons.component.core import Component
 from odoo.exceptions import MissingError
-
-_logger = logging.getLogger(__name__)
 
 
 class LotService(Component):
