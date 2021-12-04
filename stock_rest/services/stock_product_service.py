@@ -73,8 +73,8 @@ class ProductService(Component):
                 'category_id': product.categ_id.id,
                 'category_name': product.categ_id.name,
                 'lot_type': product.tracking,
-                'asset_category_id': product.asset_category_id.id or None,
-                'asset_category_name': product.asset_category_id.name or None,
+                'asset_category_id': product.sudo().asset_category_id.id or None,
+                'asset_category_name': product.sudo().asset_category_id.name or None,
                 'lots': lots
             })
 
