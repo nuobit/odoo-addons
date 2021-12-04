@@ -2,6 +2,7 @@
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+from odoo import _
 from odoo.addons.component.core import Component
 from odoo.exceptions import ValidationError
 
@@ -22,8 +23,11 @@ class OperationService(Component):
         ]).company_id.id
 
         picking_type_id = self.env['stock.picking.type'].search([
-            ('name', '=', 'Internal Transfers'),
-        ], order='id asc', limit=1)
+            ('warehouse_id.company_id', '=', company_id),
+            ('use_in_rest_operations', '=', True),
+        ])
+        if not picking_type_id:
+            raise ValidationError(_("No Operation Type configured for REST operations on current company"))
 
         # Setting Source and destination
         src_location_id = self.env['stock.location'].search([
