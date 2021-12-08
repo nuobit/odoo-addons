@@ -2,10 +2,17 @@
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo.addons.base_rest.controllers import main
+import logging
+
+_logger = logging.getLogger(__name__)
+try:
+    from odoo.addons.base_rest.controllers.main import RestController
+except ImportError:
+    _logger.warning("Module base_rest is not installed.")
+    RestController = object
 
 
-class StockRestController(main.RestController):
+class StockRestController(RestController):
     _root_path = "/api/v2/"
     _collection_name = "stock.rest.services"
     _default_auth = "user"
