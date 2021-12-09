@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -61,12 +61,10 @@ class OxigestiBackend(models.Model):
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(selection="_select_state", string="State", default="draft")
 
-    @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
         self.write({"state": "draft", "version": None})
 
-    @api.multi
     def _check_connection(self):
         self.ensure_one()
         with self.work_on("oxigesti.backend") as work:
@@ -74,7 +72,6 @@ class OxigestiBackend(models.Model):
             with api_handle_errors("Connection failed"):
                 self.version = component.get_version()
 
-    @api.multi
     def button_check_connection(self):
         self._check_connection()
         self.write({"state": "checked"})
@@ -94,17 +91,15 @@ class OxigestiBackend(models.Model):
     import_services_since_date = fields.Datetime("Import Services since")
 
     # Backend data methods
-    @api.multi
     def import_customers_since(self):
         for rec in self:
-            since_date = fields.Datetime.from_string(rec.import_customers_since_date)
+            since_date = rec.import_customers_since_date
             self.env["oxigesti.res.partner"].with_delay().import_customers_since(
                 backend_record=rec, since_date=since_date
             )
 
         return True
 
-    @api.multi
     def export_products_since(self):
         for rec in self:
             since_date = rec.export_products_since_date
@@ -114,7 +109,6 @@ class OxigestiBackend(models.Model):
 
         return True
 
-    @api.multi
     def export_product_categories_since(self):
         for rec in self:
             since_date = rec.export_product_categories_since_date
@@ -126,7 +120,6 @@ class OxigestiBackend(models.Model):
 
         return True
 
-    @api.multi
     def export_products_by_customer_since(self):
         for rec in self:
             since_date = rec.export_products_by_customer_since_date
@@ -138,7 +131,6 @@ class OxigestiBackend(models.Model):
 
         return True
 
-    @api.multi
     def export_product_prices_by_customer_since(self):
         for rec in self:
             since_date = rec.export_product_prices_by_customer_since_date
@@ -150,7 +142,6 @@ class OxigestiBackend(models.Model):
 
         return True
 
-    @api.multi
     def export_stock_production_lot_since(self):
         for rec in self:
             since_date = rec.export_stock_production_lot_since_date
@@ -162,10 +153,9 @@ class OxigestiBackend(models.Model):
 
         return True
 
-    @api.multi
     def import_services_since(self):
         for rec in self:
-            since_date = fields.Datetime.from_string(rec.import_services_since_date)
+            since_date = rec.import_services_since_date
             rec.import_services_since_date = fields.Datetime.now()
             self.env["oxigesti.sale.order"].with_delay().import_services_since(
                 backend_record=rec, since_date=since_date
@@ -179,7 +169,7 @@ class OxigestiBackend(models.Model):
         if self.env.user.id == self.env.ref("base.user_root").id:
             raise exceptions.ValidationError(_("The cron user cannot be admin"))
 
-        return self.env.user.company_id
+        return self.env.company
 
     @api.model
     def _scheduler_import_customers(self):

@@ -1,10 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class ProductPricelistItem(models.Model):
@@ -21,6 +19,7 @@ class ProductPricelistItemBinding(models.Model):
     _name = "oxigesti.product.pricelist.item"
     _inherit = "oxigesti.binding"
     _inherits = {"product.pricelist.item": "odoo_id"}
+    _description = "Product pricelist item binding"
 
     odoo_id = fields.Many2one(
         comodel_name="product.pricelist.item",
@@ -45,28 +44,23 @@ class ProductPricelistItemBinding(models.Model):
         ),
     ]
 
-    @job(default_channel="root.oxigesti")
     @api.model
     def export_product_prices_by_customer_since(
         self, backend_record=None, since_date=None
     ):
         """ Prepare the batch export of product prices by customer modified on Odoo """
-        domain = [("company_id", "=", backend_record.company_id.id)]
+        domain = [("company_id", "in", (backend_record.company_id.id, False))]
         if since_date:
             domain += [("write_date", ">", since_date)]
         now_fmt = fields.Datetime.now()
         self.export_batch(backend=backend_record, domain=domain)
         backend_record.export_product_prices_by_customer_since_date = now_fmt
-
         return True
 
-    @api.multi
     def resync(self):
         for record in self:
             func = record.export_record
             if record.env.context.get("connector_delay"):
                 func = record.export_record.delay
-
             func(record.backend_id, record)
-
         return True

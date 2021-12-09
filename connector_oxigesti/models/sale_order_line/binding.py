@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -19,6 +19,7 @@ class SaleOrderLineBinding(models.Model):
     _name = "oxigesti.sale.order.line"
     _inherit = "oxigesti.binding"
     _inherits = {"sale.order.line": "odoo_id"}
+    _description = "Sale order line binding"
 
     odoo_id = fields.Many2one(
         comodel_name="sale.order.line",
@@ -44,12 +45,13 @@ class SaleOrderLineBinding(models.Model):
         index=True,
     )
 
-    @api.model
-    def create(self, vals):
-        oxigesti_order_id = vals["oxigesti_order_id"]
-        binding = self.env["oxigesti.sale.order"].browse(oxigesti_order_id)
-        vals["order_id"] = binding.odoo_id.id
-        binding = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            oxigesti_order_id = vals["oxigesti_order_id"]
+            binding = self.env["oxigesti.sale.order"].browse(oxigesti_order_id)
+            vals["order_id"] = binding.odoo_id.id
+        return super().create(vals_list)
         # FIXME triggers function field
         # The amounts (amount_total, ...) computed fields on 'sale.order' are
         # not triggered when magento.sale.order.line are created.
@@ -58,4 +60,3 @@ class SaleOrderLineBinding(models.Model):
         # by writing again on the line.
         # line = binding.odoo_id
         # line.write({'price_unit': line.price_unit})
-        return binding

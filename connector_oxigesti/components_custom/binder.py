@@ -1,4 +1,5 @@
-# Copyright 2013-2017 Camptocamp SA
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 """
@@ -74,7 +75,10 @@ class BinderComposite(AbstractComponent):
 
         return True
 
-    def _find_binding(self, relation, binding_extra_vals={}):
+    def _find_binding(self, relation, binding_extra_vals=None):
+        if not binding_extra_vals:
+            binding_extra_vals = {}
+
         if self._is_binding(relation):
             raise Exception(
                 "The source object %s must not be a binding" % relation.model._name
@@ -99,7 +103,10 @@ class BinderComposite(AbstractComponent):
 
         return binding
 
-    def wrap_binding(self, relation, binding_field=None, binding_extra_vals={}):
+    def wrap_binding(self, relation, binding_field=None, binding_extra_vals=None):
+        if not binding_extra_vals:
+            binding_extra_vals = {}
+
         if not relation:
             return
 
@@ -142,7 +149,8 @@ class BinderComposite(AbstractComponent):
                     # the same binding. It will be caught and
                     # raise a RetryableJobError.
                     if not odoo.tools.config["test_enable"]:
-                        self.env.cr.commit()  # nowait
+                        # nowait
+                        self.env.cr.commit()  # pylint: disable=E8102
         else:
             # If oxigest_bind_ids does not exist we are typically in a
             # "direct" binding (the binding record is the same record).
@@ -183,7 +191,7 @@ class BinderComposite(AbstractComponent):
         return bindings
 
     def to_external(
-        self, binding, wrap=False, wrapped_model=None, binding_extra_vals={}
+        self, binding, wrap=False, wrapped_model=None, binding_extra_vals=None
     ):
         """Give the external ID for an Odoo binding ID
 
@@ -193,6 +201,8 @@ class BinderComposite(AbstractComponent):
                      the external id of the binding
         :return: external ID of the record
         """
+        if not binding_extra_vals:
+            binding_extra_vals = {}
         if isinstance(binding, models.BaseModel):
             binding.ensure_one()
         else:
@@ -209,7 +219,9 @@ class BinderComposite(AbstractComponent):
             if not binding:
                 return None
 
-        return binding[self._external_field] or None
+        return binding[self._external_field] and json.loads(
+            binding[self._external_field]
+        )
 
     def bind(self, external_id, binding):
         """Create the link between an external ID and an Odoo ID
@@ -234,10 +246,15 @@ class BinderComposite(AbstractComponent):
 
         binding.with_context(connector_no_export=True).write(
             {
-                self._external_field: external_id,
+                self._external_field: json.dumps(external_id),
                 self._sync_date_field: now_fmt,
             }
         )
 
     def _get_external_id(self, binding):
         return None
+
+    def to_json(self, value):
+        return {
+            self._external_field: value,
+        }
