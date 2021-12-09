@@ -1,8 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 
 
 class LabourAgreement(models.Model):
@@ -63,7 +63,6 @@ class LabourAgreement(models.Model):
         ),
     ]
 
-    @api.multi
     def name_get(self):
         result = []
         for rec in self:
@@ -110,7 +109,6 @@ class LabourAgreementWageTypeLine(models.Model):
         required=True,
     )
 
-    @api.multi
     def name_get(self):
         result = []
         for rec in self:
