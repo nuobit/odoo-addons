@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -16,7 +15,8 @@ class PayslipCheckAdapter(Component):
                      ec.Año, ec.MesD, ec.TipoProceso,
                      CAST(ec.IdEmpleado AS char(36)) as IdEmpleado, ec.OrdenNom,
                      ec.Importe,
-                     coalesce(en.FechaBaja, convert(datetime2, '3000-12-31 00:00:00')) as FechaBaja
+                     coalesce(en.FechaBaja,
+                     convert(datetime2, '3000-12-31 00:00:00')) as FechaBaja
               from HistoricoRelacionesDePago ec, EmpleadoNomina en
               where ec.CodigoEmpresa = en.CodigoEmpresa AND
                     ec.IdEmpleado = en.IdEmpleado AND

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- Sage backend -->
@@ -26,20 +26,14 @@
                     <field name="state" widget="statusbar" readonly="1" />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button
-                            class="oe_stat_button"
-                            type="object"
-                            name="toggle_active"
-                            icon="fa-archive"
-                        >
-                            <field
-                                name="active"
-                                widget="boolean_button"
-                                options='{"terminology": "archive"}'
-                            />
-                        </button>
-                    </div>
+                    <div class="oe_button_box" name="button_box" />
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <field name="active" invisible="1" />
                     <h1>
                         <field
                             name="name"
@@ -128,7 +122,11 @@
                                     <h4>Import employees</h4>
                                     <ul class="list-unstyled">
                                         <li>
-                                            <label string="Since" class="oe_inline" />
+                                            <label
+                                                string="Since"
+                                                class="oe_inline"
+                                                for="import_employees_since_date"
+                                            />
                                             <field
                                                 name="import_employees_since_date"
                                                 class="oe_inline"
@@ -139,6 +137,7 @@
                                             <label
                                                 string="Default account payable"
                                                 class="oe_inline"
+                                                for="import_employees_default_account_payable_id"
                                             />
                                             <field
                                                 name="import_employees_default_account_payable_id"
@@ -159,7 +158,11 @@
                                     <h4>Import labour agreements</h4>
                                     <ul class="list-unstyled">
                                         <li>
-                                            <label string="Since" class="oe_inline" />
+                                            <label
+                                                string="Since"
+                                                class="oe_inline"
+                                                for="import_labour_agreements_since_date"
+                                            />
                                             <field
                                                 name="import_labour_agreements_since_date"
                                                 class="oe_inline"
@@ -180,7 +183,11 @@
                                     <h4>Import Payslip Lines</h4>
                                     <ul class="list-unstyled">
                                         <li>
-                                            <label string="Payslip" class="oe_inline" />
+                                            <label
+                                                string="Payslip"
+                                                class="oe_inline"
+                                                for="import_payslip_line_id"
+                                            />
                                             <field
                                                 name="import_payslip_line_id"
                                                 class="oe_inline"
@@ -201,7 +208,11 @@
                                     <h4>Import Payslip Checks</h4>
                                     <ul class="list-unstyled">
                                         <li>
-                                            <label string="Payslip" class="oe_inline" />
+                                            <label
+                                                string="Payslip"
+                                                class="oe_inline"
+                                                for="import_payslip_check_id"
+                                            />
                                             <field
                                                 name="import_payslip_check_id"
                                                 class="oe_inline"
@@ -243,7 +254,6 @@
     <record id="sage_backend_action" model="ir.actions.act_window">
         <field name="name">Sage Backends</field>
         <field name="res_model">sage.backend</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>

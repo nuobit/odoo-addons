@@ -1,17 +1,16 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class PayslipLineTransferBinding(models.Model):
     _name = "sage.payroll.sage.payslip.line.transfer"
     _inherit = "sage.payroll.sage.payslip.line"
+    _description = "Payroll sage payslip line transfer binding"
 
-    ## composed id
+    # composed id
     sage_fecha_cobro = fields.Date(string="FechaCobro", required=True)
 
     _sql_constraints = [
@@ -24,19 +23,16 @@ class PayslipLineTransferBinding(models.Model):
         ),
     ]
 
-    @job(default_channel="root.sage")
     def import_payslip_lines(self, payslip_id, backend_record):
         """ Prepare the import of payslip from Sage """
         filters = {
             "CodigoEmpresa": backend_record.sage_company_id,
             "CodigoConvenio": payslip_id.labour_agreement_id.code,
-            "FechaRegistroCV": fields.Date.from_string(
-                payslip_id.labour_agreement_id.registration_date_cv
-            ),
+            "FechaRegistroCV": payslip_id.labour_agreement_id.registration_date_cv,
             "Año": payslip_id.year,
             "MesD": ("between", (payslip_id.month_from, payslip_id.month_to)),
             "TipoProceso": payslip_id.process,
-            "FechaCobro": fields.Date.from_string(payslip_id.payment_date),
+            "FechaCobro": payslip_id.payment_date,
         }
 
         self.env["sage.payroll.sage.payslip.line.transfer"].import_batch(

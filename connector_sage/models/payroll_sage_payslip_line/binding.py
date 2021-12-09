@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -27,6 +26,7 @@ class PayslipLineBinding(models.AbstractModel):
     _name = "sage.payroll.sage.payslip.line"
     _inherit = "sage.binding"
     _inherits = {"payroll.sage.payslip.line": "odoo_id"}
+    _description = "Payroll sage payslip line binding"
 
     odoo_id = fields.Many2one(
         comodel_name="payroll.sage.payslip.line",
@@ -35,7 +35,7 @@ class PayslipLineBinding(models.AbstractModel):
         ondelete="cascade",
     )
 
-    ## composed id
+    # composed id
     sage_codigo_empresa = fields.Integer(string="CodigoEmpresa", required=True)
     sage_codigo_convenio = fields.Integer(string="CodigoConvenio", required=True)
     sage_fecha_registro_cv = fields.Date(string="FechaRegistroCV", required=True)

@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -65,10 +65,14 @@ class SageBackend(models.Model):
         "Import labour agreements since"
     )
 
-    import_payslip_line_id = fields.Many2one("payroll.sage.payslip", string="Payslip")
+    import_payslip_line_id = fields.Many2one(
+        "payroll.sage.payslip", string="Payslip Line"
+    )
 
     import_payslip_check_id = fields.Many2one(
-        "payroll.sage.payslip", string="Payslip", domain=[("type", "=", "transfer")]
+        "payroll.sage.payslip",
+        string="Payslip Check",
+        domain=[("type", "=", "transfer")],
     )
 
     _sql_constraints = [
@@ -79,12 +83,10 @@ class SageBackend(models.Model):
         ),
     ]
 
-    @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
         self.write({"state": "draft", "version": None})
 
-    @api.multi
     def _check_connection(self):
         self.ensure_one()
         with self.work_on("sage.backend") as work:
@@ -92,12 +94,10 @@ class SageBackend(models.Model):
             with api_handle_errors("Connection failed"):
                 self.version = component.get_version()
 
-    @api.multi
     def button_check_connection(self):
         self._check_connection()
         self.write({"state": "checked"})
 
-    @api.multi
     def import_employees_since(self):
         for rec in self:
             if not rec.import_employees_default_account_payable_id:
@@ -110,7 +110,6 @@ class SageBackend(models.Model):
 
         return True
 
-    @api.multi
     def import_labour_agreements_since(self):
         for rec in self:
             since_date = rec.import_labour_agreements_since_date
@@ -122,7 +121,6 @@ class SageBackend(models.Model):
 
         return True
 
-    @api.multi
     def import_payslip_lines(self):
         for rec in self:
             if not rec.import_payslip_line_id:
@@ -140,7 +138,6 @@ class SageBackend(models.Model):
             self.env[model].with_delay().import_payslip_lines(payslip_id, rec)
         return True
 
-    @api.multi
     def import_payslip_checks(self):
         for rec in self:
             if not rec.import_payslip_check_id:
@@ -161,7 +158,7 @@ class SageBackend(models.Model):
         if self.env.user.id == self.env.ref("base.user_root").id:
             raise exceptions.ValidationError(_("The cron user cannot be admin"))
 
-        return self.env.user.company_id
+        return self.env.company
 
     @api.model
     def _scheduler_import_employees(self):
