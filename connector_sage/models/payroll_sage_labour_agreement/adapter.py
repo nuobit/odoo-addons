@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -11,7 +10,8 @@ class PayrollSageLabourAgreementAdapter(Component):
     _inherit = "sage.adapter"
     _apply_on = "sage.payroll.sage.labour.agreement"
 
-    _sql = """select c.CodigoEmpresa, n.CodigoConvenio, n.Convenio, n.FechaRegistroCV, n.FechaFinalNom,
+    _sql = """select c.CodigoEmpresa, n.CodigoConvenio, n.Convenio,
+                     n.FechaRegistroCV, n.FechaFinalNom,
                      n.FechaRevision, n.CodigoConvenioColectivo, n.CodigoConvenioColectivoAnt,
                      n.JornadaAnual, n.ConvenioBloqueado
               from (select distinct c.CodigoEmpresa, c.CodigoConvenio, c.FechaRegistroCV

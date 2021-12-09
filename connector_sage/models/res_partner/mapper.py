@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -60,20 +59,22 @@ class ResPartnerImportMapper(Component):
     def company_id(self, record):
         return {"company_id": self.backend_record.company_id.id}
 
-    @only_create
-    @mapping
-    def customer(self, record):
-        return {"customer": False}
-
-    @mapping
-    def employee_as_supplier(self, record):
-        return {"supplier": True}
+    # @only_create
+    # @mapping
+    # def customer(self, record):
+    #     return {"customer_rank": 0}
+    #
+    # @mapping
+    # def employee_as_supplier(self, record):
+    #     return {"supplier_rank": 1}
 
     @only_create
     @mapping
     def employee_as_supplier_account(self, record):
         return {
-            "property_account_payable_id": self.backend_record.import_employees_default_account_payable_id.id
+            "property_account_payable_id": (
+                self.backend_record.import_employees_default_account_payable_id.id
+            )
         }
 
     @mapping
