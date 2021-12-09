@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -63,11 +62,11 @@ class ProductProductImportMapper(Component):
     @mapping
     def uom(self, record):
         uom_map = {
-            "Traslado": "product.product_uom_unit",
-            "Kms": "product.product_uom_km",
-            "Horas_Medico_4ph": "product.product_uom_hour",
-            "Horas_DUE_4ph": "product.product_uom_hour",
-            "Horas_Espera": "product.product_uom_hour",
+            "Traslado": "uom.product_uom_unit",
+            "Kms": "uom.product_uom_km",
+            "Horas_Medico_4ph": "uom.product_uom_hour",
+            "Horas_DUE_4ph": "uom.product_uom_hour",
+            "Horas_Espera": "uom.product_uom_hour",
         }
 
         for ambugest_uom, odoo_uom_ext_id in uom_map.items():
@@ -78,8 +77,8 @@ class ProductProductImportMapper(Component):
                 }
 
         return {
-            "uom_id": self.env.ref("product.product_uom_unit").id,
-            "uom_po_id": self.env.ref("product.product_uom_unit").id,
+            "uom_id": self.env.ref("uom.product_uom_unit").id,
+            "uom_po_id": self.env.ref("uom.product_uom_unit").id,
         }
 
     @only_create
