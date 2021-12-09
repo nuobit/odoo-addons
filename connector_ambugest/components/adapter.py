@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -7,7 +7,11 @@ import random
 from contextlib import contextmanager
 from functools import partial
 
-from requests.exceptions import ConnectionError, HTTPError, RequestException
+from requests.exceptions import (
+    ConnectionError as RequestConnectionError,
+    HTTPError,
+    RequestException,
+)
 
 from odoo import _, exceptions
 
@@ -37,23 +41,23 @@ def api_handle_errors(message=""):
         yield
     except NetworkRetryableError as err:
         raise exceptions.UserError(_(u"{}Network Error:\n\n{}").format(message, err))
-    except (HTTPError, RequestException, ConnectionError) as err:
+    except (HTTPError, RequestException, RequestConnectionError) as err:
         raise exceptions.UserError(
             _(u"{}API / Network Error:\n\n{}").format(message, err)
         )
-    except (pymssql.OperationalError,) as err:
+    except pymssql.OperationalError as err:
         raise exceptions.UserError(
             _(u"{}DB operational Error:\n\n{}").format(message, err)
         )
-    except (pymssql.IntegrityError,) as err:
+    except pymssql.IntegrityError as err:
         raise exceptions.UserError(
             _(u"{}DB integrity Error:\n\n{}").format(message, err)
         )
-    except (pymssql.InternalError,) as err:
+    except pymssql.InternalError as err:
         raise exceptions.UserError(
             _(u"{}DB internal Error:\n\n{}").format(message, err)
         )
-    except (pymssql.InterfaceError,) as err:
+    except pymssql.InterfaceError as err:
         raise exceptions.UserError(
             _(u"{}DB interface Error:\n\n{}").format(message, err)
         )
@@ -87,7 +91,7 @@ class CRUDAdapter(AbstractComponent):
         and returns a list of ids"""
         raise NotImplementedError
 
-    def read(self, id, attributes=None):
+    def read(self, _id, attributes=None):  # pylint: disable=W8106
         """ Returns the information of a record """
         raise NotImplementedError
 
@@ -96,15 +100,15 @@ class CRUDAdapter(AbstractComponent):
         and returns their information"""
         raise NotImplementedError
 
-    def create(self, data):
+    def create(self, data):  # pylint: disable=W8106
         """ Create a record on the external system """
         raise NotImplementedError
 
-    def write(self, id, data):
+    def write(self, _id, data):  # pylint: disable=W8106
         """ Update records on the external system """
         raise NotImplementedError
 
-    def delete(self, id):
+    def delete(self, _id):
         """ Delete a record on the external system """
         raise NotImplementedError
 
@@ -117,7 +121,7 @@ class GenericAdapter(AbstractComponent):
     _name = "ambugest.adapter"
     _inherit = "ambugest.crud.adapter"
 
-    ## private methods
+    # private methods
 
     def _escape(self, s):
         return s.replace("'", "").replace('"', "")
@@ -182,7 +186,7 @@ class GenericAdapter(AbstractComponent):
                 )
             uniq.add(id_t)
 
-    ########## exposed methods
+    # exposed methods
 
     def search(self, filters=None):
         """Search records according to some criterias
@@ -198,16 +202,16 @@ class GenericAdapter(AbstractComponent):
 
         return res
 
-    def read(self, id, attributes=None):
+    def read(self, _id, attributes=None):  # pylint: disable=W8106
         """Returns the information of a record
 
         :rtype: dict
         """
         _logger.debug(
-            "method read, sql %s id %s, attributes %s", self._sql, id, attributes
+            "method read, sql %s id %s, attributes %s", self._sql, _id, attributes
         )
 
-        id_d = dict(zip(self._id, id))
+        id_d = dict(zip(self._id, _id))
 
         res = self._exec_query(filters=id_d)
 
@@ -218,9 +222,9 @@ class GenericAdapter(AbstractComponent):
 
         return res and res[0] or []
 
-    def write(self, id, values_d):
+    def write(self, _id, values_d):  # pylint: disable=W8106
         """ Update records on the external system """
-        _logger.debug("method write, sql %s id %s, values %s", self._sql, id, values_d)
+        _logger.debug("method write, sql %s id %s, values %s", self._sql, _id, values_d)
 
         if not values_d:
             return 0
@@ -233,7 +237,7 @@ class GenericAdapter(AbstractComponent):
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
         # get id fieldnames and values
-        id_d = dict(zip(self._id, id))
+        id_d = dict(zip(self._id, _id))
 
         # fix same field on set and on where, change set fields
         qset_map_d = {}
@@ -249,7 +253,7 @@ class GenericAdapter(AbstractComponent):
 
         # get the set data
         qset_l = []
-        for k, (k9, v) in qset_map_d.items():
+        for k, (k9, _v) in qset_map_d.items():
             qset_l.append("%(field)s = %%(%(field9)s)s" % dict(field=k, field9=k9))
         qset = "%s" % (", ".join(qset_l),)
 
@@ -258,12 +262,12 @@ class GenericAdapter(AbstractComponent):
 
         # prepare params
         params = dict(id_d)
-        for k, (k9, v) in qset_map_d.items():
+        for k9, v in qset_map_d.values():
             params[k9] = v
 
         conn = self.conn()
         cr = conn.cursor()
-        cr.execute(sql, params)
+        cr.execute(sql, params)  # pylint: disable=E8103
         count = cr.rowcount
         if count == 0:
             raise Exception(
@@ -281,7 +285,7 @@ class GenericAdapter(AbstractComponent):
 
         return count
 
-    def create(self, attributes=None):
+    def create(self, attributes=None):  # pylint: disable=W8106
         """ Create a record on the external system """
         _logger.debug(
             "method create, model %s, attributes %s", self._sage_model, attributes
