@@ -1,10 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class SageBinding(models.AbstractModel):
@@ -20,7 +18,6 @@ class SageBinding(models.AbstractModel):
         ondelete="restrict",
     )
 
-    @job(default_channel="root.sage")
     @api.model
     def import_batch(self, backend, filters=None):
         """ Prepare the import of records modified on Sage """
@@ -30,7 +27,6 @@ class SageBinding(models.AbstractModel):
             importer = work.component(usage="batch.importer")
             return importer.run(filters=filters)
 
-    @job(default_channel="root.sage")
     @api.model
     def import_record(self, backend, external_id):
         """ Import a Sage record """
@@ -38,7 +34,6 @@ class SageBinding(models.AbstractModel):
             importer = work.component(usage="record.importer")
             return importer.run(external_id)
 
-    @api.multi
     def resync(self):
         for record in self:
             with record.backend_id.work_on(record._name) as work:
