@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
-<!---->
 <odoo>
     <!-- window action wage_tag2wage_type_line smart button -->
     <record id="wage_tag_action_wage_type_line" model="ir.actions.act_window">
         <field name="name">Wage type line</field>
         <field name="res_model">payroll.sage.labour.agreement.wage.type.line</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('wage_tag_ids','=',active_id)]</field>
         <field name="context">{'default_wage_tag_ids': [(4, active_id, False)]}</field>
