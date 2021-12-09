@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -36,7 +35,7 @@ class ProductProductExporter(Component):
     _apply_on = "oxigesti.product.product"
 
     def _export_dependencies(self):
-        ## category
+        # category
         binder = self.binder_for("oxigesti.product.category")
         relation = self.binding.with_context(active_test=False).categ_id
         if not binder.to_external(relation, wrap=True):

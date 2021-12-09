@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
+<odoo noupdate="1">
+    <record
+        id="oxigesti_binding_export_products_by_customer_since_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti.model_oxigesti_product_buyerinfo"
+        />
+        <field name="method">export_products_by_customer_since</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record id="oxigesti_binding_export_record_job_function" model="queue.job.function">
+        <field name="model_id" ref="connector_oxigesti.model_oxigesti_binding" />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="oxigesti_binding_export_product_categories_since_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_oxigesti.model_product_category" />
+        <field name="method">export_product_categories_since</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="oxigesti_binding_export_product_prices_by_customer_since_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti.model_oxigesti_product_pricelist_item"
+        />
+        <field name="method">export_product_prices_by_customer_since</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="oxigesti_binding_export_stock_production_lot_since_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti.model_oxigesti_stock_production_lot"
+        />
+        <field name="method">export_stock_production_lot_since</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="oxigesti_res_partner_import_customers_since_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_oxigesti.model_oxigesti_res_partner" />
+        <field name="method">import_customers_since</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="oxigesti_product_product_export_products_since_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti.model_oxigesti_product_product"
+        />
+        <field name="method">export_products_since</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="oxigesti_sale_order_import_services_since_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_oxigesti.model_oxigesti_sale_order" />
+        <field name="method">import_services_since</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+     <record id="oxigesti_binding_export_batch_job_function" model="queue.job.function">
+        <field name="model_id" ref="connector_oxigesti.model_oxigesti_binding" />
+        <field name="method">export_batch</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti_batch" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+</odoo>

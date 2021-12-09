@@ -1,9 +1,7 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-
-from odoo import fields
 
 from odoo.addons.component.core import Component
 
@@ -18,18 +16,20 @@ class ProductPricelistItemBatchExporter(Component):
     _inherit = "oxigesti.delayed.batch.exporter"
     _apply_on = "oxigesti.product.pricelist.item"
 
-    def run(self, domain=[]):
-        """ Run the batch synchronization """
+    def run(self, domain=None):
+        if not domain:
+            domain = []
+        # Run the batch synchronization
         parent_domain = domain + [
             ("is_company", "=", True),
-            ("customer", "=", True),
+            ("customer_rank", ">", 0),
         ]
         since_date = None
         domain = []
         for e in parent_domain:
             field, operator, value = e
             if field == "write_date":
-                since_date = fields.Datetime.from_string(value)
+                since_date = value
             else:
                 domain.append(e)
         partner_adapter = self.component(
@@ -42,12 +42,15 @@ class ProductPricelistItemBatchExporter(Component):
             for pl in p.property_product_pricelist.item_ids.filtered(
                 lambda x: (
                     not since_date
-                    or fields.Datetime.from_string(x.write_date) > since_date
-                    or fields.Datetime.from_string(p.write_date) > since_date
+                    or x.write_date > since_date
+                    or p.write_date > since_date
                 )
                 and x.applied_on == "1_product"
                 and x.compute_price == "fixed"
-                and x.sudo().product_tmpl_id.company_id == p.company_id
+                and (
+                    not x.sudo().product_tmpl_id.company_id
+                    or x.sudo().product_tmpl_id.company_id == p.company_id
+                )
             ):
                 if pl.product_tmpl_id.default_code and partner_external_id:
                     external_id = [
@@ -78,7 +81,7 @@ class ProductPricelistItemExporter(Component):
     _apply_on = "oxigesti.product.pricelist.item"
 
     def _export_dependencies(self):
-        ### partner
+        # partner
         binder = self.binder_for("oxigesti.res.partner")
         binding_model = binder.model._name
         odoo_partner_id = self.binding.with_context(active_test=False).odoo_partner_id
@@ -102,7 +105,7 @@ class ProductPricelistItemExporter(Component):
                 ]
             )
 
-        ## product
+        # product
         binder = self.binder_for("oxigesti.product.product")
         relation = self.binding.with_context(
             active_test=False

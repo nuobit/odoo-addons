@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -74,6 +74,7 @@ class ProductProductExportMapper(Component):
             "If not, then this category %s (%s) does not exist in Oxigesti."
             % (category, category, category.display_name)
         )
+
         return {"Categoria": external_id[0]}
 
     @changed_by("active")
@@ -84,3 +85,7 @@ class ProductProductExportMapper(Component):
                 record.odoo_id.active and record.odoo_id.product_tmpl_id.active
             )
         }
+
+    @mapping
+    def Eliminado(self, record):
+        return {"Eliminado": 0}

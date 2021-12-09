@@ -1,7 +1,9 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+
+import json
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import convert, mapping, only_create
@@ -26,8 +28,8 @@ class SaleOrderLineImportMapper(Component):
     @mapping
     def external_id(self, record):
         adapter = self.component(usage="backend.adapter")
-        external_id = [record[f] for f in adapter._id]
-        return {"external_id": external_id}
+        external_id = adapter.dict2id(record)
+        return {"external_id_display": json.dumps(external_id)}
 
     @mapping
     def product(self, record):
@@ -37,7 +39,7 @@ class SaleOrderLineImportMapper(Component):
             .with_context(active_test=False)
             .search(
                 [
-                    ("company_id", "=", self.backend_record.company_id.id),
+                    ("company_id", "in", (self.backend_record.company_id.id, False)),
                     ("default_code", "=", oxigesti_articulo),
                 ]
             )

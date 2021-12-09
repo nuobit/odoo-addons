@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -43,7 +42,7 @@ class ResPartnerImportMapper(Component):
     @only_create
     @mapping
     def partner_type(self, record):
-        return {"customer": True, "supplier": False}
+        return {"customer_rank": 1}
 
     @only_create
     @mapping
@@ -92,7 +91,8 @@ class ResPartnerImportMapper(Component):
                         _(
                             "Already exists a binding with the partner: '%s' "
                             "but with another external id: '%s'.\n"
-                            "This could be caused by a duplicated external reference on the backend"
+                            "This could be caused by "
+                            "a duplicated external reference on the backend"
                         )
                         % (partner.name, other_binding.external_id_display)
                     )

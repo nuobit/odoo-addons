@@ -1,7 +1,7 @@
-# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
-
+from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
@@ -25,8 +25,10 @@ class ProductCategoryBinder(Component):
             return None
         if len(external_ids) > 1:
             raise ValidationError(
-                "More than one Category with ID '%i' on the backend"
-                % (binding.odoo_id.id,)
+                _(
+                    "More than one Category with ID '%i' on the backend"
+                    % (binding.odoo_id.id,)
+                )
             )
 
         return external_ids[0]

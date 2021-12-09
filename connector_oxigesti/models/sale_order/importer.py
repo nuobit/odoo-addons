@@ -1,6 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+import json
 
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -45,8 +47,8 @@ class SaleOrderImporter(Component):
                     .get("selection")
                 )
                 return _(
-                    "The Order %s is already imported and is in state '%s' -> Update not allowed"
-                    % (order.name, state_option[order.state])
+                    "The Order %s is already imported and is in state '%s' "
+                    "-> Update not allowed" % (order.name, state_option[order.state])
                 )
         else:
             if odoo_num_alb:
@@ -64,7 +66,7 @@ class SaleOrderImporter(Component):
         external_id = (self.external_data["Codigo_Mutua"],)
         self._import_dependency(external_id, "oxigesti.res.partner", always=False)
 
-        # products
+        # products & lots
         adapter = self.component(
             usage="backend.adapter", model_name="oxigesti.sale.order.line"
         )
@@ -73,6 +75,8 @@ class SaleOrderImporter(Component):
                 ("Codigo_Servicio", "=", self.external_data["Codigo_Servicio"]),
             ]
         )
+
+        # products
         oxigesti_codigos_articulo = [
             adapter.id2dict(x)["CodigoArticulo"] for x in oxigesti_cargos_servicio
         ]
@@ -87,13 +91,42 @@ class SaleOrderImporter(Component):
             ]
         )
 
+        # Lots
+        domain = ["&", ("company_id", "=", self.backend_record.company_id.id)] + [
+            "|"
+        ] * (len(oxigesti_cargos_servicio) - 1)
+        adapter_product = self.component(
+            usage="backend.adapter", model_name="oxigesti.product.product"
+        )
+        for line in oxigesti_cargos_servicio:
+            # Product
+            product_external_id = adapter_product.dict2id(adapter.id2dict(line))
+            product = self.binder_for("oxigesti.product.product").to_internal(
+                product_external_id, unwrap=True
+            )
+            # Lot
+            tracking_name = adapter.id2dict(line)["Partida"]
+            if not tracking_name and product.tracking == "lot":
+                tracking_name = "999"
+
+            domain += [
+                "&",
+                ("product_id", "=", product.id),
+                ("name", "=", tracking_name),
+            ]
+
+        exporter = self.component(
+            usage="direct.batch.exporter", model_name="oxigesti.stock.production.lot"
+        )
+        exporter.run(domain=domain)
+
     def _after_import(self, binding):
-        ## rebind the lines, for the sync date
+        # rebind the lines, for the sync date
         binder = self.binder_for("oxigesti.sale.order.line")
         for line in binding.oxigesti_order_line_ids:
-            binder.bind(line.external_id, line)
+            binder.bind(json.loads(line.external_id), line)
 
-        ## order validation
+        # order validation
         binder = self.component(usage="binder")
         sale_order = binder.unwrap_binding(binding)
         sale_order.onchange_partner_id()
@@ -101,7 +134,7 @@ class SaleOrderImporter(Component):
             line.product_id_change()
         sale_order.action_confirm()
 
-        ## picking validation
+        # picking validation
         stock_order_lines = binding.oxigesti_order_line_ids.filtered(
             lambda x: x.move_ids
         )
@@ -187,7 +220,7 @@ class SaleOrderImporter(Component):
                     move_id.move_line_ids = [(0, False, move_line_id_d)]
 
                 picking_id.button_validate()
-            except:
+            except Exception:
                 sale_order.action_cancel()
                 sale_order.unlink()
                 raise

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
+<odoo>
+    <data noupdate="0">
+        <record id="channel_oxigesti" model="queue.job.channel">
+            <field name="name">oxigesti</field>
+            <field name="parent_id" ref="queue_job.channel_root" />
+        </record>
+        <record id="channel_oxigesti_batch" model="queue.job.channel">
+            <field name="name">oxigesti_batch</field>
+            <field name="parent_id" ref="queue_job.channel_root" />
+        </record>
+    </data>
+</odoo>

@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -13,6 +13,18 @@ class StockProductionLotBatchExporter(Component):
 
     _name = "oxigesti.stock.production.lot.delayed.batch.exporter"
     _inherit = "oxigesti.delayed.batch.exporter"
+
+    _apply_on = "oxigesti.stock.production.lot"
+
+
+class StockProductionLotDirectBatchExporter(Component):
+    """Export the Oxigesti Lot.
+
+    For every Lot in the list, execute inmediately.
+    """
+
+    _name = "oxigesti.stock.production.lot.direct.batch.exporter"
+    _inherit = "oxigesti.direct.batch.exporter"
 
     _apply_on = "oxigesti.stock.production.lot"
 
