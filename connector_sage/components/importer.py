@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -32,8 +32,8 @@ class SageImporter(AbstractComponent):
     #     if not sync:
     #         return
     #     from_string = fields.Datetime.from_string
-    #     sync_date = from_string(sync)
-    #     sage_date = from_string(self.sage_record['updated_at'])
+    #     sync_date = sync
+    #     sage_date = self.sage_record['updated_at']
     #     # if the last synchronization date is greater than the last
     #     # update in sage, we skip the import.
     #     # Important: at the beginning of the exporters flows, we have to
@@ -89,7 +89,7 @@ class SageImporter(AbstractComponent):
         return
 
     def run(self, external_id):
-        ## get_data
+        # get_data
         # this one knows how to speak to sage
         backend_adapter = self.component(usage="backend.adapter")
         # read external data from sage
@@ -98,7 +98,7 @@ class SageImporter(AbstractComponent):
         except IDMissingInBackend:
             return _("Record does no longer exist in Sage")
 
-        ## get_binding
+        # get_binding
         # this one knows how to link sage/odoo records
         binder = self.component(usage="binder")
         # find if the sage id already exists in odoo
@@ -110,14 +110,13 @@ class SageImporter(AbstractComponent):
         # import the missing linked resources
         self._import_dependencies()
 
-        ## map_data
+        # map_data
         # this one knows how to convert sage data to odoo data
         mapper = self.component(usage="import.mapper")
         # convert to odoo data
         internal_data = mapper.map_record(self.external_data)
         if binding:
-            # if yes, we update it
-            binding.with_context(force_company=self.backend_record.company_id.id).write(
+            binding.with_company(self.backend_record.company_id.id).write(
                 internal_data.values()
             )
             _logger.debug("%d updated from Sage %s", binding, external_id)

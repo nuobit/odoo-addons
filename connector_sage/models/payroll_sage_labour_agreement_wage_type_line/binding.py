@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -19,6 +19,7 @@ class PayrollSageLabourAgreementWageTypeLineBinding(models.Model):
     _name = "sage.payroll.sage.labour.agreement.wage.type.line"
     _inherit = "sage.binding"
     _inherits = {"payroll.sage.labour.agreement.wage.type.line": "odoo_id"}
+    _description = "Payroll sage labour agreement wage type line binding"
 
     odoo_id = fields.Many2one(
         comodel_name="payroll.sage.labour.agreement.wage.type.line",
@@ -44,7 +45,7 @@ class PayrollSageLabourAgreementWageTypeLineBinding(models.Model):
         index=True,
     )
 
-    ## composed id
+    # composed id
     sage_codigo_empresa = fields.Integer(string="CodigoEmpresa", required=True)
     sage_codigo_convenio = fields.Integer(string="CodigoConvenio", required=True)
     sage_fecha_registro_cv = fields.Date(string="FechaRegistroCV", required=True)
@@ -53,19 +54,21 @@ class PayrollSageLabourAgreementWageTypeLineBinding(models.Model):
     _sql_constraints = [
         (
             "uniq",
-            "unique(sage_labour_agreement_id, sage_codigo_empresa, sage_codigo_convenio, sage_fecha_registro_cv, sage_codigo_concepto_nom)",
+            "unique(sage_labour_agreement_id, sage_codigo_empresa, "
+            "sage_codigo_convenio, sage_fecha_registro_cv, sage_codigo_concepto_nom)",
             "Wage type line with same ID on Sage already exists.",
         ),
     ]
 
-    @api.model
-    def create(self, vals):
-        sage_labour_agreement_id = vals["sage_labour_agreement_id"]
-        binding = self.env["sage.payroll.sage.labour.agreement"].browse(
-            sage_labour_agreement_id
-        )
-        vals["labour_agreement_id"] = binding.odoo_id.id
-        binding = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            sage_labour_agreement_id = vals["sage_labour_agreement_id"]
+            binding = self.env["sage.payroll.sage.labour.agreement"].browse(
+                sage_labour_agreement_id
+            )
+            vals["labour_agreement_id"] = binding.odoo_id.id
+        return super().create(vals_list)
         # FIXME triggers function field
         # The amounts (amount_total, ...) computed fields on 'sale.order' are
         # not triggered when magento.sale.order.line are created.
@@ -74,4 +77,3 @@ class PayrollSageLabourAgreementWageTypeLineBinding(models.Model):
         # by writing again on the line.
         # line = binding.odoo_id
         # line.write({'price_unit': line.price_unit})
-        return binding
