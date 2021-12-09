@@ -1,10 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class ProductProduct(models.Model):
@@ -29,7 +27,7 @@ class ProductProductBinding(models.Model):
         ondelete="cascade",
     )
 
-    ## id
+    # id
     ambugest_empresa = fields.Integer(string="Empresa on Ambugest", required=True)
     ambugest_id = fields.Integer(string="Id on Ambugest", required=True)
 
@@ -41,7 +39,6 @@ class ProductProductBinding(models.Model):
         ),
     ]
 
-    @job(default_channel="root.ambugest")
     def import_products_since(self, backend_record=None, since_date=None):
         """ Prepare the import of products modified on Ambugest """
         filters = {
