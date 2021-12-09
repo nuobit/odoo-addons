@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -59,9 +59,9 @@ class SaleOrderImportMapChild(Component):
         """
         ops = []
         for values in items_values:
-            id = values.pop("id", None)
-            if id:
-                ops.append((1, id, values))
+            _id = values.pop("id", None)
+            if _id:
+                ops.append((1, _id, values))
             else:
                 ops.append((0, False, values))
 

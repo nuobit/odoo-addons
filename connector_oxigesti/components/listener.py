@@ -1,7 +1,7 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
@@ -18,5 +18,5 @@ class OxigestiEventListener(AbstractComponent):
             with backend.work_on(binding_name) as work:
                 adapter = work.component(usage="backend.adapter")
                 if not external_id:
-                    raise ValidationError("The external_id of the binding is null")
+                    raise ValidationError(_("The external_id of the binding is null"))
                 adapter.delete(external_id)

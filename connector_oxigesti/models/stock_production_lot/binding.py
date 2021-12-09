@@ -1,10 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class StockProductionLot(models.Model):
@@ -21,6 +19,7 @@ class StockProductionLotBinding(models.Model):
     _name = "oxigesti.stock.production.lot"
     _inherit = "oxigesti.binding"
     _inherits = {"stock.production.lot": "odoo_id"}
+    _description = "Stock production lot binding"
 
     odoo_id = fields.Many2one(
         comodel_name="stock.production.lot",
@@ -29,15 +28,14 @@ class StockProductionLotBinding(models.Model):
         ondelete="cascade",
     )
 
-    @job(default_channel="root.oxigesti")
     @api.model
     def export_stock_production_lot_since(self, backend_record=None, since_date=None):
         """ Prepare the batch export of Lots on Odoo """
 
-        def chunks(l, n):
+        def chunks(ls, n):
             """Yield successive n-sized chunks from lst."""
-            for i in range(0, len(l), n):
-                yield l[i : i + n]
+            for i in range(0, len(ls), n):
+                yield ls[i : i + n]
 
         domain = [("company_id", "=", backend_record.company_id.id)]
         if since_date:
@@ -52,7 +50,6 @@ class StockProductionLotBinding(models.Model):
 
         return True
 
-    @api.multi
     def resync(self):
         for record in self:
             with record.backend_id.work_on(record._name) as work:

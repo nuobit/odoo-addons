@@ -1,10 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class ProductProduct(models.Model):
@@ -16,7 +14,6 @@ class ProductProduct(models.Model):
         string="Oxigesti Bindings",
     )
 
-    @api.multi
     def unlink(self):
         to_remove = {}
         for record in self:
@@ -34,15 +31,15 @@ class ProductProductBinding(models.Model):
     _name = "oxigesti.product.product"
     _inherit = "oxigesti.binding"
     _inherits = {"product.product": "odoo_id"}
+    _description = "Product product binding"
 
     odoo_id = fields.Many2one(
         comodel_name="product.product",
-        string="Product",
+        string="Odoo Product",
         required=True,
         ondelete="cascade",
     )
 
-    @job(default_channel="root.oxigesti")
     @api.model
     def export_products_since(self, backend_record=None, since_date=None):
         """ Prepare the batch export of products modified on Odoo """
@@ -61,7 +58,6 @@ class ProductProductBinding(models.Model):
 
         return True
 
-    @api.multi
     def resync(self):
         for record in self:
             with record.backend_id.work_on(record._name) as work:

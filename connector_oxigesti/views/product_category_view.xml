@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
-<!---->
 <odoo>
     <record id="product_category_view_form_connector_oxigesti" model="ir.ui.view">
         <field name="name">product.category.connector.oxigesti.form</field>

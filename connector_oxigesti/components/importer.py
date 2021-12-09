@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -81,10 +81,10 @@ class OxigestiImporter(AbstractComponent):
 
         :returns: None | str | unicode
         """
-        return
+        return False
 
     def run(self, external_id):
-        ## get_data
+        # get_data
         # this one knows how to speak to Oxigesti
         backend_adapter = self.component(usage="backend.adapter")
 
@@ -100,7 +100,7 @@ class OxigestiImporter(AbstractComponent):
         if not self.external_data:
             return _("Record with ID %s does not exist in Oxigesti") % (external_id,)
 
-        ## get_binding
+        # get_binding
         # this one knows how to link Oxigesti/odoo records
         binder = self.component(usage="binder")
 
@@ -119,7 +119,7 @@ class OxigestiImporter(AbstractComponent):
         # import the missing linked resources
         self._import_dependencies()
 
-        ## map_data
+        # map_data
         # this one knows how to convert backend data to odoo data
         mapper = self.component(usage="import.mapper")
         # convert to odoo data
@@ -164,8 +164,10 @@ class OxigestiBatchImporter(AbstractComponent):
     _name = "oxigesti.batch.importer"
     _inherit = ["base.importer", "base.oxigesti.connector"]
 
-    def run(self, filters=[]):
-        """ Run the synchronization """
+    def run(self, filters=None):
+        if not filters:
+            filters = []
+        # Run the synchronization
         record_ids = self.backend_adapter.search(filters)
         for record_id in record_ids:
             self._import_record(record_id)

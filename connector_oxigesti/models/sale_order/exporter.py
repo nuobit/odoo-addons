@@ -1,10 +1,10 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
 
-from odoo import _, fields
+from odoo import _
 
 from odoo.addons.component.core import Component
 
@@ -25,7 +25,7 @@ class SaleOrderExporter(Component):
         order_number, order_date = None, None
         if not clear:
             order_number = binding.name
-            order_date = fields.Date.from_string(binding.confirmation_date)
+            order_date = binding.confirmation_date
 
         values = {
             "Odoo_Numero_Albaran": order_number,
@@ -41,7 +41,7 @@ class SaleOrderExporter(Component):
         invoice_number, invoice_date = None, None
         if not clear:
             invoice_number = invoice.number
-            invoice_date = fields.Date.from_string(invoice.date_invoice)
+            invoice_date = invoice.date_invoice
 
         values = {
             "Odoo_Numero_Factura": invoice_number,
