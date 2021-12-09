@@ -1,0 +1,1 @@
+odoo-addons @ git+https://github.com/KNVx/odoo-addons.git@14.0-mig-payroll_sage
