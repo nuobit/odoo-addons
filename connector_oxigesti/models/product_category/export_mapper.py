@@ -1,4 +1,4 @@
-# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -25,3 +25,7 @@ class ProductBuyerExportMapper(Component):
                 lang=self.backend_record.lang_id.code
             ).name[:255]
         }
+
+    @mapping
+    def Eliminado(self, record):
+        return {"Eliminado": 0}

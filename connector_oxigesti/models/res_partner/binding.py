@@ -1,10 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
-
-from odoo.addons.queue_job.job import job
+from odoo import fields, models
 
 
 class ResPartner(models.Model):
@@ -21,12 +19,12 @@ class ResPartnerBinding(models.Model):
     _name = "oxigesti.res.partner"
     _inherit = "oxigesti.binding"
     _inherits = {"res.partner": "odoo_id"}
+    _description = "Partner binding"
 
     odoo_id = fields.Many2one(
         comodel_name="res.partner", string="Partner", required=True, ondelete="cascade"
     )
 
-    @job(default_channel="root.oxigesti")
     def import_customers_since(self, backend_record=None, since_date=None):
         """ Prepare the batch import of partners modified on Oxigesti """
         filters = []
@@ -40,7 +38,6 @@ class ResPartnerBinding(models.Model):
 
         return True
 
-    @api.multi
     def resync(self):
         for record in self:
             with record.backend_id.work_on(record._name) as work:

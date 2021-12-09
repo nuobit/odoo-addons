@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -121,8 +121,10 @@ class OxigestiBatchExporter(AbstractComponent):
     _name = "oxigesti.batch.exporter"
     _inherit = ["base.exporter", "base.oxigesti.connector"]
 
-    def run(self, domain=[]):
-        """ Run the batch synchronization """
+    def run(self, domain=None):
+        if not domain:
+            domain = []
+        # Run the batch synchronization
         relation_model = self.binder_for(self.model._name).unwrap_model()
         for relation in (
             self.env[relation_model].with_context(active_test=False).search(domain)
