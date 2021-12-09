@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
-<!---->
 <odoo>
     <record id="view_order_form" model="ir.ui.view">
         <field name="name">sale.order.oxigesti.connector.form</field>
@@ -47,12 +46,6 @@
                 <field name="odoo_id" />
                 <field name="external_id_display" />
                 <field name="sync_date" />
-                <button
-                    name="resync"
-                    type="object"
-                    string="Resynchronize"
-                    icon="fa-refresh fa-lg"
-                />
             </tree>
         </field>
     </record>

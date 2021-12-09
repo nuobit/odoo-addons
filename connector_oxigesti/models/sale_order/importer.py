@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _
@@ -45,8 +45,8 @@ class SaleOrderImporter(Component):
                     .get("selection")
                 )
                 return _(
-                    "The Order %s is already imported and is in state '%s' -> Update not allowed"
-                    % (order.name, state_option[order.state])
+                    "The Order %s is already imported and is in state '%s' "
+                    "-> Update not allowed" % (order.name, state_option[order.state])
                 )
         else:
             if odoo_num_alb:
@@ -88,12 +88,12 @@ class SaleOrderImporter(Component):
         )
 
     def _after_import(self, binding):
-        ## rebind the lines, for the sync date
+        # rebind the lines, for the sync date
         binder = self.binder_for("oxigesti.sale.order.line")
         for line in binding.oxigesti_order_line_ids:
             binder.bind(line.external_id, line)
 
-        ## order validation
+        # order validation
         binder = self.component(usage="binder")
         sale_order = binder.unwrap_binding(binding)
         sale_order.onchange_partner_id()
@@ -101,7 +101,7 @@ class SaleOrderImporter(Component):
             line.product_id_change()
         sale_order.action_confirm()
 
-        ## picking validation
+        # picking validation
         stock_order_lines = binding.oxigesti_order_line_ids.filtered(
             lambda x: x.move_ids
         )
@@ -187,7 +187,7 @@ class SaleOrderImporter(Component):
                     move_id.move_line_ids = [(0, False, move_line_id_d)]
 
                 picking_id.button_validate()
-            except:
+            except Exception:
                 sale_order.action_cancel()
                 sale_order.unlink()
                 raise

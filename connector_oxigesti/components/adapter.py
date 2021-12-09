@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -7,7 +7,11 @@ import random
 from contextlib import contextmanager
 from functools import partial
 
-from requests.exceptions import ConnectionError, HTTPError, RequestException
+from requests.exceptions import (
+    ConnectionError as RequestConnectionError,
+    HTTPError,
+    RequestException,
+)
 
 from odoo import _, exceptions
 from odoo.exceptions import ValidationError
@@ -38,23 +42,23 @@ def api_handle_errors(message=""):
         yield
     except NetworkRetryableError as err:
         raise exceptions.UserError(_(u"{}Network Error:\n\n{}").format(message, err))
-    except (HTTPError, RequestException, ConnectionError) as err:
+    except (HTTPError, RequestException, RequestConnectionError) as err:
         raise exceptions.UserError(
             _(u"{}API / Network Error:\n\n{}").format(message, err)
         )
-    except (pymssql.OperationalError,) as err:
+    except pymssql.OperationalError as err:
         raise exceptions.UserError(
             _(u"{}DB operational Error:\n\n{}").format(message, err)
         )
-    except (pymssql.IntegrityError,) as err:
+    except pymssql.IntegrityError as err:
         raise exceptions.UserError(
             _(u"{}DB integrity Error:\n\n{}").format(message, err)
         )
-    except (pymssql.InternalError,) as err:
+    except pymssql.InternalError as err:
         raise exceptions.UserError(
             _(u"{}DB internal Error:\n\n{}").format(message, err)
         )
-    except (pymssql.InterfaceError,) as err:
+    except pymssql.InterfaceError as err:
         raise exceptions.UserError(
             _(u"{}DB interface Error:\n\n{}").format(message, err)
         )
@@ -84,29 +88,29 @@ class CRUDAdapter(AbstractComponent):
             self.backend_record.database,
         )
 
-    def search(self, model, filters=[]):
+    def search(self, model, filters=None):
         """Search records according to some criterias
         and returns a list of ids"""
         raise NotImplementedError
 
-    def read(self, id, attributes=None):
+    def read(self, _id, attributes=None):  # pylint: disable=W8106
         """ Returns the information of a record """
         raise NotImplementedError
 
-    def search_read(self, filters=[]):
+    def search_read(self, filters=None):
         """Search records according to some criterias
         and returns their information"""
         raise NotImplementedError
 
-    def create(self, data):
+    def create(self, data):  # pylint: disable=W8106
         """ Create a record on the external system """
         raise NotImplementedError
 
-    def write(self, id, data):
+    def write(self, _id, data):  # pylint: disable=W8106
         """ Update records on the external system """
         raise NotImplementedError
 
-    def delete(self, id):
+    def delete(self, _id):
         """ Delete a record on the external system """
         raise NotImplementedError
 
@@ -119,7 +123,7 @@ class GenericAdapter(AbstractComponent):
     _name = "oxigesti.adapter"
     _inherit = "oxigesti.crud.adapter"
 
-    ## private methods
+    # private methods
 
     def _escape(self, s):
         return s.replace("'", "").replace('"', "")
@@ -136,7 +140,9 @@ class GenericAdapter(AbstractComponent):
 
         return res
 
-    def _exec_query(self, filters=[], fields=None, as_dict=True):
+    def _exec_query(self, filters=None, fields=None, as_dict=True):
+        if not filters:
+            filters = []
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
             "select 1 from sys.schemas where name=%s", (self.schema,)
@@ -198,17 +204,19 @@ class GenericAdapter(AbstractComponent):
                 )
             uniq.add(id_t)
 
-    def id2dict(self, id):
+    def id2dict(self, _id):
         return dict(zip(self._id, id))
 
-    ########## exposed methods
+    # exposed methods
 
-    def search(self, filters=[]):
+    def search(self, filters=None):
         """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
+        if not filters:
+            filters = []
         _logger.debug("method search, sql %s, filters %s", self._sql, filters)
 
         res = self._exec_query(filters=filters)
@@ -217,7 +225,7 @@ class GenericAdapter(AbstractComponent):
 
         return res
 
-    def read(self, id, attributes=None):
+    def read(self, _id, attributes=None):  # pylint: disable=W8106
         """Returns the information of a record
 
         :rtype: dict
@@ -237,7 +245,7 @@ class GenericAdapter(AbstractComponent):
 
         return res and res[0] or []
 
-    def write(self, id, values_d):
+    def write(self, _id, values_d):  # pylint: disable=W8106
         """ Update records on the external system """
         _logger.debug("method write, sql %s id %s, values %s", self._sql, id, values_d)
 
@@ -268,7 +276,7 @@ class GenericAdapter(AbstractComponent):
 
         # get the set data
         qset_l = []
-        for k, (k9, v) in qset_map_d.items():
+        for k, (k9, _v) in qset_map_d.items():
             qset_l.append("%(field)s = %%(%(field9)s)s" % dict(field=k, field9=k9))
         qset = "%s" % (", ".join(qset_l),)
 
@@ -277,12 +285,12 @@ class GenericAdapter(AbstractComponent):
 
         # prepare params
         params = dict(id_d)
-        for k, (k9, v) in qset_map_d.items():
+        for k9, v in qset_map_d.values():
             params[k9] = v
 
         conn = self.conn()
         cr = conn.cursor()
-        cr.execute(sql, params)
+        cr.execute(sql, params)  # pylint: disable=E8103
         count = cr.rowcount
         if count == 0:
             raise Exception(
@@ -303,7 +311,7 @@ class GenericAdapter(AbstractComponent):
 
         return count
 
-    def create(self, values_d):
+    def create(self, values_d):  # pylint: disable=W8106
         """ Create a record on the external system """
         _logger.debug("method create, model %s, attributes %s", self._name, values_d)
 
@@ -345,16 +353,23 @@ class GenericAdapter(AbstractComponent):
         try:
             res = self._exec_sql(sql, tuple(params), commit=True)
         except pymssql.IntegrityError as e:
-            # Workaround: Because of Microsoft SQL Server removes the spaces on varchars on comparisions
-            # where the varchar belongs to a PK or UK. This produces a no existent IntegrityViolation,
+            # Workaround: Because of Microsoft SQL Server
+            # removes the spaces on varchars on comparisions
+            # where the varchar belongs to a PK or UK.
+            # This produces a no existent IntegrityViolation,
             # so we need to make user aware of that in order to solve the issue.
             if e.args[0] == 2627:
                 raise ValidationError(
-                    "%s\nThis can be caused by a Microsoft SQL Server missbehaviour where a field belonging to a PK or "
-                    "UK cannot have trailing spaces."
-                    "If it has any then a fake IntegrityViolation can be thrown. Please check that there's no other "
-                    "record on the database with the same key fields but with/without trailing spaces, "
-                    "then fix it and try again." % (e,)
+                    _(
+                        "%s\nThis can be caused by a Microsoft SQL Server "
+                        "missbehaviour where a field belonging to a PK or "
+                        "UK cannot have trailing spaces."
+                        "If it has any then a fake IntegrityViolation can be thrown. "
+                        "Please check that there's no other "
+                        "record on the database with the same key "
+                        "fields but with/without trailing spaces, "
+                        "then fix it and try again." % (e,)
+                    )
                 )
             raise
 
@@ -392,7 +407,7 @@ class GenericAdapter(AbstractComponent):
 
         conn = self.conn()
         cr = conn.cursor()
-        cr.execute(sql, params)
+        cr.execute(sql, params)  # pylint: disable=E8103
         count = cr.rowcount
         if count == 0:
             raise Exception(

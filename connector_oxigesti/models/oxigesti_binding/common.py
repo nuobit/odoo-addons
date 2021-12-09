@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import hashlib
@@ -7,8 +7,6 @@ import json
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-
-from odoo.addons.queue_job.job import job
 
 
 def idhash(external_id):
@@ -23,7 +21,7 @@ def idhash(external_id):
         elif e is None:
             pass
         else:
-            raise Exception("Unexpected type for a key: type %" % type(e))
+            raise Exception("Unexpected type for a key: type %s" % type(e))
 
         external_id_hash.update(e9.encode("utf8"))
 
@@ -101,8 +99,10 @@ class OxigestiBinding(models.AbstractModel):
                 if external_id_hash == other_computed_external_id_hash:
                     raise ValidationError(
                         _(
-                            "Already exists another record %s with the same external_id %s (%s)%s.\n"
-                            "If the existing record is and old record, please remove its binding and try again."
+                            "Already exists another record %s with the s"
+                            "ame external_id %s (%s)%s.\n"
+                            "If the existing record is and old record, "
+                            "please remove its binding and try again."
                         )
                         % (
                             other.odoo_id,
@@ -114,12 +114,13 @@ class OxigestiBinding(models.AbstractModel):
                 else:
                     raise ValidationError(
                         _(
-                            "Exists another record %s with the same external_id %s (%s)%s on binding but different "
-                            "ID fields values %s.\n"
-                            "This error occurs because the ID fields values were changed on the other record after "
-                            "it was linked to the backend.\n"
-                            "You cannot change the values on ID fields if the record has bindings. "
-                            "Please remove the binding on the other record and try again."
+                            "Exists another record %s with the same external_id %s (%s)%s "
+                            "on binding but different ID fields values %s.\n"
+                            "This error occurs because the ID fields values were "
+                            "changed on the other record after it was linked to the backend.\n"
+                            "You cannot change the values on ID fields "
+                            "if the record has bindings. Please remove "
+                            "the binding on the other record and try again."
                         )
                         % (
                             other.odoo_id,
@@ -146,21 +147,23 @@ class OxigestiBinding(models.AbstractModel):
     ]
 
     @api.model
-    def import_batch(self, backend, filters=[]):
-        """ Prepare the batch import of records modified on Oxigesti """
+    def import_batch(self, backend, filters=None):
+        if not filters:
+            filters = []
+        # Prepare the batch import of records modified on Oxigesti
         with backend.work_on(self._name) as work:
             importer = work.component(usage="delayed.batch.importer")
             return importer.run(filters=filters)
 
-    @job(default_channel="root.oxigesti.batch")
     @api.model
-    def export_batch(self, backend, domain=[]):
-        """ Prepare the batch export of records modified on Odoo """
+    def export_batch(self, backend, domain=None):
+        if not domain:
+            domain = []
+        # Prepare the batch export of records modified on Odoo
         with backend.work_on(self._name) as work:
             exporter = work.component(usage="delayed.batch.exporter")
             return exporter.run(domain=domain)
 
-    @job(default_channel="root.oxigesti")
     @api.model
     def import_record(self, backend, external_id):
         """ Import Oxigesti record """
@@ -168,7 +171,6 @@ class OxigestiBinding(models.AbstractModel):
             importer = work.component(usage="record.importer")
             return importer.run(external_id)
 
-    @job(default_channel="root.oxigesti")
     @api.model
     def export_record(self, backend, relation):
         """ Export Odoo record """
@@ -177,7 +179,8 @@ class OxigestiBinding(models.AbstractModel):
         ):
             raise ValidationError(
                 _(
-                    "Record %s has been deleted on Odoo and cannot be exported to Oxigesti anymore."
+                    "Record %s has been deleted on Odoo and cannot be "
+                    "exported to Oxigesti anymore."
                 )
                 % (relation)
             )

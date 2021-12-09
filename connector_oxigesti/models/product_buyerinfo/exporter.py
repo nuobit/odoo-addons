@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -25,7 +24,7 @@ class ProductBuyerinfoExporter(Component):
     _apply_on = "oxigesti.product.buyerinfo"
 
     def _export_dependencies(self):
-        ### partner
+        # partner
         binder = self.binder_for("oxigesti.res.partner")
         binding_model = binder.model._name
         partner_id = self.binding.with_context(active_test=False).partner_id
@@ -49,7 +48,7 @@ class ProductBuyerinfoExporter(Component):
                 ]
             )
 
-        ## product
+        # product
         binder = self.binder_for("oxigesti.product.product")
         relation = self.binding.with_context(active_test=False).product_id
         if not binder.to_external(self.binding.product_id, wrap=True):
