@@ -1,4 +1,5 @@
-# Copyright 2013-2017 Camptocamp SA
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 """
@@ -22,23 +23,6 @@ class SageBinderComposite(AbstractComponent):
     _name = "base.binder.composite"
     _inherit = "base.binder"
 
-    def _orm_value(self, func_name, field, value):
-        field_type = self.model.fields_get([field], ["type"])[field]["type"]
-
-        if field_type == "datetime":
-            return getattr(fields.Datetime, func_name)(value)
-
-        if field_type == "date":
-            return getattr(fields.Date, func_name)(value)
-
-        return value
-
-    def _to_orm_value(self, field, value):
-        return self._orm_value("to_string", field, value)
-
-    def _from_orm_value(self, field, value):
-        return self._orm_value("from_string", field, value)
-
     def to_internal(self, external_id, unwrap=False):
         """Give the Odoo recordset for an external ID
 
@@ -55,7 +39,7 @@ class SageBinderComposite(AbstractComponent):
 
         domain = [(self._backend_field, "=", self.backend_record.id)]
         for k, v in zip(self._external_field, external_id):
-            domain.append((k, "=", self._to_orm_value(k, v)))
+            domain.append((k, "=", v))
 
         bindings = self.model.with_context(active_test=False).search(domain)
         if not bindings:
@@ -93,8 +77,8 @@ class SageBinderComposite(AbstractComponent):
             if not binding:
                 return None
             binding.ensure_one()
-            return [self._from_orm_value(f, binding[f]) for f in self._external_field]
-        return [self._from_orm_value(f, binding[f]) for f in self._external_field]
+            return [binding[f] for f in self._external_field]
+        return [binding[f] for f in self._external_field]
 
     def bind(self, external_id, binding):
         """Create the link between an external ID and an Odoo ID
