@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -58,7 +58,8 @@ class WageTag(models.Model):
     _sql_constraints = [
         (
             "wage_tag_uniq",
-            "unique(type,account_id,credit_debit,aggregate,negative_withholding,description,company_id)",
+            "unique(type,account_id,credit_debit,aggregate,"
+            "negative_withholding,description,company_id)",
             "Already exists a Wage Tag with the same parameters",
         ),
         (
@@ -96,7 +97,6 @@ class WageTag(models.Model):
             n = max(n_l.mapped("sequence"))
             return n + 1
 
-    @api.multi
     def name_get(self):
         type_option_d = dict(
             self.fields_get(["type"], ["selection"]).get("type").get("selection")
@@ -134,7 +134,6 @@ class WageTag(models.Model):
             res.append((rec.id, ": ".join(fd)))
         return res
 
-    @api.multi
     def copy(self, default=None):
         self.ensure_one()
         default = dict(
