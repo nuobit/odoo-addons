@@ -1,12 +1,16 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
 from contextlib import contextmanager
 from functools import partial
 
-from requests.exceptions import ConnectionError, HTTPError, RequestException
+from requests.exceptions import (
+    ConnectionError as RequestConnectionError,
+    HTTPError,
+    RequestException,
+)
 
 from odoo import _, exceptions
 
@@ -36,23 +40,23 @@ def api_handle_errors(message=""):
         yield
     except NetworkRetryableError as err:
         raise exceptions.UserError(_(u"{}Network Error:\n\n{}").format(message, err))
-    except (HTTPError, RequestException, ConnectionError) as err:
+    except (HTTPError, RequestException, RequestConnectionError) as err:
         raise exceptions.UserError(
             _(u"{}API / Network Error:\n\n{}").format(message, err)
         )
-    except (pymssql.OperationalError,) as err:
+    except pymssql.OperationalError as err:
         raise exceptions.UserError(
             _(u"{}DB operational Error:\n\n{}").format(message, err)
         )
-    except (pymssql.IntegrityError,) as err:
+    except pymssql.IntegrityError as err:
         raise exceptions.UserError(
             _(u"{}DB integrity Error:\n\n{}").format(message, err)
         )
-    except (pymssql.InternalError,) as err:
+    except pymssql.InternalError as err:
         raise exceptions.UserError(
             _(u"{}DB internal Error:\n\n{}").format(message, err)
         )
-    except (pymssql.InterfaceError,) as err:
+    except pymssql.InterfaceError as err:
         raise exceptions.UserError(
             _(u"{}DB interface Error:\n\n{}").format(message, err)
         )
@@ -86,7 +90,7 @@ class SageCRUDAdapter(AbstractComponent):
         and returns a list of ids"""
         raise NotImplementedError
 
-    def read(self, id, attributes=None):
+    def read(self, _id, attributes=None):  # pylint: disable=W8106
         """ Returns the information of a record """
         raise NotImplementedError
 
@@ -95,15 +99,15 @@ class SageCRUDAdapter(AbstractComponent):
         and returns their information"""
         raise NotImplementedError
 
-    def create(self, data):
+    def create(self, data):  # pylint: disable=W8106
         """ Create a record on the external system """
         raise NotImplementedError
 
-    def write(self, id, data):
+    def write(self, _id, data):  # pylint: disable=W8106
         """ Update records on the external system """
         raise NotImplementedError
 
-    def delete(self, id):
+    def delete(self, _id):
         """ Delete a record on the external system """
         raise NotImplementedError
 
@@ -116,7 +120,7 @@ class GenericAdapter(AbstractComponent):
     _name = "sage.adapter"
     _inherit = "sage.crud.adapter"
 
-    ## private methods
+    # private methods
 
     def _escape(self, s):
         return s.replace("'", "").replace('"', "")
@@ -124,7 +128,7 @@ class GenericAdapter(AbstractComponent):
     def _exec_sql(self, sql, params, as_dict=False):
         conn = self.conn()
         cr = conn.cursor(as_dict=as_dict)
-        cr.execute(sql, params)
+        cr.execute(sql, params)  # pylint: disable=E8103
         res = cr.fetchall()
         cr.close()
         conn.close()
@@ -195,7 +199,7 @@ class GenericAdapter(AbstractComponent):
                 )
             uniq.add(id_t)
 
-    ########## exposed methods
+    # exposed methods
 
     def search(self, filters=None):
         """Search records according to some criterias
@@ -211,7 +215,7 @@ class GenericAdapter(AbstractComponent):
 
         return res
 
-    def read(self, id, attributes=None):
+    def read(self, _id, attributes=None):  # pylint: disable=W8106
         """Returns the information of a record
 
         :rtype: dict
@@ -231,7 +235,7 @@ class GenericAdapter(AbstractComponent):
 
         return res and res[0] or []
 
-    def create(self, attributes=None):
+    def create(self, attributes=None):  # pylint: disable=W8106
         """ Create a record on the external system """
         _logger.debug(
             "method create, model %s, attributes %s", self._sage_model, attributes
@@ -241,7 +245,7 @@ class GenericAdapter(AbstractComponent):
             return res["sage"][self._export_node_name_res]["id"]
         return res
 
-    def write(self, id, attributes=None):
+    def write(self, _id, attributes=None):  # pylint: disable=W8106
         """ Update records on the external system """
         attributes["id"] = id
         _logger.debug(

@@ -1,10 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class PayslipCheck(models.Model):
@@ -29,7 +27,7 @@ class PayslipCheckBinding(models.Model):
         ondelete="cascade",
     )
 
-    ## composed id
+    # composed id
     sage_codigo_empresa = fields.Integer(string="CodigoEmpresa", required=True)
     sage_codigo_empleado = fields.Integer(string="CodigoEmpleado", required=True)
 
@@ -49,7 +47,6 @@ class PayslipCheckBinding(models.Model):
         ),
     ]
 
-    @job(default_channel="root.sage")
     def import_payslip_checks(self, payslip_id, backend_record):
         """ Prepare the import of payslip from Sage """
         filters = {

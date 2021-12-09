@@ -1,10 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class ResPartner(models.Model):
@@ -26,7 +24,7 @@ class ResPartnerBinding(models.Model):
         comodel_name="res.partner", string="Partner", required=True, ondelete="cascade"
     )
 
-    ## composed id
+    # composed id
     sage_codigo_empresa = fields.Integer(string="CodigoEmpresa", required=True)
     sage_codigo_empleado = fields.Integer(string="CodigoEmpleado", required=True)
 
@@ -38,7 +36,6 @@ class ResPartnerBinding(models.Model):
         ),
     ]
 
-    @job(default_channel="root.sage")
     def import_contacts_since(self, backend_record=None, since_date=None):
         """ Prepare the import of partners modified on Sage """
         filters = {

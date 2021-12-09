@@ -1,10 +1,10 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Sage-Odoo connector",
-    "version": "11.0.0.10.1",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Connector",
@@ -21,6 +21,8 @@
     },
     "data": [
         "data/ir_cron.xml",
+        "data/queue_data.xml",
+        "data/queue_job_function_data.xml",
         "views/sage_backend_views.xml",
         "views/hr_employee_views.xml",
         "views/res_partner_views.xml",

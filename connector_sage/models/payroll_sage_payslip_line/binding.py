@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -35,7 +34,7 @@ class PayslipLineBinding(models.AbstractModel):
         ondelete="cascade",
     )
 
-    ## composed id
+    # composed id
     sage_codigo_empresa = fields.Integer(string="CodigoEmpresa", required=True)
     sage_codigo_convenio = fields.Integer(string="CodigoConvenio", required=True)
     sage_fecha_registro_cv = fields.Date(string="FechaRegistroCV", required=True)
