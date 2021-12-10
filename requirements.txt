@@ -1,4 +1,2 @@
 # generated from manifests external_dependencies
-hashlib
-json
 pymssql
