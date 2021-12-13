@@ -11,9 +11,11 @@ class StockService(AbstractComponent):
     _inherit = "base.rest.service"
 
     def _get_current_user(self):
-        user = self.env['res.users'].search([
-            ('id', '=', self.env.uid),
-        ])
+        user = self.env["res.users"].search(
+            [
+                ("id", "=", self.env.uid),
+            ]
+        )
         if not user:
             raise IOError("No user found with current id")
         elif len(user) > 1:
