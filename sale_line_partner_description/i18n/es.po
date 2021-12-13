@@ -1,13 +1,13 @@
 # This file contains the translation of the following modules:
-#	* sale_line_partner_description
+# 	* sale_line_partner_description
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-07 12:21+0000\n"
 "PO-Revision-Date: 2019-06-07 12:21+0000\n"
-"Last-Translator: <>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,74 +15,73 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_line_partner_description
-#: sql_constraint:product.buyerinfo:0
+#: model:ir.model.constraint,message:sale_line_partner_description.constraint_product_buyerinfo_buyerinfo_uniq
 msgid "Already exists this same line!"
 msgstr "Already exists this same line!"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_create_uid
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_create_date
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__create_date
 msgid "Created on"
 msgstr "Creado en"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_partner_id
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__partner_id
 msgid "Customer"
 msgstr "Cliente"
 
 #. module: sale_line_partner_description
-#: model:ir.ui.view,arch_db:sale_line_partner_description.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:sale_line_partner_description.product_normal_form_view
 msgid "Product names by customer"
 msgstr "Nombres de producto por cliente"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_ambugest_product_product_buyer_ids
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_product_buyer_ids
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_product__buyer_ids
 msgid "Customers"
 msgstr "Clientes"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_name
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__name
 msgid "Product name"
 msgstr "Nombre del producto"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_code
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__code
 msgid "Product code"
 msgstr "Código del producto"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_display_name
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_id
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__id
 msgid "ID"
 msgstr "ID (identificación)"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo___last_update
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_write_uid
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización de"
 
 #. module: sale_line_partner_description
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_write_date
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__write_date
 msgid "Last Updated on"
 msgstr "Última actualización en"
 
 #. module: sale_line_partner_description
 #: model:ir.model,name:sale_line_partner_description.model_product_product
-#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo_product_id
+#: model:ir.model.fields,field_description:sale_line_partner_description.field_product_buyerinfo__product_id
 msgid "Product"
 msgstr "Producto"
 
