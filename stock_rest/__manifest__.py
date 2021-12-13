@@ -3,19 +3,15 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    'name': "Stock REST",
-    'author': 'NuoBiT Solutions, S.L.',
-    'category': 'Stock',
-    'version': '11.0.1.0.7',
-    'license': 'AGPL-3',
-    'website': 'https://github.com/nuobit',
-    'depends': [
-        'stock',
-        'connector_sage',
-        'base_rest'
+    "name": "Stock REST",
+    "author": "NuoBiT Solutions, S.L.",
+    "category": "Stock",
+    "version": "11.0.1.0.7",
+    "license": "AGPL-3",
+    "website": "https://github.com/nuobit/odoo-addons",
+    "depends": ["stock", "connector_sage", "base_rest"],
+    "data": [
+        "views/stock_picking_views.xml",
     ],
-    'data': [
-        'views/stock_picking_views.xml',
-    ],
-    'installable': True,
+    "installable": True,
 }
