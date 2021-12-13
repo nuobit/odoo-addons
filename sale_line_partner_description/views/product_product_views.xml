@@ -12,7 +12,10 @@
                     <field name="buyer_ids" nolabel="1">
                         <tree editable="bottom">
                             <field name="product_id" invisible="1" />
-                            <field name="partner_id" />
+                            <field
+                                name="partner_id"
+                                context="{'res_partner_search_mode': 'customer'}"
+                            />
                             <field name="code" />
                             <field name="name" />
                         </tree>
