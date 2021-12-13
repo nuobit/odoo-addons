@@ -21,6 +21,6 @@ class StockRestController(RestController):
         self._validate_method_name(method_name)
         with self.service_component(service_name) as service:
             result = service.dispatch(method_name, _id, params)
-            if 'rows' in result:
-                result = result['rows']
+            if "rows" in result:
+                result = result["rows"]
             return self.make_response(result)
