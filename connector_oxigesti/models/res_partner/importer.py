@@ -2,39 +2,36 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import re
-
-from odoo import _
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import (
-    mapping, external_to_m2o, only_create)
 
 
 class ResPartnerDelayedBatchImporter(Component):
-    """ Import the Oxigesti Partners.
+    """Import the Oxigesti Partners.
 
     For every partner in the list, a delayed job is created.
     """
-    _name = 'oxigesti.res.partner.delayed.batch.importer'
-    _inherit = 'oxigesti.delayed.batch.importer'
 
-    _apply_on = 'oxigesti.res.partner'
+    _name = "oxigesti.res.partner.delayed.batch.importer"
+    _inherit = "oxigesti.delayed.batch.importer"
+
+    _apply_on = "oxigesti.res.partner"
 
 
 class ResPartnerDirectBatchImporter(Component):
-    """ Import the Oxigesti Partners.
+    """Import the Oxigesti Partners.
 
     For every partner in the list, import it directly.
     """
-    _name = 'oxigesti.res.partner.direct.batch.importer'
-    _inherit = 'oxigesti.direct.batch.importer'
 
-    _apply_on = 'oxigesti.res.partner'
+    _name = "oxigesti.res.partner.direct.batch.importer"
+    _inherit = "oxigesti.direct.batch.importer"
+
+    _apply_on = "oxigesti.res.partner"
 
 
 class ResPartnerImporter(Component):
-    _name = 'oxigesti.res.partner.importer'
-    _inherit = 'oxigesti.importer'
+    _name = "oxigesti.res.partner.importer"
+    _inherit = "oxigesti.importer"
 
-    _apply_on = 'oxigesti.res.partner'
+    _apply_on = "oxigesti.res.partner"
