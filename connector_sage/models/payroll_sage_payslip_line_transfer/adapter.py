@@ -2,21 +2,20 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields
 
 from odoo.addons.component.core import Component
 
 
 class PayslipLineTransferAdapter(Component):
-    _name = 'sage.payroll.sage.payslip.line.transfer.adapter'
-    _inherit = 'sage.payroll.sage.payslip.line.adapter'
+    _name = "sage.payroll.sage.payslip.line.transfer.adapter"
+    _inherit = "sage.payroll.sage.payslip.line.adapter"
 
-    _apply_on = 'sage.payroll.sage.payslip.line.transfer'
+    _apply_on = "sage.payroll.sage.payslip.line.transfer"
 
     _sql = """select n.CodigoEmpresa, n.Año, n.MesD,
                      n.TipoProceso,
-                     n.CodigoEmpleado, n.CodigoConceptoNom, 
-                     c.CodigoConvenio, c.FechaRegistroCV,  
+                     n.CodigoEmpleado, n.CodigoConceptoNom,
+                     c.CodigoConvenio, c.FechaRegistroCV,
                      n.FechaCobro,
                      min(n.ConceptoLargo) as ConceptoLargo,
                      sum(n.ImporteNom) as ImporteNom
@@ -28,12 +27,20 @@ class PayslipLineTransferAdapter(Component):
                     n.CodigoEmpresa = c.CodigoEmpresa
               group by n.CodigoEmpresa, n.Año, n.MesD,
                        n.TipoProceso,
-                       n.CodigoEmpleado, n.CodigoConceptoNom, 
-                       c.CodigoConvenio, c.FechaRegistroCV,  
+                       n.CodigoEmpleado, n.CodigoConceptoNom,
+                       c.CodigoConvenio, c.FechaRegistroCV,
                        n.FechaCobro
               having sum(n.importenom) != 0
     """
 
-    _id = ('CodigoEmpresa', 'Año', 'MesD', 'TipoProceso',
-           'CodigoEmpleado', 'CodigoConceptoNom',
-           'CodigoConvenio', 'FechaRegistroCV', 'FechaCobro')
+    _id = (
+        "CodigoEmpresa",
+        "Año",
+        "MesD",
+        "TipoProceso",
+        "CodigoEmpleado",
+        "CodigoConceptoNom",
+        "CodigoConvenio",
+        "FechaRegistroCV",
+        "FechaCobro",
+    )
