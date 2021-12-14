@@ -6,7 +6,7 @@ from odoo.addons.component.core import AbstractComponent
 
 
 class AmbugestModelBinder(AbstractComponent):
-    """ Bind records and give odoo/ambugest ids correspondence
+    """Bind records and give odoo/ambugest ids correspondence
 
     Binding models are models called ``ambugest.{normal_model}``,
     like ``ambugest.res.partner`` or ``ambugest.product.product``.
@@ -14,5 +14,6 @@ class AmbugestModelBinder(AbstractComponent):
     the Ambugest ID, the ID of the Ambugest Backend and the additional
     fields belonging to the Ambugest instance.
     """
-    _name = 'ambugest.binder'
-    _inherit = ['base.binder.composite', 'base.ambugest.connector']
+
+    _name = "ambugest.binder"
+    _inherit = ["base.binder.composite", "base.ambugest.connector"]

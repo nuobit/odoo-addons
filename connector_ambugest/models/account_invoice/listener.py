@@ -2,18 +2,17 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models, _
 from odoo.addons.component.core import Component
 
 
 class AmbugestAccountInvoiceListener(Component):
-    _name = 'ambugest.account.invoice.listener'
-    _inherit = 'base.event.listener'
-    _apply_on = ['account.invoice']
+    _name = "ambugest.account.invoice.listener"
+    _inherit = "base.event.listener"
+    _apply_on = ["account.invoice"]
 
     def on_validate_invoice(self, record):
         record.ensure_one()
-        for order in record.invoice_line_ids.mapped('sale_line_ids.order_id'):
+        for order in record.invoice_line_ids.mapped("sale_line_ids.order_id"):
             binding = order.ambugest_bind_ids
             if binding:
                 binding.ensure_one()
@@ -22,7 +21,7 @@ class AmbugestAccountInvoiceListener(Component):
 
     def on_cancel_invoice(self, record):
         record.ensure_one()
-        for order in record.invoice_line_ids.mapped('sale_line_ids.order_id'):
+        for order in record.invoice_line_ids.mapped("sale_line_ids.order_id"):
             binding = order.ambugest_bind_ids
             if binding:
                 binding.ensure_one()
