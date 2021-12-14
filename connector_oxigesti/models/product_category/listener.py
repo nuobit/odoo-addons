@@ -6,7 +6,7 @@ from odoo.addons.component.core import Component
 
 
 class ProductCategoryListener(Component):
-    _name = 'oxigesti.product.category.listener'
-    _inherit = 'oxigesti.event.listener'
+    _name = "oxigesti.product.category.listener"
+    _inherit = "oxigesti.event.listener"
 
-    _apply_on = 'product.category'
+    _apply_on = "product.category"

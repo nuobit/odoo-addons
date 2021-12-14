@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!---->
 <odoo>
     <record id="oxigesti_product_pricelist_item_view_form" model="ir.ui.view">
         <field name="name">oxigesti.product.pricelist.item.form</field>
@@ -9,11 +10,11 @@
         <field name="arch" type="xml">
             <form string="Oxigesti Product prices by customer">
                 <group>
-                    <field name="backend_id" readonly="True"/>
-                    <field name="odoo_id" readonly="True"/>
-                    <field name="odoo_partner_id" readonly="True"/>
-                    <field name="external_id_display" readonly="True"/>
-                    <field name="sync_date" readonly="True"/>
+                    <field name="backend_id" readonly="True" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="odoo_partner_id" readonly="True" />
+                    <field name="external_id_display" readonly="True" />
+                    <field name="sync_date" readonly="True" />
                 </group>
             </form>
         </field>
@@ -24,13 +25,17 @@
         <field name="model">oxigesti.product.pricelist.item</field>
         <field name="arch" type="xml">
             <tree string="Oxigesti Product prices by customer">
-                <field name="backend_id"/>
-                <field name="odoo_id"/>
-                <field name="odoo_partner_id"/>
-                <field name="external_id_display"/>
-                <field name="sync_date"/>
-                <button name="resync" type="object"
-                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="odoo_partner_id" />
+                <field name="external_id_display" />
+                <field name="sync_date" />
+                <button
+                    name="resync"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
             </tree>
         </field>
     </record>

@@ -6,11 +6,11 @@ from odoo.addons.component.core import AbstractComponent
 
 
 class OxigestiBaseConnectorComponent(AbstractComponent):
-    """ Base Oxigesti Connector Component
+    """Base Oxigesti Connector Component
 
     All components of this connector should inherit from it.
     """
 
-    _name = 'base.oxigesti.connector'
-    _inherit = 'base.connector'
-    _collection = 'oxigesti.backend'
+    _name = "base.oxigesti.connector"
+    _inherit = "base.connector"
+    _collection = "oxigesti.backend"

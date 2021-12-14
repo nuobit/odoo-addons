@@ -3,23 +3,25 @@
 
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import (
-    mapping, changed_by)
+from odoo.addons.connector.components.mapper import changed_by, mapping
 
 
 class ProductBuyerExportMapper(Component):
-    _name = 'oxigesti.product.category.export.mapper'
-    _inherit = 'oxigesti.export.mapper'
+    _name = "oxigesti.product.category.export.mapper"
+    _inherit = "oxigesti.export.mapper"
 
-    _apply_on = 'oxigesti.product.category'
+    _apply_on = "oxigesti.product.category"
 
-    @changed_by('odoo_id')
+    @changed_by("odoo_id")
     @mapping
     def IdCategoriaOdoo(self, record):
-        return {'IdCategoriaOdoo': record.odoo_id.id}
+        return {"IdCategoriaOdoo": record.odoo_id.id}
 
-    @changed_by('name')
+    @changed_by("name")
     @mapping
     def Descripcion(self, record):
-        return {'Descripcion': record.with_context(
-            lang=self.backend_record.lang_id.code).name[:255]}
+        return {
+            "Descripcion": record.with_context(
+                lang=self.backend_record.lang_id.code
+            ).name[:255]
+        }

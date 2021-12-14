@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!---->
 <odoo>
     <record id="product_category_view_form_connector_oxigesti" model="ir.ui.view">
         <field name="name">product.category.connector.oxigesti.form</field>
         <field name="model">product.category</field>
-        <field name="inherit_id" ref="connector_common.product_category_form_view"/>
+        <field name="inherit_id" ref="connector_common.product_category_form_view" />
         <field name="arch" type="xml">
             <page name="connector" position="attributes">
                 <attribute name="invisible">0</attribute>
             </page>
             <page name="connector" position="inside">
                 <group string="Oxigesti Bindings">
-                    <field name="oxigesti_bind_ids" nolabel="1"/>
+                    <field name="oxigesti_bind_ids" nolabel="1" />
                 </group>
             </page>
         </field>
@@ -24,10 +25,10 @@
         <field name="arch" type="xml">
             <form string="Oxigesti Product Categories">
                 <group>
-                    <field name="backend_id"/>
-                    <field name="odoo_id" readonly="True"/>
-                    <field name="external_id_display" readonly="True"/>
-                    <field name="sync_date" readonly="True"/>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="external_id_display" readonly="True" />
+                    <field name="sync_date" readonly="True" />
                 </group>
             </form>
         </field>
@@ -38,12 +39,16 @@
         <field name="model">oxigesti.product.category</field>
         <field name="arch" type="xml">
             <tree string="Oxigesti Product Categories">
-                <field name="backend_id"/>
-                <field name="odoo_id"/>
-                <field name="external_id_display" readonly="True"/>
-                <field name="sync_date"/>
-                <button name="resync" type="object"
-                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="external_id_display" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
             </tree>
         </field>
     </record>

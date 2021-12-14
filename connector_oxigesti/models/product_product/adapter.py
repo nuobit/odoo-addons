@@ -6,10 +6,10 @@ from odoo.addons.component.core import Component
 
 
 class ProductProductAdapter(Component):
-    _name = 'oxigesti.product.product.adapter'
-    _inherit = 'oxigesti.adapter'
+    _name = "oxigesti.product.product.adapter"
+    _inherit = "oxigesti.adapter"
 
-    _apply_on = 'oxigesti.product.product'
+    _apply_on = "oxigesti.product.product"
 
     _sql = """select a.CodigoArticulo, a.DescripcionArticulo, a.Familia, a.CodigoAlternativo, a.Importe
               from %(schema)s.Odoo_Articulos_Generales a
@@ -21,7 +21,7 @@ class ProductProductAdapter(Component):
                      where s.CodigoArticulo = %%(CodigoArticulo)s
          """
 
-    _sql_insert = """insert into %(schema)s.Odoo_Articulos_Generales 
+    _sql_insert = """insert into %(schema)s.Odoo_Articulos_Generales
                          (%(fields)s)
                      output %(retvalues)s
                      values (%(phvalues)s)
@@ -31,4 +31,4 @@ class ProductProductAdapter(Component):
                      where CodigoArticulo = %%(CodigoArticulo)s
          """
 
-    _id = ('CodigoArticulo',)
+    _id = ("CodigoArticulo",)

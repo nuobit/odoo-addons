@@ -6,7 +6,7 @@ from odoo.addons.component.core import Component
 
 
 class ProductTemplateListener(Component):
-    _name = 'oxigesti.product.template.listener'
-    _inherit = 'oxigesti.event.listener'
+    _name = "oxigesti.product.template.listener"
+    _inherit = "oxigesti.event.listener"
 
-    _apply_on = 'product.template'
+    _apply_on = "product.template"

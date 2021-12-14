@@ -7,12 +7,13 @@ import random
 from contextlib import contextmanager
 from functools import partial
 
-from requests.exceptions import HTTPError, RequestException, ConnectionError
+from requests.exceptions import ConnectionError, HTTPError, RequestException
 
-from odoo import exceptions, _
+from odoo import _, exceptions
+from odoo.exceptions import ValidationError
+
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import NetworkRetryableError
-from odoo.exceptions import ValidationError
 
 try:
     import pymssql
@@ -23,8 +24,8 @@ _logger = logging.getLogger(__name__)
 
 
 @contextmanager
-def api_handle_errors(message=''):
-    """ Handle error when calling the API
+def api_handle_errors(message=""):
+    """Handle error when calling the API
 
     It is meant to be used when a model does a direct
     call to a job using the API (not using job.delay()).
@@ -32,41 +33,40 @@ def api_handle_errors(message=''):
     instead, they are presented as :class:`openerp.exceptions.UserError`.
     """
     if message:
-        message = message + u'\n\n'
+        message = message + u"\n\n"
     try:
         yield
     except NetworkRetryableError as err:
-        raise exceptions.UserError(
-            _(u'{}Network Error:\n\n{}').format(message, err)
-        )
+        raise exceptions.UserError(_(u"{}Network Error:\n\n{}").format(message, err))
     except (HTTPError, RequestException, ConnectionError) as err:
         raise exceptions.UserError(
-            _(u'{}API / Network Error:\n\n{}').format(message, err)
+            _(u"{}API / Network Error:\n\n{}").format(message, err)
         )
     except (pymssql.OperationalError,) as err:
         raise exceptions.UserError(
-            _(u'{}DB operational Error:\n\n{}').format(message, err)
+            _(u"{}DB operational Error:\n\n{}").format(message, err)
         )
     except (pymssql.IntegrityError,) as err:
         raise exceptions.UserError(
-            _(u'{}DB integrity Error:\n\n{}').format(message, err)
+            _(u"{}DB integrity Error:\n\n{}").format(message, err)
         )
     except (pymssql.InternalError,) as err:
         raise exceptions.UserError(
-            _(u'{}DB internal Error:\n\n{}').format(message, err)
+            _(u"{}DB internal Error:\n\n{}").format(message, err)
         )
     except (pymssql.InterfaceError,) as err:
         raise exceptions.UserError(
-            _(u'{}DB interface Error:\n\n{}').format(message, err)
+            _(u"{}DB interface Error:\n\n{}").format(message, err)
         )
 
 
 class CRUDAdapter(AbstractComponent):
     """ External Records Adapter for Oxigesti """
-    _name = 'oxigesti.crud.adapter'
-    _inherit = ['base.backend.adapter', 'base.oxigesti.connector']
 
-    _usage = 'backend.adapter'
+    _name = "oxigesti.crud.adapter"
+    _inherit = ["base.backend.adapter", "base.oxigesti.connector"]
+
+    _usage = "backend.adapter"
 
     def __init__(self, environment):
         """
@@ -78,15 +78,15 @@ class CRUDAdapter(AbstractComponent):
         self.schema = self.backend_record.schema
         self.conn = partial(
             pymssql.connect,
-            '%s:%i' % (self.backend_record.server, self.backend_record.port),
+            "%s:%i" % (self.backend_record.server, self.backend_record.port),
             self.backend_record.username,
             self.backend_record.password,
             self.backend_record.database,
         )
 
     def search(self, model, filters=[]):
-        """ Search records according to some criterias
-        and returns a list of ids """
+        """Search records according to some criterias
+        and returns a list of ids"""
         raise NotImplementedError
 
     def read(self, id, attributes=None):
@@ -94,7 +94,7 @@ class CRUDAdapter(AbstractComponent):
         raise NotImplementedError
 
     def search_read(self, filters=[]):
-        """ Search records according to some criterias
+        """Search records according to some criterias
         and returns their information"""
         raise NotImplementedError
 
@@ -116,8 +116,8 @@ class CRUDAdapter(AbstractComponent):
 
 
 class GenericAdapter(AbstractComponent):
-    _name = 'oxigesti.adapter'
-    _inherit = 'oxigesti.crud.adapter'
+    _name = "oxigesti.adapter"
+    _inherit = "oxigesti.crud.adapter"
 
     ## private methods
 
@@ -138,7 +138,9 @@ class GenericAdapter(AbstractComponent):
 
     def _exec_query(self, filters=[], fields=None, as_dict=True):
         # check if schema exists to avoid injection
-        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        schema_exists = self._exec_sql(
+            "select 1 from sys.schemas where name=%s", (self.schema,)
+        )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
@@ -149,31 +151,34 @@ class GenericAdapter(AbstractComponent):
         if filters or fields:
             sql_l = ["with t as (%s)" % sql]
 
-            fields_l = fields or ['*']
+            fields_l = fields or ["*"]
             if fields:
                 if self._id:
                     for f in self._id:
                         if f not in fields_l:
                             fields_l.append(f)
 
-            sql_l.append("select %s from t" % (', '.join(fields_l),))
+            sql_l.append("select %s from t" % (", ".join(fields_l),))
 
             if filters:
                 where = []
                 for k, operator, v in filters:
                     if v is None:
-                        if operator == '=':
-                            operator = 'is'
-                        elif operator == '!=':
-                            operator = 'is not'
+                        if operator == "=":
+                            operator = "is"
+                        elif operator == "!=":
+                            operator = "is not"
                         else:
-                            raise Exception("Operator '%s' is not implemented on NULL values" % operator)
+                            raise Exception(
+                                "Operator '%s' is not implemented on NULL values"
+                                % operator
+                            )
 
-                    where.append('%s %s %%s' % (k, operator))
+                    where.append("%s %s %%s" % (k, operator))
                     values.append(v)
-                sql_l.append("where %s" % (' and '.join(where),))
+                sql_l.append("where %s" % (" and ".join(where),))
 
-            sql = ' '.join(sql_l)
+            sql = " ".join(sql_l)
 
         res = self._exec_sql(sql, tuple(values), as_dict=as_dict)
 
@@ -188,7 +193,9 @@ class GenericAdapter(AbstractComponent):
         for rec in data:
             id_t = tuple([rec[f] for f in self._id])
             if id_t in uniq:
-                raise pymssql.IntegrityError("Unexpected error: ID duplicated: %s - %s" % (self._id, id_t))
+                raise pymssql.IntegrityError(
+                    "Unexpected error: ID duplicated: %s - %s" % (self._id, id_t)
+                )
             uniq.add(id_t)
 
     def id2dict(self, id):
@@ -197,14 +204,12 @@ class GenericAdapter(AbstractComponent):
     ########## exposed methods
 
     def search(self, filters=[]):
-        """ Search records according to some criterias
+        """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
-        _logger.debug(
-            'method search, sql %s, filters %s',
-            self._sql, filters)
+        _logger.debug("method search, sql %s, filters %s", self._sql, filters)
 
         res = self._exec_query(filters=filters)
 
@@ -213,34 +218,36 @@ class GenericAdapter(AbstractComponent):
         return res
 
     def read(self, id, attributes=None):
-        """ Returns the information of a record
+        """Returns the information of a record
 
         :rtype: dict
         """
         _logger.debug(
-            'method read, sql %s id %s, attributes %s',
-            self._sql, id, attributes)
+            "method read, sql %s id %s, attributes %s", self._sql, id, attributes
+        )
 
-        filters = list(zip(self._id, ['='] * len(self._id), id))
+        filters = list(zip(self._id, ["="] * len(self._id), id))
 
         res = self._exec_query(filters=filters)
 
         if len(res) > 1:
-            raise pymssql.IntegrityError("Unexpected error: Returned more the one rows:\n%s" % ('\n'.join(res),))
+            raise pymssql.IntegrityError(
+                "Unexpected error: Returned more the one rows:\n%s" % ("\n".join(res),)
+            )
 
         return res and res[0] or []
 
     def write(self, id, values_d):
         """ Update records on the external system """
-        _logger.debug(
-            'method write, sql %s id %s, values %s',
-            self._sql, id, values_d)
+        _logger.debug("method write, sql %s id %s, values %s", self._sql, id, values_d)
 
         if not values_d:
             return 0
 
         # check if schema exists to avoid injection
-        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        schema_exists = self._exec_sql(
+            "select 1 from sys.schemas where name=%s", (self.schema,)
+        )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
@@ -252,7 +259,7 @@ class GenericAdapter(AbstractComponent):
         for k, v in values_d.items():
             if k in id_d:
                 while True:
-                    k9 = '%s%i' % (k, random.randint(0, 999))
+                    k9 = "%s%i" % (k, random.randint(0, 999))
                     if k9 not in values_d and k9 not in id_d:
                         qset_map_d[k] = (k9, v)
                         break
@@ -262,8 +269,8 @@ class GenericAdapter(AbstractComponent):
         # get the set data
         qset_l = []
         for k, (k9, v) in qset_map_d.items():
-            qset_l.append('%(field)s = %%(%(field9)s)s' % dict(field=k, field9=k9))
-        qset = "%s" % (', '.join(qset_l),)
+            qset_l.append("%(field)s = %%(%(field9)s)s" % dict(field=k, field9=k9))
+        qset = "%s" % (", ".join(qset_l),)
 
         # prepare the sql with base strucrture
         sql = self._sql_update % dict(schema=self.schema, qset=qset)
@@ -278,11 +285,18 @@ class GenericAdapter(AbstractComponent):
         cr.execute(sql, params)
         count = cr.rowcount
         if count == 0:
-            raise Exception(_("Impossible to update external record with ID '%s': "
-                              "Register not found on Backend") % (id_d,))
+            raise Exception(
+                _(
+                    "Impossible to update external record with ID '%s': "
+                    "Register not found on Backend"
+                )
+                % (id_d,)
+            )
         elif count > 1:
             conn.rollback()
-            raise pymssql.IntegrityError("Unexpected error: Returned more the one row with ID: %s" % (id_d,))
+            raise pymssql.IntegrityError(
+                "Unexpected error: Returned more the one row with ID: %s" % (id_d,)
+            )
         conn.commit()
         cr.close()
         conn.close()
@@ -291,15 +305,15 @@ class GenericAdapter(AbstractComponent):
 
     def create(self, values_d):
         """ Create a record on the external system """
-        _logger.debug(
-            'method create, model %s, attributes %s',
-            self._name, values_d)
+        _logger.debug("method create, model %s, attributes %s", self._name, values_d)
 
         if not values_d:
             return 0
 
         # check if schema exists to avoid injection
-        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        schema_exists = self._exec_sql(
+            "select 1 from sys.schemas where name=%s", (self.schema,)
+        )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
@@ -309,20 +323,22 @@ class GenericAdapter(AbstractComponent):
             fields.append(k)
             params.append(v)
             if v is None or isinstance(v, str):
-                phvalues.append('%s')
+                phvalues.append("%s")
             elif isinstance(v, (int, float)):
-                phvalues.append('%d')
+                phvalues.append("%d")
             else:
                 raise NotImplementedError("Type %s" % type(v))
 
         # build retvalues
-        retvalues = ['inserted.%s' % x for x in self._id]
+        retvalues = ["inserted.%s" % x for x in self._id]
 
         # prepare the sql with base structure
-        sql = self._sql_insert % dict(schema=self.schema,
-                                      fields=', '.join(fields),
-                                      phvalues=', '.join(phvalues),
-                                      retvalues=', '.join(retvalues))
+        sql = self._sql_insert % dict(
+            schema=self.schema,
+            fields=", ".join(fields),
+            phvalues=", ".join(phvalues),
+            retvalues=", ".join(retvalues),
+        )
 
         # executem la insercio
         res = None
@@ -338,25 +354,33 @@ class GenericAdapter(AbstractComponent):
                     "UK cannot have trailing spaces."
                     "If it has any then a fake IntegrityViolation can be thrown. Please check that there's no other "
                     "record on the database with the same key fields but with/without trailing spaces, "
-                    "then fix it and try again." % (e,))
+                    "then fix it and try again." % (e,)
+                )
             raise
 
         if not res:
             raise Exception(_("Unexpected!! Nothing created: %s") % (values_d,))
         elif len(res) > 1:
-            raise Exception("Unexpected!!: Returned more the one row:%s -  %s" % (res, values_d,))
+            raise Exception(
+                "Unexpected!!: Returned more the one row:%s -  %s"
+                % (
+                    res,
+                    values_d,
+                )
+            )
 
         return res[0]
 
     def delete(self, _id):
         """
-            Delete the record with _id
+        Delete the record with _id
         """
-        _logger.debug('method delete, model %s, is %s',
-                      self._name, _id)
+        _logger.debug("method delete, model %s, is %s", self._name, _id)
 
         # check if schema exists to avoid injection
-        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        schema_exists = self._exec_sql(
+            "select 1 from sys.schemas where name=%s", (self.schema,)
+        )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
@@ -371,11 +395,18 @@ class GenericAdapter(AbstractComponent):
         cr.execute(sql, params)
         count = cr.rowcount
         if count == 0:
-            raise Exception(_("Impossible to delete external record with ID '%s': "
-                              "Register not found on Backend") % (params,))
+            raise Exception(
+                _(
+                    "Impossible to delete external record with ID '%s': "
+                    "Register not found on Backend"
+                )
+                % (params,)
+            )
         elif count > 1:
             conn.rollback()
-            raise pymssql.IntegrityError("Unexpected error: Returned more the one row with ID: %s" % (params,))
+            raise pymssql.IntegrityError(
+                "Unexpected error: Returned more the one row with ID: %s" % (params,)
+            )
         conn.commit()
         cr.close()
         conn.close()
@@ -390,9 +421,10 @@ class GenericAdapter(AbstractComponent):
 
 class OxigestiNoModelAdapter(AbstractComponent):
     """ Used to test the connection """
-    _name = 'oxigesti.adapter.test'
-    _inherit = 'oxigesti.adapter'
-    _apply_on = 'oxigesti.backend'
+
+    _name = "oxigesti.adapter.test"
+    _inherit = "oxigesti.adapter"
+    _apply_on = "oxigesti.backend"
 
     _sql = "select @@version"
     _id = None
