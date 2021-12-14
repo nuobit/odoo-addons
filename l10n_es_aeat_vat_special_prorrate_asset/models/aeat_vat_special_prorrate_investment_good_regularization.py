@@ -2,13 +2,11 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models, fields
-from odoo.exceptions import ValidationError
-from odoo.tools.translate import _
+from odoo import fields, models
 
 
 class AEATVatspecialProrrateInvestmentRegularization(models.Model):
-    _name = 'aeat.vat.special.prorrate.investment.good.regularization'
+    _name = "aeat.vat.special.prorrate.investment.good.regularization"
 
     name = fields.Char(string="Name")
 
@@ -16,4 +14,4 @@ class AEATVatspecialProrrateInvestmentRegularization(models.Model):
 
     amount = fields.Float(string="Amount", required=True)
 
-    investment_good_id = fields.Many2one(comodel_name='account.asset.asset')
+    investment_good_id = fields.Many2one(comodel_name="account.asset.asset")

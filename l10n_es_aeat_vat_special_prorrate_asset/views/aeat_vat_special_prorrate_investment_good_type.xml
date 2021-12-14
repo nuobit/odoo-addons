@@ -1,18 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="aeat_vat_special_prorrate_investment_good_type_view_form" model="ir.ui.view">
-        <field name="name">aeat.vat.special.prorrate.investment.good.type.view.form</field>
+    <record
+        id="aeat_vat_special_prorrate_investment_good_type_view_form"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >aeat.vat.special.prorrate.investment.good.type.view.form</field>
         <field name="model">aeat.vat.special.prorrate.investment.good.type</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <group col="4">
                         <group colspan="2">
-                            <field name="name"/>
-                            <field name="period"/>
+                            <field name="name" />
+                            <field name="period" />
                         </group>
                     </group>
                 </sheet>
@@ -20,26 +25,36 @@
         </field>
     </record>
 
-    <record id="aeat_vat_special_prorrate_investment_good_type_view_tree" model="ir.ui.view">
-        <field name="name">aeat.vat.special.prorrate.investment.good.type.view.tree</field>
+    <record
+        id="aeat_vat_special_prorrate_investment_good_type_view_tree"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >aeat.vat.special.prorrate.investment.good.type.view.tree</field>
         <field name="model">aeat.vat.special.prorrate.investment.good.type</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
-                <field name="period"/>
+                <field name="name" />
+                <field name="period" />
             </tree>
         </field>
     </record>
 
-    <record id="aeat_vat_special_prorrate_investment_good_type_action" model="ir.actions.act_window">
+    <record
+        id="aeat_vat_special_prorrate_investment_good_type_action"
+        model="ir.actions.act_window"
+    >
         <field name="name">Investment good types</field>
         <field name="res_model">aeat.vat.special.prorrate.investment.good.type</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="aeat_vat_special_prorrate_investment_good_type_menu"
-              parent="l10n_es_aeat.menu_l10n_es_aeat_config"
-              action="aeat_vat_special_prorrate_investment_good_type_action"
-              name="Investment good types"/>
+    <menuitem
+        id="aeat_vat_special_prorrate_investment_good_type_menu"
+        parent="l10n_es_aeat.menu_l10n_es_aeat_config"
+        action="aeat_vat_special_prorrate_investment_good_type_action"
+        name="Investment good types"
+    />
 </odoo>

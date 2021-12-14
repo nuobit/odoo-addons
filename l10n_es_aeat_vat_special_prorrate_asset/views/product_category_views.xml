@@ -1,16 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_category_form_view" model="ir.ui.view">
         <field name="model">product.category</field>
-        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="inherit_id" ref="product.product_category_form_view" />
         <field name="arch" type="xml">
             <group name="first" position="after">
                 <group col="2">
-                    <field name="investment_good_type" options="{'no_create': True, 'no_open': True}"
-                           class="oe_inline"/>
+                    <field
+                        name="investment_good_type"
+                        options="{'no_create': True, 'no_open': True}"
+                        class="oe_inline"
+                    />
                 </group>
             </group>
         </field>
@@ -18,10 +21,10 @@
 
     <record id="product_category_list_view" model="ir.ui.view">
         <field name="model">product.category</field>
-        <field name="inherit_id" ref="product.product_category_list_view"/>
+        <field name="inherit_id" ref="product.product_category_list_view" />
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
-                <field name="investment_good_type"/>
+                <field name="investment_good_type" />
             </xpath>
         </field>
     </record>

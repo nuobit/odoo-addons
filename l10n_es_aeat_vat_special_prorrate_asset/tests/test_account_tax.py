@@ -5,7 +5,6 @@
 import logging
 
 from odoo.tests import common
-from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -16,4 +15,4 @@ class TestAccountTax(common.SavepointCase):
         super(TestAccountTax, cls).setUpClass()
 
     def test_tax_template(self):
-       print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
