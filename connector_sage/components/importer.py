@@ -3,28 +3,22 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
-from contextlib import closing, contextmanager
-from odoo.addons.connector.exception import IDMissingInBackend
-from odoo.addons.queue_job.exception import NothingToDoJob
 
-import odoo
 from odoo import _
 
-from odoo.addons.queue_job.exception import (
-    RetryableJobError,
-    FailedJobError,
-)
-
 from odoo.addons.component.core import AbstractComponent
+from odoo.addons.connector.exception import IDMissingInBackend
+from odoo.addons.queue_job.exception import NothingToDoJob
 
 _logger = logging.getLogger(__name__)
 
 
 class SageImporter(AbstractComponent):
     """ Base importer for Sage """
-    _name = 'sage.importer'
-    _inherit = ['base.importer', 'base.sage.connector']
-    _usage = 'record.importer'
+
+    _name = "sage.importer"
+    _inherit = ["base.importer", "base.sage.connector"]
+    _usage = "record.importer"
 
     # def _is_uptodate(self, binding):
     #     """Return True if the import should be skipped because
@@ -48,9 +42,10 @@ class SageImporter(AbstractComponent):
     #     # miss changes done in Sage
     #     return sage_date < sync_date
 
-    def _import_dependency(self, external_id, binding_model,
-                           importer=None, always=False):
-        """ Import a dependency.
+    def _import_dependency(
+        self, external_id, binding_model, importer=None, always=False
+    ):
+        """Import a dependency.
 
         The importer class is a class or subclass of
         :class:`SageImporter`. A specific class can be defined.
@@ -73,18 +68,20 @@ class SageImporter(AbstractComponent):
         binder = self.binder_for(binding_model)
         if always or not binder.to_internal(external_id):
             if importer is None:
-                importer = self.component(usage='record.importer',
-                                          model_name=binding_model)
+                importer = self.component(
+                    usage="record.importer", model_name=binding_model
+                )
             try:
                 importer.run(external_id)
             except NothingToDoJob:
                 _logger.info(
-                    'Dependency import of %s(%s) has been ignored.',
-                    binding_model._name, external_id
+                    "Dependency import of %s(%s) has been ignored.",
+                    binding_model._name,
+                    external_id,
                 )
 
     def _import_dependencies(self):
-        """ Import the dependencies for the record
+        """Import the dependencies for the record
 
         Import of dependencies can be done manually or by calling
         :meth:`_import_dependency` for each dependency.
@@ -94,19 +91,18 @@ class SageImporter(AbstractComponent):
     def run(self, external_id):
         ## get_data
         # this one knows how to speak to sage
-        backend_adapter = self.component(usage='backend.adapter')
+        backend_adapter = self.component(usage="backend.adapter")
         # read external data from sage
         try:
             self.external_data = backend_adapter.read(external_id)
         except IDMissingInBackend:
-            return _('Record does no longer exist in Sage')
+            return _("Record does no longer exist in Sage")
 
         ## get_binding
         # this one knows how to link sage/odoo records
-        binder = self.component(usage='binder')
+        binder = self.component(usage="binder")
         # find if the sage id already exists in odoo
         binding = binder.to_internal(external_id)
-
 
         # if not force and self._is_uptodate(binding):
         #     return _('Already up-to-date.')
@@ -116,17 +112,21 @@ class SageImporter(AbstractComponent):
 
         ## map_data
         # this one knows how to convert sage data to odoo data
-        mapper = self.component(usage='import.mapper')
+        mapper = self.component(usage="import.mapper")
         # convert to odoo data
         internal_data = mapper.map_record(self.external_data)
         if binding:
             # if yes, we update it
-            binding.with_context(force_company=self.backend_record.company_id.id).write(internal_data.values())
-            _logger.debug('%d updated from Sage %s', binding, external_id)
+            binding.with_context(force_company=self.backend_record.company_id.id).write(
+                internal_data.values()
+            )
+            _logger.debug("%d updated from Sage %s", binding, external_id)
         else:
             # or we create it
-            binding = self.model.with_context(force_company=self.backend_record.company_id.id).create(internal_data.values(for_create=True))
-            _logger.debug('%d created from Sage %s', binding, external_id)
+            binding = self.model.with_context(
+                force_company=self.backend_record.company_id.id
+            ).create(internal_data.values(for_create=True))
+            _logger.debug("%d created from Sage %s", binding, external_id)
 
         # finally, we bind both, so the next time we import
         # the record, we'll update the same record instead of
@@ -135,13 +135,14 @@ class SageImporter(AbstractComponent):
 
 
 class SageBatchImporter(AbstractComponent):
-    """ The role of a BatchImporter is to search for a list of
+    """The role of a BatchImporter is to search for a list of
     items to import, then it can either import them directly or delay
     the import of each item separately.
     """
-    _name = 'sage.batch.importer'
-    _inherit = ['base.importer', 'base.sage.connector']
-    _usage = 'batch.importer'
+
+    _name = "sage.batch.importer"
+    _inherit = ["base.importer", "base.sage.connector"]
+    _usage = "batch.importer"
 
     def run(self, filters=None):
         """ Run the synchronization """
@@ -150,7 +151,7 @@ class SageBatchImporter(AbstractComponent):
             self._import_record(record_id)
 
     def _import_record(self, external_id):
-        """ Import a record directly or delay the import of the record.
+        """Import a record directly or delay the import of the record.
 
         Method to implement in sub-classes.
         """
@@ -160,8 +161,8 @@ class SageBatchImporter(AbstractComponent):
 class SageDirectBatchImporter(AbstractComponent):
     """ Import the records directly, without delaying the jobs. """
 
-    _name = 'sage.direct.batch.importer'
-    _inherit = 'sage.batch.importer'
+    _name = "sage.direct.batch.importer"
+    _inherit = "sage.batch.importer"
 
     def _import_record(self, external_id):
         """ Import the record directly """
@@ -171,8 +172,8 @@ class SageDirectBatchImporter(AbstractComponent):
 class SageDelayedBatchImporter(AbstractComponent):
     """ Delay import of the records """
 
-    _name = 'sage.delayed.batch.importer'
-    _inherit = 'sage.batch.importer'
+    _name = "sage.delayed.batch.importer"
+    _inherit = "sage.batch.importer"
 
     def _import_record(self, external_id, job_options=None):
         """ Delay the import of the records"""

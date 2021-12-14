@@ -2,24 +2,20 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import re
-
-from odoo import _
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import (
-    mapping, external_to_m2o, only_create)
+from odoo.addons.connector.components.mapper import mapping, only_create
 
 
 class ResPartnerImportMapper(Component):
-    _name = 'sage.partner.import.mapper'
-    _inherit = 'sage.import.mapper'
-    _apply_on = 'sage.res.partner'
+    _name = "sage.partner.import.mapper"
+    _inherit = "sage.import.mapper"
+    _apply_on = "sage.res.partner"
 
     direct = [
-        ('Email1', 'email'),
-        ('CodigoEmpresa', 'sage_codigo_empresa'),
-        ('CodigoEmpleado', 'sage_codigo_empleado'),
+        ("Email1", "email"),
+        ("CodigoEmpresa", "sage_codigo_empresa"),
+        ("CodigoEmpleado", "sage_codigo_empleado"),
         # (normalize_datetime('created_at'), 'created_at'),
         # (normalize_datetime('updated_at'), 'updated_at'),
         # ('email', 'emailid'),
@@ -28,56 +24,63 @@ class ResPartnerImportMapper(Component):
 
     @mapping
     def backend_id(self, record):
-        return {'backend_id': self.backend_record.id}
+        return {"backend_id": self.backend_record.id}
 
     @only_create
     @mapping
     def email2_comment(self, record):
-        if record['Email1'] != record['Email2']:
-            return {'comment': record['Email2']}
+        if record["Email1"] != record["Email2"]:
+            return {"comment": record["Email2"]}
 
     @only_create
     @mapping
     def is_company(self, record):
-        return {'is_company': False}
+        return {"is_company": False}
 
     @only_create
     @mapping
     def company_type(self, record):
-        return {'company_type': 'person'}
+        return {"company_type": "person"}
 
     @mapping
     def names(self, record):
-        parts = [part for part in (record['NombreEmpleado'],
-                                   record['PrimerApellidoEmpleado'],
-                                   record['SegundoApellidoEmpleado']) if part]
-        return {'name': ' '.join(parts)}
+        parts = [
+            part
+            for part in (
+                record["NombreEmpleado"],
+                record["PrimerApellidoEmpleado"],
+                record["SegundoApellidoEmpleado"],
+            )
+            if part
+        ]
+        return {"name": " ".join(parts)}
 
     @only_create
     @mapping
     def company_id(self, record):
-        return {'company_id': self.backend_record.company_id.id}
+        return {"company_id": self.backend_record.company_id.id}
 
     @only_create
     @mapping
     def customer(self, record):
-        return {'customer': False}
+        return {"customer": False}
 
     @mapping
     def employee_as_supplier(self, record):
-        return {'supplier': True}
+        return {"supplier": True}
 
     @only_create
     @mapping
     def employee_as_supplier_account(self, record):
-        return {'property_account_payable_id': self.backend_record.import_employees_default_account_payable_id.id}
+        return {
+            "property_account_payable_id": self.backend_record.import_employees_default_account_payable_id.id
+        }
 
     @mapping
     def type(self, record):
-        return {'type': 'contact'}
+        return {"type": "contact"}
 
     @mapping
     def euvat(self, record):
-        parts = [part for part in (record['SiglaNacion'],
-                                   record['Dni']) if part]
-        return {'vat': ''.join(parts).strip().upper()}
+        parts = [part for part in (record["SiglaNacion"], record["Dni"]) if part]
+        return {"vat": "".join(parts).strip().upper()}

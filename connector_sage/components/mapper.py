@@ -3,9 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import AbstractComponent
-from odoo.addons.connector.components.mapper import mapping
 
 
 class SageImportMapper(AbstractComponent):
-    _name = 'sage.import.mapper'
-    _inherit = ['base.import.mapper', 'base.sage.connector']
+    _name = "sage.import.mapper"
+    _inherit = ["base.import.mapper", "base.sage.connector"]
