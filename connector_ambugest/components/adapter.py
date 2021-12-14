@@ -2,17 +2,17 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo.addons.component.core import AbstractComponent
-
-from odoo import exceptions, _
-from odoo.addons.connector.exception import NetworkRetryableError
-
-from contextlib import contextmanager
-from requests.exceptions import HTTPError, RequestException, ConnectionError
-import random
 import logging
-
+import random
+from contextlib import contextmanager
 from functools import partial
+
+from requests.exceptions import ConnectionError, HTTPError, RequestException
+
+from odoo import _, exceptions
+
+from odoo.addons.component.core import AbstractComponent
+from odoo.addons.connector.exception import NetworkRetryableError
 
 try:
     import pymssql
@@ -23,8 +23,8 @@ _logger = logging.getLogger(__name__)
 
 
 @contextmanager
-def api_handle_errors(message=''):
-    """ Handle error when calling the API
+def api_handle_errors(message=""):
+    """Handle error when calling the API
 
     It is meant to be used when a model does a direct
     call to a job using the API (not using job.delay()).
@@ -32,40 +32,39 @@ def api_handle_errors(message=''):
     instead, they are presented as :class:`openerp.exceptions.UserError`.
     """
     if message:
-        message = message + u'\n\n'
+        message = message + u"\n\n"
     try:
         yield
     except NetworkRetryableError as err:
-        raise exceptions.UserError(
-            _(u'{}Network Error:\n\n{}').format(message, err)
-        )
+        raise exceptions.UserError(_(u"{}Network Error:\n\n{}").format(message, err))
     except (HTTPError, RequestException, ConnectionError) as err:
         raise exceptions.UserError(
-            _(u'{}API / Network Error:\n\n{}').format(message, err)
+            _(u"{}API / Network Error:\n\n{}").format(message, err)
         )
     except (pymssql.OperationalError,) as err:
         raise exceptions.UserError(
-            _(u'{}DB operational Error:\n\n{}').format(message, err)
+            _(u"{}DB operational Error:\n\n{}").format(message, err)
         )
     except (pymssql.IntegrityError,) as err:
         raise exceptions.UserError(
-            _(u'{}DB integrity Error:\n\n{}').format(message, err)
+            _(u"{}DB integrity Error:\n\n{}").format(message, err)
         )
     except (pymssql.InternalError,) as err:
         raise exceptions.UserError(
-            _(u'{}DB internal Error:\n\n{}').format(message, err)
+            _(u"{}DB internal Error:\n\n{}").format(message, err)
         )
     except (pymssql.InterfaceError,) as err:
         raise exceptions.UserError(
-            _(u'{}DB interface Error:\n\n{}').format(message, err)
+            _(u"{}DB interface Error:\n\n{}").format(message, err)
         )
 
 
 class CRUDAdapter(AbstractComponent):
     """ External Records Adapter for Ambugest """
-    _name = 'ambugest.crud.adapter'
-    _inherit = ['base.backend.adapter', 'base.ambugest.connector']
-    _usage = 'backend.adapter'
+
+    _name = "ambugest.crud.adapter"
+    _inherit = ["base.backend.adapter", "base.ambugest.connector"]
+    _usage = "backend.adapter"
 
     def __init__(self, environment):
         """
@@ -77,15 +76,15 @@ class CRUDAdapter(AbstractComponent):
         self.schema = self.backend_record.schema
         self.conn = partial(
             pymssql.connect,
-            '%s:%i' % (self.backend_record.server, self.backend_record.port),
+            "%s:%i" % (self.backend_record.server, self.backend_record.port),
             self.backend_record.username,
             self.backend_record.password,
             self.backend_record.database,
         )
 
     def search(self, model, filters=None):
-        """ Search records according to some criterias
-        and returns a list of ids """
+        """Search records according to some criterias
+        and returns a list of ids"""
         raise NotImplementedError
 
     def read(self, id, attributes=None):
@@ -93,7 +92,7 @@ class CRUDAdapter(AbstractComponent):
         raise NotImplementedError
 
     def search_read(self, filters=None):
-        """ Search records according to some criterias
+        """Search records according to some criterias
         and returns their information"""
         raise NotImplementedError
 
@@ -115,8 +114,8 @@ class CRUDAdapter(AbstractComponent):
 
 
 class GenericAdapter(AbstractComponent):
-    _name = 'ambugest.adapter'
-    _inherit = 'ambugest.crud.adapter'
+    _name = "ambugest.adapter"
+    _inherit = "ambugest.crud.adapter"
 
     ## private methods
 
@@ -135,7 +134,9 @@ class GenericAdapter(AbstractComponent):
 
     def _exec_query(self, filters=None, fields=None, as_dict=True):
         # check if schema exists to avoid injection
-        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        schema_exists = self._exec_sql(
+            "select 1 from sys.schemas where name=%s", (self.schema,)
+        )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
@@ -146,23 +147,23 @@ class GenericAdapter(AbstractComponent):
         if filters or fields:
             sql_l = ["with t as (%s)" % sql]
 
-            fields_l = fields or ['*']
+            fields_l = fields or ["*"]
             if fields:
                 if self._id:
                     for f in self._id:
                         if f not in fields_l:
                             fields_l.append(f)
 
-            sql_l.append("select %s from t" % (', '.join(fields_l),))
+            sql_l.append("select %s from t" % (", ".join(fields_l),))
 
             if filters:
                 where = []
                 for k, v in filters.items():
-                    where.append('%s = %%s' % k)
+                    where.append("%s = %%s" % k)
                     values.append(v)
-                sql_l.append("where %s" % (' and '.join(where),))
+                sql_l.append("where %s" % (" and ".join(where),))
 
-            sql = ' '.join(sql_l)
+            sql = " ".join(sql_l)
 
         res = self._exec_sql(sql, tuple(values), as_dict=as_dict)
 
@@ -176,20 +177,20 @@ class GenericAdapter(AbstractComponent):
         for rec in data:
             id_t = tuple([rec[f] for f in self._id])
             if id_t in uniq:
-                raise pymssql.IntegrityError("Unexpected error: ID duplicated: %s - %s" % (self._id, id_t))
+                raise pymssql.IntegrityError(
+                    "Unexpected error: ID duplicated: %s - %s" % (self._id, id_t)
+                )
             uniq.add(id_t)
 
     ########## exposed methods
 
     def search(self, filters=None):
-        """ Search records according to some criterias
+        """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
-        _logger.debug(
-            'method search, sql %s, filters %s',
-            self._sql, filters)
+        _logger.debug("method search, sql %s, filters %s", self._sql, filters)
 
         res = self._exec_query(filters=filters)
 
@@ -198,34 +199,36 @@ class GenericAdapter(AbstractComponent):
         return res
 
     def read(self, id, attributes=None):
-        """ Returns the information of a record
+        """Returns the information of a record
 
         :rtype: dict
         """
         _logger.debug(
-            'method read, sql %s id %s, attributes %s',
-            self._sql, id, attributes)
+            "method read, sql %s id %s, attributes %s", self._sql, id, attributes
+        )
 
         id_d = dict(zip(self._id, id))
 
         res = self._exec_query(filters=id_d)
 
         if len(res) > 1:
-            raise pymssql.IntegrityError("Unexpected error: Returned more the one rows:\n%s" % ('\n'.join(res),))
+            raise pymssql.IntegrityError(
+                "Unexpected error: Returned more the one rows:\n%s" % ("\n".join(res),)
+            )
 
         return res and res[0] or []
 
     def write(self, id, values_d):
         """ Update records on the external system """
-        _logger.debug(
-            'method write, sql %s id %s, values %s',
-            self._sql, id, values_d)
+        _logger.debug("method write, sql %s id %s, values %s", self._sql, id, values_d)
 
         if not values_d:
             return 0
 
         # check if schema exists to avoid injection
-        schema_exists = self._exec_sql("select 1 from sys.schemas where name=%s", (self.schema,))
+        schema_exists = self._exec_sql(
+            "select 1 from sys.schemas where name=%s", (self.schema,)
+        )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
@@ -237,7 +240,7 @@ class GenericAdapter(AbstractComponent):
         for k, v in values_d.items():
             if k in id_d:
                 while True:
-                    k9 = '%s%i' % (k, random.randint(0, 999))
+                    k9 = "%s%i" % (k, random.randint(0, 999))
                     if k9 not in values_d and k9 not in id_d:
                         qset_map_d[k] = (k9, v)
                         break
@@ -247,8 +250,8 @@ class GenericAdapter(AbstractComponent):
         # get the set data
         qset_l = []
         for k, (k9, v) in qset_map_d.items():
-            qset_l.append('%(field)s = %%(%(field9)s)s' % dict(field=k, field9=k9))
-        qset = "%s" % (', '.join(qset_l),)
+            qset_l.append("%(field)s = %%(%(field9)s)s" % dict(field=k, field9=k9))
+        qset = "%s" % (", ".join(qset_l),)
 
         # prepare the sql with base strucrture
         sql = self._sql_update % dict(schema=self.schema, qset=qset)
@@ -263,11 +266,15 @@ class GenericAdapter(AbstractComponent):
         cr.execute(sql, params)
         count = cr.rowcount
         if count == 0:
-            raise Exception(_("The record does not exist in %s: %s") % (
-                self.backend_record.name, id_d))
+            raise Exception(
+                _("The record does not exist in %s: %s")
+                % (self.backend_record.name, id_d)
+            )
         elif count > 1:
             conn.rollback()
-            raise pymssql.IntegrityError("Unexpected error: Returned more the one rows: with ID: %s" % (id_d,))
+            raise pymssql.IntegrityError(
+                "Unexpected error: Returned more the one rows: with ID: %s" % (id_d,)
+            )
         conn.commit()
         cr.close()
         conn.close()
@@ -277,18 +284,15 @@ class GenericAdapter(AbstractComponent):
     def create(self, attributes=None):
         """ Create a record on the external system """
         _logger.debug(
-            'method create, model %s, attributes %s',
-            self._sage_model, attributes)
-        res = self.client.add(self._sage_model, {
-            self._export_node_name: attributes
-        })
+            "method create, model %s, attributes %s", self._sage_model, attributes
+        )
+        res = self.client.add(self._sage_model, {self._export_node_name: attributes})
         if self._export_node_name_res:
-            return res['sage'][self._export_node_name_res]['id']
+            return res["sage"][self._export_node_name_res]["id"]
         return None
 
     def delete(self, resource, ids):
-        _logger.debug('method delete, model %s, ids %s',
-                      resource, ids)
+        _logger.debug("method delete, model %s, ids %s", resource, ids)
         # Delete a record(s) on the external system
         return self.client.delete(resource, ids)
 
@@ -300,9 +304,10 @@ class GenericAdapter(AbstractComponent):
 
 class AmbugestNoModelAdapter(AbstractComponent):
     """ Used to test the connection """
-    _name = 'ambugest.adapter.test'
-    _inherit = 'ambugest.adapter'
-    _apply_on = 'ambugest.backend'
+
+    _name = "ambugest.adapter.test"
+    _inherit = "ambugest.adapter"
+    _apply_on = "ambugest.backend"
 
     _sql = "select @@version"
     _id = None
