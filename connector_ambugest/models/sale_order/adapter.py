@@ -2,16 +2,14 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields
 
 from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import job
 
 
 class SaleOrderAdapter(Component):
-    _name = 'ambugest.sale.order.adapter'
-    _inherit = 'ambugest.adapter'
-    _apply_on = 'ambugest.sale.order'
+    _name = "ambugest.sale.order.adapter"
+    _inherit = "ambugest.adapter"
+    _apply_on = "ambugest.sale.order"
 
     _sql = """select c.EMPRESA,  c."Codi UP" as "CodiUP",
                      s.Fecha_Servicio, s.Codigo_Servicio, s.Servicio_Dia, s.Servicio_Ano,
@@ -44,4 +42,11 @@ class SaleOrderAdapter(Component):
                            s.Servicio_Ano = %%(Servicio_Ano)s
          """
 
-    _id = ('EMPRESA', 'CodiUP', 'Fecha_Servicio', 'Codigo_Servicio', 'Servicio_Dia', 'Servicio_Ano')
+    _id = (
+        "EMPRESA",
+        "CodiUP",
+        "Fecha_Servicio",
+        "Codigo_Servicio",
+        "Servicio_Dia",
+        "Servicio_Ano",
+    )
