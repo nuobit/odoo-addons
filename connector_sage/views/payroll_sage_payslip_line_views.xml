@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,19 +6,27 @@
     <record id="payslip_line_view_form_inherit_connector_sage" model="ir.ui.view">
         <field name="name">payslip.line.form.inherit.connector.sage</field>
         <field name="model">payroll.sage.payslip.line</field>
-        <field name="inherit_id" ref="payroll_sage.payslip_line_view_form"/>
-        <field name="groups_id"
-               eval="[(4, ref('connector.group_connector_manager'))]"/>
+        <field name="inherit_id" ref="payroll_sage.payslip_line_view_form" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
         <field name="arch" type="xml">
             <xpath expr="//group" position="after">
-                <group string="Payroll Sage Bindings" attrs="{'invisible': [('payslip_type', '!=', 'payroll')]}">
-                    <field name="sage_payroll_bind_ids" nolabel="1"/>
+                <group
+                    string="Payroll Sage Bindings"
+                    attrs="{'invisible': [('payslip_type', '!=', 'payroll')]}"
+                >
+                    <field name="sage_payroll_bind_ids" nolabel="1" />
                 </group>
-                <group string="Transfer Sage Bindings" attrs="{'invisible': [('payslip_type', '!=', 'transfer')]}">
-                    <field name="sage_transfer_bind_ids" nolabel="1"/>
+                <group
+                    string="Transfer Sage Bindings"
+                    attrs="{'invisible': [('payslip_type', '!=', 'transfer')]}"
+                >
+                    <field name="sage_transfer_bind_ids" nolabel="1" />
                 </group>
                 <group invisible="1">
-                    <field name="payslip_type"/>
+                    <field name="payslip_type" />
                 </group>
             </xpath>
         </field>
@@ -30,17 +38,17 @@
         <field name="arch" type="xml">
             <form string="Sage Payslip Line Payroll">
                 <group>
-                    <field name="backend_id"/>
-                    <field name="odoo_id" readonly="True"/>
-                    <field name="sage_codigo_empresa" readonly="True"/>
-                    <field name="sage_codigo_convenio" readonly="True"/>
-                    <field name="sage_fecha_registro_cv" readonly="True"/>
-                    <field name="sage_ano" readonly="True"/>
-                    <field name="sage_mesd" readonly="True"/>
-                    <field name="sage_tipo_proceso" readonly="True"/>
-                    <field name="sage_codigo_empleado" readonly="True"/>
-                    <field name="sage_codigo_concepto_nom" readonly="True"/>
-                    <field name="sync_date" readonly="True"/>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="sage_codigo_empresa" readonly="True" />
+                    <field name="sage_codigo_convenio" readonly="True" />
+                    <field name="sage_fecha_registro_cv" readonly="True" />
+                    <field name="sage_ano" readonly="True" />
+                    <field name="sage_mesd" readonly="True" />
+                    <field name="sage_tipo_proceso" readonly="True" />
+                    <field name="sage_codigo_empleado" readonly="True" />
+                    <field name="sage_codigo_concepto_nom" readonly="True" />
+                    <field name="sync_date" readonly="True" />
                 </group>
             </form>
         </field>
@@ -51,19 +59,23 @@
         <field name="model">sage.payroll.sage.payslip.line.payroll</field>
         <field name="arch" type="xml">
             <tree string="Sage Payslip Line Payroll">
-                <field name="backend_id"/>
-                <field name="odoo_id"/>
-                <field name="sage_codigo_empresa" readonly="True"/>
-                <field name="sage_codigo_convenio" readonly="True"/>
-                <field name="sage_fecha_registro_cv" readonly="True"/>
-                <field name="sage_ano" readonly="True"/>
-                <field name="sage_mesd" readonly="True"/>
-                <field name="sage_tipo_proceso" readonly="True"/>
-                <field name="sage_codigo_empleado" readonly="True"/>
-                <field name="sage_codigo_concepto_nom" readonly="True"/>
-                <field name="sync_date"/>
-                <button name="resync" type="object"
-                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="sage_codigo_empresa" readonly="True" />
+                <field name="sage_codigo_convenio" readonly="True" />
+                <field name="sage_fecha_registro_cv" readonly="True" />
+                <field name="sage_ano" readonly="True" />
+                <field name="sage_mesd" readonly="True" />
+                <field name="sage_tipo_proceso" readonly="True" />
+                <field name="sage_codigo_empleado" readonly="True" />
+                <field name="sage_codigo_concepto_nom" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
             </tree>
         </field>
     </record>
@@ -74,18 +86,18 @@
         <field name="arch" type="xml">
             <form string="Sage Payslip Line Transfer">
                 <group>
-                    <field name="backend_id"/>
-                    <field name="odoo_id" readonly="True"/>
-                    <field name="sage_codigo_empresa" readonly="True"/>
-                    <field name="sage_codigo_convenio" readonly="True"/>
-                    <field name="sage_fecha_registro_cv" readonly="True"/>
-                    <field name="sage_ano" readonly="True"/>
-                    <field name="sage_mesd" readonly="True"/>
-                    <field name="sage_codigo_empleado" readonly="True"/>
-                    <field name="sage_codigo_concepto_nom" readonly="True"/>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="sage_codigo_empresa" readonly="True" />
+                    <field name="sage_codigo_convenio" readonly="True" />
+                    <field name="sage_fecha_registro_cv" readonly="True" />
+                    <field name="sage_ano" readonly="True" />
+                    <field name="sage_mesd" readonly="True" />
+                    <field name="sage_codigo_empleado" readonly="True" />
+                    <field name="sage_codigo_concepto_nom" readonly="True" />
 
-                    <field name="sage_fecha_cobro" readonly="True"/>
-                    <field name="sync_date" readonly="True"/>
+                    <field name="sage_fecha_cobro" readonly="True" />
+                    <field name="sync_date" readonly="True" />
                 </group>
             </form>
         </field>
@@ -96,20 +108,24 @@
         <field name="model">sage.payroll.sage.payslip.line.transfer</field>
         <field name="arch" type="xml">
             <tree string="Sage Payslip Line Transfer">
-                <field name="backend_id"/>
-                <field name="odoo_id"/>
-                <field name="sage_codigo_empresa" readonly="True"/>
-                <field name="sage_codigo_convenio" readonly="True"/>
-                <field name="sage_fecha_registro_cv" readonly="True"/>
-                <field name="sage_ano" readonly="True"/>
-                <field name="sage_mesd" readonly="True"/>
-                <field name="sage_codigo_empleado" readonly="True"/>
-                <field name="sage_codigo_concepto_nom" readonly="True"/>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="sage_codigo_empresa" readonly="True" />
+                <field name="sage_codigo_convenio" readonly="True" />
+                <field name="sage_fecha_registro_cv" readonly="True" />
+                <field name="sage_ano" readonly="True" />
+                <field name="sage_mesd" readonly="True" />
+                <field name="sage_codigo_empleado" readonly="True" />
+                <field name="sage_codigo_concepto_nom" readonly="True" />
 
-                <field name="sage_fecha_cobro" readonly="True"/>
-                <field name="sync_date"/>
-                <button name="resync" type="object"
-                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+                <field name="sage_fecha_cobro" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
             </tree>
         </field>
     </record>

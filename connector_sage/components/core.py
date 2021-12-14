@@ -6,11 +6,11 @@ from odoo.addons.component.core import AbstractComponent
 
 
 class SageBaseConnectorComponent(AbstractComponent):
-    """ Base Sage Connector Component
+    """Base Sage Connector Component
 
     All components of this connector should inherit from it.
     """
 
-    _name = 'base.sage.connector'
-    _inherit = 'base.connector'
-    _collection = 'sage.backend'
+    _name = "base.sage.connector"
+    _inherit = "base.connector"
+    _collection = "sage.backend"
