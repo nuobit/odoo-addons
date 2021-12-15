@@ -2,6 +2,7 @@
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+from odoo import _
 from odoo.exceptions import MissingError
 
 from odoo.addons.component.core import Component
@@ -17,39 +18,40 @@ class LotService(Component):
     """
 
     def search(self, code=None, product_code=None):
-        ## validate not implemented functonalities
+
+        # validate not implemented functonalities
         if (code, product_code) == (None, None):
             raise IOError("The full lot list is not supported")
 
-        ## get current user
+        # get current user
         self._get_current_user()
 
-        ## get current company
+        # get current company
         company = self._get_current_company()
-        domain = [("product_id.company_id", "in", [company.id, False])]
+        domain = [("company_id", "in", [company.id, False])]
 
-        ## get query parameters
+        # get query parameters
         if code:
             domain += [("name", "=", code)]
         if product_code:
             domain += [("product_id.default_code", "=", product_code)]
 
-        ## search data
+        # search data
         lots = self.env["stock.production.lot"].search(domain)
         if not lots:
-            raise MissingError("Lots not found")
+            raise MissingError(_("Lots not found"))
 
-        ## format data
+        # format data
         data = []
-        for l in lots:
+        for lot in lots:
             data.append(
                 {
-                    "id": l.id,
-                    "code": l.name,
-                    "product_id": l.product_id.id,
-                    "product_code": l.product_id.default_code or None,
-                    "category_id": l.product_id.categ_id.id,
-                    "category_name": l.product_id.categ_id.name or None,
+                    "id": lot.id,
+                    "code": lot.name,
+                    "product_id": lot.product_id.id,
+                    "product_code": lot.product_id.default_code or None,
+                    "category_id": lot.product_id.categ_id.id,
+                    "category_name": lot.product_id.categ_id.name or None,
                 }
             )
         return {"rows": data}

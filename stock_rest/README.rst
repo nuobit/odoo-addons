@@ -6,8 +6,8 @@
 Stock Rest
 ========================
 
-* Methods created to use Base Rest module and create new services to check stock, products,
-locations and move stock between different locations
+* Methods created to use Base Rest module and create new services to check stock, products,locations
+  and move stock between different locations.
 
 Bug Tracker
 ===========
@@ -25,7 +25,3 @@ Contributors
 
 * Eric Antones <eantones@nuobit.com>
 * Kilian Niubo <kniubo@nuobit.com>
-
-
-
-
