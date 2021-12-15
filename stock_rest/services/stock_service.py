@@ -23,7 +23,7 @@ class StockService(AbstractComponent):
         return user
 
     def _get_current_company(self):
-        company = self.env.user.company_id
+        company = self.env.company
         if not company:
             raise IOError("Cannot get the company from the user")
         return company

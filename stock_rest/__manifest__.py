@@ -6,10 +6,16 @@
     "name": "Stock REST",
     "author": "NuoBiT Solutions, S.L.",
     "category": "Stock",
-    "version": "11.0.1.0.7",
+    "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
-    "depends": ["stock", "connector_sage", "base_rest"],
+    "depends": [
+        "stock_location_code",
+        "connector_sage",
+        "base_rest",
+        "account_asset_management",
+        "stock_picking_partner_ref",
+    ],
     "data": [
         "views/stock_picking_views.xml",
     ],

@@ -17,7 +17,7 @@ class OperationService(Component):
         Create stock operations
     """
 
-    def create(self, **kwargs):
+    def create(self, **kwargs):  # pylint: disable=W8106
         # validate client call
         company_id = (
             self.env["res.users"]
@@ -31,7 +31,7 @@ class OperationService(Component):
 
         picking_type_id = self.env["stock.picking.type"].search(
             [
-                ("warehouse_id.company_id", "=", company_id),
+                ("company_id", "=", company_id),
                 ("use_in_rest_operations", "=", True),
             ]
         )
@@ -82,7 +82,7 @@ class OperationService(Component):
                 employees.mapped("sage_codigo_empleado")
             )
             if employee_diff:
-                raise ValidationError("Employees %s are not found" % employee_diff)
+                raise ValidationError(_("Employees %s are not found" % employee_diff))
 
         # group by product
         moves_by_product = {}
@@ -104,16 +104,18 @@ class OperationService(Component):
                 }
             )
 
-        ## Create moves
+        # Create moves
         moves = []
         for product_id in moves_by_product.keys():
             obj = self.env["product.product"].browse(product_id)
-            if obj.sudo().asset_category_id and not kwargs["asset"]:
-                raise ValidationError(
-                    "You cannot consume an asset. %s [%s]. "
-                    "Add the parameter 'asset=true' to the call to force it"
-                    % (obj.id, obj.default_code)
-                )
+            # if obj.sudo().asset_category_id and not kwargs["asset"]:
+            #     raise ValidationError(
+            #         _(
+            #             "You cannot consume an asset. %s [%s]. "
+            #             "Add the parameter 'asset=true' to the call to force it"
+            #             % (obj.id, obj.default_code)
+            #         )
+            #     )
             moves.append(
                 {
                     "product_id": obj.id,
@@ -162,7 +164,7 @@ class OperationService(Component):
             "source": {"type": "string", "required": True, "empty": False},
             "destination": {"type": "string", "required": True, "empty": False},
             "validate": {"type": "boolean", "default": True},
-            "asset": {"type": "boolean", "default": False},
+            # "asset": {"type": "boolean", "default": False},
             "products": {
                 "type": "list",
                 "required": True,

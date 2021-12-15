@@ -2,6 +2,7 @@
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+from odoo import _
 from odoo.exceptions import MissingError
 
 from odoo.addons.component.core import Component
@@ -16,40 +17,44 @@ class LotService(Component):
         Access to Lot services
     """
 
-    def search(self, code=None, product_code=None):
-        ## validate not implemented functonalities
-        if (code, product_code) == (None, None):
+    def search(self, code=None, product_code=None, product_barcode=None):
+
+        # validate not implemented functonalities
+        if (code, product_code, product_barcode) == (None, None, None):
             raise IOError("The full lot list is not supported")
 
-        ## get current user
+        # get current user
         self._get_current_user()
 
-        ## get current company
+        # get current company
         company = self._get_current_company()
-        domain = [("product_id.company_id", "in", [company.id, False])]
+        domain = [("company_id", "in", [company.id, False])]
 
-        ## get query parameters
+        # get query parameters
         if code:
             domain += [("name", "=", code)]
         if product_code:
             domain += [("product_id.default_code", "=", product_code)]
+        if product_barcode:
+            domain += [("product_id.barcode", "=", product_barcode)]
 
-        ## search data
+        # search data
         lots = self.env["stock.production.lot"].search(domain)
         if not lots:
-            raise MissingError("Lots not found")
+            raise MissingError(_("Lots not found"))
 
-        ## format data
+        # format data
         data = []
-        for l in lots:
+        for lot in lots:
             data.append(
                 {
-                    "id": l.id,
-                    "code": l.name,
-                    "product_id": l.product_id.id,
-                    "product_code": l.product_id.default_code or None,
-                    "category_id": l.product_id.categ_id.id,
-                    "category_name": l.product_id.categ_id.name or None,
+                    "id": lot.id,
+                    "code": lot.name,
+                    "product_id": lot.product_id.id,
+                    "product_code": lot.product_id.default_code or None,
+                    "product_barcode": lot.product_id.barcode or None,
+                    "category_id": lot.product_id.categ_id.id,
+                    "category_name": lot.product_id.categ_id.name or None,
                 }
             )
         return {"rows": data}
@@ -58,6 +63,7 @@ class LotService(Component):
         return {
             "code": {"type": "string", "nullable": True, "empty": False},
             "product_code": {"type": "string", "nullable": True, "empty": False},
+            "product_barcode": {"type": "string", "nullable": True, "empty": False},
         }
 
     def _validator_return_search(self):
@@ -66,6 +72,7 @@ class LotService(Component):
             "code": {"type": "string", "required": True},
             "product_id": {"type": "integer", "required": True},
             "product_code": {"type": "string", "required": True, "nullable": True},
+            "product_barcode": {"type": "string", "required": True, "nullable": True},
             "category_id": {"type": "integer", "required": True},
             "category_name": {"type": "string", "required": True, "nullable": False},
         }

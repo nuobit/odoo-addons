@@ -23,6 +23,7 @@ class PickingType(models.Model):
             if other:
                 raise ValidationError(
                     _(
-                        "Only one picking type can be used in REST operations for the same company"
+                        "Only one picking type can be used in "
+                        "REST operations for the same company"
                     )
                 )
