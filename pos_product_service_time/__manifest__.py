@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Point of Sale",
-    "website": "https://github.com/nuobit",
+    "website": "https://github.com/nuobit/odoo-addons",
     "summary": "Add the service time on POS order line.",
     "depends": [
         "point_of_sale",
