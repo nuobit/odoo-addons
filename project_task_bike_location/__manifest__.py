@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Project",
-    "website": "https://github.com/nuobit",
+    "website": "https://github.com/nuobit/odoo-addons",
     "summary": "This module links Task Bike Location to sale order and "
     "creates the tasks with the Bike Location in its name.",
     "depends": [
