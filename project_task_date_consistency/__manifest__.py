@@ -7,7 +7,7 @@
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "license": "AGPL-3",
     "category": "Project",
-    "website": "https://github.com/nuobit",
+    "website": "https://github.com/nuobit/odoo-addons",
     "summary": "This module makes sure to maintain consistency between the dates",
     "depends": [
         "sale_timesheet",
