@@ -7,7 +7,7 @@
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "license": "AGPL-3",
     "category": "Project",
-    "website": "https://github.com/nuobit",
+    "website": "https://github.com/nuobit/odoo-addons",
     "summary": "This module adds a check box to indicate in which states we want "
     "the tasks to be hidden in the calendar view.",
     "depends": [
