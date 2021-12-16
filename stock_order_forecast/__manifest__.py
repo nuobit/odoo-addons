@@ -7,7 +7,7 @@
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "license": "AGPL-3",
     "category": "Product",
-    "website": "https://github.com/nuobit",
+    "website": "https://github.com/nuobit/odoo-addons",
     "summary": "This module shows sales and purchase orders with pending products",
     "depends": [
         "sale",
