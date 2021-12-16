@@ -9,7 +9,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Custom",
-    "website": "https://github.com/nuobit",
+    "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
         "product",
     ],
