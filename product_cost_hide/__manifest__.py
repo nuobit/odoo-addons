@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Product",
-    "website": "https://github.com/nuobit",
+    "website": "https://github.com/nuobit/odoo-addons",
     "summary": "This module hides the cost from the product tree view and "
     "moves it to purchase tab on the form view.",
     "depends": [
