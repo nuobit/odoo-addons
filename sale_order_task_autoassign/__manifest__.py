@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Project",
-    "website": "https://github.com/nuobit",
+    "website": "https://github.com/nuobit/odoo-addons",
     "summary": "This module allows creating tasks from sale orders with "
     "the duration defined on the service product. It also auto "
     "assigns the task to availableresources avoiding collisions "
