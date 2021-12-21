@@ -1,10 +1,10 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
 
-import odoo.addons.decimal_precision as dp
+# import odoo.addons.decimal_precision as dp
 
 
 class ProductTemplate(models.Model):
@@ -12,7 +12,8 @@ class ProductTemplate(models.Model):
 
     service_time = fields.Float(
         string="Service Time",
-        digits=dp.get_precision("Product UoM"),
+        digits="Product UoM",
+        # digits=dp.get_precision("Product UoM"),
         help="Time to complete this service.",
         compute="_compute_service_time",
         inverse="_inverse_set_service_time",
@@ -29,7 +30,6 @@ class ProductTemplate(models.Model):
         for template in self - unique_variants:
             template.service_time = False
 
-    @api.multi
     def _inverse_set_service_time(self):
         for rec in self:
             if len(rec.product_variant_ids) == 1:
