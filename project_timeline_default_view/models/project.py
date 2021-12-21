@@ -1,8 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class Project(models.Model):
@@ -10,9 +10,8 @@ class Project(models.Model):
 
     default_timeline_view = fields.Boolean(string="Default timeline view")
 
-    @api.multi
-    def action_project_task(self):
-        action = super(Project, self).open_tasks()
+    def action_view_tasks(self):
+        action = super(Project, self).action_view_tasks()
         if self.default_timeline_view:
             action[
                 "view_mode"
