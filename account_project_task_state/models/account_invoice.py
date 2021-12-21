@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import datetime
 import logging
@@ -11,9 +11,8 @@ _logger = logging.getLogger(__name__)
 
 
 class AccountInvoice(models.Model):
-    _inherit = "account.invoice"
+    _inherit = "account.move"
 
-    @api.multi
     def write(self, vals):
         meta_type = {
             ("draft", "open"): "done",
@@ -57,7 +56,7 @@ class AccountInvoice(models.Model):
 
     @api.model
     def archive_paid_invoices(self, days=10):
-        invoices = self.env["account.invoice"].search(
+        invoices = self.env["account.move"].search(
             [
                 ("state", "=", "paid"),
             ]
