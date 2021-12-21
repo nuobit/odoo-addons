@@ -44,6 +44,8 @@ class SaleOrder(models.Model):
                     )
                 )
                 .mapped(
-                    lambda x: ",".join(x.product_id.attribute_value_ids.mapped("name"))
+                    lambda x: ",".join(
+                        x.product_id.product_template_attribute_value_ids.mapped("name")
+                    )
                 )
             )

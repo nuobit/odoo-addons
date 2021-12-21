@@ -3,7 +3,7 @@
 
 {
     "name": "Project task alternate name",
-    "version": "12.0.1.0.1",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "license": "AGPL-3",
     "category": "Project",
@@ -18,7 +18,6 @@
         "views/product_category_views.xml",
         "views/sale_order_views.xml",
         "views/product_template_views.xml",
-        "views/project_task_views.xml",
     ],
     "installable": True,
 }
