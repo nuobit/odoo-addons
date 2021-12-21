@@ -41,10 +41,9 @@ class SaleOrder(models.Model):
         )
         return [("id", "in", tasks.mapped("sale_line_id.order_id").ids)]
 
-    @api.multi
     @api.depends(
         "order_line.customer_lead",
-        "confirmation_date",
+        "date_order",
         "order_line.state",
         "tasks_ids.date_end",
         "tasks_ids.date_deadline",
@@ -157,7 +156,6 @@ class SaleOrder(models.Model):
         available_user_time = self._free_time_selection(free_time_by_user, project_id)
         return available_user_time
 
-    @api.multi
     def _action_confirm(self):
         existing_task = self.with_context(active_test=False).tasks_ids
         if existing_task:
