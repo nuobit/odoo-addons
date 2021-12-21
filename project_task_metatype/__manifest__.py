@@ -4,7 +4,7 @@
 
 {
     "name": "Project Task Metatype",
-    "version": "12.0.1.0.1",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Project",
