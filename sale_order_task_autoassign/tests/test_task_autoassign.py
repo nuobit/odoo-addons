@@ -95,6 +95,8 @@ class TestTaskAutoassign(TransactionCase):
                 "project_id": project1.id,
             }
         )
+        product1 = self.env["product.product"].search([("name", "=", "service1")])
+
         partner1 = self.env["res.partner"].create(
             {
                 "name": "partner1",
@@ -115,6 +117,7 @@ class TestTaskAutoassign(TransactionCase):
                 ],
             }
         )
+
         saleorder1.action_confirm()
 
         # ACT

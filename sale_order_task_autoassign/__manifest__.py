@@ -4,7 +4,7 @@
 
 {
     "name": "Sale order task autoassign",
-    "version": "12.0.1.1.10",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Project",
@@ -18,6 +18,8 @@
         "project_task_metatype",
         "product_service_time",
         "project_timeline_calendar",
+        "project_task_date_consistency",
+        "sale_project",
     ],
     "data": [
         "views/project_views.xml",
