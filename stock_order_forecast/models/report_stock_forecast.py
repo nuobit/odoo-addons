@@ -1,7 +1,7 @@
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class ReportStockForecast(models.Model):
@@ -10,7 +10,6 @@ class ReportStockForecast(models.Model):
     sale_order_id = fields.Many2one("sale.order", readonly=True)
     purchase_order_id = fields.Many2one("purchase.order", readonly=True)
 
-    @api.model_cr
     def init(self):
         super().init()
         self._cr.execute(
