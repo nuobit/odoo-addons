@@ -1,14 +1,15 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class Task(models.Model):
     _inherit = "project.task"
+    date_start = fields.Datetime("Start Date")
 
-    @api.multi
     @api.constrains("date_start", "date_start", "user_id", "project_id")
     def check_ovelap(self):
         for task in self:
@@ -25,7 +26,7 @@ class Task(models.Model):
                 limit=1,
             )
             if overlaped_tasks:
-                raise ValueError(
+                raise ValidationError(
                     _("The task would be overlaped with the task %s")
                     % overlaped_tasks[0].name
                 )
