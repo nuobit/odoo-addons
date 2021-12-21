@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <templates xml:space="preserve">
-    <t t-extend="Orderline">
-        <t
-            t-jquery="ul[class='info-list'] t[t-esc='line.get_unit().name']:last"
-            t-operation='replace'
+    <t t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
+        <xpath
+            expr="//ul[@class='info-list']//t[@t-esc='props.line.get_unit().name'][last()]"
+            position="replace"
         >
             <t
                 t-set="service_time_minutes"
-                t-value="line.get_service_time_minutes_str()"
+                t-value="props.line.get_service_time_minutes_str()"
             />
             <t t-if="service_time_minutes">
-                 <t t-esc="service_time_minutes" />
+                <t t-esc="service_time_minutes" />
             </t>
             <t t-if="!service_time_minutes">
-                 <t t-esc="line.get_unit().name" />
+                 <t t-esc="props.line.get_unit().name" />
             </t>
-        </t>
+        </xpath>
     </t>
 </templates>
