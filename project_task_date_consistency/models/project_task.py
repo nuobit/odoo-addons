@@ -8,9 +8,9 @@ from odoo import fields, models
 
 class ProjectTask(models.Model):
     _inherit = "project.task"
-    date_start = fields.Datetime(track_visibility=True)
-    date_end = fields.Datetime(track_visibility=True)
-    date_deadline = fields.Date(track_visibility=True)
+    date_start = fields.Datetime()
+    date_end = fields.Datetime()
+    date_deadline = fields.Date()
 
     def _check_consistency_update(self, values):  # noqa: C901
         if "date_start" in values:
