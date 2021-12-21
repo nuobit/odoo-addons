@@ -1,10 +1,9 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "POS restaurant line note receipt",
-    "version": "12.0.1.0.2",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Point of Sale",
@@ -12,6 +11,7 @@
     "summary": "This module shows the line note on the receipt on screen and printer.",
     "depends": [
         "pos_restaurant",
+        "point_of_sale",
     ],
     "data": [
         "views/templates.xml",
