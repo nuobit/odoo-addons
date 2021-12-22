@@ -6,8 +6,8 @@ from odoo import fields, models
 
 
 class ResConfigSettings(models.TransientModel):
-    _inherit = 'res.config.settings'
+    _inherit = "res.config.settings"
 
     default_invoice_batch_sending_email_template_id = fields.Many2one(
-        related='company_id.default_invoice_batch_sending_email_template_id',
+        related="company_id.default_invoice_batch_sending_email_template_id",
     )

@@ -10,6 +10,6 @@ class ResCompany(models.Model):
 
     default_invoice_batch_sending_email_template_id = fields.Many2one(
         string="Default Invoice batches e-mail template",
-        comodel_name='mail.template',
-        domain=[('model_id', '=', 'account.invoice')]
+        comodel_name="mail.template",
+        domain=[("model_id", "=", "account.invoice")],
     )

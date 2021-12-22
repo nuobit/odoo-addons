@@ -1,28 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!---->
 <odoo>
     <record id="invoice_form" model="ir.ui.view">
         <field name="name">account.invoice.form.inherit</field>
         <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="inherit_id" ref="account.invoice_form" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Invoice batch" name="invoice_batchj">
                     <group col="4">
-                        <field name="invoice_batch_id"
-                               attrs="{'readonly': [('sent', '=', True)]}"/>
-                        <newline/>
-                        <field name="invoice_batch_sending_method"
-                               attrs="{'readonly': [('sent', '=', True)]}"/>
-                        <field name="invoice_batch_email_partner_id"
-                               options="{'no_create': True, 'no_create_edit':True}"
-                               attrs="{
+                        <field
+                            name="invoice_batch_id"
+                            attrs="{'readonly': [('sent', '=', True)]}"
+                        />
+                        <newline />
+                        <field
+                            name="invoice_batch_sending_method"
+                            attrs="{'readonly': [('sent', '=', True)]}"
+                        />
+                        <field
+                            name="invoice_batch_email_partner_id"
+                            options="{'no_create': True, 'no_create_edit':True}"
+                            attrs="{
                                'invisible': [('invoice_batch_sending_method', '!=', 'email')],
                                'required': [('invoice_batch_sending_method', '=', 'email')],
                                'readonly': [('sent', '=', True)]
-                               }"/>
+                               }"
+                        />
                     </group>
                 </page>
             </xpath>
@@ -32,22 +39,38 @@
     <record id="view_account_invoice_filter" model="ir.ui.view">
         <field name="name">account.invoice.filter.inherit</field>
         <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="inherit_id" ref="account.view_account_invoice_filter" />
         <field name="arch" type="xml">
             <xpath expr="//group" position="before">
-                <separator/>
-                <filter string="PDF" name="pdf"
-                        domain="[('invoice_batch_sending_method', '=', 'pdf')]"/>
-                <filter string="E-mail" name="email"
-                        domain="[('invoice_batch_sending_method', '=', 'email')]"/>
-                <filter string="Factura-e" name="facturae"
-                        domain="[('invoice_batch_sending_method', 'in', ('signedfacturae', 'unsignedfacturae'))]"/>
+                <separator />
+                <filter
+                    string="PDF"
+                    name="pdf"
+                    domain="[('invoice_batch_sending_method', '=', 'pdf')]"
+                />
+                <filter
+                    string="E-mail"
+                    name="email"
+                    domain="[('invoice_batch_sending_method', '=', 'email')]"
+                />
+                <filter
+                    string="Factura-e"
+                    name="facturae"
+                    domain="[('invoice_batch_sending_method', 'in', ('signedfacturae', 'unsignedfacturae'))]"
+                />
             </xpath>
             <xpath expr="//group" position="inside">
-                <separator/>
-                <filter name="invoice_batch_id" string="Invoice batch" context="{'group_by':'invoice_batch_id'}"/>
-                <filter name="invoice_batch_sending_method" string="Sending method"
-                        context="{'group_by':'invoice_batch_sending_method'}"/>
+                <separator />
+                <filter
+                    name="invoice_batch_id"
+                    string="Invoice batch"
+                    context="{'group_by':'invoice_batch_id'}"
+                />
+                <filter
+                    name="invoice_batch_sending_method"
+                    string="Sending method"
+                    context="{'group_by':'invoice_batch_sending_method'}"
+                />
             </xpath>
         </field>
     </record>

@@ -5,8 +5,8 @@
 from odoo import _
 
 BATCH_SENDING_METHODS = [
-    ('pdf', _('PDF')),
-    ('email', _('e-mail')),
-    ('signedfacturae', _('Factura-e signed')),
-    ('unsignedfacturae', _('Factura-e unsigned')),
+    ("pdf", _("PDF")),
+    ("email", _("e-mail")),
+    ("signedfacturae", _("Factura-e signed")),
+    ("unsignedfacturae", _("Factura-e unsigned")),
 ]
