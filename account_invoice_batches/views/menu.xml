@@ -6,7 +6,7 @@
     <menuitem
         id="account_invoice_batch_menu"
         name="Invoice batches"
-        parent="account.menu_finance_receivables_documents"
+        parent="account.menu_finance_receivables"
         action="account_invoice_batch_action"
         sequence="100"
     />

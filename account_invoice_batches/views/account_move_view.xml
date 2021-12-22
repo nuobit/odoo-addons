@@ -5,21 +5,25 @@
 <!---->
 <odoo>
     <record id="invoice_form" model="ir.ui.view">
-        <field name="name">account.invoice.form.inherit</field>
-        <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_form" />
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Invoice batch" name="invoice_batchj">
+                <page
+                    string="Invoice batch"
+                    name="invoice_batch"
+                    attrs="{'invisible': [('move_type','not in',('out_invoice','out_invoice','out_refund'))]}"
+                >
                     <group col="4">
                         <field
                             name="invoice_batch_id"
-                            attrs="{'readonly': [('sent', '=', True)]}"
+                            attrs="{'readonly': [('is_move_sent', '=', True)]}"
                         />
                         <newline />
                         <field
                             name="invoice_batch_sending_method"
-                            attrs="{'readonly': [('sent', '=', True)]}"
+                            attrs="{'readonly': [('is_move_sent', '=', True)]}"
                         />
                         <field
                             name="invoice_batch_email_partner_id"
@@ -27,7 +31,7 @@
                             attrs="{
                                'invisible': [('invoice_batch_sending_method', '!=', 'email')],
                                'required': [('invoice_batch_sending_method', '=', 'email')],
-                               'readonly': [('sent', '=', True)]
+                               'readonly': [('is_move_sent', '=', True)]
                                }"
                         />
                     </group>
@@ -37,8 +41,8 @@
     </record>
 
     <record id="view_account_invoice_filter" model="ir.ui.view">
-        <field name="name">account.invoice.filter.inherit</field>
-        <field name="model">account.invoice</field>
+        <field name="name">account.move.filter.inherit</field>
+        <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_account_invoice_filter" />
         <field name="arch" type="xml">
             <xpath expr="//group" position="before">

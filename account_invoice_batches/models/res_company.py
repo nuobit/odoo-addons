@@ -8,8 +8,8 @@ from odoo import fields, models
 class ResCompany(models.Model):
     _inherit = "res.company"
 
-    default_invoice_batch_sending_email_template_id = fields.Many2one(
+    invoice_batch_sending_email_template_id = fields.Many2one(
         string="Default Invoice batches e-mail template",
         comodel_name="mail.template",
-        domain=[("model_id", "=", "account.invoice")],
+        domain=[("model_id", "=", "account.move")],
     )

@@ -1,13 +1,14 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* account_invoice_batches
+# 	* account_invoice_batches
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-02 19:39+0000\n"
-"PO-Revision-Date: 2020-01-02 19:39+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2022-01-13 12:06+0000\n"
+"PO-Revision-Date: 2022-01-13 12:06+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,19 +16,33 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
-msgid "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
-msgstr "<span class=\"fa fa-lg fa-building-o\" title=\"Los valores establecidos aquí son específicos de la compañia actual.\" groups=\"base.group_multi_company\"/>"
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Los valores establecidos aquí"
+" son específicos de la compañia actual.\" "
+"groups=\"base.group_multi_company\"/>"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
+#: model:ir.model,name:account_invoice_batches.model_account_invoice_batch
+msgid "Account Invoice Batch"
+msgstr ""
+
+#. module: account_invoice_batches
+#: model:ir.model,name:account_invoice_batches.model_account_invoice_batch_process
+msgid "Account Invoice Batch Process"
+msgstr ""
+
+#. module: account_invoice_batches
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
 msgid "All"
 msgstr "Todas"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -37,220 +52,258 @@ msgid "Companies"
 msgstr "Compañías"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_company_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__company_id
 msgid "Company"
 msgstr "Compañía"
 
 #. module: account_invoice_batches
+#: model:ir.model,name:account_invoice_batches.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de configuración"
+
+#. module: account_invoice_batches
 #: model:ir.model,name:account_invoice_batches.model_res_partner
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_ambugest_res_partner_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_oxigesti_res_partner_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_users_invoice_batch_email_partner_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_sage_res_partner_invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_bank_statement_line__invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_move__invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_payment__invoice_batch_email_partner_id
 msgid "Contact"
 msgstr "Contacto"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.view_sale_advance_payment_inv
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.view_sale_advance_payment_inv
 msgid "Create and View Batch"
 msgstr "Crear y ver lote"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv_invoice_batch_create
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv__invoice_batch_create
 msgid "Create invoice batch"
 msgstr "Crear lote de facturación"
 
 #. module: account_invoice_batches
-#: model:ir.actions.act_window,help:account_invoice_batches.account_invoice_batch_invoice_action
+#: model_terms:ir.actions.act_window,help:account_invoice_batches.account_invoice_batch_invoice_action
 msgid "Create the first Invoice batch"
 msgstr "Crea el primer lote de facturación"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_create_uid
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_create_uid
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__create_uid
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_create_date
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_create_date
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__create_date
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__create_date
 msgid "Created on"
 msgstr "Creado el"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_date
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__date
 msgid "Date"
 msgstr "Fecha"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_connector_config_settings_default_invoice_batch_sending_email_template_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_company_default_invoice_batch_sending_email_template_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_config_settings_default_invoice_batch_sending_email_template_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_company__invoice_batch_sending_email_template_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_config_settings__invoice_batch_sending_email_template_id
 msgid "Default Invoice batches e-mail template"
 msgstr "Plantilla de e-mail por defecto del lote de facturación"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
 msgid "Default email template"
 msgstr "Plantilla de e-mail por defecto"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__name
 msgid "Description"
 msgstr "Descripción"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_display_name
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_display_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__display_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__display_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_company__display_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner__display_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv__display_name
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_order__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_draft_invoice_count
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_draft_invoice_ids
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__draft_invoice_count
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__draft_invoice_ids
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
 msgid "Draft"
 msgstr "En borrador"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_invoice_batch_sending_email
-#: model:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__invoice_batch_sending_email
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
 msgid "E-mail"
 msgstr "E-mail"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_invoice_batch_sending_email_template_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__invoice_batch_sending_email_template_id
 msgid "E-mail template"
 msgstr "Plantilla de e-mail"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
+#, python-format
+msgid "Error sending move template %s"
+msgstr ""
+
+#. module: account_invoice_batches
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
 msgid "Factura-e"
 msgstr "Factura-e"
 
 #. module: account_invoice_batches
-#: selection:account.invoice,invoice_batch_sending_method:0
-#: code:addons/account_invoice_batches/models/common.py:10
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_invoice_batch_sending_signedfacturae
-#: selection:res.partner,invoice_batch_sending_method:0
+#: code:addons/account_invoice_batches/models/common.py:0
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__invoice_batch_sending_signedfacturae
+#: model:ir.model.fields.selection,name:account_invoice_batches.selection__account_move__invoice_batch_sending_method__signedfacturae
+#: model:ir.model.fields.selection,name:account_invoice_batches.selection__res_partner__invoice_batch_sending_method__signedfacturae
 #, python-format
 msgid "Factura-e signed"
 msgstr "Factura-e firmada"
 
 #. module: account_invoice_batches
-#: selection:account.invoice,invoice_batch_sending_method:0
-#: code:addons/account_invoice_batches/models/common.py:11
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_invoice_batch_sending_unsignedfacturae
-#: selection:res.partner,invoice_batch_sending_method:0
+#: code:addons/account_invoice_batches/models/common.py:0
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__invoice_batch_sending_unsignedfacturae
+#: model:ir.model.fields.selection,name:account_invoice_batches.selection__account_move__invoice_batch_sending_method__unsignedfacturae
+#: model:ir.model.fields.selection,name:account_invoice_batches.selection__res_partner__invoice_batch_sending_method__unsignedfacturae
 #, python-format
 msgid "Factura-e unsigned"
 msgstr "Factura-e no firmada"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_id
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_move__id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_company__id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_config_settings__id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner__id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv__id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_order__id
 msgid "ID"
 msgstr "ID"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
-msgid "If empty, you're gonna need to select a template on batch processing\n"
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
+msgid ""
+"If empty, you're gonna need to select a template on batch processing\n"
 "                                dialog."
-msgstr "If empty, you're gonna need to select a template on batch processing\n"
-"                                dialog."
+msgstr ""
 
 #. module: account_invoice_batches
-#: model:ir.model,name:account_invoice_batches.model_account_invoice
-msgid "Invoice"
-msgstr "Factura"
-
-#. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv_in_background
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv__in_background
 msgid "In background"
 msgstr "En segundo plano"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_invoice_batch_id
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
-#: model:ir.ui.view,arch_db:account_invoice_batches.invoice_form
-#: model:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner__invoice_batch_email_partner_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_users__invoice_batch_email_partner_id
+msgid "Invoice Batch Contact"
+msgstr "Contacto de Lote de facturación"
+
+#. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner__invoice_batch_sending_method
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_users__invoice_batch_sending_method
+msgid "Invoice Batch Sending method"
+msgstr "Método de envío de Lote de facturación"
+
+#. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_bank_statement_line__invoice_batch_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_move__invoice_batch_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_payment__invoice_batch_id
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.invoice_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
 msgid "Invoice batch"
 msgstr "Lote de facturación"
 
 #. module: account_invoice_batches
 #: model:ir.actions.act_window,name:account_invoice_batches.account_invoice_batch_action
 #: model:ir.ui.menu,name:account_invoice_batches.account_invoice_batch_menu
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
-#: model:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
-#: model:ir.ui.view,arch_db:account_invoice_batches.view_partner_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.view_partner_property_form
 msgid "Invoice batches"
 msgstr "Lotes de facturación"
 
 #. module: account_invoice_batches
 #: model:ir.actions.act_window,name:account_invoice_batches.account_invoice_batch_invoice_action
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_invoice_count
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_invoice_ids
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__invoice_count
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__invoice_ids
 msgid "Invoices"
 msgstr "Facturas"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch___last_update
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process___last_update
-msgid "Last Modified on"
-msgstr "Última modificación en"
+#: model:ir.model,name:account_invoice_batches.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_write_uid
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_write_uid
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch____last_update
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process____last_update
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_move____last_update
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_company____last_update
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner____last_update
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_advance_payment_inv____last_update
+#: model:ir.model.fields,field_description:account_invoice_batches.field_sale_order____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__write_uid
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_write_date
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_write_date
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__write_date
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: account_invoice_batches
-#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:27
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
 #, python-format
-msgid "More than one company found. The data selected must be of the same company"
-msgstr "Más de una compañia encontrada. Los datos seleccionados deben pertenecer todos a la misma compañia"
+msgid ""
+"More than one company found. The data selected must be of the same company"
+msgstr ""
+"Más de una compañía encontrada. Los datos seleccionados deben pertenecer "
+"todos a la misma compañía"
 
 #. module: account_invoice_batches
-#: selection:account.invoice,invoice_batch_sending_method:0
-#: code:addons/account_invoice_batches/models/common.py:8
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process_invoice_batch_sending_pdf
-#: model:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
-#: selection:res.partner,invoice_batch_sending_method:0
+#: code:addons/account_invoice_batches/models/common.py:0
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_process__invoice_batch_sending_pdf
+#: model:ir.model.fields.selection,name:account_invoice_batches.selection__account_move__invoice_batch_sending_method__pdf
+#: model:ir.model.fields.selection,name:account_invoice_batches.selection__res_partner__invoice_batch_sending_method__pdf
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
 #, python-format
 msgid "PDF"
 msgstr "Impresión"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
 msgid "Process"
 msgstr "Procesar"
 
 #. module: account_invoice_batches
 #: model:ir.actions.act_window,name:account_invoice_batches.account_invoice_batch_process_batch_action
 #: model:ir.actions.act_window,name:account_invoice_batches.account_invoice_batch_process_invoice_action
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
 msgid "Process batch"
 msgstr "Procesar lote"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
 msgid "Process invoices"
 msgstr "Procesar facturas"
-
-#. module: account_invoice_batches
-#: model:ir.model,name:account_invoice_batches.model_sale_order
-msgid "Quotation"
-msgstr "Presupuesto"
 
 #. module: account_invoice_batches
 #: model:ir.model,name:account_invoice_batches.model_sale_advance_payment_inv
@@ -258,56 +311,64 @@ msgid "Sales Advance Payment Invoice"
 msgstr "Ventas. Anticipo pago factura"
 
 #. module: account_invoice_batches
-#: model:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_ambugest_res_partner_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_oxigesti_res_partner_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_res_users_invoice_batch_sending_method
-#: model:ir.model.fields,field_description:account_invoice_batches.field_sage_res_partner_invoice_batch_sending_method
+#: model:ir.model,name:account_invoice_batches.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_bank_statement_line__invoice_batch_sending_method
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_move__invoice_batch_sending_method
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_payment__invoice_batch_sending_method
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
 msgid "Sending method"
 msgstr "Método de envío"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_sent_invoice_count
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_sent_invoice_ids
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__sent_invoice_count
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__sent_invoice_ids
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
 msgid "Sent"
 msgstr "Enviadas"
 
 #. module: account_invoice_batches
-#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:101
-#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:107
+#: code:addons/account_invoice_batches/wizard/sale_make_invoice_advance.py:0
+#, python-format
+msgid "There is no invoiceable line."
+msgstr "No hay ninguna línea facturable"
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
 #, python-format
 msgid "There's no invoices to process"
 msgstr "No hay facturas para procesar"
 
 #. module: account_invoice_batches
-#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:115
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
 #, python-format
 msgid "There's no report defined on invoice company"
 msgstr "No hay el tipo de informe definido para al compañia actual"
 
 #. module: account_invoice_batches
-#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:24
-#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:111
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
 #, python-format
 msgid "Unexpected model '%s'"
-msgstr "Unexpected model '%s'"
+msgstr "Modelo '%s' inesperado"
 
 #. module: account_invoice_batches
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_unsent_invoice_count
-#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch_unsent_invoice_ids
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
-#: model:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__unsent_invoice_count
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__unsent_invoice_ids
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_view_tree
 msgid "Unsent"
 msgstr "No enviadas"
 
 #. module: account_invoice_batches
-#: selection:account.invoice,invoice_batch_sending_method:0
-#: code:addons/account_invoice_batches/models/common.py:9
-#: selection:res.partner,invoice_batch_sending_method:0
+#: code:addons/account_invoice_batches/models/common.py:0
+#: model:ir.model.fields.selection,name:account_invoice_batches.selection__account_move__invoice_batch_sending_method__email
+#: model:ir.model.fields.selection,name:account_invoice_batches.selection__res_partner__invoice_batch_sending_method__email
 #, python-format
 msgid "e-mail"
 msgstr "e-mail"

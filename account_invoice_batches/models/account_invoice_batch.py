@@ -4,11 +4,12 @@
 
 from ast import literal_eval
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class AccountInvoiceBatch(models.Model):
     _name = "account.invoice.batch"
+    _description = "Account Invoice Batch"
     _order = "date desc"
 
     date = fields.Datetime(string="Date", required=True)
@@ -16,17 +17,17 @@ class AccountInvoiceBatch(models.Model):
     name = fields.Char(string="Description")
 
     company_id = fields.Many2one(
-        "res.company",
+        comodel_name="res.company",
         string="Company",
         required=True,
         readonly=True,
         copy=False,
-        default=lambda self: self.env["res.company"]._company_default_get(),
+        default=lambda self: self.env.company,
     )
 
     # all invoices
     invoice_ids = fields.One2many(
-        comodel_name="account.invoice",
+        comodel_name="account.move",
         inverse_name="invoice_batch_id",
         string="Invoices",
     )
@@ -39,7 +40,7 @@ class AccountInvoiceBatch(models.Model):
 
     # draft (non-validated) invoices
     draft_invoice_ids = fields.One2many(
-        comodel_name="account.invoice",
+        comodel_name="account.move",
         domain=[("state", "=", "draft")],
         inverse_name="invoice_batch_id",
         string="Draft",
@@ -55,8 +56,8 @@ class AccountInvoiceBatch(models.Model):
 
     # validated and unsent invoices
     unsent_invoice_ids = fields.One2many(
-        comodel_name="account.invoice",
-        domain=[("state", "!=", "draft"), ("sent", "=", False)],
+        comodel_name="account.move",
+        domain=[("state", "!=", "draft"), ("is_move_sent", "=", False)],
         inverse_name="invoice_batch_id",
         string="Unsent",
     )
@@ -70,8 +71,8 @@ class AccountInvoiceBatch(models.Model):
 
     # validated and sent invoices
     sent_invoice_ids = fields.One2many(
-        comodel_name="account.invoice",
-        domain=[("state", "!=", "draft"), ("sent", "=", True)],
+        comodel_name="account.move",
+        domain=[("state", "!=", "draft"), ("is_move_sent", "=", True)],
         inverse_name="invoice_batch_id",
         string="Sent",
     )
@@ -83,7 +84,6 @@ class AccountInvoiceBatch(models.Model):
         for rec in self:
             rec.sent_invoice_count = len(rec.sent_invoice_ids)
 
-    @api.multi
     def name_get(self):
         lang = self.env["res.lang"].search([("code", "=", self.env.lang)])
         datetime_format = " ".join(
@@ -106,11 +106,17 @@ class AccountInvoiceBatch(models.Model):
             res.append((rec.id, " ".join(value)))
         return res
 
-    def account_invoice_batch_invoice_action(self, domain=[], context={}, name=None):
+    def account_invoice_batch_invoice_action(
+        self, domain=None, context=None, name=None
+    ):
         self.ensure_one()
-        action = self.env.ref(
+        if not domain:
+            domain = []
+        if not context:
+            context = {}
+        action = self.env["ir.actions.act_window"]._for_xml_id(
             "account_invoice_batches.account_invoice_batch_invoice_action"
-        ).read()[0]
+        )
 
         if name:
             action["name"] = action["display_name"] = name
