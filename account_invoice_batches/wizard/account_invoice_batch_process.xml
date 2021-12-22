@@ -35,27 +35,28 @@
         </field>
     </record>
 
-    <act_window
+    <record
         id="account_invoice_batch_process_invoice_action"
-        multi="True"
-        key2="client_action_multi"
-        name="Process batch"
-        res_model="account.invoice.batch.process"
-        src_model="account.invoice"
-        view_mode="form"
-        target="new"
-        view_type="form"
-    />
+        model="ir.actions.act_window"
+    >
+        <field name="name">Process batch</field>
+        <field name="res_model">account.invoice.batch.process</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move" />
+        <field name="binding_view_types">list</field>
+    </record>
 
-    <act_window
+    <record
         id="account_invoice_batch_process_batch_action"
-        multi="True"
-        key2="client_action_multi"
-        name="Process batch"
-        res_model="account.invoice.batch.process"
-        src_model="account.invoice.batch"
-        view_mode="form"
-        target="new"
-        view_type="form"
-    />
+        model="ir.actions.act_window"
+    >
+        <field name="name">Process batch</field>
+        <field name="res_model">account.invoice.batch.process</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_account_invoice_batch" />
+        <field name="binding_view_types">list</field>
+    </record>
+
 </odoo>

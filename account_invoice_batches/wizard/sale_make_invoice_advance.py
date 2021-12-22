@@ -3,10 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
-
-from odoo.addons.queue_job.job import job
 
 
 class SaleAdvancePaymentInv(models.TransientModel):
@@ -15,7 +13,6 @@ class SaleAdvancePaymentInv(models.TransientModel):
     invoice_batch_create = fields.Boolean(string="Create invoice batch", default=True)
     in_background = fields.Boolean(string="In background", default=False)
 
-    @api.multi
     def _create_invoice(self, order, so_line, amount):
         invoice = super(SaleAdvancePaymentInv, self)._create_invoice(
             order, so_line, amount
@@ -39,7 +36,6 @@ class SaleAdvancePaymentInv(models.TransientModel):
 
         return invoice
 
-    @job
     def create_invoice_group(self, order_group, invoice_batch=None):
         context = {"active_ids": order_group.mapped("id")}
         if invoice_batch:
@@ -49,9 +45,8 @@ class SaleAdvancePaymentInv(models.TransientModel):
                 }
             )
         self = self.with_context(**context)
-        return super(SaleAdvancePaymentInv, self).create_invoices()
+        return super(SaleAdvancePaymentInv, self).with_delay().create_invoices()
 
-    @api.multi
     def create_invoices(self):
         if not self.in_background and not self.invoice_batch_create:
             return super(SaleAdvancePaymentInv, self).create_invoices()
@@ -85,16 +80,16 @@ class SaleAdvancePaymentInv(models.TransientModel):
                 self = self.with_context(batch_id=invoice_batch.id)
             res = super(SaleAdvancePaymentInv, self).create_invoices()
 
-            invoices = self.env["account.invoice"].search(
+            invoices = self.env["account.move"].search(
                 [("invoice_batch_id", "=", invoice_batch.id)]
             )
             if not invoices:
                 raise UserError(_("There is no invoiceable line."))
 
         if self._context.get("open_batch", False):
-            action = self.env.ref(
+            action = self.env["ir.actions.act_window"]._for_xml_id(
                 "account_invoice_batches.account_invoice_batch_action"
-            ).read()[0]
+            )
             action["views"] = [
                 (
                     self.env.ref(
