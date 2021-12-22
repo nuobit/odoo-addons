@@ -1,22 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_sale_advance_payment_inv" model="ir.ui.view">
-        <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+        <field name="inherit_id" ref="sale.view_sale_advance_payment_inv" />
         <field name="name">Invoice Orders</field>
         <field name="model">sale.advance.payment.inv</field>
         <field name="arch" type="xml">
             <xpath expr="//footer/button[1]" position="before">
-                <button name="create_invoices" string="Create and View Batch" type="object"
-                        context="{'open_batch': True}" class="btn-primary"
-                        attrs="{'invisible': [('invoice_batch_create','=', False)]}"/>
+                <button
+                    name="create_invoices"
+                    string="Create and View Batch"
+                    type="object"
+                    context="{'open_batch': True}"
+                    class="btn-primary"
+                    attrs="{'invisible': [('invoice_batch_create','=', False)]}"
+                />
             </xpath>
             <xpath expr="//footer" position="before">
                 <group col="4">
-                    <field name="invoice_batch_create"/>
-                    <field name="in_background"/>
+                    <field name="invoice_batch_create" />
+                    <field name="in_background" />
                 </group>
             </xpath>
         </field>
