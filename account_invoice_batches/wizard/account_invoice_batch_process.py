@@ -3,13 +3,17 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
+import logging
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
 
 
 class AccountInvoiceBatchProcess(models.TransientModel):
     _name = "account.invoice.batch.process"
+    _description = "Account Invoice Batch Process"
 
     @property
     def company_id(self):
@@ -20,7 +24,7 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         active_objects = self.env[model].browse(active_ids)
         company = active_objects.mapped("company_id")
 
-        if model not in ("account.invoice.batch", "account.invoice"):
+        if model not in ("account.invoice.batch", "account.move"):
             raise UserError(_("Unexpected model '%s'" % model))
 
         if len(company) > 1:
@@ -37,8 +41,8 @@ class AccountInvoiceBatchProcess(models.TransientModel):
     invoice_batch_sending_email_template_id = fields.Many2one(
         string="E-mail template",
         comodel_name="mail.template",
-        domain=[("model_id", "=", "account.invoice")],
-        default=lambda self: self.company_id.default_invoice_batch_sending_email_template_id,
+        domain=[("model_id", "=", "account.move")],
+        default=lambda self: self.company_id.invoice_batch_sending_email_template_id,
     )
     invoice_batch_sending_signedfacturae = fields.Boolean(
         string="Factura-e signed", default=True
@@ -47,7 +51,6 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         string="Factura-e unsigned", default=True
     )
 
-    @api.multi
     def prepare_invoices(self, invoices):
         self.ensure_one()
 
@@ -69,7 +72,7 @@ class AccountInvoiceBatchProcess(models.TransientModel):
             for inv in invoices.filtered(
                 lambda x: x.invoice_batch_sending_method in sending_facturae
             ):
-                if not inv.sent:
+                if not inv.is_move_sent:
                     try:
                         invoice_file, file_name = inv.get_facturae(
                             inv.invoice_batch_sending_method == "signedfacturae"
@@ -80,57 +83,55 @@ class AccountInvoiceBatchProcess(models.TransientModel):
                             {
                                 "name": file_name,
                                 "datas": file,
-                                "datas_fname": file_name,
-                                "res_model": "account.invoice",
+                                "res_model": "account.move",
                                 "res_id": inv.id,
                                 "mimetype": "application/xml",
                             }
                         )
-                        inv.sent = True
-                    except:
-                        pass
+                        inv.is_move_sent = True
+                    except Exception as e:
+                        _logger.debug(_("Error sending move template %s") % str(e))
 
         # email
         if self.invoice_batch_sending_email:
             for inv in invoices.filtered(
                 lambda x: x.invoice_batch_sending_method == "email"
             ):
-                if not inv.sent:
+                if not inv.is_move_sent:
                     try:
                         inv.message_post_with_template(
                             self.invoice_batch_sending_email_template_id.id,
-                            message_type="email",
+                            message_type="comment",
                             composition_mode="mass_mail",
                         )
-                        inv.sent = True
-                    except:
-                        pass
+                        inv.is_move_sent = True
+                    except Exception as e:
+                        _logger.debug(_("Error sending move template %s") % str(e))
 
         # pdf
         if self.invoice_batch_sending_pdf:
             return invoices.filtered(lambda x: x.invoice_batch_sending_method == "pdf")
 
-        return self.env["account.invoice"]
+        return self.env["account.move"]
 
-    @api.multi
     def process_invoices(self):
         self.ensure_one()
         context = dict(self.env.context or {})
         model = context.get("active_model")
 
         active_objects = self.env[model].browse(context.get("active_ids"))
-        invoices_pdf = self.env["account.invoice"]
+        invoices_pdf = self.env["account.move"]
         if model == "account.invoice.batch":
             if not active_objects.mapped("unsent_invoice_ids"):
                 raise UserError(_("There's no invoices to process"))
             for batch in active_objects:
                 invoices = batch.unsent_invoice_ids
                 invoices_pdf += self.prepare_invoices(invoices)
-        elif model == "account.invoice":
+        elif model == "account.move":
             if not active_objects:
                 raise UserError(_("There's no invoices to process"))
             invoices = active_objects.filtered(
-                lambda x: x.invoice_batch_id and not x.sent
+                lambda x: x.invoice_batch_id and not x.is_move_sent
             )
             invoices_pdf = self.prepare_invoices(invoices)
         else:
@@ -142,5 +143,5 @@ class AccountInvoiceBatchProcess(models.TransientModel):
             report_action = self.company_id.report_service_id.report_action(
                 invoices_pdf
             )
-            invoices_pdf.write({"sent": True})
+            invoices_pdf.write({"is_move_sent": True})
             return report_action

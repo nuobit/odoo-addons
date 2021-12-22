@@ -9,7 +9,7 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="account.view_partner_property_form" />
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='acc_purchase']" position="after">
+            <xpath expr="//group[@name='purchase']" position="after">
                 <group string="Invoice batches">
                     <field name="invoice_batch_sending_method" />
                     <field

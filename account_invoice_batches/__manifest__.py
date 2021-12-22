@@ -4,7 +4,7 @@
 
 {
     "name": "Invoice batches",
-    "version": "11.0.1.1.0",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Accounting",
@@ -13,6 +13,8 @@
         "sale",
         "l10n_es_facturae",
         "account_invoice_report_service",
+        "sale_order_invoicing_grouping_criteria",
+        "queue_job",
     ],
     "data": [
         "security/account_invoice_batch.xml",
@@ -21,7 +23,7 @@
         "wizard/account_invoice_batch_process.xml",
         "wizard/sale_make_invoice_advance_views.xml",
         "views/res_partner.xml",
-        "views/account_invoice.xml",
+        "views/account_move_view.xml",
         "views/account_invoice_batch.xml",
         "views/menu.xml",
     ],
