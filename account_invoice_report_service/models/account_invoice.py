@@ -4,35 +4,36 @@
 
 import re
 
-from odoo import _, api, models
+from odoo import _, models
 from odoo.exceptions import UserError, ValidationError
 
 
-class AccountInvoice(models.Model):
-    _inherit = "account.invoice"
+class AccountMove(models.Model):
+    _inherit = "account.move"
 
-    @api.multi
     def print_report_invoice_service(self):
         if not self.company_id.report_service_id:
             raise UserError(_("There's no report defined on invoice company"))
         return self.company_id.report_service_id.report_action(self)
 
     def _group_by_order(self):
-        ilines_trace = self.env["account.invoice.line"]
-        order_d, no_order = {}, self.env["account.invoice.line"]
+        ilines_trace = self.env["account.move.line"]
+        order_d, no_order = {}, self.env["account.move.line"]
         for iline in self.invoice_line_ids:
             if iline.sale_line_ids:
                 for oline in iline.sale_line_ids:
                     if iline in ilines_trace:
                         raise ValidationError(
                             _(
-                                "Not implemented case: The same invoice line belongs to different orders"
+                                "Not implemented case: "
+                                "The same invoice line "
+                                "belongs to different orders"
                             )
                         )
                     ilines_trace |= iline
                     order = oline.order_id
                     if order not in order_d:
-                        order_d[order] = self.env["account.invoice.line"]
+                        order_d[order] = self.env["account.move.line"]
                     order_d[order] |= iline
             else:
                 no_order += iline
@@ -56,7 +57,7 @@ class AccountInvoice(models.Model):
                 order_rt_date_l.append((order, order))
 
         # sort round trip classified orders by return_service
-        for dummy, orders in order_rt_d.items():
+        for _dummy, orders in order_rt_d.items():
             going_order = orders.filtered(lambda x: not x.return_service)
             if going_order:
                 going_order = going_order[0]
@@ -68,7 +69,7 @@ class AccountInvoice(models.Model):
 
         # sort and join with lines w/o orders
         order_sorted_l = []
-        for dummy, order in sorted(
+        for _dummy, order in sorted(
             order_rt_date_l,
             key=lambda x: (
                 x[0].service_date,
@@ -96,7 +97,7 @@ class AccountInvoice(models.Model):
         if no_order:
             order_sorted_l.append((None, no_order.sorted(lambda x: (x.sequence, x.id))))
 
-        for order, invoice_lines in sorted(
+        for order, _invoice_lines in sorted(
             order_d.items(),
             key=lambda x: (
                 x[0].date_order,
@@ -111,41 +112,34 @@ class AccountInvoice(models.Model):
         return order_sorted_l
 
 
-class AccountInvoiceLine(models.Model):
-    _inherit = "account.invoice.line"
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
 
     def get_line_lots(self):
         return (
-            self.move_line_ids.mapped("move_line_ids.lot_id")
-            .sorted(lambda x: x.name)
-            .mapped("name")
+            self.move_line_ids.mapped("lot_id").sorted(lambda x: x.name).mapped("name")
         )
 
     def _extract_product_code(self, name):
         m = re.match(r"^ *\[([^]]+)\] *(.*)$", name, flags=re.DOTALL)
         if not m:
             return None, name
-
         return m.groups()
 
     def get_splited_line_description(self):
         if not self.product_id:
             return None, self.name
-
         # find product data
-        part = self.invoice_id.partner_id
+        part = self.move_id.partner_id
         if part.lang:
             product = self.product_id.with_context(lang=part.lang)
         else:
             product = self.product_id
-
         product_partner_ref, product_name = self._extract_product_code(
             product.partner_ref
         )
-
         # find invoice line data
         line_partner_ref, line_name = self._extract_product_code(self.name)
         if line_partner_ref and line_partner_ref == product_partner_ref:
             return line_partner_ref, line_name
-
         return product_partner_ref, self.name
