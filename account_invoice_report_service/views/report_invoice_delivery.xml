@@ -1,70 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <template id="report_assets_common_invoice_delivery_style"
-              inherit_id="web.report_assets_common">
+    <template
+        id="report_assets_common_invoice_delivery_style"
+        inherit_id="web.report_assets_common"
+    >
         <xpath expr="." position="inside">
-            <link href="/account_invoice_report_service/static/src/less/report_invoice_delivery_styles.less"
-                  rel="stylesheet" type="text/less"/>
+            <link
+                href="/account_invoice_report_service/static/src/less/report_invoice_delivery_styles.less"
+                rel="stylesheet"
+                type="text/less"
+            />
         </xpath>
     </template>
 
     <template id="external_layout_invoice_delivery">
         <t t-if="not o and doc">
-            <t t-set="o" t-value="doc"/>
+            <t t-set="o" t-value="doc" />
         </t>
 
         <t t-if="o and 'company_id' in o">
-            <t t-set="company" t-value="o.company_id.sudo()"/>
+            <t t-set="company" t-value="o.company_id.sudo()" />
         </t>
         <t t-if="not o or not 'company_id' in o">
-            <t t-set="company" t-value="res_company"/>
+            <t t-set="company" t-value="res_company" />
         </t>
 
-        <div class="header rid-header" t-attf-style="height: {{ header_max_height }}px;">
+        <div
+            class="header rid-header"
+            t-attf-style="height: {{ header_max_height }}px;"
+        >
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-6">
-                        <img t-if="company.logo" class="img-responsive"
-                             t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"/>
+                        <img
+                            t-if="company.logo"
+                            class="img-responsive"
+                            t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"
+                        />
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="article o_report_layout_standard">
-            <t t-raw="0"/>
+            <t t-raw="0" />
         </div>
 
         <div class="footer">
             <div class="text-center" style="font-size: 10px;">
                 <ul class="list-unstyled mt4 mb4">
                     <li>
-                        <span t-field="company.name"/>
+                        <span t-field="company.name" />
                         -
-                        <t t-esc="company.country_id.vat_label or 'CIF'"/>:
-                        <span t-field="company.vat"/>
+                        <t t-esc="company.country_id.vat_label or 'CIF'" />:
+                        <span t-field="company.vat" />
                     </li>
                     <li t-if="company.street or company.street2">
-                        <span t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"/>
+                        <span
+                            t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
+                        />
                         -
-                        <span t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"/>
+                        <span
+                            t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
+                        />
                     </li>
                     <li>
                         <t t-if="company.phone">
                             Tel.
-                            <span t-field="company.phone"/>
+                            <span t-field="company.phone" />
                         </t>
-                        <span t-esc="' / '.join(filter(lambda x: x, [company.email, company.website]))"/>
+                        <span
+                            t-esc="' / '.join(filter(lambda x: x, [company.email, company.website]))"
+                        />
                     </li>
                 </ul>
                 <div class="text-muted">
                     Page
-                    <span class="page"/>
+                    <span class="page" />
                     of
-                    <span class="topage"/>
+                    <span class="topage" />
                 </div>
             </div>
         </div>
@@ -72,8 +89,11 @@
 
     <template id="report_invoice_delivery_document">
         <t t-call="account_invoice_report_service.external_layout_invoice_delivery">
-            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
-            <t t-set="delivery_lines_by_order" t-value="o.get_delivery_lines_by_order()"/>
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
+            <t
+                t-set="delivery_lines_by_order"
+                t-value="o.get_delivery_lines_by_order()"
+            />
             <div class="page rid-page">
                 <table class="rid-table-2 mb16" name="invoice_line_table">
                     <thead>
@@ -82,25 +102,41 @@
                                 <table class="rid-table-1">
                                     <tbody>
                                         <tr>
-                                            <td width="60%"/>
+                                            <td width="60%" />
                                             <td>
                                                 <div>
                                                     <div style="font-size: 14px;">
-                                                        <t t-set="partner" t-value="o.partner_id.parent_id or o.partner_id"/>
-                                                        <strong t-field="partner.name"/>
+                                                        <t
+                                                            t-set="partner"
+                                                            t-value="o.partner_id.parent_id or o.partner_id"
+                                                        />
+                                                        <strong
+                                                            t-field="partner.name"
+                                                        />
                                                     </div>
                                                     <div style="font-size: 12px;">
-                                                        <div t-if="o.partner_id.street"
-                                                             t-field="o.partner_id.street"/>
-                                                        <div t-if="o.partner_id.street2"
-                                                             t-field="o.partner_id.street2"/>
+                                                        <div
+                                                            t-if="o.partner_id.street"
+                                                            t-field="o.partner_id.street"
+                                                        />
+                                                        <div
+                                                            t-if="o.partner_id.street2"
+                                                            t-field="o.partner_id.street2"
+                                                        />
                                                         <div>
-                                                            <span t-if="o.partner_id.zip"
-                                                                  t-field="o.partner_id.zip"/>
-                                                            <span t-if="o.partner_id.city"
-                                                                  t-field="o.partner_id.city"/>
-                                                            <span t-if="o.partner_id.country_id">(<span
-                                                                    t-field="o.partner_id.country_id"/>)
+                                                            <span
+                                                                t-if="o.partner_id.zip"
+                                                                t-field="o.partner_id.zip"
+                                                            />
+                                                            <span
+                                                                t-if="o.partner_id.city"
+                                                                t-field="o.partner_id.city"
+                                                            />
+                                                            <span
+                                                                t-if="o.partner_id.country_id"
+                                                            >(<span
+                                                                    t-field="o.partner_id.country_id"
+                                                                />)
                                                             </span>
                                                         </div>
                                                     </div>
@@ -110,31 +146,51 @@
                                         <tr>
                                             <td colspan="2">
                                                 <h2>
-                                                    <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">
+                                                    <span
+                                                        t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')"
+                                                    >
                                                         <span>Invoice</span>
                                                     </span>
-                                                    <span t-if="o.type == 'out_invoice' and o.state == 'draft'">
+                                                    <span
+                                                        t-if="o.type == 'out_invoice' and o.state == 'draft'"
+                                                    >
                                                         <span>Draft Invoice</span>
                                                     </span>
-                                                    <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">
+                                                    <span
+                                                        t-if="o.type == 'out_invoice' and o.state == 'cancel'"
+                                                    >
                                                         <span>Cancelled Invoice</span>
                                                     </span>
-                                                    <span t-if="o.type == 'out_refund'">Credit Note</span>
-                                                    <span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
-                                                    <span t-if="o.type == 'in_invoice'">Vendor Bill</span>
-                                                    <span t-field="o.number"/>
+                                                    <span
+                                                        t-if="o.type == 'out_refund'"
+                                                    >Credit Note</span>
+                                                    <span
+                                                        t-if="o.type == 'in_refund'"
+                                                    >Vendor Credit Note</span>
+                                                    <span
+                                                        t-if="o.type == 'in_invoice'"
+                                                    >Vendor Bill</span>
+                                                    <span t-field="o.number" />
                                                 </h2>
                                                 <div t-if="o.date_invoice">
                                                     <strong>Invoice date:</strong>
-                                                    <span t-field="o.date_invoice"/>
+                                                    <span t-field="o.date_invoice" />
                                                 </div>
-                                                <div t-if="o.partner_id.ref" class="mt4">
+                                                <div
+                                                    t-if="o.partner_id.ref"
+                                                    class="mt4"
+                                                >
                                                     <strong>Customer code:</strong>
-                                                    <span t-field="o.partner_id.ref"/>
+                                                    <span t-field="o.partner_id.ref" />
                                                 </div>
-                                                <div t-if="o.partner_id.vat" class="mt4">
-                                                    <strong t-esc="o.company_id.country_id.vat_label or 'CIF'"/>:
-                                                    <span t-field="o.partner_id.vat"/>
+                                                <div
+                                                    t-if="o.partner_id.vat"
+                                                    class="mt4"
+                                                >
+                                                    <strong
+                                                        t-esc="o.company_id.country_id.vat_label or 'CIF'"
+                                                    />:
+                                                    <span t-field="o.partner_id.vat" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -146,21 +202,41 @@
                             <th>
                                 <table class="rid-table0">
                                     <thead>
-                                        <tr t-if="list(filter(None, [x[0] for x in delivery_lines_by_order]))">
-                                            <th width="10%"/>
+                                        <tr
+                                            t-if="list(filter(None, [x[0] for x in delivery_lines_by_order]))"
+                                        >
+                                            <th width="10%" />
                                             <th width="14%">Document no.</th>
-                                            <th width="13%" class="text-right">Service no.</th>
-                                            <th width="13%" class="text-right">Customer ref.</th>
+                                            <th
+                                                width="13%"
+                                                class="text-right"
+                                            >Service no.</th>
+                                            <th
+                                                width="13%"
+                                                class="text-right"
+                                            >Customer ref.</th>
                                             <th width="9%" class="text-right">Date</th>
-                                            <th colspan="4" width="41%"/>
+                                            <th colspan="4" width="41%" />
                                         </tr>
                                         <tr>
                                             <th width="10%">Item</th>
                                             <th colspan="4" width="49%">Description</th>
-                                            <th width="13%" class="text-right">Quantity</th>
-                                            <th width="10%" class="text-right">Unit Price</th>
-                                            <th width="8%" class="text-right">Discount</th>
-                                            <th width="10%" class="text-right">Amount</th>
+                                            <th
+                                                width="13%"
+                                                class="text-right"
+                                            >Quantity</th>
+                                            <th
+                                                width="10%"
+                                                class="text-right"
+                                            >Unit Price</th>
+                                            <th
+                                                width="8%"
+                                                class="text-right"
+                                            >Discount</th>
+                                            <th
+                                                width="10%"
+                                                class="text-right"
+                                            >Amount</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -169,59 +245,94 @@
                     </thead>
                     <tbody class="invoice_tbody">
                         <t t-foreach="delivery_lines_by_order" t-as="l">
-                            <t t-set="order" t-value="l[0]"/>
-                            <t t-set="invoice_lines" t-value="l[1]"/>
+                            <t t-set="order" t-value="l[0]" />
+                            <t t-set="invoice_lines" t-value="l[1]" />
                             <tr>
                                 <td>
                                     <table class="rid-table2">
                                         <tbody>
-                                            <tr t-if="order" class="rid-tr2-order-header">
+                                            <tr
+                                                t-if="order"
+                                                class="rid-tr2-order-header"
+                                            >
                                                 <td>
                                                     <table class="rid-table3">
                                                         <tbody>
                                                             <tr>
-                                                                <td width="10%"/>
+                                                                <td width="10%" />
                                                                 <td width="14%">
-                                                                    <span t-field="order.name"/>
+                                                                    <span
+                                                                        t-field="order.name"
+                                                                    />
                                                                 </td>
-                                                                <td width="13%" class="text-right">
-                                                                    <t t-if="order.service_number">
-                                                                        <span t-esc="str(order.service_number)"/>
+                                                                <td
+                                                                    width="13%"
+                                                                    class="text-right"
+                                                                >
+                                                                    <t
+                                                                        t-if="order.service_number"
+                                                                    >
+                                                                        <span
+                                                                            t-esc="str(order.service_number)"
+                                                                        />
                                                                     </t>
                                                                 </td>
-                                                                <td width="13%" class="text-right">
-                                                                    <t t-if="order.client_order_ref">
-                                                                        <span t-field="order.client_order_ref"/>
+                                                                <td
+                                                                    width="13%"
+                                                                    class="text-right"
+                                                                >
+                                                                    <t
+                                                                        t-if="order.client_order_ref"
+                                                                    >
+                                                                        <span
+                                                                            t-field="order.client_order_ref"
+                                                                        />
                                                                     </t>
                                                                 </td>
-                                                                <td width="9%" class="text-right">
-                                                                    <span t-field="order.date_order"
-                                                                          t-field-options="{'widget': 'date'}"/>
+                                                                <td
+                                                                    width="9%"
+                                                                    class="text-right"
+                                                                >
+                                                                    <span
+                                                                        t-field="order.date_order"
+                                                                        t-field-options="{'widget': 'date'}"
+                                                                    />
                                                                 </td>
-                                                                <td width="41%"/>
+                                                                <td width="41%" />
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <t t-if="invoice_lines">
-                                                <t t-set="order_total" t-value="0"/>
+                                                <t t-set="order_total" t-value="0" />
                                                 <tr>
                                                     <td>
                                                         <table class="rid-table3">
                                                             <tbody>
-                                                                <t t-foreach="invoice_lines" t-as="il">
+                                                                <t
+                                                                    t-foreach="invoice_lines"
+                                                                    t-as="il"
+                                                                >
                                                                     <tr>
-                                                                        <t t-set="il_name"
-                                                                           t-value="il.get_splited_line_description()"/>
+                                                                        <t
+                                                                            t-set="il_name"
+                                                                            t-value="il.get_splited_line_description()"
+                                                                        />
                                                                         <td width="10%">
-                                                                            <span t-if="il_name[0]"
-                                                                                  t-esc="il_name[0]"/>
+                                                                            <span
+                                                                                t-if="il_name[0]"
+                                                                                t-esc="il_name[0]"
+                                                                            />
                                                                         </td>
                                                                         <td width="49%">
-                                                                            <t t-foreach="il_name[1].split('\n')"
-                                                                               t-as="iln">
-                                                                                <div t-esc="iln"/>
+                                                                            <t
+                                                                                t-foreach="il_name[1].split('\n')"
+                                                                                t-as="iln"
+                                                                            >
+                                                                                <div
+                                                                                    t-esc="iln"
+                                                                                />
                                                                             </t>
                                                                             <!--t t-if="il.product_id.tracking in ('lot', 'serial')">
                                                                                 <t t-set="lots"
@@ -237,25 +348,50 @@
                                                                                 </div>
                                                                             </t-->
                                                                         </td>
-                                                                        <td width="13%" class="text-right">
-                                                                            <span t-field="il.quantity"/>
-                                                                            <span class="rid-units" t-field="il.uom_id"
-                                                                                  groups="product.group_uom"/>
+                                                                        <td
+                                                                            width="13%"
+                                                                            class="text-right"
+                                                                        >
+                                                                            <span
+                                                                                t-field="il.quantity"
+                                                                            />
+                                                                            <span
+                                                                                class="rid-units"
+                                                                                t-field="il.uom_id"
+                                                                                groups="product.group_uom"
+                                                                            />
                                                                         </td>
-                                                                        <td width="10%" class="text-right">
-                                                                            <span t-field="il.price_unit"/>
+                                                                        <td
+                                                                            width="10%"
+                                                                            class="text-right"
+                                                                        >
+                                                                            <span
+                                                                                t-field="il.price_unit"
+                                                                            />
                                                                         </td>
-                                                                        <td width="8%" class="text-right">
-                                                                            <span t-field="il.discount"/>
+                                                                        <td
+                                                                            width="8%"
+                                                                            class="text-right"
+                                                                        >
+                                                                            <span
+                                                                                t-field="il.discount"
+                                                                            />
                                                                         </td>
-                                                                        <td width="10%" class="text-right"
-                                                                            id="subtotal">
-                                                                            <span t-field="il.price_subtotal"
-                                                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                                        <td
+                                                                            width="10%"
+                                                                            class="text-right"
+                                                                            id="subtotal"
+                                                                        >
+                                                                            <span
+                                                                                t-field="il.price_subtotal"
+                                                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                                            />
                                                                         </td>
                                                                     </tr>
-                                                                    <t t-set="order_total"
-                                                                       t-value="order_total+il.price_subtotal"/>
+                                                                    <t
+                                                                        t-set="order_total"
+                                                                        t-value="order_total+il.price_subtotal"
+                                                                    />
                                                                 </t>
                                                             </tbody>
                                                         </table>
@@ -266,14 +402,23 @@
                                                         <table class="rid-table3">
                                                             <tbody>
                                                                 <tr>
-                                                                    <td width="80%"/>
-                                                                    <td width="10%" class="text-right">
-                                                                        <strong>Total</strong>
+                                                                    <td width="80%" />
+                                                                    <td
+                                                                        width="10%"
+                                                                        class="text-right"
+                                                                    >
+                                                                        <strong
+                                                                        >Total</strong>
                                                                     </td>
-                                                                    <td width="10%" class="text-right">
+                                                                    <td
+                                                                        width="10%"
+                                                                        class="text-right"
+                                                                    >
                                                                         <strong>
-                                                                            <span t-esc="order_total"
-                                                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                                            <span
+                                                                                t-esc="order_total"
+                                                                                t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                                            />
                                                                         </strong>
                                                                     </td>
                                                                 </tr>
@@ -292,40 +437,67 @@
                 <div class="clearfix">
                     <div id="total" class="row">
                         <div class="col-xs-4 pull-right">
-                            <table class="table table-condensed" style="min-width: 250px;max-width: 400px;">
-                                <t t-set="tax_amount_by_group"
-                                   t-value="list(filter(lambda x: x[1], o._get_tax_amount_by_group()))"/>
+                            <table
+                                class="table table-condensed"
+                                style="min-width: 250px;max-width: 400px;"
+                            >
+                                <t
+                                    t-set="tax_amount_by_group"
+                                    t-value="list(filter(lambda x: x[1], o._get_tax_amount_by_group()))"
+                                />
                                 <t t-if="tax_amount_by_group">
-                                    <tr class="border-black" style="border-bottom:1px solid #dddddd;">
+                                    <tr
+                                        class="border-black"
+                                        style="border-bottom:1px solid #dddddd;"
+                                    >
                                         <td>
                                             <strong>Subtotal</strong>
                                         </td>
                                         <td class="text-right">
-                                            <span t-field="o.amount_untaxed"
-                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            <span
+                                                t-field="o.amount_untaxed"
+                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                            />
                                         </td>
                                     </tr>
-                                    <t t-foreach="tax_amount_by_group" t-as="amount_by_group">
+                                    <t
+                                        t-foreach="tax_amount_by_group"
+                                        t-as="amount_by_group"
+                                    >
                                         <t t-if="amount_by_group[1]">
-                                            <tr style="border-bottom:1px solid #dddddd;">
-                                                <t t-if="len(tax_amount_by_group) == 1 and o.amount_untaxed == amount_by_group[2]">
+                                            <tr
+                                                style="border-bottom:1px solid #dddddd;"
+                                            >
+                                                <t
+                                                    t-if="len(tax_amount_by_group) == 1 and o.amount_untaxed == amount_by_group[2]"
+                                                >
                                                     <td>
-                                                        <span t-esc="amount_by_group[0]"/>
+                                                        <span
+                                                            t-esc="amount_by_group[0]"
+                                                        />
                                                     </td>
                                                     <td class="text-right">
-                                                        <span t-esc="amount_by_group[3]"/>
+                                                        <span
+                                                            t-esc="amount_by_group[3]"
+                                                        />
                                                     </td>
                                                 </t>
                                                 <t t-else="">
                                                     <td>
-                                                        <span t-esc="amount_by_group[0]"/>
+                                                        <span
+                                                            t-esc="amount_by_group[0]"
+                                                        />
                                                         <span>
                                                             <span>on</span>
-                                                            <t t-esc="amount_by_group[4]"/>
+                                                            <t
+                                                                t-esc="amount_by_group[4]"
+                                                            />
                                                         </span>
                                                     </td>
                                                     <td class="text-right">
-                                                        <span t-esc="amount_by_group[3]"/>
+                                                        <span
+                                                            t-esc="amount_by_group[3]"
+                                                        />
                                                     </td>
                                                 </t>
                                             </tr>
@@ -337,8 +509,10 @@
                                         <strong>Total</strong>
                                     </td>
                                     <td class="text-right">
-                                        <span t-field="o.amount_total"
-                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <span
+                                            t-field="o.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                        />
                                     </td>
                                 </tr>
                             </table>
@@ -350,30 +524,39 @@
                     <div class="col-xs-12">
                         <p t-if="o.comment">
                             <strong>Comment:</strong>
-                            <span t-field="o.comment"/>
+                            <span t-field="o.comment" />
                         </p>
                         <ul class="list-unstyled mb4 mt4">
                             <li t-if="o.payment_mode_id or o.payment_term_id">
                                 <span>Payment terms:</span>
-                                <span t-if="o.payment_mode_id.name" t-field="o.payment_mode_id.name"/>
+                                <span
+                                    t-if="o.payment_mode_id.name"
+                                    t-field="o.payment_mode_id.name"
+                                />
                                 <t t-if="o.payment_term_id.name">
-                                    <span t-field="o.payment_term_id.name"/>
+                                    <span t-field="o.payment_term_id.name" />
                                     <span>from invoice date</span>
                                 </t>
                             </li>
-                            <li t-if="o.payment_mode_id.payment_method_id.code == 'customer_transfer' and o.payment_mode_id.payment_method_id.payment_type == 'inbound'">
-                                <t t-set="bank_account_id"
-                                   t-value="o.partner_bank_id or o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids.sorted(lambda x: x.sequence)[0]"/>
-                                <strong t-field="bank_account_id.acc_number"/>
+                            <li
+                                t-if="o.payment_mode_id.payment_method_id.code == 'customer_transfer' and o.payment_mode_id.payment_method_id.payment_type == 'inbound'"
+                            >
+                                <t
+                                    t-set="bank_account_id"
+                                    t-value="o.partner_bank_id or o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids.sorted(lambda x: x.sequence)[0]"
+                                />
+                                <strong t-field="bank_account_id.acc_number" />
                                 -
-                                <span t-field="bank_account_id.bank_id.display_name"/>
+                                <span t-field="bank_account_id.bank_id.display_name" />
                             </li>
                             <li>
                                 Please indicate in your payments the invoice numbers that you cancel*
                             </li>
                             <li t-if="o.move_id">
-                                <t t-set="movelines"
-                                   t-value="o.move_id.line_ids.filtered(lambda x: x.partner_id == o.partner_id and x.account_id == o.account_id).sorted(lambda x: x.date_maturity)"/>
+                                <t
+                                    t-set="movelines"
+                                    t-value="o.move_id.line_ids.filtered(lambda x: x.partner_id == o.partner_id and x.account_id == o.account_id).sorted(lambda x: x.date_maturity)"
+                                />
                                 <t t-if="movelines">
                                     <t t-if="len(movelines)>1">
                                         <span>Maturity dates:</span>
@@ -383,15 +566,20 @@
                                     </t>
                                     <t t-foreach="movelines" t-as="ml">
                                         <t t-if="not ml_last">
-                                            <span t-field="ml.date_maturity"/>,
+                                            <span t-field="ml.date_maturity" />,
                                         </t>
-                                        <span t-if="ml_last" t-field="ml.date_maturity"/>
+                                        <span
+                                            t-if="ml_last"
+                                            t-field="ml.date_maturity"
+                                        />
                                     </t>
                                 </t>
                             </li>
                         </ul>
-                        <t t-set="notaxable_taxes"
-                           t-value="o.invoice_line_ids.mapped('invoice_line_tax_ids').filtered(lambda x: x.description=='S_IVA0')"/>
+                        <t
+                            t-set="notaxable_taxes"
+                            t-value="o.invoice_line_ids.mapped('invoice_line_tax_ids').filtered(lambda x: x.description=='S_IVA0')"
+                        />
                         <ul t-if="notaxable_taxes" class="list-unstyled mt8">
                             <li>
                                 Billing lines with VAT-free operations - Law 37/1992, article 20, one, 15th
@@ -406,8 +594,10 @@
     <template id="report_invoice_delivery">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="account_invoice_report_service.report_invoice_delivery_document"
-                   t-lang="o.partner_id.lang"/>
+                <t
+                    t-call="account_invoice_report_service.report_invoice_delivery_document"
+                    t-lang="o.partner_id.lang"
+                />
             </t>
         </t>
     </template>
