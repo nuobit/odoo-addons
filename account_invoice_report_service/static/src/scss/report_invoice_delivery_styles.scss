@@ -13,32 +13,36 @@
     font-size: 11px;
 }
 
-.rid-basetable {
+@mixin ris-basetable-mixin {
     width: 100%;
     max-width: 100%;
     margin-top: 3px;
 }
 
+.rid-basetable {
+    @include ris-basetable-mixin;
+}
+
 .rid-table-1 {
-    .rid-basetable;
+    @include ris-basetable-mixin;
     margin-bottom: 5px;
 }
 
 .rid-table-2 {
-    .rid-basetable;
+    @include ris-basetable-mixin;
 }
 
 .rid-table0 {
-    .rid-basetable;
+    @include ris-basetable-mixin;
     border-bottom: 1px solid #291a63;
 }
 
 .rid-table1 {
-    .rid-basetable;
+    @include ris-basetable-mixin;
 }
 
 .rid-table2 {
-    .rid-basetable;
+    @include ris-basetable-mixin;
 }
 
 .rid-table2 > tbody > tr.rid-tr2-order-header > td {
@@ -46,7 +50,7 @@
 }
 
 .rid-table3 {
-    .rid-basetable;
+    @include ris-basetable-mixin;
 }
 
 .rid-table3 > tbody > tr:not(:last-child) > td {

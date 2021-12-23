@@ -7,17 +7,16 @@ from odoo import api, models
 
 class AccountInvoiceServiceReport(models.AbstractModel):
     _name = "report.account_invoice_report_service.report_invoice_service"
+    _description = "Account Invoice Service Report"
 
     @api.model
-    def get_report_values(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
         report_obj = self.env["ir.actions.report"]
         report = report_obj._get_report_from_name(
             "account_invoice_report_service.report_invoice_service"
         )
-
         paperformat = report.paperformat_id
         header_max_height = paperformat.dpi / 25.4 * paperformat.header_spacing * 1.25
-
         docs = self.env[report.model].browse(docids)
         data = {
             "doc_ids": docids,
@@ -25,23 +24,21 @@ class AccountInvoiceServiceReport(models.AbstractModel):
             "docs": docs,
             "header_max_height": header_max_height,
         }
-
         return data
 
 
 class AccountInvoiceDeliveryReport(models.AbstractModel):
     _name = "report.account_invoice_report_service.report_invoice_delivery"
+    _description = "Account Invoice Delivery Report"
 
     @api.model
-    def get_report_values(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
         report_obj = self.env["ir.actions.report"]
         report = report_obj._get_report_from_name(
             "account_invoice_report_service.report_invoice_delivery"
         )
-
         paperformat = report.paperformat_id
         header_max_height = paperformat.dpi / 25.4 * paperformat.header_spacing * 1.25
-
         docs = self.env[report.model].browse(docids)
         data = {
             "doc_ids": docids,
@@ -49,5 +46,4 @@ class AccountInvoiceDeliveryReport(models.AbstractModel):
             "docs": docs,
             "header_max_height": header_max_height,
         }
-
         return data
