@@ -13,14 +13,18 @@
     font-size: 11px;
 }
 
-.ris-basetable {
+@mixin ris-basetable-mixin {
     width: 100%;
     max-width: 100%;
     margin-top: 3px;
 }
 
+.ris-basetable {
+    @include ris-basetable-mixin;
+}
+
 .ris-table-1 {
-    .ris-basetable;
+    @include ris-basetable-mixin;
     margin-bottom: 5px;
 }
 
@@ -29,23 +33,23 @@
 }
 
 .ris-table-2 {
-    .ris-basetable;
+    @include ris-basetable-mixin;
 }
 
 .ris-table0 {
-    .ris-basetable;
+    @include ris-basetable-mixin;
     border-bottom: 1px solid #0d9697;
 }
 
 .ris-table1 {
-    .ris-basetable;
+    @include ris-basetable-mixin;
 }
 
 .ris-table2 {
-    .ris-basetable;
+    @include ris-basetable-mixin;
     border-bottom: 1px solid rgb(221, 221, 221);
 }
 
 .ris-table3 {
-    .ris-basetable;
+    @include ris-basetable-mixin;
 }
