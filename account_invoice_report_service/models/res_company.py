@@ -10,8 +10,8 @@ class ResCompany(models.Model):
 
     report_service_id = fields.Many2one(
         string="Service Invoice report",
-        comodel_name='ir.actions.report',
+        comodel_name="ir.actions.report",
         domain=[
-            ('model', '=', 'account.invoice'),
-        ]
+            ("model", "=", "account.invoice"),
+        ],
     )

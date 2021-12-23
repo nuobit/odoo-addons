@@ -2,14 +2,14 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-
 import re
+
+from odoo import _, api, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+    _inherit = "account.invoice"
 
     @api.multi
     def print_report_invoice_service(self):
@@ -18,18 +18,21 @@ class AccountInvoice(models.Model):
         return self.company_id.report_service_id.report_action(self)
 
     def _group_by_order(self):
-        ilines_trace = self.env['account.invoice.line']
-        order_d, no_order = {}, self.env['account.invoice.line']
+        ilines_trace = self.env["account.invoice.line"]
+        order_d, no_order = {}, self.env["account.invoice.line"]
         for iline in self.invoice_line_ids:
             if iline.sale_line_ids:
                 for oline in iline.sale_line_ids:
                     if iline in ilines_trace:
                         raise ValidationError(
-                            _("Not implemented case: The same invoice line belongs to different orders"))
+                            _(
+                                "Not implemented case: The same invoice line belongs to different orders"
+                            )
+                        )
                     ilines_trace |= iline
                     order = oline.order_id
                     if order not in order_d:
-                        order_d[order] = self.env['account.invoice.line']
+                        order_d[order] = self.env["account.invoice.line"]
                     order_d[order] |= iline
             else:
                 no_order += iline
@@ -47,7 +50,7 @@ class AccountInvoice(models.Model):
             rt_code = order.round_trip_code
             if rt_code:
                 if rt_code not in order_rt_d:
-                    order_rt_d[rt_code] = self.env['sale.order']
+                    order_rt_d[rt_code] = self.env["sale.order"]
                 order_rt_d[rt_code] |= order
             else:
                 order_rt_date_l.append((order, order))
@@ -65,10 +68,19 @@ class AccountInvoice(models.Model):
 
         # sort and join with lines w/o orders
         order_sorted_l = []
-        for dummy, order in sorted(order_rt_date_l, key=lambda x: (x[0].service_date, x[0].service_number,
-                                                                   x[1].round_trip_code, x[1].return_service,
-                                                                   x[1].service_number)):
-            order_sorted_l.append((order, order_d[order].sorted(lambda x: (x.sequence, x.id))))
+        for dummy, order in sorted(
+            order_rt_date_l,
+            key=lambda x: (
+                x[0].service_date,
+                x[0].service_number,
+                x[1].round_trip_code,
+                x[1].return_service,
+                x[1].service_number,
+            ),
+        ):
+            order_sorted_l.append(
+                (order, order_d[order].sorted(lambda x: (x.sequence, x.id)))
+            )
 
         if no_order:
             order_sorted_l.append((None, no_order.sorted(lambda x: (x.sequence, x.id))))
@@ -84,24 +96,33 @@ class AccountInvoice(models.Model):
         if no_order:
             order_sorted_l.append((None, no_order.sorted(lambda x: (x.sequence, x.id))))
 
-        for order, invoice_lines in sorted(order_d.items(),
-                                           key=lambda x: (x[0].date_order,
-                                                          x[0].client_order_ref or '',
-                                                          x[0].service_number)):
-            order_sorted_l.append((order, order_d[order].sorted(lambda x: (x.sequence, x.id))))
+        for order, invoice_lines in sorted(
+            order_d.items(),
+            key=lambda x: (
+                x[0].date_order,
+                x[0].client_order_ref or "",
+                x[0].service_number,
+            ),
+        ):
+            order_sorted_l.append(
+                (order, order_d[order].sorted(lambda x: (x.sequence, x.id)))
+            )
 
         return order_sorted_l
 
 
 class AccountInvoiceLine(models.Model):
-    _inherit = 'account.invoice.line'
+    _inherit = "account.invoice.line"
 
     def get_line_lots(self):
-        return self.move_line_ids.mapped('move_line_ids.lot_id') \
-            .sorted(lambda x: x.name).mapped('name')
+        return (
+            self.move_line_ids.mapped("move_line_ids.lot_id")
+            .sorted(lambda x: x.name)
+            .mapped("name")
+        )
 
     def _extract_product_code(self, name):
-        m = re.match(r'^ *\[([^]]+)\] *(.*)$', name, flags=re.DOTALL)
+        m = re.match(r"^ *\[([^]]+)\] *(.*)$", name, flags=re.DOTALL)
         if not m:
             return None, name
 
@@ -118,7 +139,9 @@ class AccountInvoiceLine(models.Model):
         else:
             product = self.product_id
 
-        product_partner_ref, product_name = self._extract_product_code(product.partner_ref)
+        product_partner_ref, product_name = self._extract_product_code(
+            product.partner_ref
+        )
 
         # find invoice line data
         line_partner_ref, line_name = self._extract_product_code(self.name)
