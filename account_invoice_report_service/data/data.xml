@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -15,7 +15,7 @@
             <field name="margin_bottom">24</field>
             <field name="margin_left">5</field>
             <field name="margin_right">5</field>
-            <field name="header_line" eval="False"/>
+            <field name="header_line" eval="False" />
             <field name="header_spacing">36</field>
             <field name="dpi">90</field>
         </record>
