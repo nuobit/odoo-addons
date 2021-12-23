@@ -1,13 +1,13 @@
 # This file contains the translation of the following modules:
-#	* account_invoice_report_service
+# 	* account_invoice_report_service
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-30 19:40+0000\n"
-"PO-Revision-Date: 2019-07-30 19:40+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2021-11-26 15:27+0000\n"
+"PO-Revision-Date: 2021-11-26 15:27+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,138 +15,161 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model:ir.actions.report,print_report_name:account_invoice_report_service.action_report_invoice_delivery
+#: model:ir.actions.report,print_report_name:account_invoice_report_service.action_report_invoice_service
+msgid "(object._get_printed_report_name())"
+msgstr ""
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>(going)</span>"
 msgstr "<span>(ida)</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>(return)</span>"
 msgstr "<span>(vuelta)</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Cancelled Invoice</span>"
 msgstr "<span>Factura cancelada</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Draft Invoice</span>"
 msgstr "<span>Factura borrador</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Invoice</span>"
 msgstr "<span>Factura</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Maturity date:</span>"
 msgstr "<span>Fecha de vencimiento:</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Maturity dates:</span>"
 msgstr "<span>Fechas de vencimiento:</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>One way</span>"
 msgstr "<span>Solo ida</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Only return</span>"
 msgstr "<span>Solo vuelta</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Payment terms:</span>"
 msgstr "<span>Forma de pago:</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>Round trip</span>"
 msgstr "<span>Ida y vuelta</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>from invoice date</span>"
 msgstr "<span>fecha factura</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>on</span>"
 msgstr "<span>sobre</span>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Comment:</strong>"
 msgstr "<strong>Comentario:</strong>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Customer code:</strong>"
 msgstr "<strong>Código cliente:</strong>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Invoice date:</strong>"
 msgstr "<strong>Fecha factura:</strong>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Subtotal</strong>"
 msgstr "<strong>Subtotal</strong>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Total</strong>"
 msgstr "<strong>Total</strong>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model:ir.model,name:account_invoice_report_service.model_report_account_invoice_report_service_report_invoice_delivery
+msgid "Account Invoice Delivery Report"
+msgstr ""
+
+#. module: account_invoice_report_service
+#: model:ir.model,name:account_invoice_report_service.model_report_account_invoice_report_service_report_invoice_service
+msgid "Account Invoice Service Report"
+msgstr ""
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Amount"
 msgstr "Importe"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Authorization num."
 msgstr "Nº autorización"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
-msgid "Billing lines with VAT-free operations - Law 37/1992, article 20, one, 15th"
-msgstr "Líneas de facturación con operaciones exentas de IVA - Ley 37/1992, artículo 20, uno, 15º"
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid ""
+"Billing lines with VAT-free operations - Law 37/1992, article 20, one, 15th"
+msgstr ""
+"Líneas de facturación con operaciones exentas de IVA - Ley 37/1992, artículo 20, uno, 15º"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model:ir.model,name:account_invoice_report_service.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Contract number"
 msgstr "Código de contrato"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Credit Note"
 msgstr "Rectificativa"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 msgid "Customer ref."
 msgstr "Ref. cliente"
 
@@ -156,136 +179,155 @@ msgid "Customer transfer"
 msgstr "Transferencia de cliente"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 msgid "Date"
 msgstr "Fecha"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Description"
 msgstr "Descripción"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Destination"
 msgstr "Destino"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 msgid "Discount"
 msgstr "Descuento"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery__display_name
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service__display_name
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 msgid "Document no."
 msgstr "Nº documento"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move__id
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move_line__id
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery__id
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service__id
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company__id
+msgid "ID"
+msgstr ""
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "ID number"
 msgstr "DNI"
 
 #. module: account_invoice_report_service
-#: model:ir.model,name:account_invoice_report_service.model_account_invoice
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
-msgid "Invoice"
-msgstr "Factura"
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+msgid "Item"
+msgstr "Artículo"
 
 #. module: account_invoice_report_service
-#: model:ir.model,name:account_invoice_report_service.model_account_invoice_line
-msgid "Invoice Line"
-msgstr "Línea de factura"
+#: model:ir.model,name:account_invoice_report_service.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-msgid "Lots:"
-msgstr "Lotes:"
+#: model:ir.model,name:account_invoice_report_service.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move____last_update
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move_line____last_update
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery____last_update
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service____last_update
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Name"
 msgstr "Nombre"
 
 #. module: account_invoice_report_service
-#: code:addons/account_invoice_report_service/models/account_invoice.py:26
+#: code:addons/account_invoice_report_service/models/account_invoice.py:0
 #, python-format
-msgid "Not implemented case: The same invoice line belongs to different orders"
-msgstr "Not implemented case: The same invoice line belongs to different orders"
+msgid ""
+"Not implemented case: The same invoice line belongs to different orders"
+msgstr ""
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Origin"
 msgstr "Origen"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_delivery
-#: model:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_service
-msgid "Page\n"
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_delivery
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_service
+msgid ""
+"Page\n"
 "                    <span class=\"page\"/>\n"
 "                    of\n"
 "                    <span class=\"topage\"/>"
-msgstr "Página\n"
+msgstr ""
+"Página\n"
 "                    <span class=\"page\"/>\n"
 "                    de\n"
 "                    <span class=\"topage\"/>"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Patient data"
 msgstr "Datos del paciente"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Plate"
 msgstr "Matrícula"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Please indicate in your payments the invoice numbers that you cancel*"
 msgstr "Rogamos indiquen en sus pagos los números de factura que cancelan*"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Policy"
-msgstr "Poliza"
+msgstr "Póliza"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.invoice_form
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.view_move_form
 msgid "Print Service invoice"
 msgstr "Imprimir factura de servicio"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-msgid "Item"
-msgstr "Artículo"
-
-#. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-msgid "Serial numbers:"
-msgstr "Números de serie:"
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company__report_service_id
+msgid "Service Invoice report"
+msgstr ""
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Service data"
 msgstr "Datos del servicio"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Service date"
 msgstr "Fecha servicio"
-
-#. module: account_invoice_report_service
-#: model:ir.actions.report,name:account_invoice_report_service.action_report_invoice_service
-msgid "Service invoice"
-msgstr "Factura de servicio"
 
 #. module: account_invoice_report_service
 #: model:ir.actions.report,name:account_invoice_report_service.action_report_invoice_delivery
@@ -293,37 +335,42 @@ msgid "Service delivery invoice"
 msgstr "Factura de servicio de entrega"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model:ir.actions.report,name:account_invoice_report_service.action_report_invoice_service
+msgid "Service invoice"
+msgstr "Factura de servicio"
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Service no."
 msgstr "Nº servicio"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_delivery
-#: model:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_delivery
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_service
 msgid "Tel."
 msgstr "Tel."
 
 #. module: account_invoice_report_service
-#: code:addons/account_invoice_report_service/models/account_invoice.py:15
+#: code:addons/account_invoice_report_service/models/account_invoice.py:0
 #, python-format
 msgid "There's no report defined on invoice company"
-msgstr "There's no report defined on invoice company"
+msgstr ""
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Unit Price"
 msgstr "Precio unitario"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Vendor Bill"
 msgstr "Factura de proveedor"
 
 #. module: account_invoice_report_service
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Vendor Credit Note"
 msgstr "Rectificativa de proveedor"

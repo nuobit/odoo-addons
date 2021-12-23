@@ -12,6 +12,6 @@ class ResCompany(models.Model):
         string="Service Invoice report",
         comodel_name="ir.actions.report",
         domain=[
-            ("model", "=", "account.invoice"),
+            ("model", "=", "account.move"),
         ],
     )
