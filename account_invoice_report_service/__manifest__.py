@@ -4,20 +4,17 @@
 
 {
     "name": "Service invoice report",
-    "description": """Service invoice report""",
-    "version": "11.0.0.2.17",
+    "summary": """Service invoice report""",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Accounting",
     "website": "https://github.com/nuobit/odoo-addons",
-    "depends": [
-        "account",
-        "sale_order_service",
-    ],
+    "depends": ["sale_order_service"],
     "data": [
         "data/data.xml",
         "report/report.xml",
-        "views/res_company_views.xml",
+        "views/res_config_settings_views.xml",
         "views/report_invoice_service.xml",
         "views/report_invoice_delivery.xml",
         "views/account_invoice_views.xml",

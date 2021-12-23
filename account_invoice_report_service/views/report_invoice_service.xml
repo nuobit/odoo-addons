@@ -9,82 +9,89 @@
     >
         <xpath expr="." position="inside">
             <link
-                href="/account_invoice_report_service/static/src/less/report_invoice_service_styles.less"
+                href="/account_invoice_report_service/static/src/scss/report_invoice_service_styles.scss"
                 rel="stylesheet"
-                type="text/less"
+                type="text/scss"
             />
         </xpath>
     </template>
 
     <template id="external_layout_invoice_service">
-        <t t-if="not o and doc">
-            <t t-set="o" t-value="doc" />
-        </t>
+        <t t-call="web.html_container">
+            <t t-if="not o and doc">
+                <t t-set="o" t-value="doc" />
+            </t>
 
-        <t t-if="o and 'company_id' in o">
-            <t t-set="company" t-value="o.company_id.sudo()" />
-        </t>
-        <t t-if="not o or not 'company_id' in o">
-            <t t-set="company" t-value="res_company" />
-        </t>
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()" />
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company" />
+            </t>
 
-        <div
-            class="header ris-header"
-            t-attf-style="height: {{ header_max_height }}px;"
-        >
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <img
-                            t-if="company.logo"
-                            class="img-responsive"
-                            t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"
-                        />
+            <div
+                class="header ris-header"
+                t-attf-style="height: {{ header_max_height }}px;"
+            >
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <img
+                                t-if="company.logo"
+                                class="img-responsive"
+                                t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="article o_report_layout_standard">
-            <t t-raw="0" />
-        </div>
+            <div
+                class="article o_report_layout_standard"
+                t-att-data-oe-model="o and o._name"
+                t-att-data-oe-id="o and o.id"
+                t-att-data-oe-lang="o and o.env.context.get('lang')"
+            >
+                <t t-raw="0" />
+            </div>
 
-        <div class="footer">
-            <div class="text-center" style="font-size: 10px;">
-                <ul class="list-unstyled mt4 mb4">
-                    <li>
-                        <span t-field="company.name" />
-                        -
-                        <t t-esc="company.country_id.vat_label or 'CIF'" />:
-                        <span t-field="company.vat" />
-                    </li>
-                    <li t-if="company.street or company.street2">
-                        <span
-                            t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
-                        />
-                        -
-                        <span
-                            t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
-                        />
-                    </li>
-                    <li>
-                        <t t-if="company.phone">
-                            Tel.
-                            <span t-field="company.phone" />
-                        </t>
-                        <span
-                            t-esc="' / '.join(filter(lambda x: x, [company.email, company.website]))"
-                        />
-                    </li>
-                </ul>
-                <div class="text-muted">
-                    Page
-                    <span class="page" />
-                    of
-                    <span class="topage" />
+            <div class="footer">
+                <div class="text-center" style="font-size: 10px;">
+                    <ul class="list-unstyled mt4 mb4">
+                        <li>
+                            <span t-field="company.name" />
+                            -
+                            <t t-esc="company.country_id.vat_label or 'CIF'" />:
+                            <span t-field="company.vat" />
+                        </li>
+                        <li t-if="company.street or company.street2">
+                            <span
+                                t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
+                            />
+                            -
+                            <span
+                                t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
+                            />
+                        </li>
+                        <li>
+                            <t t-if="company.phone">
+                                Tel.
+                                <span t-field="company.phone" />
+                            </t>
+                            <span
+                                t-esc="' / '.join(filter(lambda x: x, [company.email, company.website]))"
+                            />
+                        </li>
+                    </ul>
+                    <div class="text-muted">
+                        Page
+                        <span class="page" />
+                        of
+                        <span class="topage" />
+                    </div>
                 </div>
             </div>
-        </div>
+        </t>
     </template>
 
     <template id="report_invoice_service_document">
@@ -101,34 +108,34 @@
                                             <td width="60%">
                                                 <h2 class="mt0">
                                                     <span
-                                                        t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')"
+                                                        t-if="o.move_type == 'out_invoice' and o.state == 'posted'"
                                                     >
                                                         <span>Invoice</span>
                                                     </span>
                                                     <span
-                                                        t-if="o.type == 'out_invoice' and o.state == 'draft'"
+                                                        t-if="o.move_type == 'out_invoice' and o.state == 'draft'"
                                                     >
                                                         <span>Draft Invoice</span>
                                                     </span>
                                                     <span
-                                                        t-if="o.type == 'out_invoice' and o.state == 'cancel'"
+                                                        t-if="o.move_type == 'out_invoice' and o.state == 'cancel'"
                                                     >
                                                         <span>Cancelled Invoice</span>
                                                     </span>
                                                     <span
-                                                        t-if="o.type == 'out_refund'"
+                                                        t-if="o.move_type == 'out_refund'"
                                                     >Credit Note</span>
                                                     <span
-                                                        t-if="o.type == 'in_refund'"
+                                                        t-if="o.move_type == 'in_refund'"
                                                     >Vendor Credit Note</span>
                                                     <span
-                                                        t-if="o.type == 'in_invoice'"
+                                                        t-if="o.move_type == 'in_invoice'"
                                                     >Vendor Bill</span>
-                                                    <span t-field="o.number" />
+                                                    <span t-field="o.name" />
                                                 </h2>
-                                                <div t-if="o.date_invoice">
+                                                <div t-if="o.invoice_date">
                                                     <strong>Invoice date:</strong>
-                                                    <span t-field="o.date_invoice" />
+                                                    <span t-field="o.invoice_date" />
                                                 </div>
                                                 <div
                                                     t-if="o.partner_id.ref"
@@ -437,8 +444,8 @@
                                                                                 t-field="il.quantity"
                                                                             />
                                                                             <span
-                                                                                t-field="il.uom_id"
-                                                                                groups="product.group_uom"
+                                                                                t-field="il.product_uom_id"
+                                                                                groups="uom.group_uom"
                                                                             />
                                                                         </td>
                                                                         <td
@@ -516,7 +523,7 @@
                             >
                                 <t
                                     t-set="tax_amount_by_group"
-                                    t-value="list(filter(lambda x: x[1], o._get_tax_amount_by_group()))"
+                                    t-value="list(filter(lambda x: x[1], o.amount_by_group))"
                                 />
                                 <t t-if="tax_amount_by_group">
                                     <tr
@@ -595,19 +602,19 @@
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <p t-if="o.comment">
+                        <p t-if="o.narration">
                             <strong>Comment:</strong>
-                            <span t-field="o.comment" />
+                            <span t-field="o.narration" />
                         </p>
                         <ul class="list-unstyled mb4 mt4">
-                            <li t-if="o.payment_mode_id or o.payment_term_id">
+                            <li t-if="o.payment_mode_id or o.invoice_payment_term_id">
                                 <span>Payment terms:</span>
                                 <span
                                     t-if="o.payment_mode_id.name"
                                     t-field="o.payment_mode_id.name"
                                 />
-                                <t t-if="o.payment_term_id.name">
-                                    <span t-field="o.payment_term_id.name" />
+                                <t t-if="o.invoice_payment_term_id.name">
+                                    <span t-field="o.invoice_payment_term_id.name" />
                                     <span>from invoice date</span>
                                 </t>
                             </li>
@@ -625,10 +632,10 @@
                             <li>
                                 Please indicate in your payments the invoice numbers that you cancel*
                             </li>
-                            <li t-if="o.move_id">
+                            <li t-if="o.line_ids">
                                 <t
                                     t-set="movelines"
-                                    t-value="o.move_id.line_ids.filtered(lambda x: x.partner_id == o.partner_id and x.account_id == o.account_id).sorted(lambda x: x.date_maturity)"
+                                    t-value="o.line_ids.filtered(lambda x: x.partner_id == o.partner_id and x.account_id.user_type_id.type in ('receivable', 'payable')).sorted(lambda x: x.date_maturity)"
                                 />
                                 <t t-if="movelines">
                                     <t t-if="len(movelines)>1">
@@ -651,7 +658,7 @@
                         </ul>
                         <t
                             t-set="notaxable_taxes"
-                            t-value="o.invoice_line_ids.mapped('invoice_line_tax_ids').filtered(lambda x: x.description=='S_IVA0')"
+                            t-value="o.invoice_line_ids.mapped('tax_ids').filtered(lambda x: x.description=='S_IVA0')"
                         />
                         <ul t-if="notaxable_taxes" class="list-unstyled mt8">
                             <li>
