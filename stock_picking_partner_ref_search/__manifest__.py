@@ -5,7 +5,7 @@
     "name": "Stock picking partner ref search",
     "summary": "This module adds partner ref in the stock "
     "picking to search by this field",
-    "version": "12.0.1.0.1",
+    "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Kilian Niubo",
     "license": "AGPL-3",
     "category": "Custom",

@@ -41,7 +41,7 @@
                 <attribute name="filter_domain">['|','|',('name','ilike',
                     self),('origin','ilike',self),('partner_ref','ilike',self)]</attribute>
             </field>
-            <field name="group_id" position="after">
+            <field name="picking_type_id" position="after">
                 <field name="partner_ref" />
             </field>
         </field>
