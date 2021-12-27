@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,11 +6,18 @@
     <record id="view_make_procurment_buffer_wizard" model="ir.ui.view">
         <field name="name">Request Procurement Zero</field>
         <field name="model">make.procurement.orderpoint</field>
-        <field name="inherit_id" ref="stock_orderpoint_manual_procurement.view_make_procurment_buffer_wizard"/>
+        <field
+            name="inherit_id"
+            ref="stock_orderpoint_manual_procurement.view_make_procurment_buffer_wizard"
+        />
         <field name="arch" type="xml">
             <footer position="inside">
-                <button name="remove_zeros" string="Remove zeros" type="object"
-                        class="oe_edit_only btn-secondary"/>
+                <button
+                    name="remove_zeros"
+                    string="Remove zeros"
+                    type="object"
+                    class="oe_edit_only btn-secondary"
+                />
             </footer>
         </field>
     </record>
@@ -18,11 +25,18 @@
     <record id="view_make_procure_without_security" model="ir.ui.view">
         <field name="name">Request Procurement Zero</field>
         <field name="model">make.procurement.orderpoint</field>
-        <field name="inherit_id" ref="stock_orderpoint_manual_procurement.view_make_procure_without_security"/>
+        <field
+            name="inherit_id"
+            ref="stock_orderpoint_manual_procurement.view_make_procure_without_security"
+        />
         <field name="arch" type="xml">
             <footer position="inside">
-                <button name="remove_zeros" string="Remove zeros" type="object"
-                        class="oe_edit_only btn-secondary"/>
+                <button
+                    name="remove_zeros"
+                    string="Remove zeros"
+                    type="object"
+                    class="oe_edit_only btn-secondary"
+                />
             </footer>
         </field>
     </record>
