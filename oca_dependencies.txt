@@ -1,3 +1,5 @@
 queue
 connector
 account-invoicing
+account-financial-tools
+l10n-spain
