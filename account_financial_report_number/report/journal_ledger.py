@@ -2,33 +2,20 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError, UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class ReportJournalLedger(models.TransientModel):
-    _inherit = 'report_journal_ledger'
+    _inherit = "report_journal_ledger"
 
-    date_from = fields.Date(
-        required=False
-    )
-    date_to = fields.Date(
-        required=False
-    )
+    date_from = fields.Date(required=False)
+    date_to = fields.Date(required=False)
 
-    filter_by_number = fields.Boolean(
-        string="Filter by entry number",
-        default=False
-    )
+    filter_by_number = fields.Boolean(string="Filter by entry number", default=False)
 
-    number_from = fields.Char(
-        string="From number",
-        required=False
-    )
-    number_to = fields.Char(
-        string="To number",
-        required=False
-    )
+    number_from = fields.Char(string="From number", required=False)
+    number_to = fields.Char(string="To number", required=False)
 
     def _get_number_interval(self):
         number_from = self.number_from
@@ -57,7 +44,7 @@ class ReportJournalLedger(models.TransientModel):
             *list(interval),
         ]
 
-        if self.move_target != 'all':
+        if self.move_target != "all":
             params.append(self.move_target)
 
         return tuple(params)
@@ -78,7 +65,7 @@ class ReportJournalLedger(models.TransientModel):
                    AND
                        am.name between %s AND %s
                """
-        if self.move_target != 'all':
+        if self.move_target != "all":
             where_clause += """
                        AND
                            am.state = %s

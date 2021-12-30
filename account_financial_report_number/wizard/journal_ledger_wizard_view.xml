@@ -1,38 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
-
 <odoo>
     <record id="journal_ledger_wizard" model="ir.ui.view">
         <field name="name">Journal Ledger with number filter</field>
         <field name="model">journal.ledger.report.wizard</field>
-        <field name="inherit_id" ref="account_financial_report.journal_ledger_wizard"/>
+        <field name="inherit_id" ref="account_financial_report.journal_ledger_wizard" />
         <field name="arch" type="xml">
             <xpath expr="//group[field[@name='company_id']]" position="after">
                 <group>
-                    <field name="filter_by_number"/>
+                    <field name="filter_by_number" />
                 </group>
 
-                <separator string="Entry number"
-                           attrs="{'invisible': [('filter_by_number', '!=', True)]}"/>
+                <separator
+                    string="Entry number"
+                    attrs="{'invisible': [('filter_by_number', '!=', True)]}"
+                />
                 <group attrs="{'invisible': [('filter_by_number', '!=', True)]}">
                     <group>
-                        <field name="number_from"
-                               attrs="{'required': [('filter_by_number', '=', True)]}"/>
-                        <field name="number_to"/>
+                        <field
+                            name="number_from"
+                            attrs="{'required': [('filter_by_number', '=', True)]}"
+                        />
+                        <field name="number_to" />
                     </group>
                 </group>
             </xpath>
 
-            <xpath expr="//group[group[field[@name='date_range_id']]]/preceding-sibling::separator[1]"
-                   position="attributes">
+            <xpath
+                expr="//group[group[field[@name='date_range_id']]]/preceding-sibling::separator[1]"
+                position="attributes"
+            >
                 <attribute name="attrs">
                     {'invisible': [('filter_by_number', '=', True)]}
                 </attribute>
             </xpath>
 
-            <xpath expr="//group[group[field[@name='date_range_id']]]" position="attributes">
+            <xpath
+                expr="//group[group[field[@name='date_range_id']]]"
+                position="attributes"
+            >
                 <attribute name="attrs">
                     {'invisible': [('filter_by_number', '=', True)]}
                 </attribute>
