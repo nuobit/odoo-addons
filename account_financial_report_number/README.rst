@@ -6,8 +6,7 @@
 Account Financial Reports Number
 ================================
 
-* This module adds a filter to Journal Ledger report to filter
-by journal entry number
+* This module adds a filter to Journal Ledger report to filter by journal entry number
 
 
 Bug Tracker
@@ -25,7 +24,4 @@ Contributors
 ------------
 
 * Eric Antones <eantones@nuobit.com>
-
-
-
-
+* Christopher Ormaza <chris.ormaza@forgeflow.com>
