@@ -16,10 +16,10 @@ class MakeProcurementOrderpoint(models.TransientModel):
             res["item_ids"] = list(filter(lambda x: x[2]["qty"] != 0, res["item_ids"]))
         return res
 
-    @api.multi
     def remove_zeros(self):
-        action_id = self.env.context["params"]["action"]
-        wizard_action = self.env["ir.actions.act_window"].browse(action_id).read()[0]
+        wizard_action = self.env.ref(
+            "stock_orderpoint_manual_procurement.act_make_procurement_from_orderpoint"
+        ).read()[0]
         wizard_action_context = dict(self.env.context)
         wizard_action_context["show_recommended_procure_zero"] = False
         wizard_action["context"] = str(wizard_action_context)
