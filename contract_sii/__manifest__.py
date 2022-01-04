@@ -5,17 +5,17 @@
 {
     "name": "Contract SII",
     "summary": "This module adds SII data to contracts and propagate them to invoice",
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Contract Management",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
         "contract",
-        "l10n_es_aeat_sii",
+        "l10n_es_aeat_sii_oca",
     ],
     "data": [
-        "views/account_analytic_contract_view.xml",
+        "views/contract_view.xml",
     ],
     "installable": True,
     "auto_install": False,

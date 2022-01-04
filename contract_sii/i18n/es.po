@@ -1,13 +1,14 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* contract_sii
+# 	* contract_sii
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-12 15:56+0000\n"
-"PO-Revision-Date: 2020-10-12 15:56+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2022-01-21 13:58+0000\n"
+"PO-Revision-Date: 2022-01-21 13:58+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,75 +16,88 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: contract_sii
-#: model:ir.model.fields,field_description:contract_sii.field_account_analytic_account_sii_registration_key_additional2
-#: model:ir.model.fields,field_description:contract_sii.field_project_project_sii_registration_key_additional2
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__sii_registration_key_additional2
 msgid "Additional 2 SII registration key"
 msgstr "Clave de registro adicional 2 SII"
 
 #. module: contract_sii
-#: model:ir.model.fields,field_description:contract_sii.field_account_analytic_account_sii_registration_key_additional1
-#: model:ir.model.fields,field_description:contract_sii.field_project_project_sii_registration_key_additional1
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__sii_registration_key_additional1
 msgid "Additional SII registration key"
 msgstr "Clave de registro adicional SII"
 
 #. module: contract_sii
-#: model:ir.model,name:contract_sii.model_account_analytic_account
-msgid "Analytic Account"
-msgstr "Cuenta analítica"
+#: model:ir.model,name:contract_sii.model_contract_contract
+msgid "Contract"
+msgstr "Contrato"
 
 #. module: contract_sii
-#: model:ir.model.fields,field_description:contract_sii.field_account_analytic_account_sii_registration_key_code
-#: model:ir.model.fields,field_description:contract_sii.field_project_project_sii_registration_key_code
-msgid "Code"
-msgstr "Código"
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
 
 #. module: contract_sii
-#: model:ir.model.fields,field_description:contract_sii.field_account_analytic_account_sii_enabled
-#: model:ir.model.fields,field_description:contract_sii.field_project_project_sii_enabled
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__sii_enabled
 msgid "Enable SII"
 msgstr "Activar SII"
 
 #. module: contract_sii
-#: model:ir.model.fields,field_description:contract_sii.field_account_analytic_account_sii_property_cadastrial_code
-#: model:ir.model.fields,field_description:contract_sii.field_project_project_sii_property_cadastrial_code
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__id
+msgid "ID"
+msgstr ""
+
+#. module: contract_sii
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract____last_update
+msgid "Last Modified on"
+msgstr "Última Modificación en"
+
+#. module: contract_sii
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__sii_property_cadastrial_code
 msgid "Real property cadastrial code"
 msgstr "Referencia catastral"
 
 #. module: contract_sii
-#: model:ir.model.fields,field_description:contract_sii.field_account_analytic_account_sii_property_location
-#: model:ir.model.fields,field_description:contract_sii.field_project_project_sii_property_location
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__sii_property_location
 msgid "Real property location"
 msgstr "Situación del inmueble"
 
 #. module: contract_sii
-#: model:ir.ui.view,arch_db:contract_sii.account_analytic_account_purchase_form
-#: model:ir.ui.view,arch_db:contract_sii.account_analytic_account_sale_form
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__sii_registration_key_code
+msgid "SII Code"
+msgstr "Código SII"
+
+#. module: contract_sii
+#: model_terms:ir.ui.view,arch_db:contract_sii.contract_contract_sale_form
 msgid "SII Information"
 msgstr "Información SII"
 
 #. module: contract_sii
-#: model:ir.model.fields,field_description:contract_sii.field_account_analytic_account_sii_registration_key
-#: model:ir.model.fields,field_description:contract_sii.field_project_project_sii_registration_key
+#: model:ir.model.fields,field_description:contract_sii.field_contract_contract__sii_registration_key
 msgid "SII registration key"
 msgstr "Clave de registro SII"
 
 #. module: contract_sii
-#: selection:account.analytic.account,sii_property_location:0
-msgid "[1]-Real property with cadastral code located within the Spanish territory except Basque Country or Navarra"
-msgstr "[1]-Inmueble con referencia catastral situado dentro del territorio Español excepto el País Vasco y Navarra"
+#: model:ir.model.fields.selection,name:contract_sii.selection__contract_contract__sii_property_location__1
+msgid ""
+"[1]-Real property with cadastral code located within the Spanish territory "
+"except Basque Country or Navarra"
+msgstr ""
+"[1]-Inmueble con referencia catastral situado dentro del territorio Español "
+"excepto el País Vasco y Navarra"
 
 #. module: contract_sii
-#: selection:account.analytic.account,sii_property_location:0
+#: model:ir.model.fields.selection,name:contract_sii.selection__contract_contract__sii_property_location__2
 msgid "[2]-Real property located in the Basque Country or Navarra"
 msgstr "[2]-Inmueble situado en el País Vasco o Navarra"
 
 #. module: contract_sii
-#: selection:account.analytic.account,sii_property_location:0
-msgid "[3]-Real property in any of the above situations but without cadastral code"
-msgstr "[3]-Inmueble situado en cualquiera de las ubicaciones anteriores pero sin referencia catastral"
+#: model:ir.model.fields.selection,name:contract_sii.selection__contract_contract__sii_property_location__3
+msgid ""
+"[3]-Real property in any of the above situations but without cadastral code"
+msgstr ""
+"[3]-Inmueble situado en cualquiera de las ubicaciones anteriores pero sin "
+"referencia catastral"
 
 #. module: contract_sii
-#: selection:account.analytic.account,sii_property_location:0
+#: model:ir.model.fields.selection,name:contract_sii.selection__contract_contract__sii_property_location__4
 msgid "[4]-Real property located in a foreign country"
 msgstr "[4]-Inmueble situado en un país extranjero"
-

@@ -5,8 +5,8 @@
 from odoo import api, fields, models
 
 
-class AccountAnalyticAccount(models.Model):
-    _inherit = "account.analytic.account"
+class ContractContract(models.Model):
+    _inherit = "contract.contract"
 
     def _default_sii_registration_key(self):
         sii_key_obj = self.env["aeat.sii.mapping.registration.keys"]
@@ -32,6 +32,7 @@ class AccountAnalyticAccount(models.Model):
     sii_registration_key_code = fields.Char(
         related="sii_registration_key.code",
         readonly=True,
+        string="SII Code",
     )
     sii_enabled = fields.Boolean(
         string="Enable SII",
@@ -61,15 +62,14 @@ class AccountAnalyticAccount(models.Model):
         copy=False,
     )
 
-    @api.multi
     @api.depends("company_id", "company_id.sii_enabled")
     def _compute_sii_enabled(self):
         for rec in self:
             rec.sii_enabled = rec.company_id.sii_enabled
 
-    @api.multi
-    def _prepare_invoice(self):
-        invoice = super()._prepare_invoice()
+    def _prepare_invoice(self, date_invoice, journal=None):
+        self.ensure_one()
+        invoice_vals, move_form = super()._prepare_invoice(date_invoice, journal)
 
         values = {}
         if self.sii_registration_key:
@@ -92,6 +92,6 @@ class AccountAnalyticAccount(models.Model):
                 ] = self.sii_property_cadastrial_code
 
         if values:
-            invoice.update(values)
+            invoice_vals.update(values)
 
-        return invoice
+        return invoice_vals, move_form
