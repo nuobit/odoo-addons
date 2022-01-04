@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="contract_contract_sale_form" model="ir.ui.view">
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='contract_template_id']/.." position="after">
+                <group
+                    col="4"
+                    string="SII Information"
+                    attrs="{'invisible': [('sii_enabled','=',False)]}"
+                >
+                    <group colspan="2">
+                        <field name="sii_enabled" invisible="1" />
+                        <field name="sii_registration_key_code" invisible="1" />
+                        <field
+                            name="sii_registration_key"
+                            domain="[('type', '=', contract_type)]"
+                            widget="selection"
+                        />
+                        <field
+                            name="sii_property_location"
+                            attrs="{
+                            'invisible': ['|', ('contract_type', '!=', 'sale'), ('sii_registration_key_code', 'not in', ['12', '13'])],
+                            'required': [('sii_registration_key_code', 'in', ['12', '13']), ('contract_type', '=', 'sale')]}"
+                        />
+                        <field
+                            name="sii_property_cadastrial_code"
+                            attrs="{
+                            'invisible': ['|', ('contract_type', '!=', 'sale'), ('sii_registration_key_code', 'not in', ['12', '13'])],
+                            'required': [('sii_registration_key_code', 'in', ['12', '13']), ('sii_property_location', 'in', ['1', '2']), ('contract_type', '=', 'sale')]}"
+                        />
+                    </group>
+                    <group colspan="2">
+                        <field
+                            name="sii_registration_key_additional1"
+                            domain="[('type', '=', contract_type)]"
+                            widget="selection"
+                        />
+                        <field
+                            name="sii_registration_key_additional2"
+                            domain="[('type', '=', contract_type)]"
+                            widget="selection"
+                        />
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
