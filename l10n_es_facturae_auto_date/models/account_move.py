@@ -8,7 +8,7 @@ from odoo import api, fields, models
 
 
 class AccountInvoice(models.Model):
-    _inherit = "account.invoice"
+    _inherit = "account.move"
 
     def _get_facturae_dates(self, date_invoice):
         date_invoice = fields.Date.from_string(date_invoice)
@@ -21,12 +21,12 @@ class AccountInvoice(models.Model):
         )
         return facturae_start_date, facturae_end_date
 
-    @api.onchange("date_invoice")
-    def onchange_date_invoice(self):
+    @api.onchange("invoice_date")
+    def _onchange_date_invoice(self):
         partner_id = self.partner_id.parent_id or self.partner_id
-        if self.facturae and self.date_invoice and partner_id.facturae_auto_dates:
+        if self.facturae and self.invoice_date and partner_id.facturae_auto_dates:
             self.facturae_start_date, self.facturae_end_date = self._get_facturae_dates(
-                self.date_invoice
+                self.invoice_date
             )
         else:
             self.facturae_start_date = False
@@ -41,11 +41,11 @@ class AccountInvoice(models.Model):
             facturae = vals.get("facturae", partner.facturae)
             auto_date = vals.get("facturae_auto_dates", partner.facturae_auto_dates)
             if facturae and auto_date:
-                date_invoice = vals.get("date_invoice")
+                date_invoice = vals.get("invoice_date")
                 if date_invoice:
                     if (
-                        vals.get("facturae_start_date") != False
-                        and vals.get("facturae_end_date") != False
+                        vals.get("facturae_start_date") is not False
+                        and vals.get("facturae_end_date") is not False
                     ):
                         (
                             vals["facturae_start_date"],
@@ -54,7 +54,6 @@ class AccountInvoice(models.Model):
 
         return super(AccountInvoice, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         for rec in self:
             facturae = vals.get("facturae", rec.facturae)
@@ -66,8 +65,8 @@ class AccountInvoice(models.Model):
                 date_invoice = vals.get("date_invoice")
                 if date_invoice is not None:
                     if (
-                        vals.get("facturae_start_date") != False
-                        and vals.get("facturae_end_date") != False
+                        vals.get("facturae_start_date") is not False
+                        and vals.get("facturae_end_date") is not False
                     ):
                         if date_invoice:
                             (

@@ -8,7 +8,7 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="l10n_es_facturae.view_partner_form" />
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='facturae']/group" position="inside">
+            <xpath expr="//group[@name='group_facturae']" position="inside">
                 <field name="facturae_auto_dates" />
             </xpath>
         </field>
