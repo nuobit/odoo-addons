@@ -7,7 +7,7 @@
     "summary": 'Set invoice "sent" flag after successfully facturae creation',
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "category": "Accounting",
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
