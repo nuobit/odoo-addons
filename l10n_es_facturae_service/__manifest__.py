@@ -6,7 +6,7 @@
     "name": "FacturaE service info",
     "summary": "This module propagates the service info of the "
     "sale order to the invoice line facturae data.",
-    "version": "11.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",

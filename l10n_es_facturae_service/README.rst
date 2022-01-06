@@ -6,8 +6,7 @@
 FacturaE service info
 =====================
 
-* This module propagates the service info of the sale order to the
-invoice line facturae data.
+* This module propagates the service info of the sale order to the invoice line facturae data.
 
 
 Bug Tracker
@@ -25,7 +24,4 @@ Contributors
 ------------
 
 * Eric Antones <eantones@nuobit.com>
-
-
-
-
+* Christopher Ormaza <chris.ormaza@forgeflow.com>
