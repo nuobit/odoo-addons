@@ -299,13 +299,33 @@ class MapSpecialProrrateYear(models.Model):
         #     )
 
         # TODO: put these as configurable from the UItipus gr
-        prorrate_taxes = self.env["account.tax"].search(
-            [
-                ("company_id", "=", self.company_id.id),
-                ("amount_type", "!=", "group"),
-                ("prorrate_type", "=", "deductible"),
-            ]
-        )
+        # Get base amount for prorrate tax operations
+        affected_taxes = [
+            'l10n_es_special_prorrate.account_tax_template_p_priva4_bc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva4_sc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva4_bi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva4_ibc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva4_ibi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva4_ic_bc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva4_ic_bi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva4_sp_in',
+            'l10n_es_special_prorrate.account_tax_template_p_priva10_bc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva10_sc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva10_bi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva10_ibc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva10_ibi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva10_ic_bc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva10_ic_bi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva10_sp_in',
+            'l10n_es_special_prorrate.account_tax_template_p_priva21_bc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva21_sc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva21_bi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva21_ibc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva21_ibi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva21_ic_bc',
+            'l10n_es_special_prorrate.account_tax_template_p_priva21_ic_bi',
+            'l10n_es_special_prorrate.account_tax_template_p_priva21_sp_in',
+        ]
         MapLine = self.env["l10n.es.aeat.map.tax.line"]
         map_line = MapLine.new(
             {
@@ -313,6 +333,7 @@ class MapSpecialProrrateYear(models.Model):
                 "field_type": "base",
                 "sum_type": "both",
                 "exigible_type": "yes",
+                "account_id": self.env.ref('l10n_es.account_common_472').id,
                 "tax_ids": [(4, self.env.ref(x).id) for x in affected_taxes],
             }
         )
