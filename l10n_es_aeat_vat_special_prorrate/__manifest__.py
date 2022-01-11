@@ -12,7 +12,7 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
-        "l10n_es_aeat",
+        "l10n_es_aeat_mod303",
     ],
     "data": [
         "security/ir.model.access.csv",

@@ -9,6 +9,7 @@
         <field name="arch" type="xml">
             <form string="Aeat VAT special prorrate map">
                 <header>
+                    <button name="fix_taxes" type="object" string="Fix Taxes" />
                     <button
                         name="compute_prorrate"
                         type="object"
@@ -102,7 +103,6 @@
     <record id="action_aeat_map_special_prorrate_year" model="ir.actions.act_window">
         <field name="name">Aeat VAT special prorrate map</field>
         <field name="res_model">aeat.map.special.prorrate.year</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 

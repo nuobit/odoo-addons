@@ -3,11 +3,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-05 16:27+0000\n"
-"PO-Revision-Date: 2021-01-05 16:27+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2022-01-09 11:38+0000\n"
+"PO-Revision-Date: 2022-01-09 11:38+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
 msgid "1st regularization final prorrate"
 msgstr "1ª regularización prorrata definitiva"
 
@@ -27,13 +27,13 @@ msgstr "AEAT year must be unique"
 #. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.actions.act_window,name:l10n_es_aeat_vat_special_prorrate.action_aeat_map_special_prorrate_year
 #: model:ir.ui.menu,name:l10n_es_aeat_vat_special_prorrate.menu_aeat_map_special_prorrate_year
-#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
-#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_tree
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_tree
 msgid "Aeat VAT special prorrate map"
 msgstr "AEAT prorrata especial IVA - Mapeo anual"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
 msgid "Close"
 msgstr "Cerrar"
 
@@ -45,32 +45,27 @@ msgid "Closed"
 msgstr "Cerrado"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_company_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__company_id
 msgid "Company"
 msgstr "Compañía"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
 msgid "Compute"
 msgstr "Calcular"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_create_uid
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_create_date
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__create_date
 msgid "Created on"
 msgstr "Creado el"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_currency_id
-msgid "Currency"
-msgstr "Moneda"
-
-#. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_move_date
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__prorrate_reg_move_date
 msgid "Date"
 msgstr "Fecha"
 
@@ -82,13 +77,13 @@ msgid "Deductible"
 msgstr "Deducible"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_tax_final_percentage
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_tax_final_percentage_aux
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__tax_final_percentage
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__tax_final_percentage_aux
 msgid "Final %"
 msgstr "Definitva %"
 
@@ -100,7 +95,7 @@ msgid "Finale"
 msgstr "Definitiva"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__id
 msgid "ID"
 msgstr "ID"
 
@@ -134,27 +129,27 @@ msgid "It's not possible to recompute a closed prorrate"
 msgstr "It's not possible to recompute a closed prorrate"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_journal_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__prorrate_reg_journal_id
 msgid "Journal"
 msgstr "Diario"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_move_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__prorrate_reg_move_id
 msgid "Journal Entry"
 msgstr "Asiento contable"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year___last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_write_uid
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_write_date
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
@@ -164,7 +159,7 @@ msgid "Link to the first regularization final prorrate journal entry"
 msgstr "Link to the first regularization final prorrate journal entry"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_map_prorrate_next_year_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__map_prorrate_next_year_id
 msgid "Map Prorrate Next Year"
 msgstr "Map Prorrate Next Year"
 
@@ -175,7 +170,7 @@ msgid "Multiple taxes with the same prorrate type under same parent is not supor
 msgstr "Multiple taxes with the same prorrate type under same parent is not suported"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_negative_adjust_account_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__prorrate_reg_negative_adjust_account_id
 msgid "Negative adjustment account"
 msgstr "Negative adjustment account"
 
@@ -203,22 +198,22 @@ msgid "P_PRD44_IVA"
 msgstr "P_PRD44_IVA"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_positive_adjust_account_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__prorrate_reg_positive_adjust_account_id
 msgid "Positive adjustment account"
 msgstr "Positive adjustment account"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_account_tax_prorrate_type
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_account_tax__prorrate_type
 msgid "Prorrate type"
 msgstr "Tipo de prorrata"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
 msgid "Recompute"
 msgstr "Recalcular"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_prorrate_reg_ref
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__prorrate_reg_ref
 msgid "Reference"
 msgstr "Referencia"
 
@@ -233,12 +228,12 @@ msgid "Regularización prorrata definitiva"
 msgstr "Regularización prorrata definitiva"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
 msgid "Set to Temporary"
 msgstr "Establecer a provisional"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_state
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__state
 msgid "State"
 msgstr "Estado"
 
@@ -267,7 +262,7 @@ msgid "Temporary"
 msgstr "Provisional"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_tax_percentage
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__tax_percentage
 msgid "Temporary %"
 msgstr "Provisional %"
 
@@ -307,7 +302,7 @@ msgid "The year of the previous linked map prorrata must be the previous chronol
 msgstr "The year of the previous linked map prorrata must be the previous chronological year"
 
 #. module: l10n_es_aeat_vat_special_prorrate
-#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year_year
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__year
 msgid "Year"
 msgstr "Año"
 
