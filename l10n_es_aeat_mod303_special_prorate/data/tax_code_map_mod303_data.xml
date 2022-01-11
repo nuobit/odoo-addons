@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_10"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi')),
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_11"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi')),
+            ]"
+        />
+
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_14_purchase"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi')),
+           ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_15_purchase"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi')),
+            ]"
+        />
+    </record>
+
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_28"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bc')),
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_29"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bc')),
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_30"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bi'))
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_31"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bi'))
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_32"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibc'))
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_33"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibc')),
+            ]"
+        />
+
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_34"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibi'))
+            ]"
+        />
+
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_35"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibi'))
+            ]"
+        />
+
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_36"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in'))
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_37"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in'))
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_38"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi'))
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_39"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi'))
+            ]"
+        />
+
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_40"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in')),
+            ]"
+        />
+    </record>
+
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_41"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_ids"
+            eval="[
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in')),
+            ]"
+        />
+    </record>
+</odoo>
