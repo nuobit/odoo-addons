@@ -10,8 +10,8 @@ class AccountMove(models.Model):
 
     def _prepare_asset_vals(self, aml):
         vals = super()._prepare_asset_vals(aml)
-        vals["move_id"] = aml.move_id.id
-        vals["move_line_id"] = aml.id
+        vals["move_id"] = aml.move_id
+        vals["move_line_id"] = aml
         return vals
 
 
