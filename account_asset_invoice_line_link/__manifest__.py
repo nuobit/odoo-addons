@@ -11,7 +11,7 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
-        "account_asset_hook",
+        "account_asset_management",
     ],
     "data": [
         "views/account_asset_view.xml",
