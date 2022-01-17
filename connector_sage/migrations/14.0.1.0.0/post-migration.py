@@ -6,4 +6,6 @@ from openupgradelib import openupgrade
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env.cr, "connector_sage", "14.0.1.0.0/noupdate_changes.xml")
+    openupgrade.load_data(
+        env.cr, "connector_sage", "migrations/14.0.1.0.0/noupdate_changes.xml"
+    )
