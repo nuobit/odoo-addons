@@ -21,11 +21,7 @@ class ResPartner(models.Model):
         inverse_name="partner_id",
     )
 
-    @api.constrains(
-        "quality_classification_id",
-        "quality_document_ids",
-        "quality_document_ids.document_type_id",
-    )
+    @api.constrains("quality_classification_id", "quality_document_ids")
     def _check_classification_document_type(self):
         for rec in self:
             if not rec.quality_classification_id:
