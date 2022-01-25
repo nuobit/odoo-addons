@@ -20,8 +20,8 @@
                 position="attributes"
             >
                 <attribute name="attrs">{'readonly': [
-                    '|', '|', ('state', 'in', ('purchase', 'done', 'cancel')),
-                    ('invoice_lines', '!=', []), ('move_ids', '!=', [])
+                    ('state', 'in', ('purchase', 'done', 'cancel')),
+                    '|', ('invoice_lines', '!=', []), ('move_ids', '!=', [])
                     ], 'required': [('display_type', '=', False)]}
                 </attribute>
             </xpath>
