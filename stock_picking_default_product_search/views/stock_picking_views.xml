@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_picking_internal_search" model="ir.ui.view">
+        <field name="name">view.picking.internal.search.product</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search" />
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute
+                    name="filter_domain"
+                >['|', '|', '|', ('name', 'ilike', self), ('origin', 'ilike', self), ('product_id.default_code', 'ilike', self), ('product_id.barcode', 'ilike', self)]</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
