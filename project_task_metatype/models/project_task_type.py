@@ -15,6 +15,7 @@ class ProjectTaskType(models.Model):
             ("parking", "Parking"),
             ("bring_in", "Bring In"),
             ("in_place", "In Place"),
+            ("to_assembly", "To Assembly"),
             ("cancel", "Cancel"),
         ]
     )
