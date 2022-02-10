@@ -225,31 +225,40 @@ class SaleOrder(models.Model):
                 meta_type = "bring_in"
             elif longest_task.bike_location == "in_shop":
                 meta_type = "in_place"
+            elif longest_task.bike_location == "to_assembly":
+                meta_type = "to_assembly"
             stage = self._get_stage_by_metatype(longest_task.project_id, meta_type)
             if stage:
                 longest_task.stage_id = stage
         return result
 
     def _get_stage_by_metatype(self, project, meta_type):
-        task_type = self.env["project.task.type"].search(
-            [
-                ("project_ids", "in", project.ids),
-                ("meta_type", "=", meta_type),
-            ]
-        )
-        if not task_type:
-            raise ValidationError(_("Theres no stages with metatype %s" % meta_type))
-
-        if len(task_type) > 1:
-            raise UserError(
-                _("The project '%s' has defined " "more than one stage %s of type '%s'")
-                % (
-                    project.name,
-                    task_type.mapped("name"),
-                    meta_type,
-                )
+        if meta_type:
+            task_type = self.env["project.task.type"].search(
+                [
+                    ("project_ids", "in", project.ids),
+                    ("meta_type", "=", meta_type),
+                ]
             )
-        return task_type
+            if not task_type:
+                raise ValidationError(
+                    _("Theres no stages with metatype %s" % meta_type)
+                )
+
+            if len(task_type) > 1:
+                raise UserError(
+                    _(
+                        "The project '%s' has defined "
+                        "more than one stage %s of type '%s'"
+                    )
+                    % (
+                        project.name,
+                        task_type.mapped("name"),
+                        meta_type,
+                    )
+                )
+            return task_type
+        return self.env["project.task.type"]
 
     def write(self, values):
         if "bike_location" in values:
@@ -265,5 +274,9 @@ class SaleOrder(models.Model):
                             task.project_id, new_meta_type
                         )
                         task.stage_id = stage
+                elif values["bike_location"] == "to_assembly":
+                    stage = self._get_stage_by_metatype(task.project_id, "to_assembly")
+                    task.stage_id = stage
+
         result = super().write(values)
         return result
