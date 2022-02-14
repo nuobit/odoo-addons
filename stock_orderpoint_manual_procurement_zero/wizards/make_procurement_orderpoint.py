@@ -17,9 +17,9 @@ class MakeProcurementOrderpoint(models.TransientModel):
         return res
 
     def remove_zeros(self):
-        wizard_action = self.env.ref(
+        wizard_action = self.env["ir.actions.act_window"]._for_xml_id(
             "stock_orderpoint_manual_procurement.act_make_procurement_from_orderpoint"
-        ).read()[0]
+        )
         wizard_action_context = dict(self.env.context)
         wizard_action_context["show_recommended_procure_zero"] = False
         wizard_action["context"] = str(wizard_action_context)
