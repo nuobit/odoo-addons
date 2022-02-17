@@ -6,9 +6,9 @@ from odoo import models
 
 
 class StockPicking(models.Model):
-    _inherit = 'stock.picking'
+    _inherit = "stock.picking"
 
     def action_barcode_scan(self):
         action = super(StockPicking, self).action_barcode_scan()
-        action['context']['default_picking_type_id'] = self.picking_type_id.id
+        action["context"]["default_picking_type_id"] = self.picking_type_id.id
         return action

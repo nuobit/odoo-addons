@@ -10,5 +10,5 @@ class StockPickingType(models.Model):
 
     def action_barcode_scan(self):
         action = super(StockPickingType, self).action_barcode_scan()
-        action['context']['default_picking_type_id'] = self.id
+        action["context"]["default_picking_type_id"] = self.id
         return action
