@@ -41,7 +41,9 @@ class WizStockBarcodesNewLot(models.TransientModel):
 
             product = self.env["product.product"].search(
                 [
-                    ("company_id", "=", self.env.user.company_id.id),
+                    "|",
+                    ("company_id", "=", self.env.company.id),
+                    ("company_id", "=", False),
                     ("barcode", "=like", "%" + product_barcode_trim),
                 ]
             )
