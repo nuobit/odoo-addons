@@ -102,8 +102,20 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                 rec.sheet_width = int(m.group(1))
                 rec.sheet_height = int(m.group(2))
 
-    label_width = fields.Float(string="Label width (mm)", required=True, default=52.5)
-    label_height = fields.Float(string="Label height (mm)", required=True, default=21.2)
+    label_width = fields.Float(
+        string="Label width (mm)",
+        required=True,
+        compute="_compute_label_size",
+        readonly=False,
+        store=True,
+    )
+    label_height = fields.Float(
+        string="Label height (mm)",
+        required=True,
+        compute="_compute_label_size",
+        readonly=False,
+        store=True,
+    )
     page_rows_max = fields.Integer(
         string="Max rows per page",
         required=True,
@@ -119,6 +131,19 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         required=True,
         compute="_compute_page_label_count",
     )
+
+    @api.depends("paperformat_id")
+    def _compute_label_size(self):
+        for rec in self:
+            if rec.paperformat_id.name == "Barcodes A4 Portrait":
+                rec.label_width = 48.50
+                rec.label_height = 16.90
+            elif rec.paperformat_id.name == "Barcodes A4 Portrait_Equipos":
+                rec.label_width = 47.50
+                rec.label_height = 21.20
+            else:
+                rec.label_width = 52.50
+                rec.label_height = 21.20
 
     @api.depends("sheet_width", "sheet_height", "label_width", "label_height")
     def _compute_page_label_count(self):
