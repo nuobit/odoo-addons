@@ -11,7 +11,7 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
-        "project",
+        "project_timeline",
         "hr",
     ],
     "data": [
