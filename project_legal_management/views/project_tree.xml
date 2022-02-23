@@ -19,7 +19,7 @@
         </field>
     </record>
     <record id="project.open_view_project_all" model="ir.actions.act_window">
-        <field name="view_mode">kanban,form,tree</field>
+        <field name="view_mode">kanban,timeline,form,tree</field>
     </record>
     <record id="view_project_project_filter" model="ir.ui.view">
         <field name="name">view.project.project.filter.legal.management</field>
