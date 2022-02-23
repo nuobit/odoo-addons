@@ -1,9 +1,9 @@
-==================
+============
 Oxigen Stock
-==================
+============
 
 * This module allows to set expiry dates and description when creating a lot
-from a picking.
+  from a picking.
 
 Credits
 =======
