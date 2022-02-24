@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2022 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
@@ -32,6 +32,7 @@ class IrActionsReport(models.Model):
         humanreadable=0,
         quiet=1,
         mask=None,
+        **kwargs,
     ):
         if barcode_type == "gs1-128":
             data = value.replace(r"\F", "\xf1")
