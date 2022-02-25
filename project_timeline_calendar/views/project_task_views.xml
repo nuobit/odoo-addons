@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_task_form2" model="ir.ui.view">
@@ -8,23 +9,9 @@
         <field name="priority" eval="100" />
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='date_assign']/.." position="after">
-                <group>
-                    <span name="date_start_placeholder" invisible="1" />
-                    <span name="date_end_placeholder" invisible="1" />
-                </group>
-            </xpath>
-            <xpath
-                expr="(//field[@name='date_start'] | //span[@name='date_start_placeholder'])[1]"
-                position="replace"
-            >
-                <field name="date_start" string="date_start_nuo" />
-            </xpath>
-            <xpath
-                expr="(//field[@name='date_end'] | //span[@name='date_end_placeholder'])[1]"
-                position="replace"
-            >
-                <field name="date_end" string="date_end_nuo" />
+            <xpath expr="//field[@name='partner_id']/.." position="inside">
+                <field name="date_start" />
+                <field name="date_end" />
             </xpath>
         </field>
     </record>
