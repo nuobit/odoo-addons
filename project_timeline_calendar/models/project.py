@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 
 class Task(models.Model):
     _inherit = "project.task"
-    date_start = fields.Datetime("Start Date")
+    date_start = fields.Datetime("Starting Date")
 
     @api.constrains("date_start", "date_start", "user_id", "project_id")
     def check_ovelap(self):
