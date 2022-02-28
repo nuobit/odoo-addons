@@ -1,5 +1,5 @@
-/* Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-   Eric Antones <eantones@nuobit.com>
+/*  Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+    Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) */
 
 odoo.define("pos_product_pack.pos_product_pack", function (require) {
@@ -114,6 +114,59 @@ odoo.define("pos_product_pack.pos_product_pack", function (require) {
     });
 
     patch(ProductScreen, "pos_product_pack.pos_product_pack", {
+        _add_subproducts: function (order, pack_lines, product) {
+            let pack_line = {};
+            let price = 0;
+            if (product.pack_type === "non_detailed") {
+                for (let j = 0; j < pack_lines.length; j++) {
+                    price +=
+                        pack_lines[j].product.get_price(order.pricelist, 1) *
+                        pack_lines[j].quantity *
+                        (1 - pack_lines[j].sale_discount / 100);
+                }
+                order.add_product(product, {
+                    price: price,
+                });
+            } else if (product.pack_component_price === "detailed") {
+                order.add_product(product);
+                for (let k = 0; k < pack_lines.length; k++) {
+                    pack_line = pack_lines[k];
+                    order.add_product(pack_line.product, {
+                        quantity: pack_line.quantity,
+                        discount: pack_line.sale_discount,
+                    });
+                }
+            } else if (product.pack_component_price === "totalized") {
+                for (let r = 0; r < pack_lines.length; r++) {
+                    price +=
+                        pack_lines[r].product.get_price(order.pricelist, 1) *
+                        pack_lines[r].quantity *
+                        (1 - pack_lines[r].sale_discount / 100);
+                }
+                order.add_product(product, {
+                    price: price,
+                });
+                for (let s = 0; s < pack_lines.length; s++) {
+                    pack_line = pack_lines[s];
+                    order.add_product(pack_line.product, {
+                        quantity: pack_line.quantity,
+                        price: 0,
+                        discount: 0,
+                    });
+                }
+            } else {
+                // Ignored
+                order.add_product(product);
+                for (let t = 0; t < pack_lines.length; t++) {
+                    pack_line = pack_lines[t];
+                    order.add_product(pack_line.product, {
+                        quantity: pack_line.quantity,
+                        price: 0,
+                        discount: 0,
+                    });
+                }
+            }
+        },
         _clickProduct: async function (event) {
             const self = this;
             const product = event.detail;
@@ -135,13 +188,24 @@ odoo.define("pos_product_pack.pos_product_pack", function (require) {
                     );
                 }
                 const pack_lines = [];
-                let pack_line = {};
                 for (let i = 0; i < product.pack_line_ids.length; i++) {
                     const pack_line_id = product.pack_line_ids[i];
-                    pack_line = this.env.pos.pack_line_by_id[pack_line_id];
+                    const pack_line = this.env.pos.pack_line_by_id[pack_line_id];
                     const subproduct = this.env.pos.db.get_product_by_id(
                         pack_line.product_id[0]
                     );
+                    if (!subproduct) {
+                        throw new Error(
+                            _t(
+                                "Pack " +
+                                    pack_line.parent_product_id[1] +
+                                    " contains products that are not available at the POS. " +
+                                    "Please, check " +
+                                    pack_line.product_id[1] +
+                                    " and add the pack again "
+                            )
+                        );
+                    }
                     pack_lines.push({
                         parent_product: product,
                         product: subproduct,
@@ -149,56 +213,7 @@ odoo.define("pos_product_pack.pos_product_pack", function (require) {
                         sale_discount: pack_line.sale_discount || 0,
                     });
                 }
-                let price = 0;
-                if (product.pack_type === "non_detailed") {
-                    for (let j = 0; j < pack_lines.length; j++) {
-                        price +=
-                            pack_lines[j].product.get_price(order.pricelist, 1) *
-                            pack_lines[j].quantity *
-                            (1 - pack_lines[j].sale_discount / 100);
-                    }
-                    order.add_product(product, {
-                        price: price,
-                    });
-                } else if (product.pack_component_price === "detailed") {
-                    order.add_product(product);
-                    for (let k = 0; k < pack_lines.length; k++) {
-                        pack_line = pack_lines[k];
-                        order.add_product(pack_line.product, {
-                            quantity: pack_line.quantity,
-                            discount: pack_line.sale_discount,
-                        });
-                    }
-                } else if (product.pack_component_price === "totalized") {
-                    for (let r = 0; r < pack_lines.length; r++) {
-                        price +=
-                            pack_lines[r].product.get_price(order.pricelist, 1) *
-                            pack_lines[r].quantity *
-                            (1 - pack_lines[r].sale_discount / 100);
-                    }
-                    order.add_product(product, {
-                        price: price,
-                    });
-                    for (let s = 0; s < pack_lines.length; s++) {
-                        pack_line = pack_lines[s];
-                        order.add_product(pack_line.product, {
-                            quantity: pack_line.quantity,
-                            price: 0,
-                            discount: 0,
-                        });
-                    }
-                } else {
-                    // Ignored
-                    order.add_product(product);
-                    for (let t = 0; t < pack_lines.length; t++) {
-                        pack_line = pack_lines[t];
-                        order.add_product(pack_line.product, {
-                            quantity: pack_line.quantity,
-                            price: 0,
-                            discount: 0,
-                        });
-                    }
-                }
+                this._add_subproducts(order, pack_lines, product);
                 NumberBuffer.reset();
             }
         },
