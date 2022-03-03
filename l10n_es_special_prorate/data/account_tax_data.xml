@@ -1,0 +1,1533 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- IVA soportado (bienes corrientes) -->
+    <record id="account_tax_template_p_priva4_bc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 4% IVA soportado (bienes corrientes)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="4" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_4" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_29')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva10_bc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 10% IVA soportado (bienes corrientes)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="10" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_10" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_29')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva21_bc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 21% IVA soportado (bienes corrientes)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="21" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_21" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_29')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <!-- IVA soportado (bienes de inversión) -->
+    <record id="account_tax_template_p_priva4_bi" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 4% IVA soportado (bienes de inversión)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="4" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_4" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+               'tag_ids': [ref('l10n_es.mod_303_30')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_31')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_30')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva10_bi" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 10% IVA soportado (bienes de inversión)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="10" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_10" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_30')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_31')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_30')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva21_bi" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 21% IVA soportado (bienes de inversión)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="21" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_21" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_30')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_31')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_30')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <!-- IVA soportado (servicios corrientes) -->
+    <record id="account_tax_template_p_priva4_sc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 4% IVA soportado (servicios corrientes)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="4" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_4" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_29')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva10_sc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 10% IVA soportado (servicios corrientes)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="10" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_10" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_29')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva21_sc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 21% IVA soportado (servicios corrientes)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="21" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_21" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_29')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <!-- Adquisiciones Intracomunitarias (bienes corrientes) -->
+    <record id="account_tax_template_p_priva4_ic_bc" model="account.tax.template">
+        <field name="amount" eval="4" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 4% Adquisición Intracomunitario. Bienes corrientes</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_4" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_37')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva10_ic_bc" model="account.tax.template">
+        <field name="amount" eval="10" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 10% Adquisición Intracomunitario. Bienes corrientes</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_10" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_37')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva21_ic_bc" model="account.tax.template">
+        <field name="amount" eval="21" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 21% Adquisición Intracomunitario. Bienes corrientes</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_21" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_37')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <!-- Adquisiciones Intracomunitarias (bienes de inversión) -->
+    <record id="account_tax_template_p_priva4_ic_bi" model="account.tax.template">
+        <field name="amount" eval="4" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 4% Adquisición Intracomunitario. Bienes de inversión</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_4" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_38'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_39')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_38'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva10_ic_bi" model="account.tax.template">
+        <field name="amount" eval="10" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 10% Adquisición Intracomunitario. Bienes de inversión</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_10" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_38'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_39')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_38'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva21_ic_bi" model="account.tax.template">
+        <field name="amount" eval="21" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 21% Adquisición Intracomunitario. Bienes de inversión</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_21" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_38'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_39')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_38'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <!-- Adquisiciones Intracomunitarias (servicios corrientes) -->
+    <record id="account_tax_template_p_priva4_sp_in" model="account.tax.template">
+        <field name="amount" eval="4" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 4% Adquisición de servicios intracomunitarios</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_4" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_37')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva10_sp_in" model="account.tax.template">
+        <field name="amount" eval="10" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 10% Adquisición de servicios intracomunitarios</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_10" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_37')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva21_sp_in" model="account.tax.template">
+        <field name="amount" eval="21" />
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field
+            name="name"
+        >Prorrata IVA 21% Adquisición de servicios intracomunitarios</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_21" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_37')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_36'), ref('l10n_es.mod_303_10')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_11')],
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40'), ref('l10n_es.mod_303_14_purchase')],
+            }),
+
+            (0,0, {
+                'factor_percent': -100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_477'),
+                'tag_ids': [ref('l10n_es.mod_303_15')],
+            }),
+        ]"
+        />
+    </record>
+
+    <!-- IVA Importaciones (bienes corrientes) -->
+    <record id="account_tax_template_p_priva4_ibc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata IVA 4% Importaciones bienes corrientes</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="4" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_4" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_32')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_33')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_32')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva10_ibc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata IVA 10% Importaciones bienes corrientes</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="10" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_10" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_32')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_33')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_32')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva21_ibc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata IVA 21% Importaciones bienes corrientes</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="21" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_21" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_32')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_33')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_32')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <!-- IVA Importaciones (bienes de inversión) -->
+    <record id="account_tax_template_p_priva4_ibi" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata IVA 4% Importaciones bienes de inversión</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="4" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_4" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_34')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_35')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_34')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva10_ibi" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata IVA 10% Importaciones bienes de inversión</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="10" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_10" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_34')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_35')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_34')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
+    <record id="account_tax_template_p_priva21_ibi" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata IVA 21% Importaciones bienes de inversión</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="21" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_21" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_34')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_35')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_34')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+</odoo>
