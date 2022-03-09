@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="aeat_map_special_prorrate_year_view_form" model="ir.ui.view">
-        <field name="name">aeat.map.special.prorrate.year.view.form</field>
+        <field name="name">aeat.map.special.prorate.year.view.form</field>
         <field name="model">aeat.map.special.prorrate.year</field>
         <field name="arch" type="xml">
-            <form string="Aeat VAT special prorrate map">
+            <form string="Aeat VAT special prorate map">
                 <header>
                     <button
-                        name="compute_prorrate"
+                        name="compute_prorate"
                         type="object"
                         string="Compute"
                         states="temporary"
                         class="oe_highlight"
                     />
                     <button
-                        name="close_prorrate"
+                        name="close_prorate"
                         type="object"
                         string="Close"
                         states="finale"
                         class="oe_highlight"
                     />
                     <button
-                        name="compute_prorrate"
+                        name="compute_prorate"
                         type="object"
                         string="Recompute"
                         states="finale"
@@ -41,6 +40,7 @@
                     <group>
                         <group>
                             <field name="year" />
+                            <field name="company_id" />
                         </group>
                         <group>
                             <field name="tax_percentage" />
@@ -54,22 +54,22 @@
     </record>
 
     <record id="aeat_map_special_prorrate_year_view_tree" model="ir.ui.view">
-        <field name="name">aeat.map.special.prorrate.year.view.tree</field>
+        <field name="name">aeat.map.special.prorate.year.view.tree</field>
         <field name="model">aeat.map.special.prorrate.year</field>
         <field name="arch" type="xml">
-            <tree string="Aeat VAT special prorrate map">
+            <tree string="Aeat VAT special prorate map">
                 <field name="year" />
                 <field name="tax_percentage" />
                 <field name="tax_final_percentage" />
                 <field name="state" />
+                <field name="company_id" />
             </tree>
         </field>
     </record>
 
     <record id="action_aeat_map_special_prorrate_year" model="ir.actions.act_window">
-        <field name="name">Aeat VAT special prorrate map</field>
+        <field name="name">Aeat VAT special prorate map</field>
         <field name="res_model">aeat.map.special.prorrate.year</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -77,6 +77,6 @@
         id="menu_aeat_map_special_prorrate_year"
         parent="l10n_es_aeat.menu_l10n_es_aeat_config"
         action="action_aeat_map_special_prorrate_year"
-        name="Aeat VAT special prorrate map"
+        name="Aeat VAT special prorate map"
     />
 </odoo>
