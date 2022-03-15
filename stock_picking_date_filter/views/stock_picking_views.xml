@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_picking_internal_search" model="ir.ui.view">
+        <field name="name">stock.picking.internal.dates.search</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//separator" position="after">
+                <filter
+                    string="Today"
+                    name="today"
+                    domain="[('scheduled_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0, 0, 0))),
+                ('scheduled_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23, 59, 59)))]"
+                />
+                <separator />
+            </xpath>
+        </field>
+    </record>
+</odoo>
