@@ -6,6 +6,7 @@ Oxigen Stock
   from a picking.
 * Makes available to select a View Location in an Inventory Adjustment, then in the inventory lines all child locations will appear.
 * Sets default company as the current company in product creation
+* Defines Complete name of locations as in v11, taking the full path of parent locations
 
 Credits
 =======
