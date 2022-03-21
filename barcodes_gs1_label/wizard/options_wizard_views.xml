@@ -22,11 +22,15 @@
                             <field name="label_copies" />
                         </group>
                         <group col="4">
-                            <field name="with_stock" />
+                            <field
+                                name="with_stock"
+                                invisible="context.get('active_model')=='stock.picking'"
+                            />
                             <field
                                 name="stock_location_ids"
                                 widget="many2many_tags"
                                 attrs="{'invisible': [('with_stock', '=', False)], 'required': [('with_stock', '=', True)]}"
+                                invisible="context.get('active_model')=='stock.picking'"
                             />
                             <field name="show_price" />
                             <field
