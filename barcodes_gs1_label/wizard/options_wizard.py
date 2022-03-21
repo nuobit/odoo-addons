@@ -35,7 +35,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         default="ean13",
     )
 
-    def _default_location_ids(self):
+    def all_location_ids(self):
         return self.env["stock.location"].search(
             [
                 ("usage", "=", "internal"),
@@ -45,9 +45,60 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     stock_location_ids = fields.Many2many(
         string="Locations",
         comodel_name="stock.location",
-        domain=[("usage", "=", "internal")],
-        default=_default_location_ids,
+        compute="_compute_stock_location_ids",
+        readonly=False,
     )
+
+    @api.depends("with_stock")
+    def _compute_stock_location_ids(self):
+        all_locs = self.all_location_ids()
+        if self.with_stock:
+            ids = self.env.context.get("active_ids")
+            model = self.env.context.get("active_model")
+            if model == "product.product":
+                for doc in (
+                    self.env[model].browse(ids).sorted(lambda x: x.default_code or "")
+                ):
+                    self.stock_location_ids = (
+                        self.env["stock.quant"]
+                        .search(
+                            [
+                                ("product_id", "=", doc.id),
+                                ("location_id.usage", "=", "internal"),
+                                ("location_id", "in", all_locs.ids),
+                                ("quantity", ">", 0),
+                            ]
+                        )
+                        .mapped("location_id")
+                    )
+            elif model == "stock.production.lot":
+                for doc in (
+                    self.env[model]
+                    .browse(ids)
+                    .filtered(lambda x: x.product_id.tracking in ("lot", "serial"))
+                    .sorted(lambda x: x.product_id.default_code or "")
+                ):
+
+                    self.stock_location_ids = (
+                        self.env["stock.quant"]
+                        .search(
+                            [
+                                ("product_id", "=", doc.product_id.id),
+                                ("location_id.usage", "=", "internal"),
+                                ("location_id", "in", all_locs.ids),
+                                ("lot_id", "=", doc.id),
+                                ("quantity", ">", 0),
+                            ]
+                        )
+                        .mapped("location_id")
+                    )
+
+            elif model == "stock.picking":
+                self.stock_location_ids = all_locs
+            else:
+                raise UserError(_("Unexpected model '%s'") % model)
+        else:
+            self.stock_location_ids = all_locs
 
     def _default_paperformat_id(self):
         return self.env.ref("barcodes_gs1_label.paperformat_gs1_barcodes")
