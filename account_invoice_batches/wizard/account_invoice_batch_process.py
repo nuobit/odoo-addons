@@ -74,11 +74,22 @@ class AccountInvoiceBatchProcess(models.TransientModel):
             ):
                 if not inv.is_move_sent:
                     try:
-                        invoice_file, file_name = inv.get_facturae(
-                            inv.invoice_batch_sending_method == "signedfacturae"
-                        )
+                        if inv.invoice_batch_sending_method == "signedfacturae":
+                            move_file = self.env.ref(
+                                "l10n_es_facturae.report_facturae_signed"
+                            )._render(inv.ids)[0]
+                            file_name = (
+                                _("facturae") + "_" + inv.name + ".xsig"
+                            ).replace("/", "-")
+                        else:
+                            move_file = self.env.ref(
+                                "l10n_es_facturae.report_facturae"
+                            )._render(inv.ids)[0]
+                            file_name = (
+                                _("facturae") + "_" + inv.name + ".xml"
+                            ).replace("/", "-")
 
-                        file = base64.b64encode(invoice_file)
+                        file = base64.b64encode(move_file)
                         self.env["ir.attachment"].create(
                             {
                                 "name": file_name,
