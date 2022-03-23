@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="product_product_only_form_view" model="ir.ui.view">
+        <field name="name">product.product.lengow.connector.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="connector_common.view_product_product_connector_form"/>
+        <field name="arch" type="xml">
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="Lengow Bindings">
+                    <field name="lengow_bind_ids" nolabel="1"/>
+                </group>
+            </page>
+        </field>
+    </record>
+
+    <record id="lengow_product_product_view_form" model="ir.ui.view">
+        <field name="name">lengow.product.product.form</field>
+        <field name="model">lengow.product.product</field>
+        <field name="arch" type="xml">
+            <form string="lengow Product">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="default_code" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="lengow_product_product_view_tree" model="ir.ui.view">
+        <field name="name">lengow.product.product.tree</field>
+        <field name="model">lengow.product.product</field>
+        <field name="arch" type="xml">
+            <tree string="Lengow Product">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="default_code"/>
+                <field name="sync_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="lengow_product_product_action" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lengow.product.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

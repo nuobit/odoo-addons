@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_order_form_status" model="ir.ui.view">
+        <field name="name">sale.order.lengow.connector.form.status</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="client_order_ref" position="after">
+                <field name="lengow_status"/>
+                <field name="marketplace_status"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.lengow.connector.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="connector_common.view_sale_order_connector_form"/>
+        <field name="arch" type="xml">
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="Lengow Bindings">
+                    <field name="lengow_bind_ids" nolabel="1"/>
+                </group>
+            </page>
+        </field>
+    </record>
+
+    <record id="lengow_sale_order_view_form" model="ir.ui.view">
+        <field name="name">lengow.sale.order.view.form</field>
+        <field name="model">lengow.sale.order</field>
+        <field name="arch" type="xml">
+            <form string="Lengow Sale order">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="lengow_marketplace" readonly="True"/>
+                    <field name="lengow_marketplace_order_id" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="lengow_sale_order_view_tree" model="ir.ui.view">
+        <field name="name">lengow.sale.order.view.tree</field>
+        <field name="model">lengow.sale.order</field>
+        <field name="arch" type="xml">
+            <tree string="Lengow Sale order">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="lengow_marketplace" readonly="True"/>
+                <field name="lengow_marketplace_order_id" readonly="True"/>
+                <field name="lengow_status" readonly="True"/>
+                <field name="sync_date"/>
+                <button name="resync_import" type="object"
+                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="lengow_sale_order_action" model="ir.actions.act_window">
+        <field name="name">Orders</field>
+        <field name="res_model">lengow.sale.order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
