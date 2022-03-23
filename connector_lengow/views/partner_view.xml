@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="res_partner_view_form_connector_lengow" model="ir.ui.view">
+        <field name="name">res.partner.lengow.connector.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="connector.view_partner_connector_form"/>
+        <field name="arch" type="xml">
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="Lengow Bindings">
+                    <field name="lengow_bind_ids" nolabel="1"/>
+                </group>
+            </page>
+            <xpath expr="//h1//field[@name='name']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('lengow_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/group//field[@name='street']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('lengow_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/group//field[@name='street2']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('lengow_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/group//field[@name='zip']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('lengow_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/group//field[@name='city']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('lengow_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/group//field[@name='country_id']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('lengow_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="lengow_res_partner_view_form" model="ir.ui.view">
+        <field name="name">lengow.res.partner.form</field>
+        <field name="model">lengow.res.partner</field>
+        <field name="arch" type="xml">
+            <form string="Lengow Partner">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                   options="{'terminology': 'archive'}"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="backend_id"/>
+                    </group>
+                    <group>
+                        <field name="odoo_id"/>
+                        <field name="email"/>
+                    </group>
+                    <group>
+                        <field name="sync_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="lengow_res_partner_view_tree" model="ir.ui.view">
+        <field name="name">lengow.res.partner.tree</field>
+        <field name="model">lengow.res.partner</field>
+        <field name="arch" type="xml">
+            <tree string="Lengow Partner">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="email" readonly="1"/>
+                <field name="sync_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="lengow_res_partner_view_search" model="ir.ui.view">
+        <field name="name">lengow.res.partner.search</field>
+        <field name="model">lengow.res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Search Partner">
+                <field name="odoo_id" filter_domain="[('odoo_id','ilike',self)]"/>
+                <field name="email"/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <group expand="0" name="group_by" string="Group By">
+                    <filter name="group_backend" string="Backend" domain="[]" context="{'group_by' : 'backend_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="lengow_res_partner_action" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">lengow.res.partner</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
