@@ -9,11 +9,7 @@
         <field name="inherit_id" ref="project.edit_project" />
         <field name="arch" type="xml">
             <field name="company_id" position="after">
-                <field
-                    name="department_ids"
-                    widget="many2many_tags"
-                    groups="base.group_no_one"
-                />
+                <field name="department_ids" widget="many2many_tags" />
             </field>
         </field>
     </record>

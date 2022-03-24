@@ -4,7 +4,7 @@
 
 {
     "name": "Sale order task autoassign",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Project",

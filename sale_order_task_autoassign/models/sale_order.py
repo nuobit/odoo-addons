@@ -118,9 +118,6 @@ class SaleOrder(models.Model):
             ("resource_type", "=", "user"),
             ("calendar_id.attendance_ids", "!=", False),
         ]
-        calendar_ids = self.tasks_ids.mapped("project_id.resource_calendar_id").ids
-        if calendar_ids:
-            domain.append(("calendar_id", "in", calendar_ids))
         department_user_ids = self.tasks_ids.mapped(
             "project_id.department_ids.member_ids.user_id"
         )
