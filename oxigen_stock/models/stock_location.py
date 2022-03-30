@@ -13,7 +13,7 @@ class StockLocation(models.Model):
     @api.depends("name", "location_id.complete_name")
     def _compute_complete_name(self):
         # we set the method as in v11 where complete_name has the full path
-        """ Forms complete name of location from parent location to child location. """
+        """Forms complete name of location from parent location to child location."""
         for location in self:
             if location.location_id.complete_name:
                 location.complete_name = "%s/%s" % (
