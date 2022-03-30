@@ -12,11 +12,13 @@ class AccountAsset(models.Model):
         comodel_name="account.move",
         string="Invoice",
         states={"draft": [("readonly", False)]},
+        readonly=True,
         copy=False,
     )
     move_line_id = fields.Many2one(
         comodel_name="account.move.line",
         ondelete="set null",
+        states={"draft": [("readonly", False)]},
         readonly=True,
         copy=False,
     )
