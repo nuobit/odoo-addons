@@ -4,14 +4,14 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
 
-    <record id="account_bank_statement_import_view" model="ir.ui.view">
-        <field name="model">account.bank.statement.import</field>
+    <record id="account_statement_import_form" model="ir.ui.view">
+        <field name="model">account.statement.import</field>
         <field
             name="inherit_id"
-            ref="l10n_es_account_bank_statement_import_n43.account_bank_statement_import_view"
+            ref="l10n_es_account_statement_import_n43.account_statement_import_form"
         />
         <field name="arch" type="xml">
-            <field name="data_file" position="before">
+            <field name="statement_file" position="before">
                 <group>
                     <field name="check_dates" />
                 </group>
