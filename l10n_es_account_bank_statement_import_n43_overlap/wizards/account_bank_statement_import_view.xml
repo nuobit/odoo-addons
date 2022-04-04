@@ -6,11 +6,14 @@
 
     <record id="account_bank_statement_import_view" model="ir.ui.view">
         <field name="model">account.bank.statement.import</field>
-        <field name="inherit_id" ref="l10n_es_account_bank_statement_import_n43.account_bank_statement_import_view"/>
+        <field
+            name="inherit_id"
+            ref="l10n_es_account_bank_statement_import_n43.account_bank_statement_import_view"
+        />
         <field name="arch" type="xml">
             <field name="data_file" position="before">
                 <group>
-                    <field name="check_dates"/>
+                    <field name="check_dates" />
                 </group>
             </field>
         </field>
