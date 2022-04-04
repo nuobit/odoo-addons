@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 
 
 class AccountBankStatementImport(models.TransientModel):
-    _inherit = "account.bank.statement.import"
+    _inherit = "account.statement.import"
 
     check_dates = fields.Boolean(string="Check dates", default=True)
 
@@ -26,7 +26,7 @@ class AccountBankStatementImport(models.TransientModel):
             for bs in self.env["account.bank.statement"].search(
                 [("journal_id", "=", journal.id)]
             ):
-                bs_dates = [fields.Date.from_string(x.date) for x in bs.line_ids]
+                bs_dates = [x.date for x in bs.line_ids]
                 bs_min_date, bs_max_date = min(bs_dates), max(bs_dates)
                 if bs_max_date >= imp_min_date and bs_min_date <= imp_max_date:
                     bs_display_name = [bs.date]
