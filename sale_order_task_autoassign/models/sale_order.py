@@ -104,11 +104,13 @@ class SaleOrder(models.Model):
 
     def _calculate_available_user_time(self, duration_h, project_id):
         # initial date_start
-        now = fields.datetime.now().replace(second=0, microsecond=0)
-        date_ref = self.date_order > now and self.date_order or now
+        now = fields.datetime.now()
+        date_ref = (self.date_order > now and self.date_order or now).replace(
+            second=0, microsecond=0
+        )
         quarters = date_ref.minute / 15
         base_date_start = date_ref + datetime.timedelta(
-            minutes=round((math.ceil(quarters) - quarters) * 15)
+            minutes=round((math.ceil(quarters) - quarters) * 15),
         )
         base_duration = int(round(duration_h * 60))
 
@@ -154,6 +156,12 @@ class SaleOrder(models.Model):
             raise UserError(_("No candidates found, cannot validate order"))
         available_user_time = self._free_time_selection(free_time_by_user, project_id)
         return available_user_time
+
+    def _prepare_confirmation_values(self):
+        res = super()._prepare_confirmation_values()
+        if self.date_order:
+            res["date_order"] = self.date_order
+        return res
 
     def _action_confirm(self):
 
