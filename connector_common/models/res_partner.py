@@ -10,7 +10,7 @@ class Partner(models.Model):
 
     address_hash = fields.Char(compute="_compute_address_hash", store=True, readonly=True)
 
-    @api.depends('name', 'street', 'street2', 'zip', 'city','country_id')
+    @api.depends('name', 'street', 'street2', 'zip', 'city', 'country_id')
     @api.multi
     def _compute_address_hash(self):
         for rec in self:
