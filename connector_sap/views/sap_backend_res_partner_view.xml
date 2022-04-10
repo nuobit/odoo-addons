@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="sap_backend_res_partner_view_form_connector_sap" model="ir.ui.view">
+        <field name="name">sap.backend.res.partner.form</field>
+        <field name="model">sap.backend.res.partner</field>
+        <field name="arch" type="xml">
+            <form string="SAP Backend">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="partner_id"/>
+                    <field name="sap_cardcode"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="sap_backend_res_partner_view_tree" model="ir.ui.view">
+        <field name="name">sap.backend.res.partner.tree</field>
+        <field name="model">sap.backend.res.partner</field>
+        <field name="arch" type="xml">
+            <tree string="SAP Backend Res Partner" editable="bottom">
+                <field name="backend_id" />
+                <field name="partner_id"/>
+                <field name="sap_cardcode"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sap_backend_res_partner_action" model="ir.actions.act_window">
+        <field name="name">SAP Backends Res Partner</field>
+        <field name="res_model">sap.backend.res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

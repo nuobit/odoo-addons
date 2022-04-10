@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_order_form_status" model="ir.ui.view">
+        <field name="name">sale.order.sap.connector.form.status</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="client_order_ref" position="after">
+<!--                <field name="lengow_status"/>-->
+<!--                <field name="marketplace_status"/>-->
+            </field>
+        </field>
+    </record>
+
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.sap.connector.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="connector_common.view_sale_order_connector_form"/>
+        <field name="arch" type="xml">
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="SAP Bindings">
+                    <field name="sap_bind_ids" nolabel="1"/>
+                </group>
+            </page>
+        </field>
+    </record>
+
+    <record id="sap_sale_order_view_form" model="ir.ui.view">
+        <field name="name">sap.sale.order.view.form</field>
+        <field name="model">sap.sale.order</field>
+        <field name="arch" type="xml">
+            <form string="SAP Sale order">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="sapb1_docentry"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="sap_sale_order_view_tree" model="ir.ui.view">
+        <field name="name">sap.sale.order.view.tree</field>
+        <field name="model">sap.sale.order</field>
+        <field name="arch" type="xml">
+            <tree string="SAP Sale order">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="sapb1_docentry"/>
+                <field name="sync_date"/>
+                <button name="resync_export" type="object"
+                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sap_sale_order_action" model="ir.actions.act_window">
+        <field name="name">Orders</field>
+        <field name="res_model">sap.sale.order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
