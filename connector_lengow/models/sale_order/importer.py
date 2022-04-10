@@ -46,44 +46,15 @@ class SaleOrderImporter(Component):
                                     always=False)
 
     def _after_import(self, binding):
-        # We search if the email of our billing address already has a partner with parent id = null
-        # If it has one but not of the 'invoice' type, we reassign all its children and this same partner
-        # to the new billing address.
-        # If it has one of the 'invoice' type, we assign it, and if not we put parent_id=Null
-        # For shipping address, we check if there is a partner with the same email and assign it as parent_id
-        # Finally, we confirm order
-
-        potential_parent = self.env['res.partner'].search([
-            ("email", "=", binding.partner_invoice_id.email),
-            ("parent_id", "=", False),
-            ("id", "!=", binding.partner_invoice_id.id),
-        ])
-        if len(potential_parent) > 1:
-            raise ValidationError(_("Expecting 1 potential parent, %s found") % len(potential_parent))
-        if potential_parent and potential_parent.type != 'invoice':
-            binding.partner_invoice_id.parent_id = False
-            potential_parent.parent_id = binding.partner_invoice_id.id
-
-            childs = self.env['res.partner'].search([
-                ("parent_id", "=", potential_parent.id)
-            ])
-            childs.write({
-                'parent_id': binding.partner_invoice_id.id
-            })
-        elif potential_parent:
-            binding.partner_invoice_id.parent_id = potential_parent.id
-        else:
-            binding.partner_invoice_id.parent_id = False
-
-        potential_parent = self.env['res.partner'].search([
-            ("email", "=", binding.partner_shipping_id.email),
-            ("parent_id", "=", False),
-            ("id", "!=", binding.partner_shipping_id.id)
-        ])
-        if len(potential_parent) > 1:
-            raise ValidationError(_("Expecting 1 potential parent, %s found") % len(potential_parent))
-        if potential_parent:
-            binding.partner_shipping_id.parent_id = potential_parent.id
+        parent = self.env['res.partner'].search([('name', '=', binding.lengow_marketplace)])
+        if not parent:
+            self.env["res.partner"].create(
+                {
+                    "name": binding.lengow_marketplace
+                })
+        parent = self.env['res.partner'].search([('name', '=', binding.lengow_marketplace)])
+        binding.partner_invoice_id.parent_id = parent.id
+        binding.partner_shipping_id.parent_id = parent.id
 
         ## order validation
         sale_order = self.binder_for().unwrap_binding(binding)
