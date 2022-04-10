@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="product_product_only_form_view" model="ir.ui.view">
+        <field name="name">product.product.sapb1.connector.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="connector_common.view_product_product_connector_form"/>
+        <field name="arch" type="xml">
+            <page name="connector" position="inside">
+                <group string="SAP B1 Bindings">
+                    <field name="sapb1_bind_ids" nolabel="1"/>
+                </group>
+            </page>
+        </field>
+    </record>
+    <record id="sapb1_product_product_view_form" model="ir.ui.view">
+        <field name="name">sapb1.product.product.form</field>
+        <field name="model">sapb1.product.product</field>
+        <field name="arch" type="xml">
+            <form string="SAP B1 Product">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="default_code" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="sapb1_product_product_view_tree" model="ir.ui.view">
+        <field name="name">sapb1.product.product.tree</field>
+        <field name="model">sapb1.product.product</field>
+        <field name="arch" type="xml">
+            <tree string="SAP B1 Product">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="default_code"/>
+                <field name="sync_date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="sapb1_product_product_action" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">sapb1.product.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
