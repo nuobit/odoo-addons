@@ -15,11 +15,11 @@ class AccountMove(models.Model):
     def _preprocess_taxes_map(self, taxes_map):
         res = super()._preprocess_taxes_map(taxes_map)
         for taxes_map_entry in res:
-            if taxes_map_entry["tax_line"]:
+            if res[taxes_map_entry]["tax_line"]:
                 grouping_dict = self._get_tax_grouping_key_from_tax_line(
-                    taxes_map_entry["tax_line"]
+                    res[taxes_map_entry]["tax_line"]
                 )
-                taxes_map_entry["tax_line"].update(
+                res[taxes_map_entry]["tax_line"].update(
                     {
                         "origin_analytic_account_id": grouping_dict[
                             "analytic_account_id"
@@ -28,8 +28,8 @@ class AccountMove(models.Model):
                     }
                 )
             else:
-                grouping_dict = taxes_map_entry["grouping_dict"]
-                taxes_map_entry["grouping_dict"].update(
+                grouping_dict = res[taxes_map_entry]["grouping_dict"]
+                res[taxes_map_entry]["grouping_dict"].update(
                     {
                         "origin_analytic_account_id": grouping_dict[
                             "analytic_account_id"
@@ -44,10 +44,10 @@ class AccountMove(models.Model):
         res = super()._get_tax_grouping_key_from_tax_line(tax_line)
         if (
             not res.get("analytic_account_id")
-            and tax_line.account_analytic_id
+            and tax_line.analytic_account_id
             and res["account_id"] == tax_line.account_id.id
         ):
-            res["analytic_account_id"] = tax_line.account_analytic_id.id
+            res["analytic_account_id"] = tax_line.analytic_account_id.id
         if (
             not res.get("analytic_tag_ids")
             and tax_line.analytic_tag_ids
@@ -61,16 +61,16 @@ class AccountMove(models.Model):
         res = super()._get_tax_grouping_key_from_base_line(base_line, tax_vals)
         if (
             not res.get("analytic_account_id")
-            and base_line.account_analytic_id
-            and res["account_id"] == base_line.account_id.id
+            and base_line.analytic_account_id
+            and res["account_id"] == base_line.analytic_account_id.id
         ):
-            res["analytic_account_id"] = base_line.account_analytic_id.id
+            res["analytic_account_id"] = base_line.analytic_account_id.id
         if (
             not res.get("analytic_tag_ids")
             and base_line.analytic_tag_ids
             and res["account_id"] == base_line.account_id.id
         ):
-            res["analytic_tag_ids"] = [6, 0, base_line.analytic_tag_ids.ids]
+            res["analytic_tag_ids"] = [(6, 0, base_line.analytic_tag_ids.ids)]
         return res
 
 
