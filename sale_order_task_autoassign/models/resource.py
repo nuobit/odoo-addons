@@ -62,7 +62,7 @@ class ResourceResource(models.Model):
         if not att:
             cint1_date_start_tz = (
                 cint.date_start_tz(self.tz) + datetime.timedelta(days=1)
-            ).replace(minute=0, hour=0)
+            ).replace(second=0, minute=0, hour=0)
             cint1 = TzInterval(cint1_date_start_tz, cint.duration, tz=self.tz)
             return self.find_next_available(cint1, project)
         else:

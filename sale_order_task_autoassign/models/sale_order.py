@@ -163,53 +163,30 @@ class SaleOrder(models.Model):
             res["date_order"] = self.date_order
         return res
 
-    def _action_confirm(self):
-
-        # TODO: self.with_context generates an error. If it's
-        #  not commented, tasks won't be generated in tests
-        # existing_task = self.tasks_ids
-        # if existing_task:
-        #     raise ValidationError(
-        #         _(
-        #             "Inconsistent data: Tasks %s already exists and cannot "
-        #             "be overwritten. Please, delete this task before create it again"
-        #             % existing_task.mapped("name")
-        #         )
-        #     )
-        result = super(SaleOrder, self)._action_confirm()
-
-        if not self.tasks_ids:
-            return result
-
-        main_tasks = self._prepare_main_tasks().sorted(
-            lambda x: x.sale_line_id.product_id.service_time
-            * x.sale_line_id.product_uom_qty
-        )
-        main_tasks_duration_h = sum(
-            [
-                x.sale_line_id.product_id.service_time * x.sale_line_id.product_uom_qty
-                for x in main_tasks
-            ]
-        )
-        longest_task = main_tasks[-1]
-        other_tasks = (self.tasks_ids - longest_task).sorted(
+    def _update_tasks(self, main_tasks, longest_task, longest_task_duration_h):
+        other_tasks = (main_tasks - longest_task).sorted(
             lambda x: (x.sale_line_id.sequence, x.sale_line_id.id)
         )
-        longest_task.write(
-            {
-                "name": longest_task.name,
-                "description": "\n".join(
-                    ["<p>- %s</p>" % x.sale_line_id.name for x in other_tasks]
-                ),
-            }
+        main_tasks_total_duration_h = longest_task_duration_h + sum(
+            other_tasks.mapped("base_duration")
+        )
+        for t in other_tasks:
+            if t.sale_line_id:
+                t.description = t.sale_line_id.name.replace("\n", "<br>")
+        longest_task.description = "<br>".join(
+            filter(None, [longest_task.description] + other_tasks.mapped("description"))
         )
         other_tasks.write({"sale_line_id": False})
         other_tasks.unlink()
-
-        available_user_time = self._calculate_available_user_time(
-            main_tasks_duration_h, longest_task.project_id
+        longest_task.write(
+            {
+                "date_start": False,
+                "date_end": False,
+            }
         )
-
+        available_user_time = self._calculate_available_user_time(
+            main_tasks_total_duration_h, longest_task.project_id
+        )
         longest_task.update(
             {
                 "user_id": available_user_time[0],
@@ -217,11 +194,9 @@ class SaleOrder(models.Model):
                 "date_end": available_user_time[1].date_end,
             }
         )
-
         # assign the deadline of main task
         if longest_task.date_end:
             longest_task.write({"date_deadline": longest_task.date_end.date()})
-
         # bike_location
         if longest_task.bike_location != "na":
             # set the stage according to bike_location
@@ -235,6 +210,14 @@ class SaleOrder(models.Model):
             stage = self._get_stage_by_metatype(longest_task.project_id, meta_type)
             if stage:
                 longest_task.stage_id = stage
+
+    def _action_confirm(self):
+        result = super(SaleOrder, self)._action_confirm()
+        main_tasks = self._prepare_main_tasks()
+        if main_tasks:
+            longest_task = main_tasks.sorted(lambda x: x.base_duration)[-1]
+            longest_task_duration_h = longest_task.base_duration
+            self._update_tasks(main_tasks, longest_task, longest_task_duration_h)
         return result
 
     def _get_stage_by_metatype(self, project, meta_type):
@@ -285,3 +268,50 @@ class SaleOrder(models.Model):
 
         result = super().write(values)
         return result
+
+
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        order_group = {}
+        for val in vals_list:
+            order_id = val.get("order_id")
+            if not order_id:
+                raise ValidationError(
+                    _("Order id is None or is not on the lines to create")
+                )
+            order_group.setdefault(order_id, []).append(val)
+        lines = self.browse()
+        for order_id, vals_list in order_group.items():
+            order = self.env["sale.order"].browse(order_id)
+            existing_tasks = order._prepare_main_tasks()
+            # merge the existing tasks if they exist
+            longest_task, longest_task_duration_h = self.env["project.task"], None
+            if existing_tasks:
+                longest_task = existing_tasks.sorted(lambda x: x.base_duration)[-1]
+                longest_task_duration_h = longest_task.base_duration
+                existing_other_tasks = existing_tasks - longest_task
+                if existing_other_tasks:
+                    longest_task.description = "<br>".join(
+                        filter(
+                            None,
+                            [longest_task.description]
+                            + existing_other_tasks.mapped("description"),
+                        )
+                    )
+                    longest_task_duration_h += sum(
+                        existing_other_tasks.mapped("base_duration")
+                    )
+                    existing_other_tasks.write({"sale_line_id": False})
+                    existing_other_tasks.unlink()
+            order_lines = super().create(vals_list)
+            lines |= order_lines
+            main_tasks = order._prepare_main_tasks()
+            if main_tasks:
+                if not longest_task:
+                    longest_task = main_tasks.sorted(lambda x: x.base_duration)[-1]
+                    longest_task_duration_h = longest_task.base_duration
+                order._update_tasks(main_tasks, longest_task, longest_task_duration_h)
+        return lines
