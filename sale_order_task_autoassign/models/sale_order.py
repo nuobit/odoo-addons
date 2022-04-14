@@ -163,13 +163,14 @@ class SaleOrder(models.Model):
             res["date_order"] = self.date_order
         return res
 
-    def _update_tasks(self, main_tasks, longest_task, longest_task_duration_h):
-        other_tasks = (main_tasks - longest_task).sorted(
+    def _prepare_other_tasks_duration(self, tasks):
+        return sum(tasks.mapped("base_duration"))
+
+    def _update_tasks(self, longest_task, longest_task_duration_h):
+        other_tasks = (self.tasks_ids - longest_task).sorted(
             lambda x: (x.sale_line_id.sequence, x.sale_line_id.id)
         )
-        main_tasks_total_duration_h = longest_task_duration_h + sum(
-            other_tasks.mapped("base_duration")
-        )
+        other_task_duration_h = self._prepare_other_tasks_duration(other_tasks)
         for t in other_tasks:
             if t.sale_line_id:
                 t.description = t.sale_line_id.name.replace("\n", "<br>")
@@ -185,7 +186,7 @@ class SaleOrder(models.Model):
             }
         )
         available_user_time = self._calculate_available_user_time(
-            main_tasks_total_duration_h, longest_task.project_id
+            longest_task_duration_h + other_task_duration_h, longest_task.project_id
         )
         longest_task.update(
             {
@@ -217,7 +218,7 @@ class SaleOrder(models.Model):
         if main_tasks:
             longest_task = main_tasks.sorted(lambda x: x.base_duration)[-1]
             longest_task_duration_h = longest_task.base_duration
-            self._update_tasks(main_tasks, longest_task, longest_task_duration_h)
+            self._update_tasks(longest_task, longest_task_duration_h)
         return result
 
     def _get_stage_by_metatype(self, project, meta_type):
@@ -275,6 +276,9 @@ class SaleOrderLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        # to avoid reentering in nested line creation
+        if not self.env.context.get("main_lines", True):
+            return super().create(vals_list)
         order_group = {}
         for val in vals_list:
             order_id = val.get("order_id")
@@ -306,12 +310,14 @@ class SaleOrderLine(models.Model):
                     )
                     existing_other_tasks.write({"sale_line_id": False})
                     existing_other_tasks.unlink()
-            order_lines = super().create(vals_list)
+            order_lines = super(
+                SaleOrderLine, self.with_context(main_lines=False)
+            ).create(vals_list)
             lines |= order_lines
             main_tasks = order._prepare_main_tasks()
             if main_tasks:
                 if not longest_task:
                     longest_task = main_tasks.sorted(lambda x: x.base_duration)[-1]
                     longest_task_duration_h = longest_task.base_duration
-                order._update_tasks(main_tasks, longest_task, longest_task_duration_h)
+                order._update_tasks(longest_task, longest_task_duration_h)
         return lines
