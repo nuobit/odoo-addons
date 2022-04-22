@@ -8,6 +8,7 @@ class LMResolution(models.Model):
     _name = "lm.resolution"
     _parent_name = "parent_id"
     _inherit = "lm.tree.mixin"
+    _description = "LMResolution"
 
     name = fields.Char(required=True)
     parent_id = fields.Many2one(comodel_name="lm.resolution")
