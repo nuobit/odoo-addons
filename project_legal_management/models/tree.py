@@ -8,6 +8,7 @@ from odoo.exceptions import UserError
 
 class LMTreeMixin(models.AbstractModel):
     _name = "lm.tree.mixin"
+    _description = "LMTreeMixin"
 
     # complete_name
     complete_name = fields.Char(
