@@ -10,7 +10,7 @@ from odoo import _, models
 class WizStockBarcodesRead(models.AbstractModel):
     _inherit = "wiz.stock.barcodes.read"
 
-    def process_barcode(self, barcode):
+    def process_barcode(self, barcode):  # noqa: C901
         """Only has been implemented AI (01, 02, 10, 21, 37), so is possible that
         scanner reads a barcode ok but this one is not precessed.
         """
