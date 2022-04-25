@@ -1,4 +1,0 @@
-odoo14-addon-connector_common @ git+https://github.com/nuobit/odoo-addons@refs/pull/89/head#subdirectory=setup/connector_common
-odoo14-addon-partner_review @ git+https://github.com/nuobit/odoo-addons@refs/pull/29/head#subdirectory=setup/partner_review
-odoo14-addon-sale_order_service @ git+https://github.com/nuobit/odoo-addons@refs/pull/18/head#subdirectory=setup/sale_order_service
-odoo14-addon-sale_line_partner_description @ git+https://github.com/nuobit/odoo-addons@refs/pull/85/head#subdirectory=setup/sale_line_partner_description
