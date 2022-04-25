@@ -11,7 +11,7 @@ class WizStockBarcodesNewLot(models.TransientModel):
     _inherit = "wiz.stock.barcodes.new.lot"
     _description = "Wizard to create new lot from barcode scanner"
 
-    def on_barcode_scanned(self, barcode):
+    def on_barcode_scanned(self, barcode):  # noqa: C901
         try:
             barcode_decoded = self._decode_barcode(barcode)
         except Exception:
