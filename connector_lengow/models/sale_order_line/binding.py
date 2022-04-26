@@ -10,7 +10,7 @@ class SaleOrderLine(models.Model):
     lengow_bind_ids = fields.One2many(
         comodel_name='lengow.sale.order.line',
         inverse_name='odoo_id',
-        string='Oxigesti Bindings',
+        string='Lengow Bindings',
     )
 
 

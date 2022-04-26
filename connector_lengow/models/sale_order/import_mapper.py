@@ -57,31 +57,43 @@ class SaleOrderImportMapper(Component):
 
     @mapping
     def delivery_address(self, record):
-        binder = self.binder_for('lengow.res.partner')
-        external_id = binder.dict2id(record['delivery_address'],in_field=False)
-        partner = binder.to_internal(external_id, unwrap=True)
-        assert partner, (
-                "partner_shipping_id %s should have been imported in "
-                "SaleOrderImporter._import_dependencies" % external_id)
-        return {'partner_shipping_id': partner.id}
+        if record['delivery_address']:
+            binder = self.binder_for('lengow.res.partner')
+            external_id = binder.dict2id(record['delivery_address'], in_field=False)
+            partner = binder.to_internal(external_id, unwrap=True)
+            assert partner, (
+                    "partner_shipping_id %s should have been imported in "
+                    "SaleOrderImporter._import_dependencies" % external_id)
+            return {'partner_shipping_id': partner.id}
+        else:
+            binding = self.options.get("binding")
+            if not binding:
+                parent = self.backend_record.get_marketplace_map(record['marketplace']).partner_id
+                return {'partner_shipping_id': parent.id}
 
     @mapping
     def billing_address(self, record):
-        binder = self.binder_for('lengow.res.partner')
-        external_id = binder.dict2id(record['billing_address'],in_field=False)
-        partner = binder.to_internal(external_id, unwrap=True)
-        assert partner, (
-                "partner_id %s should have been imported in "
-                "SaleOrderImporter._import_dependencies" % external_id)
-        if not partner.active:
-            raise ValidationError(_("The partner %s, with id:%s is archived, please, enable it") %
-                                  (partner.name, partner.id))
-        partner_return = {'partner_invoice_id': partner.id}
-        if partner.parent_id:
-            partner_return['partner_id'] = partner.parent_id.id
+        if record['billing_address']:
+            binder = self.binder_for('lengow.res.partner')
+            external_id = binder.dict2id(record['billing_address'], in_field=False)
+            partner = binder.to_internal(external_id, unwrap=True)
+            assert partner, (
+                    "partner_id %s should have been imported in "
+                    "SaleOrderImporter._import_dependencies" % external_id)
+            if not partner.active:
+                raise ValidationError(_("The partner %s, with id:%s is archived, please, enable it") %
+                                      (partner.name, partner.id))
+            partner_return = {'partner_invoice_id': partner.id}
+            if partner.parent_id:
+                partner_return['partner_id'] = partner.parent_id.id
+            else:
+                partner_return['partner_id'] = partner.id
+            return partner_return
         else:
-            partner_return['partner_id'] = partner.id
-        return partner_return
+            binding = self.options.get("binding")
+            if not binding:
+                partner = self.backend_record.get_marketplace_map(record['marketplace']).partner_id
+                return {'partner_invoice_id': partner.id ,'partner_id':partner.id}
 
     @only_create
     @mapping
@@ -109,3 +121,7 @@ class SaleOrderImportMapper(Component):
     @mapping
     def marketplace_status(self, record):
         return {'marketplace_status': record['marketplace_status']}
+
+    @mapping
+    def marketplace_order_id(self, record):
+        return {'client_order_ref': record['marketplace_order_id']}

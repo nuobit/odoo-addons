@@ -55,6 +55,7 @@
                 <field name="odoo_id"/>
                 <field name="lengow_marketplace" readonly="True"/>
                 <field name="lengow_marketplace_order_id" readonly="True"/>
+                <field name="lengow_status" readonly="True"/>
                 <field name="sync_date"/>
                 <button name="resync_import" type="object"
                         string="Resynchronize" icon="fa-refresh fa-lg"/>

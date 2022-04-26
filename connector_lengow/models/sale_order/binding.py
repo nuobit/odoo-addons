@@ -3,6 +3,7 @@
 
 from odoo import fields, models
 from odoo.addons.queue_job.job import job
+from odoo.tools import datetime
 
 
 class LengowSaleOrderBinding(models.Model):
@@ -40,9 +41,10 @@ class LengowSaleOrderBinding(models.Model):
     @job(default_channel='root.lengow')
     def import_sale_orders_since(self, backend_record=None, since_date=None):
         """ Prepare the batch import of partners modified on Lengow """
-        domain = []
         if since_date:
-            domain = [('marketplace_order_date_from', '=', since_date)]
+            domain = [('updated_from', '=', since_date)]
+        else:
+            domain = [('updated_from', '=', datetime(1900, 1, 1, 0, 0, 0))]
         self.import_batch(
             backend_record, domain=domain)
         return True

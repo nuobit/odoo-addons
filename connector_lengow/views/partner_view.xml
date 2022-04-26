@@ -58,9 +58,6 @@
         <field name="model">lengow.res.partner</field>
         <field name="arch" type="xml">
             <form string="Lengow Partner">
-                <header>
-                    <button name="resync_import" type="object" class="oe_highlight" string="Resync"/>
-                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
@@ -69,34 +66,17 @@
                         </button>
                     </div>
                     <group>
-                        <field name="backend_id" readonly="1"/>
+                        <field name="backend_id"/>
                     </group>
                     <group>
-                        <field name="odoo_id" readonly="1"/>
-                        <field name="email" readonly="1"/>
+                        <field name="odoo_id"/>
+                        <field name="email"/>
                     </group>
                     <group>
-                        <field name="sync_date" readonly="1"/>
+                        <field name="sync_date"/>
                     </group>
                 </sheet>
             </form>
-        </field>
-    </record>
-
-    <record id="lengow_res_partner_manager_view_form" model="ir.ui.view">
-        <field name="name">lengow.res.partner.manager.form</field>
-        <field name="model">lengow.res.partner</field>
-        <field name="inherit_id" ref="connector_lengow.lengow_res_partner_view_form"/>
-        <field name="groups_id" eval="[(6, 0, [ref('connector.group_connector_manager')])]"/>
-        <field name="arch" type="xml">
-            <field name="backend_id" position="attributes">
-                <attribute name="readonly">0</attribute>
-                <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
-            </field>
-            <field name="odoo_id" position="attributes">
-                <attribute name="readonly">0</attribute>
-            </field>
-            <field name="email" readonly="1"/>
         </field>
     </record>
 
@@ -109,8 +89,6 @@
                 <field name="odoo_id"/>
                 <field name="email" readonly="1"/>
                 <field name="sync_date"/>
-                <button name="resync_import" type="object"
-                        string="Resynchronize" icon="fa-refresh fa-lg"/>
             </tree>
         </field>
     </record>

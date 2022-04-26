@@ -7,6 +7,7 @@ import datetime
 import requests
 from odoo import _
 from odoo.exceptions import ValidationError
+from urllib.parse import urlparse, parse_qs
 
 from odoo.addons.component.core import AbstractComponent
 
@@ -83,10 +84,23 @@ class LengowAdapter(AbstractComponent):
             'account_id': account_id,
             **kwargs,
         }
-        r = session.get(url, params=params)
-        if not r.ok:
-            raise ConnectionError(r.text)
-        return self._prepare_results(r.json())
+        result = []
+        data = {}
+        while True:
+            if result:
+                url_next = data.get('next')
+                if not url_next:
+                    break
+                params=parse_qs(urlparse(url_next).query)
+            r = session.get(url, params=params)
+            if not r.ok:
+                raise ConnectionError(r.text)
+            data = r.json()
+            if 'results' in data:
+                result += data['results']
+            else:
+                result = data
+        return self._prepare_results(result)
 
     def chunks(self, l, n):
         """Yield successive n-sized chunks from lst."""

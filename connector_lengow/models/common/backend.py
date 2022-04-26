@@ -55,13 +55,19 @@ class LengowBackend(models.Model):
     base_url = fields.Char(
         default="https://api.lengow.net",
     )
+    marketplace_ids = fields.One2many(
+        comodel_name="lengow.backend.marketplace",
+        inverse_name="backend_id",
+        string="Marketplaces",
+        required=True,
+    )
 
     import_sale_orders_since_date = fields.Datetime('Import Services since')
 
     @api.multi
     def _check_connection(self):
         self.ensure_one()
-        with self.work_on('oxigesti.backend') as work:
+        with self.work_on('lengow.backend') as work:
             token = work.component_by_name(name='lengow.adapter')._exec('get_token')
         if not token:
             raise UserError('Invalid token')
@@ -79,9 +85,35 @@ class LengowBackend(models.Model):
 
     @api.multi
     def import_sale_orders_since(self):
+        if self.user_id:
+            self = self.sudo(self.user_id)
         for rec in self:
             since_date = fields.Datetime.from_string(rec.import_sale_orders_since_date)
             rec.import_sale_orders_since_date = fields.Datetime.now()
+
             self.env['lengow.sale.order'].with_delay(
             ).import_sale_orders_since(
                 backend_record=rec, since_date=since_date)
+
+            # # to_delete
+            # self.env['lengow.sale.order'].import_sale_orders_since(
+            #     backend_record=rec, since_date=since_date)
+            # #
+
+    # scheduler
+    @api.model
+    def _scheduler_import(self):
+        for backend in self.env["lengow.backend"].search([]):
+            if backend.user_id:
+                backend = backend.with_user(self.user_id)
+            backend.import_sale_orders_since()
+
+    def get_marketplace_map(self, marketplace_name):
+        self.ensure_one()
+        marketplace_map = self.marketplace_ids.filtered(
+            lambda r: r.lengow_marketplace == marketplace_name)
+        if not marketplace_map:
+            raise ValidationError(
+                _("Can't found a parent partner for marketplace %s. "
+                  "Please, add it on backend mappings" % marketplace_name))
+        return marketplace_map

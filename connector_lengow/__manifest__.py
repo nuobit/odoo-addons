@@ -19,8 +19,9 @@
         'sale_management',
     ],
     'data': [
-        # 'security/ir.model.access.csv',
-        # 'data/ir_cron.xml',
+        'security/connector_lengow.xml',
+        'security/ir.model.access.csv',
+        'data/ir_cron.xml',
         'views/lengow_backend_view.xml',
         'views/sale_order_view.xml',
         'views/partner_view.xml',

@@ -41,12 +41,12 @@ class ResPartnerImportMapper(Component):
     @only_create
     @mapping
     def is_company(self, record):
-        return {'is_company': True}
+        return {'is_company': False}
 
     @only_create
     @mapping
     def company_type(self, record):
-        return {'company_type': 'company'}
+        return {'company_type': 'person'}
 
     @only_create
     @mapping
@@ -59,6 +59,12 @@ class ResPartnerImportMapper(Component):
         if address_type not in type_map:
             raise ValidationError(_("Address type %s is not supported") % address_type)
         return {'type': type_map[address_type]}
+
+    @only_create
+    @mapping
+    def parent(self, record):
+        parent = self.backend_record.get_marketplace_map(record['marketplace']).partner_id
+        return {'parent_id': parent.id}
 
     @mapping
     def zip(self, record):
@@ -84,11 +90,9 @@ class ResPartnerImportMapper(Component):
         if country_code:
             lang = self.env['res.lang'].with_context(active_test=False).search(
                 [('iso_code', '=', country_code.lower())])
-            if not lang:
-                raise ValidationError(_("Can't found a language with iso code: %s" % country_code))
-            if not lang.active:
+            if lang and not lang.active:
                 raise ValidationError(_("Please, active language %s in settings" % lang.code))
-            return {'lang': lang.code}
+            return {'lang': lang.code or None}
 
     @mapping
     def country(self, record):

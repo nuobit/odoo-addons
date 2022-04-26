@@ -31,13 +31,15 @@ class SaleOrderImporter(Component):
         # Customer
         billing_address = external_data['billing_address']
         binder = self.binder_for('lengow.res.partner')
-        self._import_dependency(binder.dict2id(billing_address, in_field=False), 'lengow.res.partner',
-                                external_data=billing_address,
-                                always=False)
+        if billing_address:
+            self._import_dependency(binder.dict2id(billing_address, in_field=False), 'lengow.res.partner',
+                                    external_data=billing_address,
+                                    always=False)
         delivery_address = external_data['delivery_address']
-        self._import_dependency(binder.dict2id(delivery_address, in_field=False), 'lengow.res.partner',
-                                external_data=delivery_address,
-                                always=False)
+        if delivery_address:
+            self._import_dependency(binder.dict2id(delivery_address, in_field=False), 'lengow.res.partner',
+                                    external_data=delivery_address,
+                                    always=False)
         # Products
         order_lines = external_data['items']
         for line in order_lines:
@@ -46,16 +48,13 @@ class SaleOrderImporter(Component):
                                     always=False)
 
     def _after_import(self, binding):
-        parent = self.env['res.partner'].search([('name', '=', binding.lengow_marketplace)])
-        if not parent:
-            self.env["res.partner"].create(
-                {
-                    "name": binding.lengow_marketplace
-                })
-        parent = self.env['res.partner'].search([('name', '=', binding.lengow_marketplace)])
-        binding.partner_invoice_id.parent_id = parent.id
-        binding.partner_shipping_id.parent_id = parent.id
-
-        ## order validation
         sale_order = self.binder_for().unwrap_binding(binding)
-        sale_order.action_confirm()
+        for line in sale_order.order_line:
+            line._compute_tax_id()
+
+        ## order cancel
+        if binding.lengow_status=='canceled':
+            sale_order.action_cancel()
+        else:
+        ## order validation
+            sale_order.action_confirm()

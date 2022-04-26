@@ -71,6 +71,16 @@
                                         class="oe_highlight" string="Import in background"/>
                             </group>
                         </page>
+                        <page name="mappings" string="Mappings">
+                            <group string="Marketplaces">
+                                <field name="marketplace_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="partner_id"/>
+                                    <field name="lengow_marketplace"/>
+                                </tree>
+                                </field>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

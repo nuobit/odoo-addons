@@ -17,9 +17,7 @@ class LengowSaleOrderTypeAdapter(Component):
     _apply_on = "lengow.sale.order"
 
     def _prepare_results(self, result):
-        if result['next'] or result['previous']:
-            raise ValidationError(_('Order pagination is not supported'))
-        return result['results']
+        return result
 
     def read(self, _id):
         external_id_values = self.binder_for().id2dict(_id, in_field=False)
@@ -40,6 +38,9 @@ class LengowSaleOrderTypeAdapter(Component):
         res = self._exec('orders', **self._prepare_parameters(kw_base_params, [], filters_values))
         self._format_order_data(res)
         res = self._filter(res, common_domain)
+        # # to_delete
+        # res = self._filter(res, [("marketplace_order_id", "=", "4731509-A")])
+        # #
         self._reorg_order_data(res)
         return res
 
@@ -55,7 +56,7 @@ class LengowSaleOrderTypeAdapter(Component):
             "/packages/cart/original_amount": lambda x: float(x),
             "/packages/cart/original_tax": lambda x: float(x),
             "/imported_at": lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ"),
-            "/updated_at": lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ"),
+            "/updated_at": lambda x: datetime.datetime.strptime(x, self._datetime_format),
         }
         self._convert_format(values, conv_mapper)
 
@@ -66,13 +67,24 @@ class LengowSaleOrderTypeAdapter(Component):
             if len(packages) > 1:
                 raise ValidationError(_("Multiple delivery addresses not supported"))
             value['items'] = packages[0].pop('cart')
-            value['delivery_address'] = packages[0].pop('delivery')
+            delivery = packages[0].pop('delivery')
+            delivery.pop('trackings')
+            value['delivery_address'] = delivery or None
+            if value['delivery_address']:
+                value['delivery_address']['marketplace'] = value['marketplace']
+            if value['billing_address']:
+                value['billing_address']['marketplace'] = value['marketplace']
             hash_fields = ['complete_name', 'first_line', 'second_line', 'zipcode', 'city', 'common_country_iso_a2']
             fields = ['delivery_address', 'billing_address']
             for f in fields:
-                value[f]['complete_name'] = ' '.join(
-                    filter(lambda x: x.strip(), [value[f]['first_name'], value[f]['last_name']]))
-                value[f]['hash'] = list2hash(
-                    value[f][x] for x in hash_fields)
+                if value['marketplace_status'] == 'CANCELED':
+                    a = 1
+                name_values = [value[f][y] for y in ['first_name', 'last_name'] if value.get(f) and value[f].get(y)]
+                if name_values:
+                    value[f]['complete_name'] = ' '.join(name_values)
+                    # else:
+                    #     value[f]['complete_name'] = None
+                    value[f]['hash'] = list2hash(
+                        value[f].get(x) for x in hash_fields)
             for item in value['items']:
                 item['sku'] = item.pop('merchant_product_id')['id']

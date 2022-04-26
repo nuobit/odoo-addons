@@ -9,13 +9,6 @@ def list2hash(l):
     for e in l:
         if isinstance(e, int):
             e9 = str(e)
-            try:
-                b=int(e9)
-            except:
-                raise
-            if b != e:
-                a=1
-                raise Exception("Unexpected")
         elif isinstance(e, str):
             e9 = e
         elif e is None:

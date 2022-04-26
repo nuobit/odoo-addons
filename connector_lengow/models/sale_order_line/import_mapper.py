@@ -12,10 +12,6 @@ class SaleOrderLineImportMapper(Component):
 
     _apply_on = 'lengow.sale.order.line'
 
-    direct = [
-        ('quantity', 'product_uom_qty'),
-    ]
-
     @only_create
     @mapping
     def backend_id(self, record):
@@ -23,12 +19,16 @@ class SaleOrderLineImportMapper(Component):
 
     @mapping
     def lengow_id(self, record):
-        binder=self.binder_for()
-        return {'lengow_id': binder.dict2id(record,in_field=False)}
+        binder = self.binder_for()
+        return {'lengow_id': binder.dict2id(record, in_field=False)}
 
     @mapping
     def price_unit(self, record):
-        return {'price_unit': float(record['amount']) / record['quantity']}
+        if record['quantity']:
+            return {'price_unit': (float(record['amount'])-float(record['tax'])) / record['quantity']}
+        binding = self.options.get("binding")
+        if not binding:
+            return {'price_unit': (float(record['amount'])-float(record['tax']))}
 
     @mapping
     def product(self, record):
@@ -38,5 +38,13 @@ class SaleOrderLineImportMapper(Component):
         assert product_odoo, (
                 "product_id %s should have been imported in "
                 "SaleOrderImporter._import_dependencies" % (external_id,))
-
         return {'product_id': product_odoo.id}
+
+    @mapping
+    def quantity(self, record):
+        if not record['quantity'] == 0:
+            return {'product_uom_qty': record['quantity']}
+        else:
+            binding = self.options.get("binding")
+            if not binding:
+                return {'product_uom_qty': record['quantity']}

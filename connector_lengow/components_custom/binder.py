@@ -280,7 +280,7 @@ class BinderComposite(AbstractComponent):
         self._check_domain(domain)
         return self.env[model_name].search(domain)
 
-    def wrap_record(self, relation, force=False):
+    def wrap_record(self, relation):
         """Give the real record
 
         :param relation: Odoo real record for which we want to get its binding
@@ -316,20 +316,10 @@ class BinderComposite(AbstractComponent):
                 (self._backend_field, "=", self.backend_record.id),
             ]
         )
-
-        if not binding:
-            if force:
-                binding = self.model.with_context(connector_no_export=True).create(
-                    {
-                        self._odoo_field: relation.id,
-                        self._backend_field: self.backend_record.id,
-                    }
-                )
-            else:
-                binding = self.model
-
         if len(binding) > 1:
             raise InvalidDataError("More than one binding found")
+        # if not binding:
+        #     binding = self.model
 
         return binding
 

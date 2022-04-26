@@ -22,7 +22,7 @@
         <field name="name">lengow.product.product.form</field>
         <field name="model">lengow.product.product</field>
         <field name="arch" type="xml">
-            <form string="Oxigesti Product">
+            <form string="lengow Product">
                 <group>
                     <field name="backend_id"/>
                     <field name="odoo_id" readonly="True"/>
