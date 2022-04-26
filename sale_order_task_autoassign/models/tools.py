@@ -48,11 +48,11 @@ class TzInterval:
         self.duration = self.date_end - self.date_start
 
     def is_included(self, other):
-        """ returns if current interval (self) is fully included on interval (other)"""
+        """returns if current interval (self) is fully included on interval (other)"""
         return self.date_end <= other.date_end and self.date_start >= other.date_start
 
     def is_overlaped(self, other):
-        """ returnsw if interval (other) and current one (self) are overlapped """
+        """returnsw if interval (other) and current one (self) are overlapped"""
         return self.date_end > other.date_start and other.date_end > self.date_start
 
     def update_start(self, date_start):
@@ -140,11 +140,11 @@ class Task:
         return self.interval.duration
 
     def is_included(self, other):
-        """ returns if current task (self) is fully included on task (other)"""
+        """returns if current task (self) is fully included on task (other)"""
         return self.end <= other.end and self.start >= other.start
 
     def is_overlaped(self, other):
-        """ returnsw if task (other) and current one (self) are overlapped """
+        """returnsw if task (other) and current one (self) are overlapped"""
         return self.end > other.start and other.end > self.start
 
     def update_start(self, start):
