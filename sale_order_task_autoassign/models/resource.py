@@ -24,7 +24,7 @@ class ResourceResource(models.Model):
         return False
 
     def get_next_attendance(self, cint):
-        """ return next attendance period from datetime dt"""
+        """return next attendance period from datetime dt"""
         self.ensure_one()
         for a in self.calendar_id.attendance_ids.filtered(
             lambda x: int(x.dayofweek) == cint.weekday(self.tz)
@@ -53,7 +53,7 @@ class ResourceResource(models.Model):
         return None
 
     def find_next_available(self, cint, project):
-        """ get the next free periode after (cint) of the resource (r) """
+        """get the next free periode after (cint) of the resource (r)"""
         self.ensure_one()
         if not self.calendar_id.attendance_ids:
             return None
