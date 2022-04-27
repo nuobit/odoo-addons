@@ -21,7 +21,7 @@ class SageBinding(models.AbstractModel):
 
     @api.model
     def import_batch(self, backend, filters=None):
-        """ Prepare the import of records modified on Sage """
+        """Prepare the import of records modified on Sage"""
         if filters is None:
             filters = {}
         with backend.work_on(self._name) as work:
@@ -39,7 +39,7 @@ class SageBinding(models.AbstractModel):
 
     @api.model
     def import_record(self, backend, external_id):
-        """ Import a Sage record """
+        """Import a Sage record"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage="record.importer")
             return importer.run(external_id)
