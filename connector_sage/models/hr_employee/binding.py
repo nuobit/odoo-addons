@@ -38,7 +38,7 @@ class HrEmployeeBinding(models.Model):
     ]
 
     def import_employees_since(self, backend_record=None, since_date=None):
-        """ Prepare the import of employees modified on Sage """
+        """Prepare the import of employees modified on Sage"""
         filters = {
             "CodigoEmpresa": backend_record.sage_company_id,
         }
