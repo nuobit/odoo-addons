@@ -8,7 +8,7 @@ from odoo import _, fields, models
 
 
 class OrderpointSyncTemplate(models.Model):
-    """ Defines Minimum stock rules. """
+    """Defines Minimum stock rules."""
 
     _name = "stock.warehouse.orderpoint.sync.template"
     _description = "Minimum Inventory Rule sync template"
