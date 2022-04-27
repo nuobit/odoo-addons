@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 
 class OxigestiExporter(AbstractComponent):
-    """ Base Exporter for Oxigesti """
+    """Base Exporter for Oxigesti"""
 
     _name = "oxigesti.exporter"
     _inherit = ["generic.exporter", "base.oxigesti.connector"]
@@ -63,7 +63,7 @@ class OxigestiExporter(AbstractComponent):
                 )
 
     def _run(self, fields=None):
-        """ Flow of the synchronization, implemented in inherited classes"""
+        """Flow of the synchronization, implemented in inherited classes"""
         assert self.binding
 
         if self._has_to_skip():
@@ -140,7 +140,7 @@ class OxigestiBatchExporter(AbstractComponent):
 
 
 class OxigestiDirectBatchExporter(AbstractComponent):
-    """ Export the records directly, without delaying the jobs. """
+    """Export the records directly, without delaying the jobs."""
 
     _name = "oxigesti.direct.batch.exporter"
     _inherit = "oxigesti.batch.exporter"
@@ -148,12 +148,12 @@ class OxigestiDirectBatchExporter(AbstractComponent):
     _usage = "direct.batch.exporter"
 
     def _export_record(self, relation):
-        """ export the record directly """
+        """export the record directly"""
         self.model.export_record(self.backend_record, relation)
 
 
 class OxigestiDelayedBatchExporter(AbstractComponent):
-    """ Delay export of the records """
+    """Delay export of the records"""
 
     _name = "oxigesti.delayed.batch.exporter"
     _inherit = "oxigesti.batch.exporter"
@@ -161,6 +161,6 @@ class OxigestiDelayedBatchExporter(AbstractComponent):
     _usage = "delayed.batch.exporter"
 
     def _export_record(self, relation, job_options=None):
-        """ Delay the export of the records"""
+        """Delay the export of the records"""
         delayable = self.model.with_delay(**job_options or {})
         delayable.export_record(self.backend_record, relation)

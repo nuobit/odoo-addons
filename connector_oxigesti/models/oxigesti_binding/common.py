@@ -180,14 +180,14 @@ class OxigestiBinding(models.AbstractModel):
 
     @api.model
     def import_record(self, backend, external_id):
-        """ Import Oxigesti record """
+        """Import Oxigesti record"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage="record.importer")
             return importer.run(external_id)
 
     @api.model
     def export_record(self, backend, relation):
-        """ Export Odoo record """
+        """Export Odoo record"""
         if not relation.with_context(active_test=False).search_count(
             [("id", "=", relation.id)]
         ):
