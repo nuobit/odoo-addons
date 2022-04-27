@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 
 class AmbugestExporter(AbstractComponent):
-    """ Base importer for Ambugest """
+    """Base importer for Ambugest"""
 
     _name = "ambugest.exporter"
     _inherit = ["base.exporter", "base.ambugest.connector"]

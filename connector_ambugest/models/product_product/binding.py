@@ -41,7 +41,7 @@ class ProductProductBinding(models.Model):
     ]
 
     def import_products_since(self, backend_record=None, since_date=None):
-        """ Prepare the import of products modified on Ambugest """
+        """Prepare the import of products modified on Ambugest"""
         filters = {
             "Empresa": backend_record.ambugest_company_id,
         }

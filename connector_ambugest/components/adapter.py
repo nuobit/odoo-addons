@@ -36,35 +36,33 @@ def api_handle_errors(message=""):
     instead, they are presented as :class:`openerp.exceptions.UserError`.
     """
     if message:
-        message = message + u"\n\n"
+        message = message + "\n\n"
     try:
         yield
     except NetworkRetryableError as err:
-        raise exceptions.UserError(_(u"{}Network Error:\n\n{}").format(message, err))
+        raise exceptions.UserError(_("{}Network Error:\n\n{}").format(message, err))
     except (HTTPError, RequestException, RequestConnectionError) as err:
         raise exceptions.UserError(
-            _(u"{}API / Network Error:\n\n{}").format(message, err)
+            _("{}API / Network Error:\n\n{}").format(message, err)
         )
     except pymssql.OperationalError as err:
         raise exceptions.UserError(
-            _(u"{}DB operational Error:\n\n{}").format(message, err)
+            _("{}DB operational Error:\n\n{}").format(message, err)
         )
     except pymssql.IntegrityError as err:
         raise exceptions.UserError(
-            _(u"{}DB integrity Error:\n\n{}").format(message, err)
+            _("{}DB integrity Error:\n\n{}").format(message, err)
         )
     except pymssql.InternalError as err:
-        raise exceptions.UserError(
-            _(u"{}DB internal Error:\n\n{}").format(message, err)
-        )
+        raise exceptions.UserError(_("{}DB internal Error:\n\n{}").format(message, err))
     except pymssql.InterfaceError as err:
         raise exceptions.UserError(
-            _(u"{}DB interface Error:\n\n{}").format(message, err)
+            _("{}DB interface Error:\n\n{}").format(message, err)
         )
 
 
 class CRUDAdapter(AbstractComponent):
-    """ External Records Adapter for Ambugest """
+    """External Records Adapter for Ambugest"""
 
     _name = "ambugest.crud.adapter"
     _inherit = ["base.backend.adapter", "base.ambugest.connector"]
@@ -92,7 +90,7 @@ class CRUDAdapter(AbstractComponent):
         raise NotImplementedError
 
     def read(self, _id, attributes=None):  # pylint: disable=W8106
-        """ Returns the information of a record """
+        """Returns the information of a record"""
         raise NotImplementedError
 
     def search_read(self, filters=None):
@@ -101,19 +99,19 @@ class CRUDAdapter(AbstractComponent):
         raise NotImplementedError
 
     def create(self, data):  # pylint: disable=W8106
-        """ Create a record on the external system """
+        """Create a record on the external system"""
         raise NotImplementedError
 
     def write(self, _id, data):  # pylint: disable=W8106
-        """ Update records on the external system """
+        """Update records on the external system"""
         raise NotImplementedError
 
     def delete(self, _id):
-        """ Delete a record on the external system """
+        """Delete a record on the external system"""
         raise NotImplementedError
 
     def get_version(self):
-        """ Check connection """
+        """Check connection"""
         raise NotImplementedError
 
 
@@ -223,7 +221,7 @@ class GenericAdapter(AbstractComponent):
         return res and res[0] or []
 
     def write(self, _id, values_d):  # pylint: disable=W8106
-        """ Update records on the external system """
+        """Update records on the external system"""
         _logger.debug("method write, sql %s id %s, values %s", self._sql, _id, values_d)
 
         if not values_d:
@@ -286,7 +284,7 @@ class GenericAdapter(AbstractComponent):
         return count
 
     def create(self, attributes=None):  # pylint: disable=W8106
-        """ Create a record on the external system """
+        """Create a record on the external system"""
         _logger.debug(
             "method create, model %s, attributes %s", self._sage_model, attributes
         )
@@ -307,7 +305,7 @@ class GenericAdapter(AbstractComponent):
 
 
 class AmbugestNoModelAdapter(AbstractComponent):
-    """ Used to test the connection """
+    """Used to test the connection"""
 
     _name = "ambugest.adapter.test"
     _inherit = "ambugest.adapter"

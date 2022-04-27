@@ -59,7 +59,7 @@ class SaleOrderBinding(models.Model):
     ]
 
     def import_services_since(self, backend_record=None, since_date=None):
-        """ Prepare the import of partners modified on Ambugest """
+        """Prepare the import of partners modified on Ambugest"""
         filters = {
             "EMPRESA": backend_record.ambugest_company_id,
         }
