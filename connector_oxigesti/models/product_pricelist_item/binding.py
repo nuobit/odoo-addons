@@ -48,7 +48,7 @@ class ProductPricelistItemBinding(models.Model):
     def export_product_prices_by_customer_since(
         self, backend_record=None, since_date=None
     ):
-        """ Prepare the batch export of product prices by customer modified on Odoo """
+        """Prepare the batch export of product prices by customer modified on Odoo"""
         domain = [("company_id", "in", (backend_record.company_id.id, False))]
         if since_date:
             domain += [("write_date", ">", since_date)]

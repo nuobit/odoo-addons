@@ -44,7 +44,7 @@ class StockProductionLotBinding(models.Model):
 
     @api.model
     def export_stock_production_lot_since(self, backend_record=None, since_date=None):
-        """ Prepare the batch export of Lots on Odoo """
+        """Prepare the batch export of Lots on Odoo"""
 
         def chunks(ls, n):
             """Yield successive n-sized chunks from lst."""

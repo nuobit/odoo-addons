@@ -21,7 +21,7 @@ class ProductCategoryBinding(models.Model):
 
     @api.model
     def export_product_categories_since(self, backend_record=None, since_date=None):
-        """ Prepare the batch export of product categories modified on Odoo """
+        """Prepare the batch export of product categories modified on Odoo"""
         domain = []
         if since_date:
             domain += [("write_date", ">", since_date)]

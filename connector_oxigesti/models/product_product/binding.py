@@ -42,7 +42,7 @@ class ProductProductBinding(models.Model):
 
     @api.model
     def export_products_since(self, backend_record=None, since_date=None):
-        """ Prepare the batch export of products modified on Odoo """
+        """Prepare the batch export of products modified on Odoo"""
         domain = [("company_id", "in", (backend_record.company_id.id, False))]
         if since_date:
             domain += [
