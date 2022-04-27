@@ -48,7 +48,7 @@ class PayrollSageLabourAgreementBinding(models.Model):
     ]
 
     def import_labour_agreements_since(self, backend_record=None, since_date=None):
-        """ Prepare the import of payroll structure modified on Sage """
+        """Prepare the import of payroll structure modified on Sage"""
         filters = {
             "CodigoEmpresa": backend_record.sage_company_id,
         }

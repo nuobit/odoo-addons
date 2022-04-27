@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 
 class SageImporter(AbstractComponent):
-    """ Base importer for Sage """
+    """Base importer for Sage"""
 
     _name = "sage.importer"
     _inherit = ["base.importer", "base.sage.connector"]
@@ -144,7 +144,7 @@ class SageBatchImporter(AbstractComponent):
     _usage = "batch.importer"
 
     def run(self, filters=None):
-        """ Run the synchronization """
+        """Run the synchronization"""
         record_ids = self.backend_adapter.search(filters)
         for record_id in record_ids:
             self._import_record(record_id)
@@ -158,23 +158,23 @@ class SageBatchImporter(AbstractComponent):
 
 
 class SageDirectBatchImporter(AbstractComponent):
-    """ Import the records directly, without delaying the jobs. """
+    """Import the records directly, without delaying the jobs."""
 
     _name = "sage.direct.batch.importer"
     _inherit = "sage.batch.importer"
 
     def _import_record(self, external_id):
-        """ Import the record directly """
+        """Import the record directly"""
         self.model.import_record(self.backend_record, external_id)
 
 
 class SageDelayedBatchImporter(AbstractComponent):
-    """ Delay import of the records """
+    """Delay import of the records"""
 
     _name = "sage.delayed.batch.importer"
     _inherit = "sage.batch.importer"
 
     def _import_record(self, external_id, job_options=None):
-        """ Delay the import of the records"""
+        """Delay the import of the records"""
         delayable = self.model.with_delay(**job_options or {})
         delayable.import_record(self.backend_record, external_id)

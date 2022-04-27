@@ -38,7 +38,7 @@ class ResPartnerBinding(models.Model):
     ]
 
     def import_contacts_since(self, backend_record=None, since_date=None):
-        """ Prepare the import of partners modified on Sage """
+        """Prepare the import of partners modified on Sage"""
         filters = {
             "CodigoEmpresa": backend_record.sage_company_id,
         }

@@ -49,7 +49,7 @@ class PayslipCheckBinding(models.Model):
     ]
 
     def import_payslip_checks(self, payslip_id, backend_record):
-        """ Prepare the import of payslip from Sage """
+        """Prepare the import of payslip from Sage"""
         filters = {
             "CodigoEmpresa": backend_record.sage_company_id,
             "Año": payslip_id.year,
