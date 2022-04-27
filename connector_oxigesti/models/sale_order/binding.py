@@ -32,7 +32,7 @@ class SaleOrderBinding(models.Model):
     )
 
     def import_services_since(self, backend_record=None, since_date=None):
-        """ Prepare the batch import of services created on Oxigesti """
+        """Prepare the batch import of services created on Oxigesti"""
         filters = []
         if since_date:
             filters = [("Fecha_Modifica", ">", since_date)]

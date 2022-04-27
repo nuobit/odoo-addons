@@ -30,7 +30,7 @@ class ProductBuyerinfoBinding(models.Model):
 
     @api.model
     def export_products_by_customer_since(self, backend_record=None, since_date=None):
-        """ Prepare the batch export of products by customer modified on Odoo """
+        """Prepare the batch export of products by customer modified on Odoo"""
         domain = [
             ("product_id.company_id", "in", (backend_record.company_id.id, False)),
             ("partner_id.company_id", "=", backend_record.company_id.id),

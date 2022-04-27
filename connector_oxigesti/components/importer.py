@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 
 class OxigestiImporter(AbstractComponent):
-    """ Base importer for Oxigesti """
+    """Base importer for Oxigesti"""
 
     _name = "oxigesti.importer"
     _inherit = ["base.importer", "base.oxigesti.connector"]
@@ -181,7 +181,7 @@ class OxigestiBatchImporter(AbstractComponent):
 
 
 class OxigestiDirectBatchImporter(AbstractComponent):
-    """ Import the records directly, without delaying the jobs. """
+    """Import the records directly, without delaying the jobs."""
 
     _name = "oxigesti.direct.batch.importer"
     _inherit = "oxigesti.batch.importer"
@@ -189,12 +189,12 @@ class OxigestiDirectBatchImporter(AbstractComponent):
     _usage = "direct.batch.importer"
 
     def _import_record(self, external_id):
-        """ Import the record directly """
+        """Import the record directly"""
         self.model.import_record(self.backend_record, external_id)
 
 
 class OxigestiDelayedBatchImporter(AbstractComponent):
-    """ Delay import of the records """
+    """Delay import of the records"""
 
     _name = "oxigesti.delayed.batch.importer"
     _inherit = "oxigesti.batch.importer"
@@ -202,6 +202,6 @@ class OxigestiDelayedBatchImporter(AbstractComponent):
     _usage = "delayed.batch.importer"
 
     def _import_record(self, external_id, job_options=None):
-        """ Delay the import of the records"""
+        """Delay the import of the records"""
         delayable = self.model.with_delay(**job_options or {})
         delayable.import_record(self.backend_record, external_id)
