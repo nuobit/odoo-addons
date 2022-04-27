@@ -11,7 +11,6 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
-        "account_asset_product_item",
         "l10n_es_aeat_vat_special_prorrate",
     ],
     "installable": True,
