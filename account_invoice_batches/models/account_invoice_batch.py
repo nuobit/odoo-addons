@@ -97,9 +97,7 @@ class AccountInvoiceBatch(models.Model):
         )
         res = []
         for rec in self:
-            datetime_str = fields.Datetime.from_string(rec.date).strftime(
-                datetime_format
-            )
+            datetime_str = rec.date.strftime(datetime_format)
             value = filter(
                 None, map(lambda x: x and x.strip() or None, [datetime_str, rec.name])
             )
