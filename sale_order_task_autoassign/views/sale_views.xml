@@ -13,7 +13,6 @@
                     <field name="task_user_id" />
                 </group>
             </xpath>
-            <field name="expected_date" position="move" />
             <field name="show_update_pricelist" position="before">
                 <field name="expected_date" />
             </field>

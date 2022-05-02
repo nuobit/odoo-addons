@@ -4,14 +4,14 @@
 
 {
     "name": "Sale order task autoassign",
-    "version": "14.0.1.1.1",
+    "version": "14.0.1.1.2",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Project",
     "website": "https://github.com/nuobit/odoo-addons",
     "summary": "This module allows creating tasks from sale orders with "
     "the duration defined on the service product. It also auto "
-    "assigns the task to availableresources avoiding collisions "
+    "assigns the task to available resources avoiding collisions "
     "and respecting the resources and leaves.",
     "depends": [
         "project_task_bike_location",
