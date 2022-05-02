@@ -10,7 +10,9 @@ def migrate(env, version):
         env.cr,
         """
         UPDATE account_move am
-        SET invoice_batch_id = ai.invoice_batch_id
+        SET invoice_batch_id = ai.invoice_batch_id,
+            invoice_batch_sending_method = ai.invoice_batch_sending_method,
+            invoice_batch_email_partner_id = ai.invoice_batch_email_partner_id
         FROM account_invoice ai
         WHERE am.old_invoice_id = ai.id AND ai.invoice_batch_id IS NOT NULL
         """,
