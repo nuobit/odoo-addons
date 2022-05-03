@@ -20,6 +20,7 @@ def chunks(li, n, padding=False):
 
 class ReportGS1Barcode(models.AbstractModel):
     _name = "report.barcodes_gs1_label.report_gs1_barcode"
+    _description = "Report GS1 Barcode"
 
     @api.model
     def _get_report_values(self, docids, data=None):  # noqa: C901

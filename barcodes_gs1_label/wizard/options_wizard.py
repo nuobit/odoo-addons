@@ -16,6 +16,7 @@ MAP_MODEL_REPORT = {
 
 class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     _name = "barcodes.gs1.label.options.wizard"
+    _description = "Barcodes GS1 Print Options Wizard"
 
     start_row = fields.Integer(string="Start row", default=1)
     start_col = fields.Integer(string="Start column", default=1)
