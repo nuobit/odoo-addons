@@ -18,7 +18,7 @@ class StockProductionLot(models.Model):
     @api.constrains("name", "product_id", "company_id")
     def _check_product_lot(self):
         for rec in self:
-            if rec.oxigesti_bind_ids.filtered(
+            if rec.sudo().oxigesti_bind_ids.filtered(
                 lambda x: x.backend_id.company_id == rec.company_id
             ):
                 raise ValidationError(
