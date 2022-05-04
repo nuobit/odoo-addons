@@ -74,7 +74,7 @@ class ProductService(Component):
                 data.setdefault(product, []).append(
                     {
                         "id": lot_id,
-                        "code": str(lot_name),
+                        "code": lot_name and str(lot_name) or None,
                         "quantity": qty,
                     }
                 )
