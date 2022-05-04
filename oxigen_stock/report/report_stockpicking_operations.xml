@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="oxigen_report_stockpicking_operations"
+        inherit_id="stock.report_picking"
+    >
+        <xpath expr="//table[1]/thead/tr/th[2]" position="after">
+            <th t-if="o.state != 'done'and o.picking_type_code == 'internal'">
+                <strong>Reserved</strong>
+            </th>
+        </xpath>
+        <xpath expr="//table[1]/tbody/t/t/tr/td[2]" position="after">
+             <td t-if="o.state != 'done' and o.picking_type_code == 'internal'">
+                <span t-field="move.reserved_availability" />
+                <span t-field="ml.product_uom_id" groups="uom.group_uom" />
+            </td>
+        </xpath>
+    </template>
+</odoo>
