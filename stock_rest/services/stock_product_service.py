@@ -68,32 +68,35 @@ class ProductService(Component):
         data = {}
         for s in stock:
             product = self.env["product.product"].browse(s["product_id"][0])
-            lot_id, lot_name = s["lot_id"] or (None, None)
-            data.setdefault(product, []).append(
-                {
-                    "id": lot_id,
-                    "code": str(lot_name),
-                    "quantity": s["quantity"],
-                }
-            )
+            qty = s["quantity"]
+            if qty > 0:
+                lot_id, lot_name = s["lot_id"] or (None, None)
+                data.setdefault(product, []).append(
+                    {
+                        "id": lot_id,
+                        "code": str(lot_name),
+                        "quantity": qty,
+                    }
+                )
 
         product_list = []
         for product, lots in data.items():
-            product_list.append(
-                {
-                    "id": product.id,
-                    "code": product.default_code or None,
-                    "barcode": product.barcode or None,
-                    "description": product.name,
-                    "category_id": product.categ_id.id,
-                    "category_name": product.categ_id.name,
-                    "lot_type": product.tracking,
-                    # # "asset_category_id": product.sudo().asset_category_id.id or None,
-                    # # "asset_category_name": product.sudo().asset_category_id.name
-                    # # or None,
-                    "lots": lots,
-                }
-            )
+            if (code or barcode) or lots:
+                product_list.append(
+                    {
+                        "id": product.id,
+                        "code": product.default_code or None,
+                        "barcode": product.barcode or None,
+                        "description": product.name,
+                        "category_id": product.categ_id.id,
+                        "category_name": product.categ_id.name,
+                        "lot_type": product.tracking,
+                        # # "asset_category_id": product.sudo().asset_category_id.id or None,
+                        # # "asset_category_name": product.sudo().asset_category_id.name
+                        # # or None,
+                        "lots": lots,
+                    }
+                )
         return {"rows": product_list}
 
     def _validator_search(self):
