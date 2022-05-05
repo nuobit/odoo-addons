@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+  <record
+        id="stock_picking_report_delivery_note_paperformat"
+        model="report.paperformat"
+    >
+    <field name="margin_left">3</field>
+    <field name="margin_right">3</field>
+    <field name="header_spacing">20</field>
+  </record>
+</odoo>
