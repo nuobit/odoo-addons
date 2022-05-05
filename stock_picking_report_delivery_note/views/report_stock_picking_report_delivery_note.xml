@@ -90,7 +90,10 @@
         >
             <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
             <div class="page">
-                <table class="table table-condensed sprdn-table3">
+                <table
+                    class="table table-condensed sprdn-table3"
+                    style="font-size: 14px;"
+                >
                     <thead>
                         <tr>
                             <th>
@@ -100,7 +103,7 @@
                                             <td width="60%" />
                                             <td class="customer_address" width="40%">
                                                 <div>
-                                                    <div style="font-size: 14px;">
+                                                    <div>
                                                         <t
                                                             t-set="partner"
                                                             t-value="o.partner_id.parent_id or o.partner_id"
@@ -138,7 +141,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                <h2>
+                                                <h3>
                                                     <span t-if="o.state == 'done'">
                                                         <span>Delivery note</span>
                                                     </span>
@@ -156,7 +159,7 @@
                                                         >Pending delivery note</span>
                                                     </span>
                                                     <span t-field="o.name" />
-                                                </h2>
+                                                </h3>
                                             </td>
                                         </tr>
                                         <tr>
