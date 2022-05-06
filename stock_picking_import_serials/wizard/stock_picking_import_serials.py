@@ -3,8 +3,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
+from io import BytesIO
 
 import xlrd
+from openpyxl import load_workbook
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError
@@ -121,6 +123,39 @@ class StockPickingImportSerials(models.TransientModel):
 
         return product_serial
 
+    def _get_product_serial_xlsx(self, sheet):
+        max_columns = sheet.max_column
+        LAST_COLUMN = 2
+        if max_columns < LAST_COLUMN:
+            raise UserError(
+                _("Incorrect format file, the number of columns must be 2 minimum")
+            )
+
+        # group serials by product
+        product_serial = {}
+        first_row = True
+        for row in sheet.rows:
+            if first_row:
+                types = {c.data_type for c in row}
+                if types != {"s"}:
+                    raise UserError(_("All fields of the header row must be text"))
+                if any(not c.internal_value for c in row):
+                    raise UserError(_("The fields on the header row must not be null"))
+                first_row = False
+                continue
+            default_code = row[0].internal_value
+            tracking_number = row[1].internal_value
+            if default_code not in product_serial:
+                product_serial[default_code] = [tracking_number]
+            else:
+                if tracking_number in product_serial[default_code]:
+                    raise UserError(
+                        _("The tracking number %s duplicated") % tracking_number
+                    )
+                product_serial[default_code].append(tracking_number)
+
+        return product_serial
+
     def import_serials(self):  # noqa: C901
         self.ensure_one()
 
@@ -148,8 +183,11 @@ class StockPickingImportSerials(models.TransientModel):
         if ext == "xls":
             book = xlrd.open_workbook(file_contents=file)
             sheet = book.sheet_by_index(0)
+        elif ext == "xlsx":
+            book = load_workbook(filename=BytesIO(file))
+            sheet = book.worksheets[0]
         else:
-            raise NotImplementedError()
+            raise UserError(_("Extesion %s no supported") % ext)
 
         product_serial = getattr(self, "_get_product_serial_%s" % ext)(sheet)
         if not product_serial:
