@@ -83,41 +83,17 @@ class StockPickingImportSerials(models.TransientModel):
         copy=False,
     )
 
-    def import_serials(self):  # noqa: C901
-        self.ensure_one()
-
-        msglog = MsgLog(
-            {
-                "MoreSerialsThanLines": _(
-                    "Not all serial numbers have been assigned. "
-                    "There are more serial numbers "
-                    "in the file than picking lines without them.\n"
-                    "Serial numbers not assigned:"
-                ),
-                "MoreLinesThanSerials": _(
-                    "There's not enough serial numbers in input file so there's "
-                    "picking lines with operations without serial number:"
-                ),
-            }
-        )
-
-        active_ids = self.env.context.get("active_ids")
-        active_model = self.env.context.get("active_model")
-        picking = self.env[active_model].browse(active_ids)
-
-        file = base64.b64decode(self.datas)
-        book = xlrd.open_workbook(file_contents=file)
-        sheet = book.sheet_by_index(0)
-
+    def _get_product_serial_xls(self, sheet):
+        max_columns = sheet.ncols
         LAST_COLUMN = 2
-        if sheet.ncols < LAST_COLUMN:
+        if max_columns < LAST_COLUMN:
             raise UserError(
                 _("Incorrect format file, the number of columns must be 2 minimum")
             )
 
         # group serials by product
         product_serial = {}
-        for row_index in range(sheet.nrows):
+        for row_index in range(max_columns):
             row_values = sheet.row_values(row_index, 0, LAST_COLUMN)
             if row_index == 0:
                 types = set(sheet.row_types(row_index, 0, LAST_COLUMN))
@@ -143,6 +119,39 @@ class StockPickingImportSerials(models.TransientModel):
                         )
                     product_serial[default_code].append(tracking_number)
 
+        return product_serial
+
+    def import_serials(self):  # noqa: C901
+        self.ensure_one()
+
+        msglog = MsgLog(
+            {
+                "MoreSerialsThanLines": _(
+                    "Not all serial numbers have been assigned. "
+                    "There are more serial numbers "
+                    "in the file than picking lines without them.\n"
+                    "Serial numbers not assigned:"
+                ),
+                "MoreLinesThanSerials": _(
+                    "There's not enough serial numbers in input file so there's "
+                    "picking lines with operations without serial number:"
+                ),
+            }
+        )
+
+        active_ids = self.env.context.get("active_ids")
+        active_model = self.env.context.get("active_model")
+        picking = self.env[active_model].browse(active_ids)
+
+        _fname, ext = self.datas_fname.split(".")
+        file = base64.b64decode(self.datas)
+        if ext == "xls":
+            book = xlrd.open_workbook(file_contents=file)
+            sheet = book.sheet_by_index(0)
+        else:
+            raise NotImplementedError()
+
+        product_serial = getattr(self, "_get_product_serial_%s" % ext)(sheet)
         if not product_serial:
             raise UserError(_("There's no data in input file"))
 
@@ -151,8 +160,10 @@ class StockPickingImportSerials(models.TransientModel):
             # get product
             product = self.env["product.product"].search(
                 [
-                    ("company_id", "=", picking.company_id.id),
                     ("default_code", "=", default_code),
+                    "|",
+                    ("company_id", "=", picking.company_id.id),
+                    ("company_id", "=", False),
                 ]
             )
             if not product:
@@ -249,6 +260,7 @@ class StockPickingImportSerials(models.TransientModel):
                             )
 
                     line.lot_id = lot_id
+                    line.lot_name = lot_id.name
 
                 if tns_n > dmls_n:
                     msglog.add_msg(
@@ -280,4 +292,4 @@ class StockPickingImportSerials(models.TransientModel):
 
         self.state = "result"
 
-        return {"type": "ir.actions.do_nothing"}
+        return {}
