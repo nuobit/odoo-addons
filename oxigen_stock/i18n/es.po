@@ -19,3 +19,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:oxigen_stock.oxigen_report_stockpicking_operations
 msgid "<strong>Reserved</strong>"
 msgstr "<strong>Reservado</strong>"
+
+#. module: oxigen_stock
+#: model_terms:ir.ui.view,arch_db:oxigen_stock.oxigen_report_stockpicking_operations
+msgid "<strong>Demand</strong>"
+msgstr "<strong>Demanda</strong>"
