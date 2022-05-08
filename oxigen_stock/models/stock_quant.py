@@ -30,8 +30,15 @@ class StockQuant(models.Model):
         if removal_strategy == "fifo":
             quants = quants.sorted(lambda q: (q.in_date, q.location_id.name))
         elif removal_strategy == "fefo":
-            quants = quants.sorted(
+            # It can happen that for some reason a quant does not have a removal_date
+            # (expiry not stored at the beginning, past version issues...)
+            quants_no_removal_date = quants.filtered(lambda q: not q.removal_date)
+            quants_removal_date = quants.filtered(lambda q: q.removal_date)
+            quants = quants_removal_date.sorted(
                 lambda q: (q.removal_date, q.in_date, q.location_id.name)
+            )
+            quants |= quants_no_removal_date.sorted(
+                lambda q: (q.in_date, q.location_id.name)
             )
         elif removal_strategy == "lifo":
             # sorting 2 keys and only one of them reversed it is a bit tricky,
