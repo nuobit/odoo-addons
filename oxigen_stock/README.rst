@@ -8,6 +8,7 @@ Oxigen Stock
 * Sets default company as the current company in product creation
 * Defines Complete name of locations as in v11, taking the full path of parent locations
 * Adds customizations in internal pickings Operations Report
+* Makes button "Mark as todo" visible before saving a planned picking
 
 Credits
 =======
