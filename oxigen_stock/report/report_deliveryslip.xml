@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="oxigen_report_deliveryslip"
+        inherit_id="stock.report_delivery_document"
+    >
+<!--Remove description_picking from report-->
+        <xpath expr="//table[1]/tbody/tr/td[1]/p/span" position="attributes">
+            <attribute name="style">visibility: hidden</attribute>
+        </xpath>
+    </template>
+</odoo>
