@@ -22,6 +22,7 @@ class AccountInvoiceServiceReport(models.AbstractModel):
             "doc_ids": docids,
             "doc_model": report.model,
             "docs": docs,
+            "data": data,
             "header_max_height": header_max_height,
         }
         return data
@@ -44,6 +45,7 @@ class AccountInvoiceDeliveryReport(models.AbstractModel):
             "doc_ids": docids,
             "doc_model": report.model,
             "docs": docs,
+            "data": data,
             "header_max_height": header_max_height,
         }
         return data

@@ -35,7 +35,7 @@
             >
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-6">
                             <img
                                 t-if="company.logo"
                                 class="img-responsive"
@@ -478,7 +478,14 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <table class="ris-table3">
+                                                        <t
+                                                            t-set="tax_amount_by_group"
+                                                            t-value="list(filter(lambda x: x[1], o.amount_by_group))"
+                                                        />
+                                                        <table
+                                                            class="ris-table3"
+                                                            t-if="not tax_amount_by_group"
+                                                        >
                                                             <tbody>
                                                                 <tr>
                                                                     <td width="80%" />
@@ -516,7 +523,7 @@
 
                 <div class="clearfix">
                     <div id="total" class="row">
-                        <div class="col-xs-4 pull-right">
+                        <div class="col-4 ml-auto">
                             <table
                                 class="table table-condensed"
                                 style="min-width: 250px;max-width: 400px;"
@@ -601,7 +608,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <p t-if="o.narration">
                             <strong>Comment:</strong>
                             <span t-field="o.narration" />
@@ -658,7 +665,7 @@
                         </ul>
                         <t
                             t-set="notaxable_taxes"
-                            t-value="o.invoice_line_ids.mapped('tax_ids').filtered(lambda x: x.description=='S_IVA0')"
+                            t-value="o.invoice_line_ids.mapped('tax_ids').filtered(lambda x: x.name=='IVA Exento Repercutido Sujeto')"
                         />
                         <ul t-if="notaxable_taxes" class="list-unstyled mt8">
                             <li>
