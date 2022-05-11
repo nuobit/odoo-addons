@@ -10,7 +10,7 @@
     "license": "AGPL-3",
     "category": "Accounting",
     "website": "https://github.com/nuobit/odoo-addons",
-    "depends": ["sale_order_service"],
+    "depends": ["sale_order_service", "account_payment_partner"],
     "data": [
         "data/data.xml",
         "report/report.xml",
