@@ -26,6 +26,8 @@ class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
     def _render_qweb_pdf(self, res_ids=None, data=None):
+        if res_ids is not None and not isinstance(res_ids, list):
+            res_ids = [res_ids]
         ir_config = self.env["ir.config_parameter"].sudo()
         chunk_threshold = int(
             ir_config.get_param("qweb.report.pdf.chunk.threshold", 50)

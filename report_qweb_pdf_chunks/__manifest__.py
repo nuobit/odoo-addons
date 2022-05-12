@@ -7,7 +7,7 @@
     "summary": "This module temporarily splits all selected documents to print into chunks "
     "and invokes the external Wkhtmltopdf (0.12.5) program for each chunk to "
     "avoid the well known memory problems when printing many documents.",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Reporting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
