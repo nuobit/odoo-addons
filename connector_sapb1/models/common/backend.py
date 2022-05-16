@@ -57,7 +57,7 @@ class SapB1Backend(models.Model):
     sl_port = fields.Integer('Port', default=50000, required=True)
     db_username = fields.Char('Username', required=True)
     db_password = fields.Char('Password', required=True)
-    company_db = fields.Char(string="SAP B1 Database")
+    company_db = fields.Char(string="Database")
     sl_ssl_enabled = fields.Boolean('SSL enabled', default=True)
     sl_base_url = fields.Char('Base URL', default='/b1s/v1', required=True)
     sl_url = fields.Char(string='URL', store=True, compute="_compute_sl_url")

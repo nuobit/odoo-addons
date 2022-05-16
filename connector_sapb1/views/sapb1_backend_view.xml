@@ -41,7 +41,7 @@
                             <field name="sl_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
-                            <field name="company_db"/>
+                            <field name="company_db" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="sl_url"/>
                             <field name="sl_base_url" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
@@ -81,20 +81,22 @@
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">
-                            <h2>Partners mapping</h2>
-                            <field name="partner_ids">
-                                <tree editable="bottom">
-                                    <field name="partner_id"/>
-                                    <field name="sapb1_cardcode"/>
-                                </tree>
-                            </field>
-                            <h2>Tax mapping</h2>
-                            <field name="tax_ids">
-                                <tree editable="bottom">
-                                    <field name="tax_id"/>
-                                    <field name="sapb1_tax"/>
-                                </tree>
-                            </field>
+                            <group string="Partners">
+                                <field name="partner_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="partner_id"/>
+                                        <field name="sapb1_cardcode"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Taxes">
+                                <field name="tax_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="tax_id"/>
+                                        <field name="sapb1_tax"/>
+                                    </tree>
+                                </field>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -108,10 +110,10 @@
         <field name="arch" type="xml">
             <tree string="SAP B1 Backend">
                 <field name="name"/>
-                <field name="company_id"/>
-                <field name="db_username"/>
-                <field name="db_password"/>
+                <field name="db_host"/>
+                <field name="sl_port"/>
                 <field name="company_db"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>
