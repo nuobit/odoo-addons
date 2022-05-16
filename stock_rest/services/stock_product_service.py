@@ -65,10 +65,11 @@ class ProductService(Component):
             lazy=False,
         )
 
+        dp = self.env["product.product"].sudo().env.ref("product.decimal_product_uom")
         data = {}
         for s in stock:
             product = self.env["product.product"].browse(s["product_id"][0])
-            qty = s["quantity"]
+            qty = round(s["quantity"], dp.digits)
             if qty > 0:
                 lot_id, lot_name = s["lot_id"] or (None, None)
                 data.setdefault(product, []).append(
