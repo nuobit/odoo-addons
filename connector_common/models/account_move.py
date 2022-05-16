@@ -8,9 +8,9 @@ from odoo import models
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    def action_post(self):
+    def _post(self, soft=True):
         for rec in self:
-            super(AccountMove, rec).action_post()
+            super(AccountMove, rec)._post(soft=soft)
             self._event("on_validate_invoice").notify(rec)
 
     def button_draft(self):
