@@ -16,7 +16,8 @@ class ResPartnerImportMapper(Component):
 
     direct = [('phone_home', 'phone'),
               ('phone_mobile', 'mobile'),
-              ('email', 'email')
+              ('email', 'email'),
+              ('complete_name', 'name'),
               ]
 
     @only_create
@@ -32,11 +33,6 @@ class ResPartnerImportMapper(Component):
     @mapping
     def company_id(self, record):
         return {'company_id': self.backend_record.company_id.id}
-
-    @mapping
-    def name(self, record):
-        complete_name = ' '.join(filter(lambda x: x and x.strip(), [record['first_name'], record['last_name']]))
-        return {'name': complete_name or None}
 
     @only_create
     @mapping
