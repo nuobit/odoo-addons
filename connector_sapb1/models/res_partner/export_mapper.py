@@ -16,7 +16,7 @@ class ResPartnerExportMapper(Component):
 
     direct = [
         ('name', 'AddressName2'),
-        ('email', 'U_ACC_EMAIL'),
+        ('email', 'AddressName3'),
     ]
 
     @changed_by('partner_id')
