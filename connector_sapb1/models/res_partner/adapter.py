@@ -28,7 +28,7 @@ class SapB1ResPartnerAdapter(Component):
             '/Street': lambda x: x or None,
             '/ZipCode': lambda x: x or None,
             '/City': lambda x: x or None,
-            '/U_ACC_EMAIL': lambda x: x or None,
+            '/AddressName3': lambda x: x or None,
         }
         self._convert_format(values, conv_mapper)
 
@@ -38,7 +38,7 @@ class SapB1ResPartnerAdapter(Component):
             'Street': lambda x: x or None,
             'ZipCode': lambda x: x or None,
             'City': lambda x: x or None,
-            'U_ACC_EMAIL': lambda x: x or None,
+            'AddressName3': lambda x: x or None,
         }
         return self._convert_format_domain(domain, conv_mapper)
 
