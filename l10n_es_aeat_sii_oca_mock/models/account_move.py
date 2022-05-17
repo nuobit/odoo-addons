@@ -20,7 +20,7 @@ class AccountMove(models.Model):
             }
 
             def __init__(self, *args, **kwargs):
-                pass
+                self.invoice = kwargs.get("invoice")
 
             def SuministroLRFacturasEmitidas(self, header, inv_dict):
                 _logger.info(
@@ -44,6 +44,9 @@ class AccountMove(models.Model):
                     header,
                     inv_dict,
                 )
+                if self.invoice:
+                    self.invoice.sii_header_sent = False
+                    self.invoice.sii_content_sent = False
                 return self._res
 
             def AnulacionLRFacturasRecibidas(self, header, inv_dict):
@@ -52,6 +55,9 @@ class AccountMove(models.Model):
                     header,
                     inv_dict,
                 )
+                if self.invoice:
+                    self.invoice.sii_header_sent = False
+                    self.invoice.sii_content_sent = False
                 return self._res
 
-        return SiiMock()
+        return SiiMock(invoice=self)

@@ -6,7 +6,7 @@
     "name": "AEAT SII Mock",
     "summary": "Module to simulate the SII connection allowing to test "
     "without establishing any real connection to AEAT",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
