@@ -74,9 +74,8 @@ class LengowSaleOrderTypeAdapter(Component):
             hash_fields = ['complete_name', 'first_line', 'second_line', 'zipcode', 'city', 'common_country_iso_a2']
             fields = ['delivery_address', 'billing_address']
             for f in fields:
-                if value['marketplace_status'] == 'CANCELED':
-                    a = 1
-                name_values = [value[f][y] for y in ['first_name', 'last_name'] if value.get(f) and value[f].get(y)]
+                name_values = [value[f][y].strip() for y in ['first_name', 'last_name'] if
+                               value.get(f) and value[f].get(y)]
                 if name_values:
                     value[f]['complete_name'] = ' '.join(name_values)
                     value[f]['hash'] = list2hash(
