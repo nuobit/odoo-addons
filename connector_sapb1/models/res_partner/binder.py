@@ -13,4 +13,4 @@ class ResPartnerBinder(Component):
     _external_field = ['CardCode', "AddressName"]
     _internal_field = ['sapb1_cardcode', 'sapb1_addressname']
 
-    _external_alt_field = ['CardCode', "AddressName2", 'U_ACC_EMAIL', "Street", "Block", "ZipCode", "City"]
+    _external_alt_field = ['CardCode', "AddressName2", "AddressName3", "Street", "Block", "ZipCode", "City"]
