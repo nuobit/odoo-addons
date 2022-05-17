@@ -38,28 +38,28 @@ class ResPartnerExportMapper(Component):
     @changed_by('phone')
     @mapping
     def phone(self, record):
-        return {'U_ACC_TELEFONO': record['phone'] or None}
+        return {'U_ACC_TELEFONO': record['phone'] and record['phone'].strip() or None}
 
     @changed_by('street')
     @mapping
     def street(self, record):
-        return {'Street': record['street'] or None}
+        return {'Street': record['street'] and record['street'].strip() or None}
 
     @changed_by('street2')
     @mapping
     def block(self, record):
-        return {'Block': record['street2'] or None}
+        return {'Block': record['street2'] and record['street2'].strip() or None}
 
     @changed_by('zip')
     @mapping
     def zipcode(self, record):
-        return {'ZipCode': record['zip'] or None}
+        return {'ZipCode': record['zip'] and record['zip'].strip() or None}
 
     @changed_by('city')
     @mapping
     def city(self, record):
-        return {'City': record['city'] or None}
+        return {'City': record['city'] and record['city'].strip() or None}
 
     @mapping
     def addressname(self, record):
-        return {'AddressName': record['name']}
+        return {'AddressName': record['name'].strip()}
