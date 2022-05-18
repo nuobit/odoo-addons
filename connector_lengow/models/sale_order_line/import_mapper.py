@@ -27,13 +27,18 @@ class SaleOrderLineImportMapper(Component):
     @mapping
     def price_unit(self, record):
         if record['quantity']:
-            return {'price_unit': (float(record['amount']) - float(record['tax'])) / record['quantity']}
+            return {'price_unit': (float(record['amount'])) / record['quantity']}
         binding = self.options.get("binding")
         if not binding:
-            return {'price_unit': (float(record['amount']) - float(record['tax']))}
+            return {'price_unit': (float(record['amount']))}
 
     @mapping
     def product(self, record):
+        if record['is_shipping']:
+            shipping_product = self.backend_record.shipping_product_id
+            if not shipping_product:
+                raise ValidationError("Shipping product not found, please define it on Backend")
+            return {'product_id': shipping_product.id}
         external_id = record['sku']
         binder = self.binder_for('lengow.product.product')
         product_odoo = binder.to_internal(external_id, unwrap=True)
