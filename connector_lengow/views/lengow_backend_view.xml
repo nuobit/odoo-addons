@@ -83,6 +83,9 @@
                                     </tree>
                                 </field>
                             </group>
+                            <group string="Shipping">
+                                <field name="shipping_product_id"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
