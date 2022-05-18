@@ -80,9 +80,11 @@ class SaleOrderExportMapper(Component):
         if not expensecode:
             raise ValidationError(
                 _('No expense code defined for partner %s. Please define it on backend') % partner.name)
-        expenses['DocumentAdditionalExpenses'].append({
-            "ExpenseCode": expensecode,
-            "LineTotal": shipping_line.price_reduce_taxexcl,
-            "VatGroup": self.backend_record.get_tax_map(shipping_line.tax_id),
-        })
+        expense = {
+            'ExpenseCode': expensecode,
+            'LineTotal': shipping_line.get_raw_price_unit(),
+        }
+        if shipping_line.tax_id:
+            expense['VatGroup'] = self.backend_record.get_tax_map(shipping_line.tax_id)
+        expenses['DocumentAdditionalExpenses'].append(expense)
         return expenses

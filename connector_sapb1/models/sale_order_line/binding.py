@@ -4,16 +4,6 @@
 from odoo import models, fields, api
 
 
-class SaleOrderLine(models.Model):
-    _inherit = 'sale.order.line'
-
-    sapb1_bind_ids = fields.One2many(
-        comodel_name='sapb1.sale.order.line',
-        inverse_name='odoo_id',
-        string='SAP B1 Bindings',
-    )
-
-
 class SaleOrderLineBinding(models.Model):
     _name = 'sapb1.sale.order.line'
     _inherit = 'sapb1.binding'
