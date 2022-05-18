@@ -36,4 +36,4 @@ class SaleOrderLineExportMapper(Component):
 
     @mapping
     def price_unit(self, record):
-        return {'UnitPrice': record.price_reduce_taxexcl}
+        return {'UnitPrice': record.get_raw_price_unit()}
