@@ -41,9 +41,10 @@ class SaleOrderImporter(Component):
         # Products
         order_lines = external_data['items']
         for line in order_lines:
-            self._import_dependency(line['sku'], 'lengow.product.product',
-                                    external_data={'sku': line['sku']},
-                                    always=False)
+            if not line['is_shipping']:
+                self._import_dependency(line['sku'], 'lengow.product.product',
+                                        external_data={'sku': line['sku']},
+                                        always=False)
 
     def _after_import(self, binding):
         sale_order = self.binder_for().unwrap_binding(binding)

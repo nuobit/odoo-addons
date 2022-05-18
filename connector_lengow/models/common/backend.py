@@ -61,6 +61,10 @@ class LengowBackend(models.Model):
         string="Marketplaces",
         required=True,
     )
+    shipping_product_id = fields.Many2one(
+        comodel_name="product.product",
+        string="Shipping Product",
+    )
 
     import_sale_orders_since_date = fields.Datetime('Import Services since')
     min_order_date = fields.Date('Min Order Date')
