@@ -38,7 +38,17 @@ class SaleOrderLineBinding(models.Model):
                                       ondelete='cascade',
                                       index=True)
 
-    lengow_id = fields.Integer(string="Lengow ID")
+    lengow_id = fields.Integer(string="Lengow ID", required=True)
+    lengow_marketplace = fields.Char(string="Marketplace on Lengow", required=True)
+    lengow_marketplace_order_id = fields.Char(string='Order on Lengow', required=True)
+
+    _sql_constraints = [
+        (
+            "lol_ext_uniq",
+            "unique(backend_id, lengow_id, lengow_marketplace, lengow_marketplace_order_id)",
+            "A binding already exists with the same External (Lengow) ID.",
+        ),
+    ]
 
     @api.model
     def create(self, vals):

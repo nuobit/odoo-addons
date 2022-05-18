@@ -18,10 +18,17 @@ class LengowBackendMarketplace(models.Model):
         required=True,
         ondelete="cascade",
     )
+    lengow_marketplace = fields.Char(string="Lengow Marketplace", required=True)
     partner_id = fields.Many2one(
         string="Odoo Partner",
         comodel_name="res.partner",
         required=True,
         ondelete="restrict",
     )
-    lengow_marketplace = fields.Char(string="Lengow Marketplace", required=True)
+
+    _sql_constraints = [
+        (
+            "lbp_partner_uniq",
+            "unique(backend_id, partner_id)",
+            "A binding already exists with the same Internal (Odoo) ID.",
+        ), ]
