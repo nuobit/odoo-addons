@@ -4,6 +4,7 @@
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
     mapping, only_create)
+from odoo.exceptions import ValidationError
 
 
 class SaleOrderLineImportMapper(Component):
@@ -18,9 +19,10 @@ class SaleOrderLineImportMapper(Component):
         return {'backend_id': self.backend_record.id}
 
     @mapping
-    def lengow_id(self, record):
+    def lengow_line_id(self, record):
         binder = self.binder_for()
-        return {'lengow_id': binder.dict2id(record, in_field=False)}
+        external_id = binder.dict2id(record, in_field=False)
+        return binder.id2dict(external_id, in_field=True)
 
     @mapping
     def price_unit(self, record):
