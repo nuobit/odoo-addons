@@ -13,10 +13,6 @@ class SaleOrderLineExportMapper(Component):
 
     _apply_on = 'sapb1.sale.order.line'
 
-    direct = [
-        ('price_unit', 'UnitPrice'),
-    ]
-
     @only_create
     @mapping
     def backend_id(self, record):
@@ -36,11 +32,8 @@ class SaleOrderLineExportMapper(Component):
 
     @mapping
     def tax(self, record):
-        if not record.tax_id:
-            return {'VatGroup': None}
-        if len(record.tax_id) > 1:
-            raise ValidationError(_("In SAP B1 only one tax can be applied to a line"))
-        tax_map = self.backend_record.tax_ids.filtered(lambda x: x.tax_id == record.tax_id)
-        if not tax_map:
-            raise ValidationError(_('No tax mapping found for tax %s') % record.tax_id.name)
-        return {'VatGroup': tax_map.sapb1_tax}
+        return {'VatGroup': self.backend_record.get_tax_map(record.tax_id)}
+
+    @mapping
+    def price_unit(self, record):
+        return {'UnitPrice': record.price_reduce_taxexcl}

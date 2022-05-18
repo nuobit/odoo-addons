@@ -39,7 +39,8 @@ class SaleOrderExporter(Component):
     def _export_dependencies(self, relation):
         self._export_dependency(relation.partner_shipping_id, "sapb1.res.partner")
         for line in relation.order_line:
-            self._export_dependency(line.product_id, "sapb1.product.product")
+            if line.product_id != self.backend_record.shipping_product_id:
+                self._export_dependency(line.product_id, "sapb1.product.product")
 
     def _after_export(self):
         """ Can do several actions after exporting a record on the backend """

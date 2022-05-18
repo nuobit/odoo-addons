@@ -86,6 +86,7 @@
                                     <tree editable="bottom">
                                         <field name="partner_id"/>
                                         <field name="sapb1_cardcode"/>
+                                        <field name="sapb1_expensecode"/>
                                     </tree>
                                 </field>
                             </group>
@@ -96,6 +97,9 @@
                                         <field name="sapb1_tax"/>
                                     </tree>
                                 </field>
+                            </group>
+                            <group string="Shipping">
+                                <field name="shipping_product_id"/>
                             </group>
                         </page>
                     </notebook>
