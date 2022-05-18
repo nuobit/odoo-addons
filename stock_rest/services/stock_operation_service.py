@@ -43,17 +43,34 @@ class OperationService(Component):
         # Setting Source and destination
         src_location_id = self.env["stock.location"].search(
             [
-                ("company_id", "=", company_id),
+                ("company_id", "in", [company_id, False]),
                 ("code", "=", kwargs["source"]),
             ]
         )
+        if not src_location_id:
+            raise ValidationError(_("Source Location not found: %s") % kwargs["source"])
+        if len(src_location_id) > 1:
+            raise ValidationError(
+                _("Multiple Source Locations found with the code: %s")
+                % kwargs["source"]
+            )
 
         dst_location_id = self.env["stock.location"].search(
             [
-                ("company_id", "=", company_id),
+                ("company_id", "in", [company_id, False]),
                 ("code", "=", kwargs["destination"]),
             ]
         )
+        if not dst_location_id:
+            raise ValidationError(
+                _("Destination Location not found: %s") % kwargs["destination"]
+            )
+        if len(dst_location_id) > 1:
+            raise ValidationError(
+                _("Multiple Destination Locations found with the code: %s")
+                % kwargs["destination"]
+            )
+
         # employees
         employees = None
         if kwargs["employees"]:
