@@ -91,7 +91,6 @@ class LengowBackend(models.Model):
         for rec in self:
             since_date = fields.Datetime.from_string(rec.import_sale_orders_since_date)
             rec.import_sale_orders_since_date = fields.Datetime.now()
-
             self.env['lengow.sale.order'].with_delay(
             ).import_sale_orders_since(
                 backend_record=rec, since_date=since_date)
@@ -104,12 +103,16 @@ class LengowBackend(models.Model):
                 backend = backend.with_user(self.user_id)
             backend.import_sale_orders_since()
 
-    def get_marketplace_map(self, marketplace_name):
+    def get_marketplace_map(self, marketplace_name, country_iso_code):
         self.ensure_one()
         marketplace_map = self.marketplace_ids.filtered(
-            lambda r: r.lengow_marketplace == marketplace_name)
+            lambda r: r.lengow_marketplace == marketplace_name and r.partner_id.country_id.code == country_iso_code)
         if not marketplace_map:
             raise ValidationError(
-                _("Can't found a parent partner for marketplace %s. "
-                  "Please, add it on backend mappings" % marketplace_name))
+                _("Can't found a parent partner for marketplace %s and country %s "
+                  "Please, add it on backend mappings") % (marketplace_name,country_iso_code))
+        if len(marketplace_map) > 1:
+            raise ValidationError(
+                _("Multiple mappings found for marketplace %s and country %s "
+                  "Please, check the country on partners") % (marketplace_name,country_iso_code))
         return marketplace_map

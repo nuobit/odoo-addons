@@ -67,18 +67,25 @@ class LengowSaleOrderTypeAdapter(Component):
             delivery = packages[0].pop('delivery')
             delivery.pop('trackings')
             value['delivery_address'] = delivery or None
-            if value['delivery_address']:
-                value['delivery_address']['marketplace'] = value['marketplace']
-            if value['billing_address']:
-                value['billing_address']['marketplace'] = value['marketplace']
             hash_fields = ['complete_name', 'first_line', 'second_line', 'zipcode', 'city', 'common_country_iso_a2']
             fields = ['delivery_address', 'billing_address']
             for f in fields:
-                name_values = [value[f][y].strip() for y in ['first_name', 'last_name'] if
-                               value.get(f) and value[f].get(y)]
-                if name_values:
-                    value[f]['complete_name'] = ' '.join(name_values)
+                if value[f]:
+                    value[f]['marketplace'] = value['marketplace']
+                    value[f]['marketplace_country_iso2'] = value['marketplace_country_iso2']
+                    name_values = [value[f][y].strip() for y in ['first_name', 'last_name'] if
+                                   value.get(f) and value[f].get(y)]
+                    value[f]['complete_name'] = ' '.join(name_values) or None
                     value[f]['hash'] = list2hash(
                         value[f].get(x) for x in hash_fields)
             for item in value['items']:
                 item['sku'] = item.pop('merchant_product_id')['id']
+                item['is_shipping'] = False
+                item['marketplace'] = value['marketplace']
+                item['marketplace_order_id'] = value['marketplace_order_id']
+            if value['shipping']:
+                value['items'].append({
+                    'is_shipping': True, 'amount': value['shipping'], 'quantity': 1, 'id': -1,
+                    'marketplace': value['marketplace'],
+                    'marketplace_order_id': value['marketplace_order_id'],
+                })
