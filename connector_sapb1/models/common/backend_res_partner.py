@@ -25,11 +25,17 @@ class SapB1Backend(models.Model):
         ondelete="restrict",
     )
     sapb1_cardcode = fields.Char(string="SAP B1 CardCode", required=True)
+    sapb1_expensecode = fields.Integer(string="SAP B1 ExpenseCode")
 
     _sql_constraints = [
         (
-            "sapb1_backend_res_partner_external_uniq",
+            "sbrp_partner_uniq",
             "unique(backend_id, partner_id)",
+            "A mapping already exists with the same partner.",
+        ),
+        (
+            "sbrp_cardcode_uniq",
+            "unique(backend_id, sapb1_cardcode)",
             "A mapping already exists with the same partner.",
         ),
     ]
