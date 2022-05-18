@@ -178,7 +178,7 @@ class StockPickingImportSerials(models.TransientModel):
         active_model = self.env.context.get("active_model")
         picking = self.env[active_model].browse(active_ids)
 
-        _fname, ext = self.datas_fname.split(".")
+        _fname, ext = self.datas_fname.rsplit(".", 1)
         file = base64.b64decode(self.datas)
         if ext == "xls":
             book = xlrd.open_workbook(file_contents=file)
