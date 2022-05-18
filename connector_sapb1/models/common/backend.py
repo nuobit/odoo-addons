@@ -4,7 +4,8 @@
 import logging
 import requests
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -51,6 +52,11 @@ class SapB1Backend(models.Model):
         comodel_name="res.users",
         string="User",
         ondelete="restrict",
+    )
+    shipping_product_id = fields.Many2one(
+        comodel_name="product.product",
+        string="Shipping Product",
+        required=True,
     )
 
     db_host = fields.Char('Hostname', required=True)
@@ -113,3 +119,13 @@ class SapB1Backend(models.Model):
             if backend.user_id:
                 backend = backend.with_user(self.user_id)
             backend.export_sale_orders_since()
+
+    def get_tax_map(self, tax):
+        if not tax:
+            return None
+        if len(tax) > 1:
+            raise ValidationError(_("In SAP B1 only one tax can be applied to a line"))
+        tax_map = self.tax_ids.filtered(lambda x: x.tax_id == tax)
+        if not tax_map:
+            raise ValidationError(_('No tax mapping found for tax %s') % tax.name)
+        return tax_map.sapb1_tax

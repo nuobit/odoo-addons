@@ -21,6 +21,9 @@ class SaleOrderExportMapChild(Component):
     def format_items(self, items_values):
         return super().format_items(items_values)
 
+    def skip_item(self, map_record):
+        return map_record.source.product_id == self.backend_record.shipping_product_id
+
 
 class SaleOrderExportMapper(Component):
     _name = 'sapb1.sale.order.export.mapper'
@@ -60,3 +63,26 @@ class SaleOrderExportMapper(Component):
                 "partner %s should have been exported in "
                 "SaleOrderExporter._export_dependencies" % record.partner_shipping_id)
         return {'ShipToCode': binding.sapb1_addressname}
+
+    @mapping
+    def shipping(self, record):
+        expenses = {"DocumentAdditionalExpenses": []}
+        shipping_line = record.order_line.filtered(lambda x: self.backend_record.shipping_product_id == x.product_id)
+        if len(shipping_line) > 1:
+            raise ValidationError(_('Only one shipping line supported'))
+        if not shipping_line:
+            return expenses
+        partner = record.partner_id.parent_id or record.partner_id
+        partner_map = self.backend_record.partner_ids.filtered(lambda x: x.partner_id == partner)
+        if not partner_map:
+            raise ValidationError(_('No partner mapping found for %s. Please define it on backend') % partner.name)
+        expensecode = partner_map.sapb1_expensecode
+        if not expensecode:
+            raise ValidationError(
+                _('No expense code defined for partner %s. Please define it on backend') % partner.name)
+        expenses['DocumentAdditionalExpenses'].append({
+            "ExpenseCode": expensecode,
+            "LineTotal": shipping_line.price_reduce_taxexcl,
+            "VatGroup": self.backend_record.get_tax_map(shipping_line.tax_id),
+        })
+        return expenses
