@@ -81,7 +81,10 @@ class ProductService(Component):
                 )
 
         product_list = []
-        for product, lots in data.items():
+        products_sorted = sorted(
+            data.items(), key=lambda x: (x[0].default_code or "", x[0].id)
+        )
+        for product, lots in products_sorted:
             if (code or barcode) or lots:
                 product_list.append(
                     {
