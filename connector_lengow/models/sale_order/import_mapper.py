@@ -17,7 +17,7 @@ class SaleOrderImportMapChild(Component):
 
     def get_item_values(self, map_record, to_attr, options):
         binder = self.binder_for('lengow.sale.order.line')
-        external_id = map_record.source['id']
+        external_id = binder.dict2id(map_record.source, in_field=False)
         lengow_order_line = binder.to_internal(external_id, unwrap=False)
         if lengow_order_line:
             map_record.update(id=lengow_order_line.id)
@@ -68,7 +68,8 @@ class SaleOrderImportMapper(Component):
         else:
             binding = self.options.get("binding")
             if not binding:
-                parent = self.backend_record.get_marketplace_map(record['marketplace']).partner_id
+                parent = self.backend_record.get_marketplace_map(record['marketplace'],
+                                                                 record['marketplace_country_iso2']).partner_id
                 return {'partner_shipping_id': parent.id}
 
     @mapping
@@ -92,8 +93,9 @@ class SaleOrderImportMapper(Component):
         else:
             binding = self.options.get("binding")
             if not binding:
-                partner = self.backend_record.get_marketplace_map(record['marketplace']).partner_id
-                return {'partner_invoice_id': partner.id ,'partner_id':partner.id}
+                partner = self.backend_record.get_marketplace_map(record['marketplace'],
+                                                                  record['marketplace_country_iso2']).partner_id
+                return {'partner_invoice_id': partner.id, 'partner_id': partner.id}
 
     @only_create
     @mapping
