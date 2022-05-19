@@ -82,7 +82,9 @@ class LengowAdapter(AbstractComponent):
         result = []
         data = {}
         while True:
-            if result:
+            if data:
+                if not data or not data.get('results'):
+                    break
                 url_next = data.get('next')
                 if not url_next:
                     break
