@@ -30,12 +30,12 @@
                             <field name="user_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
-                            <field name="access_token"/>
-                            <field name="secret" password="True"/>
+                            <field name="access_token" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="secret" password="True" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
                     <group>
-                        <field name="base_url"/>
+                        <field name="base_url" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     </group>
                     <group>
                         <field name="min_order_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -76,7 +76,7 @@
                         </page>
                         <page name="mappings" string="Mappings">
                             <group string="Marketplaces">
-                                <field name="marketplace_ids" nolabel="1">
+                                <field name="marketplace_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
                                     <tree editable="bottom">
                                         <field name="partner_id"/>
                                         <field name="lengow_marketplace"/>
@@ -84,7 +84,7 @@
                                 </field>
                             </group>
                             <group string="Shipping">
-                                <field name="shipping_product_id"/>
+                                <field name="shipping_product_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                         </page>
                     </notebook>
