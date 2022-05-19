@@ -197,7 +197,9 @@ class LengowAdapter(AbstractComponent):
             raise NotImplementedError("Type %s not implemented" % type(elem))
 
     def _normalize_value(self, value):
-        if isinstance(value, datetime.date):
+        if isinstance(value, datetime.datetime):
+            value = value.strftime(self._datetime_format)
+        elif isinstance(value, datetime.date):
             value = value.strftime(self._date_format)
         elif isinstance(value, (int, str, list, tuple, bool)):
             pass
