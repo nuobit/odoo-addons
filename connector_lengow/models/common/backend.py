@@ -103,8 +103,6 @@ class LengowBackend(models.Model):
     @api.model
     def _scheduler_import(self):
         for backend in self.env["lengow.backend"].search([]):
-            if backend.user_id:
-                backend = backend.with_user(self.user_id)
             backend.import_sale_orders_since()
 
     def get_marketplace_map(self, marketplace_name, country_iso_code):
