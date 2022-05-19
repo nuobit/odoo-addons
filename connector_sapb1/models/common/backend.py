@@ -116,8 +116,6 @@ class SapB1Backend(models.Model):
         the same as the interval execution defined in job
         """
         for backend in self.env["sapb1.backend"].search([]):
-            if backend.user_id:
-                backend = backend.with_user(self.user_id)
             backend.export_sale_orders_since()
 
     def get_tax_map(self, tax):
