@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<odoo>
+<odoo noupdate="1">
     <data>
         <record model="ir.cron" id="cron_connector_sap_b1_export">
             <field name="name">SAP B1 Connector Exports</field>
