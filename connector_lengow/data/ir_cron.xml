@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
-<odoo>
+<odoo noupdate="1">
     <data>
         <record model="ir.cron" id="cron_connector_lengow_import">
             <field name="name">Lengow Connector Imports</field>
