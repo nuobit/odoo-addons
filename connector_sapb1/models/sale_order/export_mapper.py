@@ -88,3 +88,13 @@ class SaleOrderExportMapper(Component):
             expense['VatGroup'] = self.backend_record.get_tax_map(shipping_line.tax_id)
         expenses['DocumentAdditionalExpenses'].append(expense)
         return expenses
+
+    @only_create
+    @mapping
+    def confirmed(self, record):
+        return {'Confirmed': 'N'}
+
+    @only_create
+    @mapping
+    def partsupply(self, record):
+        return {'PartialSupply': 'N'}
