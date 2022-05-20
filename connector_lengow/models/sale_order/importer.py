@@ -3,7 +3,9 @@
 
 import logging
 
+from odoo import _
 from odoo.addons.component.core import Component
+from odoo.addons.queue_job.exception import RetryableJobError
 
 _logger = logging.getLogger(__name__)
 
@@ -57,3 +59,13 @@ class SaleOrderImporter(Component):
         else:
             ## order validation
             sale_order.action_confirm()
+
+    def _pre_must_skip(self, external_id, external_data, had_external_data):
+        if external_data['lengow_status'] != 'canceled':
+            if not external_data['delivery_address']:
+                if not had_external_data:
+                    raise RetryableJobError(_("Delivery Address not yet populated. The job will be retried later"))
+                self.model.with_delay().import_record(self.backend_record, external_id)
+                return _("The data of the order is not complete yet. "
+                         "New job created")
+        return False
