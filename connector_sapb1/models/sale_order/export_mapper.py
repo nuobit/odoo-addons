@@ -82,7 +82,7 @@ class SaleOrderExportMapper(Component):
                 _('No expense code defined for partner %s. Please define it on backend') % partner.name)
         expense = {
             'ExpenseCode': expensecode,
-            'LineTotal': shipping_line.get_raw_price_unit(),
+            'LineTotal': shipping_line.get_raw_total_line(),
         }
         if shipping_line.tax_id:
             expense['VatGroup'] = self.backend_record.get_tax_map(shipping_line.tax_id)
