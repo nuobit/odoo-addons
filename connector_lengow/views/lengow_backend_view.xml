@@ -41,7 +41,7 @@
                         <field name="min_order_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     </group>
                     <notebook>
-                        <page name="import" string="Imports">
+                        <page name="import" string="Imports" attrs="{'invisible': [('state', '=', 'draft')]}">
                             <p class="oe_grey oe_inline">
                                 By clicking on the buttons,
                                 you will initiate the
@@ -71,7 +71,7 @@
                                            nolabel="1"/>
                                 </div>
                                 <button name="import_sale_orders_since" type="object"
-                                        class="oe_highlight" string="Import in background" attrs="{'invisible': [('state', '=', 'draft')]}" />
+                                        class="oe_highlight" string="Import in background"/>
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">
