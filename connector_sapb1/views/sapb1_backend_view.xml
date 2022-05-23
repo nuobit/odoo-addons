@@ -77,7 +77,7 @@
                                            nolabel="1"/>
                                 </div>
                                 <button name="export_sale_orders_since" type="object"
-                                        class="oe_highlight" string="Export in background"/>
+                                        class="oe_highlight" string="Export in background" attrs="{'invisible': [('state', '=', 'draft')]}"/>
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">
