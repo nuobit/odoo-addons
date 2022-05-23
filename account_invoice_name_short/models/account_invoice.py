@@ -77,12 +77,10 @@ def shorten_long_vals(vals):
     vals_new = {}
     if vals:
         if "ref" in vals and vals["ref"]:
-            vals_new["ref"] = shorten_long_string(
-                shorten_long_delimited_string(vals["ref"].strip())
-            )
+            vals_new["ref"] = shorten_long_string(vals["ref"].strip())
         if "payment_reference" in vals and vals["payment_reference"]:
             vals_new["payment_reference"] = shorten_long_string(
-                shorten_long_delimited_string(vals["payment_reference"].strip())
+                vals["payment_reference"].strip()
             )
         if "invoice_origin" in vals and vals["invoice_origin"]:
             vals_new["invoice_origin"] = shorten_long_delimited_string(
