@@ -85,9 +85,7 @@ def shorten_long_vals(vals):
     vals_new = {}
     if vals:
         if 'name' in vals and vals['name'] and vals['name'].strip():
-            vals_new['name'] = shorten_long_string(
-                shorten_long_delimited_string(vals['name'])
-            )
+            vals_new['name'] = shorten_long_string(vals['name'])
 
         if 'origin' in vals and vals['origin'] and vals['origin'].strip():
             vals_new['origin'] = shorten_long_delimited_string(vals['origin'])
