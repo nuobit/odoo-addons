@@ -15,14 +15,14 @@ class SaleOrderLine(models.Model):
     )
 
     @api.multi
-    def get_raw_price_unit(self):
+    def get_raw_total_line(self):
         self.ensure_one()
-        price_unit = self.price_unit
+        line_total = self.price_unit * self.product_uom_qty
         if self.tax_id:
             if len(self.tax_id) > 1:
                 raise ValidationError(_('Only one tax supported per order line'))
             if self.tax_id.amount_type != 'percent':
                 raise ValidationError(_('Only percentage taxes supported'))
             if self.tax_id.price_include:
-                price_unit /= 1 + self.tax_id.amount / 100
-        return price_unit
+                line_total /= 1 + self.tax_id.amount / 100
+        return line_total
