@@ -35,5 +35,5 @@ class SaleOrderLineExportMapper(Component):
         return {'VatGroup': self.backend_record.get_tax_map(record.tax_id)}
 
     @mapping
-    def price_unit(self, record):
-        return {'UnitPrice': record.get_raw_price_unit()}
+    def line_total(self, record):
+        return {'LineTotal': record.get_raw_total_line()}
