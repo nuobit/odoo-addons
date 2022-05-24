@@ -22,7 +22,7 @@ class ProductPricelistItemBatchExporter(Component):
         # Run the batch synchronization
         parent_domain = domain + [
             ("is_company", "=", True),
-            ("customer_rank", ">", 0),
+            ("customer_rank", ">=", 0),
         ]
         since_date = None
         domain = []
@@ -45,6 +45,7 @@ class ProductPricelistItemBatchExporter(Component):
                     or x.write_date > since_date
                     or p.write_date > since_date
                 )
+                and p.customer_rank >= p.supplier_rank
                 and x.applied_on == "1_product"
                 and x.compute_price == "fixed"
                 and (
