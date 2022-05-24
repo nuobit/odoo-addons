@@ -108,7 +108,7 @@
                                     <field
                                         name="product_uom"
                                         options="{'no_open': True, 'no_create': True}"
-                                        groups="product.group_uom"
+                                        groups="uom.group_uom"
                                     />
                                     <field name="product_min_qty" />
                                     <field name="product_max_qty" />
