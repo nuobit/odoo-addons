@@ -9,8 +9,8 @@ def migrate(env, version):
     openupgrade.rename_columns(
         env.cr,
         {
-            "account_analytic_contract_line_account_tax_rel": [
-                ("account_analytic_contract_line_id", "contract_line_id")
+            "account_analytic_invoice_line_account_tax_rel": [
+                ("account_analytic_invoice_line_id", "contract_line_id")
             ]
         },
     )
@@ -18,7 +18,7 @@ def migrate(env, version):
         env.cr,
         [
             (
-                "account_analytic_contract_line_account_tax_rel",
+                "account_analytic_invoice_line_account_tax_rel",
                 "account_tax_contract_line_rel",
             )
         ],
