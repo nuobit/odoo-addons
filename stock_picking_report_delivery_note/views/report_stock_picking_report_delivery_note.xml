@@ -296,7 +296,7 @@
                                                     <span
                                                         class="units"
                                                         t-field="l.product_uom"
-                                                        groups="product.group_uom"
+                                                        groups="uom.group_uom"
                                                     />
                                                 </td>
                                                 <td width="12%" class="text-right">
