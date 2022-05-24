@@ -9,6 +9,10 @@ class Partner(models.Model):
     _inherit = "res.partner"
 
     def _default_company(self):
-        return self.env.company.id
+        return (
+            not self.env.context.get("company_creation", False)
+            and self.env.company
+            or self.env["res.company"]
+        )
 
     company_id = fields.Many2one(default=_default_company)
