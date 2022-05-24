@@ -39,7 +39,7 @@ class SaleOrderLineImportMapper(Component):
             .with_context(active_test=False)
             .search(
                 [
-                    ("company_id", "in", (self.backend_record.company_id.id, False)),
+                    ("company_id", "=", self.backend_record.company_id.id),
                     ("default_code", "=", oxigesti_articulo),
                 ]
             )
