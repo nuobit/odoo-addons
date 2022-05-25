@@ -209,7 +209,7 @@ class TaskList:
         self.tasks = tasks
 
     def rotate_split(self, i):
-        return self.tasks[i], self.__class__(self.tasks[:i] + self.tasks[i + 1:])
+        return self.tasks[i], self.__class__(self.tasks[:i] + self.tasks[i + 1 :])
 
     @property
     def start(self):
