@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+    <!--Remove description_picking from deliveryslip report-->
     <template
         id="oxigen_report_deliveryslip"
         inherit_id="stock.report_delivery_document"
     >
-<!--Remove description_picking from report-->
-        <xpath expr="//table[1]/tbody/tr/td[1]/p/span" position="attributes">
+        <xpath
+            expr="//table[@name='stock_move_table']//tr[@t-as='move']//span[@t-field='move.description_picking']"
+            position="attributes"
+        >
+            <attribute name="style">visibility: hidden</attribute>
+        </xpath>
+    </template>
+
+    <template
+        id="oxigen_stock_report_delivery_has_serial_move_line"
+        inherit_id="stock.stock_report_delivery_has_serial_move_line"
+    >
+        <xpath
+            expr='//t[@t-value="move_line.move_id.description_picking"]'
+            position="attributes"
+        >
+            <attribute name="style">visibility: hidden</attribute>
+        </xpath>
+        <xpath expr="//span[@t-esc='description']" position="attributes">
+            <attribute name="style">visibility: hidden</attribute>
+        </xpath>
+    </template>
+
+    <template
+        id="oxigen_stock_report_delivery_aggregated_move_lines"
+        inherit_id="stock.stock_report_delivery_aggregated_move_lines"
+    >
+        <xpath
+            expr='//tr[@t-as="line"]//p[@t-if="aggregated_lines[line][&apos;description&apos;]"]'
+            position="attributes"
+        >
             <attribute name="style">visibility: hidden</attribute>
         </xpath>
     </template>
