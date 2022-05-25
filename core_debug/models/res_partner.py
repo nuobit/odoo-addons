@@ -13,20 +13,10 @@ class Partner(models.Model):
 
     def __eq__(self, other):
         """Test whether two recordsets are equivalent (up to reordering)."""
-        _logger.info("EQ: other %s of type %s", other, type(other))
-        if not isinstance(other, Partner):
-            if other:
-                filename, lineno = frame_codeinfo(currentframe(), 1)
-                _logger.warning(
-                    "Comparing apples and oranges: %r == %r (%s:%s)",
-                    self,
-                    other,
-                    filename,
-                    lineno,
-                )
-                raise Exception()
-            return NotImplemented
-        return self._name == other._name and set(self._ids) == set(other._ids)
+        _logger.info("EQ: other %s of type %s, and self has ids = %s", other, type(other), self._ids)
+        if isinstance(other, int):
+            raise Exception()
+        return super().__eq__(other)
 
     def address_get(self, adr_pref=None):
         """ Find contacts/addresses of the right type(s) by doing a depth-first-search
