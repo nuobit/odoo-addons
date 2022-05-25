@@ -46,7 +46,7 @@ class Partner(models.Model):
                 while to_scan:
                     record = to_scan.pop(0)
                     _logger.info("ADDRESS_GET: record %s of type %s, visited %s", record, type(record), visited)
-                    visited.add(record)
+                    visited.add(set(record))
                     if record.type in adr_pref and not result.get(record.type):
                         result[record.type] = record.id
                     if len(result) == len(adr_pref):
