@@ -15,9 +15,9 @@ class Base(models.AbstractModel):
     def __eq__(self, other):
         """Test whether two recordsets are equivalent (up to reordering)."""
         # _logger.info("EQ: other %s of type %s, and self has ids = %s", other, type(other), self._ids)
-        if isinstance(other, int):
-            _logger.info("EQ: other %s of type %s, and self has ids = %s", other, type(other), self._ids)
-            raise Exception()
+        # if isinstance(other, int):
+        #     _logger.info("EQ: other %s of type %s, and self has ids = %s", other, type(other), self._ids)
+        #     raise Exception()
         return super().__eq__(other)
 
 
