@@ -37,7 +37,7 @@ class Partner(models.Model):
         if 'contact' not in adr_pref:
             adr_pref.add('contact')
         result = {}
-        visited = set()
+        visited = self.env["res.partner"]
         for partner in self:
             current_partner = partner
             while current_partner:
@@ -45,8 +45,8 @@ class Partner(models.Model):
                 # Scan descendants, DFS
                 while to_scan:
                     record = to_scan.pop(0)
-                    _logger.info("ADDRESS_GET: record %s of type %s, visited %s", record, type(record), visited)
-                    visited.add(set(record))
+                    # _logger.info("ADDRESS_GET: record %s of type %s, visited %s", record, type(record), visited)
+                    visited |= record
                     if record.type in adr_pref and not result.get(record.type):
                         result[record.type] = record.id
                     if len(result) == len(adr_pref):
