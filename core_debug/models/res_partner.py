@@ -13,7 +13,7 @@ class Partner(models.Model):
 
     def __eq__(self, other):
         """Test whether two recordsets are equivalent (up to reordering)."""
-        if not isinstance(other, models.BaseModel):
+        if not isinstance(other, Partner):
             if other:
                 filename, lineno = frame_codeinfo(currentframe(), 1)
                 _logger.warning(
