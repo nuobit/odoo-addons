@@ -52,7 +52,7 @@ class TzInterval:
         return self.date_end <= other.date_end and self.date_start >= other.date_start
 
     def is_overlaped(self, other):
-        """returnsw if interval (other) and current one (self) are overlapped"""
+        """returns if interval (other) and current one (self) are overlapped"""
         return self.date_end > other.date_start and other.date_end > self.date_start
 
     def update_start(self, date_start):
@@ -125,7 +125,7 @@ class Task:
         self.interval = TzInterval(start, end)
 
         if self.interval.duration.seconds <= 0:
-            raise Exception("Tha task must hjave duyration greater than 0")
+            raise Exception("The task must have duration greater than 0")
 
     @property
     def start(self):
@@ -144,7 +144,7 @@ class Task:
         return self.end <= other.end and self.start >= other.start
 
     def is_overlaped(self, other):
-        """returnsw if task (other) and current one (self) are overlapped"""
+        """returns if task (other) and current one (self) are overlapped"""
         return self.end > other.start and other.end > self.start
 
     def update_start(self, start):
@@ -233,7 +233,7 @@ class TaskList:
 
     def check_len(self, n):
         if len(self) != n:
-            raise Exception("Diferents longs!!!!! no pot ser: %s" % self)
+            raise Exception("Different lengths!!!!! no pot ser: %s" % self)
 
     def __len__(self):
         return len(self.tasks)
@@ -263,7 +263,7 @@ class UserTasks:
                 end = v.end
             else:
                 if end != v.end:
-                    raise Exception("inconsistenci, all elemnts must be same end")
+                    raise Exception("Inconsistencies, all elements must be same end")
         return end
 
     def del_user(self, res, raise_not_exists=False):
@@ -294,7 +294,7 @@ class UserTasks:
 
     def update(self, res, cl):
         if not isinstance(cl, TaskList):
-            raise Exception("Expectd caniddalte list")
+            raise Exception("Expected candidate list")
 
         self.tasks[res.id] = cl
         self.resources[res.id] = res
@@ -376,7 +376,7 @@ class UserTasks:
         elif op == "<=":
             return self.end <= other.end
         else:
-            raise Exception("op %s not expecte" % op)
+            raise Exception("op %s not expected" % op)
 
     def __len__(self):
         return len(self.tasks)
