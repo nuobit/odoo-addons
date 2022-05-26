@@ -24,7 +24,7 @@ class AccountMove(models.Model):
 
     @api.onchange("invoice_date", "date")
     def _onchange_dates(self):
-        self._recompute_tax_lines()
+        self._recompute_dynamic_lines()
 
 
 class AccountMoveLine(models.Model):
