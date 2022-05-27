@@ -29,6 +29,7 @@ class SaleOrder(models.Model):
         search="_search_task_user_id",
         readonly=True,
     )
+    tasks_ids = fields.Many2many(search="_search_tasks_ids")
 
     def _compute_task_user_id(self):
         for rec in self:
@@ -42,6 +43,20 @@ class SaleOrder(models.Model):
             [("sale_line_id", "!=", False), ("user_id.name", op, value)]
         )
         return [("id", "in", tasks.mapped("sale_line_id.order_id").ids)]
+
+    def _search_tasks_ids(self, operator, value):
+        assert operator == "in"
+        tasks = self.env["project.task"].browse(set(value))
+        return [
+            (
+                "id",
+                "in",
+                (
+                    tasks.mapped("sale_order_id")
+                    | tasks.mapped("sale_line_id.order_id")
+                ).ids,
+            )
+        ]
 
     @api.depends(
         "order_line.customer_lead",
