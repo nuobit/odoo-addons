@@ -301,7 +301,7 @@
                                                                     class="text-right"
                                                                 >
                                                                     <span
-                                                                        t-field="order.date_order"
+                                                                        t-field="order.date_order_tz"
                                                                         t-options="{'widget': 'date'}"
                                                                     />
                                                                 </td>
