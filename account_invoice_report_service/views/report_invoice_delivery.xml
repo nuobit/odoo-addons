@@ -302,7 +302,6 @@
                                                                 >
                                                                     <span
                                                                         t-field="order.date_order_tz"
-                                                                        t-options="{'widget': 'date'}"
                                                                     />
                                                                 </td>
                                                                 <td width="41%" />
