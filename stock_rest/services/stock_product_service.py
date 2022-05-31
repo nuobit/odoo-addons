@@ -21,13 +21,15 @@ class ProductService(Component):
         # get current user
         self._get_current_user()
         company = self._get_current_company()
-        domain = [("company_id", "in", [company.id, False])]
-        stock_domain = domain[:] + [("location_id.usage", "=", "internal")]
+        stock_domain = [("product_id.company_id", "in", [company.id, False])]
 
         # get locations
         if location_code:
             location = self.env["stock.location"].search(
-                domain + [("code", "=", location_code), ("usage", "=", "internal")]
+                [
+                    ("company_id", "in", [company.id, False]),
+                    ("code", "=", location_code),
+                ]
             )
             if not location:
                 raise MissingError(
@@ -38,10 +40,12 @@ class ProductService(Component):
                     _("There's more than one location with code '%s'" % location_code)
                 )
             stock_domain.append(("location_id", "=", location.id))
+        else:
+            stock_domain.append(("location_id.usage", "=", "internal"))
 
         # get product by code
         if code or barcode:
-            product_domain = domain[:]
+            product_domain = [("company_id", "in", [company.id, False])]
             if code:
                 product_domain += [("default_code", "=", code)]
             if barcode:
