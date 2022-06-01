@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
+<odoo noupdate="1">
+     <record
+        id="account_invoice_batches_create_invoice_group_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="model_sale_advance_payment_inv" />
+        <field name="method">create_invoice_group</field>
+        <field name="channel_id" ref="channel_invoice_batches" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+</odoo>

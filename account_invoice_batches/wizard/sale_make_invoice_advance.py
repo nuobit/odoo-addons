@@ -45,7 +45,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
                 }
             )
         self = self.with_context(**context)
-        return super(SaleAdvancePaymentInv, self).with_delay().create_invoices()
+        return super(SaleAdvancePaymentInv, self).create_invoices()
 
     def create_invoices(self):
         if not self.in_background and not self.invoice_batch_create:
