@@ -57,4 +57,21 @@
             </xpath>
         </field>
     </record>
+
+    <record id="contract_line_form_view" model="ir.ui.view">
+        <field name="name">contract.line.form.view</field>
+        <field name="model">contract.line</field>
+        <field name="inherit_id" ref="contract.contract_line_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='discount']" position="after">
+                <field
+                    colspan="4"
+                    name="tax_ids"
+                    options="{'no_create': True}"
+                    widget="many2many_tags"
+                />
+            </xpath>
+        </field>
+    </record>
+
 </odoo>
