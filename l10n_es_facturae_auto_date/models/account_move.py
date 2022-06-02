@@ -62,7 +62,7 @@ class AccountInvoice(models.Model):
                 (rec.partner_id.parent_id or rec.partner_id).facturae_auto_dates,
             )
             if facturae and auto_date:
-                date_invoice = vals.get("date_invoice")
+                date_invoice = vals.get("invoice_date")
                 if date_invoice is not None:
                     if (
                         vals.get("facturae_start_date") is not False
