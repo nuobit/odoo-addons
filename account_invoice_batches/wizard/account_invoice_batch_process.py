@@ -51,6 +51,42 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         string="Factura-e unsigned", default=True
     )
 
+    def send_facturae(self, move_id):
+        inv = self.env["account.move"].browse(move_id)
+        if not inv.is_move_sent:
+            if inv.invoice_batch_sending_method == "signedfacturae":
+                move_file = self.env.ref(
+                    "l10n_es_facturae.report_facturae_signed"
+                )._render(inv.ids)[0]
+                file_name = (_("facturae") + "_" + inv.name + ".xsig").replace("/", "-")
+            else:
+                move_file = self.env.ref("l10n_es_facturae.report_facturae")._render(
+                    inv.ids
+                )[0]
+                file_name = (_("facturae") + "_" + inv.name + ".xml").replace("/", "-")
+
+            file = base64.b64encode(move_file)
+            self.env["ir.attachment"].create(
+                {
+                    "name": file_name,
+                    "datas": file,
+                    "res_model": "account.move",
+                    "res_id": inv.id,
+                    "mimetype": "application/xml",
+                }
+            )
+            inv.is_move_sent = True
+
+    def send_email(self, move_id):
+        inv = self.env["account.move"].browse(move_id)
+        if not inv.is_move_sent:
+            inv.message_post_with_template(
+                self.invoice_batch_sending_email_template_id.id,
+                message_type="comment",
+                composition_mode="mass_mail",
+            )
+            inv.is_move_sent = True
+
     def prepare_invoices(self, invoices):
         self.ensure_one()
 
@@ -71,53 +107,17 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         if sending_facturae:
             for inv in invoices.filtered(
                 lambda x: x.invoice_batch_sending_method in sending_facturae
+                and not x.is_move_sent
             ):
-                if not inv.is_move_sent:
-                    try:
-                        if inv.invoice_batch_sending_method == "signedfacturae":
-                            move_file = self.env.ref(
-                                "l10n_es_facturae.report_facturae_signed"
-                            )._render(inv.ids)[0]
-                            file_name = (
-                                _("facturae") + "_" + inv.name + ".xsig"
-                            ).replace("/", "-")
-                        else:
-                            move_file = self.env.ref(
-                                "l10n_es_facturae.report_facturae"
-                            )._render(inv.ids)[0]
-                            file_name = (
-                                _("facturae") + "_" + inv.name + ".xml"
-                            ).replace("/", "-")
-
-                        file = base64.b64encode(move_file)
-                        self.env["ir.attachment"].create(
-                            {
-                                "name": file_name,
-                                "datas": file,
-                                "res_model": "account.move",
-                                "res_id": inv.id,
-                                "mimetype": "application/xml",
-                            }
-                        )
-                        inv.is_move_sent = True
-                    except Exception as e:
-                        _logger.debug(_("Error sending move template %s") % str(e))
+                self.with_delay().send_facturae(inv.id)
 
         # email
         if self.invoice_batch_sending_email:
             for inv in invoices.filtered(
                 lambda x: x.invoice_batch_sending_method == "email"
+                and not x.is_move_sent
             ):
-                if not inv.is_move_sent:
-                    try:
-                        inv.message_post_with_template(
-                            self.invoice_batch_sending_email_template_id.id,
-                            message_type="comment",
-                            composition_mode="mass_mail",
-                        )
-                        inv.is_move_sent = True
-                    except Exception as e:
-                        _logger.debug(_("Error sending move template %s") % str(e))
+                self.with_delay().send_email(inv.id)
 
         # pdf
         if self.invoice_batch_sending_pdf:
