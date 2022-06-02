@@ -54,6 +54,7 @@ class AccountInvoiceBatchProcess(models.TransientModel):
     def send_facturae(self, move_id):
         inv = self.env["account.move"].browse(move_id)
         if not inv.is_move_sent:
+            self = self.with_context(lang=inv.partner_id.lang)
             if inv.invoice_batch_sending_method == "signedfacturae":
                 move_file = self.env.ref(
                     "l10n_es_facturae.report_facturae_signed"
@@ -80,7 +81,7 @@ class AccountInvoiceBatchProcess(models.TransientModel):
     def send_email(self, move_id):
         inv = self.env["account.move"].browse(move_id)
         if not inv.is_move_sent:
-            inv.message_post_with_template(
+            inv.with_context(lang=inv.partner_id.lang).message_post_with_template(
                 self.invoice_batch_sending_email_template_id.id,
                 message_type="comment",
                 composition_mode="mass_mail",
