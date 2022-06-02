@@ -24,10 +24,10 @@
         "views/res_config_settings_views.xml",
         "views/res_partner.xml",
         "views/account_move_view.xml",
-        "views/account_invoice_batch.xml",
-        "views/menu.xml",
         "wizard/account_invoice_batch_process.xml",
         "wizard/sale_make_invoice_advance_views.xml",
+        "views/account_invoice_batch.xml",
+        "views/menu.xml",
     ],
     "installable": True,
 }
