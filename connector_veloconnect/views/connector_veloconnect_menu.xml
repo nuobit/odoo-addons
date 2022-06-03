@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="veloconnect_menu_root"
+        parent="connector.menu_connector_root"
+        name="Veloconnect"
+        sequence="30"
+        groups="connector.group_connector_manager"
+    />
+
+    <menuitem
+        id="veloconnect_backend_menu_action"
+        name="Backends"
+        parent="veloconnect_menu_root"
+        action="veloconnect_backend_action"
+    />
+
+    <menuitem
+        id="veloconnect_external_objects_menu"
+        name="External Objects"
+        parent="veloconnect_menu_root"
+        sequence="100"
+    />
+
+    <menuitem
+        id="veloconnect_external_products_menu"
+        name="External Products"
+        sequence="20"
+        parent="veloconnect_external_objects_menu"
+        action="veloconnect_product_template_action"
+    />
+
+    <menuitem
+        id="veloconnect_external_brands_menu"
+        name="External Brands"
+        sequence="20"
+        parent="veloconnect_external_objects_menu"
+        action="veloconnect_product_brand_action"
+    />
+</odoo>

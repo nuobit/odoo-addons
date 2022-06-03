@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_supplierinfo_tree_view" model="ir.ui.view">
+        <field name="name">product.supplierinfo.tree.view</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="/tree" position="inside">
+                <field name='veloconnect_readonly' invisible='1' />
+            </xpath>
+            <field name="name" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="product_code" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="currency_id" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="min_qty" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="price" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
