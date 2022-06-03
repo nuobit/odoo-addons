@@ -3,11 +3,9 @@
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-
     <template id="login_layout_nologo" inherit_id="web.login_layout">
         <xpath expr="//img" position="attributes">
             <attribute name="t-attf-src">/nologo.png</attribute>
         </xpath>
     </template>
-
 </odoo>
