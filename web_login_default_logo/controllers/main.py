@@ -12,11 +12,17 @@ _logger = logging.getLogger(__name__)
 
 
 class Binary(http.Controller):
-
-    @http.route([
-        '/nologo.png',
-    ], type='http', auth="none", cors="*")
+    @http.route(
+        [
+            "/nologo.png",
+        ],
+        type="http",
+        auth="none",
+        cors="*",
+    )
     def no_logo(self, dbname=None, **kw):
-        placeholder = functools.partial(get_resource_path, 'web', 'static', 'src', 'img')
+        placeholder = functools.partial(
+            get_resource_path, "web", "static", "src", "img"
+        )
 
-        return http.send_file(placeholder('nologo.png'))
+        return http.send_file(placeholder("nologo.png"))
