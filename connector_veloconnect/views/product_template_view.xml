@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">product.template.veloconnect.connector.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="connector_common.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="Veloconnect Bindings">
+                    <field name="veloconnect_bind_ids" nolabel="1"/>
+                </group>
+            </page>
+        </field>
+    </record>
+
+    <record id="veloconnect_product_template_view_form" model="ir.ui.view">
+        <field name="name">veloconnect.product.template.form</field>
+        <field name="model">veloconnect.product.template</field>
+        <field name="arch" type="xml">
+            <form string="Veloconnect Product">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="veloconnect_ean" readonly="True"/>
+                    <field name="veloconnect_price" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="veloconnect_product_template_view_tree" model="ir.ui.view">
+        <field name="name">veloconnect.product.template.tree</field>
+        <field name="model">veloconnect.product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Veloconnect Product">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="barcode"/>
+                <field name="sync_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="veloconnect_product_template_action" model="ir.actions.act_window">
+        <field name="name">Product Templates</field>
+        <field name="res_model">veloconnect.product.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
