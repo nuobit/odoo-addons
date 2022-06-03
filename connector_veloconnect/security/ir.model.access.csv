@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_veloconnect_product_template_manager","veloconnect_product_template connector manager","model_veloconnect_product_template","connector.group_connector_manager",1,1,1,1
+"access_veloconnect_product_template_user","veloconnect_product_template connector user","model_veloconnect_product_template","base.group_user",1,0,0,0
+"access_product_template_partner_stock_manager","product_template_partner_stock connector manager","model_product_template_partner_stock","connector.group_connector_manager",1,1,1,1
+"access_product_template_partner_stock_user","product_template_partner_stock connector user","model_product_template_partner_stock","base.group_user",1,0,0,0
+"access_veloconnect_product_brand_manager","veloconnect_product_brand connector manager","model_veloconnect_product_brand","connector.group_connector_manager",1,1,1,1
+"access_veloconnect_product_brand_user","veloconnect_product_brand connector user","model_veloconnect_product_brand","base.group_user",1,0,0,0
+"access_veloconnect_backend_manager","veloconnect_backend connector manager","model_veloconnect_backend","connector.group_connector_manager",1,1,1,1
+"access_veloconnect_backend_user","veloconnect_backend connector user","model_veloconnect_backend","base.group_user",1,0,0,0
+"access_veloconnect_backend_uom_manager","veloconnect_backend_uom connector manager","model_veloconnect_backend_uom","connector.group_connector_manager",1,1,1,1
+"access_veloconnect_backend_uom_user","veloconnect_backend_uom connector user","model_veloconnect_backend_uom","base.group_user",1,0,0,0

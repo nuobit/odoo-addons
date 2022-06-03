@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- connector_common views -->
+    <record id="product_template_only_form_connector_view" model="ir.ui.view">
+        <field name="name">product.template.veloconnect.connector.form</field>
+        <field name="model">product.template</field>
+        <field
+            name="inherit_id"
+            ref="connector_common.product_template_only_form_view"
+        />
+        <field name="arch" type="xml">
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="Veloconnect Bindings">
+                    <field name="veloconnect_bind_ids" nolabel="1" />
+                </group>
+            </page>
+        </field>
+    </record>
+    <!-- odoo model views -->
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">veloconnect.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet" position="inside">
+                <field name='veloconnect_readonly' invisible='1' />
+            </xpath>
+            <field name="list_price" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="uom_id" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="uom_po_id" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="currency_id" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+        </field>
+    </record>
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">veloconnect.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/header" position="inside">
+                <button
+                    name="resync_import_all"
+                    type="object"
+                    string="Veloconnect Refresh"
+                    attrs="{'invisible':[('veloconnect_readonly', '=', False)]}"
+                    help="Refresh Veloconnect product"
+                />
+            </xpath>
+            <xpath expr="/form/sheet" position="inside">
+                <field name='veloconnect_readonly' invisible='1' />
+            </xpath>
+            <field name="default_code" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="barcode" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+        </field>
+    </record>
+    <!-- stock views -->
+    <record id="product_template_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="purchase.view_product_supplier_inherit" />
+        <field name="arch" type="xml">
+            <field name="seller_ids" position="after">
+                <field name="partner_stock_ids" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="partner_id" />
+                        <field name="status" />
+                        <field name="quantity" />
+                        <field name="sync_date" />
+                    </tree>
+                </field>
+            </field>
+        </field>
+    </record>
+    <!-- bindings views -->
+    <record id="veloconnect_product_template_view_form" model="ir.ui.view">
+        <field name="name">veloconnect.product.template.form</field>
+        <field name="model">veloconnect.product.template</field>
+        <field name="arch" type="xml">
+            <form string="Veloconnect Product">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="veloconnect_seller_item_id" readonly="True" />
+                    <field name="veloconnect_description" readonly="True" />
+                    <field name="veloconnect_uom" readonly="True" />
+                    <field name="veloconnect_price" readonly="True" />
+                    <field name="veloconnect_hash" readonly="True" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="veloconnect_product_template_view_tree" model="ir.ui.view">
+        <field name="name">veloconnect.product.template.tree</field>
+        <field name="model">veloconnect.product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Veloconnect Product">
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="veloconnect_description" readonly="True" />
+                <field name="veloconnect_uom" readonly="True" />
+                <field name="veloconnect_price" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync_import"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+    <record id="veloconnect_product_template_action" model="ir.actions.act_window">
+        <field name="name">Product Templates</field>
+        <field name="res_model">veloconnect.product.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
