@@ -5,7 +5,7 @@
 {
     "name": "Special prorate templates",
     "summary": "This module adds special prorate templates",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.1.0",
     "category": "Sales",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",

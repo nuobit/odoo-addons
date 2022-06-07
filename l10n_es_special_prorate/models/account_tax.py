@@ -23,37 +23,41 @@ class AccountTax(models.Model):
         account_tax_mixin.check_prorate(self)
 
     def get_non_deductible_percent(self, date, company_id, is_refund):
-        value = 0
         repartition_field = (
             is_refund
             and "refund_repartition_line_ids"
             or "invoice_repartition_line_ids"
         )
-        for rec in self.filtered("prorate").flatten_taxes_hierarchy():
-            account_tax_mixin.check_prorate(rec)
-            non_deductible_rep_line = rec.mapped(repartition_field).filtered(
-                lambda x: x.repartition_type == "tax"
-                and x.factor_percent > 0
-                and not x.account_id
-            )
-            if not non_deductible_rep_line:
-                raise ValidationError(
-                    _(
-                        "On prorate taxes there should be at least "
-                        "one repartition line without account"
-                    )
+        value = 0
+        for rec in self:
+            if rec.amount_type == "percent":
+                non_deductible_rep_line = rec.mapped(repartition_field).filtered(
+                    lambda x: x.repartition_type == "tax"
+                    and x.factor_percent > 0
+                    and not x.account_id
                 )
-            elif len(non_deductible_rep_line) > 1:
-                raise ValidationError(
-                    _(
-                        "On prorate taxes there should be only "
-                        "one repartition line without account"
+                if non_deductible_rep_line:
+                    if len(non_deductible_rep_line) > 1:
+                        raise ValidationError(
+                            _(
+                                "On non deductible taxes there should be only "
+                                "one repartition line without account"
+                            )
+                        )
+                    context = {}
+                    if rec.prorate:
+                        context = dict(prorate={"date": date, "company_id": company_id})
+                    value += (
+                        rec.amount
+                        * non_deductible_rep_line.with_context(**context).factor
                     )
+            elif rec.amount_type == "group":
+                for tax_child in rec.children_tax_ids:
+                    value += tax_child.get_non_deductible_percent(
+                        date, company_id, is_refund
+                    )
+            else:
+                raise NotImplementedError(
+                    "Tax type '%s' not suported yet" % rec.amount_type
                 )
-            value += (
-                rec.amount
-                * non_deductible_rep_line.with_context(
-                    prorate={"date": date, "company_id": company_id}
-                ).factor
-            )
         return value
