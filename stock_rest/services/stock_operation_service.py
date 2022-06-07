@@ -168,7 +168,7 @@ class OperationService(Component):
                 }
                 if "lot_id" in ml:
                     move_line.update({"lot_id": ml["lot_id"]})
-            move_lines.append(move_line)
+                move_lines.append(move_line)
             move.move_line_ids = [(0, False, v) for v in move_lines]
 
         # Validate Picking
