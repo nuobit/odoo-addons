@@ -5,7 +5,7 @@
 {
     "name": "Non-deductible asset value",
     "summary": "Adds a non-deductible tax amount to the asset value",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.1.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
