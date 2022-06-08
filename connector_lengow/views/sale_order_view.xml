@@ -24,7 +24,7 @@
             </page>
             <page name="connector" position="inside">
                 <group string="Lengow Bindings">
-                    <field name="lengow_bind_ids" nolabel="1"/>
+                    <field name="lengow_bind_ids" nolabel="1" context="{'default_odoo_id': active_id}"/>
                 </group>
             </page>
         </field>
@@ -37,10 +37,10 @@
             <form string="Lengow Sale order">
                 <group>
                     <field name="backend_id"/>
-                    <field name="odoo_id" readonly="True"/>
-                    <field name="lengow_marketplace" readonly="True"/>
-                    <field name="lengow_marketplace_order_id" readonly="True"/>
-                    <field name="sync_date" readonly="True"/>
+                    <field name="odoo_id"/>
+                    <field name="lengow_marketplace"/>
+                    <field name="lengow_marketplace_order_id"/>
+                    <field name="sync_date"/>
                 </group>
             </form>
         </field>
@@ -53,9 +53,9 @@
             <tree string="Lengow Sale order">
                 <field name="backend_id"/>
                 <field name="odoo_id"/>
-                <field name="lengow_marketplace" readonly="True"/>
-                <field name="lengow_marketplace_order_id" readonly="True"/>
-                <field name="lengow_status" readonly="True"/>
+                <field name="lengow_marketplace"/>
+                <field name="lengow_marketplace_order_id"/>
+                <field name="lengow_status"/>
                 <field name="sync_date"/>
                 <button name="resync_import" type="object"
                         string="Resynchronize" icon="fa-refresh fa-lg"/>
