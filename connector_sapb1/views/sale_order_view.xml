@@ -22,7 +22,7 @@
             </page>
             <page name="connector" position="inside">
                 <group string="SAP B1 Bindings">
-                    <field name="sapb1_bind_ids" nolabel="1"/>
+                    <field name="sapb1_bind_ids" nolabel="1" context="{'default_odoo_id': active_id}"/>
                 </group>
             </page>
         </field>
@@ -35,9 +35,9 @@
             <form string="SAP B1 Sale order">
                 <group>
                     <field name="backend_id"/>
-                    <field name="odoo_id" readonly="True"/>
+                    <field name="odoo_id"/>
                     <field name="sapb1_docentry"/>
-                    <field name="sync_date" readonly="True"/>
+                    <field name="sync_date"/>
                 </group>
             </form>
         </field>
