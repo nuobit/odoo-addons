@@ -13,5 +13,5 @@ class SaleOrder(models.Model):
         string="Lengow Binding",
     )
 
-    lengow_status = fields.Char(string="Lengow State", readonly=True)
-    marketplace_status = fields.Char(string="Marketplace State", readonly=True)
+    lengow_status = fields.Char(string="Lengow State", readonly=True, track_visibility='onchange')
+    marketplace_status = fields.Char(string="Marketplace State", readonly=True, track_visibility='onchange')
