@@ -52,8 +52,8 @@ class LengowSaleOrderTypeAdapter(Component):
             "/packages/cart/tax": lambda x: float(x),
             "/packages/cart/original_amount": lambda x: float(x),
             "/packages/cart/original_tax": lambda x: float(x),
-            "/imported_at": lambda x: datetime.datetime.strptime(x, self._datetimestamp_format),
-            "/updated_at": lambda x: datetime.datetime.strptime(x, self._datetimestamp_format),
+            "/imported_at": self._str_to_datetime,
+            "/updated_at": self._str_to_datetime,
         }
         self._convert_format(values, conv_mapper)
 

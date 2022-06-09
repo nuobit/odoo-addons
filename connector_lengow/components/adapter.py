@@ -21,6 +21,12 @@ class LengowAdapter(AbstractComponent):
     _datetime_format = "%Y-%m-%dT%H:%M:%SZ"
     _datetimestamp_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
+    def _str_to_datetime(self, sdt):
+        try:
+            return datetime.datetime.strptime(sdt, self._datetimestamp_format)
+        except ValueError:
+            return datetime.datetime.strptime(sdt, self._datetime_format)
+
     def _prepare_field_type(self, field_data):
         default_values = {}
         fields = []
