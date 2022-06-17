@@ -16,9 +16,10 @@ class ContractLine(models.Model):
     def _prepare_invoice_line(self, move_form):
         self.ensure_one()
         res = super(ContractLine, self)._prepare_invoice_line(move_form)
+        taxes = self.tax_ids or self.product_id.taxes_id
         res.update(
             {
-                "tax_ids": self.tax_ids.ids and [(6, 0, self.tax_ids.ids)] or [],
+                "tax_ids": taxes.ids and [(6, 0, taxes.ids)] or [],
             }
         )
         return res
