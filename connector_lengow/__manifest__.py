@@ -4,8 +4,8 @@
 {
     'name': "Connector Lengow",
     'description': "Connector Lengow",
-    'version': '11.0.0.1.15',
-    'author': 'NuoBiT Solutions, S.L., Kilian Niubo',
+    'version': '11.0.0.1.16',
+    'author': 'NuoBiT Solutions, S.L.',
     'license': 'AGPL-3',
     'category': 'Connector',
     'website': 'https://github.com/nuobit',
