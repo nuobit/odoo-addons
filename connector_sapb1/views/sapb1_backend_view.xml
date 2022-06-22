@@ -82,7 +82,7 @@
                         </page>
                         <page name="mappings" string="Mappings">
                             <group string="Partners">
-                                <field name="partner_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <field name="partner_ids" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="partner_id"/>
                                         <field name="sapb1_cardcode"/>
@@ -91,7 +91,7 @@
                                 </field>
                             </group>
                             <group string="Taxes">
-                                <field name="tax_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <field name="tax_ids" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="tax_id"/>
                                         <field name="sapb1_tax"/>
@@ -99,7 +99,7 @@
                                 </field>
                             </group>
                             <group string="Shipping">
-                                <field name="shipping_product_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="shipping_product_id"/>
                             </group>
                         </page>
                     </notebook>
