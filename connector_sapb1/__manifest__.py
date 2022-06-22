@@ -4,8 +4,8 @@
 {
     'name': "Connector SAP B1",
     'description': "SAP Business One connector",
-    'version': '11.0.0.1.13',
-    'author': 'NuoBiT Solutions, S.L., Kilian Niubo',
+    'version': '11.0.0.1.14',
+    'author': 'NuoBiT Solutions, S.L.',
     'license': 'AGPL-3',
     'category': 'Connector',
     'website': 'https://github.com/nuobit',
