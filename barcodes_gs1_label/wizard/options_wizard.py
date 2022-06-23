@@ -11,6 +11,8 @@ MAP_MODEL_REPORT = {
     "product.product": "barcodes_gs1_label.action_report_product_gs1_barcodes",
     "stock.production.lot": "barcodes_gs1_label.action_report_lot_gs1_barcodes",
     "stock.picking": "barcodes_gs1_label.action_report_picking_gs1_barcodes",
+    "stock.quant": "barcodes_gs1_label.action_report_quant_gs1_barcodes",
+    "stock.inventory.line": "barcodes_gs1_label.action_report_inv_line_gs1_barcodes",
 }
 
 
@@ -40,6 +42,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         return self.env["stock.location"].search(
             [
                 ("usage", "=", "internal"),
+                ("company_id", "=", self.env.company.id),
             ]
         )
 
@@ -57,10 +60,11 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             ids = self.env.context.get("active_ids")
             model = self.env.context.get("active_model")
             if model == "product.product":
+                locations = self.env["stock.location"]
                 for doc in (
                     self.env[model].browse(ids).sorted(lambda x: x.default_code or "")
                 ):
-                    self.stock_location_ids = (
+                    locations |= (
                         self.env["stock.quant"]
                         .search(
                             [
@@ -68,19 +72,21 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                                 ("location_id.usage", "=", "internal"),
                                 ("location_id", "in", all_locs.ids),
                                 ("quantity", ">", 0),
+                                ("company_id", "=", self.env.company.id),
                             ]
                         )
                         .mapped("location_id")
                     )
+                self.stock_location_ids = locations
             elif model == "stock.production.lot":
+                locations = self.env["stock.location"]
                 for doc in (
                     self.env[model]
                     .browse(ids)
                     .filtered(lambda x: x.product_id.tracking in ("lot", "serial"))
                     .sorted(lambda x: x.product_id.default_code or "")
                 ):
-
-                    self.stock_location_ids = (
+                    locations |= (
                         self.env["stock.quant"]
                         .search(
                             [
@@ -89,11 +95,93 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                                 ("location_id", "in", all_locs.ids),
                                 ("lot_id", "=", doc.id),
                                 ("quantity", ">", 0),
+                                ("company_id", "=", self.env.company.id),
                             ]
                         )
                         .mapped("location_id")
                     )
-
+                self.stock_location_ids = locations
+            elif model == "stock.quant":
+                locations = self.env["stock.location"]
+                for doc in (
+                    self.env[model]
+                    .browse(ids)
+                    .sorted(lambda x: x.product_id.default_code or "")
+                ):
+                    locations |= (
+                        self.env["stock.quant"]
+                        .search(
+                            [
+                                ("id", "=", doc.id),
+                                ("location_id.usage", "=", "internal"),
+                                ("quantity", ">", 0),
+                                ("company_id", "=", self.env.company.id),
+                            ]
+                        )
+                        .mapped("location_id")
+                    )
+                self.stock_location_ids = locations
+            elif model == "stock.inventory.line":
+                locations = self.env["stock.location"]
+                for doc in (
+                    self.env[model]
+                    .browse(ids)
+                    .sorted(lambda x: x.product_id.default_code or "")
+                ):
+                    locations |= (
+                        self.env["stock.quant"]
+                        .search(
+                            [
+                                ("product_id", "=", doc.product_id.id),
+                                ("location_id.usage", "=", "internal"),
+                                ("location_id", "in", all_locs.ids),
+                                ("quantity", ">", 0),
+                                ("company_id", "=", self.env.company.id),
+                            ]
+                        )
+                        .mapped("location_id")
+                    )
+                self.stock_location_ids = locations
+            elif model == "stock.inventory":
+                locations = self.env["stock.location"]
+                for doc in (
+                    self.env[model]
+                    .browse(ids)
+                    .line_ids.sorted(lambda x: x.product_id.default_code or "")
+                    .inventory_id
+                ):
+                    locations |= (
+                        self.env["stock.quant"]
+                        .search(
+                            [
+                                ("product_id", "in", doc.line_ids.product_id.ids),
+                                ("location_id.usage", "=", "internal"),
+                                ("location_id", "in", all_locs.ids),
+                                ("quantity", ">", 0),
+                                ("company_id", "=", self.env.company.id),
+                            ]
+                        )
+                        .mapped("location_id")
+                    )
+                self.stock_location_ids = locations
+            elif model == "stock.location":
+                locations = self.env["stock.location"]
+                for doc in (
+                    self.env[model].browse(ids).sorted(lambda x: x.parent_path or "")
+                ):
+                    locations |= (
+                        self.env["stock.quant"]
+                        .search(
+                            [
+                                ("location_id.usage", "=", "internal"),
+                                ("location_id", "child_of", doc.ids),
+                                ("quantity", ">", 0),
+                                ("company_id", "=", self.env.company.id),
+                            ]
+                        )
+                        .mapped("location_id")
+                    )
+                self.stock_location_ids = locations
             elif model == "stock.picking":
                 self.stock_location_ids = all_locs
             else:
