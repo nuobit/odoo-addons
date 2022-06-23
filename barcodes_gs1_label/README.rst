@@ -24,3 +24,4 @@ Contributors
 ------------
 
 * Eric Antones <eantones@nuobit.com>
+* Miquel Raïch <miquel.raich@forgeflow.com>

@@ -108,4 +108,24 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
+
+    <record id="barcodes_quant_option_wizard_view_action" model="ir.actions.act_window">
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_stock_quant" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record
+        id="barcodes_inv_line_option_wizard_view_action"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_stock_inventory_line" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
 </odoo>
