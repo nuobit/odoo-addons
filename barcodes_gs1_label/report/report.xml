@@ -59,4 +59,31 @@
         />
         <field name="print_report_name">'Barcodes - %s' % (object.name, )</field>
     </record>
+
+    <record id="action_report_quant_gs1_barcodes" model="ir.actions.report">
+        <field name="name">Print barcodes</field>
+        <field name="model">stock.quant</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">barcodes_gs1_label.report_gs1_barcode</field>
+        <field name="report_name">barcodes_gs1_label.report_gs1_barcode</field>
+        <field
+            name="paperformat_id"
+            ref="barcodes_gs1_label.paperformat_gs1_barcodes"
+        />
+        <field name="print_report_name">'Barcodes - %s' % (object.name, )</field>
+    </record>
+
+    <record id="action_report_inv_line_gs1_barcodes" model="ir.actions.report">
+        <field name="name">Print barcodes</field>
+        <field name="model">stock.inventory.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">barcodes_gs1_label.report_gs1_barcode</field>
+        <field name="report_name">barcodes_gs1_label.report_gs1_barcode</field>
+        <field
+            name="paperformat_id"
+            ref="barcodes_gs1_label.paperformat_gs1_barcodes"
+        />
+        <field name="print_report_name">'Barcodes - %s' % (object.name, )</field>
+    </record>
+
 </odoo>
