@@ -10,6 +10,6 @@ class Picking(models.Model):
 
     def print_gs1_barcode_wizard(self):
         action = self.env["ir.actions.act_window"]._for_xml_id(
-            "barcodes_gs1_label.barcodes_product_option_wizard_view_action"
+            "barcodes_gs1_label.barcodes_picking_option_wizard_view_action"
         )
         return action

@@ -22,6 +22,44 @@ class ReportGS1Barcode(models.AbstractModel):
     _name = "report.barcodes_gs1_label.report_gs1_barcode"
     _description = "Report GS1 Barcode"
 
+    def _get_product_lot(self, products, quants, with_stock):
+        docs = []
+        if with_stock:
+            prods = quants.product_id
+        else:
+            prods = products
+        for product in prods:
+            if product.tracking == "none":
+                label = {"product": product, "lot": None}
+                if with_stock:
+                    for q in quants.filtered(lambda x: x.product_id == product):
+                        docs += [label] * int(q.quantity)
+                else:
+                    docs.append(label)
+            elif product.tracking in ("lot", "serial"):
+                if with_stock:
+                    for q in quants.filtered(lambda x: x.product_id == product).sorted(
+                        lambda x: x.lot_id.name or ""
+                    ):
+                        docs += [
+                            {
+                                "product": product,
+                                "lot": q.lot_id,
+                            }
+                        ] * int(q.quantity)
+                else:
+                    lots = self.env["stock.production.lot"].search(
+                        [("product_id", "=", product.id)]
+                    )
+                    for lot in lots.sorted(lambda x: x.name):
+                        docs.append(
+                            {
+                                "product": product,
+                                "lot": lot,
+                            }
+                        )
+        return docs
+
     @api.model
     def _get_report_values(self, docids, data=None):  # noqa: C901
         if not data:
@@ -54,35 +92,10 @@ class ReportGS1Barcode(models.AbstractModel):
                             ("location_id.usage", "=", "internal"),
                             ("location_id", "in", stock_location_ids),
                             ("quantity", ">", 0),
+                            ("company_id", "=", self.env.company.id),
                         ]
                     )
-                if doc.tracking == "none":
-                    label = {"product": doc, "lot": None}
-                    if with_stock:
-                        for q in quants:
-                            docs1 += [label] * int(q.quantity)
-                    else:
-                        docs1.append(label)
-                elif doc.tracking in ("lot", "serial"):
-                    if with_stock:
-                        for q in quants.sorted(lambda x: x.lot_id.name):
-                            docs1 += [
-                                {
-                                    "product": doc,
-                                    "lot": q.lot_id,
-                                }
-                            ] * int(q.quantity)
-                    else:
-                        lots = self.env["stock.production.lot"].search(
-                            [("product_id", "=", doc.id)]
-                        )
-                        for lot in lots.sorted(lambda x: x.name):
-                            docs1.append(
-                                {
-                                    "product": doc,
-                                    "lot": lot,
-                                }
-                            )
+                docs1 += self._get_product_lot(doc, quants, with_stock)
         elif model == "stock.production.lot":
             for doc in (
                 self.env[model]
@@ -99,10 +112,11 @@ class ReportGS1Barcode(models.AbstractModel):
                             ("location_id", "in", stock_location_ids),
                             ("lot_id", "=", doc.id),
                             ("quantity", ">", 0),
+                            ("company_id", "=", self.env.company.id),
                         ]
                     )
                 if with_stock:
-                    for q in quants.sorted(lambda x: x.lot_id.name):
+                    for q in quants.sorted(lambda x: x.lot_id.name or ""):
                         docs1 += [
                             {
                                 "product": doc.product_id,
@@ -116,6 +130,41 @@ class ReportGS1Barcode(models.AbstractModel):
                             "lot": doc,
                         }
                     )
+        elif model == "stock.quant":
+            for doc in (
+                self.env[model]
+                .browse(docids)
+                .sorted(lambda x: x.product_id.default_code or "")
+            ):
+                quants = self.env["stock.quant"]
+                if with_stock:
+                    quants = self.env["stock.quant"].search(
+                        [
+                            ("id", "=", doc.id),
+                            ("location_id.usage", "=", "internal"),
+                            ("quantity", ">", 0),
+                            ("company_id", "=", self.env.company.id),
+                        ]
+                    )
+                docs1 += self._get_product_lot(doc.product_id, quants, with_stock)
+        elif model == "stock.inventory.line":
+            for doc in (
+                self.env[model]
+                .browse(docids)
+                .sorted(lambda x: x.product_id.default_code or "")
+            ):
+                quants = self.env["stock.quant"]
+                if with_stock:
+                    quants = self.env["stock.quant"].search(
+                        [
+                            ("product_id", "in", doc.product_id.ids),
+                            ("location_id.usage", "=", "internal"),
+                            ("location_id", "in", stock_location_ids),
+                            ("quantity", ">", 0),
+                            ("company_id", "=", self.env.company.id),
+                        ]
+                    )
+                docs1 += self._get_product_lot(doc.product_id, quants, with_stock)
         elif model == "stock.picking":
             qty_tracking = {}
             for ml in (
