@@ -15,7 +15,3 @@ class Picking(models.Model):
             and r.state == "draft"
         ):
             rec.show_mark_as_todo = True
-
-    def _send_confirmation_email(self):
-        # https://github.com/odoo/odoo/pull/92870
-        return super(Picking, self.sudo())._send_confirmation_email()
