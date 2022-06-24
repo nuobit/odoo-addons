@@ -68,6 +68,23 @@ class SapB1Adapter(AbstractComponent):
         }
         r = session.post(url, json=payload, verify=False)
         if not r.ok:
+            try:
+                # if it's json response
+                err_json = r.json()
+                err = err_json['error']
+                if err['code'] == 305:
+                    if err['message']['lang'] != 'en-us':
+                        raise ValidationError(
+                            _("Only supported english (en-us) dealing with error messages from the server\n%s") %
+                            err_json)
+                    if err['message']['value'] == 'Switch company error: -1102':
+                        raise RetryableJobError(_("Temporarily connection error:\n%s\n"
+                                                  "It will be retried later.") % err_json)
+            except json.decoder.JSONDecodeError:
+                # if it's non-json (text/html) response
+                if '<title>502 Proxy Error</title>' in r.text:
+                    raise RetryableJobError(_("Temporarily connection error:\n%s\n"
+                                              "It will be retried later.") % r.text)
             raise ConnectionError(f"Error trying to log in\n{r.text}")
 
     def _logout(self, session):
