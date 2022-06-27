@@ -4,7 +4,7 @@
 
 from ast import literal_eval
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class AccountInvoiceBatch(models.Model):
@@ -34,6 +34,7 @@ class AccountInvoiceBatch(models.Model):
 
     invoice_count = fields.Integer(compute="_compute_invoice_count", string="Invoices")
 
+    @api.depends("invoice_ids")
     def _compute_invoice_count(self):
         for rec in self:
             rec.invoice_count = len(rec.invoice_ids)
@@ -50,6 +51,7 @@ class AccountInvoiceBatch(models.Model):
         compute="_compute_draft_invoice_count", string="Draft"
     )
 
+    @api.depends("draft_invoice_ids")
     def _compute_draft_invoice_count(self):
         for rec in self:
             rec.draft_invoice_count = len(rec.draft_invoice_ids)
@@ -65,6 +67,7 @@ class AccountInvoiceBatch(models.Model):
         compute="_compute_unsent_invoice_count", string="Unsent"
     )
 
+    @api.depends("unsent_invoice_ids")
     def _compute_unsent_invoice_count(self):
         for rec in self:
             rec.unsent_invoice_count = len(rec.unsent_invoice_ids)
