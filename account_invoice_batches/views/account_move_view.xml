@@ -13,7 +13,7 @@
                 <page
                     string="Invoice batch"
                     name="invoice_batch"
-                    attrs="{'invisible': [('move_type','not in',('out_invoice','out_invoice','out_refund'))]}"
+                    attrs="{'invisible': [('move_type','not in',('out_invoice','out_refund'))]}"
                 >
                     <group col="4">
                         <field
