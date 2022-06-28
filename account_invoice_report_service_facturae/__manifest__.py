@@ -3,7 +3,7 @@
 
 {
     "name": "Invoice report service facturae",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Invoicing Management",
@@ -13,6 +13,9 @@
     "depends": [
         "account_invoice_report_service",
         "l10n_es_facturae",
+    ],
+    "data": [
+        "views/res_partner.xml",
     ],
     "installable": True,
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!---->
+<odoo>
+     <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="l10n_es_facturae.view_partner_form" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="attach_invoice_as_annex" position="after">
+                <field
+                    name="attach_invoice_only_default_report"
+                    attrs="{'invisible': [('attach_invoice_as_annex', '=', False)]}"
+                />
+            </field>
+        </field>
+     </record>
+</odoo>
