@@ -4,16 +4,6 @@
 from odoo import models, fields
 
 
-class ProductTemplate(models.Model):
-    _inherit = 'product.template'
-
-    veloconnect_bind_ids = fields.One2many(
-        comodel_name='veloconnect.product.template',
-        inverse_name='odoo_id',
-        string='Veloconnect Bindings',
-    )
-
-
 class ProductTemplateBinding(models.Model):
     _name = 'veloconnect.product.template'
     _inherit = 'veloconnect.binding'
@@ -24,11 +14,13 @@ class ProductTemplateBinding(models.Model):
                               required=True,
                               ondelete='cascade',
                               )
-    veloconnect_ean = fields.Char(string='Veloconnect StandardItemIdentification', required=True)
+    veloconnect_seller_item_id = fields.Char(string="Veloconnect SellersItemIdentificationID", required=True)
 
+    # veloconnect_ean = fields.Char(string='Veloconnect StandardItemIdentification', required=True)
     veloconnect_hash = fields.Char(string='Veloconnect Hash', required=True)
+    veloconnect_description = fields.Char(string='Veloconnect Description')
     veloconnect_price = fields.Float(string='Veloconnect RecommendedRetailPrice', required=True)
-
+    veloconnect_uom = fields.Char(string='Veloconnect quantityUnitCode', required=True)
     veloconnect_seller_ids = fields.One2many(
         comodel_name="veloconnect.product.supplierinfo",
         inverse_name="veloconnect_product_tmpl_id",
@@ -37,7 +29,7 @@ class ProductTemplateBinding(models.Model):
     _sql_constraints = [
         (
             "vp_external_uniq",
-            "unique(backend_id, veloconnect_ean)",
+            "unique(backend_id, veloconnect_seller_item_id)",
             "A binding already exists with the same External (veloconnect) ID.",
         ),
     ]
@@ -45,29 +37,21 @@ class ProductTemplateBinding(models.Model):
     def import_products(self, backend_record=None):
         """ Prepare the batch import of products modified on Veloconnect"""
         domain = []
-        ######################### to_delete?
-        # existing_hashes = self.env['veloconnect.product.template'].search([
-        #     ('product_hash', '!=', False),
-        # ]).mapped('product_hash')
-        existing_hashes = self.env['veloconnect.product.template'].search([
-            ('veloconnect_hash', '!=', False),
-        ]).mapped('veloconnect_hash')
-        if existing_hashes:
-            domain = [('Hash', 'not in', existing_hashes)]
-
         self.env['veloconnect.product.template'].import_batch(
             backend_record=backend_record, domain=domain)
 
         return True
 
     def resync_import(self):
+        # raise NotImplementedError("Resync not implemented yet")
         for record in self:
             with record.backend_id.work_on(record._name) as work:
                 binder = work.component(usage='binder')
-                external_id = binder.to_external(self)
+                relation = binder.unwrap_binding(self)
             func = record.import_record
             if record.env.context.get('connector_delay'):
                 func = record.import_record.delay
 
-            func(record.backend_id, external_id)
+            func(record.backend_id, relation)
+
         return True

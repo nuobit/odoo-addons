@@ -120,10 +120,6 @@ class GenericImporterCustom(AbstractComponent):
     def _mapper_options(self, binding):
         return {"binding": binding}
 
-    def _update(self, binding, values):
-        """ Update an Internal record """
-        binding.with_context(connector_no_export=True).write(values)
-
     def run(self, external_id, external_data=None, external_fields=None):
         if not external_data:
             external_data = {}
@@ -137,7 +133,7 @@ class GenericImporterCustom(AbstractComponent):
         # The lock is kept since we have detected that the informations
         # will be updated into Odoo
         self.advisory_lock_or_retry(lock_name, retry_seconds=10)
-
+        had_external_data = bool(external_data)
         if not external_data:
             # read external data from Backend
             external_data = self.backend_adapter.read(external_id)
@@ -146,6 +142,10 @@ class GenericImporterCustom(AbstractComponent):
                     _("Record with external_id '%s' does not exist in Backend")
                     % (external_id,)
                 )
+        # to_delete
+        # pre_skip = self._pre_must_skip(external_id, external_data, had_external_data)
+        # if pre_skip:
+        #     return pre_skip
 
         # import the missing linked resources
         self._import_dependencies(external_data)
@@ -153,6 +153,8 @@ class GenericImporterCustom(AbstractComponent):
         # map_data
         # this one knows how to convert backend data to odoo data
         mapper = self.component(usage="import.mapper")
+
+
 
         # convert to odoo data
         internal_data = mapper.map_record(external_data)
@@ -181,7 +183,7 @@ class GenericImporterCustom(AbstractComponent):
             if binding:
                 # if exists, we update it
                 values = internal_data.values(fields=external_fields, **opts)
-                self._update(binding, values)
+                binding.with_context(connector_no_export=True).write(values)
                 _logger.debug("%d updated from Backend %s", binding, external_id)
             else:
                 # or we create it

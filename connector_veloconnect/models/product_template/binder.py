@@ -3,11 +3,7 @@
 
 from odoo.addons.component.core import Component
 from odoo.odoo.exceptions import ValidationError
-
-
-def _(param):
-    pass
-
+from odoo import _
 
 class ProductTemplateBinder(Component):
     _name = 'veloconnect.product.template.binder'
@@ -15,8 +11,11 @@ class ProductTemplateBinder(Component):
 
     _apply_on = 'veloconnect.product.template'
 
-    _external_field = 'StandardItemIdentification'
-    _internal_field = 'veloconnect_ean'
+    # to_delete
+    # _external_field = 'StandardItemIdentification'
+    # _internal_field = 'veloconnect_ean'
+    _external_field = 'SellersItemIdentificationID'
+    _internal_field = 'veloconnect_seller_item_id'
     _internal_alt_field = "barcode"
 
     def _get_internal_record_alt(self, model_name, values):

@@ -1,8 +1,9 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+from contextlib import contextmanager
 
 from odoo.addons.component.core import Component
-from odoo.exceptions import ValidationError
+from odoo.odoo.exceptions import ValidationError
 
 
 class ProductTemplateDelayedBatchImporter(Component):
@@ -34,6 +35,7 @@ class ProductTemplateImporter(Component):
     _apply_on = 'veloconnect.product.template'
 
     def run(self, external_id, external_data, external_fields=None):
+        # to_modify?
         if not external_data:
             raise ValidationError("External data is mandatory")
         return super().run(external_id, external_data=external_data)

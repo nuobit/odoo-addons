@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="product_brand_form" model="ir.ui.view">
+        <field name="name">product.brand.veloconnect.connector.form</field>
+        <field name="model">product.brand</field>
+        <field name="inherit_id" ref="product_brand.view_product_brand_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page string="Connectors" name="connector" >
+                    <group string="Veloconnect Bindings">
+                        <field name="veloconnect_bind_ids" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="veloconnect_product_brand_view_form" model="ir.ui.view">
+        <field name="name">veloconnect.product.brand.form</field>
+        <field name="model">veloconnect.product.brand</field>
+        <field name="arch" type="xml">
+            <form string="Veloconnect Product">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <field name="veloconnect_manufacturer_name" readonly="True"/>
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="veloconnect_product_brand_view_tree" model="ir.ui.view">
+        <field name="name">veloconnect.product.brand.tree</field>
+        <field name="model">veloconnect.product.brand</field>
+        <field name="arch" type="xml">
+            <tree string="Veloconnect Brands">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <field name="veloconnect_manufacturer_name"/>
+                <field name="sync_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="veloconnect_product_brand_action" model="ir.actions.act_window">
+        <field name="name">Product Brands</field>
+        <field name="res_model">veloconnect.product.brand</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

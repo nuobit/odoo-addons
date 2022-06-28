@@ -238,6 +238,7 @@ class BinderComposite(AbstractComponent):
         external_id = self.dict2id(external_data, in_field=False)
         values.update({
             self._backend_field: self.backend_record.id,
+            self._sync_date_field: fields.Datetime.now(),
             **self.id2dict(external_id, in_field=True),
             **self._additional_internal_binding_fields(external_data),
         })
@@ -267,6 +268,7 @@ class BinderComposite(AbstractComponent):
             return self.model.with_context(connector_no_export=True).create({
                 self._backend_field: self.backend_record.id,
                 self._odoo_field: relation_id,
+                self._sync_date_field: fields.Datetime.now(),
                 **self.id2dict(external_id, in_field=True),
                 **self._additional_external_binding_fields(external_data),
             })
@@ -334,49 +336,59 @@ class BinderComposite(AbstractComponent):
             raise InvalidDataError("More than one binding found")
         return binding
 
-    def to_binding_from_external_key(self, mapper):
+    def _to_record_from_external_key(self, map_record):
         """
-        :param mapper:
+        :param map_record:
         :return: binding with alternate external key
         """
+        model_name = self.unwrap_model()
         internal_alt_id = self._internal_alt_field
         if internal_alt_id:
             if isinstance(internal_alt_id, str):
                 internal_alt_id = [internal_alt_id]
-            all_values = mapper.values(for_create=True, binding=self.model)
+            all_values = map_record.values(for_create=True, binding=self.model)
             if any([x not in all_values for x in internal_alt_id]):
                 raise InvalidDataError(
                     "The alternative id (_internal_alt_field) '%s' must exist on mapper"
                     % internal_alt_id
                 )
-            model_name = self.unwrap_model()
             id_values = {x: all_values[x] for x in internal_alt_id}
             record = self._get_internal_record_alt(model_name, id_values)
             if len(record) > 1:
                 raise InvalidDataError(
-                    "More than one internal records found. "
+                    "More than one '%s' found with id %s. "
                     "The alternate internal id field '%s' is not unique"
-                    % (internal_alt_id,)
+                    % (model_name, id_values, internal_alt_id)
                 )
-            if record:
-                binding = self.wrap_record(record)
-                if not binding:
-                    values = {
-                        k: all_values[k]
-                        for k in set(self.model._model_fields) & set(all_values)
-                    }
-                    if self._odoo_field in values:
-                        if values[self._odoo_field] != record.id:
-                            raise InvalidDataError(
-                                "The id found on the mapper ('%i') "
-                                "is not the one expected ('%i')"
-                                % (values[self._odoo_field], record.id)
-                            )
-                    else:
-                        values[self._odoo_field] = record.id
-                    binding = self.bind_import(mapper.source, values)
-                _logger.debug("%d linked from Backend", binding)
-                return binding
+            return record
+        return self.env[model_name]
+
+    def to_binding_from_external_key(self, map_record):
+        """
+        :param map_record:
+        :return: binding with alternate external key
+        """
+        record = self._to_record_from_external_key(map_record)
+        if record:
+            binding = self.wrap_record(record)
+            if not binding:
+                all_values = map_record.values(for_create=True, binding=self.model)
+                values = {
+                    k: all_values[k]
+                    for k in set(self.model._model_fields) & set(all_values)
+                }
+                if self._odoo_field in values:
+                    if values[self._odoo_field] != record.id:
+                        raise InvalidDataError(
+                            "The id found on the mapper ('%i') "
+                            "is not the one expected ('%i')"
+                            % (values[self._odoo_field], record.id)
+                        )
+                else:
+                    values[self._odoo_field] = record.id
+                binding = self.bind_import(map_record.source, values)
+            _logger.debug("%d linked from Backend", binding)
+            return binding
         return self.model
 
     def _additional_internal_binding_fields(self, external_data):
@@ -413,7 +425,7 @@ class BinderComposite(AbstractComponent):
                 _("External alternative id '%s' not found in export mapper")
                 % (ext_alt_id,)
             )
-        id_values = mapper_external_data.values(for_create=True, fields=id_fields,binding=self.model)
+        id_values = mapper_external_data.values(for_create=True, fields=id_fields, binding=self.model)
         record = self._get_external_record_alt(id_values)
         if record:
             if len(record) > 1:
@@ -463,6 +475,13 @@ class BinderComposite(AbstractComponent):
             return binding
 
         return self.model
+
+    def unwrap_binding(self, binding):
+        if isinstance(binding, models.BaseModel):
+            odoo_object_ids = binding.mapped(lambda x: x[self._odoo_field].id)
+        else:
+            odoo_object_ids = [binding]
+        return self.model.browse(odoo_object_ids)
 
 # TODO: naming the methods more intuitively
 # TODO: unify both methods, they have a lot of common code

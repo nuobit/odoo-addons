@@ -15,6 +15,9 @@
     <menuitem id="veloconnect_external_products_menu" name="External Products" sequence="20"
               parent="veloconnect_external_objects_menu" action="veloconnect_product_template_action"/>
 
+    <menuitem id="veloconnect_external_brands_menu" name="External Brands" sequence="20"
+          parent="veloconnect_external_objects_menu" action="veloconnect_product_brand_action"/>
+
 <!--    <menuitem id="veloconnect_external_partners_menu" name="External Customers" sequence="10"-->
 <!--              parent="veloconnect_external_objects_menu" action="veloconnect_res_partner_action"/>-->
 

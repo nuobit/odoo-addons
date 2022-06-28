@@ -85,9 +85,7 @@ def convert_to_json(data, ct, namespace):
     res = []
     for d in data:
         jitem = {}
-        # implementar multi
         for path, func, key, multi in ct:
-        # for path, func, key in ct:
             if key in jitem:
                 raise ValidationError(_("Key %s already exists") % key)
             value = d.xpath(path, namespaces=namespace)

@@ -18,6 +18,23 @@
         </field>
     </record>
 
+    <record id="product_template_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="purchase.view_product_supplier_inherit"/>
+        <field name="arch" type="xml">
+            <field name="seller_ids" position="after">
+                <field name="partner_stock_ids" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                        <field name="quantity"/>
+                    </tree>
+                </field>
+            </field>
+        </field>
+    </record>
+
     <record id="veloconnect_product_template_view_form" model="ir.ui.view">
         <field name="name">veloconnect.product.template.form</field>
         <field name="model">veloconnect.product.template</field>
@@ -26,8 +43,12 @@
                 <group>
                     <field name="backend_id"/>
                     <field name="odoo_id" readonly="True"/>
-                    <field name="veloconnect_ean" readonly="True"/>
+                    <field name="veloconnect_seller_item_id" readonly="True"/>
+<!--                    <field name="veloconnect_ean" readonly="True" />-->
+                    <field name="veloconnect_description" readonly="True"/>
+                    <field name="veloconnect_uom" readonly="True"/>
                     <field name="veloconnect_price" readonly="True"/>
+                    <field name="veloconnect_hash" readonly="True"/>
                     <field name="sync_date" readonly="True"/>
                 </group>
             </form>
@@ -41,8 +62,20 @@
             <tree string="Veloconnect Product">
                 <field name="backend_id"/>
                 <field name="odoo_id"/>
-                <field name="barcode"/>
+<!--                to_delete-->
+<!--                <field name="veloconnect_ean" readonly="True"/>-->
+                <field name="veloconnect_description" readonly="True"/>
+                <field name="veloconnect_uom" readonly="True"/>
+                <field name="veloconnect_price" readonly="True"/>
+
                 <field name="sync_date"/>
+                <button
+                    name="resync_import"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+
             </tree>
         </field>
     </record>

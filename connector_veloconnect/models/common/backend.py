@@ -6,6 +6,8 @@ import logging
 from odoo import _, fields, models, api
 from odoo.exceptions import ValidationError, UserError
 
+from odoo.addons.queue_job.exception import RetryableJobError
+
 _logger = logging.getLogger(__name__)
 
 
@@ -43,21 +45,30 @@ class VeloconnectBackend(models.Model):
         string="User",
         ondelete="restrict",
     )
-
-    veloconnect_user = fields.Char(
-        help="Buyer id to access",
+    # TODO:afegir chunk_size a la vista i definir el default
+    chunk_size = fields.Integer(
+        default=500,
+        string="Chunk Size"
+    )
+    # TODO:afegir product_retry a la vista. Default?
+    product_search_retry_time = fields.Integer(
+        string="Product Search Retry Time (minutes) ",
+        default=10
+    )
+    buyer = fields.Char(
+        help="Buyer ID",
         required=True,
         # to_delete
         default="28802"
     )
-    veloconnect_password = fields.Char(
-        help="WebService password",
+    password = fields.Char(
+        help="WebService Password",
         required=True,
         # to_delete
         default="b2fumo0910",
     )
 
-    veloconnect_url = fields.Char(
+    url = fields.Char(
         # to_delete
         default="http://fuchs-movesa.velocom.de/fr",
     )
@@ -68,6 +79,12 @@ class VeloconnectBackend(models.Model):
     partner_id = fields.Many2one(
         comodel_name="res.partner",
         string="Veloconnect Partner",
+        required=True,
+    )
+    product_uom_ids = fields.One2many(
+        comodel_name="veloconnect.backend.uom",
+        inverse_name="backend_id",
+        string="product_uom",
         required=True,
     )
 
@@ -100,3 +117,17 @@ class VeloconnectBackend(models.Model):
     def _scheduler_import(self):
         for backend in self.env["veloconnect.backend"].search([]):
             backend.import_products()
+
+    def get_product_uom_map(self, product_uom_veloconnect):
+        self.ensure_one()
+        product_uom_map = self.product_uom_ids.filtered(
+            lambda r: r.quantityunitcode == product_uom_veloconnect)
+        if not product_uom_map:
+            raise ValidationError(
+                _("Can't found a product uom %s. "
+                  "Please, add it on backend mappings") % product_uom_veloconnect)
+        if len(product_uom_map) > 1:
+            raise ValidationError(
+                _("Multiple mappings found for product uom %s"
+                  "Please, check the unit on uom.uom") % product_uom_map)
+        return product_uom_map.uom_id

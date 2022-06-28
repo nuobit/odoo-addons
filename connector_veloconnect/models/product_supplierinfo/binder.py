@@ -11,6 +11,6 @@ class ProductSupplierinfoBinder(Component):
     _apply_on = 'veloconnect.product.supplierinfo'
 
     _external_field = ['SellersItemIdentificationID', 'MinimumQuantity']
-    _internal_field = ['veloconnect_seller_id', 'veloconnect_minimum_quantity']
+    _internal_field = ['veloconnect_seller_item_id', 'veloconnect_minimum_quantity']
 
     _internal_alt_field = ['product_code', 'min_qty']

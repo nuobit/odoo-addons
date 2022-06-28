@@ -33,16 +33,18 @@
                             <field name="user_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
-                            <field name="veloconnect_user"/>
-                            <field name="veloconnect_password" password="True"/>
+                            <field name="buyer"/>
+                            <field name="password" password="True"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="veloconnect_url"/>
+                            <field name="url"/>
                         </group>
                         <group>
                             <field name="partner_id"/>
+                            <field name="chunk_size"/>
+                            <field name="product_search_retry_time"/>
                         </group>
                     </group>
                     <notebook>
@@ -82,6 +84,17 @@
                                         class="oe_highlight" string="Import in background"/>
                             </group>
                         </page>
+                        <page name="mappings" string="Mappings">
+                            <group string="Product UOM">
+                                <field name="product_uom_ids" nolabel="1"
+                                       attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree editable="bottom">
+                                        <field name="uom_id"/>
+                                        <field name="quantityunitcode"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -95,8 +108,8 @@
             <tree string="veloconnect Backend">
                 <field name="name"/>
                 <field name="company_id"/>
-                <field name="veloconnect_user"/>
-                <field name="veloconnect_url"/>
+                <field name="buyer"/>
+                <field name="url"/>
             </tree>
         </field>
     </record>

@@ -41,7 +41,7 @@ class VeloconnectBinding(models.AbstractModel):
             importer = work.component(
                 usage=delayed and 'delayed.batch.importer' or "direct.batch.importer"
             )
-            return importer.run(domain=domain)
+        return importer.run(domain)
 
     @api.model
     def import_record(self, backend_record, external_id, external_data=None):
@@ -53,13 +53,13 @@ class VeloconnectBinding(models.AbstractModel):
             return importer.run(external_id, external_data=external_data)
 
     @api.model
-    def import_chunk(self, backend_record, external_data=None, delayed=True):
+    def import_chunk(self, backend_record, domain, offset, chunk_size, external_data=None, delayed=True):
         """ Prepare the chunk import of records modified on Channel """
         with backend_record.work_on(self._name) as work:
             importer = work.component(
                 usage=delayed and 'delayed.chunk.importer' or "direct.chunk.importer"
             )
-            return importer.run(external_data=external_data)
+            return importer.run(domain, offset, chunk_size)
 
     # existing binding synchronization
     def resync_import(self):

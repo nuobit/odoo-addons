@@ -2,7 +2,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import logging
 
+from odoo import _
 from odoo.addons.component.core import AbstractComponent
+from odoo.odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -27,17 +29,20 @@ class VeloconnectBatchImporter(AbstractComponent):
         """ Run the synchronization """
         if domain is None:
             domain = []
-        # TODO: afegir al backend el count 500
-        offset, limit = 0, 100
-        while True:
-            data, limit, left_items = self.backend_adapter.search_read(domain, limit, offset)
-            self._import_chunk(data)
-            if left_items <= 0:
-                break
-            offset += limit
-            print(left_items)
+        total_items = self.backend_adapter.get_total_items()
+        # TODO: si fem un return false, retornarà el job buit?
+        if total_items == 0:
+            return False
+        chunk_size = self.backend_record.chunk_size
+        offset = 0
+        while total_items > 0:
+            if chunk_size > total_items:
+                chunk_size = total_items
+            self._import_chunk(domain, offset, chunk_size)
+            offset += chunk_size
+            total_items -= chunk_size
 
-    def _import_chunk(self, data):
+    def _import_chunk(self, domain, offset, chunk_size):
         raise NotImplementedError
 
 
@@ -48,9 +53,9 @@ class VeloconnectDirectBatchImporter(AbstractComponent):
 
     _usage = "direct.batch.importer"
 
-    def _import_chunk(self, external_data):
+    def _import_chunk(self, domain, offset, chunk_size):
         self.model.import_chunk(
-            self.backend_record, external_data=external_data
+            self.backend_record, domain, offset, chunk_size
         )
 
 
@@ -61,14 +66,10 @@ class VeloconnectDelayedBatchImporter(AbstractComponent):
 
     _usage = "delayed.batch.importer"
 
-    def _import_chunk(self, external_data, job_options=None):
-        # to_uncoment
-        delayable = self.model.with_delay(**job_options or {})
+    def _import_chunk(self, domain, offset, chunk_size):
+        delayable = self.model.with_delay()
         delayable.import_chunk(
-            # self.model.import_chunk(
-            self.backend_record, external_data=external_data,
-            # to_delete
-            # delayed=False
+            self.backend_record, domain, offset, chunk_size
         )
 
 
@@ -80,14 +81,12 @@ class VeloconnectChunkImporter(AbstractComponent):
     _name = "veloconnect.chunk.importer"
     _inherit = ['base.importer', 'base.veloconnect.connector']
 
-    def run(self, external_data=None):
+    def run(self, domain, offset, chunk_size):
         """ Run the synchronization """
-        for d in external_data:
+        data = self.backend_adapter.search_read(domain, offset, chunk_size)
+        for d in data:
             external_id = self.binder_for().dict2id(d, in_field=False)
             self._import_record(external_id, external_data=d)
-        # for rec in external_data:
-        #     external_id = self.binder_for().dict2id(rec, in_field=False)
-        #     self._import_record(external_id, external_data=rec)
 
     def _import_record(self, external_id, external_data=None):
         """Import a record directly or delay the import of the record.

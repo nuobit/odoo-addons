@@ -56,51 +56,6 @@ class VeloconnectAdapter(AbstractComponent):
     def _prepare_results(self, result):
         return result
 
-    # to_delete ??
-    # def _exec(self, funcname, **kwargs):
-        # session = requests.Session()
-        # url = self.backend_record.base_url + '/access/get_token'
-        # payload = {
-        #     'access_token': self.backend_record.access_token,
-        #     'secret': self.backend_record.secret,
-        # }
-        # r = session.post(url, data=payload)
-        # if not r.ok:
-        #     raise ConnectionError(f"Error trying to log in\n{r.text}")
-        # data = r.json()
-        # # TODO: Reutilize token
-        # token = data.get('token')
-        # if funcname == 'get_token':
-        #     return token
-        # account_id = data.get('account_id')
-        # session.headers.update({
-        #     'Authorization': token,
-        # })
-        # url = f'{self.backend_record.base_url}/v3.0/{funcname}/'
-        # params = {
-        #     'account_id': account_id,
-        #     **kwargs,
-        # }
-        # result = []
-        # data = {}
-        # while True:
-        #     if data:
-        #         if not data or not data.get('results'):
-        #             break
-        #         url_next = data.get('next')
-        #         if not url_next:
-        #             break
-        #         params = parse_qs(urlparse(url_next).query)
-        #     r = session.get(url, params=params)
-        #     if not r.ok:
-        #         raise ConnectionError(r.text)
-        #     data = r.json()
-        #     if 'results' in data:
-        #         result += data['results']
-        #     else:
-        #         result = data
-        # return self._prepare_results(result)
-
     def chunks(self, l, n):
         """Yield successive n-sized chunks from lst."""
         for i in range(0, len(l), n):
@@ -160,8 +115,16 @@ class VeloconnectAdapter(AbstractComponent):
                     raise NotImplementedError("Operator '%s' not supported" % op)
             else:
                 values_filtered.append(record)
-
         return values_filtered
+
+    def _filter_by_hash(self, data):
+        indexed_data = {x['Hash']: x for x in data}
+        odoo_hashes = set((self.env['veloconnect.product.template'].search([
+            ('backend_id', '=', self.backend_record.id),
+        ]).mapped('veloconnect_hash')))
+        changed_hashes = set((indexed_data.keys())) - odoo_hashes
+        return [indexed_data[x] for x in changed_hashes]
+
     def _domain_to_normalized_dict(self, domain):
         """Convert, if possible, standard Odoo domain to a dictionary.
         To do so it is necessary to convert all operators to
@@ -195,7 +158,7 @@ class VeloconnectAdapter(AbstractComponent):
                 res[field] = self._normalize_value(value)
             elif op in (">", ">=", "<", "<="):
                 if not isinstance(
-                        value, (datetime.date, datetime.datetime, int)
+                    value, (datetime.date, datetime.datetime, int)
                 ):
                     raise ValidationError(
                         _("Type {} not supported for operator {}").format(
@@ -216,7 +179,6 @@ class VeloconnectAdapter(AbstractComponent):
                 raise ValidationError(_("Operator %s not supported") % op)
 
         return res
-
 
     def _extract_domain_clauses(self, domain, fields):
         if not isinstance(fields, (tuple, list)):

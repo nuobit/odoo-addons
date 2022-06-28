@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_supplierinfo_form_view" model="ir.ui.view">
+        <field name="name">product.supplierinfo.form.inherit</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet" position="inside">
+                <notebook>
+                    <page string="Connectors" name="connector">
+                        <group name="Connector">
+                            <field name="veloconnect_bind_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="backend_id"/>
+                                    <field name="odoo_id" readonly="True"/>
+                                    <field name="veloconnect_seller_item_id"/>
+                                    <field name="veloconnect_minimum_quantity"/>
+                                    <field name="sync_date" readonly="True"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_supplierinfo_tree_view" model="ir.ui.view">
+        <field name="name">product.supplierinfo.tree.view</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="/tree" position="inside">
+                <field name='veloconnect_readonly' invisible='1'/>
+            </xpath>
+            <field name="name" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="product_code" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="currency_id" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="min_qty" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+            <field name="price" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

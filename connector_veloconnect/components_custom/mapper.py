@@ -110,6 +110,7 @@ class BaseChildMapper(AbstractComponent):
             map_record = mapper.map_record(item, parent=parent)
             if self.skip_item(map_record):
                 continue
+            self._update_with_existing_item(map_record)
             item_values = self.get_item_values(map_record, to_attr, options)
             if item_values:
                 self._child_bind(map_record, item_values)
@@ -124,6 +125,9 @@ class BaseChildMapper(AbstractComponent):
     def _child_bind(self, map_record, item_values):
         raise NotImplementedError
 
+    def _update_with_existing_item(self, map_record):
+        raise NotImplementedError
+
 
 class ImportMapChild(AbstractComponent):
     _inherit = "base.map.child.import"
@@ -131,19 +135,48 @@ class ImportMapChild(AbstractComponent):
     def _child_bind(self, map_record, item_values):
         binder = self.binder_for()
         external_id = binder.dict2id(map_record.source, in_field=False)
-        item_values.update({
+        values = {
             binder._backend_field: self.backend_record.id,
+            binder._sync_date_field: fields.Datetime.now(),
             **binder.id2dict(external_id, in_field=True),
             **binder._additional_internal_binding_fields(map_record.source),
-        })
+        }
+        binding = binder.to_internal(external_id, unwrap=False)
+        if not binding:
+            record = binder._to_record_from_external_key(map_record)
+            if record:
+                values.update({
+                    binder._odoo_field: record.id
+                })
+        item_values.update(values)
 
+    def format_items(self, items_values):
+        ops = []
+        for values in items_values:
+            id = values.pop('id', None)
+            if id:
+                ops.append((1, id, values))
+            else:
+                ops.append((0, False, values))
+        return ops
+
+    def _update_with_existing_item(self, map_record):
+        binder = self.binder_for()
+        external_id = binder.dict2id(map_record.source, in_field=False)
+        binding = binder.to_internal(external_id, unwrap=False)
+        if binding:
+            map_record.update(id=binding.id)
 
 class ExportMapChild(AbstractComponent):
     _inherit = "base.map.child.export"
 
     def _child_bind(self, map_record, item_values):
+        # TODO: implement this method
         raise NotImplementedError
 
+    def _update_with_existing_item(self, map_record):
+        # TODO: implement this method
+        raise NotImplementedError
 
 # TODO: create a fix on OCA repo and remove this class
 class ExportMapper(AbstractComponent):

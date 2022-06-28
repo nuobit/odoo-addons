@@ -13,12 +13,6 @@ class ProductSupplierinfoImportMapper(Component):
 
     _apply_on = 'veloconnect.product.supplierinfo'
 
-    # @only_create
-    # @mapping
-    # def backend_id(self, record):
-    #     return {'backend_id': self.backend_record.id}
-
-    @only_create
     @mapping
     def partner(self, record):
         return {'name': self.backend_record.partner_id.id}
@@ -38,3 +32,5 @@ class ProductSupplierinfoImportMapper(Component):
     @mapping
     def price(self, record):
         return {'price': record['PriceAmount']}
+
+

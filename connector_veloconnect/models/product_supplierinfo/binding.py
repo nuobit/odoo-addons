@@ -4,16 +4,6 @@
 from odoo import models, fields, api
 
 
-class ProductSupplierinfo(models.Model):
-    _inherit = 'product.supplierinfo'
-
-    veloconnect_bind_ids = fields.One2many(
-        comodel_name='veloconnect.product.supplierinfo',
-        inverse_name='odoo_id',
-        string='Veloconnect Bindings',
-    )
-
-
 class ProductSupplierinfoBinding(models.Model):
     _name = 'veloconnect.product.supplierinfo'
     _inherit = 'veloconnect.binding'
@@ -24,7 +14,7 @@ class ProductSupplierinfoBinding(models.Model):
                               required=True,
                               ondelete='cascade')
 
-    veloconnect_seller_id = fields.Char(string='Veloconnect SellersItemIdentificationID', required=True)
+    veloconnect_seller_item_id = fields.Char(string='Veloconnect SellersItemIdentificationID', required=True)
     veloconnect_minimum_quantity = fields.Integer(string='Veloconnect MinimumQuantity', required=True)
 
     veloconnect_product_tmpl_id = fields.Many2one(comodel_name='veloconnect.product.template',
@@ -36,7 +26,7 @@ class ProductSupplierinfoBinding(models.Model):
     _sql_constraints = [
         (
             "vp_external_uniq",
-            "unique(backend_id, veloconnect_seller_id,veloconnect_minimum_quantity)",
+            "unique(backend_id, veloconnect_seller_item_id, veloconnect_minimum_quantity)",
             "A binding already exists with the same External (veloconnect) ID.",
         ),
     ]
