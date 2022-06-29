@@ -15,6 +15,7 @@ class AccountMove(models.Model):
         ondelete="restrict",
         string="Invoice batch",
         tracking=True,
+        copy=False,
     )
     invoice_batch_sending_method = fields.Selection(
         selection=BATCH_SENDING_METHODS,
