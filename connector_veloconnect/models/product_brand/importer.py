@@ -32,3 +32,7 @@ class ProductBrandImporter(Component):
 
     _apply_on = 'veloconnect.product.brand'
 
+    def _create(self, values):
+        with self._retry_unique_violation():
+            return super()._create(values)
+

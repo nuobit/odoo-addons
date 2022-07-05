@@ -242,8 +242,8 @@ class BinderComposite(AbstractComponent):
             **self.id2dict(external_id, in_field=True),
             **self._additional_internal_binding_fields(external_data),
         })
-        with self._retry_unique_violation():
-            return self.model.with_context(connector_no_export=True).create(values)
+        # with self._retry_unique_violation():
+        #     return self.model.with_context(connector_no_export=True).create(values)
 
     def bind_export(self, external_data, relation):
         """ Create the link between an external ID and an Odoo ID
@@ -386,7 +386,9 @@ class BinderComposite(AbstractComponent):
                         )
                 else:
                     values[self._odoo_field] = record.id
-                binding = self.bind_import(map_record.source, values)
+                self.bind_import(map_record.source, values)
+                importer = self.component(usage="direct.record.importer")
+                binding = importer._create(values)
             _logger.debug("%d linked from Backend", binding)
             return binding
         return self.model

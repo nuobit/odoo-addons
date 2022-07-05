@@ -8,8 +8,8 @@ from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
     mapping, only_create)
 from odoo.addons.connector_veloconnect.models.common import tools
-from odoo.odoo import fields
-from odoo.odoo.exceptions import ValidationError
+from odoo import fields
+from odoo.exceptions import ValidationError
 
 
 class ProductTemplateImportMapChild(Component):
@@ -18,6 +18,7 @@ class ProductTemplateImportMapChild(Component):
 
     _apply_on = 'veloconnect.product.supplierinfo'
 
+    # to_delete
     # def get_item_values(self, map_record, to_attr, options):
     #     binder = self.binder_for('veloconnect.product.supplierinfo')
     #     external_id = binder.dict2id(map_record.source, in_field=False)
@@ -34,6 +35,11 @@ class ProductTemplateImportMapChild(Component):
     #         map_record.update(id=binding.id)
     #     return map_record.values(**options)
 
+class ProductTemplateDeleteMapChild(Component):
+    _name = 'veloconnect.product.supplierinfo.map.child.delete'
+    _inherit = 'veloconnect.map.child.import'
+
+    _apply_on = 'product.supplierinfo'
 
 class VeloconnectProductTemplateImportMapper(Component):
     _name = 'veloconnect.product.template.import.mapper'
@@ -43,7 +49,10 @@ class VeloconnectProductTemplateImportMapper(Component):
 
     direct = []
 
-    children = [('items', 'veloconnect_seller_ids', 'veloconnect.product.supplierinfo')]
+    children = [
+                ('items', 'veloconnect_seller_ids', 'veloconnect.product.supplierinfo'),
+                ('items', 'seller_ids', 'product.supplierinfo')
+                ]
 
     @only_create
     @mapping
@@ -116,6 +125,10 @@ class VeloconnectProductTemplateImportMapper(Component):
             lambda x: x.partner_id == self.backend_record.partner_id and
                       x.product_tmpl_id.id == product_template.id
         )
+        if self.backend_record.ignore_availablequantity:
+            values.update({
+                'quantity': -1,
+            })
         if partner_stock:
             partner_stock_ids = [(1, partner_stock.id, values)]
         else:
@@ -128,15 +141,18 @@ class VeloconnectProductTemplateImportMapper(Component):
     @mapping
     def product_uom(self, record):
         product_uom_map = self.backend_record.get_product_uom_map(record['quantityUnitCode'])
+        values = {'uom_po_id': product_uom_map.id}
         binding = self.options.get("binding")
-        other_bindings = binding.veloconnect_bind_ids.filtered(
-            lambda x: x.backend_id != self.backend_record and x.uom_po_id != product_uom_map)
-        if other_bindings:
-            raise ValidationError(_("Purchase Unit of Measure are different between backends. %s") % product_uom_map)
-        return {
-            'uom_po_id': product_uom_map.id,
-            'uom_id': product_uom_map.id
-        }
+        if not binding:
+            values.update({'uom_id': product_uom_map.id})
+        else:
+            other_bindings = binding.veloconnect_bind_ids.filtered(
+                lambda x: x.backend_id != self.backend_record and x.uom_po_id != product_uom_map)
+            if other_bindings:
+                raise ValidationError(_("Purchase Unit of Measure are different between backends: %s vs %s") % (
+                    product_uom_map.name, other_bindings.uom_po_id.name))
+        return values
+
 
     # TODO: Mirar si les imatges existeixen abans d'importarles
     # implementar compatibilitat amb swipe_images_backend

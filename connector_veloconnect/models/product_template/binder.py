@@ -2,8 +2,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
-from odoo.odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError
 from odoo import _
+
 
 class ProductTemplateBinder(Component):
     _name = 'veloconnect.product.template.binder'
@@ -16,7 +17,47 @@ class ProductTemplateBinder(Component):
     # _internal_field = 'veloconnect_ean'
     _external_field = 'SellersItemIdentificationID'
     _internal_field = 'veloconnect_seller_item_id'
-    _internal_alt_field = "barcode"
+    _internal_alt_field = ['barcode', 'veloconnect_seller_ids']
+
+    def _get_internal_record_domain(self, values):
+        query = """ SELECT t.id
+                    FROM product_template t
+                    WHERE (t.company_id IS NULL OR t.company_id = %(company_id)s) AND
+                        EXISTS (
+                                SELECT 1
+                                FROM product_product i
+                                WHERE i.product_tmpl_id = t.id AND
+                                      i.barcode = %(barcode)s
+                        ) AND (
+                        EXISTS (
+                            SELECT 1
+                            FROM product_supplierinfo i
+                            WHERE i.product_tmpl_id = t.id AND
+                                  i.name = %(name)s AND
+                                  i.product_code = %(product_code)s
+                        ) OR
+                        NOT EXISTS (
+                            SELECT 1
+                            FROM product_supplierinfo i
+                            WHERE i.product_tmpl_id = t.id AND
+                                  i.name = %(name)s
+                        ) OR
+                        NOT EXISTS (
+                            SELECT 1
+                            FROM product_supplierinfo i
+                            WHERE i.product_tmpl_id = t.id AND
+                                  i.name = %(name)s AND
+                                  i.product_code IS NOT NULL
+                        )
+                    )
+                    """
+        self.env.cr.execute(query, {
+            'company_id': self.backend_record.company_id.id,
+            'barcode': values['barcode'],
+            'name': self.backend_record.partner_id.id,
+            'product_code': values['veloconnect_seller_ids'][0][2]['product_code'],
+        })
+        return [('id', 'in', [x[0] for x in self.env.cr.fetchall()])]
 
     def _get_internal_record_alt(self, model_name, values):
         template = super()._get_internal_record_alt(model_name, values)

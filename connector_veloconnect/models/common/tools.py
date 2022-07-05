@@ -5,7 +5,7 @@ import hashlib
 import unicodedata
 
 from odoo import _
-from odoo.odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError
 
 
 def list2hash(l):

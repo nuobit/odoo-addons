@@ -4,7 +4,7 @@ import logging
 
 from odoo import _
 from odoo.addons.component.core import AbstractComponent
-from odoo.odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 

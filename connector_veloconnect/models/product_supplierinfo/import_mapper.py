@@ -3,8 +3,7 @@
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
-    mapping, only_create)
-from odoo.exceptions import ValidationError
+    mapping)
 
 
 class ProductSupplierinfoImportMapper(Component):
@@ -32,5 +31,3 @@ class ProductSupplierinfoImportMapper(Component):
     @mapping
     def price(self, record):
         return {'price': record['PriceAmount']}
-
-

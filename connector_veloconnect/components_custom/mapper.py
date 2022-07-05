@@ -110,7 +110,6 @@ class BaseChildMapper(AbstractComponent):
             map_record = mapper.map_record(item, parent=parent)
             if self.skip_item(map_record):
                 continue
-            self._update_with_existing_item(map_record)
             item_values = self.get_item_values(map_record, to_attr, options)
             if item_values:
                 self._child_bind(map_record, item_values)
@@ -120,12 +119,17 @@ class BaseChildMapper(AbstractComponent):
     def get_items(self, items, parent, to_attr, options):
         mapper = self._child_mapper()
         mapped = self.get_all_items(mapper, items, parent, to_attr, options)
+        # binding = options['binding']
+        # binder = self.binder_for()
+        # if binding:
+        #     old = {(x.product_code, x.min_qty): x.id for x in options['binding'].seller_ids}
+        #     new = {(x['product_code'], x['min_qty']) for x in mapped}
+        #     to_remove = set(old.keys()) - new
+        #     mapped.append({'seller_ids': [old[x] for x in to_remove]})
+
         return self.format_items(mapped)
 
     def _child_bind(self, map_record, item_values):
-        raise NotImplementedError
-
-    def _update_with_existing_item(self, map_record):
         raise NotImplementedError
 
 
@@ -141,18 +145,28 @@ class ImportMapChild(AbstractComponent):
             **binder.id2dict(external_id, in_field=True),
             **binder._additional_internal_binding_fields(map_record.source),
         }
-        binding = binder.to_internal(external_id, unwrap=False)
-        if not binding:
-            record = binder._to_record_from_external_key(map_record)
-            if record:
+        if map_record.parent:
+            binding = binder.to_internal(external_id, unwrap=False)
+            if not binding:
+                record = binder._to_record_from_external_key(map_record)
+                if record:
+                    values.update({
+                        binder._odoo_field: record.id
+                    })
+            else:
                 values.update({
-                    binder._odoo_field: record.id
+                    'id': binding.id
                 })
+                # map_record.update(id=binding.id)
+
         item_values.update(values)
 
     def format_items(self, items_values):
         ops = []
         for values in items_values:
+            # seller_ids = values.get('seller_ids')
+            # if seller_ids:
+            #     ops += [(2, x, False) for x in seller_ids]
             id = values.pop('id', None)
             if id:
                 ops.append((1, id, values))
@@ -160,12 +174,6 @@ class ImportMapChild(AbstractComponent):
                 ops.append((0, False, values))
         return ops
 
-    def _update_with_existing_item(self, map_record):
-        binder = self.binder_for()
-        external_id = binder.dict2id(map_record.source, in_field=False)
-        binding = binder.to_internal(external_id, unwrap=False)
-        if binding:
-            map_record.update(id=binding.id)
 
 class ExportMapChild(AbstractComponent):
     _inherit = "base.map.child.export"
@@ -174,9 +182,6 @@ class ExportMapChild(AbstractComponent):
         # TODO: implement this method
         raise NotImplementedError
 
-    def _update_with_existing_item(self, map_record):
-        # TODO: implement this method
-        raise NotImplementedError
 
 # TODO: create a fix on OCA repo and remove this class
 class ExportMapper(AbstractComponent):
@@ -209,3 +214,31 @@ class ExportMapper(AbstractComponent):
         return value
 
 # TODO: move uuid to generic binder
+
+
+class DeleteMapChild(AbstractComponent):
+    """ :py:class:`MapChild` for the Deleters """
+
+    _name = "base.map.child.deleter"
+    _inherit = "base.map.child"
+    _usage = "delete.map.child"
+
+    def _child_mapper(self):
+        return self.component(usage="import.mapper")
+
+    def format_items(self, items_values):
+        """Format the values of the items mapped from the child Mappers.
+
+        It can be overridden for instance to add the Odoo
+        relationships commands ``(6, 0, [IDs])``, ...
+
+        As instance, it can be modified to handle update of existing
+        items: check if an 'id' has been defined by
+        :py:meth:`get_item_values` then use the ``(1, ID, {values}``)
+        command
+
+        :param items_values: list of values for the items to create
+        :type items_values: list
+
+        """
+        return [(0, 0, values) for values in items_values]

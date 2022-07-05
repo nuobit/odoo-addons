@@ -17,4 +17,3 @@ class ProductSupplierinfoBinder(Component):
 
     def _get_internal_record_domain(self, value):
         return [('name_slug', "=", tools.slugify(value['name']))]
-

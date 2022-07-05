@@ -45,6 +45,7 @@
                             <field name="partner_id"/>
                             <field name="chunk_size"/>
                             <field name="product_search_retry_time"/>
+                            <field name="ignore_availablequantity"/>
                         </group>
                     </group>
                     <notebook>
@@ -76,7 +77,7 @@
                                            class="oe_inline"
                                            for="import_products_name"/>
                                     <field name="import_products_name" class="oe_inline"
-                                           nolabel="1"/>
+                                           nolabel="1" invisible="1"/>
                                     <!--<field name="import_sale_orders_since_date" class="oe_inline"-->
                                     <!-- nolabel="1"/>-->
                                 </div>

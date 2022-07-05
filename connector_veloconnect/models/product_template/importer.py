@@ -3,7 +3,7 @@
 from contextlib import contextmanager
 
 from odoo.addons.component.core import Component
-from odoo.odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError
 
 
 class ProductTemplateDelayedBatchImporter(Component):

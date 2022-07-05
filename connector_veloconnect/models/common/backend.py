@@ -72,7 +72,7 @@ class VeloconnectBackend(models.Model):
         # to_delete
         default="http://fuchs-movesa.velocom.de/fr",
     )
-
+    ignore_availablequantity = fields.Boolean(string="Ignore AvailableQuantity", default=False)
     import_sale_orders_since_date = fields.Datetime('Import Services since')
     import_products_name = fields.Char('Import Products with Name')
 

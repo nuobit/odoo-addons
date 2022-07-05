@@ -68,36 +68,34 @@ class VeloconnectProductTemplateTypeAdapter(Component):
         return res[0] or None
 
     def search_read(self, domain, offset, chunk_size):
-        if domain != []:
-            raise ValidationError(_('Not supported domain %s on search_read' % domain))
-        domain = [('StandardItemIdentification', '!=', None)]
-        items = []
+
+
+        filters_values = ["Hash"]
+        real_domain, common_domain = self._extract_domain_clauses(
+            domain, filters_values
+        )
         res = []
+        context = vc.Context(url=self.backend_record.url, userid=self.backend_record.buyer,
+                             passwd=self.backend_record.password, istest=True, log=False,
+                             use_objects=False)
+        context._load_params()
         while chunk_size:
-            filters_values = ["Hash"]
-            real_domain, common_domain = self._extract_domain_clauses(
-                domain, filters_values
-            )
-            context = vc.Context(url=self.backend_record.url, userid=self.backend_record.buyer,
-                                 passwd=self.backend_record.password, istest=True, log=False,
-                                 use_objects=False)
-            context._load_bindings()
             cts = vc.CreateTextSearch(context)
-            # en el 17.8 hay 36 (fuch movesa)
             try:
-                ctsresp = cts.execute('')
+                ctsresp = cts.execute('30.80165')
             except vc.VeloConnectException as e:
                 if e.code == 421:
                     raise RetryableJobError(_("%s. The job will be retried later") % e.message,
                                             seconds=self.backend_record.product_search_retry_time * 60)
+                raise
             sr = vc.SearchReadResult(context)
             items = sr.execute(ctsresp.tan, offset, chunk_size)
             res += items
             len_items = len(items)
-            chunk_size = chunk_size - len_items
+            chunk_size -= len_items
             if chunk_size < 0:
                 raise ValidationError(_("Unexpected Error: Chunk_size is < 0"))
-            offset = offset + len_items
+            offset += len_items
         res = tools.convert_to_json(res, ct, vc.NAMESPACES)
         res = self._reorg_product_data(res)
         res = self._filter(res, common_domain)
@@ -109,9 +107,9 @@ class VeloconnectProductTemplateTypeAdapter(Component):
         context = vc.Context(url=self.backend_record.url, userid=self.backend_record.buyer,
                              passwd=self.backend_record.password, istest=True, log=False,
                              use_objects=False)
-        context._load_bindings()
+        context._load_params()
         cts = vc.CreateTextSearch(context)
-        return cts.execute('').count
+        return cts.execute('30.80165').count
 
     def _reorg_product_data(self, values):
         # reorganize data
@@ -157,7 +155,7 @@ class VeloconnectProductTemplateTypeAdapter(Component):
             for price in itertools.product(*sorted_prices):
                 t = [x['PriceAmount'] for x in price]
                 diffs = [i - j for i, j in zip(t[:-1], t[1:])]
-                positives = all(map(lambda x: x > 0, diffs))
+                positives = all(map(lambda x: x >= 0, diffs))
                 if positives:
                     if found is not None:
                         raise ValidationError(_("More than one BasePrice consistent found"))
@@ -167,5 +165,4 @@ class VeloconnectProductTemplateTypeAdapter(Component):
             value['items'] = found
             value['quantityUnitCode'] = product_uom
             value['Hash'] = tools.list2hash([value[x] or None for x in hash_fields] + [tools.list2hash(price_hash)])
-
         return values

@@ -119,7 +119,7 @@ class VeloconnectAdapter(AbstractComponent):
 
     def _filter_by_hash(self, data):
         indexed_data = {x['Hash']: x for x in data}
-        odoo_hashes = set((self.env['veloconnect.product.template'].search([
+        odoo_hashes = set((self.model.search([
             ('backend_id', '=', self.backend_record.id),
         ]).mapped('veloconnect_hash')))
         changed_hashes = set((indexed_data.keys())) - odoo_hashes

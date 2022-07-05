@@ -120,6 +120,10 @@ class GenericImporterCustom(AbstractComponent):
     def _mapper_options(self, binding):
         return {"binding": binding}
 
+    def _create(self, values):
+        """ Create the Internal record """
+        return self.model.with_context(connector_no_export=True).create(values)
+
     def run(self, external_id, external_data=None, external_fields=None):
         if not external_data:
             external_data = {}
@@ -182,6 +186,7 @@ class GenericImporterCustom(AbstractComponent):
             # persist data
             if binding:
                 # if exists, we update it
+                a=1
                 values = internal_data.values(fields=external_fields, **opts)
                 binding.with_context(connector_no_export=True).write(values)
                 _logger.debug("%d updated from Backend %s", binding, external_id)
@@ -191,6 +196,7 @@ class GenericImporterCustom(AbstractComponent):
                     for_create=True, fields=external_fields, **opts
                 )
                 binder.bind_import(external_data, values)
+                self._create(values)
 
                 _logger.debug("%d created from Backend %s", binding, external_id)
 
