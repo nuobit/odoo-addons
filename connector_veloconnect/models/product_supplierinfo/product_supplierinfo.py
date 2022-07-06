@@ -11,25 +11,25 @@ class ProductSupplierinfo(models.Model):
     _inherit = 'product.supplierinfo'
 
 
-    veloconnect_bind_ids = fields.One2many(
-        comodel_name='veloconnect.product.supplierinfo',
-        inverse_name='odoo_id',
-        string='Veloconnect Bindings',
-    )
+    # veloconnect_bind_ids = fields.One2many(
+    #     comodel_name='veloconnect.product.supplierinfo',
+    #     inverse_name='odoo_id',
+    #     string='Veloconnect Bindings',
+    # )
 
-    backend_id = fields.Many2one(
-        string="Backend id",
-        comodel_name="veloconnect.backend",
-        required=True,
-        ondelete="cascade",
-    )
-
-    veloconnect_readonly = fields.Boolean(compute="_compute_veloconnect_readonly")
-
-    def _compute_veloconnect_readonly(self):
-        for rec in self:
-            binding_partner = rec.veloconnect_bind_ids.filtered(lambda x: x.backend_id.partner_id == rec.name)
-            rec.veloconnect_readonly = bool(binding_partner)
+    # backend_id = fields.Many2one(
+    #     string="Backend id",
+    #     comodel_name="veloconnect.backend",
+    #     required=True,
+    #     ondelete="cascade",
+    # )
+    #
+    # veloconnect_readonly = fields.Boolean(compute="_compute_veloconnect_readonly")
+    #
+    # def _compute_veloconnect_readonly(self):
+    #     for rec in self:
+    #         binding_partner = rec.veloconnect_bind_ids.filtered(lambda x: x.backend_id.partner_id == rec.name)
+    #         rec.veloconnect_readonly = bool(binding_partner)
 
     @api.constrains('name', 'product_code', 'product_tmpl_id', 'min_qty')
     def _check_unique_supplierinfo(self):

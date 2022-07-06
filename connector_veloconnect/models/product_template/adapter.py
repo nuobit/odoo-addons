@@ -69,7 +69,6 @@ class VeloconnectProductTemplateTypeAdapter(Component):
 
     def search_read(self, domain, offset, chunk_size):
 
-
         filters_values = ["Hash"]
         real_domain, common_domain = self._extract_domain_clauses(
             domain, filters_values
@@ -82,9 +81,9 @@ class VeloconnectProductTemplateTypeAdapter(Component):
         while chunk_size:
             cts = vc.CreateTextSearch(context)
             try:
-                ctsresp = cts.execute('30.80165')
+                ctsresp = cts.execute('')
             except vc.VeloConnectException as e:
-                if e.code == 421:
+                if e.code == 420 or e.code == 421:
                     raise RetryableJobError(_("%s. The job will be retried later") % e.message,
                                             seconds=self.backend_record.product_search_retry_time * 60)
                 raise
@@ -109,7 +108,7 @@ class VeloconnectProductTemplateTypeAdapter(Component):
                              use_objects=False)
         context._load_params()
         cts = vc.CreateTextSearch(context)
-        return cts.execute('30.80165').count
+        return cts.execute('').count
 
     def _reorg_product_data(self, values):
         # reorganize data

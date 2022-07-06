@@ -17,7 +17,7 @@ class ProductTemplateBinder(Component):
     # _internal_field = 'veloconnect_ean'
     _external_field = 'SellersItemIdentificationID'
     _internal_field = 'veloconnect_seller_item_id'
-    _internal_alt_field = ['barcode', 'veloconnect_seller_ids']
+    _internal_alt_field = ['barcode', 'seller_ids']
 
     def _get_internal_record_domain(self, values):
         query = """ SELECT t.id
@@ -55,7 +55,7 @@ class ProductTemplateBinder(Component):
             'company_id': self.backend_record.company_id.id,
             'barcode': values['barcode'],
             'name': self.backend_record.partner_id.id,
-            'product_code': values['veloconnect_seller_ids'][0][2]['product_code'],
+            'product_code': values['seller_ids'][0][2]['product_code'],
         })
         return [('id', 'in', [x[0] for x in self.env.cr.fetchall()])]
 

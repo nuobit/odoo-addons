@@ -119,17 +119,13 @@ class BaseChildMapper(AbstractComponent):
     def get_items(self, items, parent, to_attr, options):
         mapper = self._child_mapper()
         mapped = self.get_all_items(mapper, items, parent, to_attr, options)
-        # binding = options['binding']
-        # binder = self.binder_for()
-        # if binding:
-        #     old = {(x.product_code, x.min_qty): x.id for x in options['binding'].seller_ids}
-        #     new = {(x['product_code'], x['min_qty']) for x in mapped}
-        #     to_remove = set(old.keys()) - new
-        #     mapped.append({'seller_ids': [old[x] for x in to_remove]})
-
+        mapped = self.classify_items(mapped, to_attr, options)
         return self.format_items(mapped)
 
     def _child_bind(self, map_record, item_values):
+        raise NotImplementedError
+
+    def classify_items(self, mapped, to_attr, options):
         raise NotImplementedError
 
 
@@ -138,6 +134,8 @@ class ImportMapChild(AbstractComponent):
 
     def _child_bind(self, map_record, item_values):
         binder = self.binder_for()
+        if not binder._is_binding(self.model):
+            return
         external_id = binder.dict2id(map_record.source, in_field=False)
         values = {
             binder._backend_field: self.backend_record.id,
@@ -153,26 +151,41 @@ class ImportMapChild(AbstractComponent):
                     values.update({
                         binder._odoo_field: record.id
                     })
-            else:
-                values.update({
-                    'id': binding.id
-                })
-                # map_record.update(id=binding.id)
-
+            # to_delete
+            # else:
+            #     values.update({
+            #         'id': binding.id
+            #     })
         item_values.update(values)
 
     def format_items(self, items_values):
         ops = []
         for values in items_values:
-            # seller_ids = values.get('seller_ids')
-            # if seller_ids:
-            #     ops += [(2, x, False) for x in seller_ids]
             id = values.pop('id', None)
             if id:
-                ops.append((1, id, values))
+                if values:
+                    ops.append((1, id, values))
+                else:
+                    ops.append((2, id, False))
             else:
                 ops.append((0, False, values))
         return ops
+
+    def classify_items(self, mapped, to_attr, options):
+        binding = options['binding']
+        binder = self.binder_for()
+        keygen = lambda x: tuple(binder.dict2id(x))
+        if binding:
+            old = {keygen(x): x.id for x in options['binding'][to_attr]}
+            new = {keygen(x) for x in mapped}
+            to_update = set(old.keys()) & new
+            for value in mapped:
+                key = keygen(value)
+                if key in to_update:
+                    value['id'] = old[key]
+            to_remove = set(old.keys()) - new
+            mapped += [{'id': old[x]} for x in to_remove]
+        return mapped
 
 
 class ExportMapChild(AbstractComponent):
@@ -181,6 +194,9 @@ class ExportMapChild(AbstractComponent):
     def _child_bind(self, map_record, item_values):
         # TODO: implement this method
         raise NotImplementedError
+
+    def classify_items(self, mapped, to_attr, options):
+        return mapped
 
 
 # TODO: create a fix on OCA repo and remove this class
@@ -212,6 +228,7 @@ class ExportMapper(AbstractComponent):
             mapping_func = m2o_to_external(from_attr)
             value = mapping_func(self, record, to_attr)
         return value
+
 
 # TODO: move uuid to generic binder
 

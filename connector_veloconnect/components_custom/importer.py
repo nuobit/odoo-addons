@@ -137,7 +137,8 @@ class GenericImporterCustom(AbstractComponent):
         # The lock is kept since we have detected that the informations
         # will be updated into Odoo
         self.advisory_lock_or_retry(lock_name, retry_seconds=10)
-        had_external_data = bool(external_data)
+        # to_delete
+        # had_external_data = bool(external_data)
         if not external_data:
             # read external data from Backend
             external_data = self.backend_adapter.read(external_id)
@@ -186,7 +187,6 @@ class GenericImporterCustom(AbstractComponent):
             # persist data
             if binding:
                 # if exists, we update it
-                a=1
                 values = internal_data.values(fields=external_fields, **opts)
                 binding.with_context(connector_no_export=True).write(values)
                 _logger.debug("%d updated from Backend %s", binding, external_id)

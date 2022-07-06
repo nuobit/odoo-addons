@@ -21,10 +21,10 @@ class ProductTemplateBinding(models.Model):
     veloconnect_description = fields.Char(string='Veloconnect Description')
     veloconnect_price = fields.Float(string='Veloconnect RecommendedRetailPrice', required=True)
     veloconnect_uom = fields.Char(string='Veloconnect quantityUnitCode', required=True)
-    veloconnect_seller_ids = fields.One2many(
-        comodel_name="veloconnect.product.supplierinfo",
-        inverse_name="veloconnect_product_tmpl_id",
-    )
+    # veloconnect_seller_ids = fields.One2many(
+    #     comodel_name="veloconnect.product.supplierinfo",
+    #     inverse_name="veloconnect_product_tmpl_id",
+    # )
 
     _sql_constraints = [
         (

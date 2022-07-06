@@ -7,10 +7,10 @@ from odoo.addons.component.core import Component
 class ProductSupplierinfoBinder(Component):
     _name = 'veloconnect.product.supplierinfo.binder'
     _inherit = 'veloconnect.binder'
-
-    _apply_on = 'veloconnect.product.supplierinfo'
-
-    _external_field = ['SellersItemIdentificationID', 'MinimumQuantity']
-    _internal_field = ['veloconnect_seller_item_id', 'veloconnect_minimum_quantity']
-
-    _internal_alt_field = ['name', 'product_code', 'min_qty']
+#
+    _apply_on = 'product.supplierinfo'
+#
+#     _external_field = ['SellersItemIdentificationID', 'MinimumQuantity']
+    _internal_field = ['name.id', 'product_code', 'min_qty']
+#
+#     _internal_alt_field = ['name', 'product_code', 'min_qty']

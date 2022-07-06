@@ -10,7 +10,7 @@ class ProductSupplierinfoImportMapper(Component):
     _name = 'veloconnect.product.supplierinfo.import.mapper'
     _inherit = 'veloconnect.import.mapper'
 
-    _apply_on = 'veloconnect.product.supplierinfo'
+    _apply_on = 'product.supplierinfo'
 
     @mapping
     def partner(self, record):

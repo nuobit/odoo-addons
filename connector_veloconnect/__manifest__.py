@@ -31,7 +31,7 @@
         # 'views/sale_order_view.xml',
         # 'views/partner_view.xml',
         'views/product_template_view.xml',
-        'views/product_supplierinfo_view.xml',
+        # 'views/product_supplierinfo_view.xml',
         'views/product_views.xml',
         'views/product_brand_view.xml',
         'views/connector_veloconnect_menu.xml',

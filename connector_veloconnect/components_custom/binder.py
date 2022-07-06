@@ -86,11 +86,21 @@ class BinderComposite(AbstractComponent):
                         With this parameter False, _external_field will be used.
         """
         field = in_field and self._internal_field or self._external_field
-        if isinstance(field, (tuple, list)):
-            res = [_dict[x] for x in field]
-            return len(res) == 1 and res[0] or res
-        else:
-            return _dict[field]
+        if not isinstance(field, (tuple, list)):
+            field = [field]
+        res = []
+        for f in field:
+            f_splitted = f.split('.')
+            val = _dict[f_splitted[0]]
+            if len(f_splitted) == 2:
+                if isinstance(val, models.BaseModel):
+                    val = val[f_splitted[1]]
+            if len(f_splitted) > 2:
+                raise NotImplemented(_("Multiple dot notation is not supported"))
+            res.append(val)
+        if len(res) == 1:
+            return res[0]
+        return res
 
     @contextmanager
     def _retry_unique_violation(self):
@@ -124,11 +134,13 @@ class BinderComposite(AbstractComponent):
                 raise
 
     def _is_binding(self, binding):
-        try:
-            binding._model_fields[self._odoo_field]
-        except KeyError:
-            return False
-        return True
+        # to_delete
+        # try:
+        #     binding._model_fields[self._odoo_field]
+        # except KeyError:
+        #     return False
+        # return True
+        return self._odoo_field in binding._model_fields
 
     def _find_binding(self, relation, binding_extra_vals={}):
         if self._is_binding(relation):
