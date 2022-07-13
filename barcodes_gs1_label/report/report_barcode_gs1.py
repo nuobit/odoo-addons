@@ -142,6 +142,7 @@ class ReportGS1Barcode(models.AbstractModel):
                         [
                             ("id", "=", doc.id),
                             ("location_id.usage", "=", "internal"),
+                            ("location_id", "=", doc.location_id.id),
                             ("quantity", ">", 0),
                             ("company_id", "=", self.env.company.id),
                         ]
@@ -159,7 +160,7 @@ class ReportGS1Barcode(models.AbstractModel):
                         [
                             ("product_id", "in", doc.product_id.ids),
                             ("location_id.usage", "=", "internal"),
-                            ("location_id", "in", stock_location_ids),
+                            ("location_id", "=", doc.location_id.id),
                             ("quantity", ">", 0),
                             ("company_id", "=", self.env.company.id),
                         ]
