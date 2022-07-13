@@ -203,8 +203,11 @@ class ReportGS1Barcode(models.AbstractModel):
                     gs1_barcode["10"] = lot.name
                 elif product.tracking == "serial":
                     gs1_barcode["21"] = lot.name
+                # elif product.tracking == "none":
+                #     ???
+                if not gs1_barcode:
+                    continue
                 doc["barcode_values"] = gs1_barcode
-
                 doc["barcode_string"] = r"\F" + "".join(
                     map(lambda x: x[0] + x[1], gs1_barcode.items())
                 )
