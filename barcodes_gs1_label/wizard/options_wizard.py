@@ -114,6 +114,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                             [
                                 ("id", "=", doc.id),
                                 ("location_id.usage", "=", "internal"),
+                                ("location_id", "=", doc.location_id.id),
                                 ("quantity", ">", 0),
                                 ("company_id", "=", self.env.company.id),
                             ]
@@ -134,7 +135,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                             [
                                 ("product_id", "=", doc.product_id.id),
                                 ("location_id.usage", "=", "internal"),
-                                ("location_id", "in", all_locs.ids),
+                                ("location_id", "=", doc.location_id.id),
                                 ("quantity", ">", 0),
                                 ("company_id", "=", self.env.company.id),
                             ]
@@ -150,13 +151,21 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                     .line_ids.sorted(lambda x: x.product_id.default_code or "")
                     .inventory_id
                 ):
+                    if doc.location_ids:
+                        location_condition = (
+                            "location_id",
+                            "child_of",
+                            doc.location_ids.ids,
+                        )
+                    else:
+                        location_condition = ("location_id", "in", all_locs.ids)
                     locations |= (
                         self.env["stock.quant"]
                         .search(
                             [
                                 ("product_id", "in", doc.line_ids.product_id.ids),
                                 ("location_id.usage", "=", "internal"),
-                                ("location_id", "in", all_locs.ids),
+                                location_condition,
                                 ("quantity", ">", 0),
                                 ("company_id", "=", self.env.company.id),
                             ]
