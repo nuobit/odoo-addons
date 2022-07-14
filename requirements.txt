@@ -2,4 +2,6 @@
 openpyxl
 pymssql
 pystrich
+pyveloedi
+requests
 xlrd
