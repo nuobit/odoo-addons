@@ -54,6 +54,10 @@ class ResPartnerImportMapper(Component):
         ]
         return {"name": " ".join(parts)}
 
+    @mapping
+    def ref(self, record):
+        return {"ref": str(record["CodigoEmpleado"])}
+
     @only_create
     @mapping
     def company_id(self, record):
