@@ -16,10 +16,13 @@ def prorate_context(invoice):
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    def _recompute_tax_lines(self, recompute_tax_base_amount=False):
+    def _recompute_tax_lines(
+        self, recompute_tax_base_amount=False, tax_rep_lines_to_recompute=None
+    ):
         self = self.with_context(prorate=prorate_context(self))
         return super(AccountMove, self)._recompute_tax_lines(
-            recompute_tax_base_amount=recompute_tax_base_amount
+            recompute_tax_base_amount=recompute_tax_base_amount,
+            tax_rep_lines_to_recompute=tax_rep_lines_to_recompute,
         )
 
     @api.onchange("invoice_date", "date")
