@@ -4,8 +4,8 @@
 
 {
     "name": "Oxigesti-Odoo connector",
-    "version": "14.0.1.0.8",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "version": "14.0.1.1.1",
+    "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/nuobit/odoo-addons",
@@ -15,6 +15,7 @@
         "sale_order_service",
         "sale_line_partner_description",
         "sale_specific_order_date",
+        "oxigen_stock_alternate_lot",
     ],
     "external_dependencies": {
         "python": [

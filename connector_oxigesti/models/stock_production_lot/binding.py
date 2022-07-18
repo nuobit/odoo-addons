@@ -15,12 +15,34 @@ class StockProductionLot(models.Model):
         string="Oxigesti Bindings",
     )
 
+    oxigesti_readonly = fields.Boolean(compute="_compute_oxigesti_readonly")
+
+    @api.depends("oxigesti_bind_ids", "company_id")
+    def _compute_oxigesti_readonly(self):
+        for rec in self:
+            rec.oxigesti_readonly = bool(
+                rec.sudo().oxigesti_bind_ids.filtered(
+                    lambda x: x.backend_id.company_id == rec.company_id
+                )
+            )
+
+    oxigesti_write_date = fields.Datetime(
+        compute="_compute_oxigesti_write_date",
+        store=True,
+        required=True,
+        readonly=False,
+        default=fields.Datetime.now,
+    )
+
+    @api.depends("nos", "dn", "nos_unknown", "dn_unknown")
+    def _compute_oxigesti_write_date(self):
+        for rec in self:
+            rec.oxigesti_write_date = fields.Datetime.now()
+
     @api.constrains("name", "product_id", "company_id")
     def _check_product_lot(self):
         for rec in self:
-            if rec.sudo().oxigesti_bind_ids.filtered(
-                lambda x: x.backend_id.company_id == rec.company_id
-            ):
+            if rec.oxigesti_readonly:
                 raise ValidationError(
                     _(
                         "You can't modify name, product or company "
@@ -51,22 +73,30 @@ class StockProductionLotBinding(models.Model):
 
         domain = [("company_id", "=", backend.company_id.id)]
         if since_date:
-            domain += [("write_date", ">", since_date)]
+            domain += [("oxigesti_write_date", ">", since_date)]
         lot_ids = self.env["stock.production.lot"].search(domain).ids
         for ck in chunks(lot_ids, 500):
             ck_domain = [("id", "in", ck)]
             self.with_delay().export_batch(backend, domain=ck_domain)
 
+    @api.model
+    def import_data(self, backend, since_date):
+        filters = []
+        if since_date:
+            filters = [("write_date", ">", since_date)]
+        self.with_delay().import_batch(backend, filters=filters)
+
     def resync(self):
         for record in self:
+            func_exp = record.export_record
+            func_imp = record.import_record
+            if record.env.context.get("connector_delay"):
+                func_exp = record.export_record.delay
+                func_imp = record.import_record.delay
             with record.backend_id.work_on(record._name) as work:
                 binder = work.component(usage="binder")
-                relation = binder.unwrap_binding(self)
-
-            func = record.export_record
-            if record.env.context.get("connector_delay"):
-                func = record.export_record.delay
-
-            func(record.backend_id, relation)
-
+            relation = binder.unwrap_binding(self)
+            func_exp(record.backend_id, relation)
+            external_id = binder.to_external(self)
+            func_imp(record.backend_id, external_id)
         return True

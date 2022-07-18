@@ -32,3 +32,15 @@ class StockProductionLotExportMapper(Component):
         )
         adapter = self.component(usage="backend.adapter")
         return adapter.id2dict(external_id)
+
+    @mapping
+    def nos(self, record):
+        return {"nos": record.nos or None, "nos_unknown": record.nos_unknown}
+
+    @mapping
+    def dn(self, record):
+        return {"dn": record.dn or None, "dn_unknown": record.dn_unknown}
+
+    @mapping
+    def write_date(self, record):
+        return {"write_date": record.oxigesti_write_date}

@@ -1,7 +1,7 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+import datetime
 import logging
 import random
 from contextlib import contextmanager
@@ -122,11 +122,39 @@ class GenericAdapter(AbstractComponent):
     _inherit = "oxigesti.crud.adapter"
 
     # private methods
+    def _convert_dict(self, data, to_backend=True):
+        if not isinstance(data, dict):
+            raise ValidationError(_("EXpected a dictionary, found %s") % data)
+        for k, v in data.items():
+            if isinstance(v, datetime.datetime):
+                if to_backend:
+                    func = self.backend_record.tz_to_local
+                else:
+                    func = self.backend_record.tz_to_utc
+                data[k] = func(v)
+        return data
+
+    def _convert_tuple(self, data, to_backend=True):
+        if not isinstance(data, tuple):
+            raise ValidationError(_("EXpected a tuple, found %s") % data)
+        new_data = []
+        for p in data:
+            if isinstance(p, datetime.datetime):
+                if to_backend:
+                    func = self.backend_record.tz_to_local
+                else:
+                    func = self.backend_record.tz_to_utc
+                p = func(p)
+            new_data.append(p)
+        return tuple(new_data)
 
     def _escape(self, s):
         return s.replace("'", "").replace('"', "")
 
     def _exec_sql(self, sql, params, as_dict=False, commit=False):
+        # Convert params
+        params = self._convert_tuple(params, to_backend=True)
+        # Execute sql
         conn = self.conn()
         cr = conn.cursor(as_dict=as_dict)
         cr.execute(sql, params)
@@ -135,7 +163,15 @@ class GenericAdapter(AbstractComponent):
             conn.commit()
         cr.close()
         conn.close()
-
+        # Convert result
+        if as_dict:
+            for r in res:
+                self._convert_dict(r, to_backend=False)
+        else:
+            new_res = []
+            for r in res:
+                new_res.append(self._convert_tuple(r, to_backend=False))
+            res = new_res
         return res
 
     def _exec_query(self, filters=None, fields=None, as_dict=True):
@@ -287,6 +323,7 @@ class GenericAdapter(AbstractComponent):
         params = dict(id_d)
         for k9, v in qset_map_d.values():
             params[k9] = v
+        params = self._convert_dict(params, to_backend=True)
 
         conn = self.conn()
         cr = conn.cursor()
@@ -330,7 +367,7 @@ class GenericAdapter(AbstractComponent):
         for k, v in values_d.items():
             fields.append(k)
             params.append(v)
-            if v is None or isinstance(v, str):
+            if v is None or isinstance(v, (str, datetime.date, datetime.datetime)):
                 phvalues.append("%s")
             elif isinstance(v, (int, float)):
                 phvalues.append("%d")
@@ -404,6 +441,7 @@ class GenericAdapter(AbstractComponent):
 
         # get id fieldnames and values
         params = dict(zip(self._id, _id))
+        params = self._convert_dict(params, to_backend=True)
 
         conn = self.conn()
         cr = conn.cursor()
@@ -430,7 +468,6 @@ class GenericAdapter(AbstractComponent):
 
     def get_version(self):
         res = self._exec_query(as_dict=False)
-
         return res[0][0]
 
 
