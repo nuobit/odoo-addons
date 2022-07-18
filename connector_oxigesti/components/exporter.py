@@ -20,8 +20,14 @@ class OxigestiExporter(AbstractComponent):
 
     _usage = "record.exporter"
 
+    def _must_skip(self, binding):
+        return False
+
     def run(self, relation, *args, **kwargs):
         binding = self.binder.wrap_binding(relation)
+        skip = self._must_skip(binding)
+        if skip:
+            return skip
         return super(OxigestiExporter, self).run(binding, *args, **kwargs)
 
     def _import_dependency(

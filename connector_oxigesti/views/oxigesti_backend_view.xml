@@ -87,6 +87,13 @@
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
                         </group>
+                        <group col="4">
+                            <field
+                                name="tz"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                        </group>
                     </group>
                     <group>
                         <field name="version" colspan="4" />
@@ -213,6 +220,26 @@
                                     type="object"
                                     class="oe_highlight"
                                     string="Export in background"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Import Lots since"
+                                        class="oe_inline"
+                                        for="import_stock_production_lot_since_date"
+                                    />
+                                    <field
+                                        name="import_stock_production_lot_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="import_stock_production_lot_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import in background"
                                 />
                             </group>
                             <group>
