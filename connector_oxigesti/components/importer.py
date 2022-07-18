@@ -84,6 +84,9 @@ class OxigestiImporter(AbstractComponent):
         """
         return False
 
+    def _create(self, values):
+        return self.model.create(values)
+
     def run(self, external_id):
         # get_data
         # this one knows how to speak to Oxigesti
@@ -146,7 +149,7 @@ class OxigestiImporter(AbstractComponent):
                             values.update(add_fields)
                     values.update({odoo_link_field: odoo_id})
 
-            binding = self.model.create(values)
+            binding = self._create(values)
             _logger.debug("%d created from Oxigesti %s", binding, external_id)
 
         # finally, we bind both, so the next time we import
