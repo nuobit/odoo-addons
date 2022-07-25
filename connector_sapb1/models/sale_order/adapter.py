@@ -35,7 +35,7 @@ class SapB1SaleOrderTypeAdapter(Component):
     def write(self, external_id, values):
         """ Update records on the external system """
         self._format_order_params(values)
-        self._exec('update_order', external_id=external_id, values=values)
+        return self._exec('update_order', external_id=external_id, values=values)
 
     def cancel(self, value):
         self._exec('cancel_order', values=value)

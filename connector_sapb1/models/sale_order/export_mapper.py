@@ -31,10 +31,6 @@ class SaleOrderExportMapper(Component):
 
     _apply_on = 'sapb1.sale.order'
 
-    direct = [
-        ('client_order_ref', 'NumAtCard'),
-    ]
-
     children = [('order_line', 'DocumentLines', 'sapb1.sale.order.line')]
 
     @changed_by('partner_id')
@@ -48,6 +44,13 @@ class SaleOrderExportMapper(Component):
         if not partner_map:
             raise ValidationError(_('No partner mapping found for parent %s') % parent.name)
         return {'CardCode': partner_map.sapb1_cardcode}
+
+    @changed_by('client_order_ref')
+    @mapping
+    def numatcard(self, record):
+        if not record.client_order_ref:
+            raise ValidationError(_('Client Order Reference is a mandatory field in Sale Order %s') % record.name)
+        return {'NumAtCard': record.client_order_ref}
 
     @only_create
     @mapping
