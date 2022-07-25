@@ -135,7 +135,16 @@ class SapB1Adapter(AbstractComponent):
             r = session.patch(self.backend_record.sl_url + "/Orders(%i)" % params['external_id'], json=params['values'],
                               headers=headers)
             if not r.ok:
-                raise ValidationError(r.text)
+                data = r.json()
+                if r.status_code == 400 and data['error']['code'] == -1029:
+                    res = session.get(self.backend_record.sl_url + "/Orders(%i)" % params['external_id'])
+                    if res.json()['DocumentStatus'] != 'bost_Open':
+                        raise SAPClosedOrderException(
+                            _("The order can't be updated because SAP doesn't allow to modify closed orders. "
+                              "This is why we can't treat that as an error. %s") %
+                            data['error']['message']['value'])
+                else:
+                    raise ValidationError(r.text)
             self._logout(session)
 
         elif funcname == 'get_products':
@@ -419,6 +428,10 @@ class SapB1Adapter(AbstractComponent):
             data = r.json()
             result += data['value']
         return result
+
+
+class SAPClosedOrderException(ValidationError):
+    pass
 
 
 class ChannelAdapterError(Exception):

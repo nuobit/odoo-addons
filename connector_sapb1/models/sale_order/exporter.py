@@ -4,6 +4,7 @@
 import logging
 
 from odoo.addons.component.core import Component
+from odoo.addons.connector_sapb1.components.adapter import SAPClosedOrderException
 
 _logger = logging.getLogger(__name__)
 
@@ -46,3 +47,11 @@ class SaleOrderExporter(Component):
         """ Can do several actions after exporting a record on the backend """
         if self.binding.state == 'cancel':
             self.backend_adapter.cancel(self.binding.sapb1_docentry)
+
+    def _update(self, external_id, data):
+        """ Update an External record """
+        try:
+            res = super()._update(external_id, data)
+        except SAPClosedOrderException as e:
+            res = e.name
+        return res

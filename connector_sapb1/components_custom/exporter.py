@@ -94,7 +94,7 @@ class GenericExporterCustom(AbstractComponent):
             values = self._update_data(map_record, fields=internal_fields, **opts)
             if values:
                 external_id = self.binder_for().dict2id(self.binding, in_field=True)
-                self._update(external_id, values)
+                result = self._update(external_id, values)
         else:
             values = self._create_data(map_record, fields=internal_fields, **opts)
             if values:
@@ -104,7 +104,6 @@ class GenericExporterCustom(AbstractComponent):
             result = _("Nothing to export")
         if not result:
             result = _("Record exported with ID %s on Backend.") % 'external_id'
-
         self._after_export()
         self.binding[self.binder._sync_date_field] = now_fmt
         return result
@@ -278,4 +277,4 @@ class GenericExporterCustom(AbstractComponent):
         """ Update an External record """
         # special check on data before export
         self._validate_update_data(data)
-        self.backend_adapter.write(external_id, data)
+        return self.backend_adapter.write(external_id, data)
