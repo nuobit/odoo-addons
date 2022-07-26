@@ -9,7 +9,18 @@ from odoo import _
 from odoo.exceptions import ValidationError
 from urllib.parse import urlparse, parse_qs
 
+from odoo.addons.queue_job.exception import RetryableJobError
 from odoo.addons.component.core import AbstractComponent
+from requests.exceptions import ConnectionError
+
+
+class LengowSession(requests.Session):
+    def request(self, method, url, **kwargs):
+        try:
+            return super().request(method, url, **kwargs)
+        except ConnectionError as e:
+            raise RetryableJobError(
+                _("Error trying to connect to '%s': %s\nThe job will be retried later.") % (url, e.reason))
 
 
 class LengowAdapter(AbstractComponent):
@@ -62,16 +73,22 @@ class LengowAdapter(AbstractComponent):
     def _prepare_results(self, result):
         return result
 
+    def _check_response_error(self, r):
+        if not r.ok:
+            err_msg = _("Error trying to connect to %s: %s") % (r.url, r.text)
+            if r.status_code in (503, 504):
+                raise RetryableJobError('%s\n%s' % (err_msg, _("The job will be retried later")))
+            raise ConnectionError(err_msg)
+
     def _exec(self, funcname, **kwargs):
-        session = requests.Session()
+        session = LengowSession()
         url = self.backend_record.base_url + '/access/get_token'
         payload = {
             'access_token': self.backend_record.access_token,
             'secret': self.backend_record.secret,
         }
         r = session.post(url, data=payload)
-        if not r.ok:
-            raise ConnectionError(f"Error trying to log in\n{r.text}")
+        self._check_response_error(r)
         data = r.json()
         # TODO: Reutilize token
         token = data.get('token')
@@ -97,8 +114,7 @@ class LengowAdapter(AbstractComponent):
                     break
                 params = parse_qs(urlparse(url_next).query)
             r = session.get(url, params=params)
-            if not r.ok:
-                raise ConnectionError(r.text)
+            self._check_response_error(r)
             data = r.json()
             if 'results' in data:
                 result += data['results']
