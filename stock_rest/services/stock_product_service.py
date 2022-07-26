@@ -75,11 +75,15 @@ class ProductService(Component):
             product = self.env["product.product"].browse(s["product_id"][0])
             qty = round(s["quantity"], dp.digits)
             if qty > 0:
-                lot_id, lot_name = s["lot_id"] or (None, None)
+                if s["lot_id"]:
+                    lot_id = s["lot_id"][0]
+                    lot_name = self.env["stock.production.lot"].browse(lot_id).name
+                else:
+                    lot_id, lot_name = None, None
                 data.setdefault(product, []).append(
                     {
                         "id": lot_id,
-                        "code": lot_name and str(lot_name) or None,
+                        "code": lot_name or None,
                         "quantity": qty,
                     }
                 )
