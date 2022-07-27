@@ -5,6 +5,7 @@
 import logging
 
 from odoo import _
+from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.queue_job.exception import NothingToDoJob
@@ -98,7 +99,9 @@ class OxigestiImporter(AbstractComponent):
         # read external data from Oxigesti
         self.external_data = backend_adapter.read(external_id)
         if not self.external_data:
-            return _("Record with ID %s does not exist in Oxigesti") % (external_id,)
+            raise ValidationError(
+                _("Record with ID %s does not exist in Oxigesti") % (external_id,)
+            )
 
         # get_binding
         # this one knows how to link Oxigesti/odoo records
