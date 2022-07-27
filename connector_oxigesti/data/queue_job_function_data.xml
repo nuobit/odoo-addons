@@ -31,7 +31,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
         id="oxigesti_binding_export_product_categories_since_job_function"
         model="queue.job.function"
     >
-        <field name="model_id" ref="connector_oxigesti.model_product_category" />
+        <field
+            name="model_id"
+            ref="connector_oxigesti.model_oxigesti_product_category"
+        />
         <field name="method">export_product_categories_since</field>
         <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
