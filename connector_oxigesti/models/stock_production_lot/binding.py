@@ -43,26 +43,19 @@ class StockProductionLotBinding(models.Model):
     )
 
     @api.model
-    def export_stock_production_lot_since(self, backend_record=None, since_date=None):
-        """Prepare the batch export of Lots on Odoo"""
-
+    def export_data(self, backend, since_date):
         def chunks(ls, n):
             """Yield successive n-sized chunks from lst."""
             for i in range(0, len(ls), n):
                 yield ls[i : i + n]
 
-        domain = [("company_id", "=", backend_record.company_id.id)]
+        domain = [("company_id", "=", backend.company_id.id)]
         if since_date:
             domain += [("write_date", ">", since_date)]
-
         lot_ids = self.env["stock.production.lot"].search(domain).ids
-        now_fmt = fields.Datetime.now()
         for ck in chunks(lot_ids, 500):
             ck_domain = [("id", "in", ck)]
-            self.with_delay().export_batch(backend=backend_record, domain=ck_domain)
-        backend_record.export_stock_production_lot_since_date = now_fmt
-
-        return True
+            self.with_delay().export_batch(backend, domain=ck_domain)
 
     def resync(self):
         for record in self:

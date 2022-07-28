@@ -2,7 +2,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
@@ -31,14 +31,12 @@ class SaleOrderBinding(models.Model):
         string="Lines",
     )
 
-    def import_services_since(self, backend_record=None, since_date=None):
-        """Prepare the batch import of services created on Oxigesti"""
+    @api.model
+    def import_data(self, backend, since_date):
         filters = []
         if since_date:
             filters = [("Fecha_Modifica", ">", since_date)]
-        self.import_batch(backend=backend_record, filters=filters)
-
-        return True
+        self.with_delay().import_batch(backend, filters=filters)
 
     def export_order_data(self, clear=False):
         self.ensure_one()

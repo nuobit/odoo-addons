@@ -152,7 +152,18 @@ class OxigestiBinding(models.AbstractModel):
     ]
 
     @api.model
+    def import_data(self, backend, since_date):
+        """Default method, it should be overridden by subclasses"""
+        self.env[self._name].with_delay().import_batch(backend)
+
+    @api.model
+    def export_data(self, backend, since_date):
+        """Default method, it should be overridden by subclasses"""
+        self.env[self._name].with_delay().export_batch(backend)
+
+    @api.model
     def import_batch(self, backend, filters=None):
+        """Prepare the batch import of records modified on Oxigesti"""
         if not filters:
             filters = []
         # Prepare the batch import of records modified on Oxigesti
@@ -171,6 +182,7 @@ class OxigestiBinding(models.AbstractModel):
 
     @api.model
     def export_batch(self, backend, domain=None):
+        """Prepare the batch export of records modified on Odoo"""
         if not domain:
             domain = []
         # Prepare the batch export of records modified on Odoo
