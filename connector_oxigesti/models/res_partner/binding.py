@@ -2,7 +2,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class ResPartner(models.Model):
@@ -25,18 +25,12 @@ class ResPartnerBinding(models.Model):
         comodel_name="res.partner", string="Partner", required=True, ondelete="cascade"
     )
 
-    def import_customers_since(self, backend_record=None, since_date=None):
-        """Prepare the batch import of partners modified on Oxigesti"""
+    @api.model
+    def import_data(self, backend, since_date):
         filters = []
         if since_date:
             filters = [("Fecha_Ultimo_Cambio", ">", since_date)]
-        now_fmt = fields.Datetime.now()
-        self.env["oxigesti.res.partner"].import_batch(
-            backend=backend_record, filters=filters
-        )
-        backend_record.import_customers_since_date = now_fmt
-
-        return True
+        self.with_delay().import_batch(backend, filters=filters)
 
     def resync(self):
         for record in self:

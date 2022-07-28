@@ -94,74 +94,44 @@ class OxigestiBackend(models.Model):
     def import_customers_since(self):
         for rec in self:
             since_date = rec.import_customers_since_date
-            self.env["oxigesti.res.partner"].with_delay().import_customers_since(
-                backend_record=rec, since_date=since_date
-            )
-
-        return True
+            rec.import_customers_since_date = fields.Datetime.now()
+            self.env["oxigesti.res.partner"].import_data(rec, since_date)
 
     def export_products_since(self):
         for rec in self:
             since_date = rec.export_products_since_date
-            self.env["oxigesti.product.product"].with_delay().export_products_since(
-                backend_record=rec, since_date=since_date
-            )
-
-        return True
+            rec.export_products_since_date = fields.Datetime.now()
+            self.env["oxigesti.product.product"].export_data(rec, since_date)
 
     def export_product_categories_since(self):
         for rec in self:
             since_date = rec.export_product_categories_since_date
-            self.env[
-                "oxigesti.product.category"
-            ].with_delay().export_product_categories_since(
-                backend_record=rec, since_date=since_date
-            )
-
-        return True
+            rec.export_product_categories_since_date = fields.Datetime.now()
+            self.env["oxigesti.product.category"].export_data(rec, since_date)
 
     def export_products_by_customer_since(self):
         for rec in self:
             since_date = rec.export_products_by_customer_since_date
-            self.env[
-                "oxigesti.product.buyerinfo"
-            ].with_delay().export_products_by_customer_since(
-                backend_record=rec, since_date=since_date
-            )
-
-        return True
+            rec.export_products_by_customer_since_date = fields.Datetime.now()
+            self.env["oxigesti.product.buyerinfo"].export_data(rec, since_date)
 
     def export_product_prices_by_customer_since(self):
         for rec in self:
             since_date = rec.export_product_prices_by_customer_since_date
-            self.env[
-                "oxigesti.product.pricelist.item"
-            ].with_delay().export_product_prices_by_customer_since(
-                backend_record=rec, since_date=since_date
-            )
-
-        return True
+            rec.export_product_prices_by_customer_since_date = fields.Datetime.now()
+            self.env["oxigesti.product.pricelist.item"].export_data(rec, since_date)
 
     def export_stock_production_lot_since(self):
         for rec in self:
             since_date = rec.export_stock_production_lot_since_date
-            self.env[
-                "oxigesti.stock.production.lot"
-            ].with_delay().export_stock_production_lot_since(
-                backend_record=rec, since_date=since_date
-            )
-
-        return True
+            rec.export_stock_production_lot_since_date = fields.Datetime.now()
+            self.env["oxigesti.stock.production.lot"].export_data(rec, since_date)
 
     def import_services_since(self):
         for rec in self:
             since_date = rec.import_services_since_date
             rec.import_services_since_date = fields.Datetime.now()
-            self.env["oxigesti.sale.order"].with_delay().import_services_since(
-                backend_record=rec, since_date=since_date
-            )
-
-        return True
+            self.env["oxigesti.sale.order"].import_data(rec, since_date)
 
     # Scheduler methods
     @api.model

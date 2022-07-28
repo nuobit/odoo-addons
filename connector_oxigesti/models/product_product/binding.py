@@ -41,20 +41,15 @@ class ProductProductBinding(models.Model):
     )
 
     @api.model
-    def export_products_since(self, backend_record=None, since_date=None):
-        """Prepare the batch export of products modified on Odoo"""
-        domain = [("company_id", "=", backend_record.company_id.id)]
+    def export_data(self, backend, since_date):
+        domain = [("company_id", "=", backend.company_id.id)]
         if since_date:
             domain += [
                 "|",
                 ("write_date", ">", since_date),
                 ("product_tmpl_id.write_date", ">", since_date),
             ]
-        now_fmt = fields.Datetime.now()
-        self.export_batch(backend=backend_record, domain=domain)
-        backend_record.export_products_since_date = now_fmt
-
-        return True
+        self.with_delay().export_batch(backend, domain=domain)
 
     def resync(self):
         for record in self:
