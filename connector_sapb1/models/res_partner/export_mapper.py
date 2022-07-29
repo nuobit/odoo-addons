@@ -62,4 +62,9 @@ class ResPartnerExportMapper(Component):
 
     @mapping
     def addressname(self, record):
-        return {'AddressName': record['name'].strip()}
+        name = record['name']
+        if not name:
+            raise ValidationError(
+                _("Partner without name: The partner name is mandatory in SAP,"
+                  " without it the record cannot be exported."))
+        return {'AddressName': name.strip()}
