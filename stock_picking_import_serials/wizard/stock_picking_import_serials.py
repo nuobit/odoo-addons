@@ -212,7 +212,7 @@ class StockPickingImportSerials(models.TransientModel):
                 )
             if product.tracking != "serial":
                 raise UserError(
-                    _("The product %s has no 'serial' tracking type") % default_code
+                    _("The product %s has no serial tracking type") % default_code
                 )
 
             # get lines of the picking lines
