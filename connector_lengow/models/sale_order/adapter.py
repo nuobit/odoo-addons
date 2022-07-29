@@ -73,9 +73,13 @@ class LengowSaleOrderTypeAdapter(Component):
                 if value[f]:
                     value[f]['marketplace'] = value['marketplace']
                     value[f]['marketplace_country_iso2'] = value['marketplace_country_iso2']
-                    name_values = [value[f][y].strip() for y in ['first_name', 'last_name'] if
-                                   value.get(f) and value[f].get(y)]
-                    value[f]['complete_name'] = ' '.join(name_values) or None
+                    if value[f]['full_name']:
+                        complete_name = value[f]['full_name']
+                    else:
+                        name_values = [value[f][y].strip() for y in ['first_name', 'last_name'] if
+                                       value.get(f) and value[f].get(y)]
+                        complete_name = ' '.join(name_values) or None
+                    value[f]['complete_name'] = complete_name
                     value[f]['hash'] = list2hash(
                         value[f].get(x) for x in hash_fields)
             for item in value['items']:
