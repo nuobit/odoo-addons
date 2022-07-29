@@ -9,7 +9,7 @@ import xlrd
 from openpyxl import load_workbook
 
 from odoo import _, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 MAP_TYPES = {
     xlrd.XL_CELL_TEXT: _("Text"),
@@ -92,9 +92,7 @@ class StockPickingImportSerials(models.TransientModel):
             raise UserError(
                 _("Incorrect format file, the number of columns must be 2 minimum")
             )
-
-        # group serials by product
-        product_serial = {}
+        data = []
         for row_index in range(max_columns):
             row_values = sheet.row_values(row_index, 0, LAST_COLUMN)
             if row_index == 0:
@@ -109,19 +107,15 @@ class StockPickingImportSerials(models.TransientModel):
                             _("The fields on the header row must not be null")
                         )
             else:
-                default_code = _get_cell(sheet, row_index, 0, xlrd.XL_CELL_TEXT)
-                tracking_number = _get_cell(sheet, row_index, 1, xlrd.XL_CELL_TEXT)
-                # adding to group structure
-                if default_code not in product_serial:
-                    product_serial[default_code] = [tracking_number]
-                else:
-                    if tracking_number in product_serial[default_code]:
-                        raise UserError(
-                            _("The tracking number %s duplicated") % tracking_number
-                        )
-                    product_serial[default_code].append(tracking_number)
-
-        return product_serial
+                data.append(
+                    tuple(
+                        [
+                            _get_cell(sheet, row_index, x, xlrd.XL_CELL_TEXT)
+                            for x in range(max_columns)
+                        ]
+                    )
+                )
+            return data
 
     def _get_product_serial_xlsx(self, sheet):
         max_columns = sheet.max_column
@@ -130,9 +124,7 @@ class StockPickingImportSerials(models.TransientModel):
             raise UserError(
                 _("Incorrect format file, the number of columns must be 2 minimum")
             )
-
-        # group serials by product
-        product_serial = {}
+        data = []
         first_row = True
         for row in sheet.rows:
             if first_row:
@@ -143,17 +135,30 @@ class StockPickingImportSerials(models.TransientModel):
                     raise UserError(_("The fields on the header row must not be null"))
                 first_row = False
                 continue
-            default_code = row[0].internal_value
-            tracking_number = row[1].internal_value
-            if default_code not in product_serial:
-                product_serial[default_code] = [tracking_number]
+            data.append(tuple([c.internal_value for c in row]))
+        return data
+
+    def _prepare_additional_tracking_values(self, data, company):
+        return {}
+
+    def _prepare_data(self, data, company):
+        unique_tracking_numbers = {}
+        product_serial = {}
+        for row in data:
+            default_code = row[0]
+            tracking_number = row[1]
+            # check serial uniqueness by product
+            if default_code not in unique_tracking_numbers:
+                unique_tracking_numbers[default_code] = {tracking_number}
             else:
-                if tracking_number in product_serial[default_code]:
-                    raise UserError(
+                if tracking_number in unique_tracking_numbers[default_code]:
+                    raise ValidationError(
                         _("The tracking number %s duplicated") % tracking_number
                     )
-                product_serial[default_code].append(tracking_number)
-
+                unique_tracking_numbers[default_code].add(tracking_number)
+            product_serial.setdefault(default_code, {})[
+                tracking_number
+            ] = self._prepare_additional_tracking_values(row[2:], company)
         return product_serial
 
     def import_serials(self):  # noqa: C901
@@ -187,15 +192,16 @@ class StockPickingImportSerials(models.TransientModel):
             book = load_workbook(filename=BytesIO(file))
             sheet = book.worksheets[0]
         else:
-            raise UserError(_("Extesion %s no supported") % ext)
+            raise UserError(_("Extension %s no supported") % ext)
 
-        product_serial = getattr(self, "_get_product_serial_%s" % ext)(sheet)
-        if not product_serial:
+        sheet_data = getattr(self, "_get_product_serial_%s" % ext)(sheet)
+        if not sheet_data:
             raise UserError(_("There's no data in input file"))
 
+        product_serial = self._prepare_data(sheet_data, picking.company_id)
+
         # set serials on move lines
-        for default_code, tracking_numbers in product_serial.items():
-            # get product
+        for default_code, tracking_values in product_serial.items():
             product = self.env["product.product"].search(
                 [
                     ("default_code", "=", default_code),
@@ -214,6 +220,8 @@ class StockPickingImportSerials(models.TransientModel):
                 raise UserError(
                     _("The product %s has no serial tracking type") % default_code
                 )
+
+            tracking_numbers = list(tracking_values.keys())
 
             # get lines of the picking lines
             product_move_lines = picking.move_lines.filtered(
@@ -273,6 +281,7 @@ class StockPickingImportSerials(models.TransientModel):
                             ("name", "=", tracking_number),
                         ]
                     )
+                    values = tracking_values[tracking_number]
                     if not lot_id:
                         if not picking.picking_type_id.use_create_lots:
                             raise UserError(
@@ -281,13 +290,14 @@ class StockPickingImportSerials(models.TransientModel):
                                     "not allowed in this operation type"
                                 )
                             )
-                        lot_id = self.env["stock.production.lot"].create(
+                        values.update(
                             {
                                 "company_id": picking.company_id.id,
                                 "product_id": line.product_id.id,
                                 "name": tracking_number,
                             }
                         )
+                        lot_id = self.env["stock.production.lot"].create(values)
                     else:
                         if not picking.picking_type_id.use_existing_lots:
                             raise UserError(
@@ -296,6 +306,8 @@ class StockPickingImportSerials(models.TransientModel):
                                     "not allowed in this operation type"
                                 )
                             )
+                        if values:
+                            lot_id.write(values)
 
                     line.lot_id = lot_id
                     line.lot_name = lot_id.name
