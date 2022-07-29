@@ -20,7 +20,7 @@ class LengowSession(requests.Session):
             return super().request(method, url, **kwargs)
         except ConnectionError as e:
             raise RetryableJobError(
-                _("Error trying to connect to '%s': %s\nThe job will be retried later.") % (url, e.reason))
+                _("Error trying to connect to '%s': %s\nThe job will be retried later.") % (url, e))
 
 
 class LengowAdapter(AbstractComponent):
