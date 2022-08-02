@@ -138,7 +138,7 @@ class OxigestiImporter(AbstractComponent):
             _logger.debug("%d updated from Oxigesti %s", binding, external_id)
         else:
             # or we create it
-            odoo_link_field = "odoo_id"
+            odoo_link_field = self.binder._odoo_field
             values = internal_data.values(for_create=True)
             if odoo_link_field in values:
                 if isinstance(values[odoo_link_field], (tuple, list)):
