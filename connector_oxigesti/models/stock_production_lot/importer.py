@@ -59,4 +59,8 @@ class StockProductionLotImporter(Component):
         return False
 
     def _create(self, values):
-        raise ValidationError(_("It's not allowed to create a new lots from Oxigesti."))
+        if self.binder._odoo_field not in values:
+            raise ValidationError(
+                _("It's not allowed to create a new lots from Oxigesti.")
+            )
+        return super()._create(values)
