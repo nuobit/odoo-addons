@@ -16,38 +16,40 @@ class ResPartnerImportMapper(Component):
     def backend_id(self, record):
         return {"backend_id": self.backend_record.id}
 
-    @only_create
-    @mapping
-    def name(self, record):
-        return {"name": record["Lote"]}
-
-    @only_create
-    @mapping
-    def product_id(self, record):
-        oxigesti_articulo = record["CodigoArticulo"]
-        binding = (
-            self.env["oxigesti.product.product"]
-            .with_context(active_test=False)
-            .search(
-                [
-                    ("company_id", "=", self.backend_record.company_id.id),
-                    ("default_code", "=", oxigesti_articulo),
-                ]
-            )
-        )
-        if not binding:
-            raise AssertionError(
-                "Product %s should have been exported in "
-                "StockProductionLotImporter._import_dependencies" % (oxigesti_articulo,)
-            )
-        if len(binding) > 1:
-            raise AssertionError(
-                "Found more than 1 products (%i) with "
-                "the same code (%s) in Odoo: %s"
-                % (len(binding), oxigesti_articulo, binding.mapped("odoo_id.id"))
-            )
-        product_id = self.binder_for().unwrap_binding(binding)
-        return {"product_id": product_id}
+    # This is not needed as we don't allow creating new lots
+    # (buy we do allow creating new bindings to link existing lots)
+    # @only_create
+    # @mapping
+    # def name(self, record):
+    #     return {"name": record["Lote"]}
+    #
+    # @only_create
+    # @mapping
+    # def product_id(self, record):
+    #     oxigesti_articulo = record["CodigoArticulo"]
+    #     binding = (
+    #         self.env["oxigesti.product.product"]
+    #         .with_context(active_test=False)
+    #         .search(
+    #             [
+    #                 ("company_id", "=", self.backend_record.company_id.id),
+    #                 ("default_code", "=", oxigesti_articulo),
+    #             ]
+    #         )
+    #     )
+    #     if not binding:
+    #         raise AssertionError(
+    #             "Product %s should have been exported in "
+    #             "StockProductionLotImporter._import_dependencies" % (oxigesti_articulo,)
+    #         )
+    #     if len(binding) > 1:
+    #         raise AssertionError(
+    #             "Found more than 1 products (%i) with "
+    #             "the same code (%s) in Odoo: %s"
+    #             % (len(binding), oxigesti_articulo, binding.mapped("odoo_id.id"))
+    #         )
+    #     product = self.binder_for().unwrap_binding(binding)
+    #     return {"product_id": product.id}
 
     @mapping
     def nos(self, record):
