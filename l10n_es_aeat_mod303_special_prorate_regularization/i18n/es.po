@@ -1,0 +1,285 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_es_aeat_mod303_special_prorate_regularization
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-08-12 07:49+0000\n"
+"PO-Revision-Date: 2022-08-12 07:49+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization.model_l10n_es_aeat_mod303_report
+msgid "AEAT 303 Report"
+msgstr "Modelo AEAT 303"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization.model_l10n_es_aeat_report
+msgid "AEAT report base module"
+msgstr "Módulo base para declaraciones AEAT"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization.model_l10n_es_aeat_tax_line
+msgid "AEAT tax line"
+msgstr "Línea de impuestos AEAT"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization.model_l10n_es_aeat_map_tax_line
+msgid "AEAT tax mapping line"
+msgstr "Línea de mapeo de impuestos AEAT"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod111_report__move_prorate_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod115_report__move_prorate_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__move_prorate_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod347_report__move_prorate_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod349_report__move_prorate_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report__move_prorate_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report_tax_mapping__move_prorate_id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_vat_book__move_prorate_id
+msgid "Account entry"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__start_date_use
+msgid "Accounting Date"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__amount_currency
+msgid "Amount Currency"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization.model_account_asset
+msgid "Asset"
+msgstr "Activo"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__cancellation_date
+msgid "Cancellation date"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization.account_asset_view_form
+msgid "Capital Asset"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization.view_l10n_es_aeat_mod303_report_form
+msgid "Capital Assets Regularization Parameters"
+msgstr "Parametros de regularización de bienes de inversión"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__company_id
+msgid "Company"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization.view_l10n_es_aeat_mod303_report_form
+msgid "Counterpart Account Payable"
+msgstr "Cuenta contrapartida de pago"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization.view_l10n_es_aeat_mod303_report_form
+msgid "Counterpart Account Receivable"
+msgstr "Cuenta contrapartida de cobro"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__counterpart_capital_assets_receivable_account_id
+msgid "Counterpart Capital Assets Account Receivable"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__counterpart_capital_assets_payable_account_id
+msgid "Counterpart Capital Assets Payable Account"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__counterpart_prorate_receivable_account_id
+msgid "Counterpart Prorate Account Receivable"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__counterpart_prorate_payable_account_id
+msgid "Counterpart Prorate Payable Account"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_map_tax_line__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_tax_line__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_product_category__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__final_prorate_percent
+msgid "Final prorrate (%)"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_map_tax_line__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_tax_line__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_product_category__id
+msgid "ID"
+msgstr "Identificador"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_oxigesti_product_category__investment_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_product_category__investment_capital_asset
+msgid "Investment Capital Asset"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.constraint,message:l10n_es_aeat_mod303_special_prorate_regularization.constraint_aeat_vat_special_prorrate_investment_capital_asset_unique_name
+msgid "Investment good name must be unique"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__invoice_date
+msgid "Invoice Date"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_map_tax_line____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_tax_line____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_product_category____last_update
+msgid "Last Modified on"
+msgstr "Última modificación"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__name
+msgid "Name"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_aeat_vat_special_prorrate_investment_capital_asset__period
+msgid "Period (years)"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization/models/aeat_vat_special_prorate_investment_capital_asset.py:0
+#, python-format
+msgid "Period must be greater than 0."
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization.model_product_category
+msgid "Product Category"
+msgstr "Categoría de producto"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization/models/mod303.py:0
+#, python-format
+msgid "Prorate Regularization"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization.view_l10n_es_aeat_mod303_report_form
+msgid "Prorate Regularization Parameters"
+msgstr "Parámetros de regularización de la prorrata"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization/models/mod303.py:0
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization/models/mod303.py:0
+#, python-format
+msgid "Prorrate year is not closed"
+msgstr "El año de la prorrata no esta cerrado"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,help:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__field_43
+msgid "Capital assets regularization by application of the final percentage."
+msgstr "Regularización de bienes de inversión por aplicación del porcentaje final."
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,help:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__field_44
+msgid "Prorate regularization by application of the final percentage."
+msgstr "Regularización de prorrata por aplicación del porcentaje final."
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__tax_id
+msgid "Tax"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__temp_prorate_percent
+msgid "Temporary prorrate (%)"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,help:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__partner_vat
+msgid ""
+"The Tax Identification Number. Complete it if the contact is subjected to "
+"government taxes. Used in some legal statements."
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_map_tax_line__to_regularize_prorate
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_tax_line__to_regularize_prorate
+msgid "To Regularize Prorata"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_account_asset__partner_vat
+msgid "VAT"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization/models/mod303.py:0
+#, python-format
+msgid "You must fill both journal and counterpart receivable/payable account."
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__field_43
+msgid "[43] Capital Assets Regularization"
+msgstr "[43] Regularización de bienes de inversión"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__field_44
+msgid "[44] Prorate Regularization"
+msgstr "[44] Regularización de prorrata"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization
+#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization.model_aeat_vat_special_prorrate_investment_capital_asset
+msgid "aeat.vat.special.prorrate.investment.capital.asset"
+msgstr ""

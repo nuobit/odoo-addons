@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_43"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field name="to_regularize_prorate" eval="True" />
+    </record>
+    <record
+        id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_44"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field name="to_regularize_prorate" eval="True" />
+    </record>
+</odoo>
