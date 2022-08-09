@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="pms_tiny_reservation_room_form_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.room.form</field>
+        <field name="model">pms.tiny.reservation.room</field>
+        <field name="arch" type="xml">
+            <form string="PMS Tiny Reservation">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code" />
+                            <field name="type" />
+                            <field name="price" />
+                            <field name="guest_full_names" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Raw Data">
+                            <field name="raw_data" nolabel="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

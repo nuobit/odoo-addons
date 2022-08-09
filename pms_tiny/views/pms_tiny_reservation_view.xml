@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="pms_tiny_reservation_form_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.form</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="arch" type="xml">
+            <form string="PMS Tiny Reservation">
+                <header>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="code" placeholder="Code" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="property_id" />
+                            <field name="date" />
+                            <field name="locator" />
+                            <field name="agency_code" />
+                            <field name="subagency_code" />
+                            <field name="guest_full_names" />
+                        </group>
+                        <group>
+                            <field name="updated_date" />
+                            <field name="cancelled_date" />
+                        </group>
+                    </group>
+                    <group>
+                        <field name="checkin_date" />
+                        <field name="checkout_date" />
+                    </group>
+                    <notebook>
+                        <page string="Rooms">
+                            <field name="room_ids">
+                                <tree>
+                                    <field name="code" />
+                                    <field name="price" />
+                                    <field name="type" />
+                                    <field name="guest_full_names" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Raw Data">
+                            <field name="raw_data" nolabel="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="pms_tiny_reservation_tree_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.tree</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="state=='cancel'">
+                <field name="code" />
+                <field name="locator" />
+                <field name="date" />
+                <field name="agency_code" />
+                <field name="subagency_code" />
+                <field name="checkin_date" />
+                <field name="checkout_date" />
+                <field name="guest_full_names" />
+                <field name="property_id" />
+                <field name="updated_date" />
+                <field name="cancelled_date" />
+                <field
+                    name="state"
+                    widget="badge"
+                    decoration-success="state == 'new'"
+                    decoration-info="state == 'modified'"
+                    decoration-danger="state == 'cancel'"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <record id="pms_tiny_reservation_search_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.search</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="arch" type="xml">
+            <search string="Search Reservations">
+                <field
+                    name="code"
+                    filter_domain="['|',('code','ilike',self),('locator','ilike',self)]"
+                />
+                <field name="code" filter_domain="[('code','ilike',self)]" />
+                <field name="locator" filter_domain="[('locator','ilike',self)]" />
+                <group expand="0" name="group_by" string="Group By">
+                    <filter
+                        name="group_locator"
+                        string="Locator"
+                        domain="[]"
+                        context="{'group_by' : 'locator'}"
+                    />
+                    <filter
+                        name="group_agency"
+                        string="Agency"
+                        domain="[]"
+                        context="{'group_by' : 'agency_code'}"
+                    />
+                     <filter
+                        name="group_subagency"
+                        string="Sub Agency"
+                        domain="[]"
+                        context="{'group_by' : 'subagency_code'}"
+                    />
+                    <filter
+                        name="group_state"
+                        string="State"
+                        domain="[]"
+                        context="{'group_by' : 'state'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="pms_tiny_reservation_action" model="ir.actions.act_window">
+        <field name="name">Reservations</field>
+        <field name="res_model">pms.tiny.reservation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
