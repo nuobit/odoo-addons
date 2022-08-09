@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="pms_tiny_reservation_form_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.form</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="arch" type="xml">
+            <form string="PMS Tiny Reservation">
+                <header>
+                     <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="code" class="oe_inline" />
+                    </h1>
+                    <group>
+                        <field name="property_id" />
+                        <field name="date" />
+                        <field name="locator" />
+                        <field name="agency_code" />
+                    </group>
+                    <group>
+                        <field name="checkin_date" />
+                        <field name="checkout_date" />
+                    </group>
+                    <group>
+                        <field name="raw_data" />
+                        <field name="updated_date" />
+                    </group>
+                    <notebook>
+                        <page string="Rooms">
+                            <field name="room_ids">
+                                <tree>
+                                    <field name="price" />
+                                    <field name="confirm_number" />
+                                    <field name="raw_data" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pms_tiny_reservation_tree_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.tree</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="arch" type="xml">
+            <tree string="PMS Tiny Reservations">
+                <field name="code" />
+                <field name="locator" />
+                <field name="date" />
+                <field name="agency_code" />
+                <field name="checkin_date" />
+                <field name="checkout_date" />
+                <field name="property_id" />
+                <field name="updated_date" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="pms_tiny_reservation_search_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.search</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="arch" type="xml">
+            <search string="Search Reservations">
+                <field
+                    name="code"
+                    filter_domain="['|',('code','ilike',self),('locator','ilike',self)]"
+                />
+                <field name="code" filter_domain="[('code','ilike',self)]" />
+                <field name="locator" filter_domain="[('locator','ilike',self)]" />
+                <group expand="0" name="group_by" string="Group By">
+                    <filter
+                        name="group_locator"
+                        string="Locator"
+                        domain="[]"
+                        context="{'group_by' : 'locator'}"
+                    />
+                    <filter
+                        name="group_agency"
+                        string="Agency"
+                        domain="[]"
+                        context="{'group_by' : 'agency_code'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="pms_tiny_reservation_action" model="ir.actions.act_window">
+        <field name="name">Reservations</field>
+        <field name="res_model">pms.tiny.reservation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

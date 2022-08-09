@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="pms_tiny_property_form_view" model="ir.ui.view">
+        <field name="name">pms.tiny.property.form</field>
+        <field name="model">pms.tiny.property</field>
+        <field name="arch" type="xml">
+            <form string="PMS Tiny Property">
+                <sheet>
+                    <h1>
+                        <field name="code" class="oe_inline" />
+                    </h1>
+                    <group>
+                        <field name="company_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pms_tiny_property_tree_view" model="ir.ui.view">
+        <field name="name">pms.tiny.property.tree</field>
+        <field name="model">pms.tiny.property</field>
+        <field name="arch" type="xml">
+            <tree string="PMS Tiny Properties">
+                <field name="code" />
+                 <field name="company_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="pms_tiny_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">pms.tiny.property</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

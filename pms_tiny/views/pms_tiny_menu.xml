@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="pms_tiny_menu_root"
+        name="PMS Tiny"
+        sequence="30"
+        groups="group_pms_tiny_manager,group_pms_tiny_user"
+    />
+    <menuitem
+        id="pms_tiny_reservations_menu_action"
+        name="Reservations"
+        parent="pms_tiny_menu_root"
+        action="pms_tiny_reservation_action"
+        sequence="10"
+    />
+    <menuitem
+        id="pms_tiny_properties_menu_action"
+        name="Properties"
+        parent="pms_tiny_menu_root"
+        action="pms_tiny_property_action"
+        sequence="20"
+    />
+
+</odoo>
