@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="pms_tiny_reservation_form_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.connector.form</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="inherit_id" ref="pms_tiny.pms_tiny_reservation_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet" position="inside">
+                <notebook>
+                    <page string="Connectors" name="connector" invisible="0">
+                        <group string="Anphitrion Bindings">
+                            <field name="anphitrion_bind_ids" nolabel="1" colspan="2" />
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>
