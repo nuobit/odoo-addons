@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_anphitrion_pms_tiny_reservation_manager","anphitrion_pms_tiny_reservation connector manager","model_anphitrion_pms_tiny_reservation","connector.group_connector_manager",1,1,1,1
+"access_anphitrion_pms_tiny_reservation_user","anphitrion_pms_tiny_reservation connector user","model_anphitrion_pms_tiny_reservation","base.group_user",1,0,0,0
+"access_anphitrion_pms_tiny_reservation_room_manager","anphitrion_pms_tiny_reservation_room connector manager","model_anphitrion_pms_tiny_reservation_room","connector.group_connector_manager",1,1,1,1
+"access_anphitrion_pms_tiny_reservation_room_user","anphitrion_pms_tiny_reservation_room connector user","model_anphitrion_pms_tiny_reservation_room","base.group_user",1,0,0,0
+"access_anphitrion_backend_manager","anphitrion_backend connector manager","model_anphitrion_backend","connector.group_connector_manager",1,1,1,1
+"access_anphitrion_backend_user","anphitrion_backend connector manager","model_anphitrion_backend","base.group_user",1,0,0,0

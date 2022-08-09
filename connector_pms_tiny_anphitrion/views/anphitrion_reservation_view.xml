@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="anphitrion_pms_tiny_reservation_connector_form_view" model="ir.ui.view">
+        <field name="name">anphitrion.pms.tiny.reservation.form</field>
+        <field name="model">anphitrion.pms.tiny.reservation</field>
+        <field name="arch" type="xml">
+            <form string="Anphitrion Reservation">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" />
+                    <field name="anphitrion_numreserva" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="anphitrion_pms_tiny_reservation_connector_tree_view" model="ir.ui.view">
+        <field name="name">anphitrion.pms.tiny.reservation.tree</field>
+        <field name="model">anphitrion.pms.tiny.reservation</field>
+        <field name="arch" type="xml">
+            <tree string="Anphitrion Reservation">
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="anphitrion_numreserva" />
+                <field name="sync_date" />
+                <button
+                    name="resync_import"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+    <record id="anphitrion_pms_tiny_reservation_action" model="ir.actions.act_window">
+        <field name="name">Anphitrion Reservation</field>
+        <field name="res_model">anphitrion.pms.tiny.reservation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
