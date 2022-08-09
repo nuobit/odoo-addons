@@ -20,5 +20,5 @@
     "installable": True,
     "development_status": "Beta",
     "maintainers": ["eantones"],
-    "auto_install": True,
+    "auto_install": False,
 }
