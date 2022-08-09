@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="0">
+    <record id="anphitrion_batch" model="queue.job.channel">
+        <field name="name">anphitrion_batch</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record id="anphitrion_record" model="queue.job.channel">
+        <field name="name">anphitrion_record</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+</odoo>

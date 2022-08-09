@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="anphitrion_connector_menu_root"
+        parent="connector.menu_connector_root"
+        name="Anphitrion"
+        sequence="40"
+        groups="connector.group_connector_manager"
+    />
+    <menuitem
+        id="anphitrion_backend_menu_action"
+        name="Backends"
+        parent="anphitrion_connector_menu_root"
+        action="anphitrion_backend_action"
+    />
+    <menuitem
+        id="anphitrion_external_objects_menu"
+        name="External Objects"
+        parent="anphitrion_connector_menu_root"
+        sequence="100"
+    />
+    <menuitem
+        id="anphitrion_external_reservations_menu"
+        name="External Reservations"
+        sequence="20"
+        parent="anphitrion_external_objects_menu"
+        action="anphitrion_pms_tiny_reservation_action"
+    />
+</odoo>
