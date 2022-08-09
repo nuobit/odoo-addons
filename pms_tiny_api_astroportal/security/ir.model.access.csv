@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_pms_tiny_api_astroportal_manager","pms_tiny_api_astroportal manager","model_pms_tiny_api_astroportal","pms_tiny.group_pms_tiny_manager",1,1,1,1
+"access_pms_tiny_api_astroportal_user","pms_tiny_api_astroportal user","model_pms_tiny_api_astroportal","pms_tiny.group_pms_tiny_user",1,0,0,0
+"access_pms_tiny_api_astroportal_guest_manager","pms_tiny_api_astroportal_guest manager","model_pms_tiny_api_astroportal_guest","pms_tiny.group_pms_tiny_manager",1,1,1,1
+"access_pms_tiny_api_astroportal_guest_user","pms_tiny_api_astroportal_guest user","model_pms_tiny_api_astroportal_guest","pms_tiny.group_pms_tiny_user",1,0,0,0
