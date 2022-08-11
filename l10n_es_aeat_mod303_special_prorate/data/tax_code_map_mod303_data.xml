@@ -136,6 +136,7 @@
         id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_31"
         model="l10n.es.aeat.map.tax.line"
     >
+        <field name="account_id" ref="l10n_es.account_common_472" />
         <field
             name="tax_ids"
             eval="[
@@ -164,6 +165,7 @@
         id="l10n_es_aeat_mod303.aeat_mod303_202107_map_line_33"
         model="l10n.es.aeat.map.tax.line"
     >
+        <field name="account_id" ref="l10n_es.account_common_472" />
         <field
             name="tax_ids"
             eval="[

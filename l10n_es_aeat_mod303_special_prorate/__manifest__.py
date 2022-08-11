@@ -5,7 +5,7 @@
 {
     "name": "Special prorate tax mapping for 303",
     "summary": "This module adds the 303 model special prorate taxes",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Sales",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
