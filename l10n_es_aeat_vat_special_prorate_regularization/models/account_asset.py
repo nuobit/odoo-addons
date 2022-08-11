@@ -5,6 +5,7 @@
 from odoo import api, fields, models, _, exceptions
 from odoo.exceptions import ValidationError
 
+
 class L10nEsAeatMod303Report(models.AbstractModel):
     _inherit = "l10n.es.aeat.mod303.report"
 
@@ -28,6 +29,7 @@ class L10nEsAeatMod303Report(models.AbstractModel):
         domain="[('company_id', '=', company_id)]",
     )
 
+
 class AccountAsset(models.Model):
     _inherit = "account.asset"
 
@@ -38,23 +40,10 @@ class AccountAsset(models.Model):
             rec.partner_vat = rec.partner_id.vat
 
     start_date_use = fields.Date(string="Accounting Date",
-                                 # compute="_compute_date",
                                  related="move_id.date")
-
-    # def _compute_date(self):
-    #     for rec in self:
-    #         rec.start_date_use = rec.move_id.date
-
     invoice_date = fields.Date(string="Invoice Date",
                                related="move_id.invoice_date")
-                               # compute="_compute_invoice_date")
-
-    # def _compute_invoice_date(self):
-    #     for rec in self:
-    #         rec.invoice_date = rec.move_id.invoice_date
-
     amount_currency = fields.Float(string="Amount Currency",
-
                                    compute="_compute_amount_currency")
 
     def _compute_amount_currency(self):
@@ -67,12 +56,13 @@ class AccountAsset(models.Model):
         for rec in self:
             # TODO: hacer el filtro en el mapping de la casilla 43
             rec.tax_id = rec.move_line_id.mapped('tax_ids').mapped('name')
+
     # comprobar si hay != 1, raise.
     # en el tax id asignamos el que nos devuelva
 
     # TODO: compute store=False /related vs compute store=True vs calcule on asset creation
-    temp_prorrate_percent = fields.Float(string="Temporary prorrate (%)", compute="_compute_tax_percentage")
-    final_prorrate_percent = fields.Float(string="Final prorrate (%)", compute="_compute_tax_percentage")
+    temp_prorate_percent = fields.Float(string="Temporary prorrate (%)", compute="_compute_tax_percentage")
+    final_prorate_percent = fields.Float(string="Final prorrate (%)", compute="_compute_tax_percentage")
 
     def _compute_tax_percentage(self):
         for rec in self:
@@ -95,12 +85,13 @@ class AccountAsset(models.Model):
     # investment_good_affectacion = fields.Selection(selection=[
     #     ('subject', _("Subject")), ('exempt', _("Exempt")), ('prorrate', _("Prorrate (temporary)"))])
 
+
 class L10nEsAeatReport(models.AbstractModel):
     _inherit = "l10n.es.aeat.report"
 
     def button_post_capital_assets(self):
         for report in self:
-            a=1
+            a = 1
             # report.create_regularization_move_prorate()
             # self.write({"state": "posted"})
             # return True

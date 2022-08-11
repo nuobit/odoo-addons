@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="account_asset_view_form" model="ir.ui.view">
@@ -33,8 +32,8 @@
                         <group>
                             <!--                            <field name="tax_ids"/>-->
                             <!--                            <field name="iva_ded_prov"/>-->
-                            <field name="temp_prorrate_percent"/>
-                            <field name="final_prorrate_percent"/>
+                            <field name="temp_prorate_percent"/>
+                            <field name="final_prorate_percent"/>
 
                         </group>
                     </group>
@@ -42,32 +41,5 @@
             </notebook>
         </field>
     </record>
-    <record id="view_l10n_es_aeat_report_capital_assets_form" model="ir.ui.view">
-        <field name="name">l10n_es.aeat.mod303.report.capital.assets.form</field>
-        <field name="model">l10n.es.aeat.mod303.report</field>
-        <field name="inherit_id" ref="l10n_es_aeat.view_l10n_es_aeat_report_form"/>
-        <field name="arch" type="xml">
-            <header position="inside">
-                <button name="button_post_capital_assets"
-                        string="Create capital assets move"
-                        help="This button creates the capital assets regularization move for the selected report"
-                        type="object"
-                        attrs="{'invisible': [('period_type', 'not in', ('4T', '12'))]}"
-                />
-                <!--                attrs="{'invisible': ['|', ('state', '!=', 'done'), ('allow_posting', '=', False)]}"/>-->
-            </header>
-            <group name="group_other_parameters" position="after">
-                <group string="Regularization Prorate Parameters" name="Regularization Prorate Parameters"
-                       attrs="{'invisible': [('period_type', 'not in', ('4T', '12'))]}">
-                    <field name="counterpart_capital_assets_receivable_account_id"
-                           string="Counterpart Account Receivable"
-                           attrs="{'required': [('period_type', 'in', ('4T', '12'))]}"/>
-                    <field name="counterpart_capital_assets_payable_account_id" string="Counterpart Account Payable"
-                           attrs="{'required': [('period_type', 'in', ('4T', '12'))]}"/>
 
-                </group>
-            </group>
-        </field>
-
-    </record>
 </odoo>

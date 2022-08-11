@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="aeat_map_special_prorrate_year_view_form" model="ir.ui.view">
-        <field name="model">aeat.map.special.prorrate.year</field>
-        <field name="inherit_id" ref="l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form"/>
-        <field name="arch" type="xml">
-
-            <header position="inside">
-                <button name="first_regularization" type="object" string="1rst regularization" states="finale"/>
-            </header>
-
-            <field name="tax_final_percentage_aux" position="after">
-                <field name="regularization" states="finale"/>
-            </field>
-        </field>
-    </record>
-
     <record id="l10n_es_aeat_map_tax_line_prorata_tree" model="ir.ui.view">
         <field name="name">l10n.es.aeat.map.tax.line.prorata.tree</field>
         <field name="model">l10n.es.aeat.map.tax.line</field>
@@ -28,32 +12,28 @@
             </field>
         </field>
     </record>
-
-    <record id="view_l10n_es_aeat_report_prorate_form" model="ir.ui.view">
+    <record id="view_l10n_es_aeat_mod303_report_form" model="ir.ui.view">
         <field name="name">l10n_es.aeat.mod303.report.prorate.form</field>
         <field name="model">l10n.es.aeat.mod303.report</field>
-        <field name="inherit_id" ref="l10n_es_aeat.view_l10n_es_aeat_report_form"/>
+        <field name="inherit_id" ref="l10n_es_aeat_mod303.view_l10n_es_aeat_mod303_report_form"/>
         <field name="arch" type="xml">
-            <header position="inside">
-                <button name="button_post_prorate"
-                        string="Create prorate move"
-                        help="This button creates the prorate regularization move for the selected report"
-                        type="object"
-                        attrs="{'invisible': [('period_type', 'not in', ('4T', '12'))]}"
-                />
-                <!--                attrs="{'invisible': ['|', ('state', '!=', 'done'), ('allow_posting', '=', False)]}"/>-->
-            </header>
             <group name="group_other_parameters" position="after">
-                <group string="Regularization Prorate Parameters" name="Regularization Prorate Parameters"
+                <group string="Prorate Regularization Parameters" name="Regularization Prorate Parameters"
                        attrs="{'invisible': [('period_type', 'not in', ('4T', '12'))]}">
                     <field name="counterpart_prorate_receivable_account_id" string="Counterpart Account Receivable"
                            attrs="{'required': [('period_type', 'in', ('4T', '12'))]}"/>
                     <field name="counterpart_prorate_payable_account_id" string="Counterpart Account Payable"
                            attrs="{'required': [('period_type', 'in', ('4T', '12'))]}"/>
-
+                </group>
+                <group string="Capital Assets Regularization Parameters" name="regularization_capital_assets_parameters"
+                       attrs="{'invisible': [('period_type', 'not in', ('4T', '12'))]}">
+                    <field name="counterpart_capital_assets_receivable_account_id"
+                           string="Counterpart Account Receivable"
+                           attrs="{'required': [('period_type', 'in', ('4T', '12'))]}"/>
+                    <field name="counterpart_capital_assets_payable_account_id" string="Counterpart Account Payable"
+                           attrs="{'required': [('period_type', 'in', ('4T', '12'))]}"/>
                 </group>
             </group>
         </field>
-
     </record>
 </odoo>
