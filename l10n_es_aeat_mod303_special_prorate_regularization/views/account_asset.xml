@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="account_asset_view_form" model="ir.ui.view">
+        <field name="model">account.asset</field>
+        <field
+            name="inherit_id"
+            ref="account_asset_management.account_asset_view_form"
+        />
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Capital Asset" name="capital_asset">
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="code" />
+                            <field name="partner_id" />
+                            <field name="partner_vat" />
+                            <field name="move_id" />
+                        </group>
+                        <group>
+                            <field name="invoice_date" />
+                            <field name="start_date_use" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="amount_currency" />
+
+                        </group>
+                        <group>
+                            <!--                            <field name="tax_ids"/>-->
+                            <!--                            <field name="iva_ded_prov"/>-->
+                            <field name="temp_prorate_percent" />
+                            <field name="final_prorate_percent" />
+
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+</odoo>

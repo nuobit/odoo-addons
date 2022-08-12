@@ -12,9 +12,12 @@
     "depends": [
         "l10n_es_aeat_mod303",
         "l10n_es_aeat_vat_special_prorrate",
+        "account_asset_management",
     ],
     "data": [
         "data/tax_code_map_mod303_data.xml",
         "views/mod303_views.xml",
+        "views/account_asset.xml",
+        "views/product_category_views.xml",
     ],
 }
