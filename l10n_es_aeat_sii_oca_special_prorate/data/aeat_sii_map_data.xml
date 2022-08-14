@@ -11,6 +11,7 @@
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bi')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_bi')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva5_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
