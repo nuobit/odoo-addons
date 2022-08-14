@@ -93,6 +93,7 @@
             eval="[
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva5_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sc')),
@@ -110,6 +111,7 @@
             eval="[
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_bc')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva5_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sc')),
@@ -285,6 +287,7 @@
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva5_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bi')),
@@ -320,6 +323,7 @@
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
+                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva5_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sc')),
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_bi')),
@@ -394,6 +398,7 @@
                 ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi'),
                 ref('l10n_es_special_prorate.account_tax_template_p_priva4_sc'),
                 ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in'),
+                ref('l10n_es_special_prorate.account_tax_template_p_priva5_sc'),
             ])]"
         />
     </record>
