@@ -404,6 +404,63 @@
         />
     </record>
 
+    <record id="account_tax_template_p_priva5_sc" model="account.tax.template">
+        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="type_tax_use">purchase</field>
+        <field name="name">Prorrata 5% IVA soportado (servicios corrientes)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="5" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_5" />
+        <field name="prorate" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_29')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_28')],
+            }),
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_41')],
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'tag_ids': [ref('l10n_es.mod_303_40')],
+            }),
+        ]"
+        />
+    </record>
+
     <record id="account_tax_template_p_priva10_sc" model="account.tax.template">
         <field name="description" /> <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
