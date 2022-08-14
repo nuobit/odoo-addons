@@ -5,7 +5,7 @@
 {
     "name": "Special prorate tax mapping for SII",
     "summary": "This module adds special prorate template taxes to SII mapping",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
