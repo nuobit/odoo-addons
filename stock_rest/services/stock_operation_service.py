@@ -191,7 +191,11 @@ class OperationService(Component):
                     "schema": {
                         "id": {"type": "integer", "required": True},
                         "quantity": {"type": ("integer", "float"), "required": True},
-                        "lot_id": {"type": "integer", "required": True},
+                        "lot_id": {
+                            "type": "integer",
+                            "required": True,
+                            "nullable": True,
+                        },
                     },
                 },
             },
