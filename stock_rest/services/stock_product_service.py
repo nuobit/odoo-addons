@@ -17,7 +17,7 @@ class ProductService(Component):
         Access to Product services
     """
 
-    def search(self, code=None, barcode=None, location_code=None):
+    def search(self, code=None, barcode=None, location_code=None, assets="true"):
         # get current user
         self._get_current_user()
         company = self._get_current_company()
@@ -73,6 +73,11 @@ class ProductService(Component):
         data = {}
         for s in stock:
             product = self.env["product.product"].browse(s["product_id"][0])
+            if (
+                product._get_product_accounts()["expense"].asset_profile_id
+                and assets == "false"
+            ):
+                continue
             qty = round(s["quantity"], dp.digits)
             if qty > 0:
                 if s["lot_id"]:
@@ -117,6 +122,13 @@ class ProductService(Component):
             "code": {"type": "string", "nullable": True, "empty": False},
             "barcode": {"type": "string", "nullable": True, "empty": False},
             "location_code": {"type": "string", "nullable": True, "empty": False},
+            "assets": {
+                "type": "string",
+                "default": "true",
+                "nullable": False,
+                "empty": False,
+                "allowed": ["true", "false"],
+            },
         }
 
     def _validator_return_search(self):
