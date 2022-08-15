@@ -80,13 +80,14 @@ class ProductService(Component):
                     lot_name = self.env["stock.production.lot"].browse(lot_id).name
                 else:
                     lot_id, lot_name = None, None
-                data.setdefault(product, []).append(
-                    {
-                        "id": lot_id,
-                        "code": lot_name or None,
-                        "quantity": qty,
-                    }
-                )
+                if bool(lot_id) == bool(product.tracking != "none"):
+                    data.setdefault(product, []).append(
+                        {
+                            "id": lot_id,
+                            "code": lot_name or None,
+                            "quantity": qty,
+                        }
+                    )
 
         product_list = []
         products_sorted = sorted(

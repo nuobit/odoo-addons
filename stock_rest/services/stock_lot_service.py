@@ -28,7 +28,10 @@ class LotService(Component):
 
         # get current company
         company = self._get_current_company()
-        domain = [("company_id", "in", [company.id, False])]
+        domain = [
+            ("company_id", "in", [company.id, False]),
+            ("product_id.tracking", "!=", "none"),
+        ]
 
         # get query parameters
         if code:
