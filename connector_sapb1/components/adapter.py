@@ -137,8 +137,12 @@ class SapB1Adapter(AbstractComponent):
             if not r.ok:
                 data = r.json()
                 if r.status_code == 400 and data['error']['code'] == -1029:
-                    res = session.get(self.backend_record.sl_url + "/Orders(%i)" % params['external_id'])
-                    if res.json()['DocumentStatus'] != 'bost_Open':
+                    order_r = session.get(self.backend_record.sl_url + "/Orders(%i)" % params['external_id'])
+                    order_data = order_r.json()
+                    if 'DocumentStatus' not in order_data:
+                        raise ValidationError(
+                            _("Unexpected: 'DocumentStatus' field not found in order response: %s") % order_data)
+                    if order_data['DocumentStatus'] != 'bost_Open':
                         raise SAPClosedOrderException(
                             _("The order can't be updated because SAP doesn't allow to modify closed orders. "
                               "This is why we can't treat that as an error. %s") %
