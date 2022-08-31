@@ -76,7 +76,7 @@ class LengowAdapter(AbstractComponent):
     def _check_response_error(self, r):
         if not r.ok:
             err_msg = _("Error trying to connect to %s: %s") % (r.url, r.text)
-            if r.status_code in (503, 504):
+            if r.status_code in (500, 503, 504):
                 raise RetryableJobError('%s\n%s' % (err_msg, _("The job will be retried later")))
             raise ConnectionError(err_msg)
 
