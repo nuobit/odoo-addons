@@ -5,9 +5,9 @@
 from odoo import fields, models
 
 
-class ProductCategory(models.Model):
-    _inherit = "product.category"
+class AccountAssetProfile(models.Model):
+    _inherit = "account.asset.profile"
 
     capital_asset_type_id = fields.Many2one(
-        comodel_name="aeat.vat.special.prorrate.capital.asset.type", ondelete="restrict"
+        comodel_name="aeat.vat.special.prorrate.capital.asset.type", ondelete="restrict", required=True
     )

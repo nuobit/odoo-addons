@@ -27,7 +27,7 @@ class L10nEsAeatMod303Report(models.AbstractModel):
     _inherit = "l10n.es.aeat.mod303.report"
 
     field_43 = fields.Float(
-        string="[43] Capital Assets Regularization",
+        string="[43] Capital Assets Prorate Regularization",
         default=0,
         compute="_compute_field_43",
         states={"done": [("readonly", True)]},
@@ -144,34 +144,87 @@ class L10nEsAeatMod303Report(models.AbstractModel):
 
     def _prepare_tax_line_vals(self, map_line):
         self.ensure_one()
+        if map_line.field_number == 43:
+            a = 1
+        res = super()._prepare_tax_line_vals(map_line)
         if self.period_type not in ("4T", "12"):
-            res = super()._prepare_tax_line_vals(map_line)
-            if map_line.field_number == 44:
+            if map_line.field_number in (43, 44):
                 res["amount"] = 0
                 res["move_line_ids"] = False
             return res
-        date_start = "%s-01-01" % self.year
-        date_end = "%s-12-31" % self.year
-        move_lines = self._get_tax_lines(date_start, date_end, map_line)
-        prorate_line = self.env["aeat.map.special.prorrate.year"].get_by_ukey(
-            self.company_id.id, self.year
-        )
-        if prorate_line.state not in ("closed", "finale"):
-            raise ValidationError(_("Prorrate year is not closed"))
-        balance = sum(move_lines.mapped("balance"))
-        precision = self.env["decimal.precision"].precision_get("Account")
-        amount = round(
-            balance
-            * (1 - prorate_line.tax_final_percentage / prorate_line.tax_percentage),
-            precision,
-        )
-        return {
-            "model": self._name,
-            "res_id": self.id,
-            "map_line_id": map_line.id,
-            "amount": amount,
-            "move_line_ids": [(6, 0, move_lines.ids)],
-        }
+        else:
+            # TODO: Create methods for each field number.
+            if map_line.field_number == 44:
+                date_values = {
+                    "date_start": "%s-01-01" % self.year,
+                    "date_end": "%s-12-31" % self.year
+                }
+                res = super(L10nEsAeatMod303Report,
+                            self.new(self.copy_data(default=date_values)[0]))._prepare_tax_line_vals(
+                    map_line)
+                res["res_id"] = self.id
+                prorate_line = self.env["aeat.map.special.prorrate.year"].get_by_ukey(
+                    self.company_id.id, self.year
+                )
+                if prorate_line.state not in ("closed", "finale"):
+                    raise ValidationError(_("Prorrate year is not closed"))
+                precision = self.env["decimal.precision"].precision_get("Account")
+                # TODO: bug--> if tax_final_percentage or tax_percentage are 0 --> error. Solve it!
+                res["amount"] = round(
+                    res["amount"] * (1 - prorate_line.tax_final_percentage / prorate_line.tax_percentage),
+                    # res["amount"]-(res["amount"]*(prorate_line.tax_percentage-prorate_line.tax_final_percentage),
+                    precision)
+
+            elif map_line.field_number == 43:
+                actual_final_prorate = self.env["aeat.map.special.prorrate.year"].get_by_ukey(
+                    self.company_id.id, self.year
+                )
+                res = {
+                    "model": self._name,
+                    "res_id": self.id,
+                    "map_line_id": map_line.id,
+                }
+                move_line_ids = []
+                amount = 0
+                # Validar amb les dades si realment ens podem refiar d'aquest camp.
+                # l'altre solució miraria el maxim temps que es pot fer la prorata(10 anys)
+                assets_ids = self.env['account.asset'].search(
+                    [('capital_asset_type_id', '!=', False),
+                     ("state", "=", "open")
+                     ])
+                # intentar no utilitzar els move_line_id ni els move_line si es possible
+                for asset in assets_ids:
+                    if all([
+                        actual_final_prorate.tax_final_percentage,
+                        asset.start_date_use,
+                        asset.start_date_use.year == self.year
+                    ]):
+                        asset.final_prorate_percent = actual_final_prorate.tax_final_percentage
+                        # TO_DELETE
+                        # asset.final_deductible_VAT_rate = asset.balance * asset.tax_ids.value * asset.final_prorate_percent/100
+                        # asset.final_non_deductible_VAT_rate = asset.balance * asset.tax_ids.value * (
+                        #     1 - asset.final_prorate_percent/100)
+                    if all([
+                        asset.start_date_use,
+                        asset.start_date_use.year >= self.year - asset.capital_asset_type_id.period,
+                        asset.start_date_use.year < self.year
+                    ]):
+                        percentaje_difference = (asset.final_prorate_percent - actual_final_prorate.tax_final_percentage)
+                        if percentaje_difference and percentaje_difference > 1 or percentaje_difference < 1:
+                            precision = self.env["decimal.precision"].precision_get("Account")
+                            if asset.move_line_id:
+                                move_line_ids.append(asset.move_line_id.id)
+                            # amount += asset.move_line_id.balance
+
+                            amount += round(
+                                asset.tax_base_amount * percentaje_difference/100,
+                                precision,
+                            )
+                res["amount"] = amount
+                if move_line_ids:
+                    res["move_line_ids"] = [(6, 0, move_line_ids)]
+
+            return res
 
     @api.model
     def _prepare_counterpart_move_line_prorate(self, account, tax, balance):

@@ -1,4 +1,4 @@
 from . import mod303
 from . import account_asset
-from . import product_category
+from . import account_asset_profile
 from . import aeat_vat_special_prorate_investment_capital_asset

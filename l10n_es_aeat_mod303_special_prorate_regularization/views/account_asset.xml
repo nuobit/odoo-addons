@@ -9,37 +9,40 @@
             ref="account_asset_management.account_asset_view_form"
         />
         <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="partner_vat"/>
+            </field>
+
             <notebook position="inside">
                 <page string="Capital Asset" name="capital_asset">
                     <group>
                         <group>
-                            <field name="name" />
-                            <field name="code" />
-                            <field name="partner_id" />
-                            <field name="partner_vat" />
-                            <field name="move_id" />
+                            <field name="invoice_number"/>
+                            <field name="capital_asset_type_id"/>
+
                         </group>
                         <group>
-                            <field name="invoice_date" />
-                            <field name="start_date_use" />
+                            <field name="invoice_date"/>
+                            <field name="start_date_use"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="amount_currency" />
-
+                            <field name="tax_base_amount"/>
+                            <field name="temp_prorate_percent"/>
+                            <field name="provisional_deductible_VAT_rate"/>
+                            <field name="provisional_non_deductible_VAT_rate"/>
                         </group>
                         <group>
-                            <!--                            <field name="tax_ids"/>-->
-                            <!--                            <field name="iva_ded_prov"/>-->
-                            <field name="temp_prorate_percent" />
-                            <field name="final_prorate_percent" />
-
+                            <field name="allowed_tax_ids" invisible="1"/>
+                            <field name="tax_ids"/>
+                            <field name="final_prorate_percent"/>
+                            <field name="final_deductible_VAT_rate"/>
+                            <field name="final_non_deductible_VAT_rate"/>
                         </group>
                     </group>
                 </page>
             </notebook>
         </field>
     </record>
-
 </odoo>
