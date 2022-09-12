@@ -53,16 +53,24 @@ class ResPartnerImportMapper(Component):
 
     @mapping
     def nos(self, record):
-        values = {"nos_unknown": record["nos_unknown"]}
+        values = {}
         if not record["nos_unknown"]:
             values["nos"] = record["nos"]
+        # we cannot put the "nos_unknown" at the beginning of the dictionary
+        # in 'values' variable because the order matters otherwise
+        # Odoo will throw a constraint of the module oxigen_stock_alternate_lot
+        values["nos_unknown"] = record["nos_unknown"]
         return values
 
     @mapping
     def dn(self, record):
-        values = {"dn_unknown": record["dn_unknown"]}
+        values = {}
         if not record["dn_unknown"]:
             values["dn"] = record["dn"]
+        # we cannot put the "dn_unknown" at the beginning of the dictionary
+        # in 'values' variable because the order matters otherwise
+        # Odoo will throw a constraint of the module oxigen_stock_alternate_lot
+        values["dn_unknown"] = record["dn_unknown"]
         return values
 
     @mapping
