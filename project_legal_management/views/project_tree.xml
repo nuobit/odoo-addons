@@ -45,7 +45,9 @@
                 />
             </xpath>
             <field name="name" position="attributes">
-                <attribute name="filter_domain">['|','|','|','|','|',('lm_date','ilike',
+                <attribute
+                    name="filter_domain"
+                >['|','|','|','|','|','|', ('name', 'ilike', self), ('lm_date','ilike',
                     self),('lm_employee_ids','ilike',self),('lm_issue_ids','ilike',self),
                     ('lm_resolution_id','ilike',self), ('lm_probability_id','ilike',self),
                     ('lm_expedient_number','ilike',self)]
