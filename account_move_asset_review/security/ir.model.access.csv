@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_move_asset_review_wizard,access.account.move.asset.review.wizard,model_account_move_asset_review_wizard,account_move_asset_review.group_review_move_asset_fields,1,1,1,1

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+        <record id="account_asset_view_form" model="ir.ui.view">
+        <field name="name">account.asset.review.form</field>
+        <field name="model">account.asset</field>
+        <field
+            name="inherit_id"
+            ref="account_asset_management.account_asset_view_form"
+        />
+        <field name="arch" type="xml">
+            <field name="code" position="before">
+                <field
+                    name="id"
+                    readonly="1"
+                    attrs="{'invisible': [('allow_review_asset', '=', False)]}"
+                />
+                <field name="allow_review_asset" invisible="1" />
+            </field>
+        </field>
+    </record>
+    <record id="account_asset_view_tree" model="ir.ui.view">
+        <field name="name">account.asset.review.tree</field>
+        <field name="model">account.asset</field>
+        <field
+            name="inherit_id"
+            ref="account_asset_management.account_asset_view_tree"
+        />
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field
+                    name="id"
+                    groups="account_move_asset_review.group_review_move_asset_fields"
+                />
+            </field>
+        </field>
+    </record>
+    <record id="account_asset_view_search" model="ir.ui.view">
+        <field name="name">account.asset.review.search</field>
+        <field name="model">account.asset</field>
+        <field
+            name="inherit_id"
+            ref="account_asset_management.account_asset_view_search"
+        />
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">
+                    ['|', ('name', 'ilike', self), ('id', '=like', self + '%')]
+                </attribute>
+            </field>
+            <field name="name" position="after">
+                <field name="id" />
+            </field>
+        </field>
+      </record>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form.account.asset.management</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account_asset_management.view_move_form" />
+        <field name="arch" type="xml">
+            <button name="action_automatic_entry" position="after">
+                <field name="allow_review_asset" invisible="1" />
+                <button
+                    name="action_review_asset"
+                    type="object"
+                    icon="fa-refresh"
+                    string="Asset"
+                    aria-label="Asset"
+                    class="float-right"
+                    attrs="{'invisible': [('allow_review_asset', '=', False)]}"
+                />
+            </button>
+        </field>
+    </record>
+</odoo>
