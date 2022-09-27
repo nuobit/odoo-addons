@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+ -->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <div data-key="account" position="inside">
+                <h2>Capital Assets</h2>
+                <div class="row mt16 o_settings_container" id="pain">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <div class="row mt16" data-key="capital_assets">
+                                    <label
+                                        for="capital_asset_threshold_amount"
+                                        class="col-md-3 o_light_label"
+                                    />
+                                    <field name="capital_asset_threshold_amount" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>
