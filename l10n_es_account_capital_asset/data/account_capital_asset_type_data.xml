@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="account_capital_asset_type_data_normal"
+        model="l10n.es.account.capital.asset.type"
+    >
+        <field name="name">Normal</field>
+        <field name="period">5</field>
+    </record>
+    <record
+        id="account_capital_asset_type_data_land_or_buildings"
+        model="l10n.es.account.capital.asset.type"
+    >
+        <field name="name">Terrenos o Edificaciones</field>
+        <field name="period">10</field>
+    </record>
+</odoo>

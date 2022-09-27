@@ -1,0 +1,191 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_es_account_capital_asset
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-29 15:59+0000\n"
+"PO-Revision-Date: 2022-09-29 15:59+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.actions.act_window,name:l10n_es_account_capital_asset.account_capital_asset_action
+#: model:ir.ui.menu,name:l10n_es_account_capital_asset.account_tax_map_amount
+msgid "Account Capital Asset Tax Map"
+msgstr "Bienes de inversión - Mapeo de impuestos"
+
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+#, python-format
+msgid "Asset have Capital Asset tax. Please, review the taxes"
+msgstr "El activo tiene impuestos de bien de inversión. Por favor, revise los impuestos"
+
+#. module: l10n_es_account_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_account_capital_asset.view_company_aeat_form
+msgid "Capital Asset"
+msgstr "Bien de inversión"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_res_company__l10n_es_capital_asset_enabled
+msgid "L10n ES - Capital Asset Enabled"
+msgstr "L10n ES - Bienes de inversión activados"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.actions.act_window,name:l10n_es_account_capital_asset.capital_asset_type_action
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__capital_asset_type_id
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_type_id
+#: model:ir.ui.menu,name:l10n_es_account_capital_asset.aeat_vat_special_prorrate_capital_asset_type_menu
+msgid "Capital Asset Type"
+msgstr "Tipo de bien de inversión"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__profile_capital_asset_type_id
+msgid "Capital Asset Profile Type"
+msgstr "Tipo de bien de inversión de la categoria"
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+#, python-format
+msgid "Capital Asset don't have Capital Asset tax. Please, review the taxes"
+msgstr "El bien de inversión no tiene impuestos de bien de inversión. Por favor, revise los impuestos"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.constraint,message:l10n_es_account_capital_asset.constraint_l10n_es_account_capital_asset_type_unique_name
+msgid "Capital Asset Type name must be unique"
+msgstr "El nombre del tipo de bien de inversión debe ser único"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.constraint,message:l10n_es_account_capital_asset.constraint_l10n_es_account_capital_asset_type_unique_name
+msgid "Capital Asset Type period must be unique"
+msgstr "El periodo del tipo de bien de inversión debe ser único"
+
+#. module: l10n_es_account_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_account_capital_asset.res_config_settings_view_form
+msgid "Capital Assets"
+msgstr "Bienes de inversión"
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"Capital asset type must be the same as the one defined in the asset "
+"category."
+msgstr "El tipo de bien de inversion debe ser el mismo que el definido en la categoria de activo"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de configuración"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__create_uid
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__create_date
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__display_name
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__id
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__id
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"If Tax Base Amount is greater than %s, capital asset type must be defined."
+msgstr "Si el Importe de la Base Imponible es mayor que %s, el tipo de bien de inversión debe ser definido"
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"If Tax Base Amount is less than %s, this asset is not considered as a "
+"capital asset so capital asset type mustn't be defined"
+msgstr "Si el Importe de la Base Imponible es menor que %s, este activo no es considerado "
+       "como un bien de inversión, por lo que el tipo de bien de inversión no debería estar definido"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset____last_update
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile____last_update
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_move____last_update
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_move_line____last_update
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax____last_update
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type____last_update
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_res_company____last_update
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_res_config_settings____last_update
+msgid "Last Modified on"
+msgstr "Última modificación"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__write_uid
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__write_date
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,help:l10n_es_account_capital_asset.field_res_config_settings__capital_asset_threshold_amount
+msgid "Minimum amount to consider the asset as a capital asset"
+msgstr "Mínimo importe para considerar el activo como bien de inversión"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__period
+msgid "Period (years)"
+msgstr "Periodo (años)"
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_capital_asset_type.py:0
+#, python-format
+msgid "Period must be greater than 0."
+msgstr "El periodo debe ser mayor que 0"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__tax_dest_id
+msgid "Replacement Tax"
+msgstr "Impuesto de reemplazo"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__tax_src_id
+msgid "Tax Source"
+msgstr "Impuesto original"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_res_config_settings__capital_asset_threshold_amount
+msgid "Threshold Amount"
+msgstr "Umbral de importe"

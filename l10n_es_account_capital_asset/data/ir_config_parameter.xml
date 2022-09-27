@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="account_capital_threshold_amount" model="ir.config_parameter">
+        <field
+            name="key"
+        >l10n_es_account_capital_asset.capital_asset_threshold_amount</field>
+        <field name="value">3005.06</field>
+    </record>
+</odoo>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_account_capital_asset_tree" model="ir.ui.view">
+        <field name="name">account.capital.asset.tree</field>
+        <field name="model">l10n.es.account.capital.asset.map.tax</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="1" delete="1">
+                <field name="tax_src_id" />
+                <field name="tax_dest_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="account_capital_asset_action" model="ir.actions.act_window">
+        <field name="name">Account Capital Asset Tax Map</field>
+        <field name="res_model">l10n.es.account.capital.asset.map.tax</field>
+        <field name="view_mode">tree</field>
+    </record>
+    <menuitem
+        id="account_tax_map_amount"
+        action="account_capital_asset_action"
+        parent="account_asset_management.menu_finance_config_assets"
+        name="Account Capital Asset Tax Map"
+    />
+</odoo>
