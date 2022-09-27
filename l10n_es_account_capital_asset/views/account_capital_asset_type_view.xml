@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="aeat_vat_special_prorrate_capital_asset_type_view_form"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >aeat.vat.special.prorrate.capital.asset.type.view.form</field>
+        <field name="model">l10n.es.account.capital.asset.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="4">
+                        <group colspan="2">
+                            <field name="name" />
+                            <field name="period" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record
+        id="aeat_vat_special_prorrate_capital_asset_type_view_tree"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >aeat.vat.special.prorrate.capital.asset.type.view.tree</field>
+        <field name="model">l10n.es.account.capital.asset.type</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="1" delete="1">
+                <field name="name" />
+                <field name="period" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="capital_asset_type_action" model="ir.actions.act_window">
+        <field name="name">Capital Asset Type</field>
+        <field name="res_model">l10n.es.account.capital.asset.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="aeat_vat_special_prorrate_capital_asset_type_menu"
+        parent="account_asset_management.menu_finance_config_assets"
+        action="capital_asset_type_action"
+        name="Capital Asset Type"
+    />
+</odoo>
