@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+        <!--     IVA soportado (bienes corrientes)-->
+    <record
+        id="account_tax_template_p_iva4_bc_bi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva4_bi" />
+    </record>
+    <record
+        id="account_tax_template_p_iva10_bc_bi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva10_bi" />
+    </record>
+    <record
+        id="account_tax_template_p_iva21_bc_bi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva21_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva21_bi" />
+    </record>
+    <!--IVA Adquisición Intracomunitario. Bienes corrientes-->
+    <record
+        id="account_tax_template_p_iva4_ic_bc_bi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_ic_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva4_ic_bi" />
+    </record>
+    <record
+        id="account_tax_template_p_iva10_ic_bc_bi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_ic_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva10_ic_bi" />
+    </record>
+    <record
+        id="account_tax_template_p_iva21_ic_bc_bi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva21_ic_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva21_ic_bi" />
+    </record>
+    <!--    IVA Importaciones bienes corrientes-->
+    <record
+        id="account_tax_template_p_iva4_ibc_ibi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_ibc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva4_ibi" />
+    </record>
+    <record
+        id="account_tax_template_p_iva10_ibc_ibi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_ibc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva10_ibi" />
+    </record>
+    <record
+        id="account_tax_template_p_iva21_ibc_ibi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva21_ibc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva21_ibi" />
+    </record>
+</odoo>
