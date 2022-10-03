@@ -65,8 +65,11 @@ class SaleOrderImportMapper(Component):
         else:
             binding = self.options.get("binding")
             if not binding:
-                parent = self.backend_record.get_marketplace_map(record['marketplace'],
-                                                                 record['marketplace_country_iso2']).partner_id
+                if record['billing_address']:
+                    country_iso2 = record['billing_address']['common_country_iso_a2']
+                else:
+                    country_iso2 = record['marketplace_country_iso2']
+                parent = self.backend_record.get_marketplace_map(record['marketplace'], country_iso2).partner_id
                 return {'partner_shipping_id': parent.id}
 
     @mapping
@@ -90,8 +93,11 @@ class SaleOrderImportMapper(Component):
         else:
             binding = self.options.get("binding")
             if not binding:
-                partner = self.backend_record.get_marketplace_map(record['marketplace'],
-                                                                  record['marketplace_country_iso2']).partner_id
+                if record['delivery_address']:
+                    country_iso2 = record['delivery_address']['common_country_iso_a2']
+                else:
+                    country_iso2 = record['marketplace_country_iso2']
+                partner = self.backend_record.get_marketplace_map(record['marketplace'], country_iso2).partner_id
                 return {'partner_invoice_id': partner.id, 'partner_id': partner.id}
 
     @only_create

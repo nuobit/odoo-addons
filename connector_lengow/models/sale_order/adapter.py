@@ -72,7 +72,6 @@ class LengowSaleOrderTypeAdapter(Component):
             for f in fields:
                 if value[f]:
                     value[f]['marketplace'] = value['marketplace']
-                    value[f]['marketplace_country_iso2'] = value['marketplace_country_iso2']
                     if value[f]['full_name']:
                         complete_name = value[f]['full_name']
                     else:
