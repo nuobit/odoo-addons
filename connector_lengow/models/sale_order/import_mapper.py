@@ -40,9 +40,6 @@ class SaleOrderImportMapper(Component):
 
     _apply_on = 'lengow.sale.order'
 
-    direct = [('phone_home', 'phone'),
-              ('email', 'email')]
-
     children = [('items', 'lengow_order_line_ids', 'lengow.sale.order.line')]
 
     @only_create
