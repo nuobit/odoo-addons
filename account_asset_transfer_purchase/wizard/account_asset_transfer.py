@@ -16,8 +16,11 @@ class AccountAssetTransfer(models.TransientModel):
             move_line = asset.account_move_line_ids[0]
             res.update(
                 {
-                    "debit": asset.purchase_value if move_line.balance < 0 else 0.0,
+                    "debit": -asset.purchase_value if move_line.balance < 0 else 0.0,
                     "credit": asset.purchase_value if move_line.balance >= 0 else 0.0,
                 }
             )
+        else:
+            if asset.purchase_value and asset.purchase_value < 0:
+                res.update({"debit": -asset.purchase_value, "credit": 0.0})
         return res
