@@ -39,14 +39,17 @@ class LengowSaleOrderBinding(models.Model):
     ]
 
     @job(default_channel='root.lengow')
-    def import_sale_orders_since(self, backend_record=None, since_date=None):
+    def import_sale_orders_since(self, backend_record=None, since_date=None, order_number=None):
         """ Prepare the batch import of partners modified on Lengow """
-        if since_date:
-            domain = [('updated_from', '=', since_date)]
+        if order_number:
+            domain = [('marketplace_order_id', 'in', [x.strip() for x in order_number.split(',')])]
         else:
-            domain = [('updated_from', '=', datetime(1900, 1, 1, 0, 0, 0))]
-        if backend_record.min_order_date:
-            domain += [('marketplace_order_date_from', '=', backend_record.min_order_date)]
+            if since_date:
+                domain = [('updated_from', '=', since_date)]
+            else:
+                domain = [('updated_from', '=', datetime(1900, 1, 1, 0, 0, 0))]
+            if backend_record.min_order_date:
+                domain += [('marketplace_order_date_from', '=', backend_record.min_order_date)]
         self.import_batch(
             backend_record, domain=domain)
         return True
