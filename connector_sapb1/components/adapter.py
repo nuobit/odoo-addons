@@ -138,10 +138,29 @@ class SapB1Adapter(AbstractComponent):
                 data = r.json()
                 if r.status_code == 400 and data['error']['code'] == -1029:
                     order_r = session.get(self.backend_record.sl_url + "/Orders(%i)" % params['external_id'])
+                    if not order_r.ok:
+                        # TODO: put this error check in a method and unify and reuse in another network calls
+                        try:
+                            err_json = order_r.json()
+                            err = err_json['error']
+                            if err['code'] == 305:
+                                if err['message']['lang'] != 'en-us':
+                                    raise ValidationError(
+                                        _("Only supported english (en-us) dealing with error messages from the "
+                                          "server\n%s") %
+                                        err_json)
+                                if err['message']['value'] == 'Switch company error: -1102':
+                                    raise RetryableJobError(_("Temporarily connection error:\n%s\n"
+                                                              "It will be retried later.") % err_json)
+                        except json.decoder.JSONDecodeError:
+                            pass
+                        raise ValidationError(f"Error trying to connect, status_code: {order_r.status_code}, "
+                                              f"response: {order_r.text}")
                     order_data = order_r.json()
+                    #TODO: remove this check if this exception is not happening for a long time
                     if 'DocumentStatus' not in order_data:
-                        raise ValidationError(
-                            _("Unexpected: 'DocumentStatus' field not found in order response: %s") % order_data)
+                        raise ValidationError(_("Unexpected: 'DocumentStatus' field not found in order response. "
+                                                "status_code: %i, response: %s") % (order_r.status_code, order_data))
                     if order_data['DocumentStatus'] != 'bost_Open':
                         raise SAPClosedOrderException(
                             _("The order can't be updated because SAP doesn't allow to modify closed orders. "
