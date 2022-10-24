@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="account_asset_view_form" model="ir.ui.view">
+        <field name="model">account.asset</field>
+        <field
+            name="inherit_id"
+            ref="account_asset_management.account_asset_view_form"
+        />
+        <field name="arch" type="xml">
+            <form position="inside">
+                <field name="capital_asset_type_id" invisible="1" />
+                <field name="profile_capital_asset_type_id" invisible="1" />
+                <field name="prorate_tax_id" invisible="1" />
+            </form>
+            <notebook position="inside">
+                <page
+                    string="Capital Asset Prorate Regularizations"
+                    name="capital_asset_prorate_regularizations"
+                    attrs="{'invisible': ['|', ('prorate_tax_id', '=', False),('capital_asset_type_id','=',False)]}"
+                >
+                    <group>
+                        <field
+                            name="active_capital_asset_prorate_regularization_ids"
+                            nolabel="1"
+                        >
+                            <tree
+                                name="active_capital_asset_prorate_regularization_ids"
+                                string="Asset Prorate Regularization"
+                                editable="bottom"
+                            >
+                                <field name="year" />
+                                <field name="amount" />
+                                <field name="prorate_percent" />
+                                <field name="mod303_id" />
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

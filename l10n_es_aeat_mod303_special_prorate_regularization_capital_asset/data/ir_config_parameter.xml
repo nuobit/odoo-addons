@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="1">
+    <record id="capital_asset_prorate_max_diff" model="ir.config_parameter">
+        <field
+            name="key"
+        >l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.capital_asset_prorate_max_diff</field>
+        <field name="value">10.0</field>
+    </record>
+</odoo>
