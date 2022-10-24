@@ -71,6 +71,7 @@ class LengowSaleOrderTypeAdapter(Component):
             fields = ['delivery_address', 'billing_address']
             for f in fields:
                 if value[f]:
+                    value[f]['parent_country_iso_a2'] = value['delivery_address']['common_country_iso_a2']
                     value[f]['marketplace'] = value['marketplace']
                     if value[f]['full_name']:
                         complete_name = value[f]['full_name']
