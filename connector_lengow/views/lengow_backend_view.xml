@@ -64,14 +64,14 @@
                                 in the menu 'Connectors > Checkpoint'.
                             </p>
                             <group>
-                                <div>
-                                    <label string="Import Sale Orders since"
-                                           class="oe_inline"/>
-                                    <field name="import_sale_orders_since_date" class="oe_inline"
-                                           nolabel="1"/>
-                                </div>
-                                <button name="import_sale_orders_since" type="object"
-                                        class="oe_highlight" string="Import in background"/>
+                                <group>
+                                    <field name="import_sale_orders_since_date"/>
+                                    <field name="import_sale_orders_order_number"/>
+                                </group>
+                                <group>
+                                    <button name="import_sale_orders_since" type="object"
+                                            class="oe_highlight" string="Import in background"/>
+                                </group>
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">

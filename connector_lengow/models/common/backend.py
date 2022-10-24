@@ -66,7 +66,8 @@ class LengowBackend(models.Model):
         string="Shipping Product",
     )
 
-    import_sale_orders_since_date = fields.Datetime('Import Services since')
+    import_sale_orders_since_date = fields.Datetime('Import Orders since')
+    import_sale_orders_order_number = fields.Char(string='Import specific orders', help="Comma separated order numbers")
     min_order_date = fields.Date('Min Order Date')
 
     @api.multi
@@ -97,7 +98,8 @@ class LengowBackend(models.Model):
             rec.import_sale_orders_since_date = fields.Datetime.now()
             self.env['lengow.sale.order'].with_delay(
             ).import_sale_orders_since(
-                backend_record=rec, since_date=since_date)
+                backend_record=rec, since_date=since_date,
+                order_number=rec.import_sale_orders_order_number)
 
     # scheduler
     @api.model
@@ -112,9 +114,9 @@ class LengowBackend(models.Model):
         if not marketplace_map:
             raise ValidationError(
                 _("Can't found a parent partner for marketplace %s and country %s "
-                  "Please, add it on backend mappings") % (marketplace_name,country_iso_code))
+                  "Please, add it on backend mappings") % (marketplace_name, country_iso_code))
         if len(marketplace_map) > 1:
             raise ValidationError(
                 _("Multiple mappings found for marketplace %s and country %s "
-                  "Please, check the country on partners") % (marketplace_name,country_iso_code))
+                  "Please, check the country on partners") % (marketplace_name, country_iso_code))
         return marketplace_map
