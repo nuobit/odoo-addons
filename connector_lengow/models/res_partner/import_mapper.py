@@ -60,7 +60,7 @@ class ResPartnerImportMapper(Component):
     @mapping
     def parent(self, record):
         parent = self.backend_record.get_marketplace_map(record['marketplace'],
-                                                         record['common_country_iso_a2']).partner_id
+                                                         record['parent_country_iso_a2']).partner_id
         return {'parent_id': parent.id}
 
     @mapping
