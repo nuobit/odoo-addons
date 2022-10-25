@@ -155,5 +155,29 @@
             >o.state != 'assigned' or o.picking_type_code != 'internal'
            </attribute>
         </xpath>
+<!--    We want that when state=ready in incoming ops if there are defined detailed operations, only these are shown for that move-->
+        <xpath expr="//table[1]/tbody/t/t" position="attributes">
+            <attribute
+                name="t-if"
+            >o.picking_type_code != 'incoming' or (o.picking_type_code == 'incoming' and ((has_detailed_op and ml.qty_done) or not has_detailed_op))
+            </attribute>
+        </xpath>
+        <xpath expr="//table[1]/tbody/t/t" position="after">
+            <t
+                t-set="has_detailed_op"
+                t-value="any(move_line.qty_done for move_line in move.move_line_ids)"
+            />
+        </xpath>
+        <xpath expr="//table[1]/tbody/t/t/tr/td[2]" position="attributes">
+            <attribute name="t-if">o.picking_type_code != 'incoming'
+            </attribute>
+        </xpath>
+        <xpath expr="// table[1]/tbody/t/t/tr/td[2]" position="after">
+            <td t-if="o.picking_type_code == 'incoming'">
+                <span t-if="has_detailed_op and ml.qty_done" t-field="ml.qty_done" />
+                <span t-else="" t-field="ml.product_uom_qty" />
+                <span t-field="ml.product_uom_id" groups="uom.group_uom" />
+            </td>
+        </xpath>
     </template>
 </odoo>
