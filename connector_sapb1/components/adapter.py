@@ -136,7 +136,7 @@ class SapB1Adapter(AbstractComponent):
                               headers=headers)
             if not r.ok:
                 data = r.json()
-                if r.status_code == 400 and data['error']['code'] == -1029:
+                if r.status_code == 400 and data['error']['code'] in (-1029, -5002):
                     order_r = session.get(self.backend_record.sl_url + "/Orders(%i)" % params['external_id'])
                     if not order_r.ok:
                         # TODO: put this error check in a method and unify and reuse in another network calls
@@ -157,7 +157,7 @@ class SapB1Adapter(AbstractComponent):
                         raise ValidationError(f"Error trying to connect, status_code: {order_r.status_code}, "
                                               f"response: {order_r.text}")
                     order_data = order_r.json()
-                    #TODO: remove this check if this exception is not happening for a long time
+                    # TODO: remove this check if this exception is not happening for a long time
                     if 'DocumentStatus' not in order_data:
                         raise ValidationError(_("Unexpected: 'DocumentStatus' field not found in order response. "
                                                 "status_code: %i, response: %s") % (order_r.status_code, order_data))
