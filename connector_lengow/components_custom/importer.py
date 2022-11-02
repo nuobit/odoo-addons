@@ -103,9 +103,6 @@ class GenericImporterCustom(AbstractComponent):
     def _after_import(self, binding):
         return
 
-    def _pre_must_skip(self, external_id, external_data, had_external_data):
-        return False
-
     def _must_skip(self, binding):
         """Hook called right after we read the data from the backend.
 
@@ -154,11 +151,6 @@ class GenericImporterCustom(AbstractComponent):
                     _("Record with external_id '%s' does not exist in Backend")
                     % (external_id,)
                 )
-
-        # pre-skip binding
-        pre_skip = self._pre_must_skip(external_id, external_data, had_external_data)
-        if pre_skip:
-            return pre_skip
 
         # import the missing linked resources
         self._import_dependencies(external_data)
