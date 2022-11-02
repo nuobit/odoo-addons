@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="account_asset_view_form" model="ir.ui.view">
+        <field name="model">account.asset</field>
+        <field
+            name="inherit_id"
+            ref="account_asset_management.account_asset_view_form"
+        />
+        <field name="arch" type="xml">
+            <tree
+                name="active_capital_asset_prorate_regularization_ids"
+                position="inside"
+            >
+                <field name="sii_state" />
+                <field name="sii_send_error" />
+                <field name="sii_enabled" invisible="1" />
+                <button
+                    type="object"
+                    icon="fa-upload"
+                    string="Send asset to SII"
+                    name="send_asset_sii"
+                    groups="l10n_es_aeat.group_account_aeat"
+                    attrs="{'invisible': ['|',('sii_enabled', '=', False),('sii_state','=','sent')]}"
+                />
+                <button
+                    type="object"
+                    icon="fa-ban"
+                    string="Send cancellation to SII"
+                    name="cancel_asset_sii"
+                    groups="l10n_es_aeat.group_account_aeat"
+                    attrs="{'invisible': ['|',('sii_enabled', '=', False),('sii_state', 'not in', ['sent','sent_w_errors','sent_modified'])]}"
+                />
+            </tree>
+        </field>
+    </record>
+    <record id="account_asset_view_search" model="ir.ui.view">
+        <field name="name">account.asset.search</field>
+        <field name="model">account.asset</field>
+        <field
+            name="inherit_id"
+            ref="account_asset_management.account_asset_view_search"
+        />
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <separator />
+                <filter
+                    string="SII Sent"
+                    name="SII_sent"
+                    domain="[('active_capital_asset_prorate_regularization_ids.sii_state', '=', 'sent')]"
+                />
+
+                <filter
+                    string="SII not sent"
+                    name="SII_not_sent"
+                    domain="[('active_capital_asset_prorate_regularization_ids.sii_state', '=', 'not_sent')]"
+                />
+                <filter
+                    string="SII sent with errors"
+                    name="SII_sent_w_errors"
+                    domain="[('active_capital_asset_prorate_regularization_ids.sii_state', '=', 'sent_w_errors')]"
+                />
+                <separator />
+                <filter
+                    string="SII Cancelled"
+                    name="SII_cancelled"
+                    domain="[('active_capital_asset_prorate_regularization_ids.sii_state', '=', 'cancelled')]"
+                />
+            </filter>
+            <filter name="method_groupby" position="after">
+                <separator />
+                <filter
+                    string="SII error"
+                    name="SII_error"
+                    context="{'group_by': 'sii_send_errors'}"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>
