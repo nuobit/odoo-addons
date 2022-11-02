@@ -1,0 +1,396 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-21 14:30+0000\n"
+"PO-Revision-Date: 2022-11-21 14:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.model_l10n_es_aeat_mod303_report
+msgid "AEAT 303 Report"
+msgstr "Modelo AEAT 303"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__capital_asset_prorate_regularization__sii_state__sent_w_errors
+msgid "Accepted with errors"
+msgstr "Aceptado con errores"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.model_aeat_tax_agency
+msgid "Aeat Tax Agency"
+msgstr "Agencia Tributaria AEAT"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.model_account_asset
+msgid "Asset"
+msgstr "Activo"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__res_company__capital_asset_send_mode__fixed
+msgid "At fixed time"
+msgstr "A una hora fija"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.view_l10n_es_aeat_mod303_report_form
+msgid "Cancel capital assets prorate regularization SII"
+msgstr ""
+"Cancelar la regularización de la prorata de los bienes de inversion del SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.view_l10n_es_aeat_mod303_report_form
+msgid "Cancel field 43 to SII"
+msgstr "Cancelación casilla 43 al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__capital_asset_prorate_regularization__sii_state__cancelled
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__capital_asset_prorate_regularization__sii_state__cancelled_modified
+msgid "Cancelled in SII but last modifications not sent"
+msgstr "Cancelado en SII pero las ultimas modificaciones no han sido enviadas"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.capital_asset_prorate_regularization_view_form
+msgid "Capital Asset Prorate Regularization"
+msgstr "Regularizacion de la prorata de los bienes de inversión"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.view_company_capital_asset_sii_form
+msgid "Capital Asset connector config"
+msgstr "Conector configuración - Bienes de inversión"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,help:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_res_company__capital_asset_use_connector
+msgid ""
+"Check it to use connector instead of sending the invoice directly when it's "
+"validated"
+msgstr ""
+"Márquelo para usar el conector en lugar de enviar la factura directamente "
+"cuando se valida"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__asset_prorate_line_job_ids
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.capital_asset_prorate_regularization_view_form
+msgid "Connector Jobs"
+msgstr "Trabajos del conector"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_res_company__capital_asset_delay_time
+msgid "Delay time"
+msgstr "Tiempo de retardo"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_account_asset__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_aeat_tax_agency__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__display_name
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_res_company__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_enabled
+msgid "Enable SII"
+msgstr "Activar SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/mod303.py:0
+#, python-format
+msgid ""
+"Exist prorate lines in year: %s in assets %s with capital asset prorate "
+"lines. Please send the cancellation to the sii before canceling the 303 "
+"model."
+msgstr ""
+"Existen lineas de prorata en el año: %s en los activos %s con regularización"
+" de prorata de bienes de inversión.Por favor, envie la anulacion al SII "
+"antes de cancelar el modelo 303."
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.capital_asset_prorate_regularization_view_form
+msgid "General"
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_account_asset__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_aeat_tax_agency__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__id
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_res_company__id
+msgid "ID"
+msgstr "Identificador"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,help:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_send_failed
+msgid ""
+"Indicates that the last attempt to communicate this invoice to the SII has "
+"failed. See SII return for details"
+msgstr ""
+"Indica que el último intento de comunicar la factura al SII ha fallado. Ver "
+"el retorno SII para más detalles"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,help:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_account_registration_date
+msgid ""
+"Indicates the account registration date set at the SII, which must be the "
+"date when the invoice is recorded in the system and is independent of the "
+"date of the accounting entry of the invoice"
+msgstr ""
+"Indica la fecha de registro contable establecida en el SII, la cual debe ser"
+" la fecha en que se registra la factura en el sistema con independencia de "
+"la fecha del asiento contable de la factura"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,help:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_state
+msgid ""
+"Indicates the state of this invoice in relation with the presentation at the"
+" SII"
+msgstr "Indica el estado de esta factura en relación al registro en el SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_account_asset____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_aeat_tax_agency____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report____last_update
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_res_company____last_update
+msgid "Last Modified on"
+msgstr "Última modificación"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#, python-format
+msgid "No VAT configured for the company '{}'"
+msgstr "No esta configurado el CIF para la compañia '{}'"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__capital_asset_prorate_regularization__sii_state__not_sent
+msgid "Not sent"
+msgstr "No registrada"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__res_company__capital_asset_send_mode__auto
+msgid "On validate"
+msgstr "Al validar"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/mod303.py:0
+#, python-format
+msgid ""
+"Please, post capital asset prorate move of the 303 model before send capital"
+" asset prorate regularization to SII"
+msgstr ""
+"Por favor, publique el asiento de los bienes de inversión del modelo 303 "
+"antes de mandar la regularización de los bienes de inversión al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#, python-format
+msgid ""
+"Please, post capital asset prorate regularization move before send capital "
+"asset prorate regularization to SII"
+msgstr ""
+"Por favor, publique el asiento de los bienes de inversión del modelo 303 "
+"antes de mandar la regularización de los bienes de inversión al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__prorate_asset_lines_to_cancel
+msgid "Prorate Asset Lines To Cancel"
+msgstr "Lineas de prorata de activo para cancelar"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__prorate_asset_lines_to_send
+msgid "Prorate Asset Lines To Send"
+msgstr "Lineas de prorata de activo para enviar"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__capital_asset_prorate_regularization__sii_state__sent_modified
+msgid "Registered in SII but last modifications not sent"
+msgstr "Registro correcto en SII con modificaciones pendientes de comunicar"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_csv
+msgid "SII CSV"
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.account_asset_view_search
+msgid "SII Cancelled"
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.capital_asset_prorate_regularization_view_form
+msgid "SII Information"
+msgstr "Información SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.capital_asset_prorate_regularization_view_form
+msgid "SII Result"
+msgstr "Resultado SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_return
+msgid "SII Return"
+msgstr "Retorno SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_send_error
+msgid "SII Send Error"
+msgstr "Error de envío SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_account_asset__sii_send_errors
+msgid "SII Send Errors"
+msgstr "Errores de envío SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.account_asset_view_search
+msgid "SII Sent"
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_account_registration_date
+msgid "SII account registration date"
+msgstr "Fecha de registro contable SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.account_asset_view_search
+msgid "SII error"
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_content_sent
+msgid "SII last content sent"
+msgstr "Último contenido enviado al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_header_sent
+msgid "SII last header sent"
+msgstr "Última cabecera enviada al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.account_asset_view_search
+msgid "SII not sent"
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_send_failed
+msgid "SII send failed"
+msgstr "Envío SII fallido"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__sii_state
+msgid "SII send state"
+msgstr "Estado de envío SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.account_asset_view_search
+msgid "SII sent with errors"
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.account_asset_view_form
+msgid "Send asset to SII"
+msgstr "Enviar activo al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.account_asset_view_form
+msgid "Send cancellation to SII"
+msgstr "Enviar anulación al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.view_l10n_es_aeat_mod303_report_form
+msgid "Send capital assets prorate regularization to SII"
+msgstr ""
+"Enviar regularización de la prorrata de los bienes de inversion al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.view_l10n_es_aeat_mod303_report_form
+msgid "Send field 43 to SII"
+msgstr "Enviar casilla 43 al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_res_company__capital_asset_send_mode
+msgid "Send mode"
+msgstr "Modo de envío"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__capital_asset_prorate_regularization__sii_state__sent
+msgid "Sent"
+msgstr "Enviada"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_res_company__capital_asset_sent_time
+msgid "Sent time"
+msgstr "Hora de envío"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.capital_asset_prorate_regularization_view_form
+msgid "Technical"
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#, python-format
+msgid ""
+"The fiscal position of the partner and of the invoice is different.Please "
+"review asset: {%i} %s"
+msgstr ""
+"La posicion fiscal de la empresa y de la factura es distinta. Por favor, "
+"revise el activo {%i} %s."
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#, python-format
+msgid "The partner has not a VAT configured."
+msgstr ""
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#, python-format
+msgid "This company doesn't have SII enabled."
+msgstr "Esta compañia no tiene habilitado el SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.field_res_company__capital_asset_use_connector
+msgid "Use connector"
+msgstr "Usar conector"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model.fields.selection,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.selection__res_company__capital_asset_send_mode__delayed
+msgid "With delay"
+msgstr "Con retardo"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#, python-format
+msgid ""
+"You can't delete a capital asset prorate regularization line if it has been "
+"previously sent"
+msgstr "No se puede eliminar una línea de regularizacion de prorata del bien de inversión si esta ha sido anteriormente enviada al SII"
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_sii_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#, python-format
+msgid "You have to select what account chart template use this company."
+msgstr "Debe seleccionar qué plan contable utiliza esta compañía."
+
+#. module: l10n_es_aeat_sii_special_prorate_regularization_capital_asset
+#: model:ir.model,name:l10n_es_aeat_sii_special_prorate_regularization_capital_asset.model_capital_asset_prorate_regularization
+msgid "capital.asset.prorate.regularization"
+msgstr ""
