@@ -16,19 +16,18 @@ class LengowSaleOrderTypeAdapter(Component):
                 analize_data = e[1]
             else:
                 new_domain.append(e)
-        if not analize_data:
-            raise Exception("analize_data key should exists")
         res = super().search_read(new_domain)
-        if res:
-            with open("connector_lengow_debug.csv", "a") as f:
-                for ord in res:
-                    f.write(','.join([
-                        ord['marketplace'],
-                        ord['marketplace_order_id'],
-                        analize_data['now'].isoformat(),
-                        analize_data['since_date'].isoformat(),
-                        ord['imported_at'].isoformat(),
-                        ord['updated_at'].isoformat(),
-                        ord['order_meta']['checksum'],
-                    ]) + '\n')
+        if analize_data:
+            if res:
+                with open("connector_lengow_debug.csv", "a") as f:
+                    for ord in res:
+                        f.write(','.join([
+                            ord['marketplace'],
+                            ord['marketplace_order_id'],
+                            analize_data['now'].isoformat(),
+                            analize_data['since_date'].isoformat(),
+                            ord['imported_at'].isoformat(),
+                            ord['updated_at'].isoformat(),
+                            ord['order_meta']['checksum'],
+                        ]) + '\n')
         return res
