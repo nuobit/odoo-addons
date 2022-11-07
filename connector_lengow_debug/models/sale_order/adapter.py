@@ -18,16 +18,30 @@ class LengowSaleOrderTypeAdapter(Component):
                 new_domain.append(e)
         res = super().search_read(new_domain)
         if analize_data:
-            if res:
-                with open("connector_lengow_debug.csv", "a") as f:
+            with open("connector_lengow_debug.csv", "a") as f:
+                if not res:
+                    line = [
+                        analize_data['now'].isoformat(),
+                        analize_data['since_date'].isoformat(),
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                    ]
+                    f.write(','.join(line) + '\n')
+                else:
                     for ord in res:
-                        f.write(','.join([
-                            ord['marketplace'],
-                            ord['marketplace_order_id'],
+                        line = [
                             analize_data['now'].isoformat(),
                             analize_data['since_date'].isoformat(),
+                            ord['marketplace'],
+                            ord['marketplace_order_id'],
                             ord['imported_at'].isoformat(),
                             ord['updated_at'].isoformat(),
                             ord['order_meta']['checksum'],
-                        ]) + '\n')
+                            ord['lengow_status'],
+                        ]
+                        f.write(','.join(line) + '\n')
         return res

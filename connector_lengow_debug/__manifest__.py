@@ -4,7 +4,7 @@
 {
     'name': "Connector Lengow Debug",
     'description': "Connector Lengow Debug",
-    'version': '11.0.1.0.1',
+    'version': '11.0.1.0.2',
     'author': 'NuoBiT Solutions, S.L.',
     'license': 'AGPL-3',
     'category': 'Connector',
