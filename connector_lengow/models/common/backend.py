@@ -1,6 +1,7 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import datetime
 import logging
 
 from odoo import _, fields, models, api
@@ -69,6 +70,10 @@ class LengowBackend(models.Model):
     import_sale_orders_since_date = fields.Datetime('Import Orders since')
     import_sale_orders_order_number = fields.Char(string='Import specific orders', help="Comma separated order numbers")
     min_order_date = fields.Date('Min Order Date')
+    sync_offset = fields.Integer(
+        string="Sync Offset",
+        help="Minutes to start the synchronization before(negative)/after(positive) the last one (Lengow bug)"
+    )
 
     @api.multi
     def _check_connection(self):
@@ -95,7 +100,9 @@ class LengowBackend(models.Model):
             self = self.sudo(self.user_id)
         for rec in self:
             since_date = fields.Datetime.from_string(rec.import_sale_orders_since_date)
-            rec.import_sale_orders_since_date = fields.Datetime.now()
+            rec.import_sale_orders_since_date = fields.Datetime.to_string(
+                fields.datetime.now() + datetime.timedelta(minutes=rec.sync_offset)
+            )
             self.env['lengow.sale.order'].with_delay(
             ).import_sale_orders_since(
                 backend_record=rec, since_date=since_date,
