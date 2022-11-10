@@ -93,12 +93,21 @@ class VeloconnectProductTemplateImportMapper(Component):
 
     @mapping
     def default_code(self, record):
-        manufacturer_id = record.get("ManufacturersItemIdentificationID")
-        if manufacturer_id:
-            binding = self.options.get("binding")
-            if not binding or not binding.default_code:
-                return {"default_code": manufacturer_id}
-            self._check_default_code(binding.default_code, manufacturer_id)
+        binding = self.options.get("binding")
+        if (
+            self.backend_record.is_manufacturer
+            and record["SellersItemIdentificationID"]
+        ):
+            if not binding or not binding.veloconnect_bind_ids.filtered(
+                lambda x: self.backend_record != x.backend_id and x.is_manufacturer
+            ):
+                return {"default_code": record["SellersItemIdentificationID"]}
+        else:
+            manufacturer_id = record.get("ManufacturersItemIdentificationID")
+            if manufacturer_id:
+                if not binding or not binding.default_code:
+                    return {"default_code": manufacturer_id}
+                self._check_default_code(binding.default_code, manufacturer_id)
 
     @mapping
     def hash(self, record):

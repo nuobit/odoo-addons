@@ -48,7 +48,7 @@ class VeloconnectBackend(models.Model):
     ignore_uom = fields.Boolean(string="Ignore quantityUnitCode", default=False)
     import_sale_orders_since_date = fields.Datetime("Import Services since")
     import_products_name = fields.Char("Import Products with Name")
-
+    is_manufacturer = fields.Boolean(string="Is Manufacturer")
     partner_id = fields.Many2one(
         comodel_name="res.partner",
         string="Veloconnect Partner",

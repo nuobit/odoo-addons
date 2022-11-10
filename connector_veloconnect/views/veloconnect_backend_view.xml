@@ -62,6 +62,7 @@
                             <field name="product_search_retry_time" />
                             <field name="ignore_availablequantity" />
                             <field name="ignore_uom" />
+                            <field name="is_manufacturer" />
                         </group>
                     </group>
                     <notebook>
@@ -139,6 +140,7 @@
                 <field name="url" />
                 <field name="ignore_availablequantity" />
                 <field name="ignore_uom" />
+                <field name="is_manufacturer" />
             </tree>
         </field>
     </record>
