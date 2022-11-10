@@ -15,6 +15,7 @@ class ProductTemplateBinding(models.Model):
         required=True,
         ondelete="cascade",
     )
+    is_manufacturer = fields.Boolean(related="backend_id.is_manufacturer")
     veloconnect_seller_item_id = fields.Char(
         string="Veloconnect SellersItemIdentificationID", required=True
     )
