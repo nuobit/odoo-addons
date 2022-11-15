@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_account_tax_group_form" model="ir.ui.view">
+        <field name="model">account.tax.group</field>
+        <field name="inherit_id" ref="account_menu.view_account_tax_group_form" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="is_vat" />
+            </field>
+        </field>
+    </record>
+</odoo>
