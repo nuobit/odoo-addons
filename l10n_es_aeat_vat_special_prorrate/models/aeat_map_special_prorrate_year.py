@@ -202,11 +202,15 @@ class MapSpecialProrateYear(models.Model):
             )
 
         if self.map_prorrate_next_year_id:
-            self.map_prorrate_next_year_id.write(
-                {
-                    "tax_percentage": self.tax_final_percentage_aux,
-                }
-            )
+            if (
+                self.map_prorrate_next_year_id.tax_percentage
+                != self.tax_final_percentage_aux
+            ):
+                self.map_prorrate_next_year_id.write(
+                    {
+                        "tax_percentage": self.tax_final_percentage_aux,
+                    }
+                )
         else:
             self.map_prorrate_next_year_id = self.create(
                 [
