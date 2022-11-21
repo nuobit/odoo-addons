@@ -219,13 +219,27 @@ class SapB1Adapter(AbstractComponent):
                 r = session.patch(self.backend_record.sl_url + "/BusinessPartners('%s')" % params['external_id'],
                                   json=values)
                 if not r.ok:
-                    # Error code -2035 means duplicated address name
-                    if r.json()['error']['code'] == -2035:
-                        m = re.match(self.re_address_name(), params['values']['AddressName'])
-                        name = m and m.group(1) or params['values']['AddressName']
-                        counter = m and int(m.group(2)) or 1
-                        params['values']['AddressName'] = "%s (%i)" % (name, counter + 1)
-                        continue
+                    try:
+                        err_json = r.json()
+                        err = err_json['error']
+                        # Error code -2035 means duplicated address name
+                        if err['code'] == -2035:
+                            m = re.match(self.re_address_name(), params['values']['AddressName'])
+                            name = m and m.group(1) or params['values']['AddressName']
+                            counter = m and int(m.group(2)) or 1
+                            params['values']['AddressName'] = "%s (%i)" % (name, counter + 1)
+                            continue
+                        elif err['code'] == 305:
+                            if err['message']['lang'] != 'en-us':
+                                raise ValidationError(
+                                    _("Only supported english (en-us) dealing with error messages from the "
+                                      "server\n%s") %
+                                    err_json)
+                            if err['message']['value'] == 'Switch company error: -1102':
+                                raise RetryableJobError(_("Temporarily connection error:\n%s\n"
+                                                          "It will be retried later.") % err_json)
+                    except json.decoder.JSONDecodeError:
+                        pass
                     raise ValidationError(r.text)
                 result = params['values']
                 result['CardCode'] = params['external_id']
