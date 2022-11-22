@@ -17,6 +17,9 @@ class LotService(Component):
         Access to Lot services
     """
 
+    def _filter_lots(self, lots):
+        return lots
+
     def search(self, code=None, product_code=None, product_barcode=None):
 
         # validate not implemented functonalities
@@ -45,6 +48,9 @@ class LotService(Component):
         lots = self.env["stock.production.lot"].search(domain)
         if not lots:
             raise MissingError(_("Lots not found"))
+
+        # filter data
+        lots = self._filter_lots(lots)
 
         # format data
         data = []
