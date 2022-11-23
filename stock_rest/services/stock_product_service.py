@@ -21,7 +21,12 @@ class ProductService(Component):
         # get current user
         self._get_current_user()
         company = self._get_current_company()
-        stock_domain = [("product_id.company_id", "in", [company.id, False])]
+        params = {
+            "company_id": company.id,
+            "location_id": None,
+            "location_usage": None,
+            "product_id": None,
+        }
 
         # get locations
         if location_code:
@@ -39,9 +44,9 @@ class ProductService(Component):
                 raise ValidationError(
                     _("There's more than one location with code '%s'" % location_code)
                 )
-            stock_domain.append(("location_id", "=", location.id))
+            params["location_id"] = location.id
         else:
-            stock_domain.append(("location_id.usage", "=", "internal"))
+            params["location_usage"] = "internal"
 
         # get product by code
         if code or barcode:
@@ -59,46 +64,107 @@ class ProductService(Component):
                 raise ValidationError(
                     _("There's more than one product with the code or barcode entered")
                 )
-            stock_domain.append(("product_id", "=", product.id))
+            params["product_id"] = product.id
 
-        # TODO: Use Lazy=True
-        stock = self.env["stock.quant"].read_group(
-            domain=stock_domain,
-            fields=["lot_id", "product_id", "quantity"],
-            groupby=["lot_id", "product_id"],
-            lazy=False,
-        )
+        sql = """
+            select q.lot_id, l.name as lot_name, q.product_id, p.default_code as product_code,
+                   sum(coalesce(q.quantity, 0)) as quantity
+            from stock_quant q, stock_location sl, stock_production_lot l,
+                 product_product p, product_template t
+            where q.lot_id = l.id and
+                  q.location_id = sl.id and
+                  q.product_id = p.id and
+                  p.product_tmpl_id = t.id and
+                  p.active and t.active and
+                  t.tracking != 'none'
+                  and (t.company_id is null or t.company_id = %(company_id)s)
+                  and (%(product_id)s is null or q.product_id = %(product_id)s)
+                  and (%(location_id)s is null or q.location_id = %(location_id)s)
+                  and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+            group by q.lot_id, l.name, q.product_id, p.default_code, t.tracking
+            having sum(coalesce(q.quantity, 0))>0
+            /*
+            union all
+            select l.id as lot_id, l.name as lot_name, l.product_id,
+                   p.default_code as product_code, 0 as quantity
+            from stock_production_lot l, product_product p, product_template t
+            where l.product_id = p.id and
+                  p.product_tmpl_id = t.id and
+                  p.active and t.active and
+                  t.tracking != 'none' and
+                  not exists (
+                     select 1
+                     from stock_quant q, stock_location sl
+                     where q.lot_id = l.id and
+                           q.location_id = sl.id
+                           and (%(location_id)s is null or q.location_id = %(location_id)s)
+                           and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                  )
+                  and (t.company_id is null or t.company_id = %(company_id)s)
+                  and (%(product_id)s is null or l.product_id = %(product_id)s)
+            */
+            union all
+            select null as lot_id, null as lot_name, q.product_id,
+                   p.default_code as product_code, sum(coalesce(q.quantity, 0)) as quantity
+            from stock_quant q, stock_location sl, product_product p, product_template t
+            where q.location_id = sl.id and
+                  q.product_id = p.id and
+                  p.product_tmpl_id = t.id and
+                  t.tracking = 'none' and
+                  p.active and t.active
+                  and (t.company_id is null or t.company_id = %(company_id)s)
+                  and (%(product_id)s is null or q.product_id = %(product_id)s)
+                  and (%(location_id)s is null or q.location_id = %(location_id)s)
+                  and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+            group by q.product_id, p.default_code, t.tracking
+            having sum(coalesce(q.quantity, 0))>0
+            /*
+            union all
+            select null as lot_id, null as lot_name, p.id as product_id,
+                   p.default_code as product_code, 0 as quantity
+            from  product_product p, product_template t
+            where p.product_tmpl_id = t.id and
+                  t.tracking = 'none' and
+                  p.active and t.active and
+                  not exists (
+                     select 1
+                     from stock_quant q, stock_location sl
+                     where q.product_id = p.id and
+                           q.location_id = sl.id
+                           and (%(location_id)s is null or q.location_id = %(location_id)s)
+                           and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                  )
+                  and (t.company_id is null or t.company_id = %(company_id)s)
+                  and (%(product_id)s is null or p.id = %(product_id)s)
+            */
+            order by product_code, product_id, lot_name, lot_id
+            """
 
         dp = self.env["product.product"].sudo().env.ref("product.decimal_product_uom")
         data = {}
-        for s in stock:
-            product = self.env["product.product"].browse(s["product_id"][0])
+        self.env.cr.execute(sql, params)
+        for (
+            lot_id,
+            lot_name,
+            product_id,
+            _product_code,
+            quantity,
+        ) in self.env.cr.fetchall():
+            product = self.env["product.product"].browse(product_id)
             if (
-                product._get_product_accounts()["expense"].asset_profile_id
-                and assets == "false"
+                assets == "false"
+                and product._get_product_accounts()["expense"].asset_profile_id
             ):
                 continue
-            qty = round(s["quantity"], dp.digits)
-            if qty > 0:
-                if s["lot_id"]:
-                    lot_id = s["lot_id"][0]
-                    lot_name = self.env["stock.production.lot"].browse(lot_id).name
-                else:
-                    lot_id, lot_name = None, None
-                if bool(lot_id) == bool(product.tracking != "none"):
-                    data.setdefault(product, []).append(
-                        {
-                            "id": lot_id,
-                            "code": lot_name or None,
-                            "quantity": qty,
-                        }
-                    )
-
+            data.setdefault(product, []).append(
+                {
+                    "id": lot_id,
+                    "code": lot_name,
+                    "quantity": round(quantity, dp.digits),
+                }
+            )
         product_list = []
-        products_sorted = sorted(
-            data.items(), key=lambda x: (x[0].default_code or "", x[0].id)
-        )
-        for product, lots in products_sorted:
+        for product, lots in data.items():
             if (code or barcode) or lots:
                 product_list.append(
                     {
