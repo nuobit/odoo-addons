@@ -6,7 +6,7 @@
     "name": "Stock REST",
     "author": "NuoBiT Solutions, S.L.",
     "category": "Stock",
-    "version": "14.0.1.1.6",
+    "version": "14.0.1.1.7",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
