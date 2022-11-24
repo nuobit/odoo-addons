@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!--    Prorrata 4% IVA soportado (bienes corrientes)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva4_bc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Prorrata 10% IVA soportado (bienes corrientes)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva10_bc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Prorrata 21% IVA soportado (bienes corrientes)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva21_bc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata 4% IVA soportado (bienes de inversión)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva4_bi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata 10% IVA soportado (bienes de inversión)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva10_bi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Prorrata 21% IVA soportado (bienes de inversión)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva21_bi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Prorrata 4% IVA soportado (servicios corrientes)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva4_sc"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--	Prorrata 10% IVA soportado (servicios corrientes)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva10_sc"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    Prorrata 21% IVA soportado (servicios corrientes)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva21_sc"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--Prorrata IVA 4% Adquisición Intracomunitario. Bienes corrientes-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--	Prorrata IVA 10% Adquisición Intracomunitario. Bienes corrientes-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Prorrata IVA 21% Adquisición Intracomunitario. Bienes corrientes-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata IVA 4% Adquisición Intracomunitario. Bienes de inversión-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Prorrata IVA 10% Adquisición Intracomunitario. Bienes de inversión-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata IVA 21% Adquisición Intracomunitario. Bienes de inversión-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata IVA 4% Adquisición de servicios intracomunitarios-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva4_sp_in"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    	Prorrata IVA 10% Adquisición de servicios intracomunitarios-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva10_sp_in"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    	Prorrata IVA 21% Adquisición de servicios intracomunitarios-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva21_sp_in"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--Prorrata IVA 4% Importaciones bienes corrientes-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva4_ibc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata IVA 10% Importaciones bienes corrientes-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva10_ibc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata IVA 21% Importaciones bienes corrientes-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva21_ibc"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Prorrata IVA 4% Importaciones bienes de inversión-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva4_ibi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata IVA 10% Importaciones bienes de inversión-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva10_ibi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Prorrata IVA 21% Importaciones bienes de inversión-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva21_ibi"
+        model="account.tax.template"
+    >
+<field name="apply_to_asset">always</field>
+    </record>
+    <!--    Prorrata 5% IVA soportado (servicios corrientes)-->
+    <record
+        id="l10n_es_special_prorate.account_tax_template_p_priva5_sc"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+</odoo>
