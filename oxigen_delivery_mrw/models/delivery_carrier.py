@@ -7,21 +7,20 @@ from odoo import models
 class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
-    # Prepared in case they want this again
-    # def _prepare_mrw_bultos(self, picking):
-    #     bultos = []
-    #     for _i in range(picking.number_of_packages):
-    #         bultos.append(
-    #             {
-    #                 "Alto": 1,
-    #                 "Largo": 1,
-    #                 "Ancho": 1,
-    #                 "Dimension": "",
-    #                 "Referencia": "",
-    #                 "Peso": 1,
-    #             }
-    #         )
-    #     return {"BultoRequest": bultos}
+    def _prepare_mrw_bultos(self, picking):
+        bultos = []
+        for _i in range(picking.number_of_packages):
+            bultos.append(
+                {
+                    "Alto": 1,
+                    "Largo": 1,
+                    "Ancho": 1,
+                    "Dimension": "",
+                    "Referencia": "",
+                    "Peso": 1,
+                }
+            )
+        return {"BultoRequest": bultos}
 
     def _prepare_mrw_shipping(self, picking):
         num_bultos = picking.with_context(
@@ -32,8 +31,8 @@ class DeliveryCarrier(models.Model):
             picking.sale_id.client_order_ref or picking.sale_id.name or "",
         )
         res["DatosServicio"]["NumeroBultos"] = num_bultos
-        # if picking.number_of_packages > 1:
-        #     bultos = self._prepare_mrw_bultos(picking)
-        #     res["DatosServicio"]["Bultos"] = bultos
-        #     res["DatosServicio"]["Peso"] = picking.number_of_packages
+        if picking.number_of_packages > 1:
+            bultos = self._prepare_mrw_bultos(picking)
+            res["DatosServicio"]["Bultos"] = bultos
+            res["DatosServicio"]["Peso"] = picking.number_of_packages
         return res
