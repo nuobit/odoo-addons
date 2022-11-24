@@ -13,6 +13,7 @@ the OCA l10n_spain localization community.
   * Added support for **BaseImponibleACoste** key when
     **ClaveRegimenEspecialOTranscedencia = "06"**
   * Added support for **CuotaDeducible** key for a partially deductible taxes
+  * Added hooks to allow extending the Agencies
 
 Bug Tracker
 ===========
@@ -29,3 +30,4 @@ Contributors
 ------------
 
 * Eric Antones <eantones@nuobit.com>
+* Kilian Niubo <kniubo@nuobit.com>
