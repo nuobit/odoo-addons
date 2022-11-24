@@ -6,7 +6,7 @@
     "name": "Oxigen Stock REST",
     "author": "NuoBiT Solutions, S.L.",
     "category": "Stock",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "license": "AGPL-3",
     "website": "https://github.com/oxigensalud/odoo-addons",
     "depends": [
