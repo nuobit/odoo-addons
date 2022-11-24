@@ -82,8 +82,6 @@ class ProductService(Component):
                   and (%(location_id)s is null or q.location_id = %(location_id)s)
                   and (%(location_usage)s is null or sl.usage = %(location_usage)s)
             group by q.lot_id, l.name, q.product_id, p.default_code, t.tracking
-            having sum(coalesce(q.quantity, 0))>0
-            /*
             union all
             select l.id as lot_id, l.name as lot_name, l.product_id,
                    p.default_code as product_code, 0 as quantity
@@ -102,7 +100,6 @@ class ProductService(Component):
                   )
                   and (t.company_id is null or t.company_id = %(company_id)s)
                   and (%(product_id)s is null or l.product_id = %(product_id)s)
-            */
             union all
             select null as lot_id, null as lot_name, q.product_id,
                    p.default_code as product_code, sum(coalesce(q.quantity, 0)) as quantity
@@ -117,8 +114,6 @@ class ProductService(Component):
                   and (%(location_id)s is null or q.location_id = %(location_id)s)
                   and (%(location_usage)s is null or sl.usage = %(location_usage)s)
             group by q.product_id, p.default_code, t.tracking
-            having sum(coalesce(q.quantity, 0))>0
-            /*
             union all
             select null as lot_id, null as lot_name, p.id as product_id,
                    p.default_code as product_code, 0 as quantity
@@ -136,8 +131,7 @@ class ProductService(Component):
                   )
                   and (t.company_id is null or t.company_id = %(company_id)s)
                   and (%(product_id)s is null or p.id = %(product_id)s)
-            */
-            order by product_code, product_id, lot_name, lot_id
+            order by product_code, lot_name, product_id, lot_id
             """
 
         dp = self.env["product.product"].sudo().env.ref("product.decimal_product_uom")
@@ -156,13 +150,16 @@ class ProductService(Component):
                 and product._get_product_accounts()["expense"].asset_profile_id
             ):
                 continue
-            data.setdefault(product, []).append(
-                {
-                    "id": lot_id,
-                    "code": lot_name,
-                    "quantity": round(quantity, dp.digits),
-                }
-            )
+            data.setdefault(product, [])
+            qty = round(quantity, dp.digits)
+            if qty > 0:
+                data[product].append(
+                    {
+                        "id": lot_id,
+                        "code": lot_name,
+                        "quantity": qty,
+                    }
+                )
         product_list = []
         for product, lots in data.items():
             if (code or barcode) or lots:
