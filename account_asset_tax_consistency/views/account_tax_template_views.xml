@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_account_tax_template_form" model="ir.ui.view">
+        <field name="model">account.tax.template</field>
+        <field name="inherit_id" ref="account.view_account_tax_template_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='description']/.." position="inside">
+                <field
+                    name="apply_to_asset"
+                    attrs="{'invisible': ['|', ('amount_type', '!=', 'percent'), ('type_tax_use', '!=', 'purchase')]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
