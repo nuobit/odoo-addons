@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="0">
+    <!--    21% IVA soportado (bienes corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva21_bc" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    21% IVA soportado (servicios corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva21_sc" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--	IVA 21% Adquisición de servicios intracomunitarios-->
+    <record
+        id="l10n_es.account_tax_template_p_iva21_sp_in"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    IVA 21% Adquisición Intracomunitaria. Bienes corrientes-->
+    <record
+        id="l10n_es.account_tax_template_p_iva21_ic_bc"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    	IVA 21% Adquisición Intracomunitaria. Bienes de inversión-->
+    <record
+        id="l10n_es.account_tax_template_p_iva21_ic_bi"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	IVA 21% Importaciones bienes corrientes-->
+    <record id="l10n_es.account_tax_template_p_iva21_ibc" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    IVA 21% Importaciones bienes de inversión-->
+    <record id="l10n_es.account_tax_template_p_iva21_ibi" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    Retenciones IRPF (Trabajadores) dinerarios-->
+    <record id="l10n_es.account_tax_template_p_irpf21td" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    IVA 4% Adquisición de servicios extracomunitarios-->
+    <record id="l10n_es.account_tax_template_p_iva4_sp_ex" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    IVA 10% Adquisición de servicios extracomunitarios-->
+    <record
+        id="l10n_es.account_tax_template_p_iva10_sp_ex"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--	IVA 21% Adquisición de servicios extracomunitarios-->
+    <record
+        id="l10n_es.account_tax_template_p_iva21_sp_ex"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    IVA 4% Adquisición Intracomunitario. Bienes corrientes-->
+    <record id="l10n_es.account_tax_template_p_iva4_ic_bc" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    IVA 4% Adquisición Intracomunitario. Bienes de inversión-->
+    <record id="l10n_es.account_tax_template_p_iva4_ic_bi" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	IVA 10% Adquisición Intracomunitario. Bienes corrientes    -->
+    <record
+        id="l10n_es.account_tax_template_p_iva10_ic_bc"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    IVA 10% Adquisición Intracomunitario. Bienes de inversión    -->
+    <record
+        id="l10n_es.account_tax_template_p_iva10_ic_bi"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	IVA 4% Importaciones bienes corrientes    -->
+    <record id="l10n_es.account_tax_template_p_iva4_ibc" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	IVA 4% Importaciones bienes de inversión-->
+    <record id="l10n_es.account_tax_template_p_iva4_ibi" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	IVA 10% Importaciones bienes corrientes-->
+    <record id="l10n_es.account_tax_template_p_iva10_ibc" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	IVA 10% Importaciones bienes de inversión    -->
+    <record id="l10n_es.account_tax_template_p_iva10_ibi" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	4% IVA Soportado (bienes de inversión)-->
+    <record id="l10n_es.account_tax_template_p_iva4_bi" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    4% IVA soportado (servicios corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva4_sc" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--	10% IVA Soportado (bienes de inversión)-->
+    <record id="l10n_es.account_tax_template_p_iva10_bi" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	21% IVA Soportado (bienes de inversión)-->
+    <record id="l10n_es.account_tax_template_p_iva21_bi" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    10% IVA soportado (bienes corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva10_bc" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	4% IVA soportado (bienes corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva4_bc" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--	10% IVA soportado (servicios corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva10_sc" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--	IVA Soportado no deducible 21% (servicios corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva0_nd" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--	IVA Soportado exento (operaciones corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva0_bc" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    IVA Soportado no sujeto (Servicios)-->
+    <record id="l10n_es.account_tax_template_p_iva0_ns" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    Retenciones IRPF 19%-->
+    <record id="l10n_es.account_tax_template_p_irpf19" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    Retenciones 20% (Arrendamientos)-->
+    <record id="l10n_es.account_tax_template_p_irpf20a" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    Retenciones IRPF 18%-->
+    <record id="l10n_es.account_tax_template_p_irpf18" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    Retenciones 19% (Arrendamientos)-->
+    <record id="l10n_es.account_tax_template_p_irpf19a" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    Retenciones 19,5% (Arrendamientos)-->
+    <record id="l10n_es.account_tax_template_p_irpf195a" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    Retenciones IRPF 7%-->
+    <record id="l10n_es.account_tax_template_p_irpf7" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    Retenciones IRPF 9%-->
+    <record id="l10n_es.account_tax_template_p_irpf9" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--	12% IVA Soportado régimen agricultura-->
+    <record id="l10n_es.account_tax_template_p_iva12_agr" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    1.4% Recargo Equivalencia Compras-->
+    <record id="l10n_es.account_tax_template_p_req014" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    0.50% Recargo Equivalencia Compras-->
+    <record id="l10n_es.account_tax_template_p_req05" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    	5.2% Recargo Equivalencia Compras-->
+    <record id="l10n_es.account_tax_template_p_req52" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--Retenciones IRPF 1%-->
+    <record id="l10n_es.account_tax_template_p_irpf1" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    	Retenciones IRPF 15%-->
+    <record id="l10n_es.account_tax_template_p_irpf15" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    	Retenciones IRPF (Trabajadores)-->
+    <record id="l10n_es.account_tax_template_p_irpf21t" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    	IVA 10% Adquisición de servicios intracomunitarios-->
+    <record
+        id="l10n_es.account_tax_template_p_iva10_sp_in"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    IVA 4% Adquisición de servicios intracomunitarios-->
+    <record id="l10n_es.account_tax_template_p_iva4_sp_in" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    Retenciones IRPF (Trabajadores) en especie-->
+    <record id="l10n_es.account_tax_template_p_irpf21te" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    Retenciones IRPF 20%-->
+    <record id="l10n_es.account_tax_template_p_irpf20" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    Retenciones 21% (Arrendamientos)-->
+    <record id="l10n_es.account_tax_template_p_irpf21a" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--	Retenciones IRPF 21%-->
+    <record id="l10n_es.account_tax_template_p_irpf21p" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--	Retenciones IRPF 2%-->
+    <record id="l10n_es.account_tax_template_p_irpf2" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    IVA 4% Compra con Inversión del Sujeto Pasivo Nacional -->
+    <record id="l10n_es.account_tax_template_p_iva4_isp" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    	IVA 10% Compra con Inversión del Sujeto Pasivo Nacional-->
+    <record id="l10n_es.account_tax_template_p_iva10_isp" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    IVA 21% Compra con Inversión del Sujeto Pasivo Nacional-->
+    <record id="l10n_es.account_tax_template_p_iva21_isp" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    	Retenciones 19% (préstamos)-->
+    <record id="l10n_es.account_tax_template_p_rp19" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--Retenciones 19% (reparto de dividendos)-->
+    <record id="l10n_es.account_tax_template_p_rrD19" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    10,5% IVA Soportado régimen ganadero o pesca-->
+    <record id="l10n_es.account_tax_template_p_iva105_gan" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    	IVA Soportado no deducible 10% (servicios corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva10_nd" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    IVA Soportado no deducible 4% (servicios corrientes)-->
+    <record id="l10n_es.account_tax_template_p_iva4_nd" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--    IVA Soportado no sujeto (Bienes)-->
+    <record id="l10n_es.account_tax_template_p_iva0_ns_b" model="account.tax.template">
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    Retenciones IRPF 24%-->
+    <record id="l10n_es.account_tax_template_p_irpf24" model="account.tax.template">
+        <field name="apply_to_asset">ignore</field>
+    </record>
+    <!--    5% IVA soportado NO POT CREAR ASSETS-->
+    <record id="l10n_es.account_tax_template_p_iva5_sc" model="account.tax.template">
+        <field name="apply_to_asset">never</field>
+    </record>
+    <!--	IVA 4% ISP (bienes de inversión)-->
+    <record
+        id="l10n_es.account_tax_template_p_iva4_isp_bi"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    IVA 10% ISP (bienes de inversión)-->
+    <record
+        id="l10n_es.account_tax_template_p_iva10_isp_bi"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">always</field>
+    </record>
+    <!--    IVA 21% ISP (bienes de inversión)-->
+    <record
+        id="l10n_es.account_tax_template_p_iva21_isp_bi"
+        model="account.tax.template"
+    >
+        <field name="apply_to_asset">always</field>
+    </record>
+</odoo>
