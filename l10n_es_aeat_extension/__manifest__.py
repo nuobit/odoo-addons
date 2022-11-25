@@ -9,7 +9,7 @@
     "the OCA l10n_spain localization community",
     "author": "NuoBiT Solutions, S.L.",
     "category": "Accounting & Finance",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [

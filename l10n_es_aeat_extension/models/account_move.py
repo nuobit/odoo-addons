@@ -12,3 +12,8 @@ class AccountMove(models.Model):
         taxes = tax.amount_type == "group" and tax.children_tax_ids or tax
         for tax in taxes:
             super()._get_aeat_tax_base_info(res, tax, line, sign)
+
+    def _get_aeat_tax_quote_info(self, res, tax, line, sign):
+        taxes = tax.amount_type == "group" and tax.children_tax_ids or tax
+        for tax in taxes:
+            super()._get_aeat_tax_quote_info(res, tax, line, sign)
