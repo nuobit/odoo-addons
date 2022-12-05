@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="account_analytic_account_recurring_form_form" model="ir.ui.view">
@@ -14,14 +14,10 @@
             >
                 <field
                     name="tax_ids"
-                    options="{'no_create': True}"
-                    domain="[
-            ('type_tax_use', '=', parent.contract_type),
-            '|',
-            ('active', '=', False),
-            ('active', '=', True),
-        ]"
+                    domain="[('type_tax_use', '=', parent.contract_type),('company_id','=',parent.company_id)]"
+                    context="{}"
                     widget="many2many_tags"
+                    options="{'no_create': True}"
                 />
             </xpath>
             <xpath
@@ -30,19 +26,15 @@
             >
                 <field
                     name="tax_ids"
-                    options="{'no_create': True}"
-                    domain="[
-            ('type_tax_use', '=', parent.contract_type),
-            '|',
-            ('active', '=', False),
-            ('active', '=', True),
-        ]"
+                    domain="[('type_tax_use', '=', parent.contract_type),('company_id','=',parent.company_id)]"
+                    context="{}"
                     widget="many2many_tags"
+                    options="{'no_create': True}"
                 />
             </xpath>
         </field>
     </record>
-
+    <!-- TODO: Delete this view in migration to v13 or further migrations // In v14 its not delete-->
     <record id="contract_line_tree_view" model="ir.ui.view">
         <field name="name">contract.line.tree.view</field>
         <field name="model">contract.line</field>
@@ -51,13 +43,12 @@
             <xpath expr="//field[@name='price_subtotal']" position="before">
                 <field
                     name="tax_ids"
-                    options="{'no_create': True}"
                     widget="many2many_tags"
+                    options="{'no_create': True}"
                 />
             </xpath>
         </field>
     </record>
-
     <record id="contract_line_form_view" model="ir.ui.view">
         <field name="name">contract.line.form.view</field>
         <field name="model">contract.line</field>
@@ -67,11 +58,12 @@
                 <field
                     colspan="4"
                     name="tax_ids"
-                    options="{'no_create': True}"
+                    domain="[('type_tax_use', '=', parent.contract_type),('company_id','=',parent.company_id)]"
+                    context="{}"
                     widget="many2many_tags"
+                    options="{'no_create': True}"
                 />
             </xpath>
         </field>
     </record>
-
 </odoo>
