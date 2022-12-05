@@ -11,6 +11,8 @@ class ContractLine(models.Model):
     tax_ids = fields.Many2many(
         comodel_name="account.tax",
         string="Taxes",
+        context={"active_test": False},
+        check_company=True,
     )
 
     def _prepare_invoice_line(self, move_form):
