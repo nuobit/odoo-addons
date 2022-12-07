@@ -12,7 +12,6 @@
     "license": "AGPL-3",
     "depends": [
         "l10n_es",
-        "account_template_view",
     ],
     "data": [
         "data/account_tax_data.xml",
