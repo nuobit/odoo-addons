@@ -4,17 +4,14 @@
 <odoo>
     <record id="view_account_tax_template_form" model="ir.ui.view">
         <field name="model">account.tax.template</field>
-        <field
-            name="inherit_id"
-            ref="account_template_view.view_account_tax_template_form"
-        />
+        <field name="inherit_id" ref="account.view_account_tax_template_form" />
         <field name="arch" type="xml">
-            <field name="active" position="after">
+            <xpath expr="//field[@name='description']/.." position="inside">
                 <field
                     name="prorate"
                     attrs="{'invisible': ['|', ('amount_type', '!=', 'percent'), ('type_tax_use', '!=', 'purchase')]}"
                 />
-            </field>
+            </xpath>
         </field>
     </record>
 </odoo>

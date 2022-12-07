@@ -6,12 +6,12 @@
         <field name="model">account.tax</field>
         <field name="inherit_id" ref="account.view_tax_form" />
         <field name="arch" type="xml">
-            <field name="active" position="after">
+            <xpath expr="//field[@name='description']/.." position="inside">
                 <field
                     name="prorate"
                     attrs="{'invisible': ['|', ('amount_type', '!=', 'percent'), ('type_tax_use', '!=', 'purchase')]}"
                 />
-            </field>
+            </xpath>
         </field>
     </record>
 </odoo>
