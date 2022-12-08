@@ -60,7 +60,7 @@ class ReportGS1Barcode(models.AbstractModel):
                         )
         return docs
 
-    @api.model
+    @api.model  # noqa: C901
     def _get_report_values(self, docids, data=None):  # noqa: C901
         if not data:
             raise UserError(_("Expected data to be passed to the report"))
