@@ -1,0 +1,3 @@
+openupgradelib@git+https://github.com/OCA/openupgradelib.git@master
+pyveloedi@git+https://github.com/nuobit/pyveloedi3.git@master
+odoo14-addon-oxigen_stock_alternate_lot@git+https://github.com/oxigensalud/odoo-addons.git@14.0#subdirectory=setup/oxigen_stock_alternate_lot
