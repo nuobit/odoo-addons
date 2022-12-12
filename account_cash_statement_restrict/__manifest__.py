@@ -4,17 +4,18 @@
 
 {
     "name": "Cash statement restrict",
-    "version": "14.0.1.0.1",
+    "version": "14.0.1.0.2",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Custom",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": ["account"],
     "data": [
-        "security/security.xml",
+        "security/res_groups.xml",
+        "security/ir_rule.xml",
         "security/ir.model.access.csv",
         "views/account_journal_dashboard_views.xml",
-        "views/account_views.xml",
+        "views/account_bank_statement_views.xml",
         "views/res_users_views.xml",
         "views/menu.xml",
     ],
