@@ -27,6 +27,11 @@ msgid "Cash journal"
 msgstr ""
 
 #. module: account_cash_statement_restrict
+#: model:res.groups,name:account_cash_statement_restrict.group_allow_reprocess_bank_statement
+msgid "Allow reprocess bank and cash statements"
+msgstr "Permitir el reprocesamiento de extractos bancarios y de caja"
+
+#. module: account_cash_statement_restrict
 #: model:res.groups,name:account_cash_statement_restrict.group_cashier
 msgid "Cashier"
 msgstr "Cajero"
@@ -40,6 +45,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_cash_statement_restrict.field_res_users__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
+
+#. module: account_cash_statement_restrict
+#: model_terms:ir.ui.view,arch_db:account_cash_statement_restrict.account_bank_statement_view_form_inherit_cash_statement_restrict
+msgid "Close"
+msgstr "Cerrar"
+
+#. module: account_cash_statement_restrict
+#: model:ir.model.fields.selection,name:account_cash_statement_restrict.selection__account_bank_statement__state__close
+msgid "Closed"
+msgstr "Cerrado"
 
 #. module: account_cash_statement_restrict
 #: model:ir.model.fields,field_description:account_cash_statement_restrict.field_res_users__id

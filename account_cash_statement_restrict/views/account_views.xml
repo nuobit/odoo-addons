@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record
@@ -11,6 +11,9 @@
         <field name="model">account.bank.statement</field>
         <field name="inherit_id" ref="account.view_bank_statement_form" />
         <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <field name="allow_reprocess_bank_statement" invisible="1" />
+            </xpath>
             <button name="button_validate_or_action" position="before">
                 <button
                     name="close_bank"
@@ -20,12 +23,16 @@
                     attrs="{'invisible':['|',('line_ids','=',[]),('state', 'not in', ('open', 'posted'))]}"
                 />
             </button>
+            <button name="button_reprocess" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', ('state', 'not in', ('confirm', 'close')), '&amp;', ('state', '=', 'close'),
+                                   ('allow_reprocess_bank_statement', '=', False)]}
+                </attribute>
+            </button>
             <field name="state" position="attributes">
-                <attribute
-                    name="statusbar_visible"
-                >open,posted,close,confirm</attribute>
+                <attribute name="statusbar_visible">open,posted,close,confirm
+                </attribute>
             </field>
-
         </field>
     </record>
 </odoo>
