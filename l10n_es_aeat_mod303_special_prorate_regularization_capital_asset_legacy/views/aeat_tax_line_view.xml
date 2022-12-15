@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_l10n_es_aeat_tax_line_tree" model="ir.ui.view">
+        <field name="name">l10n.es.aeat.tax.line.tree</field>
+        <field name="model">l10n.es.aeat.tax.line</field>
+        <field name="inherit_id" ref="l10n_es_aeat.view_l10n_es_aeat_tax_line_tree" />
+        <field name="arch" type="xml">
+            <tree position="inside">
+                <field name="mod303_period_type" invisible="1" />
+            </tree>
+            <button name="get_calculated_move_lines" position="after">
+                <button
+                    name="get_calculated_assets"
+                    type="object"
+                    help="Show asset items"
+                    aria-label="Show asset items"
+                    title="Show asset items"
+                    icon="fa-search-plus"
+                    attrs="{'invisible':['|',('field_number','!=', 43),('mod303_period_type','not in',('4T','12'))]}"
+                />
+            </button>
+        </field>
+    </record>
+</odoo>
