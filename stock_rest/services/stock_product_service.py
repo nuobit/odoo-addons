@@ -26,6 +26,7 @@ class ProductService(Component):
             "location_id": None,
             "location_usage": None,
             "product_id": None,
+            "assets": assets == "true",
         }
 
         # get locations
@@ -67,10 +68,33 @@ class ProductService(Component):
             params["product_id"] = product.id
 
         sql = """
+            with product_template_asset as (
+                select t.id, t.active, t.company_id, t.tracking
+                from product_template t
+                where not exists (
+                        select 1
+                        from account_account a, ir_property r
+                        where a.asset_profile_id is not null and
+                              r.name = 'property_account_expense_categ_id' and
+                              r.res_id = 'product.category,' || t.categ_id and
+                              r.value_reference = 'account.account,' || a.id
+                              and r.company_id = %(company_id)s
+                              and not %(assets)s
+                    ) and not exists (
+                        select 1
+                        from account_account a, ir_property r
+                        where a.asset_profile_id is not null and
+                              r.name = 'property_account_expense_id' and
+                              r.res_id = 'product.template,' || t.id and
+                              r.value_reference = 'account.account,' || a.id
+                              and r.company_id = %(company_id)s
+                              and not %(assets)s
+                    )
+            )
             select q.lot_id, l.name as lot_name, q.product_id, p.default_code as product_code,
                    sum(coalesce(q.quantity, 0)) as quantity
             from stock_quant q, stock_location sl, stock_production_lot l,
-                 product_product p, product_template t
+                 product_product p, product_template_asset t
             where q.lot_id = l.id and
                   q.location_id = sl.id and
                   q.product_id = p.id and
@@ -85,7 +109,7 @@ class ProductService(Component):
             union all
             select l.id as lot_id, l.name as lot_name, l.product_id,
                    p.default_code as product_code, 0 as quantity
-            from stock_production_lot l, product_product p, product_template t
+            from stock_production_lot l, product_product p, product_template_asset t
             where l.product_id = p.id and
                   p.product_tmpl_id = t.id and
                   p.active and t.active and
@@ -103,7 +127,7 @@ class ProductService(Component):
             union all
             select null as lot_id, null as lot_name, q.product_id,
                    p.default_code as product_code, sum(coalesce(q.quantity, 0)) as quantity
-            from stock_quant q, stock_location sl, product_product p, product_template t
+            from stock_quant q, stock_location sl, product_product p, product_template_asset t
             where q.location_id = sl.id and
                   q.product_id = p.id and
                   p.product_tmpl_id = t.id and
@@ -117,7 +141,7 @@ class ProductService(Component):
             union all
             select null as lot_id, null as lot_name, p.id as product_id,
                    p.default_code as product_code, 0 as quantity
-            from  product_product p, product_template t
+            from  product_product p, product_template_asset t
             where p.product_tmpl_id = t.id and
                   t.tracking = 'none' and
                   p.active and t.active and
@@ -145,11 +169,6 @@ class ProductService(Component):
             quantity,
         ) in self.env.cr.fetchall():
             product = self.env["product.product"].browse(product_id)
-            if (
-                assets == "false"
-                and product._get_product_accounts()["expense"].asset_profile_id
-            ):
-                continue
             data.setdefault(product, [])
             qty = round(quantity, dp.digits)
             if qty > 0:
