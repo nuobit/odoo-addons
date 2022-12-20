@@ -1,0 +1,64 @@
+<odoo>
+    <record model="ir.ui.view" id="account_asset_view_form">
+        <field name="name">account.asset.form</field>
+        <field name="model">account.asset</field>
+        <field
+            name="inherit_id"
+            ref="account_asset_management.account_asset_view_form"
+        />
+        <field name="arch" type="xml">
+            <button name="set_to_draft" position="after">
+                <button
+                    name="revert_transfer"
+                    states="transferred"
+                    string="Revert Transfer"
+                    class="oe_highlight"
+                    type="object"
+                    groups="account.group_account_manager"
+                />
+            </button>
+            <notebook position="inside">
+                <page
+                    name="from_assets"
+                    string="From Assets"
+                    attrs="{'invisible': [('from_asset_ids','=',[])]}"
+                >
+                    <group>
+                        <field name="from_asset_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name" />
+                                <field name="code" />
+                                <field name="date_start" />
+                                <field name="depreciation_base" />
+                                <field name="company_id" invisible="1" />
+                                <field name="profile_id" />
+                                <field name="state" />
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+                <page
+                    name="to_assets"
+                    string="To Assets"
+                    attrs="{'invisible': [('to_asset_ids','=',[])]}"
+                >
+                    <field name="to_asset_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="name" />
+                            <field name="code" />
+                            <field name="date_start" />
+                            <field name="depreciation_base" />
+                            <field name="company_id" invisible="1" />
+                            <field name="profile_id" />
+                            <field name="state" />
+                        </tree>
+                    </field>
+
+                </page>
+            </notebook>
+            <field name="state" position="attributes">
+                <attribute name="statusbar_visible">draft,open,close</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,258 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_asset_transfer_extension
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-23 16:15+0000\n"
+"PO-Revision-Date: 2022-12-23 16:15+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "> Journal entries to remove: %s"
+msgstr "> Apuntes contables a eliminar: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "> New assets to remove: %s"
+msgstr "> Nuevos activos a eliminar: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "> Transferred assets to restore: %s"
+msgstr "> Activos transferidos a restaurar: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "Active Model not defined"
+msgstr "El modelo activo no ha sido definido"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model,name:account_asset_transfer_extension.model_account_asset
+msgid "Asset"
+msgstr "Activo"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__date_transfer
+msgid "Asset Transfer Date"
+msgstr "Fecha de la transferencia del activo"
+
+#. module: account_asset_transfer_extension
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__display_name
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer__display_name
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__display_name
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move_line__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__from_asset_ids
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+msgid "From Assets"
+msgstr "Activos origen"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__id
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer__id
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__id
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move__id
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model,name:account_asset_transfer_extension.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model,name:account_asset_transfer_extension.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset____last_update
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer____last_update
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert____last_update
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move____last_update
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move_line____last_update
+msgid "Last Modified on"
+msgstr "Última modificación"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_asset.py:0
+#, python-format
+msgid "More than one move with the same to_asset found"
+msgstr "Mas de un movimiento con el mismo activo de destino encontrado"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "No assets selected"
+msgstr "No hay activos seleccionados"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "Nothing to revert"
+msgstr "Nada a revertir"
+
+#. module: account_asset_transfer_extension
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+msgid "Revert Transfer"
+msgstr "Revertir transferencia"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_asset.py:0
+#, python-format
+msgid "Revert Transfer AUC to Asset"
+msgstr "Revertir transferencia AUC del activo"
+
+#. module: account_asset_transfer_extension
+#: model:ir.actions.server,name:account_asset_transfer_extension.action_asset_transfer_revert_from_list
+msgid "Revert Transfer Asset"
+msgstr "Revertir transferencia de activo"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model,name:account_asset_transfer_extension.model_account_asset_transfer_revert
+msgid "Revert Transferred Asset"
+msgstr "Revertir activos transferidos"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__state
+msgid "Status"
+msgstr "Estado"
+
+#. module: account_asset_transfer_extension
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
+msgid "Tansfer Assets?"
+msgstr "Transferir activos?"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "The journal entry %s has lines without asset"
+msgstr "El asiento contable %s tiene líneas sin activos"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "The journal entry assets has inconsistencies with de from/to assets"
+msgstr "Los activos del asiento contable tienen inconsistencias con el origen y destino de los activos"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "The next actions will be taken: "
+msgstr "Se realizaran las siguientes acciones: "
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__to_asset_ids
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+msgid "To Assets"
+msgstr "Activos nuevos"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model,name:account_asset_transfer_extension.model_account_asset_transfer
+msgid "Transfer Asset"
+msgstr "Transferir Activo"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__transfer_move_id
+msgid "Transfer Move id"
+msgstr "Movimiento de transferencia"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields.selection,name:account_asset_transfer_extension.selection__account_asset__state__transferred
+msgid "Transferred"
+msgstr "Transferido"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "Unexpected number of init entries found on deprecation line"
+msgstr "Número inesperado de entradas init encontradas en la línea de desaprobación"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__warning_message
+msgid "Warning Message"
+msgstr "Mensaje de advertencia"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,help:account_asset_transfer_extension.field_account_asset__state
+msgid ""
+"When an asset is created, the status is 'Draft'.\n"
+"If the asset is confirmed, the status goes in 'Running' and the depreciation lines can be posted to the accounting.\n"
+"If the last depreciation line is posted, the asset goes into the 'Close' status.\n"
+"When the removal entries are generated, the asset goes into the 'Removed' status."
+msgstr ""
+"Cuando se crea un activo, el estado es 'Borrador'.\n"
+"Si el activo es confirmado, el estado pasa a 'En ejecución' y las líneas de amortización pueden ser creadas en la contabilizada.\n"
+"Si se crea la última línea de amortización, el activo pasa a estado 'Cerrado'.\n"
+"Cuando se generan los asientos de eliminación, el activo pasa a estado 'Eliminado'."
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_asset.py:0
+#, python-format
+msgid ""
+"When asset has from_asset_ids, state must be open, close or removed. Please,"
+" review asset: %s"
+msgstr "Cuando los activos tienen activos de origen el estado debe ser en ejecucion, cerrar o eliminado."
+"Por favor, revise el activo: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_asset.py:0
+#, python-format
+msgid ""
+"When asset has to_asset_ids, state must be transferred. Please, review "
+"asset: %s"
+msgstr "Cuando un activo tiene activos nuevos, el estado debe ser transferido."
+"Por favor, revise el activo: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_move.py:0
+#, python-format
+msgid ""
+"You can't modify or delete a journal item on journal entries with "
+"transferred assets"
+msgstr "No se puede modificar o eliminar un asiento en los asientos con activos transferidos."
