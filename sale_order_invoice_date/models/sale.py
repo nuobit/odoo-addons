@@ -15,6 +15,11 @@ class SaleOrder(models.Model):
         if invoices:
             invoice_date = self.env.context.get("invoice_date")
             if invoice_date:
-                invoices.write({"invoice_date": invoice_date})
+                invoices.write(
+                    {
+                        "invoice_date": invoice_date,
+                        "date": invoice_date,
+                    }
+                )
 
         return invoices
