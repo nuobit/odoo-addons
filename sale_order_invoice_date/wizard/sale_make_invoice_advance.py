@@ -14,7 +14,12 @@ class SaleAdvancePaymentInv(models.TransientModel):
         invoice = super(SaleAdvancePaymentInv, self)._create_invoice(
             order, so_line, amount
         )
-        invoice.write({"invoice_date": self.invoice_date})
+        invoice.write(
+            {
+                "invoice_date": self.invoice_date,
+                "date": self.invoice_date,
+            }
+        )
         return invoice
 
     def create_invoices(self):
