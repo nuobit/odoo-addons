@@ -100,7 +100,9 @@ class AccountInvoiceBatch(models.Model):
         )
         res = []
         for rec in self:
-            datetime_str = rec.date.strftime(datetime_format)
+            datetime_str = fields.Datetime.context_timestamp(rec, rec.date).strftime(
+                datetime_format
+            )
             value = filter(
                 None, map(lambda x: x and x.strip() or None, [datetime_str, rec.name])
             )
