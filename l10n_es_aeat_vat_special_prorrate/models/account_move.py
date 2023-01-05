@@ -1,12 +1,12 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models
+from odoo import api, fields, models
 
 
 def prorate_context(invoice):
     return {
-        "date": invoice.date,
+        "date": invoice.date or fields.Date.context_today(invoice),
         "company_id": invoice.company_id.id,
     }
 
