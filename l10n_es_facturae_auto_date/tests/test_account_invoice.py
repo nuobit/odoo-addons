@@ -85,6 +85,7 @@ class TestAccountInvoice(SavepointCase):
         # ACT
         date_invoice2 = datetime.date(2021, 2, 13)
 
+        invoice.date = date_invoice2
         invoice_form = Form(invoice)
         invoice_form.invoice_date = date_invoice2
         invoice = invoice_form.save()
