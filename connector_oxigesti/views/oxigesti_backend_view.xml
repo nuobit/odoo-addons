@@ -282,6 +282,26 @@
                                     string="Import in background"
                                 />
                             </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Export Services since"
+                                        class="oe_inline"
+                                        for="export_services_since_date"
+                                    />
+                                    <field
+                                        name="export_services_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="export_services_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
+                            </group>
                         </page>
                         <page name="additional_data" string="Additional data">
                             <group>
