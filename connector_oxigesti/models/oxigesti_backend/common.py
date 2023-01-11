@@ -107,6 +107,7 @@ class OxigestiBackend(models.Model):
     import_stock_production_lot_since_date = fields.Datetime("Import Lots since")
     export_stock_production_lot_since_date = fields.Datetime("Export Lots since")
     import_services_since_date = fields.Datetime("Import Services since")
+    export_services_since_date = fields.Datetime("Export Services since")
 
     # Backend data methods
     def import_customers_since(self):
@@ -156,6 +157,12 @@ class OxigestiBackend(models.Model):
             since_date = rec.import_services_since_date
             rec.import_services_since_date = fields.Datetime.now()
             self.env["oxigesti.sale.order"].import_data(rec, since_date)
+
+    def export_services_since(self):
+        for rec in self:
+            since_date = rec.import_services_since_date
+            rec.import_services_since_date = fields.Datetime.now()
+            self.env["oxigesti.sale.order"].export_data(rec, since_date)
 
     # Scheduler methods
     @api.model
@@ -210,6 +217,11 @@ class OxigestiBackend(models.Model):
         company_id = self.get_current_user_company()
         domain = [("company_id", "=", company_id.id)]
         self.search(domain).import_services_since()
+
+    def _scheduler_export_services(self):
+        company_id = self.get_current_user_company()
+        domain = [("company_id", "=", company_id.id)]
+        self.search(domain).export_services_since()
 
     def tz_to_utc(self, dt):
         t = pytz.timezone(self.tz).localize(dt)

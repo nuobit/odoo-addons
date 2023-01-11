@@ -2,7 +2,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class SaleOrder(models.Model):
@@ -13,6 +14,28 @@ class SaleOrder(models.Model):
         inverse_name="odoo_id",
         string="Oxigesti Bindings",
     )
+
+    oxigesti_write_date = fields.Datetime(
+        compute="_compute_oxigesti_write_date",
+        store=True,
+        required=True,
+        default=fields.Datetime.now,
+    )
+
+    @api.depends("name", "date_order")
+    def _compute_oxigesti_write_date(self):
+        for rec in self:
+            rec.oxigesti_write_date = fields.Datetime.now()
+
+    @api.constrains("state", "oxigesti_bind_ids")
+    def _check_cancel_state(self):
+        for rec in self:
+            if rec.state == "cancel" and rec.oxigesti_bind_ids:
+                raise ValidationError(
+                    _(
+                        "It's not possible cancel a sale order when it has oxigesti binding"
+                    )
+                )
 
 
 class SaleOrderBinding(models.Model):
@@ -37,6 +60,16 @@ class SaleOrderBinding(models.Model):
         if since_date:
             filters = [("Fecha_Modifica", ">", since_date)]
         self.with_delay().import_batch(backend, filters=filters)
+
+    @api.model
+    def export_data(self, backend, since_date):
+        domain = [("company_id", "=", backend.company_id.id)]
+        if since_date:
+            domain += [
+                ("oxigesti_write_date", ">", since_date),
+                ("oxigesti_bind_ids", "!=", False),
+            ]
+        self.with_delay().export_batch(backend, domain=domain)
 
     def export_order_data(self, clear=False):
         self.ensure_one()
