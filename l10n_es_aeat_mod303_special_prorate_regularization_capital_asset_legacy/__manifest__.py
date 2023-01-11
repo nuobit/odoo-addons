@@ -5,7 +5,7 @@
     "name": "AEAT 303 - Special Prorate Regularization Capital Asset legacy",
     "summary": "This module extends Special Prorate Regularization Capital Asset "
     "to include old assets",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
