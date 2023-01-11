@@ -11,28 +11,23 @@ from odoo.addons.component.core import Component
 _logger = logging.getLogger(__name__)
 
 
+class SaleOrderBatchExporter(Component):
+    """Export the Oxigesti Services.
+
+    For every sale order in the list, a delayed job is created.
+    """
+
+    _name = "oxigesti.sale.order.delayed.batch.exporter"
+    _inherit = "oxigesti.delayed.batch.exporter"
+
+    _apply_on = "oxigesti.sale.order"
+
+
 class SaleOrderExporter(Component):
     _name = "oxigesti.sale.order.exporter"
     _inherit = "oxigesti.exporter"
 
     _apply_on = "oxigesti.sale.order"
-
-    def run_order_data(self, binding, clear=False):
-        external_id = self.binder.to_external(binding)
-        if not external_id:
-            return _("Sale is not linked with a Oxigesti sales order")
-
-        order_number, order_date = None, None
-        if not clear:
-            order_number = binding.name
-
-            order_date = binding.date_order
-
-        values = {
-            "Odoo_Numero_Albaran": order_number,
-            "Odoo_Fecha_Generado_Albaran": order_date,
-        }
-        self.backend_adapter.write(external_id, values)
 
     def run_invoice_data(self, binding, invoice, clear=False):
         external_id = self.binder.to_external(binding)
