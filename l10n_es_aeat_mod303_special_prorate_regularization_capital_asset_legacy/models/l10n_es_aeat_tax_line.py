@@ -27,8 +27,10 @@ class L10nEsAeatTaxLine(models.Model):
                 rec.mod303_id = False
 
     def get_calculated_assets(self):
-        action = self.env.ref("account_asset_management.account_asset_action")
-        action_dict = action.sudo().read()[0]
-        if self.asset_ids.ids:
-            action_dict["domain"] = [("id", "in", self.asset_ids.ids)]
+        action_dict = (
+            self.env.ref("account_asset_management.account_asset_action")
+            .sudo()
+            .read()[0]
+        )
+        action_dict["domain"] = [("id", "in", self.asset_ids.ids)]
         return action_dict
