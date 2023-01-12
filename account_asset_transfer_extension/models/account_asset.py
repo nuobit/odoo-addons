@@ -76,7 +76,7 @@ class AccountAsset(models.Model):
         }
         return res
 
-    @api.constrains("state", "to_asset_ids")
+    @api.constrains("state")
     def _check_state_to_asset_ids(self):
         for rec in self:
             if rec.to_asset_ids and rec.state != "transferred":
@@ -88,7 +88,7 @@ class AccountAsset(models.Model):
                     % rec.name
                 )
 
-    @api.constrains("state", "from_asset_ids")
+    @api.constrains("state")
     def _check_state_from_asset_ids(self):
         for rec in self:
             if rec.from_asset_ids and rec.state not in ["open", "close", "removed"]:
