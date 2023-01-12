@@ -38,8 +38,10 @@ class AccountCapitalAssetMapTax(models.Model):
             ]
         ):
             return taxes
-        threshold_capital_asset_amount = self.env["ir.config_parameter"].get_param(
-            "l10n_es_account_capital_asset.capital_asset_threshold_amount"
+        threshold_capital_asset_amount = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("l10n_es_account_capital_asset.capital_asset_threshold_amount")
         )
         asset_price = self.env["account.asset"]._get_asset_unit_price(amount, quantity)
         result = taxes
