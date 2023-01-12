@@ -22,7 +22,7 @@ class AccountAsset(models.Model):
         domain="[('id', '=', profile_capital_asset_type_id)]",
     )
 
-    @api.constrains("tax_base_amount_unit", "capital_asset_type_id", "company_id")
+    @api.constrains("capital_asset_type_id", "company_id")
     def _check_amount_type(self):
         threshold_capital_asset_amount = float(
             self.env["ir.config_parameter"].get_param(
@@ -55,7 +55,7 @@ class AccountAsset(models.Model):
                         % threshold_capital_asset_amount
                     )
 
-    @api.constrains("tax_base_amount_unit", "tax_ids")
+    @api.constrains("tax_ids")
     def _check_tax_base_amount(self):
         if not self.mapped("tax_ids") and self.env.context.get(
             "allow_empty_taxes", False
