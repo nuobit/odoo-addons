@@ -7,6 +7,7 @@ from odoo import api, fields, models
 
 class AccountCapitalAssetMapTax(models.Model):
     _name = "l10n.es.account.capital.asset.map.tax"
+    _description = "Capital Asset Map Tax"
 
     tax_src_id = fields.Many2one(
         "account.tax.template", string="Tax Source", required=True
