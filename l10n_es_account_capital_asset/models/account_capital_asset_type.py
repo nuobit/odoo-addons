@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 
 class CapitalAssetType(models.Model):
     _name = "l10n.es.account.capital.asset.type"
+    _description = "Capital Asset Type"
 
     name = fields.Char(string="Name", required=True, translate=True)
     period = fields.Integer(string="Period (years)", required=True)
