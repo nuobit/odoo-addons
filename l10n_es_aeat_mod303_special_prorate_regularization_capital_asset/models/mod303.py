@@ -193,7 +193,9 @@ class L10nEsAeatMod303Report(models.AbstractModel):
         )
         prorate_year = self._get_prorate_year(self.company_id, self.year)
         prorate_max_diff = float(
-            self.env["ir.config_parameter"].get_param(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
                 "l10n_es_aeat_mod303_special_prorate_regularization_capital_asset."
                 "capital_asset_prorate_max_diff"
             )
