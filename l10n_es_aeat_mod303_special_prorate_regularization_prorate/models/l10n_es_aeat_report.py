@@ -10,7 +10,7 @@ class L10nEsAeatReport(models.AbstractModel):
 
     move_prorate_id = fields.Many2one(
         comodel_name="account.move",
-        string="Account entry",
+        string="Prorate Account entry",
         readonly=True,
         domain=[("move_type", "=", "entry")],
     )
