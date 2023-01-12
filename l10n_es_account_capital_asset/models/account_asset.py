@@ -25,9 +25,9 @@ class AccountAsset(models.Model):
     @api.constrains("capital_asset_type_id", "company_id")
     def _check_amount_type(self):
         threshold_capital_asset_amount = float(
-            self.env["ir.config_parameter"].get_param(
-                "l10n_es_account_capital_asset.capital_asset_threshold_amount"
-            )
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("l10n_es_account_capital_asset.capital_asset_threshold_amount")
         )
         for rec in self:
             if rec.company_id.l10n_es_capital_asset_enabled:

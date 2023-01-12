@@ -11,9 +11,9 @@ class AccountTax(models.Model):
 
     def check_tax_base_amount(self, tax_base_amount):
         threshold_amount = float(
-            self.env["ir.config_parameter"].get_param(
-                "l10n_es_account_capital_asset.capital_asset_threshold_amount"
-            )
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("l10n_es_account_capital_asset.capital_asset_threshold_amount")
         )
         bi_tax_templates = self.env["l10n.es.account.capital.asset.map.tax"].search([])
         for rec in self:
