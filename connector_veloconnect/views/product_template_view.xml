@@ -30,11 +30,12 @@
         <field name="arch" type="xml">
             <xpath expr="/form/sheet" position="inside">
                 <field name='veloconnect_readonly' invisible='1' />
+                <field name='veloconnect_list_price_readonly' invisible='1' />
             </xpath>
             <field name="list_price" position="attributes">
                 <attribute
                     name="attrs"
-                >{'readonly': [('veloconnect_readonly', '=', True)]}</attribute>
+                >{'readonly': [('veloconnect_list_price_readonly', '=', True)]}</attribute>
             </field>
             <field name="uom_id" position="attributes">
                 <attribute
