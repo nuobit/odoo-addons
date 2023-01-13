@@ -68,7 +68,8 @@ class VeloconnectProductTemplateImportMapper(Component):
                 [x.veloconnect_price for x in other_bindings]
                 + [record["RecommendedRetailPrice"]]
             )
-            return {"list_price": max_price}
+            if max_price:
+                return {"list_price": max_price}
 
     @mapping
     def binding_description(self, record):

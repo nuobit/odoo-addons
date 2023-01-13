@@ -26,6 +26,16 @@ class ProductTemplate(models.Model):
         for rec in self:
             rec.veloconnect_readonly = bool(rec.veloconnect_bind_ids)
 
+    veloconnect_list_price_readonly = fields.Boolean(
+        compute="_compute_veloconnect_list_price_readonly"
+    )
+
+    def _compute_veloconnect_list_price_readonly(self):
+        for rec in self:
+            rec.veloconnect_list_price_readonly = rec.veloconnect_bind_ids and set(
+                rec.veloconnect_bind_ids.mapped("veloconnect_price")
+            ) != {0}
+
     def resync_import_all(self):
         for binding in self.veloconnect_bind_ids:
             binding.sudo().resync_import()
