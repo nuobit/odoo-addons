@@ -160,8 +160,8 @@ class OxigestiBackend(models.Model):
 
     def export_services_since(self):
         for rec in self:
-            since_date = rec.import_services_since_date
-            rec.import_services_since_date = fields.Datetime.now()
+            since_date = rec.export_services_since_date
+            rec.export_services_since_date = fields.Datetime.now()
             self.env["oxigesti.sale.order"].export_data(rec, since_date)
 
     # Scheduler methods
