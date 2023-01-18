@@ -20,6 +20,7 @@ class AccountAsset(models.Model):
     )
     invoice_date = fields.Date(
         string="Invoice Date",
+        states=READONLY_STATES,
     )
     quantity = fields.Float(
         string="Quantity",
