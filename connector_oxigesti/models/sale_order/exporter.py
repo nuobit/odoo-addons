@@ -5,6 +5,7 @@
 import logging
 
 from odoo import _
+from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 
@@ -28,6 +29,11 @@ class SaleOrderExporter(Component):
     _inherit = "oxigesti.exporter"
 
     _apply_on = "oxigesti.sale.order"
+
+    def _create(self, values):
+        raise ValidationError(
+            _("It's not allowed to create a new services to Oxigesti.")
+        )
 
     def run_invoice_data(self, binding, invoice, clear=False):
         external_id = self.binder.to_external(binding)

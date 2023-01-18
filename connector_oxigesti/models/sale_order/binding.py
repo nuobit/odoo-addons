@@ -63,11 +63,13 @@ class SaleOrderBinding(models.Model):
 
     @api.model
     def export_data(self, backend, since_date):
-        domain = [("company_id", "=", backend.company_id.id)]
+        domain = [
+            ("oxigesti_bind_ids", "!=", False),
+            ("oxigesti_bind_ids.backend_id", "=", backend.id),
+        ]
         if since_date:
             domain += [
                 ("oxigesti_write_date", ">", since_date),
-                ("oxigesti_bind_ids", "!=", False),
             ]
         self.with_delay().export_batch(backend, domain=domain)
 
