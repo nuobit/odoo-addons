@@ -4,7 +4,7 @@
 {
     "name": "Account Asset Management Extension",
     "summary": "This module adds additional fields in assets",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",

@@ -28,6 +28,7 @@
                                 widget="monetary"
                                 options="{'currency_field': 'company_currency_id'}"
                             />
+                            <field name="quantity" />
                             <field name="json_tax_ids" invisible="1" />
                             <field name="tax_ids" widget="many2many_tags" />
                         </group>

@@ -21,6 +21,11 @@ class AccountAsset(models.Model):
     invoice_date = fields.Date(
         string="Invoice Date",
     )
+    quantity = fields.Float(
+        string="Quantity",
+        states=READONLY_STATES,
+        required=True,
+    )
     tax_base_amount = fields.Float(
         string="Tax Base Amount",
         states=READONLY_STATES,
@@ -51,15 +56,56 @@ class AccountAsset(models.Model):
                 amount /= quantity
         return amount
 
-    @api.depends("tax_base_amount", "invoice_move_line_id.quantity")
+    @api.depends("tax_base_amount", "quantity")
     def _compute_tax_base_amount_unit(self):
         for rec in self:
             tax_base_amount = rec.tax_base_amount
-            if rec.invoice_move_line_id:
+            if rec.quantity:
                 tax_base_amount = rec._get_asset_unit_price(
-                    rec.tax_base_amount, rec.invoice_move_line_id.quantity
+                    rec.tax_base_amount, rec.quantity
                 )
             rec.tax_base_amount_unit = tax_base_amount
+
+    @api.constrains("quantity")
+    def _check_quantity_on_asset(self):
+        for rec in self:
+            if rec.quantity == 0:
+                raise ValidationError(_("Quantity in asset can't be 0"))
+
+    @api.constrains("invoice_ref", "invoice_date", "quantity", "tax_base_amount")
+    def _check_invoice(self):
+        for rec in self:
+            if rec.invoice_move_line_id:
+                if rec.invoice_move_line_id.move_id.ref != rec.invoice_ref:
+                    raise ValidationError(
+                        _("Invoice ref must be the same as the one in the invoice: %s")
+                        % rec.invoice_move_line_id.move_id.ref
+                    )
+                if rec.invoice_move_line_id.move_id.invoice_date != rec.invoice_date:
+                    raise ValidationError(
+                        _("Invoice date must be the same as the one in the invoice: %s")
+                        % rec.invoice_move_line_id.move_id.invoice_date
+                    )
+                if rec.invoice_move_line_id.quantity != rec.quantity:
+                    raise ValidationError(
+                        _(
+                            "Quantity must be the same as the one in the invoice line: %s"
+                        )
+                        % rec.invoice_move_line_id.quantity
+                    )
+                if rec.invoice_move_line_id.balance != rec.tax_base_amount:
+                    raise ValidationError(
+                        _(
+                            "Tax base amount must be the same as the one in the "
+                            "invoice line: %s"
+                        )
+                        % rec.invoice_move_line_id.balance
+                    )
+                if rec.invoice_move_line_id.tax_ids != rec.tax_ids:
+                    raise ValidationError(
+                        _("Taxes must be the same as the ones in the invoice line: %s")
+                        % rec.invoice_move_line_id.tax_ids.mapped("name")
+                    )
 
     # needed for bypassing the restriction on m2m fields on Form class. Remove it when supported
     json_tax_ids = fields.Char(
