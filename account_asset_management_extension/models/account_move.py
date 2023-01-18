@@ -16,6 +16,7 @@ class AccountMove(models.Model):
             {
                 "invoice_ref": self.ref,
                 "invoice_date": self.invoice_date,
+                "quantity": aml.quantity,
                 "tax_base_amount": aml.balance,
                 "json_tax_ids": json.dumps(aml.tax_ids.ids),
             }
