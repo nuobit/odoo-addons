@@ -25,20 +25,13 @@ class AccountTax(models.Model):
             for rec in self:
                 apply_to_asset.setdefault(rec.apply_to_asset, self.env[self._name])
                 apply_to_asset[rec.apply_to_asset] |= rec
+            error_message = _(
+                "Defined taxes %s are not applicable with assets. "
+                "Please enter the taxes accordingly."
+            )
             if "never" in apply_to_asset:
                 raise ValidationError(
-                    _(
-                        "It's not possible create an asset with taxes "
-                        "marked as 'never' in the field apply to asset: %s"
-                    )
-                    % apply_to_asset["never"].mapped("name")
+                    error_message % apply_to_asset["never"].mapped("name")
                 )
             if "always" not in apply_to_asset:
-                raise ValidationError(
-                    _(
-                        "It's not possible to create an asset with this taxes: %s. "
-                        "The taxes to create an asset must have the field "
-                        "apply on asset as 'always'. Please review the taxes"
-                    )
-                    % self.mapped("name")
-                )
+                raise ValidationError(error_message % self.mapped("name"))
