@@ -27,12 +27,13 @@ class AccountCapitalAssetMapTax(models.Model):
         }
 
     @api.model
-    def map_tax(self, taxes, company, amount, quantity):
+    def map_tax(self, taxes, company, asset_profile, amount, quantity):
         if any(
             [
                 not taxes,
                 not company,
                 not company.l10n_es_capital_asset_enabled,
+                not asset_profile,
                 not amount,
                 not quantity,
             ]
