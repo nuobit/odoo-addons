@@ -55,3 +55,43 @@ msgstr "Línea de factura"
 msgid "Taxes"
 msgstr "Impuestos"
 
+#. module: account_asset_management_extension
+#: model:ir.model.fields,field_description:account_asset_management_extension.field_account_asset__quantity
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: account_asset_management_extension
+#: code:addons/account_asset_management_extension/models/account_asset.py:0
+#, python-format
+msgid "Quantity in asset can't be 0"
+msgstr "La cantidad del activo no puede ser 0."
+
+#. module: account_asset_management_extension
+#: code:addons/account_asset_management_extension/models/account_asset.py:0
+#, python-format
+msgid "Invoice date must be the same as the one in the invoice: %s"
+msgstr "La fecha de factura debe ser la misma que la establecida en la factura: %s"
+
+#. module: account_asset_management_extension
+#: code:addons/account_asset_management_extension/models/account_asset.py:0
+#, python-format
+msgid "Invoice ref must be the same as the one in the invoice: %s"
+msgstr "La referencia de factura debe ser la misma que la establecida en la factura: %s"
+
+#. module: account_asset_management_extension
+#: code:addons/account_asset_management_extension/models/account_asset.py:0
+#, python-format
+msgid "Taxes must be the same as the ones in the invoice line: %s"
+msgstr "Los impuestos deben ser los mismos que los establecidos en la línea de la factura: %s"
+
+#. module: account_asset_management_extension
+#: code:addons/account_asset_management_extension/models/account_asset.py:0
+#, python-format
+msgid "Tax base amount must be the same as the one in the invoice line: %s"
+msgstr "El importe de la base imponible debe ser el mismo que el establecido en la línea de factura: %s"
+
+#. module: account_asset_management_extension
+#: code:addons/account_asset_management_extension/models/account_asset.py:0
+#, python-format
+msgid "Quantity must be the same as the one in the invoice line: %s"
+msgstr "La cantidad debe ser la misma que la establecida en la línea de factura: %s"
