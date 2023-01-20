@@ -119,6 +119,16 @@ msgid "It's not possible to recompute a closed prorate"
 msgstr "It's not possible to recompute a closed prorate"
 
 #. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_res_company__l10n_es_prorate_enabled
+msgid "L10n ES Prorate Enabled"
+msgstr "L10n ES prorrata activada"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.view_company_aeat_form
+msgid "Prorate"
+msgstr "Prorrata"
+
+#. module: l10n_es_aeat_vat_special_prorrate
 #: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
