@@ -95,11 +95,10 @@ class L10nEsAeatMod303Report(models.AbstractModel):
     def _prepare_tax_line_vals(self, map_line):
         self.ensure_one()
         res = super()._prepare_tax_line_vals(map_line)
-        if self.period_type not in ("4T", "12"):
+        if not self._eligible_prorate_period():
             if map_line.field_number == 44:
                 res["amount"] = 0
                 res["move_line_ids"] = False
-            return res
         else:
             if map_line.field_number == 44:
                 res = self._prepare_tax_line_vals_dates(
@@ -117,7 +116,7 @@ class L10nEsAeatMod303Report(models.AbstractModel):
 
     def create_regularization_move(self):
         super().create_regularization_move()
-        if self.period_type in ("4T", "12"):
+        if self._eligible_prorate_period():
             if any(
                 [
                     not self.counterpart_prorate_receivable_account_id,
