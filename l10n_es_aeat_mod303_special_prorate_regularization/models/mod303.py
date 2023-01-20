@@ -46,3 +46,8 @@ class L10nEsAeatMod303Report(models.AbstractModel):
                         % (rec.year, rec.date_start.year, rec.date_end.year)
                     )
                 )
+
+    def _eligible_prorate_period(self):
+        return (
+            self.period_type in ("4T", "12") and self.company_id.l10n_es_prorate_enabled
+        )

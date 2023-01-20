@@ -4,7 +4,7 @@
 {
     "name": "AEAT 303 - Special Prorate Regularization",
     "summary": "This module adds hooks and common methods for regularizations",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
