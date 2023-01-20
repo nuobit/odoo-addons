@@ -4,7 +4,7 @@
 {
     "name": "AEAT 303 - Special Prorate Regularization Prorate",
     "summary": "This module allows to regularize prorate differences on 303 report",
-    "version": "14.0.1.0.1",
+    "version": "14.0.1.0.2",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
