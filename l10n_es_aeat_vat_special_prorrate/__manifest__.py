@@ -6,7 +6,7 @@
     "name": "AEAT - Prorrata especial de IVA",
     "summary": "Módulo para gestionar la prorrata especial del IVA "
     "en las facturas de la AEAT",
-    "version": "14.0.1.0.4",
+    "version": "14.0.1.0.5",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
@@ -19,6 +19,7 @@
         "security/ir.model.access.csv",
         "security/aeat_map_special_prorrate_year.xml",
         "views/aeat_map_special_prorrate_year_views.xml",
+        "views/res_company_view.xml",
     ],
     "installable": True,
     "auto_install": False,
