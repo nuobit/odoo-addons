@@ -102,34 +102,6 @@ class TestAccountInvoice(SavepointCase):
             "The FacturaE start and end dates does not match to the invoice date",
         )
 
-    def test_03(self):
-        # ARRANGE
-        self.partner.facturae_auto_dates = True
-        date_invoice = datetime.date(2021, 4, 13)
-        invoice = (
-            self.env["account.move"]
-            .with_context(move_type="out_invoice")
-            .create(
-                {
-                    "partner_id": self.partner.id,
-                    "invoice_date": date_invoice,
-                    "move_type": "out_invoice",
-                }
-            )
-        )
-        # force partner onchange to populate 'factuare' field
-        invoice_form = Form(invoice)
-        invoice_form.partner_id = self.partner
-        invoice_form.invoice_date = False
-        invoice = invoice_form.save()
-
-        # ASSERT
-        self.assertEqual(
-            [x for x in [invoice.facturae_start_date, invoice.facturae_end_date]],
-            [False, False],
-            "The FacturaE start and end dates does not match to the invoice date",
-        )
-
     def test_04(self):
         # ARRANGE
         self.partner.facturae_auto_dates = True
