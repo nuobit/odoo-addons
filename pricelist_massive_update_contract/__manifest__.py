@@ -3,7 +3,7 @@
 {
     "name": "Price List Massive Update Contract",
     "summary": "Update pricelists according to pricelist tags on contracts",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Sale",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L.",
