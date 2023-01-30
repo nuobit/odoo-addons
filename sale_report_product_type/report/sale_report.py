@@ -13,8 +13,11 @@ class SaleReport(models.Model):
         readonly=True,
     )
 
-    def _query(self, with_clause="", fields=None, groupby="", from_clause=""):
-        fields = fields or {}
+    def _group_by_sale(self, groupby=""):
+        res = super()._group_by_sale(groupby)
+        res += """, t.type"""
+        return res
+
+    def _select_additional_fields(self, fields):
         fields["type"] = ", t.type as type"
-        groupby += ", t.type"
-        return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
+        return super()._select_additional_fields(fields)
