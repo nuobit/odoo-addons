@@ -28,8 +28,14 @@
             <sheet position="inside">
                 <group>
                     <group>
-                        <field name="update_pricelists" />
-                        <field name="update_contracts" />
+                        <field
+                            name="update_pricelists"
+                            attrs="{'readonly': [('state','=','processed')]}"
+                        />
+                        <field
+                            name="update_contracts"
+                            attrs="{'readonly': [('state','=','processed')]}"
+                        />
                     </group>
                 </group>
             </sheet>
