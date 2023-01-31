@@ -17,7 +17,11 @@ NuoBiT Odoo addons
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[stock_picking_partner_ref](stock_picking_partner_ref/) | 16.0.1.0.0 | [![eantones](https://github.com/eantones.png?size=30px)](https://github.com/eantones) | Adds a partner reference on picking
 
 [//]: # (end addons)
 
