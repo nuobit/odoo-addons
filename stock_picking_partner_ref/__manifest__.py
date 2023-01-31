@@ -5,9 +5,10 @@
 {
     "name": "Stock picking partner reference",
     "summary": "Adds a partner reference on picking",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "author": "NuoBiT Solutions",
+    "maintainers": ["eantones"],
     "category": "Warehouse",
-    "version": "14.0.1.0.0",
+    "version": "16.0.1.0.0",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
