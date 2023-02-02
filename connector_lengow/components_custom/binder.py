@@ -12,12 +12,13 @@ create the binding between them.
 
 """
 import hashlib
-import psycopg2
 import logging
+from contextlib import contextmanager
+
+import psycopg2
 
 from odoo import fields, models, tools, _
 from odoo.addons.component.core import AbstractComponent
-from contextlib import contextmanager
 from odoo.addons.connector.exception import (RetryableJobError, InvalidDataError)
 from odoo.exceptions import ValidationError
 
@@ -56,13 +57,16 @@ class BinderComposite(AbstractComponent):
             _lengow_odoo_hash.update(e9.encode('utf8'))
         return _lengow_odoo_hash.hexdigest()
 
-    def id2dict(self, _id, in_field=True):
+    def id2dict(self, _id, in_field=True, alt_field=False):
         """ Return a dict with the internal or external fields and their values
         :param _id: Values to put on internal or external fields
         :param in_field: with True value, _internal_field defined in binder are used.
                         With this parameter False, _external_field will be used.
         """
-        field = in_field and self._internal_field or self._external_field
+        if in_field:
+            field = alt_field and self._internal_alt_id or self._internal_field
+        else:
+            field = self._external_field
         if not isinstance(_id, (tuple, list)):
             _id = [_id]
         else:
@@ -89,6 +93,15 @@ class BinderComposite(AbstractComponent):
             return len(res) == 1 and res[0] or res
         else:
             return _dict[field]
+
+    def is_complete_id(self, _id, in_field=True):
+        fields = in_field and self._internal_field or self._external_field
+        if not isinstance(fields, (tuple, list)):
+            fields = [fields]
+        if not isinstance(_id, (tuple, list)):
+            _id = [_id]
+        _id = list(filter(None, _id))
+        return len(_id) == len(fields)
 
     @contextmanager
     def _retry_unique_violation(self):
@@ -271,7 +284,8 @@ class BinderComposite(AbstractComponent):
                             % (type(e), e, field)
                         )
 
-    def _get_internal_record_alt(self, model_name, values):
+    def _get_internal_record_alt(self, values):
+        model_name = self.unwrap_model()
         domain = self._get_internal_record_domain(values)
         self._check_domain(domain)
         return self.env[model_name].search(domain)
@@ -331,9 +345,8 @@ class BinderComposite(AbstractComponent):
                     "The alternative id (_internal_alt_id) '%s' must exist on mapper"
                     % internal_alt_id
                 )
-            model_name = self.unwrap_model()
             id_values = {x: all_values[x] for x in internal_alt_id}
-            record = self._get_internal_record_alt(model_name, id_values)
+            record = self._get_internal_record_alt(id_values)
             if len(record) > 1:
                 raise InvalidDataError(
                     "More than one internal records found. "
@@ -343,9 +356,11 @@ class BinderComposite(AbstractComponent):
             if record:
                 binding = self.wrap_record(record)
                 if not binding:
+                    binding_only_fields = set(binding._fields) - set(record._fields)
+                    update_values = mapper.values()
                     values = {
-                        k: all_values[k]
-                        for k in set(self.model._fields) & set(all_values)
+                        k: update_values[k]
+                        for k in binding_only_fields & set(update_values)
                     }
                     if self._odoo_field in values:
                         if values[self._odoo_field] != record.id:

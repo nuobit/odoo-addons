@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -7,7 +8,6 @@ from contextlib import contextmanager
 import psycopg2
 
 from odoo import _
-
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.queue_job.exception import NothingToDoJob, RetryableJobError

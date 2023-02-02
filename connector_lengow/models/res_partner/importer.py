@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -37,3 +38,13 @@ class ResPartnerImporter(Component):
         if not external_data:
             raise ValidationError("External data is mandatory")
         return super().run(external_id, external_data=external_data)
+
+    def _import_dependencies(self, external_data):
+        # County
+        model = 'lengow.res.country.state'
+        binder = self.binder_for(model)
+        external_id = binder.dict2id(external_data, in_field=False)
+        if binder.is_complete_id(external_id, in_field=False):
+            self._import_dependency(external_id, model,
+                                    external_data=external_data,
+                                    always=False)

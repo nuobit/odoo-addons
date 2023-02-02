@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import fields, models
@@ -39,16 +40,19 @@ class LengowSaleOrderBinding(models.Model):
     ]
 
     def _prepare_import_sale_orders_domain(self, backend_record=None, since_date=None, order_number=None):
-        domain = [('lengow_status', 'not in', ('waiting_acceptance', 'accepted'))]
+        domain = [
+            ('lengow_status', 'not in', ('waiting_acceptance', 'accepted')),
+            ('anonymized', '=', False),
+        ]
         if order_number:
             domain += [('marketplace_order_id', 'in', [x.strip() for x in order_number.split(',')])]
         else:
             if since_date:
                 domain += [('updated_from', '=', since_date)]
-            else:
-                domain += [('updated_from', '=', datetime(1900, 1, 1, 0, 0, 0))]
             if backend_record.min_order_date:
                 domain += [('marketplace_order_date_from', '=', backend_record.min_order_date)]
+        if order_number or not since_date:
+            domain += [('updated_from', '=', datetime(1900, 1, 1, 0, 0, 0))]
         return domain
 
     @job(default_channel='root.lengow')

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) --><!---->
+<odoo>
+    <record id="view_country_state_form" model="ir.ui.view">
+        <field name="name">res.country.state.lengow.connector.form</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="connector_common.view_country_state_form"/>
+        <field name="arch" type="xml">
+            <page name="connector" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </page>
+            <page name="connector" position="inside">
+                <group string="Lengow Bindings">
+                    <field name="lengow_bind_ids" nolabel="1"/>
+                </group>
+            </page>
+        </field>
+    </record>
+
+    <record id="lengow_country_state_view_form" model="ir.ui.view">
+        <field name="name">lengow.res.country.form</field>
+        <field name="model">lengow.res.country.state</field>
+        <field name="arch" type="xml">
+            <form string="lengow Product">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="odoo_id" readonly="True"/>
+                    <!--                    <field name="default_code" readonly="True"/>-->
+                    <field name="sync_date" readonly="True"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="lengow_country_state_view_tree" model="ir.ui.view">
+        <field name="name">lengow.res.country.tree</field>
+        <field name="model">lengow.res.country.state</field>
+        <field name="arch" type="xml">
+            <tree string="Lengow Product">
+                <field name="backend_id"/>
+                <field name="odoo_id"/>
+                <!--                <field name="default_code"/>-->
+                <field name="sync_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="lengow_res_country_state_action" model="ir.actions.act_window">
+        <field name="name">County</field>
+        <field name="res_model">lengow.res.country.state</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
