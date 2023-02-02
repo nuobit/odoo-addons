@@ -31,24 +31,27 @@ class ResPartnerExportMapper(Component):
             raise ValidationError(_('No partner mapping found for parent %s') % parent.name)
         return {'CardCode': partner_map.sapb1_cardcode}
 
+    @changed_by('country_id')
     @mapping
     def country(self, record):
         return {'Country': record['country_id'].code}
+
+    @changed_by('state_id')
+    @mapping
+    def county(self, record):
+        return {'County': record['state_id'].name or None}
 
     @changed_by('phone')
     @mapping
     def phone(self, record):
         return {'U_ACC_TELEFONO': record['phone'] and record['phone'].strip() or None}
 
+    @changed_by('street2')
     @changed_by('street')
     @mapping
     def street(self, record):
-        return {'Street': record['street'] and record['street'].strip() or None}
-
-    @changed_by('street2')
-    @mapping
-    def block(self, record):
-        return {'Block': record['street2'] and record['street2'].strip() or None}
+        street_l = list(map(lambda x: x.strip(), filter(None, [record['street'], record['street2']])))
+        return {'Street': street_l and ' '.join(street_l) or None}
 
     @changed_by('zip')
     @mapping
