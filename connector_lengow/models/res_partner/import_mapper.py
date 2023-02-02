@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _
@@ -103,3 +104,18 @@ class ResPartnerImportMapper(Component):
             return {'country_id': country.id}
         else:
             return {'country_id': None}
+
+    @mapping
+    def county(self, record):
+        binder = self.binder_for('lengow.res.country.state')
+        external_id = binder.dict2id(record, in_field=False)
+        if binder.is_complete_id(external_id):
+            values = binder.id2dict(external_id, in_field=True, alt_field=True)
+            county = binder._get_internal_record_alt(values)
+            if not county:
+                raise ValidationError(
+                    _("County %s not found on odoo and it should have. "
+                      "Please review the current heuristics") % values)
+            return {'state_id': county.id}
+        else:
+            return {'state_id': None}
