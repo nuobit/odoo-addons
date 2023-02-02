@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_country_state_form" model="ir.ui.view">
+        <field name="name">res.country.state.connector.form</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_form"/>
+        <field name="groups_id"
+               eval="[(4, ref('connector.group_connector_manager'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form" position="inside">
+                <!-- change the invisible attribute to 0 when used
+                     in submodules -->
+                <notebook>
+                    <page string="Connectors" name="connector" invisible="1"/>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>
