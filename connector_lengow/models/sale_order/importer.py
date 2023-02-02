@@ -3,9 +3,7 @@
 
 import logging
 
-from odoo import _
 from odoo.addons.component.core import Component
-from odoo.addons.queue_job.exception import RetryableJobError
 
 _logger = logging.getLogger(__name__)
 

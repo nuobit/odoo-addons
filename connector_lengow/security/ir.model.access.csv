@@ -2,6 +2,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_lengow_sale_order","lengow_sale_order connector manager","model_lengow_sale_order","connector.group_connector_manager",1,1,1,1
 "access_lengow_sale_order_line","lengow_sale_order_line connector manager","model_lengow_sale_order_line","connector.group_connector_manager",1,1,1,1
 "access_lengow_res_partner","lengow_res_partner connector manager","model_lengow_res_partner","connector.group_connector_manager",1,1,1,1
+"access_lengow_res_country_state","lengow_res_country_state connector manager","model_lengow_res_country_state","connector.group_connector_manager",1,1,1,1
 "access_lengow_product_product","lengow_product_product connector manager","model_lengow_product_product","connector.group_connector_manager",1,1,1,1
 "access_lengow_backend","lengow_backend connector manager","model_lengow_backend","connector.group_connector_manager",1,1,1,1
 "access_lengow_backend_marketplace","lengow_backend_marketplace connector manager","model_lengow_backend_marketplace","connector.group_connector_manager",1,1,1,1
