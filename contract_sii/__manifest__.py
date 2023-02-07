@@ -5,7 +5,7 @@
 {
     "name": "Contract SII",
     "summary": "This module adds SII data to contracts and propagate them to invoice",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Contract Management",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
