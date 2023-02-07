@@ -47,6 +47,7 @@ class TestContractSii(TestContractBase):
         line_form.recurring_next_date = "2018-02-22"
         line_form.save()
         self.contract_sale_ssi = contract_sale_form.save()
+        self.contract_sale_ssi._compute_recurring_next_date()
         self.contract_sale_ssi.recurring_create_invoice()
         invoices = self.aml_model.search(
             [
@@ -105,6 +106,7 @@ class TestContractSii(TestContractBase):
         line_form.recurring_next_date = "2018-02-22"
         line_form.save()
         self.contract_purchase_ssi = contract_purchase_form.save()
+        self.contract_purchase_ssi._compute_recurring_next_date()
         self.contract_purchase_ssi.recurring_create_invoice()
         invoices = self.aml_model.search(
             [
