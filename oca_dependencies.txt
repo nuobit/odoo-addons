@@ -1,5 +1,6 @@
 account-invoicing
 account-financial-tools
+brand
 connector
 contract
 l10n-spain
