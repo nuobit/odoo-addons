@@ -5,7 +5,7 @@
     "name": "Oxigen Stock",
     "summary": "Customizations for Oxigen in Stock. "
     "description when creating a lot from a picking",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "author": "ForgeFlow",
     "website": "https://github.com/oxigensalud/odoo-addons",
     "category": "Warehouse",

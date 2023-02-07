@@ -63,7 +63,9 @@
                 style="font-weight: bold"
             >
                 <td>
-                    <span t-field="move.product_id.display_name" /><br />
+                    <span
+                        t-field="move.product_id.with_context(partner_id=o.partner_id.id).partner_ref"
+                    /><br />
                     <span t-field="move.product_id.description_picking" />
                 </td>
                 <td>
@@ -94,6 +96,14 @@
                 </td>
             </tr>
         </xpath>
+        <xpath
+            expr="//table[1]/tbody/t/t//span[@t-field='ml.product_id.display_name']"
+            position="replace"
+        >
+            <span
+                t-field="ml.product_id.with_context(partner_id=o.partner_id.id).partner_ref"
+            />
+        </xpath>
 <!--    Stock move lines info, some changes depending on whether there's only one stock move line-->
         <xpath expr="//table[1]/tbody/t/t/tr" position="after">
             <tr
@@ -101,7 +111,9 @@
                 t-att-style="style"
             >
                 <td t-if="len(move.move_line_ids)==1">
-                    <span t-field="ml.product_id.display_name" /><br />
+                    <span
+                        t-field="ml.product_id.with_context(partner_id=o.partner_id.id).partner_ref"
+                    /><br />
                     <span t-field="ml.product_id.description_picking" />
                 </td>
                 <td t-if="len(move.move_line_ids)!=1">
