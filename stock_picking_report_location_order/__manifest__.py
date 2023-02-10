@@ -3,9 +3,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    "name": "Stock picking report location order",
-    "summary": "Sort report picking lines by location",
-    "version": "14.0.1.0.0",
+    "name": "(deprecated) Stock picking report location order",
+    "summary": "Sort report picking lines by location. "
+    "(deprecated in favor of stock_picking_line_location_order)",
+    "version": "14.0.1.0.1",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Warehouse",
