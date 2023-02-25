@@ -91,8 +91,8 @@ class ProductService(Component):
                               and not %(assets)s
                     )
             )
-            select q.lot_id, l.name as lot_name, q.product_id, p.default_code as product_code,
-                   sum(coalesce(q.quantity, 0)) as quantity
+            select q.location_id, q.lot_id, l.name as lot_name, q.product_id,
+                   p.default_code as product_code, sum(coalesce(q.quantity, 0)) as quantity
             from stock_quant q, stock_location sl, stock_production_lot l,
                  product_product p, product_template_asset t
             where q.lot_id = l.id and
@@ -105,9 +105,9 @@ class ProductService(Component):
                   and (%(product_id)s is null or q.product_id = %(product_id)s)
                   and (%(location_id)s is null or q.location_id = %(location_id)s)
                   and (%(location_usage)s is null or sl.usage = %(location_usage)s)
-            group by q.lot_id, l.name, q.product_id, p.default_code, t.tracking
+            group by q.location_id, q.lot_id, l.name, q.product_id, p.default_code
             union all
-            select l.id as lot_id, l.name as lot_name, l.product_id,
+            select null as location_id, l.id as lot_id, l.name as lot_name, l.product_id,
                    p.default_code as product_code, 0 as quantity
             from stock_production_lot l, product_product p, product_template_asset t
             where l.product_id = p.id and
@@ -125,7 +125,7 @@ class ProductService(Component):
                   and (t.company_id is null or t.company_id = %(company_id)s)
                   and (%(product_id)s is null or l.product_id = %(product_id)s)
             union all
-            select null as lot_id, null as lot_name, q.product_id,
+            select q.location_id, null as lot_id, null as lot_name, q.product_id,
                    p.default_code as product_code, sum(coalesce(q.quantity, 0)) as quantity
             from stock_quant q, stock_location sl, product_product p, product_template_asset t
             where q.location_id = sl.id and
@@ -137,9 +137,9 @@ class ProductService(Component):
                   and (%(product_id)s is null or q.product_id = %(product_id)s)
                   and (%(location_id)s is null or q.location_id = %(location_id)s)
                   and (%(location_usage)s is null or sl.usage = %(location_usage)s)
-            group by q.product_id, p.default_code, t.tracking
+            group by q.location_id, q.product_id, p.default_code
             union all
-            select null as lot_id, null as lot_name, p.id as product_id,
+            select null as location_id, null as lot_id, null as lot_name, p.id as product_id,
                    p.default_code as product_code, 0 as quantity
             from  product_product p, product_template_asset t
             where p.product_tmpl_id = t.id and
@@ -162,6 +162,7 @@ class ProductService(Component):
         data = {}
         self.env.cr.execute(sql, params)
         for (
+            _location_id,
             lot_id,
             lot_name,
             product_id,
@@ -169,18 +170,24 @@ class ProductService(Component):
             quantity,
         ) in self.env.cr.fetchall():
             product = self.env["product.product"].browse(product_id)
-            data.setdefault(product, [])
+            data.setdefault(product, {})
             qty = round(quantity, dp.digits)
             if qty > 0:
-                data[product].append(
+                data[product].setdefault(
+                    lot_id,
                     {
                         "id": lot_id,
                         "code": lot_name,
-                        "quantity": qty,
-                    }
+                        "quantity": 0,
+                    },
                 )
+                data[product][lot_id]["quantity"] = round(
+                    data[product][lot_id]["quantity"] + qty, dp.digits
+                )
+
         product_list = []
-        for product, lots in data.items():
+        for product, lots_d in data.items():
+            lots = list(lots_d.values())
             if (code or barcode) or lots:
                 product_list.append(
                     {
