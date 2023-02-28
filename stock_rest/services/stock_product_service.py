@@ -77,22 +77,24 @@ class ProductService(Component):
 
         # get data
         sql = """
-            with model_field_translation as (
-                select r.name as field, r.res_id, r.value as value
+            with product_template_name_trl as (
+                select r.res_id as id, r.value as name
                 from ir_translation r
                 where r.type = 'model' and
+                      r.name = 'product.template,name' and
+                      (%(lang)s != 'en_US' and r.lang = %(lang)s)
+            ),
+            product_attribute_value_name_trl as (
+                select r.res_id as id, r.value as name
+                from ir_translation r
+                where r.type = 'model' and
+                      r.name = 'product.attribute.value,name' and
                       (%(lang)s != 'en_US' and r.lang = %(lang)s)
             ),
             product_template_asset as (
-                select t.id, t.active, t.company_id,
-                       coalesce(r.value, t.name) as name, t.categ_id, c.name as categ_name,
-                       t.tracking
+                select t.id, t.active, t.company_id, t.tracking
                 from product_template t
-                        left join model_field_translation r on
-                                      r.field='product.template,name' and t.id = r.res_id,
-                     product_category c
-                where t.categ_id = c.id and
-                      not exists (
+                where not exists (
                         select 1
                         from account_account a, ir_property r
                         where a.asset_profile_id is not null and
@@ -111,82 +113,111 @@ class ProductService(Component):
                               and r.company_id = %(company_id)s
                               and not %(assets)s
                     )
+            ),
+            product_variant_base as (
+                select distinct c.product_product_id as product_id,
+                                a.id as attribute_id, av.id as attibute_value_id
+                from product_variant_combination c,
+                     product_template_attribute_value tav,
+                     product_attribute_value av, product_attribute a
+                where c.product_template_attribute_value_id = tav.id and
+                      tav.product_attribute_value_id = av.id and
+                      av.attribute_id = a.id and
+                      (%(product_id)s is null or c.product_product_id = %(product_id)s)
+            ),
+            product_variant as (
+                select pv.product_id,
+                       string_agg(coalesce(avr.name, av.name),
+                           ' ' order by a."sequence") as attribute_name
+                from product_variant_base pv, product_attribute a,
+                     product_attribute_value av
+                        left join product_attribute_value_name_trl avr on avr.id = av.id
+                where pv.attribute_id = a.id and
+                      pv.attibute_value_id = av.id
+                group by pv.product_id
+            ),
+            product_lot_location as (
+                select q.location_id, q.lot_id, l.name as lot_name, q.product_id,
+                       sum(coalesce(q.quantity, 0)) as quantity
+                from stock_quant q, stock_location sl, stock_production_lot l,
+                     product_product p, product_template_asset t
+                where q.lot_id = l.id and
+                      q.location_id = sl.id and
+                      q.product_id = p.id and
+                      p.product_tmpl_id = t.id and
+                      p.active and t.active and
+                      t.tracking != 'none'
+                      and (t.company_id is null or t.company_id = %(company_id)s)
+                      and (%(product_id)s is null or q.product_id = %(product_id)s)
+                      and (%(location_id)s is null or q.location_id = %(location_id)s)
+                      and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                group by q.location_id, q.lot_id, l.name, q.product_id
+                union all
+                select null as location_id, l.id as lot_id, l.name as lot_name, l.product_id,
+                       0 as quantity
+                from stock_production_lot l, product_product p, product_template_asset t
+                where l.product_id = p.id and
+                      p.product_tmpl_id = t.id and
+                      p.active and t.active and
+                      t.tracking != 'none' and
+                      not exists (
+                         select 1
+                         from stock_quant q, stock_location sl
+                         where q.lot_id = l.id and
+                               q.location_id = sl.id
+                               and (%(location_id)s is null or q.location_id = %(location_id)s)
+                               and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                      )
+                      and (t.company_id is null or t.company_id = %(company_id)s)
+                      and (%(product_id)s is null or l.product_id = %(product_id)s)
+                union all
+                select q.location_id, null as lot_id, null as lot_name, q.product_id,
+                       sum(coalesce(q.quantity, 0)) as quantity
+                from stock_quant q, stock_location sl, product_product p,
+                     product_template_asset t
+                where q.location_id = sl.id and
+                      q.product_id = p.id and
+                      p.product_tmpl_id = t.id and
+                      t.tracking = 'none' and
+                      p.active and t.active
+                      and (t.company_id is null or t.company_id = %(company_id)s)
+                      and (%(product_id)s is null or q.product_id = %(product_id)s)
+                      and (%(location_id)s is null or q.location_id = %(location_id)s)
+                      and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                group by q.location_id, q.product_id
+                union all
+                select null as location_id, null as lot_id, null as lot_name,
+                       p.id as product_id, 0 as quantity
+                from  product_product p, product_template_asset t
+                where p.product_tmpl_id = t.id and
+                      t.tracking = 'none' and
+                      p.active and t.active and
+                      not exists (
+                         select 1
+                         from stock_quant q, stock_location sl
+                         where q.product_id = p.id and
+                               q.location_id = sl.id
+                               and (%(location_id)s is null or q.location_id = %(location_id)s)
+                               and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                      )
+                      and (t.company_id is null or t.company_id = %(company_id)s)
+                      and (%(product_id)s is null or p.id = %(product_id)s)
             )
-            select q.location_id, q.lot_id, l.name as lot_name, q.product_id,
-                   p.default_code as product_code, t.name as product_name,
-                   p.barcode as product_barcode,
-                   t.tracking as product_tracking, t.categ_id, t.categ_name,
-                   sum(coalesce(q.quantity, 0)) as quantity
-            from stock_quant q, stock_location sl, stock_production_lot l,
-                 product_product p, product_template_asset t
-            where q.lot_id = l.id and
-                  q.location_id = sl.id and
-                  q.product_id = p.id and
-                  p.product_tmpl_id = t.id and
-                  p.active and t.active and
-                  t.tracking != 'none'
-                  and (t.company_id is null or t.company_id = %(company_id)s)
-                  and (%(product_id)s is null or q.product_id = %(product_id)s)
-                  and (%(location_id)s is null or q.location_id = %(location_id)s)
-                  and (%(location_usage)s is null or sl.usage = %(location_usage)s)
-            group by q.location_id, q.lot_id, l.name, q.product_id, p.default_code,
-                     t.name, p.barcode, t.tracking, t.categ_id, t.categ_name
-            union all
-            select null as location_id, l.id as lot_id, l.name as lot_name, l.product_id,
-                   p.default_code as product_code, t.name as product_name,
+            select pll.location_id, pll.lot_id, pll.lot_name, pll.product_id,
+                   p.default_code as product_code,
+                   coalesce(r.name, t.name) ||
+                       coalesce(' - ' || pv.attribute_name, '') as product_name,
                    p.barcode as product_barcode, t.tracking as product_tracking,
-                   t.categ_id, t.categ_name, 0 as quantity
-            from stock_production_lot l, product_product p, product_template_asset t
-            where l.product_id = p.id and
+                   t.categ_id, c.name as categ_name, pll.quantity
+            from product_lot_location pll
+                     left join product_variant pv on pv.product_id = pll.product_id,
+                 product_product p,
+                 product_template t
+                    left join product_template_name_trl r on t.id = r.id,
+                 product_category c
+            where pll.product_id = p.id and
                   p.product_tmpl_id = t.id and
-                  p.active and t.active and
-                  t.tracking != 'none' and
-                  not exists (
-                     select 1
-                     from stock_quant q, stock_location sl
-                     where q.lot_id = l.id and
-                           q.location_id = sl.id
-                           and (%(location_id)s is null or q.location_id = %(location_id)s)
-                           and (%(location_usage)s is null or sl.usage = %(location_usage)s)
-                  )
-                  and (t.company_id is null or t.company_id = %(company_id)s)
-                  and (%(product_id)s is null or l.product_id = %(product_id)s)
-            union all
-            select q.location_id, null as lot_id, null as lot_name, q.product_id,
-                   p.default_code as product_code, t.name as product_name,
-                   p.barcode as product_barcode, t.tracking as product_tracking,
-                   t.categ_id, t.categ_name, sum(coalesce(q.quantity, 0)) as quantity
-            from stock_quant q, stock_location sl, product_product p, product_template_asset t
-            where q.location_id = sl.id and
-                  q.product_id = p.id and
-                  p.product_tmpl_id = t.id and
-                  t.tracking = 'none' and
-                  p.active and t.active
-                  and (t.company_id is null or t.company_id = %(company_id)s)
-                  and (%(product_id)s is null or q.product_id = %(product_id)s)
-                  and (%(location_id)s is null or q.location_id = %(location_id)s)
-                  and (%(location_usage)s is null or sl.usage = %(location_usage)s)
-            group by q.location_id, q.product_id, p.default_code, t.name, p.barcode, t.tracking,
-                     t.categ_id, t.categ_name
-            union all
-            select null as location_id, null as lot_id, null as lot_name, p.id as product_id,
-                   p.default_code as product_code, t.name as product_name,
-                   p.barcode as product_barcode, t.tracking as product_tracking,
-                   t.categ_id, t.categ_name, 0 as quantity
-            from  product_product p, product_template_asset t
-            where p.product_tmpl_id = t.id and
-                  t.tracking = 'none' and
-                  p.active and t.active and
-                  not exists (
-                     select 1
-                     from stock_quant q, stock_location sl
-                     where q.product_id = p.id and
-                           q.location_id = sl.id
-                           and (%(location_id)s is null or q.location_id = %(location_id)s)
-                           and (%(location_usage)s is null or sl.usage = %(location_usage)s)
-                  )
-                  and (t.company_id is null or t.company_id = %(company_id)s)
-                  and (%(product_id)s is null or p.id = %(product_id)s)
+                  t.categ_id = c.id
             order by product_code, lot_name, product_id, lot_id
             """
 
