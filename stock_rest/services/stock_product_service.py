@@ -67,11 +67,32 @@ class ProductService(Component):
                 )
             params["product_id"] = product.id
 
+        # get user lang
+        lang = self.env.user.lang
+        if not lang:
+            raise ValidationError(
+                _("There's no language found on user %s") % self.env.user.name
+            )
+        params["lang"] = lang
+
+        # get data
         sql = """
-            with product_template_asset as (
-                select t.id, t.active, t.company_id, t.tracking
+            with model_field_translation as (
+                select r.name as field, r.res_id, r.value as value
+                from ir_translation r
+                where r.type = 'model' and
+                      (%(lang)s != 'en_US' and r.lang = %(lang)s)
+            ),
+            product_template_asset as (
+                select t.id, t.active, t.company_id,
+                       coalesce(r.value, t.name) as name, t.categ_id, c.name as categ_name,
+                       t.tracking
                 from product_template t
-                where not exists (
+                        left join model_field_translation r on
+                                      r.field='product.template,name' and t.id = r.res_id,
+                     product_category c
+                where t.categ_id = c.id and
+                      not exists (
                         select 1
                         from account_account a, ir_property r
                         where a.asset_profile_id is not null and
@@ -92,7 +113,10 @@ class ProductService(Component):
                     )
             )
             select q.location_id, q.lot_id, l.name as lot_name, q.product_id,
-                   p.default_code as product_code, sum(coalesce(q.quantity, 0)) as quantity
+                   p.default_code as product_code, t.name as product_name,
+                   p.barcode as product_barcode,
+                   t.tracking as product_tracking, t.categ_id, t.categ_name,
+                   sum(coalesce(q.quantity, 0)) as quantity
             from stock_quant q, stock_location sl, stock_production_lot l,
                  product_product p, product_template_asset t
             where q.lot_id = l.id and
@@ -105,10 +129,13 @@ class ProductService(Component):
                   and (%(product_id)s is null or q.product_id = %(product_id)s)
                   and (%(location_id)s is null or q.location_id = %(location_id)s)
                   and (%(location_usage)s is null or sl.usage = %(location_usage)s)
-            group by q.location_id, q.lot_id, l.name, q.product_id, p.default_code
+            group by q.location_id, q.lot_id, l.name, q.product_id, p.default_code,
+                     t.name, p.barcode, t.tracking, t.categ_id, t.categ_name
             union all
             select null as location_id, l.id as lot_id, l.name as lot_name, l.product_id,
-                   p.default_code as product_code, 0 as quantity
+                   p.default_code as product_code, t.name as product_name,
+                   p.barcode as product_barcode, t.tracking as product_tracking,
+                   t.categ_id, t.categ_name, 0 as quantity
             from stock_production_lot l, product_product p, product_template_asset t
             where l.product_id = p.id and
                   p.product_tmpl_id = t.id and
@@ -126,7 +153,9 @@ class ProductService(Component):
                   and (%(product_id)s is null or l.product_id = %(product_id)s)
             union all
             select q.location_id, null as lot_id, null as lot_name, q.product_id,
-                   p.default_code as product_code, sum(coalesce(q.quantity, 0)) as quantity
+                   p.default_code as product_code, t.name as product_name,
+                   p.barcode as product_barcode, t.tracking as product_tracking,
+                   t.categ_id, t.categ_name, sum(coalesce(q.quantity, 0)) as quantity
             from stock_quant q, stock_location sl, product_product p, product_template_asset t
             where q.location_id = sl.id and
                   q.product_id = p.id and
@@ -137,10 +166,13 @@ class ProductService(Component):
                   and (%(product_id)s is null or q.product_id = %(product_id)s)
                   and (%(location_id)s is null or q.location_id = %(location_id)s)
                   and (%(location_usage)s is null or sl.usage = %(location_usage)s)
-            group by q.location_id, q.product_id, p.default_code
+            group by q.location_id, q.product_id, p.default_code, t.name, p.barcode, t.tracking,
+                     t.categ_id, t.categ_name
             union all
             select null as location_id, null as lot_id, null as lot_name, p.id as product_id,
-                   p.default_code as product_code, 0 as quantity
+                   p.default_code as product_code, t.name as product_name,
+                   p.barcode as product_barcode, t.tracking as product_tracking,
+                   t.categ_id, t.categ_name, 0 as quantity
             from  product_product p, product_template_asset t
             where p.product_tmpl_id = t.id and
                   t.tracking = 'none' and
@@ -159,6 +191,7 @@ class ProductService(Component):
             """
 
         dp = self.env["product.product"].sudo().env.ref("product.decimal_product_uom")
+        products = {}
         data = {}
         self.env.cr.execute(sql, params)
         for (
@@ -166,14 +199,30 @@ class ProductService(Component):
             lot_id,
             lot_name,
             product_id,
-            _product_code,
+            product_code,
+            product_name,
+            product_barcode,
+            product_tracking,
+            categ_id,
+            categ_name,
             quantity,
         ) in self.env.cr.fetchall():
-            product = self.env["product.product"].browse(product_id)
-            data.setdefault(product, {})
+            products.setdefault(
+                product_id,
+                {
+                    "id": product_id,
+                    "code": product_code,
+                    "name": product_name,
+                    "barcode": product_barcode,
+                    "tracking": product_tracking,
+                    "categ_id": categ_id,
+                    "categ_name": categ_name,
+                },
+            )
+            data.setdefault(product_id, {})
             qty = round(quantity, dp.digits)
             if qty > 0:
-                data[product].setdefault(
+                data[product_id].setdefault(
                     lot_id,
                     {
                         "id": lot_id,
@@ -181,23 +230,24 @@ class ProductService(Component):
                         "quantity": 0,
                     },
                 )
-                data[product][lot_id]["quantity"] = round(
-                    data[product][lot_id]["quantity"] + qty, dp.digits
+                data[product_id][lot_id]["quantity"] = round(
+                    data[product_id][lot_id]["quantity"] + qty, dp.digits
                 )
 
         product_list = []
-        for product, lots_d in data.items():
+        for product_id, lots_d in data.items():
             lots = list(lots_d.values())
             if (code or barcode) or lots:
+                product = products[product_id]
                 product_list.append(
                     {
-                        "id": product.id,
-                        "code": product.default_code or None,
-                        "barcode": product.barcode or None,
-                        "description": product.name,
-                        "category_id": product.categ_id.id,
-                        "category_name": product.categ_id.name,
-                        "lot_type": product.tracking,
+                        "id": product_id,
+                        "code": product["code"] or None,
+                        "barcode": product["barcode"] or None,
+                        "description": product["name"],
+                        "category_id": product["categ_id"],
+                        "category_name": product["categ_name"],
+                        "lot_type": product["tracking"],
                         # # "asset_category_id": product.sudo().asset_category_id.id or None,
                         # # "asset_category_name": product.sudo().asset_category_id.name
                         # # or None,
