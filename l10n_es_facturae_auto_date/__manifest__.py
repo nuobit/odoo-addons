@@ -6,7 +6,7 @@
     "name": "FacturaE auto dates",
     "summary": "This module computes automatically the FacturaE start date "
     "and end date from date invoice",
-    "version": "14.0.1.0.3",
+    "version": "14.0.1.1.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
@@ -16,6 +16,7 @@
     ],
     "data": [
         "views/res_partner_views.xml",
+        "views/account_move_view.xml",
     ],
     "installable": True,
     "development_status": "Beta",
