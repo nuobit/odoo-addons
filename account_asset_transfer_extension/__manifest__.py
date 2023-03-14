@@ -7,7 +7,7 @@
     "summary": "This module extends account_asset_transfer ",
     "author": "NuoBiT Solutions, S.L.",
     "category": "Accounting",
-    "version": "14.0.1.0.2",
+    "version": "14.0.1.0.3",
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": ["account_asset_transfer"],

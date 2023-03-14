@@ -25,7 +25,9 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     def write(self, vals):
-        self.move_id._check_exists_asset_transfers()
+        self.move_id.filtered(
+            lambda x: x.state != "posted"
+        )._check_exists_asset_transfers()
         return super().write(vals)
 
     @api.model_create_multi
