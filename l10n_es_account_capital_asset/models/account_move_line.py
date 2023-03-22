@@ -1,4 +1,5 @@
 # Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -30,12 +31,10 @@ class AccountMoveLine(models.Model):
     @api.onchange("asset_profile_id")
     def _onchange_asset_profile_id(self):
         super()._onchange_asset_profile_id()
-        self.compute_taxes_fiscal_position()
         self.compute_mapped_taxes()
 
     @api.onchange("price_subtotal", "quantity")
     def _onchange_subtotal_quantity_id(self):
-        self.compute_taxes_fiscal_position()
         self.compute_mapped_taxes()
 
     def compute_mapped_taxes(self):
@@ -47,11 +46,3 @@ class AccountMoveLine(models.Model):
                 self.balance,
                 self.quantity,
             )
-
-    def compute_taxes_fiscal_position(self):
-        taxes = self._get_computed_taxes()
-        if taxes and self.move_id.fiscal_position_id:
-            taxes = self.move_id.fiscal_position_id.map_tax(
-                taxes, partner=self.partner_id
-            )
-        self.tax_ids = taxes
