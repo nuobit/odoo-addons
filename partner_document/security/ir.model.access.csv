@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partner_document_manager,partner.document manager,model_partner_document,partner_document.partner_document_group_manager,1,1,1,1
+access_partner_document_user,partner.document user,model_partner_document,partner_document.partner_document_group_user,1,1,1,1
+access_partner_document_guest,partner.document guest,model_partner_document,partner_document.partner_document_group_guest,1,0,0,0
+access_partner_classification_manager,partner.classification manager,model_partner_classification,partner_document.partner_document_group_manager,1,1,1,1
+access_partner_classification_user,partner.classification user,model_partner_classification,partner_document.partner_document_group_user,1,0,0,0
+access_partner_document_type_manager,partner.document.type manager,model_partner_document_type,partner_document.partner_document_group_manager,1,1,1,1
+access_partner_document_type_user,partner.document.type user,model_partner_document_type,partner_document.partner_document_group_user,1,0,0,0

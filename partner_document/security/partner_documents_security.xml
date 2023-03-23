@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="partner_document_security" model="ir.module.category">
+        <field name="name">Partner document</field>
+        <field name="description">Partner Document security</field>
+        <field name="sequence">1000</field>
+    </record>
+
+    <record id="partner_document_group_guest" model="res.groups">
+        <field name="name">Guest</field>
+        <field name="category_id" ref="partner_document_security" />
+    </record>
+
+    <record id="partner_document_group_user" model="res.groups">
+        <field name="name">User</field>
+        <field
+            name="implied_ids"
+            eval="[(6, False, [ref('partner_document.partner_document_group_guest')])]"
+        />
+        <field name="category_id" ref="partner_document_security" />
+    </record>
+
+    <record id="partner_document_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="implied_ids" eval="[(4, ref('partner_document_group_user'))]" />
+        <field name="users" eval="[(4, ref('base.user_admin'))]" />
+        <field name="category_id" ref="partner_document_security" />
+    </record>
+</odoo>
