@@ -39,6 +39,7 @@ class Payslip(models.Model):
         "payroll.sage.labour.agreement",
         string="Labour agreement",
         required=True,
+        domain="[('end_date', '=', False)]",
     )
 
     company_id = fields.Many2one(
