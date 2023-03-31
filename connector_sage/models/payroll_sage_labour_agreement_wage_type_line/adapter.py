@@ -3,6 +3,9 @@
 
 
 from odoo.addons.component.core import Component
+from odoo.addons.connector_sage.components.adapter import (  # pylint: disable=W7950
+    GenericAdapter,
+)
 
 
 class PayrollSageLabourAgreementWageTypeLineAdapter(Component):
@@ -14,8 +17,12 @@ class PayrollSageLabourAgreementWageTypeLineAdapter(Component):
                      c.ConceptoCorto, c.ConceptoLargo,
                      c.Positivo, c.TotalFichaHistorica, c.CasillaRos, c.DevRet,
                      c.CotizacionSegSoc, c.CotizacionIrpf
-              from %(schema)s.ConvenioConcepto c, %(schema)s.Convenio n
-              where c.CodigoConvenio = n.CodigoConvenio and
+              from %%(schema)s.ConvenioConcepto c, (%(sql_convenios)s) n
+              where c.CodigoEmpresa = n.CodigoEmpresa and
+                    c.CodigoConvenio = n.CodigoConvenio and
                     c.FechaRegistroCV = n.FechaRegistroCV
-     """
+     """ % {
+        "sql_convenios": GenericAdapter._sql_convenios
+    }
+
     _id = ("CodigoEmpresa", "CodigoConvenio", "FechaRegistroCV", "CodigoConceptoNom")
