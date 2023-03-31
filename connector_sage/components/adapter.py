@@ -118,6 +118,29 @@ class GenericAdapter(AbstractComponent):
     _name = "sage.adapter"
     _inherit = "sage.crud.adapter"
 
+    _sql_convenios = """
+        select e.CodigoEmpresa, n.CodigoConvenio, n.Convenio,
+               e.FechaAplicacionCV as FechaRegistroCV, n.FechaFinalNom,
+               n.FechaRevision, n.CodigoConvenioColectivo,
+               n.CodigoConvenioColectivoAnt,
+               n.JornadaAnual, n.ConvenioBloqueado
+        from (select distinct e.CodigoEmpresa, e.CodigoConvenio,
+                              e.FechaRegistroCV, e.FechaAplicacionCV
+            from %(schema)s.EmpresaNominaConvenio e
+            where not exists (
+                select 1
+                from %(schema)s.EmpresaNominaConvenio e0
+                where e0.CodigoEmpresa = e.CodigoEmpresa and
+                      e0.CodigoConvenio = e.CodigoConvenio and
+                      e0.FechaRegistroCV = e.FechaRegistroCV and
+                      e0.FechaAplicacionCV > e.FechaAplicacionCV
+                )
+            ) e,
+            %(schema)s.Convenio n
+        where n.CodigoConvenio = e.CodigoConvenio and
+               n.FechaRegistroCV = e.FechaRegistroCV
+    """
+
     # private methods
 
     def _escape(self, s):
