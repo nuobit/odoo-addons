@@ -3,13 +3,14 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
+from odoo.exceptions import ValidationError
 
 
 class LabourAgreement(models.Model):
     _name = "payroll.sage.labour.agreement"
     _description = "Labour agreement"
 
-    _order = "company_id,code"
+    _order = "company_id,registration_date_cv desc"
 
     name = fields.Char(string="Name", required=True)
     code = fields.Integer(string="Code", required=True)
@@ -64,11 +65,17 @@ class LabourAgreement(models.Model):
     ]
 
     def name_get(self):
+        lang = self.env["res.lang"].search([("code", "=", self.env.user.lang)])
+        if len(lang) != 1:
+            raise ValidationError(
+                _("More than one language found for user language %s")
+                % self.env.user.lang
+            )
         result = []
         for rec in self:
-            name = "%s - %s" % (rec.code, rec.name)
+            date_str = rec.registration_date_cv.strftime(lang.date_format)
+            name = "%s - %s (%s)" % (rec.code, rec.name, date_str)
             result.append((rec.id, name))
-
         return result
 
 
