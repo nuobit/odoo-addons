@@ -5,7 +5,7 @@
 {
     "name": "Connector Extension",
     "summary": "Modulo base para declaraciones de la AEAT",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Connector",
@@ -13,6 +13,7 @@
     "external_dependencies": {
         "python": [
             "requests",
+            "mysql-connector-python",
         ],
     },
     "depends": ["connector"],
