@@ -54,12 +54,29 @@ class BackendSQLAdapterCRUD(AbstractComponent):
                 data[k] = func(v)
         return data
 
-    def _execute(self, op, cr, sql, params):
-        return cr.execute(sql, params)
+    def _execute(self, op, cr, sql, params=None):
+        return cr.execute(sql, params=params)
 
     def _exec(self, op, *args, **kwargs):
         func = getattr(self, "_exec_%s" % op)
         return func(*args, **kwargs)
+
+    # TODO:REVIEW: GET_VERSION
+    # def _exec_get_version(self):
+    #     sql = self._sql_version
+    #     if self.schema:
+    #         # check if schema exists to avoid injection
+    #         self._check_schema()
+    #         sql = sql % dict(schema=self.schema)
+    #     conn = self.conn()
+    #     cr = conn.cursor()
+    #     self._execute("read", cr, sql)
+    #     res = cr.fetchone()
+    #     cr.close()
+    #     conn.close()
+    #     if not res:
+    #         raise ValidationError("Unexpected error: The get_version should have return something")
+    #     return res[0]
 
     def _exec_read(self, filters=None, fields=None):
         if not filters:
