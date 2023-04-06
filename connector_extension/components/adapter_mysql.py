@@ -15,6 +15,9 @@ class BackendMySQLAdapterCRUD(AbstractComponent):
     _name = "base.backend.mysql.adapter.crud"
     _inherit = "base.backend.sql.adapter.crud"
 
+    # TODO:REVIEW: GET_VERSION
+    # _sql_version = "SELECT VERSION();"
+
     def _execute(self, op, cr, sql, params):
         if not sql:
             raise ValidationError(_("Empty SQL statement"))
@@ -37,3 +40,8 @@ class BackendMySQLAdapterCRUD(AbstractComponent):
         if op == "create":
             res = cr.execute(sql_l[1])
         return res
+
+    # TODO:REVIEW: GET_VERSION
+    # def get_version(self):
+    #     res = self._execute()
+    #     return res[0][0]
