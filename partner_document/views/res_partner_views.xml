@@ -32,7 +32,6 @@
                             <field name="partner_classification_id" />
                             <field name="datas" filename="datas_fname" />
                             <field name="datas_fname" invisible="1" />
-                            <field name="date" />
                             <field name="expiration_date" />
                         </tree>
                     </field>
