@@ -30,6 +30,7 @@ class PartnerDocument(models.Model):
         domain="[('id', 'in', partner_classification_id.document_type_ids.ids)]",
         ondelete="restrict",
     )
+
     datas = fields.Binary(
         string="File",
         attachment=True,
