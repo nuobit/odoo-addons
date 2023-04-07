@@ -15,10 +15,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Documents">
                     <group>
-                        <field
-                            name="classification_id"
-                            attrs="{'required': [('document_ids', '!=', [])]}"
-                        />
+                        <field name="classification_id" />
                     </group>
                     <field name="document_ids">
                         <tree editable="bottom">

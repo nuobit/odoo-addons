@@ -19,7 +19,32 @@ class ResPartner(models.Model):
         comodel_name="partner.document",
         string="Documents",
         inverse_name="partner_id",
+        compute="_compute_document_ids",
+        store=True,
+        readonly=False,
     )
+
+    @api.depends("classification_id", "classification_id.document_type_ids")
+    def _compute_document_ids(self):
+        doc_types = []
+        for rec in self:
+            for doc_type in rec.document_ids:
+                if (
+                    doc_type.document_type_id
+                    not in rec.classification_id.document_type_ids
+                    and not doc_type.datas
+                ):
+                    doc_types += [(2, doc_type.id, 0)]
+            for doc_type in rec.classification_id.document_type_ids:
+                if not rec.document_ids.filtered(
+                    lambda x: x.document_type_id == doc_type
+                ) or rec.document_ids.filtered(
+                    lambda x: x.document_type_id == doc_type
+                    and x.expiration_date
+                    and x.expiration_date < fields.Date.today()
+                ):
+                    doc_types += [(0, 0, {"document_type_id": doc_type.id})]
+            rec.document_ids = doc_types
 
     remain_files = fields.Boolean(
         compute="_compute_remain_files",
