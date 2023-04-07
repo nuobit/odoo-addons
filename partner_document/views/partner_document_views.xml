@@ -23,11 +23,6 @@
                         <field name="datas_fname" invisible="1" />
                     </group>
                     <group>
-                        <group>
-                            <field name="date" />
-                        </group>
-                    </group>
-                    <group>
                         <field name="description" />
                     </group>
                     <field name="partner_classification_id" invisible="1" />
@@ -46,7 +41,6 @@
         <field name="arch" type="xml">
             <tree>
                                 <field name="document_type_id" />
-                <field name="date" />
                 <field name="datas_fname" />
                 <field name="description" />
             </tree>

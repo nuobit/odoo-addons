@@ -8,7 +8,7 @@ from odoo import api, fields, models
 class PartnerDocument(models.Model):
     _name = "partner.document"
     _description = "Partner Document"
-    _order = "partner_id,date desc,document_type_id"
+    _order = "partner_id,document_type_id"
 
     partner_id = fields.Many2one(
         comodel_name="res.partner",
@@ -38,10 +38,7 @@ class PartnerDocument(models.Model):
     datas_fname = fields.Char(
         string="Filename",
     )
-    date = fields.Date(
-        required=True,
-        default=fields.Date.context_today,
-    )
+
     expiration_date = fields.Date()
     description = fields.Text()
 
