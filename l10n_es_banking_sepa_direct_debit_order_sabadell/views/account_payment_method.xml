@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+ -->
+<odoo>
+    <record id="view_res_bank_form" model="ir.ui.view">
+        <field name="name">res.bank.form.sabadell</field>
+        <field name="model">res.bank</field>
+        <field name="inherit_id" ref="base.view_res_bank_form" />
+        <field name="arch" type="xml">
+             <group name="bank_details" position="inside">
+                <field name="is_sabadell" />
+             </group>
+        </field>
+    </record>
+</odoo>
