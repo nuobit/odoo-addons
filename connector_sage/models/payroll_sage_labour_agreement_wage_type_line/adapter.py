@@ -18,7 +18,8 @@ class PayrollSageLabourAgreementWageTypeLineAdapter(Component):
                      c.Positivo, c.TotalFichaHistorica, c.CasillaRos, c.DevRet,
                      c.CotizacionSegSoc, c.CotizacionIrpf
               from %%(schema)s.ConvenioConcepto c, (%(sql_convenios)s) n
-              where c.CodigoEmpresa = n.CodigoEmpresa and
+              where c.TipoConceptoNom != 3 and
+                    c.CodigoEmpresa = n.CodigoEmpresa and
                     c.CodigoConvenio = n.CodigoConvenio and
                     c.FechaRegistroCV = n.FechaRegistroCV
      """ % {
