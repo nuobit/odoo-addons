@@ -84,6 +84,6 @@ class AccountMoveLine(models.Model):
 
     def _process_aeat_tax_fee_info(self, res, tax, sign):
         super()._process_aeat_tax_fee_info(res, tax, sign)
-        res[tax].setdefault("atual_deductible_amount", 0)
+        res[tax].setdefault("actual_deductible_amount", 0)
         if self.tax_repartition_line_id.account_id:
             res[tax]["actual_deductible_amount"] += self.balance * sign
