@@ -21,17 +21,6 @@ def sum_key(elem, key):
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    def _get_aeat_tax_base_info(self, res, tax, line, sign):
-        super()._get_aeat_tax_base_info(res, tax, line, sign)
-        for tax in res.keys():
-            res[tax].setdefault("deductible_amount", 0)
-
-    def _get_aeat_tax_quote_info(self, res, tax, line, sign):
-        super()._get_aeat_tax_quote_info(res, tax, line, sign)
-        res[tax].setdefault("deductible_amount", 0)
-        if line.tax_repartition_line_id.account_id:
-            res[tax]["deductible_amount"] += line.balance * sign
-
     def _get_sii_in_taxes_deductible(self):
         self.ensure_one()
         taxes_sfrs = self._get_sii_taxes_map(["SFRS"])
@@ -41,7 +30,7 @@ class AccountMove(models.Model):
         for tax_line in tax_lines.values():
             tax = tax_line["tax"]
             if tax in taxes_sfrisp + taxes_sfrs:
-                tax_deductible_amount += tax_line["deductible_amount"]
+                tax_deductible_amount += tax_line["actual_deductible_amount"]
         return tax_deductible_amount
 
     def _get_sii_invoice_dict_in(self, cancel=False):
@@ -83,3 +72,18 @@ class AccountMove(models.Model):
             ],
         )
         return inv_dict
+
+
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
+
+    def _process_aeat_tax_base_info(self, res, tax, sign):
+        super()._process_aeat_tax_base_info(res, tax, sign)
+        for tax in res.keys():
+            res[tax].setdefault("actual_deductible_amount", 0)
+
+    def _process_aeat_tax_fee_info(self, res, tax, sign):
+        super()._process_aeat_tax_fee_info(res, tax, sign)
+        res[tax].setdefault("atual_deductible_amount", 0)
+        if self.tax_repartition_line_id.account_id:
+            res[tax]["actual_deductible_amount"] += self.balance * sign
