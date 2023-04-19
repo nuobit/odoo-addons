@@ -1,8 +1,17 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import unicodedata
+
 from odoo import _
 from odoo.addons.component.core import Component
 from odoo.exceptions import ValidationError
+
+
+def unicode_to_ascii(s):
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', s)
+        if unicodedata.category(c) != 'Mn' and ord(c) < 128
+    )
 
 
 class CountryStateBinder(Component):
@@ -30,7 +39,7 @@ class CountryStateBinder(Component):
         if len(county) == 1:
             return county
         external_county_code = values['code']
-        base_domain = [('country_id', '=', values['country_id'])]
+        base_domain = [('country_id.code', '=', values['country_id'])]
         model_name = self.unwrap_model()
         county = self.env[model_name].search([
             *base_domain,
@@ -44,12 +53,20 @@ class CountryStateBinder(Component):
         ], order='id')
         if len(county) > 0:
             return county[0]
-        county = self.env[model_name].search([
+        counties = self.env[model_name].search([
             *base_domain,
             ('name', 'ilike', external_county_code),
         ])
-        if len(county) == 1:
-            return county
+        if len(counties) == 1:
+            return counties
+        elif len(counties) > 1:
+            ok_counties = self.env[model_name]
+            for county in counties:
+                if unicode_to_ascii(county.name.lower().strip()) == unicode_to_ascii(
+                        external_county_code.lower().strip()):
+                    ok_counties |= county
+            if len(ok_counties) > 0:
+                return ok_counties[0]
         if '/' in external_county_code:
             parts = list(map(lambda x: x.strip(), filter(None, external_county_code.split('/'))))
             ops = ['=ilike', 'ilike']

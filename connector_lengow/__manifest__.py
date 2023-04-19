@@ -4,7 +4,7 @@
 {
     'name': "Connector Lengow",
     'description': "Connector Lengow",
-    'version': '11.0.0.1.32',
+    'version': '11.0.0.1.33',
     'author': 'NuoBiT Solutions, S.L.',
     'license': 'AGPL-3',
     'category': 'Connector',
@@ -12,6 +12,7 @@
     'external_dependencies': {
         'python': [
             'requests',
+            'unicodedata',
         ],
     },
     'depends': [
