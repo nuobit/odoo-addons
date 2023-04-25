@@ -54,9 +54,9 @@ class ResPartner(models.Model):
     def _compute_remain_files(self):
         for rec in self:
             rec.remain_files = False
-            for type in rec.classification_id.document_type_ids:
+            for doc_type in rec.classification_id.document_type_ids:
                 valid_document = rec.document_ids.filtered(
-                    lambda x: x.document_type_id == type
+                    lambda x: x.document_type_id == doc_type
                     and x.expiration_date
                     and x.expiration_date > fields.Date.today()
                     and x.datas
