@@ -132,8 +132,14 @@ class BackendAdapter(AbstractComponent):
             elif op == "in":
                 if not isinstance(value, (tuple, list)):
                     raise ValidationError(
-                        _("Operator '%s' only supports tuples or lists, not %s")
-                        % (op, type(value))
+                        _(
+                            "Operator '%(OPERATOR)s' only supports tuples or lists, "
+                            "not %(TYPE)s"
+                        )
+                        % {
+                            "OPERATOR": op,
+                            "TYPE": type(value),
+                        }
                     )
                 if field in res:
                     raise ValidationError(_("Duplicated field %s") % field)
@@ -141,9 +147,11 @@ class BackendAdapter(AbstractComponent):
             elif op in (">", ">=", "<", "<="):
                 if not isinstance(value, (datetime.date, datetime.datetime, int)):
                     raise ValidationError(
-                        _("Type {} not supported for operator {}").format(
-                            type(value), op
-                        )
+                        _("Type %(TYPE)s not supported for operator %(OPERATOR)s")
+                        % {
+                            "TYPE": type(value),
+                            "OPERATOR": op,
+                        }
                     )
                 if op in (">", "<"):
                     adj = 1

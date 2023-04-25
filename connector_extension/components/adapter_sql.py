@@ -5,7 +5,7 @@ import datetime
 import logging
 import random
 
-import mysql.connector as mysql
+import mysql.connector as mysql  # pylint: disable=W7936
 
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -75,7 +75,8 @@ class BackendSQLAdapterCRUD(AbstractComponent):
     #     cr.close()
     #     conn.close()
     #     if not res:
-    #         raise ValidationError("Unexpected error: The get_version should have return something")
+    #         raise ValidationError("Unexpected error:
+    #         The get_version should have return something")
     #     return res[0]
 
     def _exec_read(self, filters=None, fields=None):
@@ -144,57 +145,60 @@ class BackendSQLAdapterCRUD(AbstractComponent):
             id_t = tuple([rec[f] for f in id_fields])
             if id_t in uniq:
                 raise ValidationError(
-                    _("Unexpected error: ID duplicated: %s - %s") % (id_fields, id_t)
+                    _("Unexpected error: ID duplicated: %(ID_FIELDS)s - %(ID_T)s")
+                    % {
+                        "ID_FIELDS": id_fields,
+                        "ID_T": id_t,
+                    }
                 )
             uniq.add(id_t)
 
-    ########## exposed methods
+    # exposed methods
 
-    def search_read(self, filters=[]):
+    def search_read(self, filters=None):
         """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
         _logger.debug("method search_read, sql %s, filters %s", self._sql_read, filters)
-
+        if not filters:
+            filters = []
         res = self._exec("read", filters=filters)
 
         return res
 
-    def search(self, filters=[]):
+    def search(self, filters=None):
         """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
         _logger.debug("method search, sql %s, filters %s", self._sql_read, filters)
-
+        if not filters:
+            filters = []
         res = self.search_read(filters=filters)
 
         res = [tuple([x[f] for f in self._id]) for x in res]
 
         return res
 
-    def read(self, id, attributes=None):
+    # pylint: disable=W8106
+    def read(self, _id, attributes=None):
         """Returns the information of a record
 
         :rtype: dict
         """
         _logger.debug(
-            "method read, sql %s id %s, attributes %s", self._sql_read, id, attributes
+            "method read, sql %s id %s, attributes %s", self._sql_read, _id, attributes
         )
-        id_list = list(self.binder_for().id2dict(id, in_field=False).items())
+        id_list = list(self.binder_for().id2dict(_id, in_field=False).items())
         filters = [(key, "=", value) for key, value in id_list]
-        # list(zip(self._id, ["="] * len(self._id), id))
-
         res = self._exec("read", filters=filters)
-
         if len(res) > 1:
             raise mysql.IntegrityError(
                 "Unexpected error: Returned more the one rows:\n%s" % ("\n".join(res),)
             )
-
         return res and res[0] or []
 
     def _check_write_result(self, conn, cr, id_d):
@@ -215,6 +219,7 @@ class BackendSQLAdapterCRUD(AbstractComponent):
             )
         return count
 
+    # pylint: disable=W8106
     def write(self, _id, values_d):
         return self._exec("write", _id, values_d)
 
@@ -272,6 +277,7 @@ class BackendSQLAdapterCRUD(AbstractComponent):
 
         return count
 
+    # pylint: disable=W8106
     def create(self, values_d):
         return self._exec("create", values_d)
 
@@ -341,9 +347,11 @@ class BackendSQLAdapterCRUD(AbstractComponent):
                         "Please check that there's no other "
                         "record on the database with the same key "
                         "fields but with/without trailing spaces, "
-                        "then fix it and try again." % (e,)
+                        "then fix it and try again."
                     )
-                )
+                    % (e,)
+                ) from e
+
             raise
 
         if not res:
@@ -400,20 +408,3 @@ class BackendSQLAdapterCRUD(AbstractComponent):
         conn.close()
 
         return count
-
-    # def get_version(self):
-    #     res = self._exec('get_version')
-    #
-    #     return res[0][0]
-
-
-# class MateuawebNoModelAdapter(AbstractComponent):
-#     """ Used to test the connection """
-#     _name = 'adapter.test'
-#     _inherit = 'sapb1.lighting.adapter'
-#     _apply_on = 'sapb1connector_sapb1.lighting.backend'
-#
-#     _sql_read = "select @@version"
-#     _id = None
-
-# TODO: REVIEW: replace Conn and cr open and closes with a context manager

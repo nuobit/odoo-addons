@@ -70,7 +70,11 @@ class BinderComposite(AbstractComponent):
                 fields_l.append(getattr(self, f))
             else:
                 raise ValidationError(
-                    _("Id field %s is not defined in model %s") % (f, self._name)
+                    _("Id field %(FIELD)s is not defined in model %(MODEL)s")
+                    % {
+                        "FIELD": f,
+                        "MODEL": self._name,
+                    }
                 )
         return fields_l
 
@@ -88,14 +92,6 @@ class BinderComposite(AbstractComponent):
                     _("If the id has only 1 element, it shouldn't be a list ")
                 )
         fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
-        # if not isinstance(field, (tuple, list)):
-        #     field = [field]
-        # else:
-        #     if len(field) == 1:
-        #         raise ValidationError(
-        #             _("If the id has only 1 element, it shouldn't be a list ")
-        #         )
-
         return dict(zip(fields, _id))
 
     def dict2id(self, _dict, in_field=True, alt_field=False):
@@ -105,8 +101,6 @@ class BinderComposite(AbstractComponent):
                         With this parameter False, _external_field will be used.
         """
         fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
-        # if not isinstance(field, (tuple, list)):
-        #     field = [field]
         res = []
         for f in fields:
             f_splitted = f.split(".")
@@ -158,7 +152,7 @@ class BinderComposite(AbstractComponent):
                     "%s\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
                     "the same record. The job will be retried later." % err
-                )
+                ) from err
             else:
                 raise
 
@@ -177,18 +171,10 @@ class BinderComposite(AbstractComponent):
                 "The source object %s must not be a binding" % relation.model._name
             )
 
-        # if not set(self._odoo_extra_fields).issubset(set(binding_extra_vals.keys())):
-        #     raise Exception(
-        #         "If _odoo_extra_fields are defined %s, "
-        #         "you must specify the correpsonding binding_extra_vals %s"
-        #         % (self._odoo_extra_fields, binding_extra_vals)
-        #     )
         domain = [
             (self._odoo_field, "=", relation.id),
             (self._backend_field, "=", self.backend_record.id),
         ]
-        # for f in self._odoo_extra_fields:
-        #     domain.append((f, "=", binding_extra_vals[f]))
         binding = self.model.with_context(active_test=False).search(domain)
         if binding:
             binding.ensure_one()
@@ -260,7 +246,7 @@ class BinderComposite(AbstractComponent):
         bindings.ensure_one()
         if unwrap:
             bindings = bindings[self._odoo_field]
-        bindings = bindings.with_context(context)
+        bindings = bindings.with_context(**context)
         return bindings
 
     def to_external(self, binding, wrap=True, binding_extra_vals=None):
@@ -274,17 +260,6 @@ class BinderComposite(AbstractComponent):
         """
         if not binding_extra_vals:
             binding_extra_vals = {}
-        # if isinstance(binding, models.BaseModel):
-        #     binding.ensure_one()
-        # else:
-        #     if wrap:
-        #         if not wrapped_model:
-        #             raise Exception(
-        #                 "The wrapped model is mandatory if binding is not an object"
-        #             )
-        #         binding = self.env[wrapped_model].browse(binding)
-        #     else:
-        #         binding = self.model.browse(binding)
         if not wrap:
             binding = self._find_binding(binding, binding_extra_vals)
             if not binding:
@@ -357,9 +332,14 @@ class BinderComposite(AbstractComponent):
                     if isinstance(e, (tuple, list, set, dict)):
                         raise ValidationError(
                             _(
-                                "Wrong domain value type '%s' on value '%s' of field '%s'"
+                                "Wrong domain value type '%(TYPE)s' on value "
+                                "'%(VALUE)s' of field '%(FIELD)s'"
                             )
-                            % (type(e), e, field)
+                            % {
+                                "TYPE": type(e),
+                                "VALUE": e,
+                                "FIELD": field,
+                            }
                         )
 
     def _get_internal_record_alt(self, values):
@@ -444,7 +424,6 @@ class BinderComposite(AbstractComponent):
             binding = self.wrap_record(record)
             if not binding:
                 binding_only_fields = set(binding._fields) - set(record._fields)
-                # update_values = map_record.values(for_create=True, binding=self.model)
                 update_values = map_record.values()
                 values = {
                     k: update_values[k]

@@ -42,14 +42,14 @@ class GenericDirectImporter(AbstractComponent):
         """
         try:
             yield
-        except psycopg2.IntegrityError as err:
-            if err.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
+        except psycopg2.IntegrityError as e:
+            if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
                     "A database error caused the failure of the job:\n"
                     "%s\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
-                    "the same record. The job will be retried later." % err
-                )
+                    "the same record. The job will be retried later." % e
+                ) from e
             else:
                 raise
 
