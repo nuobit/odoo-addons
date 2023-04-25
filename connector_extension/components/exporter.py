@@ -129,7 +129,7 @@ class GenericDirectExporter(AbstractComponent):
         sql = "SELECT id FROM %s WHERE ID = %%s FOR UPDATE NOWAIT" % record._table
         try:
             self.env.cr.execute(sql, (record.id,), log_exceptions=False)
-        except psycopg2.OperationalError:
+        except psycopg2.OperationalError as e:
             _logger.info(
                 "A concurrent job is already exporting the same "
                 "record (%s with id %s). Job delayed later.",
@@ -140,7 +140,7 @@ class GenericDirectExporter(AbstractComponent):
                 "A concurrent job is already exporting the same record "
                 "(%s with id %s). The job will be retried later."
                 % (self.model._name, record.id)
-            )
+            ) from e
 
     def _has_to_skip(self):
         """Return True if the export can be skipped"""
@@ -174,7 +174,7 @@ class GenericDirectExporter(AbstractComponent):
                     "%s\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
                     "the same record. The job will be retried later." % err
-                )
+                ) from err
             else:
                 raise
 

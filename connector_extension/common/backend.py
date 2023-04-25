@@ -7,6 +7,7 @@ from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
+
 # TODO:REVIEW: GET_VERSION
 class ConnectorBackend(models.AbstractModel):
     _inherit = "connector.backend"
@@ -36,7 +37,7 @@ class ConnectorBackend(models.AbstractModel):
         default=True,
     )
 
-    def _check_connection(self):
+    def check_connection(self):
         self.ensure_one()
         with self.work_on("connector.backend") as work:
             component = work.component(usage="backend.adapter")

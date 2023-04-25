@@ -4,7 +4,7 @@
 
 {
     "name": "Connector Extension",
-    "summary": "Modulo base para declaraciones de la AEAT",
+    "summary": "This module extends the connector module",
     "version": "16.0.1.0.1",
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
