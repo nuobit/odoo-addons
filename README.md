@@ -21,6 +21,8 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[connector_extension](connector_extension/) | 16.0.1.0.1 |  | This module extends the connector module
+[partner_document](partner_document/) | 16.0.1.0.0 |  | This module adds the logic to classify and evaluate the partner performance
 [stock_picking_partner_ref](stock_picking_partner_ref/) | 16.0.1.0.0 | [![eantones](https://github.com/eantones.png?size=30px)](https://github.com/eantones) | Adds a partner reference on picking
 
 [//]: # (end addons)
