@@ -6,7 +6,7 @@
     "name": "Connector Extension",
     "summary": "This module extends the connector module",
     "version": "16.0.1.0.1",
-    "author": "NuoBiT Solutions, S.L.",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/nuobit/odoo-addons",
