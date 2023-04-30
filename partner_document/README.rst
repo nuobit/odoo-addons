@@ -42,9 +42,7 @@ Credits
 Authors
 ~~~~~~~
 
-* NuoBiT Solutions
-* S.L.
-* Eric Antones
+* NuoBiT Solutions SL
 
 Contributors
 ~~~~~~~~~~~~
