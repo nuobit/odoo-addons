@@ -12,7 +12,7 @@ github_enable_stale_action: true
 github_enforce_dev_status_compatibility: true
 include_wkhtmltopdf: false
 odoo_version: 16.0
-org_name: NuoBiT Solutions, S.L.
+org_name: NuoBiT Solutions SL
 org_slug: nuobit
 rebel_module_groups: []
 repo_description: NuoBiT Odoo addons
