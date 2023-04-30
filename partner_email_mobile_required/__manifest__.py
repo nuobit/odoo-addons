@@ -6,7 +6,7 @@
     "summary": "This module make required the email or mobile fields in the partner form.",
     "version": "16.0.1.0.0",
     "category": "Partner",
-    "author": "NuoBiT Solutions, S.L.",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": ["contacts"],
