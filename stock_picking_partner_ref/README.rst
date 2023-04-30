@@ -42,7 +42,7 @@ Credits
 Authors
 ~~~~~~~
 
-* NuoBiT Solutions
+* NuoBiT Solutions SL
 
 Contributors
 ~~~~~~~~~~~~
