@@ -107,6 +107,34 @@ class BackendAdapter(AbstractComponent):
                 values_filtered.append(record)
         return values_filtered
 
+    def chunks(self, lst, n):
+        """Yield successive n-sized chunks from lst."""
+        for i in range(0, len(lst), n):
+            yield lst[i : i + n]
+
+    def _filter_by_hash(self, data):
+        indexed_data = {x["Hash"]: x for x in data}
+        odoo_hashes = set(
+            self.model.search(
+                [
+                    ("backend_id", "=", self.backend_record.id),
+                ]
+            ).mapped("veloconnect_hash")
+        )
+        changed_hashes = set(indexed_data.keys()) - odoo_hashes
+        return [indexed_data[x] for x in changed_hashes]
+
+    def _normalize_value(self, value):
+        if isinstance(value, datetime.datetime):
+            value = value.strftime(self._datetime_format)
+        elif isinstance(value, datetime.date):
+            value = value.strftime(self._date_format)
+        elif isinstance(value, (int, str, list, tuple, bool)):
+            pass
+        else:
+            raise ValidationError(_("Type '%s' not supported") % type(value))
+        return value
+
     def _domain_to_normalized_dict(self, domain):
         """Convert, if possible, standard Odoo domain to a dictionary.
         To do so it is necessary to convert all operators to
