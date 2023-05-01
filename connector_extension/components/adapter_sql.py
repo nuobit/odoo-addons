@@ -15,12 +15,21 @@ from odoo.addons.component.core import AbstractComponent
 _logger = logging.getLogger(__name__)
 
 
-class BackendSQLAdapterCRUD(AbstractComponent):
+class SQLAdapterCRUD(AbstractComponent):
     _name = "base.backend.sql.adapter.crud"
     _inherit = "base.backend.adapter.crud"
 
     _date_format = "%Y-%m-%d"
     _datetime_format = "%Y-%m-%dT%H:%M:%SZ"
+
+    def get_version(self):
+        conn = self.conn()
+        cr = conn.cursor()
+        cr.execute(self._sql_version)
+        version = cr.fetchone()[0]
+        cr.close()
+        conn.close()
+        return version
 
     def _escape(self, s):
         return s.replace("'", "").replace('"', "")
@@ -61,24 +70,7 @@ class BackendSQLAdapterCRUD(AbstractComponent):
         func = getattr(self, "_exec_%s" % op)
         return func(*args, **kwargs)
 
-    # TODO:REVIEW: GET_VERSION
-    # def _exec_get_version(self):
-    #     sql = self._sql_version
-    #     if self.schema:
-    #         # check if schema exists to avoid injection
-    #         self._check_schema()
-    #         sql = sql % dict(schema=self.schema)
-    #     conn = self.conn()
-    #     cr = conn.cursor()
-    #     self._execute("read", cr, sql)
-    #     res = cr.fetchone()
-    #     cr.close()
-    #     conn.close()
-    #     if not res:
-    #         raise ValidationError("Unexpected error:
-    #         The get_version should have return something")
-    #     return res[0]
-
+    # read/search
     def _exec_read(self, filters=None, fields=None):
         if not filters:
             filters = []
@@ -153,8 +145,6 @@ class BackendSQLAdapterCRUD(AbstractComponent):
                 )
             uniq.add(id_t)
 
-    # exposed methods
-
     def search_read(self, filters=None):
         """Search records according to some criterias
         and returns a list of ids
@@ -183,6 +173,7 @@ class BackendSQLAdapterCRUD(AbstractComponent):
 
         return res
 
+    # read
     # pylint: disable=W8106
     def read(self, _id, attributes=None):
         """Returns the information of a record
@@ -201,6 +192,11 @@ class BackendSQLAdapterCRUD(AbstractComponent):
             )
         return res and res[0] or []
 
+    # write
+    # pylint: disable=W8106
+    def write(self, _id, values_d):
+        return self._exec("write", _id, values_d)
+
     def _check_write_result(self, conn, cr, id_d):
         count = cr.rowcount
         # On mysql if record is not modified the rowcount is 0
@@ -218,10 +214,6 @@ class BackendSQLAdapterCRUD(AbstractComponent):
                 "Unexpected error: Returned more the one row with ID: %s" % (id_d,)
             )
         return count
-
-    # pylint: disable=W8106
-    def write(self, _id, values_d):
-        return self._exec("write", _id, values_d)
 
     def _exec_write(self, _id, values_d):  # pylint: disable=W8106
         """Update records on the external system"""
@@ -277,6 +269,7 @@ class BackendSQLAdapterCRUD(AbstractComponent):
 
         return count
 
+    # create
     # pylint: disable=W8106
     def create(self, values_d):
         return self._exec("create", values_d)
@@ -367,6 +360,7 @@ class BackendSQLAdapterCRUD(AbstractComponent):
 
         return res[0]
 
+    # delete
     def delete(self, _id):
         return self._exec("delete", _id)
 
