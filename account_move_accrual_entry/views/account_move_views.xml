@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form.sii</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <div
+                    class="alert alert-warning"
+                    role="alert"
+                    style="margin-bottom:0px;"
+                    attrs="{'invisible': [('has_assets', '=', False)]}"
+                >
+                    You have assets added to the invoice
+                    <field name="has_assets" invisible="1" />
+                </div>
+            </xpath>
+            <xpath
+                expr="//group[@id='header_right_group']/div[@class='o_td_label']"
+                position="before"
+            >
+                <field
+                    name="accrual_date"
+                    attrs="{
+                            'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))],
+                            'readonly': [('state', '!=', 'draft')],
+                        }"
+                />
+            </xpath>
+            <div name="button_box" position="inside">
+                <button
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-bars"
+                    name="action_journal_entry"
+                    attrs="{'invisible': [('accrual_date', '=', False)]}"
+                >
+                    <div class="o_form_field o_stat_info">
+                        <span>Accrual entry</span>
+                    </div>
+                </button>
+            </div>
+            <xpath
+                expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']"
+                position="after"
+            >
+                <field name="accrual_date" invisible="1" />
+                <field
+                    name="accrual_account_id"
+                    domain="[('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id), ('is_off_balance', '=', False)]"
+                    attrs="{'readonly': [('accrual_date', '=', False)]}"
+                />
+            </xpath>
+            <xpath
+                expr="//field[@name='line_ids']/tree/field[@name='account_id']"
+                position="after"
+            >
+                <field name="accrual_date" invisible="1" />
+                <field
+                    name="accrual_account_id"
+                    invisible="1"
+                    domain="[('deprecated', '=', False), ('company_id', '=', parent.company_id)]"
+                    attrs="{'invisible': [('accrual_date', '=', False)]}"
+                    optional="hide"
+                />
+            </xpath>
+            <xpath
+                expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']"
+                position="attributes"
+            >
+                <attribute
+                    name="attrs"
+                >{'required': [('display_type', '=', False)], 'readonly': [('accrual_date', '!=', False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
