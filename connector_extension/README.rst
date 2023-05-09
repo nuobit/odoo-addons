@@ -51,7 +51,8 @@ Credits
 Authors
 ~~~~~~~
 
-* NuoBiT Solutions SL
+* NuoBiT Solutions
+* SL
 
 Contributors
 ~~~~~~~~~~~~
