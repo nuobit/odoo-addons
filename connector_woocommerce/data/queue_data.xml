@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
+<odoo noupdate="1">
+    <record id="woocommerce_export_record" model="queue.job.channel">
+        <field name="name">woocommerce_export_record</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record id="woocommerce_batch" model="queue.job.channel">
+        <field name="name">woocommerce_import_batch</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record id="woocommerce_chunk" model="queue.job.channel">
+        <field name="name">woocommerce_import_chunk</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record id="woocommerce_import_record" model="queue.job.channel">
+        <field name="name">woocommerce_import_record</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+</odoo>

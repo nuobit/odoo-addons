@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
+<odoo noupdate="1">
+    <!--   Export Product product-->
+    <record
+        id="woocommerce_product_product_export_batch_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_product_product"
+        />
+        <field name="method">export_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_woocommerce.woocommerce_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="woocommerce_product_product_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_product_product"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_woocommerce.woocommerce_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <!--   Export Product Template-->
+    <record
+        id="woocommerce_product_template_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_product_template"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_woocommerce.woocommerce_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <!--   Export Product Public Category-->
+    <record
+        id="woocommerce_product_public_category_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_product_public_category"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_woocommerce.woocommerce_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <!--   Export Product Attribute-->
+    <record
+        id="woocommerce_product_attribute_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_product_attribute"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_woocommerce.woocommerce_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <!--   Export Product Attribute Value-->
+    <record
+        id="woocommerce_product_attribute_value_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_product_attribute_value"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_woocommerce.woocommerce_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <!--    Export Sale Order-->
+    <record
+        id="woocommerce_sale_order_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_sale_order"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_woocommerce.woocommerce_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <!--    Import Sale Order   -->
+    <record id="woocommerce_sale_order_import_batch" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_sale_order"
+        />
+        <field name="method">import_batch</field>
+        <field name="channel_id" ref="connector_woocommerce.woocommerce_batch" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record id="woocommerce_sale_order_import_chunk" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_sale_order"
+        />
+        <field name="method">import_chunk</field>
+        <field name="channel_id" ref="connector_woocommerce.woocommerce_chunk" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record id="woocommerce_sale_order_import_record" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_sale_order"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_woocommerce.woocommerce_import_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+</odoo>
