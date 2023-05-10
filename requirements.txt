@@ -5,4 +5,5 @@ pymssql
 pystrich
 pyveloedi
 requests
+woocommerce
 xlrd
