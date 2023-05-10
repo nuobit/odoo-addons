@@ -1,0 +1,11 @@
+import chunks:
+se deberia separar el metodo de creacion que queremos. si en el backend esta definido el chunk_size, hacerlo con chunks,
+si no, hacerlo por batch i paginación.
+
+implementar paginacion.
+
+
+TODO: deberiamos devolver las orders que salen + las que estan trash. El problema es que en el import chunk
+no podemos saber como hacer estos chunks, con que orden, ya que los gets deberian ser distintos
+
+les orders refund, que fem?
