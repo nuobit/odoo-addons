@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="connector_product_product_view_form" model="ir.ui.view">
+        <field name="name">product.product.connector.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page string="Connector WooCommerce" name="connector">
+                    <group string="WooCommerce Bindings">
+                        <field name="woocommerce_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+            <field name="template_is_published" position="before">
+                <field name="variant_is_published" string="Is published" />
+            </field>
+            <field name="template_is_published" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="public_description" position="after">
+                <field name="variant_public_description" />
+            </field>
+            <field name="public_description" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+    <record id="woocommerce_product_product_view_form" model="ir.ui.view">
+        <field name="name">woocommerce.product.product.view.form</field>
+        <field name="model">woocommerce.product.product</field>
+        <field name="arch" type="xml">
+            <form string="WooCommerce Product Product">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="woocommerce_idproduct" readonly="True" />
+                    <field name="woocommerce_idparent" readonly="True" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="woocommerce_product_product_view_tree" model="ir.ui.view">
+        <field name="name">woocommerce.product.product.view.tree</field>
+        <field name="model">woocommerce.product.product</field>
+        <field name="arch" type="xml">
+            <tree string="WooCommerce Product product">
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="woocommerce_idproduct" readonly="True" />
+                <field name="woocommerce_idparent" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync_export"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+    <record id="woocommerce_product_product_action" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">woocommerce.product.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
