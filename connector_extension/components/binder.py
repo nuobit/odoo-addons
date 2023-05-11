@@ -30,8 +30,7 @@ _logger = logging.getLogger(__name__)
 class BinderComposite(AbstractComponent):
     """The same as Binder but allowing composite external keys"""
 
-    # TODO: Better name instead of composite
-    _name = "base.binder.composite"
+    _name = "generic.binder"
     _inherit = "base.binder"
 
     _internal_field = "internal_id"
@@ -67,7 +66,11 @@ class BinderComposite(AbstractComponent):
         fields_l = []
         for f in fields:
             if hasattr(self, f):
-                fields_l.append(getattr(self, f))
+                fields = getattr(self, f)
+                if isinstance(fields, (tuple, list)):
+                    fields_l.extend(fields)
+                else:
+                    fields_l.append(fields)
             else:
                 raise ValidationError(
                     _("Id field %(FIELD)s is not defined in model %(MODEL)s")
@@ -84,15 +87,25 @@ class BinderComposite(AbstractComponent):
         :param in_field: with True value, _internal_field defined in binder are used.
                         With this parameter False, _external_field will be used.
         """
-        if not isinstance(_id, (tuple, list)):
-            _id = [_id]
+        if _id:
+            fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
+            return dict(zip(fields, _id))
         else:
-            if len(_id) == 1:
-                raise ValidationError(
-                    _("If the id has only 1 element, it shouldn't be a list ")
-                )
-        fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
-        return dict(zip(fields, _id))
+            return None
+
+    # This Function returns a dict with the external ids from a "dirty" dict
+    def dict2id2dict(self, _dict, in_field=True, alt_field=False):
+        """Giving a dict, return the a dict with internal or external ids
+        :param _dict: Dict to extract internal or external fields
+        :param in_field: with True value, _internal_field defined in binder are used.
+                        With this parameter False, _external_field will be used.
+        :param alt_field: with True value, alternative id fields defined in binder are used.
+        """
+        return self.id2dict(
+            self.dict2id(_dict, in_field=in_field, alt_field=alt_field),
+            in_field=in_field,
+            alt_field=alt_field,
+        )
 
     def dict2id(self, _dict, in_field=True, alt_field=False):
         """Giving a dict, return the values of the internal or external fields
@@ -104,15 +117,18 @@ class BinderComposite(AbstractComponent):
         res = []
         for f in fields:
             f_splitted = f.split(".")
-            val = _dict[f_splitted[0]]
+            if f_splitted[0] in _dict or _dict.get(f_splitted[0]) is not None:
+                val = _dict[f_splitted[0]]
+            else:
+                return None
             if len(f_splitted) == 2:
                 if isinstance(val, models.BaseModel):
                     val = val[f_splitted[1]]
             if len(f_splitted) > 2:
                 raise NotImplementedError(_("Multiple dot notation is not supported"))
             res.append(val)
-        if len(res) == 1:
-            return res[0]
+        # if len(res) == 1:
+        #     return res[0]
         return res
 
     def is_complete_id(self, _id, in_field=True):
@@ -322,6 +338,14 @@ class BinderComposite(AbstractComponent):
     def _additional_external_binding_fields(self, external_data):
         return {}
 
+    def is_id_null(self, _id):
+        if not isinstance(_id, (list, tuple)):
+            _id = [_id]
+        for value in _id:
+            if value is None:
+                return True
+        return False
+
     def _get_internal_record_domain(self, values):
         return [(k, "=", v) for k, v in values.items()]
 
@@ -439,7 +463,7 @@ class BinderComposite(AbstractComponent):
                 else:
                     values[self._odoo_field] = record.id
                 self.bind_import(map_record.source, values, sync_date, for_create=True)
-                importer = self.component(usage="direct.record.importer")
+                importer = self.component(usage="record.direct.importer")
                 binding = importer._create(values)
             _logger.debug("%d linked from Backend", binding)
             return binding
@@ -481,9 +505,16 @@ class BinderComposite(AbstractComponent):
                 % (ext_alt_id,)
             )
         id_values = mapper_external_data.values(
-            for_create=True, fields=id_fields, binding=self.model
+            for_create=True,
+            fields=id_fields,
+            binding=self.model,
+            ignore_required_fields=True,
         )
         record = self._get_external_record_alt(id_values)
+        # TODO: check if we can put this in a hook
+        external_alt_id = self.dict2id(id_values, in_field=False, alt_field=True)
+        if self.is_id_null(external_alt_id):
+            return self.model
         if record:
             if len(record) > 1:
                 raise InvalidDataError(
@@ -511,7 +542,7 @@ class BinderComposite(AbstractComponent):
                     binding_ext_fields = mapper_internal_data._mapper.get_target_fields(
                         mapper_internal_data, fields=self.model._fields
                     )
-                    importer = self.component(usage="direct.record.importer")
+                    importer = self.component(usage="record.direct.importer")
                     importer.run(
                         external_id,
                         external_data=record,
@@ -539,6 +570,20 @@ class BinderComposite(AbstractComponent):
         else:
             odoo_object_ids = [binding]
         return self.model.browse(odoo_object_ids)
+
+    def check_external_id(self, external_id, relation):
+        assert external_id, (
+            "Unexpected error on %s:"
+            "The backend id cannot be obtained."
+            "At this stage, the backend record should have been already linked via "
+            "._export_dependencies. " % relation._name
+        )
+
+    def get_external_dict_ids(self, relation, check_external_id=True):
+        external_id = self.to_external(relation, wrap=False)
+        if check_external_id:
+            self.check_external_id(external_id, relation)
+        return self.id2dict(external_id, in_field=False)
 
 
 # TODO: naming the methods more intuitively

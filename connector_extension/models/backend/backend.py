@@ -52,6 +52,12 @@ class ConnectorBackend(models.AbstractModel):
         help="This field is used in order to define in which timezone the backend will work.",
     )
 
+    chunk_size = fields.Integer(
+        string="Chunk Size",
+        default=-1,
+        help="This field is used in order to define the chunk size for the backend.",
+    )
+
     def _check_connection(self):
         self.ensure_one()
         with self.work_on(self._name) as work:
