@@ -37,10 +37,10 @@ class ExternalBinding(models.AbstractModel):
             domain = []
         with backend_record.work_on(self._name) as work:
             exporter = work.component(
-                # usage="batch.direct.exporter"
-                usage=delayed
-                and "batch.delayed.exporter"
-                or "batch.direct.exporter"
+                usage="batch.direct.exporter"
+                # usage=delayed
+                # and "batch.delayed.exporter"
+                # or "batch.direct.exporter"
             )
             return exporter.run(domain=domain)
 

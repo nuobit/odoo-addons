@@ -27,11 +27,10 @@ from odoo.addons.connector.exception import InvalidDataError, RetryableJobError
 _logger = logging.getLogger(__name__)
 
 
-class BinderComposite(AbstractComponent):
+class GenericBinder(AbstractComponent):
     """The same as Binder but allowing composite external keys"""
 
-    # TODO: Better name instead of composite
-    _name = "base.binder.composite"
+    _name = "generic.binder"
     _inherit = "base.binder"
 
     _internal_field = "internal_id"
@@ -64,20 +63,19 @@ class BinderComposite(AbstractComponent):
             fields = self._external_alt_field if alt_field else self._external_field
         if not isinstance(fields, (tuple, list)):
             fields = [fields]
-        return fields
-        # fields_l = []
-        # for f in fields:
-        #     if hasattr(self, f):
-        #         fields_l.append(getattr(self, f))
-        #     else:
-        #         raise ValidationError(
-        #             _("Id field %(FIELD)s is not defined in model %(MODEL)s")
-        #             % {
-        #                 "FIELD": f,
-        #                 "MODEL": self._name,
-        #             }
-        #         )
-        # return fields_l
+        fields_l = []
+        for f in fields:
+            if hasattr(self, f):
+                fields_l.append(getattr(self, f))
+            else:
+                raise ValidationError(
+                    _("Id field %(FIELD)s is not defined in model %(MODEL)s")
+                    % {
+                        "FIELD": f,
+                        "MODEL": self._name,
+                    }
+                )
+        return fields_l
 
     def id2dict(self, _id, in_field=True, alt_field=False):
         """Return a dict with the internal or external fields and their values
