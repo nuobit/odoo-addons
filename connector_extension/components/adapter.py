@@ -131,6 +131,8 @@ class BackendAdapter(AbstractComponent):
             value = value.strftime(self._date_format)
         elif isinstance(value, (int, str, list, tuple, bool)):
             pass
+        elif value is None:
+            pass
         else:
             raise ValidationError(_("Type '%s' not supported") % type(value))
         return value

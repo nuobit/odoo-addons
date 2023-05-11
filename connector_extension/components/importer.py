@@ -22,7 +22,7 @@ class GenericDirectImporter(AbstractComponent):
     _name = "generic.record.direct.importer"
     _inherit = "base.importer"
 
-    _usage = "direct.record.importer"
+    _usage = "record.direct.importer"
 
     @contextmanager
     def _retry_unique_violation(self):
@@ -57,7 +57,7 @@ class GenericDirectImporter(AbstractComponent):
         self,
         external_id,
         binding_model,
-        sync_date,
+        # sync_date,
         external_data=None,
         importer=None,
         adapter=None,
@@ -157,7 +157,10 @@ class GenericDirectImporter(AbstractComponent):
                 )
 
         # import the missing linked resources
-        self._import_dependencies(external_data, sync_date)
+        self._import_dependencies(
+            external_data,
+            # sync_date
+        )
 
         # map_data
         # this one knows how to convert backend data to odoo data
