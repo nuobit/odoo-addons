@@ -26,7 +26,8 @@ class ExternalBinding(models.AbstractModel):
             domain = []
         with backend_record.work_on(self._name) as work:
             importer = work.component(
-                usage=delayed and "batch.delayed.importer" or "batch.direct.importer"
+                usage="batch.direct.importer"
+                # usage=delayed and "batch.delayed.importer" or "batch.direct.importer"
             )
         return importer.run(domain)
 
@@ -37,10 +38,10 @@ class ExternalBinding(models.AbstractModel):
             domain = []
         with backend_record.work_on(self._name) as work:
             exporter = work.component(
-                # usage="batch.direct.exporter"
-                usage=delayed
-                and "batch.delayed.exporter"
-                or "batch.direct.exporter"
+                usage="batch.direct.exporter"
+                # usage=delayed
+                # and "batch.delayed.exporter"
+                # or "batch.direct.exporter"
             )
             return exporter.run(domain=domain)
 
@@ -72,7 +73,8 @@ class ExternalBinding(models.AbstractModel):
         """Prepare the chunk import of records modified on Backend"""
         with backend_record.work_on(self._name) as work:
             importer = work.component(
-                usage=delayed and "delayed.chunk.importer" or "direct.chunk.importer"
+                # usage=delayed and "delayed.chunk.importer" or "direct.chunk.importer"
+                "chunk.direct.importer"
             )
             return importer.run(domain, offset, chunk_size)
 

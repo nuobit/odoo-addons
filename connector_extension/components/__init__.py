@@ -2,6 +2,8 @@ from . import adapter
 from . import adapter_sql
 from . import adapter_mysql
 from . import adapter_mssql
+from . import adapter_woocommerce
+from . import adapter_wordpress
 from . import binder
 from . import exporter
 from . import importer

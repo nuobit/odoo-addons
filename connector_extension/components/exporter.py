@@ -8,7 +8,7 @@ import psycopg2
 from odoo import _, fields
 
 from odoo.addons.component.core import AbstractComponent
-from odoo.addons.connector.exception import IDMissingInBackend, RetryableJobError
+from odoo.addons.connector.exception import RetryableJobError
 
 _logger = logging.getLogger(__name__)
 
@@ -18,35 +18,36 @@ class GenericDirectExporter(AbstractComponent):
 
     _name = "generic.record.direct.exporter"
     _inherit = "base.exporter"
+
     _usage = "record.direct.exporter"
 
-    def __init__(self, working_context):
-        super().__init__(working_context)
-        self.binding = None
-        self.external_id = None
+    # def __init__(self, working_context):
+    #     super().__init__(working_context)
+    # self.binding = None
+    # self.external_id = None
 
-    def _should_import(self):
+    def _should_import(self, binding):
         return False
 
-    def _delay_import(self):
-        """Schedule an import of the record.
+    # def _delay_import(self, binding):
+    #     """Schedule an import of the record.
+    #
+    #     Adapt in the sub-classes when the model is not imported
+    #     using ``import_record``.
+    #     """
+    #     # force is True because the sync_date will be more recent
+    #     # so the import would be skipped
+    #     assert self.external_id
+    #     binding.with_delay().import_record(
+    #         self.backend_record, self.external_id, force=True
+    #     )
 
-        Adapt in the sub-classes when the model is not imported
-        using ``import_record``.
-        """
-        # force is True because the sync_date will be more recent
-        # so the import would be skipped
-        assert self.external_id
-        self.binding.with_delay().import_record(
-            self.backend_record, self.external_id, force=True
-        )
+    def _mapper_options(self, binding):
+        return {"binding": binding}
 
-    def _mapper_options(self):
-        return {"binding": self.binding}
-
-    def _force_binding_creation(self, relation):
-        if not self.binding:
-            self.binding = self.binder.wrap_record(relation, force=True)
+    # def _force_binding_creation(self, relation):
+    #     if not self.binding:
+    #         self.binding = self.binder.wrap_record(relation, force=True)
 
     def run(self, relation, internal_fields=None):
         """Run the synchronization
@@ -56,29 +57,29 @@ class GenericDirectExporter(AbstractComponent):
         now_fmt = fields.Datetime.now()
         result = None
         # get binding from real record
-        self.binding = self.binder.wrap_record(relation)
+        binding = self.binder_for().wrap_record(relation)
 
         # if not binding, try to link to existing external record with
         # the same alternate key and create/update binding
-        if not self.binding:
-            self.binding = (
-                self.binder.to_binding_from_internal_key(relation) or self.binding
+        if not binding:
+            binding = (
+                self.binder_for().to_binding_from_internal_key(relation) or binding
             )
-        try:
-            should_import = self._should_import()
-        except IDMissingInBackend:
-            # self.external_id = None
-            should_import = False
-        if should_import:
-            self._delay_import()
+        # try:
+        #     should_import = self._should_import(binding)
+        # except IDMissingInBackend:
+        #     # self.external_id = None
+        #     should_import = False
+        # if should_import:
+        #     self._delay_import(binding)
 
-        if not self.binding:
+        if not binding:
             internal_fields = None  # should be created with all the fields
+        # TODO: pongo el relation porque si no tiene binding no podemos hacer comprobaciones
+        if self._has_to_skip(binding, relation):
+            return _("Nothing to export")
 
-        if self._has_to_skip():
-            result = _("Nothing to export")
-
-            # export the missing linked resources
+        # export the missing linked resources
         self._export_dependencies(relation)
 
         # prevent other jobs to export the same record
@@ -88,23 +89,23 @@ class GenericDirectExporter(AbstractComponent):
         map_record = self.mapper.map_record(relation)
 
         # passing info to the mapper
-        opts = self._mapper_options()
-        if self.binding:
+        opts = self._mapper_options(binding)
+        if binding:
             values = self._update_data(map_record, fields=internal_fields, **opts)
             if values:
-                external_id = self.binder_for().dict2id(self.binding, in_field=True)
+                external_id = self.binder_for().dict2id(binding, in_field=True)
                 result = self._update(external_id, values)
         else:
             values = self._create_data(map_record, fields=internal_fields, **opts)
             if values:
                 external_data = self._create(values)
-                self.binding = self.binder.bind_export(external_data, relation)
+                binding = self.binder_for().bind_export(external_data, relation)
         if not values:
             result = _("Nothing to export")
         if not result:
             result = _("Record exported with ID %s on Backend.") % "external_id"
         self._after_export()
-        self.binding[self.binder._sync_date_field] = now_fmt
+        binding[self.binder_for()._sync_date_field] = now_fmt
         return result
 
     def _after_export(self):
@@ -142,7 +143,7 @@ class GenericDirectExporter(AbstractComponent):
                 % (self.model._name, record.id)
             ) from e
 
-    def _has_to_skip(self):
+    def _has_to_skip(self, binding, relation):
         """Return True if the export can be skipped"""
         return False
 
