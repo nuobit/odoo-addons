@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="res_config_settings_view_form_inherit_account_sii" model="ir.ui.view">
@@ -34,10 +35,10 @@
                             <div class="row mt8">
                                 <label
                                     string="Asset account type"
-                                    for="accrual_asset_account_type_id"
+                                    for="accrual_account_asset_type_id"
                                     class="col-lg-3 o_light_label"
                                 />
-                                <field name="accrual_asset_account_type_id" />
+                                <field name="accrual_account_asset_type_id" />
                             </div>
                         </div>
                     </div>
