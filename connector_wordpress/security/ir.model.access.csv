@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_wordpress_backend_manager","wordpress_backend connector manager","model_wordpress_backend","connector.group_connector_manager",1,1,1,1
+"access_wordpress_backend_user","wordpress_backend connector user","model_wordpress_backend","base.group_user",1,0,0,0
+"access_wordpress_ir_attachment_manager","wordpress_ir_attachment connector manager","model_wordpress_ir_attachment","connector.group_connector_manager",1,1,1,1
+"access_wordpress_ir_attachment_user","wordpress_ir_attachment connector user","model_wordpress_ir_attachment","base.group_user",1,0,0,0
