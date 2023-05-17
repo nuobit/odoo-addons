@@ -6,4 +6,5 @@ pystrich
 pyveloedi
 requests
 woocommerce
+wordpress-api
 xlrd
