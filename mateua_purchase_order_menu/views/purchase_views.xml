@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
+        <field name="sequence" eval="1" />
+    </record>
+    <record id="purchase.menu_purchase_form_action" model="ir.ui.menu">
+        <field name="sequence" eval="0" />
+    </record>
+</odoo>
