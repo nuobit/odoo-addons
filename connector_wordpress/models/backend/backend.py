@@ -47,7 +47,9 @@ class WordPressBackend(models.Model):
     def export_ir_attachment_since(self):
         self.env.user.company_id = self.company_id
         for rec in self:
-            since_date = fields.Datetime.from_string(rec.export_ir_attachment_since_date)
+            since_date = fields.Datetime.from_string(
+                rec.export_ir_attachment_since_date
+            )
             rec.export_ir_attachment_since_date = fields.Datetime.now()
             self.env["wordpress.ir.attachment"].export_ir_attachment_since(
                 backend_record=rec, since_date=since_date

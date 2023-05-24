@@ -24,13 +24,13 @@ class WordPressIrAttachment(models.Model):
     # checksum= fields.Char()
 
     # TODO: eliminar esta constrain
-    _sql_constraints = [
-        (
-            "external_uniq",
-            "unique(backend_id, wordpress_idattachment)",
-            "A binding already exists with the same External (idAttachment) ID.",
-        ),
-    ]
+    # _sql_constraints = [
+    #     (
+    #         "external_uniq",
+    #         "unique(backend_id, wordpress_idattachment)",
+    #         "A binding already exists with the same External (idAttachment) ID.",
+    #     ),
+    # ]
 
     @api.model
     def _get_base_domain(self):
@@ -44,13 +44,13 @@ class WordPressIrAttachment(models.Model):
             ]
         # TODO: refactor del domain
         domain += [
-            ("res_id", "=", 62558),
+            ("res_id", "in", (62558, 62559)),
             ("res_field", "=", "image_variant_1920"),
             ("res_model", "=", "product.product"),
         ]
-        a=1
         self.export_batch(backend_record, domain=domain)
         return True
+
 
 # self.env['ir.attachment'].sudo().search([
 #                 ('name', '=', "image_variant_1920"),

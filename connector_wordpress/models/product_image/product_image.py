@@ -4,8 +4,8 @@
 from odoo import models
 
 
-class ProductProduct(models.Model):
-    _inherit = "product.product"
+class ProductImage(models.Model):
+    _inherit = "product.image"
 
     def write(self, vals):
         if "image_1920" in vals:
@@ -13,7 +13,7 @@ class ProductProduct(models.Model):
                 [
                     ("res_model", "=", self._name),
                     ("res_id", "=", self.id),
-                    ("res_field", "=", "image_variant_1920"),
+                    ("res_field", "=", "image_1920"),
                 ]
             )
             if attachment:

@@ -6,7 +6,7 @@
         id="wordpress_menu_root"
         parent="connector.menu_connector_root"
         name="WordPress"
-        sequence="400"
+        sequence="500"
         groups="connector.group_connector_manager"
     />
     <menuitem

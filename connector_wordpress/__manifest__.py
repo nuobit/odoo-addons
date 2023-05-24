@@ -9,11 +9,6 @@
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/nuobit/odoo-addons",
-    "external_dependencies": {
-        "python": [
-            "wordpress-api",
-        ],
-    },
     "depends": [
         "connector_extension",
         "website_sale",

@@ -13,3 +13,9 @@ class IrAttachment(models.Model):
         string="WordPress Bindings",
     )
 
+    # TODO: crear un modelo product product i product template
+    #  para mirar si le cambian la imagen,
+    #  si es asi, mirar si el attachment coincide
+    #  con alguno de los enlazados
+    #   y en ese caso, borrar el binding(si lo tiene) para
+    #   que se vuelva a exportar la imagen

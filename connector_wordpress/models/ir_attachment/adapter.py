@@ -11,6 +11,8 @@ class WordPressIrAttachment(Component):
     _apply_on = "wordpress.ir.attachment"
 
     def create(self, data):  # pylint: disable=W8106
+        if "alternative_binding_id" in data:
+            return {"id": data["alternative_binding_id"]}
         return self._exec("post", "media", data=data)
 
     # def write(self, external_id, data):  # pylint: disable=W8106

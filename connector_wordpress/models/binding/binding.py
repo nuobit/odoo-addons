@@ -18,10 +18,12 @@ class WordPressBinding(models.AbstractModel):
         ondelete="restrict",
     )
 
-    _sql_constraints = [
-        (
-            "wordpress_internal_uniq",
-            "unique(backend_id, odoo_id)",
-            "A binding already exists with the same Internal (Odoo) ID.",
-        ),
-    ]
+    # this constrain is commented because we dont want to restrict the binding duplicated.
+    # A same external image can be used in different products
+    # _sql_constraints = [
+    #     (
+    #         "wordpress_internal_uniq",
+    #         "unique(backend_id, odoo_id)",
+    #         "A binding already exists with the same Internal (Odoo) ID.",
+    #     ),
+    # ]
