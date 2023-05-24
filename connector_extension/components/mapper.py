@@ -14,6 +14,28 @@ from odoo.addons.connector.components.mapper import m2o_to_external
 _logger = logging.getLogger(__name__)
 
 
+def required(*args):
+    """Decorator, declare that a method is a required field.
+
+    It is then used by the :py:class:`Mapper` to validate the records.
+
+    Usage::
+
+        @required
+        def any(self, record):
+            return {'output_field': record['input_field']}
+
+    """
+
+    def required_mapping(func):
+        func.required = args
+        return func
+
+    return required_mapping
+    # func.is_required = True
+    # return func
+
+
 class Mapper(AbstractComponent):
     _inherit = "base.mapper"
 
@@ -54,6 +76,12 @@ class Mapper(AbstractComponent):
                         "%s: invalid return value for the "
                         "mapping method %s" % (values, meth)
                     )
+                if not self.options.get("ignore_required_fields"):
+                    for field_required in getattr(meth, "required", []):
+                        if field_required not in values or not values[field_required]:
+                            raise ValidationError(
+                                _("Missing required field '%s'") % field_required
+                            )
                 result.update(values)
 
         for from_attr, to_attr, model_name in self.children:
@@ -103,7 +131,6 @@ class Mapper(AbstractComponent):
                 if to_attr in result:
                     raise ValidationError(_("Field '%s' mapping defined twice"))
                 result[to_attr] = from_attr
-
         return list(set(result.values()))
 
 
@@ -214,7 +241,8 @@ class ExportMapChild(AbstractComponent):
 
     def _child_bind(self, map_record, item_values):
         # TODO: implement this method
-        raise NotImplementedError
+        return
+        # raise NotImplementedError
 
     def classify_items(self, mapped, to_attr, options):
         return mapped

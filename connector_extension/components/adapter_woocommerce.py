@@ -18,19 +18,42 @@ class WooCommerceAdapterCRUD(AbstractComponent):
     # TODO: manage retryable_errors
     def _exec(self, op, resource, *args, **kwargs):
         func = getattr(self, "_exec_%s" % op)
-        return func(resource,*args, **kwargs)
+        return func(resource, *args, **kwargs)
 
-    def _get_filters_values(self):
-        return
-    def _exec_get(self, resource, *args, **kwargs):
-        a=1
-        if 'domain' in kwargs:
-            domain=kwargs.pop('domain')
-        filters_values=self._get_filters_values()
+    def get_total_items(self, resource, domain=None):
+        filters_values = self._get_filters_values()
         real_domain, common_domain = self._extract_domain_clauses(
             domain, filters_values
         )
-        return self.wcapi.get(resource, *args, **kwargs)
+        res = self.wcapi.get(
+            resource,
+            params=self._domain_to_normalized_dict(real_domain),
+        )
+        total_items = int(res.headers.get("X-WP-Total"))
+        return total_items
+
+    def _get_filters_values(self):
+        return ["per_page", "page"]
+
+    def _exec_get(self, resource, *args, **kwargs):
+        domain = []
+        if "domain" in kwargs:
+            domain = kwargs.pop("domain")
+        filters_values = self._get_filters_values()
+        real_domain, common_domain = self._extract_domain_clauses(
+            domain, filters_values
+        )
+        res = self.wcapi.get(
+            resource,
+            *args,
+            **kwargs,
+            params=self._domain_to_normalized_dict(real_domain),
+        )
+        res = res.json()
+        if isinstance(res, dict):
+            res = [res]
+        res = self._filter(res, common_domain)
+        return res
 
     def _exec_post(self, resource, *args, **kwargs):
         res = self.wcapi.post(resource, *args, **kwargs)
@@ -55,5 +78,5 @@ class WooCommerceAdapterCRUD(AbstractComponent):
         system_status = self._exec("get", "system_status")
         version = False
         if system_status:
-            version = system_status.json().get("environment").get("version")
+            version = system_status.get("environment").get("version")
         return version

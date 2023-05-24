@@ -2,7 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+
 import requests
+
+from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
@@ -21,9 +24,13 @@ class WordpressAdapterCRUD(AbstractComponent):
 
     def _exec_get(self, resource, *args, **kwargs):
         url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        res = requests.get(url=url,
-                           auth=(self.backend_record.consumer_key, self.backend_record.consumer_secret)
-                           )
+        res = requests.get(
+            url=url,
+            auth=(
+                self.backend_record.consumer_key,
+                self.backend_record.consumer_secret,
+            ),
+        )
         if res.status_code in [400, 401, 403, 404, 500]:
             raise ValidationError(res.json().get("message"))
         try:
@@ -34,7 +41,8 @@ class WordpressAdapterCRUD(AbstractComponent):
 
     def _exec_post(self, resource, *args, **kwargs):
         # TODO: this auth method is working like this because if we call
-        #  the export from the woocommerce backend, the credentials are in the wordpress backend. Refactor
+        #  the export from the woocommerce backend,
+        #  the credentials are in the wordpress backend. Refactor
         auth = False
         if "wordpress_backend_id" in self.backend_record:
             backend = self.backend_record.wordpress_backend_id
@@ -46,11 +54,13 @@ class WordpressAdapterCRUD(AbstractComponent):
         if data_aux.get("checksum"):
             checksum = data_aux.pop("checksum")
         url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        res = requests.post(url=url,
-                            headers=headers,
-                            data=data,
-                            auth=auth or (self.backend_record.consumer_key, self.backend_record.consumer_secret)
-                            )
+        res = requests.post(
+            url=url,
+            headers=headers,
+            data=data,
+            auth=auth
+            or (self.backend_record.consumer_key, self.backend_record.consumer_secret),
+        )
         if res.status_code in [400, 401, 403, 404, 500]:
             raise ValidationError(res.json().get("message"))
         try:
@@ -75,4 +85,4 @@ class WordpressAdapterCRUD(AbstractComponent):
         if settings.get("title"):
             return "Wordpress '%s' connected" % settings.get("title")
         else:
-            raise ValidationError("Wordpress not connected")
+            raise ValidationError(_("Wordpress not connected"))
