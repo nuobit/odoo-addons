@@ -2,7 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.components.mapper import changed_by, mapping
+from odoo.addons.connector_extension.components.mapper import required
 
 
 def nullif(field):
@@ -19,19 +20,27 @@ class WooCommerceProductAttributeValueExportMapper(Component):
 
     _apply_on = "woocommerce.product.attribute.value"
 
-    direct = [
-        ("name", "name"),
-    ]
+    @required("name")
+    @changed_by("name")
+    @mapping
+    def name(self, record):
+        return {"name": record.with_context(lang=self.backend_record.backend_lang).name}
 
-    # @mapping
-    # def name(self, record):
-    #     return {"name": record.name}
-
+    @required("parent_id")
+    @changed_by("attribute_id")
     @mapping
     def parent_id(self, record):
-        parent = record.attribute_id
-        external_id = self.binder_for("woocommerce.product.attribute").to_external(
-            parent, wrap=False
-        )
-        self.check_external_id(external_id, parent)
-        return {"parent_id": external_id}
+        binder = self.binder_for("woocommerce.product.attribute")
+        # TODO: review this check_external_id
+        # values = binder.get_external_dict_ids(record.attribute_id,check_external_id=False)
+        values = binder.get_external_dict_ids(record.attribute_id)
+        return {"parent_id": values["id"] or None}
+
+    @changed_by("attribute_id")
+    @mapping
+    def parent_name(self, record):
+        return {
+            "parent_name": record.attribute_id.with_context(
+                lang=self.backend_record.backend_lang
+            ).name
+        }

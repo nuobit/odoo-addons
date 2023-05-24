@@ -10,8 +10,8 @@ class WooCommerceProductProductBinder(Component):
 
     _apply_on = "woocommerce.product.product"
 
-    external_id = ["product_tmpl_external_id", "id"]
-    internal_id = "woocommerce_idproduct"
+    external_id = ["parent_id", "id"]
+    internal_id = ["woocommerce_idparent", "woocommerce_idproduct"]
 
-    # external_alt_id = "sku"
+    external_alt_id = "sku"
     internal_alt_id = "default_code"

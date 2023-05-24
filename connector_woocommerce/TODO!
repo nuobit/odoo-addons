@@ -1,0 +1,24 @@
+# bindings de tots els models a la vista + resync
+# Paginacion
+# Export taxes? mapping taxes?
+    woocommerce ---- odoo
+    data = {
+    "country": "US", ----  record.country_code
+    "state": "AL",   ----  xxxxx
+    "cities": ["Alpine", "Brookside", "Cardiff"],  ----  xxxxx
+    "postcodes": ["35014", "35036", "35041"],  ----  xxxxx
+    "rate": "4", ----  record.amount
+    "name": "State Tax",  ----  record.name
+    "shipping": False
+}
+No he encontrado ningun "real_domain". habra que hacer el search_read de todo y filtrarlo luego con el common
+Podria ser que pudieramos hacer un filtro por class si lo implementamos.
+implementar paginacion.
+
+# implementamos tax clases? seria el tipo de impuesto o el nombre del impuesto?
+
+# orders --> export dependencies: Partners, ¿products? ¿currency? ¿taxes? ¿taxes classes?
+
+
+mapping taxa odoo vs taxa woo
+mirar lengow posicions fiscals --- ????

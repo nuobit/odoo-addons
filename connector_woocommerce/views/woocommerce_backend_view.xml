@@ -64,7 +64,8 @@
                                 password="True"
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
-
+                            <field name="backend_lang" />
+                            <field name="chunk_size" />
                         </group>
                     </group>
                     <notebook>
@@ -100,77 +101,106 @@
                             </div>
                             <div>
                                 <label
-                                    string="Export Products Template Since"
+                                    string="Import Sale Orders Since"
                                     class="oe_inline"
-                                    for="export_product_tmpl_since_date"
+                                    for="import_sale_order_since_date"
                                 />
                                 <field
-                                    name="export_product_tmpl_since_date"
+                                    name="import_sale_order_since_date"
                                     class="oe_inline"
                                     nolabel="1"
                                 />
                                 <button
-                                    name="export_product_tmpl_since"
+                                    name="import_sale_orders_since"
                                     type="object"
                                     class="oe_highlight"
-                                    string="Export in background"
+                                    string="Import in background"
                                 />
                             </div>
-                            <div>
-                                <label
-                                    string="Export Products Public Categories Since"
-                                    class="oe_inline"
-                                    for="export_product_public_category_since_date"
-                                />
-                                <field
-                                    name="export_product_public_category_since_date"
-                                    class="oe_inline"
-                                    nolabel="1"
-                                />
-                                <button
-                                    name="export_product_public_category_since"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Export in background"
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    string="Export Product Template Attribute Lines Since"
-                                    class="oe_inline"
-                                    for="export_product_attribute_since_date"
-                                />
-                                <field
-                                    name="export_product_attribute_since_date"
-                                    class="oe_inline"
-                                    nolabel="1"
-                                />
-                                <button
-                                    name="export_product_attribute_since"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Export in background"
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    string="Export Product Attribute Value Since"
-                                    class="oe_inline"
-                                    for="export_product_attribute_value_since_date"
-                                />
-                                <field
-                                    name="export_product_attribute_value_since_date"
-                                    class="oe_inline"
-                                    nolabel="1"
-                                />
-                                <button
-                                    name="export_product_attribute_value_since"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Export in background"
-                                />
-                            </div>
+                            <!--                            <div>-->
+                            <!--                                <label-->
+                            <!--                                    string="Export Products Template Since"-->
+                            <!--                                    class="oe_inline"-->
+                            <!--                                    for="export_product_tmpl_since_date"-->
+                            <!--                                />-->
+                            <!--                                <field-->
+                            <!--                                    name="export_product_tmpl_since_date"-->
+                            <!--                                    class="oe_inline"-->
+                            <!--                                    nolabel="1"-->
+                            <!--                                />-->
+                            <!--                                <button-->
+                            <!--                                    name="export_product_tmpl_since"-->
+                            <!--                                    type="object"-->
+                            <!--                                    class="oe_highlight"-->
+                            <!--                                    string="Export in background"-->
+                            <!--                                />-->
+                            <!--                            </div>-->
+                            <!--                            <div>-->
+                            <!--                                <label-->
+                            <!--                                    string="Export Products Public Categories Since"-->
+                            <!--                                    class="oe_inline"-->
+                            <!--                                    for="export_product_public_category_since_date"-->
+                            <!--                                />-->
+                            <!--                                <field-->
+                            <!--                                    name="export_product_public_category_since_date"-->
+                            <!--                                    class="oe_inline"-->
+                            <!--                                    nolabel="1"-->
+                            <!--                                />-->
+                            <!--                                <button-->
+                            <!--                                    name="export_product_public_category_since"-->
+                            <!--                                    type="object"-->
+                            <!--                                    class="oe_highlight"-->
+                            <!--                                    string="Export in background"-->
+                            <!--                                />-->
+                            <!--                            </div>-->
+                            <!--                            <div>-->
+                            <!--                                <label-->
+                            <!--                                    string="Export Product Template Attribute Lines Since"-->
+                            <!--                                    class="oe_inline"-->
+                            <!--                                    for="export_product_attribute_since_date"-->
+                            <!--                                />-->
+                            <!--                                <field-->
+                            <!--                                    name="export_product_attribute_since_date"-->
+                            <!--                                    class="oe_inline"-->
+                            <!--                                    nolabel="1"-->
+                            <!--                                />-->
+                            <!--                                <button-->
+                            <!--                                    name="export_product_attribute_since"-->
+                            <!--                                    type="object"-->
+                            <!--                                    class="oe_highlight"-->
+                            <!--                                    string="Export in background"-->
+                            <!--                                />-->
+                            <!--                            </div>-->
+                            <!--                            <div>-->
+                            <!--                                <label-->
+                            <!--                                    string="Export Product Attribute Value Since"-->
+                            <!--                                    class="oe_inline"-->
+                            <!--                                    for="export_product_attribute_value_since_date"-->
+                            <!--                                />-->
+                            <!--                                <field-->
+                            <!--                                    name="export_product_attribute_value_since_date"-->
+                            <!--                                    class="oe_inline"-->
+                            <!--                                    nolabel="1"-->
+                            <!--                                />-->
+                            <!--                                <button-->
+                            <!--                                    name="export_product_attribute_value_since"-->
+                            <!--                                    type="object"-->
+                            <!--                                    class="oe_highlight"-->
+                            <!--                                    string="Export in background"-->
+                            <!--                                />-->
+                            <!--                            </div>-->
                         </page>
+                        <page name="mappings" string="Mappings">
+                                <group string="taxes">
+<!--                                    <field name="marketplace_ids" nolabel="1">-->
+<!--                                        <tree editable="bottom">-->
+<!--                                            <field name="partner_id"/>-->
+<!--                                            <field name="country_id"/>-->
+<!--                                            <field name="lengow_marketplace"/>-->
+<!--                                        </tree>-->
+<!--                                    </field>-->
+                                </group>
+                            </page>
                     </notebook>
                 </sheet>
             </form>

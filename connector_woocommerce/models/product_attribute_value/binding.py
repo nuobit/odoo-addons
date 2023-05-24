@@ -16,15 +16,19 @@ class WooCommerceProductAttributeValue(models.Model):
         required=True,
         ondelete="cascade",
     )
+    woocommerce_idattribute = fields.Integer(
+        string="ID Attribute",
+        readonly=True,
+    )
     woocommerce_idattributevalue = fields.Integer(
-        string="ID Product",
+        string="ID Attribute Value",
         readonly=True,
     )
 
     _sql_constraints = [
         (
             "external_uniq",
-            "unique(backend_id, woocommerce_idattributevalue)",
+            "unique(backend_id, woocommerce_idattribute,woocommerce_idattributevalue)",
             "A binding already exists with the same External (idAttributevalue) ID.",
         ),
     ]

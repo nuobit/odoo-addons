@@ -4,11 +4,11 @@
 from odoo import fields, models
 
 
-class IrAttachment(models.Model):
-    _inherit = "ir.attachment"
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
 
     woocommerce_bind_ids = fields.One2many(
-        comodel_name="woocommerce.ir.attachment",
+        comodel_name="woocommerce.sale.order.line",
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
     )

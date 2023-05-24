@@ -14,8 +14,8 @@ class WooCommerceProductAttribute(Component):
         url_l = ["products/attributes", str(_id)]
         return self._exec("get", "/".join(url_l))
 
-    def search_read(self, filters=None):
-        return self._exec("get", "products/attributes", domain=filters)
+    def search_read(self, domain=None):
+        return self._exec("get", "products/attributes", domain=domain)
 
     def create(self, data):  # pylint: disable=W8106
         return self._exec("post", "products/attributes", data=data)
@@ -23,3 +23,8 @@ class WooCommerceProductAttribute(Component):
     def write(self, external_id, data):  # pylint: disable=W8106
         url_l = ["products/attributes", str(external_id)]
         return self._exec("put", "/".join(url_l), data=data)
+
+    def _get_filters_values(self):
+        res = super()._get_filters_values()
+        res.append("slug")
+        return res

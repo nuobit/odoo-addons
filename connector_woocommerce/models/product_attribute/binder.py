@@ -13,5 +13,5 @@ class WooCommerceProductAttributeBinder(Component):
     external_id = "id"
     internal_id = "woocommerce_idattribute"
 
-    # external_alt_id = "sku"
+    external_alt_id = "name"
     # internal_alt_id = "default_code"

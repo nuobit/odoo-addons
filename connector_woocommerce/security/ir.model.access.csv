@@ -11,3 +11,9 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_woocommerce_product_attribute_user","woocommerce_product_attribute connector user","model_woocommerce_product_attribute","base.group_user",1,0,0,0
 "access_woocommerce_product_attribute_value_manager","woocommerce_product_attribute_value connector manager","model_woocommerce_product_attribute_value","connector.group_connector_manager",1,1,1,1
 "access_woocommerce_product_attribute_value_user","woocommerce_product_attribute_value connector user","model_woocommerce_product_attribute_value","base.group_user",1,0,0,0
+"access_woocommerce_sale_order_manager","woocommerce_sale_order connector manager","model_woocommerce_sale_order","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_sale_order_user","woocommerce_sale_order connector user","model_woocommerce_sale_order","base.group_user",1,0,0,0
+"access_woocommerce_res_partner_manager","woocommerce_res_partner connector manager","model_woocommerce_res_partner","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_res_partner_user","woocommerce_res_partner connector user","model_woocommerce_res_partner","base.group_user",1,0,0,0
+"access_woocommerce_sale_order_line_manager","woocommerce_sale_order_line connector manager","model_woocommerce_sale_order_line","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_sale_order_line_user","woocommerce_sale_order_line connector user","model_woocommerce_sale_order_line","base.group_user",1,0,0,0

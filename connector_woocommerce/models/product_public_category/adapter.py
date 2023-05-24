@@ -17,7 +17,10 @@ class WooCommerceProductPublicCategory(Component):
         url_l = ["products/categories", str(external_id)]
         return self._exec("put", "/".join(url_l), data=data)
 
-    def search_read(self, filters=None):
-        a=1
-        return self._exec("get", "products/categories", domain=filters)
-# ?sku="+sku
+    def search_read(self, domain=None):
+        return self._exec("get", "products/categories", domain=domain)
+
+    def _get_filters_values(self):
+        res = super()._get_filters_values()
+        res.append("slug")
+        return res

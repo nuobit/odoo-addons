@@ -4,14 +4,6 @@
 from odoo.addons.component.core import Component
 
 
-def nullif(field):
-    def modifier(self, record, to_attr):
-        value = record[field]
-        return value and value.strip() or None
-
-    return modifier
-
-
 class WooCommerceProductPublicCategoryExportMapper(Component):
     _name = "woocommerce.product.public.category.export.mapper"
     _inherit = "woocommerce.export.mapper"

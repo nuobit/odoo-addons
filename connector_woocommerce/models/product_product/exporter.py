@@ -1,4 +1,4 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -35,38 +35,39 @@ class WooCommerceProductProductExporter(Component):
     _apply_on = "woocommerce.product.product"
 
     def _export_dependencies(self, relation):
-        # Descomentar, funciona ok
         self._export_dependency(
-            relation.public_categ_ids, "woocommerce.product.public.category"
+            relation.product_tmpl_id,
+            "woocommerce.product.template",
         )
+        for line in relation.attribute_line_ids:
+            self._export_dependency(
+                line.attribute_id,
+                "woocommerce.product.attribute",
+            )
         if len(relation.product_tmpl_id.product_variant_ids) > 1:
-            self._export_dependency(
-                relation.product_tmpl_id, "woocommerce.product.template"
+            attachment = self.env["ir.attachment"].search(
+                [
+                    ("res_model", "=", relation._name),
+                    ("res_id", "=", relation.id),
+                    ("res_field", "=", "image_variant_1920"),
+                ]
             )
+            if self.collection.wordpress_backend_id:
+                with self.collection.wordpress_backend_id.work_on(
+                    "wordpress.ir.attachment"
+                ) as work:
+                    exporter = work.component(self._usage)
+                    exporter._export_dependency(
+                        attachment,
+                        "wordpress.ir.attachment",
+                    )
 
-        # images_to_export = (relation.image_1920 and relation.product_variant_image_ids)
-        # for image in self.env['ir.attachment'].search([('res_model','=','product.product'),('res_id','=',relation.id)]):
-        #     attachments_to_export= self.env['ir.attachment'].search([('res_model','=','product.product'),('res_id','=',relation.id)])
-        # for image in (relation.image_1920 and relation.product_variant_image_ids) :
-        # with self.backend_record.wordpress_backend_id.work_on("wordpress.ir.attachment") as work:
-        #     exporter = work.component(usage="record.exporter")
-        #     return exporter.run(relation)
-        att1 = self.env['ir.attachment'].search(
-            [
-                ('res_model', '=', relation._name),
-                ('res_id', '=', relation.id),
-                ('res_field', '=', 'image_variant_1920'),
-            ]
-        )
-        att2 = self.env['ir.attachment'].search(
-            [
-                ('res_model', '=', relation.product_variant_image_ids._name),
-                ('res_id', 'in', relation.product_variant_image_ids.ids),
-                ('res_field', '=', 'image_1920'),
-
-            ]
-        )
-        for attachment in att1 + att2:
-            self._export_dependency(
-                attachment, "wordpress.ir.attachment",
-            )
+    # This _has_to_skip allow to export the product dependencies,
+    # including the product template, when the product
+    # created in woocommerce is a simple product
+    def _has_to_skip(self, binding, relation):
+        res = super()._has_to_skip(binding, relation)
+        if len(relation.product_tmpl_id.product_variant_ids) <= 1:
+            self._export_dependencies(relation.product_variant_id)
+            res = True
+        return res

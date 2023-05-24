@@ -20,6 +20,9 @@
         "connector_wordpress",
     ],
     "data": [
+        # "data/ir_cron.xml",
+        # "data/queue_data.xml",
+        # "data/queue_job_function_data.xml",
         "security/connector_woocommerce.xml",
         "security/ir.model.access.csv",
         "views/woocommerce_backend_view.xml",

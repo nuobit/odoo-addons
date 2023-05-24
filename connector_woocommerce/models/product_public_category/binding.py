@@ -35,12 +35,12 @@ class WooCommerceProductPublicCategory(models.Model):
             # ("boat_id", "!=", False),
         ]
 
-    def export_product_public_category_since(
-        self, backend_record=None, since_date=None
-    ):
-        domain = self._get_base_domain()
-        # TODO: descomentar
-        # if since_date:
-        domain += []
-        self.export_batch(backend_record, domain=domain)
-        return True
+    # def export_product_public_category_since(
+    #     self, backend_record=None, since_date=None
+    # ):
+    #     domain = self._get_base_domain()
+    #     # TODO: descomentar
+    #     # if since_date:
+    #     domain += []
+    #     self.export_batch(backend_record, domain=domain)
+    #     return True

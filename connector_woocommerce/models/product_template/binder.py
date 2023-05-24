@@ -13,5 +13,5 @@ class WooCommerceProductTemplateBinder(Component):
     external_id = "id"
     internal_id = "woocommerce_idproduct"
 
-    # external_alt_id = "sku"
-    # internal_alt_id = "default_code"
+    external_alt_id = "sku"
+    internal_alt_id = "default_code"

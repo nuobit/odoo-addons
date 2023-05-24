@@ -43,6 +43,7 @@ class WooCommerceProductTemplate(models.Model):
             # ("write_date", ">", fields.Datetime.to_string(since_date)),
             # ("id", "=", 40593)
             ("id", "=", 40762)
+            # ("id", "=", 62850) simple_product
         ]
 
         self.export_batch(backend_record, domain=domain)

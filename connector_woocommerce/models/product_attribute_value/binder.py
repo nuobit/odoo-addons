@@ -10,8 +10,7 @@ class WooCommerceProductAttributeValueBinder(Component):
 
     _apply_on = "woocommerce.product.attribute.value"
 
-    external_id = "id"
-    internal_id = "woocommerce_idattributevalue"
+    external_id = ["parent_id", "id"]
+    internal_id = ["woocommerce_idattribute", "woocommerce_idattributevalue"]
 
-    external_alt_id = "name"
-    # internal_alt_id = "default_code"
+    external_alt_id = ["parent_name", "name"]

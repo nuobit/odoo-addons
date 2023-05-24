@@ -5,8 +5,6 @@ from woocommerce import API as API
 
 from odoo.addons.component.core import AbstractComponent
 
-# from wordpress import API as WPAPI
-
 
 class WooCommerceAdapter(AbstractComponent):
     _name = "woocommerce.adapter"

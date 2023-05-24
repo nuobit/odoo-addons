@@ -32,6 +32,15 @@ class WooCommerceBackend(models.Model):
         default=lambda self: self.env.company,
         ondelete="restrict",
     )
+
+    @api.model
+    def _lang_get(self):
+        return self.env["res.lang"].get_installed()
+
+    backend_lang = fields.Selection(
+        _lang_get, "Language", default=lambda self: self.env.lang
+    )
+
     wordpress_backend_id = fields.Many2one(
         comodel_name="wordpress.backend",
     )
@@ -49,6 +58,9 @@ class WooCommerceBackend(models.Model):
     )
     export_product_attribute_value_since_date = fields.Datetime(
         string="Export Product attribute value Since",
+    )
+    import_sale_order_since_date = fields.Datetime(
+        string="Import Sale Order Since",
     )
 
     def export_product_tmpl_since(self):
@@ -106,8 +118,23 @@ class WooCommerceBackend(models.Model):
                 backend_record=rec, since_date=since_date
             )
 
+    def import_sale_orders_since(self):
+        self.env.user.company_id = self.company_id
+        for rec in self:
+            since_date = fields.Datetime.from_string(rec.import_sale_order_since_date)
+            rec.import_sale_order_since_date = fields.Datetime.now()
+            self.env["woocommerce.sale.order"].import_sale_orders_since(
+                backend_record=rec, since_date=since_date
+            )
+
     # scheduler
     @api.model
     def _scheduler_export_products(self):
         for backend in self.env[self._name].search([]):
             backend.export_products_since()
+
+    # scheduler
+    @api.model
+    def _scheduler_import_sale_orders(self):
+        for backend in self.env[self._name].search([]):
+            backend.import_sale_orders_since()

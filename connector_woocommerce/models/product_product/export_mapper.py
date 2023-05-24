@@ -2,15 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping
-
-
-def nullif(field):
-    def modifier(self, record, to_attr):
-        value = record[field]
-        return value and value.strip() or None
-
-    return modifier
+from odoo.addons.connector.components.mapper import changed_by, mapping
 
 
 class WooCommerceProductProductExportMapper(Component):
@@ -19,73 +11,81 @@ class WooCommerceProductProductExportMapper(Component):
 
     _apply_on = "woocommerce.product.product"
 
-    # @mapping
-    # def name(self, record):
-    #     if not len(record.product_tmpl_id.product_variant_ids) > 1:
-    #         return {"name": record.name}
-
     @mapping
     def price(self, record):
-        return {"price": record.lst_price}
+        # TODO: Revisar esto, el sale price no se exporta si es
+        #  igual que el regular. si el regular no esta informado, no se exporta.
+        #      El regular price deberia ser menor que el regular,
+        #      si no tampoco se exporta.
+        return {
+            "regular_price": str(record.lst_price),
+            "sale_price": str(record.lst_price),
+        }
 
+    @changed_by("default_code")
     @mapping
     def sku(self, record):
-        return {"sku": record.default_code or ''}
+        return {"sku": record.default_code or None}
+
+    @changed_by("active")
+    @mapping
+    def status(self, record):
+        if record.active:
+            return {"status": "publish"}
+        else:
+            return {"status": "pending"}
+
+    @mapping
+    def stock(self, record):
+        return {
+            "manage_stock": True,
+            "stock_quantity": record.qty_available,
+            "stock_status": "instock" if record.qty_available > 0 else "outofstock",
+        }
 
     @mapping
     def parent_id(self, record):
-        # TODO: descomentar
-        parent = record.product_tmpl_id
-        external_id = self.binder_for("woocommerce.product.template").to_external(
-            parent, wrap=False
-        )
-        self.check_external_id(external_id, parent)
-        return {"parent_id": external_id}
+        binder = self.binder_for("woocommerce.product.template")
+        values = binder.get_external_dict_ids(record.product_tmpl_id)
+        return {"parent_id": values["id"]}
 
     @mapping
-    def images(self, record):
-        im1 = self.env['ir.attachment'].search(
-            [
-                "&", "&",
-                ('res_model', '=', record._name),
-                ('res_id', '=', record.id),
-                ('res_field', '=', 'image_variant_1920'),
-            ]
-        )
-        im2 = self.env['ir.attachment'].search(
-            [
-                ('res_model', '=', record.product_variant_image_ids._name),
-                ('res_id', 'in', record.product_variant_image_ids.ids),
-                ('res_field', '=', 'image_1920'),
+    def image(self, record):
+        if record.image_1920 != record.product_tmpl_id.image_1920:
+            if self.collection.wordpress_backend_id:
+                with self.collection.wordpress_backend_id.work_on(
+                    "wordpress.ir.attachment"
+                ) as work:
+                    exporter = work.component(self._usage)
+                    binder = exporter.binder_for("wordpress.ir.attachment")
+                    image = self.env["ir.attachment"].search(
+                        [
+                            ("res_model", "=", record._name),
+                            ("res_id", "=", record.id),
+                            ("res_field", "=", "image_variant_1920"),
+                        ]
+                    )
+                    values = binder.get_external_dict_ids(image)
+                    # values = binder.get_external_dict_ids(image, check_external_id=False)
+                    # external_id = exporter.binder_for(
+                    #     "wordpress.ir.attachment"
+                    # ).to_external(image, wrap=False)
+                    return {
+                        "image": {
+                            "id": values["id"],
+                        }
+                    }
 
-            ]
-        )
-        img_list = []
-        for image in im1 + im2:
-            external_id = self.binder_for("wordpress.ir.attachment").to_external(
-                image, wrap=False
-            )
-            self.check_external_id(external_id, image)
-            img_list.append(
+    @mapping
+    def attributes(self, record):
+        binder = self.binder_for("woocommerce.product.attribute")
+        attr_list = []
+        for value in record.product_template_attribute_value_ids:
+            values = binder.get_external_dict_ids(value.attribute_id)
+            attr_list.append(
                 {
-                    "id": external_id,
+                    "id": values["id"],
+                    "option": value.name,
                 }
             )
-        return {"images": img_list}
-
-        # TODO: descomentar
-    # @mapping
-    # def attributes(self, record):
-        # attr_list = []
-        # for x in record.product_template_attribute_value_ids:
-        #     attribute = self.binder_for("woocommerce.product.attribute").to_external(
-        #         x.attribute_id, wrap=False
-        #     )
-        #     self.check_external_id(attribute, x.attribute_id)
-        #     attr_list.append(
-        #         {
-        #             "id": attribute,
-        #             "option": x.name,
-        #         }
-        #     )
-        # return {"attributes": attr_list}
+        return {"attributes": attr_list}
