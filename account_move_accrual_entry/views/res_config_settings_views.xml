@@ -34,6 +34,14 @@
                             </div>
                             <div class="row mt8">
                                 <label
+                                    string="Journal"
+                                    for="accrual_journal_id"
+                                    class="col-lg-3 o_light_label"
+                                />
+                                <field name="accrual_journal_id" />
+                            </div>
+                            <div class="row mt8">
+                                <label
                                     string="Asset account type"
                                     for="accrual_account_asset_type_id"
                                     class="col-lg-3 o_light_label"

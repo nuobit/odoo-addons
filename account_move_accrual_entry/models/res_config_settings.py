@@ -11,17 +11,16 @@ class ResConfigSettings(models.TransientModel):
         comodel_name="account.account",
         related="company_id.accrual_account_id",
         readonly=False,
-        domain=[
-            ("reconcile", "=", True),
-            ("deprecated", "=", False),
-            ("user_type_id.type", "not in", ("receivable", "payable")),
-            ("is_off_balance", "=", False),
-        ],
+    )
+
+    accrual_journal_id = fields.Many2one(
+        comodel_name="account.journal",
+        related="company_id.accrual_journal_id",
+        readonly=False,
     )
 
     accrual_account_asset_type_id = fields.Many2one(
         comodel_name="account.account.type",
         related="company_id.accrual_account_asset_type_id",
         readonly=False,
-        domain=[("internal_group", "=", "asset")],
     )
