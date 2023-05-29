@@ -18,7 +18,8 @@ class PayslipLinePayrollAdapter(Component):
                      min(n.ConceptoLargo) as ConceptoLargo,
                      sum(n.ImporteNom) as ImporteNom
               from Historico n, ConvenioConcepto c
-              where n.CodigoEmpresa in (1, 2, 4, 5) AND
+              where c.TipoConceptoNom != 3 AND
+                    n.CodigoEmpresa in (1, 2, 4, 5) AND
                     n.Año >= 2018 AND
                     n.TotalFichaHistorica in ('TD1', 'TR1') AND
                     n.CodigoConceptoNom = c.CodigoConceptoNom AND
