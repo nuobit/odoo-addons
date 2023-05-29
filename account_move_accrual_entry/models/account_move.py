@@ -34,6 +34,24 @@ class AccountMove(models.Model):
             else:
                 rec.company_accrual_account_id = False
 
+    company_accrual_journal_id = fields.Many2one(
+        comodel_name="account.journal",
+        compute="_compute_company_accrual_journal_id",
+    )
+
+    @api.depends("company_id")
+    def _compute_company_accrual_journal_id(self):
+        for rec in self:
+            if rec.move_type in ("out_invoice", "out_refund"):
+                accrual_journal = rec.company_id.accrual_journal_id
+                if rec.company_id and rec.accrual_date and not accrual_journal:
+                    raise UserError(
+                        _("Please set the accrual journal in the invoicing settings.")
+                    )
+                rec.company_accrual_journal_id = accrual_journal
+            else:
+                rec.company_accrual_journal_id = False
+
     company_accrual_account_asset_type_id = fields.Many2one(
         comodel_name="account.account.type",
         compute="_compute_accrual_account_asset_type_id",
@@ -110,7 +128,7 @@ class AccountMove(models.Model):
             {
                 "company_id": self.company_id.id,
                 "partner_id": self.partner_id.id,
-                "journal_id": self.journal_id.id,
+                "journal_id": self.company_accrual_journal_id.id,
                 "date": self.accrual_date,
                 "move_type": "entry",
                 "line_ids": line_ids,
