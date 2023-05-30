@@ -5,3 +5,4 @@ pystrich
 pyveloedi
 requests
 xlrd
+zeep
