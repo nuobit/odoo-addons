@@ -463,7 +463,7 @@ class GenericBinder(AbstractComponent):
                 else:
                     values[self._odoo_field] = record.id
                 self.bind_import(map_record.source, values, sync_date, for_create=True)
-                importer = self.component(usage="direct.record.importer")
+                importer = self.component(usage="record.direct.importer")
                 binding = importer._create(values)
             _logger.debug("%d linked from Backend", binding)
             return binding
@@ -542,7 +542,7 @@ class GenericBinder(AbstractComponent):
                     binding_ext_fields = mapper_internal_data._mapper.get_target_fields(
                         mapper_internal_data, fields=self.model._fields
                     )
-                    importer = self.component(usage="direct.record.importer")
+                    importer = self.component(usage="record.direct.importer")
                     importer.run(
                         external_id,
                         external_data=record,
