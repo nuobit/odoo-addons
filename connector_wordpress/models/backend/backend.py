@@ -32,6 +32,10 @@ class WordPressBackend(models.Model):
         default=lambda self: self.env.company,
         ondelete="restrict",
     )
+    verify_ssl = fields.Boolean(
+        default=True,
+        help="Verify SSL certificate of the WordPress server.",
+    )
     test_database = fields.Boolean(
         default=False,
         help="If a test database is being used, the attachments routes can be empty."

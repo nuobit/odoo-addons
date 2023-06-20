@@ -63,9 +63,10 @@
                         </group>
                     </group>
                     <notebook>
-                        <page name="debug" string="Debug" groups="base.group_no_one">
+                        <page name="settings" string="Debug" groups="base.group_no_one">
                             <group>
                                 <field name="test_database" />
+                                <field name="verify_ssl" />
                             </group>
                         </page>
                     </notebook>
