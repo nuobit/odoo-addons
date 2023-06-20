@@ -1,0 +1,82 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_extension_woocommerce
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-22 12:51+0000\n"
+"PO-Revision-Date: 2024-10-22 12:51+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_extension_woocommerce
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#, python-format
+msgid "Error connecting to WooCommerce: %s"
+msgstr "Error al connectar amb WooCommerce: %s"
+
+#. module: connector_extension_woocommerce
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#, python-format
+msgid ""
+"Error decoding json WooCommerce response: %s\n"
+"Args:%s\n"
+"Kwargs:%s\n"
+"URL:%s\n"
+"Headers:%s\n"
+"Method:%s\n"
+"Body:%s"
+msgstr ""
+"Error decodificant la resposta json de WooCommerce: %s\n"
+"Args:%s\n"
+"Kwargs:%s\n"
+"URL:%s\n"
+"Headers:%s\n"
+"Method:%s\n"
+"Body:%s"
+
+#. module: connector_extension_woocommerce
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#, python-format
+msgid "Error: %s, Resource: %s"
+msgstr "Error: %s, Recurs: %s"
+
+#. module: connector_extension_woocommerce
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#, python-format
+msgid ""
+"Error: '%s'. Probably repeated record already exists in Woocommerce.\n"
+"Please, review the data in %s/%s and compare it with %s"
+msgstr ""
+"Error: '%s'. Probablement el registre repetit ja existeix a Woocommerce.\n"
+"Si us plau, revisa les dades a %s/%s i compara-les amb %s"
+
+#. module: connector_extension_woocommerce
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#, python-format
+msgid ""
+"Error: '%s'. Probably the %s has been removed from Woocommerce. If it's the "
+"case, try to remove the binding of the %s."
+msgstr ""
+"Error: '%s'. Probablement el %s ha estat eliminat de Woocommerce. Si és el "
+"cas, intenta eliminar la vinculació del %s."
+
+#. module: connector_extension_woocommerce
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#, python-format
+msgid ""
+"Error: '%s'. Probably the product in %s has been removed from Woocommerce. "
+"If it's the case, try to remove the binding of the "
+"woocommerce.product.template"
+msgstr ""
+"Error: '%s'. Probablement el producte a %s ha estat eliminat de Woocommerce. "
+"Si és el cas, intenta eliminar la vinculació del "
+"woocommerce.product.template"
