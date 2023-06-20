@@ -5,8 +5,6 @@ import datetime
 import logging
 import random
 
-import mysql.connector as mysql  # pylint: disable=W7936
-
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -49,7 +47,9 @@ class SQLAdapterCRUD(AbstractComponent):
         conn.close()
         # schema_exists = self._exec_sql(self._sql_schema, (self.schema,))
         if not res:
-            raise mysql.InternalError("The schema %s does not exist" % self.schema)
+            raise self._database_exception(
+                "IntegrityError", _("The schema %s does not exist") % self.schema
+            )
 
     def _convert_dict(self, data, to_backend=True):
         if not isinstance(data, dict):
@@ -62,6 +62,9 @@ class SQLAdapterCRUD(AbstractComponent):
                     func = self.backend_record.tz_to_utc
                 data[k] = func(v)
         return data
+
+    def _database_exception(self, exception_name):
+        raise NotImplementedError
 
     def _execute(self, op, cr, sql, params=None):
         return cr.execute(sql, params=params)
@@ -187,8 +190,9 @@ class SQLAdapterCRUD(AbstractComponent):
         filters = [(key, "=", value) for key, value in id_list]
         res = self._exec("read", filters=filters)
         if len(res) > 1:
-            raise mysql.IntegrityError(
-                "Unexpected error: Returned more the one rows:\n%s" % ("\n".join(res),)
+            raise self._database_exception("IntegrityError")(
+                _("Unexpected error: Returned more the one rows:\n%s")
+                % ("\n".join(res),)
             )
         return res and res[0] or []
 
@@ -210,8 +214,8 @@ class SQLAdapterCRUD(AbstractComponent):
         #     )
         if count > 1:
             conn.rollback()
-            raise mysql.IntegrityError(
-                "Unexpected error: Returned more the one row with ID: %s" % (id_d,)
+            raise self._database_exception("IntegrityError")(
+                _("Unexpected error: Returned more the one row with ID: %s") % (id_d,)
             )
         return count
 
@@ -324,7 +328,7 @@ class SQLAdapterCRUD(AbstractComponent):
             conn.close()
 
             # res = self._exec_sql(sql, tuple(params), commit=True)
-        except mysql.IntegrityError as e:
+        except self._database_exception("IntegrityError") as e:
             # Workaround: Because of Microsoft SQL Server
             # removes the spaces on varchars on comparisions
             # where the varchar belongs to a PK or UK.
@@ -348,14 +352,11 @@ class SQLAdapterCRUD(AbstractComponent):
             raise
 
         if not res:
-            raise Exception(_("Unexpected!! Nothing created: %s") % (values_d,))
+            raise ValidationError(_("Unexpected!! Nothing created: %s") % (values_d,))
         elif len(res) > 1:
-            raise Exception(
-                "Unexpected!!: Returned more the one row:%s -  %s"
-                % (
-                    res,
-                    values_d,
-                )
+            raise ValidationError(
+                _("Unexpected!!: Returned more the one row: %(row)s -  %(values)s")
+                % dict(row=res, values=values_d)
             )
 
         return res[0]
@@ -385,7 +386,7 @@ class SQLAdapterCRUD(AbstractComponent):
         # cr.execute(sql, params)  # pylint: disable=E8103
         count = cr.rowcount
         if count == 0:
-            raise Exception(
+            raise ValidationError(
                 _(
                     "Impossible to delete external record with ID '%s': "
                     "Register not found on Backend"
@@ -394,9 +395,10 @@ class SQLAdapterCRUD(AbstractComponent):
             )
         elif count > 1:
             conn.rollback()
-            raise mysql.IntegrityError(
-                "Unexpected error: Returned more the one row with ID: %s" % (params,)
+            raise self._database_exception("IntegrityError")(
+                _("Unexpected error: Returned more the one row with ID: %s") % (params,)
             )
+
         conn.commit()
         cr.close()
         conn.close()
