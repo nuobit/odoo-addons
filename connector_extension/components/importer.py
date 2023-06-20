@@ -57,7 +57,7 @@ class GenericDirectImporter(AbstractComponent):
         self,
         external_id,
         binding_model,
-        # sync_date,
+        sync_date,
         external_data=None,
         importer=None,
         adapter=None,
