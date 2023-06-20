@@ -1,0 +1,64 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_extension_wordpress
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-22 12:54+0000\n"
+"PO-Revision-Date: 2024-10-22 12:54+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_extension_wordpress
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+#, python-format
+msgid "Error connecting to WordPress: %s"
+msgstr "Error al conectar con WordPress: %s"
+
+#. module: connector_extension_wordpress
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+#, python-format
+msgid ""
+"Error decoding json WordPress response: %s\n"
+"%s"
+msgstr ""
+"Error al decodificar la respuesta json de WordPress: %s\n"
+"%s"
+
+#. module: connector_extension_wordpress
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+#, python-format
+msgid "Error: %s, Resource: %s"
+msgstr "Error: %s, Recurso: %s"
+
+#. module: connector_extension_wordpress
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+#, python-format
+msgid ""
+"Error: '%s'. Probably the %s has been removed from WordPress. If it's the "
+"case, try to remove the binding of the %s."
+msgstr ""
+"Error: '%s'. Probablemente el %s ha sido eliminado de WordPress. Si es el "
+"caso, intente eliminar la vinculación del %s."
+
+#. module: connector_extension_wordpress
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+#, python-format
+msgid ""
+"Error: '%s'. Probably the image or document is uploaded with bad format. "
+"Please, review on database: %s"
+msgstr ""
+"Error: '%s'. Probablemente la imagen o el documento se ha subido con un "
+"formato incorrecto. Por favor, revise en la base de datos: %s"
+
+#. module: connector_extension_wordpress
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+#, python-format
+msgid "Wordpress not connected"
+msgstr "WordPress no conectado"
