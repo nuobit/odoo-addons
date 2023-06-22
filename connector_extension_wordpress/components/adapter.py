@@ -30,7 +30,6 @@ class WordpressAdapterCRUD(AbstractComponent):
                 self.backend_record.consumer_key,
                 self.backend_record.consumer_secret,
             ),
-            timeout=120,
         )
         if res.status_code in [400, 401, 403, 404, 500]:
             raise ValidationError(res.json().get("message"))
@@ -61,7 +60,6 @@ class WordpressAdapterCRUD(AbstractComponent):
             data=data,
             auth=auth
             or (self.backend_record.consumer_key, self.backend_record.consumer_secret),
-            timeout=120,
         )
         if res.status_code in [400, 401, 403, 404, 500]:
             raise ValidationError(res.json().get("message"))
