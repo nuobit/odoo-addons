@@ -74,7 +74,7 @@ class SQLAdapterCRUD(AbstractComponent):
         return func(*args, **kwargs)
 
     # read/search
-    def _exec_read(self, filters=None, fields=None):
+    def _exec_read(self, filters=None, fields=None, unique=True):
         if not filters:
             filters = []
         sql = self._sql_read
@@ -126,11 +126,12 @@ class SQLAdapterCRUD(AbstractComponent):
         cr.close()
         conn.close()
 
-        filter_keys_s = {e[0] for e in filters}
-        # TODO: Modified with getattr
-        id_fields = self.binder_for().get_id_fields(in_field=False)
-        if id_fields and set(id_fields).issubset(filter_keys_s):
-            self._check_uniq(res, id_fields)
+        if unique:
+            filter_keys_s = {e[0] for e in filters}
+            # TODO: Modified with getattr
+            id_fields = self.binder_for().get_id_fields(in_field=False)
+            if id_fields and set(id_fields).issubset(filter_keys_s):
+                self._check_uniq(res, id_fields)
 
         return res
 
