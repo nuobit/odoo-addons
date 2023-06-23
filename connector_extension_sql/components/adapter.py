@@ -74,9 +74,9 @@ class SQLAdapterCRUD(AbstractComponent):
         return func(*args, **kwargs)
 
     # read/search
-    def _exec_read(self, filters=None, fields=None, unique=True):
-        if not filters:
-            filters = []
+    def _exec_read(self, domain=None, fields=None, unique=True):
+        if not domain:
+            domain = []
         sql = self._sql_read
         if self.schema:
             # check if schema exists to avoid injection
@@ -84,7 +84,7 @@ class SQLAdapterCRUD(AbstractComponent):
             sql = sql % dict(schema=self.schema)
 
         values = []
-        if filters or fields:
+        if domain or fields:
             # TODO: Is it really necessary?
             sql_l = ["with t as (%s)" % sql]
             fields_l = fields or ["*"]
@@ -95,9 +95,9 @@ class SQLAdapterCRUD(AbstractComponent):
                             fields_l.append(f)
             sql_l.append("select %s from t" % (", ".join(fields_l),))
 
-            if filters:
+            if domain:
                 where = []
-                for k, operator, v in filters:
+                for k, operator, v in domain:
                     if v is None:
                         if operator == "=":
                             operator = "is"
@@ -127,7 +127,7 @@ class SQLAdapterCRUD(AbstractComponent):
         conn.close()
 
         if unique:
-            filter_keys_s = {e[0] for e in filters}
+            filter_keys_s = {e[0] for e in domain}
             # TODO: Modified with getattr
             id_fields = self.binder_for().get_id_fields(in_field=False)
             if id_fields and set(id_fields).issubset(filter_keys_s):
@@ -149,29 +149,29 @@ class SQLAdapterCRUD(AbstractComponent):
                 )
             uniq.add(id_t)
 
-    def search_read(self, filters=None):
+    def search_read(self, domain=None):
         """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
-        _logger.debug("method search_read, sql %s, filters %s", self._sql_read, filters)
-        if not filters:
-            filters = []
-        res = self._exec("read", filters=filters)
+        _logger.debug("method search_read, sql %s, domain %s", self._sql_read, domain)
+        if not domain:
+            domain = []
+        res = self._exec("read", domain=domain)
 
         return res
 
-    def search(self, filters=None):
+    def search(self, domain=None):
         """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
-        _logger.debug("method search, sql %s, filters %s", self._sql_read, filters)
-        if not filters:
-            filters = []
-        res = self.search_read(filters=filters)
+        _logger.debug("method search, sql %s, domain %s", self._sql_read, domain)
+        if not domain:
+            domain = []
+        res = self.search_read(domain=domain)
 
         res = [tuple([x[f] for f in self._id]) for x in res]
 
@@ -188,8 +188,8 @@ class SQLAdapterCRUD(AbstractComponent):
             "method read, sql %s id %s, attributes %s", self._sql_read, _id, attributes
         )
         id_list = list(self.binder_for().id2dict(_id, in_field=False).items())
-        filters = [(key, "=", value) for key, value in id_list]
-        res = self._exec("read", filters=filters)
+        domain = [(key, "=", value) for key, value in id_list]
+        res = self._exec("read", domain=domain)
         if len(res) > 1:
             raise self._database_exception("IntegrityError")(
                 _("Unexpected error: Returned more the one rows:\n%s")
