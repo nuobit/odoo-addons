@@ -565,11 +565,15 @@ class BinderComposite(AbstractComponent):
         return self.model
 
     def unwrap_binding(self, binding):
-        if isinstance(binding, models.BaseModel):
-            odoo_object_ids = binding.mapped(lambda x: x[self._odoo_field].id)
-        else:
-            odoo_object_ids = [binding]
-        return self.model.browse(odoo_object_ids)
+        if not isinstance(binding, models.BaseModel):
+            if isinstance(binding, (tuple, list)):
+                odoo_object_ids = binding
+            elif isinstance(binding, int):
+                odoo_object_ids = [binding]
+            else:
+                raise ValidationError(_("Invalid binding type"))
+            binding = self.model.browse(odoo_object_ids)
+        return binding.mapped(self._odoo_field)
 
     def check_external_id(self, external_id, relation):
         assert external_id, (
