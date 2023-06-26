@@ -1,7 +1,7 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+import datetime
 import logging
 
 import pytz
@@ -109,6 +109,12 @@ class OxigestiBackend(models.Model):
     import_services_since_date = fields.Datetime("Import Services since")
     export_services_since_date = fields.Datetime("Export Services since")
 
+    sync_offset = fields.Integer(
+        string="Sync Offset",
+        help="Minutes to start the synchronization "
+        "before(negative)/after(positive) the last one",
+    )
+
     # Backend data methods
     def import_customers_since(self):
         for rec in self:
@@ -149,7 +155,9 @@ class OxigestiBackend(models.Model):
     def export_stock_production_lot_since(self):
         for rec in self:
             since_date = rec.export_stock_production_lot_since_date
-            rec.export_stock_production_lot_since_date = fields.Datetime.now()
+            rec.export_stock_production_lot_since_date = (
+                fields.datetime.now() + datetime.timedelta(minutes=rec.sync_offset)
+            )
             self.env["oxigesti.stock.production.lot"].export_data(rec, since_date)
 
     def import_services_since(self):
