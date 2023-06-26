@@ -571,19 +571,22 @@ class BinderComposite(AbstractComponent):
             odoo_object_ids = [binding]
         return self.model.browse(odoo_object_ids)
 
-    def check_external_id(self, external_id, relation):
-        assert external_id, (
-            "Unexpected error on %s:"
-            "The backend id cannot be obtained."
-            "At this stage, the backend record should have been already linked via "
-            "._export_dependencies. " % relation._name
-        )
-
     def get_external_dict_ids(self, relation, check_external_id=True):
         external_id = self.to_external(relation, wrap=False)
         if check_external_id:
-            self.check_external_id(external_id, relation)
+            assert external_id, (
+                "Unexpected error on %s:"
+                "The backend id cannot be obtained."
+                "At this stage, the backend record should have been already linked via "
+                "._export_dependencies. " % relation._name
+            )
         return self.id2dict(external_id, in_field=False)
+
+    # def get_internal_dict_ids(self, relation, check_external_id=True):
+    #     external_id = self.to_internal(relation, unwrap=True)
+    #     if check_external_id:
+    #         self.check_external_id(external_id, relation)
+    #     return self.id2dict(external_id, in_field=True)
 
 
 # TODO: naming the methods more intuitively

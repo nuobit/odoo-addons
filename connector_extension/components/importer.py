@@ -7,7 +7,7 @@ from contextlib import contextmanager
 
 import psycopg2
 
-from odoo import _
+from odoo import _, fields
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import IDMissingInBackend
@@ -57,7 +57,7 @@ class GenericDirectImporter(AbstractComponent):
         self,
         external_id,
         binding_model,
-        sync_date,
+        # sync_date,
         external_data=None,
         importer=None,
         adapter=None,
@@ -94,7 +94,9 @@ class GenericDirectImporter(AbstractComponent):
 
         if always or not binder.to_internal(external_id):
             try:
-                importer.run(external_id, sync_date, external_data=external_data)
+                # TODO: sync_date
+                # importer.run(external_id, sync_date, external_data=external_data)
+                importer.run(external_id, external_data=external_data)
             except NothingToDoJob:
                 _logger.info(
                     "Dependency import of %s(%s) has been ignored.",
@@ -102,7 +104,8 @@ class GenericDirectImporter(AbstractComponent):
                     external_id,
                 )
 
-    def _import_dependencies(self, external_data, sync_date, external_fields=None):
+    # def _import_dependencies(self, external_data, sync_date, external_fields=None):
+    def _import_dependencies(self, external_data, external_fields=None):
         """Import the dependencies for the record
 
         Import of dependencies can be done manually or by calling
@@ -130,11 +133,9 @@ class GenericDirectImporter(AbstractComponent):
     def _mapper_options(self, binding, sync_date):
         return {"binding": binding, "sync_date": sync_date}
 
-    def _create(self, values):
-        """Create the Internal record"""
-        return self.model.with_context(connector_no_export=True).create(values)
-
-    def run(self, external_id, sync_date, external_data=None, external_fields=None):
+    # def run(self, external_id, sync_date, external_data=None, external_fields=None):
+    def run(self, external_id, external_data=None, external_fields=None):
+        now_fmt = fields.Datetime.now()
         if not external_data:
             external_data = {}
         lock_name = "import({}, {}, {}, {})".format(
@@ -175,7 +176,7 @@ class GenericDirectImporter(AbstractComponent):
 
         # if binding not exists, try to link existing internal object
         if not binding:
-            binding = binder.to_binding_from_external_key(internal_data, sync_date)
+            binding = binder.to_binding_from_external_key(internal_data, now_fmt)
 
         # skip binding
         skip = self._must_skip(binding)
@@ -183,25 +184,58 @@ class GenericDirectImporter(AbstractComponent):
             return skip
 
         # passing info to the mapper
-        opts = self._mapper_options(binding, sync_date)
+        opts = self._mapper_options(binding, now_fmt)
 
         if external_fields != [] or external_fields is None:
             # persist data
             if binding:
                 # if exists, we update it
                 values = internal_data.values(fields=external_fields, **opts)
-                binder.bind_import(external_data, values, sync_date)
-                binding.with_context(connector_no_export=True).write(values)
+                binder.bind_import(external_data, values, now_fmt)
+                # binding.with_context(connector_no_export=True).write(values)
+                self._update(binding, values)
                 _logger.debug("%d updated from Backend %s", binding, external_id)
             else:
                 # or we create it
                 values = internal_data.values(
                     for_create=True, fields=external_fields, **opts
                 )
-                binder.bind_import(external_data, values, sync_date, for_create=True)
+                binder.bind_import(external_data, values, now_fmt, for_create=True)
+                print("values: ", values["woocommerce_order_line_ids"])
                 self._create(values)
                 _logger.debug("%d created from Backend %s", binding, external_id)
 
             # last update
             self._after_import(binding)
+            binding[self.binder_for()._sync_date_field] = now_fmt
         return True
+
+    def _validate_update_data(self, data):
+        """Check if the values to import are correct
+
+        Pro-actively check before the ``Model.update`` if some fields
+        are missing or invalid
+
+        Raise `InvalidDataError`
+        """
+        return
+
+    def _update(self, binding, data):
+        """Update the Internal record"""
+        self._validate_update_data(data)
+        return binding.with_context(connector_no_export=True).write(data)
+
+    def _validate_create_data(self, data):
+        """Check if the values to import are correct
+
+        Pro-actively check before the ``Model.create`` if some fields
+        are missing or invalid
+
+        Raise `InvalidDataError`
+        """
+        return
+
+    def _create(self, data):
+        """Create the Internal record"""
+        self._validate_create_data(data)
+        return self.model.with_context(connector_no_export=True).create(data)

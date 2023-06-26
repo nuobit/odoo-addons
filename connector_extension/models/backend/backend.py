@@ -22,7 +22,10 @@ def _tz_get(self):
 
 
 class ConnectorBackend(models.AbstractModel):
-    # _name = "connector.backend.extension"
+    # TODO: this name is defined to avoid problems on other connectors (oxigesti...).
+    #  Chunk size is not defined in this backends and it throws errors when trying
+    #  to access in products.products.
+    _name = "connector.backend.extension"
     _inherit = "connector.backend"
     _description = "Connector Backend Extension"
 

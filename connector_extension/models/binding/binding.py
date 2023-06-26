@@ -27,7 +27,9 @@ class ExternalBinding(models.AbstractModel):
         with backend_record.work_on(self._name) as work:
             importer = work.component(
                 usage="batch.direct.importer"
-                # usage=delayed and "batch.delayed.importer" or "batch.direct.importer"
+                # usage=delayed
+                # and "batch.delayed.importer"
+                # or "batch.direct.importer"
             )
         return importer.run(domain)
 
@@ -46,13 +48,14 @@ class ExternalBinding(models.AbstractModel):
             return exporter.run(domain=domain)
 
     @api.model
-    def import_record(self, backend_record, external_id, sync_date, external_data=None):
+    # def import_record(self, backend_record, external_id, sync_date, external_data=None):
+    def import_record(self, backend_record, external_id, external_data=None):
         """Import record from Backend"""
         if not external_data:
             external_data = {}
         with backend_record.work_on(self._name) as work:
             importer = work.component(usage="record.direct.importer")
-            return importer.run(external_id, sync_date, external_data=external_data)
+            return importer.run(external_id, external_data=external_data)
 
     @api.model
     def export_record(self, backend_record, relation):
