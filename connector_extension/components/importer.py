@@ -157,10 +157,7 @@ class GenericDirectImporter(AbstractComponent):
                 )
 
         # import the missing linked resources
-        self._import_dependencies(
-            external_data,
-            # sync_date
-        )
+        self._import_dependencies(external_data, sync_date)
 
         # map_data
         # this one knows how to convert backend data to odoo data
