@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_pms_tiny_astrochannel_service_manager","pms_tiny_astrochannelservice_ manager","model_pms_tiny_astrochannel_service","pms_tiny.group_pms_tiny_manager",1,1,1,1
+"access_pms_tiny_astrochannel_service_user","pms_tiny_astrochannelservice_ user","model_pms_tiny_astrochannel_service","pms_tiny.group_pms_tiny_user",1,0,0,0
+"access_pms_tiny_astrochannel_service_guest_manager","pms_tiny_astrochannel_service_service_guest manager","model_pms_tiny_astrochannel_service_guest","pms_tiny.group_pms_tiny_manager",1,1,1,1
+"access_pms_tiny_astrochannel_service_guest_user","pms_tiny_astrochannel_service_guest user","model_pms_tiny_astrochannel_service_guest","pms_tiny.group_pms_tiny_user",1,0,0,0
+"access_pms_tiny_astrochannel_log_manager","pms_tiny_astrochannel_log manager","model_pms_tiny_astrochannel_log","pms_tiny.group_pms_tiny_manager",1,1,1,1
+"access_pms_tiny_astrochannel_log_user","pms_tiny_astrochannel_log user","model_pms_tiny_astrochannel_log","pms_tiny.group_pms_tiny_user",1,0,0,0

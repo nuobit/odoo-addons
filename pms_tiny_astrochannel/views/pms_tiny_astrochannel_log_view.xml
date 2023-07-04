@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="pms_tiny__astrochannel_log_form_view" model="ir.ui.view">
+        <field name="name">pms.tiny.astrochannel.log.form</field>
+        <field name="model">pms.tiny.astrochannel.log</field>
+        <field name="arch" type="xml">
+            <form string="Astrochannel Service Log">
+                <sheet>
+                    <group>
+                        <field name="write_date" />
+                    </group>
+                    <group string="Message">
+                        <field name="message" nolabel="1" colspan="2" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pms_tiny__astrochannel_log_tree_view" model="ir.ui.view">
+        <field name="name">pms.tiny.astrochannel.log.tree</field>
+        <field name="model">pms.tiny.astrochannel.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="id" />
+                <field name="write_date" />
+            </tree>
+        </field>
+    </record>
+    <record id="pms_tiny__astrochannel_log_search_view" model="ir.ui.view">
+        <field name="name">pms.tiny.astrochannel.log.search</field>
+        <field name="model">pms.tiny.astrochannel.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Atrochannel Log">
+                <field name="message" filter_domain="[('message','ilike',self)]" />
+            </search>
+        </field>
+    </record>
+    <record id="pms_tiny_astrochannel_log_action" model="ir.actions.act_window">
+        <field name="name">Astrochannel Log</field>
+        <field name="res_model">pms.tiny.astrochannel.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
