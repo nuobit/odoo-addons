@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template_inherited" xml:space="preserve">
+    <t t-inherit="point_of_sale.SelectionPopup" t-inherit-mode="extension">
+        <xpath expr="//div[@class='selection-item']" position="attributes">
+            <attribute
+                name="style"
+            >display: flex; justify-content: space-between; align-items: center;</attribute>
+        </xpath>
+        <xpath expr="//div[@class='selection-item']" position="inside">
+            <t t-if="item.count">
+                <span class="count"><t t-esc="item.count" /></span>
+            </t>
+        </xpath>
+    </t>
+</templates>
