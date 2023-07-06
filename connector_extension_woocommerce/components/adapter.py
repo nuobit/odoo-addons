@@ -88,5 +88,5 @@ class WooCommerceAdapterCRUD(AbstractComponent):
         system_status = self._exec("get", "system_status")
         version = False
         if system_status:
-            version = system_status.get("environment").get("version")
+            version = system_status[0].get("environment").get("version")
         return version
