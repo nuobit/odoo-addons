@@ -33,7 +33,7 @@ class WooCommerceAdapterCRUD(AbstractComponent):
         return total_items
 
     def _get_filters_values(self):
-        return ["per_page", "page"]
+        return ["modified_after", "offset", "per_page", "page"]
 
     def _exec_get(self, resource, *args, **kwargs):
         domain = []
@@ -43,11 +43,21 @@ class WooCommerceAdapterCRUD(AbstractComponent):
         real_domain, common_domain = self._extract_domain_clauses(
             domain, filters_values
         )
+        params = self._domain_to_normalized_dict(real_domain)
+        if "offset" in kwargs and "offset" not in params:
+            params["offset"] = kwargs.pop("offset")
+        if "limit" in kwargs and "per_page" not in params:
+            if kwargs["limit"] < 0:
+                # this 100 is the max of per_page on woocommerce
+                kwargs.pop("limit")
+                params["per_page"] = 100
+            else:
+                params["per_page"] = kwargs.pop("limit")
         res = self.wcapi.get(
             resource,
             *args,
             **kwargs,
-            params=self._domain_to_normalized_dict(real_domain),
+            params=params,
         )
         res = res.json()
         if isinstance(res, dict):
