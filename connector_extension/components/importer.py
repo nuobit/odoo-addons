@@ -199,7 +199,7 @@ class GenericDirectImporter(AbstractComponent):
                     for_create=True, fields=external_fields, **opts
                 )
                 binder.bind_import(external_data, values, sync_date, for_create=True)
-                self._create(values)
+                binding = self._create(values)
                 _logger.debug("%d created from Backend %s", binding, external_id)
 
             # last update
