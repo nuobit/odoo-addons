@@ -26,8 +26,7 @@ class ExternalBinding(models.AbstractModel):
             domain = []
         with backend_record.work_on(self._name) as work:
             importer = work.component(
-                usage="batch.direct.importer"
-                # usage=delayed and "batch.delayed.importer" or "batch.direct.importer"
+                usage=delayed and "batch.delayed.importer" or "batch.direct.importer"
             )
         return importer.run(domain)
 
@@ -38,10 +37,7 @@ class ExternalBinding(models.AbstractModel):
             domain = []
         with backend_record.work_on(self._name) as work:
             exporter = work.component(
-                usage="batch.direct.exporter"
-                # usage=delayed
-                # and "batch.delayed.exporter"
-                # or "batch.direct.exporter"
+                usage=delayed and "batch.delayed.exporter" or "batch.direct.exporter"
             )
             return exporter.run(domain=domain)
 
