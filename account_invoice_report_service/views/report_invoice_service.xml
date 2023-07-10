@@ -480,7 +480,7 @@
                                                     <td>
                                                         <t
                                                             t-set="tax_amount_by_group"
-                                                            t-value="list(filter(lambda x: x[1], o.amount_by_group))"
+                                                            t-value="o.amount_by_group"
                                                         />
                                                         <table
                                                             class="ris-table3"
@@ -530,7 +530,7 @@
                             >
                                 <t
                                     t-set="tax_amount_by_group"
-                                    t-value="list(filter(lambda x: x[1], o.amount_by_group))"
+                                    t-value="o.amount_by_group"
                                 />
                                 <t t-if="tax_amount_by_group">
                                     <tr
@@ -551,44 +551,30 @@
                                         t-foreach="tax_amount_by_group"
                                         t-as="amount_by_group"
                                     >
-                                        <t t-if="amount_by_group[1]">
-                                            <tr
-                                                style="border-bottom:1px solid #dddddd;"
+                                        <tr style="border-bottom:1px solid #dddddd;">
+                                            <t
+                                                t-if="len(tax_amount_by_group) == 1 and o.amount_untaxed == amount_by_group[2]"
                                             >
-                                                <t
-                                                    t-if="len(tax_amount_by_group) == 1 and o.amount_untaxed == amount_by_group[2]"
-                                                >
-                                                    <td>
-                                                        <span
-                                                            t-esc="amount_by_group[0]"
-                                                        />
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <span
-                                                            t-esc="amount_by_group[3]"
-                                                        />
-                                                    </td>
-                                                </t>
-                                                <t t-else="">
-                                                    <td>
-                                                        <span
-                                                            t-esc="amount_by_group[0]"
-                                                        />
-                                                        <span>
-                                                            <span>on</span>
-                                                            <t
-                                                                t-esc="amount_by_group[4]"
-                                                            />
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <span
-                                                            t-esc="amount_by_group[3]"
-                                                        />
-                                                    </td>
-                                                </t>
-                                            </tr>
-                                        </t>
+                                                <td>
+                                                    <span t-esc="amount_by_group[0]" />
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="amount_by_group[3]" />
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td>
+                                                    <span t-esc="amount_by_group[0]" />
+                                                    <span>
+                                                        <span>on</span>
+                                                        <t t-esc="amount_by_group[4]" />
+                                                    </span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="amount_by_group[3]" />
+                                                </td>
+                                            </t>
+                                        </tr>
                                     </t>
                                 </t>
                                 <tr class="border-black">
