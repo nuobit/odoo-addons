@@ -57,6 +57,13 @@ class ConnectorBackend(models.AbstractModel):
         help="This field is used in order to define the chunk size for the backend.",
     )
 
+    sync_offset = fields.Integer(
+        required=True,
+        default=0,
+        help="Minutes to start the synchronization "
+        "before(negative)/after(positive) the last one",
+    )
+
     def _check_connection(self):
         self.ensure_one()
         with self.work_on(self._name) as work:
