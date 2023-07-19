@@ -15,9 +15,9 @@ from odoo.addons.connector.exception import RetryableJobError
 _logger = logging.getLogger(__name__)
 
 
-class WordpressAdapterCRUD(AbstractComponent):
-    _name = "base.backend.wordpress.adapter.crud"
-    _inherit = "base.backend.adapter.crud"
+class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
+    _name = "connector.extension.wordpress.adapter.crud"
+    _inherit = "connector.extension.adapter.crud"
 
     def _exec(self, op, resource, *args, **kwargs):
         func = getattr(self, "_exec_%s" % op)
