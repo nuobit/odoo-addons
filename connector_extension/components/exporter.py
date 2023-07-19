@@ -21,33 +21,8 @@ class GenericDirectExporter(AbstractComponent):
 
     _usage = "record.direct.exporter"
 
-    # def __init__(self, working_context):
-    #     super().__init__(working_context)
-    # self.binding = None
-    # self.external_id = None
-
-    def _should_import(self, binding):
-        return False
-
-    # def _delay_import(self, binding):
-    #     """Schedule an import of the record.
-    #
-    #     Adapt in the sub-classes when the model is not imported
-    #     using ``import_record``.
-    #     """
-    #     # force is True because the sync_date will be more recent
-    #     # so the import would be skipped
-    #     assert self.external_id
-    #     binding.with_delay().import_record(
-    #         self.backend_record, self.external_id, force=True
-    #     )
-
     def _mapper_options(self, binding):
         return {"binding": binding}
-
-    # def _force_binding_creation(self, relation):
-    #     if not self.binding:
-    #         self.binding = self.binder.wrap_record(relation, force=True)
 
     def run(self, relation, internal_fields=None):
         """Run the synchronization
@@ -65,17 +40,9 @@ class GenericDirectExporter(AbstractComponent):
             binding = (
                 self.binder_for().to_binding_from_internal_key(relation) or binding
             )
-        # try:
-        #     should_import = self._should_import(binding)
-        # except IDMissingInBackend:
-        #     # self.external_id = None
-        #     should_import = False
-        # if should_import:
-        #     self._delay_import(binding)
 
         if not binding:
             internal_fields = None  # should be created with all the fields
-        # TODO: pongo el relation porque si no tiene binding no podemos hacer comprobaciones
         if self._has_to_skip(binding, relation):
             return _("Nothing to export")
 
