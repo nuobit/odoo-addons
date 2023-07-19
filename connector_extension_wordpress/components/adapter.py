@@ -13,9 +13,9 @@ from odoo.addons.component.core import AbstractComponent
 _logger = logging.getLogger(__name__)
 
 
-class WordpressAdapterCRUD(AbstractComponent):
-    _name = "base.backend.wordpress.adapter.crud"
-    _inherit = "base.backend.adapter.crud"
+class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
+    _name = "connector.extension.wordpress.adapter.crud"
+    _inherit = "connector.extension.adapter.crud"
 
     # TODO: manage retryable_errors
     def _exec(self, op, resource, *args, **kwargs):
