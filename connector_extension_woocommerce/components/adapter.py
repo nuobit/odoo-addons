@@ -17,9 +17,9 @@ from ...connector_extension.common.tools import trim_domain
 _logger = logging.getLogger(__name__)
 
 
-class WooCommerceAdapterCRUD(AbstractComponent):
-    _name = "base.backend.woocommerce.adapter.crud"
-    _inherit = "base.backend.adapter.crud"
+class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
+    _name = "connector.extension.woocommerce.adapter.crud"
+    _inherit = "connector.extension.adapter.crud"
 
     def _exec(self, op, resource, *args, **kwargs):
         if kwargs.get("domain"):
