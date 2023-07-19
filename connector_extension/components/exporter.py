@@ -245,3 +245,56 @@ class GenericDirectExporter(AbstractComponent):
         # special check on data before export
         self._validate_update_data(data)
         return self.backend_adapter.write(external_id, data)
+
+
+class GenericBatchExporter(AbstractComponent):
+    """Generic Synchronizer for importing data from backend to Odoo"""
+
+    _name = "generic.batch.exporter"
+    _inherit = "base.exporter"
+
+    _usage = "batch.direct.importer"
+
+    def run(self, domain=None):
+        if not domain:
+            domain = []
+        # Run the batch synchronization
+        relation_model = self.binder_for(self.model._name).unwrap_model()
+        for relation in (
+            self.env[relation_model].with_context(active_test=False).search(domain)
+        ):
+            self._export_record(relation)
+
+    def _export_record(self, external_id):
+        """Export a record directly or delay the export of the record.
+
+        Method to implement in sub-classes.
+        """
+        raise NotImplementedError
+
+
+class BatchDirectExporter(AbstractComponent):
+    """Import the records directly, without delaying the jobs."""
+
+    _name = "generic.batch.direct.exporter"
+    _inherit = "generic.batch.exporter"
+
+    _usage = "batch.direct.exporter"
+
+    def _export_record(self, relation):
+        """export the record directly"""
+        self.model.export_record(self.backend_record, relation)
+
+
+class BatchDelayedExporter(AbstractComponent):
+    """Delay import of the records"""
+
+    _name = "generic.batch.delayed.exporter"
+    _inherit = "generic.batch.exporter"
+
+    _usage = "batch.delayed.exporter"
+
+    def _export_record(self, relation, job_options=None):
+        """Delay the export of the records"""
+        delayable = self.model.with_delay(**job_options or {})
+        delayable.export_record(self.backend_record, relation)
