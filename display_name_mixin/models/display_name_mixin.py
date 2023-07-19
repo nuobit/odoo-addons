@@ -6,7 +6,7 @@
 from odoo import models
 
 
-class DisplayNameMixin(models.Model):
+class DisplayNameMixin(models.AbstractModel):
     _name = "display.name.mixin"
     _description = "Display Name Mixin"
 
