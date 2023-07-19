@@ -1,5 +1,6 @@
 # Copyright 2013-2017 Camptocamp SA
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 """
@@ -127,8 +128,6 @@ class BinderComposite(AbstractComponent):
             if len(f_splitted) > 2:
                 raise NotImplementedError(_("Multiple dot notation is not supported"))
             res.append(val)
-        # if len(res) == 1:
-        #     return res[0]
         return res
 
     def is_complete_id(self, _id, in_field=True):
@@ -575,18 +574,15 @@ class BinderComposite(AbstractComponent):
             binding = self.model.browse(odoo_object_ids)
         return binding.mapped(self._odoo_field)
 
-    def check_external_id(self, external_id, relation):
-        assert external_id, (
-            "Unexpected error on %s:"
-            "The backend id cannot be obtained."
-            "At this stage, the backend record should have been already linked via "
-            "._export_dependencies. " % relation._name
-        )
-
     def get_external_dict_ids(self, relation, check_external_id=True):
         external_id = self.to_external(relation, wrap=False)
         if check_external_id:
-            self.check_external_id(external_id, relation)
+            assert external_id, (
+                "Unexpected error on %s:"
+                "The backend id cannot be obtained."
+                "At this stage, the backend record should have been already linked via "
+                "._export_dependencies. " % relation._name
+            )
         return self.id2dict(external_id, in_field=False)
 
 
