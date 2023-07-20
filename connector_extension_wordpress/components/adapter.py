@@ -4,11 +4,13 @@
 import logging
 
 import requests
+from requests.exceptions import ConnectionError as RequestConnectionError
 
 from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
+from odoo.addons.connector.exception import RetryableJobError
 
 _logger = logging.getLogger(__name__)
 
@@ -17,33 +19,34 @@ class WordpressAdapterCRUD(AbstractComponent):
     _name = "base.backend.wordpress.adapter.crud"
     _inherit = "base.backend.adapter.crud"
 
-    # TODO: manage retryable_errors
     def _exec(self, op, resource, *args, **kwargs):
         func = getattr(self, "_exec_%s" % op)
         return func(resource, *args, **kwargs)
 
+    def _exec_wp_call(self, op, url, *args, **kwargs):
+        func = getattr(requests, op)
+        try:
+            res = func(url, *args, **kwargs)
+            data = res.json()
+            if not res.ok:
+                raise ValidationError(data)
+        except RequestConnectionError as e:
+            raise RetryableJobError(_("Error connecting to WordPress: %s") % e) from e
+        return data
+
     def _exec_get(self, resource, *args, **kwargs):
         url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        res = requests.get(
+        return self._exec_wp_call(
+            "get",
             url=url,
             auth=(
                 self.backend_record.consumer_key,
                 self.backend_record.consumer_secret,
             ),
         )
-        if res.status_code in [400, 401, 403, 404, 500]:
-            raise ValidationError(res.json().get("message"))
-        try:
-            res = res.json()
-        except Exception as e:
-            raise ValidationError(e)
-        return res
 
     def _exec_post(self, resource, *args, **kwargs):
-        # TODO: this auth method is working like this because if we call
-        #  the export from the woocommerce backend,
-        #  the credentials are in the wordpress backend. Refactor
-        auth = False
+        auth = (self.backend_record.consumer_key, self.backend_record.consumer_secret)
         if "wordpress_backend_id" in self.backend_record:
             backend = self.backend_record.wordpress_backend_id
             auth = (backend.consumer_key, backend.consumer_secret)
@@ -54,25 +57,16 @@ class WordpressAdapterCRUD(AbstractComponent):
         if data_aux.get("checksum"):
             checksum = data_aux.pop("checksum")
         url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        res = requests.post(
-            url=url,
-            headers=headers,
-            data=data,
-            auth=auth
-            or (self.backend_record.consumer_key, self.backend_record.consumer_secret),
+        result = self._exec_wp_call(
+            "post", url=url, data=data, headers=headers, auth=auth
         )
-        if res.status_code in [400, 401, 403, 404, 500]:
-            raise ValidationError(res.json().get("message"))
-        try:
-            res = res.json()
-            if checksum:
-                res["checksum"] = checksum
-        except Exception as e:
-            raise ValidationError(e)
-        return res
+        if checksum:
+            result["checksum"] = checksum
+        return result
 
     def _exec_put(self, resource, *args, **kwargs):
-        return self.wpapi.put(resource, *args, **kwargs)
+        url = self.backend_record.url + "/wp-json/wp/v2/" + resource
+        return self._exec_wp_call("put", url=url, *args, **kwargs)
 
     def _exec_delete(self, resource, *args, **kwargs):
         raise NotImplementedError()
