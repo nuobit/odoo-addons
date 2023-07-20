@@ -112,14 +112,14 @@ class BackendAdapter(AbstractComponent):
         for i in range(0, len(lst), n):
             yield lst[i : i + n]
 
-    def _filter_by_hash(self, data):
+    def _filter_by_hash(self, data, hash_field):
         indexed_data = {x["Hash"]: x for x in data}
         odoo_hashes = set(
             self.model.search(
                 [
                     ("backend_id", "=", self.backend_record.id),
                 ]
-            ).mapped("veloconnect_hash")
+            ).mapped(hash_field)
         )
         changed_hashes = set(indexed_data.keys()) - odoo_hashes
         return [indexed_data[x] for x in changed_hashes]
