@@ -236,6 +236,7 @@ class Controller(http.Controller):
                 }
             )
 
+    # TODO: move to a service class
     def _update_last_sync_time(self, service):
         start_sync_time = fields.Datetime.now()
         env = http.request.env
@@ -330,32 +331,28 @@ class Controller(http.Controller):
                 return e.args[0]
 
         if op == "BookingRetrievalRQ":
-            # manage the sync timestamps
-            last_sync_time = self._update_last_sync_time(service)
-
-            # get reservations
-            reservations = service.property_id.reservation_ids.filtered(
-                lambda x: not last_sync_time or x.state_write_date >= last_sync_time
-            ).sorted("code")
+            # get all reservations
+            reservations = service.property_id.reservation_ids
 
             # filter by debug codes
-            if reservations:
-                if service.debug_reservation_codes:
-                    # get debug filter by reservation code
-                    debug_reservation_codes_l = [
-                        int(x.strip())
-                        for x in service.debug_reservation_codes.split(",")
-                    ]
-                    reservations = reservations.filtered(
-                        lambda x: x.code in debug_reservation_codes_l
-                    )
-                else:
-                    reservations = reservations.filtered(
-                        lambda x: x.code
-                        in service.property_id.reservation_ids.mapped("code")
-                    )
+            if service.debug_reservation_codes:
+                # get debug filter by reservation code
+                debug_reservation_codes_l = [
+                    int(x.strip()) for x in service.debug_reservation_codes.split(",")
+                ]
+                reservations = reservations.filtered(
+                    lambda x: x.code in debug_reservation_codes_l
+                )
+            else:
+                # manage the sync timestamps
+                last_sync_time = self._update_last_sync_time(service)
 
-            reservations_l = reservations.convert_data()
+                # filter by last sync time
+                reservations = reservations.filtered(
+                    lambda x: not last_sync_time or x.state_write_date >= last_sync_time
+                )
+
+            reservations_l = reservations.sorted("code").convert_data()
 
             xml_obj = service.generate_expedia_reservations_xml(reservations_l)
             return self._send_response(xml_obj)
