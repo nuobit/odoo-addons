@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 import requests
 from lxml import etree
 
-from odoo import api, http, registry
+from odoo import api, fields, http, registry
 from odoo.exceptions import ValidationError
 
 
@@ -237,7 +237,7 @@ class Controller(http.Controller):
             )
 
     def _update_last_sync_time(self, service):
-        start_sync_time = datetime.datetime.now()
+        start_sync_time = fields.Datetime.now()
         env = http.request.env
         with registry(env.cr.dbname).cursor() as new_cr:
             new_env = api.Environment(new_cr, env.uid, env.context)
