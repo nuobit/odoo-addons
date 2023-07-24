@@ -119,3 +119,21 @@ def slugify(value):
         .lower()
         .replace(" ", "")
     )
+
+
+def trim_domain(domain):
+    trimmed_domain = []
+    for d in domain:
+        if isinstance(d, (list, tuple)):
+            if len(d) == 3 and isinstance(d[2], str):
+                trimmed_domain.append((d[0], d[1], d[2].strip()))
+            elif len(d) == 3 and isinstance(d[2], (list, tuple)):
+                trimmed_value = [
+                    value.strip() if isinstance(value, str) else value for value in d[2]
+                ]
+                trimmed_domain.append((d[0], d[1], trimmed_value))
+            else:
+                trimmed_domain.append(d)
+        else:
+            raise Exception("Unexpected domain format: %s" % d)
+    return trimmed_domain
