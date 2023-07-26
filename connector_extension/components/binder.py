@@ -108,7 +108,7 @@ class BinderComposite(AbstractComponent):
             alt_field=alt_field,
         )
 
-    def dict2id(self, _dict, in_field=True, alt_field=False):
+    def dict2id(self, _dict, in_field=True, alt_field=False, unwrap=False):
         """Giving a dict, return the values of the internal or external fields
         :param _dict: Dict (usually binder) to extract internal or external fields
         :param in_field: with True value, _internal_field defined in binder are used.
@@ -128,6 +128,11 @@ class BinderComposite(AbstractComponent):
             if len(f_splitted) > 2:
                 raise NotImplementedError(_("Multiple dot notation is not supported"))
             res.append(val)
+        if unwrap:
+            if len(res) == 1:
+                return res[0]
+            else:
+                raise ValidationError(_("It's not possible to unwrap a composite id"))
         return res
 
     def is_complete_id(self, _id, in_field=True):
