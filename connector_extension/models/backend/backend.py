@@ -49,12 +49,18 @@ class ConnectorBackend(models.AbstractModel):
         string="Timezone",
         required=True,
         default=lambda self: self._context.get("tz") or self.env.user.tz or "UTC",
-        help="This field is used in order to define in which timezone the backend will work.",
+        help="This field is used to define in which timezone the backend will work.",
     )
 
     chunk_size = fields.Integer(
         default=-1,
-        help="This field is used in order to define the chunk size for the backend.",
+        help="This field is used to define the chunk size to import from the backend.",
+    )
+    page_size = fields.Integer(
+        string="Page Size",
+        default=-1,
+        help="This field is used in order to define the "
+        "number of records imported at the same time.",
     )
 
     sync_offset = fields.Integer(
