@@ -36,7 +36,8 @@ def required(*args):
     # return func
 
 
-class Mapper(AbstractComponent):
+class ConnectorExtensionMapper(AbstractComponent):
+    _name = "connector.extension.mapper"
     _inherit = "base.mapper"
 
     def _apply_with_options(self, map_record):
@@ -134,7 +135,8 @@ class Mapper(AbstractComponent):
         return list(set(result.values()))
 
 
-class BaseChildMapper(AbstractComponent):
+class ConnectorExtensionChildMapper(AbstractComponent):
+    _name = "connector.extension.child.mapper"
     _inherit = "base.map.child"
 
     def get_all_items(self, mapper, items, parent, to_attr, options):
@@ -162,8 +164,9 @@ class BaseChildMapper(AbstractComponent):
         raise NotImplementedError
 
 
-class ImportMapChild(AbstractComponent):
-    _inherit = "base.map.child.import"
+class ConnectorExtensionMapChildImport(AbstractComponent):
+    _name = "connector.extension.map.child.import"
+    _inherit = ["base.map.child.import", "connector.extension.child.mapper"]
 
     def _child_bind(self, map_record, item_values):
         binder = self.binder_for()
@@ -236,8 +239,9 @@ class ImportMapChild(AbstractComponent):
         return mapped
 
 
-class ExportMapChild(AbstractComponent):
-    _inherit = "base.map.child.export"
+class ConnectorExtensionMapChildExport(AbstractComponent):
+    _name = "connector.extension.map.child.export"
+    _inherit = ["base.map.child.export", "connector.extension.child.mapper"]
 
     def _child_bind(self, map_record, item_values):
         # TODO: implement this method
@@ -249,8 +253,9 @@ class ExportMapChild(AbstractComponent):
 
 
 # TODO: create a fix on OCA repo and remove this class
-class ExportMapper(AbstractComponent):
-    _inherit = "base.export.mapper"
+class ConnectorExtensionExportMapper(AbstractComponent):
+    _name = "connector.extension.export.mapper"
+    _inherit = ["base.export.mapper", "connector.extension.mapper"]
 
     def _map_direct(self, record, from_attr, to_attr):
         """Apply the ``direct`` mappings.
@@ -285,6 +290,11 @@ class ExportMapper(AbstractComponent):
             "At this stage, the backend record should have been already linked via "
             "._export_dependencies. " % relation._name
         )
+
+
+class ConnectorExtensionImportMapper(AbstractComponent):
+    _name = "connector.extension.import.mapper"
+    _inherit = ["base.import.mapper", "connector.extension.mapper"]
 
 
 class DeleteMapChild(AbstractComponent):

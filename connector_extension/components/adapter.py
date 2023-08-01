@@ -10,8 +10,9 @@ from odoo.exceptions import ValidationError
 from odoo.addons.component.core import AbstractComponent
 
 
-class BackendAdapter(AbstractComponent):
-    _inherit = "base.backend.adapter"
+class ConnectorExtensionAdapterCRUD(AbstractComponent):
+    _name = "connector.extension.adapter.crud"
+    _inherit = "base.backend.adapter.crud"
 
     _date_format = "%Y-%m-%d"
     _datetime_format = "%Y-%m-%dT%H:%M:%SZ"

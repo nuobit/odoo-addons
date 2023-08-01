@@ -22,7 +22,7 @@ def _tz_get(self):
 
 
 class ConnectorBackend(models.AbstractModel):
-    # _name = "connector.backend.extension"
+    _name = "connector.extension.backend"
     _inherit = "connector.backend"
     _description = "Connector Backend Extension"
 
