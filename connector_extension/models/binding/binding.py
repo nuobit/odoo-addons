@@ -5,9 +5,9 @@
 from odoo import api, fields, models
 
 
-class ExternalBinding(models.AbstractModel):
+class ConnectorExtensionExternalBinding(models.AbstractModel):
+    _name = "connector.extension.external.binding"
     _inherit = "external.binding"
-
     # by default we consider sync_date as the import one
 
     @api.model
