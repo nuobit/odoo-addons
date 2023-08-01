@@ -130,10 +130,6 @@ class GenericDirectImporter(AbstractComponent):
     def _mapper_options(self, binding, sync_date):
         return {"binding": binding, "sync_date": sync_date}
 
-    def _create(self, values):
-        """Create the Internal record"""
-        return self.model.with_context(connector_no_export=True).create(values)
-
     def run(self, external_id, sync_date, external_data=None, external_fields=None):
         if not external_data:
             external_data = {}
@@ -191,7 +187,7 @@ class GenericDirectImporter(AbstractComponent):
                 # if exists, we update it
                 values = internal_data.values(fields=external_fields, **opts)
                 binder.bind_import(external_data, values, sync_date)
-                binding.with_context(connector_no_export=True).write(values)
+                self._update(binding, values)
                 _logger.debug("%d updated from Backend %s", binding, external_id)
             else:
                 # or we create it
@@ -205,3 +201,33 @@ class GenericDirectImporter(AbstractComponent):
             # last update
             self._after_import(binding)
         return True
+
+    def _validate_update_data(self, data):
+        """Check if the values to import are correct
+
+        Pro-actively check before the ``Model.update`` if some fields
+        are missing or invalid
+
+        Raise `InvalidDataError`
+        """
+        return
+
+    def _update(self, binding, data):
+        """Update the Internal record"""
+        self._validate_update_data(data)
+        return binding.with_context(connector_no_export=True).write(data)
+
+    def _validate_create_data(self, data):
+        """Check if the values to import are correct
+
+        Pro-actively check before the ``Model.create`` if some fields
+        are missing or invalid
+
+        Raise `InvalidDataError`
+        """
+        return
+
+    def _create(self, data):
+        """Create the Internal record"""
+        self._validate_create_data(data)
+        return self.model.with_context(connector_no_export=True).create(data)
