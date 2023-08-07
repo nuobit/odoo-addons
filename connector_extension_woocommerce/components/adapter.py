@@ -41,7 +41,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                     )
                 )
             elif not res.ok:
-                raise ValidationError(data)
+                raise ValidationError(_("Error: %s") % data)
             headers = res.headers
             total_items = headers.get("X-WP-Total") or 0
             if total_items:
