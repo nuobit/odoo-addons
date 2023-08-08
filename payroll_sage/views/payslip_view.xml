@@ -83,7 +83,7 @@
                     <field
                         name="payment_date"
                         colspan="2"
-                        attrs="{'invisible': [('type', '!=', 'transfer')], 'required': [('type', '=', 'transfer')], 'readonly': [('state', '!=', 'draft')]}"
+                        attrs="{'invisible': [('type', '!=', 'transfer')], 'readonly': [('state', '!=', 'draft')]}"
                     />
                 </group>
                 <group col="4">
