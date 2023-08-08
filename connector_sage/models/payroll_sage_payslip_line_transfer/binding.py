@@ -32,9 +32,9 @@ class PayslipLineTransferBinding(models.Model):
             "Año": payslip_id.year,
             "MesD": ("between", (payslip_id.month_from, payslip_id.month_to)),
             "TipoProceso": payslip_id.process,
-            "FechaCobro": payslip_id.payment_date,
         }
-
+        if payslip_id.payment_date:
+            filters["FechaCobro"] = payslip_id.payment_date
         self.env["sage.payroll.sage.payslip.line.transfer"].import_batch(
             backend=backend_record, filters=filters
         )
