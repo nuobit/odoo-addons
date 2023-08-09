@@ -18,6 +18,7 @@ from contextlib import contextmanager
 
 import psycopg2
 
+import odoo
 from odoo import _, fields, models, tools
 from odoo.exceptions import ValidationError
 
@@ -228,7 +229,6 @@ class BinderComposite(AbstractComponent):
                         .sudo()
                         .create(_bind_values)
                     )
-
                     if not tools.config["test_enable"]:
                         self.env.cr.commit()  # pylint: disable=invalid-commit
         else:
@@ -329,7 +329,7 @@ class BinderComposite(AbstractComponent):
 
         external_id = self.dict2id(external_data, in_field=False)
         with self._retry_unique_violation():
-            return self.model.with_context(connector_no_export=True).create(
+            binding = self.model.with_context(connector_no_export=True).create(
                 {
                     self._backend_field: self.backend_record.id,
                     self._odoo_field: relation_id,
@@ -338,6 +338,14 @@ class BinderComposite(AbstractComponent):
                     **self._additional_external_binding_fields(external_data),
                 }
             )
+            # Eager commit to avoid having 2 jobs
+            # exporting at the same time. The constraint
+            # will pop if an other job already created
+            # the same binding. It will be caught and
+            # raise a RetryableJobError.
+            if not odoo.tools.config["test_enable"]:
+                self.env.cr.commit()  # pylint: disable=E8102
+            return binding
 
     def _additional_external_binding_fields(self, external_data):
         return {}
