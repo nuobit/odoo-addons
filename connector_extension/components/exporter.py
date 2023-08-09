@@ -78,6 +78,9 @@ class GenericDirectExporter(AbstractComponent):
     def _after_export(self):
         """Can do several actions after exporting a record on the backend"""
 
+    def _get_sql_lock(self, record):
+        return "SELECT id FROM %s WHERE ID = %%s FOR UPDATE NOWAIT" % record._table
+
     def _lock(self, record):
         """Lock the binding record.
 
@@ -94,7 +97,7 @@ class GenericDirectExporter(AbstractComponent):
         on the binding record it has to export.
 
         """
-        sql = "SELECT id FROM %s WHERE ID = %%s FOR UPDATE NOWAIT" % record._table
+        sql = self._get_sql_lock(record)
         try:
             self.env.cr.execute(sql, (record.id,), log_exceptions=False)
         except psycopg2.OperationalError as e:
