@@ -51,13 +51,14 @@ class ProductProductExportMapper(Component):
 
         return {"CodigoArticulo": record.default_code}
 
-    @changed_by("name")
+    @changed_by("display_name")
     @mapping
     def DescripcionArticulo(self, record):
         return {
-            "DescripcionArticulo": record.with_context(
-                lang=self.backend_record.lang_id.code
-            ).name[:250]
+            "DescripcionArticulo": record.odoo_id.with_context(
+                lang=self.backend_record.lang_id.code,
+                display_default_code=False,
+            ).display_name[:250]
         }
 
     @changed_by("categ_id")
