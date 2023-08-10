@@ -29,7 +29,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             res = func(url, *args, **kwargs)
             data = res.json()
             if not res.ok:
-                raise ValidationError(data)
+                raise ValidationError(_("Error: %s") % data)
         except RequestConnectionError as e:
             raise RetryableJobError(_("Error connecting to WordPress: %s") % e) from e
         return data
