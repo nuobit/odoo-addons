@@ -142,7 +142,8 @@ class AnphitrionPMSTinyReservationAdapter(Component):
                     row_d[k] = None
                 elif k in ("Entrada", "Salida", "FechaReserva", "FechaNoche"):
                     # convert to date
-                    row_d[k] = row_d[k].date()
+                    if k not in ("FechaNoche",) or row_d[k]:
+                        row_d[k] = row_d[k].date()
                 elif k in ("FechaCancelada", "FechaModificada"):
                     if row_d[k]:
                         row_d[k] = self.backend_record.tz_to_utc(row_d[k])
@@ -158,6 +159,17 @@ class AnphitrionPMSTinyReservationAdapter(Component):
                 row_d["Nombre"], row_d["Apellidos"] = completename_split
             else:
                 row_d["Apellidos"] = None
+
+            if row_d["FechaNoche"] is None and not row_d["Anulada"]:
+                raise ValidationError(
+                    _(
+                        "%(reservation_number)i: Only cancelled reservations are "
+                        "allowed to have temporarily null date nights"
+                    )
+                    % {
+                        "reservation_number": row_d["NumReserva"],
+                    }
+                )
 
         # group by reservation number
         reservations = {}
@@ -277,26 +289,40 @@ class AnphitrionPMSTinyReservationAdapter(Component):
         # reformat data as a lists, removing auxiliar dictionaries
         reservations_l = []
         for reservation in reservations.values():
+            rooms = []
+            for room in sorted(
+                reservation["rooms"].values(), key=lambda x: x["data"]["Linea"]
+            ):
+                # check nights integrity: either all nights have date or none
+                if None in room["nights"]:
+                    if len(room["nights"]) != 1:
+                        raise ValidationError(
+                            _(
+                                "There are nights with date and other without "
+                                "in reservation '%(reservation_number)s'"
+                            )
+                            % {
+                                "reservation_number": reservation["data"]["NumReserva"],
+                            }
+                        )
+                    nights = []
+                else:
+                    nights = [x["data"] for x in room["nights"].values()]
+
+                rooms.append(
+                    {
+                        **room["data"],
+                        "Huespedes": sorted(
+                            [x["data"] for x in room["guests"].values()],
+                            key=lambda x: x["Numocupante"],
+                        ),
+                        "Noches": sorted(nights, key=lambda x: x["FechaNoche"]),
+                    }
+                )
             reservations_l.append(
                 {
                     **reservation["data"],
-                    "Habitaciones": [
-                        {
-                            **room["data"],
-                            "Huespedes": sorted(
-                                [x["data"] for x in room["guests"].values()],
-                                key=lambda x: x["Numocupante"],
-                            ),
-                            "Noches": sorted(
-                                [x["data"] for x in room["nights"].values()],
-                                key=lambda x: x["FechaNoche"],
-                            ),
-                        }
-                        for room in sorted(
-                            reservation["rooms"].values(),
-                            key=lambda x: x["data"]["Linea"],
-                        )
-                    ],
+                    "Habitaciones": rooms,
                 }
             )
 
