@@ -4,8 +4,7 @@
 import logging
 
 import requests
-from requests.exceptions import ConnectionError as RequestConnectionError
-
+import json
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -30,8 +29,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             data = res.json()
             if not res.ok:
                 raise ValidationError(_("Error: %s") % data)
-        except RequestConnectionError as e:
+        except requests.exceptions.ConnectionError as e:
             raise RetryableJobError(_("Error connecting to WordPress: %s") % e) from e
+        except json.JSONDecodeError as e:
+            raise ValidationError(_("Error decoding json WordPress response: %s\n%s") % (e,res.text)) from e
         return data
 
     def _exec_get(self, resource, *args, **kwargs):
