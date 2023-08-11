@@ -6,7 +6,7 @@ from odoo import fields, models
 
 class PMSTinyReservation(models.Model):
     _inherit = "pms.tiny.reservation"
-    _order = "state_write_date desc"
+    _order = "state_write_date desc, id desc"
 
     state_write_date = fields.Datetime(
         required=True,

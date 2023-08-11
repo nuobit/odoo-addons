@@ -352,7 +352,11 @@ class Controller(http.Controller):
                     lambda x: not last_sync_time or x.state_write_date >= last_sync_time
                 )
 
-            reservations_l = reservations.sorted("code").convert_data()
+            reservations_l = (
+                reservations.filtered(lambda x: x.state not in ("draft",))
+                .sorted("code")
+                .convert_data()
+            )
 
             xml_obj = service.generate_expedia_reservations_xml(reservations_l)
             return self._send_response(xml_obj)
