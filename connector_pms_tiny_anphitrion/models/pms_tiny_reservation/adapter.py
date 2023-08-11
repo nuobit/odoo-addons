@@ -105,7 +105,7 @@ class AnphitrionPMSTinyReservationAdapter(Component):
                Nombre, SNumero, Entrada, Salida, Regimen, Nacion, Colocacion,
                nfactura, Anulada, TipoProduccion, Agencia, usaFantasma,
                HabitacionesCompartidas, HabitacionEspecial, PrecioPorHabitacion,
-               CodigoContrato, Provincia,SubAgencia, CodigoHotel, Telefono,
+               CodigoContrato, Provincia, SubAgencia, CodigoHotel, Telefono,
                CorreoElectronico, TipoCliente, HabitacionVenta, HabitacionVenta2,
                FechaReserva, NomAgencia, NomSubAgencia,
                importe2 as ImporteBaseHabNocheOcupante, fecha as FechaNoche,

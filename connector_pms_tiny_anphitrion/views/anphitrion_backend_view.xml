@@ -160,6 +160,7 @@
                         <group>
                             <field name="min_reservation_number" />
                             <field name="agency_codes" />
+                            <field name="agency_codes_with_mandatory_subagency_str" />
                         </group>
                     </page>
                     <page name="debug" string="Debug" groups="base.group_no_one">

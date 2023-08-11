@@ -39,6 +39,33 @@ class AnphitrionBackend(models.Model):
     )
 
     agency_codes = fields.Char(required=True)
+
+    agency_codes_with_mandatory_subagency_str = fields.Char(
+        string="Agencies with mandatory subagency",
+    )
+
+    agency_codes_with_mandatory_subagency = fields.Json(
+        compute="_compute_agency_codes_with_mandatory_subagency",
+    )
+
+    @api.depends("agency_codes_with_mandatory_subagency_str")
+    def _compute_agency_codes_with_mandatory_subagency(self):
+        for rec in self:
+            if rec.agency_codes_with_mandatory_subagency_str:
+                rec.agency_codes_with_mandatory_subagency = list(
+                    filter(
+                        None,
+                        [
+                            x.strip()
+                            for x in rec.agency_codes_with_mandatory_subagency_str.split(
+                                ","
+                            )
+                        ],
+                    )
+                )
+            else:
+                rec.agency_codes_with_mandatory_subagency = []
+
     min_reservation_number = fields.Integer(
         string="Minimum Reservation Number",
         help="Minimum reservation number to import (included). "

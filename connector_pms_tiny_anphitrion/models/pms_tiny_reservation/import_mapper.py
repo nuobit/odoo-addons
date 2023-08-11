@@ -47,6 +47,10 @@ class AnphitrionPMSTinyReservationImportMapper(Component):
             state = "cancel"
         else:
             state = "new"
+            agencia = record["Agencia"].strip()
+            if agencia in self.backend_record.agency_codes_with_mandatory_subagency:
+                if not record["SubAgencia"]:
+                    state = "draft"
         return {"state": state}
 
     # @mapping
