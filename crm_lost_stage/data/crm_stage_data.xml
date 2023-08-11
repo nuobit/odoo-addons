@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record model="crm.stage" id="stage_lead_lost">
+        <field name="name">Lost</field>
+        <field name="is_lost">True</field>
+    </record>
+</odoo>
