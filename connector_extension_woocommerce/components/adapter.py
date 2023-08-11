@@ -2,8 +2,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import logging
 import json
+import logging
 
 from requests.exceptions import ConnectionError as RequestConnectionError
 
@@ -57,8 +57,23 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             raise RetryableJobError(_("Error connecting to WooCommerce: %s") % e) from e
         except json.JSONDecodeError as e:
             raise ValidationError(
-                _("Error decoding json WooCommerce response: %s\n%s\nResource:%s\nArgs:%s\nKwargs:%s\nRes:%s") % (
-                e, res.text, resource, args, kwargs,res)) from e
+                _(
+                    "Error decoding json WooCommerce response: "
+                    "%s\n%s\nResource:%s\nArgs:%s\nKwargs:%s\n"
+                    "URL:%s\nHeaders:%s\nMethod:%s\nBody:%s"
+                )
+                % (
+                    e,
+                    res.text,
+                    resource,
+                    args,
+                    kwargs,
+                    res.url,
+                    res.request.headers,
+                    res.request.method,
+                    res.request.body,
+                )
+            ) from e
         return result
 
     def get_total_items(self, resource, domain=None):
