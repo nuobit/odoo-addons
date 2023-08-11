@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="1">
+    <record id="connector_anphitrion_backend_company_rule" model="ir.rule">
+        <field name="name">Connector Anphitrion Backend multi-company rule</field>
+        <field name="model_id" ref="model_anphitrion_backend" />
+        <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+    <record id="connector_anphitrion_reservation_binding_company_rule" model="ir.rule">
+        <field
+            name="name"
+        >Connector Anphitrion reservation binding multi-company rule</field>
+        <field name="model_id" ref="model_anphitrion_pms_tiny_reservation" />
+        <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+</odoo>

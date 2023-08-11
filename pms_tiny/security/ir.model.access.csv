@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_pms_tiny_property_manager","pms_tiny_property manager","model_pms_tiny_property","group_pms_tiny_manager",1,1,1,1
+"access_pms_tiny_property_user","pms_tiny_property user","model_pms_tiny_property","group_pms_tiny_user",1,0,0,0
+"access_pms_tiny_reservation_manager","pms_tiny_reservation manager","model_pms_tiny_reservation","group_pms_tiny_manager",1,1,1,1
+"access_pms_tiny_reservation_user","pms_tiny_reservation user","model_pms_tiny_reservation","group_pms_tiny_user",1,0,0,0
+"access_pms_tiny_reservation_room_manager","pms_tiny_reservation_room manager","model_pms_tiny_reservation_room","group_pms_tiny_manager",1,1,1,1
+"access_pms_tiny_reservation_room_user","pms_tiny_reservation_room user","model_pms_tiny_reservation_room","group_pms_tiny_user",1,0,0,0

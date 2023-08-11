@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="1">
+    <record id="anphitrion_binding_import_batch" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_pms_tiny_anphitrion.model_anphitrion_pms_tiny_reservation"
+        />
+        <field name="method">import_batch</field>
+        <field name="channel_id" ref="connector_pms_tiny_anphitrion.anphitrion_batch" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record id="anphitrion_binding_import_record" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_pms_tiny_anphitrion.model_anphitrion_pms_tiny_reservation"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_pms_tiny_anphitrion.anphitrion_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+</odoo>

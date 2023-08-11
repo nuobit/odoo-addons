@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="pms_tiny_reservation_form_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.form</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="inherit_id" ref="pms_tiny.pms_tiny_reservation_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='room_ids']/tree" position="inside">
+                <field name="confirm_number" />
+                <field name="confirm_time" />
+            </xpath>
+            <field name="cancelled_date" position="after">
+                <field name="state_write_date" />
+            </field>
+        </field>
+    </record>
+     <record id="pms_tiny_reservation_tree_view" model="ir.ui.view">
+        <field name="name">pms.tiny.reservation.tree</field>
+        <field name="model">pms.tiny.reservation</field>
+        <field name="inherit_id" ref="pms_tiny.pms_tiny_reservation_tree_view" />
+        <field name="arch" type="xml">
+            <field name="cancelled_date" position="after">
+                <field name="state_write_date" />
+            </field>
+        </field>
+    </record>
+</odoo>

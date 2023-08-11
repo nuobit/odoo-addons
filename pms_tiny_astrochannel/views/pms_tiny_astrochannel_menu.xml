@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="pms_tiny_astrochannel_root_menu_action"
+        name="Astrochannel"
+        parent="pms_tiny.pms_tiny_menu_root"
+        sequence="100"
+    >
+        <menuitem
+            id="pms_tiny_astrochannel_service_menu_action"
+            name="Services"
+            action="pms_tiny_astrochannel_service_action"
+            sequence="10"
+        />
+        <menuitem
+            id="pms_tiny_astrochannel_log_menu_action"
+            name="Log"
+            action="pms_tiny_astrochannel_log_action"
+            sequence="20"
+        />
+    </menuitem>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="pms_tiny__astrochannel_service_form_view" model="ir.ui.view">
+        <field name="name">pms.tiny.astrochannel.service.form</field>
+        <field name="model">pms.tiny.astrochannel.service</field>
+        <field name="arch" type="xml">
+            <form string="Astrochannel Service">
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" />
+                    </h1>
+                    <group>
+                        <field name="property_id" />
+                        <field name="tz" />
+                    </group>
+                    <group>
+                        <field name="username" />
+                        <field name="password" password="True" />
+                    </group>
+                    <group>
+                        <field name="tax_percent" />
+                        <field name="currency" />
+                    </group>
+                    <notebook>
+                        <page name="sync" string="Sync">
+                            <group col="4">
+                                <field
+                                    name="export_reservations_since_datetime"
+                                    colspan="2"
+                                />
+                            </group>
+                        </page>
+                        <page name="mappings" string="Mappings">
+                            <group string="Guest Types">
+                                <field name="guest_ids" nolabel="1" colspan="2">
+                                    <tree editable="bottom">
+                                        <field name="tipofac" />
+                                        <field name="guest_type" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page name="debug" string="Debug" groups="base.group_no_one">
+                            <group>
+                                <field name="debug_reservation_codes" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="pms_tiny_astrochannel_service_tree_view" model="ir.ui.view">
+        <field name="name">pms.tiny.astrochannel.service.tree</field>
+        <field name="model">pms.tiny.astrochannel.service</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="username" />
+                <field name="property_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="pms_tiny_astrochannel_service_action" model="ir.actions.act_window">
+        <field name="name">Astrochannel Service</field>
+        <field name="res_model">pms.tiny.astrochannel.service</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
