@@ -42,6 +42,7 @@ class PMSTinyReservation(models.Model):
 
     state = fields.Selection(
         selection=[
+            ("draft", _("Draft")),
             ("new", _("New")),
             ("modified", _("Modified")),
             ("cancel", _("Cancelled")),
@@ -93,6 +94,7 @@ class PMSTinyReservation(models.Model):
     @api.model
     def change_state_workflow(self):
         return {
+            "draft": {"new", "cancel"},
             "new": {"cancel"},
             "modified": {"cancel", "modified"},
             "cancel": set(),

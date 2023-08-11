@@ -62,7 +62,10 @@
         <field name="name">pms.tiny.reservation.tree</field>
         <field name="model">pms.tiny.reservation</field>
         <field name="arch" type="xml">
-            <tree decoration-danger="state=='cancel'">
+            <tree
+                decoration-warning="state=='draft'"
+                decoration-danger="state=='cancel'"
+            >
                 <field name="code" />
                 <field name="locator" />
                 <field name="date" />
@@ -77,6 +80,7 @@
                 <field
                     name="state"
                     widget="badge"
+                    decoration-warning="state == 'draft'"
                     decoration-success="state == 'new'"
                     decoration-info="state == 'modified'"
                     decoration-danger="state == 'cancel'"
