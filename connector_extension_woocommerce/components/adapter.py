@@ -57,8 +57,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             raise RetryableJobError(_("Error connecting to WooCommerce: %s") % e) from e
         except json.JSONDecodeError as e:
             raise ValidationError(
-                _("Error decoding json WooCommerce response: %s\n%s\nResource:%s\nArgs:%s\nKwargs:%s\nHeaders:%s") % (
-                e, res.text, resource, args, kwargs,res.headers)) from e
+                _("Error decoding json WooCommerce response: %s\n%s\nResource:%s\nArgs:%s\nKwargs:%s\nRes:%s") % (
+                e, res.text, resource, args, kwargs,res)) from e
         return result
 
     def get_total_items(self, resource, domain=None):
