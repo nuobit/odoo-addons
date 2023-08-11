@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+import json
 
 from requests.exceptions import ConnectionError as RequestConnectionError
 
@@ -54,6 +55,10 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             }
         except RequestConnectionError as e:
             raise RetryableJobError(_("Error connecting to WooCommerce: %s") % e) from e
+        except json.JSONDecodeError as e:
+            raise ValidationError(
+                _("Error decoding json WooCommerce response: %s\n%s\nResource:%s\nArgs:%s\nKwargs:%s\nHeaders:%s") % (
+                e, res.text, resource, args, kwargs,res.headers)) from e
         return result
 
     def get_total_items(self, resource, domain=None):
