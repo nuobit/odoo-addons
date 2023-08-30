@@ -98,7 +98,13 @@
         </xpath>
         <xpath
             expr="//table[1]/tbody/t/t//span[@t-field='ml.product_id.display_name']"
-            position="replace"
+            position="attributes"
+        >
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        <xpath
+            expr="//table[1]/tbody/t/t//span[@t-field='ml.product_id.display_name']"
+            position="after"
         >
             <span
                 t-field="ml.product_id.with_context(partner_id=o.partner_id.id).partner_ref"
