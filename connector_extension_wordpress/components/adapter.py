@@ -1,10 +1,11 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import json
 import logging
 
 import requests
-import json
+
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -32,7 +33,9 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         except requests.exceptions.ConnectionError as e:
             raise RetryableJobError(_("Error connecting to WordPress: %s") % e) from e
         except json.JSONDecodeError as e:
-            raise ValidationError(_("Error decoding json WordPress response: %s\n%s") % (e,res.text)) from e
+            raise ValidationError(
+                _("Error decoding json WordPress response: %s\n%s") % (e, res.text)
+            ) from e
         return data
 
     def _exec_get(self, resource, *args, **kwargs):
