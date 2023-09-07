@@ -45,11 +45,13 @@ class SaleOrder(models.Model):
             frozenset(["cancel", "done", "processing"]): "processing",
         }
 
+    # aa = fields.Boolean(default=False)
     @api.depends(
         "state",
         "order_line.qty_delivered",
         "order_line.product_uom_qty",
         "woocommerce_bind_ids",
+        # "aa",
     )
     def _compute_woocommerce_order_state(self):
         woocommerce_order_state_mapping = self._get_woocommerce_order_state_mapping()
@@ -57,19 +59,33 @@ class SaleOrder(models.Model):
         # this is the reason of set value just when record has binding.
         # Try to avoid compute on install.
         for rec in self:
-            if not rec.woocommerce_bind_ids:
-                rec.woocommerce_order_state = False
+            old_state = rec.woocommerce_order_state
+            lines_states = frozenset(
+                rec.order_line.mapped("woocommerce_order_line_state")
+            )
+            if lines_states:
+                new_state = woocommerce_order_state_mapping[lines_states]
             else:
-                old_state = rec.woocommerce_order_state
-                lines_states = frozenset(
-                    rec.order_line.mapped("woocommerce_order_line_state")
+                new_state = "processing"
+            if old_state != new_state:
+                rec.woocommerce_order_state = new_state
+                self._event("on_compute_woocommerce_order_state").notify(
+                    rec, fields={"woocommerce_order_state"}
                 )
-                if lines_states:
-                    new_state = woocommerce_order_state_mapping[lines_states]
-                else:
-                    new_state = "processing"
-                if old_state != new_state:
-                    rec.woocommerce_order_state = new_state
-                    self._event("on_compute_woocommerce_order_state").notify(
-                        rec, fields={"woocommerce_order_state"}
-                    )
+            #
+            # if not rec.woocommerce_bind_ids:
+            #     rec.woocommerce_order_state = False
+            # else:
+            #     old_state = rec.woocommerce_order_state
+            #     lines_states = frozenset(
+            #         rec.order_line.mapped("woocommerce_order_line_state")
+            #     )
+            #     if lines_states:
+            #         new_state = woocommerce_order_state_mapping[lines_states]
+            #     else:
+            #         new_state = "processing"
+            #     if old_state != new_state:
+            #         rec.woocommerce_order_state = new_state
+            #         self._event("on_compute_woocommerce_order_state").notify(
+            #             rec, fields={"woocommerce_order_state"}
+            #         )

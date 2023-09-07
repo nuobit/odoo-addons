@@ -39,5 +39,6 @@ class WooCommerceProductTemplate(models.Model):
             domain += [
                 ("write_date", ">", fields.Datetime.to_string(since_date)),
             ]
+        # domain = [("id", "=", 41139)]
         self.export_batch(backend_record, domain=domain)
         return True

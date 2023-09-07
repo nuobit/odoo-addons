@@ -38,6 +38,7 @@ class WooCommerceProductTemplateExportMapper(Component):
         if len(record.product_variant_ids) <= 1:
             return {
                 "manage_stock": manage_stock,
+                # TODO: modificar la quantity per agafar les dels magatzems definits al backend
                 "stock_quantity": int(record.product_variant_id.qty_available),
                 "stock_status": "instock"
                 if record.product_variant_id.qty_available > 0
@@ -61,8 +62,20 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def description(self, record):
-        if record.description:
-            return {"description": record.description}
+        description = False
+        if record.public_description:
+            description = record.with_context(
+                lang=self.backend_record.backend_lang
+            ).public_description
+        elif (
+            record.product_variant_ids == 1
+            and record.product_variant_id.variant_public_description
+        ):
+            description = record.product_variant_id.with_context(
+                lang=self.backend_record.backend_lang
+            ).variant_public_description
+        if description:
+            return {"description": description}
 
     @mapping
     def product_type(self, record):

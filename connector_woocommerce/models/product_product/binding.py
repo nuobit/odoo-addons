@@ -33,6 +33,7 @@ class WooCommerceProductProduct(models.Model):
         ),
     ]
 
+    # TODO: REFACTOR THIS GET_BASE_DOMAIN TO DO IT MORE SIMPLE
     @api.model
     def _get_base_domain(self):
         return [

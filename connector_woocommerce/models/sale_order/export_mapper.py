@@ -14,7 +14,7 @@ class WooCommerceSaleOrderExportMapper(Component):
     @mapping
     def status(self, record):
         if record.woocommerce_order_state == "processing":
-            status = "processing"
+            status = "on-hold" if record.state == "draft" else "processing"
         elif record.woocommerce_order_state == "done":
             status = "completed"
         else:

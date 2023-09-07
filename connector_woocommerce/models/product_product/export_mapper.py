@@ -42,10 +42,23 @@ class WooCommerceProductProductExportMapper(Component):
             stock = {
                 "manage_stock": True,
                 # WooCommerce don't accept fractional quantities
+                # TODO: modificar la quantity per agafar les dels magatzems definits al backend
                 "stock_quantity": int(record.qty_available),
                 "stock_status": "instock" if record.qty_available > 0 else "outofstock",
             }
         return stock
+
+    @mapping
+    def description(self, record):
+        if (
+            len(record.product_tmpl_id.product_variant_ids) > 1
+            and record.variant_public_description
+        ):
+            return {
+                "description": record.with_context(
+                    lang=self.backend_record.backend_lang
+                ).variant_public_description
+            }
 
     @mapping
     def parent_id(self, record):

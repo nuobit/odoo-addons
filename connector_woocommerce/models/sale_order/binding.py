@@ -41,10 +41,17 @@ class WooCommerceSaleOrder(models.Model):
 
     def import_sale_orders_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
-        domain += [("status", "=", "on-hold")]
+        # TODO: El extract_domain_clauses no puede aceptar un domain con in,
+        #  por tanto si queremos los items totales de las orders con status
+        #  on-hold y processing, tenemos que hacer dos importaciones.
+        #  De momento se deja asi pero hay que mirar una mejor forma de unir estos domains
+        domain += [("status", "=", "on-hold,processing")]
+        # domain += [("status", "=", "on-hold")]
+        # domain += [("status", "in", ["on-hold","processing"])]
+
         if since_date:
             domain += [
-                ("modified_after", "=", since_date.strftime("%Y-%m-%dT%H:%M:%S"))
+                ("date_created_gmt", "=", since_date.strftime("%Y-%m-%dT%H:%M:%S"))
             ]
         self.import_batch(backend_record, domain=domain)
         return True

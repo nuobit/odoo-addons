@@ -215,10 +215,25 @@
                                     class="oe_highlight"
                                     string="Export in background"
                                 />
+<!--                                <button-->
+<!--                                    name="export_cross_up_sell_products_since"-->
+<!--                                    type="object"-->
+<!--                                    class="oe_highlight"-->
+<!--                                    string="Export in background"-->
+<!--                                />-->
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">
-                            <group string="taxes">
+                            <group string="Payment Mode">
+                                <field name="payment_mode_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="woocommerce_payment_mode" />
+                                        <field name="payment_mode_id" />
+                                        <field name="company_id" invisible="1" />
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Taxes">
                                 <field name="tax_map_ids" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="woocommerce_tax_rate_id" />
@@ -235,6 +250,7 @@
                                 <field name="chunk_size" />
                                 <field name="page_size" />
                                 <field name="backend_lang" />
+<!--                                <field name="stock_location_ids" widget="many2many_tags"/>-->
                             </group>
                             <group>
                                 <field

@@ -12,10 +12,6 @@ class ProductTemplate(models.Model):
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
     )
-    product_attachment_ids = fields.Many2many(
-        comodel_name="product.attachment",
-        compute="_compute_product_attachment_ids",
-    )
     woocommerce_write_date = fields.Datetime(
         compute="_compute_woocommerce_write_date",
         store=True,
@@ -33,11 +29,46 @@ class ProductTemplate(models.Model):
         "description",
         "public_categ_ids",
         "attribute_line_ids",
+        "public_description",
     )
     def _compute_woocommerce_write_date(self):
         for rec in self:
             if rec.is_published or rec.woocommerce_write_date:
                 rec.woocommerce_write_date = fields.Datetime.now()
+
+    public_description = fields.Text(
+        translate=True,
+    )
+    is_published = fields.Boolean(
+        related="template_is_published",
+        store=True,
+        readonly=False,
+    )
+    template_is_published = fields.Boolean(
+        string="Is Published",
+        compute="_compute_template_is_published",
+        inverse="_inverse_template_is_published",
+        store=True,
+    )
+
+    @api.depends("product_variant_ids.variant_is_published")
+    def _compute_template_is_published(self):
+        for rec in self:
+            published_variants = rec._origin.product_variant_ids.filtered(
+                lambda x: x.variant_is_published is True
+            )
+            rec.template_is_published = bool(published_variants)
+
+    def _inverse_template_is_published(self):
+        for rec in self:
+            rec.product_variant_ids.variant_is_published = (
+                True if rec.template_is_published else False
+            )
+
+    product_attachment_ids = fields.Many2many(
+        comodel_name="product.attachment",
+        compute="_compute_product_attachment_ids",
+    )
 
     def _compute_product_attachment_ids(self):
         for rec in self:

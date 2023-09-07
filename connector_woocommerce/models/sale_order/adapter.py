@@ -147,5 +147,5 @@ class WooCommerceSaleOrderAdapter(Component):
 
     def _get_filters_values(self):
         res = super()._get_filters_values()
-        res += ["status", "modified_after", "modified_before"]
+        res += ["status", "date_created_gmt", "modified_after", "modified_before"]
         return res

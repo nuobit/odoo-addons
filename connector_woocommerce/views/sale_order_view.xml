@@ -14,6 +14,7 @@
             <xpath expr="/form/sheet/notebook" position="inside">
                 <page string="Connector WooCommerce" name="connector">
                     <group string="WooCommerce Bindings">
+<!--                        <field name="aa" />-->
                         <field name="woocommerce_bind_ids" nolabel="1" />
                     </group>
                 </page>

@@ -27,12 +27,22 @@ class ProductProduct(models.Model):
         "default_code",
         "qty_available",
         "product_template_attribute_value_ids",
+        "variant_public_description",
     )
     def _compute_woocommerce_write_date(self):
         for rec in self:
             if rec.is_published or rec.woocommerce_write_date:
                 rec.woocommerce_write_date = fields.Datetime.now()
 
+    variant_public_description = fields.Text(
+        translate=True,
+    )
+    variant_is_published = fields.Boolean(
+        string="Is Published",
+        default=False,
+        store=True,
+        readonly=False,
+    )
     product_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",
         compute="_compute_product_attachment_ids",

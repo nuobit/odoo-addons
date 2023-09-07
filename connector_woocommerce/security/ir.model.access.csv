@@ -3,6 +3,8 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_woocommerce_backend_user","woocommerce_backend connector user","model_woocommerce_backend","base.group_user",1,0,0,0
 "access_woocommerce_backend_account_tax_manager","woocommerce_backend_account_tax connector manager","model_woocommerce_backend_account_tax","connector.group_connector_manager",1,1,1,1
 "access_woocommerce_backend_account_tax_user","woocommerce_backend_account_tax connector user","model_woocommerce_backend_account_tax","base.group_user",1,0,0,0
+"access_woocommerce_backend_payment_mode_manager","woocommerce_backend_payment_mode connector manager","model_woocommerce_backend_payment_mode","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_backend_payment_mode_user","woocommerce_backend_payment_mode connector user","model_woocommerce_backend_payment_mode","base.group_user",1,0,0,0
 "access_woocommerce_product_product_manager","woocommerce_product_product connector manager","model_woocommerce_product_product","connector.group_connector_manager",1,1,1,1
 "access_woocommerce_product_product_user","woocommerce_product_product connector user","model_woocommerce_product_product","base.group_user",1,0,0,0
 "access_woocommerce_product_public_category_manager","woocommerce_product_public_category connector manager","model_woocommerce_product_public_category","connector.group_connector_manager",1,1,1,1

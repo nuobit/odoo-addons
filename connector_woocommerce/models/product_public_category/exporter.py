@@ -33,3 +33,9 @@ class WooCommerceProductPublicCategoryExporter(Component):
     _inherit = "woocommerce.record.direct.exporter"
 
     _apply_on = "woocommerce.product.public.category"
+
+    def _export_dependencies(self, relation):
+        if relation.parent_id:
+            self._export_dependency(
+                relation.parent_id, "woocommerce.product.public.category"
+            )

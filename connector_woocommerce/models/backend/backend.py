@@ -33,6 +33,11 @@ class WooCommerceBackend(models.Model):
         default=lambda self: self.env.company,
         ondelete="restrict",
     )
+    payment_mode_ids = fields.One2many(
+        comodel_name="woocommerce.backend.payment.mode",
+        inverse_name="backend_id",
+        string="Payment Mode",
+    )
     tax_map_ids = fields.One2many(
         comodel_name="woocommerce.backend.account.tax",
         inverse_name="backend_id",
@@ -85,8 +90,16 @@ class WooCommerceBackend(models.Model):
     export_product_attribute_value_since_date = fields.Datetime(
         string="Export Product attribute values Since",
     )
+    # export_cross_up_sell_products_since_date = fields.Datetime(
+    #     string="Export Cross Up-sell products Since",
+    # )
     import_sale_order_since_date = fields.Datetime(
         string="Import Sale Order Since",
+    )
+    stock_location_ids = fields.Many2many(
+        string="Locations",
+        comodel_name="stock.location",
+        readonly=False,
     )
 
     def export_product_tmpl_since(self):
@@ -152,6 +165,19 @@ class WooCommerceBackend(models.Model):
             ].export_product_attribute_value_since(
                 backend_record=rec, since_date=since_date
             )
+
+    # def export_cross_up_sell_products_since(self):
+    #     self.env.user.company_id = self.company_id
+    #     for rec in self:
+    #         since_date = fields.Datetime.from_string(
+    #             rec.export_product_attribute_value_since_date
+    #         )
+    #         rec.export_cross_up_sell_products_since_date = fields.Datetime.now()
+    #         self.env[
+    #             "woocommerce.product.template"
+    #         ].export_cross_up_sell_products_since(
+    #             backend_record=rec, since_date=since_date
+    #         )
 
     def import_sale_orders_since(self):
         self.env.user.company_id = self.company_id
