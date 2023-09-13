@@ -74,6 +74,34 @@ class ResPartnerImportMapper(Component):
         return values
 
     @mapping
+    def manufacturer(self, record):
+        manufacturer_id = (
+            self.env["res.partner"].search([("name", "=", record["manufacturer"])]).id
+            or False
+        )
+        return {"manufacturer": manufacturer_id}
+
+    @mapping
+    def weight(self, record):
+        return {"weight": record["weight"]}
+
+    @mapping
+    def manufacture_date(self, record):
+        return {"manufacture_date": record["manufacture_date"]}
+
+    @mapping
+    def retesting_date(self, record):
+        return {"retesting_date": record["retesting_date"]}
+
+    @mapping
+    def next_retesting_date(self, record):
+        return {"next_retesting_date": record["next_retesting_date"]}
+
+    @mapping
+    def removal_date(self, record):
+        return {"removal_date": record["removal_date"]}
+
+    @mapping
     def oxigesti_write_date(self, record):
         return {"oxigesti_write_date": record["write_date"]}
 

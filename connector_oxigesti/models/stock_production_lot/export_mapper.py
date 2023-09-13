@@ -42,5 +42,29 @@ class StockProductionLotExportMapper(Component):
         return {"dn": record.dn or None, "dn_unknown": record.dn_unknown}
 
     @mapping
+    def manufacturer(self, record):
+        return {"manufacturer": record.manufacturer.name or None}
+
+    @mapping
+    def weight(self, record):
+        return {"weight": record.weight or None}
+
+    @mapping
+    def manufacture_date(self, record):
+        return {"manufacture_date": record.manufacture_date or None}
+
+    @mapping
+    def retesting_date(self, record):
+        return {"retesting_date": record.retesting_date or None}
+
+    @mapping
+    def next_retesting_date(self, record):
+        return {"next_retesting_date": record.next_retesting_date or None}
+
+    @mapping
+    def removal_date(self, record):
+        return {"removal_date": record.removal_date or None}
+
+    @mapping
     def write_date(self, record):
         return {"write_date": record.oxigesti_write_date}

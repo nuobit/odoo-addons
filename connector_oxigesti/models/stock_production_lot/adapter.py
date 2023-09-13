@@ -13,7 +13,10 @@ class StockProductionLotAdapter(Component):
     _apply_on = "oxigesti.stock.production.lot"
 
     _sql = """select l.CodigoArticulo, l.Lote, l.nos, l.nos_unknown,
-                     l.dn, l.dn_unknown, l.write_date
+                     l.dn, l.dn_unknown, l.manufacturer, l.weight,
+                     l.manufacture_date, l.retesting_date,
+                     l.next_retesting_date, l.removal_date,
+                     l.write_date
               from %(schema)s.Odoo_Articulos_Lotes l
             """
 
