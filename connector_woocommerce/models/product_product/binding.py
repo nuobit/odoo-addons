@@ -37,7 +37,7 @@ class WooCommerceProductProduct(models.Model):
     @api.model
     def _get_base_domain(self):
         return [
-            ("website_published", "=", True),
+            ("variant_is_published", "=", True),
             ("woocommerce_write_date", "=", False),
         ]
 

@@ -33,6 +33,11 @@ class WooCommerceBackend(models.Model):
         default=lambda self: self.env.company,
         ondelete="restrict",
     )
+    carrier_provider_ids = fields.One2many(
+        comodel_name="woocommerce.backend.delivery.type.provider",
+        inverse_name="backend_id",
+        string="Carrier Provider",
+    )
     payment_mode_ids = fields.One2many(
         comodel_name="woocommerce.backend.payment.mode",
         inverse_name="backend_id",
@@ -42,6 +47,11 @@ class WooCommerceBackend(models.Model):
         comodel_name="woocommerce.backend.account.tax",
         inverse_name="backend_id",
         string="Tax Mapping",
+    )
+    tax_class_ids = fields.One2many(
+        comodel_name="woocommerce.backend.tax.class",
+        inverse_name="backend_id",
+        string="Tax Class",
     )
     shipping_product_id = fields.Many2one(
         comodel_name="product.product",
@@ -100,6 +110,8 @@ class WooCommerceBackend(models.Model):
         string="Locations",
         comodel_name="stock.location",
         readonly=False,
+        required=True,
+        domain="[('usage', 'in', ['internal','view'])]",
     )
 
     def export_product_tmpl_since(self):

@@ -79,6 +79,7 @@ class SaleOrderLine(models.Model):
         "qty_delivered",
     )
     def _compute_woocommerce_order_line_state(self):
+        # TODO: add woocommerce status: delivered to workflow
         woocommerce_order_line_state_mapping = (
             self._get_woocommerce_order_line_state_mapping()
         )
@@ -100,6 +101,8 @@ class SaleOrderLine(models.Model):
                     rec.product_id.product_tmpl_id.service_policy == "ordered_timesheet"
                 ):
                     rec.woocommerce_order_line_state = "done"
+                else:
+                    rec.woocommerce_order_line_state = "processing"
             else:
                 if (
                     rec.order_id.picking_ids

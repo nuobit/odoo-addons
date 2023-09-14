@@ -28,6 +28,7 @@ class SaleOrder(models.Model):
         store=True,
         selection=[
             ("processing", "Processing"),
+            ("partial-shipped", "Partial Shipped"),
             ("done", "Done"),
             ("cancel", "Cancel"),
         ],
@@ -41,7 +42,7 @@ class SaleOrder(models.Model):
             frozenset(["processing"]): "processing",
             frozenset(["cancel", "done"]): "done",
             frozenset(["cancel", "processing"]): "processing",
-            frozenset(["done", "processing"]): "processing",
+            frozenset(["done", "processing"]): "partial-shipped",
             frozenset(["cancel", "done", "processing"]): "processing",
         }
 
@@ -61,13 +62,18 @@ class SaleOrder(models.Model):
         for rec in self:
             old_state = rec.woocommerce_order_state
             lines_states = frozenset(
-                rec.order_line.mapped("woocommerce_order_line_state")
+                rec.order_line.filtered(
+                    lambda x: x.product_id.product_tmpl_id.service_policy
+                    != "ordered_timesheet"
+                ).mapped("woocommerce_order_line_state")
             )
             if lines_states:
                 new_state = woocommerce_order_state_mapping[lines_states]
             else:
                 new_state = "processing"
-            if old_state != new_state:
+            if not old_state:
+                rec.woocommerce_order_state = new_state
+            elif old_state != new_state:
                 rec.woocommerce_order_state = new_state
                 self._event("on_compute_woocommerce_order_state").notify(
                     rec, fields={"woocommerce_order_state"}
@@ -89,3 +95,11 @@ class SaleOrder(models.Model):
             #         self._event("on_compute_woocommerce_order_state").notify(
             #             rec, fields={"woocommerce_order_state"}
             #         )
+
+    def action_confirm(self):
+        res = super().action_confirm()
+        if self.woocommerce_bind_ids.woocommerce_status == "on-hold":
+            self._event("on_compute_woocommerce_order_state").notify(
+                self, fields={"woocommerce_order_state"}
+            )
+        return res

@@ -1,5 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+from odoo import _
+from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping
@@ -36,10 +38,24 @@ class WooCommerceProductTemplateExportMapper(Component):
         else:
             manage_stock = True
         if len(record.product_variant_ids) <= 1:
+            qty = (
+                self.env["stock.quant"]
+                .search(
+                    [
+                        ("product_id", "=", record.product_variant_id.id),
+                        (
+                            "location_id",
+                            "child_of",
+                            self.backend_record.stock_location_ids.ids,
+                        ),
+                    ]
+                )
+                .available_quantity
+            )
             return {
                 "manage_stock": manage_stock,
                 # TODO: modificar la quantity per agafar les dels magatzems definits al backend
-                "stock_quantity": int(record.product_variant_id.qty_available),
+                "stock_quantity": int(qty),
                 "stock_status": "instock"
                 if record.product_variant_id.qty_available > 0
                 or record.type in ("consu", "service")
@@ -112,6 +128,21 @@ class WooCommerceProductTemplateExportMapper(Component):
             )
         if attr_list:
             return {"attributes": attr_list}
+
+    @mapping
+    def tax_class(self, record):
+        if record.taxes_id:
+            if len(record.taxes_id) > 1:
+                raise ValidationError(_("Only one tax is allowed per product"))
+            tax_class = self.backend_record.tax_class_ids.filtered(
+                lambda x: record["taxes_id"] == x.account_tax
+            )
+            if not tax_class:
+                raise ValidationError(
+                    _("Tax class is not defined on backend for tax %s")
+                    % record.get("taxes_id")
+                )
+            return {"tax_class": tax_class.woocommerce_tax_class}
 
     @mapping
     def images(self, record):

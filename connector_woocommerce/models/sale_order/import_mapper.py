@@ -108,3 +108,7 @@ class WooCommerceSaleOrderImportMapper(Component):
     @mapping
     def note(self, record):
         return {"note": record["customer_note"]}
+
+    @mapping
+    def status(self, record):
+        return {"woocommerce_status": record["status"]}

@@ -20,6 +20,9 @@ class WooCommerceSaleOrder(models.Model):
         string="ID Sale Order",
         readonly=True,
     )
+    woocommerce_status = fields.Char(
+        readonly=True,
+    )
     woocommerce_order_line_ids = fields.One2many(
         string="WooCommerce Order Line ids",
         help="Order Lines in WooCommerce sale orders",
@@ -41,10 +44,9 @@ class WooCommerceSaleOrder(models.Model):
 
     def import_sale_orders_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
-        # TODO: El extract_domain_clauses no puede aceptar un domain con in,
-        #  por tanto si queremos los items totales de las orders con status
-        #  on-hold y processing, tenemos que hacer dos importaciones.
-        #  De momento se deja asi pero hay que mirar una mejor forma de unir estos domains
+        # TODO: El extract_domain_clauses don't accept 'in operator,
+        #  to use get_total_items in status on-hold and processing we have to do two imports.
+        #  We have to find a better way to join this domains.
         domain += [("status", "=", "on-hold,processing")]
         # domain += [("status", "=", "on-hold")]
         # domain += [("status", "in", ["on-hold","processing"])]

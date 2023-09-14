@@ -99,9 +99,9 @@ class WooCommerceSaleOrderImporter(Component):
             if not binding:
                 raise ValidationError(_("Product not found on Odoo"))
 
-    def _after_import(self, binding, external_data):
+    def _after_import(self, binding):
         sale_order = self.binder_for().unwrap_binding(binding)
-        if sale_order.state == "draft" and external_data.get("status") == "processing":
+        if sale_order.state == "draft" and binding.woocommerce_status == "processing":
             sale_order.action_confirm()
 
 

@@ -30,6 +30,7 @@
                     <field name="backend_id" />
                     <field name="odoo_id" readonly="True" />
                     <field name="woocommerce_idsaleorder" readonly="True" />
+                    <field name="woocommerce_status" readonly="True" />
                     <field name="sync_date" readonly="True" />
                 </group>
             </form>
@@ -43,9 +44,10 @@
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="woocommerce_idsaleorder" readonly="True" />
+                <field name="woocommerce_status" readonly="True" />
                 <field name="sync_date" />
                 <button
-                    name="resync_import"
+                    name="resync_export"
                     type="object"
                     string="Resynchronize"
                     icon="fa-refresh fa-lg"

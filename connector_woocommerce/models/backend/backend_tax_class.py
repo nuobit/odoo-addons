@@ -7,9 +7,9 @@ from odoo import fields, models
 _logger = logging.getLogger(__name__)
 
 
-class WooCommerceBackendAccountTax(models.Model):
-    _name = "woocommerce.backend.account.tax"
-    _description = "WooCommerce Backend Account Tax"
+class WooCommerceBackendTaxClass(models.Model):
+    _name = "woocommerce.backend.tax.class"
+    _description = "WooCommerce Backend Tax Class"
 
     backend_id = fields.Many2one(
         string="Backend id",
@@ -17,15 +17,14 @@ class WooCommerceBackendAccountTax(models.Model):
         required=True,
         ondelete="cascade",
     )
-    woocommerce_tax_rate_id = fields.Integer(
-        string="WooCommerce Tax Rate ID",
-        required=True,
-    )
     account_tax = fields.Many2one(
         comodel_name="account.tax",
         required=True,
     )
-
+    woocommerce_tax_class = fields.Char(
+        string="WooCommerce Tax Class",
+        required=True,
+    )
     _sql_constraints = [
         (
             "tax_map_uniq",

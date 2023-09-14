@@ -93,8 +93,6 @@
                                     class="oe_highlight"
                                     string="Export in background"
                                 />
-
-
                             </group>
                             <group>
                                 <div>
@@ -215,12 +213,6 @@
                                     class="oe_highlight"
                                     string="Export in background"
                                 />
-<!--                                <button-->
-<!--                                    name="export_cross_up_sell_products_since"-->
-<!--                                    type="object"-->
-<!--                                    class="oe_highlight"-->
-<!--                                    string="Export in background"-->
-<!--                                />-->
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">
@@ -234,15 +226,35 @@
                                 </field>
                             </group>
                             <group string="Taxes">
-                                <field name="tax_map_ids" nolabel="1">
-                                    <tree editable="bottom">
-                                        <field name="woocommerce_tax_rate_id" />
-                                        <field name="account_tax" />
-                                    </tree>
-                                </field>
+                                <group>
+                                    <field name="tax_map_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="woocommerce_tax_rate_id" />
+                                            <field name="account_tax" />
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group>
+                                    <field name="tax_class_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="account_tax" />
+                                            <field name="woocommerce_tax_class" />
+                                        </tree>
+                                    </field>
+                                </group>
                             </group>
                             <group name="shipping" string="Shipping">
-                                <field name="shipping_product_id" />
+                                <group>
+                                    <field name="shipping_product_id" />
+                                </group>
+                                <group>
+                                    <field name="carrier_provider_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="delivery_type" />
+                                            <field name="woocommerce_provider" />
+                                        </tree>
+                                    </field>
+                                </group>
                             </group>
                         </page>
                         <page name="other_info" string="Other Info">
@@ -250,7 +262,10 @@
                                 <field name="chunk_size" />
                                 <field name="page_size" />
                                 <field name="backend_lang" />
-<!--                                <field name="stock_location_ids" widget="many2many_tags"/>-->
+                                <field
+                                    name="stock_location_ids"
+                                    widget="many2many_tags"
+                                />
                             </group>
                             <group>
                                 <field

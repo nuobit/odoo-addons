@@ -29,7 +29,9 @@ class WooCommerceProductProductExportMapper(Component):
     @mapping
     def status(self, record):
         return {
-            "status": "publish" if record.active and record.is_published else "private"
+            "status": "publish"
+            if record.active and record.variant_is_published
+            else "private"
         }
 
     @mapping
@@ -39,11 +41,24 @@ class WooCommerceProductProductExportMapper(Component):
                 "manage_stock": False,
             }
         else:
+            qty = (
+                self.env["stock.quant"]
+                .search(
+                    [
+                        ("product_id", "=", record.id),
+                        (
+                            "location_id",
+                            "child_of",
+                            self.backend_record.stock_location_ids.ids,
+                        ),
+                    ]
+                )
+                .available_quantity
+            )
             stock = {
                 "manage_stock": True,
                 # WooCommerce don't accept fractional quantities
-                # TODO: modificar la quantity per agafar les dels magatzems definits al backend
-                "stock_quantity": int(record.qty_available),
+                "stock_quantity": int(qty),
                 "stock_status": "instock" if record.qty_available > 0 else "outofstock",
             }
         return stock
