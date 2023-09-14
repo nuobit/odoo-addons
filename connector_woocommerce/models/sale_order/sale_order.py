@@ -46,13 +46,11 @@ class SaleOrder(models.Model):
             frozenset(["cancel", "done", "processing"]): "processing",
         }
 
-    # aa = fields.Boolean(default=False)
     @api.depends(
         "state",
         "order_line.qty_delivered",
         "order_line.product_uom_qty",
         "woocommerce_bind_ids",
-        # "aa",
     )
     def _compute_woocommerce_order_state(self):
         woocommerce_order_state_mapping = self._get_woocommerce_order_state_mapping()

@@ -30,7 +30,7 @@ class WooCommerceSaleOrderExportMapper(Component):
         for picking in record.picking_ids:
             if picking.carrier_id:
                 carrier = self.backend_record.carrier_provider_ids.filtered(
-                    lambda x: record["carrier_id"] == x.carrier_id
+                    lambda x: picking.carrier_id.delivery_type == x.delivery_type
                 )
                 if not carrier:
                     raise ValidationError(
