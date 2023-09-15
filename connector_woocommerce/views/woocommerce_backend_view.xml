@@ -247,14 +247,6 @@
                                 <group>
                                     <field name="shipping_product_id" />
                                 </group>
-                                <group>
-                                    <field name="carrier_provider_ids" nolabel="1">
-                                        <tree editable="bottom">
-                                            <field name="delivery_type" />
-                                            <field name="woocommerce_provider" />
-                                        </tree>
-                                    </field>
-                                </group>
                             </group>
                         </page>
                         <page name="other_info" string="Other Info">

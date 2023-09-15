@@ -28,7 +28,6 @@ class SaleOrder(models.Model):
         store=True,
         selection=[
             ("processing", "Processing"),
-            ("partial-shipped", "Partial Shipped"),
             ("done", "Done"),
             ("cancel", "Cancel"),
         ],
@@ -42,7 +41,7 @@ class SaleOrder(models.Model):
             frozenset(["processing"]): "processing",
             frozenset(["cancel", "done"]): "done",
             frozenset(["cancel", "processing"]): "processing",
-            frozenset(["done", "processing"]): "partial-shipped",
+            frozenset(["done", "processing"]): "processing",
             frozenset(["cancel", "done", "processing"]): "processing",
         }
 

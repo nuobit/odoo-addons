@@ -33,11 +33,6 @@ class WooCommerceBackend(models.Model):
         default=lambda self: self.env.company,
         ondelete="restrict",
     )
-    carrier_provider_ids = fields.One2many(
-        comodel_name="woocommerce.backend.delivery.type.provider",
-        inverse_name="backend_id",
-        string="Carrier Provider",
-    )
     payment_mode_ids = fields.One2many(
         comodel_name="woocommerce.backend.payment.mode",
         inverse_name="backend_id",
