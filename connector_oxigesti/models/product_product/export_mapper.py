@@ -89,3 +89,18 @@ class ProductProductExportMapper(Component):
     @mapping
     def Eliminado(self, record):
         return {"Eliminado": 0}
+
+    @mapping
+    def Atributo(self, record):
+        attributes = {}
+        for ptav in record.product_template_attribute_value_ids:
+            attribute_map = self.env["oxigesti.backend.product.attribute.map"].search(
+                [
+                    ("attribute_id", "=", ptav.attribute_id.id),
+                ]
+            )
+            if attribute_map:
+                attributes[attribute_map.oxigesti_attribute] = ptav.with_context(
+                    lang=self.backend_record.lang_id.code
+                ).product_attribute_value_id.name
+        return attributes or None
