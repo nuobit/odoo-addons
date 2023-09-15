@@ -12,6 +12,14 @@ class ResPartnerImportMapper(Component):
 
     _apply_on = "oxigesti.stock.production.lot"
 
+    direct = [
+        ("weight", "Peso"),
+        ("manufacture_date", "FechaFabricacion"),
+        ("retesting_date", "FechaReinspeccion"),
+        ("next_retesting_date", "ProximaFechaReinspeccion"),
+        ("removal_date", "FechaRetirada"),
+    ]
+
     @mapping
     def backend_id(self, record):
         return {"backend_id": self.backend_record.id}
@@ -72,6 +80,15 @@ class ResPartnerImportMapper(Component):
         # Odoo will throw a constraint of the module oxigen_stock_alternate_lot
         values["dn_unknown"] = record["dn_unknown"]
         return values
+
+    # TODO: REVIEW: improve this mapping, exists the possibility that the
+    @mapping
+    def manufacturer(self, record):
+        manufacturer_id = (
+            self.env["res.partner"].search([("name", "=", record["manufacturer"])]).id
+            or False
+        )
+        return {"Fabricante": manufacturer_id}
 
     @mapping
     def oxigesti_write_date(self, record):
