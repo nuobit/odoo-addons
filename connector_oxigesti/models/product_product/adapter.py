@@ -11,7 +11,13 @@ class ProductProductAdapter(Component):
     _apply_on = "oxigesti.product.product"
 
     _sql = """select a.CodigoArticulo, a.DescripcionArticulo,
-              a.Familia, a.CodigoAlternativo, a.Importe
+              a.Familia, a.CodigoAlternativo, a.Importe, a.Diametro,
+              a.ColorOjiva, a.AlojamientoValvula, a.Base,
+              a.CapacidadGeometrica, a.ColorCuerpo, a.PresionPrueba,
+              a.RoscaCollarinParaTulipa, a.TipoAleacion,
+              a.AcoplamientoSalida, a.PresionMaximaTrabajo, a.Sonda,
+              a.TomaRapida, a.Cromada, a.TipoValvula, a.PresionResidual,
+              a.CaudalPresionMaximo, a.PresionRotura, a.Comunicacion, a.Manometro
               from %(schema)s.Odoo_Articulos_Generales a
            """
 

@@ -85,6 +85,12 @@ class OxigestiBackend(models.Model):
             if rec.chunk_size < 0:
                 raise exceptions.ValidationError(_("Chunk size cannot be negative"))
 
+    product_attribute_map_ids = fields.One2many(
+        comodel_name="oxigesti.backend.product.attribute.map",
+        inverse_name="backend_id",
+        string="Product Attribute Map",
+    )
+
     def button_reset_to_draft(self):
         self.ensure_one()
         self.write({"state": "draft", "version": None})
