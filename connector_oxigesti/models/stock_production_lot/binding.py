@@ -43,6 +43,12 @@ class StockProductionLot(models.Model):
         "dn",
         "nos_unknown",
         "dn_unknown",
+        "manufacturer_id",
+        "weight",
+        "manufacture_date",
+        "retesting_date",
+        "next_retesting_date",
+        "removal_date",
     )
     def _compute_oxigesti_write_date(self):
         for rec in self:
