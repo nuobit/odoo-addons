@@ -77,6 +77,11 @@ class OxigestiBackend(models.Model):
     )
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(selection="_select_state", string="State", default="draft")
+    product_attribute_map_ids = fields.One2many(
+        comodel_name="oxigesti.backend.product.attribute.map",
+        inverse_name="backend_id",
+        string="Product Attribute Map",
+    )
 
     def button_reset_to_draft(self):
         self.ensure_one()

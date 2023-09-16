@@ -331,6 +331,16 @@
                                 <field name="warehouse_id" />
                             </group>
                         </page>
+                        <page name="mappings" string="Mappings">
+                            <group string="Product Attributes">
+                                <field name="product_attribute_map_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="attribute_id" />
+                                        <field name="oxigesti_attribute" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
