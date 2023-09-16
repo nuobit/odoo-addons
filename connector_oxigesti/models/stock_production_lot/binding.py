@@ -34,7 +34,20 @@ class StockProductionLot(models.Model):
         default=fields.Datetime.now,
     )
 
-    @api.depends("name", "product_id", "nos", "dn", "nos_unknown", "dn_unknown")
+    @api.depends(
+        "name",
+        "product_id",
+        "nos",
+        "dn",
+        "nos_unknown",
+        "dn_unknown",
+        "manufacturer_id",
+        "weight",
+        "manufacture_date",
+        "retesting_date",
+        "next_retesting_date",
+        "removal_date",
+    )
     def _compute_oxigesti_write_date(self):
         for rec in self:
             rec.oxigesti_write_date = fields.Datetime.now()
