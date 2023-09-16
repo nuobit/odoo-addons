@@ -17,6 +17,7 @@
         "sale_line_partner_description",
         "sale_specific_order_date",
         "oxigen_stock_alternate_lot",
+        "oxigen_mrp",
     ],
     "external_dependencies": {
         "python": [
