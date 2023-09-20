@@ -214,27 +214,48 @@
                                     string="Export in background"
                                 />
                             </group>
+
+<!--                            <group>-->
+<!--                                <div>-->
+<!--                                    <label-->
+<!--                                        string="Export Cross Up sell Products Since"-->
+<!--                                        class="oe_inline"-->
+<!--                                        for="export_cross_up_sell_products_since_date"-->
+<!--                                    />-->
+<!--                                    <field-->
+<!--                                        name="export_cross_up_sell_products_since_date"-->
+<!--                                        class="oe_inline"-->
+<!--                                        nolabel="1"-->
+<!--                                    />-->
+<!--                                </div>-->
+<!--                                <button-->
+<!--                                    name="export_cross_up_sell_products_since"-->
+<!--                                    type="object"-->
+<!--                                    class="oe_highlight"-->
+<!--                                    string="Export in background"-->
+<!--                                />-->
+<!--                            </group>-->
                         </page>
                         <page name="mappings" string="Mappings">
                             <group string="Payment Mode">
                                 <field name="payment_mode_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="woocommerce_payment_mode" />
                                         <field name="payment_mode_id" />
+                                        <field name="woocommerce_payment_mode" />
                                         <field name="company_id" invisible="1" />
                                     </tree>
                                 </field>
                             </group>
                             <group string="Taxes">
-                                <group>
+                                <group string="Order tax">
                                     <field name="tax_map_ids" nolabel="1">
                                         <tree editable="bottom">
-                                            <field name="woocommerce_tax_rate_id" />
                                             <field name="account_tax" />
+                                            <field name="woocommerce_tax_rate_id" />
                                         </tree>
                                     </field>
                                 </group>
-                                <group>
+                                <group string="Product tax">
                                     <field name="tax_class_ids" nolabel="1">
                                         <tree editable="bottom">
                                             <field name="account_tax" />

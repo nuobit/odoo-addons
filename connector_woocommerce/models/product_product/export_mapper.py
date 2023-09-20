@@ -17,7 +17,7 @@ class WooCommerceProductProductExportMapper(Component):
         # sales price is the price with discount.
         # On odoo we don't have this functionality per product
         return {
-            "regular_price": str(record.lst_price),
+            "regular_price": str(round(record.lst_price, 10)),
         }
 
     @changed_by("default_code")
@@ -41,7 +41,7 @@ class WooCommerceProductProductExportMapper(Component):
                 "manage_stock": False,
             }
         else:
-            qty = (
+            qty = sum(
                 self.env["stock.quant"]
                 .search(
                     [
@@ -53,7 +53,7 @@ class WooCommerceProductProductExportMapper(Component):
                         ),
                     ]
                 )
-                .available_quantity
+                .mapped("available_quantity")
             )
             stock = {
                 "manage_stock": True,

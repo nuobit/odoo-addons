@@ -12,6 +12,9 @@ class SaleOrder(models.Model):
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
     )
+    is_woocommerce = fields.Boolean(
+        default=False,
+    )
     woocommerce_status_write_date = fields.Datetime(
         compute="_compute_woocommerce_status_write_date",
         store=True,
@@ -20,7 +23,7 @@ class SaleOrder(models.Model):
     @api.depends("state", "picking_ids", "picking_ids.state")
     def _compute_woocommerce_status_write_date(self):
         for rec in self:
-            if rec.woocommerce_bind_ids:
+            if rec.is_woocommerce:
                 rec.woocommerce_status_write_date = fields.Datetime.now()
 
     woocommerce_order_state = fields.Selection(
@@ -57,41 +60,42 @@ class SaleOrder(models.Model):
         # this is the reason of set value just when record has binding.
         # Try to avoid compute on install.
         for rec in self:
-            old_state = rec.woocommerce_order_state
-            lines_states = frozenset(
-                rec.order_line.filtered(
-                    lambda x: x.product_id.product_tmpl_id.service_policy
-                    != "ordered_timesheet"
-                ).mapped("woocommerce_order_line_state")
-            )
-            if lines_states:
-                new_state = woocommerce_order_state_mapping[lines_states]
-            else:
-                new_state = "processing"
-            if not old_state:
-                rec.woocommerce_order_state = new_state
-            elif old_state != new_state:
-                rec.woocommerce_order_state = new_state
-                self._event("on_compute_woocommerce_order_state").notify(
-                    rec, fields={"woocommerce_order_state"}
+            if rec.is_woocommerce:
+                old_state = rec.woocommerce_order_state
+                lines_states = frozenset(
+                    rec.order_line.filtered(
+                        lambda x: x.product_id.product_tmpl_id.service_policy
+                        != "ordered_timesheet"
+                    ).mapped("woocommerce_order_line_state")
                 )
-            #
-            # if not rec.woocommerce_bind_ids:
-            #     rec.woocommerce_order_state = False
-            # else:
-            #     old_state = rec.woocommerce_order_state
-            #     lines_states = frozenset(
-            #         rec.order_line.mapped("woocommerce_order_line_state")
-            #     )
-            #     if lines_states:
-            #         new_state = woocommerce_order_state_mapping[lines_states]
-            #     else:
-            #         new_state = "processing"
-            #     if old_state != new_state:
-            #         rec.woocommerce_order_state = new_state
-            #         self._event("on_compute_woocommerce_order_state").notify(
-            #             rec, fields={"woocommerce_order_state"}
-            #         )
+                if lines_states:
+                    new_state = woocommerce_order_state_mapping[lines_states]
+                else:
+                    new_state = "processing"
+                if not old_state:
+                    rec.woocommerce_order_state = new_state
+                elif old_state != new_state:
+                    rec.woocommerce_order_state = new_state
+                    self._event("on_compute_woocommerce_order_state").notify(
+                        rec, fields={"woocommerce_order_state"}
+                    )
+                #
+                # if not rec.woocommerce_bind_ids:
+                #     rec.woocommerce_order_state = False
+                # else:
+                #     old_state = rec.woocommerce_order_state
+                #     lines_states = frozenset(
+                #         rec.order_line.mapped("woocommerce_order_line_state")
+                #     )
+                #     if lines_states:
+                #         new_state = woocommerce_order_state_mapping[lines_states]
+                #     else:
+                #         new_state = "processing"
+                #     if old_state != new_state:
+                #         rec.woocommerce_order_state = new_state
+                #         self._event("on_compute_woocommerce_order_state").notify(
+                #             rec, fields={"woocommerce_order_state"}
+                #         )
 
     def action_confirm(self):
         res = super().action_confirm()

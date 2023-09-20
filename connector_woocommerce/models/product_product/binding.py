@@ -58,3 +58,11 @@ class WooCommerceProductProduct(models.Model):
             )
         self.export_batch(backend_record, domain=domain)
         return True
+
+    def resync_export(self):
+        for record in self:
+            super().resync_export()
+            if not record._context.get("resync_product_template"):
+                template = record.product_tmpl_id.woocommerce_bind_ids
+                if template:
+                    template.with_context(resync_product_product=True).resync_export()

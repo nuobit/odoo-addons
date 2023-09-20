@@ -11,10 +11,19 @@
             eval="[(4, ref('connector.group_connector_manager'))]"
         />
         <field name="arch" type="xml">
+            <div name="button_box" position="before">
+                <field name="is_woocommerce" invisible="1" />
+                 <widget
+                    name="web_ribbon"
+                    title="WooCommerce"
+                    bg_color="bg-info"
+                    attrs="{'invisible': [('is_woocommerce', '!=', True)]}"
+                />
+            </div>
+
             <xpath expr="/form/sheet/notebook" position="inside">
                 <page string="Connector WooCommerce" name="connector">
                     <group string="WooCommerce Bindings">
-<!--                        <field name="aa" />-->
                         <field name="woocommerce_bind_ids" nolabel="1" />
                     </group>
                 </page>
@@ -53,6 +62,21 @@
                     icon="fa-refresh fa-lg"
                 />
             </tree>
+        </field>
+    </record>
+    <record id="woocommerce_sale_order_view_filter" model="ir.ui.view">
+        <field name="name">woocommerce.sale.order.view.filter</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="before">
+                <separator />
+                <filter
+                    string="WooCommerce Sale Orders"
+                    name="is_woocommerce"
+                    domain="[('is_woocommerce', '=', 'True')]"
+                />
+            </xpath>
         </field>
     </record>
     <record id="woocommerce_sale_order_action" model="ir.actions.act_window">

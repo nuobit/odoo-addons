@@ -38,7 +38,7 @@ class WooCommerceProductTemplateExportMapper(Component):
         else:
             manage_stock = True
         if len(record.product_variant_ids) <= 1:
-            qty = (
+            qty = sum(
                 self.env["stock.quant"]
                 .search(
                     [
@@ -50,7 +50,7 @@ class WooCommerceProductTemplateExportMapper(Component):
                         ),
                     ]
                 )
-                .available_quantity
+                .mapped("available_quantity")
             )
             return {
                 "manage_stock": manage_stock,
@@ -73,7 +73,7 @@ class WooCommerceProductTemplateExportMapper(Component):
             # sales price is the price with discount.
             # On odoo we don't have this functionality per product
             return {
-                "regular_price": str(record.list_price),
+                "regular_price": str(round(record.list_price, 10)),
             }
 
     @mapping
@@ -84,14 +84,13 @@ class WooCommerceProductTemplateExportMapper(Component):
                 lang=self.backend_record.backend_lang
             ).public_description
         elif (
-            record.product_variant_ids == 1
+            len(record.product_variant_ids) == 1
             and record.product_variant_id.variant_public_description
         ):
             description = record.product_variant_id.with_context(
                 lang=self.backend_record.backend_lang
             ).variant_public_description
-        if description:
-            return {"description": description}
+        return {"description": description if description else ""}
 
     @mapping
     def product_type(self, record):
@@ -140,9 +139,32 @@ class WooCommerceProductTemplateExportMapper(Component):
             if not tax_class:
                 raise ValidationError(
                     _("Tax class is not defined on backend for tax %s")
-                    % record.get("taxes_id")
+                    % record.mapped("taxes_id").name
                 )
             return {"tax_class": tax_class.woocommerce_tax_class}
+
+    # @mapping
+    # def upsell_ids(self, record):
+    #     binder = self.binder_for("woocommerce.product.template")
+    #     alternate_list = []
+    #     if record.alternative_product_ids:
+    #         for product in record.alternative_product_ids:
+    #             values = binder.get_external_dict_ids(product)
+    #             alternate_list.append(values["id"])
+    #     if alternate_list:
+    #         # return {"cross_sell_ids": alternate_list}
+    #         return {"upsell_ids": alternate_list}
+    #
+    # @mapping
+    # def cross_sell_ids(self, record):
+    #     binder = self.binder_for("woocommerce.product.product")
+    #     accessory_list = []
+    #     if record.accessory_product_ids:
+    #         for product in record.accessory_product_ids:
+    #             values = binder.get_external_dict_ids(product)
+    #             accessory_list.append(values["id"])
+    #     if accessory_list:
+    #         return {"cross_sell_ids": accessory_list}
 
     @mapping
     def images(self, record):

@@ -43,15 +43,20 @@ class WooCommerceSaleOrderAdapter(Component):
 
     def _get_partner_parent(self, dir_type, value):
         # TODO: REVIEW: slug for company name?
-        parent = self.env["res.partner"].search(
-            [
-                ("name", "=", value[dir_type]["company"]),
-                ("company_type", "=", "company"),
-            ]
-        )
+        domain = [
+            ("name", "=", value[dir_type]["company"]),
+            ("company_type", "=", "company"),
+        ]
+        if value[dir_type].get("nif"):
+            domain.append(("vat", "=", value[dir_type]["nif"]))
+        parent = self.env["res.partner"].search(domain)
         if not parent:
             parent = self.env["res.partner"].create(
-                {"name": value[dir_type]["company"], "company_type": "company"}
+                {
+                    "name": value[dir_type]["company"],
+                    "company_type": "company",
+                    "vat": value[dir_type].get("nif"),
+                }
             )
             value[dir_type]["parent"] = parent.id
         elif len(parent) > 1:
@@ -61,53 +66,62 @@ class WooCommerceSaleOrderAdapter(Component):
         else:
             value[dir_type]["parent"] = parent.id
 
+    def _get_hash_fields(self):
+        return [
+            "name",
+            "address_1",
+            "address_2",
+            "city",
+            "postcode",
+            "email",
+            "phone",
+            "company",
+            "state",
+            "country",
+        ]
+
+    def _get_billing(self, value, hash_fields):
+        if value.get("billing"):
+            value["billing"]["type"] = "billing"
+            if value["billing"].get("company"):
+                self._get_partner_parent("billing", value)
+            value["billing"]["name"] = (
+                value["billing"]["first_name"] + " " + value["billing"]["last_name"]
+            )
+            value["billing"]["hash"] = list2hash(
+                value["billing"].get(x) for x in hash_fields
+            )
+
+    def _get_shipping(self, value, hash_fields):
+        if value.get("shipping"):
+            if value["shipping"].get("first_name") or value["shipping"].get(
+                "last_name"
+            ):
+                if value["shipping"].get("company"):
+                    self._get_partner_parent("shipping", value)
+                value["shipping"]["type"] = "shipping"
+                if value["shipping"].get("first_name"):
+                    value["shipping"]["name"] = value["shipping"]["first_name"]
+                    if value["shipping"].get("last_name"):
+                        value["shipping"]["name"] += (
+                            " " + value["shipping"]["last_name"]
+                        )
+                else:
+                    value["shipping"]["name"] = value["shipping"]["last_name"]
+                value["shipping"]["hash"] = list2hash(
+                    value["shipping"].get(x) for x in hash_fields
+                )
+            else:
+                value["shipping"] = None
+        else:
+            value["shipping"] = None
+
     def _reorg_order_data(self, values):
         # reorganize data
         for value in values:
-            hash_fields = [
-                "name",
-                "address_1",
-                "address_2",
-                "city",
-                "postcode",
-                "email",
-                "phone",
-                "company",
-                "state",
-                "country",
-            ]
-            if value.get("billing"):
-                value["billing"]["type"] = "billing"
-                if value["billing"].get("company"):
-                    self._get_partner_parent("billing", value)
-                value["billing"]["name"] = (
-                    value["billing"]["first_name"] + " " + value["billing"]["last_name"]
-                )
-                value["billing"]["hash"] = list2hash(
-                    value["billing"].get(x) for x in hash_fields
-                )
-            if value.get("shipping"):
-                if value["shipping"].get("first_name") or value["shipping"].get(
-                    "last_name"
-                ):
-                    if value["shipping"].get("company"):
-                        self._get_partner_parent("shipping", value)
-                    value["shipping"]["type"] = "shipping"
-                    if value["shipping"].get("first_name"):
-                        value["shipping"]["name"] = value["shipping"]["first_name"]
-                        if value["shipping"].get("last_name"):
-                            value["shipping"]["name"] += (
-                                " " + value["shipping"]["last_name"]
-                            )
-                    else:
-                        value["shipping"]["name"] = value["shipping"]["last_name"]
-                    value["shipping"]["hash"] = list2hash(
-                        value["shipping"].get(x) for x in hash_fields
-                    )
-                else:
-                    value["shipping"] = None
-            else:
-                value["shipping"] = None
+            hash_fields = self._get_hash_fields()
+            self._get_billing(value, hash_fields)
+            self._get_shipping(value, hash_fields)
             if not value.get("products"):
                 value["products"] = []
             for item in value["line_items"]:

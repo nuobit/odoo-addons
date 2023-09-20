@@ -112,3 +112,7 @@ class WooCommerceSaleOrderImportMapper(Component):
     @mapping
     def status(self, record):
         return {"woocommerce_status": record["status"]}
+
+    @mapping
+    def is_woocommerce(self, record):
+        return {"is_woocommerce": True}

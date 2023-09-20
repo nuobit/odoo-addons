@@ -19,6 +19,17 @@ class Partner(models.Model):
         compute="_compute_address_hash", store=True, readonly=True
     )
 
+    def _get_hash_fields(self):
+        return ["name", "street", "street2", "city", "zip", "email", "mobile"]
+
+    def _set_values_hash(self):
+        for rec in self:
+            values = [rec[x] or None for x in self._get_hash_fields()]
+            values.append(rec.parent_id.name or None)
+            values.append(rec.state_id.code or None)
+            values.append(rec.country_id.code or None)
+            return values
+
     @api.depends(
         "name",
         "parent_id",
@@ -33,11 +44,5 @@ class Partner(models.Model):
     )
     def _compute_address_hash(self):
         for rec in self:
-            values = [
-                rec[x] or None
-                for x in ["name", "street", "street2", "city", "zip", "email", "mobile"]
-            ]
-            values.append(rec.parent_id.name or None)
-            values.append(rec.state_id.code or None)
-            values.append(rec.country_id.code or None)
+            values = rec._set_values_hash()
             rec.address_hash = list2hash(values)

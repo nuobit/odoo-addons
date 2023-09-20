@@ -19,7 +19,7 @@
                 </page>
             </xpath>
             <field name="template_is_published" position="before">
-                <field name="variant_is_published" />
+                <field name="variant_is_published" string="Is published" />
             </field>
             <field name="template_is_published" position="attributes">
                 <attribute name="invisible">1</attribute>

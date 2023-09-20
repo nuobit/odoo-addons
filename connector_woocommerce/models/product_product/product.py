@@ -38,7 +38,6 @@ class ProductProduct(models.Model):
         translate=True,
     )
     variant_is_published = fields.Boolean(
-        string="Is Published",
         default=False,
         store=True,
         readonly=False,

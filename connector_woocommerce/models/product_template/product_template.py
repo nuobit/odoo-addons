@@ -16,6 +16,10 @@ class ProductTemplate(models.Model):
         compute="_compute_woocommerce_write_date",
         store=True,
     )
+    # woocommerce_upsell_write_date = fields.Datetime(
+    #     compute="_compute_woocommerce_write_date",
+    #     store=True,
+    # )
 
     @api.depends(
         "is_published",
