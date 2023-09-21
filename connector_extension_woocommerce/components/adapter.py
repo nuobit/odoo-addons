@@ -59,19 +59,17 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             raise ValidationError(
                 _(
                     "Error decoding json WooCommerce response: "
-                    "%s\n%s\nResource:%s\nArgs:%s\nKwargs:%s\n"
+                    "%s\nArgs:%s\nKwargs:%s\n"
                     "URL:%s\nHeaders:%s\nMethod:%s\nBody:%s"
                 )
                 % (
                     e,
-                    res.text,
-                    resource,
                     args,
                     kwargs,
                     res.url,
                     res.request.headers,
                     res.request.method,
-                    res.request.body,
+                    res.text and res.text[:100] + " ...",
                 )
             ) from e
         return result
