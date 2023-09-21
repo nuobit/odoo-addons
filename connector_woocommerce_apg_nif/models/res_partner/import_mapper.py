@@ -9,5 +9,4 @@ class WooCommerceResPartnerImportMapper(Component):
 
     @mapping
     def vat(self, record):
-        if record.get("nif"):
-            return {"vat": record.get("nif")}
+        return {"vat": record.get("nif")}

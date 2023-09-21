@@ -16,6 +16,5 @@
     "depends": [
         "connector_woocommerce",
     ],
-    "data": ["security/ir.model.access.csv", "views/woocommerce_backend_view.xml"],
     "installable": True,
 }
