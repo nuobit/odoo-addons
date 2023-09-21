@@ -60,9 +60,8 @@ class WooCommerceProductProduct(models.Model):
         return True
 
     def resync_export(self):
-        for record in self:
-            super().resync_export()
-            if not record._context.get("resync_product_template"):
-                template = record.product_tmpl_id.woocommerce_bind_ids
-                if template:
-                    template.with_context(resync_product_product=True).resync_export()
+        super().resync_export()
+        if not self.env.context.get("resync_product_template", False):
+            self.product_tmpl_id.woocommerce_bind_ids.with_context(
+                resync_product_product=True
+            ).resync_export()

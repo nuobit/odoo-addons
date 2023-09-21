@@ -49,7 +49,6 @@ class ProductTemplate(models.Model):
         readonly=False,
     )
     template_is_published = fields.Boolean(
-        string="Is Published",
         compute="_compute_template_is_published",
         inverse="_inverse_template_is_published",
         store=True,
@@ -59,15 +58,13 @@ class ProductTemplate(models.Model):
     def _compute_template_is_published(self):
         for rec in self:
             published_variants = rec._origin.product_variant_ids.filtered(
-                lambda x: x.variant_is_published is True
+                lambda x: x.variant_is_published
             )
             rec.template_is_published = bool(published_variants)
 
     def _inverse_template_is_published(self):
         for rec in self:
-            rec.product_variant_ids.variant_is_published = (
-                True if rec.template_is_published else False
-            )
+            rec.product_variant_ids.variant_is_published = rec.template_is_published
 
     product_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",

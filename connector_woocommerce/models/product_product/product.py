@@ -39,8 +39,6 @@ class ProductProduct(models.Model):
     )
     variant_is_published = fields.Boolean(
         default=False,
-        store=True,
-        readonly=False,
     )
     product_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",

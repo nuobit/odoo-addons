@@ -19,6 +19,7 @@ class Partner(models.Model):
         compute="_compute_address_hash", store=True, readonly=True
     )
 
+    @api.model
     def _get_hash_fields(self):
         return ["name", "street", "street2", "city", "zip", "email", "mobile"]
 

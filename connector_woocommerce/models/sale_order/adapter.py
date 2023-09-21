@@ -30,6 +30,7 @@ class WooCommerceSaleOrderAdapter(Component):
         return res[0]
 
     def search_read(self, domain=None, offset=0, limit=None):
+        self._convert_format_domain(domain)
         if limit:
             res = self._exec("get", "orders", domain=domain, offset=offset, limit=limit)
         else:
@@ -161,5 +162,14 @@ class WooCommerceSaleOrderAdapter(Component):
 
     def _get_filters_values(self):
         res = super()._get_filters_values()
-        res += ["status", "date_created_gmt", "modified_after", "modified_before"]
+        res += [
+            "status",
+            "after",
+            "date_created_gmt",
+            "modified_after",
+            "modified_before",
+        ]
         return res
+
+    def _prepare_domain(self, domain):
+        self._convert_format_domain(domain)

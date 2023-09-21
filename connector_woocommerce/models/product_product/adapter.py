@@ -20,6 +20,7 @@ class WooCommerceProductProductAdapter(Component):
         return self._exec("get", url)
 
     def create(self, data):  # pylint: disable=W8106
+        self._prepare_data(data)
         url_l = ["products"]
         parent = data.pop("parent_id")
         url_l.append("%s/variations" % parent)
@@ -28,6 +29,7 @@ class WooCommerceProductProductAdapter(Component):
         return res
 
     def write(self, external_id, data):  # pylint: disable=W8106
+        self._prepare_data(data)
         return self._exec(
             "put",
             "products/%s/variations/%s" % (external_id[0], external_id[1]),
@@ -64,3 +66,12 @@ class WooCommerceProductProductAdapter(Component):
         res = super()._get_filters_values()
         res.extend(["sku", "parent"])
         return res
+
+    def _format_product_product(self, data):
+        conv_mapper = {
+            "/regular_price": lambda x: str(round(x, 10)) or None,
+        }
+        self._convert_format(data, conv_mapper)
+
+    def _prepare_data(self, data):
+        self._format_product_product(data)

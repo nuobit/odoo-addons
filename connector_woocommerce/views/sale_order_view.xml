@@ -72,7 +72,7 @@
             <xpath expr="//group" position="before">
                 <separator />
                 <filter
-                    string="WooCommerce Sale Orders"
+                    string="WooCommerce"
                     name="is_woocommerce"
                     domain="[('is_woocommerce', '=', 'True')]"
                 />

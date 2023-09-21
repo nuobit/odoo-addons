@@ -59,7 +59,14 @@ class WooCommerceProductTemplateAdapter(Component):
         res.extend(["sku"])
         return res
 
+    def _format_product_template(self, data):
+        conv_mapper = {
+            "/regular_price": lambda x: str(round(x, 10)) or None,
+        }
+        self._convert_format(data, conv_mapper)
+
     def _prepare_data(self, data):
+        self._format_product_template(data)
         if data["sku"]:
             if data["type"] == "simple":
                 if len(data["sku"]) > 1:

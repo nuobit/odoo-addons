@@ -73,7 +73,7 @@ class WooCommerceProductTemplateExportMapper(Component):
             # sales price is the price with discount.
             # On odoo we don't have this functionality per product
             return {
-                "regular_price": str(round(record.list_price, 10)),
+                "regular_price": record.list_price,
             }
 
     @mapping

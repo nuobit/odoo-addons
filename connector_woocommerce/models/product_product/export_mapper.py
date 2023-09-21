@@ -17,7 +17,7 @@ class WooCommerceProductProductExportMapper(Component):
         # sales price is the price with discount.
         # On odoo we don't have this functionality per product
         return {
-            "regular_price": str(round(record.lst_price, 10)),
+            "regular_price": record.lst_price,
         }
 
     @changed_by("default_code")
@@ -65,15 +65,12 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def description(self, record):
-        if (
-            len(record.product_tmpl_id.product_variant_ids) > 1
-            and record.variant_public_description
-        ):
-            return {
-                "description": record.with_context(
-                    lang=self.backend_record.backend_lang
-                ).variant_public_description
-            }
+        return {
+            "description": record.with_context(
+                lang=self.backend_record.backend_lang
+            ).variant_public_description
+            or None
+        }
 
     @mapping
     def parent_id(self, record):

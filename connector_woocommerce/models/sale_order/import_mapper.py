@@ -4,7 +4,7 @@ from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.components.mapper import mapping, only_create
 
 
 class SaleOrderImportMapChild(Component):
@@ -113,6 +113,7 @@ class WooCommerceSaleOrderImportMapper(Component):
     def status(self, record):
         return {"woocommerce_status": record["status"]}
 
+    @only_create
     @mapping
     def is_woocommerce(self, record):
         return {"is_woocommerce": True}

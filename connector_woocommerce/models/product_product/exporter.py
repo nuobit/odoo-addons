@@ -63,8 +63,8 @@ class WooCommerceProductProductExporter(Component):
 
     # This _has_to_skip export the product template instead of the product product
     # when the product created in woocommerce is a simple product
-    def _has_to_skip(self, binding, relation, now_fmt):
-        res = super()._has_to_skip(binding, relation, now_fmt)
+    def _has_to_skip(self, binding, relation):
+        res = super()._has_to_skip(binding, relation)
         if len(relation.product_tmpl_id.product_variant_ids) <= 1:
             self._export_dependency(
                 relation.product_tmpl_id,
@@ -72,6 +72,4 @@ class WooCommerceProductProductExporter(Component):
                 always=True,
             )
             res = True
-            if binding:
-                binding[self.binder_for()._sync_date_field] = now_fmt
         return res
