@@ -10,14 +10,14 @@
             ref="connector_woocommerce.woocommerce_backend_view_form"
         />
         <field name="arch" type="xml">
-            <field name="shipping_product_id" position="before">
-                <field name="carrier_provider_ids" nolabel="1">
+            <group name="shipping" position="inside">
+                     <field name="carrier_provider_ids" nolabel="1">
                     <tree editable="bottom">
                         <field name="delivery_type" />
                         <field name="woocommerce_provider" />
                     </tree>
                 </field>
-            </field>
+            </group>
         </field>
     </record>
 </odoo>
