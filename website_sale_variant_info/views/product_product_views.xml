@@ -22,6 +22,9 @@
             <field name="website_ribbon_id" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
+            <field name="product_template_image_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
             <field name="product_template_image_ids" position="before">
                 <field
                     name="product_variant_image_ids"
@@ -31,9 +34,6 @@
                     options="{'create_text':'Add a Media'}"
                     nolabel="1"
                 />
-            </field>
-            <field name="product_template_image_ids" position="attributes">
-                <attribute name="invisible">1</attribute>
             </field>
         </field>
     </record>
