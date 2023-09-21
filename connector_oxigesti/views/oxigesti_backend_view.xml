@@ -168,6 +168,26 @@
                             <group>
                                 <div>
                                     <label
+                                        string="Export Productions since"
+                                        class="oe_inline"
+                                        for="export_mrp_production_since_date"
+                                    />
+                                    <field
+                                        name="export_mrp_production_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="export_mrp_production_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
                                         string="Export Product Categories since"
                                         class="oe_inline"
                                         for="export_product_categories_since_date"

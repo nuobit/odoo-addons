@@ -189,7 +189,25 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
         <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
-
+    <!-- Productions -->
+        <record
+        id="oxigesti_mrp_production_export_batch_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_oxigesti.model_oxigesti_mrp_production" />
+        <field name="method">export_batch</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti_batch" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="oxigesti_mrp_production_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_oxigesti.model_oxigesti_mrp_production" />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
     <!--    EXPORTS-->
     <record
         id="oxigesti_sale_order_export_batch_job_function"
