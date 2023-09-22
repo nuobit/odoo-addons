@@ -23,6 +23,10 @@ class WooCommerceProductTemplateExportMapper(Component):
         default_codes = record.product_variant_ids.filtered("default_code").mapped(
             "default_code"
         )
+        if not default_codes:
+            raise ValidationError(
+                _("You must define a default code for the product %s") % record.name
+            )
         return {"sku": default_codes or None}
 
     @mapping
