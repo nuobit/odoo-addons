@@ -1,5 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+from odoo import _
+from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping
@@ -23,7 +25,12 @@ class WooCommerceProductProductExportMapper(Component):
     @changed_by("default_code")
     @mapping
     def sku(self, record):
-        return {"sku": record.default_code or None}
+        # This requirement is not needed on WooCommerce but it's necess
+        if not record.default_code:
+            raise ValidationError(
+                _("You must define a default code for the product %s") % record.name
+            )
+        return {"sku": record.default_code}
 
     @changed_by("is_published")
     @mapping
