@@ -44,14 +44,13 @@ class ProductTemplate(models.Model):
         translate=True,
     )
     is_published = fields.Boolean(
-        related="template_is_published",
-        store=True,
-        readonly=False,
-    )
-    template_is_published = fields.Boolean(
         compute="_compute_template_is_published",
         inverse="_inverse_template_is_published",
         store=True,
+        readonly=False,
+    )
+    button_is_published = fields.Boolean(
+        related="is_published",
     )
 
     @api.depends("product_variant_ids.variant_is_published")
@@ -60,11 +59,11 @@ class ProductTemplate(models.Model):
             published_variants = rec._origin.product_variant_ids.filtered(
                 lambda x: x.variant_is_published
             )
-            rec.template_is_published = bool(published_variants)
+            rec.is_published = bool(published_variants)
 
     def _inverse_template_is_published(self):
         for rec in self:
-            rec.product_variant_ids.variant_is_published = rec.template_is_published
+            rec.product_variant_ids.variant_is_published = rec.is_published
 
     product_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",

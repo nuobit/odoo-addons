@@ -18,10 +18,22 @@
                     </group>
                 </page>
             </xpath>
-            <field name="template_is_published" position="before">
-                <field name="variant_is_published" string="Is published" />
-            </field>
-            <field name="template_is_published" position="attributes">
+            <xpath
+                expr="//page[@name='shop']/group[@name='shop']/group/field[@name='is_published']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//page[@name='shop']/group[@name='shop']/group/field[@name='is_published']"
+                position="after"
+            >
+                <field name="variant_is_published" />
+            </xpath>
+            <!--            <field name="is_published" position="before">-->
+            <!--                <field name="variant_is_published" string="Is published" />-->
+            <!--            </field>-->
+            <field name="is_published" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="public_description" position="after">
@@ -32,23 +44,23 @@
             </field>
         </field>
     </record>
-    <record id="product_product_tree_view" model="ir.ui.view">
-        <field name="name">product.product.connector.form</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_product_tree_view" />
-        <field
+        <record id="product_product_tree_view" model="ir.ui.view">
+            <field name="name">product.product.connector.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field
             name="groups_id"
             eval="[(4, ref('connector.group_connector_manager'))]"
         />
-        <field name="arch" type="xml">
-            <field name="is_published" position="attributes">
-                <attribute name="invisible">1</attribute>
+            <field name="arch" type="xml">
+                <field name="is_published" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="is_published" position="after">
+                    <field name="variant_is_published" string="Is Published" />
+                </field>
             </field>
-            <field name="is_published" position="after">
-                <field name="variant_is_published" string="Is Published" />
-            </field>
-        </field>
-    </record>
+        </record>
     <record id="woocommerce_product_product_view_form" model="ir.ui.view">
         <field name="name">woocommerce.product.product.view.form</field>
         <field name="model">woocommerce.product.product</field>
@@ -83,23 +95,23 @@
             </tree>
         </field>
     </record>
-    <record id="product_search_form_view" model="ir.ui.view">
-        <field name="name">product.woocommerce.search.published</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_search_form_view" />
-        <field name="arch" type="xml">
-            <xpath expr="//filter[@name='published']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//filter[@name='published']" position="after">
-                <filter
+        <record id="product_search_form_view" model="ir.ui.view">
+            <field name="name">product.woocommerce.search.published</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='published']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='published']" position="after">
+                    <filter
                     name="variant_is_published"
                     string="Published"
                     domain="[('variant_is_published', '=', True)]"
                 />
-            </xpath>
-        </field>
-    </record>
+                </xpath>
+            </field>
+        </record>
     <record id="woocommerce_product_product_action" model="ir.actions.act_window">
         <field name="name">Products</field>
         <field name="res_model">woocommerce.product.product</field>
