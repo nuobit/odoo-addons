@@ -5,7 +5,7 @@
 {
     "name": "Service invoice report",
     "summary": """Service invoice report""",
-    "version": "14.0.1.1.0",
+    "version": "14.0.1.1.1",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Accounting",

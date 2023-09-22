@@ -144,6 +144,15 @@
                                                     <strong>Customer code:</strong>
                                                     <span t-field="o.partner_id.ref" />
                                                 </div>
+                                                <div
+                                                    t-if="o.partner_id.vat"
+                                                    class="mt4"
+                                                >
+                                                    <strong
+                                                        t-esc="o.company_id.country_id.vat_label or 'CIF'"
+                                                    />:
+                                                    <span t-field="o.partner_id.vat" />
+                                                </div>
                                             </td>
                                             <td class="customer_address" width="40%">
                                                 <div>
@@ -183,18 +192,6 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                    </p>
-                                                    <p
-                                                        t-if="o.partner_id.vat"
-                                                        class="mt16"
-                                                        style="font-size: 12px;"
-                                                    >
-                                                        <t
-                                                            t-esc="o.company_id.country_id.vat_label or 'CIF'"
-                                                        />:
-                                                        <span
-                                                            t-field="o.partner_id.vat"
-                                                        />
                                                     </p>
                                                 </div>
                                             </td>
