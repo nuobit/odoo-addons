@@ -32,6 +32,23 @@
             </field>
         </field>
     </record>
+    <record id="product_product_tree_view" model="ir.ui.view">
+        <field name="name">product.product.connector.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="arch" type="xml">
+            <field name="is_published" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="is_published" position="after">
+                <field name="variant_is_published" string="Is Published" />
+            </field>
+        </field>
+    </record>
     <record id="woocommerce_product_product_view_form" model="ir.ui.view">
         <field name="name">woocommerce.product.product.view.form</field>
         <field name="model">woocommerce.product.product</field>
