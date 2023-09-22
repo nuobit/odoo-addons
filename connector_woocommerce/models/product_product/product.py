@@ -39,7 +39,24 @@ class ProductProduct(models.Model):
     )
     variant_is_published = fields.Boolean(
         default=False,
+        # inverse="_inverse_variant_is_published",
+        # compute="_compute_variant_is_published",
+        # store=True,
+        # readonly=False,
     )
+    # def _inverse_variant_is_published(self):
+    #     for rec in self:
+    #         published_variants=rec._origin.product_tmpl_id.product_variant_ids.filtered(
+    #             lambda x: x.variant_is_published
+    #         )
+    #         rec.product_tmpl_id = bool(published_variants)
+
+    # @api.depends("product_tmpl_id.is_published")
+    # def _compute_variant_is_published(self):
+    #     for rec in self:
+    #         if not self.env.context.get("variant_published", False):
+    #             rec.variant_is_published = rec.product_tmpl_id.is_published
+
     product_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",
         compute="_compute_product_attachment_ids",
