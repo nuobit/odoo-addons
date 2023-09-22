@@ -66,6 +66,23 @@
             </tree>
         </field>
     </record>
+    <record id="product_search_form_view" model="ir.ui.view">
+        <field name="name">product.woocommerce.search.published</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='published']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='published']" position="after">
+                <filter
+                    name="variant_is_published"
+                    string="Published"
+                    domain="[('variant_is_published', '=', True)]"
+                />
+            </xpath>
+        </field>
+    </record>
     <record id="woocommerce_product_product_action" model="ir.actions.act_window">
         <field name="name">Products</field>
         <field name="res_model">woocommerce.product.product</field>
