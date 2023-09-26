@@ -16,8 +16,8 @@ class WooCommerceProductPublicCategory(models.Model):
         required=True,
         ondelete="cascade",
     )
-    woocommerce_idproduct = fields.Integer(
-        string="ID Product",
+    woocommerce_idpubliccategory = fields.Integer(
+        string="WooCommerce ID Public Category",
         readonly=True,
     )
 

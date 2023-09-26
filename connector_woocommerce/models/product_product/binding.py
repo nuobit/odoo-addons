@@ -18,11 +18,11 @@ class WooCommerceProductProduct(models.Model):
         ondelete="cascade",
     )
     woocommerce_idproduct = fields.Integer(
-        string="ID Product",
+        string="WooCommerce ID Product",
         readonly=True,
     )
     woocommerce_idparent = fields.Integer(
-        string="ID Parent",
+        string="WooCommerce ID Parent",
         readonly=True,
     )
     _sql_constraints = [

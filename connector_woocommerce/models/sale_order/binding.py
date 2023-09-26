@@ -17,7 +17,7 @@ class WooCommerceSaleOrder(models.Model):
         ondelete="cascade",
     )
     woocommerce_idsaleorder = fields.Integer(
-        string="ID Sale Order",
+        string="WooCommerce ID Sale Order",
         readonly=True,
     )
     woocommerce_status = fields.Char(
