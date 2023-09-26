@@ -11,4 +11,5 @@ class ProductAttributeValue(models.Model):
         comodel_name="woocommerce.product.attribute.value",
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
+        context={"active_test": False},
     )

@@ -11,4 +11,5 @@ class ProductPublicCategory(models.Model):
         comodel_name="woocommerce.product.public.category",
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
+        context={"active_test": False},
     )

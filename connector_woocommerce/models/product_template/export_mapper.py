@@ -20,8 +20,10 @@ class WooCommerceProductTemplateExportMapper(Component):
     @changed_by("default_code")
     @mapping
     def sku(self, record):
-        default_codes = record.product_variant_ids.filtered("default_code").mapped(
-            "default_code"
+        default_codes = (
+            record.with_context(active_test=False)
+            .product_variant_ids.filtered("default_code")
+            .mapped("default_code")
         )
         if not default_codes:
             raise ValidationError(
