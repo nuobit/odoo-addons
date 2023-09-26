@@ -37,4 +37,10 @@ class ProductProductAdapter(Component):
                      where CodigoArticulo = %%(CodigoArticulo)s
          """
 
+    _sql_field_type = """SELECT COLUMN_NAME, DATA_TYPE
+                         FROM INFORMATION_SCHEMA.COLUMNS
+                         WHERE TABLE_NAME = 'Odoo_Articulos_Generales'
+                         AND TABLE_SCHEMA = %(schema)s;
+                      """
+
     _id = ("CodigoArticulo",)
