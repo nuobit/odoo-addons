@@ -1,7 +1,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ProductTemplate(models.Model):
@@ -16,6 +17,16 @@ class ProductTemplate(models.Model):
         compute="_compute_woocommerce_write_date",
         store=True,
     )
+    has_attributes = fields.Boolean(
+        compute="_compute_has_attributes",
+        store=True,
+    )
+
+    @api.depends("attribute_line_ids")
+    def _compute_has_attributes(self):
+        for rec in self:
+            rec.has_attributes = bool(rec.attribute_line_ids)
+
     # woocommerce_upsell_write_date = fields.Datetime(
     #     compute="_compute_woocommerce_write_date",
     #     store=True,
@@ -116,3 +127,18 @@ class ProductTemplate(models.Model):
                     ]
             if not rec.product_attachment_ids:
                 rec.product_attachment_ids = self.env["product.attachment"]
+
+    def write(self, vals):
+        res = super().write(vals)
+        if "has_attributes" in vals:
+            for rec in self:
+                if (
+                    rec.woocommerce_bind_ids
+                    and rec.has_attributes != vals["has_attributes"]
+                ):
+                    raise ValidationError(
+                        _(
+                            "You can't change the attributes if the product has a woocommerce binding"
+                        )
+                    )
+        return res
