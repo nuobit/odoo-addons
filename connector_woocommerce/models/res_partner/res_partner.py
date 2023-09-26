@@ -13,6 +13,7 @@ class Partner(models.Model):
         comodel_name="woocommerce.res.partner",
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
+        context={"active_test": False},
     )
 
     address_hash = fields.Char(
