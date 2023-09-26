@@ -66,8 +66,10 @@ class WooCommerceBackend(models.Model):
             if rec.page_size > 100:
                 raise ValidationError(_("Page size must be less than 100"))
 
-    backend_lang = fields.Selection(
-        _lang_get, "Language", default=lambda self: self.env.lang
+    language_id = fields.Many2one(
+        comodel_name="res.lang",
+        string="Language",
+        required=True,
     )
     client_order_ref_prefix = fields.Char(
         string="Client Order Reference Prefix",
