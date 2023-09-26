@@ -39,6 +39,7 @@ class WooCommerceProductProduct(models.Model):
         return [
             ("variant_is_published", "=", True),
             ("woocommerce_write_date", "=", False),
+            ("product_tmpl_id.has_attributes", "=", True),
         ]
 
     def export_products_since(self, backend_record=None, since_date=None):
