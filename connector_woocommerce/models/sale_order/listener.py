@@ -13,10 +13,11 @@ class WooCommerceSaleOrderListener(Component):
     def on_compute_woocommerce_order_state(self, records, fields=None):
         self.export_records(records, fields)
 
+    def _get_fields_to_update(self):
+        return {"woocommerce_order_state"}
+
     def export_records(self, records, fields=None):
-        fields_to_update = {
-            "woocommerce_order_state",
-        }
+        fields_to_update = self._get_fields_to_update()
         for rec in records:
             if rec.woocommerce_bind_ids:
                 if set(fields) & fields_to_update:
