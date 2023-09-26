@@ -158,6 +158,7 @@ class SaleOrderLine(models.Model):
         comodel_name="woocommerce.sale.order.line",
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
+        context={"active_test": False},
     )
 
     def write(self, vals):
