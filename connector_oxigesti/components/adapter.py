@@ -121,6 +121,25 @@ class GenericAdapter(AbstractComponent):
     _name = "oxigesti.adapter"
     _inherit = "oxigesti.crud.adapter"
 
+    @property
+    def PYTHON_TYPE_MAP(self):
+        return {
+            int: ["int"],
+            float: ["float", "numeric"],
+            str: ["nvarchar"],
+            bool: ["bit"],
+        }
+
+    @property
+    def MSSQL_TYPE_MAP(self):
+        mssql_type_map = {}
+        for k, v in self.PYTHON_TYPE_MAP.items():
+            for t in v:
+                if t in mssql_type_map:
+                    raise ValidationError(_("Duplicated type %s in MSSQL_TYPE_MAP") % t)
+                mssql_type_map[t] = k
+        return mssql_type_map
+
     # private methods
     def _convert_dict(self, data, to_backend=True):
         if not isinstance(data, dict):
@@ -226,6 +245,26 @@ class GenericAdapter(AbstractComponent):
         if self._id and set(self._id).issubset(filter_keys_s):
             self._check_uniq(res)
 
+        return res
+
+    def get_headers(self):
+        # prepare the sql and execute
+        if not hasattr(self, "_sql_field_type"):
+            raise ValidationError(
+                _("The adapter %s doesn't have a _sql_field_type defined") % self._name
+            )
+        conn = self.conn()
+        cr = conn.cursor()
+        cr.execute(self._sql_field_type, dict(schema=self.schema))
+        res = {}
+        for field, ttype in cr.fetchall():
+            if ttype not in self.MSSQL_TYPE_MAP:
+                raise ValidationError(
+                    _("Unexpected type %s for field %s") % (ttype, field)
+                )
+            res[field] = self.MSSQL_TYPE_MAP[ttype]
+        cr.close()
+        conn.close()
         return res
 
     def _check_uniq(self, data):
