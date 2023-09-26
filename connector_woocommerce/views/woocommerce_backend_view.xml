@@ -272,7 +272,7 @@
                             <group>
                                 <field name="chunk_size" />
                                 <field name="page_size" />
-                                <field name="backend_lang" />
+                                <field name="language_id" />
                                 <field
                                     name="stock_location_ids"
                                     widget="many2many_tags"
