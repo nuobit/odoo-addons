@@ -11,6 +11,7 @@ class SaleOrder(models.Model):
         comodel_name="woocommerce.sale.order",
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
+        context={"active_test": False},
     )
     is_woocommerce = fields.Boolean(
         default=False,

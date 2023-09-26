@@ -11,6 +11,7 @@ class ProductProduct(models.Model):
         comodel_name="woocommerce.product.product",
         inverse_name="odoo_id",
         string="WooCommerce Bindings",
+        context={"active_test": False},
     )
     woocommerce_write_date = fields.Datetime(
         compute="_compute_woocommerce_write_date",
