@@ -17,7 +17,7 @@ class WooCommerceResPartner(models.Model):
         ondelete="cascade",
     )
     woocommerce_idrespartner = fields.Integer(
-        string="ID Res Partner",
+        string="WooCommerce ID Res Partner",
         readonly=True,
     )
     woocommerce_address_type = fields.Char(
