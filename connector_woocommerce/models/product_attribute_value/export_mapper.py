@@ -24,7 +24,9 @@ class WooCommerceProductAttributeValueExportMapper(Component):
     @changed_by("name")
     @mapping
     def name(self, record):
-        return {"name": record.with_context(lang=self.backend_record.backend_lang).name}
+        return {
+            "name": record.with_context(lang=self.backend_record.language_id.code).name
+        }
 
     @required("parent_id")
     @changed_by("attribute_id")
@@ -39,6 +41,6 @@ class WooCommerceProductAttributeValueExportMapper(Component):
     def parent_name(self, record):
         return {
             "parent_name": record.attribute_id.with_context(
-                lang=self.backend_record.backend_lang
+                lang=self.backend_record.language_id.code
             ).name
         }

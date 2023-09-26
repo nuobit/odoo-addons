@@ -74,7 +74,7 @@ class WooCommerceProductProductExportMapper(Component):
     def description(self, record):
         return {
             "description": record.with_context(
-                lang=self.backend_record.backend_lang
+                lang=self.backend_record.language_id.code
             ).variant_public_description
             or None
         }

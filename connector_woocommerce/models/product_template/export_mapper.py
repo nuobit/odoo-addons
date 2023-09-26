@@ -85,14 +85,14 @@ class WooCommerceProductTemplateExportMapper(Component):
         description = False
         if record.public_description:
             description = record.with_context(
-                lang=self.backend_record.backend_lang
+                lang=self.backend_record.language_id.code
             ).public_description
         elif (
             len(record.product_variant_ids) == 1
             and record.product_variant_id.variant_public_description
         ):
             description = record.product_variant_id.with_context(
-                lang=self.backend_record.backend_lang
+                lang=self.backend_record.language_id.code
             ).variant_public_description
         return {"description": description if description else ""}
 
@@ -123,7 +123,7 @@ class WooCommerceProductTemplateExportMapper(Component):
                 {
                     "id": values["id"],
                     "options": line.value_ids.with_context(
-                        lang=self.backend_record.backend_lang
+                        lang=self.backend_record.language_id.code
                     ).mapped("name"),
                     "visible": "true",
                     "variation": "true",
