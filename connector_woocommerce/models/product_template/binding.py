@@ -17,7 +17,7 @@ class WooCommerceProductTemplate(models.Model):
         ondelete="cascade",
     )
     woocommerce_idproduct = fields.Integer(
-        string="ID Product",
+        string="WooCommerce ID Product",
         readonly=True,
     )
 

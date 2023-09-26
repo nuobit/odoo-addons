@@ -17,7 +17,7 @@ class WooCommerceProductAttribute(models.Model):
         ondelete="cascade",
     )
     woocommerce_idattribute = fields.Integer(
-        string="ID Product",
+        string="WooCommerce ID Attribute",
         readonly=True,
     )
 
