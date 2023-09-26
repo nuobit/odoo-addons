@@ -46,7 +46,8 @@ class ProductProductExportMapper(Component):
             raise AssertionError(
                 "The Odoo product with ID %i and Name '%s' "
                 "has no Internal reference. "
-                "Please assign one and requeue the job." % (record.id, record.name)
+                "Please assign one and requeue the job."
+                % (record.odoo_id.id, record.name)
             )
 
         return {"CodigoArticulo": record.default_code}
