@@ -31,7 +31,10 @@ class WooCommerceProductTemplate(models.Model):
 
     @api.model
     def _get_base_domain(self):
-        return [("website_published", "=", True)]
+        return [
+            ("is_published", "=", True),
+            ("has_attributes", "=", False),
+        ]
 
     def export_product_tmpl_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
