@@ -11,6 +11,6 @@ class WooCommerceProductPublicCategoryBinder(Component):
     _apply_on = "woocommerce.product.public.category"
 
     external_id = "id"
-    internal_id = "woocommerce_idproduct"
+    internal_id = "woocommerce_idpubliccategory"
 
     external_alt_id = "name"
