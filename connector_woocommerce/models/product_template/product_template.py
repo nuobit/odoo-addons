@@ -139,7 +139,8 @@ class ProductTemplate(models.Model):
                 ):
                     raise ValidationError(
                         _(
-                            "You can't change the attributes if the product has a woocommerce binding"
+                            "You can't change the attributes if the "
+                            "product has a woocommerce binding"
                         )
                     )
         return res
