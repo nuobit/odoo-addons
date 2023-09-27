@@ -14,6 +14,8 @@ class WooCommerceSaleOrderExportMapper(Component):
     def status(self, record):
         if record.woocommerce_order_state == "partial-shipped":
             return {"status": "partial-shipped"}
+        elif record.woocommerce_order_state == "delivered":
+            return {"status": "delivered"}
         else:
             return super().status(record)
 
