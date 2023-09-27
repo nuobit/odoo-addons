@@ -37,66 +37,39 @@ class SaleOrder(models.Model):
         ],
     )
 
-    # TODO: REVIEW: try to do it without frozenset
-    def _get_woocommerce_order_state_mapping(self):
-        return {
-            frozenset(["cancel"]): "cancel",
-            frozenset(["done"]): "done",
-            frozenset(["processing"]): "processing",
-            frozenset(["cancel", "done"]): "done",
-            frozenset(["cancel", "processing"]): "processing",
-            frozenset(["done", "processing"]): "processing",
-            frozenset(["cancel", "done", "processing"]): "processing",
-        }
+    @api.model
+    def _get_woocommerce_order_state(self, picking_states):
+        if "processing" in picking_states:
+            woocommerce_order_state = "processing"
+        else:
+            if "done" not in self.picking_ids.mapped("state"):
+                woocommerce_order_state = "cancel"
+            else:
+                woocommerce_order_state = "done"
+        return woocommerce_order_state
 
     @api.depends(
         "state",
         "order_line.qty_delivered",
         "order_line.product_uom_qty",
         "woocommerce_bind_ids",
+        "picking_ids.woocommerce_stock_picking_state",
+        "picking_ids.state",
     )
     def _compute_woocommerce_order_state(self):
-        woocommerce_order_state_mapping = self._get_woocommerce_order_state_mapping()
-        # TODO: REVIEW: When module is intalled in large db, a memory error is raised
-        # this is the reason of set value just when record has binding.
-        # Try to avoid compute on install.
         for rec in self:
             if rec.is_woocommerce:
-                old_state = rec.woocommerce_order_state
-                lines_states = frozenset(
-                    rec.order_line.filtered(
-                        lambda x: x.product_id.product_tmpl_id.service_policy
-                        != "ordered_timesheet"
-                    ).mapped("woocommerce_order_line_state")
+                picking_states = self.picking_ids.mapped(
+                    "woocommerce_stock_picking_state"
                 )
-                if lines_states:
-                    new_state = woocommerce_order_state_mapping[lines_states]
-                else:
-                    new_state = "processing"
-                if not old_state:
-                    rec.woocommerce_order_state = new_state
-                elif old_state != new_state:
-                    rec.woocommerce_order_state = new_state
+                woocommerce_order_state = rec._get_woocommerce_order_state(
+                    picking_states
+                )
+                if woocommerce_order_state != rec.woocommerce_order_state:
+                    rec.woocommerce_order_state = woocommerce_order_state
                     self._event("on_compute_woocommerce_order_state").notify(
                         rec, fields={"woocommerce_order_state"}
                     )
-                #
-                # if not rec.woocommerce_bind_ids:
-                #     rec.woocommerce_order_state = False
-                # else:
-                #     old_state = rec.woocommerce_order_state
-                #     lines_states = frozenset(
-                #         rec.order_line.mapped("woocommerce_order_line_state")
-                #     )
-                #     if lines_states:
-                #         new_state = woocommerce_order_state_mapping[lines_states]
-                #     else:
-                #         new_state = "processing"
-                #     if old_state != new_state:
-                #         rec.woocommerce_order_state = new_state
-                #         self._event("on_compute_woocommerce_order_state").notify(
-                #             rec, fields={"woocommerce_order_state"}
-                #         )
 
     def action_confirm(self):
         res = super().action_confirm()
