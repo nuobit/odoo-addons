@@ -100,10 +100,7 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def product_type(self, record):
-        product_type = "simple"
-        if len(record.product_variant_ids) > 1:
-            product_type = "variable"
-        return {"type": product_type}
+        return {"type": "variable" if record.has_attributes else "simple"}
 
     @mapping
     def categories(self, record):
