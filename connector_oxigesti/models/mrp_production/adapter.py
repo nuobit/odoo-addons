@@ -11,9 +11,9 @@ class MrpProductionAdapter(Component):
     _apply_on = "oxigesti.mrp.production"
 
     _sql = """select a.Id, a.CodigoOrdenProduccion, a.FechaProduccion,
-                     a.EsMontaje, a.CodigoBotellaVacia, a.LoteBotellaVacia,
-                     a.CodigoCilindro, a.LoteCilindro, a.CodigoValvula,
-                     a.LoteValvula
+                     a.CodigoOrdenDeconstruccion, a.CodigoBotellaVacia,
+                     a.LoteBotellaVacia, a.CodigoCilindro, a.LoteCilindro,
+                     a.CodigoValvula, a.LoteValvula
               from %(schema)s.Odoo_Orden_Produccion a
            """
 

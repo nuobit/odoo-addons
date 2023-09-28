@@ -28,16 +28,16 @@ class MrpProductionExportMapper(Component):
         return {"CodigoBotellaVacia": record.product_id.default_code}
 
     @mapping
-    def EsMontaje(self, record):
-        unbuild_count = self.env["mrp.unbuild"].search(
+    def CodigoOrdenDeconstruccion(self, record):
+        unbuild = self.env["mrp.unbuild"].search(
             [("mo_id", "=", record.odoo_id.id), ("state", "=", "done")]
         )
-        if len(unbuild_count) > 1:
+        if len(unbuild) > 1:
             raise ValidationError(
                 _("The production %s has more than one unbuild. %s")
-                % (record.name, unbuild_count.mapped("name"))
+                % (record.name, unbuild.mapped("name"))
             )
-        return {"EsMontaje": 0 if len(unbuild_count) > 0 else 1}
+        return {"CodigoOrdenDeconstruccion": unbuild.name or None}
 
     @mapping
     def Componentes(self, record):
