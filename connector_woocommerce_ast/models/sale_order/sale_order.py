@@ -26,17 +26,17 @@ class SaleOrder(models.Model):
 
     woocommerce_order_state = fields.Selection(
         selection_add=[
-            ("partial-shipped", "Partial Shipped"),
+            ("partial_shipped", "Partial Shipped"),
             ("delivered", "Delivered"),
         ],
     )
 
-    @api.model
     def _get_woocommerce_order_state(self, picking_states):
+        self.ensure_one()
         woocommerce_order_state = super()._get_woocommerce_order_state(picking_states)
         if woocommerce_order_state == "processing":
             if "done" in self.picking_ids.mapped("woocommerce_stock_picking_state"):
-                woocommerce_order_state = "partial-shipped"
+                woocommerce_order_state = "partial_shipped"
         elif woocommerce_order_state == "done":
             precision = self.env["decimal.precision"].precision_get(
                 "Product Unit of Measure"
@@ -51,7 +51,7 @@ class SaleOrder(models.Model):
                     != "ordered_timesheet"
                 )
             ):
-                woocommerce_order_state = "partial-shipped"
+                woocommerce_order_state = "partial_shipped"
             elif "delivered" in picking_states:
                 woocommerce_order_state = "delivered"
         return woocommerce_order_state
