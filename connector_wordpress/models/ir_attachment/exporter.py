@@ -36,8 +36,8 @@ class WordPressIrAttachmentExporter(Component):
 
     _apply_on = "wordpress.ir.attachment"
 
-    def _has_to_skip(self, binding, relation):
-        res = super()._has_to_skip(binding, relation)
+    def _has_to_skip(self, relation):
+        res = super()._has_to_skip(relation)
         if self.backend_record.test_database:
             if not Path(relation._full_path(relation.store_fname)).is_file():
                 return True
