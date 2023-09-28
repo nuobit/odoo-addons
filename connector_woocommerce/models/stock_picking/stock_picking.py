@@ -16,8 +16,8 @@ class Picking(models.Model):
         ],
     )
 
-    @api.model
     def _get_woocommerce_stock_picking_state(self):
+        self.ensure_one()
         if self.state == "done":
             woocommerce_stock_picking_state = "done"
         elif self.state == "cancel":

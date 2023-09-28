@@ -37,8 +37,8 @@ class SaleOrder(models.Model):
         ],
     )
 
-    @api.model
     def _get_woocommerce_order_state(self, picking_states):
+        self.ensure_one()
         if "processing" in picking_states:
             woocommerce_order_state = "processing"
         else:
