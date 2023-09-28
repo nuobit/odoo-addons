@@ -47,8 +47,7 @@ class MrpProductionExporter(Component):
         for binder_name, items in items_dict.items():
             binder = self.binder_for(binder_name)
             for item in items:
-                if not binder.to_external(item, wrap=True):
-                    exporter = self.component(
-                        usage="record.exporter", model_name=binder.model._name
-                    )
-                    exporter.run(item)
+                exporter = self.component(
+                    usage="record.exporter", model_name=binder.model._name
+                )
+                exporter.run(item)
