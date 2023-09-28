@@ -13,8 +13,8 @@ class StockPicking(models.Model):
         ],
     )
 
-    @api.model
     def _get_woocommerce_stock_picking_state(self):
+        self.ensure_one()
         woocommerce_stock_picking_state = super()._get_woocommerce_stock_picking_state()
         if (
             woocommerce_stock_picking_state == "done"
