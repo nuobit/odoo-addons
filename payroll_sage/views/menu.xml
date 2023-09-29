@@ -41,4 +41,12 @@
         parent="menu_sage_payroll"
         action="wage_tag_action"
     />
+
+    <menuitem
+        id="process_menu_action"
+        name="Processes"
+        sequence="40"
+        parent="menu_sage_payroll"
+        action="payslip_process_action"
+    />
 </odoo>

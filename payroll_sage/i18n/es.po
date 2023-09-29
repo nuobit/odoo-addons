@@ -180,6 +180,13 @@ msgid "Labour agreeemnt"
 msgstr "Convenio laboral"
 
 #. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__process_id
+#: model_terms:ir.ui.view,arch_db:payroll_sage.labour_agreement_view_form
+#: model_terms:ir.ui.view,arch_db:payroll_sage.labour_agreement_view_tree
+msgid "Process"
+msgstr "Proceso"
+
+#. module: payroll_sage
 #: model:ir.model,name:payroll_sage.model_payroll_sage_labour_agreement
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__labour_agreement_id
 #: model:ir.ui.menu,name:payroll_sage.labour_agreement_menu_action
@@ -251,6 +258,7 @@ msgstr "Responsable"
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__name
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__name
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__name
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_process__name
 msgid "Name"
 msgstr "Nombre"
 
@@ -464,6 +472,12 @@ msgstr "Etiquetas de concepto"
 #: model:ir.ui.menu,name:payroll_sage.wage_tag_menu_action
 msgid "Wage tag"
 msgstr "Etiquetas"
+
+#. module: payroll_sage
+#: model:ir.actions.act_window,name:payroll_sage.payslip_process_action
+#: model:ir.ui.menu,name:payroll_sage.process_menu_action
+msgid "Processes"
+msgstr "Procesos"
 
 #. module: payroll_sage
 #: model_terms:ir.ui.view,arch_db:payroll_sage.wage_tag_view_form
