@@ -50,7 +50,7 @@
                             attrs="{'readonly': [('state', '!=', 'draft')]}"
                         />
                         <field
-                            name="process"
+                            name="process_id"
                             attrs="{'readonly': [('state', '!=', 'draft')]}"
                         />
                     </group>
@@ -190,6 +190,18 @@
                     <field name="employee_id" />
                     <field name="name" />
                     <field name="amount" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="payslip_process_type_view_form" model="ir.ui.view">
+        <field name="name">payslip.process.type.form</field>
+        <field name="model">payroll.sage.payslip.process.type</field>
+        <field name="arch" type="xml">
+            <form string="Payslip Process Type">
+                <group>
+                    <field name="name" />
+                    <field name="payslip_ids" invisible="1" />
                 </group>
             </form>
         </field>
