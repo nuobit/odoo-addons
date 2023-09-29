@@ -50,7 +50,7 @@
                             attrs="{'readonly': [('state', '!=', 'draft')]}"
                         />
                         <field
-                            name="process"
+                            name="process_id"
                             attrs="{'readonly': [('state', '!=', 'draft')]}"
                         />
                     </group>
