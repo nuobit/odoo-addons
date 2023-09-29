@@ -20,3 +20,6 @@ access_payslip_wage_type_guest,payslip.wage.type guest,model_payroll_sage_paysli
 access_wage_tag_line_manager,wage.tag manager,model_payroll_sage_wage_tag,payroll_sage.group_manager,1,1,1,1
 access_wage_tag_line_user,wage.tag user,model_payroll_sage_wage_tag,payroll_sage.group_user,1,1,1,1
 access_wage_tag_line_guest,wage.tag guest,model_payroll_sage_wage_tag,payroll_sage.group_guest,1,0,0,0
+access_payslip_process_manager,payslip.process manager,model_payroll_sage_payslip_process,payroll_sage.group_manager,1,1,1,1
+access_payslip_process_user,payslip.process user,model_payroll_sage_payslip_process,payroll_sage.group_user,1,1,1,1
+access_payslip_process_guest,payslip.process guest,model_payroll_sage_payslip_process,payroll_sage.group_guest,1,0,0,0
