@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 {
     "name": "Sage Payroll",
-    "version": "14.0.1.0.3",
+    "version": "14.0.1.0.4",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Human Resources",
@@ -18,6 +18,7 @@
         "views/labour_agreement_view.xml",
         "views/payslip_view.xml",
         "views/wage_tag_view.xml",
+        "views/payslip_process_view.xml",
         "views/menu.xml",
     ],
     "installable": True,

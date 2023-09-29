@@ -5,114 +5,11 @@
 from odoo import _, fields, models
 from odoo.exceptions import UserError, ValidationError
 
-PROCESS_TYPES = [
-    ("MES", "MES"),
-    ("P01", "P01"),
-    ("P02", "P02"),
-    ("P03", "P03"),
-    ("A01", "A01"),
-    ("A02", "A02"),
-    ("A03", "A03"),
-    ("A04", "A04"),
-    ("A05", "A05"),
-    ("A06", "A06"),
-    ("A07", "A07"),
-    ("A08", "A08"),
-    ("A09", "A09"),
-    ("A10", "A10"),
-    ("A11", "A11"),
-    ("A12", "A12"),
-    ("A13", "A13"),
-    ("A14", "A14"),
-    ("A15", "A15"),
-    ("A16", "A16"),
-    ("A17", "A17"),
-    ("A18", "A18"),
-    ("A19", "A19"),
-    ("A20", "A20"),
-    ("A21", "A21"),
-    ("A22", "A22"),
-    ("A23", "A23"),
-    ("A24", "A24"),
-    ("A25", "A25"),
-    ("A26", "A26"),
-    ("A28", "A28"),
-    ("A29", "A29"),
-    ("A30", "A30"),
-    ("A31", "A31"),
-    ("A32", "A32"),
-    ("A33", "A33"),
-    ("A34", "A34"),
-    ("A35", "A35"),
-    ("A36", "A36"),
-    ("A37", "A37"),
-    ("A38", "A38"),
-    ("A39", "A39"),
-    ("A93", "A93"),
-    ("A94", "A94"),
-    ("A95", "A95"),
-    ("A97", "A97"),
-    ("A98", "A98"),
-    ("A99", "A99"),
-    ("B0101", "B0101"),
-    ("B0102", "B0102"),
-    ("B0103", "B0103"),
-    ("B0201", "B0201"),
-    ("B0202", "B0202"),
-    ("B0203", "B0203"),
-    ("B0301", "B0301"),
-    ("B0401", "B0401"),
-    ("B0402", "B0402"),
-    ("B0501", "B0501"),
-    ("B0502", "B0502"),
-    ("B0601", "B0601"),
-    ("B0602", "B0602"),
-    ("B0701", "B0701"),
-    ("B0702", "B0702"),
-    ("B0801", "B0801"),
-    ("B0802", "B0802"),
-    ("B1001", "B1001"),
-    ("B1002", "B1002"),
-    ("B1003", "B1003"),
-    ("B1101", "B1101"),
-    ("B1102", "B1102"),
-    ("B1201", "B1201"),
-    ("B1202", "B1202"),
-    ("B1301", "B1301"),
-    ("B1401", "B1401"),
-    ("B1402", "B1402"),
-    ("B1501", "B1501"),
-    ("B1601", "B1601"),
-    ("B1602", "B1602"),
-    ("B1701", "B1701"),
-    ("B1702", "B1702"),
-    ("B1801", "B1801"),
-    ("B1802", "B1802"),
-    ("B1901", "B1901"),
-    ("B1902", "B1902"),
-    ("B2001", "B2001"),
-    ("B2002", "B2002"),
-    ("B2101", "B2101"),
-    ("B2201", "B2201"),
-    ("B2601", "B2601"),
-    ("B2602", "B2602"),
-    ("B2802", "B2802"),
-    ("B2901", "B2901"),
-    ("B3001", "B3001"),
-    ("B3002", "B3002"),
-    ("B3101", "B3101"),
-    ("B3202", "B3202"),
-    ("B3501", "B3501"),
-    ("B3502", "B3502"),
-    ("B3701", "B3701"),
-    ("B3702", "B3702"),
-]
-
 
 class Payslip(models.Model):
     _name = "payroll.sage.payslip"
     _description = "Payslip"
-    _order = "entry_date desc, type, process"
+    _order = "entry_date desc, type, process_id desc"
 
     name = fields.Char(string="Name", required=True)
     entry_date = fields.Date(string="Entry date", required=True)
@@ -148,7 +45,12 @@ class Payslip(models.Model):
 
     payment_date = fields.Date("Payment date")
 
-    process = fields.Selection(selection=PROCESS_TYPES, string="Process", required=True)
+    process_id = fields.Many2one(
+        comodel_name="payroll.sage.payslip.process",
+        string="Process",
+        required=True,
+        ondelete="restrict",
+    )
 
     note = fields.Text(string="Note")
 
