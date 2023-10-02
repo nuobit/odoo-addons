@@ -30,13 +30,14 @@ class WordpressAdapterCRUD(AbstractComponent):
                 self.backend_record.consumer_key,
                 self.backend_record.consumer_secret,
             ),
+            timeout=120,
         )
         if res.status_code in [400, 401, 403, 404, 500]:
             raise ValidationError(res.json().get("message"))
         try:
             res = res.json()
         except Exception as e:
-            raise ValidationError(e)
+            raise ValidationError(e) from e
         return res
 
     def _exec_post(self, resource, *args, **kwargs):
@@ -60,6 +61,7 @@ class WordpressAdapterCRUD(AbstractComponent):
             data=data,
             auth=auth
             or (self.backend_record.consumer_key, self.backend_record.consumer_secret),
+            timeout=120,
         )
         if res.status_code in [400, 401, 403, 404, 500]:
             raise ValidationError(res.json().get("message"))
@@ -68,7 +70,7 @@ class WordpressAdapterCRUD(AbstractComponent):
             if checksum:
                 res["checksum"] = checksum
         except Exception as e:
-            raise ValidationError(e)
+            raise ValidationError(e) from e
         return res
 
     def _exec_put(self, resource, *args, **kwargs):
