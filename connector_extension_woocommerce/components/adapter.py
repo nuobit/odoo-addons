@@ -35,9 +35,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             if not res.ok and res.status_code == "rest_no_route":
                 raise ValidationError(
                     _(
-                        "Error: '%s'. Probably the %s has been removed from Woocommerce. "
-                        "If it's the case, try to remove the binding of the %s."
-                        % (res.get("message"), resource, self.model._name)
+                        "Error: '%(message)s'. Probably the %(resource)s has been removed "
+                        "from Woocommerce. If it's the case, try to remove the binding "
+                        "of the %(model)s."
+                    )
+                    % dict(
+                        message=res.get("message"),
+                        resource=resource,
+                        model=self.model._name,
                     )
                 )
             elif not res.ok:
