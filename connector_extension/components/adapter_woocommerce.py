@@ -62,7 +62,7 @@ class WooCommerceAdapterCRUD(AbstractComponent):
         try:
             res = res.json()
         except Exception as e:
-            raise ValidationError(e)
+            raise ValidationError(e) from e
         return res
 
     def _exec_put(self, resource, *args, **kwargs):
