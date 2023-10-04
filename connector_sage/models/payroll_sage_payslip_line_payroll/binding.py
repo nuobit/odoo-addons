@@ -28,7 +28,7 @@ class PayslipLinePayrollBinding(models.Model):
             "FechaRegistroCV": payslip_id.labour_agreement_id.registration_date_cv,
             "Año": payslip_id.year,
             "MesD": ("between", (payslip_id.month_from, payslip_id.month_to)),
-            "TipoProceso": payslip_id.process,
+            "TipoProceso": payslip_id.process_id.name,
         }
 
         self.env["sage.payroll.sage.payslip.line.payroll"].import_batch(
