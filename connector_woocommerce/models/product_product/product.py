@@ -29,6 +29,8 @@ class ProductProduct(models.Model):
         "qty_available",
         "product_template_attribute_value_ids",
         "variant_public_description",
+        "alternative_product_ids",
+        "accessory_product_ids",
     )
     def _compute_woocommerce_write_date(self):
         for rec in self:
