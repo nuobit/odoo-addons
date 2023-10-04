@@ -31,7 +31,7 @@ class PayslipLineTransferBinding(models.Model):
             "FechaRegistroCV": payslip_id.labour_agreement_id.registration_date_cv,
             "Año": payslip_id.year,
             "MesD": ("between", (payslip_id.month_from, payslip_id.month_to)),
-            "TipoProceso": payslip_id.process,
+            "TipoProceso": payslip_id.process_id.name,
         }
         if payslip_id.payment_date:
             filters["FechaCobro"] = payslip_id.payment_date
