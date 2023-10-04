@@ -60,7 +60,6 @@ class WooCommerceProductTemplateExportMapper(Component):
             )
             return {
                 "manage_stock": manage_stock,
-                # TODO: modificar la quantity per agafar les dels magatzems definits al backend
                 "stock_quantity": int(qty),
                 "stock_status": "instock"
                 if record.product_variant_id.qty_available > 0
@@ -146,28 +145,29 @@ class WooCommerceProductTemplateExportMapper(Component):
                 )
             return {"tax_class": tax_class.woocommerce_tax_class}
 
-    # @mapping
-    # def upsell_ids(self, record):
-    #     binder = self.binder_for("woocommerce.product.template")
-    #     alternate_list = []
-    #     if record.alternative_product_ids:
-    #         for product in record.alternative_product_ids:
-    #             values = binder.get_external_dict_ids(product)
-    #             alternate_list.append(values["id"])
-    #     if alternate_list:
-    #         # return {"cross_sell_ids": alternate_list}
-    #         return {"upsell_ids": alternate_list}
-    #
-    # @mapping
-    # def cross_sell_ids(self, record):
-    #     binder = self.binder_for("woocommerce.product.product")
-    #     accessory_list = []
-    #     if record.accessory_product_ids:
-    #         for product in record.accessory_product_ids:
-    #             values = binder.get_external_dict_ids(product)
-    #             accessory_list.append(values["id"])
-    #     if accessory_list:
-    #         return {"cross_sell_ids": accessory_list}
+    @mapping
+    def upsell_ids(self, record):
+        binder = self.binder_for("woocommerce.product.template")
+        alternate_list = []
+        if record.alternative_product_ids and not record.env.context.get(
+            "export_wo_alt_p"
+        ):
+            for product in record.alternative_product_ids:
+                values = binder.get_external_dict_ids(product)
+                alternate_list.append(values["id"])
+        return {"upsell_ids": alternate_list}
+
+    @mapping
+    def cross_sell_ids(self, record):
+        binder = self.binder_for("woocommerce.product.product")
+        accessory_list = []
+        if record.accessory_product_ids and not record.env.context.get(
+            "export_wo_acc_p"
+        ):
+            for product in record.accessory_product_ids:
+                values = binder.get_external_dict_ids(product)
+                accessory_list.append(values["id"])
+        return {"cross_sell_ids": accessory_list}
 
     @mapping
     def images(self, record):
