@@ -54,7 +54,7 @@ class PayslipCheckBinding(models.Model):
             "CodigoEmpresa": backend_record.sage_company_id,
             "Año": payslip_id.year,
             "MesD": ("between", (payslip_id.month_from, payslip_id.month_to)),
-            "TipoProceso": payslip_id.process,
+            "TipoProceso": payslip_id.process_id.name,
         }
 
         self.env["sage.payroll.sage.payslip.check"].import_batch(
