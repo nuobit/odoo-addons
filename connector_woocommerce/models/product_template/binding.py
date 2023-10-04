@@ -45,19 +45,6 @@ class WooCommerceProductTemplate(models.Model):
         self.export_batch(backend_record, domain=domain)
         return True
 
-    # def export_up_sell_products_since(self, backend_record=None, since_date=None):
-    #     domain = self._get_base_domain()
-    #     if since_date:
-    #         domain += [
-    #             (
-    #                 "woocommerce_upsell_write_date",
-    #                 ">",
-    #                 fields.Datetime.to_string(since_date),
-    #             ),
-    #         ]
-    #     self.export_up_sell_products_batch(backend_record, domain=domain)
-    #     return True
-
     def resync_export(self):
         super().resync_export()
         if not self.env.context.get("resync_product_product", False):
