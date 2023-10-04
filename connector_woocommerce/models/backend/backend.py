@@ -97,9 +97,6 @@ class WooCommerceBackend(models.Model):
     export_product_attribute_value_since_date = fields.Datetime(
         string="Export Product attribute values Since",
     )
-    # export_cross_up_sell_products_since_date = fields.Datetime(
-    #     string="Export Cross Up-sell products Since",
-    # )
     import_sale_order_since_date = fields.Datetime(
         string="Import Sale Order Since",
     )
@@ -174,19 +171,6 @@ class WooCommerceBackend(models.Model):
             ].export_product_attribute_value_since(
                 backend_record=rec, since_date=since_date
             )
-
-    # def export_cross_up_sell_products_since(self):
-    #     self.env.user.company_id = self.company_id
-    #     for rec in self:
-    #         since_date = fields.Datetime.from_string(
-    #             rec.export_product_attribute_value_since_date
-    #         )
-    #         rec.export_cross_up_sell_products_since_date = fields.Datetime.now()
-    #         self.env[
-    #             "woocommerce.product.template"
-    #         ].export_cross_up_sell_products_since(
-    #             backend_record=rec, since_date=since_date
-    #         )
 
     def import_sale_orders_since(self):
         self.env.user.company_id = self.company_id

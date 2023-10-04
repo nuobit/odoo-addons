@@ -28,11 +28,6 @@ class ProductTemplate(models.Model):
         for rec in self:
             rec.has_attributes = bool(rec.attribute_line_ids)
 
-    # woocommerce_upsell_write_date = fields.Datetime(
-    #     compute="_compute_woocommerce_write_date",
-    #     store=True,
-    # )
-
     @api.depends(
         "is_published",
         "name",

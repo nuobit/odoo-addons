@@ -38,10 +38,16 @@ class WooCommerceProductProductExporter(Component):
         # In the case of a woocommerce simple product (Product template with one variant)
         # we need to export the dependencies of the product template because
         # it's the product template that will be exported instead of product product
-        self._export_dependency(
-            relation.product_tmpl_id,
-            "woocommerce.product.template",
-        )
+        if relation.env.context.get("export_wo_acc_p"):
+            self._export_dependency(
+                relation.with_context(export_wo_acc_p=True).product_tmpl_id,
+                "woocommerce.product.template",
+            )
+        else:
+            self._export_dependency(
+                relation.product_tmpl_id,
+                "woocommerce.product.template",
+            )
         for attribute_line in relation.attribute_line_ids:
             self._export_dependency(
                 attribute_line.attribute_id,
