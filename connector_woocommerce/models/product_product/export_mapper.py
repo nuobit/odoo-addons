@@ -25,10 +25,12 @@ class WooCommerceProductProductExportMapper(Component):
     @changed_by("default_code")
     @mapping
     def sku(self, record):
-        # This requirement is not needed on WooCommerce but it's necess
+        # This requirement is not needed on WooCommerce
+        # but it's necessary in e-commerce
         if not record.default_code:
             raise ValidationError(
-                _("You must define a default code for the product %s") % record.name
+                _("You must define an internal reference for the product {%s}'%s'")
+                % (record.id, record.display_name)
             )
         return {"sku": record.default_code}
 
