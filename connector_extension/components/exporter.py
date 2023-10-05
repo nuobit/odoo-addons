@@ -44,7 +44,7 @@ class GenericDirectExporter(AbstractComponent):
 
         if not binding:
             internal_fields = None  # should be created with all the fields
-        if self._has_to_skip(binding, relation):
+        if self._has_to_skip(relation):
             return _("Nothing to export")
 
         # export the missing linked resources
@@ -114,7 +114,7 @@ class GenericDirectExporter(AbstractComponent):
                 % (self.model._name, record.id)
             ) from e
 
-    def _has_to_skip(self, binding, relation):
+    def _has_to_skip(self, relation):
         """Return True if the export can be skipped"""
         return False
 
