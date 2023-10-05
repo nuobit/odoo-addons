@@ -134,7 +134,13 @@ class WooCommerceProductTemplateExportMapper(Component):
     def tax_class(self, record):
         if record.taxes_id:
             if len(record.taxes_id) > 1:
-                raise ValidationError(_("Only one tax is allowed per product"))
+                raise ValidationError(
+                    _(
+                        "Only one tax is allowed per product. "
+                        "Please review taxes in product {%s} %s"
+                    )
+                    % (record.id, record.display_name)
+                )
             tax_class = self.backend_record.tax_class_ids.filtered(
                 lambda x: record["taxes_id"] == x.account_tax
             )
