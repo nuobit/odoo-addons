@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_partner_form" model="ir.ui.view">
@@ -23,10 +24,7 @@
                                 name="partner_class_mandatory_document_type_ids"
                                 invisible="1"
                             />
-                            <field
-                                name="document_type_id"
-                                domain="[('id', 'in', partner_class_mandatory_document_type_ids)]"
-                            />
+                            <field name="document_type_id" />
                             <field name="description" />
                             <field name="partner_classification_id" />
                             <field name="datas" filename="datas_fname" />
@@ -36,6 +34,26 @@
                         </tree>
                     </field>
                 </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">button_expired_documents_tree</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_partner_kanban" model="ir.ui.view">
+        <field name="name">res.partner.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="js_class">button_expired_documents_kanban</attribute>
             </xpath>
         </field>
     </record>

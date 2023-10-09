@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions SL (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<templates>
+   <t
+        t-name="SearchExpiredDocuments.KanbanView.Buttons"
+        t-inherit="web.KanbanView.Buttons"
+    >
+       <xpath
+            expr="//button[@class='btn btn-primary o-kanban-button-new']"
+            position="after"
+        >
+           <button
+                type="button"
+                class="btn btn-primary"
+                style="margin-left: 10px;"
+                t-on-click="OnSearchExpiredDocumentsClick"
+            >
+               Search Expired Documents
+           </button>
+       </xpath>
+   </t>
+</templates>
