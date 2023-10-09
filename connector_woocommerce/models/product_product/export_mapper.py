@@ -45,11 +45,15 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def stock(self, record):
-        if record.type in ("consu", "service"):
+        if (
+            record.type in ("consu", "service")
+            or record.variant_inventory_availability == "never"
+        ):
             stock = {
                 "manage_stock": False,
             }
-        else:
+        # modificar el type
+        elif record.variant_inventory_availability == "always":
             qty = sum(
                 self.env["stock.quant"]
                 .search(
@@ -70,6 +74,18 @@ class WooCommerceProductProductExportMapper(Component):
                 "stock_quantity": int(qty),
                 "stock_status": "instock" if record.qty_available > 0 else "outofstock",
             }
+        else:
+            raise ValidationError(
+                _(
+                    "The inventory availability '%s' is not supported by WooCommerce. "
+                    "Review product variant {%s}%s."
+                )
+                % (
+                    record.variant_inventory_availability,
+                    record.id,
+                    record.display_name,
+                )
+            )
         return stock
 
     @mapping
