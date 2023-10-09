@@ -75,7 +75,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         return result
 
     def get_total_items(self, resource, domain=None):
-        filters_values = self._get_filters_values()
+        filters_values = self._get_search_fields()
         real_domain, common_domain = self._extract_domain_clauses(
             domain, filters_values
         )
@@ -84,7 +84,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         result = self._exec_wcapi_call("get", resource=resource, params=params)
         return result["total_items"]
 
-    def _get_filters_values(self):
+    def _get_search_fields(self):
         return ["modified_after", "offset", "per_page", "page"]
 
     def _exec_get(self, resource, *args, **kwargs):
@@ -97,10 +97,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         domain = []
         if "domain" in kwargs:
             domain = kwargs.pop("domain")
-        filters_values = self._get_filters_values()
-        real_domain, common_domain = self._extract_domain_clauses(
-            domain, filters_values
-        )
+        search_fields = self._get_search_fields()
+        real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
         params = self._domain_to_normalized_dict(real_domain)
         if "limit" in kwargs:
             limit = kwargs.pop("limit")
