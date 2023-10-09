@@ -160,8 +160,8 @@ class WooCommerceSaleOrderAdapter(Component):
                     }
                 )
 
-    def _get_filters_values(self):
-        res = super()._get_filters_values()
+    def _get_search_fields(self):
+        res = super()._get_search_fields()
         res += [
             "status",
             "after",

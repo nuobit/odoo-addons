@@ -54,8 +54,8 @@ class WooCommerceProductTemplateAdapter(Component):
                 res = self._exec("get", "products", domain=domain)
         return res
 
-    def _get_filters_values(self):
-        res = super()._get_filters_values()
+    def _get_search_fields(self):
+        res = super()._get_search_fields()
         res.extend(["sku"])
         return res
 
