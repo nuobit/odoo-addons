@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions SL (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="partner_document_expired_wizard_view_form" model="ir.ui.view">
+        <field name="name">partner.document.expired.wizard.view.form</field>
+        <field name="model">partner.document.expired.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Search Expired Documents">
+                <group>
+                    <field name="document_type_ids" widget="many2many_tags" />
+                    <field name="date_from" />
+                    <field name="date_to" />
+                </group>
+                <footer>
+                    <button
+                        name="search_expired_documents"
+                        string="Search"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="partner_document_expired_wizard_action" model="ir.actions.act_window">
+        <field name="name">Search Expired Documents</field>
+        <field name="res_model">partner.document.expired.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

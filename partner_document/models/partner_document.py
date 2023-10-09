@@ -43,9 +43,17 @@ class PartnerDocument(models.Model):
     document_type_id = fields.Many2one(
         comodel_name="partner.document.type",
         required=True,
-        domain="[('id', 'in', partner_classification_id.document_type_ids.ids)]",
         ondelete="restrict",
     )
+
+    @api.onchange("partner_classification_id")
+    def _onchange_domain_document_type_id(self):
+        domain = []
+        if self.partner_id.classification_id:
+            domain = [
+                ("id", "in", self.partner_id.classification_id.document_type_ids.ids)
+            ]
+        return {"domain": {"document_type_id": domain}}
 
     datas = fields.Binary(
         string="File",

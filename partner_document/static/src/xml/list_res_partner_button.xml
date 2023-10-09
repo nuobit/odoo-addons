@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<templates>
+   <t t-name="SearchExpiredDocuments.ListView.Buttons" t-inherit="web.ListView.Buttons">
+       <xpath expr="//*[@class='btn btn-primary o_list_button_add']" position="after">
+           <button
+                type="button"
+                class="btn btn-primary"
+                style="margin-left: 10px;"
+                t-on-click="OnSearchExpiredDocumentsClick"
+            >
+               Search Expired Documents
+           </button>
+       </xpath>
+   </t>
+</templates>
