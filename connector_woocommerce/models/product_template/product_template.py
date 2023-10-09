@@ -29,6 +29,7 @@ class ProductTemplate(models.Model):
             rec.has_attributes = bool(rec.attribute_line_ids)
 
     @api.depends(
+        "woocommerce_bind_ids",
         "is_published",
         "name",
         "lst_price",
