@@ -20,7 +20,7 @@ class WooCommerceProductPublicCategoryAdapter(Component):
     def search_read(self, domain=None):
         return self._exec("get", "products/categories", domain=domain)
 
-    def _get_filters_values(self):
-        res = super()._get_filters_values()
+    def _get_search_fields(self):
+        res = super()._get_search_fields()
         res.append("slug")
         return res

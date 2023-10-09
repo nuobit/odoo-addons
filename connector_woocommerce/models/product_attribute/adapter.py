@@ -24,7 +24,7 @@ class WooCommerceProductAttributeAdapter(Component):
         url_l = ["products/attributes", str(external_id[0])]
         return self._exec("put", "/".join(url_l), data=data)
 
-    def _get_filters_values(self):
-        res = super()._get_filters_values()
+    def _get_search_fields(self):
+        res = super()._get_search_fields()
         res.append("slug")
         return res
