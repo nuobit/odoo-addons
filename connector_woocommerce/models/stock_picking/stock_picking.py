@@ -34,3 +34,5 @@ class Picking(models.Model):
                     rec._get_woocommerce_stock_picking_state()
                 )
                 rec.woocommerce_stock_picking_state = woocommerce_stock_picking_state
+            else:
+                rec.woocommerce_stock_picking_state = False
