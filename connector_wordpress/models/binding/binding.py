@@ -7,7 +7,7 @@ from odoo import fields, models
 
 class WordPressBinding(models.AbstractModel):
     _name = "wordpress.binding"
-    _inherit = "external.binding"
+    _inherit = "connector.extension.external.binding"
     _description = "WordPress Binding"
 
     # binding fields
