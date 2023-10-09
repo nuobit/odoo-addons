@@ -184,36 +184,36 @@ class WooCommerceBackend(models.Model):
     # scheduler
     @api.model
     def _scheduler_export_products(self):
-        for backend in self.env[self._name].search([]):
+        for backend in self.env[self._name].search([("state", "=", "validated")]):
             backend.export_products_since()
 
     # scheduler
     @api.model
     def _scheduler_export_product_tmpl(self):
-        for backend in self.env[self._name].search([]):
+        for backend in self.env[self._name].search([("state", "=", "validated")]):
             backend.export_product_tmpl_since()
 
     @api.model
     def _scheduler_export_sale_orders(self):
-        for backend in self.env[self._name].search([]):
+        for backend in self.env[self._name].search([("state", "=", "validated")]):
             backend.export_sale_orders_since()
 
     @api.model
     def _scheduler_import_sale_orders(self):
-        for backend in self.env[self._name].search([]):
+        for backend in self.env[self._name].search([("state", "=", "validated")]):
             backend.import_sale_orders_since()
 
     @api.model
     def _scheduler_export_product_public_category(self):
-        for backend in self.env[self._name].search([]):
+        for backend in self.env[self._name].search([("state", "=", "validated")]):
             backend.export_product_public_category_since()
 
     @api.model
     def _scheduler_export_product_attribute(self):
-        for backend in self.env[self._name].search([]):
+        for backend in self.env[self._name].search([("state", "=", "validated")]):
             backend.export_product_attribute_since()
 
     @api.model
     def _scheduler_export_product_attribute_value(self):
-        for backend in self.env[self._name].search([]):
+        for backend in self.env[self._name].search([("state", "=", "validated")]):
             backend.export_product_attribute_value_since()
