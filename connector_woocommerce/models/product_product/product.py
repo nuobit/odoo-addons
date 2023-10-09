@@ -19,6 +19,7 @@ class ProductProduct(models.Model):
     )
 
     @api.depends(
+        "woocommerce_bind_ids",
         "is_published",
         "lst_price",
         "type",
