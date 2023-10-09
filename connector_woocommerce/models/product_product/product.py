@@ -31,6 +31,7 @@ class ProductProduct(models.Model):
         "variant_public_description",
         "alternative_product_ids",
         "accessory_product_ids",
+        "variant_inventory_availability",
     )
     def _compute_woocommerce_write_date(self):
         for rec in self:
@@ -40,6 +41,30 @@ class ProductProduct(models.Model):
     variant_public_description = fields.Text(
         translate=True,
     )
+    variant_inventory_availability = fields.Selection(
+        selection=[
+            ("never", "Sell regardless of inventory"),
+            (
+                "always",
+                "Show inventory on website " "and prevent sales if not enough stock",
+            ),
+        ],
+        string="Inventory Availability",
+        help="Adds an inventory availability status on the web product page.",
+        default="never",
+        compute="_compute_variant_inventory_availability",
+        store=True,
+        readonly=False,
+    )
+
+    def _compute_variant_inventory_availability(self):
+        for rec in self:
+            rec.variant_inventory_availability = (
+                "always"
+                if rec.product_tmpl_id.inventory_availability == "always"
+                else "never"
+            )
+
     variant_is_published = fields.Boolean(
         compute="_compute_variant_is_published",
         store=True,

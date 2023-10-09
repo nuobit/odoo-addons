@@ -72,6 +72,31 @@ class ProductTemplate(models.Model):
         for rec in self:
             rec.product_variant_ids.variant_is_published = rec.is_published
 
+    inventory_availability = fields.Selection(
+        compute="_compute_inventory_availability",
+        inverse="_inverse_inventory_availability",
+        store=True,
+        readonly=False,
+    )
+
+    @api.depends("product_variant_ids.variant_inventory_availability")
+    def _compute_inventory_availability(self):
+        for rec in self:
+            never_variants_availability = rec.product_variant_ids.filtered(
+                lambda x: x.variant_inventory_availability == "never"
+            )
+            if never_variants_availability:
+                rec.inventory_availability = "never"
+            else:
+                rec.inventory_availability = "always"
+
+    def _inverse_inventory_availability(self):
+        for rec in self:
+            if rec.inventory_availability in ("always", "never"):
+                rec.product_variant_ids.variant_inventory_availability = (
+                    rec.inventory_availability
+                )
+
     product_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",
         compute="_compute_product_attachment_ids",

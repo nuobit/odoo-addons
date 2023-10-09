@@ -30,9 +30,6 @@
             >
                 <field name="variant_is_published" />
             </xpath>
-            <!--            <field name="is_published" position="before">-->
-            <!--                <field name="variant_is_published" string="Is published" />-->
-            <!--            </field>-->
             <field name="is_published" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
@@ -42,6 +39,13 @@
             <field name="public_description" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
+            <field name="inventory_availability" position="after">
+                <field name="variant_inventory_availability" />
+            </field>
+            <field name="inventory_availability" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
         </field>
     </record>
         <record id="product_product_tree_view" model="ir.ui.view">

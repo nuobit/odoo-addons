@@ -39,37 +39,50 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def stock(self, record):
-        if record.type in ("consu", "service"):
-            manage_stock = False
-        else:
-            manage_stock = True
-        if len(record.product_variant_ids) <= 1:
-            qty = sum(
-                self.env["stock.quant"]
-                .search(
-                    [
-                        ("product_id", "=", record.product_variant_id.id),
-                        (
-                            "location_id",
-                            "child_of",
-                            self.backend_record.stock_location_ids.ids,
-                        ),
-                    ]
-                )
-                .mapped("available_quantity")
-            )
-            return {
-                "manage_stock": manage_stock,
-                "stock_quantity": int(qty),
-                "stock_status": "instock"
-                if record.product_variant_id.qty_available > 0
-                or record.type in ("consu", "service")
-                else "outofstock",
-            }
-        else:
-            return {
+        if any(
+            [
+                record.inventory_availability == "never",
+                record.type in ("consu", "service"),
+                record.has_attributes,
+            ]
+        ):
+            stock = {
                 "manage_stock": False,
             }
+        else:
+            if record.inventory_availability == "always":
+                manage_stock = True
+                qty = sum(
+                    self.env["stock.quant"]
+                    .search(
+                        [
+                            ("product_id", "=", record.product_variant_id.id),
+                            (
+                                "location_id",
+                                "child_of",
+                                self.backend_record.stock_location_ids.ids,
+                            ),
+                        ]
+                    )
+                    .mapped("available_quantity")
+                )
+                stock = {
+                    "manage_stock": manage_stock,
+                    "stock_quantity": int(qty),
+                    "stock_status": "instock"
+                    if record.product_variant_id.qty_available > 0
+                    or record.type in ("consu", "service")
+                    else "outofstock",
+                }
+            else:
+                raise ValidationError(
+                    _(
+                        "The inventory availability '%s' is not supported by WooCommerce. "
+                        "Review product template {%s}%s."
+                    )
+                    % (record.inventory_availability, record.id, record.display_name)
+                )
+        return stock
 
     @mapping
     def price(self, record):
