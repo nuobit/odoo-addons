@@ -48,6 +48,7 @@ class WooCommerceProductTemplateExportMapper(Component):
         ):
             stock = {
                 "manage_stock": False,
+                "stock_status": "instock",
             }
         else:
             if record.inventory_availability == "always":
