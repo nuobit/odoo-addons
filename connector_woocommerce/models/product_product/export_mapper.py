@@ -49,9 +49,7 @@ class WooCommerceProductProductExportMapper(Component):
             record.type in ("consu", "service")
             or record.variant_inventory_availability == "never"
         ):
-            stock = {
-                "manage_stock": False,
-            }
+            stock = {"manage_stock": False, "stock_status": "instock"}
         # modificar el type
         elif record.variant_inventory_availability == "always":
             qty = sum(
