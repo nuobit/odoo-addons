@@ -2,8 +2,8 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, fields, models
-from odoo.exceptions import UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class PartnerDocumentType(models.Model):
@@ -21,6 +21,16 @@ class PartnerDocumentType(models.Model):
         required=True,
         default=1,
     )
+
+    @api.constrains("name")
+    def _check_name(self):
+        for record in self:
+            if self.env[self._name].search_count(
+                [("id", "!=", record.id), ("name", "=ilike", record.name)]
+            ):
+                raise ValidationError(
+                    _("The name must be unique!"),
+                )
 
     def unlink(self):
         records = self.env["partner.classification"].search(
