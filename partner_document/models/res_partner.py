@@ -26,44 +26,32 @@ class ResPartner(models.Model):
 
     @api.depends("classification_id", "classification_id.document_type_ids")
     def _compute_document_ids(self):
-        doc_types = []
         for rec in self:
-            for doc_type in rec.document_ids:
-                if (
-                    doc_type.document_type_id
-                    not in rec.classification_id.document_type_ids
-                    and not doc_type.datas
-                ):
-                    doc_types += [(2, doc_type.id, 0)]
-            for doc_type in rec.classification_id.document_type_ids:
-                if not rec.document_ids.filtered(
-                    lambda x: x.document_type_id == doc_type
-                ) or rec.document_ids.filtered(
-                    lambda x: x.document_type_id == doc_type
-                    and x.expiration_date
-                    and x.expiration_date < fields.Date.today()
-                ):
-                    doc_types += [(0, 0, {"document_type_id": doc_type.id})]
-            rec.document_ids = doc_types
+            selected_docs = rec.document_ids.filtered(
+                lambda x: x.partner_classification_id == rec.classification_id
+            ).document_type_id
+            rest_docs = rec.document_ids.filtered(
+                lambda x: x.partner_classification_id != rec.classification_id
+            )
+            actions = []
 
-    remain_files = fields.Boolean(
-        compute="_compute_remain_files",
-    )
+            # # DELETE DOCUMENTS
+            for cd in rest_docs.mapped("partner_classification_id"):
+                docs = rest_docs.filtered(lambda x: x.partner_classification_id == cd)
+                if not any(docs.filtered(lambda x: x.datas)):
+                    actions += [(2, dc.id, 0) for dc in docs]
 
-    @api.depends("document_ids", "classification_id")
-    def _compute_remain_files(self):
-        for rec in self:
-            rec.remain_files = False
-            for doc_type in rec.classification_id.document_type_ids:
-                valid_document = rec.document_ids.filtered(
-                    lambda x: x.document_type_id == doc_type
-                    and x.expiration_date
-                    and x.expiration_date > fields.Date.today()
-                    and x.datas
-                )
-                if not valid_document:
-                    rec.remain_files = True
-                    break
+            # CREATE NEW DOCUMENTS
+            new_docs = rec.classification_id.document_type_ids - selected_docs
+            for doc_type in new_docs:
+                vals = {
+                    "partner_id": rec._origin.id,
+                    "partner_classification_id": rec.classification_id.id,
+                    "document_type_id": doc_type.id,
+                }
+                actions.append((0, 0, vals))
+
+            rec.document_ids = actions
 
     @api.model
     def default_get(self, fields):

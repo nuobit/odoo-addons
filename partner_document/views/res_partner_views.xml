@@ -18,8 +18,7 @@
                         <field name="classification_id" />
                     </group>
                     <field name="document_ids">
-                        <tree editable="bottom">
-<!--                            <field name="partner_id"/>-->
+                        <tree editable="bottom" decoration-danger="expired">
                             <field
                                 name="partner_class_mandatory_document_type_ids"
                                 invisible="1"
@@ -33,23 +32,11 @@
                             <field name="datas" filename="datas_fname" />
                             <field name="datas_fname" invisible="1" />
                             <field name="expiration_date" />
+                            <field name="expired" invisible="1" />
                         </tree>
                     </field>
                 </page>
             </xpath>
         </field>
     </record>
-     <record id="res_partner_view_tree_inherit_document" model="ir.ui.view">
-            <field name="name">res.partner.view.tree.inherit.document</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_tree" />
-            <field name="arch" type="xml">
-                <xpath expr="//tree" position="inside">
-                    <field name="remain_files" invisible="1" />
-                </xpath>
-                <xpath expr="//tree" position="attributes">
-                    <attribute name="decoration-danger">remain_files == True</attribute>
-                </xpath>
-            </field>
-        </record>
 </odoo>
