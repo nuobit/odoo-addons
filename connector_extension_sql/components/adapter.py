@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 class SQLAdapterCRUD(AbstractComponent):
     _name = "base.backend.sql.adapter.crud"
-    _inherit = "base.backend.adapter.crud"
+    _inherit = "connector.extension.adapter.crud"
 
     _date_format = "%Y-%m-%d"
     _datetime_format = "%Y-%m-%dT%H:%M:%SZ"
