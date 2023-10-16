@@ -18,6 +18,15 @@ class WordPressRecordDirectExporter(AbstractComponent):
         "base.wordpress.connector",
     ]
 
+    def _get_lock_name(self, relation):
+        lock_name = "export_record({}, {}, {}, {})".format(
+            self.backend_record._name,
+            self.backend_record.id,
+            relation._name,
+            relation.checksum,
+        )
+        return lock_name
+
 
 class WordPressBatchExporter(AbstractComponent):
     """The role of a BatchExporter is to search for a list of
