@@ -257,7 +257,7 @@ class GenericBatchExporter(AbstractComponent):
     _name = "generic.batch.exporter"
     _inherit = "base.exporter"
 
-    _usage = "batch.direct.importer"
+    _usage = "batch.exporter"
 
     def run(self, domain=None):
         if not domain:
