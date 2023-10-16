@@ -46,6 +46,11 @@
             </xpath>
             <field name="website_sequence" position="before">
                 <field name="is_published" />
+                <field
+                    name="woocommerce_enabled"
+                    attrs="{'readonly': [('woocommerce_enabled', '=', True), ('woocommerce_bind_ids', '!=', [])]}"
+                />
+                <field name="woocommerce_bind_ids" invisible="1" />
             </field>
             <field name="website_ribbon_id" position="after">
                 <field name="public_description" />

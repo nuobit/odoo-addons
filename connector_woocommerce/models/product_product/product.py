@@ -19,13 +19,11 @@ class ProductProduct(models.Model):
     )
 
     @api.depends(
-        "woocommerce_bind_ids",
         "is_published",
         "lst_price",
         "type",
         "default_code",
         "image_1920",
-        "product_tmpl_id",
         "default_code",
         "qty_available",
         "product_template_attribute_value_ids",
@@ -33,10 +31,17 @@ class ProductProduct(models.Model):
         "alternative_product_ids",
         "accessory_product_ids",
         "variant_inventory_availability",
+        "product_tmpl_id",
+        "product_tmpl_id.has_attributes",
+        "product_tmpl_id.woocommerce_enabled",
     )
     def _compute_woocommerce_write_date(self):
         for rec in self:
-            if rec.is_published or rec.woocommerce_write_date:
+            if (
+                rec.product_tmpl_id.woocommerce_enabled
+                or rec.variant_is_published
+                or rec.woocommerce_write_date
+            ):
                 rec.woocommerce_write_date = fields.Datetime.now()
 
     variant_public_description = fields.Text(
