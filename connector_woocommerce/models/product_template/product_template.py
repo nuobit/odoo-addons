@@ -29,23 +29,28 @@ class ProductTemplate(models.Model):
             rec.has_attributes = bool(rec.attribute_line_ids)
 
     @api.depends(
-        "woocommerce_bind_ids",
         "is_published",
         "name",
         "lst_price",
         "active",
-        "product_variant_id.qty_available",
+        "qty_available",
         "image_1920",
         "default_code",
-        "qty_available",
         "description",
         "public_categ_ids",
         "attribute_line_ids",
         "public_description",
+        "inventory_availability",
+        "has_attributes",
+        "woocommerce_enabled",
     )
     def _compute_woocommerce_write_date(self):
         for rec in self:
-            if rec.is_published or rec.woocommerce_write_date:
+            if (
+                rec.woocommerce_enabled
+                or rec.is_published
+                or rec.woocommerce_write_date
+            ):
                 rec.woocommerce_write_date = fields.Datetime.now()
 
     public_description = fields.Text(
@@ -60,6 +65,15 @@ class ProductTemplate(models.Model):
     button_is_published = fields.Boolean(
         related="is_published",
     )
+    woocommerce_enabled = fields.Boolean(
+        compute="_compute_woocommerce_enabled",
+        store=True,
+        readonly=False,
+    )
+
+    def _compute_woocommerce_enabled(self):
+        for rec in self:
+            rec.woocommerce_enabled = rec.is_published
 
     @api.depends("product_variant_ids.variant_is_published")
     def _compute_template_is_published(self):
