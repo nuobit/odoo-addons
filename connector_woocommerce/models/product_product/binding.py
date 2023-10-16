@@ -2,7 +2,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
-from odoo.osv import expression
 
 
 class WooCommerceProductProduct(models.Model):
@@ -33,30 +32,19 @@ class WooCommerceProductProduct(models.Model):
         ),
     ]
 
-    # TODO: REFACTOR THIS GET_BASE_DOMAIN TO DO IT MORE SIMPLE
     @api.model
     def _get_base_domain(self):
         return [
-            ("variant_is_published", "=", True),
-            ("woocommerce_write_date", "=", False),
+            ("product_tmpl_id.woocommerce_enabled", "=", True),
             ("product_tmpl_id.has_attributes", "=", True),
         ]
 
     def export_products_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
         if since_date:
-            domain = expression.OR(
-                [
-                    domain,
-                    [
-                        (
-                            "woocommerce_write_date",
-                            ">",
-                            fields.Datetime.to_string(since_date),
-                        )
-                    ],
-                ]
-            )
+            domain = [
+                ("woocommerce_write_date", ">", fields.Datetime.to_string(since_date))
+            ]
         self.export_batch(backend_record, domain=domain)
         return True
 
