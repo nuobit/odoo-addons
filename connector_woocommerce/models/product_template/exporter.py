@@ -35,19 +35,6 @@ class WooCommerceProductTemplateExporter(Component):
     _apply_on = "woocommerce.product.template"
 
     def _export_dependencies(self, relation):
-        # for category in relation.public_categ_ids:
-        #     self._lock_relation(category)
-        # for line in relation.attribute_line_ids:
-        #     self._lock_relation(line.attribute_id)
-        #     for value in line.value_ids:
-        #         self._lock_relation(value)
-        # if not relation.env.context.get('export_wo_alt_p'):
-        #     for alternative_product in relation.alternative_product_ids:
-        #         self._lock_relation(alternative_product)
-        # if not relation.env.context.get('export_wo_acc_p'):
-        #     for accessory_product in relation.accessory_product_ids:
-        #         self._lock_relation(accessory_product)
-
         for category in relation.public_categ_ids:
             self._export_dependency(category, "woocommerce.product.public.category")
         for line in relation.attribute_line_ids:
@@ -62,7 +49,6 @@ class WooCommerceProductTemplateExporter(Component):
                 )
         if not relation.env.context.get("export_wo_alt_p"):
             for alternative_product in relation.alternative_product_ids:
-                # self._lock_relation(alternative_product)
                 self._export_dependency(
                     alternative_product.with_context(export_wo_alt_p=True),
                     "woocommerce.product.template",
@@ -70,7 +56,6 @@ class WooCommerceProductTemplateExporter(Component):
 
         if not relation.env.context.get("export_wo_acc_p"):
             for accessory_product in relation.accessory_product_ids:
-                # self._lock_relation(accessory_product)
                 self._export_dependency(
                     accessory_product.with_context(export_wo_acc_p=True),
                     "woocommerce.product.product",
