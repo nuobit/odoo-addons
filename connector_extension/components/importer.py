@@ -240,7 +240,7 @@ class GenericBatchImporter(AbstractComponent):
     _name = "generic.batch.importer"
     _inherit = "base.importer"
 
-    _usage = "batch.direct.importer"
+    _usage = "batch.importer"
 
     def run(self, domain=None):
         """Run the synchronization"""
