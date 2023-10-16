@@ -27,6 +27,6 @@ class WooCommerceBatchExporter(AbstractComponent):
 
     _name = "woocommerce.batch.exporter"
     _inherit = [
-        "generic.record.direct.exporter",
+        "generic.batch.exporter",
         "base.woocommerce.connector",
     ]
