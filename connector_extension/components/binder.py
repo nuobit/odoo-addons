@@ -210,44 +210,48 @@ class BinderComposite(AbstractComponent):
             binding.ensure_one()
         return binding
 
-    def wrap_binding(self, relation, binding_field=None, binding_extra_vals=None):
-        if not binding_extra_vals:
-            binding_extra_vals = {}
-        if not relation:
-            return
-
-        if binding_field is None:
-            if not self._default_binding_field:
-                raise Exception(
-                    "_binding_field defined on synchronizer class is mandatory"
-                )
-            binding_field = self._default_binding_field
-
-        wrap = relation._name != self.model._name
-        if wrap and hasattr(relation, binding_field):
-            binding = self._find_binding(relation, binding_extra_vals)
-            if not binding:
-                _bind_values = {
-                    self._odoo_field: relation.id,
-                    self._backend_field: self.backend_record.id,
-                }
-                _bind_values.update(binding_extra_vals)
-                with self._retry_unique_violation():
-                    binding = (
-                        self.model.with_context(connector_no_export=True)
-                        .sudo()
-                        .create(_bind_values)
-                    )
-                    if not tools.config["test_enable"]:
-                        self.env.cr.commit()  # pylint: disable=invalid-commit
-        else:
-            binding = relation
-
-        if not self._is_binding(binding):
-            raise Exception(
-                "Expected binding '%s' and found regular model '%s'"
-                % (self.model._name, relation._name)
-            )
+    # This function can have problems with concurrency.
+    # Refactor it before enabling (wrap_binding)
+    # def wrap_binding(self, relation, binding_field=None, binding_extra_vals=None):
+    #     if not binding_extra_vals:
+    #         binding_extra_vals = {}
+    #     if not relation:
+    #         return
+    #
+    #     if binding_field is None:
+    #         if not self._default_binding_field:
+    #             raise Exception(
+    #                 "_binding_field defined on synchronizer class is mandatory"
+    #             )
+    #         binding_field = self._default_binding_field
+    #
+    #     wrap = relation._name != self.model._name
+    #     if wrap and hasattr(relation, binding_field):
+    #         binding = self._find_binding(relation, binding_extra_vals)
+    #         if not binding:
+    #             _bind_values = {
+    #                 self._odoo_field: relation.id,
+    #                 self._backend_field: self.backend_record.id,
+    #             }
+    #             _bind_values.update(binding_extra_vals)
+    #             with self._retry_unique_violation():
+    #                 binding = (
+    #                     self.model.with_context(connector_no_export=True)
+    #                     .sudo()
+    #                     .create(_bind_values)
+    #                 )
+    #                 if not tools.config["test_enable"]:
+    #                     self.env.cr.commit()  # pylint: disable=invalid-commit
+    #     else:
+    #         binding = relation
+    #
+    #     if not self._is_binding(binding):
+    #         raise Exception(
+    #             "Expected binding '%s' and found regular model '%s'"
+    #             % (self.model._name, relation._name)
+    #         )
+    #
+    #     return binding
 
     @api.model
     def to_internal(self, external_id, unwrap=False):
