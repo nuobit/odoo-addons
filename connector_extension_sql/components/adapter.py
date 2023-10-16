@@ -304,7 +304,7 @@ class SQLAdapterCRUD(AbstractComponent):
                 raise NotImplementedError("Type %s" % type(v))
 
         # build retvalues
-        id_list = list(self.binder_for().id2dict(id, in_field=False).keys())
+        id_list = list(self.binder_for().id2dict(values_d, in_field=False))
         retvalues = id_list
         params_dict["fields"] = ", ".join(fields)
         params_dict["phvalues"] = ", ".join(phvalues)
