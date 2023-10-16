@@ -25,55 +25,65 @@ class GenericDirectExporter(AbstractComponent):
     def _mapper_options(self, binding):
         return {"binding": binding}
 
-    def run(self, relation, internal_fields=None):
+    def _get_lock_name(self, relation):
+        lock_name = "export_record({}, {}, {}, {})".format(
+            self.backend_record._name,
+            self.backend_record.id,
+            relation._name,
+            relation.id,
+        )
+        return lock_name
+
+    def run(self, relation, always=True, internal_fields=None):
         """Run the synchronization
 
         :param binding: binding record to export
         """
         now_fmt = fields.Datetime.now()
         result = None
-        # get binding from real record
-        binding = self.binder_for().wrap_record(relation)
-
-        # if not binding, try to link to existing external record with
-        # the same alternate key and create/update binding
-        if not binding:
-            binding = (
-                self.binder_for().to_binding_from_internal_key(relation) or binding
-            )
-
-        if not binding:
-            internal_fields = None  # should be created with all the fields
         if self._has_to_skip(relation):
             return _("Nothing to export")
+        lock_name = self._get_lock_name(relation)
+        self.session_advisory_lock_or_retry(lock_name)
+        try:
+            self._export_dependencies(relation)
+            # get binding from real record
+            binding = self.binder_for().wrap_record(relation)
+            # if not binding, try to link to existing external record with
+            # the same alternate key and create/update binding
+            if not binding:
+                binding = (
+                    self.binder_for().to_binding_from_internal_key(relation) or binding
+                )
+            if not binding:
+                internal_fields = None  # should be created with all the fields
+            map_record = self.mapper.map_record(relation)
 
-        # export the missing linked resources
-        self._export_dependencies(relation)
-
-        # prevent other jobs to export the same record
-        # will be released on commit (or rollback)
-        self._lock(relation)
-
-        map_record = self.mapper.map_record(relation)
-
-        # passing info to the mapper
-        opts = self._mapper_options(binding)
-        if binding:
-            values = self._update_data(map_record, fields=internal_fields, **opts)
-            if values:
-                external_id = self.binder_for().dict2id(binding, in_field=True)
-                result = self._update(external_id, values)
-        else:
-            values = self._create_data(map_record, fields=internal_fields, **opts)
-            if values:
-                external_data = self._create(values)
-                binding = self.binder_for().bind_export(external_data, relation)
-        if not values:
-            result = _("Nothing to export")
-        if not result:
-            result = _("Record exported with ID %s on Backend.") % "external_id"
-        self._after_export()
-        binding[self.binder_for()._sync_date_field] = now_fmt
+            # passing info to the mapper
+            opts = self._mapper_options(binding)
+            if always or not binding:
+                if binding:
+                    values = self._update_data(
+                        map_record, fields=internal_fields, **opts
+                    )
+                    if values:
+                        external_id = self.binder_for().dict2id(binding, in_field=True)
+                        result = self._update(external_id, values)
+                else:
+                    values = self._create_data(
+                        map_record, fields=internal_fields, **opts
+                    )
+                    if values:
+                        external_data = self._create(values)
+                        binding = self.binder_for().bind_export(external_data, relation)
+                if not values:
+                    result = _("Nothing to export")
+                if not result:
+                    result = _("Record exported with ID %s on Backend.") % "external_id"
+                self._after_export()
+                binding[self.binder_for()._sync_date_field] = now_fmt
+        finally:
+            self.session_pg_advisory_unlock(lock_name)
         return result
 
     def _after_export(self):
@@ -192,19 +202,8 @@ class GenericDirectExporter(AbstractComponent):
                               pass extra values for this binding
         :type binding_extra_vals: dict
         """
-        if not relation:
-            return
-
-        binding = None
-        if not always:
-            rel_binder = self.binder_for(binding_model)
-            binding = rel_binder.wrap_record(relation)
-            if not binding:
-                binding = rel_binder.to_binding_from_internal_key(relation)
-
-        if always or not binding:
-            exporter = self.component(usage=component_usage, model_name=binding_model)
-            exporter.run(relation)
+        exporter = self.component(usage=component_usage, model_name=binding_model)
+        exporter.run(relation, always=always)
 
     def _export_dependencies(self, relation):
         """Export the dependencies for the record"""

@@ -344,24 +344,24 @@ class BinderComposite(AbstractComponent):
             relation_id = relation
 
         external_id = self.dict2id(external_data, in_field=False)
-        with self._retry_unique_violation():
-            binding = self.model.with_context(connector_no_export=True).create(
-                {
-                    self._backend_field: self.backend_record.id,
-                    self._odoo_field: relation_id,
-                    self._sync_date_field: fields.Datetime.now(),
-                    **self.id2dict(external_id, in_field=True),
-                    **self._additional_external_binding_fields(external_data),
-                }
-            )
-            # Eager commit to avoid having 2 jobs
-            # exporting at the same time. The constraint
-            # will pop if an other job already created
-            # the same binding. It will be caught and
-            # raise a RetryableJobError.
-            if not odoo.tools.config["test_enable"]:
-                self.env.cr.commit()  # pylint: disable=E8102
-            return binding
+        binding = self.model.with_context(connector_no_export=True).create(
+            {
+                self._backend_field: self.backend_record.id,
+                self._odoo_field: relation_id,
+                self._sync_date_field: fields.Datetime.now(),
+                **self.id2dict(external_id, in_field=True),
+                **self._additional_external_binding_fields(external_data),
+            }
+        )
+
+        # Eager commit to avoid having 2 jobs
+        # exporting at the same time. The constraint
+        # will pop if an other job already created
+        # the same binding. It will be caught and
+        # raise a RetryableJobError.
+        if not odoo.tools.config["test_enable"]:
+            self.env.cr.commit()  # pylint: disable=E8102
+        return binding
 
     @api.model
     def _additional_external_binding_fields(self, external_data):
@@ -413,6 +413,11 @@ class BinderComposite(AbstractComponent):
         :return: binding corresponding to the real record or
                  empty recordset if the record has no binding
         """
+        # This commit is needed because the binding is created in
+        # other transaction but isolation level of this
+        # transaction is set before creation.
+        # So we need to commit to be able to see the new binding.
+        self.env.cr.commit()  # pylint: disable=E8102
         if isinstance(relation, models.BaseModel):
             relation.ensure_one()
         else:
