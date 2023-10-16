@@ -19,7 +19,7 @@ from contextlib import contextmanager
 import psycopg2
 
 import odoo
-from odoo import _, fields, models, tools
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
@@ -42,6 +42,7 @@ class BinderComposite(AbstractComponent):
 
     _default_binding_field = None
 
+    @api.model
     def idhash(self, external_id):
         odoo_hash = hashlib.sha256()
         for e in external_id:
@@ -58,6 +59,7 @@ class BinderComposite(AbstractComponent):
             odoo_hash.update(e9.encode("utf8"))
         return odoo_hash.hexdigest()
 
+    @api.model
     def get_id_fields(self, in_field=True, alt_field=False):
         if in_field:
             fields = self._internal_alt_field if alt_field else self._internal_field
@@ -83,6 +85,7 @@ class BinderComposite(AbstractComponent):
                 )
         return fields_l
 
+    @api.model
     def id2dict(self, _id, in_field=True, alt_field=False):
         """Return a dict with the internal or external fields and their values
         :param _id: Values to put on internal or external fields
@@ -96,6 +99,7 @@ class BinderComposite(AbstractComponent):
             return None
 
     # This Function returns a dict with the external ids from a "dirty" dict
+    @api.model
     def dict2id2dict(self, _dict, in_field=True, alt_field=False):
         """Giving a dict, return the a dict with internal or external ids
         :param _dict: Dict to extract internal or external fields
@@ -109,6 +113,7 @@ class BinderComposite(AbstractComponent):
             alt_field=alt_field,
         )
 
+    @api.model
     def dict2id(self, _dict, in_field=True, alt_field=False, unwrap=False):
         """Giving a dict, return the values of the internal or external fields
         :param _dict: Dict (usually binder) to extract internal or external fields
@@ -136,6 +141,7 @@ class BinderComposite(AbstractComponent):
                 raise ValidationError(_("It's not possible to unwrap a composite id"))
         return res
 
+    @api.model
     def is_complete_id(self, _id, in_field=True):
         fields = in_field and self._internal_field or self._external_field
         if not isinstance(fields, (tuple, list)):
@@ -145,6 +151,7 @@ class BinderComposite(AbstractComponent):
         _id = list(filter(None, _id))
         return len(_id) == len(fields)
 
+    @api.model
     @contextmanager
     def _retry_unique_violation(self):
         """Context manager: catch Unique constraint error and retry the
@@ -177,6 +184,7 @@ class BinderComposite(AbstractComponent):
             else:
                 raise
 
+    @api.model
     def _is_binding(self, binding):
         try:
             binding._fields[self._odoo_field]
@@ -184,6 +192,7 @@ class BinderComposite(AbstractComponent):
             return False
         return True
 
+    @api.model
     def _find_binding(self, relation, binding_extra_vals=None):
         if not binding_extra_vals:
             binding_extra_vals = {}
@@ -240,8 +249,7 @@ class BinderComposite(AbstractComponent):
                 % (self.model._name, relation._name)
             )
 
-        return binding
-
+    @api.model
     def to_internal(self, external_id, unwrap=False):
         """Give the Odoo recordset for an external ID
 
@@ -269,6 +277,7 @@ class BinderComposite(AbstractComponent):
         bindings = bindings.with_context(**context)
         return bindings
 
+    @api.model
     def to_external(self, binding, wrap=True, binding_extra_vals=None):
         """Give the external ID for an Odoo binding ID
 
@@ -286,11 +295,13 @@ class BinderComposite(AbstractComponent):
                 return None
         return self.dict2id(binding, in_field=True) or None
 
+    @api.model
     def bind(self, external_id, binding):
         raise ValidationError(
             _("This method is deprecated. Use bind_export or bind_import instead")
         )
 
+    @api.model
     def bind_import(self, external_data, values, sync_date, for_create=False):
         values.update(
             {
@@ -307,6 +318,7 @@ class BinderComposite(AbstractComponent):
                 }
             )
 
+    @api.model
     def bind_export(self, external_data, relation):
         """Create the link between an external ID and an Odoo ID
 
@@ -347,9 +359,11 @@ class BinderComposite(AbstractComponent):
                 self.env.cr.commit()  # pylint: disable=E8102
             return binding
 
+    @api.model
     def _additional_external_binding_fields(self, external_data):
         return {}
 
+    @api.model
     def is_id_null(self, _id):
         if not isinstance(_id, (list, tuple)):
             _id = [_id]
@@ -358,9 +372,11 @@ class BinderComposite(AbstractComponent):
                 return True
         return False
 
+    @api.model
     def _get_internal_record_domain(self, values):
         return [(k, "=", v) for k, v in values.items()]
 
+    @api.model
     def _check_domain(self, domain):
         for field, _op, value in domain:
             if isinstance(value, (list, tuple)):
@@ -378,18 +394,18 @@ class BinderComposite(AbstractComponent):
                             }
                         )
 
+    @api.model
     def _get_internal_record_alt(self, values):
         model_name = self.unwrap_model()
         domain = self._get_internal_record_domain(values)
         self._check_domain(domain)
         return self.env[model_name].search(domain)
 
+    @api.model
     def wrap_record(self, relation):
         """Give the real record
 
         :param relation: Odoo real record for which we want to get its binding
-        :param force: if this is True and not binding found it creates an
-                      empty binding
         :return: binding corresponding to the real record or
                  empty recordset if the record has no binding
         """
@@ -411,7 +427,7 @@ class BinderComposite(AbstractComponent):
                     "The object '%s' is already wrapped, it's already a binding object. "
                     "You can only wrap Odoo objects"
                 )
-                % (relation)
+                % relation
             )
 
         binding = self.model.with_context(active_test=False).search(
@@ -424,6 +440,7 @@ class BinderComposite(AbstractComponent):
             raise InvalidDataError("More than one binding found")
         return binding
 
+    @api.model
     def _to_record_from_external_key(self, map_record):
         """
         :param map_record:
@@ -450,6 +467,7 @@ class BinderComposite(AbstractComponent):
             return record
         return self.env[model_name]
 
+    @api.model
     def to_binding_from_external_key(self, map_record, sync_date):
         """
         :param map_record:
@@ -481,17 +499,21 @@ class BinderComposite(AbstractComponent):
             return binding
         return self.model
 
+    @api.model
     def _additional_internal_binding_fields(self, external_data):
         return {}
 
+    @api.model
     def _get_external_record_domain(self, values):
         return [(k, "=", v) for k, v in values.items()]
 
+    @api.model
     def _get_external_record_alt(self, values):
         domain = self._get_external_record_domain(values)
         adapter = self.component(usage="backend.adapter")
         return adapter.search_read(domain)
 
+    @api.model
     def to_binding_from_internal_key(self, relation):
         """
         Given an odoo object (not binding object) without binding related
@@ -576,6 +598,7 @@ class BinderComposite(AbstractComponent):
 
         return self.model
 
+    @api.model
     def unwrap_binding(self, binding):
         if not isinstance(binding, models.BaseModel):
             if isinstance(binding, (tuple, list)):
@@ -587,6 +610,7 @@ class BinderComposite(AbstractComponent):
             binding = self.model.browse(odoo_object_ids)
         return binding.mapped(self._odoo_field)
 
+    @api.model
     def get_external_dict_ids(self, relation, check_external_id=True):
         external_id = self.to_external(relation, wrap=False)
         if check_external_id:
