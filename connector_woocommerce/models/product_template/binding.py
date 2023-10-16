@@ -32,15 +32,19 @@ class WooCommerceProductTemplate(models.Model):
     @api.model
     def _get_base_domain(self):
         return [
-            ("is_published", "=", True),
+            ("woocommerce_enabled", "=", True),
             ("has_attributes", "=", False),
         ]
 
     def export_product_tmpl_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
         if since_date:
-            domain += [
-                ("woocommerce_write_date", ">", fields.Datetime.to_string(since_date)),
+            domain = [
+                (
+                    "woocommerce_write_date",
+                    ">",
+                    fields.Datetime.to_string(since_date),
+                )
             ]
         self.export_batch(backend_record, domain=domain)
         return True
