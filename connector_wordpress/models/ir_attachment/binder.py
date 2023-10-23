@@ -12,3 +12,19 @@ class WordPressIrAttachmentBinder(Component):
 
     external_id = "id"
     internal_id = "wordpress_idattachment"
+
+    def _get_external_record_domain(self, relation, values):
+        equivalent_binding_attachment = self.env["wordpress.ir.attachment"].search(
+            [("checksum", "=", relation.checksum)],
+            limit=1,
+        )
+        if equivalent_binding_attachment:
+            return [("id", "=", equivalent_binding_attachment.wordpress_idattachment)]
+        else:
+            return None
+
+    def _additional_external_binding_fields(self, external_data):
+        return {
+            **super()._additional_external_binding_fields(external_data),
+            "wordpress_source_url": external_data["source_url"],
+        }

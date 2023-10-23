@@ -11,27 +11,22 @@ class WordPressIrAttachment(Component):
     _apply_on = "wordpress.ir.attachment"
 
     def create(self, data):  # pylint: disable=W8106
-        attachment_id = data.pop("id")
-        attachment = self.env["ir.attachment"].browse(attachment_id)
-        binded_attachments_ids = self.env["ir.attachment"].search(
-            [
-                (
-                    "id",
-                    "in",
-                    self.env["wordpress.ir.attachment"]
-                    .search([])
-                    .mapped("odoo_id")
-                    .ids,
-                ),
-                ("checksum", "=", attachment.checksum),
-            ],
-            limit=1,
-        )
-        alternative_binding_id = (
-            self.env["wordpress.ir.attachment"]
-            .search([("odoo_id", "=", binded_attachments_ids.id)])
-            .wordpress_idattachment
-        )
-        if alternative_binding_id:
-            return {"id": alternative_binding_id}
         return self._exec("post", "media", data=data)
+
+    def read(self, external_id):  # pylint: disable=W8106
+        # TODO: REVIEW: Check external_id_values, external_id and
+        #  external_id_values["id] nullability
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        return self._exec("get", "media/%s" % external_id_values["id"])
+
+    def search_read(self, domain=None):
+        binder = self.binder_for()
+        domain_dict = self._domain_to_normalized_dict(domain)
+        external_id_fields = binder.get_id_fields(in_field=False)
+        _, common_domain = self._extract_domain_clauses(domain, external_id_fields)
+        external_id_values = binder.dict2id2dict(domain_dict, in_field=False)
+        if external_id_values:
+            url = "media/%s" % external_id_values["id"]
+        else:
+            url = "media"
+        return self._exec("get", url, domain=common_domain)
