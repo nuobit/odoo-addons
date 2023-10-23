@@ -4,10 +4,10 @@
 from odoo import fields, models
 
 
-# This model is used to store in order attachments from product images
+# This model is used to store attachments from product images and documents
 class ProductAttachment(models.TransientModel):
     _name = "product.attachment"
-    _order = "sequence"
+    _order = "sequence, id"
 
     sequence = fields.Integer(
         string="Sequence",

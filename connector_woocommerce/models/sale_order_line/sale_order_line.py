@@ -8,9 +8,6 @@ from odoo.tools.float_utils import float_round
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    # TODO: check lotes de facturacion -- no se como deberia verse,
-    #  en las que he hecho sale un error de que no hay factura
-
     # This field is created with digits=False to force
     # the creation with type numeric, like discount.
     woocommerce_discount = fields.Float(

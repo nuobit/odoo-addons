@@ -12,10 +12,10 @@ class WooCommerceProductProductAdapter(Component):
     _apply_on = "woocommerce.product.product"
 
     def read(self, external_id):  # pylint: disable=W8106
-        external_id = self.binder_for().id2dict(external_id, in_field=False)
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
         url = "products/%s/variations/%s" % (
-            external_id["parent_id"],
-            external_id["id"],
+            external_id_values["parent_id"],
+            external_id_values["id"],
         )
         return self._exec("get", url)
 
@@ -41,11 +41,11 @@ class WooCommerceProductProductAdapter(Component):
         domain_dict = self._domain_to_normalized_dict(domain)
         external_id_fields = binder.get_id_fields(in_field=False)
         _, common_domain = self._extract_domain_clauses(domain, external_id_fields)
-        external_id = binder.dict2id2dict(domain_dict, in_field=False)
-        if external_id:
+        external_id_values = binder.dict2id2dict(domain_dict, in_field=False)
+        if external_id_values:
             url = "products/%s/variations/%s" % (
-                external_id["parent_id"],
-                external_id["id"],
+                external_id_values["parent_id"],
+                external_id_values["id"],
             )
             res = self._exec("get", url, domain=common_domain)
         else:

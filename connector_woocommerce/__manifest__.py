@@ -16,7 +16,6 @@
     },
     "depends": [
         "connector_extension_woocommerce",
-        "website_sale",
         "connector_wordpress",
         "sale_stock",
     ],

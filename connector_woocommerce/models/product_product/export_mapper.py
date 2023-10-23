@@ -9,7 +9,7 @@ from odoo.addons.connector.components.mapper import changed_by, mapping
 
 class WooCommerceProductProductExportMapper(Component):
     _name = "woocommerce.product.product.export.mapper"
-    _inherit = "woocommerce.export.mapper"
+    _inherit = "woocommerce.product.export.mapper"
 
     _apply_on = "woocommerce.product.product"
 
@@ -88,12 +88,17 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def description(self, record):
-        return {
-            "description": record.with_context(
-                lang=self.backend_record.language_id.code
-            ).variant_public_description
-            or None
-        }
+        description = record.with_context(
+            lang=self.backend_record.language_id.code
+        ).variant_public_description
+        document_description = ""
+        if record.document_ids:
+            document_description = self._prepare_document_description(record)
+        if description:
+            description = description + "\n" + document_description
+        else:
+            description = document_description
+        return {"description": description or None}
 
     @mapping
     def parent_id(self, record):
@@ -104,27 +109,26 @@ class WooCommerceProductProductExportMapper(Component):
     @mapping
     def image(self, record):
         # WooCommerce only allows one image per variant product
-        if record.product_attachment_ids and self.collection.wordpress_backend_id:
-            with self.collection.wordpress_backend_id.work_on(
+        if (
+            record.product_image_attachment_ids
+            and self.backend_record.wordpress_backend_id
+        ):
+            with self.backend_record.wordpress_backend_id.work_on(
                 "wordpress.ir.attachment"
             ) as work:
-                exporter = work.component(self._usage)
-                binder = exporter.binder_for("wordpress.ir.attachment")
-                if record.product_attachment_ids:
-                    image = record.product_attachment_ids[0].attachment_id
-                    values = binder.get_external_dict_ids(
-                        image, check_external_id=False
-                    )
-                    if (
-                        not values
-                        and self.backend_record.wordpress_backend_id.test_database
-                    ):
-                        return
-                    return {
-                        "image": {
-                            "id": values["id"],
-                        }
+                binder = work.component(usage="binder")
+                image = record.product_image_attachment_ids[0].attachment_id
+                values = binder.get_external_dict_ids(image, check_external_id=False)
+                if (
+                    self.backend_record.wordpress_backend_id.test_database
+                    and not values
+                ):
+                    return
+                return {
+                    "image": {
+                        "id": values["id"],
                     }
+                }
 
     @mapping
     def attributes(self, record):
