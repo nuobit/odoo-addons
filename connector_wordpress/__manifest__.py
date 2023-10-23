@@ -11,7 +11,7 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
         "connector_extension_wordpress",
-        "website_sale",
+        "website_sale_product_document",
     ],
     "data": [
         "security/connector_wordpress.xml",
