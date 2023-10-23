@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import mimetypes
 import os
 
 from odoo.addons.component.core import Component
@@ -12,23 +13,25 @@ class WordPressIrAttachmentExportMapper(Component):
 
     _apply_on = "wordpress.ir.attachment"
 
+    # TODO: create header in adapter, sending mimetype and file name
     @mapping
     def name(self, record):
-        img_path = record._full_path(record.store_fname)
-        file_type = record.mimetype.split("/")[1]
+        attachment_path = record._full_path(record.store_fname)
+        file_name = os.path.basename(attachment_path)
         # We need to concatenate the filename with the extension
         # because odoo does not store the extension
         # and wordpress needs it to recognize the file type
-        if file_type == "octet-stream":
-            file_type = "jpeg"
-        filename = os.path.basename(img_path) + "." + file_type
+        file_extension = mimetypes.guess_extension(record.mimetype)
         headers = {
-            "content-disposition": "attachment; filename=%s" % filename,
+            "content-disposition": "attachment; filename=%s"
+            % (file_name + file_extension),
             "content-type": record.mimetype,
         }
-        data = open(img_path, "rb").read()
+        data = open(attachment_path, "rb").read()
         return {
-            "id": record.id,
+            # "id": record.id,
+            # "filename": file_name,
+            # "mimetype": record.mimetype,
             "headers": headers,
             "data": data,
         }

@@ -20,3 +20,7 @@ class WordPressIrAttachment(models.Model):
         string="ID Attachment",
         readonly=True,
     )
+    wordpress_source_url = fields.Char(
+        string="Source URL",
+        readonly=True,
+    )
