@@ -10,6 +10,7 @@ def migrate(env, version):
         """
         select p.id, p.process
         from payroll_sage_payslip p
+        where p.process is not null
         """
     )
 
