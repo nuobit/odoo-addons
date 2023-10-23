@@ -18,14 +18,14 @@ class WooCommerceSaleOrderAdapter(Component):
         return super().get_total_items("orders", domain=domain)
 
     def read(self, external_id):  # pylint: disable=W8106
-        external_id = self.binder_for().id2dict(external_id, in_field=False)
-        url = "orders/%s" % (external_id["id"])
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        url = "orders/%s" % (external_id_values["id"])
         res = self._exec("get", url, limit=1)
         self._reorg_order_data(res)
         if len(res) > 1:
             raise ValidationError(
                 _("More than one order found with the same id: %s")
-                % (external_id["id"])
+                % (external_id_values["id"])
             )
         return res[0]
 

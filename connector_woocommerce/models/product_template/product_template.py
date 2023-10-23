@@ -42,6 +42,7 @@ class ProductTemplate(models.Model):
         "public_description",
         "inventory_availability",
         "has_attributes",
+        "document_ids",
         "woocommerce_enabled",
     )
     def _compute_woocommerce_write_date(self):
@@ -112,12 +113,12 @@ class ProductTemplate(models.Model):
                     rec.inventory_availability
                 )
 
-    product_attachment_ids = fields.Many2many(
+    product_image_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",
-        compute="_compute_product_attachment_ids",
+        compute="_compute_product_image_attachment_ids",
     )
 
-    def _compute_product_attachment_ids(self):
+    def _compute_product_image_attachment_ids(self):
         for rec in self:
             attachment = self.env["ir.attachment"].search(
                 [
@@ -127,7 +128,7 @@ class ProductTemplate(models.Model):
                 ]
             )
             if attachment:
-                rec.product_attachment_ids = [
+                rec.product_image_attachment_ids = [
                     (
                         0,
                         0,
@@ -151,7 +152,7 @@ class ProductTemplate(models.Model):
                             ("res_field", "=", "image_1920"),
                         ]
                     )
-                    rec.product_attachment_ids = [
+                    rec.product_image_attachment_ids = [
                         (
                             0,
                             0,
@@ -161,8 +162,29 @@ class ProductTemplate(models.Model):
                             },
                         )
                     ]
-            if not rec.product_attachment_ids:
-                rec.product_attachment_ids = self.env["product.attachment"]
+            if not rec.product_image_attachment_ids:
+                rec.product_image_attachment_ids = self.env["product.attachment"]
+
+    product_document_attachment_ids = fields.Many2many(
+        comodel_name="product.attachment",
+        compute="_compute_product_document_attachment_ids",
+    )
+
+    def _compute_product_document_attachment_ids(self):
+        for rec in self:
+            for doc in rec.document_ids:
+                rec.product_document_attachment_ids = [
+                    (
+                        0,
+                        0,
+                        {
+                            "attachment_id": doc.attachment_id.id,
+                            "sequence": doc.sequence,
+                        },
+                    )
+                ]
+            if not rec.product_document_attachment_ids:
+                rec.product_document_attachment_ids = self.env["product.attachment"]
 
     def write(self, vals):
         res = super().write(vals)
