@@ -31,6 +31,7 @@ class ProductProduct(models.Model):
         "alternative_product_ids",
         "accessory_product_ids",
         "variant_inventory_availability",
+        "document_ids",
         "product_tmpl_id",
         "product_tmpl_id.has_attributes",
         "product_tmpl_id.woocommerce_enabled",
@@ -83,12 +84,12 @@ class ProductProduct(models.Model):
         for rec in self:
             rec.variant_is_published = rec.product_tmpl_id.is_published
 
-    product_attachment_ids = fields.Many2many(
+    product_image_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",
-        compute="_compute_product_attachment_ids",
+        compute="_compute_product_image_attachment_ids",
     )
 
-    def _compute_product_attachment_ids(self):
+    def _compute_product_image_attachment_ids(self):
         for rec in self:
             attachment = self.env["ir.attachment"].search(
                 [
@@ -98,7 +99,7 @@ class ProductProduct(models.Model):
                 ]
             )
             if attachment:
-                rec.product_attachment_ids = [
+                rec.product_image_attachment_ids = [
                     (
                         0,
                         0,
@@ -122,7 +123,7 @@ class ProductProduct(models.Model):
                             ("res_field", "=", "image_1920"),
                         ]
                     )
-                    rec.product_attachment_ids = [
+                    rec.product_image_attachment_ids = [
                         (
                             0,
                             0,
@@ -132,5 +133,26 @@ class ProductProduct(models.Model):
                             },
                         )
                     ]
-            if not rec.product_attachment_ids:
-                rec.product_attachment_ids = self.env["product.attachment"]
+            if not rec.product_image_attachment_ids:
+                rec.product_image_attachment_ids = self.env["product.attachment"]
+
+    product_document_attachment_ids = fields.Many2many(
+        comodel_name="product.attachment",
+        compute="_compute_product_document_attachment_ids",
+    )
+
+    def _compute_product_document_attachment_ids(self):
+        for rec in self:
+            for doc in rec.document_ids:
+                rec.product_document_attachment_ids = [
+                    (
+                        0,
+                        0,
+                        {
+                            "attachment_id": doc.attachment_id.id,
+                            "sequence": doc.sequence,
+                        },
+                    )
+                ]
+            if not rec.product_document_attachment_ids:
+                rec.product_document_attachment_ids = self.env["product.attachment"]
