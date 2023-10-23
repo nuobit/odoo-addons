@@ -9,7 +9,7 @@ from odoo.addons.connector.components.mapper import changed_by, mapping
 
 class WooCommerceProductTemplateExportMapper(Component):
     _name = "woocommerce.product.template.export.mapper"
-    _inherit = "woocommerce.export.mapper"
+    _inherit = "woocommerce.product.export.mapper"
 
     _apply_on = "woocommerce.product.template"
 
@@ -112,6 +112,11 @@ class WooCommerceProductTemplateExportMapper(Component):
         return {"description": description if description else ""}
 
     @mapping
+    def short_description(self, record):
+        short_description = self._prepare_document_description(record)
+        return {"short_description": short_description if short_description else ""}
+
+    @mapping
     def product_type(self, record):
         return {"type": "variable" if record.has_attributes else "simple"}
 
@@ -191,15 +196,16 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def images(self, record):
-        if self.collection.wordpress_backend_id:
-            with self.collection.wordpress_backend_id.work_on(
+        if self.backend_record.wordpress_backend_id:
+            with self.backend_record.wordpress_backend_id.work_on(
                 "wordpress.ir.attachment"
             ) as work:
-                exporter = work.component(self._usage)
-                binder = exporter.binder_for("wordpress.ir.attachment")
+                binder = work.component(usage="binder")
                 img_list = []
-                if record.product_attachment_ids:
-                    for image in record.product_attachment_ids.mapped("attachment_id"):
+                if record.product_image_attachment_ids:
+                    for image in record.product_image_attachment_ids.mapped(
+                        "attachment_id"
+                    ):
                         external_id = binder.get_external_dict_ids(
                             image, check_external_id=False
                         )
@@ -211,8 +217,8 @@ class WooCommerceProductTemplateExportMapper(Component):
                             )
                         else:
                             if (
-                                self.backend_record.wordpress_backend_id
-                                and not self.backend_record.wordpress_backend_id.test_database
+                                not self.backend_record.wordpress_backend_id.test_database
+                                and self.backend_record.wordpress_backend_id
                             ):
                                 assert external_id, (
                                     "Unexpected error on %s:"

@@ -61,13 +61,18 @@ class WooCommerceProductTemplateExporter(Component):
                     "woocommerce.product.product",
                 )
 
-        if self.collection.wordpress_backend_id:
-            with self.collection.wordpress_backend_id.work_on(
+        if self.backend_record.wordpress_backend_id:
+            with self.backend_record.wordpress_backend_id.work_on(
                 "wordpress.ir.attachment"
             ) as work:
                 exporter = work.component(self._usage)
-                for attachment in relation.product_attachment_ids:
+                for image_attachment in relation.product_image_attachment_ids:
                     exporter._export_dependency(
-                        attachment.attachment_id,
+                        image_attachment.attachment_id,
+                        "wordpress.ir.attachment",
+                    )
+                for document_attachment in relation.product_document_attachment_ids:
+                    exporter._export_dependency(
+                        document_attachment.attachment_id,
                         "wordpress.ir.attachment",
                     )
