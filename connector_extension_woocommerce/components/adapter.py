@@ -33,16 +33,21 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         try:
             res = func(resource, *args, **kwargs)
             data = res.json()
-            if not res.ok and res.status_code == "rest_no_route":
-                raise ValidationError(
-                    _(
-                        "Error: '%s'. Probably the %s has been removed from Woocommerce. "
-                        "If it's the case, try to remove the binding of the %s."
-                        % (res.get("message"), resource, self.model._name)
-                    )
-                )
-            elif not res.ok:
-                raise ValidationError(_("Error: %s") % data)
+            if not res.ok:
+                if res.status_code == 404:
+                    if res.status_code == "rest_no_route":
+                        raise ValidationError(
+                            _(
+                                "Error: '%s'. Probably the %s has been"
+                                " removed from Woocommerce. "
+                                "If it's the case, try to remove the binding of the %s."
+                                % (res.get("message"), resource, self.model._name)
+                            )
+                        )
+                    data = []
+                else:
+                    ValidationError(_("Error: %s") % data)
+            # TODO: remove this total items and use the res.headers instead
             headers = res.headers
             total_items = headers.get("X-WP-Total") or 0
             if total_items:
@@ -81,7 +86,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         )
         params = self._domain_to_normalized_dict(real_domain)
         params["per_page"] = 1
-        result = self._exec_wcapi_call("get", resource=resource, params=params)
+        result = self._exec_wcapi_call("get", resource, params=params)
         return result["total_items"]
 
     def _get_search_fields(self):
@@ -89,7 +94,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
 
     def _exec_get(self, resource, *args, **kwargs):
         if resource == "system_status":
-            return self._exec_wcapi_call("get", resource=resource, *args, **kwargs)
+            return self._exec_wcapi_call("get", resource, *args, **kwargs)
         # WooCommerce has the parameter next on the response headers
         # to get the next page but we can't use it because if we use
         # the offset, the next page will have the same items as the first page.
@@ -113,9 +118,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         while len(data) < limit:
             if page_size > limit - len(data):
                 params["per_page"] = limit - len(data)
-            res = self._exec_wcapi_call(
-                "get", resource=resource, params=params, *args, **kwargs
-            )
+            res = self._exec_wcapi_call("get", resource, params=params, *args, **kwargs)
             # WooCommerce returns a dict if the response is a single item
             if not isinstance(res["data"], list):
                 res["data"] = [res["data"]]
