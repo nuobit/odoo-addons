@@ -35,14 +35,12 @@ class IrActionsReport(models.Model):
         **kwargs,
     ):
         if barcode_type == "gs1-128":
-            data = value.replace(r"\F", "\xf1")
             encoder = c128.Code128Encoder(
-                data, options=dict(show_label=False, height=int(height))
+                value, options=dict(show_label=False, height=int(height))
             )
             return encoder.get_imagedata()
         elif barcode_type == "gs1-datamatrix":
-            data = value.replace(r"\F", "\xe7")
-            encoder = dmx.DataMatrixEncoder(data)
+            encoder = dmx.DataMatrixEncoder(value)
             return encoder.get_imagedata()
         else:
             return super().barcode(
