@@ -441,13 +441,23 @@ class BinderComposite(AbstractComponent):
     def _additional_internal_binding_fields(self, external_data):
         return {}
 
-    def _get_external_record_domain(self, values):
+    def _get_external_record_domain(self, relation, values):
         return [(k, "=", v) for k, v in values.items()]
 
-    def _get_external_record_alt(self, values):
-        domain = self._get_external_record_domain(values)
-        adapter = self.component(usage="backend.adapter")
-        return adapter.search_read(domain)
+    def _get_external_record_alt(self, relation, id_values):
+        domain = self._get_external_record_domain(relation, id_values)
+        if domain:
+            adapter = self.component(usage="backend.adapter")
+            res = adapter.search_read(domain)
+            if res:
+                if len(res) > 1:
+                    raise InvalidDataError(
+                        "More than one external records found. "
+                        "The alternate external id field '%s' is not "
+                        "unique in the backend" % (id_values,)
+                    )
+                return res[0]
+        return {}
 
     def to_binding_from_internal_key(self, relation):
         """
@@ -455,43 +465,35 @@ class BinderComposite(AbstractComponent):
         :param relation: odoo object, not a binding and without binding
         :return: binding
         """
-
-        ext_alt_id = getattr(self, self._external_alt_field, None)
-        if not ext_alt_id:
-            return self.model
-
-        if isinstance(ext_alt_id, str):
-            ext_alt_id = [ext_alt_id]
-
         export_mapper = self.component(usage="export.mapper")
         mapper_external_data = export_mapper.map_record(relation)
-        id_fields = mapper_external_data._mapper.get_target_fields(
-            mapper_external_data, fields=ext_alt_id
-        )
-        if not id_fields:
-            raise ValidationError(
-                _("External alternative id '%s' not found in export mapper")
-                % (ext_alt_id,)
+        ext_alt_id = getattr(self, self._external_alt_field, None)
+        if not ext_alt_id:
+            id_values = {}
+        else:
+            if isinstance(ext_alt_id, str):
+                ext_alt_id = [ext_alt_id]
+
+            id_fields = mapper_external_data._mapper.get_target_fields(
+                mapper_external_data, fields=ext_alt_id
             )
-        id_values = mapper_external_data.values(
-            for_create=True,
-            fields=id_fields,
-            binding=self.model,
-            ignore_required_fields=True,
-        )
-        record = self._get_external_record_alt(id_values)
-        # TODO: check if we can put this in a hook
-        external_alt_id = self.dict2id(id_values, in_field=False, alt_field=True)
-        if self.is_id_null(external_alt_id):
-            return self.model
-        if record:
-            if len(record) > 1:
-                raise InvalidDataError(
-                    "More than one external records found. "
-                    "The alternate external id field '%s' is not "
-                    "unique in the backend" % (ext_alt_id,)
+            if not id_fields:
+                raise ValidationError(
+                    _("External alternative id '%s' not found in export mapper")
+                    % (ext_alt_id,)
                 )
-            record = record[0]
+            id_values = mapper_external_data.values(
+                for_create=True,
+                fields=id_fields,
+                binding=self.model,
+                ignore_required_fields=True,
+            )
+            # TODO: check if we can put this in a hook
+            external_alt_id = self.dict2id(id_values, in_field=False, alt_field=True)
+            if self.is_id_null(external_alt_id):
+                return self.model
+        record = self._get_external_record_alt(relation, id_values)
+        if record:
             external_id = self.dict2id(record, in_field=False)
             binding = self.wrap_record(relation)
             if binding:
