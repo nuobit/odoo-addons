@@ -23,31 +23,137 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         func = getattr(self, "_exec_%s" % op)
         return func(resource, *args, **kwargs)
 
-    def _exec_wp_call(self, op, url, *args, **kwargs):
+    def _exec_wp_call(self, op, resource, *args, **kwargs):
+        url = self.backend_record.url + "/wp-json/wp/v2/" + resource
         func = getattr(requests, op)
         try:
             res = func(url, *args, **kwargs)
             data = res.json()
             if not res.ok:
-                raise ValidationError(_("Error: %s") % data)
+                if res.status_code == "rest_post_invalid_id":
+                    data = []
+                else:
+                    raise ValidationError(_("Error: %s") % data)
+            result = {
+                "ok": res.ok,
+                "status_code": res.status_code,
+                "headers": res.headers,
+                "data": data,
+            }
         except requests.exceptions.ConnectionError as e:
             raise RetryableJobError(_("Error connecting to WordPress: %s") % e) from e
         except json.JSONDecodeError as e:
             raise ValidationError(
                 _("Error decoding json WordPress response: %s\n%s") % (e, res.text)
             ) from e
-        return data
+        return result
 
-    def _exec_get(self, resource, *args, **kwargs):
-        url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        return self._exec_wp_call(
+    def _get_search_fields(self):
+        return ["modified_after", "offset", "per_page", "page"]
+
+    def get_total_items(self, resource, domain=None):
+        filters_values = self._get_search_fields()
+        real_domain, common_domain = self._extract_domain_clauses(
+            domain, filters_values
+        )
+        params = self._domain_to_normalized_dict(real_domain)
+        # TODO: make an optimization to get the total items and use the result
+        params["per_page"] = 1
+        result = self._exec_wp_call(
             "get",
-            url=url,
+            resource,
             auth=(
                 self.backend_record.consumer_key,
                 self.backend_record.consumer_secret,
             ),
+            params=params,
         )
+
+        total_items_header = result["headers"]._store.get("x-wp-total")
+        if total_items_header:
+            total_items_header = int(total_items_header[1])
+        else:
+            # WordPress returns a dict if the response is a single item
+            if not isinstance(result["data"], list):
+                result["data"] = [result["data"]]
+            total_items_header = len(result["data"])
+        return total_items_header
+
+    def _exec_get(self, resource, *args, **kwargs):
+        if resource == "system_status":
+            return self._exec_wp_call(
+                "get",
+                resource,
+                auth=(
+                    self.backend_record.consumer_key,
+                    self.backend_record.consumer_secret,
+                ),
+                *args,
+                **kwargs
+            )
+        # WooCommerce has the parameter next on the response headers
+        # to get the next page but we can't use it because if we use
+        # the offset, the next page will have the same items as the first page.
+        # It looks like a bug in WooCommerce API.
+        domain = []
+        if "domain" in kwargs:
+            domain = kwargs.pop("domain")
+        search_fields = self._get_search_fields()
+        real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
+        params = self._domain_to_normalized_dict(real_domain)
+        if "limit" in kwargs:
+            limit = kwargs.pop("limit")
+        else:
+            limit = self.get_total_items(resource, domain)
+        params["offset"] = (
+            kwargs.pop("offset") if "offset" in kwargs and "offset" not in params else 0
+        )
+        page_size = self.backend_record.page_size
+        params["per_page"] = page_size if page_size > 0 else 100
+        data = []
+        while len(data) < limit:
+            if page_size > limit - len(data):
+                params["per_page"] = limit - len(data)
+            res = self._exec_wp_call(
+                "get",
+                resource,
+                params=params,
+                auth=(
+                    self.backend_record.consumer_key,
+                    self.backend_record.consumer_secret,
+                ),
+                *args,
+                **kwargs
+            )
+            # WooCommerce returns a dict if the response is a single item
+            if not isinstance(res["data"], list):
+                res["data"] = [res["data"]]
+            data += res["data"]
+            params["offset"] += len(res["data"])
+        return self._filter(data, common_domain)
+
+        # url = self.backend_record.url + "/wp-json/wp/v2/" + resource
+        # domain = []
+        # if "domain" in kwargs:
+        #     domain = kwargs.pop("domain")
+        # search_fields = self._get_search_fields()
+        # real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
+        # params = self._domain_to_normalized_dict(real_domain)
+        # params["offset"] = (
+        #     kwargs.pop("offset") if "offset" in kwargs and "offset" not in params else 0
+        # )
+        # res = self._exec_wp_call(
+        #     "get",
+        #     url,
+        #     auth=(
+        #         self.backend_record.consumer_key,
+        #         self.backend_record.consumer_secret,
+        #     ),
+        #     params=params, *args, **kwargs
+        # )
+        # if not isinstance(res, list):
+        #     res = [res]
+        # return self._filter(res, common_domain)
 
     def _exec_post(self, resource, *args, **kwargs):
         auth = (self.backend_record.consumer_key, self.backend_record.consumer_secret)
@@ -57,16 +163,16 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         data_aux = kwargs.pop("data", {})
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
-        checksum = False
-        if data_aux.get("checksum"):
-            checksum = data_aux.pop("checksum")
-        url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        result = self._exec_wp_call(
-            "post", url=url, data=data, headers=headers, auth=auth
+        # checksum = False
+        # if data_aux.get("checksum"):
+        #     checksum = data_aux.pop("checksum")
+        # url = self.backend_record.url + "/wp-json/wp/v2/" + resource
+        res = self._exec_wp_call(
+            "post", resource, data=data, headers=headers, auth=auth
         )
-        if checksum:
-            result["checksum"] = checksum
-        return result
+        # if checksum:
+        #     result["checksum"] = checksum
+        return res["data"]
 
     def _exec_put(self, resource, *args, **kwargs):
         url = self.backend_record.url + "/wp-json/wp/v2/" + resource
