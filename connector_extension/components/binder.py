@@ -265,6 +265,7 @@ class BinderComposite(AbstractComponent):
                     **self.id2dict(external_id, in_field=True),
                 }
             )
+        self.env.cr.commit()  # pylint: disable=E8102
 
     def bind_export(self, external_data, relation):
         """Create the link between an external ID and an Odoo ID
