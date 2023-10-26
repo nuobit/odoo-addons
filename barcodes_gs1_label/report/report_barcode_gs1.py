@@ -2,6 +2,8 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import requests.utils
+
 from odoo import _, api, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -245,7 +247,7 @@ class ReportGS1Barcode(models.AbstractModel):
                     if fnc1_required and i < len(gs1):
                         res.append(fnc1)
                 doc["barcode_values"] = gs1_barcode
-                doc["barcode_string"] = "".join(res)
+                doc["barcode_string"] = requests.utils.quote("".join(res))
                 lot.gs1_generated = True
             elif barcode_type == "ean13-code128":
                 doc["barcode_values"] = (
