@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!--TODO: REVIEW: This view and product_product_views in this module are equivalent.
+        Try to unify them https://www.odoo.com/documentation/14.0/developer/reference/addons/views.html#inheritance-fields-->
 <odoo>
     <record
         id="website_sale_public_description_product_template_view_form"
@@ -17,7 +19,7 @@
                             <field name="sequence" widget="handle" />
                             <field name="name" />
                             <field name="datas" filename="datas_fname" />
-                             <field name="datas_fname" />
+                            <field name="datas_fname" />
                         </tree>
                     </field>
                 </group>
