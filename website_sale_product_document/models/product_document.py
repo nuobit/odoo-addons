@@ -38,7 +38,6 @@ class ProductDocument(models.AbstractModel):
             )
             if not attachment:
                 raise ValidationError(_("No attachment found"))
-            elif len(attachment) > 1:
+            if len(attachment) > 1:
                 raise ValidationError(_("More than one attachment found"))
-            else:
-                rec.attachment_id = attachment[0]
+            rec.attachment_id = attachment[0]
