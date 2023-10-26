@@ -79,6 +79,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             total_items_header = len(result["data"])
         return total_items_header
 
+    # TODO: REVIEW: Unify with connector_extension_woocommerce
     def _exec_get(self, resource, *args, **kwargs):
         if resource == "system_status":
             return self._exec_wp_call(
@@ -132,29 +133,6 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             params["offset"] += len(res["data"])
         return self._filter(data, common_domain)
 
-        # url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        # domain = []
-        # if "domain" in kwargs:
-        #     domain = kwargs.pop("domain")
-        # search_fields = self._get_search_fields()
-        # real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
-        # params = self._domain_to_normalized_dict(real_domain)
-        # params["offset"] = (
-        #     kwargs.pop("offset") if "offset" in kwargs and "offset" not in params else 0
-        # )
-        # res = self._exec_wp_call(
-        #     "get",
-        #     url,
-        #     auth=(
-        #         self.backend_record.consumer_key,
-        #         self.backend_record.consumer_secret,
-        #     ),
-        #     params=params, *args, **kwargs
-        # )
-        # if not isinstance(res, list):
-        #     res = [res]
-        # return self._filter(res, common_domain)
-
     def _exec_post(self, resource, *args, **kwargs):
         auth = (self.backend_record.consumer_key, self.backend_record.consumer_secret)
         if "wordpress_backend_id" in self.backend_record:
@@ -163,15 +141,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         data_aux = kwargs.pop("data", {})
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
-        # checksum = False
-        # if data_aux.get("checksum"):
-        #     checksum = data_aux.pop("checksum")
-        # url = self.backend_record.url + "/wp-json/wp/v2/" + resource
         res = self._exec_wp_call(
             "post", resource, data=data, headers=headers, auth=auth
         )
-        # if checksum:
-        #     result["checksum"] = checksum
+
         return res["data"]
 
     def _exec_put(self, resource, *args, **kwargs):
