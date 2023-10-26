@@ -11,14 +11,15 @@ class WooCommerceProductExportMapper(AbstractComponent):
     def _prepare_url(self, binding, document):
         return binding.wordpress_source_url
 
-    def _prepare_document_description(self, record):
+    def _prepare_document_description(self, documents):
         document_description = ""
+        # TODO: posar a la llista els strings i fer un join al final del bucle for.
         if self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
                 "wordpress.ir.attachment"
             ) as work:
                 binder = work.component(usage="binder")
-                for document in record.document_ids:
+                for document in documents:
                     external_id = binder.get_external_dict_ids(
                         document.attachment_id, check_external_id=False
                     )
@@ -43,6 +44,6 @@ class WooCommerceProductExportMapper(AbstractComponent):
                                 "The backend id cannot be obtained."
                                 "At this stage, the backend record should "
                                 "have been already linked via "
-                                "._export_dependencies. " % record._name
+                                "._export_dependencies. " % document.product_id._name
                             )
-                return document_description
+        return document_description
