@@ -113,7 +113,7 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def short_description(self, record):
-        short_description = self._prepare_document_description(record)
+        short_description = self._prepare_document_description(record.document_ids)
         return {"short_description": short_description if short_description else ""}
 
     @mapping
@@ -218,7 +218,6 @@ class WooCommerceProductTemplateExportMapper(Component):
                         else:
                             if (
                                 not self.backend_record.wordpress_backend_id.test_database
-                                and self.backend_record.wordpress_backend_id
                             ):
                                 assert external_id, (
                                     "Unexpected error on %s:"

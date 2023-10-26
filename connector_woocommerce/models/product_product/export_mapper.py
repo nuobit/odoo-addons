@@ -88,17 +88,19 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def description(self, record):
-        description = record.with_context(
+        description = []
+        product_description = record.with_context(
             lang=self.backend_record.language_id.code
         ).variant_public_description
-        document_description = ""
+        if product_description:
+            description.append(product_description)
         if record.document_ids:
-            document_description = self._prepare_document_description(record)
-        if description:
-            description = description + "\n" + document_description
-        else:
-            description = document_description
-        return {"description": description or None}
+            document_description = self._prepare_document_description(
+                record.document_ids
+            )
+            if document_description:
+                description.append(document_description)
+        return {"description": "\n".join(description) or None}
 
     @mapping
     def parent_id(self, record):
@@ -123,7 +125,7 @@ class WooCommerceProductProductExportMapper(Component):
                     self.backend_record.wordpress_backend_id.test_database
                     and not values
                 ):
-                    return
+                    return None
                 return {
                     "image": {
                         "id": values["id"],
