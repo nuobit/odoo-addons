@@ -58,7 +58,7 @@
         <field name="name">wage.tag.tree</field>
         <field name="model">payroll.sage.wage.tag</field>
         <field name="arch" type="xml">
-            <tree string="Wage Tag">
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="code" />
                 <field name="type" />
