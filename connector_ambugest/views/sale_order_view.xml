@@ -45,7 +45,7 @@
         <field name="name">ambugest.sale.order.view.tree</field>
         <field name="model">ambugest.sale.order</field>
         <field name="arch" type="xml">
-            <tree string="Ambugest Sale order">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="ambugest_empresa" readonly="True" />
