@@ -121,7 +121,6 @@
         <field name="model">account.invoice.batch</field>
         <field name="arch" type="xml">
             <tree
-                string="Invoice batches"
                 decoration-warning="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and draft_invoice_count"
                 decoration-info="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and not draft_invoice_count and sent_invoice_count != invoice_count"
                 decoration-success="draft_invoice_count + unsent_invoice_count + sent_invoice_count == invoice_count and sent_invoice_count == invoice_count and invoice_count != 0"
