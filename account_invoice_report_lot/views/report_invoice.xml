@@ -10,11 +10,11 @@
             />
         </table>
 
-        <xpath expr="//span[text()='Description']/parent::th" position="after">
+        <th name="th_description" position="after">
             <th t-if="lineswithlots" class="text-left">
                 <span>Lot/Serial Number</span>
             </th>
-        </xpath>
+        </th>
 
         <td name="account_invoice_line_name" position="after">
             <td t-if="lineswithlots">
