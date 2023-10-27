@@ -27,7 +27,6 @@
                         >
                             <tree
                                 name="active_capital_asset_prorate_regularization_ids"
-                                string="Asset Prorate Regularization"
                                 editable="bottom"
                             >
                                 <field name="year" />
