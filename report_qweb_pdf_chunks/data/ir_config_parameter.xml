@@ -2,15 +2,13 @@
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
-<odoo>
-    <data noupdate="1">
-        <record id="report_qweb_pdf_chunks_threshold" model="ir.config_parameter">
-            <field name="key">qweb.report.pdf.chunk.threshold</field>
-            <field name="value">50</field>
-        </record>
-        <record id="report_qweb_pdf_chunks_size" model="ir.config_parameter">
-            <field name="key">qweb.report.pdf.chunk.size</field>
-            <field name="value">50</field>
-        </record>
-    </data>
+<odoo noupdate="1">
+    <record id="report_qweb_pdf_chunks_threshold" model="ir.config_parameter">
+        <field name="key">qweb.report.pdf.chunk.threshold</field>
+        <field name="value">50</field>
+    </record>
+    <record id="report_qweb_pdf_chunks_size" model="ir.config_parameter">
+        <field name="key">qweb.report.pdf.chunk.size</field>
+        <field name="value">50</field>
+    </record>
 </odoo>
