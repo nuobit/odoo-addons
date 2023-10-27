@@ -57,7 +57,7 @@
         <field name="name">aeat.map.special.prorate.year.view.tree</field>
         <field name="model">aeat.map.special.prorrate.year</field>
         <field name="arch" type="xml">
-            <tree string="Aeat VAT special prorate map">
+            <tree>
                 <field name="year" />
                 <field name="tax_percentage" />
                 <field name="tax_final_percentage" />
