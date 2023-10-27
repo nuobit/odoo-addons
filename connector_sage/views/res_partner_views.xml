@@ -38,7 +38,7 @@
         <field name="name">sage.res.partner.tree</field>
         <field name="model">sage.res.partner</field>
         <field name="arch" type="xml">
-            <tree string="Sage Partner">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="sage_codigo_empresa" />
