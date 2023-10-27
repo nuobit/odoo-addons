@@ -67,14 +67,14 @@ class SaleOrder(models.Model):
                 )
                 if woocommerce_order_state != rec.woocommerce_order_state:
                     rec.woocommerce_order_state = woocommerce_order_state
-                    self._event("on_compute_woocommerce_order_state").notify(
-                        rec, fields={"woocommerce_order_state"}
-                    )
+                    # self._event("on_compute_woocommerce_order_state").notify(
+                    #     rec, fields={"woocommerce_order_state"}
+                    # )
 
-    def action_confirm(self):
-        res = super().action_confirm()
-        if self.woocommerce_bind_ids.woocommerce_status == "on-hold":
-            self._event("on_compute_woocommerce_order_state").notify(
-                self, fields={"woocommerce_order_state"}
-            )
-        return res
+    # def action_confirm(self):
+    #     res = super().action_confirm()
+    #     if self.woocommerce_bind_ids.woocommerce_status == "on-hold":
+    #         self._event("on_compute_woocommerce_order_state").notify(
+    #             self, fields={"woocommerce_order_state"}
+    #         )
+    #     return res
