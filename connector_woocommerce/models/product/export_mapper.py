@@ -12,8 +12,7 @@ class WooCommerceProductExportMapper(AbstractComponent):
         return binding.wordpress_source_url
 
     def _prepare_document_description(self, documents):
-        document_description = ""
-        # TODO: posar a la llista els strings i fer un join al final del bucle for.
+        document_description = []
         if self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
                 "wordpress.ir.attachment"
@@ -25,8 +24,8 @@ class WooCommerceProductExportMapper(AbstractComponent):
                     )
                     if external_id:
                         binding = binder.wrap_record(document.attachment_id)
-                        document_description += (
-                            "<p><a href=%s target='_blank'>%s</a></p>\n"
+                        document_description.append(
+                            "<p><a href=%s target='_blank'>%s</a></p>"
                             % (
                                 self._prepare_url(binding, document),
                                 document.with_context(
@@ -46,4 +45,4 @@ class WooCommerceProductExportMapper(AbstractComponent):
                                 "have been already linked via "
                                 "._export_dependencies. " % document.product_id._name
                             )
-        return document_description
+        return "\n".join(document_description)
