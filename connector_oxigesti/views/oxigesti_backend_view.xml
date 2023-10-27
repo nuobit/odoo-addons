@@ -321,7 +321,7 @@
         <field name="name">oxigesti.backend.tree</field>
         <field name="model">oxigesti.backend</field>
         <field name="arch" type="xml">
-            <tree string="Oxigesti Backend">
+            <tree>
                 <field name="name" />
                 <field name="company_id" />
                 <field name="server" />

@@ -86,7 +86,7 @@
         <field name="name">oxigesti.res.partner.tree</field>
         <field name="model">oxigesti.res.partner</field>
         <field name="arch" type="xml">
-            <tree string="Oxigesti Partner">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="external_id_display" readonly="True" />

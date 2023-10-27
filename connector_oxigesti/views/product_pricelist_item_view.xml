@@ -22,7 +22,7 @@
         <field name="name">oxigesti.product.pricelist.item.tree</field>
         <field name="model">oxigesti.product.pricelist.item</field>
         <field name="arch" type="xml">
-            <tree string="Oxigesti Product prices by customer">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="odoo_partner_id" />
