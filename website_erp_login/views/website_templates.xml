@@ -7,6 +7,7 @@
         id="login_layout"
         inherit_id="website.login_layout"
         name="Original Web Login Layout"
+        priority="100"
     >
         <xpath expr="t" position="replace">
             <t t-call="website_erp_login.login_layout_copy">
