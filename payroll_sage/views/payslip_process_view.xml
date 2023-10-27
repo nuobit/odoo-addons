@@ -18,7 +18,7 @@
         <field name="name">payslip.process.tree</field>
         <field name="model">payroll.sage.payslip.process</field>
         <field name="arch" type="xml">
-            <tree string="Payslip Processes">
+            <tree>
                 <field name="name" />
             </tree>
         </field>
