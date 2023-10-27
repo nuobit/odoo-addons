@@ -42,7 +42,7 @@
         <field name="name">sage.labour.agreement.tree</field>
         <field name="model">sage.payroll.sage.labour.agreement</field>
         <field name="arch" type="xml">
-            <tree string="Sage Labour agreement">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="sage_codigo_empresa" readonly="True" />

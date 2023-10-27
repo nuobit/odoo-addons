@@ -57,7 +57,7 @@
         <field name="name">sage.payslip.line.payroll.tree</field>
         <field name="model">sage.payroll.sage.payslip.line.payroll</field>
         <field name="arch" type="xml">
-            <tree string="Sage Payslip Line Payroll">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="sage_codigo_empresa" readonly="True" />
@@ -106,7 +106,7 @@
         <field name="name">sage.payslip.line.transfer.tree</field>
         <field name="model">sage.payroll.sage.payslip.line.transfer</field>
         <field name="arch" type="xml">
-            <tree string="Sage Payslip Line Transfer">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="sage_codigo_empresa" readonly="True" />
