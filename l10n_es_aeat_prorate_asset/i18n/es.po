@@ -23,8 +23,8 @@ msgstr "Activo"
 #. module: l10n_es_aeat_prorate_asset
 #: code:addons/l10n_es_aeat_prorate_asset/models/account_asset.py:0
 #, python-format
-msgid "Asset has more than 1 Prorate tax. Please, review the invoice %s"
-msgstr "El activo tiene mas de un impuesto de prorata. Por favor, revise los impuestos"
+msgid "Asset has more than 1 Prorate tax. Please, review the invoice"
+msgstr "El activo tiene mas de un impuesto de prorata. Por favor, revise la factura"
 
 #. module: l10n_es_aeat_prorate_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__display_name
