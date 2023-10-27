@@ -26,7 +26,7 @@
         <field name="name">lm.resolution.view.tree</field>
         <field name="model">lm.resolution</field>
         <field name="arch" type="xml">
-            <tree string="Resolution Tree">
+            <tree>
                 <field name="name" />
                 <field name="parent_id" />
             </tree>
