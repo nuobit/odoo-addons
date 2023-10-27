@@ -16,8 +16,5 @@ class ProductImage(models.Model):
                     ("res_field", "=", "image_1920"),
                 ]
             )
-            if attachment:
-                self.env["wordpress.ir.attachment"].search(
-                    [("odoo_id", "=", attachment.id)]
-                ).unlink()
+            attachment.wordpress_bind_ids.unlink()
         return super().write(vals)
