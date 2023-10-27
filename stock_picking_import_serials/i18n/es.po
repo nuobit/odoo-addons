@@ -215,8 +215,8 @@ msgstr "El producto %s no existe"
 #. module: stock_picking_import_serials
 #: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:166
 #, python-format
-msgid "The product %s has no 'serial' tracking type"
-msgstr "El producto no tiene seguimiento o no es de tipo 'Número de serie'"
+msgid "The product %s has no serial tracking type"
+msgstr "El producto %s no tiene seguimiento o no es de tipo Número de serie"
 
 #. module: stock_picking_import_serials
 #: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:142
