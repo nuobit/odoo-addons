@@ -44,7 +44,7 @@
         <field name="name">labour.agreement.tree</field>
         <field name="model">payroll.sage.labour.agreement</field>
         <field name="arch" type="xml">
-            <tree string="Labour agreement">
+            <tree>
                 <field name="code" />
                 <field name="name" />
                 <field name="registration_date_cv" />
@@ -57,7 +57,7 @@
         <field name="name">labour.agreement.wage.tyle.line.tree</field>
         <field name="model">payroll.sage.labour.agreement.wage.type.line</field>
         <field name="arch" type="xml">
-            <tree string="Labour agreement">
+            <tree>
                 <field name="code" />
                 <field name="short_name" />
                 <field name="name" />

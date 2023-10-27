@@ -152,7 +152,7 @@
         <field name="name">payslip.tree</field>
         <field name="model">payroll.sage.payslip</field>
         <field name="arch" type="xml">
-            <tree string="Payslip">
+            <tree>
                 <field name="name" />
                 <field name="entry_date" />
                 <field name="labour_agreement_id" />
