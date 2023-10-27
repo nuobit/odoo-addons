@@ -40,7 +40,7 @@
         <field name="name">oxigesti.product.product.tree</field>
         <field name="model">oxigesti.product.product</field>
         <field name="arch" type="xml">
-            <tree string="Oxigesti Product">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="external_id_display" readonly="True" />
