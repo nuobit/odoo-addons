@@ -19,7 +19,7 @@
         <field name="name">stock.warehouse.orderpoint.sync.template.tree</field>
         <field name="model">stock.warehouse.orderpoint.sync.template</field>
         <field name="arch" type="xml">
-            <tree string="Reordering Rule Sync Templates">
+            <tree>
                 <field name="name" />
                 <field name="warehouse_id" groups="stock.group_stock_multi_locations" />
                 <field
