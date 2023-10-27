@@ -44,7 +44,7 @@
         <field name="name">quality.partner.classification.view.tree</field>
         <field name="model">quality.partner.classification</field>
         <field name="arch" type="xml">
-            <tree string="Quality partner classification Tree">
+            <tree>
                 <field name="complete_name" />
                 <field name="name" />
                 <field name="code" />
