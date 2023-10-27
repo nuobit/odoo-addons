@@ -114,7 +114,7 @@ class WooCommerceProductTemplateExportMapper(Component):
     @mapping
     def short_description(self, record):
         short_description = self._prepare_document_description(record.document_ids)
-        return {"short_description": short_description if short_description else ""}
+        return {"short_description": short_description}
 
     @mapping
     def product_type(self, record):
