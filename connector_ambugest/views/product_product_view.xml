@@ -42,7 +42,7 @@
         <field name="name">ambugest.product.product.tree</field>
         <field name="model">ambugest.product.product</field>
         <field name="arch" type="xml">
-            <tree string="Ambugest Product">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="ambugest_empresa" readonly="True" />

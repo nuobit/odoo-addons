@@ -39,7 +39,7 @@
         <field name="name">ambugest.res.partner.tree</field>
         <field name="model">ambugest.res.partner</field>
         <field name="arch" type="xml">
-            <tree string="Ambugest Partner">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="ambugest_empresa" />
