@@ -26,7 +26,7 @@
         <field name="name">lm.issue.view.tree</field>
         <field name="model">lm.issue</field>
         <field name="arch" type="xml">
-            <tree string="Issue Tree">
+            <tree>
                 <field name="name" />
                 <field name="parent_id" />
             </tree>
