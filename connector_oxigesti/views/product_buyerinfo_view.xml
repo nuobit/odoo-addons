@@ -21,7 +21,7 @@
         <field name="name">oxigesti.product.buyerinfo.tree</field>
         <field name="model">oxigesti.product.buyerinfo</field>
         <field name="arch" type="xml">
-            <tree string="Oxigesti Products by customer">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="external_id_display" readonly="True" />
