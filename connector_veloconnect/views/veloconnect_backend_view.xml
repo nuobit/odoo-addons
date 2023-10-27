@@ -133,7 +133,7 @@
         <field name="name">veloconnect.backend.tree</field>
         <field name="model">veloconnect.backend</field>
         <field name="arch" type="xml">
-            <tree string="veloconnect Backend">
+            <tree>
                 <field name="name" />
                 <field name="company_id" />
                 <field name="buyer" />

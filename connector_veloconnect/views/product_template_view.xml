@@ -123,7 +123,7 @@
         <field name="name">veloconnect.product.template.tree</field>
         <field name="model">veloconnect.product.template</field>
         <field name="arch" type="xml">
-            <tree string="Veloconnect Product">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="veloconnect_description" readonly="True" />
