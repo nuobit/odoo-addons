@@ -58,7 +58,18 @@ class PayrollSageLabourAgreementImportMapper(Component):
             items = mapper.get_items(
                 [detail_record], map_record, to_attr, options=self.options
             )
-            children.extend(items)
+            # find if the sage id already exists in odoo
+            external_id = [
+                detail_record["CodigoEmpresa"],
+                detail_record["CodigoConvenio"],
+                detail_record["FechaRegistroCV"],
+                detail_record["CodigoConceptoNom"],
+            ]
+            binding = adapter.binder_for().to_internal(external_id)
+            if binding:
+                children.extend([(1, binding.id, items[0][2])])
+            else:
+                children.extend(items)
         return children
 
     # def _map_child(self, map_record, from_attr, to_attr, model_name):
