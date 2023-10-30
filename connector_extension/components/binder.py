@@ -287,24 +287,24 @@ class BinderComposite(AbstractComponent):
             relation_id = relation
 
         external_id = self.dict2id(external_data, in_field=False)
-        binding = self.model.with_context(connector_no_export=True).create(
-            {
-                self._backend_field: self.backend_record.id,
-                self._odoo_field: relation_id,
-                self._sync_date_field: fields.Datetime.now(),
-                **self.id2dict(external_id, in_field=True),
-                **self._additional_external_binding_fields(external_data),
-            }
-        )
-
-        # Eager commit to avoid having 2 jobs
-        # exporting at the same time. The constraint
-        # will pop if an other job already created
-        # the same binding. It will be caught and
-        # raise a RetryableJobError.
-        if not odoo.tools.config["test_enable"]:
-            self.env.cr.commit()  # pylint: disable=E8102
-        return binding
+        with self._retry_unique_violation():
+            binding = self.model.with_context(connector_no_export=True).create(
+                {
+                    self._backend_field: self.backend_record.id,
+                    self._odoo_field: relation_id,
+                    self._sync_date_field: fields.Datetime.now(),
+                    **self.id2dict(external_id, in_field=True),
+                    **self._additional_external_binding_fields(external_data),
+                }
+            )
+            # Eager commit to avoid having 2 jobs
+            # exporting at the same time. The constraint
+            # will pop if an other job already created
+            # the same binding. It will be caught and
+            # raise a RetryableJobError.
+            if not odoo.tools.config["test_enable"]:
+                self.env.cr.commit()  # pylint: disable=E8102
+            return binding
 
     def _additional_external_binding_fields(self, external_data):
         return {}
