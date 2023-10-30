@@ -45,4 +45,4 @@ class WooCommerceProductExportMapper(AbstractComponent):
                                 "have been already linked via "
                                 "._export_dependencies. " % document.product_id._name
                             )
-        return "\n".join(document_description)
+        return "\n".join(document_description) or None
