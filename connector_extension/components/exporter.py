@@ -6,8 +6,7 @@ from contextlib import contextmanager
 
 import psycopg2
 
-import odoo
-from odoo import _, api, fields
+from odoo import _, fields
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import RetryableJobError
@@ -26,82 +25,56 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
     def _mapper_options(self, binding):
         return {"binding": binding}
 
-    def _get_lock_name(self, relation):
-        lock_name = "export_record({}, {}, {}, {})".format(
-            self.backend_record._name,
-            self.backend_record.id,
-            relation._name,
-            relation.id,
-        )
-        return lock_name
-
-    def atomic(func):  # noqa: B902
-        def wrapper(self, now_fmt, relation, always, internal_fields):
-            lock_name = self._get_lock_name(relation)
-            self.session_advisory_lock_or_retry(lock_name)
-            try:
-                with odoo.registry(self.env.cr.dbname).cursor() as new_cr:
-                    new_env = api.Environment(new_cr, self.env.uid, self.env.context)
-                    new_backend_record = new_env[self.backend_record._name].browse(
-                        self.backend_record.id
-                    )
-                    with new_backend_record.work_on(self.model._name) as work:
-                        new_self = work.component(self._usage)
-                        result = func(
-                            new_self, now_fmt, relation, always, internal_fields
-                        )
-            finally:
-                self.session_pg_advisory_unlock(lock_name)
-            return result
-
-        return wrapper
-
-    @atomic
-    def _run(self, now_fmt, relation, always, internal_fields):
-        result = None
-        binding = self.binder_for().wrap_record(relation)
-
-        if not binding:
-            binding = (
-                self.binder_for().to_binding_from_internal_key(relation) or binding
-            )
-        if not binding:
-            internal_fields = None  # should be created with all the fields
-        map_record = self.mapper.map_record(relation)
-
-        # passing info to the mapper
-        opts = self._mapper_options(binding)
-        if always or not binding:
-            if binding:
-                values = self._update_data(map_record, fields=internal_fields, **opts)
-                if values:
-                    external_id = self.binder_for().dict2id(binding, in_field=True)
-                    result = self._update(external_id, values)
-            else:
-                values = self._create_data(map_record, fields=internal_fields, **opts)
-                if values:
-                    external_data = self._create(values)
-                    binding = self.binder_for().bind_export(external_data, relation)
-            if not values:
-                result = _("Nothing to export")
-            if not result:
-                result = _("Record exported with ID %s on Backend.") % "external_id"
-            self._after_export()
-            binding[self.binder_for()._sync_date_field] = now_fmt
-            return result
-
-    def run(self, relation, always=True, internal_fields=None):
+    def run(self, relation, internal_fields=None):
         """Run the synchronization
 
         :param binding: binding record to export
         """
         now_fmt = fields.Datetime.now()
-        if self._has_to_skip(relation):
+        result = None
+        # get binding from real record
+        binding = self.binder_for().wrap_record(relation)
+
+        # if not binding, try to link to existing external record with
+        # the same alternate key and create/update binding
+        if not binding:
+            binding = (
+                self.binder_for().to_binding_from_internal_key(relation) or binding
+            )
+
+        if not binding:
+            internal_fields = None  # should be created with all the fields
+        if self._has_to_skip(binding, relation):
             return _("Nothing to export")
+
+        # export the missing linked resources
         self._export_dependencies(relation)
-        return self._run(
-            now_fmt, relation, always=always, internal_fields=internal_fields
-        )
+
+        # prevent other jobs to export the same record
+        # will be released on commit (or rollback)
+        self._lock(relation)
+
+        map_record = self.mapper.map_record(relation)
+
+        # passing info to the mapper
+        opts = self._mapper_options(binding)
+        if binding:
+            values = self._update_data(map_record, fields=internal_fields, **opts)
+            if values:
+                external_id = self.binder_for().dict2id(binding, in_field=True)
+                result = self._update(external_id, values)
+        else:
+            values = self._create_data(map_record, fields=internal_fields, **opts)
+            if values:
+                external_data = self._create(values)
+                binding = self.binder_for().bind_export(external_data, relation)
+        if not values:
+            result = _("Nothing to export")
+        if not result:
+            result = _("Record exported with ID %s on Backend.") % "external_id"
+        self._after_export()
+        binding[self.binder_for()._sync_date_field] = now_fmt
+        return result
 
     def _after_export(self):
         """Can do several actions after exporting a record on the backend"""
@@ -138,12 +111,10 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
             raise RetryableJobError(
                 "A concurrent job is already exporting the same record "
                 "(%s with id %s). The job will be retried later."
-                % (self.model._name, record.id),
-                seconds=5,
-                ignore_retry=True,
+                % (self.model._name, record.id)
             ) from e
 
-    def _has_to_skip(self, relation):
+    def _has_to_skip(self, binding, relation):
         """Return True if the export can be skipped"""
         return False
 
@@ -221,8 +192,19 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
                               pass extra values for this binding
         :type binding_extra_vals: dict
         """
-        exporter = self.component(usage=component_usage, model_name=binding_model)
-        exporter.run(relation, always=always)
+        if not relation:
+            return
+
+        binding = None
+        if not always:
+            rel_binder = self.binder_for(binding_model)
+            binding = rel_binder.wrap_record(relation)
+            if not binding:
+                binding = rel_binder.to_binding_from_internal_key(relation)
+
+        if always or not binding:
+            exporter = self.component(usage=component_usage, model_name=binding_model)
+            exporter.run(relation)
 
     def _export_dependencies(self, relation):
         """Export the dependencies for the record"""
