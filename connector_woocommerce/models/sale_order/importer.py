@@ -104,6 +104,17 @@ class WooCommerceSaleOrderImporter(Component):
         if sale_order.state == "draft" and binding.woocommerce_status == "processing":
             sale_order.action_confirm()
 
+    def _must_skip(self, binding):
+        """Return True if the binding must be skipped."""
+        res = super()._must_skip(binding)
+        if binding:
+            return _(
+                "The Order %s is already imported "
+                "-> Update not allowed"
+                % self.binder_for().unwrap_binding(binding).display_name
+            )
+        return res
+
 
 class WooCommerceSaleOrderChunkDirectImporter(Component):
     """Import the Woocommerce Orders.
