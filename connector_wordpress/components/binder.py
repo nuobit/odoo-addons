@@ -5,6 +5,6 @@ from odoo.addons.component.core import AbstractComponent
 
 class WordPressBinder(AbstractComponent):
     _name = "wordpress.binder"
-    _inherit = ["generic.binder", "base.wordpress.connector"]
+    _inherit = ["connector.extension.generic.binder", "base.wordpress.connector"]
 
     _default_binding_field = "wordpress_bind_ids"
