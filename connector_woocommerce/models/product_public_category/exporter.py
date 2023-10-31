@@ -11,7 +11,7 @@ class WooCommerceProductPublicCategoryBatchDirectExporter(Component):
     """
 
     _name = "woocommerce.product.public.category.batch.direct.exporter"
-    _inherit = "generic.batch.direct.exporter"
+    _inherit = "connector.extension.generic.batch.direct.exporter"
 
     _apply_on = "woocommerce.product.public.category"
 
@@ -23,7 +23,7 @@ class WooCommerceProductPublicCategoryBatchDelayedExporter(Component):
     """
 
     _name = "woocommerce.product.public.category.batch.delayed.exporter"
-    _inherit = "generic.batch.delayed.exporter"
+    _inherit = "connector.extension.generic.batch.delayed.exporter"
 
     _apply_on = "woocommerce.product.public.category"
 
