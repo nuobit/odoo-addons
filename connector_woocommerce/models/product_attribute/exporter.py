@@ -11,7 +11,7 @@ class WooCommerceProductAttributeBatchDirectExporter(Component):
     """
 
     _name = "woocommerce.product.attribute.batch.direct.exporter"
-    _inherit = "generic.batch.direct.exporter"
+    _inherit = "connector.extension.generic.batch.direct.exporter"
 
     _apply_on = "woocommerce.product.attribute"
 
@@ -23,7 +23,7 @@ class WooCommerceProductAttributeBatchDelayedExporter(Component):
     """
 
     _name = "woocommerce.product.attribute.batch.delayed.exporter"
-    _inherit = "generic.batch.delayed.exporter"
+    _inherit = "connector.extension.generic.batch.delayed.exporter"
 
     _apply_on = "woocommerce.product.attribute"
 
