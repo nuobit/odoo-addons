@@ -13,7 +13,7 @@ class WooCommerceDirectImporter(AbstractComponent):
 
     _name = "woocommerce.record.direct.importer"
     _inherit = [
-        "generic.record.direct.importer",
+        "connector.extension.generic.record.direct.importer",
         "base.woocommerce.connector",
     ]
 
@@ -26,6 +26,6 @@ class WooCommerceBatchImporter(AbstractComponent):
 
     _name = "woocommerce.batch.importer"
     _inherit = [
-        "generic.batch.importer",
+        "connector.extension.generic.batch.importer",
         "base.woocommerce.connector",
     ]

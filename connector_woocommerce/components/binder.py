@@ -5,6 +5,6 @@ from odoo.addons.component.core import AbstractComponent
 
 class WooCommerceBinder(AbstractComponent):
     _name = "woocommerce.binder"
-    _inherit = ["generic.binder", "base.woocommerce.connector"]
+    _inherit = ["connector.extension.generic.binder", "base.woocommerce.connector"]
 
     _default_binding_field = "woocommerce_bind_ids"

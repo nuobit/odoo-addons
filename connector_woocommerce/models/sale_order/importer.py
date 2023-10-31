@@ -13,7 +13,7 @@ class WooCommerceSaleOrderBatchDirectImporter(Component):
     """
 
     _name = "woocommerce.sale.order.batch.direct.importer"
-    _inherit = "generic.batch.direct.importer"
+    _inherit = "connector.extension.generic.batch.direct.importer"
 
     _apply_on = "woocommerce.sale.order"
 
@@ -25,7 +25,7 @@ class WooCommerceSaleOrderBatchDelayedImporter(Component):
     """
 
     _name = "woocommerce.sale.order.batch.delayed.importer"
-    _inherit = "generic.batch.delayed.importer"
+    _inherit = "connector.extension.generic.batch.delayed.importer"
 
     _apply_on = "woocommerce.sale.order"
 
@@ -123,7 +123,7 @@ class WooCommerceSaleOrderChunkDirectImporter(Component):
     """
 
     _name = "woocommerce.sale.order.chunk.direct.importer"
-    _inherit = "generic.chunk.direct.importer"
+    _inherit = "connector.extension.generic.chunk.direct.importer"
 
     _apply_on = "woocommerce.sale.order"
 
@@ -135,6 +135,6 @@ class WooCommerceSaleOrderChunkDelayedImporter(Component):
     """
 
     _name = "woocommerce.sale.order.chunk.delayed.importer"
-    _inherit = "generic.chunk.delayed.importer"
+    _inherit = "connector.extension.generic.chunk.delayed.importer"
 
     _apply_on = "woocommerce.sale.order"
