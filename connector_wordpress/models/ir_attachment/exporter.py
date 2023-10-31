@@ -13,7 +13,7 @@ class WordPressIrAttachmentBatchDirectExporter(Component):
     """
 
     _name = "wordpress.ir.attachment.batch.direct.exporter"
-    _inherit = "generic.batch.direct.exporter"
+    _inherit = "connector.extension.generic.batch.direct.exporter"
 
     _apply_on = "wordpress.ir.attachment"
 
@@ -25,7 +25,7 @@ class WordPressIrAttachmentBatchDelayedExporter(Component):
     """
 
     _name = "wordpress.ir.attachment.batch.delayed.exporter"
-    _inherit = "generic.batch.delayed.exporter"
+    _inherit = "connector.extension.generic.batch.delayed.exporter"
 
     _apply_on = "wordpress.ir.attachment"
 
