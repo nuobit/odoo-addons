@@ -25,7 +25,7 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
     def _mapper_options(self, binding):
         return {"binding": binding}
 
-    def run(self, relation, internal_fields=None):
+    def run(self, relation, always=True, internal_fields=None):
         """Run the synchronization
 
         :param binding: binding record to export
@@ -44,7 +44,7 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
 
         if not binding:
             internal_fields = None  # should be created with all the fields
-        if self._has_to_skip(binding, relation):
+        if self._has_to_skip(relation):
             return _("Nothing to export")
 
         # export the missing linked resources
@@ -58,23 +58,24 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
 
         # passing info to the mapper
         opts = self._mapper_options(binding)
-        if binding:
-            values = self._update_data(map_record, fields=internal_fields, **opts)
-            if values:
-                external_id = self.binder_for().dict2id(binding, in_field=True)
-                result = self._update(external_id, values)
-        else:
-            values = self._create_data(map_record, fields=internal_fields, **opts)
-            if values:
-                external_data = self._create(values)
-                binding = self.binder_for().bind_export(external_data, relation)
-        if not values:
-            result = _("Nothing to export")
-        if not result:
-            result = _("Record exported with ID %s on Backend.") % "external_id"
-        self._after_export()
-        binding[self.binder_for()._sync_date_field] = now_fmt
-        return result
+        if always or not binding:
+            if binding:
+                values = self._update_data(map_record, fields=internal_fields, **opts)
+                if values:
+                    external_id = self.binder_for().dict2id(binding, in_field=True)
+                    result = self._update(external_id, values)
+            else:
+                values = self._create_data(map_record, fields=internal_fields, **opts)
+                if values:
+                    external_data = self._create(values)
+                    binding = self.binder_for().bind_export(external_data, relation)
+            if not values:
+                result = _("Nothing to export")
+            if not result:
+                result = _("Record exported with ID %s on Backend.") % "external_id"
+            self._after_export()
+            binding[self.binder_for()._sync_date_field] = now_fmt
+            return result
 
     def _after_export(self):
         """Can do several actions after exporting a record on the backend"""
@@ -114,7 +115,7 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
                 % (self.model._name, record.id)
             ) from e
 
-    def _has_to_skip(self, binding, relation):
+    def _has_to_skip(self, relation):
         """Return True if the export can be skipped"""
         return False
 
@@ -192,19 +193,8 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
                               pass extra values for this binding
         :type binding_extra_vals: dict
         """
-        if not relation:
-            return
-
-        binding = None
-        if not always:
-            rel_binder = self.binder_for(binding_model)
-            binding = rel_binder.wrap_record(relation)
-            if not binding:
-                binding = rel_binder.to_binding_from_internal_key(relation)
-
-        if always or not binding:
-            exporter = self.component(usage=component_usage, model_name=binding_model)
-            exporter.run(relation)
+        exporter = self.component(usage=component_usage, model_name=binding_model)
+        exporter.run(relation, always=always)
 
     def _export_dependencies(self, relation):
         """Export the dependencies for the record"""
