@@ -65,7 +65,8 @@ def domain_to_normalized_dict(self, domain):
         elif op in (">", ">=", "<", "<="):
             if not isinstance(value, (datetime.date, datetime.datetime, int)):
                 raise ValidationError(
-                    _("Type {} not supported for operator {}").format(type(value), op)
+                    _("Type %(type)s not supported for operator %(op)s")
+                    % dict(type=value, op=op)
                 )
             if op in (">", "<"):
                 adj = 1
