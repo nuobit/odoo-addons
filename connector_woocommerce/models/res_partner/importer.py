@@ -11,7 +11,7 @@ class WooCommerceResPartnerBatchDirectImporter(Component):
     """
 
     _name = "woocommerce.res.partner.batch.direct.importer"
-    _inherit = "generic.batch.direct.importer"
+    _inherit = "connector.extension.generic.batch.direct.importer"
 
     _apply_on = "woocommerce.res.partner"
 
@@ -23,7 +23,7 @@ class WooCommerceResPartnerBatchDelayedImporter(Component):
     """
 
     _name = "woocommerce.res.partner.batch.delayed.importer"
-    _inherit = "generic.batch.delayed.importer"
+    _inherit = "connector.extension.generic.batch.delayed.importer"
 
     _apply_on = "woocommerce.res.partner"
 

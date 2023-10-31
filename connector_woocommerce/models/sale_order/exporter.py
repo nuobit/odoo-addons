@@ -11,7 +11,7 @@ class WooCommerceSaleOrdertBatchDirectExporter(Component):
     """
 
     _name = "woocommerce.sale.order.batch.direct.exporter"
-    _inherit = "generic.batch.direct.exporter"
+    _inherit = "connector.extension.generic.batch.direct.exporter"
 
     _apply_on = "woocommerce.sale.order"
 
@@ -23,7 +23,7 @@ class WooCommerceSaleOrderBatchDelayedExporter(Component):
     """
 
     _name = "woocommerce.sale.order.batch.delayed.exporter"
-    _inherit = "generic.batch.delayed.exporter"
+    _inherit = "connector.extension.generic.batch.delayed.exporter"
 
     _apply_on = "woocommerce.sale.order"
 
