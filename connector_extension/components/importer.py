@@ -17,10 +17,10 @@ from odoo.addons.queue_job.exception import NothingToDoJob, RetryableJobError
 _logger = logging.getLogger(__name__)
 
 
-class GenericDirectImporter(AbstractComponent):
+class ConnectorExtensionGenericDirectImporter(AbstractComponent):
     """Generic Synchronizer for importing data from backend to Odoo"""
 
-    _name = "generic.record.direct.importer"
+    _name = "connector.extension.generic.record.direct.importer"
     _inherit = "base.importer"
 
     _usage = "record.direct.importer"
@@ -234,10 +234,10 @@ class GenericDirectImporter(AbstractComponent):
         return self.model.with_context(connector_no_export=True).create(data)
 
 
-class GenericBatchImporter(AbstractComponent):
+class ConnectorExtensionGenericBatchImporter(AbstractComponent):
     """Generic Synchronizer for importing data from backend to Odoo"""
 
-    _name = "generic.batch.importer"
+    _name = "connector.extension.generic.batch.importer"
     _inherit = "base.importer"
 
     _usage = "batch.importer"
@@ -279,11 +279,11 @@ class GenericBatchImporter(AbstractComponent):
         raise NotImplementedError
 
 
-class BatchDirectImporter(AbstractComponent):
+class ConnectorExtensionBatchDirectImporter(AbstractComponent):
     """Import the records directly, without delaying the jobs."""
 
-    _name = "generic.batch.direct.importer"
-    _inherit = "generic.batch.importer"
+    _name = "connector.extension.generic.batch.direct.importer"
+    _inherit = "connector.extension.generic.batch.importer"
 
     _usage = "batch.direct.importer"
 
@@ -302,11 +302,11 @@ class BatchDirectImporter(AbstractComponent):
         )
 
 
-class BatchDelayedImporter(AbstractComponent):
+class ConnectorExtensionBatchDelayedImporter(AbstractComponent):
     """Delay import of the records"""
 
-    _name = "generic.batch.delayed.importer"
-    _inherit = "generic.batch.importer"
+    _name = "connector.extension.generic.batch.delayed.importer"
+    _inherit = "connector.extension.generic.batch.importer"
 
     _usage = "batch.delayed.importer"
 
@@ -330,13 +330,13 @@ class BatchDelayedImporter(AbstractComponent):
         )
 
 
-class GenericChunkImporter(AbstractComponent):
+class ConnectorExtensionGenericChunkImporter(AbstractComponent):
     """The role of a ChunkImporter is to search for a list of
     items to import, then it can either import them directly or delay
     the import of each item separately.
     """
 
-    _name = "generic.chunk.importer"
+    _name = "connector.extension.generic.chunk.importer"
     _inherit = "base.importer"
 
     def run(self, domain, offset, chunk_size):
@@ -364,11 +364,11 @@ class GenericChunkImporter(AbstractComponent):
         raise NotImplementedError
 
 
-class ChunkDirectImporter(AbstractComponent):
+class ConnectorExtensionChunkDirectImporter(AbstractComponent):
     """Import the records directly, without delaying the jobs."""
 
-    _name = "generic.chunk.direct.importer"
-    _inherit = "generic.chunk.importer"
+    _name = "connector.extension.generic.chunk.direct.importer"
+    _inherit = "connector.extension.generic.chunk.importer"
 
     _usage = "chunk.direct.importer"
 
@@ -384,11 +384,11 @@ class ChunkDirectImporter(AbstractComponent):
         )
 
 
-class ChunkDelayedImporter(AbstractComponent):
+class ConnectorExtensionChunkDelayedImporter(AbstractComponent):
     """Delay import of the records"""
 
-    _name = "generic.chunk.delayed.importer"
-    _inherit = "generic.chunk.importer"
+    _name = "connector.extension.generic.chunk.delayed.importer"
+    _inherit = "connector.extension.generic.chunk.importer"
 
     _usage = "chunk.delayed.importer"
 

@@ -297,10 +297,10 @@ class ConnectorExtensionImportMapper(AbstractComponent):
     _inherit = ["base.import.mapper", "connector.extension.mapper"]
 
 
-class DeleteMapChild(AbstractComponent):
+class ConnectorExtensionDeleteMapChild(AbstractComponent):
     """:py:class:`MapChild` for the Deleters"""
 
-    _name = "base.map.child.deleter"
+    _name = "connector.extension.base.map.child.deleter"
     _inherit = "base.map.child"
     _usage = "delete.map.child"
 
