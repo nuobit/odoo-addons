@@ -23,11 +23,11 @@ class StockPicking(models.Model):
             woocommerce_stock_picking_state = "delivered"
         return woocommerce_stock_picking_state
 
-    # def write(self, vals):
-    #     res = super().write(vals)
-    #     for rec in self:
-    #         if "carrier_tracking_ref" in vals or "carrier_id" in vals:
-    #             self.env["sale.order"]._event(
-    #                 "on_compute_woocommerce_order_state"
-    #             ).notify(rec.sale_id, fields={"woocommerce_ast_fields"})
-    #     return res
+    def write(self, vals):
+        res = super().write(vals)
+        for rec in self:
+            if "carrier_tracking_ref" in vals or "carrier_id" in vals:
+                self.env["sale.order"]._event(
+                    "on_compute_woocommerce_order_state"
+                ).notify(rec.sale_id, fields={"woocommerce_ast_fields"})
+        return res
