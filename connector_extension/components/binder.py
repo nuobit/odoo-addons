@@ -29,10 +29,10 @@ from odoo.addons.connector.exception import InvalidDataError, RetryableJobError
 _logger = logging.getLogger(__name__)
 
 
-class BinderComposite(AbstractComponent):
+class ConnectorExtensionBinderComposite(AbstractComponent):
     """The same as Binder but allowing composite external keys"""
 
-    _name = "generic.binder"
+    _name = "connector.extension.generic.binder"
     _inherit = "base.binder"
 
     _internal_field = "internal_id"
