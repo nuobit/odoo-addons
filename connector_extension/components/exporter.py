@@ -14,10 +14,10 @@ from odoo.addons.connector.exception import RetryableJobError
 _logger = logging.getLogger(__name__)
 
 
-class GenericDirectExporter(AbstractComponent):
+class ConnectorExtensionGenericDirectExporter(AbstractComponent):
     """Generic Synchronizer for exporting data from Odoo to a backend"""
 
-    _name = "generic.record.direct.exporter"
+    _name = "connector.extension.generic.record.direct.exporter"
     _inherit = "base.exporter"
 
     _usage = "record.direct.exporter"
@@ -241,10 +241,10 @@ class GenericDirectExporter(AbstractComponent):
         return self.backend_adapter.write(external_id, data)
 
 
-class GenericBatchExporter(AbstractComponent):
+class ConnectorExtensionGenericBatchExporter(AbstractComponent):
     """Generic Synchronizer for importing data from backend to Odoo"""
 
-    _name = "generic.batch.exporter"
+    _name = "connector.extension.generic.batch.exporter"
     _inherit = "base.exporter"
 
     _usage = "batch.exporter"
@@ -267,11 +267,11 @@ class GenericBatchExporter(AbstractComponent):
         raise NotImplementedError
 
 
-class BatchDirectExporter(AbstractComponent):
+class ConnectorExtensionBatchDirectExporter(AbstractComponent):
     """Import the records directly, without delaying the jobs."""
 
-    _name = "generic.batch.direct.exporter"
-    _inherit = "generic.batch.exporter"
+    _name = "connector.extension.generic.batch.direct.exporter"
+    _inherit = "connector.extension.generic.batch.exporter"
 
     _usage = "batch.direct.exporter"
 
@@ -280,11 +280,11 @@ class BatchDirectExporter(AbstractComponent):
         self.model.export_record(self.backend_record, relation)
 
 
-class BatchDelayedExporter(AbstractComponent):
+class ConnectorExtensionBatchDelayedExporter(AbstractComponent):
     """Delay import of the records"""
 
-    _name = "generic.batch.delayed.exporter"
-    _inherit = "generic.batch.exporter"
+    _name = "connector.extension.generic.batch.delayed.exporter"
+    _inherit = "connector.extension.generic.batch.exporter"
 
     _usage = "batch.delayed.exporter"
 
