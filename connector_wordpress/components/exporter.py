@@ -14,7 +14,7 @@ class WordPressRecordDirectExporter(AbstractComponent):
 
     _name = "wordpress.record.direct.exporter"
     _inherit = [
-        "generic.record.direct.exporter",
+        "connector.extension.generic.record.direct.exporter",
         "base.wordpress.connector",
     ]
 
@@ -36,6 +36,6 @@ class WordPressBatchExporter(AbstractComponent):
 
     _name = "wordpress.batch.exporter"
     _inherit = [
-        "generic.batch.exporter",
+        "connector.extension.generic.batch.exporter",
         "base.wordpress.connector",
     ]
