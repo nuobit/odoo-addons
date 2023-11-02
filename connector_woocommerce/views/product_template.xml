@@ -75,7 +75,7 @@
         <field name="name">woocommerce.product.template.view.tree</field>
         <field name="model">woocommerce.product.template</field>
         <field name="arch" type="xml">
-            <tree string="WooCommerce Product template">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="woocommerce_idproduct" readonly="True" />

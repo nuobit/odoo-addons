@@ -21,7 +21,7 @@
         <field name="name">woocommerce.product.attribute.value.view.tree</field>
         <field name="model">woocommerce.product.attribute.value</field>
         <field name="arch" type="xml">
-            <tree string="WooCommerce Product Attribute Value">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="woocommerce_idattribute" readonly="True" />
