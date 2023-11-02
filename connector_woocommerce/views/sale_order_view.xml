@@ -49,7 +49,7 @@
         <field name="name">woocommerce.sale.order.view.tree</field>
         <field name="model">woocommerce.sale.order</field>
         <field name="arch" type="xml">
-            <tree string="WooCommerce Sale order">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="woocommerce_idsaleorder" readonly="True" />
