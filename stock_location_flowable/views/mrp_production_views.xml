@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="mrp_production_view_form" model="ir.ui.view">
+        <field name="name">mrp.production.form.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lot_producing_id']" position="after">
+                <field name="production_blocked" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='lot_producing_id']" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('production_blocked', '=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
