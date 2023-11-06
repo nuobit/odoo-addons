@@ -1,0 +1,372 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_location_flowable
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-27 11:13+0000\n"
+"PO-Revision-Date: 2023-11-27 11:13+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "All allowed products must be tracked by lot"
+msgstr "Todos los productos permitidos deben ser rastreados por lote."
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_allowed_product_ids
+msgid "Allowed Products"
+msgstr "Productos Permitidos"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#: model:ir.actions.act_window,name:stock_location_flowable.action_picking_tree_blocked
+#: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_picking_type_kanban
+#, python-format
+msgid "Blocked"
+msgstr "Bloqueado"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_capacity
+#: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
+msgid "Capacity"
+msgstr "Capacidad"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "Capacity must be greater than 0"
+msgstr "La capacidad debe ser mayor que 0."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "Capacity must be greater than capacity occupied %s"
+msgstr "La capacidad debe ser mayor que la capacidad ocupada %s"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type__count_picking_blocked
+msgid "Count Picking Blocked"
+msgstr "Conteo de Albarán Bloqueado"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__create_lots
+#: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
+msgid "Create Lots"
+msgstr "Crear Lotes"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production__display_name
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__display_name
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move__display_name
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move_line__display_name
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking__display_name
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type__display_name
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_return_picking__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: stock_location_flowable
+#: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
+msgid "Enable"
+msgstr "Habilitar"
+
+#. module: stock_location_flowable
+#: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
+msgid "Flowable"
+msgstr "Fluido"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_capacity_occupied
+msgid "Flowable Capacity Occupied"
+msgstr "Capacidad Fluida Ocupada"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "Flowable Location Warning"
+msgstr "Advertencia de Ubicación Fluido"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type__flowable_operation
+msgid "Flowable Operation"
+msgstr "Operación Fluido"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_percentage_occupied
+msgid "Flowable Percentage Occupied"
+msgstr "Porcentaje Fluido Ocupado"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_production_id
+msgid "Flowable Production"
+msgstr "Producción de Fluido"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_storage
+msgid "Flowable Storage"
+msgstr "Almacenamiento de Fluido"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production__id
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__id
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move__id
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move_line__id
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking__id
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type__id
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_return_picking__id
+msgid "ID"
+msgstr "ID"
+
+#. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_stock_location
+msgid "Inventory Locations"
+msgstr "Ubicaciones de inventario"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_blocked_popover
+msgid "JSON data for the popover widget"
+msgstr "Datos JSON para el widget emergente"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production____last_update
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location____last_update
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move____last_update
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move_line____last_update
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking____last_update
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type____last_update
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_return_picking____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "Location capacity is full"
+msgstr "La capacidad de la ubicación está llena"
+
+#. module: stock_location_flowable
+#: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
+msgid "Manufacturing Order"
+msgstr "Orden de producción"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking__flowable_production_ids
+#: model_terms:ir.ui.view,arch_db:stock_location_flowable.view_picking_form
+#, python-format
+msgid "Manufacturing Orders"
+msgstr "Ordenes de producción"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid "More than one manufacturing code in picking type for flowable location %s"
+msgstr "Más de un código de fabricación en el tipo de operación para la ubicación fluida %s"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid "Not found sequence in manufacturing picking type %s for flowable location %s"
+msgstr "Secuencia no encontrada en el tipo de operación de fabricación %s para la ubicación fluida %s"
+
+#. module: stock_location_flowable
+#: model_terms:ir.actions.act_window,help:stock_location_flowable.action_picking_tree_blocked
+msgid "No transfer found. Let's create one!"
+msgstr "No se encontró ninguna transferencia. ¡Creemos uno!"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid "Not found manufacturing picking type for flowable location %s to do flowable"
+" mixing in %s"
+msgstr "No se encontró el tipo de operación de producción para la ubicación fluida"
+" %s para realizar la mezcla fluida en %s"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking_type.py:0
+#, python-format
+msgid "Only one picking type can be flowable in a warehouse %s.."
+msgstr "Sólo un tipo de operación puede ser fluido en el almacén %s."
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production__picking_id
+msgid "Picking"
+msgstr "Albarán"
+
+#. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_stock_picking_type
+msgid "Picking Type"
+msgstr "Tipo de albarán"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid "The allowed products %s cannot have different Unit of Measure than flowable location %s"
+msgstr "Los productos permitidos %s no pueden tener una unidad de medida diferente a la ubicación fluida %s"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid "Product %s must be tracked by lot"
+msgstr "El producto %s debe ser rastreado por lote"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid "Product %s not allowed in flowable location %s"
+msgstr "Producto %s no permitido en ubicación fluida %s"
+
+#. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_stock_move_line
+msgid "Product Moves (Stock Move Line)"
+msgstr "Movimientos de Producto (Stock Move Line)"
+
+#. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_mrp_production
+msgid "Production Order"
+msgstr "Orden de producción"
+
+#. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_stock_return_picking
+msgid "Return Picking"
+msgstr "Albarán de devolución"
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_sequence_id
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de inventario"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_move_line.py:0
+#, python-format
+msgid "The location %s is blocked. Probably you need to review the pending "
+"manufacturing orders related to this location"
+msgstr "La ubicación %s está bloqueada. Probablemente necesites revisar las"
+" órdenes de producción pendientes relacionadas con esta ubicación"
+
+#. module: stock_location_flowable
+#: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
+msgid "The location is blocked"
+msgstr "La ubicación está bloqueada."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "The product %s is measured in %s. You can only assign products that have the"
+" allowed unit of measure"
+msgstr "El producto %s se mide en %s. Sólo puedes asignar productos que tengan la"
+" unidad de medida permitida"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "This location is blocked because it has a manufacturing order assigned."
+msgstr "Esta ubicación está bloqueada porque tiene una orden de producción asignada."
+
+#. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_stock_picking
+msgid "Transfer"
+msgstr "Albarán"
+
+#. module: stock_location_flowable
+#: model_terms:ir.actions.act_window,help:stock_location_flowable.action_picking_tree_blocked
+msgid "Transfers allow you to move products from one location to another."
+msgstr "Las transferencias le permiten mover productos de un lugar a otro."
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_uom_id
+msgid "Unit of Measure"
+msgstr "Unidad de Medida"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid "You can only receive one product at location %s because a manufacturing "
+"order must be generated and the location will be blocked. Create a partial "
+"delivery for this product %s."
+msgstr "Solo puedes recibir un producto en la ubicación %s porque se debe generar"
+" una orden de producción y la ubicación será bloqueada. Crea una entrega parcial"
+" para este producto %s."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "You cannot disable flowable storage from a blocked location."
+msgstr "No puedes deshabilitar el almacenamiento fluido de una ubicación bloqueada"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid "You cannot cancel a production with a picking associated. The mixing is in progress."
+msgstr "No se puede cancelar una producción que tenga un albarán asociado. La mezcla está en curso."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "You cannot convert this location into a flowable location because there are "
+"unmixed products or products with different units of measure."
+msgstr "No puedes convertir esta ubicación en una ubicación fluida porque hay "
+"productos sin mezclar o productos con diferentes unidades de medida."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_quant.py:0
+#, python-format
+msgid "You cannot have more than one lot in the same location."
+msgstr "No se puede tener más de un lote en la misma ubicación."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#: code:addons/stock_location_flowable/models/stock_move.py:0
+#, python-format
+msgid "You cannot modify a mix production with a picking associated. The mixing is in progress."
+msgstr "No se puede modificar una producción de mezcla que tenga un albarán asociado. La mezcla está en curso."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "You cannot remove a product that is currently stored in this location."
+msgstr "No puedes eliminar un producto que esté actualmente almacenado en esta ubicación."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_return_picking.py:0
+#, python-format
+msgid "You cannot return the product %s because it comes from a flowable location %s."
+msgstr "No puedes devolver el producto %s porque proviene de una ubicación fluida %s."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "You have stock movements with different unit of measure"
+msgstr "Tienes movimientos de stock con diferente unidad de medida"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "You must select a sequence"
+msgstr "Debes seleccionar una secuencia."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "You must select a unit of measure"
+msgstr "Debes seleccionar una unidad de medida."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid "You must select products"
+msgstr "Debes seleccionar productos."

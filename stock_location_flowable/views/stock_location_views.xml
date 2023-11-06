@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="stock_location_view_form" model="ir.ui.view">
+        <field name="name">stock.location.form.inherit</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div
+                    class="alert alert-danger alert-link text-center"
+                    role="alert"
+                    attrs="{'invisible': [('flowable_blocked', '=', False)]}"
+                >
+                    The location is blocked
+                </div>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="flowable_production_id" invisible="1" />
+                <button
+                    name="action_view_mrp_production"
+                    class="oe_stat_button"
+                    icon="fa-wrench"
+                    string="Manufacturing Order"
+                    type="object"
+                    attrs="{'invisible': [('flowable_production_id', '=', False)]}"
+                    groups="stock.group_stock_user"
+                >
+                </button>
+            </xpath>
+            <xpath expr="//group" position="after">
+                <group name="flowable" string="Flowable">
+                    <group>
+                        <field name="flowable_storage" string="Enable" />
+                        <field name="flowable_blocked" invisible="1" />
+                        <label
+                            for="flowable_create_lots"
+                            string="Create Lots"
+                            attrs="{'invisible': ['|', ('flowable_storage', '=', False), ('usage', '=', 'view')]}"
+                        />
+                        <div class="o_row no-gutters d-flex">
+                            <field
+                                name="flowable_create_lots"
+                                attrs="{'invisible': ['|', ('flowable_storage', '=', False), ('usage', '=', 'view')]}"
+                            />
+                            <field
+                                name="flowable_sequence_id"
+                                class="oe_inline"
+                                attrs="{'invisible': ['|', '|', ('flowable_storage', '=', False), ('usage', '=', 'view'), ('flowable_create_lots', '=', False)], 'required': [('flowable_storage', '=', True), ('usage', '!=', 'view'), ('flowable_create_lots', '=', True)]}"
+                            />
+                        </div>
+                        <label
+                            for="flowable_capacity"
+                            string="Capacity"
+                            attrs="{'invisible': ['|', ('flowable_storage', '=', False), ('usage', '=', 'view')]}"
+                        />
+                        <div class="o_row no-gutters d-flex">
+                            <field
+                                name="flowable_capacity"
+                                class="oe_inline text-left"
+                                attrs="{'invisible': ['|', ('flowable_storage', '=', False), ('usage', '=', 'view')], 'required': [('flowable_storage', '=', True), ('usage', '!=', 'view')]}"
+                            />
+                            <field
+                                name="flowable_uom_id"
+                                nolabel="1"
+                                attrs="{'invisible': ['|', ('flowable_storage', '=', False), ('usage', '=', 'view')], 'required': [('flowable_storage', '=', True), ('usage', '!=', 'view')]}"
+                                class="oe_inline"
+                            />
+                            <!-- TODO: Review: If you modify this string, you'll see the updated string field appear adjacent to the percentpie widget.-->
+                            <field
+                                name="flowable_percentage_occupied"
+                                widget="percentpie"
+                                nolabel="1"
+                                string=" "
+                                attrs="{'invisible': ['|', ('flowable_storage', '=', False), ('usage', '=', 'view')]}"
+                            />
+                        </div>
+                        <field
+                            name="flowable_allowed_product_ids"
+                            widget="many2many_tags"
+                            attrs="{'invisible': ['|', ('flowable_storage', '=', False), ('usage', '=', 'view')], 'required': [('flowable_storage', '=', True), ('usage', '!=', 'view')]}"
+                        />
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_location_tree2" model="ir.ui.view">
+        <field name="name">stock.location.tree.inherit</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='complete_name']" position="before">
+                <field name="flowable_blocked" invisible="1" />
+                <field
+                    string=" "
+                    name="flowable_blocked_popover"
+                    widget="stock_rescheduling_popover"
+                    attrs="{'invisible': [('flowable_blocked', '=', False)]}"
+                />
+            </xpath>
+            <xpath expr="//tree" position="inside">
+                <field name="flowable_storage" invisible="1" />
+                <!-- TODO: Review: If you modify this string, you'll see the updated string field appear adjacent to the percentpie widget.-->
+                <field
+                    name="flowable_percentage_occupied"
+                    widget="percentpie"
+                    string=" "
+                    attrs="{'invisible': [('flowable_storage', '=', False)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
