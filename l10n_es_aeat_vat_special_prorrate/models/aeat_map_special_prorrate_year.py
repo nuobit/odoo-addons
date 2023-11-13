@@ -160,7 +160,8 @@ class MapSpecialProrateYear(models.Model):
         taxed = sum(move_lines.mapped("credit")) - sum(move_lines.mapped("debit"))
         # Get base amount of exempt operations
         mapline_vals["tax_ids"] = [
-            (4, self.env.ref("l10n_es.account_tax_template_s_iva0").id)
+            (4, self.env.ref("l10n_es.account_tax_template_s_iva0").id),
+            (4, self.env.ref("l10n_es.account_tax_template_s_iva0_ns").id),
         ]
         map_line = MapLine.new(mapline_vals)
         move_lines = mod303._get_tax_lines(date_from, date_to, map_line)
