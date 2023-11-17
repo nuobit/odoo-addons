@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="menu_mrp_production_batch"
+        name="MRP Batch Production"
+        parent="mrp.menu_mrp_manufacturing"
+        action="mrp_production_batch"
+        sequence="21"
+    />
+    <data>
+        <record id="view_mrp_production_tree_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.tree.inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
+            <field name="arch" type="xml">
+                <button name="button_plan" position="after">
+                    <button
+                        name="mrp_production_batch_create_wizard_action"
+                        type="object"
+                        string="Batch Production"
+                        class="oe_highlight"
+                    />
+                </button>
+                <field name="product_id" position="before">
+                    <field name="production_batch_id" />
+                </field>
+            </field>
+        </record>
+        <record id="mrp_production_form_view" model="ir.ui.view">
+            <field name="name">mrp.production.form.inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+            <field name="arch" type="xml">
+                <xpath
+                    expr="//page[@name='miscellaneous']/group/group[2]"
+                    position="inside"
+                >
+                    <field name="production_batch_id" />
+                </xpath>
+                <div name="button_box" position="inside">
+                    <button
+                        name="action_view_production_batch"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-list"
+                        string=""
+                        attrs="{'invisible': [('production_batch_id', '=', False)]}"
+                    >
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Production Batch</span>
+                        </div>
+                        <field name="production_batch_id" invisible="1" />
+                    </button>
+                </div>
+            </field>
+        </record>
+        <record
+            id="mrp.mrp_production_action_picking_deshboard"
+            model="ir.actions.act_window"
+        >
+            <field
+                name="domain"
+            >[('picking_type_id', '=', active_id), ('production_batch_id', '=', False)]</field>
+        </record>
+    </data>
+</odoo>

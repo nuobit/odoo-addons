@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+-->
+<odoo noupdate="1">
+    <record id="mrp_production_batch_sequence" model="ir.sequence">
+        <field name="name">MRP Production Batch</field>
+        <field name="code">mrp.production.batch</field>
+        <field name="prefix">MOB/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False" />
+    </record>
+</odoo>
