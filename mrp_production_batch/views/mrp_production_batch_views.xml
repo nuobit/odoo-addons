@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="mrp_production_batch_tree_view" model="ir.ui.view">
+        <field name="name">mrp.production.batch.tree</field>
+        <field name="model">mrp.production.batch</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="production_ids" widget="many2many_tags" />
+                <field name="product_ids" widget="many2many_tags" />
+                <field name="product_qty" />
+                <field name="creation_date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="mrp_production_batch_form_view" model="ir.ui.view">
+        <field name="name">mrp.production.batch.form</field>
+        <field name="model">mrp.production.batch</field>
+        <field name="arch" type="xml">
+            <form string="MRP Batch Production">
+                <header>
+                    <button
+                        name="action_done"
+                        id="action_confirm"
+                        string="Confirm Production"
+                        class="btn-primary"
+                        type="object"
+                        attrs="{'invisible': [('state', 'in', ['done'])]}"
+                    />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_production"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-list"
+                            attrs="{'invisible': [('production_ids', '=', False)]}"
+                        >
+                            <field
+                                name="production_qty"
+                                widget="statinfo"
+                                string="productions"
+                            />
+                        </button>
+                        <button
+                            name="action_view_production_pending"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('production_ids', '=', False),('state','!=','done')]}"
+                        >
+                            <field
+                                name="pending_production_qty"
+                                widget="statinfo"
+                                string="pending productions"
+                            />
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="creation_date" />
+                        </group>
+                    </group>
+                    <field name="production_ids" invisible="1" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+        <record
+        id="mrp_production_batch_action_picking_deshboard"
+        model="ir.actions.act_window"
+    >
+            <field name="name">Manufacturing Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.production.batch</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" eval="False" />
+            <field
+            name="domain"
+        >[('production_ids.picking_type_id', '=', active_id)]</field>
+            <field name="context">{'default_picking_type_id': active_id}</field>
+        </record>
+    <record id="mrp_production_batch" model="ir.actions.act_window">
+        <field name="name">Batch Production</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.production.batch</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Batch Production order found
+            </p>
+            <p>
+                Batch production is used to group several production orders
+            </p>
+        </field>
+    </record>
+</odoo>

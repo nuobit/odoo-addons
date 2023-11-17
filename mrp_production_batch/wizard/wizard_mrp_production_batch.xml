@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="wizard_mrp_production_batch_view_form" model="ir.ui.view">
+        <field name="name">mrp.production.batch.wizard.form</field>
+        <field name="model">mrp.production.batch.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Group Productions">
+                <div class="oe_clear" />
+                <field name="manufacturing_ids">
+                    <tree create="false">
+                        <field name="production_id" />
+                        <field name="product_ids" widget="many2many_tags" />
+                    </tree>
+                </field>
+                <footer>
+                    <button
+                        name="action_mrp_production_batch_group"
+                        string="Group Productions"
+                        type="object"
+                        class="btn-primary"
+                        data-hotkey="y"
+                    />
+                    <button
+                        string="Cancel"
+                        class="btn-secondary"
+                        special="cancel"
+                        data-hotkey="n"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="mrp_production_batch_wizard_action" model="ir.actions.act_window">
+        <field name="name">Import partners</field>
+        <field name="res_model">mrp.production.batch.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

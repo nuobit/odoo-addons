@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="stock_production_type_kanban2" model="ir.ui.view">
+        <field name="name">stock.picking.type.kanban</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="mrp.stock_production_type_kanban" />
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="mo_todo_wo_batch_count" />
+                <field name="mo_batch_count" />
+            </field>
+            <xpath expr="//t[@t-esc='record.count_mo_todo.value']" position="after">
+                <t t-esc="record.mo_todo_wo_batch_count.value" />
+            </xpath>
+            <xpath
+                expr="//t[@t-esc='record.count_mo_todo.value']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//t[@t-esc='record.count_mo_todo.value']/../.."
+                position="after"
+            >
+                <button
+                    class="btn btn-primary"
+                    name="%(mrp_production_batch_action_picking_deshboard)d"
+                    type="action"
+                >
+                    <span t-if="record.code.raw_value =='mrp_operation'">
+                        <t t-esc="record.mo_batch_count.value" /> To Process (Batches)
+                    </span>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
