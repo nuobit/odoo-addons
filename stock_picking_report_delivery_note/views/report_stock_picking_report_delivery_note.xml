@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <template id="report_assets_common" inherit_id="web.report_assets_common">
@@ -243,82 +243,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="o.move_lines" t-as="l">
-                            <t t-set="line_amounts" t-value="l._get_amounts()" />
-                            <tr>
-                                <td>
-                                    <table class="sprdn-table2">
-                                        <tbody>
-                                            <tr>
-                                                <t
-                                                    t-set="l_default_codes"
-                                                    t-value="filter(None, list(l.get_product_codes()))"
-                                                />
-                                                <td width="15%">
-                                                    <t
-                                                        t-foreach="l_default_codes"
-                                                        t-as="lc"
-                                                    >
-                                                        <div t-esc="lc" />
-                                                    </t>
-                                                </td>
-                                                <t
-                                                    t-set="l_name"
-                                                    t-value="l.get_splited_line_description()"
-                                                />
-                                                <td width="50%">
-                                                    <t
-                                                        t-foreach="l_name.split('\n')"
-                                                        t-as="ln"
-                                                    >
-                                                        <div t-esc="ln" />
-                                                    </t>
-                                                    <t
-                                                        t-set="lots"
-                                                        t-value="l.get_line_lots()"
-                                                    />
-                                                    <div t-if="lots">
-                                                        <span
-                                                            t-if="l.product_id.tracking == 'lot'"
-                                                        >
-                                                            Lots:
-                                                        </span>
-                                                        <span
-                                                            t-if="l.product_id.tracking == 'serial'"
-                                                        >
-                                                            Serial numbers:
-                                                        </span>
-                                                        <span t-esc="', '.join(lots)" />
-                                                    </div>
-                                                </td>
-                                                <td width="13%" class="text-right">
-                                                    <span t-field="l.quantity_done" />
-                                                    <span
-                                                        class="units"
-                                                        t-field="l.product_uom"
-                                                        groups="uom.group_uom"
-                                                    />
-                                                </td>
-                                                <td width="12%" class="text-right">
-                                                    <span
-                                                        t-if="l.sale_line_id"
-                                                        t-field="l.sale_price_unit"
-                                                    />
-                                                </td>
-                                                <td width="10%" class="text-right">
-                                                    <t t-if="l.sale_line_id">
-                                                        <span
-                                                            t-esc="line_amounts['subtotal']"
-                                                            t-options="{'widget': 'monetary', 'display_currency': o.sale_id.pricelist_id.currency_id}"
-                                                        />
-                                                    </t>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </t>
+                        <tr>
+                            <td>
+                                <table class="sprdn-table2">
+                                    <tbody name="sprdn_document_tbody">
+                                        <t
+                                            t-set="grouped_moves"
+                                            t-value="o.get_delivery_note_moves()"
+                                        />
+                                        <t t-foreach="grouped_moves" t-as="gm">
+                                            <t
+                                                t-call="stock_picking_report_delivery_note.sprdn_document_body"
+                                                class="report_stock"
+                                            />
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -410,11 +352,9 @@
                         <p t-if="o.note" t-field="o.note" />
                     </div>
                 </div>
-
             </div>
         </t>
     </template>
-
     <template id="sprdn">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
@@ -423,6 +363,57 @@
                     t-lang="o.partner_id.lang"
                 />
             </t>
+        </t>
+    </template>
+    <template id="sprdn_document_body">
+        <t name="move_lines" t-foreach="gm" t-as="l">
+            <tr>
+                <t t-set="line_amounts" t-value="l._get_amounts()" />
+                <t
+                    t-set="l_default_codes"
+                    t-value="filter(None, list(l.get_product_codes()))"
+                />
+                <td width="15%">
+                    <t t-foreach="l_default_codes" t-as="lc">
+                        <div t-esc="lc" />
+                    </t>
+                </td>
+                <t t-set="l_name" t-value="l.get_splited_line_description()" />
+                <td width="50%">
+                    <t t-foreach="l_name.split('\n')" t-as="ln">
+                        <div t-esc="ln" />
+                    </t>
+                    <t t-set="lots" t-value="l.get_line_lots()" />
+                    <div t-if="lots">
+                        <span t-if="l.product_id.tracking == 'lot'">
+                            Lots:
+                        </span>
+                        <span t-if="l.product_id.tracking == 'serial'">
+                            Serial numbers:
+                        </span>
+                        <span t-esc="', '.join(lots)" />
+                    </div>
+                </td>
+                <td width="13%" class="text-right">
+                    <span t-field="l.quantity_done" />
+                    <span
+                        class="units"
+                        t-field="l.product_uom"
+                        groups="uom.group_uom"
+                    />
+                </td>
+                <td width="12%" class="text-right">
+                    <span t-if="l.sale_line_id" t-field="l.sale_price_unit" />
+                </td>
+                <td width="10%" class="text-right">
+                    <t t-if="l.sale_line_id">
+                        <span
+                            t-esc="line_amounts['subtotal']"
+                            t-options="{'widget': 'monetary', 'display_currency': o.sale_id.pricelist_id.currency_id}"
+                        />
+                    </t>
+                </td>
+            </tr>
         </t>
     </template>
 </odoo>

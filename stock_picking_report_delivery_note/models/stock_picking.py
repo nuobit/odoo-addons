@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -42,3 +42,6 @@ class Picking(models.Model):
         res = sorted(res.items(), key=lambda l: l[0].sequence)
         res = [(val[0].name, val[1]["amount"], val[1]["base"], len(res)) for val in res]
         return res
+
+    def get_delivery_note_moves(self):
+        return self.move_lines
