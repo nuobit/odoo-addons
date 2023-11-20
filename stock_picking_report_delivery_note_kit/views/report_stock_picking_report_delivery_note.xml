@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_assets_common" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link
+                href="/stock_picking_report_delivery_note_kit/static/src/scss/stock_picking_report_delivery_note.scss"
+                rel="stylesheet"
+                type="text/scss"
+            />
+        </xpath>
+    </template>
+    <template
+        id="sprdn_document_kit_tbody"
+        inherit_id="stock_picking_report_delivery_note.sprdn_document"
+    >
+        <xpath expr="//tbody//t[@t-foreach='grouped_moves']/*[1]" position="before">
+            <t t-set="parent_product" t-value="gm[0]" />
+            <t t-set="move_lines" t-value="gm[1]" />
+        </xpath>
+        <xpath expr="//tbody//t[@class='report_stock']" position="after">
+            <t t-if="parent_product">
+                <t
+                    t-call="stock_picking_report_delivery_note_kit.sprdn_document_kit_body"
+                    class="report_stock"
+                />
+            </t>
+            <t t-else="" name="moves_not_kit" />
+        </xpath>
+        <xpath expr="//t[@name='moves_not_kit']" position="inside">
+            <xpath expr="//tbody//t[@class='report_stock']" position="move" />
+        </xpath>
+    </template>
+    <template id="sprdn_document_kit_body">
+        <tr>
+            <td width="15%">
+                <div t-esc="parent_product.default_code" />
+            </td>
+            <t t-set="l_name" t-value="move_lines[0].get_splited_line_description()" />
+            <td width="50%">
+                <t t-foreach="l_name.split('\n')" t-as="ln">
+                    <div t-esc="ln" />
+                </t>
+                <td width="13%" class="text-right">
+                </td>
+                <td width="12%" class="text-right">
+                    <span
+                        t-if="move_lines[0].sale_line_id"
+                        t-field="move_lines[0].sale_price_unit"
+                    />
+                </td>
+                <td width="10%" class="text-right">
+                    <t t-if="move_lines[0].sale_line_id">
+                        <t
+                            t-set="line_amounts"
+                            t-value="move_lines[0]._get_amounts()"
+                        />
+                        <span
+                            t-esc="line_amounts['subtotal']"
+                            t-options="{'widget': 'monetary', 'display_currency': o.sale_id.pricelist_id.currency_id}"
+                        />
+                    </t>
+                </td>
+            </td>
+        </tr>
+        <t
+            t-call="stock_picking_report_delivery_note_kit.sprdn_document_kit_components_body"
+            class="report_stock"
+        />
+    </template>
+    <template id="sprdn_document_kit_components_body">
+        <t t-foreach="move_lines" t-as="l">
+            <tr>
+                <t t-set="line_amounts" t-value="l._get_amounts()" />
+                <t
+                    t-set="l_default_codes"
+                    t-value="filter(None, list(l.get_product_codes()))"
+                />
+                <td width="15%">
+                    <t t-foreach="l_default_codes" t-as="lc">
+                        <div class="padding-left" t-esc="lc" />
+                    </t>
+                </td>
+                <t
+                    t-set="l_name"
+                    t-value="l.get_splited_line_component_description()"
+                />
+                <td width="50%">
+
+                    <t t-foreach="l_name.split('\n')" t-as="ln">
+
+                        <div class="padding-left">
+
+                            <span t-esc="ln" />
+                        </div>
+                    </t>
+                    <t t-set="lots" t-value="l.get_line_lots()" />
+                    <div class="padding-left" t-if="lots">
+                        <span t-if="l.product_id.tracking == 'lot'">
+                            Lots:
+                        </span>
+                        <span t-if="l.product_id.tracking == 'serial'">
+                            Serial numbers:
+                        </span>
+                        <span t-esc="', '.join(lots)" />
+                    </div>
+                </td>
+                <td width="13%" class="text-right">
+                    <span t-field="l.quantity_done" />
+                    <span
+                        class="units"
+                        t-field="l.product_uom"
+                        groups="uom.group_uom"
+                    />
+                </td>
+                <td width="12%" class="text-right">
+                </td>
+                <td width="10%" class="text-right">
+                </td>
+            </tr>
+        </t>
+    </template>
+    <template
+        id="sprdn_document_body"
+        inherit_id="stock_picking_report_delivery_note.sprdn_document_body"
+    >
+        <xpath expr="//t[@name='move_lines']" position="attributes">
+            <attribute name="t-foreach">move_lines</attribute>
+        </xpath>
+    </template>
+</odoo>
