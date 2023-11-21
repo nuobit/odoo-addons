@@ -8,7 +8,7 @@ class MRPProductionBatchLineWizard(models.TransientModel):
     _name = "mrp.production.batch.line.wizard"
     _description = "MRP Production Line Batch wizard"
 
-    mrp_production_batch_id = fields.Many2one(
+    production_batch_wizard_id = fields.Many2one(
         comodel_name="mrp.production.batch.wizard",
         required=True,
         ondelete="cascade",

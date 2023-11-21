@@ -1,2 +1,2 @@
-from . import wizard_mrp_production_batch
-from . import wizard_mrp_production_batch_line
+from . import mrp_production_batch_wizard
+from . import mrp_production_batch_line_wizard
