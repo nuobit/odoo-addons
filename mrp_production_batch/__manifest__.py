@@ -13,10 +13,10 @@
     "license": "AGPL-3",
     "data": [
         "security/ir.model.access.csv",
-        "data/ir_sequence_data.xml",
+        # "data/ir_sequence_data.xml",
         "views/mrp_production_batch_views.xml",
         "views/mrp_production_views.xml",
         "views/stock_picking_views.xml",
-        "wizard/wizard_mrp_production_batch.xml",
+        "wizard/mrp_production_batch_wizard.xml",
     ],
 }

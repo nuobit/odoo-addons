@@ -2,13 +2,13 @@
 <odoo>
     <menuitem
         id="menu_mrp_production_batch"
-        name="MRP Batch Production"
+        name="Production Batches"
         parent="mrp.menu_mrp_manufacturing"
         action="mrp_production_batch"
         sequence="21"
     />
     <data>
-        <record id="view_mrp_production_tree_inherit" model="ir.ui.view">
+        <record id="mrp_production_tree_view" model="ir.ui.view">
             <field name="name">mrp.production.tree.inherit</field>
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
@@ -31,12 +31,11 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view" />
             <field name="arch" type="xml">
-                <xpath
-                    expr="//page[@name='miscellaneous']/group/group[2]"
-                    position="inside"
-                >
-                    <field name="production_batch_id" />
-                </xpath>
+                <page name="miscellaneous" position="inside">
+                    <group>
+                        <field name="production_batch_id" />
+                    </group>
+                </page>
                 <div name="button_box" position="inside">
                     <button
                         name="action_view_production_batch"

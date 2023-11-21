@@ -19,15 +19,23 @@
         <field name="name">mrp.production.batch.form</field>
         <field name="model">mrp.production.batch</field>
         <field name="arch" type="xml">
-            <form string="MRP Batch Production">
+            <form string="Production Batches">
                 <header>
+                     <button
+                        name="action_generate_serial"
+                        id="action_generate_serial"
+                        string="Generate Serial Numbers"
+                        class="btn-primary"
+                        type="object"
+                        attrs="{'invisible': ['|',('state', '=', 'done'),('production_wo_lot_producing_id','=',[])]}"
+                    />
                     <button
                         name="action_done"
                         id="action_confirm"
                         string="Confirm Production"
                         class="btn-primary"
                         type="object"
-                        attrs="{'invisible': [('state', 'in', ['done'])]}"
+                        attrs="{'invisible': ['|',('state', '=', 'done'),('production_wo_lot_producing_id','!=',[])]}"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
@@ -41,50 +49,43 @@
                             attrs="{'invisible': [('production_ids', '=', False)]}"
                         >
                             <field
-                                name="production_qty"
+                                name="production_count"
                                 widget="statinfo"
-                                string="productions"
-                            />
-                        </button>
-                        <button
-                            name="action_view_production_pending"
-                            type="object"
-                            class="oe_stat_button"
-                            icon="fa-pencil-square-o"
-                            attrs="{'invisible': [('production_ids', '=', False),('state','!=','done')]}"
-                        >
-                            <field
-                                name="pending_production_qty"
-                                widget="statinfo"
-                                string="pending productions"
+                                string="Productions"
                             />
                         </button>
                     </div>
                     <group>
                         <group>
-                            <field name="name" />
-                            <field name="creation_date" />
+                            <group>
+                                <field name="name" />
+                                <field name="creation_date" />
+                            </group>
+                            <group>
+                              <field name="operation_type" />
+                            </group>
                         </group>
                     </group>
                     <field name="production_ids" invisible="1" />
+                    <field name="production_wo_lot_producing_id" invisible="1" />
                 </sheet>
             </form>
         </field>
     </record>
-        <record
-        id="mrp_production_batch_action_picking_deshboard"
+    <record
+        id="mrp_production_batch_action_picking_dashboard"
         model="ir.actions.act_window"
     >
-            <field name="name">Manufacturing Orders</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">mrp.production.batch</field>
-            <field name="view_mode">tree,kanban,form</field>
-            <field name="view_id" eval="False" />
-            <field
+        <field name="name">Manufacturing Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.production.batch</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" eval="False" />
+        <field
             name="domain"
         >[('production_ids.picking_type_id', '=', active_id)]</field>
-            <field name="context">{'default_picking_type_id': active_id}</field>
-        </record>
+        <field name="context">{'default_picking_type_id': active_id}</field>
+    </record>
     <record id="mrp_production_batch" model="ir.actions.act_window">
         <field name="name">Batch Production</field>
         <field name="type">ir.actions.act_window</field>
@@ -98,5 +99,10 @@
                 Batch production is used to group several production orders
             </p>
         </field>
+    </record>
+        <record id="mrp_production_batch_action" model="ir.actions.act_window">
+        <field name="name">Invoice batches</field>
+        <field name="res_model">mrp.production.batch</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>

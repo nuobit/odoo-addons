@@ -10,23 +10,30 @@ class MrpProduction(models.Model):
     production_batch_id = fields.Many2one(
         comodel_name="mrp.production.batch",
         string="Production Batch",
+        ondelete="restrict",
         readonly=True,
     )
 
-    def _check_production_to_batch_consitency(self, mrp_production_ids):
-        if not mrp_production_ids:
+    def _check_production_to_batch_consistency(self, mrp_productions):
+        if not mrp_productions:
             raise ValidationError(_("No productions selected"))
-        if mrp_production_ids.mapped("production_batch_id"):
+        if mrp_productions.production_batch_id:
             raise ValidationError(
                 _("Some of the selected productions already have a batch")
             )
-        if any(
-            state in ("done", "cancel") for state in mrp_production_ids.mapped("state")
-        ):
+        if {"done", "cancel"} & set(mrp_productions.mapped("state")):
             raise ValidationError(
                 _("Some of the selected productions are already done or cancelled")
             )
-        picking_type_ids = mrp_production_ids.mapped("picking_type_id")
+        if len(mrp_productions.mapped("picking_type_id")) > 1:
+            raise ValidationError(
+                _("Some of the selected productions have different operation types")
+            )
+        if len(mrp_productions.mapped("picking_type_id").mapped("warehouse_id")) > 1:
+            raise ValidationError(
+                _("Some of the selected productions have different warehouses")
+            )
+        picking_type_ids = mrp_productions.picking_type_id
         if len(picking_type_ids) > 1:
             raise ValidationError(
                 _(
@@ -38,21 +45,59 @@ class MrpProduction(models.Model):
     def mrp_production_batch_create_wizard_action(self):
         model = self.env.context.get("active_model")
         mrp_production_ids = self.env[model].browse(self.env.context.get("active_ids"))
-        self._check_production_to_batch_consitency(mrp_production_ids)
-        self.env["mrp.production.batch"].create(
+        self._check_production_to_batch_consistency(mrp_production_ids)
+        ctx = dict(self.env.context, active_ids=self.ids)
+
+        view_form = self.env.ref(
+            "mrp_production_batch.wizard_mrp_production_batch_view_form"
+        )
+        res_id = self.env["mrp.production.batch.wizard"].create(
             {
-                "creation_date": str(fields.Datetime.now()),
-                "production_ids": [
-                    (6, 0, mrp_production_ids.ids),
-                ],
+                "warehouse_id": mrp_production_ids.mapped("picking_type_id")
+                .mapped("warehouse_id")
+                .id,
             }
         )
+        res = {
+            "name": _("MRP production Batch"),
+            "view_mode": "form",
+            "res_model": "mrp.production.batch.wizard",
+            "res_id": res_id.id,
+            "target": "new",
+            "views": [(view_form.id, "form")],
+            "view_id": view_form.id,
+            "type": "ir.actions.act_window",
+            "context": ctx,
+        }
+        return res
+
+    def _action_generate_consumption_wizard(self, consumption_issues):
+        if not self.env.context.get("mrp_production_batch_create"):
+            return super()._action_generate_consumption_wizard(consumption_issues)
+        else:
+            raise ValidationError(
+                _(
+                    "Production %s have not recorded produced quantities yet."
+                    % self.mapped("name")
+                )
+            )
+
+    def _action_generate_immediate_wizard(self):
+        if not self.env.context.get("mrp_production_batch_create"):
+            return super()._action_generate_immediate_wizard()
+        else:
+            raise ValidationError(
+                _(
+                    "Production %s have not recorded produced quantities yet."
+                    % self.mapped("name")
+                )
+            )
 
     @api.constrains("state")
     def _check_state_batch_creation(self):
         for rec in self:
-            if rec.state == "cancel":
-                if rec.production_batch_id:
+            if rec.production_batch_id:
+                if rec.state == "cancel":
                     raise ValidationError(
                         _(
                             "You can't cancel a production that belongs to a batch %s. "
@@ -60,17 +105,18 @@ class MrpProduction(models.Model):
                         )
                         % rec.production_batch_id.name
                     )
-            elif rec.state == "done":
-                if rec.production_batch_id and not self.env.context.get("batch_create"):
-                    raise ValidationError(
-                        _(
-                            "You can't change the state of a production %s "
-                            "because it belongs to a batch: %s. \n "
-                            "It must be processed from the batch."
+                elif rec.state == "done":
+                    if not self.env.context.get("mrp_production_batch_create"):
+                        raise ValidationError(
+                            _(
+                                "You can't change the state of a production %s "
+                                "because it belongs to a batch: %s. \n "
+                                "It must be processed from the batch."
+                            )
+                            % (rec.name, rec.production_batch_id.name)
                         )
-                        % (rec.name, rec.production_batch_id.name)
-                    )
 
+    # TODO: xml action
     def action_view_production_batch(self):
         self.ensure_one()
         view = self.env.ref("mrp_production_batch.mrp_production_batch_form_view")

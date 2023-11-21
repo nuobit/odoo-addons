@@ -6,38 +6,47 @@ from odoo import _, api, fields, models
 class MrpProductionBatch(models.Model):
     _name = "mrp.production.batch"
 
-    @api.model
-    def _default_name(self):
-        return self.env["ir.sequence"].next_by_code("mrp.production.batch")
-
     name = fields.Char(
-        default=_default_name,
         readonly=True,
+        required=True,
     )
     production_ids = fields.One2many(
         comodel_name="mrp.production",
         inverse_name="production_batch_id",
         string="Manufacturing Orders",
     )
-    production_qty = fields.Integer(
-        compute="_compute_production_qty",
+    production_wo_lot_producing_id = fields.One2many(
+        comodel_name="mrp.production",
+        inverse_name="production_batch_id",
+        compute="_compute_production_wo_lot_producing_id",
     )
 
-    def _compute_production_qty(self):
+    @api.depends("production_ids.lot_producing_id")
+    def _compute_production_wo_lot_producing_id(self):
         for rec in self:
-            rec.production_qty = len(rec.production_ids)
+            rec.production_wo_lot_producing_id = rec.production_ids.filtered(
+                lambda x: not x.lot_producing_id
+            )
 
-    pending_production_qty = fields.Integer(
-        compute="_compute_pending_production_qty",
+    production_count = fields.Integer(
+        compute="_compute_production_count",
     )
 
-    def _compute_pending_production_qty(self):
+    def _compute_production_count(self):
         for rec in self:
-            rec.pending_production_qty = len(
+            rec.production_count = len(rec.production_ids)
+
+    pending_production_count = fields.Integer(
+        compute="_compute_pending_production_count",
+    )
+
+    def _compute_pending_production_count(self):
+        for rec in self:
+            rec.pending_production_count = len(
                 rec.production_ids.filtered(lambda r: r.state != "done")
             )
 
-    creation_date = fields.Datetime(
+    creation_date = fields.Date(
         string="Creation Date",
     )
     state = fields.Selection(
@@ -46,6 +55,11 @@ class MrpProductionBatch(models.Model):
             ("done", "Done"),
         ],
         default="draft",
+    )
+    operation_type = fields.Many2one(
+        comodel_name="stock.picking.type",
+        required=True,
+        readonly=True,
     )
     product_qty = fields.Float(
         compute="_compute_product_qty",
@@ -68,7 +82,9 @@ class MrpProductionBatch(models.Model):
 
     def action_done(self):
         self.ensure_one()
-        self.production_ids.with_context(batch_create=True).button_mark_done()
+        self.production_ids.with_context(
+            mrp_production_batch_create=True
+        ).button_mark_done()
         self.state = "done"
 
     def _get_common_action_view_production(self):
@@ -97,3 +113,8 @@ class MrpProductionBatch(models.Model):
             ("state", "!=", "done"),
         ]
         return action
+
+    def action_generate_serial(self):
+        for rec in self:
+            for production in rec.production_wo_lot_producing_id:
+                production.action_generate_serial()

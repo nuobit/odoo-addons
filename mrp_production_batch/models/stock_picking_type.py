@@ -1,13 +1,19 @@
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
 from odoo import fields, models
 
 
-class PickingType(models.Model):
+class StockPickingType(models.Model):
     _inherit = "stock.picking.type"
 
-    mo_todo_wo_batch_count = fields.Integer(
+    code = fields.Selection(
+        selection_add=[("mrp_operation_batch", "Manufacturing Batch")],
+        ondelete={"mrp_operation_batch": "cascade"},
+    )
+
+    count_mo_todo_wo_batch = fields.Integer(
         string="Number of Manufacturing Orders to Process",
         compute="_compute_mo_count",
     )
@@ -41,38 +47,30 @@ class PickingType(models.Model):
                     and x["picking_type_id"][0]: x["picking_type_id_count"]
                     for x in data
                 }
-                rec.mo_todo_wo_batch_count = count.get(rec.id, 0)
+                rec.count_mo_todo_wo_batch = count.get(rec.id, 0)
             else:
-                rec.mo_todo_wo_batch_count = False
+                rec.count_mo_todo_wo_batch = False
 
+    mo_batches = fields.One2many(
+        comodel_name="mrp.production.batch",
+        inverse_name="operation_type",
+    )
     mo_batch_count = fields.Integer(
         compute="_compute_mo_batch_count",
     )
 
-    def _get_production_batch_ids(self):
-        domains = {
-            "count_mo_waiting": [("reservation_state", "=", "waiting")],
-            "count_mo_todo": [
-                ("state", "in", ("confirmed", "draft", "progress", "to_close"))
-            ],
-            "count_mo_late": [
-                ("date_planned_start", "<", fields.Date.today()),
-                ("state", "=", "confirmed"),
-            ],
-        }
-        return (
-            self.env["mrp.production"]
-            .search(
-                domains["count_mo_todo"]
-                + [
-                    ("state", "not in", ("done", "cancel")),
-                    ("picking_type_id", "in", self.ids),
-                    ("production_batch_id", "!=", False),
-                ],
-            )
-            .mapped("production_batch_id")
-        )
-
     def _compute_mo_batch_count(self):
         for rec in self:
-            rec.mo_batch_count = len(self._get_production_batch_ids()) or False
+            rec.mo_batch_count = len(rec.mo_batches) or False
+
+    def mrp_production_batch_action(self):
+        tree_view = self.env.ref("mrp_production_batch.mrp_production_batch_tree_view")
+        return {
+            "name": ("Detailed Operations"),
+            "type": "ir.actions.act_window",
+            "view_mode": "tree",
+            "res_model": "mrp.production.batch",
+            "views": [(tree_view.id, "tree")],
+            "view_id": tree_view.id,
+            "domain": [("id", "in", self.mo_batches.ids)],
+        }
