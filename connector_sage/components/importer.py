@@ -122,15 +122,18 @@ class SageImporter(AbstractComponent):
             _logger.debug("%d updated from Sage %s", binding, external_id)
         else:
             # or we create it
-            binding = self.model.with_company(self.backend_record.company_id).create(
-                internal_data.values(for_create=True)
-            )
+            binding = self._create_binding(internal_data)
             _logger.debug("%d created from Sage %s", binding, external_id)
 
         # finally, we bind both, so the next time we import
         # the record, we'll update the same record instead of
         # creating a new one
         binder.bind(external_id, binding)
+
+    def _create_binding(self, internal_data):
+        return self.model.with_company(self.backend_record.company_id).create(
+            internal_data.values(for_create=True)
+        )
 
 
 class SageBatchImporter(AbstractComponent):
