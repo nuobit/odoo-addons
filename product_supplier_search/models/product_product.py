@@ -26,7 +26,6 @@ class ProductProduct(models.Model):
                     ]
                 )
                 if suppliers:
-                    products_name = []
                     products = self.search(
                         [("product_tmpl_id.seller_ids", "in", suppliers.ids)],
                         limit=limit,
