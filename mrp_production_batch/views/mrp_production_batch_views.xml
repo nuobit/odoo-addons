@@ -42,16 +42,55 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button
-                            name="action_view_production"
+                            name="action_view_total_production"
                             type="object"
                             class="oe_stat_button"
                             icon="fa-list"
                             attrs="{'invisible': [('production_ids', '=', False)]}"
                         >
                             <field
-                                name="production_count"
+                                name="total_production_count"
                                 widget="statinfo"
-                                string="Productions"
+                                string="Total"
+                            />
+                        </button>
+                        <button
+                            name="action_view_production_cancelled"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-times"
+                            attrs="{'invisible': [('production_ids', '=', False)]}"
+                        >
+                            <field
+                                name="cancelled_production_count"
+                                widget="statinfo"
+                                string="Cancelled"
+                            />
+                        </button>
+                        <button
+                            name="action_view_production_pending"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-clock-o"
+                            attrs="{'invisible': [('production_ids', '=', False)]}"
+                        >
+                            <field
+                                name="pending_production_count"
+                                widget="statinfo"
+                                string="Pending"
+                            />
+                        </button>
+                        <button
+                            name="action_view_production_done"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-check"
+                            attrs="{'invisible': [('production_ids', '=', False)]}"
+                        >
+                            <field
+                                name="done_production_count"
+                                widget="statinfo"
+                                string="Done"
                             />
                         </button>
                     </div>

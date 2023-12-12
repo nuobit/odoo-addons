@@ -1,6 +1,11 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import logging
+
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
 
 
 class MrpProductionBatch(models.Model):
@@ -28,13 +33,13 @@ class MrpProductionBatch(models.Model):
                 lambda x: not x.lot_producing_id
             )
 
-    production_count = fields.Integer(
-        compute="_compute_production_count",
+    total_production_count = fields.Integer(
+        compute="_compute_total_production_count",
     )
 
-    def _compute_production_count(self):
+    def _compute_total_production_count(self):
         for rec in self:
-            rec.production_count = len(rec.production_ids)
+            rec.total_production_count = len(rec.production_ids)
 
     pending_production_count = fields.Integer(
         compute="_compute_pending_production_count",
@@ -43,7 +48,27 @@ class MrpProductionBatch(models.Model):
     def _compute_pending_production_count(self):
         for rec in self:
             rec.pending_production_count = len(
-                rec.production_ids.filtered(lambda r: r.state != "done")
+                rec.production_ids.filtered(lambda r: r.state not in ("done", "cancel"))
+            )
+
+    done_production_count = fields.Integer(
+        compute="_compute_done_production_count",
+    )
+
+    def _compute_done_production_count(self):
+        for rec in self:
+            rec.done_production_count = len(
+                rec.production_ids.filtered(lambda r: r.state == "done")
+            )
+
+    cancelled_production_count = fields.Integer(
+        compute="_compute_cancelled_production_count",
+    )
+
+    def _compute_cancelled_production_count(self):
+        for rec in self:
+            rec.cancelled_production_count = len(
+                rec.production_ids.filtered(lambda r: r.state == "cancel")
             )
 
     creation_date = fields.Date(
@@ -52,10 +77,27 @@ class MrpProductionBatch(models.Model):
     state = fields.Selection(
         selection=[
             ("draft", "Draft"),
+            ("in_progress", "In Progress"),
             ("done", "Done"),
         ],
         default="draft",
+        compute="_compute_state",
+        store=True,
     )
+
+    @api.depends("production_ids.state", "production_wo_lot_producing_id")
+    def _compute_state(self):
+        for rec in self:
+            if not rec.production_wo_lot_producing_id:
+                if rec.production_ids.filtered(
+                    lambda r: r.state not in ["done", "cancel"]
+                ):
+                    rec.state = "in_progress"
+                else:
+                    rec.state = "done"
+            else:
+                rec.state = "draft"
+
     operation_type = fields.Many2one(
         comodel_name="stock.picking.type",
         required=True,
@@ -82,10 +124,20 @@ class MrpProductionBatch(models.Model):
 
     def action_done(self):
         self.ensure_one()
-        self.production_ids.with_context(
-            mrp_production_batch_create=True
-        ).button_mark_done()
-        self.state = "done"
+        productions = self.production_ids.filtered(lambda r: r.state != "done")
+        len_production = len(productions)
+        productions_display_name = []
+        for production in productions:
+            try:
+                production.with_context(
+                    mrp_production_batch_create=True
+                ).button_mark_done()
+            except Exception:
+                productions_display_name.append(production.display_name)
+        if productions_display_name and len(productions_display_name) == len_production:
+            message = "The following productions could not be marked as 'done':\n"
+            message += "\n".join(productions_display_name)
+            raise UserError(message)
 
     def _get_common_action_view_production(self):
         tree_view = self.env.ref("mrp.mrp_production_tree_view")
@@ -99,7 +151,7 @@ class MrpProductionBatch(models.Model):
             "view_id": tree_view.id,
         }
 
-    def action_view_production(self):
+    def action_view_total_production(self):
         self.ensure_one()
         action = self._get_common_action_view_production()
         action["domain"] = [("id", "in", self.production_ids.ids)]
@@ -110,7 +162,25 @@ class MrpProductionBatch(models.Model):
         action = self._get_common_action_view_production()
         action["domain"] = [
             ("id", "in", self.production_ids.ids),
-            ("state", "!=", "done"),
+            ("state", "not in", ("done", "cancel")),
+        ]
+        return action
+
+    def action_view_production_done(self):
+        self.ensure_one()
+        action = self._get_common_action_view_production()
+        action["domain"] = [
+            ("id", "in", self.production_ids.ids),
+            ("state", "=", "done"),
+        ]
+        return action
+
+    def action_view_production_cancelled(self):
+        self.ensure_one()
+        action = self._get_common_action_view_production()
+        action["domain"] = [
+            ("id", "in", self.production_ids.ids),
+            ("state", "=", "cancel"),
         ]
         return action
 

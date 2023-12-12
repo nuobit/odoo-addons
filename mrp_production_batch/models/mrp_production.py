@@ -1,6 +1,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -11,7 +11,7 @@ class MrpProduction(models.Model):
         comodel_name="mrp.production.batch",
         string="Production Batch",
         ondelete="restrict",
-        readonly=True,
+        domain="[('state', '!=', 'done')]",
     )
 
     def _check_production_to_batch_consistency(self, mrp_productions):
@@ -92,29 +92,6 @@ class MrpProduction(models.Model):
                     % self.mapped("name")
                 )
             )
-
-    @api.constrains("state")
-    def _check_state_batch_creation(self):
-        for rec in self:
-            if rec.production_batch_id:
-                if rec.state == "cancel":
-                    raise ValidationError(
-                        _(
-                            "You can't cancel a production that belongs to a batch %s. "
-                            "Please, delete it from the batch first."
-                        )
-                        % rec.production_batch_id.name
-                    )
-                elif rec.state == "done":
-                    if not self.env.context.get("mrp_production_batch_create"):
-                        raise ValidationError(
-                            _(
-                                "You can't change the state of a production %s "
-                                "because it belongs to a batch: %s. \n "
-                                "It must be processed from the batch."
-                            )
-                            % (rec.name, rec.production_batch_id.name)
-                        )
 
     # TODO: xml action
     def action_view_production_batch(self):
