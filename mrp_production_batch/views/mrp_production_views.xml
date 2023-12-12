@@ -33,7 +33,12 @@
             <field name="arch" type="xml">
                 <page name="miscellaneous" position="inside">
                     <group>
-                        <field name="production_batch_id" />
+                        <group>
+                            <field
+                                name="production_batch_id"
+                                attrs="{'readonly': [('state', '=', 'done')]}"
+                            />
+                        </group>
                     </group>
                 </page>
                 <div name="button_box" position="inside">
