@@ -4,16 +4,6 @@
 from odoo import api, fields, models
 
 
-class SaleOrderLine(models.Model):
-    _inherit = "sale.order.line"
-
-    lengow_bind_ids = fields.One2many(
-        comodel_name="lengow.sale.order.line",
-        inverse_name="odoo_id",
-        string="Lengow Bindings",
-    )
-
-
 class SaleOrderLineBinding(models.Model):
     _name = "lengow.sale.order.line"
     _inherit = "lengow.binding"
@@ -59,7 +49,7 @@ class SaleOrderLineBinding(models.Model):
         lengow_order_id = vals["lengow_order_id"]
         binding = self.env["lengow.sale.order"].browse(lengow_order_id)
         vals["order_id"] = binding.odoo_id.id
-        binding = super().create(vals)
+        return super().create(vals)
         # FIXME triggers function field
         # The amounts (amount_total, ...) computed fields on 'sale.order' are
         # not triggered when magento.sale.order.line are created.
@@ -68,4 +58,4 @@ class SaleOrderLineBinding(models.Model):
         # by writing again on the line.
         # line = binding.odoo_id
         # line.write({'price_unit': line.price_unit})
-        return binding
+        # return binding

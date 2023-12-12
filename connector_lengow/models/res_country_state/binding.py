@@ -16,8 +16,12 @@ class CountryStateBinding(models.Model):
         ondelete="cascade",
     )
 
-    lengow_state_region = fields.Char(string="Lengow Region")
-    lengow_common_country_iso_a2 = fields.Char(string="Lengow Country Code")
+    lengow_state_region = fields.Char(
+        string="Lengow Region",
+    )
+    lengow_common_country_iso_a2 = fields.Char(
+        string="Lengow Country Code",
+    )
 
     _sql_constraints = [
         (

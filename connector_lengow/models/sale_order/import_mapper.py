@@ -25,9 +25,9 @@ class SaleOrderImportMapChild(Component):
     def format_items(self, items_values):
         ops = []
         for values in items_values:
-            id = values.pop("id", None)
-            if id:
-                ops.append((1, id, values))
+            _id = values.pop("id", None)
+            if _id:
+                ops.append((1, _id, values))
             else:
                 ops.append((0, False, values))
         return ops
@@ -43,11 +43,6 @@ class SaleOrderImportMapper(Component):
 
     @only_create
     @mapping
-    def backend_id(self, record):
-        return {"backend_id": self.backend_record.id}
-
-    @only_create
-    @mapping
     def company_id(self, record):
         return {"company_id": self.backend_record.company_id.id}
 
@@ -56,6 +51,12 @@ class SaleOrderImportMapper(Component):
         if record["delivery_address"]:
             binder = self.binder_for("lengow.res.partner")
             external_id = binder.dict2id(record["delivery_address"], in_field=False)
+            if not external_id:
+                raise ValidationError(
+                    _(
+                        "Delivery Address not found. This Address should be defined on Lengow"
+                    )
+                )
             partner = binder.to_internal(external_id, unwrap=True)
             assert partner, (
                 "partner_shipping_id %s should have been imported in "
@@ -82,8 +83,10 @@ class SaleOrderImportMapper(Component):
             )
             if not partner.active:
                 raise ValidationError(
-                    _("The partner %s, with id:%s is archived, please, enable it")
-                    % (partner.name, partner.id)
+                    _(
+                        "The partner %(name)s, with id:%(id)s is archived, please, enable it"
+                    )
+                    % {"name": partner.name, "id": partner.id}
                 )
             partner_return = {"partner_invoice_id": partner.id}
             if partner.parent_id:
@@ -94,8 +97,19 @@ class SaleOrderImportMapper(Component):
         else:
             binding = self.options.get("binding")
             if not binding:
+                country = record.get("parent_country_iso_a2")
+                if not country:
+                    if record.get("marketplace_country_iso2"):
+                        country = record.get("marketplace_country_iso2")
+                    else:
+                        raise ValidationError(
+                            _(
+                                "The order don't has billing address "
+                                "and parent country iso a2 is empty"
+                            )
+                        )
                 partner = self.backend_record.get_marketplace_map(
-                    record["marketplace"], record["parent_country_iso_a2"]
+                    record["marketplace"], country
                 ).partner_id
                 return {"partner_invoice_id": partner.id, "partner_id": partner.id}
 
@@ -104,7 +118,7 @@ class SaleOrderImportMapper(Component):
     def order_date(self, record):
         return {
             "date_order": record["marketplace_order_date"],
-            "confirmation_date": record["marketplace_order_date"],
+            # "confirmation_date": record["marketplace_order_date"],
             "validity_date": record["marketplace_order_date"],
         }
 

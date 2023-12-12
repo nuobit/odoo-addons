@@ -7,27 +7,40 @@ from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector_lengow.models.common.tools import list2hash
+
+from ....connector_extension.common.tools import list2hash
 
 
 class LengowSaleOrderTypeAdapter(Component):
     _name = "lengow.sale.order.adapter"
-    _inherit = "lengow.adapter"
+    _inherit = "connector.lengow.adapter"
 
     _apply_on = "lengow.sale.order"
+
+    _datetimestamp_format = "%Y-%m-%dT%H:%M:%S.%fZ"
+
+    def _str_to_datetime(self, sdt):
+        try:
+            return datetime.datetime.strptime(sdt, self._datetimestamp_format)
+        except ValueError:
+            return datetime.datetime.strptime(sdt, self._datetime_format)
 
     def _prepare_results(self, result):
         return result
 
-    def read(self, _id):
+    def read(self, _id):  # pylint: disable=W8106
         external_id_values = self.binder_for().id2dict(_id, in_field=False)
         domain = [(key, "=", value) for key, value in external_id_values.items()]
         res = self.search_read(domain)
-        if len(res) > 1:
-            raise ValidationError(
-                _("Found more than 1 record for an unique key %s") % _id
-            )
-        return res[0] or None
+        external_values = None
+        if res:
+            values = res[0]
+            if len(values) > 1:
+                raise ValidationError(
+                    _("Found more than 1 record for an unique key %s") % _id
+                )
+            external_values = values[0]
+        return external_values
 
     def search_read(self, domain):
         filters_values = [
@@ -53,7 +66,7 @@ class LengowSaleOrderTypeAdapter(Component):
         self._format_order_data(res)
         res = self._filter(res, common_domain)
         self._reorg_order_data(res)
-        return res
+        return res, len(res)
 
     def _format_order_data(self, values):
         conv_mapper = {

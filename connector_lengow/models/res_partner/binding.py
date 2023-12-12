@@ -4,28 +4,20 @@
 from odoo import fields, models
 
 
-class ResPartner(models.Model):
-    _inherit = "res.partner"
-
-    lengow_bind_ids = fields.One2many(
-        comodel_name="lengow.res.partner",
-        inverse_name="odoo_id",
-        string="Lengow Bindings",
-    )
-
-
 class ResPartnerBinding(models.Model):
     _name = "lengow.res.partner"
     _inherit = "lengow.binding"
     _inherits = {"res.partner": "odoo_id"}
 
     odoo_id = fields.Many2one(
-        comodel_name="res.partner", string="Partner", required=True, ondelete="cascade"
+        comodel_name="res.partner",
+        string="Partner",
+        required=True,
+        ondelete="cascade",
     )
-
-    lengow_email = fields.Char(string="Lengow Email")
-    lengow_address_hash = fields.Char(string="Lengow Address Hash")
-    lengow_address_type = fields.Char(string="Lengow Address Type")
+    lengow_email = fields.Char()
+    lengow_address_hash = fields.Char()
+    lengow_address_type = fields.Char()
 
     _sql_constraints = [
         (

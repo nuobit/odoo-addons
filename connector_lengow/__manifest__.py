@@ -3,20 +3,18 @@
 
 {
     "name": "Connector Lengow",
-    "description": "Connector Lengow",
-    "version": "11.0.0.1.33",
-    "author": "NuoBiT Solutions, S.L.",
+    "version": "16.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/nuobit/odoo-addons",
     "external_dependencies": {
         "python": [
             "requests",
-            "unicodedata",
         ],
     },
     "depends": [
-        "connector_common",
+        "connector_extension",
         "sale_management",
     ],
     "data": [
@@ -30,5 +28,4 @@
         "views/lengow_backend_view.xml",
         "views/connector_lengow_menu.xml",
     ],
-    "installable": True,
 }

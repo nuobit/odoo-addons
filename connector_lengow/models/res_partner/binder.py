@@ -10,6 +10,6 @@ class ResPartnerBinder(Component):
 
     _apply_on = "lengow.res.partner"
 
-    _external_field = ["email", "hash", "type"]
-    _internal_field = ["lengow_email", "lengow_address_hash", "lengow_address_type"]
-    _internal_alt_id = ["email", "address_hash", "type"]
+    external_id = ["email", "hash", "type"]
+    internal_id = ["lengow_email", "lengow_address_hash", "lengow_address_type"]
+    internal_alt_id = ["email", "address_hash", "type"]

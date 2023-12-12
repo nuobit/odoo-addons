@@ -10,5 +10,5 @@ class SaleOrderLineBinder(Component):
 
     _apply_on = "lengow.sale.order.line"
 
-    _external_field = ["id", "marketplace", "marketplace_order_id"]
-    _internal_field = ["lengow_id", "lengow_marketplace", "lengow_marketplace_order_id"]
+    external_id = ["id", "marketplace", "marketplace_order_id"]
+    internal_id = ["lengow_id", "lengow_marketplace", "lengow_marketplace_order_id"]

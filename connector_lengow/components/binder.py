@@ -5,4 +5,6 @@ from odoo.addons.component.core import AbstractComponent
 
 class LengowBinder(AbstractComponent):
     _name = "lengow.binder"
-    _inherit = ["base.binder.composite", "base.lengow.connector"]
+    _inherit = ["connector.extension.generic.binder", "base.lengow.connector"]
+
+    _default_binding_field = "lengow_bind_ids"

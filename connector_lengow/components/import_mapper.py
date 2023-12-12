@@ -6,9 +6,9 @@ from odoo.addons.component.core import AbstractComponent
 
 class LengowImportMapper(AbstractComponent):
     _name = "lengow.import.mapper"
-    _inherit = ["base.import.mapper", "base.lengow.connector"]
+    _inherit = ["connector.extension.import.mapper", "base.lengow.connector"]
 
 
 class LengowImportMapChild(AbstractComponent):
     _name = "lengow.map.child.import"
-    _inherit = ["base.map.child.import", "base.lengow.connector"]
+    _inherit = ["connector.extension.map.child.import", "base.lengow.connector"]

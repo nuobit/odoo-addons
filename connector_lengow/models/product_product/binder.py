@@ -10,6 +10,6 @@ class ProductProductBinder(Component):
 
     _apply_on = "lengow.product.product"
 
-    _external_field = "sku"
-    _internal_field = "lengow_sku"
-    _internal_alt_id = "default_code"
+    external_id = "sku"
+    internal_id = "lengow_sku"
+    internal_alt_id = "default_code"
