@@ -22,9 +22,9 @@ class CountryStateBinder(Component):
 
     _apply_on = "lengow.res.country.state"
 
-    _external_field = ["state_region", "common_country_iso_a2"]
-    _internal_field = ["lengow_state_region", "lengow_common_country_iso_a2"]
-    _internal_alt_id = ["code", "country_id"]
+    external_id = ["state_region", "common_country_iso_a2"]
+    internal_id = ["lengow_state_region", "lengow_common_country_iso_a2"]
+    internal_alt_id = ["code", "country_id"]
 
     def _check_unaccent(self):
         # this heuristic works assuming PostgreSQL unaccent extension is installed
@@ -83,7 +83,7 @@ class CountryStateBinder(Component):
                     ok_counties |= county
             if len(ok_counties) > 0:
                 return ok_counties[0]
-        if "/" in external_county_code:
+        if external_county_code and "/" in external_county_code:
             parts = list(
                 map(lambda x: x.strip(), filter(None, external_county_code.split("/")))
             )

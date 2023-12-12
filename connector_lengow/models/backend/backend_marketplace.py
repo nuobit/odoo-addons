@@ -19,7 +19,6 @@ class LengowBackendMarketplace(models.Model):
         required=True,
         ondelete="cascade",
     )
-
     partner_id = fields.Many2one(
         string="Odoo Partner",
         comodel_name="res.partner",
@@ -27,9 +26,13 @@ class LengowBackendMarketplace(models.Model):
         ondelete="restrict",
     )
     country_id = fields.Many2one(
-        string="Odoo Partner Country", readonly=True, related="partner_id.country_id"
+        string="Odoo Partner Country",
+        readonly=True,
+        related="partner_id.country_id",
     )
-    lengow_marketplace = fields.Char(string="Lengow Marketplace", required=True)
+    lengow_marketplace = fields.Char(
+        required=True,
+    )
 
     _sql_constraints = [
         (

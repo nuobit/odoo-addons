@@ -12,22 +12,12 @@ _logger = logging.getLogger(__name__)
 
 class LengowBackend(models.Model):
     _name = "lengow.backend"
-    _inherit = "connector.backend"
+    _inherit = "connector.extension.backend"
     _description = "Lengow Backend"
 
-    @api.model
-    def _select_state(self):
-        return [
-            ("draft", "Draft"),
-            ("checked", "Checked"),
-            ("production", "In Production"),
-        ]
-
-    name = fields.Char("Name", required=True)
-
-    state = fields.Selection(selection="_select_state", string="State", default="draft")
-    active = fields.Boolean(string="Active", default=True)
-
+    name = fields.Char(
+        required=True,
+    )
     company_id = fields.Many2one(
         comodel_name="res.company",
         string="Company",
@@ -39,7 +29,6 @@ class LengowBackend(models.Model):
         string="User",
         ondelete="restrict",
     )
-
     access_token = fields.Char(
         help="WebService Access Token",
         required=True,
@@ -59,57 +48,54 @@ class LengowBackend(models.Model):
     )
     shipping_product_id = fields.Many2one(
         comodel_name="product.product",
-        string="Shipping Product",
     )
 
-    import_sale_orders_since_date = fields.Datetime("Import Orders since")
+    import_sale_orders_since_date = fields.Datetime(
+        string="Import Orders since",
+    )
     import_sale_orders_order_number = fields.Char(
-        string="Import specific orders", help="Comma separated order numbers"
+        string="Import specific orders",
+        help="Comma separated order numbers",
     )
-    min_order_date = fields.Date("Min Order Date")
+    min_order_date = fields.Date()
     sync_offset = fields.Integer(
-        string="Sync Offset",
-        help="Minutes to start the synchronization before(negative)/after(positive) the last one (Lengow bug)",
+        help="Minutes to start the synchronization before(negative)/after(positive) "
+        "the last one (Lengow bug)",
     )
 
-    @api.multi
+    # Rewrited method, no need version on lengow
     def _check_connection(self):
         self.ensure_one()
-        with self.work_on("lengow.backend") as work:
-            token = work.component_by_name(name="lengow.adapter")._exec("get_token")
+        with self.work_on(self._name) as work:
+            component = work.component(usage="backend.adapter")
+            token = component._exec("get_token")
         if not token:
-            raise UserError("Invalid token")
+            raise UserError(_("Invalid token"))
 
-    @api.multi
-    def button_check_connection(self):
-        for rec in self:
-            rec._check_connection()
-            rec.write({"state": "checked"})
-
-    @api.multi
-    def button_reset_to_draft(self):
-        self.ensure_one()
-        self.write({"state": "draft"})
-
-    @api.multi
     def import_sale_orders_since(self):
-        if self.user_id:
-            self = self.sudo(self.user_id)
+        # if self.user_id:
+        #     self = self.sudo(self.user_id)
+        self.env.user.company_id = self.company_id
         for rec in self:
-            since_date = fields.Datetime.from_string(rec.import_sale_orders_since_date)
-            rec.import_sale_orders_since_date = fields.Datetime.to_string(
+            since_date = fields.Datetime.to_datetime(rec.import_sale_orders_since_date)
+            rec.import_sale_orders_since_date = fields.Datetime.to_datetime(
                 fields.datetime.now() + datetime.timedelta(minutes=rec.sync_offset)
             )
-            self.env["lengow.sale.order"].with_delay().import_sale_orders_since(
+            self.env["lengow.sale.order"].import_sale_orders_since(
                 backend_record=rec,
                 since_date=since_date,
                 order_number=rec.import_sale_orders_order_number,
             )
+            # self.env["lengow.sale.order"].with_delay().import_sale_orders_since(
+            #     backend_record=rec,
+            #     since_date=since_date,
+            #     order_number=rec.import_sale_orders_order_number,
+            # )
 
     # scheduler
     @api.model
-    def _scheduler_import(self):
-        for backend in self.env["lengow.backend"].search([]):
+    def _scheduler_import_sale_orders(self):
+        for backend in self.env[self._name].search([("state", "=", "validated")]):
             backend.import_sale_orders_since()
 
     def get_marketplace_map(self, marketplace_name, country_iso_code):
@@ -121,17 +107,25 @@ class LengowBackend(models.Model):
         if not marketplace_map:
             raise ValidationError(
                 _(
-                    "Can't found a parent partner for marketplace %s and country %s "
+                    "Can't found a parent partner for marketplace %(marketplace)s "
+                    "and country %(country)s. "
                     "Please, add it on backend mappings"
                 )
-                % (marketplace_name, country_iso_code)
+                % {
+                    "marketplace": marketplace_name,
+                    "country": country_iso_code,
+                }
             )
         if len(marketplace_map) > 1:
             raise ValidationError(
                 _(
-                    "Multiple mappings found for marketplace %s and country %s "
+                    "Multiple mappings found for marketplace %(marketplace)s "
+                    "and country %(country)s. "
                     "Please, check the country on partners"
                 )
-                % (marketplace_name, country_iso_code)
+                % {
+                    "marketplace": marketplace_name,
+                    "country": country_iso_code,
+                }
             )
         return marketplace_map

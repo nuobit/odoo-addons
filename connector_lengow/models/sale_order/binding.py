@@ -5,11 +5,10 @@
 from odoo import fields, models
 from odoo.tools import datetime
 
-from odoo.addons.queue_job.job import job
-
 
 class LengowSaleOrderBinding(models.Model):
     _name = "lengow.sale.order"
+    _description = "Lengow Sale Order Binding"
     _inherit = "lengow.binding"
     _inherits = {"sale.order": "odoo_id"}
 
@@ -21,11 +20,13 @@ class LengowSaleOrderBinding(models.Model):
         ondelete="cascade",
     )
 
-    lengow_marketplace = fields.Char(string="Marketplace on Lengow")
-    lengow_marketplace_order_id = fields.Char(string="Order on Lengow")
-
+    lengow_marketplace = fields.Char(
+        string="Marketplace on Lengow",
+    )
+    lengow_marketplace_order_id = fields.Char(
+        string="Order on Lengow",
+    )
     lengow_order_line_ids = fields.One2many(
-        string="Lengow Order Line ids",
         help="Order Lines in Lengow sale orders",
         comodel_name="lengow.sale.order.line",
         inverse_name="lengow_order_id",
@@ -65,7 +66,6 @@ class LengowSaleOrderBinding(models.Model):
             domain += [("updated_from", "=", datetime(1900, 1, 1, 0, 0, 0))]
         return domain
 
-    @job(default_channel="root.lengow")
     def import_sale_orders_since(
         self, backend_record=None, since_date=None, order_number=None
     ):

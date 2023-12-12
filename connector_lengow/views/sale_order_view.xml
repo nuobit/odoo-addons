@@ -11,32 +11,19 @@
                 <field name="lengow_status" />
                 <field name="marketplace_status" />
             </field>
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page
+                    string="Connector Lengow"
+                    name="connector"
+                    groups="connector.group_connector_manager"
+                >
+                    <group string="Lengow Bindings">
+                        <field name="lengow_bind_ids" colspan="2" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
         </field>
     </record>
-
-    <record id="view_order_form" model="ir.ui.view">
-        <field name="name">sale.order.lengow.connector.form</field>
-        <field name="model">sale.order</field>
-        <field
-            name="inherit_id"
-            ref="connector_common.view_sale_order_connector_form"
-        />
-        <field name="arch" type="xml">
-            <page name="connector" position="attributes">
-                <attribute name="invisible">0</attribute>
-            </page>
-            <page name="connector" position="inside">
-                <group string="Lengow Bindings">
-                    <field
-                        name="lengow_bind_ids"
-                        nolabel="1"
-                        context="{'default_odoo_id': active_id}"
-                    />
-                </group>
-            </page>
-        </field>
-    </record>
-
     <record id="lengow_sale_order_view_form" model="ir.ui.view">
         <field name="name">lengow.sale.order.view.form</field>
         <field name="model">lengow.sale.order</field>
@@ -52,12 +39,11 @@
             </form>
         </field>
     </record>
-
     <record id="lengow_sale_order_view_tree" model="ir.ui.view">
         <field name="name">lengow.sale.order.view.tree</field>
         <field name="model">lengow.sale.order</field>
         <field name="arch" type="xml">
-            <tree string="Lengow Sale order">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="lengow_marketplace" />
@@ -73,7 +59,6 @@
             </tree>
         </field>
     </record>
-
     <record id="lengow_sale_order_action" model="ir.actions.act_window">
         <field name="name">Orders</field>
         <field name="res_model">lengow.sale.order</field>

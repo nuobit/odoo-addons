@@ -1,10 +1,10 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping, only_create
+from odoo.addons.connector.components.mapper import mapping
 
 
 class SaleOrderLineImportMapper(Component):
@@ -12,11 +12,6 @@ class SaleOrderLineImportMapper(Component):
     _inherit = "lengow.import.mapper"
 
     _apply_on = "lengow.sale.order.line"
-
-    @only_create
-    @mapping
-    def backend_id(self, record):
-        return {"backend_id": self.backend_record.id}
 
     @mapping
     def lengow_line_id(self, record):
@@ -38,10 +33,15 @@ class SaleOrderLineImportMapper(Component):
             shipping_product = self.backend_record.shipping_product_id
             if not shipping_product:
                 raise ValidationError(
-                    "Shipping product not found, please define it on Backend"
+                    _("Shipping product not found, please define it on Backend")
                 )
             return {"product_id": shipping_product.id}
-        external_id = record["sku"]
+        external_id = record["sku"] or record["marketplace_product_id"]
+        if not external_id:
+
+            raise ValidationError(
+                _("Product SKU not found. This SKU should be defined on Lengow")
+            )
         binder = self.binder_for("lengow.product.product")
         product_odoo = binder.to_internal(external_id, unwrap=True)
         assert product_odoo, (

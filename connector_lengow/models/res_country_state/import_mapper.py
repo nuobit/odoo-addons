@@ -14,10 +14,6 @@ class CountryStateImportMapper(Component):
 
     _apply_on = "lengow.res.country.state"
 
-    @mapping
-    def backend_id(self, record):
-        return {"backend_id": self.backend_record.id}
-
     @only_create
     @mapping
     def name(self, record):

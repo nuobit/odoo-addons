@@ -4,16 +4,6 @@
 from odoo import fields, models
 
 
-class ProductProduct(models.Model):
-    _inherit = "product.product"
-
-    lengow_bind_ids = fields.One2many(
-        comodel_name="lengow.product.product",
-        inverse_name="odoo_id",
-        string="Lengow Bindings",
-    )
-
-
 class ProductProductBinding(models.Model):
     _name = "lengow.product.product"
     _inherit = "lengow.binding"

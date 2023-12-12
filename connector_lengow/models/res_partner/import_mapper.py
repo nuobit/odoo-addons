@@ -27,10 +27,6 @@ class ResPartnerImportMapper(Component):
     def address_hash(self, record):
         return {"address_hash": record["hash"]}
 
-    @mapping
-    def backend_id(self, record):
-        return {"backend_id": self.backend_record.id}
-
     @only_create
     @mapping
     def company_id(self, record):
@@ -75,10 +71,10 @@ class ResPartnerImportMapper(Component):
     def street(self, record):
         return {"street": record["first_line"], "street2": record["second_line"]}
 
-    @only_create
-    @mapping
-    def partner_type(self, record):
-        return {"customer": True, "supplier": False}
+    # @only_create
+    # @mapping
+    # def partner_type(self, record):
+    #     return {"customer": True, "supplier": False}
 
     @mapping
     def lang(self, record):

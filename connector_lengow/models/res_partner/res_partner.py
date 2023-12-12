@@ -4,18 +4,24 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-from odoo.addons.connector_lengow.models.common.tools import list2hash
+from ....connector_extension.common.tools import list2hash
 
 
 class Partner(models.Model):
     _inherit = "res.partner"
 
+    lengow_bind_ids = fields.One2many(
+        comodel_name="lengow.res.partner",
+        inverse_name="odoo_id",
+        string="Lengow Bindings",
+    )
     address_hash = fields.Char(
-        compute="_compute_address_hash", store=True, readonly=True
+        compute="_compute_address_hash",
+        store=True,
+        readonly=True,
     )
 
     @api.depends("name", "street", "street2", "zip", "city", "country_id")
-    @api.multi
     def _compute_address_hash(self):
         for rec in self:
             values = [

@@ -9,16 +9,19 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     lengow_bind_ids = fields.One2many(
+        string="Lengow Binding",
         comodel_name="lengow.sale.order",
         inverse_name="odoo_id",
-        string="Lengow Binding",
     )
-
     lengow_status = fields.Char(
-        string="Lengow State", readonly=True, track_visibility="onchange"
+        string="Lengow State",
+        readonly=True,
+        tracking=True,
     )
     marketplace_status = fields.Char(
-        string="Marketplace State", readonly=True, track_visibility="onchange"
+        string="Marketplace State",
+        readonly=True,
+        tracking=True,
     )
 
     # TODO move this check to a standalone module and make the current module depends on it
@@ -57,3 +60,10 @@ class SaleOrder(models.Model):
                             "the main partner in the order"
                         )
                     )
+
+    def _prepare_confirmation_values(self):
+        res = super()._prepare_confirmation_values()
+        if self.env.context.get("confirm_from_lengow"):
+            if "date_order" in res:
+                del res["date_order"]
+        return res
