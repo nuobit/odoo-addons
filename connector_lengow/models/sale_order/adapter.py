@@ -107,22 +107,25 @@ class LengowSaleOrderTypeAdapter(Component):
             fields = ["delivery_address", "billing_address"]
             for f in fields:
                 if value[f]:
-                    if value["delivery_address"]:
+                    if (
+                        not value["delivery_address"]
+                        or "common_country_iso_a2" not in value["delivery_address"]
+                    ):
+                        value[f]["parent_country_iso_a2"] = None
+                    else:
                         value[f]["parent_country_iso_a2"] = value["delivery_address"][
                             "common_country_iso_a2"
                         ]
-                    else:
-                        value[f]["parent_country_iso_a2"] = None
                     value[f]["marketplace"] = value["marketplace"]
-                    if value[f]["full_name"]:
-                        complete_name = value[f]["full_name"]
-                    else:
+                    if not value[f].get("full_name") or "full_name" not in value[f]:
                         name_values = [
                             value[f][y].strip()
                             for y in ["first_name", "last_name"]
                             if value.get(f) and value[f].get(y)
                         ]
                         complete_name = " ".join(name_values) or None
+                    else:
+                        complete_name = value[f]["full_name"]
                     value[f]["complete_name"] = complete_name
                     value[f]["hash"] = list2hash(value[f].get(x) for x in hash_fields)
             for item in value["items"]:
