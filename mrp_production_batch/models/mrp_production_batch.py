@@ -3,7 +3,7 @@
 import logging
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -120,11 +120,13 @@ class MrpProductionBatch(models.Model):
 
     def _compute_product_ids(self):
         for rec in self:
-            rec.product_ids = rec.production_ids.mapped("product_id")
+            rec.product_ids = rec.production_ids.product_id
 
     def action_done(self):
         self.ensure_one()
-        productions = self.production_ids.filtered(lambda r: r.state != "done")
+        productions = self.production_ids.filtered(
+            lambda r: r.state not in ("cancel", "done")
+        )
         len_production = len(productions)
         productions_display_name = []
         for production in productions:
@@ -132,7 +134,7 @@ class MrpProductionBatch(models.Model):
                 production.with_context(
                     mrp_production_batch_create=True
                 ).button_mark_done()
-            except Exception:
+            except (ValidationError, UserError):
                 productions_display_name.append(production.display_name)
         if productions_display_name and len(productions_display_name) == len_production:
             message = "The following productions could not be marked as 'done':\n"

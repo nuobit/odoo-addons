@@ -25,11 +25,11 @@ class MrpProduction(models.Model):
             raise ValidationError(
                 _("Some of the selected productions are already done or cancelled")
             )
-        if len(mrp_productions.mapped("picking_type_id")) > 1:
+        if len(mrp_productions.picking_type_id) > 1:
             raise ValidationError(
                 _("Some of the selected productions have different operation types")
             )
-        if len(mrp_productions.mapped("picking_type_id").mapped("warehouse_id")) > 1:
+        if len(mrp_productions.picking_type_id.warehouse_id) > 1:
             raise ValidationError(
                 _("Some of the selected productions have different warehouses")
             )
