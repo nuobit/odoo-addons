@@ -10,10 +10,10 @@ class ResPartnerBinder(Component):
 
     _apply_on = "sapb1.res.partner"
 
-    _external_field = ["CardCode", "AddressName"]
-    _internal_field = ["sapb1_cardcode", "sapb1_addressname"]
+    external_id = ["CardCode", "AddressName"]
+    internal_id = ["sapb1_cardcode", "sapb1_addressname"]
 
-    _external_alt_field = [
+    external_alt_id = [
         "CardCode",
         "AddressName2",
         "AddressName3",

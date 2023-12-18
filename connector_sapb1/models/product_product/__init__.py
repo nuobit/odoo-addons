@@ -3,3 +3,4 @@ from . import binder
 from . import binding
 from . import exporter
 from . import export_mapper
+from . import product

@@ -7,7 +7,7 @@ from odoo.addons.component.core import Component
 
 class SapB1SaleOrderTypeAdapter(Component):
     _name = "sapb1.sale.order.adapter"
-    _inherit = "sapb1.adapter"
+    _inherit = "connector.sapb1.adapter"
 
     _apply_on = "sapb1.sale.order"
 
@@ -27,12 +27,12 @@ class SapB1SaleOrderTypeAdapter(Component):
     def _reorg_order_data(self, values):
         return True
 
-    def create(self, values):
+    def create(self, values):  # pylint: disable=W8106
         """Create a record on the external system"""
         self._format_order_params(values)
         return self._exec("create_order", values=values)
 
-    def write(self, external_id, values):
+    def write(self, external_id, values):  # pylint: disable=W8106
         """Update records on the external system"""
         self._format_order_params(values)
         return self._exec("update_order", external_id=external_id, values=values)

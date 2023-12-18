@@ -25,7 +25,10 @@ class SapB1Backend(models.Model):
         required=True,
         ondelete="restrict",
     )
-    sapb1_tax = fields.Char(string="SAP B1 Tax", required=True)
+    sapb1_tax = fields.Char(
+        string="SAP B1 Tax",
+        required=True,
+    )
 
     _sql_constraints = [
         (

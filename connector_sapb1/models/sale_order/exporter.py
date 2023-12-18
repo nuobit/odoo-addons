@@ -4,38 +4,39 @@
 import logging
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector_sapb1.components.adapter import SAPClosedOrderException
+
+from ...components.adapter import SAPClosedOrderException
 
 _logger = logging.getLogger(__name__)
 
 
-class SaleOrderDelayedBatchExporter(Component):
+class SAPB1SaleOrderBatchDirectExporter(Component):
     """Export the Odoo Sale Orders.
 
     For every sale order in the list, a delayed job is created.
     """
 
-    _name = "sapb1.sale.order.delayed.batch.exporter"
-    _inherit = "sapb1.delayed.batch.exporter"
+    _name = "sapb1.sale.order.batch.direct.exporter"
+    _inherit = "connector.extension.generic.batch.direct.exporter"
 
     _apply_on = "sapb1.sale.order"
 
 
-class SaleOrderDirectBatchExporter(Component):
+class SAPB1SaleOrderBatchDelayedExporter(Component):
     """Export the Odoo Sale Orders.
 
     For every sale order in the list, a delayed job is created.
     """
 
-    _name = "sapb1.sale.order.direct.batch.exporter"
-    _inherit = "sapb1.direct.batch.exporter"
+    _name = "sapb1.sale.order.batch.delayed.exporter"
+    _inherit = "connector.extension.generic.batch.delayed.exporter"
 
     _apply_on = "sapb1.sale.order"
 
 
 class SaleOrderExporter(Component):
-    _name = "sapb1.sale.order.exporter"
-    _inherit = "sapb1.exporter"
+    _name = "sapb1.sale.order.record.direct.exporter"
+    _inherit = "sapb1.record.direct.exporter"
 
     _apply_on = "sapb1.sale.order"
 
@@ -45,10 +46,10 @@ class SaleOrderExporter(Component):
             if line.product_id != self.backend_record.shipping_product_id:
                 self._export_dependency(line.product_id, "sapb1.product.product")
 
-    def _after_export(self):
+    def _after_export(self, binding):
         """Can do several actions after exporting a record on the backend"""
-        if self.binding.state == "cancel":
-            self.backend_adapter.cancel(self.binding.sapb1_docentry)
+        if binding.state == "cancel":
+            self.backend_adapter.cancel(binding.sapb1_docentry)
 
     def _update(self, external_id, data):
         """Update an External record"""

@@ -25,8 +25,13 @@ class SapB1Backend(models.Model):
         required=True,
         ondelete="restrict",
     )
-    sapb1_cardcode = fields.Char(string="SAP B1 CardCode", required=True)
-    sapb1_expensecode = fields.Integer(string="SAP B1 ExpenseCode")
+    sapb1_cardcode = fields.Char(
+        string="SAP B1 CardCode",
+        required=True,
+    )
+    sapb1_expensecode = fields.Integer(
+        string="SAP B1 ExpenseCode",
+    )
 
     _sql_constraints = [
         (

@@ -5,19 +5,21 @@
     <record id="res_partner_view_form_connector_sapb1" model="ir.ui.view">
         <field name="name">res.partner.sapb1.connector.form</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="connector.view_partner_connector_form" />
+        <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <page name="connector" position="attributes">
-                <attribute name="invisible">0</attribute>
-            </page>
-            <page name="connector" position="inside">
-                <group string="SAP B1 Bindings">
-                    <field name="sapb1_bind_ids" nolabel="1" />
-                </group>
-            </page>
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page
+                    string="Connector SAPB1"
+                    name="connector"
+                    groups="connector.group_connector_manager"
+                >
+                    <group string="SAP B1 Bindings">
+                        <field name="sapb1_bind_ids" colspan="2" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
         </field>
     </record>
-
     <record id="sapb1_res_partner_view_form" model="ir.ui.view">
         <field name="name">sapb1.res.partner.form</field>
         <field name="model">sapb1.res.partner</field>
@@ -32,20 +34,6 @@
                     />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button
-                            name="toggle_active"
-                            type="object"
-                            class="oe_stat_button"
-                            icon="fa-archive"
-                        >
-                            <field
-                                name="active"
-                                widget="boolean_button"
-                                options="{'terminology': 'archive'}"
-                            />
-                        </button>
-                    </div>
                     <group>
                         <field name="backend_id" />
                     </group>
@@ -61,12 +49,11 @@
             </form>
         </field>
     </record>
-
     <record id="sapb1_res_partner_view_tree" model="ir.ui.view">
         <field name="name">sapb1.res.partner.tree</field>
         <field name="model">sapb1.res.partner</field>
         <field name="arch" type="xml">
-            <tree string="SAP B1 Partner">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="sapb1_cardcode" readonly="1" />
@@ -81,7 +68,6 @@
             </tree>
         </field>
     </record>
-
     <record id="sapb1_res_partner_view_search" model="ir.ui.view">
         <field name="name">sapb1.res.partner.search</field>
         <field name="model">sapb1.res.partner</field>
@@ -104,7 +90,6 @@
             </search>
         </field>
     </record>
-
     <record id="sapb1_res_partner_action" model="ir.actions.act_window">
         <field name="name">Customers</field>
         <field name="res_model">sapb1.res.partner</field>

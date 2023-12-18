@@ -3,9 +3,8 @@
 
 {
     "name": "Connector SAP B1",
-    "description": "SAP Business One connector",
-    "version": "11.0.0.1.22",
-    "author": "NuoBiT Solutions, S.L.",
+    "version": "16.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/nuobit/odoo-addons",
@@ -15,18 +14,19 @@
         ],
     },
     "depends": [
-        "connector_common",
+        "connector_extension",
         "sale_management",
     ],
     "data": [
         "security/connector_sapb1.xml",
         "security/ir.model.access.csv",
         "data/ir_cron.xml",
+        "data/queue_data.xml",
+        "data/queue_job_function_data.xml",
         "views/sapb1_backend_view.xml",
         "views/sale_order_view.xml",
         "views/partner_view.xml",
         "views/product_product_view.xml",
         "views/connector_sapb1_menu.xml",
     ],
-    "installable": True,
 }

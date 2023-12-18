@@ -1,7 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -14,7 +14,6 @@ class SaleOrderLine(models.Model):
         string="SAP B1 Bindings",
     )
 
-    @api.multi
     def get_raw_total_line(self):
         self.ensure_one()
         line_total = self.price_unit * self.product_uom_qty

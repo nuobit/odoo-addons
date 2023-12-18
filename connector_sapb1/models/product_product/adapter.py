@@ -9,7 +9,7 @@ from odoo.addons.component.core import Component
 
 class SapB1ProductProductTypeAdapter(Component):
     _name = "sapb1.product.product.adapter"
-    _inherit = "sapb1.adapter"
+    _inherit = "connector.sapb1.adapter"
 
     _apply_on = "sapb1.product.product"
 
@@ -18,7 +18,7 @@ class SapB1ProductProductTypeAdapter(Component):
         res = self._exec("get_products", values=kw_base_params)
         return res
 
-    def create(self, values):
+    def create(self, values):  # pylint: disable=W8106
         raise ValidationError(
             _(
                 "Create operation is not supported on products by SAP B1. Values: %s. "
@@ -26,7 +26,7 @@ class SapB1ProductProductTypeAdapter(Component):
             )
         )
 
-    def write(self, external_id, values):
+    def write(self, external_id, values):  # pylint: disable=W8106
         raise ValidationError(
             _(
                 "Write operation is not supported on products by SAP B1. Values: %s. "

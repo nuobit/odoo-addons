@@ -10,8 +10,8 @@ class SaleOrderBinder(Component):
 
     _apply_on = "sapb1.sale.order"
 
-    _external_field = "DocEntry"
-    _internal_field = "sapb1_docentry"
+    external_id = "DocEntry"
+    internal_id = "sapb1_docentry"
 
-    _external_alt_field = ["CardCode", "NumAtCard"]
-    _internal_alt_field = ["partner_id", "client_order_ref"]
+    external_alt_id = ["CardCode", "NumAtCard"]
+    internal_alt_id = ["partner_id", "client_order_ref"]

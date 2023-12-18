@@ -8,6 +8,7 @@ class SaleOrderLineBinding(models.Model):
     _name = "sapb1.sale.order.line"
     _inherit = "sapb1.binding"
     _inherits = {"sale.order.line": "odoo_id"}
+    _description = "SAP B1 Sale Order Line Binding"
 
     odoo_id = fields.Many2one(
         comodel_name="sale.order.line",
@@ -15,7 +16,6 @@ class SaleOrderLineBinding(models.Model):
         required=True,
         ondelete="cascade",
     )
-
     backend_id = fields.Many2one(
         related="sapb1_order_id.backend_id",
         string="Backend",
@@ -23,7 +23,6 @@ class SaleOrderLineBinding(models.Model):
         store=True,
         required=False,
     )
-
     sapb1_order_id = fields.Many2one(
         comodel_name="sapb1.sale.order",
         string="SAP Order",
@@ -32,7 +31,10 @@ class SaleOrderLineBinding(models.Model):
         index=True,
     )
 
-    sapb1_id = fields.Char(string="SAP ID", required=True)
+    sapb1_id = fields.Char(
+        string="SAP ID",
+        required=True,
+    )
 
     @api.model
     def create(self, vals):
