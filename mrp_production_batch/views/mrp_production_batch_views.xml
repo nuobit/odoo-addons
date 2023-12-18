@@ -120,9 +120,7 @@
         <field name="res_model">mrp.production.batch</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" eval="False" />
-        <field
-            name="domain"
-        >[('production_ids.picking_type_id', '=', active_id)]</field>
+        <field name="domain">[('operation_type', '=', active_id)]</field>
         <field name="context">{'default_picking_type_id': active_id}</field>
     </record>
     <record id="mrp_production_batch" model="ir.actions.act_window">
@@ -139,7 +137,7 @@
             </p>
         </field>
     </record>
-        <record id="mrp_production_batch_action" model="ir.actions.act_window">
+    <record id="mrp_production_batch_action" model="ir.actions.act_window">
         <field name="name">Invoice batches</field>
         <field name="res_model">mrp.production.batch</field>
         <field name="view_mode">tree,form</field>

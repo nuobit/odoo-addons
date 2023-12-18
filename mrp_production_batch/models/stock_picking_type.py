@@ -63,6 +63,14 @@ class StockPickingType(models.Model):
         for rec in self:
             rec.mo_batch_count = len(rec.mo_batches) or False
 
+    def get_mrp_production_batch_stock_picking_action_picking_type(self):
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "mrp_production_batch.mrp_production_batch_action_picking_dashboard"
+        )
+        if self:
+            action["display_name"] = self.display_name
+        return action
+
     def mrp_production_batch_action(self):
         tree_view = self.env.ref("mrp_production_batch.mrp_production_batch_tree_view")
         form_view = self.env.ref("mrp_production_batch.mrp_production_batch_form_view")

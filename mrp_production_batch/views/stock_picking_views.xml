@@ -20,7 +20,7 @@
                                 <div class="o_primary" t-if="!selection_mode">
                                     <a
                                         type="object"
-                                        name="get_mrp_stock_picking_action_picking_type"
+                                        name="get_mrp_production_batch_stock_picking_action_picking_type"
                                     >
                                         <field name="name" />
                                     </a>
