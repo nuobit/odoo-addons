@@ -67,6 +67,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 self.backend_record.consumer_secret,
             ),
             params=params,
+            verify=self.backend_record.verify_ssl,
         )
 
         total_items_header = result["headers"]._store.get("x-wp-total")
@@ -89,6 +90,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                     self.backend_record.consumer_key,
                     self.backend_record.consumer_secret,
                 ),
+                verify=self.backend_record.verify_ssl,
                 *args,
                 **kwargs
             )
@@ -123,6 +125,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                     self.backend_record.consumer_key,
                     self.backend_record.consumer_secret,
                 ),
+                verify=self.backend_record.verify_ssl,
                 *args,
                 **kwargs
             )
@@ -142,14 +145,21 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
         res = self._exec_wp_call(
-            "post", resource, data=data, headers=headers, auth=auth
+            "post",
+            resource,
+            data=data,
+            headers=headers,
+            auth=auth,
+            verify=self.backend_record.verify_ssl,
         )
 
         return res["data"]
 
     def _exec_put(self, resource, *args, **kwargs):
         url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        return self._exec_wp_call("put", url=url, *args, **kwargs)
+        return self._exec_wp_call(
+            "put", url=url, verify=self.backend_record.verify_ssl, *args, **kwargs
+        )
 
     def _exec_delete(self, resource, *args, **kwargs):
         raise NotImplementedError()
@@ -159,7 +169,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
 
     def get_version(self):
         settings = self._exec("get", "settings")
-        if settings.get("title"):
-            return "Wordpress '%s' connected" % settings.get("title")
+        if settings and settings[0].get("title"):
+            return "Wordpress '%s' connected" % settings[0].get("title")
         else:
             raise ValidationError(_("Wordpress not connected"))
