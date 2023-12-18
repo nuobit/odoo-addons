@@ -227,20 +227,20 @@
                             </group>
                             <group string="Order Tax">
                                 <field name="tax_map_ids" nolabel="1">
-                                        <tree editable="bottom">
-                                            <field name="account_tax" />
-                                            <field name="woocommerce_tax_rate_id" />
-                                        </tree>
-                                    </field>
-                               </group>
-                                <group string="Product tax">
-                                    <field name="tax_class_ids" nolabel="1">
-                                        <tree editable="bottom">
-                                            <field name="account_tax" />
-                                            <field name="woocommerce_tax_class" />
-                                        </tree>
-                                    </field>
-                                </group>
+                                    <tree editable="bottom">
+                                        <field name="account_tax" />
+                                        <field name="woocommerce_tax_rate_id" />
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Product tax">
+                                <field name="tax_class_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="account_tax" />
+                                        <field name="woocommerce_tax_class" />
+                                    </tree>
+                                </field>
+                            </group>
                             <group name="shipping" string="Shipping">
                                 <group>
                                     <field name="shipping_product_id" />
@@ -249,6 +249,7 @@
                         </page>
                         <page name="other_info" string="Other Info">
                             <group>
+                                <field name="verify_ssl" />
                                 <field name="chunk_size" />
                                 <field name="page_size" />
                                 <field name="language_id" />
