@@ -75,7 +75,9 @@ class WooCommerceBackend(models.Model):
         string="Client Order Reference Prefix",
         help="Prefix to add to the client order reference",
     )
-
+    verify_ssl = fields.Boolean(
+        default=True,
+    )
     wordpress_backend_id = fields.Many2one(
         comodel_name="wordpress.backend",
     )

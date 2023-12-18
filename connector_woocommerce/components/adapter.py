@@ -22,4 +22,5 @@ class ConnectorWooCommerceAdapter(AbstractComponent):
             consumer_key=self.backend_record.consumer_key,
             consumer_secret=self.backend_record.consumer_secret,
             version="wc/v3",
+            verify_ssl=self.backend_record.verify_ssl,
         )
