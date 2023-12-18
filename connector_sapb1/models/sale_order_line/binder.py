@@ -10,5 +10,5 @@ class SaleOrderLineBinder(Component):
 
     _apply_on = "sapb1.sale.order.line"
 
-    _external_field = "id"
-    _internal_field = "sapb1_id"
+    external_id = "id"
+    internal_id = "sapb1_id"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
+<odoo noupdate="1">
+    <record id="sapb1_binding_export_record_job_function" model="queue.job.function">
+        <field name="model_id" ref="connector_sapb1.model_sapb1_binding" />
+        <field name="method">import_record</field>
+        <field name="channel_id" ref="connector_sapb1.channel_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+    <record
+        id="sapb1_sale_order_export_services_since_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_sapb1.model_sapb1_sale_order" />
+        <field name="method">import_services_since</field>
+        <field name="channel_id" ref="connector_sapb1.channel_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+</odoo>

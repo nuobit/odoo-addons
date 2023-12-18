@@ -24,20 +24,6 @@
                     <field name="state" widget="statusbar" readonly="1" />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button
-                            class="oe_stat_button"
-                            type="object"
-                            name="toggle_active"
-                            icon="fa-archive"
-                        >
-                            <field
-                                name="active"
-                                widget="boolean_button"
-                                options='{"terminology": "archive"}'
-                            />
-                        </button>
-                    </div>
                     <h1>
                         <field
                             name="name"
@@ -120,28 +106,32 @@
                                 in the menu 'Connectors > Checkpoint'.
                             </p>
                             <group>
-                                <div>
+                                <group>
+
                                     <label
                                         string="Export Sale Orders since"
                                         class="oe_inline"
+                                        for="export_sale_orders_since_date"
                                     />
                                     <field
                                         name="export_sale_orders_since_date"
                                         class="oe_inline"
                                         nolabel="1"
                                     />
-                                </div>
-                                <button
-                                    name="export_sale_orders_since"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Export in background"
-                                />
+                                </group>
+                                <group>
+                                    <button
+                                        name="export_sale_orders_since"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Export in background"
+                                    />
+                                </group>
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">
                             <group string="Partners">
-                                <field name="partner_ids" nolabel="1">
+                                <field name="partner_ids" colspan="2" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="partner_id" />
                                         <field name="sapb1_cardcode" />
@@ -150,7 +140,7 @@
                                 </field>
                             </group>
                             <group string="Taxes">
-                                <field name="tax_ids" nolabel="1">
+                                <field name="tax_ids" colspan="2" nolabel="1">
                                     <tree editable="bottom">
                                         <field name="tax_id" />
                                         <field name="sapb1_tax" />
@@ -166,12 +156,11 @@
             </form>
         </field>
     </record>
-
     <record id="sapb1_backend_view_tree" model="ir.ui.view">
         <field name="name">sapb1.backend.tree</field>
         <field name="model">sapb1.backend</field>
         <field name="arch" type="xml">
-            <tree string="SAP B1 Backend">
+            <tree>
                 <field name="name" />
                 <field name="db_host" />
                 <field name="sl_port" />
@@ -180,11 +169,9 @@
             </tree>
         </field>
     </record>
-
     <record id="sapb1_backend_action" model="ir.actions.act_window">
         <field name="name">SAP B1 Backends</field>
         <field name="res_model">sapb1.backend</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>

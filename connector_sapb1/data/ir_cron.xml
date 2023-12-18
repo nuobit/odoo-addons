@@ -12,6 +12,6 @@
         <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="model_id" ref="model_sapb1_backend" />
-        <field name="code">model._scheduler_export()</field>
+        <field name="code">model._scheduler_export_sale_orders()</field>
     </record>
 </odoo>

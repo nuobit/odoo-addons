@@ -5,6 +5,6 @@ from odoo.addons.component.core import AbstractComponent
 
 class SapB1Binder(AbstractComponent):
     _name = "sapb1.binder"
-    _inherit = ["base.binder.composite", "base.sapb1.connector"]
+    _inherit = ["connector.extension.generic.binder", "base.sapb1.connector"]
 
-    _binding_field = "sapb1_bind_ids"
+    _default_binding_field = "sapb1_bind_ids"

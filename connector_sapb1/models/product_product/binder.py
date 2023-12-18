@@ -10,6 +10,6 @@ class ProductProductBinder(Component):
 
     _apply_on = "sapb1.product.product"
 
-    _external_field = "ItemCode"
-    _internal_field = "sapb1_sku"
-    _external_alt_field = "ItemCode"
+    external_id = "ItemCode"
+    internal_id = "sapb1_sku"
+    external_alt_id = "ItemCode"

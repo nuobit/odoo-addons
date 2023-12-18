@@ -6,7 +6,7 @@ from odoo.addons.component.core import Component
 
 class SapB1ResPartnerAdapter(Component):
     _name = "sapb1.res.partner.adapter"
-    _inherit = "sapb1.adapter"
+    _inherit = "connector.sapb1.adapter"
 
     _apply_on = "sapb1.res.partner"
 
@@ -50,14 +50,14 @@ class SapB1ResPartnerAdapter(Component):
             address["CardCode"] = address.pop("BPCode")
         return values["BPAddresses"]
 
-    def create(self, values):
+    def create(self, values):  # pylint: disable=W8106
         external_id = values.pop("CardCode")
         self._format_partner_values(values)
         with self._retry_concurrent_write_operation():
             res = self._exec("create_address", external_id=external_id, values=values)
         return res
 
-    def write(self, external_id, values):
+    def write(self, external_id, values):  # pylint: disable=W8106
         """Update records on the external system"""
         values.pop("CardCode")
         values.pop("AddressName")
