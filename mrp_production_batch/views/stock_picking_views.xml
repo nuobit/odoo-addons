@@ -25,26 +25,30 @@
                                         <field name="name" />
                                     </a>
                                 </div>
-                                <span class="o_primary" t-if="selection_mode"><field
-                                        name="name"
-                                    /></span>
-                                <div class="o_secondary"><field
+                                <span class="o_primary" t-if="selection_mode">
+                                    <field name="name" />
+                                </span>
+                                <div class="o_secondary">
+                                    <field
                                         class="o_secondary"
                                         name="warehouse_id"
                                         readonly="1"
                                         groups="stock.group_stock_multi_warehouses"
-                                    /></div>
+                                    />
+                                </div>
                             </div>
                             <div
                                 class="o_kanban_manage_button_section"
                                 t-if="!selection_mode"
                             >
-                                <a class="o_kanban_manage_toggle_button" href="#"><i
+                                <a class="o_kanban_manage_toggle_button" href="#">
+                                    <i
                                         class="fa fa-ellipsis-v"
                                         role="img"
                                         aria-label="Manage"
                                         title="Manage"
-                                    /></a>
+                                    />
+                                </a>
                             </div>
                         </div>
                         <div
@@ -53,17 +57,19 @@
                         >
                             <div class="row">
                                 <div class="col-6 o_kanban_primary_left">
-
-                                     <button
+                                    <button
                                         class="btn btn-primary"
                                         name="mrp_production_batch_action"
                                         type="object"
                                     >
-
-                    <span t-if="record.code.raw_value =='mrp_operation_batch'">
-                        <t t-esc="record.mo_batch_count.value" /> To Process
-                    </span>
-                </button>
+                                        <span
+                                            t-if="record.code.raw_value =='mrp_operation_batch'"
+                                        >
+                                            <t
+                                                t-esc="record.mo_batch_count.value"
+                                            /> To Process
+                                        </span>
+                                    </button>
 
 <!--                                    <button class="btn btn-primary" name="%(mrp_production_batch_action_picking_dashboard)d" type="action" context="{'search_default_todo': 1, 'default_picking_type_id': active_id}">-->
 <!--                                        <span t-if="record.code.raw_value =='mrp_operation_batch'"> <t t-esc="record.mo_todo_wo_batch_count.value" /> To Process</span>-->
@@ -105,7 +111,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div><div
+                        </div>
+                        <div
                             class="container o_kanban_card_manage_pane dropdown-menu"
                             role="menu"
                         >
@@ -124,21 +131,27 @@
                                         <a
                                             name="%(mrp_production_batch_action_picking_dashboard)d"
                                             type="action"
-                                        >All</a>
+                                        >
+                                            All
+                                        </a>
                                     </div>
                                     <div role="menuitem">
                                         <a
                                             name="%(mrp_production_batch_action_picking_dashboard)d"
                                             type="action"
                                             context="{'search_default_inprogress': 1}"
-                                        >In Progress</a>
+                                        >
+                                            In Progress
+                                        </a>
                                     </div>
                                     <div role="menuitem">
                                         <a
                                             name="%(mrp_production_batch_action_picking_dashboard)d"
                                             type="action"
                                             context="{'search_default_planned': 1}"
-                                        >Planned</a>
+                                        >
+                                            Planned
+                                        </a>
                                     </div>
                                 </div>
                                 <div
@@ -152,7 +165,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div
                                 t-if="widget.editable"
                                 class="o_kanban_card_manage_settings row"
@@ -169,14 +181,15 @@
                                         class="dropdown-item"
                                         role="menuitem"
                                         type="edit"
-                                    >Configuration</a>
+                                    >
+                                        Configuration
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </xpath>
-
             <xpath expr="//t[@t-esc='record.count_mo_todo.value']" position="after">
                 <t t-esc="record.count_mo_todo_wo_batch.value" />
             </xpath>

@@ -65,12 +65,13 @@ class StockPickingType(models.Model):
 
     def mrp_production_batch_action(self):
         tree_view = self.env.ref("mrp_production_batch.mrp_production_batch_tree_view")
+        form_view = self.env.ref("mrp_production_batch.mrp_production_batch_form_view")
         return {
             "name": ("Detailed Operations"),
             "type": "ir.actions.act_window",
-            "view_mode": "tree",
+            "view_mode": "tree,form",
             "res_model": "mrp.production.batch",
-            "views": [(tree_view.id, "tree")],
+            "views": [(tree_view.id, "tree"), (form_view.id, "form")],
             "view_id": tree_view.id,
             "domain": [("id", "in", self.mo_batches.ids)],
         }
