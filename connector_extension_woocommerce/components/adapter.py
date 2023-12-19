@@ -46,7 +46,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                         )
                     data = []
                 else:
-                    ValidationError(_("Error: %s") % data)
+                    raise ValidationError(_("Error: %s") % data)
             # TODO: remove this total items and use the res.headers instead
             headers = res.headers
             total_items = headers.get("X-WP-Total") or 0
@@ -60,7 +60,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             }
         except RequestConnectionError as e:
             raise RetryableJobError(_("Error connecting to WooCommerce: %s") % e) from e
-        except json.JSONDecodeError as e:
+        except json.decoder.JSONDecodeError as e:
             raise ValidationError(
                 _(
                     "Error decoding json WooCommerce response: "
