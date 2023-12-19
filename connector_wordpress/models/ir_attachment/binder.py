@@ -15,7 +15,10 @@ class WordPressIrAttachmentBinder(Component):
 
     def _get_external_record_domain(self, relation, values):
         equivalent_binding_attachment = self.env["wordpress.ir.attachment"].search(
-            [("checksum", "=", relation.checksum)],
+            [
+                ("checksum", "=", relation.checksum),
+                ("backend_id", "=", self.backend_record.id),
+            ],
             limit=1,
         )
         if equivalent_binding_attachment:
