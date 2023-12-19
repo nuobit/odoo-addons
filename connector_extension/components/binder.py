@@ -90,6 +90,8 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                         With this parameter False, _external_field will be used.
         """
         if _id:
+            if not isinstance(_id, (tuple, list)):
+                _id = [_id]
             fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
             return dict(zip(fields, _id))
         else:
@@ -137,7 +139,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         return res
 
     def is_complete_id(self, _id, in_field=True):
-        fields = in_field and self._internal_field or self._external_field
+        fields = in_field and self.internal_id or self.external_id
         if not isinstance(fields, (tuple, list)):
             fields = [fields]
         if not isinstance(_id, (tuple, list)):
