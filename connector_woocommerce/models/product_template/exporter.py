@@ -56,10 +56,18 @@ class WooCommerceProductTemplateExporter(Component):
 
         if not relation.env.context.get("export_wo_acc_p"):
             for accessory_product in relation.accessory_product_ids:
-                self._export_dependency(
-                    accessory_product.with_context(export_wo_acc_p=True),
-                    "woocommerce.product.product",
-                )
+                if accessory_product.product_tmpl_id.has_attributes:
+                    self._export_dependency(
+                        accessory_product.with_context(export_wo_acc_p=True),
+                        "woocommerce.product.product",
+                    )
+                else:
+                    self._export_dependency(
+                        accessory_product.product_tmpl_id.with_context(
+                            export_wo_acc_p=True
+                        ),
+                        "woocommerce.product.template",
+                    )
 
         if self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
