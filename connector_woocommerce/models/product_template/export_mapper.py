@@ -184,13 +184,19 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def cross_sell_ids(self, record):
-        binder = self.binder_for("woocommerce.product.product")
+        product_binder = self.binder_for("woocommerce.product.product")
+        template_binder = self.binder_for("woocommerce.product.template")
         accessory_list = []
         if record.accessory_product_ids and not record.env.context.get(
             "export_wo_acc_p"
         ):
             for product in record.accessory_product_ids:
-                values = binder.get_external_dict_ids(product)
+                if product.product_tmpl_id.has_attributes:
+                    values = product_binder.get_external_dict_ids(product)
+                else:
+                    values = template_binder.get_external_dict_ids(
+                        product.product_tmpl_id
+                    )
                 accessory_list.append(values["id"])
         return {"cross_sell_ids": accessory_list}
 
