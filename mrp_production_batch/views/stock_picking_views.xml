@@ -6,6 +6,7 @@
         <field name="inherit_id" ref="mrp.stock_production_type_kanban" />
         <field name="arch" type="xml">
             <field name="code" position="after">
+                <field name="count_pb_todo" />
                 <field name="count_mo_todo_wo_batch" />
                 <field name="mo_batch_count" />
             </field>
@@ -59,54 +60,35 @@
                                 <div class="col-6 o_kanban_primary_left">
                                     <button
                                         class="btn btn-primary"
-                                        name="mrp_production_batch_action"
-                                        type="object"
+                                        name="%(mrp_production_batch_action_picking_dashboard)d"
+                                        type="action"
+                                        context="{'search_default_todo': 1}"
                                     >
                                         <span
                                             t-if="record.code.raw_value =='mrp_operation_batch'"
                                         >
                                             <t
-                                                t-esc="record.mo_batch_count.value"
+                                                t-esc="record.count_pb_todo.value"
                                             /> To Process
                                         </span>
                                     </button>
-
-<!--                                    <button class="btn btn-primary" name="%(mrp_production_batch_action_picking_dashboard)d" type="action" context="{'search_default_todo': 1, 'default_picking_type_id': active_id}">-->
-<!--                                        <span t-if="record.code.raw_value =='mrp_operation_batch'"> <t t-esc="record.mo_todo_wo_batch_count.value" /> To Process</span>-->
-<!--                                    </button>-->
                                 </div>
                                 <div class="col-6 o_kanban_primary_right">
                                     <div
-                                        t-if="record.count_mo_waiting.raw_value > 0"
+                                        t-if="record.count_pb_waiting.raw_value > 0"
                                         class="row"
                                     >
                                         <div class="col-9">
                                             <a
                                                 name="%(mrp_production_batch_action_picking_dashboard)d"
                                                 type="action"
+                                                context="{'search_default_in_progress': 1}"
                                             >
                                                 Waiting
                                             </a>
                                         </div>
                                         <div class="col-3">
-                                            <field name="count_mo_waiting" />
-                                        </div>
-                                    </div>
-                                    <div
-                                        t-if="record.count_mo_late.raw_value > 0"
-                                        class="row"
-                                    >
-                                        <div class="col-9">
-                                            <a
-                                                class="oe_kanban_stock_picking_type_list"
-                                                name="%(mrp_production_batch_action_picking_dashboard)d"
-                                                type="action"
-                                            >
-                                                Late
-                                            </a>
-                                        </div>
-                                        <div class="col-3">
-                                            <field name="count_mo_late" />
+                                            <field name="count_pb_waiting" />
                                         </div>
                                     </div>
                                 </div>
@@ -139,18 +121,9 @@
                                         <a
                                             name="%(mrp_production_batch_action_picking_dashboard)d"
                                             type="action"
-                                            context="{'search_default_inprogress': 1}"
+                                            context="{'search_default_in_progress': 1}"
                                         >
                                             In Progress
-                                        </a>
-                                    </div>
-                                    <div role="menuitem">
-                                        <a
-                                            name="%(mrp_production_batch_action_picking_dashboard)d"
-                                            type="action"
-                                            context="{'search_default_planned': 1}"
-                                        >
-                                            Planned
                                         </a>
                                     </div>
                                 </div>
@@ -162,6 +135,12 @@
                                         class="o_kanban_card_manage_title"
                                     >
                                         <span>New</span>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a
+                                            name="%(mrp_production_batch_form_action)d"
+                                            type="action"
+                                        >Production Batch</a>
                                     </div>
                                 </div>
                             </div>
