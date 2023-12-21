@@ -1,0 +1,68 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_barcodes_unique
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-22 15:20+0000\n"
+"PO-Revision-Date: 2023-12-22 15:20+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_barcodes_unique
+#: model:ir.model.fields,field_description:stock_barcodes_unique.field_stock_barcodes_option__copy_to_header
+msgid "Copy To Header"
+msgstr "Copiar al Encabezado"
+
+#. module: stock_barcodes_unique
+#: model:ir.model.fields,field_description:stock_barcodes_unique.field_stock_barcodes_option__display_name
+#: model:ir.model.fields,field_description:stock_barcodes_unique.field_wiz_stock_barcodes_read_picking__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: stock_barcodes_unique
+#: model:ir.model.fields,field_description:stock_barcodes_unique.field_stock_barcodes_option____last_update
+#: model:ir.model.fields,field_description:stock_barcodes_unique.field_wiz_stock_barcodes_read_picking____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: stock_barcodes_unique
+#: model:ir.model,name:stock_barcodes_unique.model_stock_barcodes_option
+msgid "Options for barcode interface"
+msgstr "Opciones para la interfaz de código de barras"
+
+#. module: stock_barcodes_unique
+#: code:addons/stock_barcodes_unique/models/stock_barcodes_read_picking.py:0
+#, python-format
+msgid ""
+"The field %s must have the same value in all the lines of the picking "
+"because you have selected it as a static field in the barcode options."
+msgstr ""
+"El campo %s debe tener el mismo valor en todas las líneas del albarán porque "
+"lo ha seleccionado como campo estático en las opciones de código de barras."
+
+#. module: stock_barcodes_unique
+#: code:addons/stock_barcodes_unique/models/stock_barcodes_option.py:0
+#, python-format
+msgid ""
+"The field 'Copy to Header' can only be checked if the field 'Unique' is also"
+" checked."
+msgstr ""
+"El campo 'Copiar al Encabezado' solo puede marcarse si el campo 'Único' "
+"también está marcado."
+
+#. module: stock_barcodes_unique
+#: model:ir.model.fields,field_description:stock_barcodes_unique.field_stock_barcodes_option__unique
+msgid "Unique"
+msgstr "Único"
+
+#. module: stock_barcodes_unique
+#: model:ir.model,name:stock_barcodes_unique.model_wiz_stock_barcodes_read_picking
+msgid "Wizard to read barcode on picking"
+msgstr "Asistente para leer códigos de barras desde los albaranes"
