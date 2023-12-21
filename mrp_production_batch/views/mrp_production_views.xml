@@ -31,6 +31,32 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view" />
             <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <field name="is_ready_to_produce" invisible="1" />
+                    <div
+                        class="alert alert-success alert-link text-center"
+                        role="alert"
+                        attrs="{'invisible': ['|', ('production_batch_id', '=', False), '|', ('is_ready_to_produce', '=', False), ('state', '=', 'done')]}"
+                    >
+                        The location is ready to produce in batch.
+                    </div>
+                    <div
+                        class="alert alert-danger alert-link text-center"
+                        role="alert"
+                        attrs="{'invisible': ['|', ('production_batch_id', '=', False), '|', ('is_ready_to_produce', '=', True), ('error_message', '=', False)]}"
+                    >
+                        <field name="error_message" readonly="1" no_label="1" />
+                    </div>
+                </xpath>
+                <field name="confirm_cancel" position="before">
+                    <button
+                        name="action_check_production_with_batch"
+                        type="object"
+                        string="Check Production"
+                        class="oe_highlight"
+                        attrs="{'invisible': ['|', ('production_batch_id', '=', False), ('state', '=', 'done')]}"
+                    />
+                </field>
                 <page name="miscellaneous" position="inside">
                     <group>
                         <group>
@@ -56,6 +82,32 @@
                         <field name="production_batch_id" invisible="1" />
                     </button>
                 </div>
+                <xpath
+                    expr="//button[@name='button_mark_done'][1]"
+                    position="attributes"
+                >
+                    <attribute name="attrs">{'invisible': [
+                        '|',
+                        ('production_batch_id', '!=', False),
+                        '|',
+                        ('state', 'in', ('draft', 'cancel', 'done', 'to_close')),
+                        ('qty_producing', '=', 0)
+                    ]}</attribute>
+                </xpath>
+                <xpath
+                    expr="//button[@name='button_mark_done'][2]"
+                    position="attributes"
+                >
+                    <attribute name="attrs">{'invisible': [
+                        '|',
+                        ('production_batch_id', '!=', False),
+                        '&amp;',
+                        '|',
+                        ('state', 'not in', ('confirmed', 'progress')),
+                        ('qty_producing', '!=', 0),
+                        ('state', '!=', 'to_close')
+                    ]}</attribute>
+                </xpath>
             </field>
         </record>
         <record

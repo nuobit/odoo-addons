@@ -51,6 +51,35 @@ class StockPickingType(models.Model):
             else:
                 rec.count_mo_todo_wo_batch = False
 
+    count_pb_todo = fields.Integer(compute="_compute_count_pb")
+    count_pb_waiting = fields.Integer(compute="_compute_count_pb")
+
+    def _compute_count_pb(self):
+        mrp_picking_types = self.filtered(
+            lambda picking: picking.code == "mrp_operation_batch"
+        )
+        if not mrp_picking_types:
+            self.count_pb_waiting = False
+            self.count_pb_todo = False
+            return
+        domains = {
+            "count_pb_waiting": [("state", "=", "in_progress")],
+            "count_pb_todo": [("state", "!=", "done")],
+        }
+        for field in domains:
+            data = self.env["mrp.production.batch"].read_group(
+                domains[field] + [("operation_type", "in", self.ids)],
+                ["operation_type"],
+                ["operation_type"],
+            )
+            count = {x["operation_type"][0]: x["operation_type_count"] for x in data}
+            for picking in mrp_picking_types:
+                picking[field] = count.get(picking.id, 0)
+        remaining = self - mrp_picking_types
+        if remaining:
+            remaining.count_pb_waiting = False
+            remaining.count_pb_todo = False
+
     mo_batches = fields.One2many(
         comodel_name="mrp.production.batch",
         inverse_name="operation_type",
@@ -70,16 +99,3 @@ class StockPickingType(models.Model):
         if self:
             action["display_name"] = self.display_name
         return action
-
-    def mrp_production_batch_action(self):
-        tree_view = self.env.ref("mrp_production_batch.mrp_production_batch_tree_view")
-        form_view = self.env.ref("mrp_production_batch.mrp_production_batch_form_view")
-        return {
-            "name": ("Detailed Operations"),
-            "type": "ir.actions.act_window",
-            "view_mode": "tree,form",
-            "res_model": "mrp.production.batch",
-            "views": [(tree_view.id, "tree"), (form_view.id, "form")],
-            "view_id": tree_view.id,
-            "domain": [("id", "in", self.mo_batches.ids)],
-        }

@@ -14,7 +14,6 @@
             </tree>
         </field>
     </record>
-
     <record id="mrp_production_batch_form_view" model="ir.ui.view">
         <field name="name">mrp.production.batch.form</field>
         <field name="model">mrp.production.batch</field>
@@ -30,12 +29,20 @@
                         attrs="{'invisible': ['|',('state', '=', 'done'),('production_wo_lot_producing_id','=',[])]}"
                     />
                     <button
+                        name="action_check"
+                        id="action_check"
+                        string="Check Productions"
+                        class="btn-primary"
+                        type="object"
+                        attrs="{'invisible': ['|','|', ('to_review_production_count', '=', 0), ('state', '=', 'done'),('production_wo_lot_producing_id','!=',[])]}"
+                    />
+                    <button
                         name="action_done"
                         id="action_confirm"
                         string="Confirm Production"
                         class="btn-primary"
                         type="object"
-                        attrs="{'invisible': ['|',('state', '=', 'done'),('production_wo_lot_producing_id','!=',[])]}"
+                        attrs="{'invisible': ['|', '|', ('to_review_production_count', '!=', 0), ('state', '=', 'done'),('production_wo_lot_producing_id','!=',[])]}"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
@@ -68,29 +75,29 @@
                             />
                         </button>
                         <button
-                            name="action_view_production_pending"
+                            name="action_view_production_to_review"
                             type="object"
                             class="oe_stat_button"
                             icon="fa-clock-o"
-                            attrs="{'invisible': [('production_ids', '=', False)]}"
+                            attrs="{'invisible': ['|', ('production_ids', '=', False), ('state', '=', 'done')]}"
                         >
                             <field
-                                name="pending_production_count"
+                                name="to_review_production_count"
                                 widget="statinfo"
-                                string="Pending"
+                                string="To review"
                             />
                         </button>
                         <button
-                            name="action_view_production_done"
+                            name="action_view_production_ready"
                             type="object"
                             class="oe_stat_button"
                             icon="fa-check"
-                            attrs="{'invisible': [('production_ids', '=', False)]}"
+                            attrs="{'invisible': ['|', ('production_ids', '=', False), ('state', '=', 'done')]}"
                         >
                             <field
-                                name="done_production_count"
+                                name="ready_production_count"
                                 widget="statinfo"
-                                string="Done"
+                                string="Ready"
                             />
                         </button>
                     </div>
@@ -111,6 +118,20 @@
             </form>
         </field>
     </record>
+    <record id="view_mrp_production_batch_filter" model="ir.ui.view">
+        <field name="name">mrp.production.batch.select</field>
+        <field name="model">mrp.production.batch</field>
+        <field name="arch" type="xml">
+            <search string="Search Production Batch">
+                <filter
+                    string="In Progress"
+                    name="in_progress"
+                    domain="[('state', '=', 'in_progress')]"
+                />
+                <filter string="To Do" name="todo" domain="[('state', '!=', 'done')]" />
+           </search>
+        </field>
+    </record>
     <record
         id="mrp_production_batch_action_picking_dashboard"
         model="ir.actions.act_window"
@@ -120,6 +141,7 @@
         <field name="res_model">mrp.production.batch</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" eval="False" />
+        <field name="search_view_id" ref="view_mrp_production_batch_filter" />
         <field name="domain">[('operation_type', '=', active_id)]</field>
         <field name="context">{'default_picking_type_id': active_id}</field>
     </record>
@@ -141,5 +163,11 @@
         <field name="name">Invoice batches</field>
         <field name="res_model">mrp.production.batch</field>
         <field name="view_mode">tree,form</field>
+    </record>
+    <record id="mrp_production_batch_form_action" model="ir.actions.act_window">
+        <field name="name">Batch Production</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.production.batch</field>
+        <field name="view_mode">form</field>
     </record>
 </odoo>

@@ -1,18 +1,47 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
 
+    is_ready_to_produce = fields.Boolean(
+        store=True,
+        readonly=False,
+    )
+    error_message = fields.Char()
     production_batch_id = fields.Many2one(
         comodel_name="mrp.production.batch",
         string="Production Batch",
         ondelete="restrict",
         domain="[('state', '!=', 'done')]",
     )
+
+    @api.constrains("state")
+    def _check_state_batch_creation(self):
+        for rec in self:
+            if rec.production_batch_id:
+                if rec.state == "cancel":
+                    raise ValidationError(
+                        _(
+                            "You can't cancel a production that belongs to a batch %s. "
+                            "Please, delete it from the batch first."
+                        )
+                        % rec.production_batch_id.name
+                    )
+                elif rec.state == "done":
+                    if not self.env.context.get("mrp_production_batch_create"):
+                        raise ValidationError(
+                            _(
+                                "You can't change the state of a production %s "
+                                "because it belongs to a batch: %s.\n"
+                                "It must be processed from the batch."
+                            )
+                            % (rec.name, rec.production_batch_id.name)
+                        )
 
     def _check_production_to_batch_consistency(self, mrp_productions):
         if not mrp_productions:
@@ -106,3 +135,7 @@ class MrpProduction(models.Model):
             "view_id": view.id,
             "res_id": self.production_batch_id.id,
         }
+
+    def action_check_production_with_batch(self):
+        self.ensure_one()
+        self.production_batch_id.with_context(mrp_production_check=True).action_check()

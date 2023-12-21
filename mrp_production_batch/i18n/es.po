@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-12 10:45+0000\n"
-"PO-Revision-Date: 2023-12-12 10:45+0000\n"
+"POT-Creation-Date: 2023-12-21 15:59+0000\n"
+"PO-Revision-Date: 2023-12-21 15:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -42,6 +42,7 @@ msgstr "Todo"
 
 #. module: mrp_production_batch
 #: model:ir.actions.act_window,name:mrp_production_batch.mrp_production_batch
+#: model:ir.actions.act_window,name:mrp_production_batch.mrp_production_batch_form_action
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_tree_view
 msgid "Batch Production"
 msgstr "Lote de Producción"
@@ -49,7 +50,9 @@ msgstr "Lote de Producción"
 #. module: mrp_production_batch
 #: model_terms:ir.actions.act_window,help:mrp_production_batch.mrp_production_batch
 msgid "Batch production is used to group several production orders"
-msgstr "La producción por lotes se utiliza para agrupar varias órdenes de producción."
+msgstr ""
+"La producción por lotes se utiliza para agrupar varias órdenes de "
+"producción."
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.wizard_mrp_production_batch_view_form
@@ -65,6 +68,16 @@ msgstr "Cancelado"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__cancelled_production_count
 msgid "Cancelled Production Count"
 msgstr "Conteo de Producción Cancelada"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_form_view
+msgid "Check Production"
+msgstr "Verificar Producción"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
+msgid "Check Productions"
+msgstr "Verificar Producciones"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban2
@@ -123,14 +136,8 @@ msgstr "Nombre mostrado"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields.selection,name:mrp_production_batch.selection__mrp_production_batch__state__done
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
 msgid "Done"
 msgstr "Hecho"
-
-#. module: mrp_production_batch
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__done_production_count
-msgid "Done Production Count"
-msgstr "Conteo de Producción Hecha"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields.selection,name:mrp_production_batch.selection__mrp_production_batch__state__draft
@@ -159,6 +166,7 @@ msgstr "Importar socios"
 #. module: mrp_production_batch
 #: model:ir.model.fields.selection,name:mrp_production_batch.selection__mrp_production_batch__state__in_progress
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban2
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.view_mrp_production_batch_filter
 msgid "In Progress"
 msgstr "En Progreso"
 
@@ -166,6 +174,13 @@ msgstr "En Progreso"
 #: model:ir.actions.act_window,name:mrp_production_batch.mrp_production_batch_action
 msgid "Invoice batches"
 msgstr "Facturar lotes"
+
+#. module: mrp_production_batch
+#: code:addons/mrp_production_batch/models/mrp_production_batch.py:0
+#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__is_ready_to_produce
+#, python-format
+msgid "Is Ready To Produce"
+msgstr "Está listo para producir"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production____last_update
@@ -189,11 +204,6 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
-
-#. module: mrp_production_batch
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban2
-msgid "Late"
-msgstr "Tarde"
 
 #. module: mrp_production_batch
 #: model:ir.model,name:mrp_production_batch.model_mrp_production_batch_wizard
@@ -260,24 +270,9 @@ msgid "Operation Type"
 msgstr "Tipo de Operación"
 
 #. module: mrp_production_batch
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
-msgid "Pending"
-msgstr "Pendiente"
-
-#. module: mrp_production_batch
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__pending_production_count
-msgid "Pending Production Count"
-msgstr "Contador de Producción Pendiente"
-
-#. module: mrp_production_batch
 #: model:ir.model,name:mrp_production_batch.model_stock_picking_type
 msgid "Picking Type"
 msgstr "Tipo de operación"
-
-#. module: mrp_production_batch
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban2
-msgid "Planned"
-msgstr "Planificado"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__product_qty
@@ -299,6 +294,7 @@ msgstr "Producción %s no ha registrado cantidades producidas todavía."
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__production_batch_id
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban2
 msgid "Production Batch"
 msgstr "Lote de Producción"
 
@@ -330,6 +326,26 @@ msgid "Products"
 msgstr "Productos"
 
 #. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
+msgid "Ready"
+msgstr "Listo"
+
+#. module: mrp_production_batch
+#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__ready_production_ids
+msgid "Ready Production"
+msgstr "Producción Lista"
+
+#. module: mrp_production_batch
+#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__ready_production_count
+msgid "Ready Production Count"
+msgstr "Contador de Producción Lista"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.view_mrp_production_batch_filter
+msgid "Search Production Batch"
+msgstr "Buscar Lote de Producción"
+
+#. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid "Some of the selected productions already have a batch"
@@ -339,19 +355,24 @@ msgstr "Algunas de las producciones seleccionadas ya tienen un lote"
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid "Some of the selected productions are already done or cancelled"
-msgstr "Algunas de las producciones seleccionadas ya están hechas o canceladas"
+msgstr ""
+"Algunas de las producciones seleccionadas ya están hechas o canceladas"
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid "Some of the selected productions have different operation types"
-msgstr "Algunas de las producciones seleccionadas tienen diferentes tipos de operación"
+msgstr ""
+"Algunas de las producciones seleccionadas tienen diferentes tipos de "
+"operación"
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid "Some of the selected productions have different picking types:%s"
-msgstr "Algunas de las producciones seleccionadas tienen diferentes tipos de operación:%s"
+msgstr ""
+"Algunas de las producciones seleccionadas tienen diferentes tipos de "
+"operación:%s"
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
@@ -365,9 +386,34 @@ msgid "State"
 msgstr "Estado"
 
 #. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_form_view
+msgid "The location is ready to produce in batch."
+msgstr "La ubicación está lista para producir en lote."
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.view_mrp_production_batch_filter
+msgid "To Do"
+msgstr "A Hacer"
+
+#. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban2
 msgid "To Process"
 msgstr "A Procesar"
+
+#. module: mrp_production_batch
+#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__to_review_production_ids
+msgid "To Review Production"
+msgstr "Producción a Revisar"
+
+#. module: mrp_production_batch
+#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__to_review_production_count
+msgid "To Review Production Count"
+msgstr "Conteo de Producción a Revisar"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
+msgid "To review"
+msgstr "A revisar"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
@@ -393,3 +439,23 @@ msgstr "Esperando"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__warehouse_id
 msgid "Warehouse"
 msgstr "Almacén"
+
+#. module: mrp_production_batch
+#: code:addons/mrp_production_batch/models/mrp_production.py:0
+#, python-format
+msgid ""
+"You can't cancel a production that belongs to a batch %s. Please, delete it "
+"from the batch first."
+msgstr ""
+"No se puede cancelar una producción que pertenece a un lote %s. Por favor, "
+"primero elimínelo del lote."
+
+#. module: mrp_production_batch
+#: code:addons/mrp_production_batch/models/mrp_production.py:0
+#, python-format
+msgid ""
+"You can't change the state of a production %s because it belongs to a batch: %s.\n"
+"It must be processed from the batch."
+msgstr ""
+"No puedes cambiar el estado de una producción %s porque pertenece a un lote: %s. \n"
+"Debe procesarse desde el lote."
