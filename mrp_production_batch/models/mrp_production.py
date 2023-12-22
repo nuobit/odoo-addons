@@ -5,13 +5,14 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
+class FakeException(ValidationError):
+    pass
+
+
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
 
-    is_ready_to_produce = fields.Boolean(
-        store=True,
-        readonly=False,
-    )
+    is_ready_to_produce = fields.Boolean()
     error_message = fields.Char()
     production_batch_id = fields.Many2one(
         comodel_name="mrp.production.batch",
@@ -33,7 +34,7 @@ class MrpProduction(models.Model):
                         % rec.production_batch_id.name
                     )
                 elif rec.state == "done":
-                    if not self.env.context.get("mrp_production_batch_create"):
+                    if not self.env.context.get("mrp_production_batch_create", False):
                         raise ValidationError(
                             _(
                                 "You can't change the state of a production %s "
@@ -136,6 +137,15 @@ class MrpProduction(models.Model):
             "res_id": self.production_batch_id.id,
         }
 
-    def action_check_production_with_batch(self):
+    def action_check_with_batch(self):
         self.ensure_one()
-        self.production_batch_id.with_context(mrp_production_check=True).action_check()
+        try:
+            with self.env.cr.savepoint():
+                self.with_context(mrp_production_batch_create=True).button_mark_done()
+                raise FakeException("")
+        except FakeException:
+            self.is_ready_to_produce = True
+            self.error_message = False
+        except Exception as e:
+            self.is_ready_to_produce = False
+            self.error_message = e.name

@@ -4,7 +4,7 @@
 import logging
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -58,16 +58,6 @@ class MrpProductionBatch(models.Model):
                 rec.production_ids.filtered(lambda r: not r.is_ready_to_produce)
             )
 
-    cancelled_production_count = fields.Integer(
-        compute="_compute_cancelled_production_count",
-    )
-
-    def _compute_cancelled_production_count(self):
-        for rec in self:
-            rec.cancelled_production_count = len(
-                rec.production_ids.filtered(lambda r: r.state == "cancel")
-            )
-
     creation_date = fields.Date(
         string="Creation Date",
     )
@@ -119,37 +109,54 @@ class MrpProductionBatch(models.Model):
         for rec in self:
             rec.product_ids = rec.production_ids.product_id
 
-    def action_done(self):
-        self.ensure_one()
-        productions = self.production_ids.filtered(lambda r: r.state != "cancel")
-        for production in productions:
-            production.with_context(mrp_production_batch_create=True).button_mark_done()
+    ready_production_ids = fields.Many2many(
+        comodel_name="mrp.production",
+        compute="_compute_production_ready_ids",
+    )
+
+    def _compute_production_ready_ids(self):
+        for rec in self:
+            rec.ready_production_ids = rec.production_ids.filtered(
+                lambda x: x.is_ready_to_produce
+            )
+
+    to_review_production_ids = fields.Many2many(
+        comodel_name="mrp.production",
+        compute="_compute_production_to_review_ids",
+    )
+
+    def _compute_production_to_review_ids(self):
+        for rec in self:
+            rec.to_review_production_ids = rec.production_ids.filtered(
+                lambda x: not x.is_ready_to_produce
+            )
+
+    def action_generate_serial(self):
+        for rec in self:
+            for production in rec.production_wo_lot_producing_id:
+                production.action_generate_serial()
 
     def action_check(self):
         self.ensure_one()
         productions = self.production_ids.filtered(lambda r: not r.is_ready_to_produce)
-        len_production = len(productions)
-        productions_not_ready = []
+        init_production_count = len(productions)
         for production in productions:
-            raise_msg = _("Is Ready To Produce")
-            try:
-                with self.env.cr.savepoint():
-                    production.with_context(
-                        mrp_production_batch_create=True
-                    ).button_mark_done()
-                    raise ValidationError(raise_msg)
-            except (ValidationError, UserError) as e:
-                production.is_ready_to_produce = bool(e.name == raise_msg)
-                if not production.is_ready_to_produce:
-                    productions_not_ready.append(production.display_name)
-                    production.error_message = e.name
-                else:
-                    production.error_message = False
-        if not self.env.context.get("mrp_production_check"):
-            if productions_not_ready and len(productions_not_ready) == len_production:
-                message = "The following productions could not be marked as 'done':\n"
-                message += "\n".join(productions_not_ready)
-                raise UserError(message)
+            production.action_check_with_batch()
+        final_production_count = len(
+            self.production_ids.filtered(lambda r: not r.is_ready_to_produce)
+        )
+        if init_production_count == final_production_count:
+            message = [
+                _("The following productions could not be marked as 'done':"),
+                "\n".join(productions.mapped("display_name")),
+            ]
+            raise UserError("\n".join(message))
+
+    def action_done(self):
+        self.ensure_one()
+        self.action_check()
+        for production in self.production_ids:
+            production.with_context(mrp_production_batch_create=True).button_mark_done()
 
     def _get_common_action_view_production(self):
         tree_view = self.env.ref("mrp.mrp_production_tree_view")
@@ -175,44 +182,8 @@ class MrpProductionBatch(models.Model):
         action["domain"] = [("id", "in", self.to_review_production_ids.ids)]
         return action
 
-    ready_production_ids = fields.Many2many(
-        comodel_name="mrp.production",
-        compute="_compute_production_ready_ids",
-    )
-
-    def _compute_production_ready_ids(self):
-        for rec in self:
-            rec.ready_production_ids = rec.production_ids.filtered(
-                lambda x: x.is_ready_to_produce
-            )
-
-    to_review_production_ids = fields.Many2many(
-        comodel_name="mrp.production",
-        compute="_compute_production_to_review_ids",
-    )
-
-    def _compute_production_to_review_ids(self):
-        for rec in self:
-            rec.to_review_production_ids = rec.production_ids.filtered(
-                lambda x: not x.is_ready_to_produce
-            )
-
     def action_view_production_ready(self):
         self.ensure_one()
         action = self._get_common_action_view_production()
         action["domain"] = [("id", "in", self.ready_production_ids.ids)]
         return action
-
-    def action_view_production_cancelled(self):
-        self.ensure_one()
-        action = self._get_common_action_view_production()
-        action["domain"] = [
-            ("id", "in", self.production_ids.ids),
-            ("state", "=", "cancel"),
-        ]
-        return action
-
-    def action_generate_serial(self):
-        for rec in self:
-            for production in rec.production_wo_lot_producing_id:
-                production.action_generate_serial()

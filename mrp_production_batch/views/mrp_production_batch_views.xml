@@ -62,19 +62,6 @@
                             />
                         </button>
                         <button
-                            name="action_view_production_cancelled"
-                            type="object"
-                            class="oe_stat_button"
-                            icon="fa-times"
-                            attrs="{'invisible': [('production_ids', '=', False)]}"
-                        >
-                            <field
-                                name="cancelled_production_count"
-                                widget="statinfo"
-                                string="Cancelled"
-                            />
-                        </button>
-                        <button
                             name="action_view_production_to_review"
                             type="object"
                             class="oe_stat_button"

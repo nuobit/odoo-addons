@@ -50,7 +50,7 @@
                 </xpath>
                 <field name="confirm_cancel" position="before">
                     <button
-                        name="action_check_production_with_batch"
+                        name="action_check_with_batch"
                         type="object"
                         string="Check Production"
                         class="oe_highlight"
