@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-21 15:59+0000\n"
-"PO-Revision-Date: 2023-12-21 15:59+0000\n"
+"POT-Creation-Date: 2023-12-22 14:37+0000\n"
+"PO-Revision-Date: 2023-12-22 14:37+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -60,24 +60,14 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: mrp_production_batch
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
-msgid "Cancelled"
-msgstr "Cancelado"
-
-#. module: mrp_production_batch
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__cancelled_production_count
-msgid "Cancelled Production Count"
-msgstr "Conteo de Producción Cancelada"
-
-#. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_form_view
 msgid "Check Production"
-msgstr "Verificar Producción"
+msgstr "Validar Producción"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
 msgid "Check Productions"
-msgstr "Verificar Producciones"
+msgstr "Validar Producciones"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban2
@@ -119,13 +109,6 @@ msgid "Creation Date"
 msgstr "Fecha de Creación"
 
 #. module: mrp_production_batch
-#: code:addons/mrp_production_batch/models/mrp_production.py:0
-#: code:addons/mrp_production_batch/models/mrp_production_batch.py:0
-#, python-format
-msgid "Detailed Operations"
-msgstr "Operaciones Detalladas"
-
-#. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__display_name
@@ -150,15 +133,6 @@ msgid "Generate Serial Numbers"
 msgstr "Generar Números de Serie"
 
 #. module: mrp_production_batch
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__id
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__id
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__id
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__id
-#: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type__id
-msgid "ID"
-msgstr "ID"
-
-#. module: mrp_production_batch
 #: model:ir.actions.act_window,name:mrp_production_batch.mrp_production_batch_wizard_action
 msgid "Import partners"
 msgstr "Importar socios"
@@ -176,9 +150,7 @@ msgid "Invoice batches"
 msgstr "Facturar lotes"
 
 #. module: mrp_production_batch
-#: code:addons/mrp_production_batch/models/mrp_production_batch.py:0
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__is_ready_to_produce
-#, python-format
 msgid "Is Ready To Produce"
 msgstr "Está listo para producir"
 
@@ -416,11 +388,6 @@ msgid "To review"
 msgstr "A revisar"
 
 #. module: mrp_production_batch
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_form_view
-msgid "Total"
-msgstr "Total"
-
-#. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__total_production_count
 msgid "Total Production Count"
 msgstr "Conteo Total de Producción"
@@ -439,6 +406,12 @@ msgstr "Esperando"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__warehouse_id
 msgid "Warehouse"
 msgstr "Almacén"
+
+#. module: mrp_production_batch
+#: code:addons/mrp_production_batch/models/mrp_production_batch.py:0
+#, python-format
+msgid "The following productions could not be marked as 'done':"
+msgstr "Las siguientes producciones no se pudieron marcar como 'hechas':"
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
