@@ -6,7 +6,7 @@ from odoo import models
 
 
 class ReportJsonAbstract(models.AbstractModel):
-    _name = 'report.report_json.abstract'
+    _name = "report.report_json.abstract"
 
     def _get_objs_for_report(self, docids, data):
         """
@@ -24,16 +24,16 @@ class ReportJsonAbstract(models.AbstractModel):
         """
         if docids:
             ids = docids
-        elif data and 'context' in data:
-            ids = data["context"].get('active_ids', [])
+        elif data and "context" in data:
+            ids = data["context"].get("active_ids", [])
         else:
-            ids = self.env.context.get('active_ids', [])
-        return self.env[self.env.context.get('active_model')].browse(ids)
+            ids = self.env.context.get("active_ids", [])
+        return self.env[self.env.context.get("active_model")].browse(ids)
 
     def create_json_report(self, docids, data):
         objs = self._get_objs_for_report(docids, data)
         json_data = self.generate_json_report(data, objs)
-        return json_data, 'json'
+        return json_data, "json"
 
     def generate_json_report(self, data, objs):
         raise NotImplementedError()
