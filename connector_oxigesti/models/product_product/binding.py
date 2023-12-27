@@ -2,7 +2,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ProductProduct(models.Model):
@@ -13,6 +14,17 @@ class ProductProduct(models.Model):
         inverse_name="odoo_id",
         string="Oxigesti Bindings",
     )
+
+    @api.constrains("default_code")
+    def _check_oxigesti_default_code(self):
+        for rec in self:
+            if rec.oxigesti_bind_ids:
+                raise ValidationError(
+                    _(
+                        "You can't change the default code of a "
+                        "product that has bindings to oxigesti"
+                    )
+                )
 
     def unlink(self):
         to_remove = {}

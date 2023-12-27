@@ -2,6 +2,23 @@
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+    <record id="product_template_only_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.only.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="oxigesti_product_variant_bind_ids" invisible="1" />
+            </field>
+            <field name="default_code" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'invisible': [('product_variant_count', '>', 1)],
+                  'readonly': [('oxigesti_product_variant_bind_ids', '!=', [])]}</attribute>
+            </field>
+        </field>
+    </record>
+
     <record id="product_product_only_form_view" model="ir.ui.view">
         <field name="name">product.product.oxigesti.connector.form</field>
         <field name="model">product.product</field>
@@ -18,6 +35,11 @@
                     <field name="oxigesti_bind_ids" nolabel="1" />
                 </group>
             </page>
+            <field name="default_code" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('oxigesti_bind_ids', '!=', [])]}</attribute>
+            </field>
         </field>
     </record>
 
