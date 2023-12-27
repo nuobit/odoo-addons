@@ -1,0 +1,9 @@
+.modal .modal-dialog .o_form_view .o_FormRenderer_chatterContainer.dialog {
+    display: flex;
+    margin: 0 auto;
+    padding-bottom: map-get($spacers, 5);
+    width: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: auto;
+}
