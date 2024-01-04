@@ -21,7 +21,7 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
         return self.export_batch(backend_record=backend_record)
 
     @api.model
-    def import_batch(self, backend_record, domain=None, delayed=True):
+    def import_batch(self, backend_record, domain=None, delayed=True, use_data=True):
         """Prepare the batch import of records from Backend"""
         if not domain:
             domain = []
@@ -29,7 +29,7 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
             importer = work.component(
                 usage=delayed and "batch.delayed.importer" or "batch.direct.importer"
             )
-        return importer.run(domain)
+        return importer.run(domain, use_data=use_data)
 
     @api.model
     def export_batch(self, backend_record, domain=None, delayed=True):
