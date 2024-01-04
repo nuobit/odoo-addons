@@ -239,7 +239,7 @@ class ConnectorExtensionGenericBatchImporter(AbstractComponent):
 
     _usage = "batch.importer"
 
-    def run(self, domain=None):
+    def run(self, domain=None, use_data=True):
         """Run the synchronization"""
         if domain is None:
             domain = []
@@ -257,10 +257,24 @@ class ConnectorExtensionGenericBatchImporter(AbstractComponent):
                 total_items -= chunk_size
         else:
             sync_date = fields.Datetime.now()
-            data, len_items = self.backend_adapter.search_read(domain)
+            if use_data:
+                data, len_items = self.backend_adapter.search_read(domain)
+
+                def _import_record(x):
+                    return self._import_record(
+                        self.binder_for().dict2id(x, in_field=False),
+                        sync_date,
+                        external_data=x,
+                    )
+
+            else:
+                data, len_items = self.backend_adapter.search(domain)
+
+                def _import_record(x):
+                    return self._import_record(x, sync_date)
+
             for d in data:
-                external_id = self.binder_for().dict2id(d, in_field=False)
-                self._import_record(external_id, sync_date, external_data=d)
+                _import_record(d)
 
     def _import_chunk(self, domain, offset, chunk_size):
         raise NotImplementedError
