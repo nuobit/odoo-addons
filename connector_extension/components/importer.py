@@ -163,10 +163,7 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         # convert to odoo data
         internal_data = mapper.map_record(external_data)
 
-        # get_binding
-        # this one knows how to link Baclend/Odoo records
-        binder = self.component(usage="binder")
-
+        binder = self.binder_for()
         # find if the external id already exists in odoo
         binding = binder.to_internal(external_id)
 
