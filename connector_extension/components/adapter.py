@@ -216,7 +216,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
         if isinstance(elem, dict):
             for k, v in elem.items():
                 current_path = "{}/{}".format(path, k)
-                if isinstance(v, (tuple, list, dict)):
+                if isinstance(v, (tuple, list, set, dict)):
                     if isinstance(v, dict):
                         if current_path in mapper:
                             v2 = {}
@@ -225,24 +225,14 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                                 v2[new_value] = v1
                             v = elem[k] = v2
                     self._convert_format(v, mapper, current_path)
-                elif isinstance(
-                    v, (str, int, float, bool, datetime.date, datetime.datetime)
-                ):
-                    if current_path in mapper:
-                        elem[k] = mapper[current_path](v)
                 elif v is None:
                     pass
                 else:
-                    raise NotImplementedError("Type %s not implemented" % type(v))
-        elif isinstance(elem, (tuple, list)):
+                    if current_path in mapper:
+                        elem[k] = mapper[current_path](v)
+        elif isinstance(elem, (tuple, list, set)):
             for ch in elem:
                 self._convert_format(ch, mapper, path)
-        elif isinstance(
-            elem, (str, int, float, bool, datetime.date, datetime.datetime)
-        ):
-            pass
-        else:
-            raise NotImplementedError("Type %s not implemented" % type(elem))
 
     def _convert_format_domain(self, domain):
         res = []
