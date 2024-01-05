@@ -1,0 +1,3 @@
+googletrans==3.0.0
+pysmb==1.2.9.1
+extract_msg<=0.30.4
