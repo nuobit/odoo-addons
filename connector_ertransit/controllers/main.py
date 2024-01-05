@@ -4,7 +4,7 @@ import werkzeug.exceptions
 
 from odoo import http
 
-from odoo.addons.connector_ertransit.models.ertransit import ERTransit
+from ..models.ertransit import ERTransit
 
 _logger = logging.getLogger(__name__)
 

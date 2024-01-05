@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- Ertransit backend -->
@@ -26,20 +25,6 @@
                     <field name="state" widget="statusbar" readonly="1" />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button
-                            class="oe_stat_button"
-                            type="object"
-                            name="toggle_active"
-                            icon="fa-archive"
-                        >
-                            <field
-                                name="active"
-                                widget="boolean_button"
-                                options='{"terminology": "archive"}'
-                            />
-                        </button>
-                    </div>
                     <h1>
                         <field
                             name="name"
@@ -65,23 +50,20 @@
             </form>
         </field>
     </record>
-
     <record id="ertransit_sage_backend_view_tree" model="ir.ui.view">
         <field name="name">ertransit.backend.tree</field>
         <field name="model">ertransit.backend</field>
         <field name="arch" type="xml">
-            <tree string="ERTransit Backend">
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="username" />
             </tree>
         </field>
     </record>
-
     <record id="ertransit_backend_action" model="ir.actions.act_window">
         <field name="name">ERTransit Backends</field>
         <field name="res_model">ertransit.backend</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>
