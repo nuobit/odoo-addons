@@ -1,10 +1,9 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
 import logging
 
-from odoo import api, exceptions, fields, models
+from odoo import _, api, exceptions, fields, models
 
 from . import ertransit
 
@@ -25,37 +24,43 @@ class ERTransitBackend(models.Model):
             ("production", "In Production"),
         ]
 
-    name = fields.Char("Name", required=True)
+    name = fields.Char(
+        required=True,
+    )
+    sequence = fields.Integer(
+        required=True,
+        default=1,
+    )
+    username = fields.Char(
+        required=True,
+    )
+    password = fields.Char(
+        required=True,
+    )
+    output = fields.Text(
+        readonly=True,
+    )
+    active = fields.Boolean(
+        default=True,
+    )
+    state = fields.Selection(
+        selection="_select_state",
+        default="draft",
+    )
 
-    sequence = fields.Integer("Sequence", required=True, default=1)
-
-    username = fields.Char("Username", required=True)
-    password = fields.Char("Password", required=True)
-
-    output = fields.Text("Output", readonly=True)
-
-    active = fields.Boolean(string="Active", default=True)
-    state = fields.Selection(selection="_select_state", string="State", default="draft")
-
-    @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
         self.write({"state": "draft", "output": None})
 
-    @api.multi
     def _check_connection(self):
         self.ensure_one()
         er = ertransit.ERTransit(username=self.username, password=self.password)
-
         if not er.login():
-            raise exceptions.ValidationError("Error on logging in")
-
+            raise exceptions.ValidationError(_("Error on logging in"))
         if not er.logout():
-            raise exceptions.ValidationError("Error on logging out")
-
+            raise exceptions.ValidationError(_("Error on logging out"))
         self.output = "OK"
 
-    @api.multi
     def button_check_connection(self):
         self._check_connection()
         self.write({"state": "checked"})

@@ -1,6 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
 import datetime
 import decimal
@@ -9,14 +8,29 @@ import logging
 import requests
 from lxml import etree
 
+from odoo import _
+from odoo.exceptions import ValidationError
+
 _logger = logging.getLogger(__name__)
 
 
 def xpath1(tree, xpath):
     tag_l = tree.xpath(xpath)
+    if len(tag_l) == 0:
+        raise ValidationError(_("No elements found on xpath: %s" % xpath))
     if len(tag_l) != 1:
-        raise Exception("Expected 1 element")
-
+        raise ValidationError(
+            _(
+                "Expected 1 element, %(elements)s found on  "
+                "xpath: %(xpath)s"
+                "Elements:%(tags)s"
+                % {
+                    "elements": len(tag_l),
+                    "xpath": xpath,
+                    "tags": tag_l,
+                }
+            )
+        )
     return tag_l[0]
 
 
@@ -32,12 +46,29 @@ def trim_d(d):
             elif isinstance(v, (dict, list)):
                 trim_d(v)
             else:
-                raise Exception("no tractat 2!! %s:%s -> %s" % (k, v, type(v)))
+                raise ValidationError(
+                    _(
+                        "Not supported type for value: %(key)s:%(value)s -> %(type)s"
+                        % {
+                            "key": k,
+                            "value": v,
+                            "type": type(v),
+                        }
+                    )
+                )
     elif isinstance(d, list):
         for d_d in d:
             trim_d(d_d)
     else:
-        raise Exception("no tractat 1!! %s -> %s" % (d, type(d)))
+        raise ValidationError(
+            _(
+                "Not supported type for data: %(data)s -> %(type)s"
+                % {
+                    "data": d,
+                    "type": type(d),
+                }
+            )
+        )
 
 
 class ERTransit:
@@ -51,11 +82,11 @@ class ERTransit:
     def login(self):
         url = "https://b2b.ertransit.com/portal/transkalweb/login.xhtml"
 
-        ## obtenim el javax.faces
+        # obtain javax.faces
         res = self.session.get(url, params={"loc": "es"})
         self._update_javax_faces_viewstate(res)
 
-        ## fem el login
+        # login
         data = {
             "frmLogin": "frmLogin",
             "frmLogin:txtUsuarioTranskal": self.username,
@@ -127,8 +158,6 @@ class ERTransit:
 
         return self.is_login_page(res)
 
-    #### private
-
     def _log(self, filename, res):
         if self.debug:
             with open(filename, "w") as f:
@@ -146,16 +175,22 @@ class ERTransit:
         tag_javax = tree.xpath('//*[@id="javax.faces.ViewState"]')
         for t in tag_javax:
             if "value" not in t.attrib:
-                raise Exception(
-                    "Unexpected, the javax.faces.ViewState element if found must have value attribute"
+                raise ValidationError(
+                    _(
+                        "Unexpected, the javax.faces.ViewState element "
+                        "if found must have value attribute"
+                    )
                 )
             if not self.javax_face_viewstate:
                 self.javax_face_viewstate = t.attrib["value"]
             else:
                 if self.javax_face_viewstate != t.attrib["value"]:
-                    raise Exception(
-                        "Unexpected! all the javax.faces.ViewState must have the same 'value'"
+                    raise ValidationError(
+                        _(
+                            "Unexpected! all the javax.faces.ViewState "
+                            "must have the same 'value'"
+                        )
                     )
 
         if not self.javax_face_viewstate:
-            raise Exception("javax.faces.ViewState not found")
+            raise ValidationError(_("javax.faces.ViewState not found"))
