@@ -12,12 +12,10 @@
     'depends': [
         'connector',
         'sale',
-        'stock',
     ],
     'data': [
         'views/product_product_view.xml',
         'views/product_category_view.xml',
-        'views/stock_production_lot_view.xml',
         'views/country_state_view.xml',
         'views/sale_order_view.xml',
     ],
