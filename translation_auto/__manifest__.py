@@ -1,14 +1,12 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Translation auto",
-    "description": "Translates ir.translation literals automagically using external resources",
-    "version": "11.0.0.1.5",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "version": "16.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
-    "category": "Custom",
+    "category": "Tools",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
         "base",
@@ -21,5 +19,4 @@
             "googletrans",
         ],
     },
-    "installable": True,
 }
