@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
 # Eric Antones <eantones@nuobit.com>
+# Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
@@ -17,6 +18,7 @@
         "base_report_pdf_css_reset",
     ],
     "data": [
+        "security/options_config_security.xml",
         "security/ir.model.access.csv",
         "wizard/options_wizard_views.xml",
         "report/report.xml",
@@ -24,6 +26,9 @@
         "views/product_views.xml",
         "views/stock_production_lot_views.xml",
         "views/stock_picking_views.xml",
+        "views/options_config_views.xml",
+        "views/options_format_views.xml",
+        "views/menu.xml",
     ],
     "installable": True,
     "development_status": "Beta",

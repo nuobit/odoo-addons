@@ -2,8 +2,15 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import requests.utils
+
 from odoo import _, api, models
 from odoo.exceptions import UserError, ValidationError
+
+FNC1 = {
+    "gs1-128": "\xf1",
+    "gs1-datamatrix": "\xe7",
+}
 
 
 def chunks(li, n, padding=False):
@@ -21,6 +28,14 @@ def chunks(li, n, padding=False):
 class ReportGS1Barcode(models.AbstractModel):
     _name = "report.barcodes_gs1_label.report_gs1_barcode"
     _description = "Report GS1 Barcode"
+
+    @property
+    def GS1_AI_FORMAT(self):
+        return {
+            "01": (14, False),
+            "10": (20, True),
+            "21": (20, True),
+        }
 
     def _get_product_lot(self, products, quants, with_stock):
         docs = []
@@ -59,6 +74,30 @@ class ReportGS1Barcode(models.AbstractModel):
                             }
                         )
         return docs
+
+    @api.model
+    def _prepare_gs1_values(self, product, lot):
+        if lot and lot.product_id != product:
+            raise ValidationError(
+                _(
+                    "Incoherent data: the lot %s doesn't belong to the product %s."
+                    "Please report this issue to your administrator."
+                )
+                % (lot.name, product.display_name)
+            )
+        res = {}
+        if product.barcode:
+            res["01"] = product.barcode.rjust(14, "0")
+        if lot:
+            if product.tracking == "lot":
+                res["10"] = lot.name
+            elif product.tracking == "serial":
+                if lot.ref:
+                    res["10"] = lot.ref
+                res["21"] = lot.name
+        # elif product.tracking == "none":
+        #     ???
+        return res
 
     @api.model  # noqa: C901
     def _get_report_values(self, docids, data=None):  # noqa: C901
@@ -196,21 +235,30 @@ class ReportGS1Barcode(models.AbstractModel):
             product, lot = doc["product"], doc["lot"]
 
             if barcode_type in ("gs1-128", "gs1-datamatrix"):
-                gs1_barcode = {}
-                if product.barcode:
-                    gs1_barcode["01"] = product.barcode.rjust(14, "0")
-                if product.tracking == "lot":
-                    gs1_barcode["10"] = lot.name
-                elif product.tracking == "serial":
-                    gs1_barcode["21"] = lot.name
-                # elif product.tracking == "none":
-                #     ???
+                gs1_barcode = self._prepare_gs1_values(product, lot)
                 if not gs1_barcode:
                     continue
+                fnc1 = FNC1[barcode_type]
+                res = [fnc1]
+                gs1 = gs1_barcode.items()
+                for i, (key, value) in enumerate(gs1, 1):
+                    if key not in self.GS1_AI_FORMAT:
+                        raise ValidationError(
+                            _("The GS1 AI %s is not defined in GS1 AI format") % key
+                        )
+                    length, fnc1_required = self.GS1_AI_FORMAT[key]
+                    if len(value) > length:
+                        raise ValidationError(
+                            _("The value of GS1 AI %s is too long (max %s characters)")
+                            % (key, length)
+                        )
+                    res.append(key + value)
+                    if fnc1_required and i < len(gs1):
+                        res.append(fnc1)
                 doc["barcode_values"] = gs1_barcode
-                doc["barcode_string"] = r"\F" + "".join(
-                    map(lambda x: x[0] + x[1], gs1_barcode.items())
-                )
+                doc["barcode_string"] = requests.utils.quote("".join(res))
+                if lot:
+                    lot.gs1_generated = True
             elif barcode_type == "ean13-code128":
                 doc["barcode_values"] = (
                     product.barcode or None,
