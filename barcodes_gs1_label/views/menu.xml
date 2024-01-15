@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="barcodes_gs1_label_options_menu"
+        name="Barcode Labels"
+        parent="stock.menu_stock_config_settings"
+        groups="stock.group_stock_manager"
+        sequence="10"
+    />
+
+    <menuitem
+        id="barcodes_gs1_label_options_format_menu"
+        action="barcodes_gs1_label_options_format_action"
+        parent="barcodes_gs1_label_options_menu"
+        sequence="1"
+    />
+
+    <menuitem
+        id="barcodes_gs1_label_options_config_menu"
+        action="barcodes_gs1_label_options_config_action"
+        parent="barcodes_gs1_label_options_menu"
+        sequence="2"
+    />
+</odoo>
