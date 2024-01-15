@@ -12,7 +12,7 @@
                 <notebook>
                     <page string="General">
                         <group>
-                            <field name="barcode_type" />
+                            <field name="label_config_id" />
                         </group>
                         <group>
                             <field name="start_row" />
@@ -32,27 +32,9 @@
                                 attrs="{'invisible': [('with_stock', '=', False)], 'required': [('with_stock', '=', True)]}"
                                 invisible="context.get('active_model') in ('stock.picking', 'stock.quant', 'stock.inventory.line')"
                             />
-                            <field name="show_price" />
-                            <field
-                                name="show_price_currency"
-                                attrs="{'invisible': [('show_price', '=', False)] }"
-                            />
                         </group>
                     </page>
-                    <page string="Configuration">
-                        <group>
-                            <field name="paperformat_id" />
-                            <field name="sheet_width" />
-                            <field name="sheet_height" />
-                        </group>
-                        <group>
-                            <field name="label_width" />
-                            <field name="label_height" />
-
-                            <field name="page_cols_max" />
-                            <field name="page_rows_max" />
-                            <field name="page_max_labels" />
-                        </group>
+                    <page string="Advanced">
                         <group>
                             <field name="show_borders" />
                             <field
