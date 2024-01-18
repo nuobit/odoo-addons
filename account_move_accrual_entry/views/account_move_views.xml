@@ -44,6 +44,7 @@
                     domain="[('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id), ('is_off_balance', '=', False)]"
                     attrs="{'readonly': [('accrual_date', '=', False)]}"
                     optional="hide"
+                    force_save="1"
                 />
             </xpath>
             <xpath
@@ -56,6 +57,7 @@
                     domain="[('deprecated', '=', False), ('company_id', '=', parent.company_id)]"
                     attrs="{'readonly': [('accrual_date', '=', False)]}"
                     optional="hide"
+                    force_save="1"
                 />
             </xpath>
             <xpath
