@@ -5,13 +5,13 @@ from odoo.addons.component.core import Component
 
 
 class SaleOrderBinder(Component):
-    _name = 'sapb1.sale.order.binder'
-    _inherit = 'sapb1.binder'
+    _name = "sapb1.sale.order.binder"
+    _inherit = "sapb1.binder"
 
-    _apply_on = 'sapb1.sale.order'
+    _apply_on = "sapb1.sale.order"
 
-    _external_field = 'DocEntry'
-    _internal_field = 'sapb1_docentry'
+    _external_field = "DocEntry"
+    _internal_field = "sapb1_docentry"
 
-    _external_alt_field = ['CardCode', 'NumAtCard']
-    _internal_alt_field = ['partner_id', 'client_order_ref']
+    _external_alt_field = ["CardCode", "NumAtCard"]
+    _internal_alt_field = ["partner_id", "client_order_ref"]

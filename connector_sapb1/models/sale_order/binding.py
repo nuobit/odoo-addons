@@ -2,14 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import fields, models
+
 from odoo.addons.queue_job.job import job
 
-JOB_RETRY_PATTERN = {
-    1: 10,
-    5: 20,
-    10: 30,
-    15: 120
-}
+JOB_RETRY_PATTERN = {1: 10, 5: 20, 10: 30, 15: 120}
 
 
 class SaleOrderBinding(models.Model):
@@ -41,11 +37,10 @@ class SaleOrderBinding(models.Model):
         ),
     ]
 
-    @job(default_channel='root.sapb1', retry_pattern=JOB_RETRY_PATTERN)
+    @job(default_channel="root.sapb1", retry_pattern=JOB_RETRY_PATTERN)
     def export_sale_orders_since(self, backend_record=None, since_date=None):
         domain = []
         if since_date:
-            domain = [('write_date', '>', fields.Datetime.to_string(since_date))]
-        self.export_batch(
-            backend_record, domain=domain)
+            domain = [("write_date", ">", fields.Datetime.to_string(since_date))]
+        self.export_batch(backend_record, domain=domain)
         return True

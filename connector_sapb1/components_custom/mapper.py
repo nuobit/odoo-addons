@@ -21,7 +21,7 @@ class Mapper(AbstractComponent):
         Hack to allow having non required children field
         """
         assert (
-                self.options is not None
+            self.options is not None
         ), "options should be defined with '_mapping_options'"
         _logger.debug("converting record %s to model %s", map_record.source, self.model)
 
@@ -41,7 +41,7 @@ class Mapper(AbstractComponent):
         for meth, definition in self.map_methods:
             mapping_changed_by = definition.changed_by
             if not fields or (
-                    mapping_changed_by and mapping_changed_by.intersection(fields)
+                mapping_changed_by and mapping_changed_by.intersection(fields)
             ):
                 if definition.only_create and not for_create:
                     continue
@@ -86,7 +86,11 @@ class Mapper(AbstractComponent):
                     raise ValidationError(_("Changed by can only be one field"))
                 values = meth(map_record.source)
                 if len(values) != 1:
-                    raise ValidationError(_("Return values of a mapper must be unique if it has changed by decorator"))
+                    raise ValidationError(
+                        _(
+                            "Return values of a mapper must be unique if it has changed by decorator"
+                        )
+                    )
                 from_attr, to_attr = list(mapping_changed_by)[0], list(values.keys())[0]
                 if to_attr in fields:
                     if to_attr in result:
@@ -175,5 +179,6 @@ class ExportMapper(AbstractComponent):
             mapping_func = m2o_to_external(from_attr)
             value = mapping_func(self, record, to_attr)
         return value
+
 
 # TODO: move uuid to generic binder

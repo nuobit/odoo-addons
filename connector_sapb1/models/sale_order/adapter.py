@@ -13,7 +13,7 @@ class SapB1SaleOrderTypeAdapter(Component):
 
     def search_read(self, domain):
         kw_base_params = self._domain_to_normalized_dict(domain)
-        res = self._exec('get_orders', values=kw_base_params)
+        res = self._exec("get_orders", values=kw_base_params)
         return res
 
     def _format_order_params(self, values):
@@ -28,14 +28,14 @@ class SapB1SaleOrderTypeAdapter(Component):
         return True
 
     def create(self, values):
-        """ Create a record on the external system """
+        """Create a record on the external system"""
         self._format_order_params(values)
-        return self._exec('create_order', values=values)
+        return self._exec("create_order", values=values)
 
     def write(self, external_id, values):
-        """ Update records on the external system """
+        """Update records on the external system"""
         self._format_order_params(values)
-        return self._exec('update_order', external_id=external_id, values=values)
+        return self._exec("update_order", external_id=external_id, values=values)
 
     def cancel(self, value):
-        self._exec('cancel_order', values=value)
+        self._exec("cancel_order", values=value)

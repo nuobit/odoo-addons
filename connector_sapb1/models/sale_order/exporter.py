@@ -10,10 +10,11 @@ _logger = logging.getLogger(__name__)
 
 
 class SaleOrderDelayedBatchExporter(Component):
-    """ Export the Odoo Sale Orders.
+    """Export the Odoo Sale Orders.
 
     For every sale order in the list, a delayed job is created.
     """
+
     _name = "sapb1.sale.order.delayed.batch.exporter"
     _inherit = "sapb1.delayed.batch.exporter"
 
@@ -21,10 +22,11 @@ class SaleOrderDelayedBatchExporter(Component):
 
 
 class SaleOrderDirectBatchExporter(Component):
-    """ Export the Odoo Sale Orders.
+    """Export the Odoo Sale Orders.
 
     For every sale order in the list, a delayed job is created.
     """
+
     _name = "sapb1.sale.order.direct.batch.exporter"
     _inherit = "sapb1.direct.batch.exporter"
 
@@ -44,12 +46,12 @@ class SaleOrderExporter(Component):
                 self._export_dependency(line.product_id, "sapb1.product.product")
 
     def _after_export(self):
-        """ Can do several actions after exporting a record on the backend """
-        if self.binding.state == 'cancel':
+        """Can do several actions after exporting a record on the backend"""
+        if self.binding.state == "cancel":
             self.backend_adapter.cancel(self.binding.sapb1_docentry)
 
     def _update(self, external_id, data):
-        """ Update an External record """
+        """Update an External record"""
         try:
             res = super()._update(external_id, data)
         except SAPClosedOrderException as e:

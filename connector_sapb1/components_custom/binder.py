@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013-2017 Camptocamp SA
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
@@ -13,33 +12,33 @@ create the binding between them.
 
 """
 import hashlib
-import psycopg2
 import logging
-
-from odoo import fields, models, tools, _
-from odoo.addons.component.core import AbstractComponent
 from contextlib import contextmanager
 
-from odoo.addons.component.exception import NoComponentError
-from odoo.addons.connector.exception import (RetryableJobError, InvalidDataError)
+import psycopg2
+
+from odoo import _, fields, models, tools
 from odoo.exceptions import ValidationError
+
+from odoo.addons.component.core import AbstractComponent
+from odoo.addons.component.exception import NoComponentError
+from odoo.addons.connector.exception import InvalidDataError, RetryableJobError
 
 _logger = logging.getLogger(__name__)
 
 
 class BinderComposite(AbstractComponent):
-    """ The same as Binder but allowing composite external keys
+    """The same as Binder but allowing composite external keys"""
 
-    """
-    _name = 'base.binder.composite'
-    _inherit = 'base.binder'
+    _name = "base.binder.composite"
+    _inherit = "base.binder"
 
     _internal_alt_id_field = "_internal_alt_field"
     _external_alt_id_field = "_external_alt_field"
 
     _binding_field = None
 
-    _internal_field = 'internal_id'
+    _internal_field = "internal_id"
 
     _odoo_extra_fields = []
 
@@ -56,11 +55,11 @@ class BinderComposite(AbstractComponent):
                 pass
             else:
                 raise Exception("Unexpected type for a key: type %" % type(e))
-            odoo_hash.update(e9.encode('utf8'))
+            odoo_hash.update(e9.encode("utf8"))
         return odoo_hash.hexdigest()
 
     def id2dict(self, _id, in_field=True):
-        """ Return a dict with the internal or external fields and their values
+        """Return a dict with the internal or external fields and their values
         :param _id: Values to put on internal or external fields
         :param in_field: with True value, _internal_field defined in binder are used.
                         With this parameter False, _external_field will be used.
@@ -70,18 +69,22 @@ class BinderComposite(AbstractComponent):
             _id = [_id]
         else:
             if len(_id) == 1:
-                raise ValidationError("If the id has only 1 element, it shouldn't be a list ")
+                raise ValidationError(
+                    "If the id has only 1 element, it shouldn't be a list "
+                )
 
         if not isinstance(field, (tuple, list)):
             field = [field]
         else:
             if len(field) == 1:
-                raise ValidationError("If the id has only 1 element, it shouldn't be a list ")
+                raise ValidationError(
+                    "If the id has only 1 element, it shouldn't be a list "
+                )
 
         return dict(zip(field, _id))
 
     def dict2id(self, _dict, in_field=True):
-        """ Giving a dict, return the values of the internal or external fields
+        """Giving a dict, return the values of the internal or external fields
         :param _dict: Dict (usually binder) to extract internal or external fields
         :param in_field: with True value, _internal_field defined in binder are used.
                         With this parameter False, _external_field will be used.
@@ -95,7 +98,7 @@ class BinderComposite(AbstractComponent):
 
     @contextmanager
     def _retry_unique_violation(self):
-        """ Context manager: catch Unique constraint error and retry the
+        """Context manager: catch Unique constraint error and retry the
         job later.
 
         When we execute several jobs workers concurrently, it happens
@@ -118,10 +121,11 @@ class BinderComposite(AbstractComponent):
         except psycopg2.IntegrityError as err:
             if err.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
-                    'A database error caused the failure of the job:\n'
-                    '%s\n\n'
-                    'Likely due to 2 concurrent jobs wanting to create '
-                    'the same record. The job will be retried later.' % err)
+                    "A database error caused the failure of the job:\n"
+                    "%s\n\n"
+                    "Likely due to 2 concurrent jobs wanting to create "
+                    "the same record. The job will be retried later." % err
+                )
             else:
                 raise
 
@@ -134,18 +138,23 @@ class BinderComposite(AbstractComponent):
 
     def _find_binding(self, relation, binding_extra_vals={}):
         if self._is_binding(relation):
-            raise Exception("The source object %s must not be a binding" % relation.model._name)
+            raise Exception(
+                "The source object %s must not be a binding" % relation.model._name
+            )
 
         if not set(self._odoo_extra_fields).issubset(set(binding_extra_vals.keys())):
-            raise Exception("If _odoo_extra_fields are defined %s, "
-                            "you must specify the correpsonding binding_extra_vals %s" % (
-                                self._odoo_extra_fields, binding_extra_vals))
-        domain = [(self._odoo_field, '=', relation.id),
-                  (self._backend_field, '=', self.backend_record.id)]
+            raise Exception(
+                "If _odoo_extra_fields are defined %s, "
+                "you must specify the correpsonding binding_extra_vals %s"
+                % (self._odoo_extra_fields, binding_extra_vals)
+            )
+        domain = [
+            (self._odoo_field, "=", relation.id),
+            (self._backend_field, "=", self.backend_record.id),
+        ]
         for f in self._odoo_extra_fields:
-            domain.append((f, '=', binding_extra_vals[f]))
-        binding = self.model.with_context(
-            active_test=False).search(domain)
+            domain.append((f, "=", binding_extra_vals[f]))
+        binding = self.model.with_context(active_test=False).search(domain)
 
         if binding:
             binding.ensure_one()
@@ -158,35 +167,42 @@ class BinderComposite(AbstractComponent):
 
         if binding_field is None:
             if not self._binding_field:
-                raise Exception("_binding_field defined on synchronizer class is mandatory")
+                raise Exception(
+                    "_binding_field defined on synchronizer class is mandatory"
+                )
             binding_field = self._binding_field
 
         wrap = relation._name != self.model._name
         if wrap and hasattr(relation, binding_field):
             binding = self._find_binding(relation, binding_extra_vals)
             if not binding:
-                _bind_values = {self._odoo_field: relation.id,
-                                self._backend_field: self.backend_record.id}
+                _bind_values = {
+                    self._odoo_field: relation.id,
+                    self._backend_field: self.backend_record.id,
+                }
                 _bind_values.update(binding_extra_vals)
                 with self._retry_unique_violation():
-                    binding = (self.model
-                               .with_context(connector_no_export=True)
-                               .sudo()
-                               .create(_bind_values))
+                    binding = (
+                        self.model.with_context(connector_no_export=True)
+                        .sudo()
+                        .create(_bind_values)
+                    )
 
-                    if not tools.config['test_enable']:
+                    if not tools.config["test_enable"]:
                         self.env.cr.commit()  # nowait
         else:
             binding = relation
 
         if not self._is_binding(binding):
             raise Exception(
-                "Expected binding '%s' and found regular model '%s'" % (self.model._name, relation._name))
+                "Expected binding '%s' and found regular model '%s'"
+                % (self.model._name, relation._name)
+            )
 
         return binding
 
     def to_internal(self, external_id, unwrap=False):
-        """ Give the Odoo recordset for an external ID
+        """Give the Odoo recordset for an external ID
 
         :param external_id: external ID for which we want
                             the Odoo ID
@@ -197,13 +213,11 @@ class BinderComposite(AbstractComponent):
         :rtype: recordset
         """
         context = self.env.context
-        domain = [(self._backend_field, '=', self.backend_record.id)]
+        domain = [(self._backend_field, "=", self.backend_record.id)]
         for key, value in self.id2dict(external_id, in_field=True).items():
-            domain.append((key, '=', value))
+            domain.append((key, "=", value))
 
-        bindings = self.model.with_context(active_test=False).search(
-            domain
-        )
+        bindings = self.model.with_context(active_test=False).search(domain)
         if not bindings:
             if unwrap:
                 return self.model.browse()[self._odoo_field]
@@ -214,8 +228,10 @@ class BinderComposite(AbstractComponent):
         bindings = bindings.with_context(context)
         return bindings
 
-    def to_external(self, binding, wrap=False, wrapped_model=None, binding_extra_vals={}):
-        """ Give the external ID for an Odoo binding ID
+    def to_external(
+        self, binding, wrap=False, wrapped_model=None, binding_extra_vals={}
+    ):
+        """Give the external ID for an Odoo binding ID
 
         :param binding: Odoo binding for which we want the external id
         :param wrap: if True, binding is a normal record, the
@@ -228,7 +244,9 @@ class BinderComposite(AbstractComponent):
         else:
             if wrap:
                 if not wrapped_model:
-                    raise Exception("The wrapped model is mandatory if binding is not an object")
+                    raise Exception(
+                        "The wrapped model is mandatory if binding is not an object"
+                    )
                 binding = self.env[wrapped_model].browse(binding)
             else:
                 binding = self.model.browse(binding)
@@ -240,16 +258,18 @@ class BinderComposite(AbstractComponent):
         # return [binding[x] for x in dict2id()self._internal_field] or None
 
     def bind(self, external_id, binding):
-        """ Create the link between an external ID and an Odoo ID
+        """Create the link between an external ID and an Odoo ID
 
         :param external_id: external id to bind
         :param binding: Odoo record to bind
         :type binding: int
         """
         # Prevent False, None, or "", but not 0
-        assert (external_id or external_id is 0) and binding, (
-                "external_id or binding missing, "
-                "got: %s, %s" % (external_id, binding)
+        assert (
+            external_id or external_id == 0
+        ) and binding, "external_id or binding missing, " "got: %s, %s" % (
+            external_id,
+            binding,
         )
         # avoid to trigger the export when we modify the `external_id`
         now_fmt = fields.Datetime.now()
@@ -258,21 +278,25 @@ class BinderComposite(AbstractComponent):
         else:
             binding = self.model.browse(binding)
 
-        binding.with_context(connector_no_export=True).write({
-            **self.id2dict(external_id, in_field=True),
-            self._sync_date_field: now_fmt,
-        })
+        binding.with_context(connector_no_export=True).write(
+            {
+                **self.id2dict(external_id, in_field=True),
+                self._sync_date_field: now_fmt,
+            }
+        )
 
     def bind_export(self, external_data, relation):
-        """ Create the link between an external ID and an Odoo ID
+        """Create the link between an external ID and an Odoo ID
 
         :param external_id: external id to bind
         :param binding: Odoo record to bind
         :type binding: int
         """
-        assert external_data and relation, (
-                "external_data or relation missing, "
-                "got: %s, %s" % (external_data, relation)
+        assert (
+            external_data and relation
+        ), "external_data or relation missing, " "got: %s, %s" % (
+            external_data,
+            relation,
         )
         # avoid to trigger the export when we modify the `external_id`
         if isinstance(relation, models.BaseModel):
@@ -283,12 +307,14 @@ class BinderComposite(AbstractComponent):
 
         external_id = self.dict2id(external_data, in_field=False)
         with self._retry_unique_violation():
-            return self.model.with_context(connector_no_export=True).create({
-                self._backend_field: self.backend_record.id,
-                self._odoo_field: relation_id,
-                **self.id2dict(external_id, in_field=True),
-                **self._additional_binding_fields(external_data),
-            })
+            return self.model.with_context(connector_no_export=True).create(
+                {
+                    self._backend_field: self.backend_record.id,
+                    self._odoo_field: relation_id,
+                    **self.id2dict(external_id, in_field=True),
+                    **self._additional_binding_fields(external_data),
+                }
+            )
 
     def _additional_binding_fields(self, external_data):
         return {}
@@ -494,6 +520,7 @@ class BinderComposite(AbstractComponent):
             return binding
 
         return self.model
+
 
 # TODO: naming the methods more intuitively
 # TODO: unify both methods, they have a lot of common code

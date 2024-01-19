@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 
 
 class GenericImporterCustom(AbstractComponent):
-    """ Generic Synchronizer for importing data from backend to Odoo """
+    """Generic Synchronizer for importing data from backend to Odoo"""
 
     _name = "generic.importer.custom"
     _inherit = "base.importer"
@@ -51,7 +51,13 @@ class GenericImporterCustom(AbstractComponent):
                 raise
 
     def _import_dependency(
-            self, external_id, binding_model, external_data=None, importer=None, adapter=None, always=False
+        self,
+        external_id,
+        binding_model,
+        external_data=None,
+        importer=None,
+        adapter=None,
+        always=False,
     ):
         """Import a dependency.
 
@@ -121,11 +127,11 @@ class GenericImporterCustom(AbstractComponent):
         return {"binding": binding}
 
     def _create(self, model, values):
-        """ Create the Internal record """
+        """Create the Internal record"""
         return model.with_context(connector_no_export=True).create(values)
 
     def _update(self, binding, values):
-        """ Update an Internal record """
+        """Update an Internal record"""
         binding.with_context(connector_no_export=True).write(values)
 
     def run(self, external_id, external_data=None, external_fields=None):

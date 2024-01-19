@@ -5,9 +5,9 @@ from odoo.addons.component.core import Component
 
 
 class ProductProductImportMapper(Component):
-    _name = 'sapb1.product.product.export.mapper'
-    _inherit = 'sapb1.export.mapper'
+    _name = "sapb1.product.product.export.mapper"
+    _inherit = "sapb1.export.mapper"
 
-    _apply_on = 'sapb1.product.product'
+    _apply_on = "sapb1.product.product"
 
-    direct = [('default_code', 'ItemCode'), ('sapb1_sku', 'SKU')]
+    direct = [("default_code", "ItemCode"), ("sapb1_sku", "SKU")]

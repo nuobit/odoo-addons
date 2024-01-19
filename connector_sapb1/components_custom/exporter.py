@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 
 class GenericExporterCustom(AbstractComponent):
-    """ Generic Synchronizer for exporting data from Odoo to a backend """
+    """Generic Synchronizer for exporting data from Odoo to a backend"""
 
     _name = "generic.exporter.custom"
     _inherit = "base.exporter"
@@ -63,7 +63,7 @@ class GenericExporterCustom(AbstractComponent):
         # the same alternate key and create/update binding
         if not self.binding:
             self.binding = (
-                    self.binder.to_binding_from_internal_key(relation) or self.binding
+                self.binder.to_binding_from_internal_key(relation) or self.binding
             )
         try:
             should_import = self._should_import()
@@ -103,13 +103,13 @@ class GenericExporterCustom(AbstractComponent):
         if not values:
             result = _("Nothing to export")
         if not result:
-            result = _("Record exported with ID %s on Backend.") % 'external_id'
+            result = _("Record exported with ID %s on Backend.") % "external_id"
         self._after_export()
         self.binding[self.binder._sync_date_field] = now_fmt
         return result
 
     def _after_export(self):
-        """ Can do several actions after exporting a record on the backend """
+        """Can do several actions after exporting a record on the backend"""
 
     def _lock(self, record):
         """Lock the binding record.
@@ -144,7 +144,7 @@ class GenericExporterCustom(AbstractComponent):
             )
 
     def _has_to_skip(self):
-        """ Return True if the export can be skipped """
+        """Return True if the export can be skipped"""
         return False
 
     @contextmanager
@@ -180,11 +180,11 @@ class GenericExporterCustom(AbstractComponent):
                 raise
 
     def _export_dependency(
-            self,
-            relation,
-            binding_model,
-            component_usage="direct.record.exporter",
-            always=False,
+        self,
+        relation,
+        binding_model,
+        component_usage="direct.record.exporter",
+        always=False,
     ):
         """
         Export a dependency. The exporter class is a subclass of
@@ -236,7 +236,7 @@ class GenericExporterCustom(AbstractComponent):
             exporter.run(relation)
 
     def _export_dependencies(self, relation):
-        """ Export the dependencies for the record"""
+        """Export the dependencies for the record"""
         return
 
     def _validate_create_data(self, data):
@@ -260,21 +260,21 @@ class GenericExporterCustom(AbstractComponent):
         return
 
     def _create_data(self, map_record, fields=None, **kwargs):
-        """ Get the data to pass to :py:meth:`_create` """
+        """Get the data to pass to :py:meth:`_create`"""
         return map_record.values(for_create=True, fields=fields, **kwargs)
 
     def _create(self, data):
-        """ Create the External record """
+        """Create the External record"""
         # special check on data before export
         self._validate_create_data(data)
         return self.backend_adapter.create(data)
 
     def _update_data(self, map_record, fields=None, **kwargs):
-        """ Get the data to pass to :py:meth:`_update` """
+        """Get the data to pass to :py:meth:`_update`"""
         return map_record.values(fields=fields, **kwargs)
 
     def _update(self, external_id, data):
-        """ Update an External record """
+        """Update an External record"""
         # special check on data before export
         self._validate_update_data(data)
         return self.backend_adapter.write(external_id, data)
