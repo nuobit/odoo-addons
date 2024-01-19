@@ -2,18 +2,17 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields
+from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import (
-    mapping, only_create, changed_by)
-from odoo.exceptions import ValidationError
+from odoo.addons.connector.components.mapper import changed_by, mapping, only_create
 
 
 class SaleOrderExportMapChild(Component):
-    _name = 'sapb1.sale.order.map.child.export'
-    _inherit = 'sapb1.map.child.export'
+    _name = "sapb1.sale.order.map.child.export"
+    _inherit = "sapb1.map.child.export"
 
-    _apply_on = 'sapb1.sale.order.line'
+    _apply_on = "sapb1.sale.order.line"
 
     def get_item_values(self, map_record, to_attr, options):
         return super().get_item_values(map_record, to_attr, options)
@@ -26,78 +25,97 @@ class SaleOrderExportMapChild(Component):
 
 
 class SaleOrderExportMapper(Component):
-    _name = 'sapb1.sale.order.export.mapper'
-    _inherit = 'sapb1.export.mapper'
+    _name = "sapb1.sale.order.export.mapper"
+    _inherit = "sapb1.export.mapper"
 
-    _apply_on = 'sapb1.sale.order'
+    _apply_on = "sapb1.sale.order"
 
-    children = [('order_line', 'DocumentLines', 'sapb1.sale.order.line')]
+    children = [("order_line", "DocumentLines", "sapb1.sale.order.line")]
 
-    @changed_by('partner_id')
+    @changed_by("partner_id")
     @mapping
     def partner(self, record):
         parent = record.partner_shipping_id.parent_id
         if not parent:
-            partner_map = self.backend_record.partner_ids.filtered(lambda x: x.partner_id == record.partner_shipping_id)
+            partner_map = self.backend_record.partner_ids.filtered(
+                lambda x: x.partner_id == record.partner_shipping_id
+            )
         else:
-            partner_map = self.backend_record.partner_ids.filtered(lambda x: x.partner_id == parent)
+            partner_map = self.backend_record.partner_ids.filtered(
+                lambda x: x.partner_id == parent
+            )
         if not partner_map:
-            raise ValidationError(_('No partner mapping found for parent %s') % parent.name)
-        return {'CardCode': partner_map.sapb1_cardcode}
+            raise ValidationError(
+                _("No partner mapping found for parent %s") % parent.name
+            )
+        return {"CardCode": partner_map.sapb1_cardcode}
 
-    @changed_by('client_order_ref')
+    @changed_by("client_order_ref")
     @mapping
     def numatcard(self, record):
         if not record.client_order_ref:
-            raise ValidationError(_('Client Order Reference is a mandatory field in Sale Order %s') % record.name)
-        return {'NumAtCard': record.client_order_ref}
+            raise ValidationError(
+                _("Client Order Reference is a mandatory field in Sale Order %s")
+                % record.name
+            )
+        return {"NumAtCard": record.client_order_ref}
 
     @only_create
     @mapping
     def date(self, record):
         date = fields.Date.from_string(record.date_order)
-        return {'DocDueDate': date, 'DocDate': date, 'TaxDate': date}
+        return {"DocDueDate": date, "DocDate": date, "TaxDate": date}
 
     @mapping
     def shiptocode(self, record):
-        binder = self.binder_for('sapb1.res.partner')
+        binder = self.binder_for("sapb1.res.partner")
         binding = binder.wrap_record(record.partner_shipping_id)
         assert binding, (
-                "partner %s should have been exported in "
-                "SaleOrderExporter._export_dependencies" % record.partner_shipping_id)
-        return {'ShipToCode': binding.sapb1_addressname}
+            "partner %s should have been exported in "
+            "SaleOrderExporter._export_dependencies" % record.partner_shipping_id
+        )
+        return {"ShipToCode": binding.sapb1_addressname}
 
     @mapping
     def shipping(self, record):
         expenses = {"DocumentAdditionalExpenses": []}
-        shipping_line = record.order_line.filtered(lambda x: self.backend_record.shipping_product_id == x.product_id)
+        shipping_line = record.order_line.filtered(
+            lambda x: self.backend_record.shipping_product_id == x.product_id
+        )
         if len(shipping_line) > 1:
-            raise ValidationError(_('Only one shipping line supported'))
+            raise ValidationError(_("Only one shipping line supported"))
         if not shipping_line:
             return expenses
         partner = record.partner_id.parent_id or record.partner_id
-        partner_map = self.backend_record.partner_ids.filtered(lambda x: x.partner_id == partner)
+        partner_map = self.backend_record.partner_ids.filtered(
+            lambda x: x.partner_id == partner
+        )
         if not partner_map:
-            raise ValidationError(_('No partner mapping found for %s. Please define it on backend') % partner.name)
+            raise ValidationError(
+                _("No partner mapping found for %s. Please define it on backend")
+                % partner.name
+            )
         expensecode = partner_map.sapb1_expensecode
         if not expensecode:
             raise ValidationError(
-                _('No expense code defined for partner %s. Please define it on backend') % partner.name)
+                _("No expense code defined for partner %s. Please define it on backend")
+                % partner.name
+            )
         expense = {
-            'ExpenseCode': expensecode,
-            'LineTotal': shipping_line.get_raw_total_line(),
+            "ExpenseCode": expensecode,
+            "LineTotal": shipping_line.get_raw_total_line(),
         }
         if shipping_line.tax_id:
-            expense['VatGroup'] = self.backend_record.get_tax_map(shipping_line.tax_id)
-        expenses['DocumentAdditionalExpenses'].append(expense)
+            expense["VatGroup"] = self.backend_record.get_tax_map(shipping_line.tax_id)
+        expenses["DocumentAdditionalExpenses"].append(expense)
         return expenses
 
     @only_create
     @mapping
     def confirmed(self, record):
-        return {'Confirmed': 'N'}
+        return {"Confirmed": "N"}
 
     @only_create
     @mapping
     def partsupply(self, record):
-        return {'PartialSupply': 'N'}
+        return {"PartialSupply": "N"}

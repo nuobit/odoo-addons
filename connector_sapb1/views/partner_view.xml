@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="res_partner_view_form_connector_sapb1" model="ir.ui.view">
         <field name="name">res.partner.sapb1.connector.form</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="connector.view_partner_connector_form"/>
+        <field name="inherit_id" ref="connector.view_partner_connector_form" />
         <field name="arch" type="xml">
             <page name="connector" position="attributes">
                 <attribute name="invisible">0</attribute>
             </page>
             <page name="connector" position="inside">
                 <group string="SAP B1 Bindings">
-                    <field name="sapb1_bind_ids" nolabel="1"/>
+                    <field name="sapb1_bind_ids" nolabel="1" />
                 </group>
             </page>
         </field>
@@ -24,25 +24,38 @@
         <field name="arch" type="xml">
             <form string="SAP B1 Partner">
                 <header>
-                    <button name="resync_export" type="object" class="oe_highlight" string="Resync"/>
+                    <button
+                        name="resync_export"
+                        type="object"
+                        class="oe_highlight"
+                        string="Resync"
+                    />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                            <field name="active" widget="boolean_button"
-                                   options="{'terminology': 'archive'}"/>
+                        <button
+                            name="toggle_active"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-archive"
+                        >
+                            <field
+                                name="active"
+                                widget="boolean_button"
+                                options="{'terminology': 'archive'}"
+                            />
                         </button>
                     </div>
                     <group>
-                        <field name="backend_id"/>
+                        <field name="backend_id" />
                     </group>
                     <group>
-                        <field name="odoo_id"/>
-                        <field name="sapb1_cardcode"/>
-                        <field name="sapb1_addressname"/>
+                        <field name="odoo_id" />
+                        <field name="sapb1_cardcode" />
+                        <field name="sapb1_addressname" />
                     </group>
                     <group>
-                        <field name="sync_date" readonly="1"/>
+                        <field name="sync_date" readonly="1" />
                     </group>
                 </sheet>
             </form>
@@ -54,13 +67,17 @@
         <field name="model">sapb1.res.partner</field>
         <field name="arch" type="xml">
             <tree string="SAP B1 Partner">
-                <field name="backend_id"/>
-                <field name="odoo_id"/>
-                <field name="sapb1_cardcode" readonly="1"/>
-                <field name="sapb1_addressname" readonly="1"/>
-                <field name="sync_date"/>
-                <button name="resync_export" type="object"
-                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="sapb1_cardcode" readonly="1" />
+                <field name="sapb1_addressname" readonly="1" />
+                <field name="sync_date" />
+                <button
+                    name="resync_export"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
             </tree>
         </field>
     </record>
@@ -70,10 +87,19 @@
         <field name="model">sapb1.res.partner</field>
         <field name="arch" type="xml">
             <search string="Search Partner">
-                <field name="odoo_id" filter_domain="[('odoo_id','ilike',self)]"/>
-                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <field name="odoo_id" filter_domain="[('odoo_id','ilike',self)]" />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active','=',False)]"
+                />
                 <group expand="0" name="group_by" string="Group By">
-                    <filter name="group_backend" string="Backend" domain="[]" context="{'group_by' : 'backend_id'}"/>
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        domain="[]"
+                        context="{'group_by' : 'backend_id'}"
+                    />
                 </group>
             </search>
         </field>

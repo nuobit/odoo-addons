@@ -5,12 +5,20 @@ from odoo.addons.component.core import Component
 
 
 class ResPartnerBinder(Component):
-    _name = 'sapb1.res.partner.binder'
-    _inherit = 'sapb1.binder'
+    _name = "sapb1.res.partner.binder"
+    _inherit = "sapb1.binder"
 
-    _apply_on = 'sapb1.res.partner'
+    _apply_on = "sapb1.res.partner"
 
-    _external_field = ['CardCode', "AddressName"]
-    _internal_field = ['sapb1_cardcode', 'sapb1_addressname']
+    _external_field = ["CardCode", "AddressName"]
+    _internal_field = ["sapb1_cardcode", "sapb1_addressname"]
 
-    _external_alt_field = ['CardCode', "AddressName2", "AddressName3", "Street", "Block", "ZipCode", "City"]
+    _external_alt_field = [
+        "CardCode",
+        "AddressName2",
+        "AddressName3",
+        "Street",
+        "Block",
+        "ZipCode",
+        "City",
+    ]

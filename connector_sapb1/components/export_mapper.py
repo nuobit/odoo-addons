@@ -5,10 +5,10 @@ from odoo.addons.component.core import AbstractComponent
 
 
 class SapB1ExportMapper(AbstractComponent):
-    _name = 'sapb1.export.mapper'
-    _inherit = ['base.export.mapper', 'base.sapb1.connector']
+    _name = "sapb1.export.mapper"
+    _inherit = ["base.export.mapper", "base.sapb1.connector"]
 
 
 class SapB1ExportMapChild(AbstractComponent):
-    _name = 'sapb1.map.child.export'
-    _inherit = ['base.map.child.export', 'base.sapb1.connector']
+    _name = "sapb1.map.child.export"
+    _inherit = ["base.map.child.export", "base.sapb1.connector"]

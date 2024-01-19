@@ -2,9 +2,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _
+from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
-from odoo.exceptions import ValidationError
 
 
 class SapB1ProductProductTypeAdapter(Component):
@@ -15,7 +15,7 @@ class SapB1ProductProductTypeAdapter(Component):
 
     def search_read(self, domain):
         kw_base_params = self._domain_to_normalized_dict(domain)
-        res = self._exec('get_products', values=kw_base_params)
+        res = self._exec("get_products", values=kw_base_params)
         return res
 
     def create(self, values):

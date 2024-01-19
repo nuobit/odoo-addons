@@ -1,10 +1,11 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-import logging
 import datetime
-import re
 import json
+import logging
+import re
+from contextlib import contextmanager
 
 import requests
 from requests.packages import urllib3
@@ -14,7 +15,6 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import RetryableJobError
-from contextlib import contextmanager
 
 _logger = logging.getLogger(__name__)
 
@@ -22,12 +22,12 @@ _logger = logging.getLogger(__name__)
 class SapB1Adapter(AbstractComponent):
     _name = "sapb1.adapter"
     _inherit = ["base.backend.adapter.crud", "base.sapb1.connector"]
-    _description = 'SAP B1 Binding (abstract)'
+    _description = "SAP B1 Binding (abstract)"
 
     _date_format = "%Y-%m-%d"
 
     def re_address_name(self):
-        return r'^ *(.+?) *\( *([0-9]+) *\) *$'
+        return r"^ *(.+?) *\( *([0-9]+) *\) *$"
 
     def _prepare_field_type(self, field_data):
         default_values = {}
@@ -60,7 +60,7 @@ class SapB1Adapter(AbstractComponent):
         return {**mandatory_values, **optional_values}
 
     def _login(self, session):
-        url = self.backend_record.sl_url + '/Login'
+        url = self.backend_record.sl_url + "/Login"
         payload = {
             "CompanyDB": self.backend_record.company_db,
             "UserName": self.backend_record.db_username,
@@ -69,21 +69,31 @@ class SapB1Adapter(AbstractComponent):
         r = session.post(url, json=payload, verify=False)
         if not r.ok:
             if r.status_code == 502:
-                raise RetryableJobError(_("Temporarily connection error:\n%s\n"
-                                          "It will be retried later.") % r.text)
+                raise RetryableJobError(
+                    _("Temporarily connection error:\n%s\n" "It will be retried later.")
+                    % r.text
+                )
             try:
                 # if it's a json response
                 # TODO: maybe use response 'Content-Type' instead??
                 err_json = r.json()
-                err = err_json['error']
-                if err['code'] == 305:
-                    if err['message']['lang'] != 'en-us':
+                err = err_json["error"]
+                if err["code"] == 305:
+                    if err["message"]["lang"] != "en-us":
                         raise ValidationError(
-                            _("Only supported english (en-us) dealing with error messages from the server\n%s") %
-                            err_json)
-                    if err['message']['value'] == 'Switch company error: -1102':
-                        raise RetryableJobError(_("Temporarily connection error:\n%s\n"
-                                                  "It will be retried later.") % err_json)
+                            _(
+                                "Only supported english (en-us) dealing with error messages from the server\n%s"
+                            )
+                            % err_json
+                        )
+                    if err["message"]["value"] == "Switch company error: -1102":
+                        raise RetryableJobError(
+                            _(
+                                "Temporarily connection error:\n%s\n"
+                                "It will be retried later."
+                            )
+                            % err_json
+                        )
             except json.decoder.JSONDecodeError:
                 pass
             raise ConnectionError(f"Error trying to log in\n{r.text}")
@@ -99,158 +109,223 @@ class SapB1Adapter(AbstractComponent):
         session = requests.Session()
         result = None
 
-        if funcname == 'check_connection':
+        if funcname == "check_connection":
             self._login(session)
             self._logout(session)
 
-        elif funcname == 'create_order':
+        elif funcname == "create_order":
             self._login(session)
-            r = session.post(self.backend_record.sl_url + "/Orders", json=params['values'])
+            r = session.post(
+                self.backend_record.sl_url + "/Orders", json=params["values"]
+            )
             result = r.json()
             if not r.ok:
-                result_error = result['error']
-                if r.status_code == 400 and result_error['code'] == -5002:
-                    m = re.match(r'^([0-9]+)', result_error['message']['value'])
+                result_error = result["error"]
+                if r.status_code == 400 and result_error["code"] == -5002:
+                    m = re.match(r"^([0-9]+)", result_error["message"]["value"])
                     if not m:
-                        raise ValidationError(_("Unknown error message format %s") % result_error['message']['value'])
-                    if m.group(1) == '1250000073':
                         raise ValidationError(
-                            _("Document Date %s is belongs to a closed fiscal year") % params['values']['TaxDate'])
+                            _("Unknown error message format %s")
+                            % result_error["message"]["value"]
+                        )
+                    if m.group(1) == "1250000073":
+                        raise ValidationError(
+                            _("Document Date %s is belongs to a closed fiscal year")
+                            % params["values"]["TaxDate"]
+                        )
                     else:
-                        raise ValidationError(result_error['message']['value'])
+                        raise ValidationError(result_error["message"]["value"])
                 raise ValidationError(r.text)
             self._logout(session)
 
-        elif funcname == 'get_orders':
+        elif funcname == "get_orders":
             # TODO: unify with get_products
             self._login(session)
-            params_l = ["%s eq %s" % (k, repr(v)) for k, v in params['values'].items()]
+            params_l = ["%s eq %s" % (k, repr(v)) for k, v in params["values"].items()]
             url_params = "Orders?$filter=%s" % " and ".join(params_l)
             result = self.get_pagination(session, url_params)
             self._logout(session)
 
-        elif funcname == 'update_order':
-            headers = {'Prefer': 'return=representation'}
+        elif funcname == "update_order":
+            headers = {"Prefer": "return=representation"}
             self._login(session)
-            r = session.patch(self.backend_record.sl_url + "/Orders(%i)" % params['external_id'], json=params['values'],
-                              headers=headers)
+            r = session.patch(
+                self.backend_record.sl_url + "/Orders(%i)" % params["external_id"],
+                json=params["values"],
+                headers=headers,
+            )
             if not r.ok:
                 data = r.json()
-                if r.status_code == 400 and data['error']['code'] in (-1029, -5002):
-                    order_r = session.get(self.backend_record.sl_url + "/Orders(%i)" % params['external_id'])
+                if r.status_code == 400 and data["error"]["code"] in (-1029, -5002):
+                    order_r = session.get(
+                        self.backend_record.sl_url
+                        + "/Orders(%i)" % params["external_id"]
+                    )
                     if not order_r.ok:
                         # TODO: put this error check in a method and unify and reuse in another network calls
                         try:
                             err_json = order_r.json()
-                            err = err_json['error']
-                            if err['code'] == 305:
-                                if err['message']['lang'] != 'en-us':
+                            err = err_json["error"]
+                            if err["code"] == 305:
+                                if err["message"]["lang"] != "en-us":
                                     raise ValidationError(
-                                        _("Only supported english (en-us) dealing with error messages from the "
-                                          "server\n%s") %
-                                        err_json)
-                                if err['message']['value'] == 'Switch company error: -1102':
-                                    raise RetryableJobError(_("Temporarily connection error:\n%s\n"
-                                                              "It will be retried later.") % err_json)
+                                        _(
+                                            "Only supported english (en-us) dealing with error messages from the "
+                                            "server\n%s"
+                                        )
+                                        % err_json
+                                    )
+                                if (
+                                    err["message"]["value"]
+                                    == "Switch company error: -1102"
+                                ):
+                                    raise RetryableJobError(
+                                        _(
+                                            "Temporarily connection error:\n%s\n"
+                                            "It will be retried later."
+                                        )
+                                        % err_json
+                                    )
                         except json.decoder.JSONDecodeError:
                             pass
-                        raise ValidationError(f"Error trying to connect, status_code: {order_r.status_code}, "
-                                              f"response: {order_r.text}")
+                        raise ValidationError(
+                            f"Error trying to connect, status_code: {order_r.status_code}, "
+                            f"response: {order_r.text}"
+                        )
                     order_data = order_r.json()
                     # TODO: remove this check if this exception is not happening for a long time
-                    if 'DocumentStatus' not in order_data:
-                        raise ValidationError(_("Unexpected: 'DocumentStatus' field not found in order response. "
-                                                "status_code: %i, response: %s") % (order_r.status_code, order_data))
-                    if order_data['DocumentStatus'] != 'bost_Open':
+                    if "DocumentStatus" not in order_data:
+                        raise ValidationError(
+                            _(
+                                "Unexpected: 'DocumentStatus' field not found in order response. "
+                                "status_code: %i, response: %s"
+                            )
+                            % (order_r.status_code, order_data)
+                        )
+                    if order_data["DocumentStatus"] != "bost_Open":
                         raise SAPClosedOrderException(
-                            _("The order can't be updated because SAP doesn't allow to modify closed orders. "
-                              "This is why we can't treat that as an error. %s") %
-                            data['error']['message']['value'])
+                            _(
+                                "The order can't be updated because SAP doesn't allow to modify closed orders. "
+                                "This is why we can't treat that as an error. %s"
+                            )
+                            % data["error"]["message"]["value"]
+                        )
                 else:
                     raise ValidationError(r.text)
             self._logout(session)
 
-        elif funcname == 'get_products':
+        elif funcname == "get_products":
             self._login(session)
-            params_l = ["%s eq %s" % (k, repr(v)) for k, v in params['values'].items()]
+            params_l = ["%s eq %s" % (k, repr(v)) for k, v in params["values"].items()]
             url_params = "Items?$filter=%s" % " and ".join(params_l)
             result = self.get_pagination(session, url_params)
             self._logout(session)
 
-        elif funcname == 'get_partner':
+        elif funcname == "get_partner":
             self._login(session)
-            r = session.get(self.backend_record.sl_url + "/BusinessPartners('%s')" % params['CardCode'])
+            r = session.get(
+                self.backend_record.sl_url
+                + "/BusinessPartners('%s')" % params["CardCode"]
+            )
             result = r.json()
             if not r.ok:
-                if r.status_code == 404 and result['error']['code'] == -2028:
+                if r.status_code == 404 and result["error"]["code"] == -2028:
                     raise ValidationError(
-                        _("CardCode %s is not mapped on backends partner mapping") % params['CardCode'])
+                        _("CardCode %s is not mapped on backends partner mapping")
+                        % params["CardCode"]
+                    )
                 else:
                     raise ValidationError(r.text)
             self._logout(session)
 
-        elif funcname == 'update_address':
-            external_id, values = params['external_id'], params['values']
+        elif funcname == "update_address":
+            external_id, values = params["external_id"], params["values"]
             external_id_dict = self.binder_for().id2dict(external_id, in_field=False)
-            cardcode = external_id_dict.pop('CardCode')
+            cardcode = external_id_dict.pop("CardCode")
             export_values = {}
-            result = self._exec('get_partner', CardCode=cardcode)
-            sap_addresses = result['BPAddresses']
+            result = self._exec("get_partner", CardCode=cardcode)
+            sap_addresses = result["BPAddresses"]
             external_id_domain = self._normalized_dict_to_domain(external_id_dict)
-            filtered_address, rest_addresses = self._filter(sap_addresses, external_id_domain, all=True)
+            filtered_address, rest_addresses = self._filter(
+                sap_addresses, external_id_domain, all=True
+            )
             if not filtered_address:
-                raise ValidationError(_("AddressName %s not found in SAP") % external_id_domain)
+                raise ValidationError(
+                    _("AddressName %s not found in SAP") % external_id_domain
+                )
             if len(filtered_address) > 1:
-                raise ValidationError(_("More than one address found for %s") % external_id_domain)
+                raise ValidationError(
+                    _("More than one address found for %s") % external_id_domain
+                )
             filtered_address[0].update(values)
             rest_addresses.append(filtered_address[0])
-            export_values['BPAddresses'] = rest_addresses
+            export_values["BPAddresses"] = rest_addresses
             self._login(session)
-            r = session.patch(self.backend_record.sl_url + "/BusinessPartners('%s')" % cardcode,
-                              json=export_values)
+            r = session.patch(
+                self.backend_record.sl_url + "/BusinessPartners('%s')" % cardcode,
+                json=export_values,
+            )
             if not r.ok:
                 raise ValidationError(r.text)
             self._logout(session)
 
-        elif funcname == 'create_address':
+        elif funcname == "create_address":
             self._login(session)
-            values = {'BPAddresses': [params['values']]}
+            values = {"BPAddresses": [params["values"]]}
             while True:
-                r = session.patch(self.backend_record.sl_url + "/BusinessPartners('%s')" % params['external_id'],
-                                  json=values)
+                r = session.patch(
+                    self.backend_record.sl_url
+                    + "/BusinessPartners('%s')" % params["external_id"],
+                    json=values,
+                )
                 if not r.ok:
                     try:
                         err_json = r.json()
-                        err = err_json['error']
+                        err = err_json["error"]
                         # Error code -2035 means duplicated address name
-                        if err['code'] == -2035:
-                            m = re.match(self.re_address_name(), params['values']['AddressName'])
-                            name = m and m.group(1) or params['values']['AddressName']
+                        if err["code"] == -2035:
+                            m = re.match(
+                                self.re_address_name(), params["values"]["AddressName"]
+                            )
+                            name = m and m.group(1) or params["values"]["AddressName"]
                             counter = m and int(m.group(2)) or 1
-                            params['values']['AddressName'] = "%s (%i)" % (name, counter + 1)
+                            params["values"]["AddressName"] = "%s (%i)" % (
+                                name,
+                                counter + 1,
+                            )
                             continue
-                        elif err['code'] == 305:
-                            if err['message']['lang'] != 'en-us':
+                        elif err["code"] == 305:
+                            if err["message"]["lang"] != "en-us":
                                 raise ValidationError(
-                                    _("Only supported english (en-us) dealing with error messages from the "
-                                      "server\n%s") %
-                                    err_json)
-                            if err['message']['value'] == 'Switch company error: -1102':
-                                raise RetryableJobError(_("Temporarily connection error:\n%s\n"
-                                                          "It will be retried later.") % err_json)
+                                    _(
+                                        "Only supported english (en-us) dealing with error messages from the "
+                                        "server\n%s"
+                                    )
+                                    % err_json
+                                )
+                            if err["message"]["value"] == "Switch company error: -1102":
+                                raise RetryableJobError(
+                                    _(
+                                        "Temporarily connection error:\n%s\n"
+                                        "It will be retried later."
+                                    )
+                                    % err_json
+                                )
                     except json.decoder.JSONDecodeError:
                         pass
                     raise ValidationError(r.text)
-                result = params['values']
-                result['CardCode'] = params['external_id']
+                result = params["values"]
+                result["CardCode"] = params["external_id"]
                 break
             self._logout(session)
-        elif funcname == 'cancel_order':
+        elif funcname == "cancel_order":
             self._login(session)
-            r = session.post(self.backend_record.sl_url + "/Orders(%i)/Cancel" % params['values'])
+            r = session.post(
+                self.backend_record.sl_url + "/Orders(%i)/Cancel" % params["values"]
+            )
             if not r.ok:
                 result = r.json()
-                if r.status_code != 400 or result['error']['code'] != -5006:
+                if r.status_code != 400 or result["error"]["code"] != -5006:
                     raise ValidationError(result)
             self._logout(session)
         else:
@@ -317,7 +392,11 @@ class SapB1Adapter(AbstractComponent):
             fields = [fields]
         extracted, rest = [], []
         for clause in domain:
-            tgt = extracted if clause[0] in fields and clause[1] not in ["in", "not in"] else rest
+            tgt = (
+                extracted
+                if clause[0] in fields and clause[1] not in ["in", "not in"]
+                else rest
+            )
             tgt.append(clause)
         return extracted, rest
 
@@ -335,7 +414,7 @@ class SapB1Adapter(AbstractComponent):
                             v = elem[k] = v2
                     self._convert_format(v, mapper, current_path)
                 elif isinstance(
-                        v, (str, int, float, bool, datetime.date, datetime.datetime)
+                    v, (str, int, float, bool, datetime.date, datetime.datetime)
                 ):
                     if current_path in mapper:
                         elem[k] = mapper[current_path](v)
@@ -347,7 +426,7 @@ class SapB1Adapter(AbstractComponent):
             for ch in elem:
                 self._convert_format(ch, mapper, path)
         elif isinstance(
-                elem, (str, int, float, bool, datetime.date, datetime.datetime)
+            elem, (str, int, float, bool, datetime.date, datetime.datetime)
         ):
             pass
         else:
@@ -406,9 +485,7 @@ class SapB1Adapter(AbstractComponent):
                     raise ValidationError(_("Duplicated field %s") % field)
                 res[field] = self._normalize_value(value)
             elif op in (">", ">=", "<", "<="):
-                if not isinstance(
-                        value, (datetime.date, datetime.datetime, int)
-                ):
+                if not isinstance(value, (datetime.date, datetime.datetime, int)):
                     raise ValidationError(
                         _("Type {} not supported for operator {}").format(
                             type(value), op
@@ -444,9 +521,11 @@ class SapB1Adapter(AbstractComponent):
                 ok = False
             if not ok:
                 raise
-            if error.get('error', {}).get('code') == -2039:
+            if error.get("error", {}).get("code") == -2039:
                 raise RetryableJobError(
-                    'A database error caused the failure of the job: %s' % error['error']['message'])
+                    "A database error caused the failure of the job: %s"
+                    % error["error"]["message"]
+                )
             raise
 
     def get_pagination(self, session, params):
@@ -454,16 +533,16 @@ class SapB1Adapter(AbstractComponent):
         data = {}
         while True:
             if data:
-                if not data['value']:
+                if not data["value"]:
                     break
-                params = data.get('odata.nextLink')
+                params = data.get("odata.nextLink")
                 if not params:
                     break
             r = session.get("/".join([self.backend_record.sl_url, params]))
             if not r.ok:
                 raise ValidationError(r.text)
             data = r.json()
-            result += data['value']
+            result += data["value"]
         return result
 
 

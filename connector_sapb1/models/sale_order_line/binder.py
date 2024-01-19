@@ -5,10 +5,10 @@ from odoo.addons.component.core import Component
 
 
 class SaleOrderLineBinder(Component):
-    _name = 'sapb1.sale.order.line.binder'
-    _inherit = 'sapb1.binder'
+    _name = "sapb1.sale.order.line.binder"
+    _inherit = "sapb1.binder"
 
-    _apply_on = 'sapb1.sale.order.line'
+    _apply_on = "sapb1.sale.order.line"
 
-    _external_field = 'id'
-    _internal_field = 'sapb1_id'
+    _external_field = "id"
+    _internal_field = "sapb1_id"

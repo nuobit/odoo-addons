@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
@@ -8,46 +8,96 @@
         <field name="arch" type="xml">
             <form string="SAP B1 Backend">
                 <header>
-                    <button name="button_check_connection" type="object" class="oe_highlight"
-                            string="Check Connection" attrs="{'invisible':[('state', 'not in', ['draft'])]}"/>
-                    <button name="button_reset_to_draft" type="object"
-                            string="Reset To draft Connection" attrs="{'invisible':[('state', 'in', ['draft'])]}"/>
-                    <field name="state" widget="statusbar" readonly="1"/>
+                    <button
+                        name="button_check_connection"
+                        type="object"
+                        class="oe_highlight"
+                        string="Check Connection"
+                        attrs="{'invisible':[('state', 'not in', ['draft'])]}"
+                    />
+                    <button
+                        name="button_reset_to_draft"
+                        type="object"
+                        string="Reset To draft Connection"
+                        attrs="{'invisible':[('state', 'in', ['draft'])]}"
+                    />
+                    <field name="state" widget="statusbar" readonly="1" />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" type="object" name="toggle_active"
-                                icon="fa-archive">
-                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        <button
+                            class="oe_stat_button"
+                            type="object"
+                            name="toggle_active"
+                            icon="fa-archive"
+                        >
+                            <field
+                                name="active"
+                                widget="boolean_button"
+                                options='{"terminology": "archive"}'
+                            />
                         </button>
                     </div>
                     <h1>
-                        <field name="name" class="oe_inline" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field
+                            name="name"
+                            class="oe_inline"
+                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                        />
                     </h1>
                     <group>
                         <group>
-                            <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="user_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field
+                                name="company_id"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="user_id"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                         <group>
-                            <field name="db_username" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="db_password" password="True" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field
+                                name="db_username"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="db_password"
+                                password="True"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
 
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="db_host" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="sl_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field
+                                name="db_host"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="sl_port"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                         <group>
-                            <field name="company_db" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="sl_url"/>
-                            <field name="sl_base_url" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field
+                                name="company_db"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field name="sl_url" />
+                            <field
+                                name="sl_base_url"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                     </group>
                     <notebook>
-                        <page name="Export" string="Exports" attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <page
+                            name="Export"
+                            string="Exports"
+                            attrs="{'invisible': [('state', '=', 'draft')]}"
+                        >
                             <p class="oe_grey oe_inline">
                                 By clicking on the buttons,
                                 you will initiate the
@@ -71,35 +121,44 @@
                             </p>
                             <group>
                                 <div>
-                                    <label string="Export Sale Orders since"
-                                           class="oe_inline"/>
-                                    <field name="export_sale_orders_since_date" class="oe_inline"
-                                           nolabel="1"/>
+                                    <label
+                                        string="Export Sale Orders since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="export_sale_orders_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
                                 </div>
-                                <button name="export_sale_orders_since" type="object"
-                                        class="oe_highlight" string="Export in background"/>
+                                <button
+                                    name="export_sale_orders_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">
                             <group string="Partners">
                                 <field name="partner_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="partner_id"/>
-                                        <field name="sapb1_cardcode"/>
-                                        <field name="sapb1_expensecode"/>
+                                        <field name="partner_id" />
+                                        <field name="sapb1_cardcode" />
+                                        <field name="sapb1_expensecode" />
                                     </tree>
                                 </field>
                             </group>
                             <group string="Taxes">
                                 <field name="tax_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="tax_id"/>
-                                        <field name="sapb1_tax"/>
+                                        <field name="tax_id" />
+                                        <field name="sapb1_tax" />
                                     </tree>
                                 </field>
                             </group>
                             <group string="Shipping">
-                                <field name="shipping_product_id"/>
+                                <field name="shipping_product_id" />
                             </group>
                         </page>
                     </notebook>
@@ -113,11 +172,11 @@
         <field name="model">sapb1.backend</field>
         <field name="arch" type="xml">
             <tree string="SAP B1 Backend">
-                <field name="name"/>
-                <field name="db_host"/>
-                <field name="sl_port"/>
-                <field name="company_db"/>
-                <field name="company_id"/>
+                <field name="name" />
+                <field name="db_host" />
+                <field name="sl_port" />
+                <field name="company_db" />
+                <field name="company_id" />
             </tree>
         </field>
     </record>
@@ -129,6 +188,3 @@
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>
-
-
-
