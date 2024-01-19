@@ -1,29 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <menuitem id="lengow_menu_root" parent="connector.menu_connector_root"
-              name="Lengow" sequence="30" groups="connector.group_connector_manager"/>
+    <menuitem
+        id="lengow_menu_root"
+        parent="connector.menu_connector_root"
+        name="Lengow"
+        sequence="30"
+        groups="connector.group_connector_manager"
+    />
 
-    <menuitem id="lengow_backend_menu_action" name="Backends"
-              parent="lengow_menu_root" action="lengow_backend_action"/>
+    <menuitem
+        id="lengow_backend_menu_action"
+        name="Backends"
+        parent="lengow_menu_root"
+        action="lengow_backend_action"
+    />
 
-    <menuitem id="lengow_external_objects_menu" name="External Objects"
-              parent="lengow_menu_root"
-              sequence="100"/>
+    <menuitem
+        id="lengow_external_objects_menu"
+        name="External Objects"
+        parent="lengow_menu_root"
+        sequence="100"
+    />
 
-    <menuitem id="lengow_external_sales_orders_menu" name="External Orders"
-              parent="lengow_external_objects_menu"
-              action="lengow_sale_order_action"
-              sequence="10"/>
+    <menuitem
+        id="lengow_external_sales_orders_menu"
+        name="External Orders"
+        parent="lengow_external_objects_menu"
+        action="lengow_sale_order_action"
+        sequence="10"
+    />
 
-    <menuitem id="lengow_external_partners_menu" name="External Customers" sequence="20"
-              parent="lengow_external_objects_menu" action="lengow_res_partner_action"/>
+    <menuitem
+        id="lengow_external_partners_menu"
+        name="External Customers"
+        sequence="20"
+        parent="lengow_external_objects_menu"
+        action="lengow_res_partner_action"
+    />
 
-    <menuitem id="lengow_external_counties_menu" name="External Counties" sequence="30"
-              parent="lengow_external_objects_menu" action="lengow_res_country_state_action"/>
+    <menuitem
+        id="lengow_external_counties_menu"
+        name="External Counties"
+        sequence="30"
+        parent="lengow_external_objects_menu"
+        action="lengow_res_country_state_action"
+    />
 
-    <menuitem id="lengow_external_products_menu" name="External Products" sequence="20"
-              parent="lengow_external_objects_menu" action="lengow_product_product_action"/>
+    <menuitem
+        id="lengow_external_products_menu"
+        name="External Products"
+        sequence="20"
+        parent="lengow_external_objects_menu"
+        action="lengow_product_product_action"
+    />
 </odoo>

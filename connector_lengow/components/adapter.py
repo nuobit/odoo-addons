@@ -3,15 +3,16 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import datetime
+from urllib.parse import parse_qs, urlparse
 
 import requests
+from requests.exceptions import ConnectionError
+
 from odoo import _
 from odoo.exceptions import ValidationError
-from urllib.parse import urlparse, parse_qs
 
-from odoo.addons.queue_job.exception import RetryableJobError
 from odoo.addons.component.core import AbstractComponent
-from requests.exceptions import ConnectionError
+from odoo.addons.queue_job.exception import RetryableJobError
 
 
 class LengowSession(requests.Session):
@@ -20,13 +21,15 @@ class LengowSession(requests.Session):
             return super().request(method, url, **kwargs)
         except ConnectionError as e:
             raise RetryableJobError(
-                _("Error trying to connect to '%s': %s\nThe job will be retried later.") % (url, e))
+                _("Error trying to connect to '%s': %s\nThe job will be retried later.")
+                % (url, e)
+            )
 
 
 class LengowAdapter(AbstractComponent):
     _name = "lengow.adapter"
     _inherit = ["base.backend.adapter.crud", "base.lengow.connector"]
-    _description = 'Lengow Binding (abstract)'
+    _description = "Lengow Binding (abstract)"
 
     _date_format = "%Y-%m-%d"
     _datetime_format = "%Y-%m-%dT%H:%M:%SZ"
@@ -77,47 +80,51 @@ class LengowAdapter(AbstractComponent):
         if not r.ok:
             err_msg = _("Error trying to connect to %s: %s") % (r.url, r.text)
             if r.status_code in (408, 500, 502, 503, 504):
-                raise RetryableJobError('%s\n%s' % (err_msg, _("The job will be retried later")))
+                raise RetryableJobError(
+                    "%s\n%s" % (err_msg, _("The job will be retried later"))
+                )
             raise ConnectionError(err_msg)
 
     def _exec(self, funcname, **kwargs):
         session = LengowSession()
-        url = self.backend_record.base_url + '/access/get_token'
+        url = self.backend_record.base_url + "/access/get_token"
         payload = {
-            'access_token': self.backend_record.access_token,
-            'secret': self.backend_record.secret,
+            "access_token": self.backend_record.access_token,
+            "secret": self.backend_record.secret,
         }
         r = session.post(url, data=payload)
         self._check_response_error(r)
         data = r.json()
         # TODO: Reutilize token
-        token = data.get('token')
-        if funcname == 'get_token':
+        token = data.get("token")
+        if funcname == "get_token":
             return token
-        account_id = data.get('account_id')
-        session.headers.update({
-            'Authorization': token,
-        })
-        url = f'{self.backend_record.base_url}/v3.0/{funcname}/'
+        account_id = data.get("account_id")
+        session.headers.update(
+            {
+                "Authorization": token,
+            }
+        )
+        url = f"{self.backend_record.base_url}/v3.0/{funcname}/"
         params = {
-            'account_id': account_id,
+            "account_id": account_id,
             **kwargs,
         }
         result = []
         data = {}
         while True:
             if data:
-                if not data or not data.get('results'):
+                if not data or not data.get("results"):
                     break
-                url_next = data.get('next')
+                url_next = data.get("next")
                 if not url_next:
                     break
                 params = parse_qs(urlparse(url_next).query)
             r = session.get(url, params=params)
             self._check_response_error(r)
             data = r.json()
-            if 'results' in data:
-                result += data['results']
+            if "results" in data:
+                result += data["results"]
             else:
                 result = data
         return self._prepare_results(result)
@@ -125,7 +132,7 @@ class LengowAdapter(AbstractComponent):
     def chunks(self, l, n):
         """Yield successive n-sized chunks from lst."""
         for i in range(0, len(l), n):
-            yield l[i: i + n]
+            yield l[i : i + n]
 
     def _filter(self, values, domain=None):
         # TODO support for domains with 'or' clauses
@@ -183,7 +190,11 @@ class LengowAdapter(AbstractComponent):
             fields = [fields]
         extracted, rest = [], []
         for clause in domain:
-            tgt = extracted if clause[0] in fields and clause[1] not in ["in", "not in"] else rest
+            tgt = (
+                extracted
+                if clause[0] in fields and clause[1] not in ["in", "not in"]
+                else rest
+            )
             tgt.append(clause)
         return extracted, rest
 
@@ -201,7 +212,7 @@ class LengowAdapter(AbstractComponent):
                             v = elem[k] = v2
                     self._convert_format(v, mapper, current_path)
                 elif isinstance(
-                        v, (str, int, float, bool, datetime.date, datetime.datetime)
+                    v, (str, int, float, bool, datetime.date, datetime.datetime)
                 ):
                     if current_path in mapper:
                         elem[k] = mapper[current_path](v)
@@ -213,7 +224,7 @@ class LengowAdapter(AbstractComponent):
             for ch in elem:
                 self._convert_format(ch, mapper, path)
         elif isinstance(
-                elem, (str, int, float, bool, datetime.date, datetime.datetime)
+            elem, (str, int, float, bool, datetime.date, datetime.datetime)
         ):
             pass
         else:
@@ -262,9 +273,7 @@ class LengowAdapter(AbstractComponent):
                     raise ValidationError(_("Duplicated field %s") % field)
                 res[field] = self._normalize_value(value)
             elif op in (">", ">=", "<", "<="):
-                if not isinstance(
-                        value, (datetime.date, datetime.datetime, int)
-                ):
+                if not isinstance(value, (datetime.date, datetime.datetime, int)):
                     raise ValidationError(
                         _("Type {} not supported for operator {}").format(
                             type(value), op

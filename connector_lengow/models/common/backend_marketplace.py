@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -27,9 +27,7 @@ class LengowBackendMarketplace(models.Model):
         ondelete="restrict",
     )
     country_id = fields.Many2one(
-        string="Odoo Partner Country",
-        readonly=True,
-        related="partner_id.country_id"
+        string="Odoo Partner Country", readonly=True, related="partner_id.country_id"
     )
     lengow_marketplace = fields.Char(string="Lengow Marketplace", required=True)
 
@@ -41,14 +39,18 @@ class LengowBackendMarketplace(models.Model):
         ),
     ]
 
-    @api.constrains('backend_id', 'partner_id', 'lengow_marketplace')
+    @api.constrains("backend_id", "partner_id", "lengow_marketplace")
     def _check_marketplace_country(self):
         for rec in self:
-            other = self.env[self._name].search([
-                ('id', '!=', rec.id),
-                ('backend_id', '=', rec.backend_id.id),
-                ('partner_id.country_id', '=', rec.partner_id.country_id.id),
-                ('lengow_marketplace', '=', rec.lengow_marketplace),
-            ])
+            other = self.env[self._name].search(
+                [
+                    ("id", "!=", rec.id),
+                    ("backend_id", "=", rec.backend_id.id),
+                    ("partner_id.country_id", "=", rec.partner_id.country_id.id),
+                    ("lengow_marketplace", "=", rec.lengow_marketplace),
+                ]
+            )
             if other:
-                raise ValidationError(_("A mapping already exists with the same country and marketplace"))
+                raise ValidationError(
+                    _("A mapping already exists with the same country and marketplace")
+                )

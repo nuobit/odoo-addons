@@ -9,9 +9,10 @@ _logger = logging.getLogger(__name__)
 
 
 class LengowImporter(AbstractComponent):
-    """ Base importer for Lengow """
+    """Base importer for Lengow"""
+
     _name = "lengow.importer"
-    _inherit = ['generic.importer.custom', 'base.lengow.connector']
+    _inherit = ["generic.importer.custom", "base.lengow.connector"]
 
     _usage = "direct.record.importer"
 
@@ -21,11 +22,12 @@ class LengowBatchImporter(AbstractComponent):
     items to import, then it can either import them directly or delay
     the import of each item separately.
     """
+
     _name = "lengow.batch.importer"
-    _inherit = ['base.importer', 'base.lengow.connector']
+    _inherit = ["base.importer", "base.lengow.connector"]
 
     def run(self, domain=None):
-        """ Run the synchronization """
+        """Run the synchronization"""
         if domain is None:
             domain = []
         records = self.backend_adapter.search_read(domain)
@@ -42,14 +44,15 @@ class LengowBatchImporter(AbstractComponent):
 
 
 class LengowDirectBatchImporter(AbstractComponent):
-    """ Import the records directly, without delaying the jobs. """
+    """Import the records directly, without delaying the jobs."""
+
     _name = "lengow.direct.batch.importer"
     _inherit = "lengow.batch.importer"
 
     _usage = "direct.batch.importer"
 
     def _import_record(self, external_id, external_data=None):
-        """ Import the record directly """
+        """Import the record directly"""
         if external_data is None:
             external_data = {}
         self.model.import_record(
@@ -58,14 +61,15 @@ class LengowDirectBatchImporter(AbstractComponent):
 
 
 class LengowDelayedBatchImporter(AbstractComponent):
-    """ Delay import of the records """
+    """Delay import of the records"""
+
     _name = "lengow.delayed.batch.importer"
     _inherit = "lengow.batch.importer"
 
     _usage = "delayed.batch.importer"
 
     def _import_record(self, external_id, external_data=None, job_options=None):
-        """ Delay the import of the records"""
+        """Delay the import of the records"""
         if external_data is None:
             external_data = {}
         delayable = self.model.with_delay(**job_options or {})
