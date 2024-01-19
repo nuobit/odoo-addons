@@ -3,8 +3,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import fields, models
-from odoo.addons.queue_job.job import job
 from odoo.tools import datetime
+
+from odoo.addons.queue_job.job import job
 
 
 class LengowSaleOrderBinding(models.Model):
@@ -21,7 +22,7 @@ class LengowSaleOrderBinding(models.Model):
     )
 
     lengow_marketplace = fields.Char(string="Marketplace on Lengow")
-    lengow_marketplace_order_id = fields.Char(string='Order on Lengow')
+    lengow_marketplace_order_id = fields.Char(string="Order on Lengow")
 
     lengow_order_line_ids = fields.One2many(
         string="Lengow Order Line ids",
@@ -36,30 +37,43 @@ class LengowSaleOrderBinding(models.Model):
             "unique(backend_id, lengow_marketplace, lengow_marketplace_order_id)",
             "A binding already exists with the same External (Lengow) ID.",
         ),
-
     ]
 
-    def _prepare_import_sale_orders_domain(self, backend_record=None, since_date=None, order_number=None):
+    def _prepare_import_sale_orders_domain(
+        self, backend_record=None, since_date=None, order_number=None
+    ):
         domain = [
-            ('lengow_status', 'not in', ('waiting_acceptance', 'accepted')),
-            ('anonymized', '=', False),
+            ("lengow_status", "not in", ("waiting_acceptance", "accepted")),
+            ("anonymized", "=", False),
         ]
         if order_number:
-            domain += [('marketplace_order_id', 'in', [x.strip() for x in order_number.split(',')])]
+            domain += [
+                (
+                    "marketplace_order_id",
+                    "in",
+                    [x.strip() for x in order_number.split(",")],
+                )
+            ]
         else:
             if since_date:
-                domain += [('updated_from', '=', since_date)]
+                domain += [("updated_from", "=", since_date)]
             if backend_record.min_order_date:
-                domain += [('marketplace_order_date_from', '=', backend_record.min_order_date)]
+                domain += [
+                    ("marketplace_order_date_from", "=", backend_record.min_order_date)
+                ]
         if order_number or not since_date:
-            domain += [('updated_from', '=', datetime(1900, 1, 1, 0, 0, 0))]
+            domain += [("updated_from", "=", datetime(1900, 1, 1, 0, 0, 0))]
         return domain
 
-    @job(default_channel='root.lengow')
-    def import_sale_orders_since(self, backend_record=None, since_date=None, order_number=None):
-        """ Prepare the batch import of partners modified on Lengow """
+    @job(default_channel="root.lengow")
+    def import_sale_orders_since(
+        self, backend_record=None, since_date=None, order_number=None
+    ):
+        """Prepare the batch import of partners modified on Lengow"""
         domain = self._prepare_import_sale_orders_domain(
-            backend_record=backend_record, since_date=since_date, order_number=order_number)
-        self.import_batch(
-            backend_record, domain=domain)
+            backend_record=backend_record,
+            since_date=since_date,
+            order_number=order_number,
+        )
+        self.import_batch(backend_record, domain=domain)
         return True

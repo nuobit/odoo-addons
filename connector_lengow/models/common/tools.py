@@ -12,8 +12,8 @@ def list2hash(l):
         elif isinstance(e, str):
             e9 = e
         elif e is None:
-            e9 = ''
+            e9 = ""
         else:
             raise Exception("Unexpected type for a key: type %" % type(e))
-        hash.update(e9.encode('utf8'))
+        hash.update(e9.encode("utf8"))
     return hash.hexdigest()

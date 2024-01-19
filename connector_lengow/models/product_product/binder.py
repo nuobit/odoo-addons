@@ -5,11 +5,11 @@ from odoo.addons.component.core import Component
 
 
 class ProductProductBinder(Component):
-    _name = 'lengow.product.product.binder'
-    _inherit = 'lengow.binder'
+    _name = "lengow.product.product.binder"
+    _inherit = "lengow.binder"
 
-    _apply_on = 'lengow.product.product'
+    _apply_on = "lengow.product.product"
 
-    _external_field = 'sku'
-    _internal_field = 'lengow_sku'
+    _external_field = "sku"
+    _internal_field = "lengow_sku"
     _internal_alt_id = "default_code"
