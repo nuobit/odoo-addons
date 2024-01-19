@@ -1,12 +1,10 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "CBL Connector",
-    "description": "Connector to get tracking info from CBL",
-    "version": "11.0.0.1.2",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "version": "16.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/nuobit/odoo-addons",
@@ -14,7 +12,6 @@
         "python": [
             "requests",
             "lxml",
-            "json",
         ],
     },
     "depends": [

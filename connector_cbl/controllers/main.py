@@ -1,10 +1,13 @@
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 import logging
 
 import werkzeug.exceptions
 
 from odoo import http
 
-from odoo.addons.connector_cbl.models.cbl import CBL
+from ..models.cbl import CBL
 
 _logger = logging.getLogger(__name__)
 
@@ -45,9 +48,6 @@ class CBLController(http.Controller):
             return werkzeug.exceptions.NotFound(
                 "There's no data with tracking number '%s'" % tracking_number
             )
-
-        # if not er.logout():
-        #    return werkzeug.exceptions.InternalServerError("Logout not successful")
         _logger.info(
             "CBL shipment %s successfully retrieved from %s."
             % (tracking_number, remote_ip)

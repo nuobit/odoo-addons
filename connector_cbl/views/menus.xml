@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <menuitem
@@ -9,12 +8,12 @@
         name="CBL"
         sequence="50"
         groups="connector.group_connector_manager"
-    />
+    >
+        <menuitem
+            id="cbl_backend_menu_action"
+            name="Backends"
+            action="cbl_backend_action"
+        />
+    </menuitem>
 
-    <menuitem
-        id="cbl_backend_menu_action"
-        name="Backends"
-        parent="cbl_menu_root"
-        action="cbl_backend_action"
-    />
 </odoo>

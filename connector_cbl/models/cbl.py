@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import datetime
@@ -10,13 +9,29 @@ import re
 import requests
 from lxml import etree
 
+from odoo import _
+from odoo.exceptions import ValidationError
+
 _logger = logging.getLogger(__name__)
 
 
 def xpath1(tree, xpath):
     tag_l = tree.xpath(xpath)
+    if len(tag_l) == 0:
+        raise ValidationError(_("No elements found on xpath: %s" % xpath))
     if len(tag_l) != 1:
-        raise Exception("Expected 1 element")
+        raise ValidationError(
+            _(
+                "Expected 1 element, %(elements)s found on  "
+                "xpath: %(xpath)s"
+                "Elements:%(tags)s"
+                % {
+                    "elements": len(tag_l),
+                    "xpath": xpath,
+                    "tags": tag_l,
+                }
+            )
+        )
 
     return tag_l[0]
 
@@ -30,18 +45,17 @@ class CBL:
         self.username = username
         self.password = password
         self.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/78.0.3904.108 Safari/537.36",
         }
         self.debug = debug
 
     def login(self):
         url = "%s/login.aspx" % self._base_url
-
-        ## obtenim les dades del viewstate
         res = self.session.get(url, headers=self.headers)
         self._update_viewstate(res)
-
-        ## fem el login
+        # login
         form_data = {
             "ScriptManager1": "UpdatePanel1|Login1$LoginButton",
             "Login1$UserName": self.username,
@@ -51,13 +65,11 @@ class CBL:
         form_data.update(self.viewstate)
         res = self.session.post(url, data=form_data, headers=self.headers)
         self._update_viewstate(res)
-
-        ## comprovem que el login ha estat ok
+        # Check login
         return not self.is_login_page(res)
 
     def filter_by_refcte(self, refcte):
         url = "%s/Consultas/envios.aspx" % self._base_url
-
         res = self.session.get(url, headers=self.headers)
         self._update_viewstate(res)
 
@@ -72,15 +84,15 @@ class CBL:
         for ut in userid_tags:
             ut_tag = xpath1(tree, "//form[@id='aspnetForm']//input[@id='%s']" % ut)
             if ut_tag is None:
-                raise Exception("Expected value")
+                raise ValidationError(_("Expected value"))
             if not userid:
                 userid = ut_tag.attrib["value"]
             else:
                 if userid != ut_tag.attrib["value"]:
-                    raise Exception("Diferent userid values")
+                    raise ValidationError(_("Different userid values"))
 
         if not userid:
-            raise Exception("userid not found")
+            raise ValidationError(_("Userid not found"))
 
         form_data = {
             "ctl00$AJAXScriptManager": "ctl00$UpdatePanel1|ctl00$TOPCONTENEDOR$WebCUI_buscar",
@@ -116,22 +128,22 @@ class CBL:
         if len(elem_table_l) == 0:
             return []
         elif len(elem_table_l) > 1:
-            raise Exception("Unexpected content CONSENV_RES")
+            raise ValidationError(_("Unexpected content CONSENV_RES"))
         elem_table = elem_table_l[0]
 
         result_ld = []
         input_detail_l = elem_table.xpath(
             "//tr/td/input[contains(@onclick, 'MuestraDetalleConsulta')]"
         )
-        for input in input_detail_l:
+        for input_d in input_detail_l:
             m = re.match(
-                r"^.+MuestraDetalleConsulta\('([^']+)'\)", input.attrib["onclick"]
+                r"^.+MuestraDetalleConsulta\('([^']+)'\)", input_d.attrib["onclick"]
             )
             if not m:
-                raise Exception("Unexpected content on MuestraDetalleConsulta")
+                raise ValidationError(_("Unexpected content on MuestraDetalleConsulta"))
             nexpedicion = m.group(1)
 
-            ### detalle expedicion
+            # Expedition detail
             url = "%s/api/Comun/DetalleEnvio/QueryDatosExpedicion" % self._base_url
             form_data = {
                 "expedicion": nexpedicion,
@@ -141,7 +153,7 @@ class CBL:
             data = res.json()["data"]
             expedition_d = data
 
-            ### tracking
+            # tracking
             url = "%s/api/Comun/DetalleEnvio/QueryTracking" % self._base_url
             form_data = {
                 "jtStartIndex": "1",
@@ -200,16 +212,20 @@ class CBL:
             tag_viewstate = tree.xpath("//*[@id='%s']" % vsf)
             for t in tag_viewstate:
                 if "value" not in t.attrib:
-                    raise Exception(
-                        "Unexpected, ViewState element iff found must have value attribute"
+                    raise ValidationError(
+                        _(
+                            "Unexpected, ViewState element iff found must have value attribute"
+                        )
                     )
                 if vsf not in self.viewstate:
                     self.viewstate[vsf] = t.attrib["value"] or None
                 else:
                     if self.viewstate[vsf] != t.attrib["value"]:
-                        raise Exception(
-                            "Unexpected! all the ViewState must have the same 'value'"
+                        raise ValidationError(
+                            _(
+                                "Unexpected! all the ViewState must have the same 'value'"
+                            )
                         )
 
         if not self.viewstate:
-            raise Exception("ViewState not found")
+            raise ValidationError(_("ViewState not found"))
