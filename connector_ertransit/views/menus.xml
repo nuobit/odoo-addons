@@ -1,11 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <menuitem id="ertransit_menu_root" parent="connector.menu_connector_root"
-              name="ERTransit" sequence="40" groups="connector.group_connector_manager"/>
+    <menuitem
+        id="ertransit_menu_root"
+        parent="connector.menu_connector_root"
+        name="ERTransit"
+        sequence="40"
+        groups="connector.group_connector_manager"
+    />
 
-    <menuitem id="ertransit_backend_menu_action" name="Backends"
-              parent="ertransit_menu_root" action="ertransit_backend_action"/>
+    <menuitem
+        id="ertransit_backend_menu_action"
+        name="Backends"
+        parent="ertransit_menu_root"
+        action="ertransit_backend_action"
+    />
 </odoo>

@@ -3,27 +3,27 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    'name': "Connector ERTransit / Erhardt",
-    'description': "ERTransit / Erhardt connector",
-    'version': '11.0.0.1.6',
-    'author': 'NuoBiT Solutions, S.L., Eric Antones',
-    'license': 'AGPL-3',
-    'category': 'Connector',
-    'website': 'https://github.com/nuobit',
-    'external_dependencies': {
-        'python': [
-            'requests',
-            'lxml',
+    "name": "Connector ERTransit / Erhardt",
+    "description": "ERTransit / Erhardt connector",
+    "version": "11.0.0.1.6",
+    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "license": "AGPL-3",
+    "category": "Connector",
+    "website": "https://github.com/nuobit/odoo-addons",
+    "external_dependencies": {
+        "python": [
+            "requests",
+            "lxml",
         ],
     },
-    'depends': [
-        'connector',
+    "depends": [
+        "connector",
     ],
-    'data': [
-        'views/backend_views.xml',
-        'views/menus.xml',
-        'templates/ertransit_template.xml',
-        'security/ir.model.access.csv',
+    "data": [
+        "views/backend_views.xml",
+        "views/menus.xml",
+        "templates/ertransit_template.xml",
+        "security/ir.model.access.csv",
     ],
-    'installable': True,
+    "installable": True,
 }
