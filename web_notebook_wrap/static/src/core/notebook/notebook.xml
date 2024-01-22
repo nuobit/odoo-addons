@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="web.Notebook" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t/div/div/ul" position="attributes">
+            <attribute
+                name="t-attf-class"
+            >nav nav-tabs {{ props.orientation === 'horizontal' ? 'flex-row' : 'flex-column p-0' }}</attribute>
+        </xpath>
+    </t>
+</templates>
