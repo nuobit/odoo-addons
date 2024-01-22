@@ -3,20 +3,18 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
-from odoo.addons.component.core import Component
+from odoo.addons.component.core import AbstractComponent, Component
 
 
-class ProductPricelistItemBatchExporter(Component):
+class ProductPricelistItemBatchExporter(AbstractComponent):
     """Export the Oxigesti Product prices.
 
     For every product in the list, a delayed job is created.
     """
 
-    _name = "oxigesti.product.pricelist.item.delayed.batch.exporter"
-    _inherit = "oxigesti.delayed.batch.exporter"
-    _apply_on = "oxigesti.product.pricelist.item"
+    _name = "oxigesti.product.pricelist.item.batch.exporter"
 
-    def run(self, domain=None):
+    def run_common(self, domain=None):
         if not domain:
             domain = []
         # Run the batch synchronization
@@ -32,47 +30,64 @@ class ProductPricelistItemBatchExporter(Component):
                 since_date = value
             else:
                 domain.append(e)
-        partner_adapter = self.component(
-            usage="backend.adapter", model_name="oxigesti.res.partner"
-        )
-        partner_binder = self.binder_for("oxigesti.res.partner")
         binder = self.binder_for(self.model._name)
         for p in self.env["res.partner"].search(domain):
-            partner_external_id = partner_binder.to_external(p, wrap=True)
-            for pl in p.property_product_pricelist.item_ids.filtered(
+            pricelist_items = p.property_product_pricelist.item_ids.filtered(
                 lambda x: (
                     not since_date
                     or x.write_date > since_date
                     or p.write_date > since_date
                 )
-                and p.customer_rank >= p.supplier_rank
                 and x.applied_on == "1_product"
                 and x.compute_price == "fixed"
                 and (
                     not x.sudo().product_tmpl_id.company_id
                     or x.sudo().product_tmpl_id.company_id == p.company_id
                 )
-            ):
-                if pl.product_tmpl_id.default_code and partner_external_id:
-                    external_id = [
-                        pl.product_tmpl_id.default_code,
-                        partner_adapter.id2dict(partner_external_id)["Codigo_Mutua"],
-                    ]
-                    binding = binder.to_internal(external_id)
-                    if binding and binding.odoo_id != pl:
-                        old_binding = binder._find_binding(
-                            pl, binding_extra_vals={"odoo_partner_id": p.id}
-                        )
-                        if old_binding:
-                            old_binding.unlink()
-                        binding.odoo_id = pl
-                binding = binder.wrap_binding(
-                    pl,
-                    binding_extra_vals={
-                        "odoo_partner_id": p.id,
-                    },
-                )
-                self._export_record(binding)
+            )
+            if pricelist_items:
+                # create/update binding data
+                for pl in pricelist_items:
+                    binding = binder.wrap_binding(
+                        pl,
+                        binding_extra_vals={
+                            "odoo_partner_id": p.id,
+                            "deprecated": pl.is_deprecated(p),
+                        },
+                    )
+                    self._export_record(binding)
+
+
+class ProductPricelistItemDelayedBatchExporter(Component):
+    """Export the Oxigesti Product prices.
+
+    For every product in the list, a delayed job is created.
+    """
+
+    _name = "oxigesti.product.pricelist.item.delayed.batch.exporter"
+    _inherit = [
+        "oxigesti.delayed.batch.exporter",
+        "oxigesti.product.pricelist.item.batch.exporter",
+    ]
+
+    def run(self, domain=None):
+        super().run_common(domain=domain)
+
+
+class ProductPricelistItemDirectBatchExporter(Component):
+    """Export the Oxigesti Product prices.
+
+    For every product in the list, a direct job is created.
+    """
+
+    _name = "oxigesti.product.pricelist.item.direct.batch.exporter"
+    _inherit = [
+        "oxigesti.direct.batch.exporter",
+        "oxigesti.product.pricelist.item.batch.exporter",
+    ]
+
+    def run(self, domain=None):
+        super().run_common(domain=domain)
 
 
 class ProductPricelistItemExporter(Component):

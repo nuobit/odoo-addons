@@ -11,7 +11,7 @@ class ProductPricelistItemAdapter(Component):
 
     _apply_on = "oxigesti.product.pricelist.item"
 
-    _sql = """select b.CodigoArticulo, b.Codigo_Mutua, b.Importe
+    _sql = """select b.CodigoArticulo, b.Codigo_Mutua, b.Importe, b.Deprecated
               from %(schema)s.Odoo_Articulos_Generales_x_Cliente b
             """
 

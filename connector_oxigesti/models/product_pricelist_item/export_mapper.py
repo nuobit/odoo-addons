@@ -63,4 +63,4 @@ class ProductPricelistItemExportMapper(Component):
 
     @mapping
     def Deprecated(self, record):
-        return {"Deprecated": 0}
+        return {"Deprecated": record.deprecated and 1 or 0}
