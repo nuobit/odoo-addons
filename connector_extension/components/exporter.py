@@ -73,11 +73,11 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
                 result = _("Nothing to export")
             if not result:
                 result = _("Record exported with ID %s on Backend.") % "external_id"
-            self._after_export()
+            self._after_export(binding)
             binding[self.binder_for()._sync_date_field] = now_fmt
             return result
 
-    def _after_export(self):
+    def _after_export(self, binding):
         """Can do several actions after exporting a record on the backend"""
 
     def _get_sql_lock(self, record):
