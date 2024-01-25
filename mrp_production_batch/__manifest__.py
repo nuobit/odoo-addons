@@ -3,7 +3,7 @@
 
 {
     "name": "MRP Production Batch",
-    "summary": "Customizations for Oxigen in MRP Production",
+    "summary": "This module manages production batches.",
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions",
     "website": "https://github.com/nuobit/odoo-addons",
@@ -12,9 +12,12 @@
     "license": "AGPL-3",
     "data": [
         "security/ir.model.access.csv",
+        "security/mrp_production_batch.xml",
         "views/mrp_production_batch_views.xml",
         "views/mrp_production_views.xml",
         "views/stock_picking_views.xml",
+        "views/res_config_settings_views.xml",
+        "views/mrp_bom_line.xml",
         "wizard/mrp_production_batch_wizard.xml",
     ],
 }

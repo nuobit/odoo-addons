@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -14,6 +15,7 @@ class MRPProductionBatchWizard(models.TransientModel):
     )
     operation_type = fields.Many2one(
         comodel_name="stock.picking.type",
+        required=True,
     )
     warehouse_id = fields.Many2one(
         comodel_name="stock.warehouse",
@@ -25,7 +27,6 @@ class MRPProductionBatchWizard(models.TransientModel):
         mrp_production_ids = self.env[model].browse(self.env.context.get("active_ids"))
         production_batch = self.env["mrp.production.batch"].create(
             {
-                "name": self.operation_type.sequence_id._next(),
                 "creation_date": fields.Datetime.now(),
                 "production_ids": [
                     (6, 0, mrp_production_ids.ids),
@@ -38,7 +39,7 @@ class MRPProductionBatchWizard(models.TransientModel):
         )
         action["views"] = [
             (
-                self.env.ref("mrp_production_batch.mrp_production_batch_form_view").id,
+                self.env.ref("mrp_production_batch.mrp_production_batch_view_form").id,
                 "form",
             )
         ]

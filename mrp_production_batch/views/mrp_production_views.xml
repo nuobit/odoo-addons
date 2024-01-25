@@ -38,7 +38,7 @@
                         role="alert"
                         attrs="{'invisible': ['|', ('production_batch_id', '=', False), '|', ('is_ready_to_produce', '=', False), ('state', '=', 'done')]}"
                     >
-                        The location is ready to produce in batch.
+                        The production is ready to produce in batch.
                     </div>
                     <div
                         class="alert alert-danger alert-link text-center"
@@ -54,7 +54,7 @@
                         type="object"
                         string="Check Production"
                         class="oe_highlight"
-                        attrs="{'invisible': ['|', ('production_batch_id', '=', False), ('state', '=', 'done')]}"
+                        attrs="{'invisible': ['|', ('production_batch_id', '=', False), ('state', 'in', ('done', 'draft'))]}"
                     />
                 </field>
                 <page name="miscellaneous" position="inside">
@@ -63,6 +63,7 @@
                             <field
                                 name="production_batch_id"
                                 attrs="{'readonly': [('state', '=', 'done')]}"
+                                domain="[('state', 'in', ('draft', 'in_progress'))]"
                             />
                         </group>
                     </group>
@@ -108,6 +109,11 @@
                         ('state', '!=', 'to_close')
                     ]}</attribute>
                 </xpath>
+                <field name="lot_producing_id" position="attributes">
+                    <attribute name="attrs">
+                        {'invisible': [('product_tracking', 'in', ('none', False))], 'readonly': [('production_batch_id', '!=', False)]}
+                    </attribute>
+                </field>
             </field>
         </record>
         <record

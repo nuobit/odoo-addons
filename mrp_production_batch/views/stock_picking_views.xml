@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <record id="stock_production_type_kanban2" model="ir.ui.view">
+    <record id="stock_production_type_kanban" model="ir.ui.view">
         <field name="name">stock.picking.type.kanban</field>
         <field name="model">stock.picking.type</field>
         <field name="inherit_id" ref="mrp.stock_production_type_kanban" />

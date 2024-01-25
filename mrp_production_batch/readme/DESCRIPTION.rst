@@ -1,1 +1,1 @@
-* Added
+* This module manages production batches.
