@@ -2,7 +2,7 @@
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="wizard_mrp_production_batch_view_form" model="ir.ui.view">
+    <record id="mrp_production_batch_wizard_view_form" model="ir.ui.view">
         <field name="name">mrp.production.batch.wizard.form</field>
         <field name="model">mrp.production.batch.wizard</field>
         <field name="arch" type="xml">
