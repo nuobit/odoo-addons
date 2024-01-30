@@ -23,6 +23,9 @@ class SageBinderComposite(AbstractComponent):
     _name = "base.binder.composite"
     _inherit = "base.binder"
 
+    def to_binding_from_external_key(self, internal_data):
+        return self.model
+
     def to_internal(self, external_id, unwrap=False):
         """Give the Odoo recordset for an external ID
 
