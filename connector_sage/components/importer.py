@@ -98,15 +98,6 @@ class SageImporter(AbstractComponent):
         except IDMissingInBackend:
             return _("Record does no longer exist in Sage")
 
-        # get_binding
-        # this one knows how to link sage/odoo records
-        binder = self.component(usage="binder")
-        # find if the sage id already exists in odoo
-        binding = binder.to_internal(external_id)
-
-        # if not force and self._is_uptodate(binding):
-        #     return _('Already up-to-date.')
-
         # import the missing linked resources
         self._import_dependencies()
 
@@ -115,6 +106,18 @@ class SageImporter(AbstractComponent):
         mapper = self.component(usage="import.mapper")
         # convert to odoo data
         internal_data = mapper.map_record(self.external_data)
+
+        # get_binding
+        # this one knows how to link sage/odoo records
+        binder = self.component(usage="binder")
+        # find if the sage id already exists in odoo
+        binding = binder.to_internal(external_id)
+
+        if not binding:
+            binding = binder.to_binding_from_external_key(internal_data)
+
+        # if not force and self._is_uptodate(binding):
+        #     return _('Already up-to-date.')
         if binding:
             binding.with_company(self.backend_record.company_id).write(
                 internal_data.values()
