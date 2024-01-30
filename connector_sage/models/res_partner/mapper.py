@@ -12,7 +12,6 @@ class ResPartnerImportMapper(Component):
     _apply_on = "sage.res.partner"
 
     direct = [
-        ("Email1", "email"),
         ("CodigoEmpresa", "sage_codigo_empresa"),
         ("CodigoEmpleado", "sage_codigo_empleado"),
         # (normalize_datetime('created_at'), 'created_at'),
@@ -20,6 +19,11 @@ class ResPartnerImportMapper(Component):
         # ('email', 'emailid'),
         # ('Dni', 'vat'),
     ]
+
+    @only_create
+    @mapping
+    def email(self, record):
+        return {"email": record["Email1"] or False}
 
     @mapping
     def backend_id(self, record):
@@ -41,6 +45,7 @@ class ResPartnerImportMapper(Component):
     def company_type(self, record):
         return {"company_type": "person"}
 
+    @only_create
     @mapping
     def names(self, record):
         parts = [
@@ -54,6 +59,7 @@ class ResPartnerImportMapper(Component):
         ]
         return {"name": " ".join(parts)}
 
+    @only_create
     @mapping
     def ref(self, record):
         return {"ref": str(record["CodigoEmpleado"])}
@@ -81,10 +87,12 @@ class ResPartnerImportMapper(Component):
             )
         }
 
+    @only_create
     @mapping
     def type(self, record):
         return {"type": "contact"}
 
+    @only_create
     @mapping
     def euvat(self, record):
         parts = [part for part in (record["SiglaNacion"], record["Dni"]) if part]
