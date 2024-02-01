@@ -157,7 +157,7 @@ class MrpProduction(models.Model):
     def _action_generate_consumption_wizard(self, consumption_issues):
         if not self.env.context.get("mrp_production_batch_create"):
             return super()._action_generate_consumption_wizard(consumption_issues)
-        if self.bom_id.bom_line_ids.product_id.ids != self.move_raw_ids.product_id.ids:
+        if self.bom_id.bom_line_ids.product_id != self.move_raw_ids.product_id:
             raise ValidationError(
                 _(
                     "A problem has been detected in production %s. Make sure you "
@@ -200,28 +200,27 @@ class MrpProduction(models.Model):
             "res_id": self.production_batch_id.id,
         }
 
-    # TODO: Refactor translation management and raise of "You need to supply..."
-    def action_check_with_batch(self):
-        self.ensure_one()
-        try:
-            with self.env.cr.savepoint():
-                self_wc = self.with_context(mrp_production_batch_create=True)
-                lot = self_wc.env["stock.production.lot"].create(
-                    {
-                        "name": "",
-                        "product_id": self.product_id.id,
-                        "company_id": self.company_id.id,
-                    }
-                )
-                self_wc.lot_producing_id = lot.id
-                self_wc.button_mark_done()
-                raise FakeException("")
-        except FakeException:
-            self.is_ready_to_produce = True
-            self.error_message = False
-        except (UserError, ValidationError) as e:
-            self.is_ready_to_produce = False
-            self.error_message = e.name
+    def action_produce_batch(self):
+        for rec in self:
+            try:
+                with rec.env.cr.savepoint():
+                    self_wc = rec.with_context(mrp_production_batch_create=True)
+                    lot = self_wc.env["stock.production.lot"].create(
+                        {
+                            "name": "",
+                            "product_id": rec.product_id.id,
+                            "company_id": rec.company_id.id,
+                        }
+                    )
+                    self_wc.lot_producing_id = lot.id
+                    self_wc.button_mark_done()
+                    raise FakeException("")
+            except FakeException:
+                rec.is_ready_to_produce = True
+                rec.error_message = False
+            except (UserError, ValidationError) as e:
+                rec.is_ready_to_produce = False
+                rec.error_message = e.name
 
     def create_batch_lot_by_bom(self):
         self.ensure_one()
