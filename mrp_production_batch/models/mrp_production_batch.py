@@ -125,8 +125,7 @@ class MrpProductionBatch(models.Model):
         self.ensure_one()
         productions = self.production_ids.filtered(lambda r: not r.is_ready_to_produce)
         init_production_count = len(productions)
-        for production in productions:
-            production.action_check_with_batch()
+        productions.action_produce_batch()
         final_production_count = len(
             self.production_ids.filtered(lambda r: not r.is_ready_to_produce)
         )
@@ -139,31 +138,27 @@ class MrpProductionBatch(models.Model):
 
     def _check_unique_serial_lot_in_batch(self):
         for rec in self:
-            serial_lots = []
+            lot_production_map = {}
             for production in rec.production_ids:
-                serial_move_line = production.move_raw_ids.filtered(
+                for move_line in production.move_raw_ids.filtered(
                     lambda x: x.product_id.tracking == "serial"
-                ).move_line_ids
-                serial_lot_ids = serial_move_line.mapped("lot_id").ids
-                serial_lots.extend(serial_lot_ids)
-            for lot in serial_lots:
-                if serial_lots.count(lot) > 1:
-                    move = (
-                        self.env["stock.move.line"]
-                        .search([("lot_id", "=", lot)])
-                        .filtered(
-                            lambda x: x.move_id.raw_material_production_id
-                            in rec.production_ids
+                ).move_line_ids:
+                    lot_id = move_line.lot_id.id
+                    if lot_id in lot_production_map:
+                        dup_production, dup_product = lot_production_map[lot_id]
+                        raise ValidationError(
+                            _(
+                                "The following productions [%s, %s] are using the "
+                                "component %s with the same serial number. Please "
+                                "make sure that the serial numbers are unique."
+                            )
+                            % (
+                                dup_production.display_name,
+                                production.display_name,
+                                dup_product.display_name,
+                            )
                         )
-                        .move_id
-                    )
-                    raise ValidationError(
-                        _(
-                            "The following productions are using the same serial number in"
-                            " some of their components: %s"
-                            % move.mapped("raw_material_production_id.display_name")
-                        )
-                    )
+                    lot_production_map[lot_id] = (production, move_line.product_id)
 
     def action_done(self):
         self.ensure_one()
@@ -205,7 +200,7 @@ class MrpProductionBatch(models.Model):
         action["domain"] = [("id", "in", self.ready_production_ids.ids)]
         return action
 
-    def get_user_timezone_datetime(self):
+    def get_user_locale_tz_datetime_string(self, date):
         self.ensure_one()
         lang = self.env["res.lang"].search([("code", "=", self.env.user.lang)])
         datetime_format = " ".join(
@@ -217,11 +212,7 @@ class MrpProductionBatch(models.Model):
                 ),
             )
         )
-        timezone = self._context.get("tz") or self.env.user.partner_id.tz or "UTC"
-        self_tz = self.with_context(tz=timezone)
-        return fields.Datetime.context_timestamp(
-            self_tz, fields.Datetime.from_string(self.create_date)
-        ).strftime(datetime_format)
+        return fields.Datetime.context_timestamp(self, date).strftime(datetime_format)
 
     @api.depends("name", "state")
     def name_get(self):
@@ -229,7 +220,7 @@ class MrpProductionBatch(models.Model):
         for rec in self:
             if rec.state == "draft":
                 state = _("Draft")
-                user_datetime = rec.get_user_timezone_datetime()
+                user_datetime = rec.get_user_locale_tz_datetime_string(rec.create_date)
                 name = "%s [%s] %s" % (
                     state,
                     user_datetime,
