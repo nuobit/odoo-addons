@@ -28,4 +28,9 @@ class ProductPricelistItemAdapter(Component):
                      values (%(phvalues)s)
                 """
 
+    _sql_delete = """delete from %(schema)s.Odoo_Articulos_Generales_x_Cliente
+                     where CodigoArticulo = %%(CodigoArticulo)s
+                     and Codigo_Mutua = %%(Codigo_Mutua)s
+                """
+
     _id = ("CodigoArticulo", "Codigo_Mutua")

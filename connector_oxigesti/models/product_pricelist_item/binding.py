@@ -7,24 +7,6 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
-class Pricelist(models.Model):
-    _inherit = "product.pricelist"
-
-    # TODO: Review use deleter to mark items as deprecated
-    def unlink(self):
-        for rec in self:
-            if rec.item_ids.oxigesti_bind_ids:
-                raise ValidationError(
-                    _(
-                        "You can't delete the pricelist %s that has been exported "
-                        "the product prices by customer to Oxigesti. If you want to"
-                        "delete it, you must first delete the items of the pricelist."
-                    )
-                    % rec.name
-                )
-        return super().unlink()
-
-
 class ProductPricelistItem(models.Model):
     _inherit = "product.pricelist.item"
 
@@ -68,6 +50,20 @@ class ProductPricelistItem(models.Model):
             or not self.active
             or not self.product_tmpl_id.active
         )
+
+    def unlink(self):
+        to_remove = {}
+        for record in self:
+            for binding in record.oxigesti_bind_ids:
+                with binding.backend_id.work_on(binding._name) as work:
+                    binder = work.component(usage="binder")
+                    to_remove.setdefault(record.id, []).append(
+                        (binding.backend_id, binder.to_external(binding))
+                    )
+        result = super(ProductPricelistItem, self).unlink()
+        for bindings_data in to_remove.values():
+            self._event("on_record_post_unlink").notify(bindings_data)
+        return result
 
 
 class ProductPricelistItemBinding(models.Model):

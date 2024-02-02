@@ -437,6 +437,10 @@ class GenericAdapter(AbstractComponent):
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
         # prepare the sql with base strucrture
+        if not hasattr(self, "_sql_delete"):
+            raise ValidationError(
+                _("The model %s does not have a delete SQL defined") % (self._name,)
+            )
         sql = self._sql_delete % dict(schema=self.schema)
 
         # get id fieldnames and values

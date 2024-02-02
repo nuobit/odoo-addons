@@ -213,3 +213,18 @@ class OxigestiBinding(models.AbstractModel):
         with backend.work_on(self._name) as work:
             exporter = work.component(usage="record.exporter")
             return exporter.run(relation)
+
+    @api.model
+    def export_deleter_record(self, backend, external_id):
+        """Deleter Oxigesti record"""
+        if not external_id:
+            raise ValidationError(_("The external_id of the binding is null"))
+        binding_name = self._name
+        with backend.work_on(binding_name) as work:
+            deleter = work.component(usage="record.export.deleter")
+            deleter.run(external_id)
+
+    @api.model
+    def import_deleter_record(self, backend, relation):
+        """Deleter Odoo record"""
+        raise NotImplementedError
