@@ -123,7 +123,7 @@ class OperationService(Component):
 
         # Create moves
         moves = []
-        for product_id in moves_by_product.keys():
+        for product_id, ml in moves_by_product.items():
             obj = self.env["product.product"].browse(product_id)
             # if obj.sudo().asset_category_id and not kwargs["asset"]:
             #     raise ValidationError(
@@ -139,6 +139,7 @@ class OperationService(Component):
                     "product_uom": obj.uom_id.id,
                     "name": obj.display_name,
                     "picking_type_id": picking_type_id.id,
+                    "product_uom_qty": sum([x["quantity"] for x in ml]),
                     "origin": False,
                 }
             )
