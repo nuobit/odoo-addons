@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 class OxigestiExportDeleter(Component):
     """Base Export Deleter for Oxigesti"""
 
-    _name = "oxigesti.product.pricelist.item.deleter"
+    _name = "oxigesti.product.pricelist.item.export.deleter"
     _inherit = "oxigesti.export.deleter"
 
     _apply_on = "oxigesti.product.pricelist.item"
@@ -20,3 +20,10 @@ class OxigestiExportDeleter(Component):
     def run(self, external_id):
         adapter = self.component(usage="backend.adapter")
         adapter.write(external_id, {"deprecated": True})
+
+
+class OxigestiDelayedBatchExportDeleter(Component):
+    _name = "oxigesti.product.pricelist.item.delayed.batch.export.deleter"
+    _inherit = "oxigesti.delayed.batch.export.deleter"
+
+    _apply_on = "oxigesti.product.pricelist.item"

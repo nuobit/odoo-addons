@@ -258,3 +258,6 @@ class BinderComposite(AbstractComponent):
         return {
             self._external_field: value,
         }
+
+    def _get_internal_record_domain(self, values):
+        return [(k, "=", v) for k, v in values.items()]

@@ -215,7 +215,7 @@ class OxigestiBinding(models.AbstractModel):
             return exporter.run(relation)
 
     @api.model
-    def export_deleter_record(self, backend, external_id):
+    def export_delete_record(self, backend, external_id):
         """Deleter Oxigesti record"""
         if not external_id:
             raise ValidationError(_("The external_id of the binding is null"))
@@ -225,6 +225,39 @@ class OxigestiBinding(models.AbstractModel):
             deleter.run(external_id)
 
     @api.model
-    def import_deleter_record(self, backend, relation):
+    def import_delete_record(self, backend, relation):
         """Deleter Odoo record"""
         raise NotImplementedError
+
+    @api.model
+    def export_delete_batch(self, backend, filters=None):
+        """Prepare the batch export of records modified on Odoo"""
+        if not filters:
+            filters = []
+        # Prepare the batch export of records modified on Odoo
+        with backend.work_on(self._name) as work:
+            exporter = work.component(usage="delayed.batch.export.deleter")
+            return exporter.run(filters=filters)
+
+    @api.model
+    def import_delete_batch(self, backend, filters=None):
+        """Prepare the batch import of records modified on Oxigesti"""
+        raise NotImplementedError
+
+    def get_external_ids_domain(self):
+        clause = []
+        for bind in self:
+            with bind.backend_id.work_on(bind._name) as work:
+                binder = work.component(usage="binder")
+                external_id = binder.to_external(bind.id)
+                if external_id:
+                    adapter = work.component(usage="backend.adapter")
+                    external_dict = adapter.id2dict(external_id)
+                    clause.append(external_dict)
+        domain = ["|"] * (len(clause) - 1)
+        for c in clause:
+            ext_domain = ["&"] * (len(c) - 1)
+            for k, v in c.items():
+                ext_domain.append((k, "=", v))
+            domain += ext_domain
+        return domain

@@ -14,14 +14,6 @@ class ResPartner(models.Model):
         string="Oxigesti Bindings",
     )
 
-    def unlink(self):
-        for rec in self:
-            for item in rec.property_product_pricelist.item_ids.filtered(
-                lambda x: x.oxigesti_bind_ids
-            ):
-                item.unlink()
-        return super().unlink()
-
 
 class ResPartnerBinding(models.Model):
     _name = "oxigesti.res.partner"

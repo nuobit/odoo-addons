@@ -51,20 +51,6 @@ class ProductPricelistItem(models.Model):
             or not self.product_tmpl_id.active
         )
 
-    def unlink(self):
-        to_remove = {}
-        for record in self:
-            for binding in record.oxigesti_bind_ids:
-                with binding.backend_id.work_on(binding._name) as work:
-                    binder = work.component(usage="binder")
-                    to_remove.setdefault(record.id, []).append(
-                        (binding.backend_id, binder.to_external(binding))
-                    )
-        result = super(ProductPricelistItem, self).unlink()
-        for bindings_data in to_remove.values():
-            self._event("on_record_post_unlink").notify(bindings_data)
-        return result
-
 
 class ProductPricelistItemBinding(models.Model):
     _name = "oxigesti.product.pricelist.item"

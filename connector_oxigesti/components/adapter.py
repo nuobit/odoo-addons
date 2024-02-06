@@ -15,6 +15,7 @@ from requests.exceptions import (
 
 from odoo import _, exceptions
 from odoo.exceptions import ValidationError
+from odoo.osv.expression import normalize_domain
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import NetworkRetryableError
@@ -60,6 +61,80 @@ def api_handle_errors(message=""):
         raise exceptions.UserError(
             _("{}DB interface Error:\n\n{}").format(message, err)
         )
+
+
+def domain_to_where(domain):
+    OP_MAP = {
+        "&": "AND",
+        "|": "OR",
+        "!": "NOT",
+    }
+
+    def domain_prefix_to_infix(domain):
+        stack = []
+        i = len(domain) - 1
+        while i >= 0:
+            item = domain[i]
+            if item in OP_MAP:
+                if item == "!":
+                    stack.append((item, stack.pop()))
+                else:
+                    stack.append((stack.pop(), item, stack.pop()))
+            else:
+                if not isinstance(item, (tuple, list)):
+                    raise ValidationError(_("Unexpected domain clause %s") % item)
+                stack.append(item)
+            i -= 1
+        return stack.pop()
+
+    def domain_infix_to_where_raw(domain, values):
+        if not isinstance(domain, (list, tuple)):
+            raise ValidationError(_("Invalid domain format %s") % domain)
+        if len(domain) == 2:
+            operator, expr = domain
+            if operator not in OP_MAP:
+                raise ValidationError(
+                    _("Invalid format, operator not supported %s on domain %s")
+                    % (operator, domain)
+                )
+            values_r, right = domain_infix_to_where_raw(expr, values)
+            return values_r, f"{OP_MAP[operator]} ({right})"
+        elif len(domain) == 3:
+            expr_l, operator, expr_r = domain
+            if operator in OP_MAP:
+                values_l, left = domain_infix_to_where_raw(expr_l, values)
+                values_r, right = domain_infix_to_where_raw(expr_r, values)
+                return {**values_l, **values_r}, f"({left} {OP_MAP[operator]} {right})"
+            field, operator, value = domain
+            # field and values
+            if field not in values:
+                values[field] = {"next": 1, "values": {}}
+            field_n = f"{field}{values[field]['next']}"
+            if field_n in values[field]["values"]:
+                raise ValidationError(_("Unexpected!! Field %s already used") % field)
+            values[field]["values"][field_n] = value
+            values[field]["next"] += 1
+            # operator and nulls values
+            if value is None:
+                if operator == "=":
+                    operator = "is"
+                elif operator == "!=":
+                    operator = "is not"
+                else:
+                    raise ValidationError(
+                        _("Operator '%s' is not implemented on NULL values") % operator
+                    )
+            return values, f"{field} {operator} %({field_n})s"
+        else:
+            raise ValidationError(_("Invalid domain format %s") % domain)
+
+    domain_norm = normalize_domain(domain)
+    domain_infix = domain_prefix_to_infix(domain_norm)
+    values, where = domain_infix_to_where_raw(domain_infix, {})
+    values_norm = {}
+    for _k, v in values.items():
+        values_norm.update(v["values"])
+    return values_norm, where
 
 
 class CRUDAdapter(AbstractComponent):
@@ -153,7 +228,7 @@ class GenericAdapter(AbstractComponent):
 
     def _exec_sql(self, sql, params, as_dict=False, commit=False):
         # Convert params
-        params = self._convert_tuple(params, to_backend=True)
+        params = self._convert_dict(params, to_backend=True)
         # Execute sql
         conn = self.conn()
         cr = conn.cursor(as_dict=as_dict)
@@ -179,7 +254,7 @@ class GenericAdapter(AbstractComponent):
             filters = []
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
-            "select 1 from sys.schemas where name=%s", (self.schema,)
+            "select 1 from sys.schemas where name=%(schema)s", dict(schema=self.schema)
         )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
@@ -201,26 +276,27 @@ class GenericAdapter(AbstractComponent):
             sql_l.append("select %s from t" % (", ".join(fields_l),))
 
             if filters:
-                where = []
-                for k, operator, v in filters:
-                    if v is None:
-                        if operator == "=":
-                            operator = "is"
-                        elif operator == "!=":
-                            operator = "is not"
-                        else:
-                            raise Exception(
-                                "Operator '%s' is not implemented on NULL values"
-                                % operator
-                            )
-
-                    where.append("%s %s %%s" % (k, operator))
-                    values.append(v)
-                sql_l.append("where %s" % (" and ".join(where),))
+                values, where = domain_to_where(filters)
+                # where = []
+                # for k, operator, v in filters:
+                #     if v is None:
+                #         if operator == "=":
+                #             operator = "is"
+                #         elif operator == "!=":
+                #             operator = "is not"
+                #         else:
+                #             raise Exception(
+                #                 "Operator '%s' is not implemented on NULL values"
+                #                 % operator
+                #             )
+                #
+                #     where.append("%s %s %%s" % (k, operator))
+                #     values.append(v)
+                sql_l.append("where %s" % where)
 
             sql = " ".join(sql_l)
 
-        res = self._exec_sql(sql, tuple(values), as_dict=as_dict)
+        res = self._exec_sql(sql, values, as_dict=as_dict)
 
         filter_keys_s = {e[0] for e in filters}
         if self._id and set(self._id).issubset(filter_keys_s):
@@ -291,7 +367,7 @@ class GenericAdapter(AbstractComponent):
 
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
-            "select 1 from sys.schemas where name=%s", (self.schema,)
+            "select 1 from sys.schemas where name=%(schema)s", dict(schema=self.schema)
         )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
@@ -357,7 +433,7 @@ class GenericAdapter(AbstractComponent):
 
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
-            "select 1 from sys.schemas where name=%s", (self.schema,)
+            "select 1 from sys.schemas where name=%(schema)s", dict(schema=self.schema)
         )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
@@ -431,7 +507,7 @@ class GenericAdapter(AbstractComponent):
 
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
-            "select 1 from sys.schemas where name=%s", (self.schema,)
+            "select 1 from sys.schemas where name=%(schema)s", dict(schema=self.schema)
         )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
