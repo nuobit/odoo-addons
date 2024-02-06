@@ -151,6 +151,29 @@ class OxigestiBinding(models.AbstractModel):
         ),
     ]
 
+    def get_external_ids_domain_by_backend(self):
+        ext_ids_by_backend = {}
+        for rec in self:
+            with rec.backend_id.work_on(rec._name) as work:
+                binder = work.component(usage="binder")
+                external_id = binder.to_external(rec.id)
+                if external_id:
+                    adapter = work.component(usage="backend.adapter")
+                    external_dict = adapter.id2dict(external_id)
+                    ext_ids_by_backend.setdefault(rec.backend_id, []).append(
+                        external_dict
+                    )
+        res = {}
+        for backend, external_dicts in ext_ids_by_backend.items():
+            domain = ["|"] * (len(external_dicts) - 1)
+            for external_dict in external_dicts:
+                ext_domain = ["&"] * (len(external_dict) - 1)
+                for k, v in external_dict.items():
+                    ext_domain.append((k, "=", v))
+                domain += ext_domain
+            res[backend] = domain
+        return res
+
     @api.model
     def import_data(self, backend, since_date):
         """Default method, it should be overridden by subclasses"""
@@ -230,34 +253,16 @@ class OxigestiBinding(models.AbstractModel):
         raise NotImplementedError
 
     @api.model
-    def export_delete_batch(self, backend, filters=None):
+    def export_delete_batch(self, backend, domain=None):
         """Prepare the batch export of records modified on Odoo"""
-        if not filters:
-            filters = []
+        if not domain:
+            domain = []
         # Prepare the batch export of records modified on Odoo
         with backend.work_on(self._name) as work:
             exporter = work.component(usage="delayed.batch.export.deleter")
-            return exporter.run(filters=filters)
+            return exporter.run(domain=domain)
 
     @api.model
-    def import_delete_batch(self, backend, filters=None):
+    def import_delete_batch(self, backend, domain=None):
         """Prepare the batch import of records modified on Oxigesti"""
         raise NotImplementedError
-
-    def get_external_ids_domain(self):
-        clause = []
-        for bind in self:
-            with bind.backend_id.work_on(bind._name) as work:
-                binder = work.component(usage="binder")
-                external_id = binder.to_external(bind.id)
-                if external_id:
-                    adapter = work.component(usage="backend.adapter")
-                    external_dict = adapter.id2dict(external_id)
-                    clause.append(external_dict)
-        domain = ["|"] * (len(clause) - 1)
-        for c in clause:
-            ext_domain = ["&"] * (len(c) - 1)
-            for k, v in c.items():
-                ext_domain.append((k, "=", v))
-            domain += ext_domain
-        return domain

@@ -11,8 +11,8 @@ class ProductPricelistItemListener(Component):
     _apply_on = "product.pricelist"
 
     def on_record_unlink(self, relation):
-        bindings = relation.sudo().item_ids.oxigesti_bind_ids
-        domain = bindings.get_external_ids_domain()
-        self.env["oxigesti.product.pricelist.item"].with_delay().export_delete_batch(
-            bindings.backend_id, filters=domain
+        bindings = (
+            relation.sudo().with_context(active_test=False).item_ids.oxigesti_bind_ids
         )
+        for backend, domain in bindings.get_external_ids_domain_by_backend().items():
+            bindings.with_delay().export_delete_batch(backend, domain=domain)

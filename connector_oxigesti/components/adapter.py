@@ -15,10 +15,11 @@ from requests.exceptions import (
 
 from odoo import _, exceptions
 from odoo.exceptions import ValidationError
-from odoo.osv.expression import normalize_domain
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import NetworkRetryableError
+
+from ..common.tools import domain_to_where
 
 try:
     import pymssql
@@ -61,80 +62,6 @@ def api_handle_errors(message=""):
         raise exceptions.UserError(
             _("{}DB interface Error:\n\n{}").format(message, err)
         )
-
-
-def domain_to_where(domain):
-    OP_MAP = {
-        "&": "AND",
-        "|": "OR",
-        "!": "NOT",
-    }
-
-    def domain_prefix_to_infix(domain):
-        stack = []
-        i = len(domain) - 1
-        while i >= 0:
-            item = domain[i]
-            if item in OP_MAP:
-                if item == "!":
-                    stack.append((item, stack.pop()))
-                else:
-                    stack.append((stack.pop(), item, stack.pop()))
-            else:
-                if not isinstance(item, (tuple, list)):
-                    raise ValidationError(_("Unexpected domain clause %s") % item)
-                stack.append(item)
-            i -= 1
-        return stack.pop()
-
-    def domain_infix_to_where_raw(domain, values):
-        if not isinstance(domain, (list, tuple)):
-            raise ValidationError(_("Invalid domain format %s") % domain)
-        if len(domain) == 2:
-            operator, expr = domain
-            if operator not in OP_MAP:
-                raise ValidationError(
-                    _("Invalid format, operator not supported %s on domain %s")
-                    % (operator, domain)
-                )
-            values_r, right = domain_infix_to_where_raw(expr, values)
-            return values_r, f"{OP_MAP[operator]} ({right})"
-        elif len(domain) == 3:
-            expr_l, operator, expr_r = domain
-            if operator in OP_MAP:
-                values_l, left = domain_infix_to_where_raw(expr_l, values)
-                values_r, right = domain_infix_to_where_raw(expr_r, values)
-                return {**values_l, **values_r}, f"({left} {OP_MAP[operator]} {right})"
-            field, operator, value = domain
-            # field and values
-            if field not in values:
-                values[field] = {"next": 1, "values": {}}
-            field_n = f"{field}{values[field]['next']}"
-            if field_n in values[field]["values"]:
-                raise ValidationError(_("Unexpected!! Field %s already used") % field)
-            values[field]["values"][field_n] = value
-            values[field]["next"] += 1
-            # operator and nulls values
-            if value is None:
-                if operator == "=":
-                    operator = "is"
-                elif operator == "!=":
-                    operator = "is not"
-                else:
-                    raise ValidationError(
-                        _("Operator '%s' is not implemented on NULL values") % operator
-                    )
-            return values, f"{field} {operator} %({field_n})s"
-        else:
-            raise ValidationError(_("Invalid domain format %s") % domain)
-
-    domain_norm = normalize_domain(domain)
-    domain_infix = domain_prefix_to_infix(domain_norm)
-    values, where = domain_infix_to_where_raw(domain_infix, {})
-    values_norm = {}
-    for _k, v in values.items():
-        values_norm.update(v["values"])
-    return values_norm, where
 
 
 class CRUDAdapter(AbstractComponent):
@@ -277,21 +204,6 @@ class GenericAdapter(AbstractComponent):
 
             if filters:
                 values, where = domain_to_where(filters)
-                # where = []
-                # for k, operator, v in filters:
-                #     if v is None:
-                #         if operator == "=":
-                #             operator = "is"
-                #         elif operator == "!=":
-                #             operator = "is not"
-                #         else:
-                #             raise Exception(
-                #                 "Operator '%s' is not implemented on NULL values"
-                #                 % operator
-                #             )
-                #
-                #     where.append("%s %s %%s" % (k, operator))
-                #     values.append(v)
                 sql_l.append("where %s" % where)
 
             sql = " ".join(sql_l)
@@ -439,16 +351,10 @@ class GenericAdapter(AbstractComponent):
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
         # build the sql parts
-        fields, params, phvalues = [], [], []
-        for k, v in values_d.items():
+        fields, phvalues = [], []
+        for k in values_d.keys():
             fields.append(k)
-            params.append(v)
-            if v is None or isinstance(v, (str, datetime.date, datetime.datetime)):
-                phvalues.append("%s")
-            elif isinstance(v, (int, float)):
-                phvalues.append("%d")
-            else:
-                raise NotImplementedError("Type %s" % type(v))
+            phvalues.append(f"%({k})s")
 
         # build retvalues
         retvalues = ["inserted.%s" % x for x in self._id]
@@ -462,9 +368,8 @@ class GenericAdapter(AbstractComponent):
         )
 
         # executem la insercio
-        res = None
         try:
-            res = self._exec_sql(sql, tuple(params), commit=True)
+            res = self._exec_sql(sql, values_d, commit=True)
         except pymssql.IntegrityError as e:
             # Workaround: Because of Microsoft SQL Server
             # removes the spaces on varchars on comparisions

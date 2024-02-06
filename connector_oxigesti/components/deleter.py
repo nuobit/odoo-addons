@@ -26,11 +26,11 @@ class OxigestiBatchExportDeleter(AbstractComponent):
     _name = "oxigesti.batch.export.deleter"
     _inherit = ["base.exporter", "base.oxigesti.connector"]
 
-    def run(self, filters=None):
-        if not filters:
-            filters = []
+    def run(self, domain=None):
+        if not domain:
+            domain = []
         # Run the synchronization
-        record_ids = self.backend_adapter.search(filters)  # canviar per external:ids
+        record_ids = self.backend_adapter.search(domain)  # canviar per external:ids
         for record_id in record_ids:
             self._export_delete_record(record_id)
 
