@@ -75,7 +75,7 @@ class BinderComposite(AbstractComponent):
 
         return True
 
-    def _find_binding(self, relation, binding_extra_vals=None, unique=True):
+    def _find_binding(self, relation, binding_extra_vals=None):
         if not binding_extra_vals:
             binding_extra_vals = {}
 
@@ -98,7 +98,7 @@ class BinderComposite(AbstractComponent):
             domain.append((f, "=", binding_extra_vals[f]))
         binding = self.model.with_context(active_test=False).search(domain)
 
-        if binding and unique:
+        if binding:
             binding.ensure_one()
 
         return binding

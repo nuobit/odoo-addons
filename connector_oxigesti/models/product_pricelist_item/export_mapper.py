@@ -59,7 +59,8 @@ class ProductPricelistItemExportMapper(Component):
 
     @mapping
     def Importe(self, record):
-        return {"Importe": record.odoo_fixed_price}
+        if not record.deprecated:
+            return {"Importe": record.odoo_fixed_price}
 
     @mapping
     def Deprecated(self, record):

@@ -10,28 +10,47 @@ from odoo.exceptions import ValidationError
 class ProductPricelistItem(models.Model):
     _inherit = "product.pricelist.item"
 
+    partner_ids = fields.Many2many(
+        comodel_name="res.partner",
+        compute="_compute_partner_ids",
+    )
+
+    def _compute_partner_ids(self):
+        for rec in self:
+            rec.partner_ids = (
+                self.env["res.partner"]
+                .search(
+                    [
+                        ("company_id", "", rec.company_id.id),
+                    ]
+                )
+                .filtered(lambda x: x.property_product_pricelist == rec.pricelist_id)
+            )
+
     oxigesti_write_date = fields.Datetime(
         compute="_compute_oxigesti_write_date",
         store=True,
+        required=True,
     )
 
     @api.depends(
+        "partner_ids.property_product_pricelist",
+        "oxigesti_bind_ids",
         "oxigesti_bind_ids.oxigesti_write_date",
-        "oxigesti_bind_ids.odoo_partner_id.write_date",
         "compute_price",
         "applied_on",
         "fixed_price",
     )
     def _compute_oxigesti_write_date(self):
         for rec in self:
-            date = False
-            for binding in rec.oxigesti_bind_ids:
-                date = max(
+            rec.oxigesti_write_date = (
+                max(
                     rec.mapped("write_date")
-                    + binding.mapped("oxigesti_write_date")
-                    + binding.odoo_partner_id.mapped("write_date")
+                    + rec.oxigesti_bind_ids.mapped("oxigesti_write_date")
+                    + rec.oxigesti_bind_ids.odoo_partner_id.mapped("write_date")
                 )
-            rec.oxigesti_write_date = date
+                or False
+            )
 
     oxigesti_bind_ids = fields.One2many(
         comodel_name="oxigesti.product.pricelist.item",
@@ -96,6 +115,8 @@ class ProductPricelistItemBinding(models.Model):
     oxigesti_write_date = fields.Datetime(
         compute="_compute_oxigesti_write_date",
         store=True,
+        required=True,
+        default=fields.Datetime.now,
     )
 
     @api.depends("deprecated")
@@ -106,9 +127,29 @@ class ProductPricelistItemBinding(models.Model):
     odoo_id = fields.Many2one(
         comodel_name="product.pricelist.item",
         string="Product pricelist item",
+        compute="_compute_odoo_id",
+        store=True,
+        readonly=False,
         required=True,
         ondelete="cascade",
     )
+
+    @api.depends("odoo_partner_id.property_product_pricelist")
+    def _compute_odoo_id(self):
+        for rec in self:
+            record = rec.odoo_partner_id.property_product_pricelist.item_ids.filtered(
+                lambda r: r.product_tmpl_id == rec.product_tmpl_id
+            )
+            if len(record) > 1:
+                raise ValidationError(
+                    _(
+                        "There are more than one pricelist item with the same "
+                        "product and the same pricelist for the customer %s"
+                    )
+                    % rec.odoo_partner_id.name
+                )
+            if record:
+                rec.odoo_id = record
 
     odoo_partner_id = fields.Many2one(
         comodel_name="res.partner", string="Partner", required=True, ondelete="cascade"
@@ -117,9 +158,10 @@ class ProductPricelistItemBinding(models.Model):
     odoo_fixed_price = fields.Float(
         compute="_compute_odoo_fixed_price",
         store=True,
+        required=True,
     )
 
-    @api.depends("odoo_id.fixed_price")
+    @api.depends("odoo_id.fixed_price", "deprecated")
     def _compute_odoo_fixed_price(self):
         for rec in self:
             if not rec.deprecated:
