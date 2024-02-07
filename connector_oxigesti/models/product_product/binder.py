@@ -19,12 +19,9 @@ class ProductProductBinder(Component):
 
     _apply_on = "oxigesti.product.product"
 
-    def _get_external_id(self, binding):
-        if not self._is_binding(binding):
-            raise Exception("The source object %s must be a binding" % binding._name)
-
+    def _get_external_id(self, relation, extra_vals=None):
         external_id = None
-        if binding.odoo_id.default_code:
-            external_id = [binding.odoo_id.default_code]
+        if relation.default_code:
+            external_id = [relation.default_code]
 
         return external_id

@@ -10,38 +10,72 @@ from odoo.exceptions import ValidationError
 class ProductPricelistItem(models.Model):
     _inherit = "product.pricelist.item"
 
+    oxigesti_write_date = fields.Datetime(
+        compute="_compute_oxigesti_write_date",
+        store=True,
+    )
+
+    @api.depends(
+        "oxigesti_bind_ids.oxigesti_write_date",
+        "oxigesti_bind_ids.odoo_partner_id.write_date",
+        "compute_price",
+        "applied_on",
+        "fixed_price",
+    )
+    def _compute_oxigesti_write_date(self):
+        for rec in self:
+            date = False
+            for binding in rec.oxigesti_bind_ids:
+                date = max(
+                    rec.mapped("write_date")
+                    + binding.mapped("oxigesti_write_date")
+                    + binding.odoo_partner_id.mapped("write_date")
+                )
+            rec.oxigesti_write_date = date
+
     oxigesti_bind_ids = fields.One2many(
         comodel_name="oxigesti.product.pricelist.item",
         inverse_name="odoo_id",
         string="Oxigesti Bindings",
     )
 
-    @api.constrains("compute_price", "applied_on", "product_tmpl_id")
+    @api.constrains("compute_price", "applied_on")
     def _check_binding(self):
         for rec in self:
             if rec.oxigesti_bind_ids:
-                partners = (
-                    self.env["res.partner"]
-                    .search(
-                        [
-                            ("company_id", "=?", rec.company_id.id),
-                        ]
-                    )
-                    .filtered(
-                        lambda x: x.property_product_pricelist == rec.pricelist_id
-                    )
-                )
-                if partners:
+                if rec.compute_price != "fixed":
                     raise ValidationError(
                         _(
-                            "You can't change the product, the price calculation "
-                            "method or the applied on field of a pricelist item "
-                            "because they have been exported the product prices by "
-                            "customer to Oxigesti.\nIf you need to change any of "
-                            "these fields, you can delete the pricelist item and "
+                            "You can't change the price calculation method of a "
+                            "pricelist item because they have been exported the "
+                            "product prices by customer to Oxigesti.\nIf you need to "
+                            "change the price calculation method, you can delete the "
+                            "pricelist item and create a new one."
+                        )
+                    )
+                if rec.applied_on != "1_product":
+                    raise ValidationError(
+                        _(
+                            "You can't change the applied on field of a pricelist "
+                            "item because they have been exported the product prices "
+                            "by customer to Oxigesti.\nIf you need to change the "
+                            "applied on field, you can delete the pricelist item and "
                             "create a new one."
                         )
                     )
+
+    @api.constrains("product_tmpl_id")
+    def _check_product_tmpl_id(self):
+        for rec in self:
+            if rec.oxigesti_bind_ids:
+                raise ValidationError(
+                    _(
+                        "You can't change the product of a pricelist item "
+                        "because they have been exported the product prices by "
+                        "customer to Oxigesti.\nIf you need to change the product, "
+                        "you can delete the pricelist item and create a new one."
+                    )
+                )
 
     def is_deprecated(self, partner):
         self.ensure_one()
@@ -49,6 +83,7 @@ class ProductPricelistItem(models.Model):
             partner.property_product_pricelist != self.pricelist_id
             or not self.active
             or not self.product_tmpl_id.active
+            or not partner.active
         )
 
 
@@ -57,6 +92,16 @@ class ProductPricelistItemBinding(models.Model):
     _inherit = "oxigesti.binding"
     _inherits = {"product.pricelist.item": "odoo_id"}
     _description = "Product pricelist item binding"
+
+    oxigesti_write_date = fields.Datetime(
+        compute="_compute_oxigesti_write_date",
+        store=True,
+    )
+
+    @api.depends("deprecated")
+    def _compute_oxigesti_write_date(self):
+        for rec in self:
+            rec.oxigesti_write_date = rec.write_date
 
     odoo_id = fields.Many2one(
         comodel_name="product.pricelist.item",
@@ -69,6 +114,17 @@ class ProductPricelistItemBinding(models.Model):
         comodel_name="res.partner", string="Partner", required=True, ondelete="cascade"
     )
 
+    odoo_fixed_price = fields.Float(
+        compute="_compute_odoo_fixed_price",
+        store=True,
+    )
+
+    @api.depends("odoo_id.fixed_price")
+    def _compute_odoo_fixed_price(self):
+        for rec in self:
+            if not rec.deprecated:
+                rec.odoo_fixed_price = rec.odoo_id.fixed_price
+
     deprecated = fields.Boolean(
         required=True,
         compute="_compute_deprecated",
@@ -76,7 +132,11 @@ class ProductPricelistItemBinding(models.Model):
     )
 
     @api.depends(
-        "active", "product_tmpl_id.active", "odoo_partner_id.property_product_pricelist"
+        "odoo_id",
+        "odoo_id.active",
+        "product_tmpl_id.active",
+        "odoo_partner_id.property_product_pricelist",
+        "odoo_partner_id.active",
     )
     def _compute_deprecated(self):
         for rec in self:
@@ -97,9 +157,13 @@ class ProductPricelistItemBinding(models.Model):
 
     @api.model
     def export_data(self, backend, since_date):
-        domain = [("company_id", "in", (backend.company_id.id, False))]
+        domain = [
+            ("company_id", "in", (backend.company_id.id, False)),
+            ("compute_price", "=", "fixed"),
+            ("applied_on", "=", "1_product"),
+        ]
         if since_date:
-            domain += [("write_date", ">", since_date)]
+            domain += [("oxigesti_write_date", ">", since_date)]
         self.with_delay().export_batch(backend, domain=domain)
 
     def resync(self):

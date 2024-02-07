@@ -75,7 +75,7 @@ class BinderComposite(AbstractComponent):
 
         return True
 
-    def _find_binding(self, relation, binding_extra_vals=None):
+    def _find_binding(self, relation, binding_extra_vals=None, unique=True):
         if not binding_extra_vals:
             binding_extra_vals = {}
 
@@ -98,7 +98,7 @@ class BinderComposite(AbstractComponent):
             domain.append((f, "=", binding_extra_vals[f]))
         binding = self.model.with_context(active_test=False).search(domain)
 
-        if binding:
+        if binding and unique:
             binding.ensure_one()
 
         return binding
@@ -251,7 +251,7 @@ class BinderComposite(AbstractComponent):
             }
         )
 
-    def _get_external_id(self, binding):
+    def _get_external_id(self, relation, extra_vals=None):
         return None
 
     def to_json(self, value):

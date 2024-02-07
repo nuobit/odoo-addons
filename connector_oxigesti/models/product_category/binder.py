@@ -13,22 +13,16 @@ class ProductCategoryBinder(Component):
 
     _apply_on = "oxigesti.product.category"
 
-    def _get_external_id(self, binding):
-        if not self._is_binding(binding):
-            raise Exception("The source object %s must be a binding" % binding._name)
-
+    def _get_external_id(self, relation, extra_vals=None):
         adapter = self.component(
             usage="backend.adapter", model_name="oxigesti.product.category"
         )
-        external_ids = adapter.search([("IdCategoriaOdoo", "=", binding.odoo_id.id)])
+        external_ids = adapter.search([("IdCategoriaOdoo", "=", relation.id)])
         if not external_ids:
             return None
         if len(external_ids) > 1:
             raise ValidationError(
-                _(
-                    "More than one Category with ID '%i' on the backend"
-                    % (binding.odoo_id.id,)
-                )
+                _("More than one Category with ID '%i' on the backend" % (relation.id,))
             )
 
         return external_ids[0]

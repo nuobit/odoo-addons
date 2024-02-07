@@ -2,32 +2,12 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import hashlib
 import json
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-
-def idhash(external_id):
-    if not isinstance(external_id, (tuple, list)):
-        raise ValidationError(_("external id must be list or tuple"))
-    external_id_hash = hashlib.sha256()
-    for e in external_id:
-        if isinstance(e, int):
-            e9 = str(e)
-            if int(e9) != e:
-                raise Exception("Unexpected")
-        elif isinstance(e, str):
-            e9 = e
-        elif e is None:
-            pass
-        else:
-            raise Exception("Unexpected type for a key: type %s" % type(e))
-
-        external_id_hash.update(e9.encode("utf8"))
-
-    return external_id_hash.hexdigest()
+from ...common.tools import idhash
 
 
 class OxigestiBinding(models.AbstractModel):
@@ -35,7 +15,7 @@ class OxigestiBinding(models.AbstractModel):
     _inherit = "external.binding"
     _description = "oxigesti Binding (abstract)"
 
-    active = fields.Boolean(default=True)
+    # active = fields.Boolean(default=True)
 
     backend_id = fields.Many2one(
         comodel_name="oxigesti.backend",
@@ -94,7 +74,10 @@ class OxigestiBinding(models.AbstractModel):
             if other:
                 with other.backend_id.work_on(other._name) as work:
                     binder = work.component(usage="binder")
-                other_computed_external_id = binder._get_external_id(other)
+                extra_vals = {x: other[x] for x in binder._odoo_extra_fields}
+                other_computed_external_id = binder._get_external_id(
+                    other, extra_vals=extra_vals
+                )
                 other_computed_external_id_hash = (
                     other_computed_external_id
                     and idhash(other_computed_external_id)

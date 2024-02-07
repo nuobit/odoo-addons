@@ -10,14 +10,9 @@ class StockProductionLotBinder(Component):
 
     _apply_on = "oxigesti.stock.production.lot"
 
-    def _get_external_id(self, binding):
-        if not self._is_binding(binding):
-            raise Exception("The source object %s must be a binding" % binding._name)
-
+    def _get_external_id(self, relation, extra_vals=None):
         product_binder = self.binder_for("oxigesti.product.product")
-        product_external_id = product_binder.to_external(
-            binding.odoo_id.product_id, wrap=True
-        )
+        product_external_id = product_binder.to_external(relation.product_id, wrap=True)
 
         external_id = None
         if product_external_id:
@@ -27,6 +22,6 @@ class StockProductionLotBinder(Component):
             codigo_articulo = product_adapter.id2dict(product_external_id)[
                 "CodigoArticulo"
             ]
-            external_id = [codigo_articulo, binding.name]
+            external_id = [codigo_articulo, relation.name]
 
         return external_id

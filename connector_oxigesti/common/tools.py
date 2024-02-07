@@ -1,6 +1,7 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
+import hashlib
 
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -88,3 +89,24 @@ def domain_to_where(domain):
     domain_norm = normalize_domain(domain)
     domain_infix = domain_prefix_to_infix(domain_norm)
     return domain_infix_to_where(domain_infix)
+
+
+def idhash(external_id):
+    if not isinstance(external_id, (tuple, list)):
+        raise ValidationError(_("external id must be list or tuple"))
+    external_id_hash = hashlib.sha256()
+    for e in external_id:
+        if isinstance(e, int):
+            e9 = str(e)
+            if int(e9) != e:
+                raise Exception("Unexpected")
+        elif isinstance(e, str):
+            e9 = e
+        elif e is None:
+            pass
+        else:
+            raise Exception("Unexpected type for a key: type %s" % type(e))
+
+        external_id_hash.update(e9.encode("utf8"))
+
+    return external_id_hash.hexdigest()
