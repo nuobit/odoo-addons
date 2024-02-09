@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError
 
 class AssetProrateRegularization(models.Model):
     _name = "capital.asset.prorate.regularization"
+    _description = "Capital Asset Prorate Regularization"
 
     year = fields.Integer(
         string="Year",

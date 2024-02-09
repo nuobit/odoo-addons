@@ -56,6 +56,10 @@ msgstr "Activo"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_account_asset__active_capital_asset_prorate_regularization_ids
+msgid "Active Asset Prorate Regularization"
+msgstr "Regularización de la prorrata del activo vigente"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_account_asset__capital_asset_prorate_regularization_ids
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.account_asset_view_form
 msgid "Asset Prorate Regularization"
