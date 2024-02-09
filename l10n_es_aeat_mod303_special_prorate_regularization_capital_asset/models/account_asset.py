@@ -17,7 +17,7 @@ class AccountAsset(models.Model):
     active_capital_asset_prorate_regularization_ids = fields.One2many(
         comodel_name="capital.asset.prorate.regularization",
         inverse_name="asset_id",
-        string="Asset Prorate Regularization",
+        string="Active Asset Prorate Regularization",
         domain=[
             "|",
             ("mod303_id", "=", False),
