@@ -257,8 +257,6 @@ class ReportGS1Barcode(models.AbstractModel):
                         res.append(fnc1)
                 doc["barcode_values"] = gs1_barcode
                 doc["barcode_string"] = requests.utils.quote("".join(res))
-                if lot:
-                    lot.gs1_generated = True
             elif barcode_type == "ean13-code128":
                 doc["barcode_values"] = (
                     product.barcode or None,
