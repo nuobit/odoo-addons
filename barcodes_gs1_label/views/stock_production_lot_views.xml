@@ -18,21 +18,6 @@
                     />
                 </header>
             </xpath>
-            <group name="main_group" position="after">
-                <group>
-                    <field name="gs1_generated" />
-                </group>
-            </group>
-            <xpath expr="//field[@name='name']" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'readonly': [('gs1_generated', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//field[@name='ref']" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'readonly': [('gs1_generated', '=', True)]}</attribute>
-            </xpath>
         </field>
     </record>
 </odoo>
