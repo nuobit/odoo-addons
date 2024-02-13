@@ -13,7 +13,6 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": ["barcodes_gs1_label", "product_expiry"],
-    "data": ["views/stock_production_lot_views.xml"],
     "installable": True,
     "development_status": "Beta",
     "maintainers": ["eantones", "fcespedes"],
