@@ -12,10 +12,11 @@ class LotService(Component):
         clasified_lots = {}
         for lot in lots.keys():
             key = 3
-            if lot.nos and not lot.nos_unknown:
-                key = 1
-            elif lot.nos_unknown:
-                key = 2
+            if lot.nos_enabled:
+                if lot.nos and not lot.nos_unknown:
+                    key = 1
+                elif lot.nos_unknown:
+                    key = 2
             clasified_lots.setdefault(lot.name, {}).setdefault(key, []).append(lot.id)
         lot_ids = []
         for data in clasified_lots.values():
