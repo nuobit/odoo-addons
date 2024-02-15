@@ -35,11 +35,19 @@ class StockProductionLotExportMapper(Component):
 
     @mapping
     def nos(self, record):
-        return {"nos": record.nos or None, "nos_unknown": record.nos_unknown}
+        if record.nos_enabled:
+            nos, unknown = record.nos or None, record.nos_unknown
+        else:
+            nos, unknown = None, None
+        return {"nos": nos, "nos_unknown": unknown}
 
     @mapping
     def dn(self, record):
-        return {"dn": record.dn or None, "dn_unknown": record.dn_unknown}
+        if record.dn_enabled:
+            dn, unknown = record.dn or None, record.dn_unknown
+        else:
+            dn, unknown = None, None
+        return {"dn": dn, "dn_unknown": unknown}
 
     @mapping
     def write_date(self, record):
