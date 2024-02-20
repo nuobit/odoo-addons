@@ -93,12 +93,16 @@ class ResPartnerImportMapper(Component):
             )
             if not product:
                 return
-            stock_production_lot = self.env["stock.production.lot"].search(
-                [
-                    ("company_id", "=", self.backend_record.company_id.id),
-                    ("name", "=", lote),
-                    ("product_id", "=", product.id),
-                ]
+            stock_production_lot = (
+                self.env["stock.production.lot"]
+                .with_context(active_test=False)
+                .search(
+                    [
+                        ("company_id", "=", self.backend_record.company_id.id),
+                        ("name", "=", lote),
+                        ("product_id", "=", product.id),
+                    ]
+                )
             )
             if stock_production_lot:
                 # check if exists another binding with the same reference
