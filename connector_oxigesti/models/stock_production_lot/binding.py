@@ -83,7 +83,12 @@ class StockProductionLotBinding(models.Model):
         domain = [("company_id", "=", backend.company_id.id)]
         if since_date:
             domain += [("oxigesti_write_date", ">", since_date)]
-        lot_ids = self.env["stock.production.lot"].search(domain).ids
+        lot_ids = (
+            self.env["stock.production.lot"]
+            .with_context(active_test=False)
+            .search(domain)
+            .ids
+        )
         for ck in chunks(lot_ids, 500):
             ck_domain = [("id", "in", ck)]
             self.with_delay().export_batch(backend, domain=ck_domain)
