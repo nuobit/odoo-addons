@@ -75,50 +75,50 @@ class SaleOrderImporter(Component):
                 ("Codigo_Servicio", "=", self.external_data["Codigo_Servicio"]),
             ]
         )
-
-        # products
-        oxigesti_codigos_articulo = [
-            adapter.id2dict(x)["CodigoArticulo"] for x in oxigesti_cargos_servicio
-        ]
-
-        exporter = self.component(
-            usage="direct.batch.exporter", model_name="oxigesti.product.product"
-        )
-        exporter.run(
-            domain=[
-                ("company_id", "=", self.backend_record.company_id.id),
-                ("default_code", "in", oxigesti_codigos_articulo),
+        if oxigesti_cargos_servicio:
+            # products
+            oxigesti_codigos_articulo = [
+                adapter.id2dict(x)["CodigoArticulo"] for x in oxigesti_cargos_servicio
             ]
-        )
-
-        # Lots
-        domain = ["&", ("company_id", "=", self.backend_record.company_id.id)] + [
-            "|"
-        ] * (len(oxigesti_cargos_servicio) - 1)
-        adapter_product = self.component(
-            usage="backend.adapter", model_name="oxigesti.product.product"
-        )
-        for line in oxigesti_cargos_servicio:
-            # Product
-            product_external_id = adapter_product.dict2id(adapter.id2dict(line))
-            product = self.binder_for("oxigesti.product.product").to_internal(
-                product_external_id, unwrap=True
+            exporter = self.component(
+                usage="direct.batch.exporter", model_name="oxigesti.product.product"
             )
-            # Lot
-            tracking_name = adapter.id2dict(line)["Partida"]
-            if not tracking_name and product.tracking == "lot":
-                tracking_name = "999"
+            exporter.run(
+                domain=[
+                    ("company_id", "=", self.backend_record.company_id.id),
+                    ("default_code", "in", oxigesti_codigos_articulo),
+                ]
+            )
 
-            domain += [
-                "&",
-                ("product_id", "=", product.id),
-                ("name", "=", tracking_name),
-            ]
-
-        exporter = self.component(
-            usage="direct.batch.exporter", model_name="oxigesti.stock.production.lot"
-        )
-        exporter.run(domain=domain)
+            # Lots
+            adapter_product = self.component(
+                usage="backend.adapter", model_name="oxigesti.product.product"
+            )
+            binder_product = self.binder_for("oxigesti.product.product")
+            lot_domain = []
+            for line in oxigesti_cargos_servicio:
+                tracking_name = adapter.id2dict(line)["Partida"]
+                if tracking_name:
+                    product_external_id = adapter_product.dict2id(adapter.id2dict(line))
+                    product = binder_product.to_internal(
+                        product_external_id, unwrap=True
+                    )
+                    lot_domain += [
+                        "&",
+                        ("product_id", "=", product.id),
+                        ("name", "=", tracking_name),
+                    ]
+            if lot_domain:
+                domain = (
+                    ["&", ("company_id", "=", self.backend_record.company_id.id)]
+                    + ["|"] * (len(lot_domain) - 1)
+                    + lot_domain
+                )
+                exporter = self.component(
+                    usage="direct.batch.exporter",
+                    model_name="oxigesti.stock.production.lot",
+                )
+                exporter.run(domain=domain)
 
     def _after_import(self, binding):
         # rebind the lines, for the sync date
@@ -178,10 +178,6 @@ class SaleOrderImporter(Component):
 
                 external_id = binder.to_external(order_line_id)
                 tracking_name = adapter.id2dict(external_id)["Partida"]
-
-                if not tracking_name and move_id.product_id.tracking == "lot":
-                    tracking_name = "999"
-
                 if tracking_name:
                     Lot = self.env["stock.production.lot"]
                     lot_id = Lot.search(
