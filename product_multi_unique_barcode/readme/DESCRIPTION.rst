@@ -1,0 +1,1 @@
+Glue module between product_unique_barcode and product_multi_barcode
