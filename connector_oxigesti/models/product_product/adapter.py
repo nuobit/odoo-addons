@@ -27,8 +27,4 @@ class ProductProductAdapter(Component):
                      values (%(phvalues)s)
          """
 
-    _sql_delete = """delete from %(schema)s.Odoo_Articulos_Generales
-                     where CodigoArticulo = %%(CodigoArticulo)s
-         """
-
     _id = ("CodigoArticulo",)

@@ -5,18 +5,16 @@ from odoo.addons.component.core import Component
 
 
 class ProductPricelistItemListener(Component):
-    _name = "oxigesti.product.template.listener"
+    _name = "oxigesti.res.partner.listener"
     _inherit = "oxigesti.event.listener"
 
-    _apply_on = "product.template"
+    _apply_on = "res.partner"
 
     def on_record_unlink(self, relation):
         bindings = (
             relation.sudo()
             .with_context(active_test=False)
-            .product_variant_ids.oxigesti_bind_ids
+            .property_product_pricelist.item_ids.oxigesti_bind_ids
         )
         for backend, domain in bindings.get_external_ids_domain_by_backend().items():
-            self.env[
-                "oxigesti.product.pricelist.item"
-            ].with_delay().export_delete_batch(backend, domain)
+            bindings.with_delay().export_delete_batch(backend, domain=domain)

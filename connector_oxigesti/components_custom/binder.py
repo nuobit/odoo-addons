@@ -251,10 +251,13 @@ class BinderComposite(AbstractComponent):
             }
         )
 
-    def _get_external_id(self, binding):
+    def _get_external_id(self, relation, extra_vals=None):
         return None
 
     def to_json(self, value):
         return {
             self._external_field: value,
         }
+
+    def _get_internal_record_domain(self, values):
+        return [(k, "=", v) for k, v in values.items()]

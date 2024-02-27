@@ -11,7 +11,7 @@ class ProductPricelistItemAdapter(Component):
 
     _apply_on = "oxigesti.product.pricelist.item"
 
-    _sql = """select b.CodigoArticulo, b.Codigo_Mutua, b.Importe
+    _sql = """select b.CodigoArticulo, b.Codigo_Mutua, b.Importe, b.Deprecated
               from %(schema)s.Odoo_Articulos_Generales_x_Cliente b
             """
 
@@ -26,6 +26,11 @@ class ProductPricelistItemAdapter(Component):
                          (%(fields)s)
                      output %(retvalues)s
                      values (%(phvalues)s)
+                """
+
+    _sql_delete = """delete from %(schema)s.Odoo_Articulos_Generales_x_Cliente
+                     where CodigoArticulo = %%(CodigoArticulo)s
+                     and Codigo_Mutua = %%(Codigo_Mutua)s
                 """
 
     _id = ("CodigoArticulo", "Codigo_Mutua")

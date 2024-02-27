@@ -2,32 +2,12 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import hashlib
 import json
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-
-def idhash(external_id):
-    if not isinstance(external_id, (tuple, list)):
-        raise ValidationError(_("external id must be list or tuple"))
-    external_id_hash = hashlib.sha256()
-    for e in external_id:
-        if isinstance(e, int):
-            e9 = str(e)
-            if int(e9) != e:
-                raise Exception("Unexpected")
-        elif isinstance(e, str):
-            e9 = e
-        elif e is None:
-            pass
-        else:
-            raise Exception("Unexpected type for a key: type %s" % type(e))
-
-        external_id_hash.update(e9.encode("utf8"))
-
-    return external_id_hash.hexdigest()
+from ...common.tools import idhash
 
 
 class OxigestiBinding(models.AbstractModel):
@@ -35,7 +15,7 @@ class OxigestiBinding(models.AbstractModel):
     _inherit = "external.binding"
     _description = "oxigesti Binding (abstract)"
 
-    active = fields.Boolean(default=True)
+    # active = fields.Boolean(default=True)
 
     backend_id = fields.Many2one(
         comodel_name="oxigesti.backend",
@@ -94,7 +74,10 @@ class OxigestiBinding(models.AbstractModel):
             if other:
                 with other.backend_id.work_on(other._name) as work:
                     binder = work.component(usage="binder")
-                other_computed_external_id = binder._get_external_id(other)
+                extra_vals = {x: other[x] for x in binder._odoo_extra_fields}
+                other_computed_external_id = binder._get_external_id(
+                    other, extra_vals=extra_vals
+                )
                 other_computed_external_id_hash = (
                     other_computed_external_id
                     and idhash(other_computed_external_id)
@@ -150,6 +133,29 @@ class OxigestiBinding(models.AbstractModel):
             "An Odoo record with same ID already exists on Oxigesti.",
         ),
     ]
+
+    def get_external_ids_domain_by_backend(self):
+        ext_ids_by_backend = {}
+        for rec in self:
+            with rec.backend_id.work_on(rec._name) as work:
+                binder = work.component(usage="binder")
+                external_id = binder.to_external(rec.id)
+                if external_id:
+                    adapter = work.component(usage="backend.adapter")
+                    external_dict = adapter.id2dict(external_id)
+                    ext_ids_by_backend.setdefault(rec.backend_id, []).append(
+                        external_dict
+                    )
+        res = {}
+        for backend, external_dicts in ext_ids_by_backend.items():
+            domain = ["|"] * (len(external_dicts) - 1)
+            for external_dict in external_dicts:
+                ext_domain = ["&"] * (len(external_dict) - 1)
+                for k, v in external_dict.items():
+                    ext_domain.append((k, "=", v))
+                domain += ext_domain
+            res[backend] = domain
+        return res
 
     @api.model
     def import_data(self, backend, since_date):
@@ -213,3 +219,33 @@ class OxigestiBinding(models.AbstractModel):
         with backend.work_on(self._name) as work:
             exporter = work.component(usage="record.exporter")
             return exporter.run(relation)
+
+    @api.model
+    def export_delete_record(self, backend, external_id):
+        """Deleter Oxigesti record"""
+        if not external_id:
+            raise ValidationError(_("The external_id of the binding is null"))
+        binding_name = self._name
+        with backend.work_on(binding_name) as work:
+            deleter = work.component(usage="record.export.deleter")
+            deleter.run(external_id)
+
+    @api.model
+    def import_delete_record(self, backend, relation):
+        """Deleter Odoo record"""
+        raise NotImplementedError
+
+    @api.model
+    def export_delete_batch(self, backend, domain=None):
+        """Prepare the batch export of records modified on Odoo"""
+        if not domain:
+            domain = []
+        # Prepare the batch export of records modified on Odoo
+        with backend.work_on(self._name) as work:
+            exporter = work.component(usage="delayed.batch.export.deleter")
+            return exporter.run(domain=domain)
+
+    @api.model
+    def import_delete_batch(self, backend, domain=None):
+        """Prepare the batch import of records modified on Oxigesti"""
+        raise NotImplementedError

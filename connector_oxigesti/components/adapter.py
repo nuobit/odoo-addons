@@ -19,6 +19,8 @@ from odoo.exceptions import ValidationError
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import NetworkRetryableError
 
+from ..common.tools import domain_to_where
+
 try:
     import pymssql
 except ImportError:
@@ -153,7 +155,7 @@ class GenericAdapter(AbstractComponent):
 
     def _exec_sql(self, sql, params, as_dict=False, commit=False):
         # Convert params
-        params = self._convert_tuple(params, to_backend=True)
+        params = self._convert_dict(params, to_backend=True)
         # Execute sql
         conn = self.conn()
         cr = conn.cursor(as_dict=as_dict)
@@ -179,7 +181,7 @@ class GenericAdapter(AbstractComponent):
             filters = []
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
-            "select 1 from sys.schemas where name=%s", (self.schema,)
+            "select 1 from sys.schemas where name=%(schema)s", dict(schema=self.schema)
         )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
@@ -201,26 +203,12 @@ class GenericAdapter(AbstractComponent):
             sql_l.append("select %s from t" % (", ".join(fields_l),))
 
             if filters:
-                where = []
-                for k, operator, v in filters:
-                    if v is None:
-                        if operator == "=":
-                            operator = "is"
-                        elif operator == "!=":
-                            operator = "is not"
-                        else:
-                            raise Exception(
-                                "Operator '%s' is not implemented on NULL values"
-                                % operator
-                            )
-
-                    where.append("%s %s %%s" % (k, operator))
-                    values.append(v)
-                sql_l.append("where %s" % (" and ".join(where),))
+                values, where = domain_to_where(filters)
+                sql_l.append("where %s" % where)
 
             sql = " ".join(sql_l)
 
-        res = self._exec_sql(sql, tuple(values), as_dict=as_dict)
+        res = self._exec_sql(sql, values, as_dict=as_dict)
 
         filter_keys_s = {e[0] for e in filters}
         if self._id and set(self._id).issubset(filter_keys_s):
@@ -291,7 +279,7 @@ class GenericAdapter(AbstractComponent):
 
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
-            "select 1 from sys.schemas where name=%s", (self.schema,)
+            "select 1 from sys.schemas where name=%(schema)s", dict(schema=self.schema)
         )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
@@ -357,22 +345,16 @@ class GenericAdapter(AbstractComponent):
 
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
-            "select 1 from sys.schemas where name=%s", (self.schema,)
+            "select 1 from sys.schemas where name=%(schema)s", dict(schema=self.schema)
         )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
         # build the sql parts
-        fields, params, phvalues = [], [], []
-        for k, v in values_d.items():
+        fields, phvalues = [], []
+        for k in values_d.keys():
             fields.append(k)
-            params.append(v)
-            if v is None or isinstance(v, (str, datetime.date, datetime.datetime)):
-                phvalues.append("%s")
-            elif isinstance(v, (int, float)):
-                phvalues.append("%d")
-            else:
-                raise NotImplementedError("Type %s" % type(v))
+            phvalues.append(f"%({k})s")
 
         # build retvalues
         retvalues = ["inserted.%s" % x for x in self._id]
@@ -386,9 +368,8 @@ class GenericAdapter(AbstractComponent):
         )
 
         # executem la insercio
-        res = None
         try:
-            res = self._exec_sql(sql, tuple(params), commit=True)
+            res = self._exec_sql(sql, values_d, commit=True)
         except pymssql.IntegrityError as e:
             # Workaround: Because of Microsoft SQL Server
             # removes the spaces on varchars on comparisions
@@ -431,12 +412,16 @@ class GenericAdapter(AbstractComponent):
 
         # check if schema exists to avoid injection
         schema_exists = self._exec_sql(
-            "select 1 from sys.schemas where name=%s", (self.schema,)
+            "select 1 from sys.schemas where name=%(schema)s", dict(schema=self.schema)
         )
         if not schema_exists:
             raise pymssql.InternalError("The schema %s does not exist" % self.schema)
 
         # prepare the sql with base strucrture
+        if not hasattr(self, "_sql_delete"):
+            raise ValidationError(
+                _("The model %s does not have a delete SQL defined") % (self._name,)
+            )
         sql = self._sql_delete % dict(schema=self.schema)
 
         # get id fieldnames and values

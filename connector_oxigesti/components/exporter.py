@@ -88,7 +88,10 @@ class OxigestiExporter(AbstractComponent):
 
         # link if already exists on backend
         if not self.external_id:
-            computed_external_id = self.binder._get_external_id(self.binding)
+            extra_vals = {x: self.binding[x] for x in self.binder._odoo_extra_fields}
+            computed_external_id = self.binder._get_external_id(
+                self.binding.odoo_id, extra_vals=extra_vals
+            )
             if computed_external_id:
                 external_record = self.backend_adapter.read(computed_external_id)
                 if external_record:
