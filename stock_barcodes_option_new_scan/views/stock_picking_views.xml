@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="stock_picking_type_view_kanban" model="ir.ui.view">
+        <field name="name">stock_picking_type_view_kanban</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock_barcodes.stock_picking_type_kanban" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//div[@t-if='record.default_location_src_id.raw_value and record.default_location_dest_id.raw_value']"
+                position="before"
+            >
+                <field name="new_picking_barcode_option_group_id" invisible="1" />
+            </xpath>
+            <xpath
+                expr="//div[@t-if='record.default_location_src_id.raw_value and record.default_location_dest_id.raw_value']"
+                position="attributes"
+            >
+                <attribute
+                    name="t-if"
+                >record.default_location_src_id.raw_value and record.default_location_dest_id.raw_value and record.new_picking_barcode_option_group_id.raw_value</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
