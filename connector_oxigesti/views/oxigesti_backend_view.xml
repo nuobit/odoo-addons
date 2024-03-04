@@ -168,6 +168,26 @@
                             <group>
                                 <div>
                                     <label
+                                        string="Export Productions since"
+                                        class="oe_inline"
+                                        for="export_mrp_production_since_date"
+                                    />
+                                    <field
+                                        name="export_mrp_production_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="export_mrp_production_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
                                         string="Export Product Categories since"
                                         class="oe_inline"
                                         for="export_product_categories_since_date"
@@ -309,6 +329,16 @@
                         <page name="additional_data" string="Additional data">
                             <group>
                                 <field name="warehouse_id" />
+                            </group>
+                        </page>
+                        <page name="mappings" string="Mappings">
+                            <group string="Product Attributes">
+                                <field name="product_attribute_map_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="attribute_id" />
+                                        <field name="oxigesti_attribute" />
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                     </notebook>
