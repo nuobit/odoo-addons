@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_stock_barcodes_option_group_form_inherit" model="ir.ui.view">
+        <field name="name">stock.barcodes.option.group.form.inherit</field>
+        <field name="model">stock.barcodes.option.group</field>
+        <field
+            name="inherit_id"
+            ref="stock_barcodes.view_stock_barcodes_option_group_form"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='clean_after_done']" position="after">
+                <field name="unique" />
+                <field name="copy_to_header" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
