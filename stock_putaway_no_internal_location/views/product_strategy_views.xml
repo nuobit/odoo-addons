@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="stock_putaway_list" model="ir.ui.view">
+        <field name="name">stock.putaway.rule.exclude.picking.type.tree.method</field>
+        <field name="model">stock.putaway.rule</field>
+        <field name="inherit_id" ref="stock.stock_putaway_list" />
+        <field name="arch" type="xml">
+            <field name="company_id" position="before">
+                <field name="exclude_internal_locations" />
+            </field>
+        </field>
+    </record>
+</odoo>
