@@ -13,6 +13,6 @@
         <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="model_id" ref="model_lengow_backend" />
-        <field name="code">model._scheduler_import()</field>
+        <field name="code">model._scheduler_import_sale_orders()</field>
     </record>
 </odoo>
