@@ -38,6 +38,6 @@ class SaleOrderBinding(models.Model):
     def export_sale_orders_since(self, backend_record=None, since_date=None):
         domain = []
         if since_date:
-            domain = [("write_date", ">", fields.Datetime.to_string(since_date))]
+            domain = [("write_date", ">", since_date)]
         self.export_batch(backend_record, domain=domain)
         return True

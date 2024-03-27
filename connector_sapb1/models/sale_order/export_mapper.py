@@ -1,7 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, fields
+from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
@@ -63,7 +63,7 @@ class SaleOrderExportMapper(Component):
     @only_create
     @mapping
     def date(self, record):
-        date = fields.Date.from_string(record.date_order)
+        date = record.date_order
         return {"DocDueDate": date, "DocDate": date, "TaxDate": date}
 
     @mapping
