@@ -37,7 +37,7 @@ class LengowBackendMarketplace(models.Model):
     _sql_constraints = [
         (
             "lbp_partner_uniq",
-            "unique(backend_id, partner_id)",
+            "unique(backend_id, partner_id, lengow_marketplace)",
             "A mapping already exists with the same Partner.",
         ),
     ]
