@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="stock_inventory_line_tree" model="ir.ui.view">
+        <field name="name">stock.inventory.line.tree</field>
+        <field name="model">stock.inventory.line</field>
+        <field name="inherit_id" ref="stock.stock_inventory_line_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='prod_lot_id']" position="before">
+                <field name="is_lot_required" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='prod_lot_id']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', '|',
+                            ('product_tracking', '=', 'none'),
+                            ('is_editable', '=', False),
+                            ('state', '!=', 'confirm')],
+                            'required': [('is_lot_required', '!=', False), ('is_editable', '=', True), ('state', '=', 'confirm')]}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

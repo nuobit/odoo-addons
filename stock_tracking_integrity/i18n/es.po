@@ -1,0 +1,28 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_inventory_required_lot_by_tracking
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-03 14:35+0000\n"
+"PO-Revision-Date: 2024-04-03 14:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_tracking_integrity
+#: code:addons/stock_tracking_integrity/models/stock_move_line.py:0
+#, python-format
+msgid "The product %s with tracking '%s' only can have movements without a lot number."
+msgstr "El producto %s con seguimiento '%s' solo puede tener movimientos sin un número de lote."
+
+#. module: stock_tracking_integrity
+#: code:addons/stock_tracking_integrity/models/stock_move_line.py:0
+#, python-format
+msgid "The product %s with tracking '%s' only can have movements with a lot number."
+msgstr "El producto %s con seguimiento '%s' solo puede tener movimientos con un número de lote."
