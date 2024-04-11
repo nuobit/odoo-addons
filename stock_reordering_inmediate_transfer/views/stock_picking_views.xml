@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': ['|', ('is_initial_demand_editable', '=', False), '&amp;', '&amp;', ('show_operations', '=', True), ('is_locked', '=', True), ('is_initial_demand_editable', '=', False)]}</attribute>
+            </xpath>
+            <xpath
+                expr="//tree/field[@name='reserved_availability']"
+                position="attributes"
+            >
+                <attribute
+                    name="attrs"
+                >{'column_invisible': (['|', ('parent.state','=', 'done'), ('parent.picking_type_code', 'in', ['incoming', 'outgoing'])])}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
