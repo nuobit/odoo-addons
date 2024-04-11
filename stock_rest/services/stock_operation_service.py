@@ -174,6 +174,7 @@ class OperationService(Component):
 
         # Validate Picking
         if kwargs["validate"]:
+            picking_id.action_confirm()
             picking_id.button_validate()
         return {"picking_id": picking_id.id}
 
