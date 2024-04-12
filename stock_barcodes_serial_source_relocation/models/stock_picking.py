@@ -146,7 +146,7 @@ class Picking(models.Model):
                                 move_line, picking_type[0], quants
                             )
                         )
-                        new_picking.action_confirm()
+                        new_picking.with_context(relocation=self.name).action_confirm()
                         for move in new_picking.move_lines:
                             move.move_line_ids.write(
                                 self._prepare_relocation_move_line_values(
