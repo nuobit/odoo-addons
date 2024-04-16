@@ -29,7 +29,8 @@ class AccountBankStatementImport(models.TransientModel):
                 bs_dates = [x.date for x in bs.line_ids]
                 bs_min_date, bs_max_date = min(bs_dates), max(bs_dates)
                 if bs_max_date >= imp_min_date and bs_min_date <= imp_max_date:
-                    bs_display_name = [bs.date]
+                    lang = self.env["res.lang"].search([("code", "=", self.env.lang)])
+                    bs_display_name = [bs.date.strftime(lang.date_format)]
                     if bs.name:
                         bs_display_name.append("(%s)" % bs.name)
                     raise ValidationError(
