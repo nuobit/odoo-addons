@@ -18,7 +18,7 @@ class ProductProduct(models.Model):
     @api.constrains("default_code")
     def _check_oxigesti_default_code(self):
         for rec in self:
-            if rec.oxigesti_bind_ids:
+            if rec.oxigesti_bind_ids.filtered("external_id_hash"):
                 raise ValidationError(
                     _(
                         "You can't change the default code of a "

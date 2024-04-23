@@ -2,7 +2,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -20,16 +20,20 @@ class ProductTemplate(models.Model):
                 active_test=False
             ).product_variant_ids.oxigesti_bind_ids
 
-    @api.constrains("default_code")
-    def _check_oxigesti_default_code(self):
-        for rec in self:
-            if rec.oxigesti_product_variant_bind_ids:
-                raise ValidationError(
-                    _(
-                        "You can't change the default code of a product "
-                        "template that has variants binded to oxigesti"
-                    )
-                )
+    def write(self, vals):
+        if "default_code" in vals:
+            for rec in self:
+                if rec.default_code != vals["default_code"]:
+                    if rec.oxigesti_product_variant_bind_ids.filtered(
+                        "external_id_hash"
+                    ):
+                        raise ValidationError(
+                            _(
+                                "You can't change the default code of a product "
+                                "template that has variants binded to oxigesti"
+                            )
+                        )
+        return super(ProductTemplate, self).write(vals)
 
     def unlink(self):
         to_remove = {}
