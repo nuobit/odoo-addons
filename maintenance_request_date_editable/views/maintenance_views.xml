@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="hr_equipment_request_view_form" model="ir.ui.view">
+        <field name="name">equipment.request.form</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <field name="request_date_editable" invisible="1" />
+            </xpath>
+            <field name="request_date" position="attributes">
+                <attribute name="readonly">0</attribute>
+                <attribute
+                    name="attrs"
+                >{'readonly': [('request_date_editable', '=', False)]}</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
