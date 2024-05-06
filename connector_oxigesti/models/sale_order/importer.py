@@ -132,7 +132,7 @@ class SaleOrderImporter(Component):
         sale_order.onchange_partner_id()
         for line in sale_order.order_line:
             line.product_id_change()
-        sale_order.action_confirm()
+        sale_order.with_context(skip_reserved_quantity=True).action_confirm()
         sale_order.action_done()
 
         # picking validation
