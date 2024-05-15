@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="group_update_lot_name_field" model="res.groups">
+        <field name="name">Allow modifying Lot name</field>
+        <field name="category_id" ref="base.module_category_hidden" />
+    </record>
+</odoo>
