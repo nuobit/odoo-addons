@@ -50,15 +50,15 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
         # export the missing linked resources
         self._export_dependencies(relation)
 
-        # prevent other jobs to export the same record
-        # will be released on commit (or rollback)
-        self._lock(relation)
-
-        map_record = self.mapper.map_record(relation)
-
-        # passing info to the mapper
-        opts = self._mapper_options(binding)
         if always or not binding:
+            # prevent other jobs to export the same record
+            # will be released on commit (or rollback)
+            self._lock(relation)
+
+            map_record = self.mapper.map_record(relation)
+
+            # passing info to the mapper
+            opts = self._mapper_options(binding)
             if binding:
                 values = self._update_data(map_record, fields=internal_fields, **opts)
                 if values:
