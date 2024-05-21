@@ -352,17 +352,17 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         :return: binding corresponding to the real record or
                  empty recordset if the record has no binding
         """
-        if isinstance(relation, models.BaseModel):
-            relation.ensure_one()
-        else:
+        if not isinstance(relation, models.BaseModel):
             if not isinstance(relation, int):
                 raise InvalidDataError(
                     "The real record (relation) must be a "
                     "regular Odoo record or an id (integer)"
                 )
-            relation = self.model.browse(relation)
-            if not relation:
-                raise InvalidDataError("The real record (relation) does not exist")
+            relation = self.model.browse(relation).exists()
+        if not relation:
+            raise InvalidDataError("The real record (relation) does not exist")
+
+        relation.ensure_one()
 
         if self.model._name == relation._name:
             raise Exception(
