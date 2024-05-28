@@ -10,6 +10,9 @@
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
-    "depends": ["base"],
-    "data": ["views/res_lang_views.xml"],
+    "depends": ["base_setup"],
+    "data": [
+        "views/res_lang_views.xml",
+        "views/res_config_settings_views.xml",
+    ],
 }
