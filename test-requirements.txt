@@ -2,3 +2,5 @@ openupgradelib@git+https://github.com/OCA/openupgradelib.git@master
 pyveloedi@git+https://github.com/nuobit/pyveloedi3.git@master
 odoo14-addon-oxigen_stock_alternate_lot@git+https://github.com/oxigensalud/odoo-addons.git@14.0#subdirectory=setup/oxigen_stock_alternate_lot
 odoo14-addon-pricelist_massive_update@git+https://github.com/oxigensalud/odoo-community-addons.git@14.0#subdirectory=setup/pricelist_massive_update
+odoo14-addon-rma_repair@git+https://github.com/nuobit/rma.git@14.0-rma_repair#subdirectory=setup/rma_repair
+odoo14-addon-rma_employee@git+https://github.com/nuobit/rma.git@14.0-rma_employee#subdirectory=setup/rma_employee
