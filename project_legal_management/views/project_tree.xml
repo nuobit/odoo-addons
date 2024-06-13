@@ -43,23 +43,33 @@
                     name="Probability"
                     context="{'group_by':'lm_probability_id'}"
                 />
+                <filter
+                    string="Issues"
+                    name="Issues"
+                    context="{'group_by':'lm_issues_complete_name'}"
+                />
             </xpath>
             <field name="name" position="attributes">
-                <attribute
-                    name="filter_domain"
-                >['|','|','|','|','|','|', ('name', 'ilike', self), ('lm_date','ilike',
-                    self),('lm_employee_ids','ilike',self),('lm_issue_ids','ilike',self),
-                    ('lm_resolution_id','ilike',self), ('lm_probability_id','ilike',self),
-                    ('lm_expedient_number','ilike',self)]
+                <attribute name="filter_domain">[
+                    '|', '|', '|', '|', '|', '|',
+                    ('name', 'ilike', self),
+                    ('lm_date', 'ilike', self),
+                    ('lm_employee_ids', 'ilike', self),
+                    ('lm_issues_complete_name', 'ilike', self),
+                    ('lm_resolution_id', 'ilike', self),
+                    ('lm_probability_id', 'ilike', self),
+                    ('lm_expedient_number', 'ilike', self)
+                ]
                 </attribute>
             </field>
             <xpath expr="//group" position="before">
                 <field name="lm_date" string="Date" />
                 <field name="lm_employee_ids" string="Employee" />
-                <field name="lm_issue_ids" string="Issues" />
+                <field name="lm_issues_complete_name" string="Issues" />
                 <field name="lm_resolution_id" string="Resolution" />
                 <field name="lm_probability_id" string="Probability" />
                 <field name="lm_expedient_number" string="Expedient Number" />
+
             </xpath>
         </field>
     </record>
