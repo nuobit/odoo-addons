@@ -51,6 +51,7 @@ class WooCommerceProductProduct(models.Model):
     def resync_export(self):
         super().resync_export()
         if not self.env.context.get("resync_product_template", False):
-            self.product_tmpl_id.woocommerce_bind_ids.with_context(
-                resync_product_product=True
-            ).resync_export()
+            for rec in self:
+                rec.product_tmpl_id.woocommerce_bind_ids.filtered(
+                    lambda x: x.backend_id == rec.backend_id
+                ).with_context(resync_product_product=True).resync_export()
