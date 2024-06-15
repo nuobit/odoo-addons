@@ -32,6 +32,7 @@
         "views/product_attribute_value.xml",
         "views/product_public_category.xml",
         "views/product_product.xml",
+        "views/res_partner_views.xml",
         "views/connector_woocommerce_menu.xml",
     ],
     "installable": True,
