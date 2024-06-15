@@ -56,12 +56,18 @@
         parent="woocommerce_external_objects_menu"
         action="woocommerce_product_public_category_action"
     />
-
     <menuitem
         id="woocommerce_external_sale_order_menu"
         name="External Orders"
         sequence="100"
         parent="woocommerce_external_objects_menu"
         action="woocommerce_sale_order_action"
+    />
+    <menuitem
+        id="woocommerce_external_partner_menu"
+        name="External Partners"
+        sequence="100"
+        parent="woocommerce_external_objects_menu"
+        action="woocommerce_partner_action"
     />
 </odoo>
