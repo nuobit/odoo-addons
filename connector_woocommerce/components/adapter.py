@@ -24,3 +24,14 @@ class ConnectorWooCommerceAdapter(AbstractComponent):
             version="wc/v3",
             verify_ssl=self.backend_record.verify_ssl,
         )
+
+    def prepare_meta_data(self, data):
+        meta_data = []
+        for field in self._prepare_meta_data_fields():
+            if field in data:
+                meta_data.append({"key": field, "value": data[field]})
+                data.pop(field)
+        return meta_data
+
+    def _prepare_meta_data_fields(self):
+        return []

@@ -39,8 +39,14 @@ class WooCommerceSaleOrderAdapter(Component):
         return res, len(res)
 
     def write(self, external_id, data):  # pylint: disable=W8106
+        self._prepare_data(data)
         url_l = ["orders", str(external_id[0])]
         return self._exec("put", "/".join(url_l), data=data)
+
+    def _prepare_data(self, data):
+        meta_data = self.prepare_meta_data(data)
+        if meta_data:
+            data["meta_data"] = meta_data
 
     def _get_partner_parent(self, dir_type, value):
         # TODO: REVIEW: slug for company name?
