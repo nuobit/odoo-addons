@@ -19,7 +19,8 @@ class WooCommerceSaleOrderExportMapper(Component):
         else:
             return super().status(record)
 
-    def get_shippment(self, record):
+    @mapping
+    def shipment_tracking(self, record):
         tracking = {}
         for picking in record.picking_ids:
             if picking.carrier_id:
@@ -35,11 +36,4 @@ class WooCommerceSaleOrderExportMapper(Component):
             if picking.carrier_tracking_ref:
                 tracking["tracking_number"] = picking.carrier_tracking_ref
             if tracking:
-                return {"key": "_wc_shipment_tracking_items", "value": [tracking]}
-
-    def _get_meta_data_values(self, record):
-        values = super()._get_meta_data_values(record)
-        shipment_values = self.get_shippment(record)
-        if shipment_values:
-            values.append(shipment_values)
-        return values
+                return {"_wc_shipment_tracking_items": [tracking]}
