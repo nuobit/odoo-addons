@@ -19,6 +19,7 @@
         id="wordpress_external_objects_menu"
         name="External Objects"
         parent="wordpress_menu_root"
+        action="wordpress_ir_attachment_action"
         sequence="150"
     />
 </odoo>
