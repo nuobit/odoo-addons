@@ -67,6 +67,9 @@ class WooCommerceProductTemplateAdapter(Component):
 
     def _prepare_data(self, data):
         self._format_product_template(data)
+        meta_data = self.prepare_meta_data(data)
+        if meta_data:
+            data["meta_data"] = meta_data
         if data["sku"]:
             if data["type"] == "simple":
                 if len(data["sku"]) > 1:
