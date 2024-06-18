@@ -3,6 +3,7 @@ mysql-connector-python==8.0.31
 openpyxl
 pymssql>=2.2.5,<2.3
 pystrich
+python-magic
 pyveloedi
 requests
 woocommerce
