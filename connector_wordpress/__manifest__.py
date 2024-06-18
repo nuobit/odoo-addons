@@ -9,9 +9,15 @@
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/nuobit/odoo-addons",
+    "external_dependencies": {
+        # Python magic is included because it can detect more mimetypes
+        # used to export the files to WordPress.
+        "python": ["python-magic"],
+    },
     "depends": [
         "connector_extension_wordpress",
         "website_sale_product_document",
+        "tools_mimetypes_extension",
     ],
     "data": [
         "security/connector_wordpress.xml",
