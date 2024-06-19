@@ -13,17 +13,17 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <xpath
-                expr="//div[@class='oe_edit_only']//field[@name='lastname']"
+                expr="//*[@id='company']/../../div[hasclass('oe_edit_only')]//field[@name='lastname']"
                 position="before"
             >
                 <xpath
-                    expr="//div[@class='oe_edit_only']//field[@name='firstname']"
+                    expr="//*[@id='company']/../../div[hasclass('oe_edit_only')]//field[@name='firstname']"
                     position="move"
                 />
             </xpath>
             <xpath
                 expr="//field[@name='child_ids']/form//field[@name='lastname']"
-                position="after"
+                position="before"
             >
                 <xpath
                     expr="//field[@name='child_ids']/form//field[@name='firstname']"
