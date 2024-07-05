@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_groups_view_form" model="ir.ui.view">
+        <field name="name">base.group.internal.res.groups.view.form</field>
+        <field name="model">res.groups</field>
+        <field name="inherit_id" ref="base.view_groups_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="after">
+                <group>
+                    <field name="is_internal" />
+                </group>
+            </xpath>
+        </field>
+
+    </record>
+</odoo>
