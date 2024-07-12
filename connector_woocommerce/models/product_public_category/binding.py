@@ -24,7 +24,7 @@ class WooCommerceProductPublicCategory(models.Model):
     _sql_constraints = [
         (
             "external_uniq",
-            "unique(backend_id, woocommerce_idproduct)",
+            "unique(backend_id, woocommerce_idpubliccategory)",
             "A binding already exists with the same External (idProduct) ID.",
         ),
     ]
