@@ -86,12 +86,15 @@ class WooCommerceProductProductExportMapper(Component):
             )
         return stock
 
+    def _get_product_description(self, record):
+        return record.with_context(
+            lang=self.backend_record.language_id.code
+        ).variant_public_description
+
     @mapping
     def description(self, record):
         description = []
-        product_description = record.with_context(
-            lang=self.backend_record.language_id.code
-        ).variant_public_description
+        product_description = self._get_product_description(record)
         if product_description:
             description.append(product_description)
         if record.document_ids:
