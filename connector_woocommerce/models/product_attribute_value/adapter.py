@@ -6,12 +6,8 @@ from odoo.exceptions import ValidationError
 from odoo.addons.component.core import Component
 
 
-class ValidatonError:
-    pass
-
-
 class WooCommerceProductAttributeValueAdapter(Component):
-    _name = "woocommerce.product.attribute.value"
+    _name = "woocommerce.product.attribute.value.adapter"
     _inherit = "connector.woocommerce.adapter"
 
     _apply_on = "woocommerce.product.attribute.value"

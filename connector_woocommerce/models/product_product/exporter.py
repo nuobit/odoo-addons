@@ -45,7 +45,8 @@ class WooCommerceProductProductExporter(Component):
             )
         else:
             self._export_dependency(
-                relation.product_tmpl_id, "woocommerce.product.template"
+                relation.product_tmpl_id,
+                "woocommerce.product.template",
             )
         for line in relation.product_tmpl_id.attribute_line_ids:
             self._export_dependency(
@@ -59,7 +60,8 @@ class WooCommerceProductProductExporter(Component):
                 )
         for attribute_line in relation.attribute_line_ids:
             self._export_dependency(
-                attribute_line.attribute_id, "woocommerce.product.attribute"
+                attribute_line.attribute_id,
+                "woocommerce.product.attribute",
             )
         if (
             relation.product_image_attachment_ids
