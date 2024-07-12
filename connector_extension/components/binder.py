@@ -21,6 +21,7 @@ import psycopg2
 import odoo
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
+from odoo.osv import expression
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.component.exception import NoComponentError
@@ -345,6 +346,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         self._check_domain(domain)
         return self.env[model_name].search(domain)
 
+    def get_binding_domain(self, relation):
+        return []
+
     def wrap_record(self, relation):
         """Give the real record
 
@@ -374,10 +378,15 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             )
 
         binding = self.model.with_context(active_test=False).search(
-            [
-                (self._odoo_field, "=", relation.id),
-                (self._backend_field, "=", self.backend_record.id),
-            ]
+            expression.AND(
+                [
+                    [
+                        (self._odoo_field, "=", relation.id),
+                        (self._backend_field, "=", self.backend_record.id),
+                    ],
+                    self.get_binding_domain(relation),
+                ]
+            )
         )
         if len(binding) > 1:
             raise InvalidDataError("More than one binding found")
