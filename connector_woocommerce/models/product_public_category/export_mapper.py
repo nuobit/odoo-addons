@@ -31,4 +31,6 @@ class WooCommerceProductPublicCategoryExportMapper(Component):
                 )
                 % record.name
             )
-        return {"name": record.name}
+        return {
+            "name": record.with_context(lang=self.backend_record.language_id.code).name
+        }

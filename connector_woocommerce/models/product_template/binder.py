@@ -10,8 +10,18 @@ class WooCommerceProductTemplateBinder(Component):
 
     _apply_on = "woocommerce.product.template"
 
-    external_id = "id"
-    internal_id = "woocommerce_idproduct"
+    @property
+    def external_id(self):
+        return ["id"]
 
-    external_alt_id = "sku"
-    internal_alt_id = "default_code"
+    @property
+    def internal_id(self):
+        return ["woocommerce_idproduct"]
+
+    @property
+    def external_alt_id(self):
+        return ["sku"]
+
+    @property
+    def internal_alt_id(self):
+        return ["default_code"]

@@ -95,20 +95,26 @@ class WooCommerceProductTemplateExportMapper(Component):
                 "regular_price": record.list_price,
             }
 
+    def _get_product_description(self, record):
+        return record.with_context(
+            lang=self.backend_record.language_id.code
+        ).public_description
+
+    def _get_product_variant_description(self, record):
+        return record.product_variant_id.with_context(
+            lang=self.backend_record.language_id.code
+        ).variant_public_description
+
     @mapping
     def description(self, record):
         description = False
         if record.public_description:
-            description = record.with_context(
-                lang=self.backend_record.language_id.code
-            ).public_description
+            description = self._get_product_description(record)
         elif (
             len(record.product_variant_ids) == 1
             and record.product_variant_id.variant_public_description
         ):
-            description = record.product_variant_id.with_context(
-                lang=self.backend_record.language_id.code
-            ).variant_public_description
+            description = self._get_product_variant_description(record)
         return {"description": description if description else ""}
 
     @mapping
@@ -130,6 +136,11 @@ class WooCommerceProductTemplateExportMapper(Component):
         if categories:
             return {"categories": categories}
 
+    def _get_value_ids(self, attribute_line):
+        return attribute_line.value_ids.with_context(
+            lang=self.backend_record.language_id.code
+        ).mapped("name")
+
     @mapping
     def attributes(self, record):
         binder = self.binder_for("woocommerce.product.attribute")
@@ -139,9 +150,7 @@ class WooCommerceProductTemplateExportMapper(Component):
             attr_list.append(
                 {
                     "id": values["id"],
-                    "options": line.value_ids.with_context(
-                        lang=self.backend_record.language_id.code
-                    ).mapped("name"),
+                    "options": self._get_value_ids(line),
                     "visible": "true",
                     "variation": "true",
                 }

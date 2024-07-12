@@ -11,6 +11,9 @@ class WooCommerceProductExportMapper(AbstractComponent):
     def _prepare_url(self, binding, document):
         return binding.wordpress_source_url
 
+    def _get_lang(self, document):
+        return self.backend_record.language_id.code
+
     def _prepare_document_description(self, documents):
         document_description = []
         if self.backend_record.wordpress_backend_id:
@@ -29,7 +32,7 @@ class WooCommerceProductExportMapper(AbstractComponent):
                             % (
                                 self._prepare_url(binding, document),
                                 document.with_context(
-                                    lang=self.backend_record.language_id.code
+                                    lang=self._get_lang(document)
                                 ).name,
                             )
                         )

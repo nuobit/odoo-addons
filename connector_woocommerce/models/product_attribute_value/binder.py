@@ -10,7 +10,16 @@ class WooCommerceProductAttributeValueBinder(Component):
 
     _apply_on = "woocommerce.product.attribute.value"
 
-    external_id = ["parent_id", "id"]
-    internal_id = ["woocommerce_idattribute", "woocommerce_idattributevalue"]
+    # TODO: Review: Parent_id is a required field to search but if we try
+    #  to rebind we need export parents(attributes) before
+    @property
+    def external_id(self):
+        return ["parent_id", "id"]
 
-    external_alt_id = ["parent_name", "name"]
+    @property
+    def internal_id(self):
+        return ["woocommerce_idattribute", "woocommerce_idattributevalue"]
+
+    @property
+    def external_alt_id(self):
+        return ["parent_name", "name"]
