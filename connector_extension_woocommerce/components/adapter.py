@@ -28,35 +28,71 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         func = getattr(self, "_exec_%s" % op)
         return func(resource, *args, **kwargs)
 
+    def _manage_error_codes(
+        self, res_data, res, resource, raise_on_error=True, **kwargs
+    ):
+        if not res.ok:
+            if res.status_code == 404:
+                if res_data.get("code") == "rest_no_route":
+                    error_message = _(
+                        "Error: '%s'. Probably the %s has been"
+                        " removed from Woocommerce. "
+                        "If it's the case, try to remove the binding of the %s."
+                        % (res_data.get("message"), resource, self.model._name)
+                    )
+                elif res_data.get("code") == "woocommerce_rest_term_invalid":
+                    error_message = _(
+                        "Error: '%s'. Probably the %s has been "
+                        "removed from Woocommerce. "
+                        "If it's the case, try to remove the binding of the %s."
+                        % (res_data.get("message"), resource, self.model._name)
+                    )
+                else:
+                    error_message = _("Error: %s") % res_data
+            elif res.status_code == 400:
+                if res_data.get("code") == "term_exists":
+                    error_message = _(
+                        "Error: '%s'. Probably repeated record already exists in Woocommerce.\n"
+                        "Please, review the data in %s/%s and compare it with %s"
+                        % (
+                            res_data["message"],
+                            resource,
+                            res_data["res_data"]["resource_id"],
+                            kwargs["data"],
+                        )
+                    )
+                else:
+                    error_message = _("Error: %s") % res_data
+            else:
+                error_message = _("Error: %s") % res_data
+            if raise_on_error:
+                raise ValidationError(error_message)
+            else:
+                return error_message
+        return res_data
+
+    # TODO: remove this total items and use the res.headers instead
+    def _get_res_total_items(self, res):
+        headers = res.headers
+        total_items = headers.get("X-WP-Total") or 0
+        if total_items:
+            total_items = int(headers.get("X-WP-Total"))
+        return total_items
+
     def _exec_wcapi_call(self, op, resource, *args, **kwargs):
         func = getattr(self.wcapi, op)
         try:
             res = func(resource, *args, **kwargs)
-            data = res.json()
-            if not res.ok:
-                if res.status_code == 404:
-                    if res.status_code == "rest_no_route":
-                        raise ValidationError(
-                            _(
-                                "Error: '%s'. Probably the %s has been"
-                                " removed from Woocommerce. "
-                                "If it's the case, try to remove the binding of the %s."
-                                % (res.get("message"), resource, self.model._name)
-                            )
-                        )
-                    data = []
-                else:
-                    raise ValidationError(_("Error: %s") % data)
-            # TODO: remove this total items and use the res.headers instead
-            headers = res.headers
-            total_items = headers.get("X-WP-Total") or 0
-            if total_items:
-                total_items = int(headers.get("X-WP-Total"))
+            res_data = res.json()
+            if "data" in res_data:
+                res_data["res_data"] = res_data.pop("data")
+            res_data = self._manage_error_codes(res_data, res, resource, **kwargs)
+            total_items = self._get_res_total_items(res)
             result = {
                 "ok": res.ok,
                 "status_code": res.status_code,
                 "total_items": total_items,
-                "data": data,
+                "data": res_data,
             }
         except RequestConnectionError as e:
             raise RetryableJobError(_("Error connecting to WooCommerce: %s") % e) from e
