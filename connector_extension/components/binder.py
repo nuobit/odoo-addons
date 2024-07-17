@@ -180,29 +180,14 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             else:
                 raise
 
-    def _is_binding(self, binding):
+    def _is_wrapped(self, obj):
+        # alternate way to detect a binding
+        # return self.model._name == obj._name
         try:
-            binding._fields[self._odoo_field]
+            obj._fields[self._odoo_field]
         except KeyError:
             return False
         return True
-
-    def _find_binding(self, relation, binding_extra_vals=None):
-        if not binding_extra_vals:
-            binding_extra_vals = {}
-        if self._is_binding(relation):
-            raise Exception(
-                "The source object %s must not be a binding" % relation.model._name
-            )
-
-        domain = [
-            (self._odoo_field, "=", relation.id),
-            (self._backend_field, "=", self.backend_record.id),
-        ]
-        binding = self.model.with_context(active_test=False).search(domain)
-        if binding:
-            binding.ensure_one()
-        return binding
 
     def to_internal(self, external_id, unwrap=False):
         """Give the Odoo recordset for an external ID
@@ -243,7 +228,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         if not binding_extra_vals:
             binding_extra_vals = {}
         if not wrap:
-            binding = self._find_binding(binding, binding_extra_vals)
+            binding = self.wrap_record(binding)
             if not binding:
                 return None
         return self.dict2id(binding, in_field=True) or None
@@ -350,33 +335,21 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         return []
 
     def wrap_record(self, relation):
-        """Give the real record
+        """Get the binding
 
         :param relation: Odoo real record for which we want to get its binding
         :return: binding corresponding to the real record or
                  empty recordset if the record has no binding
         """
-        if not isinstance(relation, models.BaseModel):
-            if not isinstance(relation, int):
-                raise InvalidDataError(
-                    "The real record (relation) must be a "
-                    "regular Odoo record or an id (integer)"
-                )
-            relation = self.model.browse(relation).exists()
-        if not relation:
-            raise InvalidDataError("The real record (relation) does not exist")
-
         relation.ensure_one()
-
-        if self.model._name == relation._name:
-            raise Exception(
+        if self._is_wrapped(relation):
+            raise ValidationError(
                 _(
                     "The object '%s' is already wrapped, it's already a binding object. "
-                    "You can only wrap Odoo objects"
+                    "You can only wrap real objects"
                 )
-                % relation
+                % relation._name
             )
-
         binding = self.model.with_context(active_test=False).search(
             expression.AND(
                 [
@@ -389,7 +362,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             )
         )
         if len(binding) > 1:
-            raise InvalidDataError("More than one binding found")
+            raise ValidationError(_("More than one binding found"))
         return binding
 
     def _to_record_from_external_key(self, map_record):
