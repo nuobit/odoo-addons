@@ -125,12 +125,16 @@ class ConnectorExtensionMapper(AbstractComponent):
                 from_attr, to_attr = list(mapping_changed_by)[0], list(values.keys())[0]
                 if to_attr in fields:
                     if to_attr in result:
-                        raise ValidationError(_("Field '%s' mapping defined twice"))
+                        raise ValidationError(
+                            _("Field '%s' mapping defined twice") % to_attr
+                        )
                     result[to_attr] = from_attr
         for from_attr, to_attr, _model_name in self.children:
             if to_attr in fields:
                 if to_attr in result:
-                    raise ValidationError(_("Field '%s' mapping defined twice"))
+                    raise ValidationError(
+                        _("Field '%s' mapping defined twice") % to_attr
+                    )
                 result[to_attr] = from_attr
         return list(set(result.values()))
 
