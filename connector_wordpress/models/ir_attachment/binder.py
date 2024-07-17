@@ -26,8 +26,8 @@ class WordPressIrAttachmentBinder(Component):
         else:
             return None
 
-    def _additional_external_binding_fields(self, external_data):
+    def _additional_external_binding_fields(self, external_data, relation):
         return {
-            **super()._additional_external_binding_fields(external_data),
+            **super()._additional_external_binding_fields(external_data, relation),
             "wordpress_source_url": external_data["source_url"],
         }
