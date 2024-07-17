@@ -174,7 +174,7 @@ class ConnectorExtensionMapChildImport(AbstractComponent):
 
     def _child_bind(self, map_record, item_values):
         binder = self.binder_for()
-        if not binder._is_binding(self.model):
+        if not binder._is_wrapped(self.model):
             return
         external_id = binder.dict2id(map_record.source, in_field=False)
         values = {
