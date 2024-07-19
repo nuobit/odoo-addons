@@ -2,7 +2,19 @@
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo>
-
+    <record id="woocommerce_product_attribute_value_view_form" model="ir.ui.view">
+        <field name="name">woocommerce.product.attribute.value.view.form</field>
+        <field name="model">woocommerce.product.attribute.value</field>
+        <field
+            name="inherit_id"
+            ref="connector_woocommerce.woocommerce_product_attribute_value_view_form"
+        />
+        <field name="arch" type="xml">
+            <field name="woocommerce_idattributevalue" position="after">
+                <field name="woocommerce_lang" />
+            </field>
+        </field>
+    </record>
     <record id="woocommerce_product_attribute_value_view_tree" model="ir.ui.view">
         <field name="name">woocommerce.product.attribute.value.view.tree</field>
         <field name="model">woocommerce.product.attribute.value</field>

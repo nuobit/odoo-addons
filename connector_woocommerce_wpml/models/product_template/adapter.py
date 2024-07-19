@@ -23,6 +23,9 @@ class WooCommerceProductTemplateAdapter(Component):
         res = super().write(external_id, data)
         if old_sku and res.get("sku") != old_sku:
             data["sku"] = old_sku
+            # This conversion is to "revert" first conversion done on prepare_data
+            if isinstance(data["regular_price"], str):
+                data["regular_price"] = float(data["regular_price"])
             res = super().write(external_id, data)
         return res
 
@@ -31,6 +34,10 @@ class WooCommerceProductTemplateAdapter(Component):
         return list(
             set(self.wpml_get_search_fields()) | set(super()._get_search_fields())
         )
+
+    def _modify_res_on_search_read(self, parent_ids, domain_dict):
+        res = super()._modify_res_on_search_read(parent_ids, domain_dict)
+        res[0]["lang"] = domain_dict.get("lang")
 
     # We need to override this method to handle the case when the response is a single item,
     # because parameter X-WP-Total is not included in header
@@ -42,8 +49,8 @@ class WooCommerceProductTemplateAdapter(Component):
     #             total_items = 1
     #     return total_items
 
-    # def _domain_to_normalized_dict(self, real_domain):
-    #     return self.wpml_domain_to_normalized_dict(real_domain)
+    def _domain_to_normalized_dict(self, real_domain):
+        return self.wpml_domain_to_normalized_dict(real_domain)
 
-    # def _extract_domain_clauses(self, domain, search_fields):
-    #     return self.wpml_extract_domain_clauses(domain, search_fields)
+    def _extract_domain_clauses(self, domain, search_fields):
+        return self.wpml_extract_domain_clauses(domain, search_fields)

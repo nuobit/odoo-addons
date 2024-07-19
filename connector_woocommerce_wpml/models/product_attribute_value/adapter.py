@@ -14,8 +14,8 @@ class WooCommerceProductAttributeValueAdapter(Component):
     def _get_search_fields(self):
         return self.wpml_get_search_fields()
 
-    def _domain_to_normalized_dict(self, real_domain):
-        return self.wpml_domain_to_normalized_dict(real_domain)
+    # def _domain_to_normalized_dict(self, real_domain):
+    #     return self.wpml_domain_to_normalized_dict(real_domain)
 
-    # def _extract_domain_clauses(self, domain, search_fields):
-    #     return self.wpml_extract_domain_clauses(domain, search_fields)
+    def _extract_domain_clauses(self, domain, search_fields):
+        return self.wpml_extract_domain_clauses(domain, search_fields)
