@@ -47,8 +47,22 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                         "If it's the case, try to remove the binding of the %s."
                         % (res_data.get("message"), resource, self.model._name)
                     )
+                elif (
+                    res_data.get("code")
+                    == "woocommerce_rest_product_variation_invalid_parent"
+                ):
+                    error_message = _(
+                        "Error: '%s'. Probably the product in %s "
+                        "has been removed from Woocommerce. "
+                        "If it's the case, try to remove the binding of the "
+                        "woocommerce.product.template"
+                        % (
+                            res_data.get("message"),
+                            resource,
+                        )
+                    )
                 else:
-                    error_message = _("Error: %s") % res_data
+                    error_message = _("Error: %s, Resource: %s" % (res_data, resource))
             elif res.status_code == 400:
                 if res_data.get("code") == "term_exists":
                     error_message = _(
@@ -61,10 +75,19 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                             kwargs["data"],
                         )
                     )
+                elif (
+                    res_data.get("code")
+                    == "woocommerce_rest_product_variation_invalid_id"
+                ):
+                    error_message = _(
+                        "Error: '%s'. Probably the %s has been removed from Woocommerce. "
+                        "If it's the case, try to remove the binding of the %s."
+                        % (res_data.get("message"), resource, self.model._name)
+                    )
                 else:
-                    error_message = _("Error: %s") % res_data
+                    error_message = _("Error: %s, Resource: %s" % (res_data, resource))
             else:
-                error_message = _("Error: %s") % res_data
+                error_message = _("Error: %s, Resource: %s" % (res_data, resource))
             if raise_on_error:
                 raise ValidationError(error_message)
             else:
