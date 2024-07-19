@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
@@ -11,13 +12,23 @@ class WooCommerceProductProductAdapter(Component):
 
     _apply_on = "woocommerce.product.product"
 
+    def _reorg_product_data(self, data):
+        return
+
     def read(self, external_id):  # pylint: disable=W8106
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
         url = "products/%s/variations/%s" % (
             external_id_values["parent_id"],
             external_id_values["id"],
         )
-        return self._exec("get", url)
+        res = self._exec("get", url, limit=1)
+        self._reorg_product_data(res)
+        if len(res) > 1:
+            raise ValidationError(
+                _("More than one simple product found with the same id: %s")
+                % (external_id_values["id"])
+            )
+        return res[0]
 
     def create(self, data):  # pylint: disable=W8106
         self._prepare_data(data)
