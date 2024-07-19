@@ -31,7 +31,11 @@ class WooCommerceProductTemplateBinder(Component):
             relation_lang = relation.env.context.get("lang")
             relation_woo_lang = self.backend_record._get_woocommerce_lang(relation_lang)
             if res.get("lang") != relation_woo_lang:
-                if res.get("translations").get(relation_woo_lang):
+                if res.get("translations") and res["translations"].get(
+                    relation_woo_lang
+                ):
                     adapter = self.component(usage="backend.adapter")
                     res = adapter.read(res["translations"][relation_woo_lang])
+                else:
+                    return None
         return res
