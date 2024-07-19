@@ -37,6 +37,9 @@ class WooCommerceProductTemplateAdapter(Component):
         res = self._exec("put", "/".join(url_l), data=data)
         return res
 
+    def _modify_res_on_search_read(self, parent_ids, domain_dict):
+        return [{"id": parent_ids.pop()}]
+
     def search_read(self, domain=None):
         binder = self.binder_for()
         domain_dict = self._domain_to_normalized_dict(domain)
@@ -63,7 +66,7 @@ class WooCommerceProductTemplateAdapter(Component):
                         _("All variants must belong to the same parent product")
                     )
                 if parent_ids:
-                    res = [{"id": parent_ids.pop()}]
+                    res = self._modify_res_on_search_read(parent_ids, domain_dict)
             else:
                 res = self._exec("get", "products", domain=domain)
         return res
