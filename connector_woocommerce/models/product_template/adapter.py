@@ -12,6 +12,21 @@ class WooCommerceProductTemplateAdapter(Component):
 
     _apply_on = "woocommerce.product.template"
 
+    def _reorg_product_data(self, data):
+        return
+
+    def read(self, external_id):  # pylint: disable=W8106
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        url = "products/%s" % external_id_values["id"]
+        res = self._exec("get", url, limit=1)
+        self._reorg_product_data(res)
+        if len(res) > 1:
+            raise ValidationError(
+                _("More than one simple product found with the same id: %s")
+                % (external_id_values["id"])
+            )
+        return res[0]
+
     def create(self, data):  # pylint: disable=W8106
         self._prepare_data(data)
         return self._exec("post", "products", data=data)
@@ -28,15 +43,14 @@ class WooCommerceProductTemplateAdapter(Component):
         id_fields = binder.get_id_fields(in_field=False)
         _, common_domain = self._extract_domain_clauses(domain, id_fields)
         template_id = binder.dict2id(domain_dict, in_field=False, unwrap=True)
-
         if template_id:
             url = "products/%s" % template_id
             res = self._exec("get", url, domain=common_domain)
         else:
             res = []
-            skus = binder.dict2id(
-                domain_dict, in_field=False, alt_field=True, unwrap=True
-            )
+            skus = []
+            if "sku" in domain_dict:
+                skus = domain_dict["sku"]
             if skus and len(skus) > 1:
                 skus = ",".join([f"{sku}" for sku in skus if sku])
             if skus:
@@ -70,7 +84,7 @@ class WooCommerceProductTemplateAdapter(Component):
         meta_data = self.prepare_meta_data(data)
         if meta_data:
             data["meta_data"] = meta_data
-        if data["sku"]:
+        if data.get("sku"):
             if data["type"] == "simple":
                 if len(data["sku"]) > 1:
                     raise ValidationError(
