@@ -20,7 +20,6 @@
                     attrs="{'invisible': [('is_woocommerce', '!=', True)]}"
                 />
             </div>
-
             <xpath expr="/form/sheet/notebook" position="inside">
                 <page string="Connector WooCommerce" name="connector">
                     <group string="WooCommerce Bindings">
