@@ -74,6 +74,7 @@ class WooCommerceBackend(models.Model):
     client_order_ref_prefix = fields.Char(
         string="Client Order Reference Prefix",
         help="Prefix to add to the client order reference",
+        required=True,
     )
     verify_ssl = fields.Boolean(
         default=True,
