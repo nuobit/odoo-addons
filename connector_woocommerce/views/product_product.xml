@@ -45,7 +45,6 @@
             <field name="inventory_availability" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
-
         </field>
     </record>
     <record id="product_product_tree_view" model="ir.ui.view">
