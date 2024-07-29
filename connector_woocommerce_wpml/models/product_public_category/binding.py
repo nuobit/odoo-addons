@@ -5,8 +5,6 @@ from odoo import fields, models
 
 
 class WooCommerceProductPublicCategory(models.Model):
-    # _name = "woocommerce.product.public.category"
-    # _inherit = ["woocommerce.product.public.category", "woocommerce.product.wpml.mixin"]
     _inherit = "woocommerce.product.public.category"
 
     woocommerce_lang = fields.Char(
