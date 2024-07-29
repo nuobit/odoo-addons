@@ -29,7 +29,6 @@ class WooCommerceProductProductExportMapper(Component):
                 != self.backend_record._get_woocommerce_lang(lang_code)
             )
             translation_of = None
-            # TODO: REVIEW: can we send two values as a list?
             for obb in other_binding_backend:
                 translation_of = obb.woocommerce_idproduct
             return {"translation_of": translation_of}

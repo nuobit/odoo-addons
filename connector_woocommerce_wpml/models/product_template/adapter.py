@@ -39,16 +39,6 @@ class WooCommerceProductTemplateAdapter(Component):
         res = super()._modify_res_on_search_read(parent_ids, domain_dict)
         res[0]["lang"] = domain_dict.get("lang")
 
-    # We need to override this method to handle the case when the response is a single item,
-    # because parameter X-WP-Total is not included in header
-    # def _get_res_total_items(self, res):
-    #     total_items = super()._get_res_total_items(res)
-    #     if not total_items:
-    #         res_data = res.json()
-    #         if isinstance(res_data, dict) and res_data:
-    #             total_items = 1
-    #     return total_items
-
     def _domain_to_normalized_dict(self, real_domain):
         return self.wpml_domain_to_normalized_dict(real_domain)
 
