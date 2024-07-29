@@ -25,7 +25,6 @@ class WooCommerceProductTemplateExportMapper(Component):
                 != self.backend_record._get_woocommerce_lang(lang_code)
             )
             translation_of = None
-            # TODO: REVIEW: can we send two values as a list?
             for obb in other_binding_backend:
                 translation_of = obb.woocommerce_idproduct
             return {"translation_of": translation_of}
@@ -41,5 +40,7 @@ class WooCommerceProductTemplateExportMapper(Component):
         return record.product_variant_id.variant_public_description
 
     def _get_value_ids(self, attribute_line):
-        # TODO: It's in the correct lang?
         return attribute_line.value_ids.mapped("name")
+
+    def _get_slug_name(self, record):
+        return record.slug_name
