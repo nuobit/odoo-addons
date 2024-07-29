@@ -54,6 +54,7 @@
             </field>
             <field name="website_ribbon_id" position="after">
                 <field name="public_description" />
+                <field name="slug_name" />
             </field>
         </field>
     </record>
