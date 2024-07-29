@@ -57,6 +57,9 @@ class ProductTemplate(models.Model):
     public_description = fields.Text(
         translate=True,
     )
+    slug_name = fields.Char(
+        translate=True,
+    )
     is_published = fields.Boolean(
         compute="_compute_template_is_published",
         inverse="_inverse_template_is_published",
