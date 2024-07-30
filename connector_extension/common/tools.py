@@ -3,6 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import datetime
 import hashlib
+import re
 import unicodedata
 
 from odoo import _
@@ -137,3 +138,23 @@ def trim_domain(domain):
         else:
             raise Exception("Unexpected domain format: %s" % d)
     return trimmed_domain
+
+
+def color_rgb2hex(data):
+    def conv_rgb(match):
+        rgb_hex_l = []
+        groups = match.groups()
+        for value, percent in zip(groups[0::2], groups[1::2]):
+            if percent:
+                hex_value = round(float(value) * 255 / 100)
+            else:
+                hex_value = int(value)
+            rgb_hex_l.append(f"{hex_value:02X}")
+        return f'#{"".join(rgb_hex_l)}'
+
+    return re.sub(
+        r"rgb\( *([0-9.]+) *(%?) *, *([0-9.]+) *(%?) *, *([0-9.]+) *(%?) *\)",
+        conv_rgb,
+        data,
+        flags=re.IGNORECASE,
+    )
