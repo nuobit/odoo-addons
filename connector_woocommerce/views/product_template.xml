@@ -45,6 +45,7 @@
                 />
             </xpath>
             <field name="website_sequence" position="before">
+                <field name="website_name" />
                 <field name="is_published" />
                 <field
                     name="woocommerce_enabled"
@@ -53,8 +54,8 @@
                 <field name="woocommerce_bind_ids" invisible="1" />
             </field>
             <field name="website_ribbon_id" position="after">
-                <field name="public_description" />
                 <field name="slug_name" />
+                <field name="public_description" widget="html" />
             </field>
         </field>
     </record>
