@@ -5,6 +5,7 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping
+from odoo.addons.connector_extension.common import tools
 
 
 class WooCommerceProductTemplateExportMapper(Component):
@@ -15,7 +16,7 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def name(self, record):
-        return {"name": record.name}
+        return {"name": record.website_name if record.website_name else record.name}
 
     @changed_by("default_code")
     @mapping
@@ -96,14 +97,18 @@ class WooCommerceProductTemplateExportMapper(Component):
             }
 
     def _get_product_description(self, record):
-        return record.with_context(
-            lang=self.backend_record.language_id.code
-        ).public_description
+        return tools.color_rgb2hex(
+            record.record.with_context(
+                lang=self.backend_record.language_id.code
+            ).public_description
+        )
 
     def _get_product_variant_description(self, record):
-        return record.product_variant_id.with_context(
-            lang=self.backend_record.language_id.code
-        ).variant_public_description
+        return tools.color_rgb2hex(
+            record.product_variant_id.with_context(
+                lang=self.backend_record.language_id.code
+            ).variant_public_description
+        )
 
     @mapping
     def description(self, record):
