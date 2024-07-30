@@ -54,6 +54,9 @@ class ProductTemplate(models.Model):
             ):
                 rec.woocommerce_write_date = fields.Datetime.now()
 
+    website_name = fields.Char(
+        translate=True,
+    )
     public_description = fields.Text(
         translate=True,
     )
