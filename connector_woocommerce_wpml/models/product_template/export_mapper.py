@@ -3,6 +3,7 @@
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping, only_create
+from odoo.addons.connector_extension.common import tools
 
 
 class WooCommerceProductTemplateExportMapper(Component):
@@ -32,12 +33,12 @@ class WooCommerceProductTemplateExportMapper(Component):
     def _get_product_description(self, record):
         # We don't need check backend_record lang
         # because record already has lang on context
-        return record.public_description
+        return tools.color_rgb2hex(record.public_description)
 
     def _get_product_variant_description(self, record):
         # We don't need check backend_record lang
         # because record already has lang on context
-        return record.product_variant_id.variant_public_description
+        return tools.color_rgb2hex(record.product_variant_id.variant_public_description)
 
     def _get_value_ids(self, attribute_line):
         return attribute_line.value_ids.mapped("name")
