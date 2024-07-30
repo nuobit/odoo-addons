@@ -34,7 +34,7 @@
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="public_description" position="after">
-                <field name="variant_public_description" />
+                <field name="variant_public_description" widget="html" />
             </field>
             <field name="public_description" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -117,7 +117,7 @@
                     <page name="shop" string="eCommerce">
                         <group name="shop">
                             <field name="variant_is_published" />
-                            <field name="variant_public_description" />
+                            <field name="variant_public_description" widget="html" />
                             <field name="variant_inventory_availability" />
                         </group>
                         <group name="product_template_document" string="Documents">
