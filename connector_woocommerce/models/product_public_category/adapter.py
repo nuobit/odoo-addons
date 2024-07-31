@@ -14,8 +14,9 @@ class WooCommerceProductPublicCategoryAdapter(Component):
         return self._exec("post", "products/categories", data=data)
 
     def write(self, external_id, data):  # pylint: disable=W8106
-        url_l = ["products/categories", str(external_id[0])]
-        return self._exec("put", "/".join(url_l), data=data)
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        url = "products/categories/%s" % external_id_values["id"]
+        return self._exec("put", url, data=data)
 
     def search_read(self, domain=None):
         return self._exec("get", "products/categories", domain=domain)
@@ -24,3 +25,8 @@ class WooCommerceProductPublicCategoryAdapter(Component):
         res = super()._get_search_fields()
         res.append("slug")
         return res
+
+    def delete(self, external_id):
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        url = "products/categories/%s" % external_id_values["id"]
+        return self._exec("delete", url, params={"force": "1"})

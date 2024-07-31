@@ -12,7 +12,7 @@
         />
         <field name="arch" type="xml">
             <xpath expr="/form/sheet/notebook" position="inside">
-                <page string="Connector WooCommerce" name="connector">
+                <page string="Connector WooCommerce" name="connector_woocommerce">
                     <group string="WooCommerce Bindings">
                         <field name="woocommerce_bind_ids" nolabel="1" />
                     </group>
