@@ -15,18 +15,7 @@ class ProductPublicCategory(models.Model):
         context={"active_test": False},
     )
 
-    def _dict_binding_data(self, binding):
-        with binding.backend_id.work_on(binding._name) as work:
-            binder = work.component(usage="binder")
-            external_id = binder.to_external(binding)
-            return {
-                "backend": binding.backend_id,
-                "binding_name": binding._name,
-                "external_id": external_id,
-            }
-
     def unlink(self):
-        to_remove = []
         categories_with_bindings = self.filtered(lambda x: x.woocommerce_bind_ids)
         if len(categories_with_bindings) > 1:
             raise ValidationError(
@@ -36,7 +25,7 @@ class ProductPublicCategory(models.Model):
                 )
             )
         children_with_bindings = categories_with_bindings.search(
-            [("parent_id", "=", self.ids)]
+            [("parent_id", "in", self.ids)]
         ).filtered(lambda x: x.woocommerce_bind_ids)
         if children_with_bindings:
             raise ValidationError(
@@ -47,11 +36,7 @@ class ProductPublicCategory(models.Model):
                 )
                 % (categories_with_bindings.name, children_with_bindings.mapped("name"))
             )
-
-        for record in self:
-            for binding in record.woocommerce_bind_ids:
-                to_remove.append(self._dict_binding_data(binding))
-        result = super().unlink()
-        for bindings_data in to_remove:
-            self._event("on_record_post_unlink").notify(bindings_data)
-        return result
+        return super(
+            ProductPublicCategory,
+            self.with_context(binding_field="woocommerce_bind_ids"),
+        ).unlink()
