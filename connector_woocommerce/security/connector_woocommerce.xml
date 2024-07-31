@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo noupdate="1">
     <record id="connector_woocommerce_backend_company_rule" model="ir.rule">
         <field name="name">Connector Woocommerce backend multi-company rule</field>
