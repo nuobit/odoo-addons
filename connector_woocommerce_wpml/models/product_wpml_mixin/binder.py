@@ -21,9 +21,9 @@ class WooCommerceProductWPMLMixinBinder(AbstractComponent):
             ]
         return domain
 
-    def wpml_additional_external_binding_fields(self, external_data, relation):
+    def wpml_additional_external_binding_fields(self, external_data):
         return {
-            **super()._additional_external_binding_fields(external_data, relation),
+            **super()._additional_external_binding_fields(external_data),
             "woocommerce_lang": external_data["lang"],
         }
 
