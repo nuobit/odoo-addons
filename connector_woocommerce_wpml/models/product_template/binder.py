@@ -18,8 +18,8 @@ class WooCommerceProductTemplateBinder(Component):
     def get_binding_domain(self, record):
         return self.wpml_get_binding_domain(record)
 
-    def _additional_external_binding_fields(self, external_data, relation):
-        return self.wpml_additional_external_binding_fields(external_data, relation)
+    def _additional_external_binding_fields(self, external_data):
+        return self.wpml_additional_external_binding_fields(external_data)
 
     def unwrap_binding(self, binding):
         return self.wpml_unwrap_binding(binding)
