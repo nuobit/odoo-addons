@@ -52,6 +52,13 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
             return importer.run(external_id, sync_date, external_data=external_data)
 
     @api.model
+    def delete_record(self, backend_record, external_id):
+        """Export Odoo record"""
+        with backend_record.work_on(self._name) as work:
+            deleter = work.component(usage="record.direct.deleter")
+            return deleter.run(external_id)
+
+    @api.model
     def export_record(self, backend_record, relation):
         """Export Odoo record"""
         with backend_record.work_on(self._name) as work:
