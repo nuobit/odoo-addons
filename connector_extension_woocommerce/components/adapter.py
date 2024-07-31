@@ -198,7 +198,12 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         return self._exec_wcapi_call("put", resource, *args, **kwargs)
 
     def _exec_delete(self, resource, *args, **kwargs):
-        raise NotImplementedError()
+        return self._exec_wcapi_call(
+            "delete",
+            resource,
+            *args,
+            **kwargs,
+        )
 
     def _exec_options(self, resource, *args, **kwargs):
         raise NotImplementedError()
