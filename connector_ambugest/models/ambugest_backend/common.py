@@ -4,11 +4,24 @@
 
 import logging
 
+import pytz
+
 from odoo import _, api, exceptions, fields, models
 
 from ...components.adapter import api_handle_errors
 
 _logger = logging.getLogger(__name__)
+
+_tzs = [
+    (tz, tz)
+    for tz in sorted(
+        pytz.all_timezones, key=lambda tz: tz if not tz.startswith("Etc/") else "_"
+    )
+]
+
+
+def _tz_get(self):
+    return _tzs
 
 
 class AmbugestBackend(models.Model):
@@ -57,6 +70,14 @@ class AmbugestBackend(models.Model):
     import_services_since_date = fields.Datetime("Import Services since")
     import_customers_since_date = fields.Datetime("Import Customers since")
     import_products_since_date = fields.Datetime("Import Products since")
+
+    tz = fields.Selection(
+        _tz_get,
+        string="Timezone",
+        required=True,
+        default=lambda self: self._context.get("tz") or self.env.user.tz or "UTC",
+        help="This field is used in order to define in which timezone the backend will work.",
+    )
 
     def button_reset_to_draft(self):
         self.ensure_one()
@@ -120,3 +141,15 @@ class AmbugestBackend(models.Model):
         company_id = self.get_current_user_company()
         domain = [("company_id", "=", company_id.id)]
         self.search(domain).import_services_since()
+
+    def tz_to_utc(self, dt):
+        t = pytz.timezone(self.tz).localize(dt)
+        t = t.astimezone(pytz.utc)
+        t = t.replace(tzinfo=None)
+        return t
+
+    def tz_to_local(self, dt):
+        local_tz = pytz.timezone(self.tz)
+        datetime_utc = pytz.utc.localize(dt)
+        datetime_local = datetime_utc.astimezone(local_tz)
+        return datetime_local
