@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="sale_order_report_xlsx_mapping_config_tree_view" model="ir.ui.view">
+        <field name="name">Sale Order Report XLSX Mapping Config Tree</field>
+        <field name="model">sale.order.report.xlsx.mapping.config</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="field_mapping_name" />
+                <field name="field_mapping_string" />
+            </tree>
+        </field>
+    </record>
+    <record id="sale_order_report_xlsx_mapping_config_form_view" model="ir.ui.view">
+        <field name="name">Sale Order Report XLSX Mapping Config Form</field>
+        <field name="model">sale.order.report.xlsx.mapping.config</field>
+        <field name="arch" type="xml">
+            <form string="Sale Order Report XLSX Mapping Configuration">
+                <sheet>
+                    <h2 class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <field name="name" />
+                    </h2>
+                    <group>
+                        <field name="field_mapping_name" />
+                        <field name="field_mapping_string" />
+                    </group>
+                    <group string="Typology Service">
+                        <field name="service_typology_ids" nolabel="1" colspan="3">
+                            <tree editable="bottom">
+                                <field name="name" />
+                                <field name="key" />
+                                <field name="transfer_reason" />
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Service Type">
+                        <field name="service_type_ids" nolabel="1" colspan="3">
+                            <tree editable="bottom">
+                                <field name="type" />
+                                <field name="name" />
+                                <field name="product_ids" widget="many2many_tags" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
