@@ -63,6 +63,34 @@
                                 name="return_service"
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
+                            <field
+                                name="service_key"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_transfer_reason"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_invoice_number"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_invoice_creation_date"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_code"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_name"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_type"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                     </group>
                 </page>
