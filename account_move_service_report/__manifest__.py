@@ -16,6 +16,7 @@
         "views/reports.xml",
         "views/res_partner_views.xml",
         "views/sale_order_report_xlsx_mapping_config_views.xml",
+        "views/account_move_views.xml",
         "wizard/sale_make_invoice_advance_views.xml",
     ],
 }

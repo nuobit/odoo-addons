@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="account_move_view_form" model="ir.ui.view">
+        <field name="name">Service invoice report</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button
+                    name="print_report_invoice_service"
+                    string="Generate sales service spreadsheet"
+                    type="object"
+                    class="o_sale_print"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record id="detailed_invoice_service_action" model="ir.actions.server">
+        <field name="name">Generate sales service spreadsheet</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="account.model_account_move" />
+        <field name="binding_model_id" ref="model_account_move" />
+        <field name="code">
+            action = record.print_report_invoice_service()
+        </field>
+    </record>
+</odoo>
