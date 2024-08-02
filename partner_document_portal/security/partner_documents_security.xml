@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+     <record id="rule_partner_document_portal" model="ir.rule">
+            <field name="name">Partner Document portal rule</field>
+            <field name="model_id" ref="partner_document.model_partner_document" />
+            <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+            <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        </record>
+</odoo>
