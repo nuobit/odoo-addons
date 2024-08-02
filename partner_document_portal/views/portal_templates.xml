@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <template
+        id="portal_my_home"
+        name="Show Documents"
+        customize_show="True"
+        inherit_id="portal.portal_my_home"
+        priority="40"
+    >
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Documents</t>
+                <t t-set="url" t-value="'/my/documents'"/>
+                <t t-set="placeholder_count" t-value="'document_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_documents" name="My Documents">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Documents</t>
+            </t>
+            <t t-if="not documents">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no Documents.
+                </div>
+            </t>
+            <t t-if="documents" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>
+                            <span class='d-none d-md-inline'>Document type</span>
+                        </th>
+                        <th class="d-none d-md-table-cell">
+                            <span class='d-none d-md-inline'>Description</span>
+                        </th>
+                        <th class="text-center">
+                            <span class='d-none d-md-inline'>Expiration Date</span>
+                        </th>
+                        <th class="text-center">
+                            <span class='d-none d-md-inline'>Expired</span>
+                        </th>
+                        <th class="text-center">
+                            <span class='d-none d-md-inline'>Actions</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tr t-foreach="documents" t-as="document">
+                    <td>
+                        <a
+                            t-attf-href="/my/documents/#{document.id}?{{ keep_query() }}"
+                        ><span t-field="document.document_type_id.name"/></a>
+                    </td>
+                    <td class="d-none d-md-table-cell">
+                        <span t-field="document.description"/>
+                    </td>
+                    <td class="text-center">
+                        <span t-field="document.expiration_date"/>
+                    </td>
+                    <td class="text-center">
+                        <t t-if="document.expired">
+                            <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
+                        </t>
+                    </td>
+                    <td class="text-center">
+                        <t t-if="not document.validated">
+                            <a t-attf-href="/my/documents/delete/#{document.id}" class="text-danger">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                        </t>
+                    </td>
+                </tr>
+            </t>
+            <div class="mt-4">
+                <a class="btn btn-primary" href="/my/documents/upload">
+                    Upload New Document
+                </a>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_document_page" name="Document Portal Template" inherit_id="portal.portal_sidebar"
+              primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <div t-attf-class="card #{'pb-5' if report_type == 'html' else ''}" id="portal_sale_content">
+                <div t-call="partner_document_portal.partner_document_portal_content"/>
+            </div>
+
+        </xpath>
+    </template>
+
+   <template id="partner_document_portal_content" name="Partner Document Portal Content">
+    <div id="introduction" t-attf-class="pb-3 pt-3 #{'card-header bg-white' if report_type == 'html' else ''}">
+        <h2 class="my-0 text-primary">
+            <t t-out="document.document_type_id.name"/>
+        </h2>
+        <div t-attf-class="#{'card-body' if report_type == 'html' else ''}">
+            <!-- Content can be added here if needed -->
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="/my/documents/update_document" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="form-group mb-4">
+                        <label class="font-weight-bold">Description:</label>
+                        <input type="text" name="description" class="form-control" t-att-value="document.description" t-att-readonly="document.validated"/>
+                    </div>
+<!--                    TODO: modificar aixo, es pot canviar el expiration date tot i que esta validat.-->
+                      <div class="form-group mb-4">
+                        <label class="font-weight-bold">Expiration Date:</label>
+                        <input type="date" name="expiration_date" class="form-control"
+                               t-att-value="document.expiration_date" t-readonly="document.validated"/>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label class="font-weight-bold">Validated:</label>
+                        <t t-if="document.validated">
+                            <span class="text-success">Validated</span>
+                        </t>
+                        <t t-if="not document.validated">
+                            <span class="text-danger">Not Validated</span>
+                        </t>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label class="font-weight-bold">Attachments:</label>
+                        <t t-if="document.datas">
+                            <div class="border p-3 rounded bg-light">
+                                <a t-att-href="'/web/content/' + str(document.id) + '?download=true'" class="btn btn-info">
+                                    <i class="fa fa-download"></i> Download Attachment
+                                </a>
+                            </div>
+                        </t>
+                        <t t-if="not document.validated">
+                            <div class="form-group mt-3">
+                                <input type="file" name="attachment" class="form-control"/>
+                            </div>
+                        </t>
+                    </div>
+                    <button type="submit" class="btn btn-primary" t-if="not document.validated">Update Document</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="portal_upload_document" name="Upload Document">
+    <t t-call="portal.portal_layout">
+        <t t-set="title">Upload Document</t>
+        <div class="container mt16">
+            <h2>Upload New Document</h2>
+            <form action="/my/documents/upload/submit" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="document_type_id">Document Type</label>
+                    <select id="document_type_id" name="document_type_id" class="form-control">
+                        <t t-foreach="request.env['partner.document.type'].search([])" t-as="doc_type">
+                            <option t-att-value="doc_type.id">
+                                <t t-esc="doc_type.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="expiration_date">Expiration Date</label>
+                    <input type="date" id="expiration_date" name="expiration_date" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="file">Upload File</label>
+                    <input type="file" id="file" name="file" class="form-control" required="required"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </t>
+</template>
+</odoo>
