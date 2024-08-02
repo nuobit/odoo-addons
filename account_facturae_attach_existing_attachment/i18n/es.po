@@ -1,0 +1,46 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_facturae_attach_existing_attachment
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-02 09:29+0000\n"
+"PO-Revision-Date: 2024-08-02 09:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_facturae_attach_existing_attachment
+#: model:ir.model.fields,field_description:account_facturae_attach_existing_attachment.field_account_move__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: account_facturae_attach_existing_attachment
+#: model:ir.model.fields,field_description:account_facturae_attach_existing_attachment.field_account_move__id
+msgid "ID"
+msgstr "ID"
+
+#. module: account_facturae_attach_existing_attachment
+#: model:ir.model,name:account_facturae_attach_existing_attachment.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
+
+#. module: account_facturae_attach_existing_attachment
+#: model:ir.model.fields,field_description:account_facturae_attach_existing_attachment.field_account_move____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: account_facturae_attach_existing_attachment
+#: code:addons/account_facturae_attach_existing_attachment/models/account_move.py:0
+#, python-format
+msgid ""
+"SimpleType 'AttachmentFormatType' not found. Please contact your system "
+"administrator."
+msgstr ""
+"Tipo simple 'AttachmentFormatType' no encontrado. Por favor, contacta con "
+"tu administrador del sistema."
