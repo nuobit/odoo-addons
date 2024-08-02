@@ -3,7 +3,8 @@
 import re
 import xml.etree.ElementTree as ET
 
-from odoo import models
+from odoo import _, models
+from odoo.exceptions import ValidationError
 from odoo.modules.module import get_module_resource
 
 
@@ -31,7 +32,12 @@ class AccountMove(models.Model):
             values = [enum.get("value") for enum in enumerations]
             return values
         else:
-            raise ValueError("SimpleType 'AttachmentFormatType' not found")
+            raise ValidationError(
+                _(
+                    "SimpleType 'AttachmentFormatType' not found. Please contact your "
+                    "system administrator."
+                )
+            )
 
     def _get_facturae_move_attachments(self):
         result = super()._get_facturae_move_attachments()
