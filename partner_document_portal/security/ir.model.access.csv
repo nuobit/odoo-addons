@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partner_document_portal,partner.document portal,partner_document.model_partner_document,base.group_portal,1,1,1,1
+access_partner_classification_portal,partner.classification portal,partner_document.model_partner_classification,base.group_portal,1,0,0,0
+access_partner_document_type_portal,partner.document_type portal,partner_document.model_partner_document_type,base.group_portal,1,0,0,0
