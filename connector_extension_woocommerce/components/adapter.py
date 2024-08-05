@@ -32,6 +32,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         self, res_data, res, resource, raise_on_error=True, **kwargs
     ):
         if not res.ok:
+            error_message = None
             if res.status_code == 404:
                 if res_data.get("code") == "rest_no_route":
                     error_message = _(
@@ -61,8 +62,6 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                             resource,
                         )
                     )
-                else:
-                    error_message = _("Error: %s, Resource: %s" % (res_data, resource))
             elif res.status_code == 400:
                 if res_data.get("code") == "term_exists":
                     error_message = _(
@@ -84,14 +83,11 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                         "If it's the case, try to remove the binding of the %s."
                         % (res_data.get("message"), resource, self.model._name)
                     )
-                else:
-                    error_message = _("Error: %s, Resource: %s" % (res_data, resource))
-            else:
+            if not error_message:
                 error_message = _("Error: %s, Resource: %s" % (res_data, resource))
             if raise_on_error:
                 raise ValidationError(error_message)
-            else:
-                return error_message
+            return error_message
         return res_data
 
     # TODO: remove this total items and use the res.headers instead
