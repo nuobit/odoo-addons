@@ -233,7 +233,9 @@ class WooCommerceProductTemplateExportMapper(Component):
             ) as work:
                 binder = work.component(usage="binder")
                 img_list = []
-                if record.product_image_attachment_ids:
+                if record.with_context(
+                    include_main_product_image=self.backend_record.use_main_product_image
+                ).product_image_attachment_ids:
                     for image in record.product_image_attachment_ids.mapped(
                         "attachment_id"
                     ):

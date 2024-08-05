@@ -129,29 +129,30 @@ class ProductTemplate(models.Model):
 
     def _compute_product_image_attachment_ids(self):
         for rec in self:
-            attachment = self.env["ir.attachment"].search(
-                [
-                    ("res_model", "=", rec._name),
-                    ("res_id", "=", rec.id),
-                    ("res_field", "=", "image_1920"),
-                ]
-            )
-            if attachment:
-                rec.product_image_attachment_ids = [
-                    (
-                        0,
-                        0,
-                        {
-                            "attachment_id": attachment.id,
-                            "sequence": min(
-                                rec.product_template_image_ids.mapped("sequence")
-                            )
-                            - 1
-                            if rec.product_template_image_ids
-                            else 1,
-                        },
-                    )
-                ]
+            if self.env.context.get("include_main_product_image", False):
+                attachment = self.env["ir.attachment"].search(
+                    [
+                        ("res_model", "=", rec._name),
+                        ("res_id", "=", rec.id),
+                        ("res_field", "=", "image_1920"),
+                    ]
+                )
+                if attachment:
+                    rec.product_image_attachment_ids = [
+                        (
+                            0,
+                            0,
+                            {
+                                "attachment_id": attachment.id,
+                                "sequence": min(
+                                    rec.product_template_image_ids.mapped("sequence")
+                                )
+                                - 1
+                                if rec.product_template_image_ids
+                                else 1,
+                            },
+                        )
+                    ]
             for template_image in rec.product_template_image_ids:
                 if template_image.image_1920:
                     attachment = self.env["ir.attachment"].search(
