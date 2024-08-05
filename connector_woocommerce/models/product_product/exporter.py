@@ -64,7 +64,9 @@ class WooCommerceProductProductExporter(Component):
                 "woocommerce.product.attribute",
             )
         if (
-            relation.product_image_attachment_ids
+            relation.with_context(
+                include_main_product_image=self.backend_record.use_main_product_image
+            ).product_image_attachment_ids
             and len(relation.product_tmpl_id.product_variant_ids) > 1
         ):
             if self.backend_record.wordpress_backend_id:
