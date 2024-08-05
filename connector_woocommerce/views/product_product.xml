@@ -39,6 +39,9 @@
             <field name="public_description" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
+            <field name="public_short_description" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
             <field name="inventory_availability" position="after">
                 <field name="variant_inventory_availability" />
             </field>

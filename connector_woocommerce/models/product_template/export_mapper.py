@@ -122,10 +122,21 @@ class WooCommerceProductTemplateExportMapper(Component):
             description = self._get_product_variant_description(record)
         return {"description": description if description else ""}
 
+    def _get_short_description(self, record):
+        return record.with_context(
+            lang=self.backend_record.language_id.code
+        ).public_short_description
+
     @mapping
     def short_description(self, record):
-        short_description = self._prepare_document_description(record.document_ids)
-        return {"short_description": short_description}
+        short_description = []
+        public_short_description = self._get_short_description(record)
+        if public_short_description:
+            short_description.append(public_short_description)
+        document_description = self._prepare_document_description(record.document_ids)
+        if document_description:
+            short_description.append(document_description)
+        return {"short_description": "\n".join(short_description) or None}
 
     @mapping
     def product_type(self, record):
