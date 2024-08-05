@@ -23,22 +23,46 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         func = getattr(self, "_exec_%s" % op)
         return func(resource, *args, **kwargs)
 
+    def _manage_error_codes(
+        self, res_data, res, resource, raise_on_error=True, **kwargs
+    ):
+        if not res.ok:
+            error_message = None
+            if res.status_code == 404:
+                if res_data.get("code") == "rest_post_invalid_id":
+                    error_message = _(
+                        "Error: '%s'. Probably the %s has been "
+                        "removed from WordPress. "
+                        "If it's the case, try to remove the binding of the %s."
+                        % (res_data.get("message"), resource, self.model._name)
+                    )
+            elif res.status_code == 500:
+                if res_data.get("code") == "rest_upload_sideload_error":
+                    error_message = _(
+                        "Error: '%s'. Probably the image or document "
+                        "is uploaded with bad format. "
+                        "Please, review on database: %s"
+                        % (res_data["message"], kwargs["headers"])
+                    )
+            if not error_message:
+                error_message = _("Error: %s, Resource: %s" % (res_data, resource))
+            if raise_on_error:
+                raise ValidationError(error_message)
+            return error_message
+        return res_data
+
     def _exec_wp_call(self, op, resource, *args, **kwargs):
         url = self.backend_record.url + "/wp-json/wp/v2/" + resource
         func = getattr(requests, op)
         try:
             res = func(url, *args, **kwargs)
-            data = res.json()
-            if not res.ok:
-                if res.status_code == "rest_post_invalid_id":
-                    data = []
-                else:
-                    raise ValidationError(_("Error: %s") % data)
+            res_data = res.json()
+            res_data = self._manage_error_codes(res_data, res, resource, **kwargs)
             result = {
                 "ok": res.ok,
                 "status_code": res.status_code,
                 "headers": res.headers,
-                "data": data,
+                "data": res_data,
             }
         except requests.exceptions.ConnectionError as e:
             raise RetryableJobError(_("Error connecting to WordPress: %s") % e) from e
