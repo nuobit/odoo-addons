@@ -74,7 +74,9 @@ class WooCommerceProductTemplateExporter(Component):
                 "wordpress.ir.attachment"
             ) as work:
                 exporter = work.component(self._usage)
-                for image_attachment in relation.product_image_attachment_ids:
+                for image_attachment in relation.with_context(
+                    include_main_product_image=self.backend_record.use_main_product_image
+                ).product_image_attachment_ids:
                     exporter._export_dependency(
                         image_attachment.attachment_id,
                         "wordpress.ir.attachment",
