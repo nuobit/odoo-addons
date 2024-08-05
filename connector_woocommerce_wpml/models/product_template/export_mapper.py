@@ -35,6 +35,9 @@ class WooCommerceProductTemplateExportMapper(Component):
         # because record already has lang on context
         return tools.color_rgb2hex(record.public_description)
 
+    def _get_short_description(self, record):
+        return record.public_short_description
+
     def _get_product_variant_description(self, record):
         # We don't need check backend_record lang
         # because record already has lang on context
