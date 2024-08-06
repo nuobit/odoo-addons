@@ -233,34 +233,30 @@ class WooCommerceProductTemplateExportMapper(Component):
             ) as work:
                 binder = work.component(usage="binder")
                 img_list = []
-                if record.with_context(
+                product_image_attachments = record.with_context(
                     include_main_product_image=self.backend_record.use_main_product_image
-                ).product_image_attachment_ids:
-                    for image in record.product_image_attachment_ids.mapped(
-                        "attachment_id"
-                    ):
-                        external_id = binder.get_external_dict_ids(
-                            image, check_external_id=False
+                ).product_image_attachment_ids
+                for image in product_image_attachments.mapped("attachment_id"):
+                    external_id = binder.get_external_dict_ids(
+                        image, check_external_id=False
+                    )
+                    if external_id:
+                        img_list.append(
+                            {
+                                "id": external_id["id"],
+                            }
                         )
-                        if external_id:
-                            img_list.append(
-                                {
-                                    "id": external_id["id"],
-                                }
+                    else:
+                        if not self.backend_record.wordpress_backend_id.test_database:
+                            assert external_id, (
+                                "Unexpected error on %s:"
+                                "The backend id cannot be obtained."
+                                "At this stage, the backend record should "
+                                "have been already linked via "
+                                "._export_dependencies. " % record._name
                             )
-                        else:
-                            if (
-                                not self.backend_record.wordpress_backend_id.test_database
-                            ):
-                                assert external_id, (
-                                    "Unexpected error on %s:"
-                                    "The backend id cannot be obtained."
-                                    "At this stage, the backend record should "
-                                    "have been already linked via "
-                                    "._export_dependencies. " % record._name
-                                )
-                    if img_list:
-                        return {"images": img_list}
+                if img_list:
+                    return {"images": img_list}
 
     def _get_slug_name(self, record):
         return record.with_context(lang=self.backend_record.language_id.code).slug_name
