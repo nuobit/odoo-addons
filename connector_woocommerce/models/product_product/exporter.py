@@ -63,10 +63,11 @@ class WooCommerceProductProductExporter(Component):
                 attribute_line.attribute_id,
                 "woocommerce.product.attribute",
             )
+        product_image_attachments = relation.with_context(
+            include_main_product_image=self.backend_record.use_main_product_image
+        ).product_image_attachment_ids
         if (
-            relation.with_context(
-                include_main_product_image=self.backend_record.use_main_product_image
-            ).product_image_attachment_ids
+            product_image_attachments
             and len(relation.product_tmpl_id.product_variant_ids) > 1
         ):
             if self.backend_record.wordpress_backend_id:
@@ -75,7 +76,7 @@ class WooCommerceProductProductExporter(Component):
                 ) as work:
                     exporter = work.component(self._usage)
                     exporter._export_dependency(
-                        relation.product_image_attachment_ids[0].attachment_id,
+                        product_image_attachments[0].attachment_id,
                         "wordpress.ir.attachment",
                     )
         if relation.product_document_attachment_ids:
