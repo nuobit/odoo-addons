@@ -19,3 +19,9 @@ class SaleOrder(models.Model):
             datetime_utc = pytz.utc.localize(order.date_order)
             datetime_local = datetime_utc.astimezone(user_tz)
             order.date_order_tz = datetime_local.date()
+
+    service_date_tz = fields.Date(compute="_compute_service_date_tz")
+
+    def _compute_service_date_tz(self):
+        for rec in self:
+            rec.service_date_tz = fields.Date.context_today(rec, rec.service_date)
