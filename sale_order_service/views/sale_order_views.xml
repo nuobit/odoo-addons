@@ -63,6 +63,22 @@
                                 name="return_service"
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
+                            <field
+                                name="service_key"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_transfer_reason"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_insurer_code"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="service_insurer_name"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
                         </group>
                     </group>
                 </page>
