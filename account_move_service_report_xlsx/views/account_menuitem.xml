@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="menu_service_report_config"
+        name="Service Report"
+        parent="account.account_invoicing_menu"
+        action="res_partner_service_report_config_action"
+        sequence="10"
+    />
+</odoo>

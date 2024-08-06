@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="report_oxigen_stock_valuation_xlsx_action" model="ir.actions.report">
+        <field name="name">Generate sales service spreadsheet</field>
+        <field name="model">account.move</field>
+        <field name="type">ir.actions.report</field>
+        <field name="report_name">account_move_service_report_xlsx.report_sale</field>
+        <field name="report_type">xlsx</field>
+        <field name="print_report_name">'%s-Sale-Service' % (object.name)</field>
+        <field name="attachment">(object.name) + '-Sale-Service.xlsx'</field>
+    </record>
+</odoo>
