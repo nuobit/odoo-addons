@@ -356,7 +356,7 @@
                                                                 </td>
                                                                 <td width="10%">
                                                                     <span
-                                                                        t-field="order.service_date"
+                                                                        t-field="order.service_date_tz"
                                                                     />
                                                                 </td>
                                                                 <td width="30%">
