@@ -1,6 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+from datetime import datetime
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
@@ -100,10 +100,28 @@ class SaleOrderImportMapper(Component):
         (nullif("Referencia_autorizacion"), "auth_number"),
         (nullif("Matricula"), "plate_number"),
         ("Servicio_Ano", "service_number"),
-        ("Fecha_Servicio", "service_date"),
         (nullif("Origen"), "origin"),
         (nullif("Destino"), "destination"),
+        ("Clave", "service_key"),
+        ("Motivo_Traslado", "service_transfer_reason"),
+        (nullif("Codigo_Aseguradora"), "service_insurer_code"),
+        (nullif("Nombre_Aseguradora"), "service_insurer_name"),
     ]
+
+    @only_create
+    @mapping
+    def service_date(self, record):
+        service_datetime = self.backend_record.tz_to_utc(
+            datetime(
+                year=record["Fecha_Servicio"].year,
+                month=record["Fecha_Servicio"].month,
+                day=record["Fecha_Servicio"].day,
+                hour=record["Hora_Servicio"].hour,
+                minute=record["Hora_Servicio"].minute,
+                second=record["Hora_Servicio"].second,
+            )
+        )
+        return {"service_date": service_datetime}
 
     def _get_order_lines(self, record, model_name):
         adapter = self.component(usage="backend.adapter", model_name=model_name)

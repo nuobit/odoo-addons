@@ -11,14 +11,17 @@ class SaleOrderAdapter(Component):
     _apply_on = "ambugest.sale.order"
 
     _sql = """select c.EMPRESA,  c."Codi UP" as "CodiUP",
-                     s.Fecha_Servicio, s.Codigo_Servicio, s.Servicio_Dia, s.Servicio_Ano,
-                     s.Fecha_Modifica,
-
+                     s.Fecha_Servicio, s.Hora_Servicio, s.Codigo_Servicio,
+                     s.Servicio_Dia, s.Servicio_Ano, s.Fecha_Modifica,
                      s.Num_Contrato, s.Nombre_Asegurado, s.DNI_Asegurado,
-                         s.Num_Asegurado,s.Referencia_autorizacion,
+                     s.Num_Asegurado, a.Codigo_Aseguradora, a.Nombre_Aseguradora,
+                     s.Referencia_autorizacion, s.Clave, s.Motivo_Trasladado,
                      s.Matricula, s.Origen, s.Destino,
                      s.Codigo_Ida_y_Vuelta, s.Servicio_de_vuelta
-              from %(schema)s.Odoo_Servicios s, %(schema)s."Unidades productivas" c
+              from %(schema)s.Odoo_Servicios s
+                    left join %(schema)s.Odoo_Aseguradoras_por_Clientes a on
+                       s.Cliente = a.Cliente and s.Cliente_Aseguradora = a.Codigo_Aseguradora,
+                   %(schema)s."Unidades productivas" c
               where c."Activa_en_AmbuGEST" = 1 and
                     cast(c."Codi UP" as integer) >= 90000 and
                     s.Cliente = c.Cliente and
