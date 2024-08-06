@@ -1,3 +1,4 @@
+from odoo import fields
 from odoo.tests import Form, common
 
 
@@ -44,6 +45,9 @@ class TestFacturaeService(common.SavepointCase):
             invoice.invoice_line_ids.mapped("facturae_receiver_contract_reference")[0],
         )
         self.assertEqual(
-            self.sale_order.service_date,
+            fields.Date.context_today(
+                self.sale_order.with_context(tz=self.sale_order.create_uid.tz),
+                self.sale_order.service_date,
+            ),
             invoice.invoice_line_ids.mapped("facturae_receiver_transaction_date")[0],
         )
