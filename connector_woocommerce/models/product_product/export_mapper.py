@@ -117,17 +117,15 @@ class WooCommerceProductProductExportMapper(Component):
     @mapping
     def image(self, record):
         # WooCommerce only allows one image per variant product
-        if (
-            record.with_context(
-                include_main_product_image=self.backend_record.use_main_product_image
-            ).product_image_attachment_ids
-            and self.backend_record.wordpress_backend_id
-        ):
+        product_image_attachments = record.with_context(
+            include_main_product_image=self.backend_record.use_main_product_image
+        ).product_image_attachment_ids
+        if product_image_attachments and self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
                 "wordpress.ir.attachment"
             ) as work:
                 binder = work.component(usage="binder")
-                image = record.product_image_attachment_ids[0].attachment_id
+                image = product_image_attachments[0].attachment_id
                 values = binder.get_external_dict_ids(image, check_external_id=False)
                 if (
                     self.backend_record.wordpress_backend_id.test_database
