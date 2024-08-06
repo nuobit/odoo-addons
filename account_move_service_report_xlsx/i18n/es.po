@@ -1,0 +1,428 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_move_service_report_xlsx
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-07 11:33+0000\n"
+"PO-Revision-Date: 2024-08-07 11:33+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.actions.report,print_report_name:account_move_service_report_xlsx.report_oxigen_stock_valuation_xlsx_action
+msgid "'%s-Sale-Service' % (object.name)"
+msgstr "'%s-Servicio-Venta' % (object.name)"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "ADDITIONAL (concept)"
+msgstr "ADICIONAL (concepto)"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "ADDITIONAL (€)"
+msgstr "ADICIONAL (€)"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model,name:account_move_service_report_xlsx.model_report_account_move_service_report_xlsx_report_sale
+msgid "Abstract XLSX Account Move Service Report"
+msgstr "Informe de movimientos de cuenta abstracto XLSX"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields.selection,name:account_move_service_report_xlsx.selection__res_partner_service_report_config_type__type__additional
+msgid "Additional"
+msgstr "Adicional"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__config_id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__config_id
+msgid "Config"
+msgstr "Configuración"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model,name:account_move_service_report_xlsx.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__create_uid
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__create_uid
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__create_date
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__create_date
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "DEPARTURE (€)"
+msgstr "SALIDA (€)"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Destination"
+msgstr "Destino"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_report_account_move_service_report_xlsx_report_sale__display_name
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner__display_name
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__display_name
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__display_name
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__display_name
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_sale_order__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.actions.report,name:account_move_service_report_xlsx.report_oxigen_stock_valuation_xlsx_action
+#: model:ir.actions.server,name:account_move_service_report_xlsx.detailed_invoice_service_action
+#: model_terms:ir.ui.view,arch_db:account_move_service_report_xlsx.account_move_view_form
+msgid "Generate sales service spreadsheet"
+msgstr "Generar hoja de cálculo de servicios de venta"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_move__id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_report_account_move_service_report_xlsx_report_sale__id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner__id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_sale_order__id
+msgid "ID"
+msgstr ""
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "ID Number (8 digits)"
+msgstr "Numero de ID (8 dígitos)"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/account_move.py:0
+#, python-format
+msgid ""
+"In the sale orders linked to this invoice, there are products that are not included in the allowed service types for this service intermediary: \n"
+"-%s\n"
+"Please go to the service report configuration and add the missing products."
+msgstr ""
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Insurance Code"
+msgstr "Codigo aseguradora"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Insurance Name"
+msgstr "Nombre aseguradora"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,help:account_move_service_report_xlsx.field_ambugest_res_partner__service_report_config_id
+#: model:ir.model.fields,help:account_move_service_report_xlsx.field_oxigesti_res_partner__service_report_config_id
+#: model:ir.model.fields,help:account_move_service_report_xlsx.field_res_partner__service_report_config_id
+#: model:ir.model.fields,help:account_move_service_report_xlsx.field_res_users__service_report_config_id
+#: model:ir.model.fields,help:account_move_service_report_xlsx.field_sage_res_partner__service_report_config_id
+msgid "Intermediary mapping for service billing"
+msgstr "Mapeo intermediario para facturación de servicios"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Invoice Date"
+msgstr "Fecha factura"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Invoice Number"
+msgstr "Numero de factura"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model,name:account_move_service_report_xlsx.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento contable"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "KM Quantity"
+msgstr "CANTIDAD KM"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__key
+msgid "Key"
+msgstr "Clave"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/res_partner_service_report_config_tipology.py:0
+#, python-format
+msgid "Key and Transfer Reason must be unique in the same configuration."
+msgstr ""
+"Clave y Motivo de Transferencia deben ser únicos en la misma configuración."
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields.selection,name:account_move_service_report_xlsx.selection__res_partner_service_report_config_type__type__km
+msgid "Km"
+msgstr ""
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_move____last_update
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_report_account_move_service_report_xlsx_report_sale____last_update
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner____last_update
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config____last_update
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type____last_update
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology____last_update
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_sale_order____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__write_uid
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__write_uid
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__write_date
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__write_date
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__name
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Origin"
+msgstr "Origen"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Patient (name and surname)"
+msgstr "Paciente (nombre y apellido)"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__product_ids
+msgid "Product"
+msgstr "Producto"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Provider name"
+msgstr "Nombre proveedor"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "RETURN (€)"
+msgstr "RETORNO (€)"
+
+#. module: account_move_service_report_xlsx
+#: model_terms:ir.ui.view,arch_db:account_move_service_report_xlsx.res_partner_service_report_config_form_view
+msgid "Res Partner Service Report Config"
+msgstr "Configuración de Informe de Servicio de Res Partner"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model,name:account_move_service_report_xlsx.model_res_partner_service_report_config_type
+msgid "Res Partner Service Report Config Type"
+msgstr "Tipo de Configuración de Informe de Servicio de Res Partner"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model,name:account_move_service_report_xlsx.model_res_partner_service_report_config_typology
+msgid "Res Partner Service Report Config Typology"
+msgstr "Tipología de Configuración de Informe de Servicio de Res Partner"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model,name:account_move_service_report_xlsx.model_res_partner_service_report_config
+msgid "Sale Order Report Xlsx Mapping Config"
+msgstr "Configuración de mapeo de informe de pedido de venta Xlsx"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model,name:account_move_service_report_xlsx.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Sales Service"
+msgstr "Servicio de ventas"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields.selection,name:account_move_service_report_xlsx.selection__res_partner_service_report_config_type__type__service
+msgid "Service"
+msgstr "Servicio"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Service Date"
+msgstr "Fecha del servicio"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_bank_statement_line__partner_service_intermediary
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_move__partner_service_intermediary
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_payment__partner_service_intermediary
+msgid "Service Intermediary"
+msgstr "Intermediario de Servicio"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.ui.menu,name:account_move_service_report_xlsx.menu_service_report_config
+msgid "Service Report"
+msgstr "Informe de Servicio"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.actions.act_window,name:account_move_service_report_xlsx.res_partner_service_report_config_action
+msgid "Service Report Config"
+msgstr "Configuración del Informe de Servicio"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_ambugest_res_partner__service_report_config_id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_oxigesti_res_partner__service_report_config_id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner__service_report_config_id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_users__service_report_config_id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_sage_res_partner__service_report_config_id
+msgid "Service Report Configuration"
+msgstr "Configuración del Informe de Servicio"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__name
+msgid "Service Report Configuration Name"
+msgstr "Nombre de la Configuración del Informe de Servicio"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Service Time"
+msgstr "Tiempo de servicio"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#: model_terms:ir.ui.view,arch_db:account_move_service_report_xlsx.res_partner_service_report_config_form_view
+#, python-format
+msgid "Service Type"
+msgstr "Tipo de servicio"
+
+#. module: account_move_service_report_xlsx
+#: model_terms:ir.ui.view,arch_db:account_move_service_report_xlsx.res_partner_service_report_config_form_view
+msgid "Service Typology"
+msgstr "Tipología de servicio"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/account_move.py:0
+#, python-format
+msgid ""
+"The client %s does not have the service report settings configured. Please "
+"go to the contact and set it up."
+msgstr ""
+"El cliente %s no tiene configurada la configuración del informe de servicio."
+" Por favor, vaya al contacto y configúrelo."
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/res_partner_service_report_config_type.py:0
+#, python-format
+msgid "The following products are duplicated in the same configuration: %s"
+msgstr ""
+"Los siguientes productos están duplicados en la misma configuración: %s"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/account_move.py:0
+#, python-format
+msgid "The invoice must be posted to generate sales service spreadsheet."
+msgstr ""
+"La factura debe ser publicada para generar la hoja de cálculo de servicios "
+"de ventas."
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/account_move.py:0
+#, python-format
+msgid ""
+"The partner is not a service intermediary and cannot generate the sales "
+"service spreadsheet."
+msgstr ""
+"El cliente no es un intermediario de servicios y no puede generar la hoja de"
+" cálculo de servicios de ventas."
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Total Insurance (€)"
+msgstr "Total Aseguradora (€)"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Total Invoice"
+msgstr "Total factura"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Total KM (€)"
+msgstr ""
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Total by ID (€)"
+msgstr "Total por ID (€)"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__transfer_reason
+msgid "Transfer Reason"
+msgstr "Motivo de transferencia"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__type_ids
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__typology_ids
+msgid "Typology"
+msgstr "Tipología"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "WAITING TIME (€)"
+msgstr "HORA ESPERA (€)"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields.selection,name:account_move_service_report_xlsx.selection__res_partner_service_report_config_type__type__wait
+msgid "Wait"
+msgstr "Espera"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "€/KM"
+msgstr ""

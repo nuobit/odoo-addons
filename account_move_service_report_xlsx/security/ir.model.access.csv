@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+res_partner_service_report_config_partner_manager,access.res.partner.service.report.config.partner.manager,model_res_partner_service_report_config,account.group_account_manager,1,1,1,1
+res_partner_service_report_config_user,access.res.partner.service.report.config.user,model_res_partner_service_report_config,account.group_account_user,1,0,0,0
+res_partner_service_report_config_typology_partner_manager,access.res.partner.service.report.config.typology.partner.manager,model_res_partner_service_report_config_typology,account.group_account_manager,1,1,1,1
+res_partner_service_report_config_typology_user,access.res.partner.service.report.config.typology.user,model_res_partner_service_report_config_typology,account.group_account_user,1,0,0,0
+res_partner_service_report_config_type_partner_manager,access.res.partner.service.report.config.type.partner.manager,model_res_partner_service_report_config_type,account.group_account_manager,1,1,1,1
+res_partner_service_report_config_type_user,access.res.partner.service.report.config.type.user,model_res_partner_service_report_config_type,account.group_account_user,1,0,0,0

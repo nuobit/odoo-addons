@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="res_partner_service_report_config_form_view" model="ir.ui.view">
+        <field name="name">Res Partner Service Report Config Form</field>
+        <field name="model">res.partner.service.report.config</field>
+        <field name="arch" type="xml">
+            <form string="Res Partner Service Report Config">
+                <sheet>
+                    <h2 class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <field name="name" />
+                    </h2>
+                    <group string="Service Typology">
+                        <field name="typology_ids" nolabel="1" colspan="3">
+                            <tree editable="bottom">
+                                <field name="key" />
+                                <field name="transfer_reason" />
+                                <field name="name" />
+                            </tree>
+                        </field>
+                    </group>
+                    <group string="Service Type">
+                        <field name="type_ids" nolabel="1" colspan="3">
+                            <tree editable="bottom">
+                                <field name="product_ids" widget="many2many_tags" />
+                                <field name="type" />
+                                <field name="name" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="res_partner_service_report_config_tree_view" model="ir.ui.view">
+        <field name="name">Res Partner Service Report Config Tree</field>
+        <field name="model">res.partner.service.report.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="res_partner_service_report_config_action" model="ir.actions.act_window">
+        <field name="name">Service Report Config</field>
+        <field name="res_model">res.partner.service.report.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
