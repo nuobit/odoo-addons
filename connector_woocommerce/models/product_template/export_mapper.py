@@ -257,6 +257,8 @@ class WooCommerceProductTemplateExportMapper(Component):
                             )
                 if img_list:
                     return {"images": img_list}
+                else:
+                    return {"images": []}
 
     def _get_slug_name(self, record):
         return record.with_context(lang=self.backend_record.language_id.code).slug_name
