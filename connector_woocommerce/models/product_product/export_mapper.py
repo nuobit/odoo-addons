@@ -137,6 +137,8 @@ class WooCommerceProductProductExportMapper(Component):
                         "id": values["id"],
                     }
                 }
+        else:
+            return {"image": {}}
 
     @mapping
     def attributes(self, record):
