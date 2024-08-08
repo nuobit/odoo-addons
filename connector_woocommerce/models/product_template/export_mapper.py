@@ -88,17 +88,18 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def price(self, record):
-        if len(record.product_variant_ids) <= 1:
+        if not record.has_attributes:
             # On WooCommerce regular price is the usually price.
             # sales price is the price with discount.
             # On odoo we don't have this functionality per product
             return {
                 "regular_price": record.list_price,
             }
+        return {"regular_price": None}
 
     @mapping
     def sale_price(self, record):
-        if len(record.product_variant_ids) <= 1:
+        if not record.has_attributes:
             pricelist = self.backend_record.discount_pricelist_id
             if pricelist:
                 return {
@@ -106,6 +107,7 @@ class WooCommerceProductTemplateExportMapper(Component):
                         pricelist.id
                     ],
                 }
+        return {"sale_price": None}
 
     def _get_product_description(self, record):
         return tools.color_rgb2hex(
