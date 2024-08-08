@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="woocommerce_ir_attachment_view_form" model="ir.ui.view">
-        <field name="name">woocommerce.partner.view.form</field>
+    <record id="wordpress_ir_attachment_view_form" model="ir.ui.view">
+        <field name="name">wordpress.ir.attachment.view.form</field>
         <field name="model">wordpress.ir.attachment</field>
         <field name="arch" type="xml">
             <form string="WordPress Ir Attachment">
