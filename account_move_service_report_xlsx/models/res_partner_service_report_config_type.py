@@ -8,7 +8,11 @@ class ResPartnerServiceReportConfigType(models.Model):
     _name = "res.partner.service.report.config.type"
     _description = "Res Partner Service Report Config Type"
 
-    config_id = fields.Many2one(comodel_name="res.partner.service.report.config")
+    config_id = fields.Many2one(
+        comodel_name="res.partner.service.report.config",
+        ondelete="cascade",
+        required=True,
+    )
     type = fields.Selection(
         selection=[
             ("service", "Service"),

@@ -8,10 +8,14 @@ class ResPartnerServiceReportConfigTypology(models.Model):
     _name = "res.partner.service.report.config.typology"
     _description = "Res Partner Service Report Config Typology"
 
-    config_id = fields.Many2one(comodel_name="res.partner.service.report.config")
-    name = fields.Char()
-    key = fields.Char()
-    transfer_reason = fields.Char()
+    config_id = fields.Many2one(
+        comodel_name="res.partner.service.report.config",
+        ondelete="cascade",
+        required=True,
+    )
+    name = fields.Char(required=True)
+    key = fields.Char(required=True)
+    transfer_reason = fields.Char(required=True)
 
     @api.constrains("key", "transfer_reason")
     def _check_key_transfer_reason(self):
