@@ -13,6 +13,9 @@
                         <label for="name" class="oe_edit_only" />
                         <field name="name" />
                     </h2>
+                    <group>
+                        <field name="company_id" options="{'no_open': True}" />
+                    </group>
                     <group string="Service Typology">
                         <field name="typology_ids" nolabel="1" colspan="3">
                             <tree editable="bottom">
