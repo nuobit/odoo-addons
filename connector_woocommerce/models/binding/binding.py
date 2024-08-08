@@ -9,7 +9,6 @@ class WoocommerceBinding(models.AbstractModel):
     _inherit = "connector.extension.external.binding"
     _description = "WooCommerce Binding"
 
-    # binding fields
     backend_id = fields.Many2one(
         comodel_name="woocommerce.backend",
         string="WooCommerce Backend",
