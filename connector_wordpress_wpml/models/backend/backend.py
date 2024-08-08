@@ -1,0 +1,24 @@
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+import logging
+
+from odoo import _, api, models
+from odoo.exceptions import ValidationError
+
+_logger = logging.getLogger(__name__)
+
+
+class WordPressBackend(models.Model):
+    _inherit = "wordpress.backend"
+
+    @api.constrains("lang_ids")
+    def check_lang_ids(self):
+        for rec in self:
+            for lang in rec.lang_ids:
+                if not lang.wordpress_wpml_lang_code:
+                    raise ValidationError(
+                        _(
+                            "The language %s has no WPML code, please define "
+                            "this code in language before using it." % lang.name
+                        )
+                    )
