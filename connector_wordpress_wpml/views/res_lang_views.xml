@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_lang_tree" model="ir.ui.view">
+        <field name="name">res.lang.tree</field>
+        <field name="model">res.lang</field>
+        <field name="inherit_id" ref="base.res_lang_tree" />
+        <field name="arch" type="xml">
+            <field name="url_code" position="after">
+                <field name="wordpress_wpml_lang_code" />
+            </field>
+        </field>
+    </record>
+    <record id="res_lang_form" model="ir.ui.view">
+        <field name="name">res.lang.form</field>
+        <field name="model">res.lang</field>
+        <field name="inherit_id" ref="base.res_lang_form" />
+        <field name="arch" type="xml">
+            <field name="url_code" position="after">
+                <field name="wordpress_wpml_lang_code" />
+            </field>
+        </field>
+    </record>
+</odoo>
