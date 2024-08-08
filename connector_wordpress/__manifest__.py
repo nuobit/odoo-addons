@@ -23,6 +23,7 @@
         "security/connector_wordpress.xml",
         "security/ir.model.access.csv",
         "views/ir_attachment_views.xml",
+        "views/product_image_views.xml",
         "views/wordpress_backend_view.xml",
         "views/connector_wordpress_menu.xml",
     ],
