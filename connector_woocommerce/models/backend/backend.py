@@ -52,10 +52,6 @@ class WooCommerceBackend(models.Model):
         comodel_name="product.product",
     )
 
-    @api.model
-    def _lang_get(self):
-        return self.env["res.lang"].get_installed()
-
     page_size = fields.Integer(
         help="Number of records to fetch at a time. Max: 100",
     )
