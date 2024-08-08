@@ -96,6 +96,17 @@ class WooCommerceProductTemplateExportMapper(Component):
                 "regular_price": record.list_price,
             }
 
+    @mapping
+    def sale_price(self, record):
+        if len(record.product_variant_ids) <= 1:
+            pricelist = self.backend_record.discount_pricelist_id
+            if pricelist:
+                return {
+                    "sale_price": pricelist.price_get(record.product_variant_id.id, 1)[
+                        pricelist.id
+                    ],
+                }
+
     def _get_product_description(self, record):
         return tools.color_rgb2hex(
             record.record.with_context(

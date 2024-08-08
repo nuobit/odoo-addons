@@ -75,6 +75,9 @@ class WooCommerceBackend(models.Model):
     verify_ssl = fields.Boolean(
         default=True,
     )
+    discount_pricelist_id = fields.Many2one(
+        comodel_name="product.pricelist",
+    )
     wordpress_backend_id = fields.Many2one(
         comodel_name="wordpress.backend",
     )

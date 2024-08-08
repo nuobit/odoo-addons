@@ -257,6 +257,7 @@
                                     name="stock_location_ids"
                                     widget="many2many_tags"
                                 />
+                                <field name="discount_pricelist_id" />
                                 <field name="use_main_product_image" />
                             </group>
                             <group>
