@@ -1,4 +1,4 @@
-* This module works with plugin WooCommerce Multi Language.
+* This module works with plugin WordPress Multi Language.
 * https://wpml.org/
 
 
