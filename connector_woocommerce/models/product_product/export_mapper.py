@@ -23,6 +23,14 @@ class WooCommerceProductProductExportMapper(Component):
             "regular_price": record.lst_price,
         }
 
+    @mapping
+    def sale_price(self, record):
+        pricelist = self.backend_record.discount_pricelist_id
+        if pricelist:
+            return {
+                "sale_price": pricelist.price_get(record.id, 1)[pricelist.id],
+            }
+
     @changed_by("default_code")
     @mapping
     def sku(self, record):

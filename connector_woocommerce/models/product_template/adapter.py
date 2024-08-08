@@ -79,6 +79,7 @@ class WooCommerceProductTemplateAdapter(Component):
     def _format_product_template(self, data):
         conv_mapper = {
             "/regular_price": lambda x: str(round(x, 10)) or None,
+            "/sale_price": lambda x: str(round(x, 10)) or None,
         }
         self._convert_format(data, conv_mapper)
 
