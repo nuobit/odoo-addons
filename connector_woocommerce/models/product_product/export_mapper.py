@@ -30,6 +30,7 @@ class WooCommerceProductProductExportMapper(Component):
             return {
                 "sale_price": pricelist.price_get(record.id, 1)[pricelist.id],
             }
+        return {"sale_price": None}
 
     @changed_by("default_code")
     @mapping
