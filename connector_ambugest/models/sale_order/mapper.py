@@ -104,7 +104,7 @@ class SaleOrderImportMapper(Component):
         (nullif("Destino"), "destination"),
         ("Clave", "service_key"),
         ("Motivo_Traslado", "service_transfer_reason"),
-        (nullif("Codigo_Aseguradora"), "service_insurer_code"),
+        ("Codigo_Aseguradora", "service_insurer_code"),
         (nullif("Nombre_Aseguradora"), "service_insurer_name"),
     ]
 
