@@ -10,7 +10,6 @@ class WooCommerceProductProduct(models.Model):
     woocommerce_lang = fields.Char(
         string="Language",
         required=True,
-        ondelete="cascade",
     )
 
     _sql_constraints = [
