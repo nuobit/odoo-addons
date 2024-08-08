@@ -54,12 +54,6 @@
                 <field name="woocommerce_idsaleorder" readonly="True" />
                 <field name="woocommerce_status" readonly="True" />
                 <field name="sync_date" />
-                <button
-                    name="resync_export"
-                    type="object"
-                    string="Resynchronize"
-                    icon="fa-refresh fa-lg"
-                />
             </tree>
         </field>
     </record>
