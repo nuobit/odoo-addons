@@ -15,7 +15,7 @@ class SaleOrderAdapter(Component):
                      s.Servicio_Dia, s.Servicio_Ano, s.Fecha_Modifica,
                      s.Num_Contrato, s.Nombre_Asegurado, s.DNI_Asegurado,
                      s.Num_Asegurado, a.Codigo_Aseguradora, a.Nombre_Aseguradora,
-                     s.Referencia_autorizacion, s.Clave, s.Motivo_Trasladado,
+                     s.Referencia_autorizacion, s.Clave, s.Motivo_Traslado,
                      s.Matricula, s.Origen, s.Destino,
                      s.Codigo_Ida_y_Vuelta, s.Servicio_de_vuelta
               from %(schema)s.Odoo_Servicios s
