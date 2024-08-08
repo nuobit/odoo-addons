@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-16 12:04+0000\n"
-"PO-Revision-Date: 2021-12-16 12:04+0000\n"
+"POT-Creation-Date: 2024-08-08 07:36+0000\n"
+"PO-Revision-Date: 2024-08-08 07:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -118,6 +118,26 @@ msgid "Service detail"
 msgstr "Detall del servei"
 
 #. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order__service_insurer_code
+msgid "Insurer code"
+msgstr "Codi asseguradora"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order__service_insurer_name
+msgid "Insurer name"
+msgstr "Nom asseguradora"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order__service_key
+msgid "Key"
+msgstr "Clau"
+
+#. module: sale_order_service
 #: model:ir.model.fields,field_description:sale_order_service.field_sale_order__service_number
 msgid "Service number"
 msgstr "Num. servei"
+
+#. module: sale_order_service
+#: model:ir.model.fields,field_description:sale_order_service.field_sale_order__service_transfer_reason
+msgid "Transfer reason"
+msgstr "Motiu transferència"
