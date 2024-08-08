@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -11,33 +11,19 @@ _logger = logging.getLogger(__name__)
 class WooCommerceBackend(models.Model):
     _inherit = "woocommerce.backend"
 
-    wpml_lang_map_ids = fields.One2many(
-        comodel_name="woocommerce.wpml.backend.mapping",
-        inverse_name="backend_id",
-        string="WPML Lang Mapping",
-        required=True,
+    language_ids = fields.Many2many(
+        string="Languages for WPML",
+        comodel_name="res.lang",
     )
 
-    def _get_woocommerce_lang(self, lang_code):
-        lang = self.wpml_lang_map_ids.filtered(lambda x: x.lang_id.code == lang_code)
-        if lang:
-            return lang.woocommerce_wpml_lang
-        else:
-            raise ValidationError(
-                _("The language %s is not mapped to any WooCommerce language")
-                % lang_code
-            )
-
-    def _get_odoo_iso_code(self, wpml_code):
-        lang = self.wpml_lang_map_ids.filtered(
-            lambda x: x.woocommerce_wpml_lang == wpml_code
-        )
-        if lang:
-            return lang.lang_id.code
-        else:
-            raise ValidationError(
-                _(
-                    "The WooCommerce WPML language code %s is not mapped to any Odoo language"
-                )
-                % wpml_code
-            )
+    @api.constrains("language_ids")
+    def check_language_ids(self):
+        for rec in self:
+            for lang in rec.language_ids:
+                if not lang.wordpress_wpml_lang_code:
+                    raise ValidationError(
+                        _(
+                            "The language %s has no WPML code, please define "
+                            "this code in language before using it." % lang.name
+                        )
+                    )

@@ -22,8 +22,8 @@ class WooCommerceProductProductBinder(Component):
     def _additional_external_binding_fields(self, external_data):
         return self.wpml_additional_external_binding_fields(external_data)
 
-    def unwrap_binding(self, binding):
-        return self.wpml_unwrap_binding(binding)
+    # def unwrap_binding(self, binding):
+    #     return self.wpml_unwrap_binding(binding)
 
     # TODO: code commented. It's not necessary? delete!
     # def to_external(self, binding, wrap=True, binding_extra_vals=None):
@@ -35,15 +35,15 @@ class WooCommerceProductProductBinder(Component):
     def _get_external_record_alt(self, relation, id_values):
         res = super()._get_external_record_alt(relation, id_values)
         if res:
-            relation_lang = relation.env.context.get("lang")
-            relation_woo_lang = self.backend_record._get_woocommerce_lang(relation_lang)
-            if res.get("lang") != relation_woo_lang:
-
+            relation_wp_lang = self.env["res.lang"]._get_wpml_code_from_iso_code(
+                relation.env.context.get("lang")
+            )
+            if res.get("lang") != relation_wp_lang:
                 if res.get("translations") and res["translations"].get(
-                    relation_woo_lang
+                    relation_wp_lang
                 ):
                     adapter = self.component(usage="backend.adapter")
-                    res = adapter.read(res["translations"][relation_woo_lang])
+                    res = adapter.read(res["translations"][relation_wp_lang])
                 else:
                     return None
         return res

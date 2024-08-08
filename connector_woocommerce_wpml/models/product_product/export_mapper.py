@@ -15,8 +15,11 @@ class WooCommerceProductProductExportMapper(Component):
     @changed_by("lang")
     @mapping
     def lang(self, record):
-        lang_code = record._context.get("lang")
-        return {"lang": self.backend_record._get_woocommerce_lang(lang_code)}
+        # TODO: unify this code. Probably do a function in res lang
+        lang = self.env["res.lang"]._get_wpml_code_from_iso_code(
+            record._context.get("lang")
+        )
+        return {"lang": lang}
 
     @only_create
     @mapping
@@ -26,7 +29,9 @@ class WooCommerceProductProductExportMapper(Component):
             other_binding_backend = record.woocommerce_bind_ids.filtered(
                 lambda x: x.backend_id == self.backend_record
                 and x.woocommerce_lang
-                != self.backend_record._get_woocommerce_lang(lang_code)
+                != self.env["res.lang"]._get_wpml_code_from_iso_code(
+                    record._context.get("lang")
+                )
             )
             translation_of = None
             for obb in other_binding_backend:

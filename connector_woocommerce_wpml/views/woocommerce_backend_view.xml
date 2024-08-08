@@ -12,12 +12,7 @@
         <field name="arch" type="xml">
             <page name="mappings" position="inside">
                 <group string="WPML Language mapping">
-                    <field name="wpml_lang_map_ids" nolabel="1">
-                        <tree editable="bottom">
-                            <field name="lang_id" />
-                            <field name="woocommerce_wpml_lang" />
-                        </tree>
-                    </field>
+                    <field name="language_ids" widget="many2many_tags" />
                 </group>
             </page>
         </field>

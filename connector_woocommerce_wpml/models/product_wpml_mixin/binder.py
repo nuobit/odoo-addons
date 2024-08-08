@@ -10,33 +10,23 @@ class WooCommerceProductWPMLMixinBinder(AbstractComponent):
 
     def wpml_get_binding_domain(self, record):
         domain = super().get_binding_domain(record)
-        lang_code = record._context.get("lang")
-        if lang_code:
+        wp_wpml_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
+            record._context.get("lang")
+        )
+        if wp_wpml_code:
             domain += [
                 (
                     "woocommerce_lang",
                     "=",
-                    self.backend_record._get_woocommerce_lang(lang_code),
+                    wp_wpml_code,
                 )
             ]
         return domain
 
     def wpml_additional_external_binding_fields(self, external_data):
+        # TODO: this additional fields probably should be
+        #  included in binding as m2o to res lang on upper binder
         return {
             **super()._additional_external_binding_fields(external_data),
             "woocommerce_lang": external_data["lang"],
         }
-
-    def wpml_unwrap_binding(self, binding):
-        res = super().unwrap_binding(binding)
-        if res:
-            context = res.env.context.copy()
-            mapped_lang = self.backend_record.wpml_lang_map_ids.filtered(
-                lambda x: binding.woocommerce_lang == x.woocommerce_wpml_lang
-            )
-            if mapped_lang:
-                context.update(
-                    {"lang": mapped_lang.lang_id.code, "resync_export": True}
-                )
-                res.env.context = context
-        return res
