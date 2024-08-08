@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-07 11:33+0000\n"
-"PO-Revision-Date: 2024-08-07 11:33+0000\n"
+"POT-Creation-Date: 2024-08-08 11:54+0000\n"
+"PO-Revision-Date: 2024-08-08 11:54+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,6 +41,11 @@ msgstr "Informe de movimientos de cuenta abstracto XLSX"
 #: model:ir.model.fields.selection,name:account_move_service_report_xlsx.selection__res_partner_service_report_config_type__type__additional
 msgid "Additional"
 msgstr "Adicional"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__company_id
+msgid "Company"
+msgstr "Compañía"
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__config_id
@@ -81,6 +86,7 @@ msgstr "Destino"
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_ir_actions_report__display_name
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_report_account_move_service_report_xlsx_report_sale__display_name
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner__display_name
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__display_name
@@ -99,6 +105,7 @@ msgstr "Generar hoja de cálculo de servicios de venta"
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_move__id
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_ir_actions_report__id
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_report_account_move_service_report_xlsx_report_sale__id
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner__id
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__id
@@ -186,6 +193,7 @@ msgstr ""
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_account_move____last_update
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_ir_actions_report____last_update
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_report_account_move_service_report_xlsx_report_sale____last_update
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner____last_update
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config____last_update
@@ -243,6 +251,11 @@ msgstr "Nombre proveedor"
 #, python-format
 msgid "RETURN (€)"
 msgstr "RETORNO (€)"
+
+#. module: account_move_service_report_xlsx
+#: model:ir.model,name:account_move_service_report_xlsx.model_ir_actions_report
+msgid "Report Action"
+msgstr "Acción de informe"
 
 #. module: account_move_service_report_xlsx
 #: model_terms:ir.ui.view,arch_db:account_move_service_report_xlsx.res_partner_service_report_config_form_view

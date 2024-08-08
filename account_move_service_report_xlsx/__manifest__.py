@@ -13,6 +13,7 @@
     "depends": ["account_move_service", "report_xlsx"],
     "data": [
         "security/ir.model.access.csv",
+        "security/res_partner_service_report_config_security.xml",
         "views/reports.xml",
         "views/res_partner_views.xml",
         "views/res_partner_service_report_config_views.xml",
