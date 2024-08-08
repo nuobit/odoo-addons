@@ -193,6 +193,26 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
                               pass extra values for this binding
         :type binding_extra_vals: dict
         """
+        if not always and relation.env.context.get("resync_export", False):
+            # This is an optimization to avoid exporting
+            # the same record multiple times on resync
+            if "resync_exported_dependencies" not in self.env.context:
+                self.env.context = {
+                    **self.env.context,
+                    "resync_exported_dependencies": {},
+                }
+
+            resync_model_ids = self.env.context["resync_exported_dependencies"]
+            model_name = relation._name
+
+            if model_name not in resync_model_ids:
+                resync_model_ids[model_name] = [relation.id]
+            else:
+                if relation.id in resync_model_ids[model_name]:
+                    return
+                resync_model_ids[model_name].append(relation.id)
+            always = True
+
         exporter = self.component(usage=component_usage, model_name=binding_model)
         exporter.run(relation, always=always)
 
