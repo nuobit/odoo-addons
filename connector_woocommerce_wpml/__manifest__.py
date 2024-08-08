@@ -15,9 +15,9 @@
     },
     "depends": [
         "connector_woocommerce",
+        "connector_wordpress_wpml",
     ],
     "data": [
-        "security/ir.model.access.csv",
         "views/woocommerce_backend_view.xml",
         "views/product_attribute_value.xml",
         "views/product_product.xml",
