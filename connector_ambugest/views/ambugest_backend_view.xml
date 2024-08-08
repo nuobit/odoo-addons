@@ -83,6 +83,13 @@
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
                         </group>
+                        <group col="4">
+                            <field
+                                name="tz"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                        </group>
                         <group>
                             <field
                                 name="ambugest_company_id"
