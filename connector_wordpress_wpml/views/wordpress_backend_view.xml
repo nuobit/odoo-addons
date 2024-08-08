@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="wordpress_backend_view_form" model="ir.ui.view">
+        <field name="name">wordpress.backend.form</field>
+        <field name="model">wordpress.backend</field>
+        <field
+            name="inherit_id"
+            ref="connector_wordpress.wordpress_backend_view_form"
+        />
+        <field name="arch" type="xml">
+            <field name="test_database" position="before">
+                <field name="language_ids" widget="many2many_tags" />
+            </field>
+        </field>
+    </record>
+</odoo>
