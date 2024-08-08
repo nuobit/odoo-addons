@@ -37,3 +37,7 @@ class WordPressIrAttachmentExportMapper(Component):
             "headers": headers,
             "data": data,
         }
+
+    @mapping
+    def seo_meta_data(self, record):
+        return record._get_seo_meta_data()

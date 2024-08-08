@@ -30,3 +30,7 @@ class WordPressIrAttachment(Component):
         else:
             url = "media"
         return self._exec("get", url, domain=common_domain)
+
+    def write(self, external_id, data):  # pylint: disable=W8106
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        return self._exec("put", "media/%s" % external_id_values["id"], data=data)

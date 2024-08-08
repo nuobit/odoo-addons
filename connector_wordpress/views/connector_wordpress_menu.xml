@@ -8,18 +8,17 @@
         name="WordPress"
         sequence="500"
         groups="connector.group_connector_manager"
-    />
-    <menuitem
-        id="wordpress_backend_menu_action"
-        name="Backends"
-        parent="wordpress_menu_root"
-        action="wordpress_backend_action"
-    />
-    <menuitem
-        id="wordpress_external_objects_menu"
-        name="External Objects"
-        parent="wordpress_menu_root"
-        action="wordpress_ir_attachment_action"
-        sequence="150"
-    />
+    >
+        <menuitem
+            id="wordpress_backend_menu_action"
+            name="Backends"
+            action="wordpress_backend_action"
+        />
+        <menuitem
+            id="wordpress_external_objects_menu"
+            name="External Objects"
+            action="wordpress_ir_attachment_action"
+            sequence="150"
+        />
+    </menuitem>
 </odoo>
