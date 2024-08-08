@@ -10,8 +10,17 @@ class WordPressIrAttachmentBinder(Component):
 
     _apply_on = "wordpress.ir.attachment"
 
-    external_id = "id"
-    internal_id = "wordpress_idattachment"
+    @property
+    def external_id(self):
+        return ["id"]
+
+    @property
+    def internal_id(self):
+        return ["wordpress_idattachment"]
+
+    @property
+    def external_alt_id(self):
+        return []
 
     def _get_external_record_domain(self, relation, values):
         equivalent_binding_attachment = self.env["wordpress.ir.attachment"].search(
