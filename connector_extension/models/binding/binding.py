@@ -101,7 +101,9 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
         for record in self:
             with record.backend_id.work_on(record._name) as work:
                 binder = work.component(usage="binder")
-                relation = binder.unwrap_binding(record)
+                relation = binder.unwrap_binding(record).with_context(
+                    resync_export=True
+                )
             func = record.export_record
             if record.env.context.get("connector_delay"):
                 func = func.with_delay
