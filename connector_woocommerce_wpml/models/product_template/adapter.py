@@ -20,12 +20,16 @@ class WooCommerceProductTemplateAdapter(Component):
         old_sku = None
         if data.get("type") == "simple":
             old_sku = data.pop("sku")
+            if isinstance(old_sku, list):
+                old_sku = old_sku[0]
         res = super().write(external_id, data)
-        if old_sku and res.get("sku") != old_sku:
+        if old_sku and res["data"].get("sku") != old_sku:
             data["sku"] = old_sku
             # This conversion is to "revert" first conversion done on prepare_data
             if isinstance(data["regular_price"], str):
                 data["regular_price"] = float(data["regular_price"])
+            if isinstance(data["regular_price"], str):
+                data["sale_price"] = float(data["sale_price"])
             res = super().write(external_id, data)
         return res
 

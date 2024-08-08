@@ -21,8 +21,8 @@ class WooCommerceProductAttributeValue(models.Model):
         ),
         (
             "external_uniq",
-            "unique(backend_id, woocommerce_idattribute,"
-            "woocommerce_idattributevalue, woocommerce_lang)",
-            "A binding already exists with the same External (idAttributevalue) ID.",
+            "unique(backend_id, woocommerce_lang, woocommerce_idattributevalue)",
+            "A binding already exists with the same External "
+            "(woocommerce_idattributevalue) ID.",
         ),
     ]
