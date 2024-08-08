@@ -172,6 +172,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             "post",
             resource,
             data=data,
+            params=data_aux,
             headers=headers,
             auth=auth,
             verify=self.backend_record.verify_ssl,
@@ -180,10 +181,25 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         return res["data"]
 
     def _exec_put(self, resource, *args, **kwargs):
-        url = self.backend_record.url + "/wp-json/wp/v2/" + resource
-        return self._exec_wp_call(
-            "put", url=url, verify=self.backend_record.verify_ssl, *args, **kwargs
+        auth = (self.backend_record.consumer_key, self.backend_record.consumer_secret)
+        if "wordpress_backend_id" in self.backend_record:
+            backend = self.backend_record.wordpress_backend_id
+            auth = (backend.consumer_key, backend.consumer_secret)
+        data_aux = kwargs.pop("data", {})
+        headers = data_aux.pop("headers", {})
+        data = data_aux.pop("data", {})
+        res = self._exec_wp_call(
+            "put",
+            resource,
+            data=data,
+            params=data_aux,
+            headers=headers,
+            auth=auth,
+            verify=self.backend_record.verify_ssl,
+            *args,
+            **kwargs
         )
+        return res["data"]
 
     def _exec_delete(self, resource, *args, **kwargs):
         raise NotImplementedError()
