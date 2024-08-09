@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-09 08:04+0000\n"
-"PO-Revision-Date: 2024-08-09 08:04+0000\n"
+"POT-Creation-Date: 2024-08-09 12:55+0000\n"
+"PO-Revision-Date: 2024-08-09 12:55+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1332,7 +1332,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_res_partner__quality_document_ids
 #: model_terms:ir.ui.view,arch_db:connector_woocommerce.product_product_view_form_easy_inherit_connector_woocommerce
 msgid "Documents"
-msgstr "Documents"
+msgstr ""
+
+#. module: connector_woocommerce
+#: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_image__no
+msgid "Don't use main image"
+msgstr ""
 
 #. module: connector_woocommerce
 #: model:ir.model.fields.selection,name:connector_woocommerce.selection__sale_order__woocommerce_order_state__done
@@ -1896,13 +1901,6 @@ msgstr ""
 #. module: connector_woocommerce
 #: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_res_partner__sale_invoicing_grouping_criteria_id
 msgid "If empty, company default (if any) or default will be applied."
-msgstr ""
-
-#. module: connector_woocommerce
-#: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_backend__use_main_product_image
-msgid ""
-"If it's True, product image in the upper right corner of the form will be "
-"exported"
 msgstr ""
 
 #. module: connector_woocommerce
@@ -3147,6 +3145,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_sale_order__plate_number
 msgid "Plate"
 msgstr ""
+
+#. module: connector_woocommerce
+#: model_terms:ir.ui.view,arch_db:connector_woocommerce.connector_product_product_view_form
+msgid ""
+"Please note that WooCommerce allows only one image per product variant. "
+"Additional images will not be exported to WooCommerce and will be ignored."
+msgstr "Tingui en compte que WooCommerce només permet una imatge per variant de producte. "
+"Les imatges addicionals seran ignorades no s'exportaran a WooCommerce."
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_sale_order__policy_number
@@ -4951,6 +4957,16 @@ msgid "Use a barcode to identify this contact."
 msgstr ""
 
 #. module: connector_woocommerce
+#: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_image__first
+msgid "Use main image as first image"
+msgstr ""
+
+#. module: connector_woocommerce
+#: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_image__last
+msgid "Use main image as last image"
+msgstr ""
+
+#. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_attribute__is_used_on_products
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_attribute_value__is_used_on_products
 msgid "Used on Products"
@@ -5535,7 +5551,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_product__woocommerce_enabled
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_template__woocommerce_enabled
 msgid "Woocommerce Enabled"
-msgstr "Producte habilitat a WooCommerce"
+msgstr "Producto habilitado en Woocommerce"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_sale_order__woocommerce_order_state
