@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="website_sale_extra_fields_form_view" model="ir.ui.view">
+        <field name="name">website.sale.extra.fields.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//page[@name='shop']/group[@name='shop']/group/field[@name='is_published']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//page[@name='shop']/group[@name='shop']/group/field[@name='is_published']"
+                position="after"
+            >
+                <field name="variant_is_published" />
+            </xpath>
+            <field name="is_published" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="public_description" position="after">
+                <field name="variant_public_description" widget="html" />
+            </field>
+            <field name="public_description" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="public_short_description" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+    <record id="website_sale_extra_fields_tree_view" model="ir.ui.view">
+        <field name="name">product.product.connector.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name="arch" type="xml">
+            <field name="is_published" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="is_published" position="after">
+                <field name="variant_is_published" string="Is Published" />
+            </field>
+        </field>
+    </record>
+    <record id="website_sale_extra_fields_view_form_easy_inherit" model="ir.ui.view">
+        <field name="name">website.sale.extra.fields.view.form.easy.inherit
+        </field>
+        <field name="model">product.product</field>
+        <field
+            name="inherit_id"
+            ref="website_sale_variant.website_sale_variant_view_form_easy_inherit"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='shop']" position="inside">
+                <group name="shop">
+                    <field name="variant_is_published" />
+                    <field name="variant_public_description" widget="html" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_search_form_view" model="ir.ui.view">
+        <field name="name">website.sale.extra.fields.search.published</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='published']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='published']" position="after">
+                <filter
+                    name="variant_is_published"
+                    string="Published"
+                    domain="[('variant_is_published', '=', True)]"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
