@@ -18,6 +18,8 @@
         "connector_extension_woocommerce",
         "connector_wordpress",
         "sale_stock",
+        "website_sale_extra_fields",
+        "website_sale_stock_variant",
     ],
     "data": [
         "data/ir_cron.xml",
