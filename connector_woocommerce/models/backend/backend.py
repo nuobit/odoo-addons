@@ -81,10 +81,13 @@ class WooCommerceBackend(models.Model):
     wordpress_backend_id = fields.Many2one(
         comodel_name="wordpress.backend",
     )
-    use_main_product_image = fields.Boolean(
-        default=True,
-        help="If it's True, product image in the upper right "
-        "corner of the form will be exported",
+    use_main_product_image = fields.Selection(
+        selection=[
+            ("no", "Don't use main image"),
+            ("first", "Use main image as first image"),
+            ("last", "Use main image as last image"),
+        ],
+        default="first",
     )
     export_product_tmpl_since_date = fields.Datetime(
         string="Export Product Templates Since",
