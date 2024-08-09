@@ -23,7 +23,7 @@ class Lang(models.Model):
 
     @api.model
     def _get_wpml_code_from_iso_code(self, code):
-        lang = self.env["res.lang"].search([("iso_code", "=", code)])
+        lang = self.env["res.lang"].search([("code", "=", code)])
         if not lang:
             raise ValidationError(_("Language not found with code %s") % code)
         if not lang.wordpress_wpml_lang_code:
