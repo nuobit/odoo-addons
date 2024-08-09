@@ -7,8 +7,12 @@ from odoo import fields, models
 class ProductImage(models.Model):
     _inherit = "product.image"
 
-    title = fields.Char()
-    alternate_text = fields.Text()
+    title = fields.Char(
+        translate=True,
+    )
+    alternate_text = fields.Text(
+        translate=True,
+    )
 
     def _get_seo_meta_data(self):
         self.ensure_one()
