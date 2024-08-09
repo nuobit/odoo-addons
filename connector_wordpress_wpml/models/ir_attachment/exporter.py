@@ -13,7 +13,7 @@ class WordPressIrAttachmentExporter(Component):
         # if relation.env.context.get("resync_export"):
         #     langs_to_export.append(relation.env.context.get("lang"))
         # else:
-        langs_to_export = self.backend_record.language_ids.mapped("iso_code")
+        langs_to_export = self.backend_record.language_ids.mapped("code")
 
         for lang in langs_to_export:
             result = super().run(
