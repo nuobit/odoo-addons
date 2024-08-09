@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+        <record id="website_sale_variant_view_form_easy_inherit" model="ir.ui.view">
+        <field name="name">website.sale.variant.view.form.easy.inherit
+        </field>
+        <field name="model">product.product</field>
+        <field
+            name="inherit_id"
+            ref="website_sale.product_product_view_form_easy_inherit_website_sale"
+        />
+        <field name="arch" type="xml">
+            <sheet position="inside">
+                <notebook>
+                    <page name="shop" string="eCommerce" />
+                </notebook>
+            </sheet>
+        </field>
+    </record>
+</odoo>
