@@ -19,5 +19,8 @@ class WordPressIrAttachment(Component):
         return res
 
     def write(self, external_id, data):  # pylint: disable=W8106
+        lang = data.pop("lang")
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        return self._exec("put", "media/%s" % external_id_values["id"], data=data)
+        res = self._exec("put", "media/%s" % external_id_values["id"], data=data)
+        res["lang"] = lang
+        return res
