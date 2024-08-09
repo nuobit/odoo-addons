@@ -9,7 +9,7 @@
     "category": "Website",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
-        "website_sale",
+        "website_sale_variant",
     ],
     "data": [
         "security/ir.model.access.csv",
