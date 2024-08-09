@@ -5551,7 +5551,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_product__woocommerce_enabled
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_template__woocommerce_enabled
 msgid "Woocommerce Enabled"
-msgstr "Producto habilitado en Woocommerce"
+msgstr "Producte habilitat a Woocommerce"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_sale_order__woocommerce_order_state
