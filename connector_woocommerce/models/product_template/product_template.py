@@ -127,32 +127,43 @@ class ProductTemplate(models.Model):
         compute="_compute_product_image_attachment_ids",
     )
 
+    def _create_main_product_image_attachment(self, is_first=True):
+        self.ensure_one()
+        attachment = self.env["ir.attachment"].search(
+            [
+                ("res_model", "=", self._name),
+                ("res_id", "=", self.id),
+                ("res_field", "=", "image_1920"),
+            ]
+        )
+        if attachment:
+            if is_first:
+                sequence = (
+                    min(self.product_template_image_ids.mapped("sequence")) - 1
+                    if self.product_template_image_ids
+                    else 1
+                )
+            else:
+                sequence = (
+                    max(self.product_template_image_ids.mapped("sequence")) + 1
+                    if self.product_template_image_ids
+                    else 1
+                )
+            self.product_image_attachment_ids = [
+                (
+                    0,
+                    0,
+                    {
+                        "attachment_id": attachment.id,
+                        "sequence": sequence,
+                    },
+                )
+            ]
+
     def _compute_product_image_attachment_ids(self):
         for rec in self:
-            if self.env.context.get("include_main_product_image", False):
-                attachment = self.env["ir.attachment"].search(
-                    [
-                        ("res_model", "=", rec._name),
-                        ("res_id", "=", rec.id),
-                        ("res_field", "=", "image_1920"),
-                    ]
-                )
-                if attachment:
-                    rec.product_image_attachment_ids = [
-                        (
-                            0,
-                            0,
-                            {
-                                "attachment_id": attachment.id,
-                                "sequence": min(
-                                    rec.product_template_image_ids.mapped("sequence")
-                                )
-                                - 1
-                                if rec.product_template_image_ids
-                                else 1,
-                            },
-                        )
-                    ]
+            if self.env.context.get("include_main_product_image") == "first":
+                rec._create_main_product_image_attachment(is_first=True)
             for template_image in rec.product_template_image_ids:
                 if template_image.image_1920:
                     attachment = self.env["ir.attachment"].search(
@@ -172,6 +183,8 @@ class ProductTemplate(models.Model):
                             },
                         )
                     ]
+            if self.env.context.get("include_main_product_image") == "last":
+                rec._create_main_product_image_attachment(is_first=False)
             if not rec.product_image_attachment_ids:
                 rec.product_image_attachment_ids = self.env["product.attachment"]
 
