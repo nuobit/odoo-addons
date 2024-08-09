@@ -23,5 +23,3 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_woocommerce_res_partner_user","woocommerce_res_partner connector user","model_woocommerce_res_partner","base.group_user",1,0,0,0
 "access_woocommerce_sale_order_line_manager","woocommerce_sale_order_line connector manager","model_woocommerce_sale_order_line","connector.group_connector_manager",1,1,1,1
 "access_woocommerce_sale_order_line_user","woocommerce_sale_order_line connector user","model_woocommerce_sale_order_line","base.group_user",1,0,0,0
-"access_product_attachment_manager","product_attachment connector manager","model_product_attachment","connector.group_connector_manager",1,1,1,1
-"access_product_attachment_user","product_attachment connector user","model_product_attachment","base.group_user",1,0,0,0

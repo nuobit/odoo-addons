@@ -28,35 +28,12 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="website_sale.product_template_form_view" />
         <field name="arch" type="xml">
-            <xpath
-                expr="//div[@name='button_box']/field[@name='is_published']"
-                position="attributes"
-            >
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath
-                expr="//div[@name='button_box']/field[@name='is_published']"
-                position="after"
-            >
-                 <field
-                    name="button_is_published"
-                    widget="website_redirect_button"
-                    attrs="{'invisible': [('sale_ok','=',False)]}"
-                />
-            </xpath>
             <field name="website_sequence" position="before">
-                <field name="website_name" />
-                <field name="is_published" />
                 <field
                     name="woocommerce_enabled"
                     attrs="{'readonly': [('woocommerce_enabled', '=', True), ('woocommerce_bind_ids', '!=', [])]}"
                 />
                 <field name="woocommerce_bind_ids" invisible="1" />
-            </field>
-            <field name="website_ribbon_id" position="after">
-                <field name="slug_name" />
-                <field name="public_description" widget="html" />
-                <field name="public_short_description" />
             </field>
         </field>
     </record>
