@@ -44,7 +44,7 @@ class WooCommerceProductTemplateAdapter(Component):
         binder = self.binder_for()
         domain_dict = self._domain_to_normalized_dict(domain)
         id_fields = binder.get_id_fields(in_field=False)
-        _, common_domain = self._extract_domain_clauses(domain, id_fields)
+        __, common_domain = self._extract_domain_clauses(domain, id_fields)
         template_id = binder.dict2id(domain_dict, in_field=False, unwrap=True)
         if template_id:
             url = "products/%s" % template_id
