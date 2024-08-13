@@ -12,6 +12,7 @@
         "website_sale_variant",
     ],
     "data": [
+        "security/ir.model.access.csv",
         "views/product_template.xml",
         "views/product_product.xml",
     ],
