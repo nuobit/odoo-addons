@@ -16,7 +16,7 @@
     ],
     "external_dependencies": {
         "python": [
-            "pymssql",
+            "pymssql==2.3.0",
         ],
     },
     "data": [
