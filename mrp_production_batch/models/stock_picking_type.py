@@ -80,6 +80,7 @@ class StockPickingType(models.Model):
             remaining.count_pb_waiting = False
             remaining.count_pb_todo = False
 
+    # TODO: Rename to mo_batches_ids
     mo_batches = fields.One2many(
         comodel_name="mrp.production.batch",
         inverse_name="operation_type",

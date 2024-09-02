@@ -13,14 +13,14 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
             <field name="arch" type="xml">
-                <button name="button_plan" position="after">
+                <xpath expr="//header/button[1]" position="before">
                     <button
-                        name="mrp_production_batch_create_wizard_action"
+                        name="action_create_and_view_production_batch"
                         type="object"
-                        string="Batch Production"
+                        string="Create and View Batch"
                         class="oe_highlight"
                     />
-                </button>
+                </xpath>
                 <field name="product_id" position="before">
                     <field name="production_batch_id" />
                 </field>

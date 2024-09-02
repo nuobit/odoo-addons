@@ -60,6 +60,7 @@ class MrpProductionBatch(models.Model):
                 rec.production_ids.filtered(lambda r: not r.is_ready_to_produce)
             )
 
+    # TODO: Rename to date
     creation_date = fields.Date(
         string="Creation Date",
     )
@@ -84,6 +85,7 @@ class MrpProductionBatch(models.Model):
             else:
                 rec.state = "draft"
 
+    # TODO: Rename to operation_type_id
     operation_type = fields.Many2one(
         comodel_name="stock.picking.type",
         required=True,

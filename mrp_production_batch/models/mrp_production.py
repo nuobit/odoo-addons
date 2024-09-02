@@ -78,45 +78,58 @@ class MrpProduction(models.Model):
     @api.constrains("production_batch_id")
     def _check_operation_type(self):
         for rec in self:
-            if (
-                rec.picking_type_id.warehouse_id
-                != rec.production_batch_id.operation_type.warehouse_id
-            ):
-                raise ValidationError(
-                    _(
-                        "The warehouse of the batch must be the same"
-                        " as the warehouse of the productions."
+            if rec.production_batch_id:
+                if (
+                    rec.picking_type_id.warehouse_id
+                    != rec.production_batch_id.operation_type.warehouse_id
+                ):
+                    raise ValidationError(
+                        _(
+                            "The warehouse of the batch must be the same"
+                            " as the warehouse of the productions."
+                        )
                     )
-                )
 
-    def _check_production_to_batch_consistency(self, mrp_productions):
-        if not mrp_productions:
+    def _check_production_batch_consistency(self):
+        if not self:
             raise ValidationError(_("No productions selected"))
-        if mrp_productions.production_batch_id:
+        if self.production_batch_id:
             raise ValidationError(
                 _("Some of the selected productions already have a batch")
             )
-        if {"done", "cancel"} & set(mrp_productions.mapped("state")):
+        if {"done", "cancel"} & set(self.mapped("state")):
             raise ValidationError(
                 _("Some of the selected productions are already done or cancelled")
             )
-        if len(mrp_productions.picking_type_id) > 1:
+        if len(self.picking_type_id) > 1:
             raise ValidationError(
                 _("Some of the selected productions have different operation types")
             )
-        if len(mrp_productions.picking_type_id.warehouse_id) > 1:
+        if len(self.picking_type_id.warehouse_id) > 1:
             raise ValidationError(
                 _("Some of the selected productions have different warehouses")
             )
-        if len(mrp_productions.picking_type_id) > 1:
+        if len(self.picking_type_id) > 1:
             raise ValidationError(
                 _(
                     "Some of the selected productions have different picking types:%s"
-                    % mrp_productions.picking_type_id.mapped("name")
+                    % self.picking_type_id.mapped("name")
                 )
             )
 
-    def mrp_production_batch_create_wizard_action(self):
+    def prepare_production_batch_values(self):
+        return {
+            "creation_date": fields.Datetime.now(),
+            "production_ids": [(6, 0, self.ids)],
+            "operation_type": self.picking_type_id.id,
+        }
+
+    def create_production_batch(self):
+        return self.env["mrp.production.batch"].create(
+            self.prepare_production_batch_values()
+        )
+
+    def action_create_and_view_production_batch(self):
         if (
             "active_model" not in self.env.context
             or "active_ids" not in self.env.context
@@ -132,27 +145,19 @@ class MrpProduction(models.Model):
             self.env.context.get(x) for x in ["active_model", "active_ids"]
         ]
         mrp_production_ids = self.env[model].browse(active_ids)
-        self._check_production_to_batch_consistency(mrp_production_ids)
-        view_form = self.env.ref(
-            "mrp_production_batch.mrp_production_batch_wizard_view_form"
+        mrp_production_ids._check_production_batch_consistency()
+        production_batch = mrp_production_ids.create_production_batch()
+        action = self.env["ir.actions.act_window"]._for_xml_id(
+            "mrp_production_batch.mrp_production_batch_action"
         )
-        res_id = self.env["mrp.production.batch.wizard"].create(
-            {
-                "warehouse_id": mrp_production_ids.picking_type_id.warehouse_id.id,
-            }
-        )
-        res = {
-            "name": _("MRP production Batch"),
-            "view_mode": "form",
-            "res_model": "mrp.production.batch.wizard",
-            "res_id": res_id.id,
-            "target": "new",
-            "views": [(view_form.id, "form")],
-            "view_id": view_form.id,
-            "type": "ir.actions.act_window",
-            "context": dict(self.env.context, active_ids=self.ids),
-        }
-        return res
+        action["views"] = [
+            (
+                self.env.ref("mrp_production_batch.mrp_production_batch_view_form").id,
+                "form",
+            )
+        ]
+        action["res_id"] = production_batch.id
+        return action
 
     def _action_generate_consumption_wizard(self, consumption_issues):
         if not self.env.context.get("mrp_production_batch_create"):
@@ -250,22 +255,31 @@ class MrpProduction(models.Model):
                     " Ensure a product marked for batch use is included."
                 )
             )
-        batch_sequence = (
+        sequence_production_batch = (
             self.env["res.company"]
             .browse(self.company_id.id)
-            .sequence_production_batch_id.next_by_id()
+            .sequence_production_batch_id
         )
-        return component_lot.name + batch_sequence
+        if not sequence_production_batch:
+            raise ValidationError(
+                _(
+                    "Please configure a sequence for the production batch in the "
+                    "configuration settings."
+                )
+            )
+        return component_lot.name + sequence_production_batch.next_by_id()
+
+    def prepare_product_lot_batch_values(self):
+        return {
+            "name": self.create_batch_lot_by_bom(),
+            "product_id": self.product_id.id,
+            "company_id": self.company_id.id,
+        }
 
     def action_generate_batch_serial(self):
         self.ensure_one()
-        seq_name = self.create_batch_lot_by_bom()
         self.lot_producing_id = self.env["stock.production.lot"].create(
-            {
-                "name": seq_name,
-                "product_id": self.product_id.id,
-                "company_id": self.company_id.id,
-            }
+            self.prepare_product_lot_batch_values()
         )
 
     def write(self, values):
