@@ -23,3 +23,5 @@ class IrAttachment(models.Model):
             if not isinstance(meta_data, dict):
                 raise ValidationError(_("it should always return a dictionary"))
             return meta_data
+        else:
+            return {}
