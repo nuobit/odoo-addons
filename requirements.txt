@@ -1,7 +1,7 @@
 # generated from manifests external_dependencies
 mysql-connector-python==8.0.31
 openpyxl
-pymssql==2.3.0
+pymssql
 pystrich
 pyveloedi
 requests
