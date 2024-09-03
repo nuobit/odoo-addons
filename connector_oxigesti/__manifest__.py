@@ -19,7 +19,7 @@
     ],
     "external_dependencies": {
         "python": [
-            "pymssql",
+            "pymssql>=2.2.5,<2.3",
         ],
     },
     "data": [
