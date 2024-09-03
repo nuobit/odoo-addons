@@ -13,7 +13,7 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "external_dependencies": {
         "python": [
-            "pymssql",
+            "pymssql>=2.2.5,<2.3",
         ],
     },
     "depends": ["connector_extension_sql"],
