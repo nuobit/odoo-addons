@@ -14,7 +14,10 @@ class StockProductionLot(models.Model):
 
     def _get_dates(self, product_id=None):
         if self.env.context.get("mrp_production_batch_create"):
-            product = self.env["product.product"].browse(product_id) or self.product_id
+            product = (
+                self.env["product.product"].browse(product_id).exists()
+                or self.product_id
+            )
             if not product.removal_time:
                 raise ValidationError(
                     _(
