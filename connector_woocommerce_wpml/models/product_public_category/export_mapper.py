@@ -19,6 +19,14 @@ class WooCommerceProductPublicCategoryExportMapper(Component):
                 dict_name["name"] = record.name
         return dict_name
 
+    @mapping
+    def description(self, record):
+        dict_description = super().description(record)
+        if dict_description.get("description"):
+            if dict_description["description"] != record.description:
+                dict_description["description"] = record.description
+        return dict_description
+
     # TODO: REMOVE THIS COMMENT: we need lang on write because woocommerce
     #  can't be write name with id as a external_id, we need name+lang.
     # TODO: REMOVE THIS LANG FROM MAPPER!!
