@@ -65,7 +65,7 @@ class WooCommerceProductProductExporter(Component):
             )
         product_image_attachments = relation.with_context(
             include_main_product_image=self.backend_record.use_main_product_image
-        ).product_image_attachment_ids
+        ).product_variant_image_attachment_ids
         if (
             product_image_attachments
             and len(relation.product_tmpl_id.product_variant_ids) > 1
