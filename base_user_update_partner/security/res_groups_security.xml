@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="group_user_update_partner" model="res.groups">
+        <field name="name">Change user related partner</field>
+        <field name="category_id" ref="base.module_category_hidden" />
+    </record>
+</odoo>
