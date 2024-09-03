@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-02 14:30+0000\n"
-"PO-Revision-Date: 2024-09-02 14:30+0000\n"
+"POT-Creation-Date: 2024-09-03 10:57+0000\n"
+"PO-Revision-Date: 2024-09-03 10:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,9 @@ msgstr ""
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
 msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
-msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Gestionar\" title=\"Gestionar\"/>"
+msgstr ""
+"<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Gestionar\" "
+"title=\"Gestionar\"/>"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
@@ -36,10 +38,10 @@ msgid ""
 "specific.\" role=\"img\" aria-label=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Los valores establecidos aquí "
-"son específicos de la compañía.\" role=\"img\" aria-label=\"Los valores "
-"establecidos aquí son específicos de la compañía.\" groups=\"base.group_multi_"
-"company\"/>"
+"<span class=\"fa fa-lg fa-building-o\" title=\"Los valores establecidos aquí"
+" son específicos de la compañía.\" role=\"img\" aria-label=\"Los valores "
+"establecidos aquí son específicos de la compañía.\" "
+"groups=\"base.group_multi_company\"/>"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_form_view
@@ -92,8 +94,9 @@ msgid ""
 "An unexpected error has occurred. There's no `active_model` or `active_ids` "
 "in the context. This is a technical error, please contact technical support."
 msgstr ""
-"Se ha producido un error inesperado. No hay `active_model` o `active_ids` en "
-"el contexto. Este es un error técnico, por favor contacta al soporte técnico."
+"Se ha producido un error inesperado. No hay `active_model` o `active_ids` en"
+" el contexto. Este es un error técnico, por favor contacta al soporte "
+"técnico."
 
 #. module: mrp_production_batch
 #: model:ir.actions.act_window,name:mrp_production_batch.mrp_production_batch
@@ -122,11 +125,6 @@ msgid ""
 msgstr ""
 "La Lista de Materiales es necesaria para la producción. Por favor, "
 "desvincule la producción por lotes."
-
-#. module: mrp_production_batch
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_wizard_view_form
-msgid "Cancel"
-msgstr "Cancelar"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_form_view
@@ -174,27 +172,17 @@ msgid "Count Pb Waiting"
 msgstr "Contar Lp en Espera"
 
 #. module: mrp_production_batch
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_wizard_view_form
-msgid "Create Batch"
-msgstr "Crear Lote"
-
-#. module: mrp_production_batch
-#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_tree_view
 msgid "Create and View Batch"
 msgstr "Crear y Ver Lote"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__create_uid
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__create_uid
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__create_date
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__create_date
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__create_date
 msgid "Created on"
 msgstr "Creado en"
 
@@ -214,8 +202,6 @@ msgstr "Operaciones Detalladas"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_bom_line__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__display_name
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__display_name
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_company__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type__display_name
@@ -245,19 +231,12 @@ msgstr "Mensaje de Error"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_bom_line__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__id
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__id
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_company__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_config_settings__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_production_lot__id
 msgid "ID"
 msgstr ""
-
-#. module: mrp_production_batch
-#: model:ir.actions.act_window,name:mrp_production_batch.mrp_production_batch_wizard_action
-msgid "Import partners"
-msgstr "Importar socios"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields.selection,name:mrp_production_batch.selection__mrp_production_batch__state__in_progress
@@ -280,8 +259,6 @@ msgstr "Está listo para producir"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_bom_line____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch____last_update
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard____last_update
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_company____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type____last_update
@@ -291,15 +268,11 @@ msgstr "Última modificación el"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__write_uid
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__write_uid
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__write_date
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__write_date
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
@@ -312,16 +285,6 @@ msgstr "Lote/Número de serie"
 #: model:ir.model,name:mrp_production_batch.model_mrp_production_batch
 msgid "MRP Production Batch"
 msgstr "MRP Lote de Producción"
-
-#. module: mrp_production_batch
-#: model:ir.model,name:mrp_production_batch.model_mrp_production_batch_wizard
-msgid "MRP Production Batch wizard"
-msgstr "Asistente de Lote de Producción MRP"
-
-#. module: mrp_production_batch
-#: model:ir.model,name:mrp_production_batch.model_mrp_production_batch_line_wizard
-msgid "MRP Production Line Batch wizard"
-msgstr "Asistente de Lote de Producción MRP"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.res_config_settings_view_form
@@ -382,7 +345,6 @@ msgstr "Número de Pedidos de Fabricación a Procesar sin Lote"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__operation_type
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__operation_type
 msgid "Operation Type"
 msgstr "Tipo de Operación"
 
@@ -405,14 +367,8 @@ msgid ""
 "Please configure a sequence for the production batch in the configuration "
 "settings."
 msgstr ""
-"Por favor, configure una secuencia para el lote de producción en los "
-"ajustes de configuración."
-
-#. module: mrp_production_batch
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__production_id
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__production_ids
-msgid "Production"
-msgstr "Producción"
+"Por favor, configure una secuencia para el lote de producción en los ajustes"
+" de configuración."
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
@@ -433,11 +389,6 @@ msgid "Production Batch Sequence"
 msgstr "Secuencia de Lote de Producción"
 
 #. module: mrp_production_batch
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__production_batch_wizard_id
-msgid "Production Batch Wizard"
-msgstr "Asistente de Lote de Producción"
-
-#. module: mrp_production_batch
 #: model:ir.ui.menu,name:mrp_production_batch.menu_mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
 msgid "Production Batches"
@@ -455,7 +406,6 @@ msgstr "Configuración de lote de producción"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__product_ids
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_line_wizard__product_ids
 msgid "Products"
 msgstr "Productos"
 
@@ -610,11 +560,6 @@ msgstr "Usar en Lote"
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
 msgid "Waiting"
 msgstr "Esperando"
-
-#. module: mrp_production_batch
-#: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch_wizard__warehouse_id
-msgid "Warehouse"
-msgstr "Almacén"
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
