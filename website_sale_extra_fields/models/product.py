@@ -23,48 +23,15 @@ class ProductProduct(models.Model):
         for rec in self:
             rec.variant_is_published = rec.product_tmpl_id.is_published
 
-    product_image_attachment_ids = fields.Many2many(
+    product_variant_image_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",
-        compute="_compute_product_image_attachment_ids",
+        compute="_compute_product_variant_image_attachment_ids",
     )
 
-    def _create_main_product_image_attachment(self, is_first=True):
-        self.ensure_one()
-        attachment = self.env["ir.attachment"].search(
-            [
-                ("res_model", "=", self._name),
-                ("res_id", "=", self.id),
-                ("res_field", "=", "image_variant_1920"),
-            ]
-        )
-        if attachment:
-            if is_first:
-                sequence = (
-                    min(self.product_variant_image_ids.mapped("sequence")) - 1
-                    if self.product_variant_image_ids
-                    else 1
-                )
-            else:
-                sequence = (
-                    max(self.product_variant_image_ids.mapped("sequence")) + 1
-                    if self.product_variant_image_ids
-                    else 1
-                )
-            self.product_image_attachment_ids = [
-                (
-                    0,
-                    0,
-                    {
-                        "attachment_id": attachment.id,
-                        "sequence": sequence,
-                    },
-                )
-            ]
-
-    def _compute_product_image_attachment_ids(self):
+    def _compute_product_variant_image_attachment_ids(self):
         for rec in self:
             if self.env.context.get("include_main_product_image") == "first":
-                rec._create_main_product_image_attachment(is_first=True)
+                rec._create_main_product_variant_image_attachment(is_first=True)
             for variant_image in rec.product_variant_image_ids:
                 if variant_image.image_1920:
                     attachment = self.env["ir.attachment"].search(
@@ -74,7 +41,7 @@ class ProductProduct(models.Model):
                             ("res_field", "=", "image_1920"),
                         ]
                     )
-                    rec.product_image_attachment_ids = [
+                    rec.product_variant_image_attachment_ids = [
                         (
                             0,
                             0,
@@ -85,9 +52,11 @@ class ProductProduct(models.Model):
                         )
                     ]
             if self.env.context.get("include_main_product_image") == "last":
-                rec._create_main_product_image_attachment(is_first=False)
-            if not rec.product_image_attachment_ids:
-                rec.product_image_attachment_ids = self.env["product.attachment"]
+                rec._create_main_product_variant_image_attachment(is_first=False)
+            if not rec.product_variant_image_attachment_ids:
+                rec.product_variant_image_attachment_ids = self.env[
+                    "product.attachment"
+                ]
 
     product_document_attachment_ids = fields.Many2many(
         comodel_name="product.attachment",
@@ -109,3 +78,37 @@ class ProductProduct(models.Model):
                 ]
             if not rec.product_document_attachment_ids:
                 rec.product_document_attachment_ids = self.env["product.attachment"]
+
+    def _create_main_product_variant_image_attachment(self, is_first=True):
+        self.ensure_one()
+        attachment = self.env["ir.attachment"].search(
+            [
+                ("res_model", "=", self._name),
+                ("res_id", "=", self.id),
+                ("res_field", "=", "image_variant_1920"),
+            ]
+        )
+        # TODO: Duplicated code in product_template
+        if attachment:
+            if is_first:
+                sequence = (
+                    min(self.product_variant_image_ids.mapped("sequence")) - 1
+                    if self.product_variant_image_ids
+                    else 1
+                )
+            else:
+                sequence = (
+                    max(self.product_variant_image_ids.mapped("sequence")) + 1
+                    if self.product_variant_image_ids
+                    else 1
+                )
+            self.product_variant_image_attachment_ids = [
+                (
+                    0,
+                    0,
+                    {
+                        "attachment_id": attachment.id,
+                        "sequence": sequence,
+                    },
+                )
+            ]
