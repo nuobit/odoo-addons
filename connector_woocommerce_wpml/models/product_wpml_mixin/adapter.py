@@ -15,7 +15,7 @@ class WooCommerceProductWPMLMixinAdapter(AbstractComponent):
 
     def wpml_domain_to_normalized_dict(self, real_domain):
         domain = super()._domain_to_normalized_dict(real_domain)
-        if domain.get("lang"):
+        if not domain.get("lang"):
             domain["lang"] = "all"
         return domain
 
