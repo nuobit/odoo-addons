@@ -34,3 +34,12 @@ class WooCommerceProductPublicCategoryExportMapper(Component):
         return {
             "name": record.with_context(lang=self.backend_record.language_id.code).name
         }
+
+    @mapping
+    def description(self, record):
+        return {
+            "description": record.with_context(
+                lang=self.backend_record.language_id.code
+            ).description
+            or ""
+        }
