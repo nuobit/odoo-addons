@@ -18,7 +18,7 @@ class ProductImage(models.Model):
         self.ensure_one()
         return {
             "title": self.title,
-            "alternate_text": self.alternate_text,
+            "alt_text": self.alternate_text,
         }
 
     def write(self, vals):
