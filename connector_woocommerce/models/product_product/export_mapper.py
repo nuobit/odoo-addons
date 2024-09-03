@@ -128,7 +128,7 @@ class WooCommerceProductProductExportMapper(Component):
         # WooCommerce only allows one image per variant product
         product_image_attachments = record.with_context(
             include_main_product_image=self.backend_record.use_main_product_image
-        ).product_image_attachment_ids
+        ).product_variant_image_attachment_ids
         if product_image_attachments and self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
                 "wordpress.ir.attachment"
