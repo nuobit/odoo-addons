@@ -30,9 +30,9 @@ class MrpProduction(models.Model):
                 if rec.lot_producing_id and rec.production_batch_id:
                     raise ValidationError(
                         _(
-                            "You can't set a lot producing for a production %s "
-                            "that belongs to a batch: %s.\n"
-                            "It must be processed from the batch."
+                            "You can't set a Lot/Serial Number for a production %s "
+                            "that belongs to a production batch: %s.\n"
+                            "It must be processed from the production batch."
                         )
                         % (rec.name, rec.production_batch_id.name)
                     )

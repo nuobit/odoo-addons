@@ -640,11 +640,11 @@ msgstr ""
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid ""
-"You can't set a lot producing for a production %s that belongs to a batch: %s.\n"
-"It must be processed from the batch."
+"You can't set a Lot/Serial Number for a production %s that belongs to a production batch: %s.\n"
+"It must be processed from the production batch."
 msgstr ""
-"No puedes establecer un lote de producción para una producción %s que pertenece a un lote: %s. \n"
-"Debe procesarse desde el lote."
+"No puedes establecer un Lote/Nº de Serie para una producción %s que pertenece a un lote de producción: %s. \n"
+"Debe procesarse desde el lote de producción."
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
