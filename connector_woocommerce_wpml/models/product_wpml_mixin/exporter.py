@@ -10,10 +10,6 @@ class WooCommerceProductWPMLMixinExporter(AbstractComponent):
 
     def wpml_run(self, relation, always=True, internal_fields=None):
         res = []
-        # langs_to_export = []
-        # if relation.env.context.get("resync_export"):
-        #     langs_to_export.append(relation.env.context.get("lang"))
-        # else:
         langs_to_export = self.backend_record.language_ids.mapped("code")
         for lang in langs_to_export:
             result = super().run(
