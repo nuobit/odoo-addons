@@ -42,6 +42,7 @@ class WooCommerceProductTemplateAdapter(Component):
     def _modify_res_on_search_read(self, parent_ids, domain_dict):
         res = super()._modify_res_on_search_read(parent_ids, domain_dict)
         res[0]["lang"] = domain_dict.get("lang")
+        return res
 
     def _domain_to_normalized_dict(self, real_domain):
         return self.wpml_domain_to_normalized_dict(real_domain)
