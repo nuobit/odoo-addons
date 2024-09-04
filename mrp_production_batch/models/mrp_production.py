@@ -242,7 +242,12 @@ class MrpProduction(models.Model):
         ).product_id
         if not batch_component:
             raise ValidationError(
-                _("Please assign a batch compatible product in the Bill of Materials")
+                _(
+                    "It is necessary to specify in the production bills of materials "
+                    "which product will be used in batch. This product will be used "
+                    "to generate the final serial number, combining the selected "
+                    "product's lot name with the sequence defined in the configuration."
+                )
             )
         component_lot = False
         for line in self.move_raw_ids.move_line_ids:
