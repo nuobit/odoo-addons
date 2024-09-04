@@ -57,7 +57,7 @@ class WooCommerceProductTemplateAdapter(Component):
             if skus and len(skus) > 1:
                 skus = ",".join([f"{sku}" for sku in skus if sku])
             if skus:
-                products = self._exec("get", "products", domain=[("sku", "=", skus)])
+                products = self._exec("get", "products", domain=domain)
                 if len(products) == 1 and products[0]["type"] == "simple":
                     return products
                 parent_ids = set(filter(None, map(lambda x: x["parent_id"], products)))
