@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-03 10:57+0000\n"
-"PO-Revision-Date: 2024-09-03 10:57+0000\n"
+"POT-Creation-Date: 2024-09-04 10:27+0000\n"
+"PO-Revision-Date: 2024-09-04 10:27+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -374,7 +374,7 @@ msgstr ""
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid "Production %s have not recorded produced quantities yet."
-msgstr "La producción %s aún no ha registrado cantidades producidas."
+msgstr "La producción %s aún no ha registrado cantidades para producir."
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__production_batch_id
@@ -585,16 +585,6 @@ msgstr ""
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid ""
-"You can't set a Lot/Serial Number for a production %s that belongs to a production batch: %s.\n"
-"It must be processed from the production batch."
-msgstr ""
-"No puedes establecer un Lote/Nº de Serie para una producción %s que pertenece a un lote de producción: %s. \n"
-"Debe procesarse desde el lote de producción."
-
-#. module: mrp_production_batch
-#: code:addons/mrp_production_batch/models/mrp_production.py:0
-#, python-format
-msgid ""
 "You can't set a production batch for a production %s because it has a "
 "lot/serial number."
 msgstr ""
@@ -606,3 +596,13 @@ msgstr ""
 #, python-format
 msgid "You can't set more than one component to be used in a batch."
 msgstr "No puedes establecer más de un componente para ser usado en un lote."
+
+#. module: mrp_production_batch
+#: code:addons/mrp_production_batch/models/mrp_production.py:0
+#, python-format
+msgid ""
+"You cannot set a Lot/Serial Number for a production %s that belongs to a production batch: %s. \n"
+"The Lot/Serial Number will be processed from the production batch when it is confirmed. Leave the field empty or unlink the production from the production batch and validate it again."
+msgstr ""
+"No puedes establecer un número de Lote/Nº de Serie para una producción %s que pertenece a un lote de producción: %s. \n"
+"El número de Lote/Nº de Serie se procesará desde el lote de producción cuando se confirme. Deje el campo vacío o desvincule la producción del lote de producción y valídelo de nuevo."

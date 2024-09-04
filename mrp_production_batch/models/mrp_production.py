@@ -30,11 +30,13 @@ class MrpProduction(models.Model):
                 if rec.lot_producing_id and rec.production_batch_id:
                     raise ValidationError(
                         _(
-                            "You can't set a Lot/Serial Number for a production %s "
-                            "that belongs to a production batch: %s.\n"
-                            "It must be processed from the production batch."
+                            "You cannot set a Lot/Serial Number for a production %s "
+                            "that belongs to a production batch: %s. \nThe Lot/Serial "
+                            "Number will be processed from the production batch when it "
+                            "is confirmed. Leave the field empty or unlink the "
+                            "production from the production batch and validate it again."
                         )
-                        % (rec.name, rec.production_batch_id.name)
+                        % (rec.name, rec.production_batch_id.display_name)
                     )
 
     @api.constrains("production_batch_id")
@@ -185,10 +187,8 @@ class MrpProduction(models.Model):
         if not self.env.context.get("mrp_production_batch_create"):
             return super()._action_generate_immediate_wizard()
         raise ValidationError(
-            _(
-                "Production %s have not recorded produced quantities yet."
-                % self.mapped("name")
-            )
+            _("Production %s have not recorded produced quantities yet.")
+            % self.mapped("name")
         )
 
     # TODO: xml action

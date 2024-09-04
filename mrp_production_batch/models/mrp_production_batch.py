@@ -134,7 +134,11 @@ class MrpProductionBatch(models.Model):
         if final_production_count and init_production_count == final_production_count:
             message = [
                 _("The following productions could not be marked as 'done':"),
-                "\n".join(productions.mapped("display_name")),
+                "\n".join(
+                    f"{p.display_name}: {p.error_message[:200]}"
+                    f"{'...' if len(p.error_message) > 200 else ''}"
+                    for p in productions
+                ),
             ]
             raise UserError("\n".join(message))
 
