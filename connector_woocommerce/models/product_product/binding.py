@@ -54,6 +54,5 @@ class WooCommerceProductProduct(models.Model):
             for rec in self:
                 rec.product_tmpl_id.woocommerce_bind_ids.filtered(
                     lambda x: x.backend_id == rec.backend_id
-                ).with_context(
-                    resync_product_product=True, lang=rec._context.get("lang")
-                ).resync_export()
+                    and x.woocommerce_lang == rec.woocommerce_lang
+                ).with_context(resync_product_product=True).resync_export()
