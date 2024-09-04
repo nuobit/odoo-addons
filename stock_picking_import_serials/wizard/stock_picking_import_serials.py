@@ -68,7 +68,13 @@ class StockPickingImportSerials(models.TransientModel):
     _name = "stock.picking.import.serials"
     _description = "Stock Picking Import Serials"
 
-    datas = fields.Binary(string="File", attachment=True, required=True)
+    datas = fields.Binary(
+        string="File",
+        attachment=True,
+        required=True,
+        help="The fields you can import are:\n -Default Code\n -Serial Number",
+    )
+
     datas_fname = fields.Char(string="Filename", required=True)
 
     result = fields.Text(string="Result", readonly=True)
