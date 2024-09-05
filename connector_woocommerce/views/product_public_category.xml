@@ -10,15 +10,13 @@
         <field name="model">product.public.category</field>
         <field name="inherit_id" ref="website_sale.product_public_category_form_view" />
         <field name="arch" type="xml">
-            <sheet position="inside">
-                <notebook>
-                    <page string="Connector WooCommerce" name="connector_woocommerce">
-                        <group string="WooCommerce Bindings">
-                            <field name="woocommerce_bind_ids" nolabel="1" />
-                        </group>
-                    </page>
-                </notebook>
-            </sheet>
+            <notebook position="inside">
+                <page string="Connector WooCommerce" name="connector_woocommerce">
+                    <group string="WooCommerce Bindings">
+                        <field name="woocommerce_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </notebook>
         </field>
     </record>
     <record id="woocommerce_product_public_category_view_form" model="ir.ui.view">
