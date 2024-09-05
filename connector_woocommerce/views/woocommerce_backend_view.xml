@@ -214,6 +214,26 @@
                                     string="Export in background"
                                 />
                             </group>
+                                                        <group>
+                                <div>
+                                    <label
+                                        string="Export Product Attachment Since"
+                                        class="oe_inline"
+                                        for="export_product_attachment_since_date"
+                                    />
+                                    <field
+                                        name="export_product_attachment_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="export_product_attachment_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
+                            </group>
                         </page>
                         <page name="mappings" string="Mappings">
                             <group string="Payment Mode">
