@@ -28,11 +28,11 @@ class WooCommerceProductProduct(models.Model):
     # TODO: This function should be an overwrite of the original one,
     #  it should be refactored to avoid code duplication
     #  doing a hook to set a context variable with lang
-    def resync_export(self):
-        super().resync_export()
-        if not self.env.context.get("resync_product_template", False):
-            for rec in self:
-                rec.product_tmpl_id.woocommerce_bind_ids.filtered(
-                    lambda x: x.backend_id == rec.backend_id
-                    and x.woocommerce_lang == rec.woocommerce_lang
-                ).with_context(resync_product_product=True).resync_export()
+    # def resync_export(self):
+    #     super().resync_export()
+    #     if not self.env.context.get("resync_product_template", False):
+    #         for rec in self:
+    #             rec.product_tmpl_id.woocommerce_bind_ids.filtered(
+    #                 lambda x: x.backend_id == rec.backend_id
+    #                 and x.woocommerce_lang == rec.woocommerce_lang
+    #             ).with_context(resync_product_product=True).resync_export()
