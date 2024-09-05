@@ -10,3 +10,7 @@ class ProductPublicCategory(models.Model):
     description = fields.Text(
         translate=True,
     )
+
+    slug_name = fields.Char(
+        translate=True,
+    )
