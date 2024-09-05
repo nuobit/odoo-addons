@@ -9,17 +9,25 @@ class WordPressIrAttachment(models.Model):
 
     @api.model
     def _get_woocommerce_base_domain(self):
-        product_template = self.env["product.template"].search(
-            [
-                ("woocommerce_enabled", "=", True),
-                ("has_attributes", "!=", False),
-            ]
+        product_template = (
+            self.env["product.template"]
+            .with_context(active_test=False)
+            .search(
+                [
+                    ("woocommerce_enabled", "=", True),
+                    ("has_attributes", "!=", False),
+                ]
+            )
         )
-        product_variant = self.env["product.product"].search(
-            [
-                ("product_tmpl_id.woocommerce_enabled", "=", True),
-                ("product_tmpl_id.has_attributes", "=", True),
-            ]
+        product_variant = (
+            self.env["product.product"]
+            .with_context(active_test=False)
+            .search(
+                [
+                    ("product_tmpl_id.woocommerce_enabled", "=", True),
+                    ("product_tmpl_id.has_attributes", "=", True),
+                ]
+            )
         )
         attachments = (
             product_template.product_image_attachment_ids.attachment_id
@@ -27,7 +35,6 @@ class WordPressIrAttachment(models.Model):
             + product_variant.product_variant_image_attachment_ids.attachment_id
             + product_variant.product_document_attachment_ids.attachment_id
         )
-
         return [("id", "in", attachments.ids)]
 
     def export_product_attachment_since(self, backend_record=None, since_date=None):
