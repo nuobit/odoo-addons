@@ -214,7 +214,7 @@
                                     string="Export in background"
                                 />
                             </group>
-                                                        <group>
+                            <group>
                                 <div>
                                     <label
                                         string="Export Product Attachment Since"
