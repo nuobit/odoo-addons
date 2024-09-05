@@ -47,12 +47,3 @@ class WooCommerceProductProduct(models.Model):
             ]
         self.export_batch(backend_record, domain=domain)
         return True
-
-    def resync_export(self):
-        super().resync_export()
-        if not self.env.context.get("resync_product_template", False):
-            for rec in self:
-                rec.product_tmpl_id.woocommerce_bind_ids.filtered(
-                    lambda x: x.backend_id == rec.backend_id
-                    and x.woocommerce_lang == rec.woocommerce_lang
-                ).with_context(resync_product_product=True).resync_export()
