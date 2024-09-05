@@ -41,14 +41,14 @@ class WooCommerceProductPublicCategoryExportMapper(Component):
             "description": record.with_context(
                 lang=self.backend_record.language_id.code
             ).description
-            or ""
+            or None
         }
 
+    # TODO: We shoud do this differently, is not a good hook
     def _get_slug_name(self, record):
         return record.with_context(lang=self.backend_record.language_id.code).slug_name
 
     @mapping
     def slug(self, record):
         slug = self._get_slug_name(record)
-        if slug:
-            return {"slug": slug}
+        return {"slug": slug or None}
