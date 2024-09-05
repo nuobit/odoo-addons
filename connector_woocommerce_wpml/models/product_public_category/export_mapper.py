@@ -56,3 +56,6 @@ class WooCommerceProductPublicCategoryExportMapper(Component):
             for obb in other_binding_backend:
                 translation_of = obb.woocommerce_idpubliccategory
             return {"translation_of": translation_of}
+
+    def _get_slug_name(self, record):
+        return record.slug_name
