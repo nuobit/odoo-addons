@@ -10,49 +10,13 @@
         <field name="model">product.public.category</field>
         <field name="inherit_id" ref="website_sale.product_public_category_form_view" />
         <field name="arch" type="xml">
-            <field name="parent_id" position="after">
-               <field name="description" />
-            </field>
+            <sheet position="inside">
+                <group string="Shop">
+                    <field name="description" />
+                    <field name="slug_name" />
+                </group>
+                <notebook />
+            </sheet>
         </field>
     </record>
-<!--    <record id="woocommerce_product_public_category_view_form" model="ir.ui.view">-->
-<!--        <field name="name">woocommerce.product.public.category.view.form</field>-->
-<!--        <field name="model">woocommerce.product.public.category</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <form string="WooCommerce Product Public Category">-->
-<!--                <group>-->
-<!--                    <field name="backend_id" />-->
-<!--                    <field name="odoo_id" readonly="True" />-->
-<!--                    <field name="woocommerce_idpubliccategory" readonly="True" />-->
-<!--                    <field name="sync_date" readonly="True" />-->
-<!--                </group>-->
-<!--            </form>-->
-<!--        </field>-->
-<!--    </record>-->
-<!--    <record id="woocommerce_product_public_category_view_tree" model="ir.ui.view">-->
-<!--        <field name="name">woocommerce.product.public.category.view.tree</field>-->
-<!--        <field name="model">woocommerce.product.public.category</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <tree>-->
-<!--                <field name="backend_id" />-->
-<!--                <field name="odoo_id" />-->
-<!--                <field name="woocommerce_idpubliccategory" readonly="True" />-->
-<!--                <field name="sync_date" />-->
-<!--                <button-->
-<!--                    name="resync_export"-->
-<!--                    type="object"-->
-<!--                    string="Resynchronize"-->
-<!--                    icon="fa-refresh fa-lg"-->
-<!--                />-->
-<!--            </tree>-->
-<!--        </field>-->
-<!--    </record>-->
-<!--    <record-->
-<!--        id="woocommerce_product_public_category_action"-->
-<!--        model="ir.actions.act_window"-->
-<!--    >-->
-<!--        <field name="name">Product Public Category</field>-->
-<!--        <field name="res_model">woocommerce.product.public.category</field>-->
-<!--        <field name="view_mode">tree,form</field>-->
-<!--    </record>-->
 </odoo>
