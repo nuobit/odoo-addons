@@ -170,11 +170,18 @@ class MrpProductionBatch(models.Model):
         self.ensure_one()
         self.action_check()
         self._check_unique_serial_lot_in_batch()
+        res = {}
         for production in self.with_context(
             mrp_production_batch_create=True
         ).production_ids:
             production.action_generate_batch_serial()
-            production.button_mark_done()
+            res[production.name] = production.button_mark_done()
+        res_ko = [k for k, v in res.items() if v is not True]
+        if res_ko:
+            raise UserError(
+                _("The following productions could not be marked as 'done': %s")
+                % ", ".join(res_ko)
+            )
 
     def _get_common_action_view_production(self):
         tree_view = self.env.ref("mrp_production_batch.mrp_production_tree_view")

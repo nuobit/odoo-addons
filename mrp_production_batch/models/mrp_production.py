@@ -218,7 +218,10 @@ class MrpProduction(models.Model):
                         }
                     )
                     self_wc.lot_producing_id = lot.id
-                    self_wc.button_mark_done()
+                    res = self_wc.button_mark_done()
+                    if res is not True:
+                        if "name" in res:
+                            raise ValidationError(res["name"])
                     raise FakeException("")
             except FakeException:
                 rec.is_ready_to_produce = True
