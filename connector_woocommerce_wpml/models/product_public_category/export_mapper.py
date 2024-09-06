@@ -22,9 +22,8 @@ class WooCommerceProductPublicCategoryExportMapper(Component):
     @mapping
     def description(self, record):
         dict_description = super().description(record)
-        if dict_description.get("description"):
-            if dict_description["description"] != record.description:
-                dict_description["description"] = record.description
+        if dict_description["description"] != record.description:
+            dict_description["description"] = record.description or None
         return dict_description
 
     # TODO: REMOVE THIS COMMENT: we need lang on write because woocommerce
