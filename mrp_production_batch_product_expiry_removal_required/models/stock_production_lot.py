@@ -18,11 +18,12 @@ class StockProductionLot(models.Model):
                 self.env["product.product"].browse(product_id).exists()
                 or self.product_id
             )
-            if not product.removal_time:
+            if product.use_expiration_date and not product.removal_time:
                 raise ValidationError(
                     _(
                         "Product %s requires a removal time to generate production "
-                        "batches.  Please set it before continuing."
+                        "batches. Please go to the product, assign a value to the "
+                        "'Removal Time' field, and try again."
                     )
                     % product.display_name
                 )
