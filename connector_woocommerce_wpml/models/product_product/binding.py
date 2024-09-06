@@ -28,6 +28,8 @@ class WooCommerceProductProduct(models.Model):
     # TODO: This function should be an overwrite of the original one,
     #  it should be refactored to avoid code duplication
     #  doing a hook to set a context variable with lang
+    #  TODO: The optimization needs to be done at the language level,
+    #   just as we do in the upper module connector_woocommerce
     # def resync_export(self):
     #     super().resync_export()
     #     if not self.env.context.get("resync_product_template", False):
