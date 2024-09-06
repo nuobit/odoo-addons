@@ -83,32 +83,6 @@
                         <field name="production_batch_id" invisible="1" />
                     </button>
                 </div>
-                <xpath
-                    expr="//button[@name='button_mark_done'][1]"
-                    position="attributes"
-                >
-                    <attribute name="attrs">{'invisible': [
-                        '|',
-                        ('production_batch_id', '!=', False),
-                        '|',
-                        ('state', 'in', ('draft', 'cancel', 'done', 'to_close')),
-                        ('qty_producing', '=', 0)
-                    ]}</attribute>
-                </xpath>
-                <xpath
-                    expr="//button[@name='button_mark_done'][2]"
-                    position="attributes"
-                >
-                    <attribute name="attrs">{'invisible': [
-                        '|',
-                        ('production_batch_id', '!=', False),
-                        '&amp;',
-                        '|',
-                        ('state', 'not in', ('confirmed', 'progress')),
-                        ('qty_producing', '!=', 0),
-                        ('state', '!=', 'to_close')
-                    ]}</attribute>
-                </xpath>
                 <field name="lot_producing_id" position="attributes">
                     <attribute name="attrs">
                         {'invisible': [('product_tracking', 'in', ('none', False))], 'readonly': [('production_batch_id', '!=', False)]}

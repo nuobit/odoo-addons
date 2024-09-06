@@ -162,26 +162,24 @@ class MrpProduction(models.Model):
         return action
 
     def _action_generate_consumption_wizard(self, consumption_issues):
-        if not self.env.context.get("mrp_production_batch_create"):
-            return super()._action_generate_consumption_wizard(consumption_issues)
-        if self.bom_id.bom_line_ids.product_id != self.move_raw_ids.product_id:
-            raise ValidationError(
-                _(
-                    "A problem has been detected in production %s. Make sure you "
-                    "have added all the necessary components from the materials "
-                    "list. Please check this and, once corrected, try again."
+        if self.production_batch_id:
+            if self.bom_id.bom_line_ids.product_id != self.move_raw_ids.product_id:
+                raise ValidationError(
+                    _(
+                        "Not all the necessary components from the bill of materials "
+                        "have been added. Correct it and try again."
+                    )
+                    % self.mapped("name")
                 )
-                % self.mapped("name")
-            )
-        else:
-            raise ValidationError(
-                _(
-                    "A problem has been detected in production %s. Verify that the"
-                    " quantities to be consumed are indicated correctly. Please "
-                    "check this and, once corrected, try again."
+            else:
+                raise ValidationError(
+                    _(
+                        "The quantities to be consumed of the components are not "
+                        "indicated correctly. Correct it and try again."
+                    )
+                    % self.mapped("name")
                 )
-                % self.mapped("name")
-            )
+        return super()._action_generate_consumption_wizard(consumption_issues)
 
     def _action_generate_immediate_wizard(self):
         if not self.env.context.get("mrp_production_batch_create"):
@@ -205,6 +203,40 @@ class MrpProduction(models.Model):
             "res_id": self.production_batch_id.id,
         }
 
+    def button_mark_done(self):
+        if self.production_batch_id:
+            if self.env.context.get("mo_ids_to_backorder"):
+                productions_to_backorder = self.browse(
+                    self.env.context["mo_ids_to_backorder"]
+                )
+                backorders = productions_to_backorder._generate_backorder_productions(
+                    close_mo=False
+                )
+                self.write(
+                    {
+                        "product_qty": self.qty_producing,
+                    }
+                )
+                context = self.env.context.copy()
+                context = {
+                    k: v for k, v in context.items() if not k.startswith("default_")
+                }
+                for k in context.keys():
+                    if k.startswith("skip_"):
+                        context[k] = False
+                return {
+                    "res_model": "mrp.production",
+                    "type": "ir.actions.act_window",
+                    "context": dict(
+                        context,
+                        mo_ids_to_backorder=None,
+                        button_mark_done_production_ids=None,
+                    ),
+                    "view_mode": "form",
+                    "res_id": backorders[0].id,
+                }
+        return super().button_mark_done()
+
     def action_produce_batch(self):
         for rec in self:
             try:
@@ -220,8 +252,20 @@ class MrpProduction(models.Model):
                     self_wc.lot_producing_id = lot.id
                     res = self_wc.button_mark_done()
                     if res is not True:
-                        if "name" in res:
-                            raise ValidationError(res["name"])
+                        if "view_id" in res:
+                            if (
+                                res["id"]
+                                == self.env.ref(
+                                    "mrp.action_mrp_production_backorder"
+                                ).id
+                            ):
+                                raise ValidationError(
+                                    _(
+                                        "An backorder must be carried out. "
+                                        "Validate the production and indicate what you "
+                                        "want to do."
+                                    )
+                                )
                     raise FakeException("")
             except FakeException:
                 rec.is_ready_to_produce = True

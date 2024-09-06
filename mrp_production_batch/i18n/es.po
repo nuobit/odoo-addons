@@ -6,14 +6,30 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-04 15:38+0000\n"
-"PO-Revision-Date: 2024-09-04 15:38+0000\n"
+"POT-Creation-Date: 2024-09-06 13:15+0000\n"
+"PO-Revision-Date: 2024-09-06 13:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr ""
+"<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Gestionar\" "
+"title=\"Gestionar\"/>"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
+msgid ""
+"<span attrs=\"{'invisible': ['|', ('state', '!=', 'draft'), ('name', '!=', "
+"'/')]}\">Draft</span>"
+msgstr ""
+"<span attrs=\"{'invisible': ['|', ('state', '!=', 'draft'), ('name', '!=', "
+"'/')]}\">Borrador</span>"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.res_config_settings_view_form
@@ -28,28 +44,34 @@ msgstr ""
 "groups=\"base.group_multi_company\"/>"
 
 #. module: mrp_production_batch
-#: code:addons/mrp_production_batch/models/mrp_production.py:0
-#, python-format
-msgid ""
-"A problem has been detected in production %s. Make sure you have added all "
-"the necessary components from the materials list. Please check this and, "
-"once corrected, try again."
-msgstr ""
-"Se ha detectado un problema en la producción %s. Asegúrate de haber añadido "
-"todos los componentes necesarios de la lista de materiales. Por favor "
-"verifica esto y, una vez corregido, intenta nuevamente."
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_form_view
+msgid "<span class=\"o_stat_text\">Production Batch</span>"
+msgstr "<span class=\"o_stat_text\">Lote de Producción</span>"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
+msgid "<span>New</span>"
+msgstr "<span>Nuevo</span>"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
+msgid "<span>Orders</span>"
+msgstr "<span>Órdenes</span>"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
+msgid "All"
+msgstr "Todos"
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid ""
-"A problem has been detected in production %s. Verify that the quantities to "
-"be consumed are indicated correctly. Please check this and, once corrected, "
-"try again."
+"An backorder must be carried out. Validate the production and indicate what "
+"you want to do."
 msgstr ""
-"Se ha detectado un problema en la producción %s. Verifica que las cantidades"
-" a consumir estén indicadas correctamente. Por favor verifica esto y, una "
-"vez corregido, intenta nuevamente."
+"Se debe realizar una orden parcial. Valida la producción e indica qué "
+"deseas hacer."
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
@@ -91,6 +113,16 @@ msgstr ""
 "desvincule la producción por lotes."
 
 #. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_form_view
+msgid "Check Production"
+msgstr "Validar Producción"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
+msgid "Check Productions"
+msgstr "Validar Producciones"
+
+#. module: mrp_production_batch
 #: model:ir.model,name:mrp_production_batch.model_res_company
 msgid "Companies"
 msgstr "Compañías"
@@ -106,6 +138,16 @@ msgid "Config Settings"
 msgstr "Opciones de configuración"
 
 #. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
+msgid "Confirm Production"
+msgstr "Producción Confirmada"
+
+#. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type__count_pb_todo
 msgid "Count Pb Todo"
 msgstr "Contar Lp Por Hacer"
@@ -114,6 +156,11 @@ msgstr "Contar Lp Por Hacer"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type__count_pb_waiting
 msgid "Count Pb Waiting"
 msgstr "Contar Lp en Espera"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_tree_view
+msgid "Create and View Batch"
+msgstr "Crear y Ver Lote"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__create_uid
@@ -143,6 +190,7 @@ msgstr "Operaciones Detalladas"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_company__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:mrp_production_batch.field_stock_move__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type__display_name
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_production_lot__display_name
 msgid "Display Name"
@@ -150,6 +198,7 @@ msgstr "Nombre mostrado"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields.selection,name:mrp_production_batch.selection__mrp_production_batch__state__done
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_search
 msgid "Done"
 msgstr "Hecho"
 
@@ -171,6 +220,7 @@ msgstr "Mensaje de Error"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_company__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_config_settings__id
+#: model:ir.model.fields,field_description:mrp_production_batch.field_stock_move__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type__id
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_production_lot__id
 msgid "ID"
@@ -178,6 +228,8 @@ msgstr ""
 
 #. module: mrp_production_batch
 #: model:ir.model.fields.selection,name:mrp_production_batch.selection__mrp_production_batch__state__in_progress
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_search
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
 msgid "In Progress"
 msgstr "En Progreso"
 
@@ -211,6 +263,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_company____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:mrp_production_batch.field_stock_move____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type____last_update
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_production_lot____last_update
 msgid "Last Modified on"
@@ -289,9 +342,19 @@ msgid "No productions selected"
 msgstr "Producciones no seleccionadas"
 
 #. module: mrp_production_batch
+#: code:addons/mrp_production_batch/models/mrp_production.py:0
+#, python-format
+msgid ""
+"Not all the necessary components from the bill of materials have been added."
+" Correct it and try again."
+msgstr ""
+"No se han añadido todos los componentes necesarios de la lista de materiales."
+" Corrígelo e inténtalo de nuevo."
+
+#. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_stock_picking_type__count_mo_todo_wo_batch
 msgid "Number of Manufacturing Orders to Process without Batch"
-msgstr "Número de Pedidos de Fabricación a Procesar sin Lote"
+msgstr "Número de Órdenes de Fabricación a Procesar sin Lote"
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__operation_type
@@ -321,6 +384,7 @@ msgstr "La producción %s aún no ha registrado cantidades para producir."
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production__production_batch_id
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
 msgid "Production Batch"
 msgstr "Lote de Producción"
 
@@ -332,6 +396,7 @@ msgstr "Secuencia de Lote de Producción"
 
 #. module: mrp_production_batch
 #: model:ir.ui.menu,name:mrp_production_batch.menu_mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
 msgid "Production Batches"
 msgstr "Lotes de Producción"
 
@@ -351,6 +416,11 @@ msgid "Products"
 msgstr "Productos"
 
 #. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
+msgid "Ready"
+msgstr "Listo"
+
+#. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__ready_production_ids
 msgid "Ready Production"
 msgstr "Producción Lista"
@@ -359,6 +429,11 @@ msgstr "Producción Lista"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__ready_production_count
 msgid "Ready Production Count"
 msgstr "Contador de Producción Lista"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_search
+msgid "Search Production Batch"
+msgstr "Buscar Lote de Producción"
 
 #. module: mrp_production_batch
 #: model_terms:ir.ui.view,arch_db:mrp_production_batch.res_config_settings_view_form
@@ -406,6 +481,11 @@ msgid "State"
 msgstr "Estado"
 
 #. module: mrp_production_batch
+#: model:ir.model,name:mrp_production_batch.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de existencias"
+
+#. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production_batch.py:0
 #, python-format
 msgid ""
@@ -423,6 +503,21 @@ msgid "The following productions could not be marked as 'done':"
 msgstr "Las siguientes producciones no se pudieron marcar como 'hechas':"
 
 #. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_form_view
+msgid "The production is ready to produce in batch."
+msgstr "La producción está lista para producir en lote."
+
+#. module: mrp_production_batch
+#: code:addons/mrp_production_batch/models/mrp_production.py:0
+#, python-format
+msgid ""
+"The quantities to be consumed of the components are not indicated correctly."
+" Correct it and try again."
+msgstr ""
+"Las cantidades a consumir de los componentes no están indicadas "
+"correctamente. Corríjalo e inténtelo de nuevo."
+
+#. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
 #, python-format
 msgid ""
@@ -438,6 +533,16 @@ msgid "This name is reseved for internal use."
 msgstr "Este nombre está reservado para uso interno."
 
 #. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_search
+msgid "To Do"
+msgstr "Por Hacer"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
+msgid "To Process"
+msgstr "A Procesar"
+
+#. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__to_review_production_ids
 msgid "To Review Production"
 msgstr "Producción a Revisar"
@@ -446,6 +551,16 @@ msgstr "Producción a Revisar"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__to_review_production_count
 msgid "To Review Production Count"
 msgstr "Conteo de Producción a Revisar"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
+msgid "To review"
+msgstr "A revisar"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.mrp_production_batch_view_form
+msgid "Total"
+msgstr ""
 
 #. module: mrp_production_batch
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_production_batch__total_production_count
@@ -461,6 +576,11 @@ msgstr "Tipo de operación"
 #: model:ir.model.fields,field_description:mrp_production_batch.field_mrp_bom_line__use_in_batch
 msgid "Use In Batch"
 msgstr "Usar en Lote"
+
+#. module: mrp_production_batch
+#: model_terms:ir.ui.view,arch_db:mrp_production_batch.stock_production_type_kanban
+msgid "Waiting"
+msgstr "Esperando"
 
 #. module: mrp_production_batch
 #: code:addons/mrp_production_batch/models/mrp_production.py:0
