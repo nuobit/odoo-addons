@@ -6,14 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-08 11:55+0000\n"
-"PO-Revision-Date: 2024-08-08 11:55+0000\n"
+"POT-Creation-Date: 2024-09-09 14:25+0000\n"
+"PO-Revision-Date: 2024-09-09 14:25+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/sale_order.py:0
+#, python-format
+msgid "%s: %s"
+msgstr ""
 
 #. module: account_move_service_report_xlsx
 #: model:ir.actions.report,print_report_name:account_move_service_report_xlsx.report_oxigen_stock_valuation_xlsx_action
@@ -97,6 +103,16 @@ msgid "Display Name"
 msgstr "Nom a mostrar"
 
 #. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/sale_order.py:0
+#, python-format
+msgid ""
+"Errors have been found in the following orders:\n"
+"%s"
+msgstr ""
+"S'han trobat errors en les següents comandes:\n"
+"%s"
+
+#. module: account_move_service_report_xlsx
 #: model:ir.actions.report,name:account_move_service_report_xlsx.report_oxigen_stock_valuation_xlsx_action
 #: model:ir.actions.server,name:account_move_service_report_xlsx.detailed_invoice_service_action
 #: model_terms:ir.ui.view,arch_db:account_move_service_report_xlsx.account_move_view_form
@@ -129,6 +145,9 @@ msgid ""
 "-%s\n"
 "Please go to the service report configuration and add the missing products."
 msgstr ""
+"En les comandes de venda vinculades a aquesta factura, hi ha productes que no estan inclosos en els tipus de servei permesos per a aquest intermediari de serveis: \n"
+"-%s\n"
+"Si us plau, aneu a la configuració dels informes de servei i afegiu els productes que falten."
 
 #. module: account_move_service_report_xlsx
 #: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
@@ -357,6 +376,18 @@ msgid ""
 msgstr ""
 "El client %s no té la configuració dels informes de servei configurada. Si "
 "us plau, vagi al contacte i configuri-la."
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/models/sale_order.py:0
+#, python-format
+msgid ""
+"The combination of Service Key ('%s') and Transfer Reason ('%s') is not "
+"found in the Service Report Configuration. Please go to the partner and set "
+"the correct service report configuration."
+msgstr ""
+"La combinació de la clau de servei ('%s') i el motiu de transferència ('%s') "
+"no es troba a la configuració de l'informe de servei. Si us plau, vagi al "
+"contacte i configureu la configuració correcta de l'informe de servei."
 
 #. module: account_move_service_report_xlsx
 #: code:addons/account_move_service_report_xlsx/models/res_partner_service_report_config_type.py:0

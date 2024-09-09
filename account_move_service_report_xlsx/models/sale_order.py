@@ -1,11 +1,28 @@
 # Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models
+from odoo import _, models
+from odoo.exceptions import ValidationError
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
+
+    def check_consistency_service_report_values(self):
+        orders = {}
+        for rec in self:
+            typology_name = rec.get_service_typology_name()
+            if not typology_name:
+                orders[rec.name] = _(
+                    "The combination of Service Key ('%s') and Transfer Reason ('%s') "
+                    "is not found in the Service Report Configuration. Please go to "
+                    "the partner and set the correct service report configuration."
+                ) % (rec.service_key, rec.service_transfer_reason)
+        if orders:
+            raise ValidationError(
+                _("Errors have been found in the following orders:\n%s")
+                % "\n".join([_("%s: %s") % (k, v) for k, v in orders.items()])
+            )
 
     def get_service_typology_name(self):
         typology_name = False
