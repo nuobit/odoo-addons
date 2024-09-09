@@ -62,6 +62,7 @@ class AbstractReportXslx(models.AbstractModel):
 
         sheet.write_row(0, 0, headers, bold)
         orders = account_moves.invoice_line_ids.sale_line_ids.order_id
+        orders.check_consistency_service_report_values()
         for row_num, sale_order in enumerate(orders, start=1):
             row_data = self._get_service_row_data(account_moves, sale_order, headers)
             for col_num, cell_value in enumerate(row_data):
