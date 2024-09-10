@@ -212,11 +212,7 @@ class MrpProduction(models.Model):
                 backorders = productions_to_backorder._generate_backorder_productions(
                     close_mo=False
                 )
-                self.write(
-                    {
-                        "product_qty": self.qty_producing,
-                    }
-                )
+                self.write({"product_qty": self.qty_producing})
                 context = self.env.context.copy()
                 context = {
                     k: v for k, v in context.items() if not k.startswith("default_")
@@ -224,16 +220,24 @@ class MrpProduction(models.Model):
                 for k in context.keys():
                     if k.startswith("skip_"):
                         context[k] = False
+                context.pop("mo_ids_to_backorder", None)
+                self.with_context(context).action_produce_batch()
                 return {
-                    "res_model": "mrp.production",
-                    "type": "ir.actions.act_window",
-                    "context": dict(
-                        context,
-                        mo_ids_to_backorder=None,
-                        button_mark_done_production_ids=None,
-                    ),
-                    "view_mode": "form",
-                    "res_id": backorders[0].id,
+                    "type": "ir.actions.client",
+                    "tag": "display_notification",
+                    "params": {
+                        "title": _(
+                            "Manufacturing order of the production batch validated",
+                        ),
+                        "message": _(
+                            "The backorder %s has been created.\nYou can now go to "
+                            "the production batch and validate this manufacturing "
+                            "order."
+                        )
+                        % backorders.mapped("name"),
+                        "type": "info",
+                        "next": {"type": "ir.actions.act_window_close"},
+                    },
                 }
         return super().button_mark_done()
 
