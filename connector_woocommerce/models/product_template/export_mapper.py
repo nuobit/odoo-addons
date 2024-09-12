@@ -133,7 +133,7 @@ class WooCommerceProductTemplateExportMapper(Component):
             and record.product_variant_id.variant_public_description
         ):
             description = self._get_product_variant_description(record)
-        return {"description": description if description else ""}
+        return {"description": description if description else None}
 
     def _get_short_description(self, record):
         return record.with_context(
@@ -242,14 +242,16 @@ class WooCommerceProductTemplateExportMapper(Component):
     def images(self, record):
         if self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
-                "wordpress.ir.attachment"
+                "wordpress.ir.checksum"
             ) as work:
                 binder = work.component(usage="binder")
                 img_list = []
                 product_image_attachments = record.with_context(
                     include_main_product_image=self.backend_record.use_main_product_image
                 ).product_image_attachment_ids
-                for image in product_image_attachments.mapped("attachment_id"):
+                for image in product_image_attachments.attachment_id.mapped(
+                    "checksum_id"
+                ):
                     external_id = binder.get_external_dict_ids(
                         image, check_external_id=False
                     )

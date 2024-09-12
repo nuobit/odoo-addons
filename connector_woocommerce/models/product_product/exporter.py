@@ -72,21 +72,21 @@ class WooCommerceProductProductExporter(Component):
         ):
             if self.backend_record.wordpress_backend_id:
                 with self.backend_record.wordpress_backend_id.work_on(
-                    "wordpress.ir.attachment"
+                    "wordpress.ir.checksum"
                 ) as work:
                     exporter = work.component(self._usage)
                     exporter._export_dependency(
-                        product_image_attachments[0].attachment_id,
-                        "wordpress.ir.attachment",
+                        product_image_attachments[0].attachment_id.checksum_id,
+                        "wordpress.ir.checksum",
                     )
         if relation.product_document_attachment_ids:
             if self.backend_record.wordpress_backend_id:
                 with self.backend_record.wordpress_backend_id.work_on(
-                    "wordpress.ir.attachment"
+                    "wordpress.ir.checksum"
                 ) as work:
                     exporter = work.component(self._usage)
                     for attachment in relation.product_document_attachment_ids:
                         exporter._export_dependency(
-                            attachment.attachment_id,
-                            "wordpress.ir.attachment",
+                            attachment.attachment_id.checksum_id,
+                            "wordpress.ir.checksum",
                         )
