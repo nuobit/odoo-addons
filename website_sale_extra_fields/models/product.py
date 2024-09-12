@@ -10,7 +10,6 @@ class ProductProduct(models.Model):
     variant_public_description = fields.Text(
         translate=True,
     )
-
     variant_is_published = fields.Boolean(
         compute="_compute_variant_is_published",
         store=True,
@@ -24,7 +23,7 @@ class ProductProduct(models.Model):
             rec.variant_is_published = rec.product_tmpl_id.is_published
 
     product_variant_image_attachment_ids = fields.Many2many(
-        comodel_name="product.attachment",
+        comodel_name="attachment.grouped",
         compute="_compute_product_variant_image_attachment_ids",
     )
 
@@ -55,11 +54,11 @@ class ProductProduct(models.Model):
                 rec._create_main_product_variant_image_attachment(is_first=False)
             if not rec.product_variant_image_attachment_ids:
                 rec.product_variant_image_attachment_ids = self.env[
-                    "product.attachment"
+                    "attachment.grouped"
                 ]
 
     product_document_attachment_ids = fields.Many2many(
-        comodel_name="product.attachment",
+        comodel_name="attachment.grouped",
         compute="_compute_product_document_attachment_ids",
     )
 
@@ -77,7 +76,7 @@ class ProductProduct(models.Model):
                     )
                 ]
             if not rec.product_document_attachment_ids:
-                rec.product_document_attachment_ids = self.env["product.attachment"]
+                rec.product_document_attachment_ids = self.env["attachment.grouped"]
 
     def _create_main_product_variant_image_attachment(self, is_first=True):
         self.ensure_one()
