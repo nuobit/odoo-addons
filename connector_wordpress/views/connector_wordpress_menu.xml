@@ -17,7 +17,7 @@
         <menuitem
             id="wordpress_external_objects_menu"
             name="External Objects"
-            action="wordpress_ir_attachment_action"
+            action="wordpress_ir_checksum_action"
             sequence="150"
         />
     </menuitem>

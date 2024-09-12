@@ -9,16 +9,16 @@ from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 
 
-class WordPressIrAttachmentExportMapper(Component):
-    _name = "wordpress.ir.attachment.export.mapper"
+class WordPressIrChecksumExportMapper(Component):
+    _name = "wordpress.ir.checksum.export.mapper"
     _inherit = "wordpress.export.mapper"
 
-    _apply_on = "wordpress.ir.attachment"
+    _apply_on = "wordpress.ir.checksum"
 
     # TODO: create header in adapter, sending mimetype and file name
     @mapping
     def name(self, record):
-        attachment_path = record._full_path(record.store_fname)
+        attachment_path = self.env["ir.attachment"]._full_path(record.store_fname)
         file_name = os.path.basename(attachment_path)
         # We need to concatenate the filename with the extension
         # because odoo does not store the extension
@@ -39,5 +39,13 @@ class WordPressIrAttachmentExportMapper(Component):
         }
 
     @mapping
-    def seo_meta_data(self, record):
-        return record._get_seo_meta_data()
+    def title(self, record):
+        return {
+            "title": record.title or None,
+        }
+
+    @mapping
+    def alternate_text(self, record):
+        return {
+            "alt_text": record.alternate_text or None,
+        }
