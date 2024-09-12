@@ -48,21 +48,27 @@ class WooCommerceSaleOrderAdapter(Component):
         if meta_data:
             data["meta_data"] = meta_data
 
+    def _get_partner_parent_domain(self, dir_type, value):
+        name = value[dir_type].get("company") or value[dir_type].get("name")
+        return [
+            ("company_type", "=", "company"),
+            ("name", "=", name),
+        ]
+
+    def _additional_partner_parent_fields(self, value, dir_type):
+        return {}
+
     def _get_partner_parent(self, dir_type, value):
         # TODO: REVIEW: slug for company name?
-        domain = [
-            ("name", "=", value[dir_type]["company"]),
-            ("company_type", "=", "company"),
-        ]
-        if value[dir_type].get("nif"):
-            domain.append(("vat", "=", value[dir_type]["nif"]))
+        domain = self._get_partner_parent_domain(dir_type, value)
         parent = self.env["res.partner"].search(domain)
         if not parent:
             parent = self.env["res.partner"].create(
                 {
-                    "name": value[dir_type]["company"],
+                    "name": value[dir_type].get("company")
+                    or value[dir_type].get("name"),
                     "company_type": "company",
-                    "vat": value[dir_type].get("nif"),
+                    **self._additional_partner_parent_fields(value, dir_type),
                 }
             )
             value[dir_type]["parent"] = parent.id
@@ -70,8 +76,7 @@ class WooCommerceSaleOrderAdapter(Component):
             raise ValidationError(
                 _("There are more than one partner with the same name")
             )
-        else:
-            value[dir_type]["parent"] = parent.id
+        value[dir_type]["parent"] = parent.id
 
     def _get_hash_fields(self):
         return [
@@ -90,36 +95,24 @@ class WooCommerceSaleOrderAdapter(Component):
     def _get_billing(self, value, hash_fields):
         if value.get("billing"):
             value["billing"]["type"] = "billing"
-            if value["billing"].get("company"):
-                self._get_partner_parent("billing", value)
             value["billing"]["name"] = (
                 value["billing"]["first_name"] + " " + value["billing"]["last_name"]
             )
+            self._get_partner_parent("billing", value)
             value["billing"]["hash"] = list2hash(
                 value["billing"].get(x) for x in hash_fields
             )
 
     def _get_shipping(self, value, hash_fields):
         if value.get("shipping"):
-            if value["shipping"].get("first_name") or value["shipping"].get(
-                "last_name"
-            ):
-                if value["shipping"].get("company"):
-                    self._get_partner_parent("shipping", value)
-                value["shipping"]["type"] = "shipping"
-                if value["shipping"].get("first_name"):
-                    value["shipping"]["name"] = value["shipping"]["first_name"]
-                    if value["shipping"].get("last_name"):
-                        value["shipping"]["name"] += (
-                            " " + value["shipping"]["last_name"]
-                        )
-                else:
-                    value["shipping"]["name"] = value["shipping"]["last_name"]
-                value["shipping"]["hash"] = list2hash(
-                    value["shipping"].get(x) for x in hash_fields
-                )
-            else:
-                value["shipping"] = None
+            value["shipping"]["type"] = "shipping"
+            value["shipping"]["name"] = (
+                value["shipping"]["first_name"] + " " + value["shipping"]["last_name"]
+            )
+            value["shipping"]["hash"] = list2hash(
+                value["shipping"].get(x) for x in hash_fields
+            )
+            self._get_partner_parent("shipping", value)
         else:
             value["shipping"] = None
 
