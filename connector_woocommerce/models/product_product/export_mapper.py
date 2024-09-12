@@ -131,10 +131,10 @@ class WooCommerceProductProductExportMapper(Component):
         ).product_variant_image_attachment_ids
         if product_image_attachments and self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
-                "wordpress.ir.attachment"
+                "wordpress.ir.checksum"
             ) as work:
                 binder = work.component(usage="binder")
-                image = product_image_attachments[0].attachment_id
+                image = product_image_attachments[0].attachment_id.checksum_id
                 values = binder.get_external_dict_ids(image, check_external_id=False)
                 if (
                     self.backend_record.wordpress_backend_id.test_database

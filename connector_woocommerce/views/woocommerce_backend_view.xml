@@ -217,18 +217,18 @@
                             <group>
                                 <div>
                                     <label
-                                        string="Export Product Attachment Since"
+                                        string="Export Attachments Since"
                                         class="oe_inline"
-                                        for="export_product_attachment_since_date"
+                                        for="export_checksum_since_date"
                                     />
                                     <field
-                                        name="export_product_attachment_since_date"
+                                        name="export_checksum_since_date"
                                         class="oe_inline"
                                         nolabel="1"
                                     />
                                 </div>
                                 <button
-                                    name="export_product_attachment_since"
+                                    name="export_checksum_since"
                                     type="object"
                                     class="oe_highlight"
                                     string="Export in background"

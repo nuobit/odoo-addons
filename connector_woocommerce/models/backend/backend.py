@@ -107,8 +107,8 @@ class WooCommerceBackend(models.Model):
     export_product_attribute_value_since_date = fields.Datetime(
         string="Export Product attribute values Since",
     )
-    export_product_attachment_since_date = fields.Datetime(
-        string="Export Product Attachment Since",
+    export_checksum_since_date = fields.Datetime(
+        string="Export Product Checksum Since",
     )
     import_sale_order_since_date = fields.Datetime(
         string="Import Sale Order Since",
@@ -185,14 +185,12 @@ class WooCommerceBackend(models.Model):
                 backend_record=rec, since_date=since_date
             )
 
-    def export_product_attachment_since(self):
+    def export_checksum_since(self):
         self.env.user.company_id = self.company_id
         for rec in self:
-            since_date = fields.Datetime.from_string(
-                rec.export_product_attachment_since_date
-            )
-            rec.export_product_attachment_since_date = fields.Datetime.now()
-            self.env["wordpress.ir.attachment"].export_product_attachment_since(
+            since_date = fields.Datetime.from_string(rec.export_checksum_since_date)
+            rec.export_checksum_since_date = fields.Datetime.now()
+            self.env["wordpress.ir.checksum"].export_checksum_since(
                 backend_record=rec, since_date=since_date
             )
 
@@ -243,6 +241,6 @@ class WooCommerceBackend(models.Model):
             backend.export_product_attribute_value_since()
 
     @api.model
-    def _scheduler_export_product_attachment(self):
+    def _scheduler_export_checksum(self):
         for backend in self.env[self._name].search([("state", "=", "validated")]):
-            backend.export_product_attachment_since()
+            backend.export_checksum_since()

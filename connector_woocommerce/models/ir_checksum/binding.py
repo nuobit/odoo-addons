@@ -4,8 +4,8 @@
 from odoo import api, models
 
 
-class WordPressIrAttachment(models.Model):
-    _inherit = "wordpress.ir.attachment"
+class WordPressIrChecksum(models.Model):
+    _inherit = "wordpress.ir.checksum"
 
     @api.model
     def _get_woocommerce_base_domain(self):
@@ -35,10 +35,30 @@ class WordPressIrAttachment(models.Model):
             + product_variant.product_variant_image_attachment_ids.attachment_id
             + product_variant.product_document_attachment_ids.attachment_id
         )
-        return [("id", "in", attachments.ids)]
+        checksums = self.env["ir.checksum"]
+        for attachment in attachments:
+            checksums += attachment.checksum_id
+        # return list(set(checksums.ids))
+        return [("id", "in", list(set(checksums.ids)))]
 
-    def export_product_attachment_since(self, backend_record=None, since_date=None):
+    def export_checksum_since(self, backend_record=None, since_date=None):
         domain = self._get_woocommerce_base_domain()
+        # TODO: in ir.model.access ir.checksum is defined as group user. Be more restrict
+        #     self.env.cr.execute(
+        #         """
+        #         insert into ir_checksum(checksum, store_fname, mimetype)
+        # select distinct a.checksum, a.store_fname, a.mimetype
+        # from ir_attachment a
+        # where a.checksum in %s
+        # and
+        # not exists (
+        # select 1
+        # from ir_checksum c
+        # where a.checksum = c.checksum
+        # )""",
+        #         (tuple(domain),),
+        #     )
+
         if since_date:
             domain += [
                 (
