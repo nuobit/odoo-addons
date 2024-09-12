@@ -13,7 +13,4 @@ class WooCommerceResPartnerBinder(Component):
     external_id = ["type", "hash"]
     internal_id = ["woocommerce_address_type", "woocommerce_address_hash"]
     external_alt_id = ["email", "hash", "type"]
-    internal_alt_id = [
-        "address_hash",
-        "type",
-    ]
+    internal_alt_id = ["address_hash", "type"]
