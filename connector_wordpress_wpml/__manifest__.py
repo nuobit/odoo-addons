@@ -12,7 +12,7 @@
         "connector_wordpress",
     ],
     "data": [
-        "views/ir_attachment_views.xml",
+        # "views/ir_attachment_views.xml",
         "views/res_lang_views.xml",
         "views/wordpress_backend_view.xml",
     ],
