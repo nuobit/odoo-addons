@@ -18,15 +18,15 @@ class WooCommerceProductExportMapper(AbstractComponent):
         document_description = []
         if self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
-                "wordpress.ir.attachment"
+                "wordpress.ir.checksum"
             ) as work:
                 binder = work.component(usage="binder")
                 for document in documents:
                     external_id = binder.get_external_dict_ids(
-                        document.attachment_id, check_external_id=False
+                        document.attachment_id.checksum_id, check_external_id=False
                     )
                     if external_id:
-                        binding = binder.wrap_record(document.attachment_id)
+                        binding = binder.wrap_record(document.attachment_id.checksum_id)
                         document_description.append(
                             "<p><a href=%s target='_blank'>%s</a></p>"
                             % (

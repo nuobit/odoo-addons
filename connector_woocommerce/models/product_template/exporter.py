@@ -71,19 +71,21 @@ class WooCommerceProductTemplateExporter(Component):
 
         if self.backend_record.wordpress_backend_id:
             with self.backend_record.wordpress_backend_id.work_on(
-                "wordpress.ir.attachment"
+                "wordpress.ir.checksum"
             ) as work:
                 exporter = work.component(self._usage)
                 product_image_attachments = relation.with_context(
                     include_main_product_image=self.backend_record.use_main_product_image
                 ).product_image_attachment_ids
+                # TODO: Make an optimization to export checksums once.
+                #  Different attachments can have the same checksum.
                 for image_attachment in product_image_attachments:
                     exporter._export_dependency(
-                        image_attachment.attachment_id,
-                        "wordpress.ir.attachment",
+                        image_attachment.attachment_id.checksum_id,
+                        "wordpress.ir.checksum",
                     )
                 for document_attachment in relation.product_document_attachment_ids:
                     exporter._export_dependency(
-                        document_attachment.attachment_id,
-                        "wordpress.ir.attachment",
+                        document_attachment.attachment_id.checksum_id,
+                        "wordpress.ir.checksum",
                     )

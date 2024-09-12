@@ -145,6 +145,6 @@
         <field name="numbercall">-1</field>
         <field name="doall" eval="False" />
         <field name="state">code</field>
-        <field name="code">model._scheduler_export_product_attachment()</field>
+        <field name="code">model._scheduler_export_checksum()</field>
     </record>
 </odoo>
