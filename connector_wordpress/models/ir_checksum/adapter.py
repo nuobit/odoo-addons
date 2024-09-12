@@ -4,11 +4,11 @@
 from odoo.addons.component.core import Component
 
 
-class WordPressIrAttachment(Component):
-    _name = "wordpress.ir.attachment.adapter"
+class WordPressIrChecksum(Component):
+    _name = "wordpress.ir.checksum.adapter"
     _inherit = "wordpress.adapter"
 
-    _apply_on = "wordpress.ir.attachment"
+    _apply_on = "wordpress.ir.checksum"
 
     def create(self, data):  # pylint: disable=W8106
         return self._exec("post", "media", data=data)
