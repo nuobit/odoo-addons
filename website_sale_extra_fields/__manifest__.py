@@ -9,13 +9,14 @@
     "category": "Website",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
-        "website_sale_variant",
+        "website_sale_product_document",
     ],
     "data": [
         "security/ir.model.access.csv",
-        "views/product_template.xml",
-        "views/product_public_category.xml",
-        "views/product_product.xml",
+        "views/product_image_views.xml",
+        "views/product_template_views.xml",
+        "views/product_public_category_views.xml",
+        "views/product_product_views.xml",
     ],
     "installable": True,
 }
