@@ -1,5 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+from odoo import _
+from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 
@@ -14,17 +16,27 @@ class WooCommerceProductPublicCategoryAdapter(Component):
     def _manage_error_codes(
         self, res_data, res, resource, raise_on_error=True, **kwargs
     ):
-        if res.status_code == 400:
-            if res_data.get("code") == "term_exists":
-                res = self.search_read(
-                    domain=[("id", "=", res_data["res_data"]["resource_id"])]
-                )
-                if res and len(res) == 1:
-                    kwargs["data"]["slug"] = (
-                        res[0].get("slug") + "-" + kwargs["data"]["lang"]
+        if res.status_code == 500:
+            if res_data.get("code") == "duplicate_term_slug":
+                error_message = _(
+                    "Error: '%s'. "
+                    "WPML plugin allows set the same slug for different "
+                    "languages on FrontEnd but this can't be done via API. "
+                    "Probably we need a solution in plugin code, it can't "
+                    "be solved in Odoo without a workaround modifying raw data. "
+                    "Review the slug of the category '%s' in lang [%s] and try again."
+                    ""
+                    % (
+                        res_data["message"],
+                        kwargs["data"].get("name"),
+                        kwargs["data"].get("lang"),
                     )
-                    res = self._exec_wcapi_call("post", resource, data=kwargs["data"])
-                    return res["data"]
+                )
+                if raise_on_error:
+                    raise ValidationError(error_message)
+                else:
+                    return error_message
+
         return super()._manage_error_codes(
             res_data, res, resource, raise_on_error=True, **kwargs
         )
