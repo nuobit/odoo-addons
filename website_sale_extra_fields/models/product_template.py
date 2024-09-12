@@ -42,7 +42,7 @@ class ProductTemplate(models.Model):
             rec.product_variant_ids.variant_is_published = rec.is_published
 
     product_image_attachment_ids = fields.Many2many(
-        comodel_name="product.attachment",
+        comodel_name="attachment.grouped",
         compute="_compute_product_image_attachment_ids",
     )
 
@@ -105,10 +105,10 @@ class ProductTemplate(models.Model):
             if self.env.context.get("include_main_product_image") == "last":
                 rec._create_main_product_image_attachment(is_first=False)
             if not rec.product_image_attachment_ids:
-                rec.product_image_attachment_ids = self.env["product.attachment"]
+                rec.product_image_attachment_ids = self.env["attachment.grouped"]
 
     product_document_attachment_ids = fields.Many2many(
-        comodel_name="product.attachment",
+        comodel_name="attachment.grouped",
         compute="_compute_product_document_attachment_ids",
     )
 
@@ -126,4 +126,4 @@ class ProductTemplate(models.Model):
                     )
                 ]
             if not rec.product_document_attachment_ids:
-                rec.product_document_attachment_ids = self.env["product.attachment"]
+                rec.product_document_attachment_ids = self.env["attachment.grouped"]
