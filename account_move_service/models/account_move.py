@@ -26,21 +26,26 @@ class AccountMove(models.Model):
     def get_service_record_fields_agg(self):
         return {"sale_line_ids"}
 
+    def get_service_avg_num_fields_agg(self):
+        return {"price_unit": ("quantity", "qty_to_invoice")}
+
     def get_service_number_fields_agg(self):
-        return {"price_unit": "price_subtotal"}
+        return {
+            "quantity": "qty_to_invoice",
+        }
 
     def get_static_invoice_service_line_values(self, so_line):
         product = self.get_config_service_group_product()
         return {
             "name": so_line.order_id.policy_number,
             "product_id": product.id,
-            "quantity": 1,
         }
 
     def get_service_other_fields_agg(self, item):
         return (
             item.keys()
             - self.get_service_number_fields_agg().keys()
+            - self.get_service_avg_num_fields_agg().keys()
             - self.get_service_record_fields_agg()
             - self.get_static_invoice_service_line_values(
                 self.env["sale.order.line"]
@@ -100,6 +105,11 @@ class AccountMove(models.Model):
         if not line_data:
             line_data.update(self.get_static_invoice_service_line_values(so_line))
 
+        for f_name, (f_var1, f_var2) in self.get_service_avg_num_fields_agg().items():
+            line_data[f_name] = (
+                line_data.get(f_name, 0) * line_data.get(f_var1, 0)
+                + (so_line[f_name] * so_line[f_var2])
+            ) / (line_data.get(f_var1, 0) + so_line[f_var2])
         for f_num, f_name in self.get_service_number_fields_agg().items():
             line_data[f_num] = line_data.get(f_num, 0) + so_line[f_name]
         for f_rec in self.get_service_record_fields_agg():
