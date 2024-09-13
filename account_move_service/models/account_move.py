@@ -8,8 +8,9 @@ from odoo.exceptions import ValidationError
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    def get_config_service_group_product(self):
-        product = self.env.company.service_group_product
+    @api.model
+    def get_config_service_group_product(self, company):
+        product = company.service_group_product
         if not product:
             raise ValidationError(
                 _(
@@ -26,26 +27,25 @@ class AccountMove(models.Model):
     def get_service_record_fields_agg(self):
         return {"sale_line_ids"}
 
-    def get_service_avg_num_fields_agg(self):
-        return {"price_unit": ("quantity", "qty_to_invoice")}
-
     def get_service_number_fields_agg(self):
         return {
-            "quantity": "qty_to_invoice",
+            "quantity": "qty_to_invoice_service",
+            "price_subtotal": "price_subtotal_to_invoice",
+            "price_total": "price_subtotal_to_invoice",
         }
 
     def get_static_invoice_service_line_values(self, so_line):
-        product = self.get_config_service_group_product()
+        product = self.get_config_service_group_product(self.env.company)
         return {
             "name": so_line.order_id.policy_number,
             "product_id": product.id,
+            "product_uom_id": product.uom_id.id,
         }
 
     def get_service_other_fields_agg(self, item):
         return (
             item.keys()
             - self.get_service_number_fields_agg().keys()
-            - self.get_service_avg_num_fields_agg().keys()
             - self.get_service_record_fields_agg()
             - self.get_static_invoice_service_line_values(
                 self.env["sale.order.line"]
@@ -94,8 +94,13 @@ class AccountMove(models.Model):
                 line.get("sale_line_ids")[0][1]
             )
             if not so_line.order_id.policy_number:
-                agg_lines[len(agg_lines)] = line
-                return
+                raise ValidationError(
+                    _(
+                        "Add a policy number to the sale order [%s]. The policy number "
+                        "is required for a service intermediary partner."
+                    )
+                    % so_line.order_id.name
+                )
         else:
             agg_lines[len(agg_lines)] = line
             return
@@ -105,11 +110,6 @@ class AccountMove(models.Model):
         if not line_data:
             line_data.update(self.get_static_invoice_service_line_values(so_line))
 
-        for f_name, (f_var1, f_var2) in self.get_service_avg_num_fields_agg().items():
-            line_data[f_name] = (
-                line_data.get(f_name, 0) * line_data.get(f_var1, 0)
-                + (so_line[f_name] * so_line[f_var2])
-            ) / (line_data.get(f_var1, 0) + so_line[f_var2])
         for f_num, f_name in self.get_service_number_fields_agg().items():
             line_data[f_num] = line_data.get(f_num, 0) + so_line[f_name]
         for f_rec in self.get_service_record_fields_agg():
@@ -151,4 +151,4 @@ class AccountMove(models.Model):
                         for agg_line in [item_data for item_data in agg_lines.values()]
                     ]
 
-        return super().create(vals_list)
+        return super(AccountMove, self).create(vals_list)

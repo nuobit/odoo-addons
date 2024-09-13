@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-25 12:28+0000\n"
-"PO-Revision-Date: 2024-07-25 12:28+0000\n"
+"POT-Creation-Date: 2024-09-16 08:50+0000\n"
+"PO-Revision-Date: 2024-09-16 08:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,21 @@ msgstr ""
 "role=\"img\"/>"
 
 #. module: account_move_service
+#: code:addons/account_move_service/models/account_move.py:0
+#, python-format
+msgid ""
+"Add a policy number to the sale order [%s]. The policy number is required "
+"for a service intermediary partner."
+msgstr ""
+"Añade un número de póliza a la orden de venta [%s]. El número de póliza es "
+"necesario para un cliente intermediario de servicios."
+
+#. module: account_move_service
+#: model:ir.model,name:account_move_service.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: account_move_service
 #: model:ir.model,name:account_move_service.model_res_config_settings
 msgid "Config Settings"
 msgstr "Opciones de configuración"
@@ -38,6 +53,7 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: account_move_service
+#: model:ir.model.fields,help:account_move_service.field_res_company__service_group_product
 #: model:ir.model.fields,help:account_move_service.field_res_config_settings__service_group_product
 msgid "Default product that will be used to group service billing"
 msgstr ""
@@ -53,13 +69,15 @@ msgstr ""
 
 #. module: account_move_service
 #: model:ir.model.fields,field_description:account_move_service.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_move_service.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:account_move_service.field_res_company__display_name
 #: model:ir.model.fields,field_description:account_move_service.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:account_move_service.field_res_partner__display_name
+#: model:ir.model.fields,field_description:account_move_service.field_sale_order_line__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: account_move_service
-#: code:addons/account_move_service/models/account_move.py:0
 #: code:addons/account_move_service/models/account_move.py:0
 #: code:addons/account_move_service/models/account_move.py:0
 #, python-format
@@ -71,21 +89,60 @@ msgstr ""
 "de servicios. Por favor, contacte con su administrador de sistema."
 
 #. module: account_move_service
+#: model:ir.model.fields,field_description:account_move_service.field_account_move__id
+#: model:ir.model.fields,field_description:account_move_service.field_account_move_line__id
+#: model:ir.model.fields,field_description:account_move_service.field_res_company__id
+#: model:ir.model.fields,field_description:account_move_service.field_res_config_settings__id
+#: model:ir.model.fields,field_description:account_move_service.field_res_partner__id
+#: model:ir.model.fields,field_description:account_move_service.field_sale_order_line__id
+msgid "ID"
+msgstr ""
+
+#. module: account_move_service
 #: model:ir.model,name:account_move_service.model_account_move
 msgid "Journal Entry"
 msgstr "Asiento contable"
 
 #. module: account_move_service
+#: model:ir.model,name:account_move_service.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
+
+#. module: account_move_service
 #: model:ir.model.fields,field_description:account_move_service.field_account_move____last_update
+#: model:ir.model.fields,field_description:account_move_service.field_account_move_line____last_update
+#: model:ir.model.fields,field_description:account_move_service.field_res_company____last_update
 #: model:ir.model.fields,field_description:account_move_service.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:account_move_service.field_res_partner____last_update
+#: model:ir.model.fields,field_description:account_move_service.field_sale_order_line____last_update
 msgid "Last Modified on"
 msgstr "Última modificación el"
 
 #. module: account_move_service
+#: model:ir.model.fields,field_description:account_move_service.field_sale_order_line__price_subtotal_to_invoice
+msgid "Price Subtotal To Invoice"
+msgstr "Precio subtotal a facturar"
+
+#. module: account_move_service
+#: model:ir.model.fields,field_description:account_move_service.field_sale_order_line__price_total_to_invoice
+msgid "Price Total To Invoice"
+msgstr "Precio total a facturar"
+
+#. module: account_move_service
+#: model:ir.model.fields,field_description:account_move_service.field_res_company__service_group_product
 #: model:ir.model.fields,field_description:account_move_service.field_res_config_settings__service_group_product
 msgid "Product for Service Grouping"
 msgstr "Producto para agrupación de servicios"
+
+#. module: account_move_service
+#: model:ir.model.fields,field_description:account_move_service.field_sale_order_line__qty_to_invoice_service
+msgid "Qty To Invoice Service"
+msgstr "Cant. a facturar de servicio"
+
+#. module: account_move_service
+#: model:ir.model,name:account_move_service.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de venta"
 
 #. module: account_move_service
 #: model:ir.model.fields,field_description:account_move_service.field_res_partner__service_intermediary
