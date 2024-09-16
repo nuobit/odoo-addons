@@ -26,6 +26,14 @@ class IrChecksum(models.Model):
     def _compute_store_fname_mimetype(self):
         for rec in self:
             store_fname, mimetype = False, False
+            # TODO: Use this search instead of query
+            # self.env["ir.attachment"].search(
+            #     [
+            #         ("checksum", "=", rec.checksum),
+            #         ("res_id", "!=", False)
+            #     ],
+            #     limit=1,
+            # )
             # We cant use search() in ir.attachment
             self.env.cr.execute(
                 "SELECT * FROM ir_attachment WHERE checksum = %s LIMIT 1",
