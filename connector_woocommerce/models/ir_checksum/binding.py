@@ -44,22 +44,8 @@ class WordPressIrChecksum(models.Model):
     def export_checksum_since(self, backend_record=None, since_date=None):
         domain = self._get_woocommerce_base_domain()
         # TODO: in ir.model.access ir.checksum is defined as group user. Be more restrict
-        #     self.env.cr.execute(
-        #         """
-        #         insert into ir_checksum(checksum, store_fname, mimetype)
-        # select distinct a.checksum, a.store_fname, a.mimetype
-        # from ir_attachment a
-        # where a.checksum in %s
-        # and
-        # not exists (
-        # select 1
-        # from ir_checksum c
-        # where a.checksum = c.checksum
-        # )""",
-        #         (tuple(domain),),
-        #     )
-
         if since_date:
+            # TODO: We need explicit field name write_date_wordpress?
             domain += [
                 (
                     "write_date",
