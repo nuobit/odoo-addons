@@ -15,14 +15,17 @@
     },
     "depends": [
         "connector_woocommerce",
-        "connector_wordpress_wpml",
+        # "connector_wordpress_wpml",
     ],
     "data": [
-        "views/woocommerce_backend_view.xml",
-        "views/product_attribute_value.xml",
-        "views/product_product.xml",
-        "views/product_public_category.xml",
-        "views/product_template.xml",
+        "security/ir.model.access.csv",
+        "views/woocommerce_wpml_backend_view.xml",
+        "views/product_attribute_value_views.xml",
+        "views/product_attribute_views.xml",
+        "views/product_product_views.xml",
+        "views/product_public_category_views.xml",
+        "views/product_template_views.xml",
+        "views/connector_woocommerce_wpml_menu.xml",
     ],
     "installable": True,
 }
