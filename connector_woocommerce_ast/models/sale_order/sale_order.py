@@ -5,6 +5,8 @@ from odoo import api, fields, models
 from odoo.tools import float_compare
 
 
+# TODO: if we duplicate code in wpml to make a new sale order bind (woocommerce_wpml_bind_ids)
+#  probably we will need improve this module or create a connector_woocommerce_wpml_ast
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
