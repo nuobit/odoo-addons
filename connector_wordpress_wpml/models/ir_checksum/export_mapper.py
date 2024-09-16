@@ -5,8 +5,8 @@ from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping
 
 
-class WordPressIrAttachmentExportMapper(Component):
-    _inherit = "wordpress.ir.attachment.export.mapper"
+class WordPressIrChecksumExportMapper(Component):
+    _inherit = "wordpress.ir.checksum.export.mapper"
 
     @changed_by("lang")
     @mapping

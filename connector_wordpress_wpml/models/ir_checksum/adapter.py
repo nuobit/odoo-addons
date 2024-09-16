@@ -4,13 +4,8 @@
 from odoo.addons.component.core import Component
 
 
-class WordPressIrAttachment(Component):
-    _inherit = "wordpress.ir.attachment.adapter"
-
-    # def _get_search_fields(self):
-    #     res = super()._get_search_fields()
-    #     res.append("lang")
-    #     return res
+class WordPressIrChecksum(Component):
+    _inherit = "wordpress.ir.checksum.adapter"
 
     def create(self, data):  # pylint: disable=W8106
         lang = data.pop("lang")
