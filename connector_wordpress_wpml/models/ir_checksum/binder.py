@@ -4,12 +4,12 @@
 from odoo.addons.component.core import Component
 
 
-class WordPressIrAttachmentBinder(Component):
-    _inherit = "wordpress.ir.attachment.binder"
+class WordPressIrChecksumBinder(Component):
+    _inherit = "wordpress.ir.checksum.binder"
 
-    @property
-    def external_alt_id(self):
-        return super().external_alt_id + ["lang"]
+    # @property
+    # def external_alt_id(self):
+    #     return super().external_alt_id + ["lang"]
 
     # TODO: This funtions are the same as product wpml mixin
     def get_binding_domain(self, record):

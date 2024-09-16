@@ -4,8 +4,8 @@
 from odoo import fields, models
 
 
-class WordPressIrAttachment(models.Model):
-    _inherit = "wordpress.ir.attachment"
+class WordPressIrChecksum(models.Model):
+    _inherit = "wordpress.ir.checksum"
 
     wordpress_lang = fields.Char(
         string="Language",
@@ -21,9 +21,9 @@ class WordPressIrAttachment(models.Model):
         ),
         (
             "external_uniq",
-            "unique(backend_id, wordpress_ir_attachment,"
-            "wordpress_irattachment, wordpress_lang)",
-            "A binding already exists with the same External (irAttachment) ID.",
+            "unique(backend_id, wordpress_ir_checksum,"
+            "wordpress_irchecksum, wordpress_lang)",
+            "A binding already exists with the same External (irChecksum) ID.",
         ),
     ]
 
