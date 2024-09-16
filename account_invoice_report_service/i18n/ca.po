@@ -1,3 +1,4 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_invoice_report_service
 #
@@ -5,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-26 15:28+0000\n"
-"PO-Revision-Date: 2021-11-26 15:28+0000\n"
+"POT-Creation-Date: 2024-09-16 13:59+0000\n"
+"PO-Revision-Date: 2024-09-16 13:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,8 +18,17 @@ msgstr ""
 #. module: account_invoice_report_service
 #: model:ir.actions.report,print_report_name:account_invoice_report_service.action_report_invoice_delivery
 #: model:ir.actions.report,print_report_name:account_invoice_report_service.action_report_invoice_service
-msgid "(object._get_printed_report_name())"
+msgid "(object._get_report_base_filename())"
 msgstr ""
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Els valors establerts aquí són "
+"específics de l'empresa.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -115,13 +125,13 @@ msgstr "<strong>Data factura:</strong>"
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Subtotal</strong>"
-msgstr "<strong>Subtotal</strong>"
+msgstr ""
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<strong>Total</strong>"
-msgstr "<strong>Total</strong>"
+msgstr ""
 
 #. module: account_invoice_report_service
 #: model:ir.model,name:account_invoice_report_service.model_report_account_invoice_report_service_report_invoice_delivery
@@ -150,12 +160,18 @@ msgstr "Núm. autorizació"
 msgid ""
 "Billing lines with VAT-free operations - Law 37/1992, article 20, one, 15th"
 msgstr ""
-"Línies de facturació amb operacions exemptes d'IVA - Lley 37/1992, article 20, u, 15º"
+"Línies de facturació amb operacions exemptes d'IVA - Lley 37/1992, article "
+"20, u, 15º"
 
 #. module: account_invoice_report_service
 #: model:ir.model,name:account_invoice_report_service.model_res_company
 msgid "Companies"
 msgstr "Empreses"
+
+#. module: account_invoice_report_service
+#: model:ir.model,name:account_invoice_report_service.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configuració"
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -184,6 +200,11 @@ msgid "Date"
 msgstr "Data"
 
 #. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.res_config_settings_view_form
+msgid "Default report for Services Invoices"
+msgstr "Informe per defecte per a factures de serveis"
+
+#. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Description"
@@ -205,6 +226,8 @@ msgstr "Descompte"
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery__display_name
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service__display_name
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company__display_name
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order__display_name
 msgid "Display Name"
 msgstr "Nom a mostrar"
 
@@ -219,6 +242,8 @@ msgstr "Núm document"
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery__id
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service__id
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company__id
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_config_settings__id
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order__id
 msgid "ID"
 msgstr ""
 
@@ -226,6 +251,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "ID number"
 msgstr "DNI"
+
+#. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.res_config_settings_view_form
+msgid ""
+"If empty, you're gonna need to select a template on batch processing\n"
+"                                dialog."
+msgstr ""
+"Si està buit, hauràs de seleccionar una plantilla en el diàleg de processament\n"
+"                                per lots."
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
@@ -248,6 +282,8 @@ msgstr "Anotació comptable"
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery____last_update
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service____last_update
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company____last_update
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order____last_update
 msgid "Last Modified on"
 msgstr "Última modificació el "
 
@@ -262,6 +298,12 @@ msgstr "Nom"
 msgid ""
 "Not implemented case: The same invoice line belongs to different orders"
 msgstr ""
+"Cas no implementat: La mateixa línia de factura pertany a diferents comandes"
+
+#. module: account_invoice_report_service
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order__date_order_tz
+msgid "Order Date TZ"
+msgstr ""
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -273,9 +315,9 @@ msgstr "Origen"
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_service
 msgid ""
 "Page\n"
-"                    <span class=\"page\"/>\n"
-"                    of\n"
-"                    <span class=\"topage\"/>"
+"                        <span class=\"page\"/>\n"
+"                        of\n"
+"                        <span class=\"topage\"/>"
 msgstr ""
 "Pàgina\n"
 "                    <span class=\"page\"/>\n"
@@ -296,7 +338,9 @@ msgstr "Matrícula"
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Please indicate in your payments the invoice numbers that you cancel*"
-msgstr "Preguem indiquin en els seus pagaments els números de factura que cancel·len*"
+msgstr ""
+"Preguem indiquin en els seus pagaments els números de factura que "
+"cancel·len*"
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -315,9 +359,20 @@ msgid "Quantity"
 msgstr "Quantitat"
 
 #. module: account_invoice_report_service
+#: model:ir.model,name:account_invoice_report_service.model_sale_order
+msgid "Sales Order"
+msgstr "Comanda de venda"
+
+#. module: account_invoice_report_service
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order__service_date_tz
+msgid "Service Date Tz"
+msgstr "Data del servei Tz"
+
+#. module: account_invoice_report_service
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company__report_service_id
+#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_config_settings__report_service_id
 msgid "Service Invoice report"
-msgstr ""
+msgstr "Informe de factura de servei"
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -346,16 +401,21 @@ msgid "Service no."
 msgstr "Núm. servei"
 
 #. module: account_invoice_report_service
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.res_config_settings_view_form
+msgid "Services Invoices"
+msgstr "Factures de serveis"
+
+#. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_delivery
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.external_layout_invoice_service
 msgid "Tel."
-msgstr "Tel."
+msgstr ""
 
 #. module: account_invoice_report_service
 #: code:addons/account_invoice_report_service/models/account_invoice.py:0
 #, python-format
 msgid "There's no report defined on invoice company"
-msgstr ""
+msgstr "No hi ha cap informe definit a la companyia de la factura"
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
