@@ -4,22 +4,41 @@
 from odoo.addons.component.core import Component
 
 
-class WooCommerceProductAttributeValueBinder(Component):
-    _name = "woocommerce.product.attribute.value.binder"
-    _inherit = [
-        "woocommerce.product.attribute.value.binder",
-        "woocommerce.product.wpml.mixin.binder",
-    ]
+class WooCommerceWPMLProductAttributeValueBinder(Component):
+    _name = "woocommerce.wpml.product.attribute.value.binder"
+    _inherit = "woocommerce.wpml.binder"
 
-    @property
-    def external_alt_id(self):
-        return super().external_alt_id + ["lang"]
+    _apply_on = "woocommerce.wpml.product.attribute.value"
+    # _name = "woocommerce.product.attribute.value.binder"
+    # _inherit = [
+    #     "woocommerce.product.attribute.value.binder",
+    #     "woocommerce.product.wpml.mixin.binder",
+    # ]
+
+    external_id = ["parent_id", "id"]
+    internal_id = ["woocommerce_wpml_idattribute", "woocommerce_wpml_idattributevalue"]
+    external_alt_id = ["parent_name", "name", "lang"]
 
     def get_binding_domain(self, record):
-        return self.wpml_get_binding_domain(record)
+        domain = super().get_binding_domain(record)
+        wp_wpml_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
+            record._context.get("lang")
+        )
+        if wp_wpml_code:
+            domain += [
+                (
+                    "woocommerce_lang",
+                    "=",
+                    wp_wpml_code,
+                )
+            ]
+        return domain
 
     def _additional_external_binding_fields(self, external_data):
-        return self.wpml_additional_external_binding_fields(external_data)
+        return {
+            **super()._additional_external_binding_fields(external_data),
+            "woocommerce_lang": external_data["lang"],
+        }
 
     # def unwrap_binding(self, binding):
     #     return self.wpml_unwrap_binding(binding)

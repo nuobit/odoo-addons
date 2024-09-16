@@ -1,0 +1,19 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_woocommerce_wpml_backend_manager","woocommerce_wpml_backend connector manager","model_woocommerce_wpml_backend","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_backend_user","woocommerce_wpml_backend connector user","model_woocommerce_wpml_backend","base.group_user",1,0,0,0
+"access_woocommerce_wpml_backend_account_tax_manager","woocommerce_wpml_backend_account_tax connector manager","model_woocommerce_wpml_backend_account_tax","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_backend_account_tax_user","woocommerce_wpml_backend_account_tax connector user","model_woocommerce_wpml_backend_account_tax","base.group_user",1,0,0,0
+"access_woocommerce_wpml_backend_tax_class_manager","woocommerce_wpml_backend_tax_class connector manager","model_woocommerce_wpml_backend_tax_class","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_backend_tax_class_user","woocommerce_wpml_backend_tax_class connector user","model_woocommerce_wpml_backend_tax_class","base.group_user",1,0,0,0
+"access_woocommerce_wpml_backend_payment_mode_manager","woocommerce_wpml_backend_payment_mode connector manager","model_woocommerce_wpml_backend_payment_mode","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_backend_payment_mode_user","woocommerce_wpml_backend_payment_mode connector user","model_woocommerce_wpml_backend_payment_mode","base.group_user",1,0,0,0
+"access_woocommerce_wpml_product_public_category_manager","woocommerce_wpml_product_public_category connector manager","model_woocommerce_wpml_product_public_category","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_product_public_category_user","woocommerce_wpml_product_public_category connector user","model_woocommerce_wpml_product_public_category","base.group_user",1,0,0,0
+"access_woocommerce_wpml_product_attribute_manager","woocommerce_wpml_product_attribute connector manager","model_woocommerce_wpml_product_attribute","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_product_attribute_user","woocommerce_wpml_product_attribute connector user","model_woocommerce_wpml_product_attribute","base.group_user",1,0,0,0
+"access_woocommerce_wpml_product_attribute_value_manager","woocommerce_wpml_product_attribute_value connector manager","model_woocommerce_wpml_product_attribute_value","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_product_attribute_value_user","woocommerce_wpml_product_attribute_value connector user","model_woocommerce_wpml_product_attribute_value","base.group_user",1,0,0,0
+"access_woocommerce_wpml_product_template_manager","woocommerce_wpml_product_template connector manager","model_woocommerce_wpml_product_template","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_product_template_user","woocommerce_wpml_product_template connector user","model_woocommerce_wpml_product_template","base.group_user",1,0,0,0
+"access_woocommerce_wpml_product_product_manager","woocommerce_wpml_product_product connector manager","model_woocommerce_wpml_product_product","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_wpml_product_product_user","woocommerce_wpml_product_product connector user","model_woocommerce_wpml_product_product","base.group_user",1,0,0,0

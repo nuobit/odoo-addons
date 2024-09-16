@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="connector_woocommerce_product_public_category_view_form"
+        model="ir.ui.view"
+    >
+        <field name="name">product.public.category.form</field>
+        <field name="model">product.public.category</field>
+        <field name="inherit_id" ref="website_sale.product_public_category_form_view" />
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Connector WooCommerce WPML" name="connector_woocommerce">
+                    <group string="WooCommerce WPML Bindings">
+                        <field name="woocommerce_wpml_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+    <record id="woocommerce_wpml_product_public_category_view_form" model="ir.ui.view">
+        <field name="name">woocommerce.wpml.product.public.category.view.form</field>
+        <field name="model">woocommerce.wpml.product.public.category</field>
+        <field name="arch" type="xml">
+            <form string="WooCommerce Product Public Category">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="woocommerce_wpml_idpubliccategory" readonly="True" />
+                    <field name="woocommerce_lang" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="woocommerce_wpml_product_public_category_view_tree" model="ir.ui.view">
+        <field name="name">woocommerce.wpml.product.public.category.view.tree</field>
+        <field name="model">woocommerce.wpml.product.public.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="woocommerce_wpml_idpubliccategory" readonly="True" />
+                <field name="woocommerce_lang" />
+                <field name="sync_date" />
+                <button
+                    name="resync_export"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+    <record
+        id="woocommerce_wpml_product_public_category_action"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Product Public Category</field>
+        <field name="res_model">woocommerce.wpml.product.public.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

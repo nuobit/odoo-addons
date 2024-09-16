@@ -4,23 +4,37 @@
 from odoo.addons.component.core import Component
 
 
-class WooCommerceProductProductBinder(Component):
-    _name = "woocommerce.product.product.binder"
-    _inherit = [
-        "woocommerce.product.product.binder",
-        "woocommerce.product.wpml.mixin.binder",
-    ]
-    # _inherit = "woocommerce.product.product.binder"
+class WooCommerceWPMLProductProductBinder(Component):
+    _name = "woocommerce.wpml.product.product.binder"
+    _inherit = "woocommerce.wpml.binder"
 
-    @property
-    def external_alt_id(self):
-        return super().external_alt_id + ["lang"]
+    _apply_on = "woocommerce.wpml.product.product"
+
+    external_id = ["parent_id", "id"]
+    internal_id = ["woocommerce_wpml_idparent", "woocommerce_wpml_idproduct"]
+    external_alt_id = ["sku", "lang"]
+    internal_alt_id = ["default_code"]
 
     def get_binding_domain(self, record):
-        return self.wpml_get_binding_domain(record)
+        domain = super().get_binding_domain(record)
+        wp_wpml_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
+            record._context.get("lang")
+        )
+        if wp_wpml_code:
+            domain += [
+                (
+                    "woocommerce_lang",
+                    "=",
+                    wp_wpml_code,
+                )
+            ]
+        return domain
 
     def _additional_external_binding_fields(self, external_data):
-        return self.wpml_additional_external_binding_fields(external_data)
+        return {
+            **super()._additional_external_binding_fields(external_data),
+            "woocommerce_lang": external_data["lang"],
+        }
 
     # def unwrap_binding(self, binding):
     #     return self.wpml_unwrap_binding(binding)
