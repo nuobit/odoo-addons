@@ -1,16 +1,49 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
-class WooCommerceProductProduct(models.Model):
-    _inherit = "woocommerce.product.product"
-
+class WooCommerceWPMLProductProduct(models.Model):
+    _name = "woocommerce.wpml.product.product"
+    _inherit = "woocommerce.wpml.binding"
+    _inherits = {"product.product": "odoo_id"}
+    _description = "WooCommerce Product Product Value Binding"
+    # _inherit = "woocommerce.product.template"
+    odoo_id = fields.Many2one(
+        comodel_name="product.product",
+        string="Product Product",
+        required=True,
+        ondelete="cascade",
+    )
+    woocommerce_wpml_idproduct = fields.Integer(
+        string="WooCommerce WPML ID Product",
+        readonly=True,
+    )
+    woocommerce_wpml_idparent = fields.Integer(
+        string="WooCommerce WPML ID Parent",
+        readonly=True,
+    )
     woocommerce_lang = fields.Char(
         string="Language",
         required=True,
     )
+
+    @api.model
+    def _get_base_domain(self):
+        return [
+            ("product_tmpl_id.woocommerce_enabled", "=", True),
+            ("product_tmpl_id.has_attributes", "=", True),
+        ]
+
+    def export_products_since(self, backend_record=None, since_date=None):
+        domain = self._get_base_domain()
+        if since_date:
+            domain = [
+                ("woocommerce_write_date", ">", fields.Datetime.to_string(since_date))
+            ]
+        self.export_batch(backend_record, domain=domain)
+        return True
 
     _sql_constraints = [
         (
@@ -20,21 +53,8 @@ class WooCommerceProductProduct(models.Model):
         ),
         (
             "external_uniq",
-            "unique(backend_id, woocommerce_lang, woocommerce_idproduct)",
+            "unique(backend_id, woocommerce_lang, "
+            "woocommerce_wpml_idproduct, woocommerce_wpml_idparent)",
             "A binding already exists with the same External (idProduct) ID.",
         ),
     ]
-
-    # TODO: This function should be an overwrite of the original one,
-    #  it should be refactored to avoid code duplication
-    #  doing a hook to set a context variable with lang
-    #  TODO: The optimization needs to be done at the language level,
-    #   just as we do in the upper module connector_woocommerce
-    # def resync_export(self):
-    #     super().resync_export()
-    #     if not self.env.context.get("resync_product_template", False):
-    #         for rec in self:
-    #             rec.product_tmpl_id.woocommerce_bind_ids.filtered(
-    #                 lambda x: x.backend_id == rec.backend_id
-    #                 and x.woocommerce_lang == rec.woocommerce_lang
-    #             ).with_context(resync_product_product=True).resync_export()

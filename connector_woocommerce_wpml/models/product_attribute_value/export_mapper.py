@@ -7,43 +7,35 @@ from odoo.addons.connector.components.mapper import changed_by, mapping, only_cr
 from odoo.addons.connector_extension.components.mapper import required
 
 
-class WooCommerceProductAttributeValueExportMapper(Component):
-    _inherit = "woocommerce.product.attribute.value.export.mapper"
+class WooCommerceWPMLProductAttributeValueExportMapper(Component):
+    _name = "woocommerce.wpml.product.attribute.value.export.mapper"
+    _inherit = "woocommerce.wpml.export.mapper"
+
+    _apply_on = "woocommerce.wpml.product.attribute.value"
+    # _inherit = "woocommerce.product.attribute.value.export.mapper"
 
     @required("name")
     @changed_by("name")
     @mapping
     def name(self, record):
-        dict_name = super().name(record)
-        if "name" in dict_name:
-            if dict_name["name"] != record.name:
-                dict_name["name"] = record.name
-        return dict_name
+        return {"name": record.name}
 
     @required("parent_id")
     @changed_by("attribute_id")
     @mapping
     def parent_id(self, record):
-        parent_dict = super().parent_id(record)
-        if "parent_id" in parent_dict:
-            parent_dict["parent_id"] = parent_dict["parent_id"]
-        binder = self.binder_for("woocommerce.product.attribute")
+        binder = self.binder_for("woocommerce.wpml.product.attribute")
         values = binder.get_external_dict_ids(record.attribute_id)
         return {"parent_id": values["id"] or None}
 
     @changed_by("attribute_id")
     @mapping
     def parent_name(self, record):
-        dict_name = super().parent_name(record)
-        if "parent_name" in dict_name:
-            if dict_name["parent_name"] != record.attribute_id.name:
-                dict_name["parent_name"] = record.attribute_id.name
-        return dict_name
+        return {"parent_name": record.attribute_id.name}
 
     @changed_by("lang")
     @mapping
     def lang(self, record):
-        # TODO: unify this code. Probably do a function in res lang
         return {
             "lang": self.env["res.lang"]._get_wpml_code_from_iso_code(
                 record._context.get("lang")
@@ -55,7 +47,7 @@ class WooCommerceProductAttributeValueExportMapper(Component):
     def translation_of(self, record):
         lang_code = record._context.get("lang")
         if lang_code:
-            other_binding_backend = record.woocommerce_bind_ids.filtered(
+            other_binding_backend = record.woocommerce_wpml_bind_ids.filtered(
                 lambda x: x.backend_id == self.backend_record
                 and x.woocommerce_lang
                 != self.env["res.lang"]._get_wpml_code_from_iso_code(
@@ -64,5 +56,5 @@ class WooCommerceProductAttributeValueExportMapper(Component):
             )
             translation_of = None
             for obb in other_binding_backend:
-                translation_of = obb.woocommerce_idattributevalue
+                translation_of = obb.woocommerce_wpml_idattributevalue
             return {"translation_of": translation_of}
