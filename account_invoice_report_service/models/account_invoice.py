@@ -14,23 +14,22 @@ class AccountMove(models.Model):
     def print_report_invoice_service(self):
         if not self.company_id.report_service_id:
             raise UserError(_("There's no report defined on invoice company"))
+        for iline in self.invoice_line_ids:
+            if len(iline.sale_line_ids.order_id) > 1:
+                raise ValidationError(
+                    _(
+                        "Not implemented case: "
+                        "The same invoice line "
+                        "belongs to different orders"
+                    )
+                )
         return self.company_id.report_service_id.report_action(self)
 
     def _group_by_order(self):
-        ilines_trace = self.env["account.move.line"]
         order_d, no_order = {}, self.env["account.move.line"]
         for iline in self.invoice_line_ids:
             if iline.sale_line_ids:
                 for oline in iline.sale_line_ids:
-                    if iline in ilines_trace:
-                        raise ValidationError(
-                            _(
-                                "Not implemented case: "
-                                "The same invoice line "
-                                "belongs to different orders"
-                            )
-                        )
-                    ilines_trace |= iline
                     order = oline.order_id
                     if order not in order_d:
                         order_d[order] = self.env["account.move.line"]
