@@ -8,6 +8,8 @@ from odoo.exceptions import ValidationError
 _logger = logging.getLogger(__name__)
 
 
+# TODO: we need to adapt wordpress wpml like woocommerce wpml,
+#  in component version
 class WordPressBackend(models.Model):
     _inherit = "wordpress.backend"
 
