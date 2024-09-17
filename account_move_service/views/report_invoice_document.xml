@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="report_invoice_document"
+        inherit_id="account.report_invoice_document"
+        priority="100"
+    >
+        <xpath expr="//span[@t-field='line.quantity']" position="replace">
+            <t t-if="line.service_group">
+                <t t-if="line.quantity &gt; 0">
+                    <span t-esc="1" />
+                </t>
+                <t t-if="line.quantity == 0">
+                    <span t-esc="'0'" />
+                </t>
+                <t t-if="line.quantity &lt; 0">
+                    <span t-esc="-1" />
+                </t>
+            </t>
+            <t t-else="">
+                <span t-field="line.quantity" />
+            </t>
+        </xpath>
+        <xpath expr="//span[@t-field='line.price_unit']" position="replace">
+            <t t-if="line.service_group">
+                <span t-field="line.price_subtotal" />
+            </t>
+            <t t-else="">
+                <span t-field="line.price_unit" />
+            </t>
+        </xpath>
+    </template>
+</odoo>

@@ -40,6 +40,7 @@ class AccountMove(models.Model):
             "name": so_line.order_id.policy_number,
             "product_id": product.id,
             "product_uom_id": product.uom_id.id,
+            "service_group": True,
         }
 
     def get_service_other_fields_agg(self, item):

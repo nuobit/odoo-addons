@@ -1,7 +1,8 @@
 # Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class AccountMoveLine(models.Model):
@@ -30,3 +31,5 @@ class AccountMoveLine(models.Model):
             res["price_subtotal"] = self.price_subtotal
             res["price_total"] = self.price_total
         return res
+
+    service_group = fields.Boolean()
