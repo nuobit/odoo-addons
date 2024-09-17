@@ -3,7 +3,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
+import io
 import logging
+
+from PyPDF2 import PdfFileReader
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError
@@ -152,8 +155,52 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         if invoices_pdf:
             if not self.company_id.report_service_id:
                 raise UserError(_("There's no report defined on invoice company"))
-            report_action = self.company_id.report_service_id.report_action(
-                invoices_pdf
-            )
-            invoices_pdf.write({"is_move_sent": True})
-            return report_action
+            report_service = self.company_id.report_service_id
+            if invoices_pdf.filtered(lambda x: x.partner_id.service_intermediary):
+                if not self.company_id.report_intermediary_service_id:
+                    raise UserError(
+                        _(
+                            "The report for service intermediary partners is not "
+                            "defined in the configuration settings. Please go to "
+                            "the billing configuration and specify which report "
+                            "will be used."
+                        )
+                    )
+            report_intermediary = self.company_id.report_intermediary_service_id
+            pdf_streams = []
+            for invoice in invoices_pdf:
+                if invoice.partner_id.service_intermediary:
+                    if not report_intermediary:
+                        raise UserError(
+                            _(
+                                "The report for service intermediary partners is not "
+                                "defined in the configuration settings. Please go to "
+                                "the billing configuration and specify which report "
+                                "will be used."
+                            )
+                        )
+                    report = report_intermediary
+                else:
+                    report = report_service
+
+                pdf_content, _p = report._render_qweb_pdf([invoice.id])
+                pdf_stream = io.BytesIO(pdf_content)
+                pdf_streams.append(pdf_stream)
+
+            if pdf_streams:
+                merged_pdf_stream = io.BytesIO()
+                pdf_merger = PdfFileReader(pdf_content)
+                for pdf_stream in pdf_streams:
+                    pdf_merger.append(pdf_stream)
+                pdf_merger.write(merged_pdf_stream)
+                pdf_merger.close()
+
+                return {
+                    "type": "ir.actions.report",
+                    "report_type": "qweb-pdf",
+                    "data": {"pdf_content": merged_pdf_stream.getvalue()},
+                    "report_name": "Merged_Invoices",
+                    "name": _("Merged Invoices"),
+                }
+            else:
+                raise UserError(_("No PDFs were generated for the selected invoices."))
