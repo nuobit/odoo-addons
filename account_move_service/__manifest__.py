@@ -4,7 +4,7 @@
 {
     "name": "Account Move Service",
     "summary": "Module to allow grouping service billing in account moves",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
     "category": "Sales/Accounting",
@@ -13,5 +13,6 @@
     "data": [
         "views/res_config_settings_views.xml",
         "views/res_partner_views.xml",
+        "views/report_invoice_document.xml",
     ],
 }
