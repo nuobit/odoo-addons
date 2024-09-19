@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="report_trial_balance_lines_header_oxigen"
+        inherit_id="account_financial_report.report_trial_balance_lines_header"
+        priority="100"
+    >
+        <xpath
+            expr="//div[hasclass('act_as_row') and hasclass('labels')]/t[@t-if='not show_partner_details']"
+            position="before"
+        >
+            <div class="act_as_cell" style="width: 9%;">Company</div>
+        </xpath>
+    </template>
+    <template
+        id="report_trial_balance_line_oxigen"
+        inherit_id="account_financial_report.report_trial_balance_line"
+        priority="100"
+    >
+        <xpath
+            expr="//div[hasclass('act_as_row') and hasclass('lines')]/t[@t-if='not show_partner_details']"
+            position="before"
+        >
+            <div class="act_as_cell left" t-att-style="style">
+                <span
+                    t-att-res-id="balance['id']"
+                    res-model="account.account"
+                    view-type="form"
+                >
+                    <t t-esc="balance['company']" />
+                </span>
+            </div>
+        </xpath>
+    </template>
+</odoo>
