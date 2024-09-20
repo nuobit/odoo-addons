@@ -46,6 +46,18 @@ class TrialBalanceReport(models.AbstractModel):
         company_ids = self.env.context.get("company_ids", [])
         total_amount, accounts_data, partners_data = {}, {}, []
         for company_id in company_ids:
+            account_type = self.env.ref("account.data_unaffected_earnings")
+            unaffected_earnings_account = (
+                self.env["account.account"]
+                .with_context(allowed_company_ids=company_ids)
+                .search(
+                    [
+                        ("user_type_id", "=", account_type.id),
+                        ("company_id", "=", company_id),
+                    ]
+                )
+                .id
+            )
             ta, ad, pd = super(TrialBalanceReport, self.sudo())._get_data(
                 account_ids,
                 journal_ids,
