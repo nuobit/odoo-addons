@@ -14,6 +14,12 @@ class AccountMove(models.Model):
     def _map_format_type_signed_facturaevx(self):
         return {
             "xlsx": "xls",
+            "xsig": "xml",
+            "docx": "doc",
+            "jpeg": "jpg",
+            "jfif": "jpg",
+            "png": "jpg",
+            "tif": "tiff",
         }
 
     def get_format_types_facturaevx(self):
@@ -58,12 +64,11 @@ class AccountMove(models.Model):
                         description = attachment.name
                         content_type = attachment.type
 
-                    if self.env.context.get("facturae_signed", False):
-                        content_type = self._map_format_type_signed_facturaevx().get(
-                            content_type, content_type
-                        )
-                        if content_type not in self.get_format_types_facturaevx():
-                            continue
+                    content_type = self._map_format_type_signed_facturaevx().get(
+                        content_type, content_type
+                    )
+                    if content_type not in self.get_format_types_facturaevx():
+                        continue
 
                     result.append(
                         {
