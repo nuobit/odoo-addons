@@ -14,6 +14,7 @@
         "l10n_es_facturae",
         "account_invoice_report_service",
         "sale_order_invoicing_grouping_criteria",
+        "account_move_service",
         "queue_job",
     ],
     "data": [

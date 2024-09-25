@@ -13,3 +13,8 @@ class ResCompany(models.Model):
         comodel_name="mail.template",
         domain=[("model_id", "=", "account.move")],
     )
+    report_intermediary_service_id = fields.Many2one(
+        string="Default Report for Intermediary Service Partner",
+        comodel_name="ir.actions.report",
+        domain=[("model", "=", "account.move")],
+    )
