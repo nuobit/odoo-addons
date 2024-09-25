@@ -13,8 +13,7 @@
             <field name="default_code" position="attributes">
                 <attribute
                     name="attrs"
-                >{'invisible': [('product_variant_count', '>', 1)],
-                  'readonly': [('oxigesti_product_variant_bind_ids', '!=', [])]}</attribute>
+                >{'invisible': [('product_variant_count', '>', 1)]}</attribute>
             </field>
         </field>
     </record>
@@ -35,11 +34,6 @@
                     <field name="oxigesti_bind_ids" nolabel="1" />
                 </group>
             </page>
-            <field name="default_code" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'readonly': [('oxigesti_bind_ids', '!=', [])]}</attribute>
-            </field>
         </field>
     </record>
 
