@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="template_facturae_tax_rounding"
+        inherit_id="l10n_es_facturae.template_facturae"
+        priority="100"
+    >
+        <xpath expr="//InvoiceLine/TaxesOutputs//TaxAmount" position="replace">
+            <TaxAmount>
+                <TotalAmount
+                    t-esc="('%.2f' if version == '3_2' else '%.8f') % (line_sign * (line._get_facturae_tax_line_info(line_tax)))"
+                />
+                <EquivalentInEuros
+                    t-esc="'%.2f' % (line_sign * (line._get_facturae_tax_line_info(line_tax) * euro_rate / currency_rate))"
+                />
+            </TaxAmount>
+        </xpath>
+    </template>
+</odoo>
