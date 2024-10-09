@@ -24,6 +24,7 @@ class AccountMoveLine(models.Model):
         )
         if (
             self.move_id.partner_id.service_intermediary
+            and self.sale_line_ids
             and self.price_subtotal
             and self.price_total
         ):
