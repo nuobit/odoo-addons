@@ -16,6 +16,7 @@
         "sale_line_partner_description",
         "sale_specific_order_date",
         "oxigen_stock_alternate_lot",
+        "oxigen_mrp",
     ],
     "external_dependencies": {
         "python": [
@@ -34,6 +35,7 @@
         "views/product_pricelist_item_view.xml",
         "views/stock_production_lot_view.xml",
         "views/sale_order_view.xml",
+        "views/mrp_production_view.xml",
         "views/connector_oxigesti_menu.xml",
         "security/connector_oxigesti.xml",
         "security/ir.model.access.csv",
