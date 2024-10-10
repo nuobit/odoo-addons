@@ -24,13 +24,13 @@ class MrpProduction(models.Model):
             )
             if len(move_raw.product_id) == 0:
                 raise ValidationError(
-                    _("Production of empty gas bottle type without %s product: %s")
+                    _("Production of empty cylinder type without %s product: %s")
                     % (mrp_type, self.name)
                 )
             if len(move_raw) > 1 or sum(move_raw.mapped("quantity_done")) > 1:
                 raise ValidationError(
                     _(
-                        "The empty gas bottle (%s) has been created with"
+                        "The empty cylinder (%s) has been created with"
                         " more than one %s"
                     )
                     % (self.name, mrp_type)
@@ -69,7 +69,7 @@ class MrpProductionBinding(models.Model):
     def export_data(self, backend, since_date):
         domain = [
             ("company_id", "=", backend.company_id.id),
-            ("product_id.mrp_type", "=", "empty_gas_bottle"),
+            ("product_id.mrp_type", "=", "empty_cylinder"),
             ("state", "=", "done"),
         ]
         if since_date:
