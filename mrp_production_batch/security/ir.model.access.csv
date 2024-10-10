@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_production_batch_manager,mrp.production.batch manager,model_mrp_production_batch,base.group_user,1,1,1,1
