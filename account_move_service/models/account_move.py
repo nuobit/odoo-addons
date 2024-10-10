@@ -69,8 +69,6 @@ class AccountMove(models.Model):
 
     def check_invoice_service_values(self, vals):
         invoice_line_ids = vals.get("invoice_line_ids", False)
-        if not invoice_line_ids:
-            return False
         if not all(item[0] == 0 for item in invoice_line_ids):
             raise ValidationError(
                 _(
@@ -131,25 +129,28 @@ class AccountMove(models.Model):
                 )
 
     def prepare_invoice_service(self, vals):
-        agg_lines = {}
-
         move_ok = self.check_invoice_service_values(vals)
         if move_ok:
+            agg_lines = {}
             for line in vals.get("invoice_line_ids"):
                 self.prepare_invoice_service_line(line[2], agg_lines)
-
-        return agg_lines
+            invoice_lines = [
+                (0, 0, agg_line)
+                for agg_line in [item_data for item_data in agg_lines.values()]
+            ]
+        else:
+            invoice_lines = vals.get("invoice_line_ids")
+        return invoice_lines
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if vals.get("move_type", False) == "out_invoice":
+            if vals.get("move_type", False) == "out_invoice" and vals.get(
+                "invoice_line_ids", False
+            ):
                 pid = vals.get("partner_id", False)
                 if pid and self.env["res.partner"].browse(pid).service_intermediary:
-                    agg_lines = self.prepare_invoice_service(vals)
-                    vals["invoice_line_ids"] = [
-                        (0, 0, agg_line)
-                        for agg_line in [item_data for item_data in agg_lines.values()]
-                    ]
+                    invoice_lines = self.prepare_invoice_service(vals)
+                    vals["invoice_line_ids"] = invoice_lines
 
         return super(AccountMove, self).create(vals_list)
