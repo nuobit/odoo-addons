@@ -16,6 +16,9 @@ class ProductTemplate(models.Model):
     public_short_description = fields.Text(
         translate=True,
     )
+    public_additional_information = fields.Text(
+        translate=True,
+    )
     slug_name = fields.Char(
         translate=True,
     )
