@@ -12,7 +12,7 @@
                         name="button_check_connection"
                         type="object"
                         class="oe_highlight"
-                        string="Check Connection2"
+                        string="Check Connection"
                         attrs="{'invisible':[('state', 'not in', ['draft'])]}"
                     />
                     <button

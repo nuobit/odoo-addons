@@ -20,6 +20,7 @@ class WooCommerceWPMLBackend(models.Model):
     language_ids = fields.Many2many(
         string="Languages for WPML",
         comodel_name="res.lang",
+        required=True,
     )
     payment_mode_ids = fields.One2many(
         comodel_name="woocommerce.wpml.backend.payment.mode",
