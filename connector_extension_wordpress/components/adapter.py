@@ -87,8 +87,8 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             "get",
             resource,
             auth=(
-                self.backend_record.consumer_key,
-                self.backend_record.consumer_secret,
+                self.backend_record.username,
+                self.backend_record.application_password,
             ),
             params=params,
             verify=self.backend_record.verify_ssl,
@@ -111,8 +111,8 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 "get",
                 resource,
                 auth=(
-                    self.backend_record.consumer_key,
-                    self.backend_record.consumer_secret,
+                    self.backend_record.username,
+                    self.backend_record.application_password,
                 ),
                 verify=self.backend_record.verify_ssl,
                 *args,
@@ -146,8 +146,8 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 resource,
                 params=params,
                 auth=(
-                    self.backend_record.consumer_key,
-                    self.backend_record.consumer_secret,
+                    self.backend_record.username,
+                    self.backend_record.application_password,
                 ),
                 verify=self.backend_record.verify_ssl,
                 *args,
@@ -161,10 +161,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         return self._filter(data, common_domain)
 
     def _exec_post(self, resource, *args, **kwargs):
-        auth = (self.backend_record.consumer_key, self.backend_record.consumer_secret)
+        auth = (self.backend_record.username, self.backend_record.application_password)
         if "wordpress_backend_id" in self.backend_record:
             backend = self.backend_record.wordpress_backend_id
-            auth = (backend.consumer_key, backend.consumer_secret)
+            auth = (backend.username, backend.application_password)
         data_aux = kwargs.pop("data", {})
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
@@ -181,10 +181,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         return res["data"]
 
     def _exec_put(self, resource, *args, **kwargs):
-        auth = (self.backend_record.consumer_key, self.backend_record.consumer_secret)
+        auth = (self.backend_record.username, self.backend_record.application_password)
         if "wordpress_backend_id" in self.backend_record:
             backend = self.backend_record.wordpress_backend_id
-            auth = (backend.consumer_key, backend.consumer_secret)
+            auth = (backend.username, backend.application_password)
         data_aux = kwargs.pop("data", {})
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
