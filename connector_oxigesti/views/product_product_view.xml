@@ -13,7 +13,8 @@
             <field name="default_code" position="attributes">
                 <attribute
                     name="attrs"
-                >{'invisible': [('product_variant_count', '>', 1)]}</attribute>
+                >{'invisible': [('product_variant_count', '>', 1)],
+                  'required': [('product_variant_count', '&lt;', 2)]}</attribute>
             </field>
         </field>
     </record>
@@ -34,6 +35,20 @@
                     <field name="oxigesti_bind_ids" nolabel="1" />
                 </group>
             </page>
+            <field name="default_code" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+        </field>
+    </record>
+
+   <record id="product_variant_easy_edit_view" model="ir.ui.view">
+        <field name="name">product.product.connector.easy.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
+        <field name="arch" type="xml">
+            <field name="default_code" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
         </field>
     </record>
 
