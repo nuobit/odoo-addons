@@ -48,36 +48,6 @@ class WooCommerceSaleOrderAdapter(Component):
         if meta_data:
             data["meta_data"] = meta_data
 
-    def _get_partner_parent_domain(self, dir_type, value):
-        name = value[dir_type].get("company") or value[dir_type].get("name")
-        return [
-            ("company_type", "=", "company"),
-            ("name", "=", name),
-        ]
-
-    def _additional_partner_parent_fields(self, value, dir_type):
-        return {}
-
-    def _get_partner_parent(self, dir_type, value):
-        # TODO: REVIEW: slug for company name?
-        domain = self._get_partner_parent_domain(dir_type, value)
-        parent = self.env["res.partner"].search(domain)
-        if not parent:
-            parent = self.env["res.partner"].create(
-                {
-                    "name": value[dir_type].get("company")
-                    or value[dir_type].get("name"),
-                    "company_type": "company",
-                    **self._additional_partner_parent_fields(value, dir_type),
-                }
-            )
-            value[dir_type]["parent"] = parent.id
-        elif len(parent) > 1:
-            raise ValidationError(
-                _("There are more than one partner with the same name")
-            )
-        value[dir_type]["parent"] = parent.id
-
     def _get_hash_fields(self):
         return [
             "name",
@@ -98,7 +68,6 @@ class WooCommerceSaleOrderAdapter(Component):
             value["billing"]["name"] = (
                 value["billing"]["first_name"] + " " + value["billing"]["last_name"]
             )
-            self._get_partner_parent("billing", value)
             value["billing"]["hash"] = list2hash(
                 value["billing"].get(x) for x in hash_fields
             )
@@ -112,7 +81,6 @@ class WooCommerceSaleOrderAdapter(Component):
             value["shipping"]["hash"] = list2hash(
                 value["shipping"].get(x) for x in hash_fields
             )
-            self._get_partner_parent("shipping", value)
         else:
             value["shipping"] = None
 
