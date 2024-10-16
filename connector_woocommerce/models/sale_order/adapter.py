@@ -17,66 +17,10 @@ class WooCommerceSaleOrderAdapter(Component):
     def get_total_items(self, resource=None, domain=None):
         return super().get_total_items("orders", domain=domain)
 
-    def read(self, external_id):  # pylint: disable=W8106
-        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        url = "orders/%s" % (external_id_values["id"])
-        res = self._exec("get", url, limit=1)
-        self._reorg_order_data(res)
-        if len(res) > 1:
-            raise ValidationError(
-                _("More than one order found with the same id: %s")
-                % (external_id_values["id"])
-            )
-        return res[0]
-
-    def search_read(self, domain=None, offset=0, limit=None):
-        self._convert_format_domain(domain)
-        if limit:
-            res = self._exec("get", "orders", domain=domain, offset=offset, limit=limit)
-        else:
-            res = self._exec("get", "orders", domain=domain, offset=offset)
-        self._reorg_order_data(res)
-        return res, len(res)
-
-    def write(self, external_id, data):  # pylint: disable=W8106
-        self._prepare_data(data)
-        url_l = ["orders", str(external_id[0])]
-        return self._exec("put", "/".join(url_l), data=data)
-
     def _prepare_data(self, data):
         meta_data = self.prepare_meta_data(data)
         if meta_data:
             data["meta_data"] = meta_data
-
-    def _get_partner_parent_domain(self, dir_type, value):
-        name = value[dir_type].get("company") or value[dir_type].get("name")
-        return [
-            ("company_type", "=", "company"),
-            ("name", "=", name),
-        ]
-
-    def _additional_partner_parent_fields(self, value, dir_type):
-        return {}
-
-    def _get_partner_parent(self, dir_type, value):
-        # TODO: REVIEW: slug for company name?
-        domain = self._get_partner_parent_domain(dir_type, value)
-        parent = self.env["res.partner"].search(domain)
-        if not parent:
-            parent = self.env["res.partner"].create(
-                {
-                    "name": value[dir_type].get("company")
-                    or value[dir_type].get("name"),
-                    "company_type": "company",
-                    **self._additional_partner_parent_fields(value, dir_type),
-                }
-            )
-            value[dir_type]["parent"] = parent.id
-        elif len(parent) > 1:
-            raise ValidationError(
-                _("There are more than one partner with the same name")
-            )
-        value[dir_type]["parent"] = parent.id
 
     def _get_hash_fields(self):
         return [
@@ -98,7 +42,6 @@ class WooCommerceSaleOrderAdapter(Component):
             value["billing"]["name"] = (
                 value["billing"]["first_name"] + " " + value["billing"]["last_name"]
             )
-            self._get_partner_parent("billing", value)
             value["billing"]["hash"] = list2hash(
                 value["billing"].get(x) for x in hash_fields
             )
@@ -112,7 +55,6 @@ class WooCommerceSaleOrderAdapter(Component):
             value["shipping"]["hash"] = list2hash(
                 value["shipping"].get(x) for x in hash_fields
             )
-            self._get_partner_parent("shipping", value)
         else:
             value["shipping"] = None
 
@@ -158,6 +100,32 @@ class WooCommerceSaleOrderAdapter(Component):
                         "total_tax": shipping["total_tax"],
                     }
                 )
+
+    def read(self, external_id):  # pylint: disable=W8106
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        url = "orders/%s" % (external_id_values["id"])
+        res = self._exec("get", url, limit=1)
+        self._reorg_order_data(res)
+        if len(res) > 1:
+            raise ValidationError(
+                _("More than one order found with the same id: %s")
+                % (external_id_values["id"])
+            )
+        return res[0]
+
+    def search_read(self, domain=None, offset=0, limit=None):
+        self._convert_format_domain(domain)
+        if limit:
+            res = self._exec("get", "orders", domain=domain, offset=offset, limit=limit)
+        else:
+            res = self._exec("get", "orders", domain=domain, offset=offset)
+        self._reorg_order_data(res)
+        return res, len(res)
+
+    def write(self, external_id, data):  # pylint: disable=W8106
+        self._prepare_data(data)
+        url_l = ["orders", str(external_id[0])]
+        return self._exec("put", "/".join(url_l), data=data)
 
     def _get_search_fields(self):
         res = super()._get_search_fields()
