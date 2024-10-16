@@ -36,11 +36,42 @@ class WooCommerceSaleOrderImporter(Component):
 
     _apply_on = "woocommerce.sale.order"
 
+    def _get_partner_parent_domain(self, dir_type, value):
+        name = value[dir_type].get("company") or value[dir_type].get("name")
+        return [
+            ("company_type", "=", "company"),
+            ("name", "=", name),
+        ]
+
+    def _additional_partner_parent_fields(self, value, dir_type):
+        return {}
+
+    def _get_partner_parent(self, dir_type, value):
+        # TODO: REVIEW: slug for company name?
+        domain = self._get_partner_parent_domain(dir_type, value)
+        parent = self.env["res.partner"].search(domain)
+        if not parent:
+            parent = self.env["res.partner"].create(
+                {
+                    "name": value[dir_type].get("company")
+                    or value[dir_type].get("name"),
+                    "company_type": "company",
+                    **self._additional_partner_parent_fields(value, dir_type),
+                }
+            )
+            value[dir_type]["parent"] = parent.id
+        elif len(parent) > 1:
+            raise ValidationError(
+                _("There are more than one partner with the same name")
+            )
+        value[dir_type]["parent"] = parent.id
+
     def _import_dependencies(self, external_data, sync_date):
         # Customer
         binder = self.binder_for("woocommerce.res.partner")
         billing = external_data.get("billing")
         if billing:
+            self._get_partner_parent("billing", external_data)
             self._import_dependency(
                 binder.dict2id(billing, in_field=False),
                 "woocommerce.res.partner",
@@ -49,6 +80,7 @@ class WooCommerceSaleOrderImporter(Component):
             )
         shipping = external_data.get("shipping")
         if shipping:
+            self._get_partner_parent("shipping", external_data)
             self._import_dependency(
                 binder.dict2id(shipping, in_field=False),
                 "woocommerce.res.partner",
