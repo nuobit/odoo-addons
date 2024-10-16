@@ -39,7 +39,8 @@ class WooCommerceSaleOrderImporter(Component):
     def _get_partner_parent_domain(self, dir_type, value):
         name = value[dir_type].get("company") or value[dir_type].get("name")
         return [
-            ("company_type", "=", "company"),
+            ("company_type", "in", (False, "company")),
+            ("child_ids", "!=", False),
             ("name", "=", name),
         ]
 
@@ -59,10 +60,10 @@ class WooCommerceSaleOrderImporter(Component):
                     **self._additional_partner_parent_fields(value, dir_type),
                 }
             )
-            value[dir_type]["parent"] = parent.id
         elif len(parent) > 1:
             raise ValidationError(
-                _("There are more than one partner with the same name")
+                _("There are more than one parent partner with the same name %s")
+                % value[dir_type].get("name")
             )
         value[dir_type]["parent"] = parent.id
 

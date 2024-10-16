@@ -80,7 +80,7 @@ class WooCommerceSaleOrderImportMapper(Component):
         payment_mode = self.backend_record.payment_mode_ids.filtered(
             lambda x: record["payment_method"] == x.woocommerce_payment_mode
         )
-        if not payment_mode:
+        if not payment_mode and record["payment_method"]:
             raise ValidationError(
                 _("Payment method '%s' is not defined on backend")
                 % record.get("payment_method")
