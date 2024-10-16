@@ -110,18 +110,20 @@ class WooCommerceProductTemplateExportMapper(Component):
         return {"sale_price": None}
 
     def _get_product_description(self, record):
-        return tools.color_rgb2hex(
-            record.record.with_context(
-                lang=self.backend_record.language_id.code
-            ).public_description
-        )
+        description = record.with_context(
+            lang=self.backend_record.language_id.code
+        ).public_description
+        if not description:
+            return False
+        return tools.color_rgb2hex(description)
 
     def _get_product_variant_description(self, record):
-        return tools.color_rgb2hex(
-            record.product_variant_id.with_context(
-                lang=self.backend_record.language_id.code
-            ).variant_public_description
-        )
+        description = record.product_variant_id.with_context(
+            lang=self.backend_record.language_id.code
+        ).variant_public_description
+        if not description:
+            return False
+        return tools.color_rgb2hex(description)
 
     @mapping
     def description(self, record):

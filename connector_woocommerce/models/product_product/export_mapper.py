@@ -97,11 +97,12 @@ class WooCommerceProductProductExportMapper(Component):
         return stock
 
     def _get_product_description(self, record):
-        return tools.color_rgb2hex(
-            record.with_context(
-                lang=self.backend_record.language_id.code
-            ).variant_public_description
-        )
+        description = record.with_context(
+            lang=self.backend_record.language_id.code
+        ).variant_public_description
+        if not description:
+            return False
+        return tools.color_rgb2hex(description)
 
     @mapping
     def description(self, record):
