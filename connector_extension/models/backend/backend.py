@@ -54,9 +54,15 @@ class ConnectorBackend(models.AbstractModel):
 
     chunk_size = fields.Integer(
         string="Chunk Size",
-        default=-1,
         help="This field is used to define the chunk size to import from the backend.",
     )
+
+    @api.constrains("chunk_size")
+    def _check_chunk_size(self):
+        for rec in self:
+            if rec.chunk_size < 0:
+                raise ValueError("Chunk Size must be a positive number")
+
     page_size = fields.Integer(
         string="Page Size",
         default=-1,
