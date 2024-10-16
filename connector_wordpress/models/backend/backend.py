@@ -19,11 +19,11 @@ class WordPressBackend(models.Model):
         help="WordPress URL",
         required=True,
     )
-    consumer_key = fields.Char(
-        help="WordPress Consumer Key",
+    username = fields.Char(
+        help="WordPress Username",
         required=True,
     )
-    consumer_secret = fields.Char(
+    application_password = fields.Char(
         required=True,
     )
     company_id = fields.Many2one(

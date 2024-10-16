@@ -47,19 +47,17 @@
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
                             <field
-                                name="consumer_key"
+                                name="username"
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
-
                         </group>
                         <group>
                             <field name="version" />
                             <field
-                                name="consumer_secret"
+                                name="application_password"
                                 password="True"
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
-
                         </group>
                     </group>
                     <notebook>
@@ -81,8 +79,8 @@
             <tree>
                 <field name="name" />
                 <field name="url" />
-                <field name="consumer_key" />
-                <field name="consumer_secret" />
+                <field name="username" />
+                <field name="application_password" />
                 <field name="version" />
             </tree>
         </field>
