@@ -26,21 +26,3 @@ class WooCommerceSaleOrderAdapter(Component):
                 if item["key"] == "_shipping_nif":
                     value["shipping"]["nif"] = item["value"]
         super()._get_shipping(value, hash_fields)
-
-    def _get_partner_parent_domain(self, dir_type, value):
-        domain = super()._get_partner_parent_domain(dir_type, value)
-        if value[dir_type].get("nif"):
-            domain.append(("vat", "=", value[dir_type]["nif"]))
-        else:
-            if (
-                dir_type == "shipping"
-                and value["shipping"]["name"] == value["billing"]["name"]
-            ):
-                domain.append(("id", "=", value["billing"]["parent"]))
-        return domain
-
-    def _additional_partner_parent_fields(self, value, dir_type):
-        return {
-            **super()._additional_partner_parent_fields(value, dir_type),
-            "vat": value[dir_type].get("nif"),
-        }
