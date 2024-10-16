@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="connector_woocommerce_product_product_view_form_easy_inherit"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >connector.woocommerce.product.product.view.form.easy.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <field name="variant_is_published" invisible="1" />
+                <div
+                    class="alert alert-info"
+                    role="alert"
+                    style="margin-bottom:0px;"
+                    attrs="{'invisible': [('variant_is_published', '=', False)]}"
+                >
+                    Please note that WooCommerce allows only one image per product variant. Additional images will not be exported to WooCommerce and will be ignored.
+                </div>
+            </xpath>
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page string="Connector WooCommerce" name="connector_woocommerce">
+                    <group string="WooCommerce Bindings">
+                        <field name="woocommerce_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="connector_product_product_view_form" model="ir.ui.view">
+        <field name="name">product.product.connector.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <field name="variant_is_published" invisible="1" />
+                <div
+                    class="alert alert-info"
+                    role="alert"
+                    style="margin-bottom:0px;"
+                    attrs="{'invisible': [('variant_is_published', '=', False)]}"
+                >
+                    Please note that WooCommerce allows only one image per product variant. Additional images will not be exported to WooCommerce and will be ignored.
+                </div>
+            </xpath>
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page string="Connector WooCommerce" name="connector_woocommerce">
+                    <group string="WooCommerce Bindings">
+                        <field name="woocommerce_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+            <xpath
+                expr="//page[@name='shop']/group[@name='shop']/group/field[@name='is_published']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="woocommerce_product_product_view_form" model="ir.ui.view">
+        <field name="name">woocommerce.product.product.view.form</field>
+        <field name="model">woocommerce.product.product</field>
+        <field name="arch" type="xml">
+            <form string="WooCommerce Product Product">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="woocommerce_idproduct" readonly="True" />
+                    <field name="woocommerce_idparent" readonly="True" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="woocommerce_product_product_view_tree" model="ir.ui.view">
+        <field name="name">woocommerce.product.product.view.tree</field>
+        <field name="model">woocommerce.product.product</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="woocommerce_idproduct" readonly="True" />
+                <field name="woocommerce_idparent" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync_export"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+    <record id="woocommerce_product_product_action" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">woocommerce.product.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

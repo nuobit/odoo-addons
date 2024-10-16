@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+
+    <record
+        id="website_sale_public_description_product_template_view_form"
+        model="ir.ui.view"
+    >
+        <field name="name">product.template.website.sale.public.description.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="website_sale.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//div[@name='button_box']/field[@name='is_published']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//div[@name='button_box']/field[@name='is_published']"
+                position="after"
+            >
+                 <field
+                    name="button_is_published"
+                    widget="website_redirect_button"
+                    attrs="{'invisible': [('sale_ok','=',False)]}"
+                />
+            </xpath>
+            <field name="website_sequence" position="before">
+                <field name="website_name" />
+                <field name="is_published" />
+            </field>
+            <field name="website_ribbon_id" position="after">
+                <field name="slug_name" />
+                <field name="public_description" widget="html" />
+                <field name="public_short_description" />
+                <field name="public_additional_information" />
+            </field>
+        </field>
+    </record>
+</odoo>

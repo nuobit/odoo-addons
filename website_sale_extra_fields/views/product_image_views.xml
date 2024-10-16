@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_product_image_form" model="ir.ui.view">
+        <field name="name">product.image.view.form</field>
+        <field name="model">product.image</field>
+        <field name="inherit_id" ref="website_sale.view_product_image_form" />
+        <field name="arch" type="xml">
+            <field name="video_url" position="after">
+                <label for="title" string="Title" /><br />
+                <field name="title" force_save="1" /><br />
+                <label for="alternate_text" string="Alternate text" /><br />
+                <field name="alternate_text" force_save="1" /><br />
+            </field>
+        </field>
+    </record>
+</odoo>

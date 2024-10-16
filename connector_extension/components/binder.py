@@ -426,7 +426,13 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         return {}
 
     def _get_external_record_domain(self, relation, values):
-        return [(k, "=", v) for k, v in values.items()]
+        domain = []
+        for k, v in values.items():
+            if isinstance(v, (tuple, list)):
+                domain.append((k, "in", v))
+            else:
+                domain.append((k, "=", v))
+        return domain
 
     def _get_external_record_alt(self, relation, id_values):
         domain = self._get_external_record_domain(relation, id_values)

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="wordpress_menu_root"
+        parent="connector.menu_connector_root"
+        name="WordPress"
+        sequence="500"
+        groups="connector.group_connector_manager"
+    >
+        <menuitem
+            id="wordpress_backend_menu_action"
+            name="Backends"
+            action="wordpress_backend_action"
+        />
+        <menuitem
+            id="wordpress_external_objects_menu"
+            name="External Objects"
+            action="wordpress_ir_checksum_action"
+            sequence="150"
+        />
+    </menuitem>
+</odoo>

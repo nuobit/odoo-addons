@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="woocommerce_menu_root"
+        parent="connector.menu_connector_root"
+        name="WooCommerce WPML"
+        sequence="400"
+        groups="connector.group_connector_manager"
+    >
+        <menuitem
+            id="woocommerce_wpml_backend_menu_action"
+            name="Backends"
+            action="woocommerce_wpml_backend_action"
+        />
+        <menuitem
+            id="woocommerce_external_objects_menu"
+            name="External Objects"
+            sequence="100"
+        >
+            <menuitem
+                id="woocommerce_external_product_template_menu"
+                name="External Product Templates"
+                sequence="20"
+                action="woocommerce_wpml_product_template_action"
+            />
+            <menuitem
+                id="woocommerce_external_product_variant_menu"
+                name="External Product product"
+                sequence="20"
+                action="woocommerce_wpml_product_product_action"
+            />
+            <menuitem
+                id="woocommerce_external_product_attribute_menu"
+                name="External Product Attributes"
+                sequence="20"
+                action="woocommerce_wpml_product_attribute_action"
+            />
+            <menuitem
+                id="woocommerce_external_product_attribute_value_menu"
+                name="External Product Attribute Values"
+                sequence="20"
+                action="woocommerce_wpml_product_attribute_value_action"
+            />
+            <menuitem
+                id="woocommerce_wpml_external_product_public_category_menu"
+                name="External Product Public Categories"
+                sequence="20"
+                action="woocommerce_wpml_product_public_category_action"
+            />
+            <menuitem
+                id="woocommerce_wpml_external_sale_order_menu"
+                name="External Orders"
+                sequence="20"
+                action="woocommerce_wpml_sale_order_action"
+            />
+            <menuitem
+                id="woocommerce_wpml_external_partner_menu"
+                name="External Partners"
+                sequence="20"
+                action="woocommerce_wpml_partner_action"
+            />
+        </menuitem>
+    </menuitem>
+</odoo>

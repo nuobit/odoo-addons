@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="connector_res_partner_view_form" model="ir.ui.view">
+        <field name="name">connector.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page string="Connector WooCommerce WPML" name="connector_woocommerce">
+                    <group string="WooCommerce Bindings">
+                        <field name="woocommerce_wpml_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="woocommerce_wpml_partner_view_form" model="ir.ui.view">
+        <field name="name">woocommerce.wpml.partner.view.form</field>
+        <field name="model">woocommerce.wpml.res.partner</field>
+        <field name="arch" type="xml">
+            <form string="WooCommerce WPML Res Partner">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="name" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="woocommerce_partner_view_tree" model="ir.ui.view">
+        <field name="name">woocommerce.wpml.partner.view.tree</field>
+        <field name="model">woocommerce.wpml.res.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="name" />
+                <field name="address_hash" />
+                <field name="sync_date" />
+                <button
+                    name="resync_export"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+    <record id="woocommerce_wpml_partner_action" model="ir.actions.act_window">
+        <field name="name">Partner</field>
+        <field name="res_model">woocommerce.wpml.res.partner</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

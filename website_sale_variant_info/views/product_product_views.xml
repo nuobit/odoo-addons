@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="website_sale_variant_info_product_product_view_form" model="ir.ui.view">
+        <field name="name">website.sale.variant.info.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <field name="website_sequence" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="public_categ_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="alternative_product_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="accessory_product_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="website_ribbon_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="product_template_image_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="product_template_image_ids" position="before">
+                <field
+                    name="product_variant_image_ids"
+                    class="o_website_sale_image_list"
+                    context="{'default_name': name}"
+                    mode="kanban"
+                    options="{'create_text':'Add a Media'}"
+                    nolabel="1"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>
