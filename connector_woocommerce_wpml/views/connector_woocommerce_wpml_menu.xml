@@ -49,18 +49,18 @@
                 sequence="20"
                 action="woocommerce_wpml_product_public_category_action"
             />
-<!--            <menuitem-->
-<!--                id="woocommerce_external_sale_order_menu"-->
-<!--                name="External Orders"-->
-<!--                sequence="100"-->
-<!--                action="woocommerce_sale_order_action"-->
-<!--            />-->
-<!--            <menuitem-->
-<!--                id="woocommerce_external_partner_menu"-->
-<!--                name="External Partners"-->
-<!--                sequence="100"-->
-<!--                action="woocommerce_partner_action"-->
-<!--            />-->
+            <menuitem
+                id="woocommerce_wpml_external_sale_order_menu"
+                name="External Orders"
+                sequence="20"
+                action="woocommerce_wpml_sale_order_action"
+            />
+            <menuitem
+                id="woocommerce_wpml_external_partner_menu"
+                name="External Partners"
+                sequence="20"
+                action="woocommerce_wpml_partner_action"
+            />
         </menuitem>
     </menuitem>
 </odoo>

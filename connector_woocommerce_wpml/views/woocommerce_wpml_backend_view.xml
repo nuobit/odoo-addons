@@ -74,66 +74,66 @@
                                 executed as soon
                                 as possible.
                             </p>
-                                                            <group>
-                                                                <div>
-                                                                    <label
+                            <group>
+                                <div>
+                                    <label
                                         string="Export Products Since"
                                         class="oe_inline"
                                         for="export_products_since_date"
                                     />
-                                                                    <field
+                                    <field
                                         name="export_products_since_date"
                                         class="oe_inline"
                                         nolabel="1"
                                     />
-                                                                </div>
-                                                                <button
+                                </div>
+                                <button
                                     name="export_products_since"
                                     type="object"
                                     class="oe_highlight"
                                     string="Export in background"
                                 />
-                                                            </group>
-                            <!--                                <group>-->
-                            <!--                                    <div>-->
-                            <!--                                        <label-->
-                            <!--                                            string="Export Sale Orders Since"-->
-                            <!--                                            class="oe_inline"-->
-                            <!--                                            for="export_sale_orders_since_date"-->
-                            <!--                                        />-->
-                            <!--                                        <field-->
-                            <!--                                            name="export_sale_orders_since_date"-->
-                            <!--                                            class="oe_inline"-->
-                            <!--                                            nolabel="1"-->
-                            <!--                                        />-->
-                            <!--                                    </div>-->
-                            <!--                                    <button-->
-                            <!--                                        name="export_sale_orders_since"-->
-                            <!--                                        type="object"-->
-                            <!--                                        class="oe_highlight"-->
-                            <!--                                        string="Export in background"-->
-                            <!--                                    />-->
-                            <!--                                </group>-->
-                            <!--                                <group>-->
-                            <!--                                    <div>-->
-                            <!--                                        <label-->
-                            <!--                                            string="Import Sale Orders Since"-->
-                            <!--                                            class="oe_inline"-->
-                            <!--                                            for="import_sale_order_since_date"-->
-                            <!--                                        />-->
-                            <!--                                        <field-->
-                            <!--                                            name="import_sale_order_since_date"-->
-                            <!--                                            class="oe_inline"-->
-                            <!--                                            nolabel="1"-->
-                            <!--                                        />-->
-                            <!--                                    </div>-->
-                            <!--                                    <button-->
-                            <!--                                        name="import_sale_orders_since"-->
-                            <!--                                        type="object"-->
-                            <!--                                        class="oe_highlight"-->
-                            <!--                                        string="Import in background"-->
-                            <!--                                    />-->
-                            <!--                                </group>-->
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Export Sale Orders Since"
+                                        class="oe_inline"
+                                        for="export_sale_orders_since_date"
+                                    />
+                                    <field
+                                        name="export_sale_orders_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="export_sale_orders_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Import Sale Orders Since"
+                                        class="oe_inline"
+                                        for="import_sale_order_since_date"
+                                    />
+                                    <field
+                                        name="import_sale_order_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="import_sale_orders_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import in background"
+                                />
+                            </group>
                             <group>
                                 <div>
                                     <label

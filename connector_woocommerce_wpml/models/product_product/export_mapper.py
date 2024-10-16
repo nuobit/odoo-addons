@@ -6,7 +6,6 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping, only_create
-from odoo.addons.connector_extension.common import tools
 
 
 class WooCommerceWPMLProductProductExportMapper(Component):
@@ -100,15 +99,18 @@ class WooCommerceWPMLProductProductExportMapper(Component):
     def _get_product_description(self, record):
         return None
         # TODO; TypeError: expected string or bytes-like object
-        return tools.color_rgb2hex(record.variant_public_description)
+        # TODO: Investigate why this is returning None
+        # return tools.color_rgb2hex(record.variant_public_description)
 
+    # TODO: REVIEW how to skip pylint error E1128
     @mapping
     def description(self, record):
         description = []
         product_description = self._get_product_description(record)
         if product_description:
             description.append(product_description)
-            # TODO: Adapt wordpress ir checksum to wordpress wpml ir checksum before uncommenting
+            # TODO: Adapt wordpress ir checksum to wordpress wpml ir checksum before
+            #  uncommenting
         # if record.document_ids:
         #     document_description = self._prepare_document_description(
         #         record.document_ids

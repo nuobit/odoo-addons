@@ -119,11 +119,13 @@ class WooCommerceProductTemplateAdapter(Component):
                 raise ValidationError(_("Product type not supported"))
 
     # TODO: REVIEW: Try this code
+    # TODO: REVIEW: Duplicated name function
     def _get_search_fields(self):
         res = super()._get_search_fields()
         res.append("lang")
         return res
 
+    # TODO: REVIEW: Duplicated name function
     def _modify_res_on_search_read(self, parent_ids, domain_dict):
         res = super()._modify_res_on_search_read(parent_ids, domain_dict)
         res[0]["lang"] = domain_dict.get("lang")

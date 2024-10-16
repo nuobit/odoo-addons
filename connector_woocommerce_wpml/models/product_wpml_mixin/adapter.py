@@ -5,8 +5,8 @@ from odoo.addons.component.core import AbstractComponent
 
 
 # TODO: we shoudn't need to use this if we do component aproach.
-class WooCommerceProductWPMLMixinAdapter(AbstractComponent):
-    _name = "woocommerce.product.wpml.mixin.adapter"
+class WooCommerceWPMLProductWPMLMixinAdapter(AbstractComponent):
+    _name = "woocommerce.wpml.product.wpml.mixin.adapter"
     _inherit = "connector.extension.woocommerce.adapter.crud"
 
     def wpml_get_search_fields(self):

@@ -110,7 +110,8 @@ class WooCommerceWPMLBatchExporter(AbstractComponent):
         if not langs_to_export:
             raise ValidationError(
                 _(
-                    "You need to define at least one language to export in the WooCommerce WPML Backend (%s)."
+                    "You need to define at least one language to export in the "
+                    "WooCommerce WPML Backend (%s)."
                 )
                 % self.backend_record.name
             )

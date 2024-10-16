@@ -139,7 +139,8 @@ class WooCommerceWPMLProductTemplateExportMapper(Component):
         if public_short_description:
             short_description.append(public_short_description)
 
-            # TODO: Adapt wordpress ir checksum to wordpress wpml ir checksum before uncommenting
+            # TODO: Adapt wordpress ir checksum to wordpress wpml ir checksum before
+            #  uncommenting
         # document_description = self._prepare_document_description(record.document_ids)
         # if document_description:
         #     short_description.append(document_description)

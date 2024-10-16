@@ -14,7 +14,9 @@
         ],
     },
     "depends": [
-        "connector_woocommerce",
+        "connector",
+        "product_multi_category",
+        "sale_stock",
         # "connector_wordpress_wpml",
     ],
     "data": [
@@ -25,6 +27,8 @@
         "views/product_product_views.xml",
         "views/product_public_category_views.xml",
         "views/product_template_views.xml",
+        "views/res_partner_views.xml",
+        "views/sale_order_views.xml",
         "views/connector_woocommerce_wpml_menu.xml",
     ],
     "installable": True,

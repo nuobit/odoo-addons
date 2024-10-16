@@ -5,5 +5,8 @@
 MOURE AIXO A "CONFIGURACIÓ"
 
 On WPML setup, select the option Language name added as a parameter.
+
 If it's already set, modify:
-  - WPML > Languages > Language URL format, select the option "Language name added as a parameter" and save the changes.
+  - Go to WPML > Languages > Language URL format.
+  - Select the option "Language name added as a parameter".
+  - Save the changes.

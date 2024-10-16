@@ -16,7 +16,7 @@ from . import res_lang
 #  modified with wpml, but probably we need copy in this module to include
 #  buttons and probably adapt some code ( in the other module we have language_id on backend)
 
-# from . import res_partner
-# from . import sale_order_line
-# from . import sale_order
-# from . import stock_picking
+from . import res_partner
+from . import sale_order_line
+from . import sale_order
+from . import stock_picking
