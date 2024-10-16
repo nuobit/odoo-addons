@@ -15,6 +15,7 @@
     },
     "depends": [
         "connector_woocommerce",
+        "connector_woocommerce_base",
     ],
     "installable": True,
 }
