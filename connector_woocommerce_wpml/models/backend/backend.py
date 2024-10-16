@@ -14,6 +14,7 @@ class WooCommerceBackend(models.Model):
     language_ids = fields.Many2many(
         string="Languages for WPML",
         comodel_name="res.lang",
+        required=True,
     )
 
     @api.constrains("language_ids")
