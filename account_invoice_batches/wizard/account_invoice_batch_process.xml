@@ -17,6 +17,7 @@
                         name="invoice_batch_sending_email_template_id"
                         attrs="{'invisible': [('invoice_batch_sending_email', '=', False)]}"
                     />
+                    <newline />
                     <field name="invoice_batch_sending_signedfacturae" />
                     <newline />
                     <field name="invoice_batch_sending_unsignedfacturae" />
