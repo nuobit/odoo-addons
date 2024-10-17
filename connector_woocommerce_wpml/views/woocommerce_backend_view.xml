@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="woocommerce_backend_view_form" model="ir.ui.view">
+        <field name="name">woocommerce.backend.form</field>
+        <field name="model">woocommerce.backend</field>
+        <field
+            name="inherit_id"
+            ref="connector_woocommerce.woocommerce_backend_view_form"
+        />
+        <field name="arch" type="xml">
+            <page name="mappings" position="inside">
+                <group string="WPML Language mapping">
+                    <field name="language_ids" widget="many2many_tags" />
+                </group>
+            </page>
+        </field>
+    </record>
+</odoo>

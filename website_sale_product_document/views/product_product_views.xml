@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="website_sale_product_document_product_product_view_form"
+        model="ir.ui.view"
+    >
+        <field name="name">website.sale.product.document.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <group name="product_template_images" position="after">
+                <group name="document_ids" string="Documents">
+                    <field name="document_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle" />
+                            <field name="name" />
+                            <field name="datas" filename="datas_fname" />
+                            <field name="datas_fname" />
+                        </tree>
+                    </field>
+                </group>
+            </group>
+            <group name="product_template_document" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </group>
+        </field>
+    </record>
+
+    <record
+        id="website_sale_product_document_view_form_easy_inherit"
+        model="ir.ui.view"
+    >
+        <field name="name">website.sale.product.document.view.form.easy.inherit
+        </field>
+        <field name="model">product.product</field>
+        <field
+            name="inherit_id"
+            ref="website_sale_variant.website_sale_variant_view_form_easy_inherit"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='shop']" position="inside">
+                <group name="product_template_document" string="Documents">
+                    <field name="document_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle" />
+                            <field name="name" />
+                            <field name="datas" filename="datas_fname" />
+                            <field name="datas_fname" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+            <group name="product_template_document" position="before">
+                <group name="product_variant_images" position="move" />
+            </group>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="connector_woocommerce_product_public_category_view_form"
+        model="ir.ui.view"
+    >
+        <field name="name">product.public.category.form</field>
+        <field name="model">product.public.category</field>
+        <field name="inherit_id" ref="website_sale.product_public_category_form_view" />
+        <field name="arch" type="xml">
+            <sheet position="inside">
+                <group string="Shop">
+                    <field name="description" />
+                    <field name="slug_name" />
+                </group>
+                <notebook />
+            </sheet>
+        </field>
+    </record>
+</odoo>
