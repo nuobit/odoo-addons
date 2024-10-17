@@ -15,14 +15,6 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         string="E-mail (Attach documents)", default=True
     )
 
-    def send_email(self, move_id):
-        value = self.env.context.get("skip_account_mail_attachments", True)
-        self = self.with_context(skip_account_mail_attachments=value)
-        return super(AccountInvoiceBatchProcess, self).send_email(move_id)
-
-    def send_email_attachments(self, move_id):
-        self.with_context(skip_account_mail_attachments=False).send_email(move_id)
-
     def prepare_invoices(self, invoices):
         self.ensure_one()
         res = super().prepare_invoices(invoices)
@@ -33,6 +25,6 @@ class AccountInvoiceBatchProcess(models.TransientModel):
                 lambda x: x.invoice_batch_sending_method == "emailattachments"
                 and not x.is_move_sent
             ):
-                self.with_delay().send_email_attachments(inv.id)
+                self.with_delay().send_email(inv.id)
 
         return res
