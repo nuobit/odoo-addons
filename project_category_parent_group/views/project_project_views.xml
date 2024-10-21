@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="project_search" model="ir.ui.view">
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project_category.project_search" />
+        <field name="arch" type="xml">
+            <field name="type_id" position="after">
+                <field name="parent_type_id" />
+            </field>
+            <group expand="0">
+                <filter
+                    string="Parent Type"
+                    name="parent_type_id"
+                    help="Parent Type"
+                    context="{'group_by':'parent_type_id'}"
+                />
+            </group>
+        </field>
+    </record>
+</odoo>
