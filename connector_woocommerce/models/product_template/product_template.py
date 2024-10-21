@@ -20,13 +20,18 @@ class ProductTemplate(models.Model):
     )
     has_attributes = fields.Boolean(
         compute="_compute_has_attributes",
-        store=True,
+        search="_search_has_attributes",
     )
 
     @api.depends("attribute_line_ids")
     def _compute_has_attributes(self):
         for rec in self:
             rec.has_attributes = bool(rec.attribute_line_ids)
+
+    def _search_has_attributes(self, operator, value):
+        if operator == "=" and value:
+            return [("attribute_line_ids", "!=", False)]
+        return [("attribute_line_ids", operator, value)]
 
     @api.depends(
         "is_published",
