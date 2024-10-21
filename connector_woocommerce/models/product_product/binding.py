@@ -42,8 +42,8 @@ class WooCommerceProductProduct(models.Model):
     def export_products_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
         if since_date:
-            domain = [
+            domain.append(
                 ("woocommerce_write_date", ">", fields.Datetime.to_string(since_date))
-            ]
+            )
         self.export_batch(backend_record, domain=domain)
         return True
