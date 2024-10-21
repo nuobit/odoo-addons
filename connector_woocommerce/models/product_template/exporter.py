@@ -54,6 +54,9 @@ class WooCommerceProductTemplateExporter(Component):
                     "woocommerce.product.template",
                 )
 
+        # TODO: Review circular reference. If at the same time one product variant
+        #  is an accessory product of the product template, probably we will have
+        #  a circular reference.
         if not relation.env.context.get("export_wo_acc_p"):
             for accessory_product in relation.accessory_product_ids:
                 if accessory_product.product_tmpl_id.has_attributes:

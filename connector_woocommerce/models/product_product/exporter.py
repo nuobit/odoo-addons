@@ -47,6 +47,7 @@ class WooCommerceProductProductExporter(Component):
             self._export_dependency(
                 relation.product_tmpl_id,
                 "woocommerce.product.template",
+                always=True,
             )
         for line in relation.product_tmpl_id.attribute_line_ids:
             self._export_dependency(

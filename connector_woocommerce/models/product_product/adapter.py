@@ -49,9 +49,9 @@ class WooCommerceProductProductAdapter(Component):
 
     def search_read(self, domain=None):
         binder = self.binder_for()
-        domain_dict = self._domain_to_normalized_dict(domain)
         external_id_fields = binder.get_id_fields(in_field=False)
         _, common_domain = self._extract_domain_clauses(domain, external_id_fields)
+        domain_dict = self._domain_to_normalized_dict(domain)
         external_id_values = binder.dict2id2dict(domain_dict, in_field=False)
         if external_id_values:
             url = "products/%s/variations/%s" % (
@@ -60,17 +60,18 @@ class WooCommerceProductProductAdapter(Component):
             )
             res = self._exec("get", url, domain=common_domain)
         else:
-            if "id" in domain_dict and "parent_id" in domain_dict:
-                url = "products/%s/variations/%s" % (
-                    domain_dict["parent_id"],
-                    domain_dict["id"],
-                )
-                res = self._exec("get", url, domain=common_domain)
-            elif "sku" in domain_dict:
-                url = "products"
-                res = self._exec("get", url, domain=domain)
-            else:
-                raise ValidationError(_("Params required"))
+            # if "id" in domain_dict and "parent_id" in domain_dict:
+            #     url = "products/%s/variations/%s" % (
+            #         domain_dict["parent_id"],
+            #         domain_dict["id"],
+            #     )
+            #     res = self._exec("get", url, domain=common_domain)
+            # if "sku" in domain_dict:
+            url = "products"
+            domain.append(("parent_id", "!=", 0))
+            res = self._exec("get", url, domain=domain)
+            # else:
+            #     raise ValidationError(_("Params required"))
         return res
 
     def _get_search_fields(self):
