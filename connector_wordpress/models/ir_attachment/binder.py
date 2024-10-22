@@ -1,0 +1,42 @@
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+from odoo.addons.component.core import Component
+
+
+class WordPressIrAttachmentBinder(Component):
+    _name = "wordpress.ir.attachment.binder"
+    _inherit = "wordpress.binder"
+
+    _apply_on = "wordpress.ir.attachment"
+
+    @property
+    def external_id(self):
+        return ["id"]
+
+    @property
+    def internal_id(self):
+        return ["wordpress_idattachment"]
+
+    @property
+    def external_alt_id(self):
+        return []
+
+    def _get_external_record_domain(self, relation, values):
+        equivalent_binding_attachment = self.env["wordpress.ir.attachment"].search(
+            [
+                ("checksum", "=", relation.checksum),
+                ("backend_id", "=", self.backend_record.id),
+            ],
+            limit=1,
+        )
+        if equivalent_binding_attachment:
+            return [("id", "=", equivalent_binding_attachment.wordpress_idattachment)]
+        else:
+            return None
+
+    def _additional_external_binding_fields(self, external_data):
+        return {
+            **super()._additional_external_binding_fields(external_data),
+            "wordpress_source_url": external_data["source_url"],
+        }
