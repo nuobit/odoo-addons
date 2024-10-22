@@ -90,12 +90,13 @@ class WooCommerceProductTemplateAdapter(Component):
             data["meta_data"] = meta_data
         if data.get("sku"):
             if data["type"] == "simple":
-                if len(data["sku"]) > 1:
-                    raise ValidationError(
-                        _("Simple products can only have one variant")
-                    )
-                else:
-                    data["sku"] = data["sku"][0]
+                if isinstance(data["sku"], list):
+                    if len(data["sku"]) > 1:
+                        raise ValidationError(
+                            _("Simple products can only have one variant")
+                        )
+                    else:
+                        data["sku"] = data["sku"][0]
             elif data["type"] == "variable":
                 data.pop("sku")
             else:
