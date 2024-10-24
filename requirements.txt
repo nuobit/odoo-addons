@@ -1,5 +1,5 @@
 # generated from manifests external_dependencies
-mysql-connector-python==8.0.31
+mysql-connector-python==9.1.0
 openpyxl
 pymssql>=2.2.5,<2.3
 pystrich
