@@ -243,6 +243,11 @@ class WooCommerceProductTemplateExportMapper(Component):
                 accessory_list.append(values["id"])
         return {"cross_sell_ids": accessory_list}
 
+    def _get_product_image_attachments(self, record):
+        return record.with_context(
+            include_main_product_image=self.backend_record.use_main_product_image
+        ).product_image_attachment_ids
+
     @mapping
     def images(self, record):
         if self.backend_record.wordpress_backend_id:
@@ -251,9 +256,7 @@ class WooCommerceProductTemplateExportMapper(Component):
             ) as work:
                 binder = work.component(usage="binder")
                 img_list = []
-                product_image_attachments = record.with_context(
-                    include_main_product_image=self.backend_record.use_main_product_image
-                ).product_image_attachment_ids
+                product_image_attachments = self._get_product_image_attachments(record)
                 for image in product_image_attachments.mapped("attachment_id"):
                     external_id = binder.get_external_dict_ids(
                         image, check_external_id=False
