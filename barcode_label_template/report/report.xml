@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="action_report_barcode_label_template" model="ir.actions.report">
+        <field name="name">Barcode Label Template</field>
+        <field name="model">stock.production.lot</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">barcode_label_template.report_label_template</field>
+        <field name="report_file">barcode_label_template.report_label_template</field>
+    </record>
+</odoo>
