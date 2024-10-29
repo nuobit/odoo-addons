@@ -1,0 +1,43 @@
+.font-size75 {
+    font-size: 75%;
+}
+.font-size50 {
+    font-size: 50%;
+}
+
+.page-container {
+    width: 100%;
+    height: 100%;
+    page-break-before: always;
+}
+
+.label-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.barcode-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bgp-img {
+    height: 80px;
+}
+
+.barcode-details {
+    padding-left: 2%;
+    font-size: small;
+}
+
+.barcode-data {
+    padding-top: 3%;
+    box-sizing: border-box;
+
+    .barcode-data-row {
+        p {
+            margin: 0;
+            padding: 0;
+        }
+    }
+}

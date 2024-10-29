@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="barcode_label_template_wizard_view_tree" model="ir.ui.view">
+        <field name="name">barcode.label.template.wizard.view.tree</field>
+        <field name="model">barcode.label.template.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="barcode_type" />
+                        <field name="barcode_label_template_configuration_id" />
+                    </group>
+                    <footer>
+                        <button
+                            name="print_barcodes_with_template"
+                            string="Print"
+                            type="object"
+                            class="btn-primary"
+                        />
+                        <button
+                            string="Cancel"
+                            special="cancel"
+                            class="btn-secondary"
+                        />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record
+        id="barcode_label_template_wizard_view_action"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Print barcodes with template</field>
+        <field name="res_model">barcode.label.template.wizard</field>
+        <field name="binding_model_id" ref="stock.model_stock_production_lot" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

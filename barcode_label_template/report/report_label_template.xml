@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_assets_common" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link
+                href="/barcode_label_template/static/src/scss/styles.scss"
+                rel="stylesheet"
+                type="text/scss"
+            />
+        </xpath>
+    </template>
+    <template id="layout_gs1productdata">
+        <div class="barcode-data">
+            <div class="text-center barcode-data-row">
+                <div>
+                    <p class="font-size75" t-field="doc['product'].default_code" />
+                    <p class="font-size50" t-field="doc['product'].name" />
+                </div>
+            </div>
+        </div>
+    </template>
+    <template id="report_label_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="doc">
+                <div
+                    class="page-container"
+                    t-att-style="'padding-top: %dmm; margin-left: %dmm;' % (position_y, position_x)"
+                >
+                    <div class="label-container" t-att-style="'width: %dmm;' % width">
+                        <div class="barcode-row">
+                            <div>
+                                <img
+                                    t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, doc['barcode_string'], 100)"
+                                    t-attf-class="bgp-img"
+                                />
+                            </div>
+                            <div class="barcode-details">
+                                <ul class="list-unstyled">
+                                    <t
+                                        t-foreach="doc['barcode_values'].items()"
+                                        t-as="bv"
+                                    >
+                                        <li t-esc="'(%s)%s' % bv" />
+                                    </t>
+                                </ul>
+                            </div>
+                        </div>
+                        <t t-call="barcode_label_template.layout_gs1productdata" />
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

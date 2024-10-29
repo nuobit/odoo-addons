@@ -1,0 +1,214 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* barcode_label_template
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-06 15:40+0000\n"
+"PO-Revision-Date: 2024-11-06 15:40+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: barcode_label_template
+#: model:ir.actions.report,name:barcode_label_template.action_report_barcode_label_template
+msgid "Barcode Label Template"
+msgstr "Plantilla de etiqueta de código de barras"
+
+#. module: barcode_label_template
+#: model:ir.actions.act_window,name:barcode_label_template.action_barcode_label_template_configuration_tree
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__barcode_label_template_configuration_id
+msgid "Barcode Label Template Configuration"
+msgstr "Configuración de plantilla de etiqueta de código de barras"
+
+#. module: barcode_label_template
+#: model:ir.model,name:barcode_label_template.model_barcode_label_template_wizard
+msgid "Barcode Label Template Wizard"
+msgstr "Wizard de plantilla de etiqueta de código de barras"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__barcode_type
+msgid "Barcode Type"
+msgstr "Tipo de código de barras"
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
+msgid "Box Size"
+msgstr "Tamaño del cuadro"
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_wizard_view_tree
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
+msgid "Coordinates"
+msgstr "Coordenadas"
+
+#. module: barcode_label_template
+#: model_terms:ir.actions.act_window,help:barcode_label_template.action_barcode_label_template_configuration_tree
+msgid ""
+"Create new barcode label template configuration to customize the barcode "
+"label template."
+msgstr ""
+"Cree una nueva configuración de plantilla de etiqueta de código de barras "
+"para personalizar la plantilla de etiqueta de código de barras."
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__create_uid
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__create_date
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__default
+msgid "Default"
+msgstr "Predeterminado"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__display_name
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__display_name
+#: model:ir.model.fields,field_description:barcode_label_template.field_ir_actions_report__display_name
+#: model:ir.model.fields,field_description:barcode_label_template.field_report_barcode_label_template_report_label_template__display_name
+#: model:ir.model.fields,field_description:barcode_label_template.field_stock_production_lot__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__id
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__id
+#: model:ir.model.fields,field_description:barcode_label_template.field_ir_actions_report__id
+#: model:ir.model.fields,field_description:barcode_label_template.field_report_barcode_label_template_report_label_template__id
+#: model:ir.model.fields,field_description:barcode_label_template.field_stock_production_lot__id
+msgid "ID"
+msgstr ""
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
+msgid "Indicate the starting point for drawing the barcode"
+msgstr "Indique el punto de inicio para dibujar el código de barras"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration____last_update
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard____last_update
+#: model:ir.model.fields,field_description:barcode_label_template.field_ir_actions_report____last_update
+#: model:ir.model.fields,field_description:barcode_label_template.field_report_barcode_label_template_report_label_template____last_update
+#: model:ir.model.fields,field_description:barcode_label_template.field_stock_production_lot____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__write_uid
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__write_date
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: barcode_label_template
+#: model:ir.model,name:barcode_label_template.model_stock_production_lot
+msgid "Lot/Serial"
+msgstr "Lote/Número de serie"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: barcode_label_template
+#: model_terms:ir.actions.act_window,help:barcode_label_template.action_barcode_label_template_configuration_tree
+msgid "No barcode label template configuration defined yet. Let's create one!"
+msgstr "No se ha definido ninguna configuración de plantilla de etiqueta de código de barras. ¡Vamos a crear una!"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__paperformat_id
+msgid "Paperformat"
+msgstr "Formato de papel"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__position_x
+msgid "Position X"
+msgstr "Posición X"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__position_y
+msgid "Position Y"
+msgstr "Posición Y"
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_wizard_view_tree
+msgid "Print"
+msgstr "Imprimir"
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.stock_production_lot_view_form
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.stock_production_lot_view_tree
+msgid "Print Barcodes with Template"
+msgstr "Imprimir códigos de barras con plantilla"
+
+#. module: barcode_label_template
+#: model:ir.actions.act_window,name:barcode_label_template.barcode_label_template_wizard_view_action
+msgid "Print barcodes with template"
+msgstr "Imprimir códigos de barras con plantilla"
+
+#. module: barcode_label_template
+#: model:ir.model,name:barcode_label_template.model_ir_actions_report
+msgid "Report Action"
+msgstr "Acción de informe"
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
+msgid "Specify the size of the box containing the barcode"
+msgstr "Especifique el tamaño del cuadro que contiene el código de barras"
+
+#. module: barcode_label_template
+#: model:ir.ui.menu,name:barcode_label_template.menu_putaway
+msgid "Template Configuration"
+msgstr "Configuración de plantilla"
+
+#. module: barcode_label_template
+#: code:addons/barcode_label_template/models/barcode_label_template_configuration.py:0
+#, python-format
+msgid "There is already a default configuration"
+msgstr "Ya hay una configuración predeterminada"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__template
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__template_name
+msgid "Template Name"
+msgstr "Nombre de la plantilla"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__width
+msgid "Width"
+msgstr "Ancho"
+
+#. module: barcode_label_template
+#: model:ir.model,name:barcode_label_template.model_barcode_label_template_configuration
+msgid "barcode.label.template.configuration"
+msgstr ""
+
+#. module: barcode_label_template
+#: model:ir.model,name:barcode_label_template.model_report_barcode_label_template_report_label_template
+msgid "report.barcode_label_template.report_label_template"
+msgstr ""
