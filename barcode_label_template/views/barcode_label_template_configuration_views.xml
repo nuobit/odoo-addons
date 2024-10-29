@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="barcode_label_template_configuration_view_tree" model="ir.ui.view">
+        <field name="name">barcode.label.template.configuration.tree</field>
+        <field name="model">barcode.label.template.configuration</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="default" />
+                <field name="name" />
+                <field name="template" filename="template_name" invisible="1" />
+                <field name="template_name" />
+                <field name="paperformat_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="barcode_label_template_configuration_view_form" model="ir.ui.view">
+        <field name="name">barcode.label.template.configuration.form</field>
+        <field name="model">barcode.label.template.configuration</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1><field name="name" /></h1>
+                    <group>
+                        <field name="default" widget="boolean_toggle" />
+                    </group>
+                    <group>
+                        <group>
+                            <field name="template" filename="template_name" />
+                            <field name="template_name" invisible="1" />
+                        </group>
+                        <group>
+                            <field name="paperformat_id" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <h4>Coordinates</h4>
+                            <div class="o_help_message" colspan="4">
+                                <p
+                                >Indicate the starting point for drawing the barcode</p>
+                            </div>
+                            <field name="position_x" />
+                            <field name="position_y" />
+                        </group>
+                        <group>
+                            <h4>Box Size</h4>
+                            <div class="o_help_message" colspan="4">
+                                <p
+                                >Specify the size of the box containing the barcode</p>
+                            </div>
+                            <field name="width" />
+                        </group>
+                    </group>
+                </sheet>
+           </form>
+        </field>
+    </record>
+
+    <record
+        id="action_barcode_label_template_configuration_tree"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Barcode Label Template Configuration</field>
+        <field name="res_model">barcode.label.template.configuration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No barcode label template configuration defined yet. Let's create one!
+            </p><p>
+                Create new barcode label template configuration to customize the barcode label template.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_putaway"
+        name="Template Configuration"
+        parent="barcodes_gs1_label.barcodes_gs1_label_options_menu"
+        action="action_barcode_label_template_configuration_tree"
+        sequence="5"
+        groups="stock.group_stock_manager"
+    />
+</odoo>
