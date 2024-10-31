@@ -15,6 +15,7 @@
                     </h2>
                     <group>
                         <field name="company_id" options="{'no_open': True}" />
+                        <field name="provider_code" />
                     </group>
                     <group string="Service Typology">
                         <field name="typology_ids" nolabel="1" colspan="3">

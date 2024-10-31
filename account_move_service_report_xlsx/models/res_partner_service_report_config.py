@@ -14,6 +14,7 @@ class ResPartnerServiceReportConfig(models.Model):
         required=True,
         readonly=True,
     )
+    provider_code = fields.Char(string="Provider Code", required=True)
     name = fields.Char(string="Service Report Configuration Name", required=True)
     typology_ids = fields.One2many(
         comodel_name="res.partner.service.report.config.typology",
