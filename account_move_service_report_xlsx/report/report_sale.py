@@ -11,9 +11,9 @@ class AbstractReportXslx(models.AbstractModel):
     def report_values(self):
         invoice = ["order_line", "invoice_lines", "move_id"]
         return {
-            _("Provider name"): ["company_id", "name"],
-            _("ID Number (8 digits)"): ["auth_number"],
-            _("Service Type"): [lambda x: x.get_service_typology_name()],
+            _("Provider Code"): [lambda x: x._get_provider_code()],
+            _("ID Number"): ["auth_number"],
+            _("Resource Type"): [lambda x: x.get_service_typology_name()],
             _("Service Date"): ["service_date", lambda x: x.date()],
             _("Service Time"): ["service_date", lambda x: x.time()],
             _("Insurance Name"): ["service_insurer_name"],
@@ -27,14 +27,15 @@ class AbstractReportXslx(models.AbstractModel):
             _("RETURN (€)"): [lambda x: x.get_service_return_price_subtotal(True)],
             _("ADDITIONAL (concept)"): [lambda x: x.get_service_additional_concept()],
             _("ADDITIONAL (€)"): [lambda x: x.get_service_type_subtotal("additional")],
-            _("WAITING TIME (€)"): [lambda x: x.get_service_type_subtotal("wait")],
-            _("Total by ID (€)"): [lambda x: x.get_service_total_by("auth_number")],
+            _("Total by service (€)"): [
+                lambda x: x.get_service_total_by("auth_number")
+            ],
             _("Total Insurance (€)"): [
                 lambda x: x.get_service_total_by("service_insurer_code")
             ],
-            _("Patient (name and surname)"): ["insured_name"],
-            _("Invoice Date"): invoice + ["invoice_date"],
+            _(""): [lambda x: x._get_empty_column()],
             _("Invoice Number"): invoice + ["name"],
+            _("Invoice Date"): invoice + ["invoice_date"],
             _("Total Invoice"): invoice + ["amount_untaxed"],
         }
 

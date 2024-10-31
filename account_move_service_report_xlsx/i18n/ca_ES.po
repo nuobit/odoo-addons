@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-09 14:25+0000\n"
-"PO-Revision-Date: 2024-09-09 14:25+0000\n"
+"POT-Creation-Date: 2024-10-31 08:26+0000\n"
+"PO-Revision-Date: 2024-10-31 08:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -134,8 +134,8 @@ msgstr ""
 #. module: account_move_service_report_xlsx
 #: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
 #, python-format
-msgid "ID Number (8 digits)"
-msgstr "Número de ID (8 dígits)"
+msgid "ID Number"
+msgstr "Número de ID"
 
 #. module: account_move_service_report_xlsx
 #: code:addons/account_move_service_report_xlsx/models/account_move.py:0
@@ -249,21 +249,16 @@ msgid "Origin"
 msgstr "Origen"
 
 #. module: account_move_service_report_xlsx
-#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
-#, python-format
-msgid "Patient (name and surname)"
-msgstr "Pacient (nom i cognoms)"
-
-#. module: account_move_service_report_xlsx
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__product_ids
 msgid "Product"
 msgstr "Producte"
 
 #. module: account_move_service_report_xlsx
 #: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__provider_code
 #, python-format
-msgid "Provider name"
-msgstr "Nom del proveïdor"
+msgid "Provider Code"
+msgstr "Codi proveïdor"
 
 #. module: account_move_service_report_xlsx
 #: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
@@ -290,6 +285,12 @@ msgstr "Tipus de Configuració de l'Informe de Serveis del Client"
 #: model:ir.model,name:account_move_service_report_xlsx.model_res_partner_service_report_config_typology
 msgid "Res Partner Service Report Config Typology"
 msgstr "Tipologia de Configuració de l'Informe de Serveis del Client"
+
+#. module: account_move_service_report_xlsx
+#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
+#, python-format
+msgid "Resource Type"
+msgstr "Tipus de recurs"
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model,name:account_move_service_report_xlsx.model_res_partner_service_report_config
@@ -356,9 +357,7 @@ msgid "Service Time"
 msgstr "Hora del servei"
 
 #. module: account_move_service_report_xlsx
-#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
 #: model_terms:ir.ui.view,arch_db:account_move_service_report_xlsx.res_partner_service_report_config_form_view
-#, python-format
 msgid "Service Type"
 msgstr "Tipus de servei"
 
@@ -385,8 +384,8 @@ msgid ""
 "found in the Service Report Configuration. Please go to the partner and set "
 "the correct service report configuration."
 msgstr ""
-"La combinació de la clau de servei ('%s') i el motiu de transferència ('%s') "
-"no es troba a la configuració de l'informe de servei. Si us plau, vagi al "
+"La combinació de la clau de servei ('%s') i el motiu de transferència ('%s')"
+" no es troba a la configuració de l'informe de servei. Si us plau, vagi al "
 "contacte i configureu la configuració correcta de l'informe de servei."
 
 #. module: account_move_service_report_xlsx
@@ -434,8 +433,8 @@ msgstr ""
 #. module: account_move_service_report_xlsx
 #: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
 #, python-format
-msgid "Total by ID (€)"
-msgstr "Total per ID (€)"
+msgid "Total by service (€)"
+msgstr "Total per servei (€)"
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__transfer_reason
@@ -452,12 +451,6 @@ msgstr "Tipus"
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config__typology_ids
 msgid "Typology"
 msgstr "Tipologia"
-
-#. module: account_move_service_report_xlsx
-#: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
-#, python-format
-msgid "WAITING TIME (€)"
-msgstr "HORA DE ESPERA (€)"
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model.fields.selection,name:account_move_service_report_xlsx.selection__res_partner_service_report_config_type__type__wait
