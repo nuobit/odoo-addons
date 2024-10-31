@@ -8,6 +8,12 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
+    def _get_empty_column(self):
+        return False
+
+    def _get_provider_code(self):
+        return self.partner_id.service_report_config_id.provider_code
+
     def check_consistency_service_report_values(self):
         orders = {}
         for rec in self:
