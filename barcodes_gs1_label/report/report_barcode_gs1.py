@@ -7,11 +7,6 @@ import requests.utils
 from odoo import _, api, models
 from odoo.exceptions import UserError, ValidationError
 
-FNC1 = {
-    "gs1-128": "\xf1",
-    "gs1-datamatrix": "\xe7",
-}
-
 
 def chunks(li, n, padding=False):
     if not li:
@@ -28,6 +23,13 @@ def chunks(li, n, padding=False):
 class ReportGS1Barcode(models.AbstractModel):
     _name = "report.barcodes_gs1_label.report_gs1_barcode"
     _description = "Report GS1 Barcode"
+
+    @property
+    def FNC1(self):
+        return {
+            "gs1-128": "\xf1",
+            "gs1-datamatrix": "\xe7",
+        }
 
     @property
     def GS1_AI_FORMAT(self):
@@ -98,6 +100,26 @@ class ReportGS1Barcode(models.AbstractModel):
         # elif product.tracking == "none":
         #     ???
         return res
+
+    def _get_gs1_barcode_string(self, gs1_barcode, barcode_type):
+        fnc1 = self.FNC1[barcode_type]
+        res = [fnc1]
+        gs1 = gs1_barcode.items()
+        for i, (key, value) in enumerate(gs1, 1):
+            if key not in self.GS1_AI_FORMAT:
+                raise ValidationError(
+                    _("The GS1 AI %s is not defined in GS1 AI format") % key
+                )
+            length, fnc1_required = self.GS1_AI_FORMAT[key]
+            if len(value) > length:
+                raise ValidationError(
+                    _("The value of GS1 AI %s is too long (max %s characters)")
+                    % (key, length)
+                )
+            res.append(key + value)
+            if fnc1_required and i < len(gs1):
+                res.append(fnc1)
+        return requests.utils.quote("".join(res))
 
     @api.model  # noqa: C901
     def _get_report_values(self, docids, data=None):  # noqa: C901
@@ -238,25 +260,9 @@ class ReportGS1Barcode(models.AbstractModel):
                 gs1_barcode = self._prepare_gs1_values(product, lot)
                 if not gs1_barcode:
                     continue
-                fnc1 = FNC1[barcode_type]
-                res = [fnc1]
-                gs1 = gs1_barcode.items()
-                for i, (key, value) in enumerate(gs1, 1):
-                    if key not in self.GS1_AI_FORMAT:
-                        raise ValidationError(
-                            _("The GS1 AI %s is not defined in GS1 AI format") % key
-                        )
-                    length, fnc1_required = self.GS1_AI_FORMAT[key]
-                    if len(value) > length:
-                        raise ValidationError(
-                            _("The value of GS1 AI %s is too long (max %s characters)")
-                            % (key, length)
-                        )
-                    res.append(key + value)
-                    if fnc1_required and i < len(gs1):
-                        res.append(fnc1)
+                barcode_string = self._get_gs1_barcode_string(gs1_barcode, barcode_type)
                 doc["barcode_values"] = gs1_barcode
-                doc["barcode_string"] = requests.utils.quote("".join(res))
+                doc["barcode_string"] = barcode_string
             elif barcode_type == "ean13-code128":
                 doc["barcode_values"] = (
                     product.barcode or None,
