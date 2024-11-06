@@ -13,7 +13,10 @@
     "license": "AGPL-3",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
+        "l10n_es_extension",
         "l10n_es_aeat_sii_oca",
     ],
-    "installable": True,
+    "data": [
+        "data/aeat_sii_map_data.xml",
+    ],
 }
