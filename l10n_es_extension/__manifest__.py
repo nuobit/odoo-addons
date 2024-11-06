@@ -16,5 +16,6 @@
     ],
     "data": [
         "data/account_data.xml",
+        "data/account_tax_data.xml",
     ],
 }
