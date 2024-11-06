@@ -15,5 +15,6 @@
     ],
     "data": [
         "data/account_capital_asset_map_tax_data.xml",
+        "data/account_tax_data.xml",
     ],
 }
