@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+   <record id="l10n_es.account_tax_template_s_iva0" model="account.tax.template">
+        <field name="description">IVA Exento CDD</field>
+        <field
+            name="name"
+        >IVA Exento Repercutido Sujeto (Con derecho a deducción)</field>
+    </record>
+    <record id="account_tax_template_s_iva0_sdd" model="account.tax.template">
+        <field name="description">IVA Exento SDD</field>
+        <field name="type_tax_use">sale</field>
+        <field
+            name="name"
+        >IVA Exento Repercutido Sujeto (Sin derecho a deducción)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="0" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_0" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+                'account_id': ref('l10n_es.account_common_472'),
+            }),
+        ]"
+        />
+    </record>
+</odoo>
