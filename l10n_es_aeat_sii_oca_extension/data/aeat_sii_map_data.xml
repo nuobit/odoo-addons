@@ -1,0 +1,13 @@
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="l10n_es_aeat_sii_oca.aeat_sii_map_line_SFESSE"
+        model="aeat.sii.map.lines"
+    >
+        <field
+            name="taxes"
+            eval="[(4, ref('l10n_es_extension.account_tax_template_s_iva0_sdd'))]"
+        />
+    </record>
+</odoo>
