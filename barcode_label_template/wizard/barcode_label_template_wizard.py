@@ -45,9 +45,6 @@ class BarcodeLabelTemplateWizard(models.TransientModel):
                 data={
                     "active_ids": self.env.context.get("active_ids"),
                     "barcode_type": self.barcode_type,
-                    "position_x": self.barcode_label_template_configuration_id.position_x,
-                    "position_y": self.barcode_label_template_configuration_id.position_y,
-                    "width": self.barcode_label_template_configuration_id.width,
                 },
             )
         )
