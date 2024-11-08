@@ -18,6 +18,11 @@ class BarcodeLabelTemplateConfiguration(models.Model):
     position_x = fields.Float()
     position_y = fields.Float()
     width = fields.Float()
+    configuration_field_ids = fields.One2many(
+        comodel_name="barcode.label.template.configuration.field",
+        inverse_name="configuration_id",
+        string="Field configuration",
+    )
 
     @api.constrains("default")
     def _check_default(self):

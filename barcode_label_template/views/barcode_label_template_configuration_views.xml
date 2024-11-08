@@ -35,7 +35,7 @@
                             <field name="paperformat_id" />
                         </group>
                     </group>
-                    <group>
+                    <group string="Barcode Configuration">
                         <group>
                             <h4>Coordinates</h4>
                             <div class="o_help_message" colspan="4">
@@ -53,6 +53,20 @@
                             </div>
                             <field name="width" />
                         </group>
+                    </group>
+                    <group string="Field configuration">
+                        <field name="configuration_field_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field
+                                    name="field_id"
+                                    options="{'no_open':True,'no_create':True}"
+                                />
+                                <field name="target_field" />
+                                <field name="position_x" />
+                                <field name="position_y" />
+                                <field name="width" />
+                            </tree>
+                        </field>
                     </group>
                 </sheet>
            </form>
