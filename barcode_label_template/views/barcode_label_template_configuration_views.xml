@@ -57,6 +57,7 @@
                     <group string="Field configuration">
                         <field name="configuration_field_ids" nolabel="1">
                             <tree editable="bottom">
+                                <field name="sequence" widget="handle" />
                                 <field
                                     name="field_id"
                                     options="{'no_open':True,'no_create':True}"
