@@ -73,6 +73,34 @@
         </field>
     </record>
 
+     <record
+        id="barcode_label_template_configuration_field_view_form"
+        model="ir.ui.view"
+    >
+        <field name="name">barcode.label.template.configuration.field.form</field>
+        <field name="model">barcode.label.template.configuration.field</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field
+                            name="field_id"
+                            options="{'no_open':True,'no_create':True}"
+                        />
+                        <field name="target_field" />
+                    </group>
+                        <group>
+                        <field name="position_x" />
+                        <field name="position_y" />
+                    </group>
+                    <group>
+                        <field name="width" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+     </record>
+
     <record
         id="action_barcode_label_template_configuration_tree"
         model="ir.actions.act_window"
