@@ -107,7 +107,7 @@ msgstr "Nombre mostrado"
 #. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__field_id
 msgid "Field"
-msgstr ""
+msgstr "Campo"
 
 #. module: barcode_label_template
 #: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
