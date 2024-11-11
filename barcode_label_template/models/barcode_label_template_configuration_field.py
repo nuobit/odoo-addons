@@ -8,6 +8,9 @@ from odoo import fields, models
 class BarcodeLabelTemplateConfigurationField(models.Model):
     _name = "barcode.label.template.configuration.field"
     _description = "Barcode Label Template Configuration Field"
+    _order = "configuration_id,sequence"
+
+    sequence = fields.Integer(default=10)
 
     configuration_id = fields.Many2one(
         comodel_name="barcode.label.template.configuration",
