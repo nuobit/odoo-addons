@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError
 
 class BarcodeLabelTemplateConfiguration(models.Model):
     _name = "barcode.label.template.configuration"
+    _description = "Barcode Label Template Configuration"
     _order = "default desc"
 
     name = fields.Char(required=True)
