@@ -33,11 +33,29 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
                     field_name = False
             field_value = False
             if field_name:
-                expression = "lot.{}".format(field_name)
-                field_value = safe_eval(expression, {"lot": lot})
-                if field_value and field.target_field:
-                    expression = "{}.{}".format(expression, field.target_field)
+                try:
+                    expression = "lot.{}".format(field_name)
                     field_value = safe_eval(expression, {"lot": lot})
+                    if field_value and field.target_field:
+                        expression = "{}.{}".format(expression, field.target_field)
+                        field_value = safe_eval(expression, {"lot": lot})
+                except Exception as error:
+                    raise ValidationError(
+                        _(
+                            "Error in the barcode label template configuration while "
+                            "evaluating expression: field [%s] + target field [%s]"
+                            "\nERROR:\n%s\n\n"
+                            "Please check the expression in the field configuration"
+                            "and assign a valid expression. "
+                            "This expression is not valid.\nExpression: %s"
+                        )
+                        % (
+                            field.field_id.field_description,
+                            field.target_field,
+                            error,
+                            expression,
+                        )
+                    )
             fields_data.append(
                 {
                     "value": field_value,
