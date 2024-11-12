@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 10:58+0000\n"
-"PO-Revision-Date: 2024-11-08 10:58+0000\n"
+"POT-Creation-Date: 2024-11-12 09:39+0000\n"
+"PO-Revision-Date: 2024-11-12 09:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,6 +27,7 @@ msgstr "Plantilla de etiqueta de código de barras"
 
 #. module: barcode_label_template
 #: model:ir.actions.act_window,name:barcode_label_template.action_barcode_label_template_configuration_tree
+#: model:ir.model,name:barcode_label_template.model_barcode_label_template_configuration
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__barcode_label_template_configuration_id
 msgid "Barcode Label Template Configuration"
 msgstr "Configuración de plantilla de etiqueta de código de barras"
@@ -105,13 +106,31 @@ msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: barcode_label_template
+#: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
+#, python-format
+msgid ""
+"Error in the barcode label template configuration while evaluating expression: field [%s] + target field [%s]\n"
+"ERROR:\n"
+"%s\n"
+"\n"
+"Please check the expression in the field configurationand assign a valid expression. This expression is not valid.\n"
+"Expression: %s"
+msgstr ""
+"Error en la configuración de la plantilla de etiqueta de código de barras al evaluar la expresión: campo [%s] + campo de referencia [%s]\n"
+"ERROR:\n"
+"%s\n"
+"\n"
+"Por favor, verifique la expresión en la configuración del campo y asigne una expresión válida. Esta expresión no es válida.\n"
+"Expresión: %s"
+
+#. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__field_id
 msgid "Field"
 msgstr "Campo"
 
 #. module: barcode_label_template
-#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__configuration_field_ids
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
 msgid "Field configuration"
 msgstr "Configuración de campo"
 
@@ -216,6 +235,11 @@ msgid "Report Action"
 msgstr "Acción de informe"
 
 #. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: barcode_label_template
 #: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
 msgid "Specify the size of the box containing the barcode"
 msgstr "Especifique el tamaño del cuadro que contiene el código de barras"
@@ -251,11 +275,6 @@ msgstr "Ya hay una configuración predeterminada"
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__width
 msgid "Width"
 msgstr "Ancho"
-
-#. module: barcode_label_template
-#: model:ir.model,name:barcode_label_template.model_barcode_label_template_configuration
-msgid "barcode.label.template.configuration"
-msgstr ""
 
 #. module: barcode_label_template
 #: model:ir.model,name:barcode_label_template.model_report_barcode_label_template_report_label_template
