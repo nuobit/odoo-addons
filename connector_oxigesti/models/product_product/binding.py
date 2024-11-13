@@ -26,6 +26,16 @@ class ProductProduct(models.Model):
                     )
                 )
 
+    # TODO: Review move the default_code logic (required) in a separate module.
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for product_tmpl in records.product_tmpl_id:
+            if not any(product_tmpl.product_variant_ids.mapped("default_code")):
+                first_variant = product_tmpl.product_variant_ids.sorted("id")[0]
+                first_variant.default_code = product_tmpl.default_code
+        return records
+
     def unlink(self):
         to_remove = {}
         for record in self:
