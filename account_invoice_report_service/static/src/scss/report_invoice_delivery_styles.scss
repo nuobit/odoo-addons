@@ -49,11 +49,7 @@
     border-bottom: 1px solid rgb(221, 221, 221);
 }
 
-.rid-table3 {
-    @include ris-basetable-mixin;
-}
-
-.rid-table3 > tbody > tr:not(:last-child) > td {
+.rid-tr-invoice-line > td {
     padding-bottom: 5px;
 }
 
