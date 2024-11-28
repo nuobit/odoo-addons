@@ -13,6 +13,16 @@ class ResPartner(models.Model):
         inverse_name="odoo_id",
         string="Oxigesti Bindings",
     )
+    oxigesti_pricelist_write_date = fields.Datetime(
+        default=fields.Datetime.now,
+        required=True,
+    )
+
+    def write(self, vals):
+        if "property_product_pricelist" in vals:
+            if vals["property_product_pricelist"] != self.property_product_pricelist.id:
+                vals["oxigesti_pricelist_write_date"] = fields.Datetime.now()
+        return super().write(vals)
 
 
 class ResPartnerBinding(models.Model):

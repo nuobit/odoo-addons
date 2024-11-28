@@ -8,3 +8,4 @@ from . import exporter
 from . import import_mapper
 from . import export_mapper
 from . import listener
+from . import deleter
