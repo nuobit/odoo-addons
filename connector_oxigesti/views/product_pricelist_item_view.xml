@@ -2,6 +2,23 @@
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+    <record id="product_pricelist_item_view_form_oxigesti" model="ir.ui.view">
+        <field name="name">product.pricelist.item.oxigesti.connector.form</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="inside">
+                <notebook>
+                    <page name="connector" string="Connectors">
+                        <group string="Oxigesti Bindings">
+                            <field name="oxigesti_bind_ids" nolabel="1" />
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
     <record id="oxigesti_product_pricelist_item_view_form" model="ir.ui.view">
         <field name="name">oxigesti.product.pricelist.item.form</field>
         <field name="model">oxigesti.product.pricelist.item</field>
@@ -13,6 +30,7 @@
                     <field name="odoo_partner_id" readonly="True" />
                     <field name="external_id_display" readonly="True" />
                     <field name="sync_date" readonly="True" />
+                    <field name="deprecated" readonly="True" />
                 </group>
             </form>
         </field>
@@ -28,6 +46,7 @@
                 <field name="odoo_partner_id" />
                 <field name="external_id_display" />
                 <field name="sync_date" />
+                <field name="deprecated" readonly="True" />
                 <button
                     name="resync"
                     type="object"

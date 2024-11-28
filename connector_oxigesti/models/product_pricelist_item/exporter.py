@@ -42,8 +42,8 @@ class ProductPricelistItemBatchExporter(Component):
             for pl in p.property_product_pricelist.item_ids.filtered(
                 lambda x: (
                     not since_date
-                    or x.write_date > since_date
-                    or p.write_date > since_date
+                    or x.oxigesti_write_date > since_date
+                    or p.oxigesti_pricelist_write_date > since_date
                 )
                 and p.customer_rank >= p.supplier_rank
                 and x.applied_on == "1_product"
@@ -68,11 +68,23 @@ class ProductPricelistItemBatchExporter(Component):
                         binding.odoo_id = pl
                 binding = binder.wrap_binding(
                     pl,
-                    binding_extra_vals={
-                        "odoo_partner_id": p.id,
-                    },
+                    binding_extra_vals={"odoo_partner_id": p.id},
                 )
+                binding.deprecated = binding.is_deprecated()
                 self._export_record(binding)
+            if p.oxigesti_pricelist_write_date > since_date:
+                oxigesti_pricelist = (
+                    self.env["oxigesti.product.pricelist.item"]
+                    .search(
+                        [
+                            ("odoo_partner_id", "=", p.id),
+                        ]
+                    )
+                    .filtered(lambda x: x.is_deprecated() and not x.deprecated)
+                )
+                for pl in oxigesti_pricelist:
+                    pl.deprecated = True
+                    self._export_record(pl)
 
 
 class ProductPricelistItemExporter(Component):

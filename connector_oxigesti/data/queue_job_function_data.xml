@@ -209,4 +209,28 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
         <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
+    <record
+        id="oxigesti_product_pricelist_item_export_delete_record_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti.model_oxigesti_product_pricelist_item"
+        />
+        <field name="method">export_delete_record</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="oxigesti_product_pricelist_item_export_delete_batch_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti.model_oxigesti_product_pricelist_item"
+        />
+        <field name="method">export_delete_batch</field>
+        <field name="channel_id" ref="connector_oxigesti.channel_oxigesti" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
 </odoo>
