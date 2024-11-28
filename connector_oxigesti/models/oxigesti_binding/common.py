@@ -2,32 +2,12 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import hashlib
 import json
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-
-def idhash(external_id):
-    if not isinstance(external_id, (tuple, list)):
-        raise ValidationError(_("external id must be list or tuple"))
-    external_id_hash = hashlib.sha256()
-    for e in external_id:
-        if isinstance(e, int):
-            e9 = str(e)
-            if int(e9) != e:
-                raise Exception("Unexpected")
-        elif isinstance(e, str):
-            e9 = e
-        elif e is None:
-            pass
-        else:
-            raise Exception("Unexpected type for a key: type %s" % type(e))
-
-        external_id_hash.update(e9.encode("utf8"))
-
-    return external_id_hash.hexdigest()
+from ...common.tools import idhash
 
 
 class OxigestiBinding(models.AbstractModel):
@@ -213,3 +193,35 @@ class OxigestiBinding(models.AbstractModel):
         with backend.work_on(self._name) as work:
             exporter = work.component(usage="record.exporter")
             return exporter.run(relation)
+
+    @api.model
+    def export_delete_record(self, backend, external_ids):
+        """Deleter Oxigesti record"""
+        if not external_ids:
+            raise ValidationError(_("The external_id of the binding is null"))
+        binding_name = self._name
+        with backend.work_on(binding_name) as work:
+            deleter = work.component(usage="record.export.deleter")
+            deleter.run(external_ids)
+
+    @api.model
+    def export_delete_batch(self, backend, external_ids=None):
+        """Prepare the batch export of records modified on Odoo"""
+        if not external_ids:
+            return
+        # Prepare the batch export of records modified on Odoo
+        with backend.work_on(self._name) as work:
+            exporter = work.component(usage="delayed.batch.export.deleter")
+            return exporter.run(external_ids=external_ids)
+
+    def get_external_ids_by_backend(self):
+        ext_ids_by_backend = {}
+        for rec in self:
+            with rec.backend_id.work_on(rec._name) as work:
+                binder = work.component(usage="binder")
+                external_id = binder.to_external(rec.id)
+                if external_id:
+                    ext_ids_by_backend.setdefault(rec.backend_id, []).append(
+                        external_id
+                    )
+        return ext_ids_by_backend
