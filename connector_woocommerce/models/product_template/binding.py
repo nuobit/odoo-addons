@@ -46,7 +46,7 @@ class WooCommerceProductTemplate(models.Model):
                     fields.Datetime.to_string(since_date),
                 )
             ]
-        self.export_batch(backend_record, domain=domain)
+        self.with_delay().export_batch(backend_record, domain=domain)
         return True
 
     def resync_export(self):

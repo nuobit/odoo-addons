@@ -41,5 +41,5 @@ class WooCommerceProductPublicCategory(models.Model):
             domain += [
                 ("write_date", ">", fields.Datetime.to_string(since_date)),
             ]
-        self.export_batch(backend_record, domain=domain)
+        self.with_delay().export_batch(backend_record, domain=domain)
         return True

@@ -43,5 +43,5 @@ class WooCommerceProductAttribute(models.Model):
                     since_date.strftime("%Y-%m-%dT%H:%M:%S"),
                 )
             ]
-        self.export_batch(backend_record, domain=domain)
+        self.with_delay().export_batch(backend_record, domain=domain)
         return True

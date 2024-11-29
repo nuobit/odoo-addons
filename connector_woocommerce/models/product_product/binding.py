@@ -39,11 +39,13 @@ class WooCommerceProductProduct(models.Model):
             ("product_tmpl_id.has_attributes", "=", True),
         ]
 
+    # TODO: Review Why is export_products_since used instead of overriding
+    #  the export_data function?
     def export_products_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
         if since_date:
             domain.append(
                 ("woocommerce_write_date", ">", fields.Datetime.to_string(since_date))
             )
-        self.export_batch(backend_record, domain=domain)
+        self.with_delay().export_batch(backend_record, domain=domain)
         return True

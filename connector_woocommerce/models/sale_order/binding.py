@@ -53,7 +53,7 @@ class WooCommerceSaleOrder(models.Model):
 
         if since_date:
             domain += [("after", "=", since_date)]
-        self.import_batch(backend_record, domain=domain)
+        self.with_delay().import_batch(backend_record, domain=domain)
         return True
 
     def export_sale_orders_since(self, backend_record=None, since_date=None):
@@ -67,5 +67,5 @@ class WooCommerceSaleOrder(models.Model):
                     since_date.strftime("%Y-%m-%dT%H:%M:%S"),
                 )
             ]
-        self.export_batch(backend_record, domain=domain)
+        self.with_delay().export_batch(backend_record, domain=domain)
         return True

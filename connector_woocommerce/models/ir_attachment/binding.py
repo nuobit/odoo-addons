@@ -47,5 +47,7 @@ class WordPressIrAttachment(models.Model):
                     since_date.strftime("%Y-%m-%dT%H:%M:%S"),
                 )
             ]
-        self.export_batch(backend_record.wordpress_backend_id, domain=domain)
+        self.with_delay().export_batch(
+            backend_record.wordpress_backend_id, domain=domain
+        )
         return True
