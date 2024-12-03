@@ -2,7 +2,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-
 from odoo.addons.component.core import Component
 
 
@@ -32,6 +31,23 @@ class ProductPricelistItemBatchExporter(Component):
                 since_date = value
             else:
                 domain.append(e)
+
+        partner_ids = self.env["res.partner"].search(domain).ids
+        chunk_size = self.backend_record.chunk_size
+        for index in range(0, len(partner_ids), chunk_size):
+            chunk_ids = partner_ids[index : index + chunk_size]
+            chunk_domain = [("id", "in", chunk_ids)]
+            self._export_chunk(chunk_domain, since_date=since_date)
+
+
+class ProductPricelistItemChunkExporter(Component):
+    _name = "oxigesti.product.pricelist.item.chunk.delayed.exporter"
+    _inherit = "oxigesti.chunk.delayed.exporter"
+
+    _apply_on = "oxigesti.product.pricelist.item"
+
+    def run(self, domain, since_date=None):
+        """Run the synchronization"""
         partner_adapter = self.component(
             usage="backend.adapter", model_name="oxigesti.res.partner"
         )
@@ -72,7 +88,7 @@ class ProductPricelistItemBatchExporter(Component):
                 )
                 binding.deprecated = binding.is_deprecated()
                 self._export_record(binding)
-            if p.oxigesti_pricelist_write_date > since_date:
+            if not since_date or p.oxigesti_pricelist_write_date > since_date:
                 oxigesti_pricelist = (
                     self.env["oxigesti.product.pricelist.item"]
                     .search(

@@ -77,6 +77,7 @@ class OxigestiBackend(models.Model):
     )
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(selection="_select_state", string="State", default="draft")
+    chunk_size = fields.Integer()
 
     def button_reset_to_draft(self):
         self.ensure_one()
