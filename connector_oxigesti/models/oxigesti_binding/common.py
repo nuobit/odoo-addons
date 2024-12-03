@@ -195,6 +195,15 @@ class OxigestiBinding(models.AbstractModel):
             return exporter.run(relation)
 
     @api.model
+    def export_chunk(self, backend_record, domain, delayed=True, **kwargs):
+        """Prepare the chunk import of records modified on Backend"""
+        with backend_record.work_on(self._name) as work:
+            exporter = work.component(
+                usage=delayed and "chunk.delayed.exporter" or "chunk.direct.exporter"
+            )
+            return exporter.run(domain, **kwargs)
+
+    @api.model
     def export_delete_record(self, backend, external_ids):
         """Deleter Oxigesti record"""
         if not external_ids:
