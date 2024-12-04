@@ -13,12 +13,12 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
 
     @api.model
     def import_data(self, backend_record=None):
-        return self.import_batch(backend_record=backend_record)
+        return self.with_delay().import_batch(backend_record=backend_record)
 
     @api.model
     def export_data(self, backend_record=None):
         """Prepare the batch export records to Channel"""
-        return self.export_batch(backend_record=backend_record)
+        return self.with_delay().export_batch(backend_record=backend_record)
 
     @api.model
     def import_batch(self, backend_record, domain=None, delayed=True, use_data=True):
