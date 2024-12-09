@@ -95,6 +95,7 @@
                             />
                         </group>
                          <group col="4">
+                            <field name="chunk_size" />
                             <field name="sync_offset" colspan="4" />
                         </group>
                     </group>
@@ -309,7 +310,6 @@
                         <page name="additional_data" string="Additional data">
                             <group>
                                 <field name="warehouse_id" />
-                                <field name="chunk_size" />
                             </group>
                         </page>
                     </notebook>
