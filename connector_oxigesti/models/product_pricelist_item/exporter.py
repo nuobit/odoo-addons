@@ -34,6 +34,8 @@ class ProductPricelistItemBatchExporter(Component):
 
         partner_ids = self.env["res.partner"].search(domain).ids
         chunk_size = self.backend_record.chunk_size
+        if chunk_size <= 0:
+            chunk_size = len(partner_ids)
         for index in range(0, len(partner_ids), chunk_size):
             chunk_ids = partner_ids[index : index + chunk_size]
             chunk_domain = [("id", "in", chunk_ids)]
