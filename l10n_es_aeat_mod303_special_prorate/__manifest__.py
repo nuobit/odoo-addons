@@ -17,6 +17,7 @@
     "data": [
         "data/tax_code_map_mod303_202107_data.xml",
         "data/tax_code_map_mod303_2023_data.xml",
+        "data/tax_code_map_mod303_202410_data.xml",
     ],
     "installable": True,
     "auto_install": True,
