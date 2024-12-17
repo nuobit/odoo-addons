@@ -13,7 +13,7 @@ from odoo.addons.component.core import AbstractComponent
 _logger = logging.getLogger(__name__)
 
 EXCEPTION_MAP = {
-    "integrity_error": mysql.IntegrityError,
+    "IntegrityError": mysql.IntegrityError,
 }
 
 
