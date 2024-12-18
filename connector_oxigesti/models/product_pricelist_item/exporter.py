@@ -55,7 +55,7 @@ class ProductPricelistItemChunkExporter(Component):
         )
         partner_binder = self.binder_for("oxigesti.res.partner")
         binder = self.binder_for(self.model._name)
-        for p in self.env["res.partner"].search(domain):
+        for p in self.env["res.partner"].with_context(active_test=False).search(domain):
             partner_external_id = partner_binder.to_external(p, wrap=True)
             for pl in p.property_product_pricelist.item_ids.filtered(
                 lambda x: (
