@@ -13,7 +13,7 @@ class AbstractReportXslx(models.AbstractModel):
         return {
             _("Provider Code"): [lambda x: x._get_provider_code()],
             _("ID Number"): ["auth_number"],
-            _("Resource Type"): [lambda x: x.get_service_typology_name()],
+            _("Service Type"): [lambda x: x.get_service_typology_name()],
             _("Service Date"): ["service_date", lambda x: x.date()],
             _("Service Time"): ["service_date", lambda x: x.time()],
             _("Insurance Name"): ["service_insurer_name"],
@@ -30,10 +30,8 @@ class AbstractReportXslx(models.AbstractModel):
             _("Total by service (€)"): [
                 lambda x: x.get_service_total_by("auth_number")
             ],
-            _("Total Insurance (€)"): [
-                lambda x: x.get_service_total_by("service_insurer_code")
-            ],
             _(""): [lambda x: x._get_empty_column()],
+            _("Patient (name and surname)"): ["insured_name"],
             _("Invoice Number"): invoice + ["name"],
             _("Invoice Date"): invoice + ["invoice_date"],
             _("Total Invoice"): invoice + ["amount_untaxed"],
