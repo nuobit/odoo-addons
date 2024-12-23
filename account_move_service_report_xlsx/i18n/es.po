@@ -434,8 +434,8 @@ msgstr ""
 #. module: account_move_service_report_xlsx
 #: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
 #, python-format
-msgid "Total by ID (€)"
-msgstr "Total por ID (€)"
+msgid "Total by service (€)"
+msgstr "Total por servicio (€)"
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_typology__transfer_reason
