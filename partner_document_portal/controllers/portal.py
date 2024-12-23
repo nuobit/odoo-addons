@@ -23,8 +23,40 @@ class DocumentPortal(CustomerPortal):
             )
         return values
 
+    # @http.route(
+    #     ["/my/documents/download/<int:document_id>"],
+    #     type="http",
+    #     auth="public",
+    #     website=True,
+    # )
+    # def download_document(
+    #     self, document_id, access_token=None, download=False, **kwargs
+    # ):
+    #     try:
+    #         if download:
+    #             document = request.env["partner.document"].sudo().browse(document_id)
+    #             if not document or not document.check_access_rights(
+    #                 "read", raise_exception=False
+    #             ):
+    #                 return request.not_found()
+    #             if access_token and access_token != document.access_token:
+    #                 return request.not_found()
+    #
+    #             return request.make_response(
+    #                 base64.b64decode(document.datas),
+    #                 headers=[
+    #                     ("Content-Type", "application/octet-stream"),
+    #                     (
+    #                         "Content-Disposition",
+    #                         f'attachment; filename="{document.name}"',
+    #                     ),
+    #                 ],
+    #             )
+    #     except Exception:
+    #         return request.not_found()
+
     def _prepare_document_domain(self):
-        return []
+        return [("partner_id", "=", request.env.user.partner_id.id)]
 
     def _prepare_searchbar_sortings(self):
         return {
@@ -130,21 +162,21 @@ class DocumentPortal(CustomerPortal):
             "description": kw.get("description"),
             "expiration_date": kw.get("expiration_date"),
             "document_type_id": int(kw.get("document_type_id")),
+            "partner_id": request.env.user.partner_id.id,
             "datas": datas,
         }
         Document.create(document_data)
         return request.redirect("/my/documents")
 
     @http.route(
-        ["/my/documents/update_document"],
+        ["/my/documents/update_document/<int:document_id>"],
         type="http",
         auth="user",
         methods=["POST"],
         website=True,
         csrf=False,
     )
-    def update_document(self, **post):
-        document_id = int(post.get("document_id"))
+    def update_document(self, document_id, **post):
         description = post.get("description")
         expiration_date = post.get("expiration_date")
         document = request.env["partner.document"].sudo().browse(document_id)
@@ -156,22 +188,26 @@ class DocumentPortal(CustomerPortal):
         )
         file = post.get("attachment")
         if file:
-            # TODO: How to create a attachment??
-            attachment = (
-                request.env["ir.attachment"]
-                .sudo()
-                .create(
-                    {
-                        "name": file.filename,
-                        "datas": base64.b64encode(file.read()).decode("ascii"),
-                        "res_model": "partner.document",
-                        "res_id": document_id,
-                        "type": "binary",
-                    }
+            try:
+                attachment = (
+                    request.env["ir.attachment"]
+                    .sudo()
+                    .create(
+                        {
+                            "name": file.filename,
+                            "datas": base64.b64encode(file.read()).decode("ascii"),
+                            "res_model": "partner.document",
+                            "res_id": document_id,
+                            "type": "binary",
+                            "mimetype": file.mimetype,
+                        }
+                    )
                 )
-            )
-            document.write({"datas": [(4, attachment.datas)]})
-
+                document.write({"datas": attachment.datas})
+            except Exception:
+                return request.redirect(
+                    f"/my/documents/{document_id}?error=attachment_failed"
+                )
         return request.redirect("/my/documents/%s" % document_id)
 
     @http.route(
