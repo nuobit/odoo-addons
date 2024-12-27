@@ -1,0 +1,151 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* partner_document_portal
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-27 09:57+0000\n"
+"PO-Revision-Date: 2024-12-27 09:57+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "<i class=\"fa fa-download\"/> Download Attachment"
+msgstr "<i class=\"fa fa-download\"/> Descargar adjunto"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
+msgid ""
+"<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\" "
+"title=\"The file has expired\"/>"
+msgstr ""
+"<i class=\"fa fa-exclamation-triangle text-danger\" aria-hidden=\"true\" "
+"title=\"El archivo ha expirado\"/>"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
+msgid "<span class=\"d-none d-md-inline\">Description</span>"
+msgstr "<span class=\"d-none d-md-inline\">Descripción</span>"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
+msgid "<span class=\"d-none d-md-inline\">Document type</span>"
+msgstr "<span class=\"d-none d-md-inline\">Tipo de documento</span>"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
+msgid "<span class=\"d-none d-md-inline\">Expiration Date</span>"
+msgstr "<span class=\"d-none d-md-inline\">Fecha de expiración</span>"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
+msgid "<span class=\"d-none d-md-inline\">Expired</span>"
+msgstr "<span class=\"d-none d-md-inline\">Expirado</span>"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "<span class=\"text-danger\">Not Validated</span>"
+msgstr "<span class=\"text-danger\">No validado</span>"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "<span class=\"text-success\">Validated</span>"
+msgstr "<span class=\"text-success\">Validado</span>"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "<strong>Error:</strong>"
+msgstr "<strong>Error:</strong>"
+
+#. module: partner_document_portal
+#: model:ir.model.fields,field_description:partner_document_portal.field_partner_document__access_warning
+msgid "Access warning"
+msgstr "Advertencia de acceso"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "An error occurred while uploading the attachment. Please try again."
+msgstr "Ocurrió un error al cargar el adjunto. Por favor, inténtelo de nuevo."
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "Attachments:"
+msgstr "Adjuntos:"
+
+#. module: partner_document_portal
+#: model:ir.model.fields,help:partner_document_portal.field_partner_document__access_url
+msgid "Customer Portal URL"
+msgstr "URL del portal del cliente"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "Description:"
+msgstr "Descripción:"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_home
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_home_menu_documents
+msgid "Documents"
+msgstr "Documentos"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "Expiration Date:"
+msgstr "Fecha de expiración:"
+
+#. module: partner_document_portal
+#. odoo-python
+#: code:addons/partner_document_portal/controllers/portal.py:0
+#, python-format
+msgid "Name"
+msgstr "Nombre"
+
+#. module: partner_document_portal
+#. odoo-python
+#: code:addons/partner_document_portal/controllers/portal.py:0
+#, python-format
+msgid "Newest"
+msgstr "Más reciente"
+
+#. module: partner_document_portal
+#: model:ir.model,name:partner_document_portal.model_partner_document
+msgid "Partner Document"
+msgstr "Documento del socio"
+
+#. module: partner_document_portal
+#: model:ir.model.fields,field_description:partner_document_portal.field_partner_document__access_url
+msgid "Portal Access URL"
+msgstr "URL de acceso al portal"
+
+#. module: partner_document_portal
+#: model:ir.model.fields,field_description:partner_document_portal.field_partner_document__access_token
+msgid "Security Token"
+msgstr "Token de seguridad"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
+msgid "There are no Documents."
+msgstr "No hay documentos."
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid ""
+"Update Document\n"
+"                        <span class=\"fa fa-long-arrow-right\"/>"
+msgstr ""
+"Actualizar documento\n"
+"                        <span class=\"fa fa-long-arrow-right\"/>"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "Validated:"
+msgstr "Validado:"
