@@ -1,0 +1,333 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* partner_document
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-27 10:04+0000\n"
+"PO-Revision-Date: 2024-12-27 10:04+0000\n"
+"Last-Translator: \n"
+"Language-Team: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_res_partner__classification_id
+#: model:ir.model.fields,field_description:partner_document.field_res_users__classification_id
+msgid "Classification"
+msgstr "Clasificación"
+
+#. module: partner_document
+#: model:ir.actions.act_window,name:partner_document.partner_classification_list_action
+#: model:ir.ui.menu,name:partner_document.partner_classification_menu
+msgid "Classifications"
+msgstr "Clasificaciones"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__code
+msgid "Code"
+msgstr "Código"
+
+#. module: partner_document
+#: model:ir.model,name:partner_document.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: partner_document
+#: model_terms:ir.actions.act_window,help:partner_document.partner_classification_list_action
+msgid "Create the first classification"
+msgstr "Crea la primera clasificación"
+
+#. module: partner_document
+#: model_terms:ir.actions.act_window,help:partner_document.partner_document_type_list_action
+msgid "Create the first document type"
+msgstr "Crea el primer tipo de documento"
+
+#. module: partner_document
+#: model_terms:ir.actions.act_window,help:partner_document.partner_document_list_action
+msgid "Create the first partner document"
+msgstr "Crea el primer documento del socio"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__create_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__create_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__create_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__create_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__create_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__create_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__date_from
+msgid "Date From"
+msgstr "Fecha desde"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__date_to
+msgid "Date To"
+msgstr "Fecha hasta"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__default
+msgid "Default"
+msgstr "Predeterminado"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__description
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__description
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__display_name
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__display_name
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__display_name
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__display_name
+msgid "Display Name"
+msgstr "Nombre para mostrar"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__document_type_ids
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__document_type_id
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__document_type_ids
+msgid "Document Type"
+msgstr "Tipo de documento"
+
+#. module: partner_document
+#: model:ir.actions.act_window,name:partner_document.partner_document_type_list_action
+#: model:ir.ui.menu,name:partner_document.partner_document_type_menu
+msgid "Document types"
+msgstr "Tipos de documento"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_res_partner__document_ids
+#: model:ir.model.fields,field_description:partner_document.field_res_users__document_ids
+#: model_terms:ir.ui.view,arch_db:partner_document.view_partner_form
+msgid "Documents"
+msgstr "Documentos"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__expiration_date
+msgid "Expiration Date"
+msgstr "Fecha de vencimiento"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__expired
+msgid "Expired"
+msgstr "Vencido"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__datas
+msgid "File"
+msgstr "Archivo"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__datas_fname
+msgid "Filename"
+msgstr "Nombre de archivo"
+
+#. module: partner_document
+#: model:res.groups,name:partner_document.partner_document_group_guest
+msgid "Guest"
+msgstr "Invitado"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__id
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__id
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__id
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__id
+msgid "ID"
+msgstr "ID"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification____last_update
+#: model:ir.model.fields,field_description:partner_document.field_partner_document____last_update
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard____last_update
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type____last_update
+msgid "Last Modified on"
+msgstr "Última modificación"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__write_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__write_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__write_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__write_uid
+msgid "Last Updated by"
+msgstr "Actualizado por última vez por"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__write_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__write_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__write_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__write_date
+msgid "Last Updated on"
+msgstr "Actualizado por última vez el"
+
+#. module: partner_document
+#: model:res.groups,name:partner_document.partner_document_group_manager
+msgid "Manager"
+msgstr "Gerente"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__mandatory_document_type_ids
+msgid "Mandatory Document Type"
+msgstr "Tipo de documento obligatorio"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__name
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__name
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_classification_view_form
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
+msgid "Name"
+msgstr "Nombre"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_classification.py:0
+#, python-format
+msgid "Only one default classification allowed"
+msgstr "Solo se permite una clasificación predeterminada"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__partner_id
+msgid "Partner"
+msgstr "Socio"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__partner_class_mandatory_document_type_ids
+msgid "Partner Class Mandatory Document Type"
+msgstr "Tipo de documento obligatorio para la clase de socio"
+
+#. module: partner_document
+#: model:ir.model,name:partner_document.model_partner_classification
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__partner_classification_id
+msgid "Partner Classification"
+msgstr "Clasificación del socio"
+
+#. module: partner_document
+#: model:ir.actions.act_window,name:partner_document.partner_document_list_action
+#: model:ir.model,name:partner_document.model_partner_document
+msgid "Partner Document"
+msgstr "Documento del socio"
+
+#. module: partner_document
+#: model:ir.model,name:partner_document.model_partner_document_type
+msgid "Partner Document Type"
+msgstr "Tipo de documento del socio"
+
+#. module: partner_document
+#: model:ir.module.category,description:partner_document.partner_document_security
+msgid "Partner Document security"
+msgstr "Seguridad de documento del socio"
+
+#. module: partner_document
+#: model:ir.ui.menu,name:partner_document.partner_document_menu
+msgid "Partner Documents"
+msgstr "Documentos del socio"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_view_form
+msgid "Partner Form"
+msgstr "Formulario de socio"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_classification_view_form
+msgid "Partner classification Form"
+msgstr "Formulario de clasificación del socio"
+
+#. module: partner_document
+#: model:ir.module.category,name:partner_document.partner_document_security
+#: model:ir.ui.menu,name:partner_document.partner_document_list_menu
+msgid "Partner document"
+msgstr "Documento del socio"
+
+#. module: partner_document
+#: model:ir.model,name:partner_document.model_partner_document_expired_wizard
+msgid "Partner expired document wizard"
+msgstr "Asistente de documentos de socio vencidos"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
+msgid "Search"
+msgstr "Buscar"
+
+#. module: partner_document
+#. odoo-javascript
+#: code:addons/partner_document/static/src/xml/kanban_res_partner_button.xml:0
+#: code:addons/partner_document/static/src/xml/list_res_partner_button.xml:0
+#: model:ir.actions.act_window,name:partner_document.partner_document_expired_wizard_action
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
+#, python-format
+msgid "Search Expired Documents"
+msgstr "Buscar documentos vencidos"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_classification__sequence
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document_type.py:0
+#, python-format
+msgid "The name must be unique!"
+msgstr "¡El nombre debe ser único!"
+
+#. module: partner_document
+#: model:res.groups,name:partner_document.partner_document_group_user
+msgid "User"
+msgstr "Usuario"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document_type.py:0
+#: code:addons/partner_document/models/partner_document_type.py:0
+#, python-format
+msgid "You are trying to delete a record that is still referenced!"
+msgstr "¡Está intentando eliminar un registro que todavía está referenciado!"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid "You can't change the %(document_type)s (%(classification)s) if it has a File"
+msgstr "No puede cambiar el %(document_type)s (%(classification)s) si tiene un archivo"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid "You can't delete %(document_type)s (%(classification)s) because it has a File"
+msgstr "No puede eliminar %(document_type)s (%(classification)s) porque tiene un archivo"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid ""
+"You cannot delete %(document_type)s because it is required in "
+"(%(classification)s). If you want to delete it, you must delete the files of "
+"the rest of the document types of this classification"
+msgstr ""
+"No puede eliminar %(document_type)s porque es obligatorio en "
+"(%(classification)s). Si desea eliminarlo, debe eliminar los archivos del "
+"resto de los tipos de documento de esta clasificación"
