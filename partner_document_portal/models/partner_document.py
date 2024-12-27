@@ -7,3 +7,10 @@ from odoo import models
 class PartnerDocument(models.Model):
     _name = "partner.document"
     _inherit = ["partner.document", "portal.mixin"]
+
+    # portal.mixin override
+    def _compute_access_url(self):
+        res = super()._compute_access_url()
+        for document in self:
+            document.access_url = f"/my/documents/{document.id}"
+        return res
