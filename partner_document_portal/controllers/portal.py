@@ -13,9 +13,10 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 class DocumentPortal(CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
-        if "document_count" in counters:
+        if "document_count" in counters:  # _getCountersAlwaysDisplayed to always show
+            domain = self._prepare_document_domain()
             values["document_count"] = (
-                request.env["partner.document"].search_count([])
+                request.env["partner.document"].search_count(domain)
                 if request.env["partner.document"].check_access_rights(
                     "read", raise_exception=False
                 )
@@ -23,37 +24,46 @@ class DocumentPortal(CustomerPortal):
             )
         return values
 
-    # @http.route(
-    #     ["/my/documents/download/<int:document_id>"],
-    #     type="http",
-    #     auth="public",
-    #     website=True,
-    # )
-    # def download_document(
-    #     self, document_id, access_token=None, download=False, **kwargs
-    # ):
-    #     try:
-    #         if download:
-    #             document = request.env["partner.document"].sudo().browse(document_id)
-    #             if not document or not document.check_access_rights(
-    #                 "read", raise_exception=False
-    #             ):
-    #                 return request.not_found()
-    #             if access_token and access_token != document.access_token:
-    #                 return request.not_found()
-    #
-    #             return request.make_response(
-    #                 base64.b64decode(document.datas),
-    #                 headers=[
-    #                     ("Content-Type", "application/octet-stream"),
-    #                     (
-    #                         "Content-Disposition",
-    #                         f'attachment; filename="{document.name}"',
-    #                     ),
-    #                 ],
-    #             )
-    #     except Exception:
-    #         return request.not_found()
+    @http.route(
+        ["/my/documents/<int:document_id>/download"],
+        type="http",
+        auth="public",
+        website=True,
+    )
+    def _download_partner_document(
+        self, document_id, access_token=None, download=False, **kw
+    ):
+        try:
+            partner_sudo = self._document_check_access(
+                "partner.document", document_id, access_token=access_token
+            )
+            attachment = (
+                request.env["ir.attachment"]
+                .sudo()
+                .search(
+                    [
+                        ("res_model", "=", "partner.document"),
+                        ("res_id", "=", partner_sudo.id),
+                    ],
+                    limit=1,
+                )
+            )
+            mimetype = attachment.mimetype or "application/octet-stream"
+
+            return request.make_response(
+                base64.b64decode(partner_sudo.datas),
+                headers=[
+                    ("Content-Type", mimetype),
+                    (
+                        "Content-Disposition",
+                        f'attachment; filename="{attachment.name}"'
+                        if download
+                        else f'inline; filename="{partner_sudo.name}"',
+                    ),
+                ],
+            )
+        except (AccessError, MissingError):
+            return request.redirect("/my")
 
     def _prepare_document_domain(self):
         return [("partner_id", "=", request.env.user.partner_id.id)]
@@ -140,34 +150,6 @@ class DocumentPortal(CustomerPortal):
             document, access_token, values, "my_document_history", False, **kwargs
         )
 
-    @http.route(["/my/documents/upload"], type="http", auth="user", website=True)
-    def portal_upload_document(self, **kw):
-        values = self._prepare_portal_layout_values()
-        return request.render("partner_document_portal.portal_upload_document", values)
-
-    @http.route(
-        ["/my/documents/upload/submit"],
-        type="http",
-        auth="user",
-        methods=["POST"],
-        website=True,
-        csrf=False,
-    )
-    def portal_upload_document_submit(self, **kw):
-        Document = request.env["partner.document"]
-        file = request.httprequest.files.get("file")
-        datas = base64.b64encode(file.read()) if file else None
-
-        document_data = {
-            "description": kw.get("description"),
-            "expiration_date": kw.get("expiration_date"),
-            "document_type_id": int(kw.get("document_type_id")),
-            "partner_id": request.env.user.partner_id.id,
-            "datas": datas,
-        }
-        Document.create(document_data)
-        return request.redirect("/my/documents")
-
     @http.route(
         ["/my/documents/update_document/<int:document_id>"],
         type="http",
@@ -203,26 +185,11 @@ class DocumentPortal(CustomerPortal):
                         }
                     )
                 )
-                document.write({"datas": attachment.datas})
+                document.write(
+                    {"datas": attachment.datas, "datas_fname": attachment.name}
+                )
             except Exception:
                 return request.redirect(
                     f"/my/documents/{document_id}?error=attachment_failed"
                 )
         return request.redirect("/my/documents/%s" % document_id)
-
-    @http.route(
-        ["/my/documents/delete/<int:document_id>"],
-        type="http",
-        auth="user",
-        website=True,
-    )
-    def portal_delete_document(self, document_id, **kw):
-        Document = request.env["partner.document"]
-        try:
-            document = Document.browse(document_id)
-            if not document.exists() or document.validated:
-                raise AccessError(_("You cannot delete this document."))
-            document.unlink()
-        except (AccessError, MissingError):
-            return request.redirect("/my/documents")
-        return request.redirect("/my/documents")
