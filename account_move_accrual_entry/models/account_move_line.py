@@ -17,7 +17,8 @@ class AccountMoveLine(models.Model):
     def _onchange_accrual_entry_account_id(self):
         for line in self:
             if (
-                line.move_id.move_type in ("out_invoice", "out_refund")
+                line.display_type not in ("line_section", "line_note")
+                and line.move_id.move_type in ("out_invoice", "out_refund")
                 and line.move_id.accrual_date
             ):
                 if not line.accrual_account_id:
