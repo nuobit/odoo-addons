@@ -10,7 +10,7 @@
     "category": "Warehouse",
     "version": "16.0.1.0.1",
     "license": "AGPL-3",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock",
     ],
