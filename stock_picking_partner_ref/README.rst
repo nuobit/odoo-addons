@@ -29,21 +29,6 @@ This module adds a partner reference on picking
 .. contents::
    :local:
 
-Configuration
-=============
-
-
-
-Usage
-=====
-
-
-
-Changelog
-=========
-
-
-
 Bug Tracker
 ===========
 
@@ -65,7 +50,10 @@ Authors
 Contributors
 ------------
 
-- Eric Antones <eantones@nuobit.com>
+- `NuoBiT <https://www.nuobit.com>`__:
+
+  - Eric Antones <eantones@nuobit.com>
+  - Deniz Gallo <dgallo@nuobit.com>
 
 Maintainers
 -----------

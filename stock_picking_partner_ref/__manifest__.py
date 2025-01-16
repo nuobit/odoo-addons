@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions SL",
     "maintainers": ["eantones"],
     "category": "Warehouse",
-    "version": "16.0.1.0.1",
+    "version": "17.0.0.0.0",
     "license": "AGPL-3",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
@@ -17,5 +17,4 @@
     "data": [
         "views/stock_picking_views.xml",
     ],
-    "installable": True,
 }
