@@ -8,7 +8,7 @@
     "version": "14.0.1.0.0",
     "category": "Web",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["base"],
     "post_init_hook": "post_init_hook_vat_update",
