@@ -8,9 +8,9 @@ from odoo import fields, models
 class ContractContract(models.Model):
     _inherit = "contract.contract"
 
-    comment = fields.Text("Additional Information")
+    comment = fields.Html("Additional Information")
 
     def _prepare_invoice(self, date_invoice, journal=None):
-        invoice_vals, move_form = super()._prepare_invoice(date_invoice, journal)
+        invoice_vals = super()._prepare_invoice(date_invoice, journal)
         invoice_vals.update({"narration": self.comment})
-        return invoice_vals, move_form
+        return invoice_vals
