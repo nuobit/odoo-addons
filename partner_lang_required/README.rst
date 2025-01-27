@@ -22,8 +22,8 @@ Partner language required
 
 |badge1| |badge2| |badge3|
 
-This module convert the lang partner attribute to required by adding a
-restriction to it
+This module convert the lang partner attribute to required by adding
+arestriction to it
 
 **Table of contents**
 
@@ -54,6 +54,7 @@ Contributors
 - `NuoBiT <https://www.nuobit.com>`__:
 
   - Frank Cespedes <fcespedes@nuobit.com>
+  - Deniz Gallo <dgallo@nuobit.com>
 
 Maintainers
 -----------
