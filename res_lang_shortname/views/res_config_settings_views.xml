@@ -5,38 +5,31 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <div id="emails" position='after'>
+            <xpath expr="//*[@id='emails']" position="after">
                 <div id="lang_shortname">
                     <h2>Language Shortname Configuration</h2>
-                    <div
-                        class="row mt16 o_settings_container"
+                    <block
                         name="language_shortname_setting_container"
+                        string="Language Shortname Configuration"
                     >
-                        <div
-                            class="col-12 col-lg-6 o_setting_box"
-                            id="res_lang_shortname_settings"
+                        <setting
+                            name="res_lang_shortname_settings"
+                            string="Shortname Type"
                         >
-                            <div class="o_setting_right_pane">
-                                <div class="content-group">
-                                    <div class="mt16" groups="base.group_no_one">
-
-                                        <label
-                                            for="shortname_type"
-                                            string="Shortname Type"
-                                            class="col-3 col-lg-3 o_light_label"
-                                        />
-                                        <field
-                                            name="shortname_type"
-                                            widget="radio"
-                                            options="{'horizontal': true}"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <label
+                                for="shortname_type"
+                                string="Shortname Type"
+                                class="o_light_label"
+                            />
+                            <field
+                                name="shortname_type"
+                                widget="radio"
+                                options="{'horizontal': true}"
+                            />
+                        </setting>
+                    </block>
                 </div>
-            </div>
+            </xpath>
         </field>
     </record>
 </odoo>
