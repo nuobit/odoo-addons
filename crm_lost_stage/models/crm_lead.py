@@ -11,7 +11,7 @@ class Lead(models.Model):
     _inherit = "crm.lead"
 
     def toggle_active(self):
-        res = super(Lead, self).toggle_active()
+        res = super().toggle_active()
         activated = self.filtered(lambda lead: lead.active)
         if activated:
             new_stage_id = self.env.context.get("force_stage_id", False)
@@ -36,7 +36,7 @@ class Lead(models.Model):
 
     def write(self, vals):
         old_leads_stage = {x: x.stage_id for x in self}
-        res = super(Lead, self).write(vals)
+        res = super().write(vals)
         if "stage_id" in vals:
             for rec in self:
                 old_stage, new_stage = old_leads_stage[rec], rec.stage_id
