@@ -23,7 +23,8 @@ class Lead(models.Model):
         if not lost_stage:
             raise UserError(
                 _(
-                    "There is no lost stage defined. Please define one in the settings menu."
+                    "There is no lost stage defined. "
+                    "Please define one in the settings menu."
                 )
             )
         return lost_stage
