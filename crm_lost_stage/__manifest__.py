@@ -1,13 +1,14 @@
 # Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "CRM Lost Stage",
     "summary": "This module adds lost stage",
-    "version": "14.0.1.0.1",
+    "version": "17.0.0.0.0",
     "category": "Sales/CRM",
-    "author": "NuoBiT Solutions, S.L.",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["crm"],
