@@ -15,7 +15,7 @@ class ResPartner(models.Model):
 
     def _get_name(self):
         """Utility method to allow name_get to be overrided without re-browse the partner"""
-        name = super(ResPartner, self)._get_name()
+        name = super()._get_name()
         if self._context.get("show_reference") and self.ref:
             name = "[%s] %s" % (self.ref, name)
         return name
