@@ -9,7 +9,7 @@
     "depends": [
         "partner_firstname",
     ],
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "data": [
         "views/res_partner.xml",
         "views/res_user.xml",
