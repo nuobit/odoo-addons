@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!--    Copyright NuoBit - Eric Antones <eantones@nuobit.com>
+        Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+        License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)    -->
 <odoo>
     <record id="stock_picking_view_form_inherit_employee" model="ir.ui.view">
         <field name="name">stock.picking.form.inherit.employee</field>
@@ -14,8 +14,8 @@
             >
                 <field
                     name="employee_ids"
-                    attrs="{'readonly': [('state', '!=', 'draft')]}"
                     widget="many2many_tags"
+                    readonly="state != 'draft'"
                 />
             </xpath>
         </field>
