@@ -22,8 +22,8 @@ Partner language required
 
 |badge1| |badge2| |badge3|
 
-This module convert the lang partner attribute to required by adding
-arestriction to it
+This module convert the lang partner attribute to required by adding a
+restriction to it
 
 **Table of contents**
 
