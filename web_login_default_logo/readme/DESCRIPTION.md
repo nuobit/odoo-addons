@@ -1,1 +1,1 @@
-* This module forces default Odoo logo at login screen
+This module forces default Odoo logo at login screen.
