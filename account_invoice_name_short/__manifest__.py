@@ -10,7 +10,7 @@
     "category": "Sales",
     "version": "14.0.1.0.0",
     "license": "AGPL-3",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": ["account"],
     "data": [],
     "installable": True,
