@@ -7,7 +7,7 @@
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Invoicing Management",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "summary": "This module adds a lot/serial number on lines of invoice reports",
     "depends": [
         "stock_picking_invoice_link",
