@@ -19,7 +19,7 @@ msgstr ""
 #: code:addons/account_invoice_name_short/models/account_invoice.py:0
 #, python-format
 msgid "Already exists"
-msgstr ""
+msgstr "Ya exite"
 
 #. module: account_invoice_name_short
 #: model:ir.model.fields,field_description:account_invoice_name_short.field_account_move__display_name
