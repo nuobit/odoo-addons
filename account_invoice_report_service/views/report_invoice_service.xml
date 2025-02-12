@@ -101,7 +101,7 @@
                 <table class="ris-table-2 mb16" name="invoice_line_table">
                     <thead>
                         <tr>
-                            <th colspan="6">
+                            <th>
                                 <table class="ris-table-1">
                                     <tbody>
                                         <tr>
@@ -201,7 +201,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th colspan="6">
+                            <th>
                                 <table class="ris-table0">
                                     <thead>
                                         <tr>
@@ -301,11 +301,11 @@
                             <t t-set="order" t-value="l[0]" />
                             <t t-set="invoice_lines" t-value="l[1]" />
                             <tr>
-                                <td colspan="6">
+                                <td>
                                     <table class="ris-table2">
                                         <tbody>
                                             <tr t-if="order">
-                                                <td colspan="6">
+                                                <td>
                                                     <table class="ris-table3">
                                                         <tbody>
                                                             <tr>
@@ -413,74 +413,107 @@
                                                     </table>
                                                 </td>
                                             </tr>
+
+                                            <t t-if="invoice_lines">
+                                                <t t-set="order_total" t-value="0" />
+                                                <tr>
+                                                    <td>
+                                                        <table class="ris-table3">
+                                                            <tbody>
+                                                                <t
+                                                                    t-foreach="invoice_lines"
+                                                                    t-as="il"
+                                                                >
+                                                                    <tr>
+                                                                        <td
+                                                                            width="26%"
+                                                                        />
+                                                                        <td width="44%">
+                                                                            <span
+                                                                                t-field="il.name"
+                                                                            />
+                                                                        </td>
+                                                                        <td
+                                                                            width="10%"
+                                                                            class="text-right"
+                                                                        >
+                                                                            <span
+                                                                                t-field="il.quantity"
+                                                                            />
+                                                                            <span
+                                                                                t-field="il.product_uom_id"
+                                                                                groups="uom.group_uom"
+                                                                            />
+                                                                        </td>
+                                                                        <td
+                                                                            width="10%"
+                                                                            class="text-right"
+                                                                        >
+                                                                            <span
+                                                                                t-field="il.price_unit"
+                                                                            />
+                                                                        </td>
+                                                                        <td
+                                                                            width="10%"
+                                                                            class="text-right"
+                                                                            id="subtotal"
+                                                                        >
+                                                                            <span
+                                                                                t-field="il.price_subtotal"
+                                                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                                            />
+                                                                        </td>
+                                                                    </tr>
+                                                                    <t
+                                                                        t-set="order_total"
+                                                                        t-value="order_total+il.price_subtotal"
+                                                                    />
+                                                                </t>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <t
+                                                            t-set="tax_amount_by_group"
+                                                            t-value="o.amount_by_group"
+                                                        />
+                                                        <table
+                                                            class="ris-table3"
+                                                            t-if="not tax_amount_by_group"
+                                                        >
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td width="80%" />
+                                                                    <td
+                                                                        width="10%"
+                                                                        class="text-right"
+                                                                    >
+                                                                        <strong
+                                                                        >Total</strong>
+                                                                    </td>
+                                                                    <td
+                                                                        width="10%"
+                                                                        class="text-right"
+                                                                    >
+                                                                        <strong>
+                                                                            <span
+                                                                                t-esc="order_total"
+                                                                                t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                                            />
+                                                                        </strong>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </t>
                                         </tbody>
                                     </table>
                                 </td>
                             </tr>
-                            <t t-if="invoice_lines">
-                                <t t-set="order_total" t-value="0" />
-                                <t t-foreach="invoice_lines" t-as="il">
-                                    <tr>
-                                        <td width="26%" />
-                                        <td width="44%">
-                                            <span t-field="il.name" />
-                                        </td>
-                                        <td width="10%" class="text-right">
-                                            <span t-field="il.quantity" />
-                                            <span
-                                                t-field="il.product_uom_id"
-                                                groups="uom.group_uom"
-                                            />
-                                        </td>
-                                        <td width="10%" class="text-right">
-                                            <span t-field="il.price_unit" />
-                                        </td>
-                                        <td
-                                            width="10%"
-                                            class="text-right"
-                                            id="subtotal"
-                                        >
-                                            <span
-                                                t-field="il.price_subtotal"
-                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
-                                            />
-                                        </td>
-                                    </tr>
-                                    <t
-                                        t-set="order_total"
-                                        t-value="order_total+il.price_subtotal"
-                                    />
-                                </t>
-                                <tr>
-                                    <td colspan="6">
-                                        <t
-                                            t-set="tax_amount_by_group"
-                                            t-value="o.amount_by_group"
-                                        />
-                                        <table
-                                            class="ris-table3"
-                                            t-if="not tax_amount_by_group"
-                                        >
-                                            <tbody>
-                                                <tr>
-                                                    <td width="80%" />
-                                                    <td width="10%" class="text-right">
-                                                        <strong>Total</strong>
-                                                    </td>
-                                                    <td width="10%" class="text-right">
-                                                        <strong>
-                                                            <span
-                                                                t-esc="order_total"
-                                                                t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
-                                                            />
-                                                        </strong>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </t>
                         </t>
                     </tbody>
                 </table>
