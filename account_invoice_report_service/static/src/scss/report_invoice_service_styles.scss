@@ -47,9 +47,13 @@
 
 .ris-table2 {
     @include ris-basetable-mixin;
-    border-bottom: 1px solid rgb(221, 221, 221);
 }
 
 .ris-table3 {
     @include ris-basetable-mixin;
+}
+
+.ris-table2-border-bottom > td {
+    border-bottom: 1px solid rgb(221, 221, 221);
+    padding-bottom: 5px;
 }
