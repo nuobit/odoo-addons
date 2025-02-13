@@ -45,11 +45,8 @@
     @include ris-basetable-mixin;
 }
 
-.rid-table2 > tbody > tr.rid-tr2-order-header > td {
+.rid-table2-border-bottom > td {
     border-bottom: 1px solid rgb(221, 221, 221);
-}
-
-.rid-tr-invoice-line > td {
     padding-bottom: 5px;
 }
 

@@ -320,7 +320,7 @@
                             <t t-if="invoice_lines">
                                 <t t-set="order_total" t-value="0" />
                                 <t t-foreach="invoice_lines" t-as="il">
-                                    <tr class="rid-tr-invoice-line">
+                                    <tr class="rid-table2-border-bottom">
                                         <t
                                             t-set="il_name"
                                             t-value="il.get_splited_line_description()"
