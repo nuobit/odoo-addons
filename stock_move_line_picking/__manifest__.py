@@ -4,11 +4,11 @@
 {
     "name": "Stock move line picking",
     "summary": "This module adds field picking to stock move line form view",
-    "version": "14.0.1.0.0",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "version": "17.0.1.0.0",
+    "author": "NuoBiT Solutions SL, Eric Antones",
     "license": "AGPL-3",
     "category": "Custom",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock",
     ],
