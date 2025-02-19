@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario personalizada -->
+    <record id="view_product_form_supplier_ref" model="ir.ui.view">
+        <field name="name">product.product.form.supplier.ref</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="after">
+                <field name="partner_ref" string="Partner Reference"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista de árbol personalizada -->
+    <record id="view_product_tree_supplier_ref" model="ir.ui.view">
+        <field name="name">product.product.tree.supplier.ref</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="after">
+                <field name="partner_ref" string="Partner Reference"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

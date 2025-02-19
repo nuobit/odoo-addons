@@ -9,10 +9,15 @@
     "empty instead of the product default_code.",
     "version": "17.0.1.0.0",
     "category": "Purchase",
-    "author": "NuoBiT Solutions SL, Eric Antones",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": [
         "product",
     ],
+    "data": [
+        "views/product_supplier_ref_views.xml",
+    ],
+    "installable": True,
+    "application": False,
 }
