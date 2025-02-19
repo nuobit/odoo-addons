@@ -12,8 +12,8 @@
                 <filter
                     string="Transferred Today"
                     name="transferred_today"
-                    domain="[('date_done','>=', datetime.datetime.combine(context_today(), datetime.time(0, 0, 0))),
-                            ('date_done','<=', datetime.datetime.combine(context_today(), datetime.time(23, 59, 59)))]"
+                    domain="[('date_done','>=', (context_today() + ' 00:00:00')),
+                            ('date_done','=', (context_today() + ' 23:59:59'))]"
                 />
                 <separator />
             </xpath>
