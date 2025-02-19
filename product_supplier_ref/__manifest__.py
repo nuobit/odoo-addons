@@ -15,4 +15,9 @@
     "depends": [
         "product",
     ],
+    "data": [
+        "views/product_supplier_ref_views.xml",
+    ],
+    "installable": True,
+    "application": False,
 }
