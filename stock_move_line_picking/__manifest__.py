@@ -12,9 +12,6 @@
     "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock",
-        "account_invoice_hide_payment_button",
-        "partner_default_company",
-        "partner_review",
     ],
     "data": [
         "views/stock_move_line_views.xml",
