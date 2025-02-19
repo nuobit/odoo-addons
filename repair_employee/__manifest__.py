@@ -5,17 +5,19 @@
 
 {
     "name": "Repair Employee",
-    "summary": "This module adds a comment field in the contract and "
-    "propagates it to the comment field of the invoice",
+    "summary": "Add employee field and assigned date to repair orders",
     "version": "17.0.1.0.0",
-    "category": "Contract Management",
-    "author": "NuoBiT Solutions SL, Eric Antones",
+    "category": "Repairs",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
-    "depends": ["hr", "repair"],
+    "depends": [
+        "repair",
+        "hr",
+    ],
     "data": [
         "views/repair_views.xml",
     ],
     "installable": True,
-    "auto_install": False,
+    "application": False,
 }
