@@ -20,3 +20,4 @@ class ProductProduct(models.Model):
                         partner_ref_l.insert(0, "[%s] " % product.code)
                     product.partner_ref = " ".join(partner_ref_l)
                     break
+        return
