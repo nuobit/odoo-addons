@@ -15,5 +15,17 @@ Bijaya Kumal <bkumal@nuobit.com>
         </field>
     </record>
 
-
+    <!-- vista arbol -->
+    <record id="view_move_line_tree" model="ir.ui.view">
+        <field name="name">stock.move.line.tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id" />
+                <field name="location_id" />
+                <field name="location_dest_id" />
+                <field name="picking_id" />
+            </tree>
+        </field>
+    </record>
 </odoo>
