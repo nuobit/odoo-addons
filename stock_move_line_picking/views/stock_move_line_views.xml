@@ -19,11 +19,11 @@
         <field name="model">stock.move.line</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="product_id"/>
-                <field name="product_uom_qty"/>
-                <field name="location_id"/>
-                <field name="location_dest_id"/>
-                <field name="additional_field"/>
+                <field name="product_id" />
+                <field name="product_uom_qty" />
+                <field name="location_id" />
+                <field name="location_dest_id" />
+                <field name="additional_field" />
             </tree>
         </field>
     </record>
