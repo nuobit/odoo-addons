@@ -10,7 +10,6 @@ Bijaya Kumal <bkumal@nuobit.com>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='lot_id']/.." position="inside">
                 <field name="picking_id" />
-                <field name="" />
             </xpath>
         </field>
     </record>
