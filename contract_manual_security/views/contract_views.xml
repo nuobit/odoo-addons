@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="contract_contract_form_view" model="ir.ui.view">
+        <field name="name">contract.contract.manual.create.invocies.form.view</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_form_view" />
+        <field name="arch" type="xml">
+            <button name="recurring_create_invoice" position="attributes">
+                <attribute
+                    name="groups"
+                >base.group_no_one,contract_manual_security.contract_contract_group_create_manual_invoices</attribute>
+            </button>
+        </field>
+    </record>
+
+</odoo>
