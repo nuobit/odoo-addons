@@ -1,4 +1,5 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -10,6 +11,11 @@ class MrpProduction(models.Model):
 
     picking_id = fields.Many2one(comodel_name="stock.picking")
     production_blocked = fields.Boolean(compute="_compute_production_blocked")
+    production_flowable = fields.Boolean(compute="_compute_production_flowable")
+
+    def _compute_production_flowable(self):
+        for rec in self:
+            rec.production_flowable = rec.picking_type_id.flowable_operation
 
     def _compute_production_blocked(self):
         for rec in self:
