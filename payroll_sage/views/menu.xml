@@ -9,14 +9,12 @@
         sequence="46"
     />
 
-
     <menuitem
         id="menu_sage_payroll"
         parent="menu_root"
         name="Sage payroll"
         sequence="10"
     />
-
 
     <menuitem
         id="payslip_menu_action"

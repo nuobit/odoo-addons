@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Human Resources",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "account",
     ],
