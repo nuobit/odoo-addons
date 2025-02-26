@@ -1,10 +1,11 @@
 # Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 {
     "name": "Sage Payroll",
-    "version": "14.0.1.0.4",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "version": "16.0.0.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Human Resources",
     "website": "https://github.com/nuobit/odoo-addons",
@@ -21,5 +22,4 @@
         "views/payslip_process_view.xml",
         "views/menu.xml",
     ],
-    "installable": True,
 }

@@ -11,10 +11,10 @@ class Payslip(models.Model):
     _description = "Payslip"
     _order = "entry_date desc, type, process_id desc"
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(required=True)
     entry_date = fields.Date(string="Entry date", required=True)
 
-    year = fields.Integer(string="Year", required=True)
+    year = fields.Integer(required=True)
     month_from = fields.Integer(string="From month", required=True)
     month_to = fields.Integer(string="To month", required=True)
 
@@ -37,7 +37,6 @@ class Payslip(models.Model):
 
     type = fields.Selection(
         [("transfer", _("Transfer")), ("payroll", _("Payroll"))],
-        string="Type",
         required=True,
     )
 
@@ -52,7 +51,7 @@ class Payslip(models.Model):
         ondelete="restrict",
     )
 
-    note = fields.Text(string="Note")
+    note = fields.Text()
 
     payslip_line_ids = fields.One2many(
         "payroll.sage.payslip.line", "payslip_id", string="Wage type lines", copy=True
@@ -345,7 +344,7 @@ class PayslipLine(models.Model):
     )
     employee_id = fields.Many2one("hr.employee", string="Employee", required=True)
 
-    amount = fields.Float("Amount", required=True)
+    amount = fields.Float(required=True)
 
     payslip_id = fields.Many2one(
         "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
@@ -360,7 +359,7 @@ class PayslipCheck(models.Model):
 
     employee_id = fields.Many2one("hr.employee", string="Employee", required=True)
 
-    amount = fields.Float("Amount", required=True)
+    amount = fields.Float(required=True)
 
     payslip_id = fields.Many2one(
         "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
@@ -379,7 +378,7 @@ class PayslipWageType(models.Model):
         required=True,
     )
 
-    amount = fields.Float("Amount", required=True)
+    amount = fields.Float(required=True)
 
     payslip_id = fields.Many2one(
         "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"

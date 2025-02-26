@@ -23,10 +23,10 @@ class PayslipProcess(models.Model):
             if similar:
                 raise ValidationError(
                     _(
-                        "There's another process with similar names "
-                        "New: '%s' vs Existing: '%s'!"
+                        "There's another process with similar names New: %(new_name)s"
+                        " vs Existing: %(existing_name)s!"
                     )
-                    % (ppt.name, similar.mapped("name"))
+                    % {"new_name": ppt.name, "existing_name": similar.name}
                 )
 
     _sql_constraints = [
