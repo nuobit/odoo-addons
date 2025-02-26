@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright  NuoBiT - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
@@ -42,9 +41,7 @@ class AccountMove(models.Model):
             not self.partner_id.sale_journal_id
             and not self.partner_id.purchase_journal_id
         ):
-            default_journal = self.with_context(
-                default_move_type=self.move_type, default_company_id=self.company_id.id
-            )._get_default_journal()
+            default_journal = self._search_default_journal()
             if default_journal != self.journal_id:
                 self.journal_id = default_journal
         return res
