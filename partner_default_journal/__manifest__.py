@@ -9,7 +9,7 @@
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Accounting",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": ["sale_purchase"],
     "data": [
         "views/res_partner_views.xml",
