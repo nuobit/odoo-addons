@@ -13,13 +13,10 @@ class WageTag(models.Model):
         "Display order", default=lambda self: self.default_sequence()
     )
 
-    code = fields.Integer(
-        "Code", required=True, default=lambda self: self.default_code()
-    )
+    code = fields.Integer(required=True, default=lambda self: self.default_code())
 
     type = fields.Selection(
         [("transfer", _("Transfer")), ("payroll", _("Payroll"))],
-        string="Type",
         required=True,
     )
 
@@ -40,7 +37,6 @@ class WageTag(models.Model):
     negative_withholding = fields.Boolean(string="Negative withholding (NWH)")
 
     description = fields.Char(
-        string="Description",
         help="If no description provided, the original will be used",
     )
 
@@ -53,7 +49,7 @@ class WageTag(models.Model):
         default=lambda self: self.env["res.company"]._company_default_get(),
     )
 
-    note = fields.Text("Note")
+    note = fields.Text()
 
     _sql_constraints = [
         (

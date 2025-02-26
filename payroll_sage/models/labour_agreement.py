@@ -12,8 +12,8 @@ class LabourAgreement(models.Model):
 
     _order = "company_id,registration_date_cv desc"
 
-    name = fields.Char(string="Name", required=True)
-    code = fields.Integer(string="Code", required=True)
+    name = fields.Char(required=True)
+    code = fields.Integer(required=True)
 
     registration_date_cv = fields.Date(string="Registration date", required=True)
     end_date = fields.Date(string="End date")
@@ -89,7 +89,7 @@ class LabourAgreementWageTypeLine(models.Model):
     short_name = fields.Char(required=True)
     code = fields.Integer(required=True)
 
-    positive = fields.Boolean(string="Positive")
+    positive = fields.Boolean()
     total_historical_record = fields.Selection(
         string="Totalize in historical record",
         selection=[
