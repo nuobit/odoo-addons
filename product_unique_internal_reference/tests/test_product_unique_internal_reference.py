@@ -1,5 +1,5 @@
-# Copyright 2021 Eric Antones <eantones@nuobit.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import logging
 
 from odoo import _
