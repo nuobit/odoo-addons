@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, models
@@ -9,12 +10,12 @@ from odoo.exceptions import ValidationError
 class ProductSupplierinfo(models.Model):
     _inherit = "product.supplierinfo"
 
-    @api.constrains("name", "product_code", "product_tmpl_id", "min_qty")
+    @api.constrains("partner_id", "product_code", "product_tmpl_id", "min_qty")
     def _check_unique_supplierinfo(self):
         for rec in self:
             domain = [
                 ("id", "!=", rec.id),
-                ("name", "=", rec.name.id),
+                ("partner_id", "=", rec.partner_id.id),
                 ("product_code", "!=", False),
             ]
             others = self.env["product.supplierinfo"].search(
@@ -27,15 +28,15 @@ class ProductSupplierinfo(models.Model):
             if others:
                 raise ValidationError(
                     _(
-                        "The product code %s of the vendor %s already exists "
-                        "on other products %s with other barcodes %s"
+                        "The product %(product_code)s of the %(vendor)s already exists"
+                        "on other products %(products)s with other barcodes %(barcodes)s"
                     )
-                    % (
-                        rec.product_code,
-                        rec.name.display_name,
-                        others.mapped("product_tmpl_id.id"),
-                        others.mapped("product_tmpl_id.barcode"),
-                    )
+                    % {
+                        "product_code": rec.product_code,
+                        "vendor": rec.partner_id.display_name,
+                        "products": others.mapped("product_tmpl_id.id"),
+                        "barcodes": others.mapped("product_tmpl_id.barcode"),
+                    }
                 )
             others = self.env["product.supplierinfo"].search(
                 [
