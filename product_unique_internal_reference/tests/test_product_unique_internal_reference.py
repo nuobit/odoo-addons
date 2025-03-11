@@ -1,15 +1,16 @@
-# Copyright 2021 Eric Antones <eantones@nuobit.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 import logging
 
 from odoo import _
 from odoo.exceptions import ValidationError
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 _logger = logging.getLogger(__name__)
 
 
-class TestProductUniqueInternalReference(SavepointCase):
+class TestProductUniqueInternalReference(TransactionCase):
     def test_01_template_vs_template_ok_same_company(self):
         """
         PRE:    - template1 exists
@@ -23,6 +24,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         self.env["product.template"].create(
@@ -63,6 +65,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         self.env["product.template"].create(
@@ -75,6 +78,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company2 = self.env["res.company"].create(
             {
                 "name": "Company 2",
+                "email": "email1@company2.com",
             }
         )
         # ACT & ASSERT
@@ -110,6 +114,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         self.env["product.template"].create(
@@ -151,6 +156,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         self.env["product.template"].create(
@@ -163,6 +169,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company2 = self.env["res.company"].create(
             {
                 "name": "Company 2",
+                "email": "email1@company2.com",
             }
         )
         # ACT & ASSERT
@@ -199,6 +206,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         self.env["product.template"].create(
@@ -245,6 +253,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         attribute = self.env["product.attribute"].create(
@@ -315,6 +324,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         attribute1 = self.env["product.attribute"].create(
@@ -412,6 +422,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         attribute1 = self.env["product.attribute"].create(
@@ -493,14 +504,15 @@ class TestProductUniqueInternalReference(SavepointCase):
                 - variant11 has default_code 'sku1'
                 - variant12 has default_code 'sku2' and is archived
                 - variant13 has default_code 'sku3' and is archived
-        ACT:    - change template1 default_code to 'sku1'
+        ACT:    - change template1 default_code to 'sku2'
         POST:   - template1 is not updated because
-                  variant11 has the same default_code 'sku1'
+                  variant12 has the same default_code 'sku1'
         """
         # ARRANGE
         company1 = self.env["res.company"].create(
             {
                 "name": "Company 1",
+                "email": "email1@company1.com",
             }
         )
         attribute1 = self.env["product.attribute"].create(
@@ -544,7 +556,7 @@ class TestProductUniqueInternalReference(SavepointCase):
         # ACT & ASSERT
         try:
             with self.assertRaises(ValidationError):
-                template1.default_code = "sku1"
+                template1.default_code = "sku2"
         except AssertionError:
             self.fail(
                 _(
