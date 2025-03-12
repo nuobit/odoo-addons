@@ -172,6 +172,7 @@ class Location(models.Model):
         return res
 
     def write(self, vals):
+        res = True
         for rec in self:
             old_allowed_products = self.env["product.product"]
             if "flowable_allowed_product_ids" in vals and vals.get(
@@ -209,7 +210,7 @@ class Location(models.Model):
                         "flowable_uom_id": False,
                     }
                 )
-            res = super(Location, rec).write(vals)
+            res &= super(Location, rec).write(vals)
             if rec.flowable_storage:
                 removed_product_ids = set(old_allowed_products.ids) - set(
                     rec.flowable_allowed_product_ids.ids
