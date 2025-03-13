@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="view_account_tax_group_form" model="ir.ui.view">
+    <record id="view_tax_group_tree" model="ir.ui.view">
         <field name="model">account.tax.group</field>
-        <field name="inherit_id" ref="account_menu.view_account_tax_group_form" />
+        <field name="inherit_id" ref="account.view_tax_group_tree" />
         <field name="arch" type="xml">
-            <field name="name" position="after">
+            <tree position="inside">
                 <field name="is_vat" />
-            </field>
+            </tree>
         </field>
     </record>
 </odoo>
