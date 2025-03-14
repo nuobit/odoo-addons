@@ -123,7 +123,9 @@ class WooCommerceSaleOrderImporter(Component):
                     [("default_code", "=", product["sku"])]
                 )
                 if not relation:
-                    raise ValidationError(_("Product not found on Odoo"))
+                    raise ValidationError(
+                        _("Product with sku %s not found on Odoo") % product["sku"]
+                    )
                 if len(relation) > 1:
                     raise ValidationError(
                         _("More than one product found with sku %s") % product["sku"]

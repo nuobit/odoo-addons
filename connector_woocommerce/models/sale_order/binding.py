@@ -52,7 +52,7 @@ class WooCommerceSaleOrder(models.Model):
         # domain += [("status", "in", ["on-hold","processing"])]
 
         if since_date:
-            domain += [("after", "=", since_date)]
+            domain += [("modified_after", "=", since_date)]
         self.with_delay().import_batch(backend_record, domain=domain)
         return True
 
