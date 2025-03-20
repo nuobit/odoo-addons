@@ -1,6 +1,8 @@
 # generated from manifests external_dependencies
 lxml
 mysql-connector-python==8.0.31
+openpyxl
 pymssql
 pystrich
 requests
+xlrd
