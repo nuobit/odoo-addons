@@ -1,4 +1,5 @@
 # Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
@@ -42,17 +43,17 @@ class TrialBalanceReport(models.AbstractModel):
         hide_account_at_0,
         unaffected_earnings_account,
         fy_start_date,
+        grouped_by,
     ):
         company_ids = self.env.context.get("company_ids", [])
         total_amount, accounts_data, partners_data = {}, {}, []
         for company_id in company_ids:
-            account_type = self.env.ref("account.data_unaffected_earnings")
             unaffected_earnings_account = (
                 self.env["account.account"]
                 .with_context(allowed_company_ids=company_ids)
                 .search(
                     [
-                        ("user_type_id", "=", account_type.id),
+                        ("account_type", "=", "equity_unaffected"),
                         ("company_id", "=", company_id),
                     ]
                 )
@@ -71,6 +72,7 @@ class TrialBalanceReport(models.AbstractModel):
                 hide_account_at_0,
                 unaffected_earnings_account,
                 fy_start_date,
+                grouped_by,
             )
             total_amount.update(ta)
             accounts_data.update(ad)
