@@ -1,11 +1,12 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import _, api, models
 from odoo.exceptions import ValidationError
 
 
-class StockProductionLot(models.Model):
-    _inherit = "stock.production.lot"
+class StockLot(models.Model):
+    _inherit = "stock.lot"
 
     @api.constrains("removal_date", "use_expiration_date")
     def _check_required_removal_date(self):
