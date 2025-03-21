@@ -1,14 +1,14 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Stock picking import serials",
     "summary": "Import serial numbers to a stock picking from spreadsheet file",
-    "version": "14.0.1.0.2",
+    "version": "16.0.1.0.0",
     "category": "Warehouse Management",
     "license": "AGPL-3",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
         "stock",
