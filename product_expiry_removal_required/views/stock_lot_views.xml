@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_move_form_expiry" model="ir.ui.view">
-        <field name="name">stock.production.lot.expiry.required.form</field>
-        <field name="model">stock.production.lot</field>
+        <field name="name">stock.lot.expiry.required.form</field>
+        <field name="model">stock.lot</field>
         <field name="inherit_id" ref="product_expiry.view_move_form_expiry" />
         <field name="arch" type="xml">
             <field name="removal_date" position="attributes">
