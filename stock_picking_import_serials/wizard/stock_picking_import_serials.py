@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
@@ -38,10 +38,11 @@ def _get_cell(sheet, row_index, col_index, ctype, nullable=False):
         if ctype in MAP_TYPES:
             ctype = MAP_TYPES[ctype]
         raise UserError(
-            _("Wrong format in cell %s. Expected %s, found %s")
-            % (cellname, ctype, current_ctype)
+            _(
+                "Wrong format in cell %(cellname)s. Expected %(ctype)s, found %(current_ctype)s"
+            )
+            % {"cellname": cellname, "ctype": ctype, "current_ctype": current_ctype}
         )
-
     return value
 
 
@@ -77,14 +78,13 @@ class StockPickingImportSerials(models.TransientModel):
 
     datas_fname = fields.Char(string="Filename", required=True)
 
-    result = fields.Text(string="Result", readonly=True)
+    result = fields.Text(readonly=True)
 
     state = fields.Selection(
         [
             ("params", _("Parameters")),
             ("result", _("Result")),
         ],
-        string="Status",
         default="params",
         readonly=True,
         required=True,
@@ -230,13 +230,13 @@ class StockPickingImportSerials(models.TransientModel):
             tracking_numbers = list(tracking_values.keys())
 
             # get lines of the picking lines
-            product_move_lines = picking.move_lines.filtered(
+            product_moves = picking.move_ids.filtered(
                 lambda x: x.product_id.id == product.id
             )
-            if not product_move_lines:
+            if not product_moves:
                 raise UserError(_("There's no lines with product %s") % default_code)
 
-            detail_move_lines = product_move_lines.mapped("move_line_ids")
+            detail_move_lines = product_moves.move_line_ids
             if not detail_move_lines:
                 raise UserError(
                     _("The line with the product %s has no detail movements created")
@@ -246,7 +246,7 @@ class StockPickingImportSerials(models.TransientModel):
             # classify already imported and pending
             dmls_pending, tns_imported = self.env["stock.move.line"], []
             for dml in detail_move_lines.sorted(lambda x: (x.move_id.sequence, x.id)):
-                if dml.product_uom_qty != 1:
+                if dml.reserved_uom_qty != 1:
                     raise UserError(
                         _("The line with the product %s must have quantity 1")
                         % default_code
@@ -268,7 +268,8 @@ class StockPickingImportSerials(models.TransientModel):
             if not tns_pending and dmls_pending:
                 msglog.add_msg(
                     "MoreLinesThanSerials",
-                    _("%s -> %i operations empty") % (default_code, dmls_n),
+                    _("%(default_code)s -> %(dmls_n)i operations empty")
+                    % {"default_code": default_code, "dmls_n": dmls_n},
                 )
             else:
                 tracking_numbers_paired, tracking_numbers_rest = (
@@ -280,7 +281,7 @@ class StockPickingImportSerials(models.TransientModel):
                     line.qty_done = 1
 
                     # find/create lot
-                    lot_id = self.env["stock.production.lot"].search(
+                    lot_id = self.env["stock.lot"].search(
                         [
                             ("company_id", "=", picking.company_id.id),
                             ("product_id", "=", line.product_id.id),
@@ -303,7 +304,7 @@ class StockPickingImportSerials(models.TransientModel):
                                 "name": tracking_number,
                             }
                         )
-                        lot_id = self.env["stock.production.lot"].create(values)
+                        lot_id = self.env["stock.lot"].create(values)
                     else:
                         if not picking.picking_type_id.use_existing_lots:
                             raise UserError(
@@ -326,7 +327,8 @@ class StockPickingImportSerials(models.TransientModel):
                 elif dmls_n > tns_n:
                     msglog.add_msg(
                         "MoreLinesThanSerials",
-                        _("%s -> %i operations empty") % (default_code, dmls_n - tns_n),
+                        _("%(default_code)s -> %(operations)i operations empty")
+                        % {"default_code": default_code, "operations": dmls_n - tns_n},
                     )
 
         if not msglog.has_msgs:
