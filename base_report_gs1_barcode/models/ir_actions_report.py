@@ -1,22 +1,22 @@
 # Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2022 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+
+import pystrich.code128 as c128
+import pystrich.datamatrix as dmx
 
 from odoo import api, models
 
-try:
-    import pystrich.code128 as c128
-    import pystrich.datamatrix as dmx
 
-    class DataMatrixRendererMod(dmx.DataMatrixRenderer):
-        def add_border(self, colour=1):
-            self.quiet_zone = 0
-            return super().add_border(colour=colour)
+class DataMatrixRendererMod(dmx.DataMatrixRenderer):
+    def add_border(self, colour=1):
+        self.quiet_zone = 0
+        return super().add_border(colour=colour)
 
-    dmx.DataMatrixRenderer = DataMatrixRendererMod
 
-except ImportError:
-    pass
+dmx.DataMatrixRenderer = DataMatrixRendererMod
 
 
 class IrActionsReport(models.Model):
