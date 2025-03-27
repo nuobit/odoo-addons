@@ -1,0 +1,65 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* auth_signup_privacy_consent_opt_in
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-27 11:45+0000\n"
+"PO-Revision-Date: 2025-03-27 11:45+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_signup_privacy_consent_opt_in
+#: model_terms:ir.ui.view,arch_db:auth_signup_privacy_consent_opt_in.fields
+msgid ""
+"<span class=\"form-select-sm\">I want to receive discounts, exclusive "
+"offers, and the latest news on products and services.</span>"
+msgstr ""
+"<span class=\"form-select-sm\">Quiero recibir descuentos, ofertas exclusivas "
+"y las últimas noticias sobre productos y servicios.</span>"
+
+#. module: auth_signup_privacy_consent_opt_in
+#: model_terms:ir.ui.view,arch_db:auth_signup_privacy_consent_opt_in.privacy_activity_view_form
+msgid "<span class=\"o_stat_text\">Opt-In</span>"
+msgstr "<span class=\"o_stat_text\">Opt-In</span>"
+
+#. module: auth_signup_privacy_consent_opt_in
+#: model:ir.model,name:auth_signup_privacy_consent_opt_in.model_privacy_activity
+msgid "Data processing activities"
+msgstr "Actividades de tratamiento de datos"
+
+#. module: auth_signup_privacy_consent_opt_in
+#. odoo-python
+#: code:addons/auth_signup_privacy_consent_opt_in/models/privacy_activity.py:0
+#: model:ir.model.fields,help:auth_signup_privacy_consent_opt_in.field_privacy_activity__is_opt_in
+#, python-format
+msgid ""
+"Indicates if this activity requires user consent to receive communications."
+msgstr ""
+"Indica si esta actividad requiere el consentimiento del usuario para recibir "
+"comunicaciones."
+
+#. module: auth_signup_privacy_consent_opt_in
+#: model:ir.model.fields,field_description:auth_signup_privacy_consent_opt_in.field_privacy_activity__is_opt_in
+msgid "Is Opt In"
+msgstr "Es Opt In"
+
+#. module: auth_signup_privacy_consent_opt_in
+#. odoo-python
+#: code:addons/auth_signup_privacy_consent_opt_in/models/privacy_activity.py:0
+#, python-format
+msgid "Opt-in activity must require consent."
+msgstr "La actividad Opt-in debe requerir consentimiento."
+
+#. module: auth_signup_privacy_consent_opt_in
+#. odoo-python
+#: code:addons/auth_signup_privacy_consent_opt_in/models/privacy_activity.py:0
+#, python-format
+msgid "There can be only one opt-in activity."
+msgstr "Solo puede haber una actividad de opt-in."
