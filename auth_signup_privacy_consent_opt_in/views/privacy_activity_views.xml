@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <record id="privacy_activity_view_form" model="ir.ui.view">
+        <field name="name">privacy.activity.form.inherit</field>
+        <field name="model">privacy.activity</field>
+        <field name="inherit_id" ref="privacy_consent.activity_form" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    attrs='{"invisible": [("consent_required", "=", False)]}'
+                    icon="fa-envelope-o"
+                    name="action_is_opt_in"
+                    type="object"
+                >
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="is_opt_in" widget="boolean_toggle" />
+                        </span>
+                        <span class="o_stat_text">Opt-In</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>
