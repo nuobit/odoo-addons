@@ -1,0 +1,56 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* auth_signup_privacy_consent_policy
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-27 11:49+0000\n"
+"PO-Revision-Date: 2025-03-27 11:49+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_signup_privacy_consent_policy
+#: model_terms:ir.ui.view,arch_db:auth_signup_privacy_consent_policy.privacy_activity_view_form
+msgid "<span class=\"o_stat_text\">Privacy Policy</span>"
+msgstr "<span class=\"o_stat_text\">Política de privacidad</span>"
+
+#. module: auth_signup_privacy_consent_policy
+#: model_terms:ir.ui.view,arch_db:auth_signup_privacy_consent_policy.fields
+msgid "By registering, you declare that you accept the"
+msgstr "Al registrarse, declara que acepta la"
+
+#. module: auth_signup_privacy_consent_policy
+#: model:ir.model,name:auth_signup_privacy_consent_policy.model_privacy_activity
+msgid "Data processing activities"
+msgstr "Actividades de tratamiento de datos"
+
+#. module: auth_signup_privacy_consent_policy
+#: model:ir.model.fields,field_description:auth_signup_privacy_consent_policy.field_privacy_activity__privacy_policy
+#: model_terms:ir.ui.view,arch_db:auth_signup_privacy_consent_policy.fields
+msgid "Privacy Policy"
+msgstr "Política de privacidad"
+
+#. module: auth_signup_privacy_consent_policy
+#. odoo-python
+#: code:addons/auth_signup_privacy_consent_policy/models/privacy_activity.py:0
+#, python-format
+msgid "Privacy Policy activity must require consent."
+msgstr "La actividad de la política de privacidad debe requerir consentimiento."
+
+#. module: auth_signup_privacy_consent_policy
+#: model_terms:ir.ui.view,arch_db:auth_signup_privacy_consent_policy.privacy_policy
+msgid "Privacy Policy not defined"
+msgstr "Política de privacidad no definida"
+
+#. module: auth_signup_privacy_consent_policy
+#. odoo-python
+#: code:addons/auth_signup_privacy_consent_policy/models/privacy_activity.py:0
+#, python-format
+msgid "There can be only one privacy policy activity."
+msgstr "Solo puede haber una actividad de política de privacidad."

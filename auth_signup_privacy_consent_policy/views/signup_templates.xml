@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <template id="fields" inherit_id="auth_signup.signup" priority="100">
+        <xpath expr="//button[@type='submit']" position="before">
+            <t
+                t-set="privacy_policy"
+                t-value="request.env['privacy.activity'].sudo().search([('privacy_policy', '=', True), ('consent_required', '!=', False)], limit=1)"
+            />
+            <t t-if="privacy_policy.description_has_text()">
+                <div>
+                    <span class="form-select-sm">
+                        By registering, you declare that you accept the
+                        <a
+                            t-attf-href="/web/privacy_policy"
+                            target="_new"
+                            class="btn btn-link btn-sm"
+                            role="button"
+                        >Privacy Policy</a>.
+                    </span>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
