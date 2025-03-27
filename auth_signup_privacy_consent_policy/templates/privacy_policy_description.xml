@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <template id="privacy_policy">
+        <t t-call="web.login_layout">
+            <div class="container readable oe_structure">
+                <t t-if="description">
+                    <t t-out="description" />
+                </t>
+                <t t-else="">Privacy Policy not defined</t>
+            </div>
+        </t>
+    </template>
+</odoo>
