@@ -1,7 +1,6 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
 import functools
 import logging
 
@@ -21,8 +20,5 @@ class Binary(http.Controller):
         cors="*",
     )
     def no_logo(self, dbname=None, **kw):
-        placeholder = functools.partial(
-            get_resource_path, "web", "static", "src", "img"
-        )
-
-        return http.send_file(placeholder("nologo.png"))
+        placeholder = functools.partial(get_resource_path, "web", "static", "img")
+        return http.Stream.from_path(placeholder("nologo.png")).get_response()
