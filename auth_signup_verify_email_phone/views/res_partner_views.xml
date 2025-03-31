@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <record id="res_partner_view_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="image_1920" position="before">
+                <group>
+                    <div
+                        style="display: flex; align-items: center; gap: 10px; font-size: 16px;"
+                    >
+                        AUTHENTICATION
+                        <span
+                            attrs="{'invisible': [('signup_email_validated', '=', True)]}"
+                        >
+                            <i
+                                class="fa fa-envelope text-danger"
+                                title="Email not verified"
+                            />
+                        </span>
+                        <span
+                            attrs="{'invisible': [('signup_email_validated', '=', False)]}"
+                        >
+                            <i
+                                class="fa fa-envelope text-success"
+                                title="Email verified"
+                            />
+                        </span>
+
+                        <span
+                            attrs="{'invisible': [('signup_mobile_validated', '=', True)]}"
+                        >
+                            <i
+                                class="fa fa-phone text-danger"
+                                title="Mobile not verified"
+                            />
+                        </span>
+                        <span
+                            attrs="{'invisible': [('signup_mobile_validated', '=', False)]}"
+                        >
+                            <i
+                                class="fa fa-phone text-success"
+                                title="Mobile verified"
+                            />
+                        </span>
+                    </div>
+                </group>
+            </field>
+            <field name="vat" position="after">
+                <field name="signup_email_validated" widget="boolean_toggle" />
+                <field name="signup_mobile_validated" widget="boolean_toggle" />
+            </field>
+        </field>
+    </record>
+</odoo>
