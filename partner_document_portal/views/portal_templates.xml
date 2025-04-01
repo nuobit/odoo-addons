@@ -141,6 +141,42 @@ License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
                             <t t-out="document.document_type_id.name" />
                         </h3>
                     </div>
+                    <t t-if="document.document_type_id.template_id">
+                        <t
+                                t-set="template_file"
+                                t-value="document.get_template_file_by_lang()"
+                            />
+                        <t t-if="template_file">
+                            <div class="form-group mb-3">
+                                <div
+                                        class="border p-3 rounded bg-light d-flex justify-content-between align-items-center"
+                                    >
+                                    <div>
+                                        <label class="font-weight-bold">
+                                            Template:
+                                        </label>
+                                        <span class="ml-2">
+                                            <t t-esc="template_file.template_id.name" />
+                                        </span>
+                                    </div>
+                                    <a
+                                            t-att-href="template_file.get_portal_url(suffix='/download', download=True)"
+                                            class="btn btn-info"
+                                        >
+                                        <i class="fa fa-download" /> Download Template
+                                    </a>
+                                </div>
+                                <div class="alert alert-info mt-3" role="alert">
+                                    Please download the template, fill it in, and then upload the completed file below.
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-warning" role="alert">
+                                The template for this language is not available. Please contact support or change the language.
+                            </div>
+                        </t>
+                    </t>
                     <div class="form-group mb-3">
                         <label class="font-weight-bold">Description:</label>
                         <input
@@ -152,17 +188,19 @@ License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
                                 required="required"
                             />
                     </div>
-                    <div class="form-group mb-3">
-                        <label class="font-weight-bold">Expiration Date:</label>
-                        <input
-                                type="date"
-                                name="expiration_date"
-                                class="form-control"
-                                t-att-value="document.expiration_date"
-                                t-att-readonly="document.validated"
-                                required="required"
-                            />
-                    </div>
+                    <t t-if="not document.document_type_id.template_id">
+                        <div class="form-group mb-3">
+                            <label class="font-weight-bold">Expiration Date:</label>
+                            <input
+                                    type="date"
+                                    name="expiration_date"
+                                    class="form-control"
+                                    t-att-value="document.expiration_date"
+                                    t-att-readonly="document.validated"
+                                    required="required"
+                                />
+                        </div>
+                    </t>
                     <div class="form-group mb-3">
                         <label class="font-weight-bold">Validated:</label>
                         <t t-if="document.validated">
@@ -200,8 +238,7 @@ License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
                             class="btn btn-primary float-end mb32"
                             t-if="not document.validated"
                         >
-                        Update Document
-                        <span class="fa fa-long-arrow-right" />
+                        Confirm
                     </button>
                 </form>
             </div>

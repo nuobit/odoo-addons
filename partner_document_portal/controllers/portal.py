@@ -44,6 +44,7 @@ class DocumentPortal(CustomerPortal):
                     [
                         ("res_model", "=", "partner.document"),
                         ("res_id", "=", partner_sudo.id),
+                        ("id", "!=", False),
                     ],
                     limit=1,
                 )
@@ -56,9 +57,53 @@ class DocumentPortal(CustomerPortal):
                     ("Content-Type", mimetype),
                     (
                         "Content-Disposition",
-                        f'attachment; filename="{attachment.name}"'
+                        f'attachment; filename="{partner_sudo.datas_fname}"'
                         if download
-                        else f'inline; filename="{partner_sudo.name}"',
+                        else f'inline; filename="{partner_sudo.datas_fname}"',
+                    ),
+                ],
+            )
+        except (AccessError, MissingError):
+            return request.redirect("/my")
+
+    @http.route(
+        ["/my/documents/template/<int:template_file_id>/download"],
+        type="http",
+        auth="public",
+        website=True,
+    )
+    def _download_document_template_file(
+        self, template_file_id, access_token=None, download=False, **kw
+    ):
+        try:
+            template_file_sudo = self._document_check_access(
+                "partner.document.template.file",
+                template_file_id,
+                access_token=access_token,
+            )
+            attachment = (
+                request.env["ir.attachment"]
+                .sudo()
+                .search(
+                    [
+                        ("res_model", "=", "partner.document.template.file"),
+                        ("res_id", "=", template_file_sudo.id),
+                        ("id", "!=", False),
+                    ],
+                    limit=1,
+                )
+            )
+            mimetype = attachment.mimetype or "application/octet-stream"
+
+            return request.make_response(
+                base64.b64decode(template_file_sudo.datas),
+                headers=[
+                    ("Content-Type", mimetype),
+                    (
+                        "Content-Disposition",
+                        f'attachment; filename="{template_file_sudo.datas_fname}"'
+                        if download
+                        else f'inline; filename="{template_file_sudo.datas_fname}"',
                     ),
                 ],
             )
@@ -171,25 +216,14 @@ class DocumentPortal(CustomerPortal):
         file = post.get("attachment")
         if file:
             try:
-                attachment = (
-                    request.env["ir.attachment"]
-                    .sudo()
-                    .create(
-                        {
-                            "name": file.filename,
-                            "datas": base64.b64encode(file.read()).decode("ascii"),
-                            "res_model": "partner.document",
-                            "res_id": document_id,
-                            "type": "binary",
-                            "mimetype": file.mimetype,
-                        }
-                    )
-                )
                 document.write(
-                    {"datas": attachment.datas, "datas_fname": attachment.name}
+                    {
+                        "datas_fname": file.filename,
+                        "datas": base64.b64encode(file.read()).decode("ascii"),
+                    }
                 )
             except Exception:
                 return request.redirect(
                     f"/my/documents/{document_id}?error=attachment_failed"
                 )
-        return request.redirect("/my/documents/%s" % document_id)
+        return request.redirect("/my/documents")

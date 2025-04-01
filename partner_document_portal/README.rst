@@ -57,14 +57,6 @@ Contributors
 Maintainers
 ~~~~~~~~~~~
 
-.. |maintainer-KNVx| image:: https://github.com/KNVx.png?size=40px
-    :target: https://github.com/KNVx
-    :alt: KNVx
-
-Current maintainer:
-
-|maintainer-KNVx| 
-
 This module is part of the `nuobit/odoo-addons <https://github.com/nuobit/odoo-addons/tree/16.0/partner_document_portal>`_ project on GitHub.
 
 You are welcome to contribute.
