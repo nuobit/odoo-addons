@@ -21,6 +21,7 @@ class PartnerDocumentType(models.Model):
         required=True,
         default=1,
     )
+    template_id = fields.Many2one(comodel_name="partner.document.template")
 
     @api.constrains("name")
     def _check_name(self):
@@ -31,6 +32,15 @@ class PartnerDocumentType(models.Model):
                 raise ValidationError(
                     _("The name must be unique!"),
                 )
+
+    @api.constrains("template_id")
+    def _check_template_id(self):
+        for rec in self:
+            if rec.template_id:
+                if not rec.template_id.file_ids.filtered(lambda x: x.default):
+                    raise ValidationError(
+                        _("To assign a template, you must first set a default file.")
+                    )
 
     def unlink(self):
         records = self.env["partner.classification"].search(

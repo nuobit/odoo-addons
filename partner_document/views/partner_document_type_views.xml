@@ -17,6 +17,7 @@
 
                     <group>
                         <field name="description" />
+                        <field name="template_id" />
                     </group>
                 </sheet>
             </form>
@@ -31,6 +32,7 @@
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="description" />
+                <field name="template_id" widget="many2one" />
             </tree>
         </field>
     </record>

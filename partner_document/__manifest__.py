@@ -19,6 +19,7 @@
         "views/partner_classification_views.xml",
         "views/partner_document_type_views.xml",
         "views/partner_document_views.xml",
+        "views/partner_document_template_views.xml",
         "wizard/partner_document_expired_wizard.xml",
     ],
     "assets": {

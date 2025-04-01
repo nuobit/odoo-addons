@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="partner_document_template_view_form" model="ir.ui.view">
+        <field name="name">partner.document.template.view.form</field>
+        <field name="model">partner.document.template</field>
+        <field name="arch" type="xml">
+            <form string="Partner Form">
+                <header />
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name" />
+                        </h1>
+                    </div>
+
+                    <group name="file_ids" string="Files">
+                        <div class="alert alert-info text-center" colspan="2">
+                            Remember: There must be a default file for the template if none exists for the language.
+                        </div>
+                        <field name="file_ids" nolabel="1" colspan="2">
+                            <tree editable="bottom">
+                                <field
+                                    name="default"
+                                    widget="boolean_toggle"
+                                    options="{'autosave': False}"
+                                />
+                                <field name="lang_id" />
+                                <field name="datas_fname" invisible="1" />
+                                <field
+                                    name="datas"
+                                    filename="datas_fname"
+                                    widget="binary"
+                                />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="partner_document_template_view_tree" model="ir.ui.view">
+        <field name="name">partner.document.template.view.tree</field>
+        <field name="model">partner.document.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="partner_document_template_list_action" model="ir.actions.act_window">
+        <field name="name">Document templates</field>
+        <field name="res_model">partner.document.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first document template
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="partner_document_template_menu"
+        name="Document templates"
+        parent="partner_document.partner_document_menu"
+        action="partner_document_template_list_action"
+        sequence="30"
+    />
+</odoo>
