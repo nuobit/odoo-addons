@@ -15,7 +15,6 @@
                                 name="document_type_id"
                                 domain="[('id', 'in', partner_class_mandatory_document_type_ids)]"
                             />
-
                         </group>
                     </group>
                     <group col="4">

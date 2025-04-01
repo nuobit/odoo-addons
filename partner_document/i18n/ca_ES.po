@@ -1,19 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#   * partner_document
+# 	* partner_document
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-27 10:04+0000\n"
-"PO-Revision-Date: 2024-12-27 10:04+0000\n"
+"POT-Creation-Date: 2025-04-02 14:30+0000\n"
+"PO-Revision-Date: 2025-04-02 14:30+0000\n"
 "Last-Translator: \n"
-"Language-Team: ca_ES\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
@@ -48,19 +48,21 @@ msgid "Create the first classification"
 msgstr "Crea la primera classificació"
 
 #. module: partner_document
+#: model_terms:ir.actions.act_window,help:partner_document.partner_document_template_list_action
+msgid "Create the first document template"
+msgstr "Crea la primera plantilla de document"
+
+#. module: partner_document
 #: model_terms:ir.actions.act_window,help:partner_document.partner_document_type_list_action
 msgid "Create the first document type"
 msgstr "Crea el primer tipus de document"
 
 #. module: partner_document
-#: model_terms:ir.actions.act_window,help:partner_document.partner_document_list_action
-msgid "Create the first partner document"
-msgstr "Crea el primer document de soci"
-
-#. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__create_uid
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__create_uid
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__create_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template__create_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__create_uid
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__create_uid
 msgid "Created by"
 msgstr "Creat per"
@@ -69,9 +71,16 @@ msgstr "Creat per"
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__create_date
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__create_date
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__create_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template__create_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__create_date
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__create_date
 msgid "Created on"
 msgstr "Creat el"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__datas
+msgid "Datas"
+msgstr ""
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__date_from
@@ -85,6 +94,7 @@ msgstr "Data fins a"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__default
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__default
 msgid "Default"
 msgstr "Per defecte"
 
@@ -99,6 +109,8 @@ msgstr "Descripció"
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__display_name
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__display_name
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__display_name
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template__display_name
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__display_name
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__display_name
 msgid "Display Name"
 msgstr "Nom per mostrar"
@@ -109,6 +121,12 @@ msgstr "Nom per mostrar"
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__document_type_ids
 msgid "Document Type"
 msgstr "Tipus de document"
+
+#. module: partner_document
+#: model:ir.actions.act_window,name:partner_document.partner_document_template_list_action
+#: model:ir.ui.menu,name:partner_document.partner_document_template_menu
+msgid "Document templates"
+msgstr "Plantilles de documents"
 
 #. module: partner_document
 #: model:ir.actions.act_window,name:partner_document.partner_document_type_list_action
@@ -135,13 +153,24 @@ msgstr "Vençut"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__datas
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template__file_ids
 msgid "File"
 msgstr "Fitxer"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__datas_fname
+msgid "File Name"
+msgstr "Nom de fitxer"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__datas_fname
 msgid "Filename"
 msgstr "Nom de fitxer"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_template_view_form
+msgid "Files"
+msgstr "Fitxers"
 
 #. module: partner_document
 #: model:res.groups,name:partner_document.partner_document_group_guest
@@ -152,14 +181,23 @@ msgstr "Convidat"
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__id
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__id
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__id
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template__id
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__id
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__lang_id
+msgid "Lang"
+msgstr "Idioma"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification____last_update
 #: model:ir.model.fields,field_description:partner_document.field_partner_document____last_update
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard____last_update
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template____last_update
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file____last_update
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type____last_update
 msgid "Last Modified on"
 msgstr "Última modificació el"
@@ -168,6 +206,8 @@ msgstr "Última modificació el"
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__write_uid
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__write_uid
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__write_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template__write_uid
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__write_uid
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__write_uid
 msgid "Last Updated by"
 msgstr "Actualitzat per última vegada per"
@@ -176,6 +216,8 @@ msgstr "Actualitzat per última vegada per"
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__write_date
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__write_date
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__write_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template__write_date
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__write_date
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__write_date
 msgid "Last Updated on"
 msgstr "Actualitzat per última vegada el"
@@ -192,8 +234,10 @@ msgstr "Tipus de document obligatori"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__name
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template__name
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__name
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_classification_view_form
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_template_view_form
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
 msgid "Name"
 msgstr "Nom"
@@ -204,6 +248,20 @@ msgstr "Nom"
 #, python-format
 msgid "Only one default classification allowed"
 msgstr "Només es permet una classificació per defecte"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document_template_file.py:0
+#, python-format
+msgid "Only one file can be the default."
+msgstr "Només es pot establir un fitxer com a predeterminat."
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document_template_file.py:0
+#, python-format
+msgid "Only one file can set for the same language."
+msgstr "Només es pot establir un fitxer per al mateix idioma."
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__partner_id
@@ -222,10 +280,19 @@ msgid "Partner Classification"
 msgstr "Classificació del soci"
 
 #. module: partner_document
-#: model:ir.actions.act_window,name:partner_document.partner_document_list_action
 #: model:ir.model,name:partner_document.model_partner_document
 msgid "Partner Document"
 msgstr "Document del soci"
+
+#. module: partner_document
+#: model:ir.model,name:partner_document.model_partner_document_template
+msgid "Partner Document Template"
+msgstr "Plantilla de document del contacte"
+
+#. module: partner_document
+#: model:ir.model,name:partner_document.model_partner_document_template_file
+msgid "Partner Document Template File"
+msgstr "Fitxer de plantilla de document del soci"
 
 #. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document_type
@@ -243,6 +310,7 @@ msgid "Partner Documents"
 msgstr "Documents del soci"
 
 #. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_template_view_form
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_view_form
 msgid "Partner Form"
@@ -255,7 +323,6 @@ msgstr "Formulari de classificació de soci"
 
 #. module: partner_document
 #: model:ir.module.category,name:partner_document.partner_document_security
-#: model:ir.ui.menu,name:partner_document.partner_document_list_menu
 msgid "Partner document"
 msgstr "Document del soci"
 
@@ -263,6 +330,15 @@ msgstr "Document del soci"
 #: model:ir.model,name:partner_document.model_partner_document_expired_wizard
 msgid "Partner expired document wizard"
 msgstr "Assistent de documents de soci vençuts"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_template_view_form
+msgid ""
+"Remember: There must be a default file for the template if none exists for "
+"the language."
+msgstr ""
+"Recorda: Ha d'haver-hi un fitxer predeterminat per a la plantilla si no n'hi "
+"ha cap per a l'idioma."
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
@@ -286,11 +362,24 @@ msgid "Sequence"
 msgstr "Seqüència"
 
 #. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__template_id
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__template_id
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: partner_document
 #. odoo-python
 #: code:addons/partner_document/models/partner_document_type.py:0
 #, python-format
 msgid "The name must be unique!"
 msgstr "El nom ha de ser únic!"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document_type.py:0
+#, python-format
+msgid "To assign a template, you must first set a default file."
+msgstr "Per assignar una plantilla, primer has d'establir un fitxer per defecte."
 
 #. module: partner_document
 #: model:res.groups,name:partner_document.partner_document_group_user
@@ -309,15 +398,20 @@ msgstr "Estàs intentant suprimir un registre que encara està referenciat!"
 #. odoo-python
 #: code:addons/partner_document/models/partner_document.py:0
 #, python-format
-msgid "You can't change the %(document_type)s (%(classification)s) if it has a File"
-msgstr "No pots canviar %(document_type)s (%(classification)s) si té un fitxer"
+msgid ""
+"You can't change the %(document_type)s (%(classification)s) if it has a File"
+msgstr ""
+"No pots canviar %(document_type)s (%(classification)s) si té un fitxer"
 
 #. module: partner_document
 #. odoo-python
 #: code:addons/partner_document/models/partner_document.py:0
 #, python-format
-msgid "You can't delete %(document_type)s (%(classification)s) because it has a File"
-msgstr "No pots suprimir %(document_type)s (%(classification)s) perquè té un fitxer"
+msgid ""
+"You can't delete %(document_type)s (%(classification)s) because it has a "
+"File"
+msgstr ""
+"No pots suprimir %(document_type)s (%(classification)s) perquè té un fitxer"
 
 #. module: partner_document
 #. odoo-python
@@ -325,9 +419,9 @@ msgstr "No pots suprimir %(document_type)s (%(classification)s) perquè té un f
 #, python-format
 msgid ""
 "You cannot delete %(document_type)s because it is required in "
-"(%(classification)s). If you want to delete it, you must delete the files of "
-"the rest of the document types of this classification"
+"(%(classification)s). If you want to delete it, you must delete the files of"
+" the rest of the document types of this classification"
 msgstr ""
-"No pots suprimir %(document_type)s perquè és obligatori a (%(classification)s). "
-"Si vols suprimir-lo, has d'eliminar els fitxers de la resta de tipus de document "
-"d'aquesta classificació"
+"No pots suprimir %(document_type)s perquè és obligatori a "
+"(%(classification)s). Si vols suprimir-lo, has d'eliminar els fitxers de la "
+"resta de tipus de document d'aquesta classificació"
