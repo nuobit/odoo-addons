@@ -14,3 +14,16 @@ class PartnerDocument(models.Model):
         for document in self:
             document.access_url = f"/my/documents/{document.id}"
         return res
+
+    def get_template_file_by_lang(self):
+        lang = self.env.context.get("lang")
+        if not lang:
+            lang = self.env.user.lang
+        template_file = self.document_type_id.template_id.file_ids.filtered(
+            lambda x: x.lang_id.code == lang
+        )
+        if not template_file:
+            template_file = self.document_type_id.template_id.file_ids.filtered(
+                lambda x: x.default
+            )
+        return template_file

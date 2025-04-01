@@ -6,20 +6,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-27 09:57+0000\n"
-"PO-Revision-Date: 2024-12-27 09:57+0000\n"
+"POT-Creation-Date: 2025-04-02 13:32+0000\n"
+"PO-Revision-Date: 2025-04-02 13:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: es\n"
+"Plural-Forms: \n"
 
 #. module: partner_document_portal
 #: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
 msgid "<i class=\"fa fa-download\"/> Download Attachment"
 msgstr "<i class=\"fa fa-download\"/> Descargar adjunto"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "<i class=\"fa fa-download\"/> Download Template"
+msgstr "<i class=\"fa fa-download\"/> Descargar plantilla"
 
 #. module: partner_document_portal
 #: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
@@ -63,10 +67,11 @@ msgstr "<span class=\"text-success\">Validado</span>"
 #. module: partner_document_portal
 #: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
 msgid "<strong>Error:</strong>"
-msgstr "<strong>Error:</strong>"
+msgstr ""
 
 #. module: partner_document_portal
 #: model:ir.model.fields,field_description:partner_document_portal.field_partner_document__access_warning
+#: model:ir.model.fields,field_description:partner_document_portal.field_partner_document_template_file__access_warning
 msgid "Access warning"
 msgstr "Advertencia de acceso"
 
@@ -81,7 +86,13 @@ msgid "Attachments:"
 msgstr "Adjuntos:"
 
 #. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: partner_document_portal
 #: model:ir.model.fields,help:partner_document_portal.field_partner_document__access_url
+#: model:ir.model.fields,help:partner_document_portal.field_partner_document_template_file__access_url
 msgid "Customer Portal URL"
 msgstr "URL del portal del cliente"
 
@@ -122,28 +133,48 @@ msgid "Partner Document"
 msgstr "Documento del socio"
 
 #. module: partner_document_portal
+#: model:ir.model,name:partner_document_portal.model_partner_document_template_file
+msgid "Partner Document Template File"
+msgstr "Archivo de plantilla de documento del contacto"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid ""
+"Please download the template, fill it in, and then upload the completed file"
+" below."
+msgstr ""
+"Por favor, descargue la plantilla, complétela y luego suba el archivo "
+"completado a continuación."
+
+#. module: partner_document_portal
 #: model:ir.model.fields,field_description:partner_document_portal.field_partner_document__access_url
+#: model:ir.model.fields,field_description:partner_document_portal.field_partner_document_template_file__access_url
 msgid "Portal Access URL"
 msgstr "URL de acceso al portal"
 
 #. module: partner_document_portal
 #: model:ir.model.fields,field_description:partner_document_portal.field_partner_document__access_token
+#: model:ir.model.fields,field_description:partner_document_portal.field_partner_document_template_file__access_token
 msgid "Security Token"
 msgstr "Token de seguridad"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid "Template:"
+msgstr "Plantilla:"
+
+#. module: partner_document_portal
+#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
+msgid ""
+"The template for this language is not available. Please contact support or change the language."
+msgstr ""
+"La plantilla para este idioma no está disponible. Por favor, póngase en "
+"contacto con soporte o cambie el idioma."
 
 #. module: partner_document_portal
 #: model_terms:ir.ui.view,arch_db:partner_document_portal.portal_my_documents
 msgid "There are no Documents."
 msgstr "No hay documentos."
-
-#. module: partner_document_portal
-#: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
-msgid ""
-"Update Document\n"
-"                        <span class=\"fa fa-long-arrow-right\"/>"
-msgstr ""
-"Actualizar documento\n"
-"                        <span class=\"fa fa-long-arrow-right\"/>"
 
 #. module: partner_document_portal
 #: model_terms:ir.ui.view,arch_db:partner_document_portal.partner_document_portal_content
