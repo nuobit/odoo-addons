@@ -15,9 +15,9 @@ class Partner(models.Model):
         if self.env.context.get("no_format_phone"):
             return vals
 
-        if "phone" in values:
+        if values.get("phone"):
             vals["phone"] = phone_format(values["phone"], False, False)
-        if "mobile" in values:
+        if values.get("mobile"):
             vals["mobile"] = phone_format(values["mobile"], False, False)
         return vals
 
