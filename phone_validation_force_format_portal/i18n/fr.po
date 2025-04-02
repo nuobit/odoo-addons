@@ -1,0 +1,43 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* phone_validation_force_format_portal
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-02 12:54+0000\n"
+"PO-Revision-Date: 2025-04-02 12:54+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: phone_validation_force_format_portal
+#. odoo-python
+#: code:addons/phone_validation_force_format_portal/controllers/portal.py:0
+#, python-format
+msgid ""
+"Invalid %s number. Please use the format:\n"
+"+[Country Code][Number]\n"
+"Example: +34612345758"
+msgstr ""
+"Numéro %s invalide. Veuillez utiliser le format :\n"
+"+[Code pays][Numéro]\n"
+"Exemple : +33612345678"
+
+#. module: phone_validation_force_format_portal
+#. odoo-python
+#: code:addons/phone_validation_force_format_portal/controllers/portal.py:0
+#, python-format
+msgid "phone"
+msgstr "téléphone"
+
+#. module: phone_validation_force_format_portal
+#. odoo-python
+#: code:addons/phone_validation_force_format_portal/controllers/portal.py:0
+#, python-format
+msgid "mobile"
+msgstr "mobile"
