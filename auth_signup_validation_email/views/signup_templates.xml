@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <template id="signup_fields" inherit_id="auth_signup.fields">
+        <xpath expr="//input[@name='login']" position="attributes">
+            <attribute name="type">email</attribute>
+        </xpath>
+    </template>
+</odoo>
