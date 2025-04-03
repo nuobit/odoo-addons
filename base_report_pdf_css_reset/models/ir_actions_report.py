@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import lxml.html
+from markupsafe import Markup
 
 from odoo import models
 
@@ -32,6 +33,6 @@ class IrActionsReport(models.Model):
                         del elem.attrib["class"]
                     else:
                         elem.attrib["class"] = " ".join(classes_tmp)
-                    bodies_tmp.append(lxml.html.tostring(root))
+                    bodies_tmp.append(Markup(lxml.html.tostring(root).decode()))
             bodies = bodies_tmp
         return bodies, res_ids, header, footer, specific_paperformat_args
