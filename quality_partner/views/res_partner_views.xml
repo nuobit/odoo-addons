@@ -15,7 +15,7 @@
                 <page
                     string="Quality"
                     attrs="{'invisible': [('supplier_rank', '&lt;=', 0), ('is_company', '=', True)]}"
-                    group="quality_partner.quality_partner_group_guest"
+                    groups="quality_partner.quality_partner_group_guest"
                 >
                     <notebook>
                         <page string="Supplier classification">
