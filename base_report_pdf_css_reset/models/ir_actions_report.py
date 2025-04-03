@@ -9,14 +9,14 @@ from odoo import models
 class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
-    def _prepare_html(self, html):
+    def _prepare_html(self, html, report_model=False):
         (
             bodies,
             res_ids,
             header,
             footer,
             specific_paperformat_args,
-        ) = super()._prepare_html(html)
+        ) = super()._prepare_html(html, report_model=report_model)
         if self.env.context.get("no_paddings", False):
             bodies_tmp = []
             for body in bodies:
