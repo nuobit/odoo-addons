@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <template id="auth_signup" inherit_id="auth_signup.signup" priority="100">
+        <xpath expr="//p[@class='alert alert-danger']/t" position="replace">
+            <t t-raw="error" />
+        </xpath>
+    </template>
+</odoo>
