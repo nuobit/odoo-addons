@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -11,10 +11,10 @@ class QualityPartnerDocumentType(models.Model):
     _description = "Quality Partner Document Type"
     _order = "sequence"
 
-    name = fields.Char(string="Name", translate=True, required=True)
-    code = fields.Char(string="Code")
-    description = fields.Text(string="Description")
-    sequence = fields.Integer(string="Sequence", required=True, default=1)
+    name = fields.Char(translate=True, required=True)
+    code = fields.Char()
+    description = fields.Text()
+    sequence = fields.Integer(required=True, default=1)
 
     def unlink(self):
         records = self.env["quality.partner.classification"].search(
