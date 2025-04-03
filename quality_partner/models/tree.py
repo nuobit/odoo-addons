@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -19,9 +19,9 @@ class QualityTreeMixin(models.AbstractModel):
 
     # complete_name
     complete_name = fields.Char(
-        "Complete Name",
         compute="_compute_complete_name",
         search="_search_complete_name",
+        recursive=True,
     )
 
     def get_complete_name(self):
@@ -94,7 +94,6 @@ class QualityTreeMixin(models.AbstractModel):
 
     # level
     level = fields.Integer(
-        string="Level",
         compute="_compute_level",
         search="_search_level",
         # store=True
