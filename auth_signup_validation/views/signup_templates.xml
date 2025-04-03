@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <template id="signup_fields" inherit_id="auth_signup.fields">
+        <xpath expr="//div[hasclass('field-password')]" position="before">
+            <t t-set="authless_signup" t-value="auth_signup_method == 'none'" />
+        </xpath>
+        <xpath expr="//div[hasclass('field-password')]" position="attributes">
+            <attribute name="t-if">only_passwords or authless_signup</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('field-confirm_password')]" position="attributes">
+            <attribute name="t-if">only_passwords or authless_signup</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('field-confirm_password')]" position="after">
+            <div class="mb-3 field-name">
+                <label for="language">Preferred Language</label>
+                <select name="language" class="form-control" required="True">
+                    <t t-foreach="languages" t-as="lang" t-key="lang[0]">
+                        <option
+                            t-att-value="lang[0]"
+                            t-att-selected="lang[0] == (language or request.env.context.get('lang', 'en_US'))"
+                        ><t t-esc="lang[2].split('/').pop()" /></option>
+                    </t>
+                </select>
+            </div>
+        </xpath>
+    </template>
+</odoo>
