@@ -1,7 +1,6 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
 from odoo import api, fields, models
 
 
@@ -26,7 +25,6 @@ class QualityPartnerDocument(models.Model):
 
     document_type_id = fields.Many2one(
         comodel_name="quality.partner.document.type",
-        string="Document type",
         required=True,
         domain="[('id', 'in', partner_quality_classification_id.document_type_ids.ids)]",
         ondelete="restrict",
@@ -35,9 +33,9 @@ class QualityPartnerDocument(models.Model):
     datas = fields.Binary(string="File", attachment=True, required=True)
     datas_fname = fields.Char(string="Filename", required=True)
 
-    date = fields.Date(string="Date", required=True)
+    date = fields.Date(required=True)
 
-    description = fields.Text(string="Description")
+    description = fields.Text()
 
     @api.depends("partner_quality_classification_id")
     def _compute_partner_class_mandatory_document_type_ids(self):

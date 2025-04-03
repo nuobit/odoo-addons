@@ -1,7 +1,6 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -23,16 +22,15 @@ class QualityPartnerClassification(models.Model):
     _rec_name = "complete_name"
     _order = "sequence"
 
-    name = fields.Char(string="Name", translate=True, required=True)
-    code = fields.Char(string="Code")
+    name = fields.Char(translate=True, required=True)
+    code = fields.Char()
 
-    level_type = fields.Selection(selection=LEVELS, string="Level type", required=True)
+    level_type = fields.Selection(selection=LEVELS, required=True)
 
-    description = fields.Text(string="Description")
+    description = fields.Text()
 
     parent_id = fields.Many2one(
         comodel_name="quality.partner.classification",
-        string="Parent",
         ondelete="restrict",
     )
 
@@ -44,7 +42,7 @@ class QualityPartnerClassification(models.Model):
         string="Document types",
     )
 
-    sequence = fields.Integer(string="Sequence")
+    sequence = fields.Integer()
 
     mandatory_document_type_ids = fields.Many2many(
         comodel_name="quality.partner.document.type",
