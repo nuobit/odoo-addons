@@ -1,7 +1,9 @@
 # generated from manifests external_dependencies
+email_validator
 lxml
 mysql-connector-python==8.0.31
 openpyxl
+phonenumbers
 pymssql
 pystrich
 requests
