@@ -1,0 +1,75 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_move_location_picking_type_default
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-09 10:51+0000\n"
+"PO-Revision-Date: 2025-04-09 10:51+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_move_location_picking_type_default
+#: model:ir.model.fields,field_description:stock_move_location_picking_type_default.field_stock_picking_type__display_name
+#: model:ir.model.fields,field_description:stock_move_location_picking_type_default.field_wiz_stock_move_location__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: stock_move_location_picking_type_default
+#: code:addons/stock_move_location_picking_type_default/models/stock_picking_type.py:0
+#, python-format
+msgid ""
+"Field 'Use in location moves' can only be activated for 'Internal Transfer' "
+"operations."
+msgstr ""
+"Le champ 'Utiliser dans les mouvements de localisation' ne peut être "
+"activé que pour les opérations de 'Transfert interne'."
+
+#. module: stock_move_location_picking_type_default
+#: model:ir.model.fields,field_description:stock_move_location_picking_type_default.field_stock_picking_type__id
+#: model:ir.model.fields,field_description:stock_move_location_picking_type_default.field_wiz_stock_move_location__id
+msgid "ID"
+msgstr ""
+
+#. module: stock_move_location_picking_type_default
+#: model:ir.model.fields,field_description:stock_move_location_picking_type_default.field_stock_picking_type____last_update
+#: model:ir.model.fields,field_description:stock_move_location_picking_type_default.field_wiz_stock_move_location____last_update
+msgid "Last Modified on"
+msgstr "Modifié le"
+
+#. module: stock_move_location_picking_type_default
+#: code:addons/stock_move_location_picking_type_default/models/stock_picking_type.py:0
+#, python-format
+msgid ""
+"Only one operation type can be marked with 'Use in location moves' per "
+"company. Please uncheck '%s' before continuing."
+msgstr ""
+"Un seul type d'opération peut être marqué comme 'Utilisé dans les mouvements "
+"de localisation' par société. Veuillez décocher '%s' avant de continuer."
+
+#. module: stock_move_location_picking_type_default
+#: model:ir.model,name:stock_move_location_picking_type_default.model_stock_picking_type
+msgid "Picking Type"
+msgstr "Type d'Opération"
+
+#. module: stock_move_location_picking_type_default
+#: model:ir.model.fields,field_description:stock_move_location_picking_type_default.field_stock_picking_type__use_in_location_moves
+msgid "Use In Location Moves"
+msgstr "Utilisé dans les mouvements de localisation"
+
+#. module: stock_move_location_picking_type_default
+#: model:ir.model,name:stock_move_location_picking_type_default.model_wiz_stock_move_location
+msgid "Wizard move location"
+msgstr "Assistant de déplacement"
+
+#. module: stock_move_location_picking_type_default
+#: code:addons/stock_move_location_picking_type_default/wizard/stock_move_location.py:0
+#, python-format
+msgid "You must first set a default picking type marked as 'Use in location moves'"
+msgstr "Vous devez d'abord définir un type d'opération par défaut marqué comme 'Utilisé dans les mouvements de localisation'"
