@@ -28,7 +28,7 @@ class WooCommerceProductTemplateAdapter(Component):
             # This conversion is to "revert" first conversion done on prepare_data
             if isinstance(data["regular_price"], str):
                 data["regular_price"] = float(data["regular_price"])
-            if isinstance(data["regular_price"], str):
+            if isinstance(data["sale_price"], str):
                 data["sale_price"] = float(data["sale_price"])
             res = super().write(external_id, data)
         return res
