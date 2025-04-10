@@ -19,9 +19,12 @@ class WooCommerceProductTemplateAdapter(Component):
     def write(self, external_id, data):  # pylint: disable=W8106
         old_sku = None
         if data.get("type") == "simple":
-            old_sku = data.pop("sku")
-            if isinstance(old_sku, list):
-                old_sku = old_sku[0]
+            if data.get("translation_of"):
+                data.pop("sku")
+            else:
+                old_sku = data.pop("sku")
+                if isinstance(old_sku, list):
+                    old_sku = old_sku[0]
         res = super().write(external_id, data)
         if old_sku and res["data"].get("sku") != old_sku:
             data["sku"] = old_sku

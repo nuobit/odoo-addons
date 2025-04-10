@@ -3,7 +3,7 @@
 
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import changed_by, mapping, only_create
+from odoo.addons.connector.components.mapper import changed_by, mapping
 from odoo.addons.connector_extension.common import tools
 
 
@@ -19,17 +19,17 @@ class WooCommerceProductTemplateExportMapper(Component):
         )
         return {"lang": lang}
 
-    @only_create
     @mapping
     def translation_of(self, record):
         lang_code = record._context.get("lang")
+        if lang_code == self.backend_record.language_ids[0].code:
+            # We don't need to set translation_of for the default lang
+            return {}
         if lang_code:
+            wpml_code = self.env["res.lang"]._get_wpml_code_from_iso_code(lang_code)
             other_binding_backend = record.woocommerce_bind_ids.filtered(
                 lambda x: x.backend_id == self.backend_record
-                and x.woocommerce_lang
-                != self.env["res.lang"]._get_wpml_code_from_iso_code(
-                    record._context.get("lang")
-                )
+                and x.woocommerce_lang != wpml_code
             )
             translation_of = None
             for obb in other_binding_backend:
