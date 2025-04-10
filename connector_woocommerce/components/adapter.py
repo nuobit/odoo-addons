@@ -23,6 +23,7 @@ class ConnectorWooCommerceAdapter(AbstractComponent):
             consumer_secret=self.backend_record.consumer_secret,
             version="wc/v3",
             verify_ssl=self.backend_record.verify_ssl,
+            timeout=30,
         )
 
     def prepare_meta_data(self, data):
