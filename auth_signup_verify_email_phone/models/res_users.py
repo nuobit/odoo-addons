@@ -32,7 +32,7 @@ class ResUsers(models.Model):
         }
 
     def _find_partner_candidates(self, values):
-        domain = [("user_id", "=", False)]
+        domain = [("user_ids", "=", False)]
         search_fields = self._partner_search_conditions()
         conditions = []
         for key, field in search_fields.items():
