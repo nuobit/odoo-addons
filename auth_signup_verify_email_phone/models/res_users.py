@@ -110,6 +110,7 @@ class ResUsers(models.Model):
                     if not selected_partner.active:
                         selected_partner.active = True
                     values["partner_id"] = selected_partner.id
+                    values.pop("name")
         return super()._signup_create_user(values)
 
     @api.model
