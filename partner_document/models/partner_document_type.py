@@ -22,6 +22,10 @@ class PartnerDocumentType(models.Model):
         default=1,
     )
     template_id = fields.Many2one(comodel_name="partner.document.template")
+    no_expiration = fields.Boolean(
+        default=False,
+        help="Check this if the document type does not require an expiration date.",
+    )
 
     @api.constrains("name")
     def _check_name(self):
@@ -41,6 +45,20 @@ class PartnerDocumentType(models.Model):
                     raise ValidationError(
                         _("To assign a template, you must first set a default file.")
                     )
+
+    def write(self, vals):
+        for rec in self:
+            if "no_expiration" in vals and vals["no_expiration"] is False:
+                docs_without_exp = self.env["partner.document"].search(
+                    [("document_type_id", "=", rec.id), ("expiration_date", "=", False)]
+                )
+                if docs_without_exp:
+                    raise ValidationError(
+                        _(
+                            "Cant 'uncheck 'No Expiration' due to docs without expiration date"
+                        )
+                    )
+        return super().write(vals)
 
     def unlink(self):
         records = self.env["partner.classification"].search(

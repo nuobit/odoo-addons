@@ -82,6 +82,23 @@ class PartnerDocument(models.Model):
     validated = fields.Boolean(
         default=False,
     )
+    no_expiration = fields.Boolean(related="document_type_id.no_expiration")
+
+    @api.constrains("expiration_date", "document_type_id")
+    def _check_expiration_date_by_type(self):
+        for rec in self:
+            if rec.document_type_id.no_expiration and rec.expiration_date:
+                raise ValidationError(
+                    _(
+                        "You cannot set an expiration date for a 'No Expiration' "
+                        "document type."
+                    )
+                )
+
+            if not rec.document_type_id.no_expiration and not rec.expiration_date:
+                raise ValidationError(
+                    _("Expiration date is required for this document type.")
+                )
 
     def write(self, vals):
         for rec in self:
