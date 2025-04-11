@@ -143,6 +143,18 @@ class SignupVerifyEmailPhone(SignupVerifyEmail):
             values, qcontext.get("token")
         )
 
+    def _handle_user_activation(self, user, qcontext):
+        if (
+            user.partner_id.signup_email_validated
+            and user.partner_id.signup_mobile_validated
+        ):
+            user.active = True
+            qcontext["message"] = _("Your account has been activated!")
+            return request.render(
+                "auth_signup_verify_email_phone.multi_auth_signup", qcontext
+            )
+        return False
+
     @http.route()
     def web_auth_reset_password(self, *args, **kw):
         auth_signup = kw.get("auth_signup", False)
@@ -161,6 +173,7 @@ class SignupVerifyEmailPhone(SignupVerifyEmail):
                 )
             )
             if user:
+                partner = user.partner_id
                 if "error" not in qcontext and request.httprequest.method == "POST":
                     self.do_signup_without_login(qcontext)
                     if not user.active:
@@ -169,20 +182,14 @@ class SignupVerifyEmailPhone(SignupVerifyEmail):
                             return response
                     return self.web_login(*args, **kw)
                 elif "signup_email" in qcontext:
-                    partner = user.partner_id
                     if auth_signup == partner.signup_email_token:
                         partner.signup_email_token = False
                         partner.signup_email_validated = True
                     elif auth_signup == partner.signup_mobile_token:
                         partner.signup_mobile_token = False
                         partner.signup_mobile_validated = True
-                    if (
-                        partner.signup_email_validated
-                        and partner.signup_mobile_validated
-                    ):
-                        user.active = True
-                        qcontext["message"] = _("Your account has been activated!")
-                        return request.render(
-                            "auth_signup_verify_email_phone.multi_auth_signup", qcontext
-                        )
+                    if not user.signup_token:
+                        response = self._handle_user_activation(user, qcontext)
+                        if response:
+                            return response
         return super().web_auth_reset_password(*args, **kw)
