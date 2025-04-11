@@ -163,6 +163,10 @@ class SignupVerifyEmailPhone(SignupVerifyEmail):
             if user:
                 if "error" not in qcontext and request.httprequest.method == "POST":
                     self.do_signup_without_login(qcontext)
+                    if not user.active:
+                        response = self._handle_user_activation(user, qcontext)
+                        if response:
+                            return response
                     return self.web_login(*args, **kw)
                 elif "signup_email" in qcontext:
                     partner = user.partner_id
