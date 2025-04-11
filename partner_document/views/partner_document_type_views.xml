@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions SL (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
+     Frank Cespedes <fcespedes@nuobit.com>
+     Bijaya Kumal <bkumal@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="partner_document_type_view_form" model="ir.ui.view">
@@ -16,6 +18,7 @@
                     </div>
 
                     <group>
+                        <field name="no_expiration" />
                         <field name="description" />
                         <field name="template_id" />
                     </group>

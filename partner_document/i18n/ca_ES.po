@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-02 14:30+0000\n"
-"PO-Revision-Date: 2025-04-02 14:30+0000\n"
+"POT-Creation-Date: 2025-04-14 14:42+0000\n"
+"PO-Revision-Date: 2025-04-14 14:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
 msgid "Cancel"
 msgstr "Cancel·la"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document_type.py:0
+#, python-format
+msgid "Cant 'uncheck 'No Expiration' due to docs without expiration date"
+msgstr "No es pot 'desmarcar' 'Sense data d'expiració' a causa de documents sense data d'expiració"
+
+#. module: partner_document
+#: model:ir.model.fields,help:partner_document.field_partner_document_type__no_expiration
+msgid "Check this if the document type does not require an expiration date."
+msgstr "Marca això si el tipus de document no requereix una data d'expiració."
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_res_partner__classification_id
@@ -139,12 +151,19 @@ msgstr "Tipus de documents"
 #: model:ir.model.fields,field_description:partner_document.field_res_users__document_ids
 #: model_terms:ir.ui.view,arch_db:partner_document.view_partner_form
 msgid "Documents"
-msgstr "Documents"
+msgstr ""
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__expiration_date
 msgid "Expiration Date"
 msgstr "Data de venciment"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid "Expiration date is required for this document type."
+msgstr "La data de venciment és obligatòria per a aquest tipus de document."
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__expired
@@ -243,6 +262,11 @@ msgid "Name"
 msgstr "Nom"
 
 #. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__no_expiration
+msgid "No Expiration"
+msgstr "Sense caducitat"
+
+#. module: partner_document
 #. odoo-python
 #: code:addons/partner_document/models/partner_classification.py:0
 #, python-format
@@ -337,8 +361,8 @@ msgid ""
 "Remember: There must be a default file for the template if none exists for "
 "the language."
 msgstr ""
-"Recorda: Ha d'haver-hi un fitxer predeterminat per a la plantilla si no n'hi "
-"ha cap per a l'idioma."
+"Recorda: Ha d'haver-hi un fitxer predeterminat per a la plantilla si no n'hi"
+" ha cap per a l'idioma."
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
@@ -379,12 +403,18 @@ msgstr "El nom ha de ser únic!"
 #: code:addons/partner_document/models/partner_document_type.py:0
 #, python-format
 msgid "To assign a template, you must first set a default file."
-msgstr "Per assignar una plantilla, primer has d'establir un fitxer per defecte."
+msgstr ""
+"Per assignar una plantilla, primer has d'establir un fitxer per defecte."
 
 #. module: partner_document
 #: model:res.groups,name:partner_document.partner_document_group_user
 msgid "User"
 msgstr "Usuari"
+
+#. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__validated
+msgid "Validated"
+msgstr "Validat"
 
 #. module: partner_document
 #. odoo-python
@@ -402,6 +432,13 @@ msgid ""
 "You can't change the %(document_type)s (%(classification)s) if it has a File"
 msgstr ""
 "No pots canviar %(document_type)s (%(classification)s) si té un fitxer"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid "You can't change the expiration date of a validated document."
+msgstr "No pots canviar la data de caducitat d'un document validat."
 
 #. module: partner_document
 #. odoo-python
@@ -425,3 +462,10 @@ msgstr ""
 "No pots suprimir %(document_type)s perquè és obligatori a "
 "(%(classification)s). Si vols suprimir-lo, has d'eliminar els fitxers de la "
 "resta de tipus de document d'aquesta classificació"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid "You cannot set an expiration date for a 'No Expiration' document type."
+msgstr "No pots establir una data de caducitat per a un tipus de document 'Sense caducitat'."

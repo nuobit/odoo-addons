@@ -24,12 +24,16 @@
                                 name="partner_class_mandatory_document_type_ids"
                                 invisible="1"
                             />
+                            <field name="no_expiration" invisible="1" />
                             <field name="document_type_id" />
                             <field name="description" />
                             <field name="partner_classification_id" />
                             <field name="datas" filename="datas_fname" />
                             <field name="datas_fname" invisible="1" />
-                            <field name="expiration_date" />
+                            <field
+                                name="expiration_date"
+                                attrs="{'readonly': [('no_expiration', '=', True)]}"
+                            />
                             <field name="expired" invisible="1" />
                             <field name="validated" />
                         </tree>
