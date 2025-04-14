@@ -1,16 +1,16 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
-# Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Barcodes label",
     "summary": "Generate barcode labels enabling barcode printing "
     "on products, lot/serial and picking",
-    "version": "14.0.1.0.1",
+    "version": "16.0.1.0.0",
     "license": "AGPL-3",
     "category": "Tools",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
         "stock",
@@ -30,6 +30,11 @@
         "views/options_format_views.xml",
         "views/menu.xml",
     ],
+    "assets": {
+        "web.report_assets_pdf": [
+            "barcodes_gs1_label/static/src/scss/styles.scss",
+        ],
+    },
     "installable": True,
     "development_status": "Beta",
     "maintainers": ["eantones"],
