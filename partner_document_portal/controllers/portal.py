@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import base64
 
-from odoo import _, http
+from odoo import _, fields, http
 from odoo.exceptions import AccessError, MissingError
 from odoo.http import request
 
@@ -206,17 +206,20 @@ class DocumentPortal(CustomerPortal):
     def update_document(self, document_id, **post):
         description = post.get("description")
         expiration_date = post.get("expiration_date")
-        document = request.env["partner.document"].sudo().browse(document_id)
-        document.write(
-            {
-                "description": description,
-                "expiration_date": expiration_date,
-            }
-        )
         file = post.get("attachment")
+        partner_document = request.env["partner.document"].sudo().browse(document_id)
+        vals = {}
+        if description != partner_document.description:
+            vals["description"] = description
+        if expiration_date != fields.Date.to_string(partner_document.expiration_date):
+            vals["expiration_date"] = expiration_date
+        if partner_document.validated and (file or vals):
+            vals["validated"] = False
+        if vals:
+            partner_document.write(vals)
         if file:
             try:
-                document.write(
+                partner_document.write(
                     {
                         "datas_fname": file.filename,
                         "datas": base64.b64encode(file.read()).decode("ascii"),

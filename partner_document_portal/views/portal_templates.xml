@@ -184,7 +184,6 @@ License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
                                 name="description"
                                 class="form-control"
                                 t-att-value="document.description"
-                                t-att-readonly="document.validated"
                                 required="required"
                             />
                     </div>
@@ -196,7 +195,6 @@ License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
                                     name="expiration_date"
                                     class="form-control"
                                     t-att-value="document.expiration_date"
-                                    t-att-readonly="document.validated"
                                     required="required"
                                 />
                         </div>
@@ -223,7 +221,7 @@ License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
                                 </a>
                             </div>
                         </t>
-                        <t t-if="not document.validated">
+                        <t>
                             <div class="form-group mt-3">
                                 <input
                                         type="file"
@@ -233,11 +231,7 @@ License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
                             </div>
                         </t>
                     </div>
-                    <button
-                            type="submit"
-                            class="btn btn-primary float-end mb32"
-                            t-if="not document.validated"
-                        >
+                    <button type="submit" class="btn btn-primary float-end mb32">
                         Confirm
                     </button>
                 </form>
