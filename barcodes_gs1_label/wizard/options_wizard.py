@@ -8,10 +8,9 @@ from odoo.exceptions import UserError
 
 MAP_MODEL_REPORT = {
     "product.product": "barcodes_gs1_label.action_report_product_gs1_barcodes",
-    "stock.production.lot": "barcodes_gs1_label.action_report_lot_gs1_barcodes",
+    "stock.lot": "barcodes_gs1_label.action_report_lot_gs1_barcodes",
     "stock.picking": "barcodes_gs1_label.action_report_picking_gs1_barcodes",
     "stock.quant": "barcodes_gs1_label.action_report_quant_gs1_barcodes",
-    "stock.inventory.line": "barcodes_gs1_label.action_report_inv_line_gs1_barcodes",
 }
 
 MMS_PER_DPI = 25.4
@@ -67,7 +66,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                         .mapped("location_id")
                     )
                 self.stock_location_ids = locations
-            elif model == "stock.production.lot":
+            elif model == "stock.lot":
                 locations = self.env["stock.location"]
                 for doc in (
                     self.env[model]
@@ -104,57 +103,6 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                                 ("id", "=", doc.id),
                                 ("location_id.usage", "=", "internal"),
                                 ("location_id", "=", doc.location_id.id),
-                                ("quantity", ">", 0),
-                                ("company_id", "=", self.env.company.id),
-                            ]
-                        )
-                        .mapped("location_id")
-                    )
-                self.stock_location_ids = locations
-            elif model == "stock.inventory.line":
-                locations = self.env["stock.location"]
-                for doc in (
-                    self.env[model]
-                    .browse(ids)
-                    .sorted(lambda x: x.product_id.default_code or "")
-                ):
-                    locations |= (
-                        self.env["stock.quant"]
-                        .search(
-                            [
-                                ("product_id", "=", doc.product_id.id),
-                                ("location_id.usage", "=", "internal"),
-                                ("location_id", "=", doc.location_id.id),
-                                ("quantity", ">", 0),
-                                ("company_id", "=", self.env.company.id),
-                            ]
-                        )
-                        .mapped("location_id")
-                    )
-                self.stock_location_ids = locations
-            elif model == "stock.inventory":
-                locations = self.env["stock.location"]
-                for doc in (
-                    self.env[model]
-                    .browse(ids)
-                    .line_ids.sorted(lambda x: x.product_id.default_code or "")
-                    .inventory_id
-                ):
-                    if doc.location_ids:
-                        location_condition = (
-                            "location_id",
-                            "child_of",
-                            doc.location_ids.ids,
-                        )
-                    else:
-                        location_condition = ("location_id", "in", all_locs.ids)
-                    locations |= (
-                        self.env["stock.quant"]
-                        .search(
-                            [
-                                ("product_id", "in", doc.line_ids.product_id.ids),
-                                ("location_id.usage", "=", "internal"),
-                                location_condition,
                                 ("quantity", ">", 0),
                                 ("company_id", "=", self.env.company.id),
                             ]
@@ -211,20 +159,22 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             or self.start_col > self.label_config_id.format_id.page_cols_max
         ):
             raise UserError(
-                _(
-                    "Start column should be between %i and %i"
-                    % (1, self.label_config_id.format_id.page_cols_max)
-                )
+                _("Start column should be between %(min_col)i and %(max_col)i")
+                % {
+                    "min_col": 1,
+                    "max_col": self.label_config_id.format_id.page_cols_max,
+                }
             )
         if (
             self.start_row < 1
             or self.start_row > self.label_config_id.format_id.page_rows_max
         ):
             raise UserError(
-                _(
-                    "Start row should be between %i and %i"
-                    % (1, self.label_config_id.format_id.page_rows_max)
-                )
+                _("Start row should be between %(min_row)i and %(max_row)i")
+                % {
+                    "min_row": 1,
+                    "max_row": self.label_config_id.format_id.page_rows_max,
+                }
             )
         if self.label_copies < 1:
             raise UserError(_("The number of copies must be greater than 0"))
