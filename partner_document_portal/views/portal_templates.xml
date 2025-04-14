@@ -187,7 +187,9 @@ License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
                                 required="required"
                             />
                     </div>
-                    <t t-if="not document.document_type_id.template_id">
+                    <t
+                            t-if="not document.document_type_id.template_id and not document.document_type_id.no_expiration"
+                        >
                         <div class="form-group mb-3">
                             <label class="font-weight-bold">Expiration Date:</label>
                             <input
