@@ -7,13 +7,17 @@ from odoo import api, fields, models
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    @api.model
+    def _get_default_classification_id(self):
+        return self.env["partner.classification"].search(
+            [("default", "=", True)], limit=1
+        )
+
     classification_id = fields.Many2one(
         comodel_name="partner.classification",
         string="Classification",
         ondelete="restrict",
-        default=lambda self: self.env["partner.classification"].search(
-            [("default", "=", True)], limit=1
-        ),
+        default=lambda self: self._get_default_classification_id(),
     )
     document_ids = fields.One2many(
         comodel_name="partner.document",
@@ -52,16 +56,6 @@ class ResPartner(models.Model):
                 actions.append((0, 0, vals))
 
             rec.document_ids = actions
-
-    @api.model
-    def default_get(self, fields):
-        defaults = super().default_get(fields)
-        default_classification = self.env["partner.classification"].search(
-            [("default", "=", True)], limit=1
-        )
-        if default_classification:
-            defaults["classification_id"] = default_classification.id
-        return defaults
 
     # @api.constrains("quality_classification_id", "quality_document_ids")
     # def _check_classification_document_type(self):
