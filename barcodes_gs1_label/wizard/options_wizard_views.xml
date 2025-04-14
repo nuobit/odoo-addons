@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="barcodes_option_wizard_view" model="ir.ui.view">
@@ -24,13 +24,13 @@
                         <group col="4">
                             <field
                                 name="with_stock"
-                                invisible="context.get('active_model') in ('stock.picking', 'stock.quant', 'stock.inventory.line')"
+                                invisible="context.get('active_model') in ('stock.picking', 'stock.quant')"
                             />
                             <field
                                 name="stock_location_ids"
                                 widget="many2many_tags"
                                 attrs="{'invisible': [('with_stock', '=', False)], 'required': [('with_stock', '=', True)]}"
-                                invisible="context.get('active_model') in ('stock.picking', 'stock.quant', 'stock.inventory.line')"
+                                invisible="context.get('active_model') in ('stock.picking', 'stock.quant')"
                             />
                         </group>
                     </page>
@@ -75,7 +75,7 @@
     <record id="barcodes_lot_option_wizard_view_action" model="ir.actions.act_window">
         <field name="name">Print barcodes</field>
         <field name="res_model">barcodes.gs1.label.options.wizard</field>
-        <field name="binding_model_id" ref="model_stock_production_lot" />
+        <field name="binding_model_id" ref="model_stock_lot" />
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
@@ -95,17 +95,6 @@
         <field name="name">Print barcodes</field>
         <field name="res_model">barcodes.gs1.label.options.wizard</field>
         <field name="binding_model_id" ref="model_stock_quant" />
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
-
-    <record
-        id="barcodes_inv_line_option_wizard_view_action"
-        model="ir.actions.act_window"
-    >
-        <field name="name">Print barcodes</field>
-        <field name="res_model">barcodes.gs1.label.options.wizard</field>
-        <field name="binding_model_id" ref="model_stock_inventory_line" />
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>

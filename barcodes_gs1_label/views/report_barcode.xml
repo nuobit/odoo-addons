@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBit Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <template
-        id="report_assets_common"
-        name="Barcodes report styles"
-        inherit_id="web.report_assets_common"
-    >
-        <xpath expr="." position="inside">
-            <link
-                href="/barcodes_gs1_label/static/src/scss/styles.scss"
-                rel="stylesheet"
-                type="text/scss"
-            />
-        </xpath>
-    </template>
 
     <template id="external_layout">
         <div class="article bgp-paddingless">
-            <t t-raw="0" />
+            <t t-out="0" />
         </div>
     </template>
 
@@ -29,7 +16,7 @@
             <div class="bgp-barcode">
                 <div class="bgp-barcode-img">
                     <img
-                        t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
+                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
                         t-attf-class="bgp-img"
                     />
                 </div>
@@ -51,7 +38,7 @@
             <div class="bgp-barcode">
                 <div class="bgp-barcode-img">
                     <img
-                        t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
+                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
                         t-attf-class="bgp-img"
                     />
                 </div>
@@ -103,7 +90,7 @@
                 <t t-if="barcode_values[0]">
                     <div class="bgp-barcode-img">
                         <img
-                            t-att-src="'/report/barcode/?type=UPCA&amp;value=%s&amp;height=%s' % (barcode_values[0], 80)"
+                            t-att-src="'/report/barcode/?barcode_type=UPCA&amp;value=%s&amp;height=%s' % (barcode_values[0], 80)"
                             t-attf-class="bgp-img"
                         />
                     </div>
@@ -160,7 +147,7 @@
                 <t t-if="barcode_values[1]">
                     <div class="bgp-barcode-img">
                         <img
-                            t-att-src="'/report/barcode/?type=Code128&amp;value=%s&amp;height=%s' % (barcode_values[1], 80)"
+                            t-att-src="'/report/barcode/?barcode_type=Code128&amp;value=%s&amp;height=%s' % (barcode_values[1], 80)"
                             t-attf-class="bgp-img"
                         />
                     </div>
@@ -180,7 +167,7 @@
                 <t t-if="barcode_values">
                     <div class="bgp-barcode-img">
                         <img
-                            t-att-src="'/report/barcode/?type=UPCA&amp;value=%s&amp;height=%s' % (barcode_values, 80)"
+                            t-att-src="'/report/barcode/?barcode_type=UPCA&amp;value=%s&amp;height=%s' % (barcode_values, 80)"
                             t-attf-class="bgp-img"
                         />
                     </div>

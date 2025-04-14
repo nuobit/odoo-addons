@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import requests.utils
@@ -65,7 +65,7 @@ class ReportGS1Barcode(models.AbstractModel):
                             }
                         ] * int(q.quantity)
                 else:
-                    lots = self.env["stock.production.lot"].search(
+                    lots = self.env["stock.lot"].search(
                         [("product_id", "=", product.id)]
                     )
                     for lot in lots.sorted(lambda x: x.name):
@@ -82,10 +82,10 @@ class ReportGS1Barcode(models.AbstractModel):
         if lot and lot.product_id != product:
             raise ValidationError(
                 _(
-                    "Incoherent data: the lot %s doesn't belong to the product %s."
-                    "Please report this issue to your administrator."
+                    "Incoherent data: the lot %(lot_name)s doesn't belong to the "
+                    "product %(product_name)s. Please report this issue to your administrator."
                 )
-                % (lot.name, product.display_name)
+                % {"lot_name": lot.name, "product_name": product.display_name}
             )
         res = {}
         if product.barcode:
@@ -113,8 +113,10 @@ class ReportGS1Barcode(models.AbstractModel):
             length, fnc1_required = self.GS1_AI_FORMAT[key]
             if len(value) > length:
                 raise ValidationError(
-                    _("The value of GS1 AI %s is too long (max %s characters)")
-                    % (key, length)
+                    _(
+                        "The value of GS1 AI %(key)s is too long (max %(length)s characters)"
+                    )
+                    % {"key": key, "length": length}
                 )
             res.append(key + value)
             if fnc1_required and i < len(gs1):
@@ -157,7 +159,7 @@ class ReportGS1Barcode(models.AbstractModel):
                         ]
                     )
                 docs1 += self._get_product_lot(doc, quants, with_stock)
-        elif model == "stock.production.lot":
+        elif model == "stock.lot":
             for doc in (
                 self.env[model]
                 .browse(docids)
@@ -202,24 +204,6 @@ class ReportGS1Barcode(models.AbstractModel):
                     quants = self.env["stock.quant"].search(
                         [
                             ("id", "=", doc.id),
-                            ("location_id.usage", "=", "internal"),
-                            ("location_id", "=", doc.location_id.id),
-                            ("quantity", ">", 0),
-                            ("company_id", "=", self.env.company.id),
-                        ]
-                    )
-                docs1 += self._get_product_lot(doc.product_id, quants, with_stock)
-        elif model == "stock.inventory.line":
-            for doc in (
-                self.env[model]
-                .browse(docids)
-                .sorted(lambda x: x.product_id.default_code or "")
-            ):
-                quants = self.env["stock.quant"]
-                if with_stock:
-                    quants = self.env["stock.quant"].search(
-                        [
-                            ("product_id", "in", doc.product_id.ids),
                             ("location_id.usage", "=", "internal"),
                             ("location_id", "=", doc.location_id.id),
                             ("quantity", ">", 0),
