@@ -83,14 +83,6 @@ class PartnerDocument(models.Model):
         default=False,
     )
 
-    @api.constrains("expiration_date")
-    def _check_expiration_date(self):
-        for rec in self:
-            if rec.validated:
-                raise ValidationError(
-                    _("You can't change the expiration date of a validated document.")
-                )
-
     def write(self, vals):
         for rec in self:
             if "document_type_id" in vals:
@@ -103,7 +95,16 @@ class PartnerDocument(models.Model):
                             "document_type": rec.document_type_id.display_name,
                             "classification": rec.partner_classification_id.display_name,
                         }
-
+            if "expiration_date" in vals:
+                if vals["expiration_date"] != rec.expiration_date:
+                    validated = vals.get("validated", rec.validated)
+                    if validated:
+                        raise ValidationError(
+                            _(
+                                "You can't change the expiration date of a "
+                                "validated document."
+                            )
+                        )
         return super().write(vals)
 
     def unlink(self):
