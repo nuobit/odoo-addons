@@ -79,6 +79,18 @@ class PartnerDocument(models.Model):
                 and rec.expiration_date < fields.Date.today()
             )
 
+    validated = fields.Boolean(
+        default=False,
+    )
+
+    @api.constrains("expiration_date")
+    def _check_expiration_date(self):
+        for rec in self:
+            if rec.validated:
+                raise ValidationError(
+                    _("You can't change the expiration date of a validated document.")
+                )
+
     def write(self, vals):
         for rec in self:
             if "document_type_id" in vals:
