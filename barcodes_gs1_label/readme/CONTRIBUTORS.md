@@ -1,0 +1,4 @@
+- [NuoBiT](https://www.nuobit.com):
+  - Eric Antones <eantones@nuobit.com>
+  - Miquel Raïch <miquel.raich@forgeflow.com>
+  - Deniz Gallo <dgallo@nuobit.com>
