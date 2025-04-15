@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <template id="report_assets_common" inherit_id="web.report_assets_common">
-        <xpath expr="." position="inside">
-            <link
-                href="/barcode_label_template/static/src/scss/styles.scss"
-                rel="stylesheet"
-                type="text/scss"
-            />
-        </xpath>
-    </template>
     <template id="layout_gs1productdata">
         <div class="barcode-data">
             <div class="text-center barcode-data-row">
@@ -49,7 +41,7 @@
                             <div class="barcode-row">
                                 <div>
                                     <img
-                                        t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;height=%s' % (barcode['type'], barcode['string'], 100)"
+                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode['type'], barcode['string'], 100)"
                                         t-attf-class="bgp-img"
                                     />
                                 </div>
