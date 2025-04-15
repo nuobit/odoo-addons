@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import io
@@ -8,17 +9,17 @@ from PyPDF2 import PdfFileMerger, PdfFileReader
 from odoo import api, models
 
 
-class Report(models.Model):
+class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
-    def _render_qweb_pdf(self, res_ids=None, data=None):
+    def _render_qweb_pdf(self, report_ref, res_ids=None, data=None):
         if self.env.context.get("template_configuration_id"):
             pdf_merger = PdfFileMerger()
             for active_id in data["active_ids"]:
                 new_data = data.copy()
                 new_data["active_ids"] = [active_id]
                 pdf_content_chunk, _ = super()._render_qweb_pdf(
-                    res_ids=res_ids, data=new_data
+                    report_ref, res_ids=res_ids, data=new_data
                 )
 
                 pdf_mem_file_chunk = io.BytesIO()
@@ -33,7 +34,9 @@ class Report(models.Model):
                 pdf_content = pdf_mem_file.getvalue()
                 pdf_mem_file.close()
         else:
-            pdf_content, _ = super()._render_qweb_pdf(res_ids=res_ids, data=data)
+            pdf_content, _ = super()._render_qweb_pdf(
+                report_ref, res_ids=res_ids, data=data
+            )
 
         return pdf_content, "pdf"
 
@@ -41,6 +44,7 @@ class Report(models.Model):
     def _run_wkhtmltopdf(
         self,
         bodies,
+        report_ref=False,
         header=None,
         footer=None,
         landscape=False,
@@ -52,12 +56,14 @@ class Report(models.Model):
             temp_config = self.env["barcode.label.template.configuration"].browse(
                 temp_config_id
             )
+            self = self.env["ir.actions.report"]._get_report_from_name(report_ref)
             original_watermark = self.pdf_watermark
             self.pdf_watermark = temp_config.template
             original_paperformat_id = self.paperformat_id
             self.paperformat_id = temp_config.paperformat_id
-        result = super(Report, self)._run_wkhtmltopdf(
+        result = super(IrActionsReport, self)._run_wkhtmltopdf(
             bodies,
+            report_ref=report_ref,
             header=header,
             footer=footer,
             landscape=landscape,
