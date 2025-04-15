@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -43,19 +44,20 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
                     raise ValidationError(
                         _(
                             "Error in the barcode label template configuration while "
-                            "evaluating expression: field [%s] + target field [%s]"
-                            "\nERROR:\n%s\n\n"
-                            "Please check the expression in the field configuration"
+                            "evaluating expression: field [%(field)s] + target "
+                            "field [%(target_field)s]"
+                            "\nERROR:\n%(error)s\n\n"
+                            "Please check the expression in the field configuration "
                             "and assign a valid expression. "
-                            "This expression is not valid.\nExpression: %s"
+                            "This expression is not valid.\nExpression: %(expression)s"
                         )
-                        % (
-                            field.field_id.field_description,
-                            field.target_field,
-                            error,
-                            expression,
-                        )
-                    )
+                        % {
+                            "field": field.field_id.field_description,
+                            "target_field": field.target_field,
+                            "error": error,
+                            "expression": expression,
+                        }
+                    ) from error
             fields_data.append(
                 {
                     "value": field_value,
@@ -80,7 +82,7 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
         )
         datas = []
         for active_id in data["active_ids"]:
-            lot = self.env["stock.production.lot"].browse(active_id).exists()
+            lot = self.env["stock.lot"].browse(active_id).exists()
             gs1_barcode = self._prepare_gs1_values(lot.product_id, lot)
             datas.append(
                 self._prepare_report_label_template_data(
