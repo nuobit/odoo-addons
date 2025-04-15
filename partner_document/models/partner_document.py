@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions SL (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright NuoBiT 2025 - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -106,23 +107,45 @@ class PartnerDocument(models.Model):
                     )
                 )
 
-            if not rec.document_type_id.no_expiration and not rec.expiration_date:
+    def write(self, vals):
+        for rec in self:
+            if "document_type_id" in vals:
+                if vals["document_type_id"] != rec.document_type_id.id:
+                    if rec.datas:
+                        raise ValidationError(
+                            _(
+                                "You can't change the %(document_type)s "
+                                "(%(classification)s) if it has a File"
+                            )
+                            % {
+                                "document_type": rec.document_type_id.display_name,
+                                "classification": rec.partner_classification_id.display_name,
+                            }
+                        )
+
+            if "expiration_date" in vals:
+                if vals["expiration_date"] != rec.expiration_date:
+                    validated = vals.get("validated", rec.validated)
+                    if validated:
+                        raise ValidationError(
+                            _(
+                                "You can't change the expiration date of a "
+                                "validated document."
+                            )
+                        )
+
+            new_document_type = (
+                self.env["partner.document.type"].browse(vals["document_type_id"])
+                if "document_type_id" in vals
+                else rec.document_type_id
+            )
+            new_expiration_date = vals.get("expiration_date", rec.expiration_date)
+
+            if not new_document_type.no_expiration and not new_expiration_date:
                 raise ValidationError(
                     _("Expiration date is required for this document type.")
                 )
 
-    def write(self, vals):
-        for rec in self:
-            if "document_type_id" in vals:
-                if vals["document_type_id"] != rec.document_type_id:
-                    if rec.datas:
-                        _(
-                            "You can't change the %(document_type)s "
-                            "(%(classification)s) if it has a File"
-                        ) % {
-                            "document_type": rec.document_type_id.display_name,
-                            "classification": rec.partner_classification_id.display_name,
-                        }
         return super().write(vals)
 
     def unlink(self):
