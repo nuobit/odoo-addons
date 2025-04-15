@@ -22,7 +22,7 @@ L10n ES Account Menu
 
 |badge1| |badge2| |badge3|
 
--  This module extends account menu
+- This module extends account menu
 
 **Table of contents**
 
@@ -50,10 +50,10 @@ Authors
 Contributors
 ------------
 
--  `NuoBiT <https://www.nuobit.com>`__:
+- `NuoBiT <https://www.nuobit.com>`__:
 
-   -  Eric Antones eantones@nuobit.com
-   -  Bijaya Kumal bkumal@nuobit.com
+  - Eric Antones eantones@nuobit.com
+  - Bijaya Kumal bkumal@nuobit.com
 
 Maintainers
 -----------
