@@ -74,10 +74,10 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                             kwargs["data"],
                         )
                     )
-                elif (
-                    res_data.get("code")
-                    == "woocommerce_rest_product_variation_invalid_id"
-                ):
+                elif res_data.get("code") in [
+                    "woocommerce_rest_product_variation_invalid_id",
+                    "woocommerce_rest_product_invalid_id",
+                ]:
                     error_message = _(
                         "Error: '%s'. Probably the %s has been removed from Woocommerce. "
                         "If it's the case, try to remove the binding of the %s."
