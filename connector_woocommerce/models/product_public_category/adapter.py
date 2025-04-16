@@ -14,6 +14,8 @@ class WooCommerceProductPublicCategoryAdapter(Component):
         return self._exec("post", "products/categories", data=data)
 
     def write(self, external_id, data):  # pylint: disable=W8106
+        if self.env.context.get("resync_exported_dependencies"):
+            return {}
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
         url = "products/categories/%s" % external_id_values["id"]
         return self._exec("put", url, data=data)
