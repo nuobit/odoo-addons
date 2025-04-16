@@ -25,7 +25,10 @@ class WordPressIrAttachmentBinder(Component):
     def _get_external_record_domain(self, relation, values):
         equivalent_binding_attachment = self.env["wordpress.ir.attachment"].search(
             [
-                ("checksum", "=", relation.checksum),
+                # I add sudo() here because only superuser and users belonging to
+                # the 'settings' group can access information from ir.attachment
+                # if it has a linked res_field
+                ("checksum", "=", relation.sudo().checksum),
                 ("backend_id", "=", self.backend_record.id),
             ],
             limit=1,
