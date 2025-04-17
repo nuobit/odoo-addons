@@ -6,7 +6,7 @@
 {
     "name": "Report GS1 barcodes",
     "summary": "This module adds a GS1-128 and GS1-Datamatrix barcode format support",
-    "version": "16.0.0.0.0",
+    "version": "17.0.1.0.0",
     "category": "Reporting",
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
@@ -17,7 +17,5 @@
         ],
     },
     "depends": ["base"],
-    "development_status": "Beta",
     "maintainers": ["eantones"],
-    "auto_install": False,
 }
