@@ -49,15 +49,17 @@ class ReportGS1Barcode(models.AbstractModel):
             if product.tracking == "none":
                 label = {"product": product, "lot": None}
                 if with_stock:
-                    for q in quants.filtered(lambda x: x.product_id == product):
+                    for q in quants.filtered(
+                        lambda x, prod=product: x.product_id == prod
+                    ):
                         docs += [label] * int(q.quantity)
                 else:
                     docs.append(label)
             elif product.tracking in ("lot", "serial"):
                 if with_stock:
-                    for q in quants.filtered(lambda x: x.product_id == product).sorted(
-                        lambda x: x.lot_id.name or ""
-                    ):
+                    for q in quants.filtered(
+                        lambda x, prod=product: x.product_id == prod
+                    ).sorted(lambda x: x.lot_id.name or ""):
                         docs += [
                             {
                                 "product": product,
@@ -82,8 +84,9 @@ class ReportGS1Barcode(models.AbstractModel):
         if lot and lot.product_id != product:
             raise ValidationError(
                 _(
-                    "Incoherent data: the lot %(lot_name)s doesn't belong to the "
-                    "product %(product_name)s. Please report this issue to your administrator."
+                    "Incoherent data: the lot %(lot_name)s doesn't "
+                    "belong to the product %(product_name)s. "
+                    "Please report this issue to your administrator."
                 )
                 % {"lot_name": lot.name, "product_name": product.display_name}
             )
@@ -114,7 +117,8 @@ class ReportGS1Barcode(models.AbstractModel):
             if len(value) > length:
                 raise ValidationError(
                     _(
-                        "The value of GS1 AI %(key)s is too long (max %(length)s characters)"
+                        "The value of GS1 AI %(key)s "
+                        "is too long (max %(length)s characters)"
                     )
                     % {"key": key, "length": length}
                 )
@@ -221,7 +225,7 @@ class ReportGS1Barcode(models.AbstractModel):
                 .filtered(lambda x: x.state == "done")
             ):
                 qty_tracking.setdefault(ml.product_id, {}).setdefault(ml.lot_id, 0)
-                qty_tracking[ml.product_id][ml.lot_id] += ml.qty_done
+                qty_tracking[ml.product_id][ml.lot_id] += ml.quantity
             for product, lot_qty in sorted(
                 qty_tracking.items(), key=lambda x: x[0].default_code or ""
             ):

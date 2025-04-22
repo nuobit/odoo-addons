@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -66,13 +67,10 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
     def name_get(self):
         res = []
         for rec in self:
-            name = "%s - %s (%g x %g mm) [%s] - %s" % (
-                rec.name,
-                rec.format_id.paperformat_id.name,
-                rec.format_id.label_width,
-                rec.format_id.label_height,
-                rec.format_id.page_max_labels,
-                rec.barcode_type,
+            name = (
+                f"{rec.name} - {rec.format_id.paperformat_id.name} "
+                f"({rec.format_id.label_width:g} x {rec.format_id.label_height:g} mm) "
+                f"[{rec.format_id.page_max_labels}] - {rec.barcode_type}"
             )
             res.append((rec.id, name))
         return res

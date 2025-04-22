@@ -3,7 +3,7 @@
      Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="barcodes_option_wizard_view" model="ir.ui.view">
+    <record id="barcodes" model="ir.ui.view">
         <field name="name">barcodes.option.wizard.form</field>
         <field name="model">barcodes.gs1.label.options.wizard</field>
         <field name="arch" type="xml">
@@ -29,8 +29,8 @@
                             <field
                                 name="stock_location_ids"
                                 widget="many2many_tags"
-                                attrs="{'invisible': [('with_stock', '=', False)], 'required': [('with_stock', '=', True)]}"
-                                invisible="context.get('active_model') in ('stock.picking', 'stock.quant')"
+                                invisible="[(with_stock, '=', False), context.get('active_model') in ('stock.picking', 'stock.quant')]"
+                                required="[(with_stock, '=', True)]"
                             />
                         </group>
                     </page>
@@ -39,7 +39,8 @@
                             <field name="show_borders" />
                             <field
                                 name="border_color"
-                                attrs="{'required': [('show_borders', '=', True)], 'invisible': [('show_borders', '!=', True)]}"
+                                required="[(show_borders, '=', True)]"
+                                invisible="[(show_borders, '!=', True)]"
                             />
                         </group>
                         <group>
