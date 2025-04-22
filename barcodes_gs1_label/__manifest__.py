@@ -7,7 +7,7 @@
     "name": "Barcodes label",
     "summary": "Generate barcode labels enabling barcode printing "
     "on products, lot/serial and picking",
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "license": "AGPL-3",
     "category": "Tools",
     "author": "NuoBiT Solutions SL",
