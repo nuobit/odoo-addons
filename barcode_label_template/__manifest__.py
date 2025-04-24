@@ -6,7 +6,7 @@
     "name": "Barcode label template",
     "summary": "This module integrates barcodes directly into the custom label "
     "template for lots/serial numbers.",
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "license": "AGPL-3",
     "category": "Tools",
     "author": "NuoBiT Solutions SL",
