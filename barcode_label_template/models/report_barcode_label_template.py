@@ -35,10 +35,10 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
             field_value = False
             if field_name:
                 try:
-                    expression = "lot.{}".format(field_name)
+                    expression = f"lot.{field_name}"
                     field_value = safe_eval(expression, {"lot": lot})
                     if field_value and field.target_field:
-                        expression = "{}.{}".format(expression, field.target_field)
+                        expression = f"{expression}.{field.target_field}"
                         field_value = safe_eval(expression, {"lot": lot})
                 except Exception as error:
                     raise ValidationError(

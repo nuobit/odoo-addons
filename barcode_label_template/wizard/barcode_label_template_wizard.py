@@ -10,7 +10,7 @@ class BarcodeLabelTemplateWizard(models.TransientModel):
 
     @api.model
     def default_get(self, fields_list):
-        res = super(BarcodeLabelTemplateWizard, self).default_get(fields_list)
+        res = super().default_get(fields_list)
         default_configuration = self.env["barcode.label.template.configuration"].search(
             [("default", "=", True)],
         )

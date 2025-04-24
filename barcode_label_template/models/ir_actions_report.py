@@ -61,7 +61,7 @@ class IrActionsReport(models.Model):
             self.pdf_watermark = temp_config.template
             original_paperformat_id = self.paperformat_id
             self.paperformat_id = temp_config.paperformat_id
-        result = super(IrActionsReport, self)._run_wkhtmltopdf(
+        result = super()._run_wkhtmltopdf(
             bodies,
             report_ref=report_ref,
             header=header,
