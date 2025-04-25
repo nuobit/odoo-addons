@@ -1,5 +1,6 @@
 # Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import json
@@ -15,20 +16,16 @@ class AccountAsset(models.Model):
     _inherit = "account.asset"
 
     invoice_ref = fields.Char(
-        string="Invoice Reference",
         states=READONLY_STATES,
     )
     invoice_date = fields.Date(
-        string="Invoice Date",
         states=READONLY_STATES,
     )
     quantity = fields.Float(
-        string="Quantity",
         states=READONLY_STATES,
         required=True,
     )
     tax_base_amount = fields.Float(
-        string="Tax Base Amount",
         states=READONLY_STATES,
         compute="_compute_tax_base_amount",
         readonly=False,
@@ -41,7 +38,6 @@ class AccountAsset(models.Model):
             rec.tax_base_amount = rec.purchase_value
 
     tax_base_amount_unit = fields.Float(
-        string="Tax Base Amount Unit",
         compute="_compute_tax_base_amount_unit",
     )
 
@@ -115,7 +111,6 @@ class AccountAsset(models.Model):
 
     tax_ids = fields.Many2many(
         comodel_name="account.tax",
-        string="Taxes",
         compute="_compute_tax_ids",
         store=True,
         readonly=False,
@@ -136,7 +131,7 @@ class AccountAsset(models.Model):
 
     @api.depends(
         "account_move_line_ids",
-        "account_move_line_ids.exclude_from_invoice_tab",
+        "account_move_line_ids.display_type",
         "account_move_line_ids.move_id",
         "account_move_line_ids.move_id.move_type",
     )
@@ -144,7 +139,7 @@ class AccountAsset(models.Model):
         for rec in self:
             iml = rec.account_move_line_ids.filtered(
                 lambda x: x.move_id.move_type != "entry"
-                and not x.exclude_from_invoice_tab
+                and x.display_type in ("product", "line_section", "line_note")
             )
             if iml:
                 if len(iml) > 1:

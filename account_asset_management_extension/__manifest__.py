@@ -6,7 +6,7 @@
     "summary": "This module adds additional fields in assets",
     "version": "16.0.1.0.2",
     "category": "Accounting",
-    "author": "NuoBiT Solutions, S.L.",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [

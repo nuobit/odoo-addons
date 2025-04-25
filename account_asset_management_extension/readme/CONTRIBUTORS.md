@@ -1,0 +1,5 @@
+- [NuoBiT](https://www.nuobit.com):
+  - Kilian Niubo <kniubo@nuobit.com>
+  - Eric Antones <eantones@nuobit.com>
+  - Bijaya Kumal <bkumal@nuobit.com>
+
