@@ -11,7 +11,7 @@
     "license": "AGPL-3",
     "category": "Tools",
     "author": "NuoBiT Solutions SL",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": ["barcodes_gs1_label", "product_expiry"],
     "installable": True,
     "development_status": "Beta",
