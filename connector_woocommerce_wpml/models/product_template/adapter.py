@@ -13,8 +13,16 @@ class WooCommerceProductTemplateAdapter(Component):
 
     def create(self, data):
         if data.get("type") == "simple" and data.get("translation_of"):
-            data.pop("sku")
-        return super().create(data)
+            sku = data.pop("sku")
+        res = super().create(data)
+        if data.get("type") == "simple" and data.get("translation_of"):
+            if res and isinstance(res, dict):
+                external_id = res.get("id")
+                if external_id:
+                    sku = self._normalize_simple_sku(sku)
+                    url_l = ["products", str(external_id)]
+                    self._exec("put", "/".join(url_l), data={"sku": sku})
+        return res
 
     def write(self, external_id, data):  # pylint: disable=W8106
         old_sku = None

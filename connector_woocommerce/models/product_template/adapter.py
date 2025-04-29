@@ -83,6 +83,14 @@ class WooCommerceProductTemplateAdapter(Component):
         }
         self._convert_format(data, conv_mapper)
 
+    def _normalize_simple_sku(self, sku):
+        if isinstance(sku, list):
+            if len(sku) > 1:
+                raise ValidationError(_("Simple products can only have one variant"))
+            else:
+                sku = sku[0]
+        return sku
+
     def _prepare_data(self, data):
         self._format_product_template(data)
         meta_data = self.prepare_meta_data(data)
@@ -90,13 +98,7 @@ class WooCommerceProductTemplateAdapter(Component):
             data["meta_data"] = meta_data
         if data.get("sku"):
             if data["type"] == "simple":
-                if isinstance(data["sku"], list):
-                    if len(data["sku"]) > 1:
-                        raise ValidationError(
-                            _("Simple products can only have one variant")
-                        )
-                    else:
-                        data["sku"] = data["sku"][0]
+                data["sku"] = self._normalize_simple_sku(data["sku"])
             elif data["type"] == "variable":
                 data.pop("sku")
             else:
