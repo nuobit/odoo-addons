@@ -59,11 +59,12 @@ class WooCommerceProductProductExporter(Component):
                     value,
                     "woocommerce.product.attribute.value",
                 )
-        for attribute_line in relation.attribute_line_ids:
-            self._export_dependency(
-                attribute_line.attribute_id,
-                "woocommerce.product.attribute",
-            )
+        # TODO: Duplicated code?
+        # for attribute_line in relation.attribute_line_ids:
+        #     self._export_dependency(
+        #         attribute_line.attribute_id,
+        #         "woocommerce.product.attribute",
+        #     )
         product_image_attachments = relation.with_context(
             include_main_product_image=self.backend_record.use_main_product_image
         ).product_variant_image_attachment_ids
