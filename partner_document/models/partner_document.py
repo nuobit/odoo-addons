@@ -80,8 +80,19 @@ class PartnerDocument(models.Model):
             )
 
     validated = fields.Boolean(
+        compute="_compute_validated",
+        store=True,
+        readonly=False,
         default=False,
+        tracking=True,
     )
+
+    @api.depends("datas", "expiration_date")
+    def _compute_validated(self):
+        for rec in self:
+            if rec.validated:
+                rec.validated = False
+
     no_expiration = fields.Boolean(related="document_type_id.no_expiration")
 
     @api.constrains("expiration_date", "document_type_id")
@@ -112,16 +123,6 @@ class PartnerDocument(models.Model):
                             "document_type": rec.document_type_id.display_name,
                             "classification": rec.partner_classification_id.display_name,
                         }
-            if "expiration_date" in vals:
-                if vals["expiration_date"] != rec.expiration_date:
-                    validated = vals.get("validated", rec.validated)
-                    if validated:
-                        raise ValidationError(
-                            _(
-                                "You can't change the expiration date of a "
-                                "validated document."
-                            )
-                        )
         return super().write(vals)
 
     def unlink(self):
