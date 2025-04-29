@@ -50,7 +50,7 @@ class WooCommerceProductTemplateExportMapper(Component):
         return tools.color_rgb2hex(record.product_variant_id.variant_public_description)
 
     def _get_value_ids(self, attribute_line):
-        return attribute_line.value_ids.mapped("name")
+        return attribute_line.product_template_value_ids.mapped("name")
 
     def _get_slug_name(self, record):
         return record.slug_name

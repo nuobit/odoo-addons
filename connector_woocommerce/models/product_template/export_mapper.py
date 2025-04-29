@@ -171,7 +171,7 @@ class WooCommerceProductTemplateExportMapper(Component):
             return {"categories": categories}
 
     def _get_value_ids(self, attribute_line):
-        return attribute_line.value_ids.with_context(
+        return attribute_line.product_template_value_ids.with_context(
             lang=self.backend_record.language_id.code
         ).mapped("name")
 
@@ -179,7 +179,11 @@ class WooCommerceProductTemplateExportMapper(Component):
     def attributes(self, record):
         binder = self.binder_for("woocommerce.product.attribute")
         attr_list = []
-        for line in record.attribute_line_ids:
+        # This method is used to ensure that even the attributes of
+        # archived products are exported
+        for line in record.with_context(
+            active_test=False
+        ).product_variant_ids.product_template_attribute_value_ids.attribute_line_id:
             values = binder.get_external_dict_ids(line.attribute_id)
             attr_list.append(
                 {
