@@ -32,6 +32,7 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
         """
         now_fmt = fields.Datetime.now()
         result = None
+        external_data = {}
         # get binding from real record
         binding = self.binder_for().wrap_record(relation)
 
@@ -72,7 +73,9 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
             if not values:
                 result = _("Nothing to export")
             if not result:
-                result = _("Record exported with ID %s on Backend.") % "external_id"
+                result = _(
+                    "Record exported with ID %s on Backend."
+                ) % external_data.get("id")
             self._after_export(binding)
             binding[self.binder_for()._sync_date_field] = now_fmt
             return result
