@@ -22,19 +22,23 @@ class WooCommerceProductTemplateExportMapper(Component):
     @mapping
     def translation_of(self, record):
         lang_code = record._context.get("lang")
-        if lang_code == self.backend_record.language_ids[0].code:
-            # We don't need to set translation_of for the default lang
-            return {}
         if lang_code:
-            wpml_code = self.env["res.lang"]._get_wpml_code_from_iso_code(lang_code)
-            other_binding_backend = record.woocommerce_bind_ids.filtered(
-                lambda x: x.backend_id == self.backend_record
-                and x.woocommerce_lang != wpml_code
-            )
-            translation_of = None
-            for obb in other_binding_backend:
-                translation_of = obb.woocommerce_idproduct
-            return {"translation_of": translation_of}
+            source_lang_code = self.backend_record.language_ids[0].code
+            if lang_code == source_lang_code:
+                # We don't need to set translation_of for the default lang
+                return {}
+            else:
+                wpml_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
+                    source_lang_code
+                )
+                master_binding_backend = record.woocommerce_bind_ids.filtered(
+                    lambda x: x.backend_id == self.backend_record
+                    and x.woocommerce_lang == wpml_code
+                )
+                translation_of = None
+                if master_binding_backend:
+                    translation_of = master_binding_backend.woocommerce_idproduct
+                return {"translation_of": translation_of}
 
     def _get_product_description(self, record):
         # We don't need check backend_record lang
