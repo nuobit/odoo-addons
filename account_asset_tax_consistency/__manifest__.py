@@ -17,5 +17,4 @@
         "views/account_tax_views.xml",
         "views/account_tax_template_views.xml",
     ],
-    "installable": True,
 }
