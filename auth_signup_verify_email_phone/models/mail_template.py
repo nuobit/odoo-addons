@@ -9,5 +9,5 @@ class MailTemplate(models.Model):
 
     def generate_email(self, res_ids, fields):
         if self.env.context.get("multi_auth_signup"):
-            self = self.with_context(auth_signup_email="email")
+            self = self.with_context(auth_signup_email=True)
         return super(MailTemplate, self).generate_email(res_ids, fields)

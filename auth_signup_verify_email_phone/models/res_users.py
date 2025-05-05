@@ -178,15 +178,13 @@ class ResUsers(models.Model):
                     _("The WhatsApp template lacks a signup field for %s.")
                     % variable.name
                 )
-
-            if field_name == "signup_url":
-                self = self.with_context(auth_signup_phone=True)
-
             variables_values["body"][variable.name] = self[field_name]
 
         return variables_values
 
     def send_whatsapp_message(self):
+        self.partner_id.update_resend_attempts("mobile")
+        self = self.with_context(auth_signup_phone=True)
         chat, whatsapp_template = self._validate_and_get_whatsapp_channel()
         variables_values = self._get_template_variables(whatsapp_template)
         body = whatsapp_template.with_context(
@@ -204,6 +202,7 @@ class ResUsers(models.Model):
         )
 
     def action_reset_password(self):
+        self.partner_id.update_resend_attempts("email")
         if not self.env.context.get("multi_auth_signup"):
             return super().action_reset_password()
 

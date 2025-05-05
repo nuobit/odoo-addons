@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-28 15:00+0000\n"
-"PO-Revision-Date: 2025-03-28 15:00+0000\n"
+"POT-Creation-Date: 2025-05-06 16:09+0000\n"
+"PO-Revision-Date: 2025-05-06 16:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,16 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.signup_fields
 msgid "+34600200500"
 msgstr ""
+
+#. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Resend count</span>"
+msgstr "<span class=\"o_form_label\">Nombre de renvois</span>"
+
+#. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Resend delay</span>"
+msgstr "<span class=\"o_form_label\">Délai de renvoi</span>"
 
 #. module: auth_signup_verify_email_phone
 #: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.mail_gateway_form_view
@@ -33,6 +43,16 @@ msgid "<span class=\"o_stat_text\">Use as authenticator for signup</span>"
 msgstr ""
 "<span class=\"o_stat_text\">Utiliser comme authentificateur pour "
 "l'inscription</span>"
+
+#. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_config_settings_view_form
+msgid "<span>Email</span>"
+msgstr "<span>Email</span>"
+
+#. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_config_settings_view_form
+msgid "<span>Mobile</span>"
+msgstr "<span>Mobile</span>"
 
 #. module: auth_signup_verify_email_phone
 #: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_partner_view_form
@@ -87,6 +107,16 @@ msgid "Check your phone to activate your account!"
 msgstr "Vérifiez votre téléphone pour activer votre compte!"
 
 #. module: auth_signup_verify_email_phone
+#: model:ir.model,name:auth_signup_verify_email_phone.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: auth_signup_verify_email_phone
+#: model:ir.model,name:auth_signup_verify_email_phone.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de configuration"
+
+#. module: auth_signup_verify_email_phone
 #: model:ir.model,name:auth_signup_verify_email_phone.model_res_partner
 msgid "Contact"
 msgstr ""
@@ -99,7 +129,7 @@ msgstr "Méthode d'authentification par défaut pour l'inscription"
 #. module: auth_signup_verify_email_phone
 #: model:ir.model,name:auth_signup_verify_email_phone.model_mail_template
 msgid "Email Templates"
-msgstr "Modèles d'email"
+msgstr "Modèles d'e-mail"
 
 #. module: auth_signup_verify_email_phone
 #: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_partner__signup_email_validated
@@ -146,6 +176,35 @@ msgstr "Modèle de messagerie WhatsApp"
 #: model:ir.model,name:auth_signup_verify_email_phone.model_mail_whatsapp_template_variable
 msgid "Mail WhatsApp template variable"
 msgstr "Variable de modèle de messagerie WhatsApp"
+
+#. module: auth_signup_verify_email_phone
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_company__max_resend_count_email
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_config_settings__max_resend_count_email
+msgid "Max Resend Count Email"
+msgstr "Délai maximum de renvoi email"
+
+#. module: auth_signup_verify_email_phone
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_company__max_resend_count_mobile
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_config_settings__max_resend_count_mobile
+msgid "Max Resend Count Mobile"
+msgstr "Délai maximum de renvoi mobile"
+
+#. module: auth_signup_verify_email_phone
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_company__max_resend_delay_email
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_config_settings__max_resend_delay_email
+msgid "Max Resend Delay Email"
+msgstr "Délai maximum de renvoi email"
+
+#. module: auth_signup_verify_email_phone
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_company__max_resend_delay_mobile
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_config_settings__max_resend_delay_mobile
+msgid "Max Resend Delay Mobile"
+msgstr "Délai maximum de renvoi mobile"
+
+#. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_config_settings_view_form
+msgid "Maximum number of resend attempts."
+msgstr "Nombre maximum de tentatives de renvoi."
 
 #. module: auth_signup_verify_email_phone
 #: model:ir.model,name:auth_signup_verify_email_phone.model_mail_notification
@@ -228,6 +287,40 @@ msgid "Preferred Language"
 msgstr "Langue préférée"
 
 #. module: auth_signup_verify_email_phone
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_partner__resend_count_email
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_users__resend_count_email
+msgid "Resend Count Email"
+msgstr "Renvoyer le compte email"
+
+#. module: auth_signup_verify_email_phone
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_partner__resend_count_mobile
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_users__resend_count_mobile
+msgid "Resend Count Mobile"
+msgstr "Renvoyer le compte mobile"
+
+#. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_partner_view_form
+msgid "Resend Email"
+msgstr "Renvoyer l'email"
+
+#. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_partner_view_form
+msgid "Resend Message"
+msgstr "Renvoyer le message"
+
+#. module: auth_signup_verify_email_phone
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_partner__resend_since_email
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_users__resend_since_email
+msgid "Resend Since Email"
+msgstr "Renvoyer depuis Email"
+
+#. module: auth_signup_verify_email_phone
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_partner__resend_since_mobile
+#: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_res_users__resend_since_mobile
+msgid "Resend Since Mobile"
+msgstr "Renvoyer depuis Mobile"
+
+#. module: auth_signup_verify_email_phone
 #: model:ir.model.fields,help:auth_signup_verify_email_phone.field_mail_whatsapp_template_variable__signup_field_id
 msgid "Select a field from res.users to use for authentication."
 msgstr ""
@@ -256,6 +349,11 @@ msgid "Signup Model"
 msgstr "Modèle d'inscription"
 
 #. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_partner_view_form
+msgid "Signup Validation"
+msgstr "Validation d'inscription"
+
+#. module: auth_signup_verify_email_phone
 #. odoo-python
 #: code:addons/auth_signup_verify_email_phone/models/res_users.py:0
 #, python-format
@@ -269,6 +367,18 @@ msgid ""
 msgstr ""
 "Le modèle utilisé pour l'authentification de l'inscription (défini "
 "automatiquement sur res.users)."
+
+#. module: auth_signup_verify_email_phone
+#: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.res_config_settings_view_form
+msgid "Time in hours to resend the email or phone verification code."
+msgstr "Temps en heures pour renvoyer le code de vérification par e-mail ou par téléphone."
+
+#. module: auth_signup_verify_email_phone
+#. odoo-python
+#: code:addons/auth_signup_verify_email_phone/models/res_partner.py:0
+#, python-format
+msgid "Unknown resend method: %s"
+msgstr "Méthode de renvoi inconnue : %s"
 
 #. module: auth_signup_verify_email_phone
 #: model:ir.model.fields,field_description:auth_signup_verify_email_phone.field_mail_whatsapp_template__signup_auth
@@ -313,6 +423,17 @@ msgstr "Le modèle WhatsApp n'existe pas ou a été supprimé."
 #, python-format
 msgid "WhatsApp template not found for the language %s."
 msgstr "Modèle WhatsApp non trouvé pour la langue %s."
+
+#. module: auth_signup_verify_email_phone
+#. odoo-python
+#: code:addons/auth_signup_verify_email_phone/models/res_partner.py:0
+#, python-format
+msgid ""
+"You can only resend %(count)s %(method)s verification messages every "
+"%(delay)s hours."
+msgstr ""
+"Vous ne pouvez renvoyer que %(count)s %(method)s messages de vérification "
+"toutes les %(delay)s heures."
 
 #. module: auth_signup_verify_email_phone
 #: model_terms:ir.ui.view,arch_db:auth_signup_verify_email_phone.signup_fields

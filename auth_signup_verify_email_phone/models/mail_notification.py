@@ -8,7 +8,7 @@ class MailNotification(models.Model):
     _inherit = "mail.notification"
 
     def send_gateway(self, auto_commit=False, raise_exception=False, parse_mode="HTML"):
-        if self.env.context.get("multi_auth_signup"):
+        if self.env.context.get("auth_signup_phone"):
             raise_exception = True
         return super().send_gateway(
             auto_commit=auto_commit,

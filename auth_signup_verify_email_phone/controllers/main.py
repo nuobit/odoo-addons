@@ -48,14 +48,12 @@ class SignupVerifyEmailPhone(SignupVerifyEmail):
                             "Your email has been verified, but your phone number still "
                             "needs to be validated."
                         )
-                        if not partner.signup_mobile_token:
+                        if not partner.signup_mobile_token or not request.params.get(
+                            "auth_signup"
+                        ):
                             try:
                                 with request.env.cr.savepoint():
-                                    user.with_context(
-                                        create_user=True,
-                                        multi_auth_signup=True,
-                                        signup_force_type_in_url="reset",
-                                    ).send_whatsapp_message()
+                                    partner.action_resend_whatsapp()
                             except Exception:
                                 message = (
                                     _("Your email is verified. ")
@@ -82,9 +80,7 @@ class SignupVerifyEmailPhone(SignupVerifyEmail):
             if not user.signup_mobile_validated:
                 if not user.signup_mobile_token:
                     try:
-                        user.with_context(
-                            multi_auth_signup=True
-                        ).send_whatsapp_message()
+                        user.partner_id.action_resend_whatsapp()
                         qcontext["message"] = _(
                             "Check your phone to activate your account!"
                         )
