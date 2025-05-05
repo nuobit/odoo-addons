@@ -1,0 +1,3 @@
+- [NuoBiT](https://www.nuobit.com):
+  - Kilian Niubo <kniubo@nuobit.com>
+  - Bijaya Kumal <bkumal@nuobit.com>
