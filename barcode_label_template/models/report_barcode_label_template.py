@@ -10,6 +10,7 @@ from odoo.tools.safe_eval import safe_eval
 
 class ReportBarcodeLabelTemplate(models.AbstractModel):
     _name = "report.barcode_label_template.report_label_template"
+    _description = "Barcode Label Template Report"
     _inherit = "report.barcodes_gs1_label.report_gs1_barcode"
 
     def _prepare_report_label_template_data(self, data, gs1_barcode, lot, temp_config):
