@@ -1,6 +1,7 @@
 # Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+from operator import itemgetter
 
 from odoo import _
 from odoo.exceptions import MissingError, ValidationError
@@ -75,6 +76,30 @@ class ProductService(Component):
             )
         params["lang"] = lang
 
+        # old asset query, really slow
+        # product_template_asset as (
+        #         select t.id, t.active, t.company_id, t.tracking
+        #         from product_template t
+        #         where not exists (
+        #                 select 1
+        #                 from account_account a, ir_property r
+        #                 where a.asset_profile_id is not null and
+        #                       r.name = 'property_account_expense_categ_id' and
+        #                       r.res_id = 'product.category,' || t.categ_id and
+        #                       r.value_reference = 'account.account,' || a.id
+        #                       and r.company_id = %(company_id)s
+        #                       and not %(assets)s
+        #             ) and not exists (
+        #                 select 1
+        #                 from account_account a, ir_property r
+        #                 where a.asset_profile_id is not null and
+        #                       r.name = 'property_account_expense_id' and
+        #                       r.res_id = 'product.template,' || t.id and
+        #                       r.value_reference = 'account.account,' || a.id
+        #                       and r.company_id = %(company_id)s
+        #                       and not %(assets)s
+        #             )
+        #     ),
         # get data
         sql = """
             with product_template_name_trl as (
@@ -90,29 +115,6 @@ class ProductService(Component):
                 where r.type = 'model' and
                       r.name = 'product.attribute.value,name' and
                       (%(lang)s != 'en_US' and r.lang = %(lang)s)
-            ),
-            product_template_asset as (
-                select t.id, t.active, t.company_id, t.tracking
-                from product_template t
-                where not exists (
-                        select 1
-                        from account_account a, ir_property r
-                        where a.asset_profile_id is not null and
-                              r.name = 'property_account_expense_categ_id' and
-                              r.res_id = 'product.category,' || t.categ_id and
-                              r.value_reference = 'account.account,' || a.id
-                              and r.company_id = %(company_id)s
-                              and not %(assets)s
-                    ) and not exists (
-                        select 1
-                        from account_account a, ir_property r
-                        where a.asset_profile_id is not null and
-                              r.name = 'property_account_expense_id' and
-                              r.res_id = 'product.template,' || t.id and
-                              r.value_reference = 'account.account,' || a.id
-                              and r.company_id = %(company_id)s
-                              and not %(assets)s
-                    )
             ),
             product_variant_base as (
                 select distinct c.product_product_id as product_id,
@@ -140,7 +142,7 @@ class ProductService(Component):
                 select q.location_id, q.lot_id, l.name as lot_name, q.product_id,
                        sum(coalesce(q.quantity, 0)) as quantity
                 from stock_quant q, stock_location sl, stock_production_lot l,
-                     product_product p, product_template_asset t
+                     product_product p, product_template t
                 where q.lot_id = l.id and
                       q.location_id = sl.id and
                       q.product_id = p.id and
@@ -155,7 +157,7 @@ class ProductService(Component):
                 union all
                 select null as location_id, l.id as lot_id, l.name as lot_name, l.product_id,
                        0 as quantity
-                from stock_production_lot l, product_product p, product_template_asset t
+                from stock_production_lot l, product_product p, product_template t
                 where l.product_id = p.id and
                       p.product_tmpl_id = t.id and
                       p.active and t.active and
@@ -174,7 +176,7 @@ class ProductService(Component):
                 select q.location_id, null as lot_id, null as lot_name, q.product_id,
                        sum(coalesce(q.quantity, 0)) as quantity
                 from stock_quant q, stock_location sl, product_product p,
-                     product_template_asset t
+                     product_template t
                 where q.location_id = sl.id and
                       q.product_id = p.id and
                       p.product_tmpl_id = t.id and
@@ -188,7 +190,7 @@ class ProductService(Component):
                 union all
                 select null as location_id, null as lot_id, null as lot_name,
                        p.id as product_id, 0 as quantity
-                from  product_product p, product_template_asset t
+                from  product_product p, product_template t
                 where p.product_tmpl_id = t.id and
                       t.tracking = 'none' and
                       p.active and t.active and
@@ -205,7 +207,7 @@ class ProductService(Component):
             )
             select pll.location_id, pll.lot_id, pll.lot_name, pll.product_id,
                    p.default_code as product_code,
-                   coalesce(r.name, t.name) ||
+                   coalesce(tr.name, t.name) ||
                        coalesce(' - ' || pv.attribute_name, '') as product_name,
                    p.barcode as product_barcode, t.tracking as product_tracking,
                    t.categ_id, c.name as categ_name, pll.quantity
@@ -213,12 +215,11 @@ class ProductService(Component):
                      left join product_variant pv on pv.product_id = pll.product_id,
                  product_product p,
                  product_template t
-                    left join product_template_name_trl r on t.id = r.id,
+                    left join product_template_name_trl tr on t.id = tr.id,
                  product_category c
             where pll.product_id = p.id and
                   p.product_tmpl_id = t.id and
                   t.categ_id = c.id
-            order by product_code, lot_name, product_id, lot_id
             """
 
         dp = self.env["product.product"].sudo().env.ref("product.decimal_product_uom")
@@ -268,6 +269,7 @@ class ProductService(Component):
         product_list = []
         for product_id, lots_d in data.items():
             lots = list(lots_d.values())
+            lots.sort(key=itemgetter("code"))
             if (code or barcode) or lots:
                 product = products[product_id]
                 product_list.append(
@@ -285,6 +287,7 @@ class ProductService(Component):
                         "lots": lots,
                     }
                 )
+        product_list.sort(key=itemgetter("code"))
         return {"rows": product_list}
 
     def _validator_search(self):
