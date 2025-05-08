@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="report_saleorder_document"
+        inherit_id="sale.report_saleorder_document"
+    >
+        <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()" />
+    </template>
+</odoo>
