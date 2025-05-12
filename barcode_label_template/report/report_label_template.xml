@@ -3,16 +3,6 @@
      Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <template id="layout_gs1productdata">
-        <div class="barcode-data">
-            <div class="text-center barcode-data-row">
-                <div>
-                    <p class="font-size75" t-field="barcode['product'].default_code" />
-                    <p class="font-size50" t-field="barcode['product'].name" />
-                </div>
-            </div>
-        </div>
-    </template>
     <template id="report_label_template_field">
         <t t-foreach="field" t-as="f">
             <div
@@ -25,12 +15,12 @@
         </t>
     </template>
     <template id="report_label_template_barcode">
-        <t t-foreach="datas" t-as="data">
-            <t t-set="barcode" t-value="data['barcodes_data']" />
-            <t t-set="field" t-value="data['fields_data']" />
+        <t t-foreach="lots" t-as="lot">
+            <t t-set="barcode" t-value="lot['barcodes_data']" />
+            <t t-set="field" t-value="lot['fields_data']" />
             <div class="page-container">
                 <t t-call="barcode_label_template.report_label_template_field" />
-                <t t-if="barcode">
+                <t t-if="barcode['barcode_values']">
                     <div
                         t-att-style="'position: absolute; top: %dmm; left: %dmm;' % (barcode['position_y'], barcode['position_x'])"
                     >
@@ -41,22 +31,23 @@
                             <div class="barcode-row">
                                 <div>
                                     <img
-                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode['type'], barcode['string'], 100)"
+                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode['barcode_type'], barcode['barcode_string'], 100)"
                                         t-attf-class="bgp-img"
                                     />
                                 </div>
-                                <div class="barcode-details">
-                                    <ul class="list-unstyled">
-                                        <t
-                                            t-foreach="barcode['values'].items()"
-                                            t-as="bv"
-                                        >
-                                            <li t-esc="'(%s)%s' % bv" />
-                                        </t>
-                                    </ul>
-                                </div>
+                                <t t-if="barcode['barcode_type'] == 'gs1-datamatrix'">
+                                    <div class="barcode-details">
+                                        <ul class="list-unstyled">
+                                            <t
+                                                t-foreach="barcode['barcode_values'].items()"
+                                                t-as="bv"
+                                            >
+                                                <li t-esc="'(%s)%s' % bv" />
+                                            </t>
+                                        </ul>
+                                    </div>
+                                </t>
                             </div>
-                            <t t-call="barcode_label_template.layout_gs1productdata" />
                         </div>
                     </div>
                 </t>
