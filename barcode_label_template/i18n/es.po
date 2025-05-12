@@ -280,3 +280,26 @@ msgstr "Ancho"
 #: model:ir.model,name:barcode_label_template.model_report_barcode_label_template_report_label_template
 msgid "report.barcode_label_template.report_label_template"
 msgstr ""
+
+#. module: barcode_label_template
+#. odoo-python
+#: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
+#, python-format
+msgid "Barcode type [%s] not supported for this report"
+msgstr "Tipo de código de barras [%s] no soportado para este informe"
+
+#. module: barcode_label_template
+#. odoo-python
+#: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
+#, python-format
+msgid ""
+"Barcode {barcode} of product {product_name} not valid for type "
+"{barcode_type}"
+msgstr ""
+"El código de barras {barcode} del producto {product_name} no es válido para "
+"el tipo {barcode_type}"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__height
+msgid "Height"
+msgstr "Altura"
