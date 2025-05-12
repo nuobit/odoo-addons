@@ -54,7 +54,10 @@
                             <field name="position_y" />
                         </group>
                         <group string="Size">
-                            <field name="width" />
+                            <field
+                                name="width"
+                                invisible="barcode_type == 'gs1-datamatrix'"
+                            />
                             <field name="height" />
                         </group>
                     </group>

@@ -18,9 +18,9 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
             {
                 "position_x": temp_config.position_x,
                 "position_y": temp_config.position_y,
-                "width": temp_config.width,
                 "height": temp_config.height,
-                "humanreadable": temp_config.humanreadable or None,
+                "width": temp_config.width,
+                "humanreadable": temp_config.humanreadable or False,
             }
         )
 
