@@ -11,14 +11,27 @@ class BarcodeLabelTemplateConfiguration(models.Model):
     _description = "Barcode Label Template Configuration"
     _order = "default desc"
 
+    @property
+    def BARCODE_TYPE_SELECTION(self):
+        return [
+            ("gs1-datamatrix", "GS1-Datamatrix"),
+            ("EAN13", "EAN13"),
+        ]
+
     name = fields.Char(required=True)
     template = fields.Binary()
     template_name = fields.Char()
     paperformat_id = fields.Many2one(comodel_name="report.paperformat", required=True)
     default = fields.Boolean()
+    barcode_type = fields.Selection(
+        selection=lambda self: self.BARCODE_TYPE_SELECTION,
+        required=True,
+        default="gs1-datamatrix",
+    )
     position_x = fields.Float()
     position_y = fields.Float()
     width = fields.Float()
+    height = fields.Float(default=100)
     configuration_field_ids = fields.One2many(
         comodel_name="barcode.label.template.configuration.field",
         inverse_name="configuration_id",
