@@ -10,7 +10,6 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="barcode_type" />
                         <field name="barcode_label_template_configuration_id" />
                     </group>
                     <footer>
