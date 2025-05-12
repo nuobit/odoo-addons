@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -18,17 +19,6 @@ class BarcodeLabelTemplateWizard(models.TransientModel):
             res["barcode_label_template_configuration_id"] = default_configuration.id
         return res
 
-    @property
-    def BARCODE_TYPE_SELECTION(self):
-        return [
-            ("gs1-datamatrix", "GS1-Datamatrix"),
-        ]
-
-    barcode_type = fields.Selection(
-        selection=lambda self: self.BARCODE_TYPE_SELECTION,
-        required=True,
-        default="gs1-datamatrix",
-    )
     barcode_label_template_configuration_id = fields.Many2one(
         comodel_name="barcode.label.template.configuration",
         required=True,
@@ -44,7 +34,6 @@ class BarcodeLabelTemplateWizard(models.TransientModel):
                 self,
                 data={
                     "active_ids": self.env.context.get("active_ids"),
-                    "barcode_type": self.barcode_type,
                 },
             )
         )
