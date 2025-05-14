@@ -64,7 +64,18 @@ class PartnerDocument(models.Model):
         string="Filename",
     )
 
-    expiration_date = fields.Date()
+    expiration_date = fields.Date(
+        compute="_compute_expiration_date",
+        store=True,
+        readonly=False,
+    )
+
+    @api.depends("datas")
+    def _compute_expiration_date(self):
+        for rec in self:
+            if not rec.datas:
+                rec.expiration_date = False
+
     description = fields.Text()
 
     expired = fields.Boolean(
@@ -108,59 +119,52 @@ class PartnerDocument(models.Model):
                 )
 
     def write(self, vals):
+        res = super().write(vals)
+        self._validate_document()
+        return res
+
+    def _validate_document(self):
         for rec in self:
-            if "document_type_id" in vals:
-                if vals["document_type_id"] != rec.document_type_id.id:
-                    if rec.datas:
-                        raise ValidationError(
-                            _(
-                                "You can't change the %(document_type)s "
-                                "(%(classification)s) if it has a File"
-                            )
-                            % {
-                                "document_type": rec.document_type_id.display_name,
-                                "classification": rec.partner_classification_id.display_name,
-                            }
-                        )
+            datas = rec.datas
+            document_type = rec.document_type_id
+            expiration_date = rec.expiration_date
 
-            if "expiration_date" in vals:
-                if vals["expiration_date"] != rec.expiration_date:
-                    validated = vals.get("validated", rec.validated)
-                    if validated:
-                        raise ValidationError(
-                            _(
-                                "You can't change the expiration date of a "
-                                "validated document."
-                            )
-                        )
+            if datas and not document_type.no_expiration and not expiration_date:
+                raise ValidationError(_("Expiration date is required for this file"))
 
-            new_document_type = (
-                self.env["partner.document.type"].browse(vals["document_type_id"])
-                if "document_type_id" in vals
-                else rec.document_type_id
-            )
-            new_expiration_date = vals.get("expiration_date", rec.expiration_date)
-
-            if not new_document_type.no_expiration and not new_expiration_date:
-                raise ValidationError(
-                    _("Expiration date is required for this document type.")
-                )
-
-        return super().write(vals)
-
-    def unlink(self):
-        for rec in self:
-            if rec.datas:
+            if rec.document_type_id != document_type:
                 raise ValidationError(
                     _(
-                        "You can't delete %(document_type)s (%(classification)s)"
-                        " because it has a File"
+                        "You can't change the %(document_type)s "
+                        "(%(classification)s) if it has a File"
                     )
                     % {
                         "document_type": rec.document_type_id.display_name,
                         "classification": rec.partner_classification_id.display_name,
                     }
                 )
+
+    @api.model
+    def create(self, vals):
+        res = super().create(vals)
+        res._validate_document()
+        return res
+
+    def unlink(self):
+        for rec in self:
+            # Temporarily disabled – raises error even without file
+            # if rec.datas:
+            #     raise ValidationError(
+            #         _(
+            #             "You can't delete %(document_type)s (%(classification)s) "
+            #             "because it has a File"
+            #         )
+            #         % {
+            #             "document_type": rec.document_type_id.display_name,
+            #             "classification": rec.partner_classification_id.display_name,
+            #         }
+            #     )
+
             if rec.partner_id.classification_id:
                 docs = self.env[self._name].search(
                     [
@@ -180,10 +184,12 @@ class PartnerDocument(models.Model):
                 ):
                     raise ValidationError(
                         _(
-                            "You cannot delete %(document_type)s because it is required"
-                            " in (%(classification)s). If you want to delete it, you "
-                            "must delete the files of the rest of the document types of"
-                            " this classification"
+                            "You cannot delete %(document_type)s "
+                            "because it is required "
+                            "in (%(classification)s). "
+                            "If you want to delete it, you must delete "
+                            "the files of the rest of the document"
+                            " types of this classification."
                         )
                         % {
                             "document_type": rec.document_type_id.display_name,
