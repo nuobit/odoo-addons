@@ -1,5 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import io
@@ -25,7 +25,7 @@ class IrActionsReport(models.Model):
                 pdf_mem_file_chunk = io.BytesIO()
                 pdf_mem_file_chunk.write(pdf_content_chunk)
                 pdf_chunk = PdfFileReader(pdf_mem_file_chunk)
-                pdf_merger.append(pdf_chunk, import_outline=False)
+                pdf_merger.append(pdf_chunk, import_bookmarks=False)
                 pdf_mem_file_chunk.close()
 
             if pdf_merger:
