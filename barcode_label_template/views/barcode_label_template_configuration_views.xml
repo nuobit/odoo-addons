@@ -23,7 +23,7 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <h1><field name="name" /></h1>
+                    <h1><field name="name" placeholder="Name" /></h1>
                     <group>
                         <field name="default" widget="boolean_toggle" />
                     </group>
@@ -34,25 +34,26 @@
                         </group>
                         <group>
                             <field name="paperformat_id" />
-                            <field name="barcode_type" />
                         </group>
                     </group>
                     <group string="Barcode Configuration">
-                        <group>
-                            <h4>Coordinates</h4>
-                            <div class="o_help_message" colspan="4">
-                                <p
-                                >Indicate the starting point for drawing the barcode</p>
-                            </div>
+                        <group colspan="4">
+                            <group>
+                                <field name="barcode_type" />
+                                <field name="humanreadable" />
+                            </group>
+                            <group>
+                                <field
+                                    name="check_barcode_encoding"
+                                    invisible="barcode_type != 'EAN13'"
+                                />
+                            </group>
+                        </group>
+                        <group string="Position">
                             <field name="position_x" />
                             <field name="position_y" />
                         </group>
-                        <group>
-                            <h4>Box Size</h4>
-                            <div class="o_help_message" colspan="4">
-                                <p
-                                >Specify the size of the box containing the barcode</p>
-                            </div>
+                        <group string="Size">
                             <field name="width" />
                             <field name="height" />
                         </group>
