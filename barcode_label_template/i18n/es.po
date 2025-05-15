@@ -43,14 +43,24 @@ msgid "Barcode Label Template Wizard"
 msgstr "Wizard de plantilla de etiqueta de código de barras"
 
 #. module: barcode_label_template
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__barcode_type
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__check_barcode_encoding
+msgid "Check Barcode Encoding"
+msgstr "Verificar código de barras"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,help:barcode_label_template.field_barcode_label_template_configuration__check_barcode_encoding
+msgid "Check if the barcode encoding is correct"
+msgstr "Verificar si la codificación del código de barras es correcta"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__barcode_type
 msgid "Barcode Type"
 msgstr "Tipo de código de barras"
 
 #. module: barcode_label_template
 #: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
-msgid "Box Size"
-msgstr "Tamaño del cuadro"
+msgid "Size"
+msgstr "Tamaño"
 
 #. module: barcode_label_template
 #: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_wizard_view_tree
@@ -64,8 +74,8 @@ msgstr "Configuración"
 
 #. module: barcode_label_template
 #: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
-msgid "Coordinates"
-msgstr "Coordenadas"
+msgid "Position"
+msgstr "Posición"
 
 #. module: barcode_label_template
 #: model_terms:ir.actions.act_window,help:barcode_label_template.action_barcode_label_template_configuration_tree
@@ -180,6 +190,7 @@ msgstr "Lote/Número de serie"
 
 #. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__name
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
 msgid "Name"
 msgstr "Nombre"
 
@@ -241,8 +252,8 @@ msgstr "Secuencia"
 
 #. module: barcode_label_template
 #: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
-msgid "Specify the size of the box containing the barcode"
-msgstr "Especifique el tamaño del cuadro que contiene el código de barras"
+msgid "Specify the size of the barcode"
+msgstr "Especifique el tamaño del código de barras"
 
 #. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__target_field
@@ -303,3 +314,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__height
 msgid "Height"
 msgstr "Altura"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__humanreadable
+msgid "Human readable"
+msgstr "Legible por humanos"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,help:barcode_label_template.field_barcode_label_template_configuration__humanreadable
+msgid "Show the human readable text"
+msgstr "Mostrar el texto legible por humanos"

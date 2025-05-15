@@ -24,18 +24,16 @@
                     <div
                         t-att-style="'position: absolute; top: %dmm; left: %dmm;' % (barcode['position_y'], barcode['position_x'])"
                     >
-                        <div
-                            class="label-container"
-                            t-att-style="'width: %dmm;' % barcode['width']"
-                        >
+                        <div class="label-container">
                             <div class="barcode-row">
                                 <div>
                                     <img
-                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%i&amp;quiet=0' % (barcode['barcode_type'], barcode['barcode_string'], barcode['height'])"
-                                        t-attf-class="bgp-img"
+                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%i&amp;width=%i&amp;quiet=0&amp;humanreadable=%i' % (barcode['barcode_type'], barcode['barcode_string'], barcode['height'], barcode['width'], barcode['humanreadable'])"
                                     />
                                 </div>
-                                <t t-if="barcode['barcode_type'] == 'gs1-datamatrix'">
+                                <t
+                                    t-if="barcode['barcode_type'] == 'gs1-datamatrix' and barcode['humanreadable']"
+                                >
                                     <div class="barcode-details">
                                         <ul class="list-unstyled">
                                             <t

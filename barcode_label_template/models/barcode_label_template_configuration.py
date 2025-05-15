@@ -28,6 +28,24 @@ class BarcodeLabelTemplateConfiguration(models.Model):
         required=True,
         default="gs1-datamatrix",
     )
+    check_barcode_encoding = fields.Boolean(
+        compute="_compute_check_barcode_encoding",
+        store=True,
+        readonly=False,
+        help="Check if the barcode encoding is correct",
+    )
+    humanreadable = fields.Boolean(
+        default=True,
+        help="Show the human readable text",
+        string="Human readable",
+    )
+
+    @api.depends("barcode_type")
+    def _compute_check_barcode_encoding(self):
+        for rec in self:
+            if rec.barcode_type == "EAN13":
+                rec.check_barcode_encoding = True
+
     position_x = fields.Float()
     position_y = fields.Float()
     width = fields.Float()
