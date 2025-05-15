@@ -22,8 +22,8 @@ Barcode label template
 
 |badge1| |badge2| |badge3|
 
-This module integrates barcodes directly into the custom label template
-for lots/serial numbers.
+-  This module integrates barcodes directly into the custom label
+   template for lots/serial numbers.
 
 **Table of contents**
 
@@ -51,10 +51,11 @@ Authors
 Contributors
 ------------
 
-- `NuoBiT <https://www.nuobit.com>`__:
+-  `NuoBiT <https://www.nuobit.com>`__:
 
-  - Frank Cespedes <fcespedes@nuobit.com>
-  - Deniz Gallo <dgallo@nuobit.com>
+   -  Frank Cespedes fcespedes@nuobit.com
+   -  Deniz Gallo dgallo@nuobit.com
+   -  Eric Antones eantones@nuobit.com
 
 Maintainers
 -----------

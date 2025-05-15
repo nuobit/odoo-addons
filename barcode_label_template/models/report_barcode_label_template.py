@@ -20,6 +20,7 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
                 "position_y": temp_config.position_y,
                 "width": temp_config.width,
                 "height": temp_config.height,
+                "humanreadable": temp_config.humanreadable or None,
             }
         )
 
@@ -92,8 +93,12 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
                 )
             elif barcode_data["barcode_type"] == "EAN13":
                 product_barcode = lot.product_id.barcode or None
-                if product_barcode and not check_barcode_encoding(
-                    product_barcode, barcode_data["barcode_type"]
+                if (
+                    product_barcode
+                    and temp_config.check_barcode_encoding
+                    and not check_barcode_encoding(
+                        product_barcode, barcode_data["barcode_type"]
+                    )
                 ):
                     raise ValidationError(
                         _(
