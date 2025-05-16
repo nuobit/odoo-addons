@@ -41,7 +41,7 @@ class BarcodeLabelTemplateConfiguration(models.Model):
     )
 
     resolution_ppi = fields.Integer(
-        default=90,
+        default=600,
         string="Resolution (ppi)",
         required=True,
     )
