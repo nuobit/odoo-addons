@@ -41,7 +41,8 @@ class IrActionsReport(models.Model):
             return encoder.get_imagedata()
         elif barcode_type == "gs1-datamatrix":
             encoder = dmx.DataMatrixEncoder(value)
-            return encoder.get_imagedata()
+            ratio = 5 / 100
+            return encoder.get_imagedata(cellsize=int(int(height) * ratio))
         else:
             return super().barcode(
                 barcode_type,
