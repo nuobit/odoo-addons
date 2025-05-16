@@ -16,11 +16,19 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
     def _prepare_report_label_template_data(self, data, lot, temp_config):
         data.update(
             {
-                "position_x": temp_config.position_x,
-                "position_y": temp_config.position_y,
-                "height": temp_config.height,
-                "width": temp_config.width,
+                "position_x": temp_config.position_x
+                / temp_config.correction_ratio_pxmm,
+                "position_y": temp_config.position_y
+                / temp_config.correction_ratio_pxmm,
+                "width": temp_config.width / temp_config.correction_ratio_pxmm,
+                "height": temp_config.height / temp_config.correction_ratio_pxmm,
                 "humanreadable": temp_config.humanreadable or False,
+                "resolution_width": temp_config.width
+                / 25.4
+                * temp_config.resolution_ppi,
+                "resolution_height": temp_config.height
+                / 25.4
+                * temp_config.resolution_ppi,
             }
         )
 
@@ -61,9 +69,9 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
             fields_data.append(
                 {
                     "value": field_value,
-                    "position_x": field.position_x,
-                    "position_y": field.position_y,
-                    "width": field.width,
+                    "position_x": field.position_x / temp_config.correction_ratio_pxmm,
+                    "position_y": field.position_y / temp_config.correction_ratio_pxmm,
+                    "width": field.width / temp_config.correction_ratio_pxmm,
                 }
             )
         return {

@@ -324,3 +324,20 @@ msgstr "Legible por humanos"
 #: model:ir.model.fields,help:barcode_label_template.field_barcode_label_template_configuration__humanreadable
 msgid "Show the human readable text"
 msgstr "Mostrar el texto legible por humanos"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__resolution_ppi
+msgid "Resolution (ppi)"
+msgstr "Resolución (ppi)"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__correction_ratio_pxmm
+msgid "Correction ratio px/mm"
+msgstr "Ratio de corrección px/mm"
+
+#. module: barcode_label_template
+#. odoo-python
+#: code:addons/barcode_label_template/models/barcode_label_template_configuration.py:0
+#, python-format
+msgid "Invalid dimension: '%s'"
+msgstr "Dimensión no válida: '%s'"

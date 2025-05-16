@@ -40,6 +40,19 @@ class BarcodeLabelTemplateConfiguration(models.Model):
         string="Human readable",
     )
 
+    resolution_ppi = fields.Integer(
+        default=90,
+        string="Resolution (ppi)",
+        required=True,
+    )
+
+    correction_ratio_pxmm = fields.Float(
+        digits=(5, 4),
+        string="Correction ratio px/mm",
+        required=True,
+        default=1.25,
+    )
+
     @api.depends("barcode_type")
     def _compute_check_barcode_encoding(self):
         for rec in self:
@@ -48,8 +61,44 @@ class BarcodeLabelTemplateConfiguration(models.Model):
 
     position_x = fields.Float()
     position_y = fields.Float()
-    width = fields.Float()
-    height = fields.Float(default=100)
+
+    def _compute_dimension_value(self, dimension, ratio=1):
+        self.ensure_one()
+        if dimension == "width":
+            self.width = int(self.height / ratio)
+        elif dimension == "height":
+            self.height = int(self.width * ratio)
+        else:
+            raise ValidationError(_("Invalid dimension: '%s'") % dimension)
+
+    def _compute_dimension(self, dimension):
+        for rec in self:
+            if rec.barcode_type == "EAN13":
+                if rec.check_barcode_encoding:
+                    rec._compute_dimension_value(dimension, ratio=1 / 2)
+            elif rec.barcode_type == "gs1-datamatrix":
+                rec._compute_dimension_value(dimension, ratio=1 / 1)
+
+    width = fields.Float(
+        compute="_compute_width",
+        store=True,
+        readonly=False,
+    )
+
+    @api.depends("height")
+    def _compute_width(self):
+        self._compute_dimension("width")
+
+    height = fields.Float(
+        compute="_compute_height",
+        store=True,
+        readonly=False,
+    )
+
+    @api.depends("width", "check_barcode_encoding", "barcode_type")
+    def _compute_height(self):
+        self._compute_dimension("height")
+
     configuration_field_ids = fields.One2many(
         comodel_name="barcode.label.template.configuration.field",
         inverse_name="configuration_id",

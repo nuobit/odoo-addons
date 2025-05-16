@@ -28,7 +28,10 @@
                             <div class="barcode-row">
                                 <div>
                                     <img
-                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%i&amp;width=%i&amp;quiet=0&amp;humanreadable=%i' % (barcode['barcode_type'], barcode['barcode_string'], barcode['height'], barcode['width'], barcode['humanreadable'])"
+                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;quiet=0&amp;humanreadable=%i&amp;width=%i&amp;height=%i' % (
+                                            barcode['barcode_type'], barcode['barcode_string'], barcode['humanreadable'],
+                                            barcode['resolution_height'], barcode['resolution_width'])"
+                                        t-att-style="'width: %imm; height: %imm;' % (barcode['width'], barcode['height'])"
                                     />
                                 </div>
                                 <t

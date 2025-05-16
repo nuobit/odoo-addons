@@ -41,6 +41,8 @@
                             <group>
                                 <field name="barcode_type" />
                                 <field name="humanreadable" />
+                                <field name="resolution_ppi" />
+                                <field name="correction_ratio_pxmm" />
                             </group>
                             <group>
                                 <field
@@ -54,10 +56,7 @@
                             <field name="position_y" />
                         </group>
                         <group string="Size">
-                            <field
-                                name="width"
-                                invisible="barcode_type == 'gs1-datamatrix'"
-                            />
+                            <field name="width" />
                             <field name="height" />
                         </group>
                     </group>
