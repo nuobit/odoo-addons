@@ -50,7 +50,7 @@ class BarcodeLabelTemplateConfiguration(models.Model):
         digits=(5, 4),
         string="Correction ratio px/mm",
         required=True,
-        default=1.25,
+        default=1,
     )
 
     @api.depends("barcode_type")
