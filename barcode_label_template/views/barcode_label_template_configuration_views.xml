@@ -47,7 +47,7 @@
                             <group>
                                 <field
                                     name="check_barcode_encoding"
-                                    invisible="barcode_type != 'EAN13'"
+                                    attrs="{'invisible': [('barcode_type', '!=', 'EAN13')]}"
                                 />
                             </group>
                         </group>
