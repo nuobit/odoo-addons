@@ -9,6 +9,7 @@ from odoo.exceptions import ValidationError
 
 class PartnerDocument(models.Model):
     _name = "partner.document"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Partner Document"
     _order = "partner_id, partner_classification_id, document_type_id"
 
