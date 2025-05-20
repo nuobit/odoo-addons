@@ -144,7 +144,7 @@ class PartnerDocument(models.Model):
                     }
                 )
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         res = super().create(vals)
         res._validate_document()
