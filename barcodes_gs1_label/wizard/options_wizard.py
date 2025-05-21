@@ -242,6 +242,9 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         }
         return (
             self.env.ref(MAP_MODEL_REPORT[model])
-            .with_context(no_paddings=True)
+            .with_context(
+                no_paddings=True,
+                paperformat_id=self.label_config_id.format_id.paperformat_id.id,
+            )
             .report_action(self, data=data)
         )
