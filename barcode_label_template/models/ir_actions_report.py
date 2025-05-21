@@ -41,36 +41,17 @@ class IrActionsReport(models.Model):
         return pdf_content, "pdf"
 
     @api.model
-    def _run_wkhtmltopdf(
-        self,
-        bodies,
-        report_ref=False,
-        header=None,
-        footer=None,
-        landscape=False,
-        specific_paperformat_args=None,
-        set_viewport_size=False,
-    ):
-        temp_config_id = self.env.context.get("template_configuration_id")
-        if temp_config_id:
-            temp_config = self.env["barcode.label.template.configuration"].browse(
-                temp_config_id
-            )
-            self = self.env["ir.actions.report"]._get_report_from_name(report_ref)
-            original_watermark = self.pdf_watermark
-            self.pdf_watermark = temp_config.template
-            original_paperformat_id = self.paperformat_id
-            self.paperformat_id = temp_config.paperformat_id
-        result = super()._run_wkhtmltopdf(
-            bodies,
-            report_ref=report_ref,
-            header=header,
-            footer=footer,
-            landscape=landscape,
-            specific_paperformat_args=specific_paperformat_args,
-            set_viewport_size=set_viewport_size,
-        )
-        if temp_config_id:
-            self.pdf_watermark = original_watermark
-            self.paperformat_id = original_paperformat_id
-        return result
+    def _get_report(self, report_ref):
+        """Override to set the watermark on the report."""
+        report = super()._get_report(report_ref)
+        if report:
+            templ_config_id = self.env.context.get("template_configuration_id")
+            if templ_config_id:
+                temp_config = (
+                    self.env["barcode.label.template.configuration"]
+                    .browse(templ_config_id)
+                    .exists()
+                )
+                if temp_config:
+                    report.pdf_watermark = temp_config.template
+        return report
