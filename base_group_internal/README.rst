@@ -50,9 +50,9 @@ Authors
 Contributors
 ------------
 
-- `NuoBiT <https://www.nuobit.com>`__:
+-  `NuoBiT <https://www.nuobit.com>`__:
 
-  - Kilian Niubo <kniubo@nuobit.com>
+   -  Kilian Niubo <kniubo@nuobit.com>
 
 Maintainers
 -----------
