@@ -53,3 +53,11 @@ class IrActionsReport(models.Model):
                 quiet=quiet,
                 mask=mask,
             )
+
+    def get_paperformat(self):
+        paperformat_id = self.env.context.get("paperformat_id")
+        if paperformat_id:
+            paperformat = self.env["report.paperformat"].browse(paperformat_id).exists()
+            if paperformat:
+                return paperformat
+        return super().get_paperformat()
