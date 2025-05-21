@@ -28,6 +28,7 @@ class BarcodeLabelTemplateWizard(models.TransientModel):
         return (
             self.env.ref("barcode_label_template.action_report_barcode_label_template")
             .with_context(
+                paperformat_id=self.barcode_label_template_configuration_id.paperformat_id.id,
                 template_configuration_id=self.barcode_label_template_configuration_id.id,
             )
             .report_action(
