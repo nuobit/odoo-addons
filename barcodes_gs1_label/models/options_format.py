@@ -2,7 +2,6 @@
 # Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import re
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -34,39 +33,70 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
         compute="_compute_sheet_sizes",
     )
 
-    # reglas de registro y buscas company
     @api.depends("paperformat_id")
     def _compute_sheet_sizes(self):
         for rec in self:
             if not rec.paperformat_id.format:
                 raise UserError(
-                    _("The paperformat '%s' has no format defined")
-                    % rec.paperformat_id.display_name
+                    _("The paperformat '%(paper_format)s' has no format defined")
+                    % {"paper_format": rec.paperformat_id.display_name}
+                )
+            if not rec.paperformat_id.orientation:
+                raise UserError(
+                    _("The paperformat '%(paper_format)s' has no orientation defined")
+                    % {"paper_format": rec.paperformat_id.display_name}
                 )
 
             if rec.paperformat_id.format == "custom":
-                rec.sheet_width = int(rec.paperformat_id.page_width)
-                rec.sheet_height = int(rec.paperformat_id.page_height)
-            else:
-                format_map = dict(
-                    rec.paperformat_id.with_context(lang=None).fields_get(
-                        "format", "selection"
-                    )["format"]["selection"]
-                )
-
-                format_str = format_map[rec.paperformat_id.format]
-                m = re.search("([0-9]+) +x +([0-9]+) +mm", format_str)
-                if not m:
+                page_width = rec.paperformat_id.page_width
+                page_height = rec.paperformat_id.page_height
+                # TODO: put this check inside a report format models a contraint
+                if any(
+                    [
+                        rec.paperformat_id.orientation == "Landscape"
+                        and page_width < page_height,
+                        rec.paperformat_id.orientation == "Portrait"
+                        and page_width > page_height,
+                    ]
+                ):
                     raise UserError(
                         _(
-                            "Wrong paperformat definition '%s', "
-                            "cannot extract sheet sizes from it"
+                            "The paperformat '%(paper_format)s' has no coherent "
+                            "height and width with the selected orientation. "
+                            "Either change the orientation "
+                            "or adjust the values of height and width."
                         )
-                        % (rec.paperformat_id.display_name,)
+                        % {"paper_format": rec.paperformat_id.display_name}
                     )
-
-                rec.sheet_width = int(m.group(1))
-                rec.sheet_height = int(m.group(2))
+                rec.sheet_width = page_width
+                rec.sheet_height = page_height
+            else:
+                paper_data = rec.paperformat_id.get_paperformat_data()
+                page_width = paper_data["width"]
+                page_height = paper_data["height"]
+                if page_width > page_height:
+                    long_side = page_width
+                    short_side = page_height
+                else:
+                    long_side = page_height
+                    short_side = page_width
+                if rec.paperformat_id.orientation == "Landscape":
+                    rec.sheet_width = long_side
+                    rec.sheet_height = short_side
+                elif rec.paperformat_id.orientation == "Portrait":
+                    rec.sheet_width = short_side
+                    rec.sheet_height = long_side
+                else:
+                    raise UserError(
+                        _(
+                            "The paperformat '%(paper_format)s' has an "
+                            "invalid orientation '%(orientation)s'"
+                        )
+                        % {
+                            "paper_format": rec.paperformat_id.display_name,
+                            "orientation": rec.paperformat_id.orientation,
+                        }
+                    )
 
     label_width = fields.Float(
         string="Label width (mm)",
@@ -96,9 +126,15 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
     def _compute_page_label_count(self):
         for rec in self:
             if rec.label_width and rec.label_height:
-                rec.page_cols_max = int(rec.sheet_width / rec.label_width)
-                rec.page_rows_max = int(rec.sheet_height / rec.label_height)
-                rec.page_max_labels = rec.page_cols_max * rec.page_rows_max
+                page_cols_max = int(rec.sheet_width / rec.label_width)
+                page_rows_max = int(rec.sheet_height / rec.label_height)
+                if page_cols_max == 0 and page_rows_max != 0:
+                    page_rows_max = 0
+                if page_rows_max == 0 and page_cols_max != 0:
+                    page_cols_max = 0
+                rec.page_cols_max = page_cols_max
+                rec.page_rows_max = page_rows_max
+                rec.page_max_labels = page_cols_max * page_rows_max
             else:
                 rec.page_cols_max = 0
                 rec.page_rows_max = 0
