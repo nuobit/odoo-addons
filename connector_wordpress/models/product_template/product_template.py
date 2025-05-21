@@ -16,5 +16,5 @@ class ProductTemplate(models.Model):
                     ("res_field", "=", "image_1920"),
                 ]
             )
-            attachment.wordpress_bind_ids.unlink()
+            attachment.sudo().wordpress_bind_ids.unlink()
         return super().write(vals)

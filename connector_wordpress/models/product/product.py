@@ -16,5 +16,5 @@ class ProductDocumentMixin(models.AbstractModel):
                     ("res_field", "=", "datas"),
                 ]
             )
-            attachment.wordpress_bind_ids.unlink()
+            attachment.sudo().wordpress_bind_ids.unlink()
         return super().write(vals)
