@@ -51,13 +51,13 @@ Authors
 Contributors
 ------------
 
-- `NuoBiT <https://www.nuobit.com>`__:
+-  `NuoBiT <https://www.nuobit.com>`__:
 
-  - Kilian Niubo <kniubo@nuobit.com>
-  - Eric Antones <eantones@nuobit.com>
-  - Deniz Gallo <dgallo@nuobit.com>
+   -  Kilian Niubo <kniubo@nuobit.com>
+   -  Eric Antones <eantones@nuobit.com>
+   -  Deniz Gallo <dgallo@nuobit.com>
 
-- Christopher Ormaza <chris.ormaza@forgeflow.com>
+-  Christopher Ormaza <chris.ormaza@forgeflow.com>
 
 Maintainers
 -----------
