@@ -33,6 +33,7 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
         compute="_compute_sheet_sizes",
     )
 
+    # TODO: convert to related??
     @api.depends("paperformat_id")
     def _compute_sheet_sizes(self):
         for rec in self:
@@ -47,56 +48,8 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
                     % {"paper_format": rec.paperformat_id.display_name}
                 )
 
-            if rec.paperformat_id.format == "custom":
-                page_width = rec.paperformat_id.page_width
-                page_height = rec.paperformat_id.page_height
-                # TODO: put this check inside a report format models a contraint
-                if any(
-                    [
-                        rec.paperformat_id.orientation == "Landscape"
-                        and page_width < page_height,
-                        rec.paperformat_id.orientation == "Portrait"
-                        and page_width > page_height,
-                    ]
-                ):
-                    raise UserError(
-                        _(
-                            "The paperformat '%(paper_format)s' has no coherent "
-                            "height and width with the selected orientation. "
-                            "Either change the orientation "
-                            "or adjust the values of height and width."
-                        )
-                        % {"paper_format": rec.paperformat_id.display_name}
-                    )
-                rec.sheet_width = page_width
-                rec.sheet_height = page_height
-            else:
-                paper_data = rec.paperformat_id.get_paperformat_data()
-                page_width = paper_data["width"]
-                page_height = paper_data["height"]
-                if page_width > page_height:
-                    long_side = page_width
-                    short_side = page_height
-                else:
-                    long_side = page_height
-                    short_side = page_width
-                if rec.paperformat_id.orientation == "Landscape":
-                    rec.sheet_width = long_side
-                    rec.sheet_height = short_side
-                elif rec.paperformat_id.orientation == "Portrait":
-                    rec.sheet_width = short_side
-                    rec.sheet_height = long_side
-                else:
-                    raise UserError(
-                        _(
-                            "The paperformat '%(paper_format)s' has an "
-                            "invalid orientation '%(orientation)s'"
-                        )
-                        % {
-                            "paper_format": rec.paperformat_id.display_name,
-                            "orientation": rec.paperformat_id.orientation,
-                        }
-                    )
+            rec.sheet_width = rec.paperformat_id.print_page_width
+            rec.sheet_height = rec.paperformat_id.print_page_height
 
     label_width = fields.Float(
         string="Label width (mm)",
