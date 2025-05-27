@@ -17,17 +17,11 @@ class OperationService(Component):
         Create stock operations
     """
 
+    def _update_picking_values(self, picking_values, **kwargs):
+        return picking_values
+
     def create(self, **kwargs):  # pylint: disable=W8106
-        # validate client call
-        company_id = (
-            self.env["res.users"]
-            .search(
-                [
-                    ("id", "=", self.env.uid),
-                ]
-            )
-            .company_id.id
-        )
+        company_id = self.env.user.company_id.id
 
         picking_type_id = self.env["stock.picking.type"].search(
             [
@@ -71,36 +65,6 @@ class OperationService(Component):
                 % kwargs["destination"]
             )
 
-        # employees
-        employees = None
-        if kwargs["employees"]:
-            sage_company_id = (
-                self.env["sage.backend"]
-                .sudo()
-                .search(
-                    [
-                        ("company_id", "=", company_id),
-                    ]
-                )
-                .sage_company_id
-            )
-            employees = (
-                self.env["sage.hr.employee"]
-                .sudo()
-                .search(
-                    [
-                        ("company_id", "=", company_id),
-                        ("sage_codigo_empresa", "=", sage_company_id),
-                        ("sage_codigo_empleado", "in", kwargs["employees"]),
-                    ]
-                )
-            )
-            employee_diff = set(kwargs["employees"]) - set(
-                employees.mapped("sage_codigo_empleado")
-            )
-            if employee_diff:
-                raise ValidationError(_("Employees %s are not found" % employee_diff))
-
         # group by product
         moves_by_product = {}
         for product_line in kwargs["products"]:
@@ -113,13 +77,6 @@ class OperationService(Component):
             "location_dest_id": dst_location_id.id,
             "partner_ref": kwargs["service_num"],
         }
-
-        if employees:
-            picking_values.update(
-                {
-                    "employee_ids": [(6, False, employees.mapped("odoo_id.id"))],
-                }
-            )
 
         # Create moves
         moves = []
@@ -149,6 +106,9 @@ class OperationService(Component):
                     "move_lines": [(0, False, v) for v in moves],
                 }
             )
+
+        # hook to allow changing picking values
+        picking_values = self._update_picking_values(picking_values, **kwargs)
 
         # create picking
         picking_id = self.env["stock.picking"].create(picking_values)
