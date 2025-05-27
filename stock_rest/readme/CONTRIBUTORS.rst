@@ -1,0 +1,5 @@
+* `NuoBiT <https://www.nuobit.com>`_:
+
+  - Eric Antones <eantones@nuobit.com>
+  - Kilian Niubo <kniubo@nuobit.com>
+  - Bijaya Kumal <bkumal@nuobit.com>
