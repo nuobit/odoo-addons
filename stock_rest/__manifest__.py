@@ -11,7 +11,6 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
         "stock_location_code",
-        "connector_sage",
         "base_rest",
         "account_asset_management",
         "stock_picking_partner_ref",
@@ -19,5 +18,4 @@
     "data": [
         "views/stock_picking_views.xml",
     ],
-    "installable": True,
 }
