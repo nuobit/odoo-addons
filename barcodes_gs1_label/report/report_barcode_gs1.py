@@ -132,6 +132,8 @@ class ReportGS1Barcode(models.AbstractModel):
         if not data:
             raise UserError(_("Expected data to be passed to the report"))
 
+        unit_uom = self.env.ref("uom.product_uom_categ_unit")
+
         model = data["model"]
         docids = data["ids"]
 
@@ -224,19 +226,48 @@ class ReportGS1Barcode(models.AbstractModel):
                 .mapped("move_line_ids")
                 .filtered(lambda x: x.state == "done")
             ):
-                qty_tracking.setdefault(ml.product_id, {}).setdefault(ml.lot_id, 0)
-                qty_tracking[ml.product_id][ml.lot_id] += ml.quantity
-            for product, lot_qty in sorted(
+                qty_tracking.setdefault(ml.product_id, {}).setdefault(
+                    ml.lot_id,
+                    {
+                        "qty": 0,
+                        "uom_category": ml.product_uom_category_id,
+                    },
+                )
+                qty_tracking[ml.product_id][ml.lot_id]["qty"] += ml.quantity
+                if (
+                    qty_tracking[ml.product_id][ml.lot_id]["uom_category"]
+                    != ml.product_uom_category_id
+                ):
+                    raise UserError(
+                        _(
+                            "All the lines must have the same UoM category "
+                            "in a picking to print labels. The lot %(lot)s has "
+                            "different UoM categories: %(uom1)s and %(uom2)s."
+                        )
+                        % {
+                            "lot": ml.lot_id.name or "",
+                            "uom1": qty_tracking[ml.product_id][ml.lot_id][
+                                "uom_category"
+                            ].name,
+                            "uom2": ml.product_uom_category_id.name,
+                        }
+                    )
+            for product, lots_data in sorted(
                 qty_tracking.items(), key=lambda x: x[0].default_code or ""
             ):
-                for lot, qty in sorted(lot_qty.items(), key=lambda x: x[0].name or ""):
-                    if qty > 0:
+                for lot, lot_data in sorted(
+                    lots_data.items(), key=lambda x: x[0].name or ""
+                ):
+                    if lot_data["qty"] > 0:
+                        expand_qty = 1
+                        if lot_data["uom_category"] == unit_uom:
+                            expand_qty = int(lot_data["qty"])
                         docs1 += [
                             {
                                 "product": product,
                                 "lot": lot or None,
                             }
-                        ] * int(qty)
+                        ] * expand_qty
         else:
             raise UserError(_("Unexpected model '%s'") % model)
 
