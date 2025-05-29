@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
+     Copyright 2025 NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_picking_type_form" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.inherit.force.product</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form" />
+        <field name="arch" type="xml">
+            <field name="auto_show_reception_report" position="after">
+                <group string="Force Final Product" invisible="code != 'mrp_operation'">
+                    <field name="force_product_id" string="Product" />
+                    <field
+                        name="force_product_qty"
+                        string="Quantity"
+                        invisible="not force_product_id"
+                        required="force_product_id"
+                    />
+                </group>
+            </field>
+        </field>
+    </record>
+</odoo>
