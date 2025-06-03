@@ -39,6 +39,7 @@ class ReportGS1Barcode(models.AbstractModel):
             "21": (20, True),
         }
 
+    @api.model
     def _get_product_lot(self, products, quants, with_stock):
         docs = []
         if with_stock:
@@ -80,7 +81,157 @@ class ReportGS1Barcode(models.AbstractModel):
         return docs
 
     @api.model
-    def _prepare_gs1_values(self, product, lot):
+    def _prepare_product_product_values(self, params):
+        model, ids, with_stock, stock_location_ids = (
+            params["model"],
+            params["ids"],
+            params["with_stock"],
+            params["stock_location_ids"],
+        )
+
+        docs = []
+        for doc in self.env[model].browse(ids).sorted(lambda x: x.default_code or ""):
+            quants = self.env["stock.quant"]
+            if with_stock:
+                quants = self.env["stock.quant"].search(
+                    [
+                        ("product_id", "=", doc.id),
+                        ("location_id.usage", "=", "internal"),
+                        ("location_id", "in", stock_location_ids),
+                        ("quantity", ">", 0),
+                        ("company_id", "=", self.env.company.id),
+                    ]
+                )
+            docs += self._get_product_lot(doc, quants, with_stock)
+        return docs
+
+    @api.model
+    def _prepare_stock_lot_values(self, params):
+        model, ids, with_stock, stock_location_ids = (
+            params["model"],
+            params["ids"],
+            params["with_stock"],
+            params["stock_location_ids"],
+        )
+        docs = []
+        for doc in (
+            self.env[model]
+            .browse(ids)
+            .filtered(lambda x: x.product_id.tracking in ("lot", "serial"))
+            .sorted(lambda x: x.product_id.default_code or "")
+        ):
+            quants = self.env["stock.quant"]
+            if with_stock:
+                quants = self.env["stock.quant"].search(
+                    [
+                        ("product_id", "=", doc.product_id.id),
+                        ("location_id.usage", "=", "internal"),
+                        ("location_id", "in", stock_location_ids),
+                        ("lot_id", "=", doc.id),
+                        ("quantity", ">", 0),
+                        ("company_id", "=", self.env.company.id),
+                    ]
+                )
+            if with_stock:
+                for q in quants.sorted(lambda x: x.lot_id.name or ""):
+                    docs += [
+                        {
+                            "product": doc.product_id,
+                            "lot": doc,
+                        }
+                    ] * int(q.quantity)
+            else:
+                docs.append(
+                    {
+                        "product": doc.product_id,
+                        "lot": doc,
+                    }
+                )
+        return docs
+
+    @api.model
+    def _prepare_stock_quant_values(self, params):
+        model, ids, with_stock = params["model"], params["ids"], params["with_stock"]
+        docs = []
+        for doc in (
+            self.env[model]
+            .browse(ids)
+            .sorted(lambda x: x.product_id.default_code or "")
+        ):
+            quants = self.env["stock.quant"]
+            if with_stock:
+                quants = self.env["stock.quant"].search(
+                    [
+                        ("id", "=", doc.id),
+                        ("location_id.usage", "=", "internal"),
+                        ("location_id", "=", doc.location_id.id),
+                        ("quantity", ">", 0),
+                        ("company_id", "=", self.env.company.id),
+                    ]
+                )
+            docs += self._get_product_lot(doc.product_id, quants, with_stock)
+        return docs
+
+    @api.model
+    def _prepare_stock_picking_values(self, params):
+        model, ids = params["model"], params["ids"]
+        unit_uom = self.env.ref("uom.product_uom_categ_unit")
+        docs = []
+        qty_tracking = {}
+        for ml in (
+            self.env[model]
+            .browse(ids)
+            .mapped("move_ids_without_package")
+            .mapped("move_line_ids")
+            .filtered(lambda x: x.state == "done")
+        ):
+            qty_tracking.setdefault(ml.product_id, {}).setdefault(
+                ml.lot_id,
+                {
+                    "qty": 0,
+                    "uom_category": ml.product_uom_category_id,
+                },
+            )
+            qty_tracking[ml.product_id][ml.lot_id]["qty"] += ml.quantity
+            if (
+                qty_tracking[ml.product_id][ml.lot_id]["uom_category"]
+                != ml.product_uom_category_id
+            ):
+                raise UserError(
+                    _(
+                        "All the lines must have the same UoM category "
+                        "in a picking to print labels. The lot %(lot)s has "
+                        "different UoM categories: %(uom1)s and %(uom2)s."
+                    )
+                    % {
+                        "lot": ml.lot_id.name or "",
+                        "uom1": qty_tracking[ml.product_id][ml.lot_id][
+                            "uom_category"
+                        ].name,
+                        "uom2": ml.product_uom_category_id.name,
+                    }
+                )
+        for product, lots_data in sorted(
+            qty_tracking.items(), key=lambda x: x[0].default_code or ""
+        ):
+            for lot, lot_data in sorted(
+                lots_data.items(), key=lambda x: x[0].name or ""
+            ):
+                if lot_data["qty"] > 0:
+                    expand_qty = 1
+                    if lot_data["uom_category"] == unit_uom:
+                        expand_qty = int(lot_data["qty"])
+                    docs += [
+                        {
+                            "product": product,
+                            "lot": lot or None,
+                        }
+                    ] * expand_qty
+        return docs
+
+    @api.model
+    def _prepare_gs1_values(self, data):
+        product, lot = data["product"], data["lot"]
         if lot and lot.product_id != product:
             raise ValidationError(
                 _(
@@ -100,8 +251,6 @@ class ReportGS1Barcode(models.AbstractModel):
                 if lot.ref:
                     res["10"] = lot.ref
                 res["21"] = lot.name
-        # elif product.tracking == "none":
-        #     ???
         return res
 
     def _get_gs1_barcode_string(self, gs1_barcode, barcode_type):
@@ -132,14 +281,8 @@ class ReportGS1Barcode(models.AbstractModel):
         if not data:
             raise UserError(_("Expected data to be passed to the report"))
 
-        unit_uom = self.env.ref("uom.product_uom_categ_unit")
-
-        model = data["model"]
-        docids = data["ids"]
-
+        # format params
         barcode_type = data["barcode_type"]
-        with_stock = data["with_stock"]
-        stock_location_ids = data["stock_location_ids"]
         show_price = data["show_price"]
         show_price_currency = data["show_price_currency"]
 
@@ -148,135 +291,31 @@ class ReportGS1Barcode(models.AbstractModel):
         labels_page_count = data["layout"]["labels_page_count"]
         label_copies = data["layout"]["label_copies"]
 
-        docs1 = []
-        if model == "product.product":
-            for doc in (
-                self.env[model].browse(docids).sorted(lambda x: x.default_code or "")
-            ):
-                quants = self.env["stock.quant"]
-                if with_stock:
-                    quants = self.env["stock.quant"].search(
-                        [
-                            ("product_id", "=", doc.id),
-                            ("location_id.usage", "=", "internal"),
-                            ("location_id", "in", stock_location_ids),
-                            ("quantity", ">", 0),
-                            ("company_id", "=", self.env.company.id),
-                        ]
-                    )
-                docs1 += self._get_product_lot(doc, quants, with_stock)
-        elif model == "stock.lot":
-            for doc in (
-                self.env[model]
-                .browse(docids)
-                .filtered(lambda x: x.product_id.tracking in ("lot", "serial"))
-                .sorted(lambda x: x.product_id.default_code or "")
-            ):
-                quants = self.env["stock.quant"]
-                if with_stock:
-                    quants = self.env["stock.quant"].search(
-                        [
-                            ("product_id", "=", doc.product_id.id),
-                            ("location_id.usage", "=", "internal"),
-                            ("location_id", "in", stock_location_ids),
-                            ("lot_id", "=", doc.id),
-                            ("quantity", ">", 0),
-                            ("company_id", "=", self.env.company.id),
-                        ]
-                    )
-                if with_stock:
-                    for q in quants.sorted(lambda x: x.lot_id.name or ""):
-                        docs1 += [
-                            {
-                                "product": doc.product_id,
-                                "lot": doc,
-                            }
-                        ] * int(q.quantity)
-                else:
-                    docs1.append(
-                        {
-                            "product": doc.product_id,
-                            "lot": doc,
-                        }
-                    )
-        elif model == "stock.quant":
-            for doc in (
-                self.env[model]
-                .browse(docids)
-                .sorted(lambda x: x.product_id.default_code or "")
-            ):
-                quants = self.env["stock.quant"]
-                if with_stock:
-                    quants = self.env["stock.quant"].search(
-                        [
-                            ("id", "=", doc.id),
-                            ("location_id.usage", "=", "internal"),
-                            ("location_id", "=", doc.location_id.id),
-                            ("quantity", ">", 0),
-                            ("company_id", "=", self.env.company.id),
-                        ]
-                    )
-                docs1 += self._get_product_lot(doc.product_id, quants, with_stock)
-        elif model == "stock.picking":
-            qty_tracking = {}
-            for ml in (
-                self.env[model]
-                .browse(docids)
-                .mapped("move_ids_without_package")
-                .mapped("move_line_ids")
-                .filtered(lambda x: x.state == "done")
-            ):
-                qty_tracking.setdefault(ml.product_id, {}).setdefault(
-                    ml.lot_id,
-                    {
-                        "qty": 0,
-                        "uom_category": ml.product_uom_category_id,
-                    },
-                )
-                qty_tracking[ml.product_id][ml.lot_id]["qty"] += ml.quantity
-                if (
-                    qty_tracking[ml.product_id][ml.lot_id]["uom_category"]
-                    != ml.product_uom_category_id
-                ):
-                    raise UserError(
-                        _(
-                            "All the lines must have the same UoM category "
-                            "in a picking to print labels. The lot %(lot)s has "
-                            "different UoM categories: %(uom1)s and %(uom2)s."
-                        )
-                        % {
-                            "lot": ml.lot_id.name or "",
-                            "uom1": qty_tracking[ml.product_id][ml.lot_id][
-                                "uom_category"
-                            ].name,
-                            "uom2": ml.product_uom_category_id.name,
-                        }
-                    )
-            for product, lots_data in sorted(
-                qty_tracking.items(), key=lambda x: x[0].default_code or ""
-            ):
-                for lot, lot_data in sorted(
-                    lots_data.items(), key=lambda x: x[0].name or ""
-                ):
-                    if lot_data["qty"] > 0:
-                        expand_qty = 1
-                        if lot_data["uom_category"] == unit_uom:
-                            expand_qty = int(lot_data["qty"])
-                        docs1 += [
-                            {
-                                "product": product,
-                                "lot": lot or None,
-                            }
-                        ] * expand_qty
-        else:
-            raise UserError(_("Unexpected model '%s'") % model)
+        # data params
+        model = data["model"]
+        data_params = {
+            "model": model,
+            "ids": data["ids"],
+            "with_stock": data["with_stock"],
+            "stock_location_ids": data["stock_location_ids"],
+        }
 
+        # generate product data
+        func_name = "_prepare_%s_values" % model.replace(".", "_")
+        func = getattr(self, func_name, None)
+        if not func:
+            raise UserError(
+                _("The model '%(model)s' is not supported by this report.")
+                % {"model": model}
+            )
+        docs1 = func(data_params)
+
+        # generate label data
         docs = []
         for doc in docs1:
             product, lot = doc["product"], doc["lot"]
-
             if barcode_type in ("gs1-128", "gs1-datamatrix"):
-                gs1_barcode = self._prepare_gs1_values(product, lot)
+                gs1_barcode = self._prepare_gs1_values(doc)
                 if not gs1_barcode:
                     continue
                 barcode_string = self._get_gs1_barcode_string(gs1_barcode, barcode_type)
@@ -297,10 +336,9 @@ class ReportGS1Barcode(models.AbstractModel):
             else:
                 docs.append(doc)
 
+        # format and print labels
         docs_padded = [None] * (start_cell - 1) + docs
-
         docs_paginated = chunks(docs_padded, labels_page_count)
-
         docs_page_rows = [list(chunks(x, cols, padding=True)) for x in docs_paginated]
 
         return {
