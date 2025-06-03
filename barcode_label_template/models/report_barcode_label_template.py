@@ -94,7 +94,7 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
             lot = self.env["stock.lot"].browse(active_id).exists()
             if barcode_data["barcode_type"] == "gs1-datamatrix":
                 barcode_data["barcode_values"] = self._prepare_gs1_values(
-                    lot.product_id, lot
+                    {"product": lot.product_id, "lot": lot}
                 )
                 barcode_data["barcode_string"] = self._get_gs1_barcode_string(
                     barcode_data["barcode_values"], barcode_data["barcode_type"]
