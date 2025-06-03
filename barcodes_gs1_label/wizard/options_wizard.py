@@ -128,10 +128,8 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                         .mapped("location_id")
                     )
                 self.stock_location_ids = locations
-            elif model == "stock.picking":
-                self.stock_location_ids = all_locs
             else:
-                raise UserError(_("Unexpected model '%s'") % model)
+                self.stock_location_ids = all_locs
         else:
             self.stock_location_ids = all_locs
 
