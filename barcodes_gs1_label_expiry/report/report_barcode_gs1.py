@@ -17,8 +17,9 @@ class ReportGS1Barcode(models.AbstractModel):
         }
 
     @api.model
-    def _prepare_gs1_values(self, product, lot):
-        res = super()._prepare_gs1_values(product, lot)
+    def _prepare_gs1_values(self, data):
+        res = super()._prepare_gs1_values(data)
+        product, lot = data["product"], data["lot"]
         if lot and product.tracking == "serial":
             if product.use_expiration_date:
                 if lot.removal_date:
