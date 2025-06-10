@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="0">
+    <record id="group_enforce_mobile_email" model="res.groups">
+        <field name="name">Enforce mobile or email</field>
+        <field name="category_id" ref="base.module_category_usability" />
+    </record>
+</odoo>
