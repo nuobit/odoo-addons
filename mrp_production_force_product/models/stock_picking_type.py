@@ -12,10 +12,6 @@ class PickingType(models.Model):
         "product.product", domain="[('type', '=', 'product')]"
     )
 
-    force_product_qty = fields.Float(
-        default=1.0,
-    )
-
     def has_forced_product(self):
         """Check if the picking type has a forced product."""
         self.ensure_one()

@@ -2,7 +2,7 @@
 
 {
     "name": "MRP Force Product",
-    "summary": "Force a specific product and quantity on "
+    "summary": "Force a specific product on "
     "manufacturing orders based on the operation type.",
     "version": "17.0.1.0.0",
     "category": "Manufacturing",

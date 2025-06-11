@@ -31,16 +31,6 @@ msgid "Product"
 msgstr "Producto"
 
 #. module: mrp_production_force_product
-#: model:ir.model.fields,field_description:mrp_production_force_product.field_stock_picking_type__force_product_qty
-msgid "Force Product Qty"
-msgstr "Forzar cantidad de producto"
-
-#. module: mrp_production_force_product
-#: model_terms:ir.ui.view,arch_db:mrp_production_force_product.view_picking_type_form
-msgid "Quantity"
-msgstr "Cantidad"
-
-#. module: mrp_production_force_product
 #: model:ir.model,name:mrp_production_force_product.model_stock_picking_type
 msgid "Picking Type"
 msgstr "Tipo de albarán"

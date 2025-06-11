@@ -11,12 +11,6 @@
             <field name="auto_show_reception_report" position="after">
                 <group string="Force Final Product" invisible="code != 'mrp_operation'">
                     <field name="force_product_id" string="Product" />
-                    <field
-                        name="force_product_qty"
-                        string="Quantity"
-                        invisible="not force_product_id"
-                        required="force_product_id"
-                    />
                 </group>
             </field>
         </field>

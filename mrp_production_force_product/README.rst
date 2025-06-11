@@ -22,8 +22,7 @@ MRP Force Product
 
 |badge1| |badge2| |badge3|
 
--  Forces product and quantity on manufacturing orders based on
-   operation type.
+-  Forces product on manufacturing orders based on operation type.
 
 **Table of contents**
 

@@ -16,27 +16,6 @@
                     has_forced_product
                 </attribute>
             </field>
-            <field name="product_qty" position="attributes">
-                <attribute name="readonly">
-                    state != 'draft' or has_forced_product
-                </attribute>
-            </field>
-            <xpath
-                expr="//field[@name='product_uom_id' and @groups='!uom.group_uom']"
-                position="attributes"
-            >
-                <attribute name="readonly">
-                    has_forced_product
-                </attribute>
-            </xpath>
-            <xpath
-                expr="//field[@name='product_uom_id' and @groups='uom.group_uom']"
-                position="attributes"
-            >
-                <attribute name="readonly">
-                    state != 'draft' or has_forced_product
-                </attribute>
-            </xpath>
         </field>
     </record>
 </odoo>
