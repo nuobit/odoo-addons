@@ -1,1 +1,1 @@
-odoo-addon-mail_gateway_whatsapp@git+https://github.com/nuobit/social.git@16.0-imp-mail_gateway_whatsapp-variables#subdirectory=setup/mail_gateway_whatsapp
+odoo-addon-mail_gateway_whatsapp@git+https://github.com/oca/social.git@16.0#subdirectory=setup/mail_gateway_whatsapp
