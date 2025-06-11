@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <record id="mail_whatsapp_template_variable_view_tree_readonly" model="ir.ui.view">
+        <field name="name">mail.whatsapp.template.variable.view.tree.readonly</field>
+        <field name="model">mail.whatsapp.template.variable</field>
+        <field
+            name="inherit_id"
+            ref="mail_gateway_whatsapp.mail_whatsapp_template_variable_view_tree_readonly"
+        />
+        <field name="arch" type="xml">
+            <tree position="inside">
+                <field name="signup_auth" invisible="1" />
+                <field name="signup_model_id" readonly="1" />
+                <field
+                    name="signup_field_id"
+                    attrs="{'required': [('signup_auth', '=', True)]}"
+                />
+            </tree>
+        </field>
+    </record>
+</odoo>
