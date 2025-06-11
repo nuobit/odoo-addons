@@ -2,7 +2,6 @@
 lxml
 mysql-connector-python==8.0.31
 openpyxl
-phonenumbers
 pymssql
 pystrich
 requests
