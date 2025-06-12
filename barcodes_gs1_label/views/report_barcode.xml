@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-     Copyright NuoBit Solutions - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- ========================== COMMON ============================== -->
@@ -21,15 +22,41 @@
                     </div>
                 </div>
                 <div class="text-left bgp-description">
-                    <p t-field="wc[1]['product'].name" />
+                    <div>
+                        <span t-esc="wc[1]['product'].name" />
+                        <t t-if="wc[1]['product'].product_template_attribute_value_ids">
+                            <t
+                                t-set="attribute_values"
+                                t-value="', '.join([ptav.name for ptav in wc[1]['product'].product_template_attribute_value_ids])"
+                            />
+                            <t t-if="attribute_values">
+                                <span class="attribute-values">
+                                    (<t t-esc="attribute_values" />)
+                                </span>
+                            </t>
+                        </t>
+                    </div>
                 </div>
             </div>
-            <div t-if="not show_price" class="text-center">
+            <div t-if="not show_price" class="text-left">
                 <div class="bgp-sku">
                     <p t-field="wc[1]['product'].default_code" />
                 </div>
                 <div class="bgp-description">
-                    <p t-field="wc[1]['product'].name" />
+                    <div>
+                        <span t-esc="wc[1]['product'].name" />
+                        <t t-if="wc[1]['product'].product_template_attribute_value_ids">
+                            <t
+                                t-set="attribute_values"
+                                t-value="', '.join([ptav.name for ptav in wc[1]['product'].product_template_attribute_value_ids])"
+                            />
+                            <t t-if="attribute_values">
+                                <span class="attribute-values">
+                                    (<t t-esc="attribute_values" />)
+                                </span>
+                            </t>
+                        </t>
+                    </div>
                 </div>
             </div>
         </div>
