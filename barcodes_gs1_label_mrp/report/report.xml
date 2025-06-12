@@ -1,0 +1,16 @@
+<odoo>
+<!-- Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+    <record id="action_report_mrp_production_gs1_barcodes" model="ir.actions.report">
+        <field name="name">Print Production Barcodes</field>
+        <field name="model">mrp.production</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">barcodes_gs1_label.report_gs1_barcode</field>
+        <field name="report_name">barcodes_gs1_label.report_gs1_barcode</field>
+        <field
+            name="paperformat_id"
+            ref="barcodes_gs1_label.paperformat_gs1_barcodes"
+        />
+        <field name="print_report_name">'Barcodes - %s' % (object.name,)</field>
+    </record>
+</odoo>
