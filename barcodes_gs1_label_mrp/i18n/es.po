@@ -1,0 +1,36 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* barcodes_gs1_label_mrp
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-03 12:04+0000\n"
+"PO-Revision-Date: 2025-06-03 12:04+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: barcodes_gs1_label_mrp
+#. odoo-python
+#: code:addons/barcodes_gs1_label_mrp/report/report_barcode_gs1.py:0
+#, python-format
+msgid ""
+"All the lines must have the same UoM category in a picking to print labels. "
+"The lot %(lot)s has different UoM categories: %(uom1)s and %(uom2)s."
+msgstr "Todas las líneas deben tener la misma categoría de UoM en un albarán para "
+"imprimir etiquetas. El lote %(lot)s tiene diferentes categorías de UoM: %(uom1)s y %(uom2)s."
+
+#. module: barcodes_gs1_label_mrp
+#: model_terms:ir.ui.view,arch_db:barcodes_gs1_label_mrp.mrp_production_form_view
+msgid "Print barcode"
+msgstr "Imprimir código de barras"
+
+#. module: barcodes_gs1_label_mrp
+#: model:ir.actions.act_window,name:barcodes_gs1_label_mrp.barcodes_production_option_wizard_view_action
+msgid "Print barcodes"
+msgstr "Imprimir códigos de barras"
