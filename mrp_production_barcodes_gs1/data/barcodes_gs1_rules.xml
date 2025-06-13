@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="barcode_nomenclature_mrp_gs1" model="barcode.nomenclature">
+        <field name="name">GS1 Nomenclature</field>
+        <field name="is_gs1_nomenclature">true</field>
+        <field
+            name="gs1_separator_fnc1"
+        >(Alt029|#|\x1D|\xe7|\xf1|\x7E\x09|\x21|\x60)</field>
+    </record>
+
+    <!-- Numeric Barcodes -->
+    <record id="barcode_rule_mrp_gs1_01" model="barcode.rule">
+        <field name="name">Global Trade Item Number (01)</field>
+        <field name="barcode_nomenclature_id" ref="barcode_nomenclature_mrp_gs1" />
+        <field name="sequence">101</field>
+        <field name="encoding">gs1-128</field>
+        <field name="pattern">(01)(\d{14})</field>
+        <field name="type">product</field>
+        <field name="gs1_content_type">identifier</field>
+    </record>
+
+    <!-- Alphanumeric Barcodes -->
+    <record id="barcode_rule_mrp_gs1_10" model="barcode.rule">
+        <field name="name">Batch or lot number (10)</field>
+        <field name="barcode_nomenclature_id" ref="barcode_nomenclature_mrp_gs1" />
+        <field name="sequence">102</field>
+        <field name="encoding">gs1-128</field>
+        <field name="pattern">(10)([!"%-/0-9:-?A-Z_a-z]{0,20})</field>
+        <field name="type">lot</field>
+        <field name="gs1_content_type">alpha</field>
+    </record>
+
+    <!-- Measure Barcodes -->
+    <record id="barcode_rule_mrp_gs1_310y" model="barcode.rule">
+        <field name="name">Net weight, kilograms (3100)</field>
+        <field name="barcode_nomenclature_id" ref="barcode_nomenclature_mrp_gs1" />
+        <field name="sequence">103</field>
+        <field name="encoding">gs1-128</field>
+        <field name="pattern">(310[0-5])(\d{6})</field>
+        <field name="associated_uom_id" ref="uom.product_uom_kgm" />
+        <field name="type">quantity</field>
+        <field name="gs1_content_type">measure</field>
+        <field name="gs1_decimal_usage">True</field>
+    </record>
+</odoo>

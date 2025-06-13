@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or la1ter (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_move_form_inherit_gs1" model="ir.ui.view">
+        <field name="name">mrp.production.form.inherit.gs1</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//page[@name='components']//field[@name='move_raw_ids']"
+                position="before"
+            >
+                <field name="barcode_scan_components" placeholder="Barcode Scan" />
+            </xpath>
+            <xpath
+                expr="//page[@name='finished_products']//field[@name='move_byproduct_ids']"
+                position="before"
+            >
+                <field name="barcode_scan_byproduct" placeholder="Barcode Scan" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,139 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mrp_production_barcodes_gs1
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-12 17:31+0000\n"
+"PO-Revision-Date: 2025-06-12 17:31+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mrp_production_barcodes_gs1
+#: model_terms:ir.ui.view,arch_db:mrp_production_barcodes_gs1.view_move_form_inherit_gs1
+msgid "Barcode Scan"
+msgstr "Escaneo de código de barras"
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Duplicate AI %(ai)s found in GS1 barcode."
+msgstr "Se ha encontrado un AI %(ai)s duplicado en el código de barras GS1."
+
+#. module: mrp_production_barcodes_gs1
+#: model:ir.model.fields,field_description:mrp_production_barcodes_gs1.field_stock_picking_type__barcode_gs1_nomenclature_id
+msgid "GS1 Barcode Nomenclature"
+msgstr "Nomenclatura de código de barras GS1"
+
+#. module: mrp_production_barcodes_gs1
+#: model:ir.model.fields,help:mrp_production_barcodes_gs1.field_mrp_production__barcode_scan_byproduct
+msgid "GS1 barcode for the byproduct, used for tracking and identification."
+msgstr "Código de barras GS1 para el coproducto, utilizado para el seguimiento y la identificación."
+
+#. module: mrp_production_barcodes_gs1
+#: model:ir.model.fields,help:mrp_production_barcodes_gs1.field_mrp_production__barcode_scan_components
+msgid "GS1 barcode for the stock move, used for tracking and identification."
+msgstr "Código de barras GS1 para el movimiento de stock, utilizado para el seguimiento y la identificación."
+
+#. module: mrp_production_barcodes_gs1
+#: model:ir.model.fields,help:mrp_production_barcodes_gs1.field_stock_picking_type__barcode_gs1_nomenclature_id
+msgid "GS1 barcode nomenclature to use for manufacturing."
+msgstr "Nomenclatura de código de barras GS1 a utilizar para la fabricación."
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Invalid GS1 barcode format."
+msgstr "Formato de código de barras GS1 no válido."
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Lot %(lot)s for product %(product)s not found."
+msgstr "El lote %(lot)s para el producto %(product)s no se ha encontrado."
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid ""
+"Missing GTIN (AI '01') in the GS1 barcode. Cannot identify the product."
+msgstr "Falta el GTIN (AI '01') en el código de barras GS1. No se puede identificar el producto."
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Missing or empty AI in barcode."
+msgstr "Falta o está vacío un AI en el código de barras."
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Missing or empty value in barcode."
+msgstr "Falta o está vacío un valor en el código de barras."
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Missing required AIs in GS1 barcode: %(missing)s"
+msgstr "Faltan AIs requeridos en el código de barras GS1: %(missing)s"
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Multiple moves found for product %(product)s."
+msgstr "Múltiples movimientos encontrados para el producto %(product)s."
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "No GS1 barcode nomenclature defined for this picking type."
+msgstr ""
+"No se ha definido ninguna nomenclatura de código de barras GS1 para este "
+"tipo de albarán."
+
+#. module: mrp_production_barcodes_gs1
+#: model:ir.model,name:mrp_production_barcodes_gs1.model_stock_picking_type
+msgid "Picking Type"
+msgstr "Tipo de albarán"
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Product %(product)s already exists in the production order."
+msgstr "El producto %(product)s ya existe en la orden de producción."
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "Product with GTIN %(gtin)s not found."
+msgstr "Producto con GTIN %(gtin)s no encontrado."
+
+#. module: mrp_production_barcodes_gs1
+#: model:ir.model,name:mrp_production_barcodes_gs1.model_mrp_production
+msgid "Production Order"
+msgstr "Orden de producción"
+
+#. module: mrp_production_barcodes_gs1
+#. odoo-python
+#: code:addons/mrp_production_barcodes_gs1/models/mrp_production.py:0
+#, python-format
+msgid "The lot number ( AI '10' ) is present but empty in the barcode."
+msgstr "El número de lote ( AI '10' ) está presente pero vacío en el código de barras."
