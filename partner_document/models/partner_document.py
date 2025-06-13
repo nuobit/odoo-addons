@@ -108,6 +108,13 @@ class PartnerDocument(models.Model):
 
     no_expiration = fields.Boolean(related="document_type_id.no_expiration")
 
+    def is_valid_document(self):
+        self.ensure_one()
+        return self.datas and (
+            self.document_type_id.no_expiration
+            or (self.expiration_date and self.expiration_date >= fields.Date.today())
+        )
+
     @api.constrains("expiration_date", "document_type_id")
     def _check_expiration_date_by_type(self):
         for rec in self:
