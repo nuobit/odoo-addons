@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or la1ter (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="stock_picking_type_view_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.type</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form" />
+        <field name="arch" type="xml">
+            <group name="first" position="inside">
+                <group string="GS1 Barcode">
+                    <field name="barcode_gs1_nomenclature_id" string="Nomenclature" />
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>
