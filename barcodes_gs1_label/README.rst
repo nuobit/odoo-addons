@@ -51,15 +51,15 @@ Authors
 Contributors
 ------------
 
-- `NuoBiT <https://www.nuobit.com>`__:
+-  `NuoBiT <https://www.nuobit.com>`__:
 
-  - Eric Antones eantones@nuobit.com
-  - Deniz Gallo dgallo@nuobit.com
-  - Bijaya Kumal bkumal@nuobit.com
+   -  Eric Antones eantones@nuobit.com
+   -  Deniz Gallo dgallo@nuobit.com
+   -  Bijaya Kumal bkumal@nuobit.com
 
-- `Forgeflow <https://www.forgeflow.com>`__:
+-  `Forgeflow <https://www.forgeflow.com>`__:
 
-  - Miquel Raïch miquel.raich@forgeflow.com
+   -  Miquel Raïch miquel.raich@forgeflow.com
 
 Maintainers
 -----------
