@@ -20,7 +20,8 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             "stock.lot": "barcodes_gs1_label.action_report_lot_gs1_barcodes",
             "stock.picking": "barcodes_gs1_label.action_report_picking_gs1_barcodes",
             "stock.quant": "barcodes_gs1_label.action_report_quant_gs1_barcodes",
-            "mrp.production": "barcodes_gs1_label_mrp.action_report_mrp_production_gs1_barcodes",
+            "mrp.production": "barcodes_gs1_label_mrp."
+            "action_report_mrp_production_gs1_barcodes",
         }
 
     start_row = fields.Integer(string="Start row", default=1)
