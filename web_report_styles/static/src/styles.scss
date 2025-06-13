@@ -1,0 +1,17 @@
+ul.o_checklist {
+    list-style: none;
+    padding-left: 0;
+
+    li::before {
+        font-family: FontAwesome;
+        margin-right: 8px;
+        content: "\f096";
+    }
+    li.o_checked::before {
+        content: "\f14a";
+    }
+
+    li p {
+        display: inline;
+    }
+}
