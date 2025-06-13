@@ -6,19 +6,22 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-MAP_MODEL_REPORT = {
-    "product.product": "barcodes_gs1_label.action_report_product_gs1_barcodes",
-    "stock.lot": "barcodes_gs1_label.action_report_lot_gs1_barcodes",
-    "stock.picking": "barcodes_gs1_label.action_report_picking_gs1_barcodes",
-    "stock.quant": "barcodes_gs1_label.action_report_quant_gs1_barcodes",
-}
-
 MMS_PER_DPI = 25.4
 
 
 class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     _name = "barcodes.gs1.label.options.wizard"
     _description = "Barcodes GS1 Print Options Wizard"
+
+    @property
+    def MAP_MODEL_REPORT(self):
+        return {
+            "product.product": "barcodes_gs1_label.action_report_product_gs1_barcodes",
+            "stock.lot": "barcodes_gs1_label.action_report_lot_gs1_barcodes",
+            "stock.picking": "barcodes_gs1_label.action_report_picking_gs1_barcodes",
+            "stock.quant": "barcodes_gs1_label.action_report_quant_gs1_barcodes",
+            "mrp.production": "barcodes_gs1_label_mrp.action_report_mrp_production_gs1_barcodes",
+        }
 
     start_row = fields.Integer(string="Start row", default=1)
     start_col = fields.Integer(string="Start column", default=1)
@@ -239,7 +242,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             },
         }
         return (
-            self.env.ref(MAP_MODEL_REPORT[model])
+            self.env.ref(self.MAP_MODEL_REPORT[model])
             .with_context(
                 no_paddings=True,
                 paperformat_id=self.label_config_id.format_id.paperformat_id.id,
