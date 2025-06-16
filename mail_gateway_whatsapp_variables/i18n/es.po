@@ -1,0 +1,184 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mail_gateway_whatsapp_variables
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-16 14:07+0000\n"
+"PO-Revision-Date: 2025-06-16 14:07+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields.selection,name:mail_gateway_whatsapp_variables.selection__mail_whatsapp_template_variable__section__body
+msgid "Body"
+msgstr "Cuerpo"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__create_uid
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__create_date
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__default_value
+msgid "Default Value"
+msgstr "Valor predeterminado"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__display_name
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields.selection,name:mail_gateway_whatsapp_variables.selection__mail_whatsapp_template_button__url_type__dynamic
+msgid "Dynamic"
+msgstr "Dinámico"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__id
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__id
+msgid "ID"
+msgstr "ID"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button____last_update
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__write_uid
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__write_date
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model,name:mail_gateway_whatsapp_variables.model_mail_gateway
+msgid "Mail Gateway"
+msgstr "Gateway de correo"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model,name:mail_gateway_whatsapp_variables.model_mail_whatsapp_template
+msgid "Mail WhatsApp template"
+msgstr "Plantilla de WhatsApp"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model,name:mail_gateway_whatsapp_variables.model_mail_whatsapp_template_button
+msgid "Mail WhatsApp template button"
+msgstr "Botón de plantilla de WhatsApp"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model,name:mail_gateway_whatsapp_variables.model_mail_whatsapp_template_variable
+msgid "Mail WhatsApp template variable"
+msgstr "Variable de plantilla de WhatsApp"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__name
+#: model:ir.model.fields.selection,name:mail_gateway_whatsapp_variables.selection__mail_whatsapp_template__variable_type__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields.selection,name:mail_gateway_whatsapp_variables.selection__mail_whatsapp_template__variable_type__number
+msgid "Number"
+msgstr "Número"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__parameter_type
+msgid "Parameter Type"
+msgstr "Tipo de parámetro"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__section
+msgid "Section"
+msgstr "Sección"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__template_state
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__template_state
+msgid "State"
+msgstr "Estado"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields.selection,name:mail_gateway_whatsapp_variables.selection__mail_whatsapp_template_button__url_type__static
+msgid "Static"
+msgstr "Estático"
+
+#. module: mail_gateway_whatsapp_variables
+#. odoo-python
+#: code:addons/mail_gateway_whatsapp_variables/models/mail_gateway.py:0
+#, python-format
+msgid "Synchronization successfully."
+msgstr "Sincronización exitosa."
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__template_id
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_variable__template_id
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__text
+#: model:ir.model.fields.selection,name:mail_gateway_whatsapp_variables.selection__mail_whatsapp_template_variable__parameter_type__text
+msgid "Text"
+msgstr "Texto"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__url_type
+msgid "URL Type"
+msgstr "Tipo de URL"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template_button__url
+msgid "Url"
+msgstr "URL"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template__variable_ids
+#: model_terms:ir.ui.view,arch_db:mail_gateway_whatsapp_variables.mail_whatsapp_template_variable_view_tree_readonly
+msgid "Variable"
+msgstr "Variable"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model.fields,field_description:mail_gateway_whatsapp_variables.field_mail_whatsapp_template__variable_type
+msgid "Variable Type"
+msgstr "Tipo de variable"
+
+#. module: mail_gateway_whatsapp_variables
+#. odoo-python
+#: code:addons/mail_gateway_whatsapp_variables/models/mail_gateway.py:0
+#, python-format
+msgid "WhatsApp Account is required to import templates."
+msgstr "Se requiere una cuenta de WhatsApp para importar plantillas."
+
+#. module: mail_gateway_whatsapp_variables
+#. odoo-python
+#: code:addons/mail_gateway_whatsapp_variables/models/mail_gateway.py:0
+#, python-format
+msgid "WhatsApp Templates"
+msgstr "Plantillas de WhatsApp"
+
+#. module: mail_gateway_whatsapp_variables
+#: model:ir.model,name:mail_gateway_whatsapp_variables.model_mail_gateway_whatsapp
+msgid "Whatsapp Gateway services"
+msgstr "Servicios de gateway de WhatsApp"

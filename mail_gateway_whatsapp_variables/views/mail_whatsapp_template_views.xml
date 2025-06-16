@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <record id="view_mail_whatsapp_template_form_inherit" model="ir.ui.view">
+        <field name="name">view.mail.whatsapp.template.form.inherit</field>
+        <field name="model">mail.whatsapp.template</field>
+        <field
+            name="inherit_id"
+            ref="mail_gateway_whatsapp.view_mail_whatsapp_template_form"
+        />
+        <field name="arch" type="xml">
+            <field name="body" position="after">
+                <field
+                    name="variable_ids"
+                    attrs="{'invisible': [('state', '!=', 'draft')]}"
+                    domain="[('section', '=', 'body')]"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

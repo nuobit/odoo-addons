@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).-->
+<odoo>
+    <record id="mail_whatsapp_template_variable_view_tree_readonly" model="ir.ui.view">
+        <field name="name">mail.whatsapp.template.variable.view.tree.readonly</field>
+        <field name="model">mail.whatsapp.template.variable</field>
+        <field name="arch" type="xml">
+             <tree editable="top">
+                <field name="template_state" invisible="1" />
+                <field
+                    name="name"
+                    string="Variable"
+                    attrs="{'readonly': [('template_state', '!=', 'draft')]}"
+                />
+                <field
+                    name="parameter_type"
+                    attrs="{'readonly': [('template_state', '!=', 'draft')]}"
+                />
+                <field name="default_value" />
+            </tree>
+        </field>
+    </record>
+</odoo>
