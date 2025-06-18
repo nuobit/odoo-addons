@@ -1,6 +1,8 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 
 import requests.utils
 
@@ -37,6 +39,7 @@ class ReportGS1Barcode(models.AbstractModel):
             "01": (14, False),
             "10": (20, True),
             "21": (20, True),
+            "3100": (6, False),
         }
 
     @api.model
@@ -176,57 +179,69 @@ class ReportGS1Barcode(models.AbstractModel):
     def _prepare_stock_picking_values(self, params):
         model, ids = params["model"], params["ids"]
         unit_uom = self.env.ref("uom.product_uom_categ_unit")
+        weight_uom = self.env.ref("uom.product_uom_categ_kgm")
         docs = []
-        qty_tracking = {}
-        for ml in (
-            self.env[model]
-            .browse(ids)
-            .mapped("move_ids_without_package")
-            .mapped("move_line_ids")
-            .filtered(lambda x: x.state == "done")
-        ):
-            qty_tracking.setdefault(ml.product_id, {}).setdefault(
-                ml.lot_id,
-                {
-                    "qty": 0,
-                    "uom_category": ml.product_uom_category_id,
-                },
-            )
-            qty_tracking[ml.product_id][ml.lot_id]["qty"] += ml.quantity
-            if (
-                qty_tracking[ml.product_id][ml.lot_id]["uom_category"]
-                != ml.product_uom_category_id
-            ):
-                raise UserError(
-                    _(
-                        "All the lines must have the same UoM category "
-                        "in a picking to print labels. The lot %(lot)s has "
-                        "different UoM categories: %(uom1)s and %(uom2)s."
+        qty_lines = []
+        for m in self.env[model].browse(ids).mapped("move_ids_without_package"):
+            # TODO: think better value
+            uom_po_unit_qty = 1
+            if m.purchase_line_id:
+                move_lines = m.move_line_ids.filtered(lambda x: x.state == "done")
+                if len(move_lines.product_uom_category_id) != 1:
+                    raise UserError(
+                        _(
+                            "All the lines must have the same UoM category "
+                            "in a picking to print labels. "
+                            "The line with the product: %(product)s has "
+                            "multiple lots with different units of measure"
+                        )
+                        % {"product": m.product.displayname}
                     )
-                    % {
-                        "lot": ml.lot_id.name or "",
-                        "uom1": qty_tracking[ml.product_id][ml.lot_id][
-                            "uom_category"
-                        ].name,
-                        "uom2": ml.product_uom_category_id.name,
-                    }
-                )
-        for product, lots_data in sorted(
-            qty_tracking.items(), key=lambda x: x[0].default_code or ""
+                total_lines_qty = sum(move_lines.mapped("quantity"))
+                uom_po_qty = m.purchase_line_id.product_qty
+                if uom_po_qty > 0:
+                    uom_po_unit_qty = total_lines_qty / uom_po_qty
+            qty_lines.append((m, uom_po_unit_qty))
+
+        # TODO: check the lines without product like section lines
+        # TODO: sorting by (product, lot) insted of just product
+        for move, uom_po_unit_qty in sorted(
+            qty_lines, key=lambda x: x[0].product_id.default_code or ""
         ):
-            for lot, lot_data in sorted(
-                lots_data.items(), key=lambda x: x[0].name or ""
+            for ml in move.move_line_ids.sorted(
+                key=lambda x: x.lot_id.name if x.lot_id else ""
             ):
-                if lot_data["qty"] > 0:
+                if ml.quantity > 0:
+                    weight_per_line = ml.product_id.weight
                     expand_qty = 1
-                    if lot_data["uom_category"] == unit_uom:
-                        expand_qty = int(lot_data["qty"])
+
+                    if ml.product_uom_category_id == unit_uom:
+                        expand_qty = ml.quantity
+                    elif ml.product_uom_category_id == weight_uom:
+                        weight_per_line = uom_po_unit_qty
+                        if ml.quantity % uom_po_unit_qty:
+                            raise UserError(
+                                _(
+                                    "The quantity of the product %(product)s"
+                                    " in the picking line is not a multiple "
+                                    "of the weight unit of measure %(uom_weight)s. "
+                                    "Please correct it."
+                                )
+                                % {
+                                    "product": ml.product_id.display_name,
+                                    "uom_weight": uom_po_unit_qty,
+                                }
+                            )
+
+                        expand_qty = ml.quantity / uom_po_unit_qty
+
                     docs += [
                         {
-                            "product": product,
-                            "lot": lot or None,
+                            "product": ml.product_id,
+                            "lot": ml.lot_id or None,
+                            "weight": weight_per_line,
                         }
-                    ] * expand_qty
+                    ] * int(expand_qty)
         return docs
 
     @api.model
@@ -251,6 +266,10 @@ class ReportGS1Barcode(models.AbstractModel):
                 if lot.ref:
                     res["10"] = lot.ref
                 res["21"] = lot.name
+
+        weight = data.get("weight", 0)
+        if weight:
+            res["3100"] = f"{int(weight)}".rjust(6, "0")
         return res
 
     def _get_gs1_barcode_string(self, gs1_barcode, barcode_type):
