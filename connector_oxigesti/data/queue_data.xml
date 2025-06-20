@@ -14,8 +14,4 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
         <field name="name">oxigesti_batch</field>
         <field name="parent_id" ref="queue_job.channel_root" />
     </record>
-    <record id="channel_oxigesti_chunk" model="queue.job.channel">
-        <field name="name">oxigesti_chunk</field>
-        <field name="parent_id" ref="queue_job.channel_root" />
-    </record>
 </odoo>
