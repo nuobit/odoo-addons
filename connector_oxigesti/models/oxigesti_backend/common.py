@@ -79,12 +79,6 @@ class OxigestiBackend(models.Model):
     state = fields.Selection(selection="_select_state", string="State", default="draft")
     chunk_size = fields.Integer(required=True, default=0)
 
-    @api.constrains("chunk_size")
-    def _check_chunk_size(self):
-        for rec in self:
-            if rec.chunk_size < 0:
-                raise exceptions.ValidationError(_("Chunk size cannot be negative"))
-
     def button_reset_to_draft(self):
         self.ensure_one()
         self.write({"state": "draft", "version": None})
