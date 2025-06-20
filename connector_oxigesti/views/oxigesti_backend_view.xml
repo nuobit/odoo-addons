@@ -309,7 +309,6 @@
                         <page name="additional_data" string="Additional data">
                             <group>
                                 <field name="warehouse_id" />
-                                <field name="chunk_size" />
                             </group>
                         </page>
                     </notebook>

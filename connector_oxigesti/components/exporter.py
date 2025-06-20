@@ -137,9 +137,6 @@ class OxigestiBatchExporter(AbstractComponent):
         ):
             self._export_record(relation)
 
-    def _export_chunk(self, domain, job_options=None, **kwargs):
-        raise NotImplementedError
-
     def _export_record(self, external_id):
         """Export a record directly or delay the export of the record.
 
@@ -156,9 +153,6 @@ class OxigestiDirectBatchExporter(AbstractComponent):
 
     _usage = "direct.batch.exporter"
 
-    def _export_chunk(self, domain, job_options=None, **kwargs):
-        self.model.export_chunk(self.backend_record, domain, **kwargs)
-
     def _export_record(self, relation):
         """export the record directly"""
         self.model.export_record(self.backend_record, relation)
@@ -171,62 +165,6 @@ class OxigestiDelayedBatchExporter(AbstractComponent):
     _inherit = "oxigesti.batch.exporter"
 
     _usage = "delayed.batch.exporter"
-
-    def _export_chunk(self, domain, job_options=None, **kwargs):
-        delayable = self.model.with_delay(**job_options or {})
-        delayable.export_chunk(self.backend_record, domain, **kwargs)
-
-    def _export_record(self, relation, job_options=None):
-        """Delay the export of the records"""
-        delayable = self.model.with_delay(**job_options or {})
-        delayable.export_record(self.backend_record, relation)
-
-
-class OxigestiChunkExporter(AbstractComponent):
-    _name = "oxigesti.chunk.exporter"
-    _inherit = ["base.exporter", "base.oxigesti.connector"]
-
-    def run(self, domain, **kwargs):
-        """Run the synchronization"""
-        raise NotImplementedError
-
-    def get_batch_exporter(self):
-        raise NotImplementedError
-
-    def _export_record(self, external_id):
-        """Export a record directly or delay the export of the record.
-
-        Method to implement in sub-classes.
-        """
-        raise NotImplementedError
-
-
-class OxigestiChunkDirectExporter(AbstractComponent):
-    """Export the records directly, without delaying the jobs."""
-
-    _name = "oxigesti.chunk.direct.exporter"
-    _inherit = "oxigesti.chunk.exporter"
-
-    _usage = "chunk.direct.exporter"
-
-    def get_batch_exporter(self):
-        return self.component(usage="batch.direct.exporter")
-
-    def _export_record(self, relation):
-        """export the record directly"""
-        self.model.export_record(self.backend_record, relation)
-
-
-class OxigestiChunkDelayedExporter(AbstractComponent):
-    """Delay export of the records"""
-
-    _name = "oxigesti.chunk.delayed.exporter"
-    _inherit = "oxigesti.chunk.exporter"
-
-    _usage = "chunk.delayed.exporter"
-
-    def get_batch_exporter(self):
-        return self.component(usage="batch.delayed.exporter")
 
     def _export_record(self, relation, job_options=None):
         """Delay the export of the records"""
