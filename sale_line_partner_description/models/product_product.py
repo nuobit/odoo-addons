@@ -34,10 +34,8 @@ class Product(models.Model):
                 )
             domain = expression.AND([domain, [("product_id", "in", self.ids)]])
             buyers = self.env["product.buyerinfo"].search(domain)
-            res = []
+            buyer_d = {}
             for buyer in buyers:
-                key_l = [buyer.product_id.id]
-
                 # build name
                 name_l = []
                 if buyer.code:
@@ -55,12 +53,12 @@ class Product(models.Model):
                     name_l.append(bname)
 
                 if name_l:
-                    name = " ".join(name_l)
-                else:
-                    name = False
+                    buyer_d[buyer.product_id.id] = " ".join(name_l)
 
-                key_l.append(name)
-                res.append(tuple(key_l))
+            for i, elem in enumerate(res):
+                product_id = elem[0]
+                if product_id in buyer_d:
+                    res[i] = (product_id, buyer_d[product_id])
 
         return res
 
