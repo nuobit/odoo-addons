@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_uom_form_view" model="ir.ui.view">
+        <field name="name">uom.uom.form.inherit.barcodes_gs1_label</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_form_view" />
+        <field name="arch" type="xml">
+            <group name="uom_details" position="inside">
+               <field name="dynamic_ratio" />
+            </group>
+        </field>
+    </record>
+
+    <record id="product_uom_categ_form_view" model="ir.ui.view">
+        <field name="name">uom.category.form.inherit.barcodes_gs1_label</field>
+        <field name="model">uom.category</field>
+        <field name="inherit_id" ref="uom.product_uom_categ_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_ids']/tree" position="inside">
+               <field name="dynamic_ratio" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
