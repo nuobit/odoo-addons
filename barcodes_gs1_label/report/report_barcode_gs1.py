@@ -175,71 +175,110 @@ class ReportGS1Barcode(models.AbstractModel):
             docs += self._get_product_lot(doc.product_id, quants, with_stock)
         return docs
 
+    # flake8: noqa: C901
     @api.model
     def _prepare_stock_picking_values(self, params):
         model, ids = params["model"], params["ids"]
         unit_uom = self.env.ref("uom.product_uom_categ_unit")
         weight_uom = self.env.ref("uom.product_uom_categ_kgm")
-        docs = []
-        qty_lines = []
+
+        # Add po qty proportional to each move line
+        uom_po_moves = []
         for m in self.env[model].browse(ids).mapped("move_ids_without_package"):
-            # TODO: think better value
-            uom_po_unit_qty = 1
+            # compute the ratio of the uom of the PO (if exists)
+            uom_po, uom_po_ratio = self.env["uom.uom"], 1
             if m.purchase_line_id:
-                move_lines = m.move_line_ids.filtered(lambda x: x.state == "done")
-                if len(move_lines.product_uom_category_id) != 1:
-                    raise UserError(
-                        _(
-                            "All the lines must have the same UoM category "
-                            "in a picking to print labels. "
-                            "The line with the product: %(product)s has "
-                            "multiple lots with different units of measure"
+                uom_po = m.purchase_line_id.product_uom
+                if uom_po.dynamic_ratio:
+                    all_move_lines = (
+                        self.env["stock.move"]
+                        .search(
+                            [
+                                ("purchase_line_id", "=", m.purchase_line_id.id),
+                                ("state", "=", "done"),
+                            ]
                         )
-                        % {"product": m.product.displayname}
+                        .move_line_ids
                     )
-                total_lines_qty = sum(move_lines.mapped("quantity"))
-                uom_po_qty = m.purchase_line_id.product_qty
-                if uom_po_qty > 0:
-                    uom_po_unit_qty = total_lines_qty / uom_po_qty
-            qty_lines.append((m, uom_po_unit_qty))
+                    if len(all_move_lines.product_uom_id) != 1:
+                        raise UserError(
+                            _(
+                                "All the lines must have the same UoM category "
+                                "in a picking to print labels. "
+                                "The line with the product: %(product)s has "
+                                "multiple lots with different units of measure"
+                            )
+                            % {"product": m.product_id.display_name}
+                        )
+                    total_po_moves_qty = sum(all_move_lines.mapped("quantity"))
+                    uom_po_qty = m.purchase_line_id.product_uom_qty
+                    if uom_po_qty > 0:
+                        uom_po_ratio = total_po_moves_qty / uom_po_qty
+                else:
+                    uom_po_ratio = uom_po.ratio
 
-        # TODO: check the lines without product like section lines
-        # TODO: sorting by (product, lot) insted of just product
-        for move, uom_po_unit_qty in sorted(
-            qty_lines, key=lambda x: x[0].product_id.default_code or ""
-        ):
-            for ml in move.move_line_ids.sorted(
-                key=lambda x: x.lot_id.name if x.lot_id else ""
-            ):
+            values = {"move": m, "move_lines": []}
+            move_lines = m.move_line_ids.filtered(lambda x: x.state == "done")
+            if not move_lines:
+                raise UserError(_("There are no done move lines"))
+            for ml in move_lines:
+                values["move_lines"].append(
+                    {
+                        "line": ml,
+                        "uom_po": uom_po,
+                        "uom_po_ratio": uom_po and uom_po_ratio or None,
+                    }
+                )
+            uom_po_moves.append(values)
+
+        # sort by product and lot
+        move_lines_tracking = {}
+        for m_d in uom_po_moves:
+            for ml_d in m_d["move_lines"]:
+                ml = ml_d["line"]
+                key = (ml.product_id, ml.lot_id)
+                move_lines_tracking.setdefault(key, []).append(ml_d)
+
+        # prepare the final list of labels
+        docs = []
+        for _dummy, mov_lines_meta in dict(sorted(move_lines_tracking.items())).items():
+            for ml_meta in mov_lines_meta:
+                ml = ml_meta["line"]
                 if ml.quantity > 0:
-                    weight_per_line = ml.product_id.weight
                     expand_qty = 1
-
-                    if ml.product_uom_category_id == unit_uom:
-                        expand_qty = ml.quantity
-                    elif ml.product_uom_category_id == weight_uom:
-                        weight_per_line = uom_po_unit_qty
-                        if ml.quantity % uom_po_unit_qty:
+                    weight_per_doc = ml.quantity * ml.product_id.weight
+                    # compute po uom qty prorated for rhe current move line
+                    if ml_meta["uom_po"].dynamic_ratio:
+                        uom_po_ratio = ml_meta["uom_po_ratio"]
+                        if ml.quantity % uom_po_ratio:
                             raise UserError(
                                 _(
                                     "The quantity of the product %(product)s"
                                     " in the picking line is not a multiple "
-                                    "of the weight unit of measure %(uom_weight)s. "
+                                    "of the weight unit of measure %(uom_ratio)s. "
                                     "Please correct it."
                                 )
                                 % {
                                     "product": ml.product_id.display_name,
-                                    "uom_weight": uom_po_unit_qty,
+                                    "uom_ratio": uom_po_ratio,
                                 }
                             )
-
-                        expand_qty = ml.quantity / uom_po_unit_qty
+                        uom_po_qty = ml.quantity / uom_po_ratio
+                        expand_qty = uom_po_qty
+                        if ml.product_uom_category_id == weight_uom:
+                            weight_per_doc = uom_po_ratio
+                    else:
+                        if ml.product_uom_category_id == unit_uom:
+                            expand_qty = ml.quantity
+                            weight_per_doc = ml.product_id.weight
+                        elif ml.product_uom_category_id == weight_uom:
+                            weight_per_doc = ml.quantity
 
                     docs += [
                         {
                             "product": ml.product_id,
                             "lot": ml.lot_id or None,
-                            "weight": weight_per_line,
+                            "weight": weight_per_doc,
                         }
                     ] * int(expand_qty)
         return docs

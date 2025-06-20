@@ -4,7 +4,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    "name": "Barcodes label",
+    "name": "GS1 Barcodes label",
     "summary": "Generate barcode labels enabling barcode printing "
     "on products, lot/serial and picking",
     "version": "17.0.1.0.0",
@@ -14,6 +14,7 @@
     "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock",
+        "purchase_stock",
         "base_report_gs1_barcode",
         "base_report_pdf_css_reset",
     ],
@@ -28,6 +29,7 @@
         "views/stock_picking_views.xml",
         "views/options_config_views.xml",
         "views/options_format_views.xml",
+        "views/uom_uom_views.xml",
         "views/menu.xml",
     ],
     "assets": {
