@@ -13,24 +13,15 @@ class ResPartner(models.Model):
         inverse_name="odoo_id",
         string="Oxigesti Bindings",
     )
-
-    @api.model
-    def _get_dependent_fields_oxigesti_pricelist_write_date(self):
-        return {"property_product_pricelist", "active"}
-
     oxigesti_pricelist_write_date = fields.Datetime(
         default=fields.Datetime.now,
         required=True,
     )
 
     def write(self, vals):
-        if self._get_dependent_fields_oxigesti_pricelist_write_date() & set(
-            vals.keys()
-        ):
-            for field in self._get_dependent_fields_oxigesti_pricelist_write_date():
-                if field in vals and vals[field] != self[field]:
-                    vals["oxigesti_pricelist_write_date"] = fields.Datetime.now()
-                    break
+        if "property_product_pricelist" in vals:
+            if vals["property_product_pricelist"] != self.property_product_pricelist.id:
+                vals["oxigesti_pricelist_write_date"] = fields.Datetime.now()
         return super().write(vals)
 
 
