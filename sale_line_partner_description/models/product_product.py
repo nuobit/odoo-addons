@@ -4,6 +4,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
+from odoo.osv import expression
 
 
 class Product(models.Model):
@@ -13,21 +14,82 @@ class Product(models.Model):
         comodel_name="product.buyerinfo", inverse_name="product_id", string="Customers"
     )
 
-    @api.model
-    def name_search(self, name="", args=None, operator="ilike", limit=100):
-        products_name = super().name_search(
-            name=name, args=args, operator=operator, limit=limit
-        )
-        if name:
-            # The 'default_description_sale' context is only used in sale.order and
-            # sale.order.line views from the 'sale' module. It's better to use this
-            # native context instead of extending the view context, avoiding conflicts
-            # with other modules.
-            if "default_description_sale" in self.env.context:
-                buyers = self.env["product.buyerinfo"].search(
-                    [("code", operator, name)]
+    def name_get(self):
+        """Override name_get to include buyer code in the product name."""
+
+        partner_id = self.env.context.get("partner_id")
+        if partner_id and "default_description_sale" in self.env.context:
+            self = self.with_context(partner_id=False)
+
+        res = super(Product, self).name_get()
+        if partner_id and "default_description_sale" in self.env.context:
+            domain = [("partner_id", "=", partner_id)]
+            parent = self.env["res.partner"].browse(partner_id).parent_id
+            if parent:
+                domain = expression.OR(
+                    [
+                        domain,
+                        [("partner_id", "=", parent.id)],
+                    ]
                 )
-                for bi in buyers:
-                    _id, display_name = bi.product_id.name_get()[0]
-                    products_name.append((_id, "[{}] {}".format(bi.code, display_name)))
-        return products_name
+            domain = expression.AND([domain, [("product_id", "in", self.ids)]])
+            buyers = self.env["product.buyerinfo"].search(domain)
+            res = []
+            for buyer in buyers:
+                key_l = [buyer.product_id.id]
+
+                # build name
+                name_l = []
+                if buyer.code:
+                    bcode = buyer.code
+                else:
+                    bcode = buyer.product_id.default_code
+                if bcode:
+                    name_l.append("[%s]" % bcode)
+
+                if buyer.name:
+                    bname = buyer.name
+                else:
+                    bname = buyer.product_id.name
+                if bname:
+                    name_l.append(bname)
+
+                if name_l:
+                    name = " ".join(name_l)
+                else:
+                    name = False
+
+                key_l.append(name)
+                res.append(tuple(key_l))
+
+        return res
+
+    @api.model
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        partner_id = self.env.context.get("partner_id")
+        if partner_id and "default_description_sale" in self.env.context:
+            self = self.with_context(partner_id=False)
+
+        res = super(Product, self)._name_search(
+            name, args=args, operator=operator, limit=limit, name_get_uid=name_get_uid
+        )
+        if partner_id and "default_description_sale" in self.env.context:
+            partner_domain = [("partner_id", "=", partner_id)]
+            parent = self.env["res.partner"].browse(partner_id).parent_id
+            if parent:
+                partner_domain = expression.OR(
+                    [
+                        partner_domain,
+                        [("partner_id", "=", parent.id)],
+                    ]
+                )
+            domain = expression.AND([partner_domain, [("code", operator, name)]])
+            res_l = list(res)
+            if res_l:
+                domain = expression.AND([domain, [("product_id", "not in", res_l)]])
+            buyers = self.env["product.buyerinfo"].search(domain)
+            if buyers:
+                res = res_l + buyers.product_id.ids
+        return res
