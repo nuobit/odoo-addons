@@ -12,6 +12,10 @@ class ProductPricelistItemExportMapper(Component):
 
     _apply_on = "oxigesti.product.pricelist.item"
 
+    direct = [
+        ("fixed_price", "Importe"),
+    ]
+
     @only_create
     @mapping
     def CodigoArticulo(self, record):
@@ -58,9 +62,5 @@ class ProductPricelistItemExportMapper(Component):
         return {"Codigo_Mutua": external_id[0]}
 
     @mapping
-    def Importe(self, record):
-        return {"Importe": record.odoo_fixed_price}
-
-    @mapping
     def Deprecated(self, record):
-        return {"Deprecated": record.deprecated and 1 or 0}
+        return {"Deprecated": 0}
