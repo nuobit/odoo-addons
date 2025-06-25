@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
+ -->
 <odoo>
     <record id="view_order_form" model="ir.ui.view">
         <field name="name">sale.order.service.form</field>
@@ -13,71 +13,35 @@
                 <page string="Service detail">
                     <group>
                         <group string="Patient data">
-                            <field
-                                name="contract_number"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="insured_name"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
+                            <field name="contract_number" readonly="state != 'draft'" />
+                            <field name="insured_name" readonly="state != 'draft'" />
                             <field
                                 name="insured_ident_cardnum"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                readonly="state != 'draft'"
                             />
-                            <field
-                                name="policy_number"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="auth_number"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
+                            <field name="policy_number" readonly="state != 'draft'" />
+                            <field name="auth_number" readonly="state != 'draft'" />
                         </group>
                         <group string="Service data">
-                            <field
-                                name="plate_number"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="service_number"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="service_date"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="origin"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="destination"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="round_trip_code"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="return_service"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="service_key"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
+                            <field name="plate_number" readonly="state != 'draft'" />
+                            <field name="service_number" readonly="state != 'draft'" />
+                            <field name="service_date" readonly="state != 'draft'" />
+                            <field name="origin" readonly="state != 'draft'" />
+                            <field name="destination" readonly="state != 'draft'" />
+                            <field name="round_trip_code" readonly="state != 'draft'" />
+                            <field name="return_service" readonly="state != 'draft'" />
+                            <field name="service_key" readonly="state != 'draft'" />
                             <field
                                 name="service_transfer_reason"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                readonly="state != 'draft'"
                             />
                             <field
                                 name="service_insurer_code"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                readonly="state != 'draft'"
                             />
                             <field
                                 name="service_insurer_name"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                readonly="state != 'draft'"
                             />
                         </group>
                     </group>
@@ -93,8 +57,16 @@
         <field name="arch" type="xml">
             <field name="name" position="attributes">
                 <attribute name="filter_domain">
-                    ['|','|','|','|','|','|','|','|',('name','ilike',self),('client_order_ref','ilike',self),('service_number','ilike',self),('partner_id','child_of',self),
-                    ('contract_number','ilike',self),('insured_name','ilike',self),('insured_ident_cardnum','ilike',self),('policy_number','ilike',self),('auth_number','ilike',self)]
+                    ['|','|','|','|','|','|','|','|',
+                    ('name','ilike',self),
+                    ('client_order_ref','ilike',self),
+                    ('service_number','ilike',self),
+                    ('partner_id','child_of',self),
+                    ('contract_number','ilike',self),
+                    ('insured_name','ilike',self),
+                    ('insured_ident_cardnum','ilike',self),
+                    ('policy_number','ilike',self),
+                    ('auth_number','ilike',self)]
                 </attribute>
             </field>
             <field name="partner_id" position="after">
