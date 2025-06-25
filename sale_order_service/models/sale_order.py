@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -19,8 +19,8 @@ class SaleOrder(models.Model):
     plate_number = fields.Char(string="Plate")
     service_number = fields.Integer(string="Service number")
     service_date = fields.Datetime(string="Service date")
-    origin = fields.Char(string="Origin")
-    destination = fields.Char(string="Destination")
+    origin = fields.Char()
+    destination = fields.Char()
     round_trip_code = fields.Integer(string="Round trip code")
     return_service = fields.Boolean(string="Return service")
     service_key = fields.Char(string="Key")
