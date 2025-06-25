@@ -8,7 +8,5 @@ class AccountMove(models.Model):
     _inherit = "account.move"
 
     cege = fields.Char(
-        string="Cege",
         readonly=True,
-        states={"draft": [("readonly", False)]},
     )
