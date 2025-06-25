@@ -17,7 +17,7 @@ class ContractLine(models.Model):
 
     def _prepare_invoice_line(self, move_form):
         self.ensure_one()
-        res = super(ContractLine, self)._prepare_invoice_line(move_form)
+        res = super()._prepare_invoice_line(move_form)
         taxes = self.tax_ids or self.product_id.taxes_id
         if taxes:
             fiscal_position = self.contract_id.fiscal_position_id or self.env[
