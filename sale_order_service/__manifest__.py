@@ -8,7 +8,7 @@
     "version": "14.0.1.0.1",
     "category": "Sales",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["sale"],
     "data": [
