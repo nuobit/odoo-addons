@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import calendar
 import datetime
@@ -7,12 +7,12 @@ import logging
 
 from odoo import fields
 from odoo.tests import Form
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 _logger = logging.getLogger(__name__)
 
 
-class TestAccountInvoice(SavepointCase):
+class TestAccountInvoice(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -20,6 +20,8 @@ class TestAccountInvoice(SavepointCase):
         cls.partner = cls.env["res.partner"].create(
             {
                 "name": "Test Partner",
+                "city": "City Test",
+                "street": "Street Test",
                 "vat": "ESA12345674",
                 "facturae": True,
                 "is_company": True,
