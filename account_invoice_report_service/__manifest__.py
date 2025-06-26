@@ -1,12 +1,12 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Service invoice report",
     "summary": """Service invoice report""",
-    "version": "14.0.1.1.1",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "version": "17.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Accounting",
     "website": "https://github.com/NuoBiT/odoo-addons",
@@ -20,4 +20,10 @@
         "views/account_invoice_views.xml",
     ],
     "installable": True,
+    "assets": {
+        "web.report_assets_common": [
+            "account_invoice_report_service/static/src/scss/report_invoice_service_styles.scss",
+            "account_invoice_report_service/static/src/scss/report_invoice_delivery_styles.scss",
+        ],
+    },
 }
