@@ -127,7 +127,8 @@ class ConnectorBackend(models.AbstractModel):
         if self.env.company != self.env.user.company_id:
             raise ValidationError(
                 _(
-                    "The current company must be the same as the default company of the user. "
+                    "The current company must be the same "
+                    "as the default company of the user. "
                 )
             )
         if self.env.company != self.env.user.company_ids:

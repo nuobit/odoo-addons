@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import datetime
 import hashlib
@@ -50,10 +51,11 @@ def domain_to_normalized_dict(self, domain):
                 raise ValidationError(_("Duplicated field %s") % field)
             res[field] = self._normalize_value(not value)
         elif op == "in":
-            if not isinstance(value, (tuple, list)):
+            if not isinstance(value, (tuple | list)):
                 raise ValidationError(
                     _(
-                        "Operator '%(OPERATOR)s' only supports tuples or lists, not %(TYPES)s"
+                        "Operator '%(OPERATOR)s' only supports "
+                        "tuples or lists, not %(TYPES)s"
                     )
                     % {
                         "OPERATOR": op,
@@ -64,14 +66,14 @@ def domain_to_normalized_dict(self, domain):
                 raise ValidationError(_("Duplicated field %s") % field)
             res[field] = self._normalize_value(value)
         elif op in (">", ">=", "<", "<="):
-            if not isinstance(value, (datetime.date, datetime.datetime, int)):
+            if not isinstance(value, (datetime.date | datetime.datetime | int)):
                 raise ValidationError(
-                    _("Type %(type)s not supported for operator %(op)s")
-                    % dict(type=value, op=op)
+                    _("Type %(value_type)s not supported for operator %(operator)s")
+                    % {"value_type": type(value), "operator": op}
                 )
             if op in (">", "<"):
                 adj = 1
-                if isinstance(value, (datetime.date, datetime.datetime)):
+                if isinstance(value, (datetime.date | datetime.datetime)):
                     adj = datetime.timedelta(days=adj)
                 if op == "<":
                     op, value = "<=", value - adj
@@ -126,10 +128,10 @@ def slugify(value):
 def trim_domain(domain):
     trimmed_domain = []
     for d in domain:
-        if isinstance(d, (list, tuple)):
+        if isinstance(d, (list | tuple)):
             if len(d) == 3 and isinstance(d[2], str):
                 trimmed_domain.append((d[0], d[1], d[2].strip()))
-            elif len(d) == 3 and isinstance(d[2], (list, tuple)):
+            elif len(d) == 3 and isinstance(d[2], (list | tuple)):
                 trimmed_value = [
                     value.strip() if isinstance(value, str) else value for value in d[2]
                 ]
@@ -145,7 +147,7 @@ def color_rgb2hex(data):
     def conv_rgb(match):
         rgb_hex_l = []
         groups = match.groups()
-        for value, percent in zip(groups[0::2], groups[1::2]):
+        for value, percent in zip(groups[0::2], groups[1::2], strict=True):
             if percent:
                 hex_value = round(float(value) * 255 / 100)
             else:

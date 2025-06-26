@@ -1,5 +1,7 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import logging
 from contextlib import contextmanager
@@ -110,9 +112,9 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
                 record.id,
             )
             raise RetryableJobError(
-                "A concurrent job is already exporting the same record "
-                "(%s with id %s). The job will be retried later."
-                % (self.model._name, record.id)
+                f"A concurrent job is already exporting the same record "
+                f"({self.model._name} with id {record.id}). "
+                f"The job will be retried later."
             ) from e
 
     def _has_to_skip(self, relation):

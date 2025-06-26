@@ -64,13 +64,13 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             fields = self._internal_alt_field if alt_field else self._internal_field
         else:
             fields = self._external_alt_field if alt_field else self._external_field
-        if not isinstance(fields, (tuple, list)):
+        if not isinstance(fields, (tuple | list)):
             fields = [fields]
         fields_l = []
         for f in fields:
             if hasattr(self, f):
                 fields = getattr(self, f)
-                if isinstance(fields, (tuple, list)):
+                if isinstance(fields, (tuple | list)):
                     fields_l.extend(fields)
                 else:
                     fields_l.append(fields)
@@ -91,10 +91,10 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                         With this parameter False, _external_field will be used.
         """
         if _id:
-            if not isinstance(_id, (tuple, list)):
+            if not isinstance(_id, (tuple | list)):
                 _id = [_id]
             fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
-            return dict(zip(fields, _id))
+            return dict(zip(fields, _id, strict=True))
         else:
             return None
 
@@ -104,7 +104,8 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         :param _dict: Dict to extract internal or external fields
         :param in_field: with True value, _internal_field defined in binder are used.
                         With this parameter False, _external_field will be used.
-        :param alt_field: with True value, alternative id fields defined in binder are used.
+        :param alt_field: with True value,
+        alternative id fields defined in binder are used.
         """
         return self.id2dict(
             self.dict2id(_dict, in_field=in_field, alt_field=alt_field),
@@ -124,9 +125,11 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         :param _dict: Dict (usually binder) to extract internal or external fields
         :param in_field: with True value, _internal_field defined in binder are used.
                         With this parameter False, _external_field will be used.
-        :param alt_field: with True value, alternative id fields defined in binder are used.
+        :param alt_field: with True value,
+        alternative id fields defined in binder are used.
         :param unwrap: if True, return the first value of the composite id
-        :param raise_on_not_found: if True, raise ValidationError if the id is not complete
+        :param raise_on_not_found: if True, raise ValidationError
+        if the id is not complete
         :return: a list with the values of the internal or external fields
         """
         fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
@@ -163,9 +166,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
 
     def is_complete_id(self, _id, in_field=True):
         fields = in_field and self.internal_id or self.external_id
-        if not isinstance(fields, (tuple, list)):
+        if not isinstance(fields, (tuple | list)):
             fields = [fields]
-        if not isinstance(_id, (tuple, list)):
+        if not isinstance(_id, (tuple | list)):
             _id = [_id]
         _id = list(filter(None, _id))
         return len(_id) == len(fields)
@@ -282,14 +285,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         :param binding: Odoo record to bind
         :type binding: int
         """
-        assert external_data and relation, (
-            "external_data or relation missing, "
-            "got: %s, %s"
-            % (
-                external_data,
-                relation,
-            )
-        )
+        assert (
+            external_data and relation
+        ), f"external_data or relation missing, got: {external_data}, {relation}"
         # avoid to trigger the export when we modify the `external_id`
         if isinstance(relation, models.BaseModel):
             relation.ensure_one()
@@ -321,7 +319,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         return {}
 
     def is_id_null(self, _id):
-        if not isinstance(_id, (list, tuple)):
+        if not isinstance(_id, (list | tuple)):
             _id = [_id]
         for value in _id:
             if value is None:
@@ -333,9 +331,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
 
     def _check_domain(self, domain):
         for field, _op, value in domain:
-            if isinstance(value, (list, tuple)):
+            if isinstance(value, (list | tuple)):
                 for e in value:
-                    if isinstance(e, (tuple, list, set, dict)):
+                    if isinstance(e, (tuple | list | set | dict)):
                         raise ValidationError(
                             _(
                                 "Wrong domain value type '%(TYPE)s' on value "
@@ -368,7 +366,8 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         if self._is_wrapped(relation):
             raise ValidationError(
                 _(
-                    "The object '%s' is already wrapped, it's already a binding object. "
+                    "The object '%s' is already wrapped, "
+                    "it's already a binding object. "
                     "You can only wrap real objects"
                 )
                 % relation._name
@@ -407,9 +406,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             record = self._get_internal_record_alt(id_values)
             if len(record) > 1:
                 raise InvalidDataError(
-                    "More than one '%s' found with id %s: %s "
-                    "The alternate internal id field '%s' is not unique"
-                    % (model_name, id_values, record.ids, internal_alt_id)
+                    f"More than one '{model_name}' found with id {id_values}: "
+                    f"{record.ids} "
+                    f"The alternate internal id field '{internal_alt_id}' is not unique"
                 )
             return record
         return self.env[model_name]
@@ -459,9 +458,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             if res:
                 if len(res) > 1:
                     raise InvalidDataError(
-                        "More than one external records found. "
-                        "The alternate external id field '%s' is not "
-                        "unique in the backend" % (id_values,)
+                        f"More than one external records found. "
+                        f"The alternate external id field '{id_values}' is not "
+                        f"unique in the backend"
                     )
                 return res[0]
         return {}
@@ -507,9 +506,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                 current_external_id = self.to_external(binding)
                 if current_external_id != external_id:
                     raise InvalidDataError(
-                        "Integrity error: The current external_id '%s' "
-                        "should be the same as the one we are trying "
-                        "to assign '%s'" % (current_external_id, external_id)
+                        f"More than one external records found. "
+                        f"The alternate external id field '{ext_alt_id}'"
+                        f" is not unique in the backend"
                     )
                 _logger.debug("%d already binded to Backend", binding)
             else:
@@ -544,7 +543,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
 
     def unwrap_binding(self, binding):
         if not isinstance(binding, models.BaseModel):
-            if isinstance(binding, (tuple, list)):
+            if isinstance(binding, (tuple | list)):
                 odoo_object_ids = binding
             elif isinstance(binding, int):
                 odoo_object_ids = [binding]

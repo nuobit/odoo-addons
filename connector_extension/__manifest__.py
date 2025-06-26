@@ -5,7 +5,7 @@
 {
     "name": "Connector Extension",
     "summary": "This module extends the connector module",
-    "version": "16.0.1.0.2",
+    "version": "17.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "license": "LGPL-3",
     "category": "Connector",

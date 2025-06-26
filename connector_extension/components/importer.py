@@ -129,7 +129,8 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         """
         return False
 
-    # TODO: Convert the mandatory parameters to a dictionary or optional parameters (kwargs)
+    # TODO: Convert the mandatory parameters to a dictionary
+    #  or optional parameters (kwargs)
     def _mapper_options(self, binding, sync_date):
         return {"binding": binding, "sync_date": sync_date}
 

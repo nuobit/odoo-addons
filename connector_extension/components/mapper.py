@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import collections
 import logging
@@ -74,8 +75,8 @@ class ConnectorExtensionMapper(AbstractComponent):
                     continue
                 if not isinstance(values, dict):
                     raise ValueError(
-                        "%s: invalid return value for the "
-                        "mapping method %s" % (values, meth)
+                        f"{values}: invalid return value for "
+                        f"the mapping method {meth}"
                     )
                 if not self.options.get("ignore_required_fields"):
                     for field_required in getattr(meth, "required", []):
