@@ -215,7 +215,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
     def _convert_format(self, elem, mapper, path=""):
         if isinstance(elem, dict):
             for k, v in elem.items():
-                current_path = "{}/{}".format(path, k)
+                current_path = f"{path}/{k}"
                 if isinstance(v, (tuple, list, set, dict)):
                     if isinstance(v, dict):
                         if current_path in mapper:

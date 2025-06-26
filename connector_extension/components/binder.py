@@ -282,11 +282,13 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         :param binding: Odoo record to bind
         :type binding: int
         """
-        assert (
-            external_data and relation
-        ), "external_data or relation missing, " "got: %s, %s" % (
-            external_data,
-            relation,
+        assert external_data and relation, (
+            "external_data or relation missing, "
+            "got: %s, %s"
+            % (
+                external_data,
+                relation,
+            )
         )
         # avoid to trigger the export when we modify the `external_id`
         if isinstance(relation, models.BaseModel):
