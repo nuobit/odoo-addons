@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2025 NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or la1ter (http://www.gnu.org/licenses/agpl) -->
+<templates xml:space="preserve">
+
+    <t
+        t-name="mrp_production_barcodes_gs1.BarcodeScannerField"
+        t-inherit="web.CharField"
+    >
+        <input position="attributes">
+            <attribute name="t-on-change">onChange</attribute>
+        </input>
+    </t>
+
+</templates>

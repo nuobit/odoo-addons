@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+<!-- Copyright 2025 NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or la1ter (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_move_form_inherit_gs1" model="ir.ui.view">
@@ -11,13 +12,22 @@
                 expr="//page[@name='components']//field[@name='move_raw_ids']"
                 position="before"
             >
-                <field name="barcode_scan_components" placeholder="Barcode Scan" />
+                <field
+                    name="barcode_scan_components"
+                    placeholder="Barcode Scan"
+                    widget="barcode_scanner_field"
+                />
             </xpath>
             <xpath
                 expr="//page[@name='finished_products']//field[@name='move_byproduct_ids']"
                 position="before"
             >
-                <field name="barcode_scan_byproduct" placeholder="Barcode Scan" />
+                <field
+                    name="barcode_scan_byproduct"
+                    placeholder="Barcode Scan"
+                    widget="barcode_scanner_field"
+                    options='{"lot_field": "lot_producing_id"}'
+                />
             </xpath>
         </field>
     </record>
