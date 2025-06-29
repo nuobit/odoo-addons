@@ -14,6 +14,12 @@
         "data/barcodes_gs1_rules.xml",
         "views/mrp_production_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "mrp_production_barcodes_gs1/static/src/components/barcode_scanner_field/barcode_scanner_field.esm.js",
+            "mrp_production_barcodes_gs1/static/src/components/barcode_scanner_field/barcode_scanner_field.xml",
+        ],
+    },
     "development_status": "Beta",
     "maintainers": ["deeniiz"],
 }
