@@ -1,4 +1,5 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -10,7 +11,7 @@ from . import account_tax_mixin
 class AccountTax(models.Model):
     _inherit = "account.tax"
 
-    prorate = fields.Boolean(string="Prorate")
+    prorate = fields.Boolean()
 
     @api.constrains(
         "prorate",
