@@ -31,7 +31,6 @@ class ReportGS1Barcode(models.AbstractModel):
             .browse(ids)
             .mapped("move_byproduct_ids")
             .mapped("move_line_ids")
-            .filtered(lambda x: x.state == "done")
         ):
             product = ml.product_id
             lot = ml.lot_id or None
