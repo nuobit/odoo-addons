@@ -13,6 +13,7 @@
     "depends": ["barcodes_gs1_label", "mrp"],
     "data": [
         "views/mrp_production_views.xml",
+        "views/options_config_views.xml",
         "report/report.xml",
         "wizard/options_wizard_views.xml",
     ],
