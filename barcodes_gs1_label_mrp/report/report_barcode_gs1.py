@@ -67,14 +67,17 @@ class ReportGS1Barcode(models.AbstractModel):
             for lot, lot_data in sorted(
                 lots_data.items(), key=lambda x: x[0].name if x[0] else ""
             ):
-                if lot_data["qty"] > 0:
+                qty = lot_data["qty"]
+                if qty > 0:
                     expand_qty = 1
                     if lot_data["uom_category"] == unit_uom:
-                        expand_qty = int(lot_data["qty"])
+                        expand_qty = int(qty)
                     docs += [
                         {
                             "product": product,
                             "lot": lot,
+                            "uom_category": lot_data["uom_category"],
+                            "qty": qty,
                         }
                     ] * expand_qty
         return docs
@@ -82,7 +85,10 @@ class ReportGS1Barcode(models.AbstractModel):
     @api.model
     def _prepare_gs1_values(self, data):
         res = super()._prepare_gs1_values(data)
-        weight = data.get("product", None).weight
-        if weight:
-            res["3100"] = f"{int(weight)}"
+        weight_uom = self.env.ref("uom.product_uom_categ_kgm")
+        uom_categ = data.get("uom_category", None)
+        if uom_categ == weight_uom:
+            qty = data.get("qty", None)
+            if qty:
+                res["3100"] = f"{int(qty)}".rjust(6, "0")
         return res
