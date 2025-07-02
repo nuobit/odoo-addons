@@ -34,7 +34,8 @@ export class BarcodeScannerField extends CharField {
                 await this.orm.call(
                     "mrp.production",
                     "action_process_barcode_byproducts",
-                    [production_id, raw_barcode, lot[1]]
+                    [production_id, raw_barcode, lot[1]],
+                    {allow_duplicate_moves: true}
                 );
             } else {
                 await this.orm.call(

@@ -63,15 +63,6 @@ class MRPProduction(models.Model):
         parsed_d = self._extract_required_gs1_ais(parsed)
         return parsed_d
 
-    def search_move(self, move, product):
-        product_move = move.filtered(lambda m: m.product_id == product)
-        if len(product_move) > 1:
-            raise UserError(
-                _("Multiple moves found for product %(product)s.")
-                % {"product": product.name}
-            )
-        return product_move
-
     def search_product(self, gtin):
         product = self.env["product.product"].search([("barcode", "=", gtin)])
         if not product:
@@ -127,7 +118,12 @@ class MRPProduction(models.Model):
             )
 
         # find if there's already a move for the product
-        move = self.search_move(self.move_raw_ids, product)
+        move = self.move_raw_ids.filtered(lambda m: m.product_id == product)
+        if len(move) > 1:
+            raise UserError(
+                _("Multiple moves found for product %(product)s.")
+                % {"product": product.name}
+            )
 
         # build the base move line values
         move_line_values = {
@@ -188,13 +184,18 @@ class MRPProduction(models.Model):
                 "product_uom": product.uom_id.id,
                 "location_id": self.location_src_id.id,
                 "location_dest_id": product.property_stock_production.id,
+                "warehouse_id": self.location_src_id.warehouse_id.id,
+                "manual_consumption": False,
+                "picked": True,
             }
             if lot:
                 move_vals["move_line_ids"] = [(0, 0, move_line_values)]
             self.move_raw_ids = [(0, 0, move_vals)]
 
     # Parse GS1 barcode and extract information in ByProducts Page
-    def action_process_barcode_byproducts(self, raw_barcode, lot_name):
+    def action_process_barcode_byproducts(
+        self, raw_barcode, lot_name, allow_duplicate_moves=False
+    ):
         self.ensure_one()
         if not raw_barcode:
             return
@@ -210,9 +211,6 @@ class MRPProduction(models.Model):
                     "Cannot identify the product."
                 )
             )
-
-        # find if there's already a move for the product
-        move = self.search_move(self.move_byproduct_ids, product)
 
         # build the base move line values
         move_line_values = {
@@ -238,7 +236,14 @@ class MRPProduction(models.Model):
             lot = self.env["stock.lot"]
 
         # update/create the moves and the move lines
-        if move:
+        # TODO: avoid quering the moves if allow_duplicate_moves is True
+        move = self.move_byproduct_ids.filtered(lambda m: m.product_id == product)
+        if move and not allow_duplicate_moves:
+            if len(move) > 1:
+                raise UserError(
+                    _("Multiple moves found for product %(product)s.")
+                    % {"product": product.name}
+                )
             move_line = move.move_line_ids.filtered(lambda x: x.lot_id == lot)
             if len(move_line) > 1:
                 raise UserError(
@@ -252,9 +257,19 @@ class MRPProduction(models.Model):
                 "product_id": product.id,
                 "name": product.name,
                 "product_uom": product.uom_id.id,
-                "location_id": self.location_src_id.id,
-                "location_dest_id": product.property_stock_production.id,
+                "location_id": product.property_stock_production.id,
+                "location_dest_id": self.location_dest_id.id,
+                "warehouse_id": self.location_dest_id.warehouse_id.id,
+                "production_id": self.id,
             }
             if lot:
                 move_vals["move_line_ids"] = [(0, 0, move_line_values)]
-            self.move_byproduct_ids = [(0, 0, move_vals)]
+            self.env["stock.move"].create(move_vals)
+
+    def write(self, vals):
+        """This is a fix for the move_byproduct_ids field"""
+        if "move_byproduct_ids" in vals:
+            for clause in vals["move_byproduct_ids"]:
+                if clause[0] == 2 and len(clause) == 2:
+                    clause.append(False)
+        return super().write(vals)
