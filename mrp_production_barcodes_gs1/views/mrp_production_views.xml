@@ -29,6 +29,14 @@
                     options='{"lot_field": "lot_producing_id"}'
                 />
             </xpath>
+            <xpath
+                expr="//page[@name='finished_products']//field[@name='move_byproduct_ids']"
+                position="attributes"
+            >
+                <attribute
+                    name="options"
+                >{'delete': [('state', 'in', ('draft', 'confirmed'))]}</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>
