@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 
@@ -28,25 +29,5 @@ class MySQLAdapterCRUD(AbstractComponent):
             raise ValidationError(_("Exception '%s' not defined") % exception_name)
         return EXCEPTION_MAP[exception_name]
 
-    def _execute(self, op, cr, sql, params):
-        if not sql:
-            raise ValidationError(_("Empty SQL statement"))
-        sql_l = sql.split(";")
-        if op == "create":
-            if len(sql_l) > 2:
-                raise ValidationError(_("Unexpected SQL statement"))
-            if len(sql_l) == 2:
-                if not "last_insert_id()".lower() in sql_l[1].lower():
-                    raise ValidationError(
-                        _("Only last_insert_id() is allowed in insert statement.")
-                    )
-        else:
-            if len(sql_l) != 1:
-                raise ValidationError(
-                    _("Only one query is allowed on non insert SQL statements.")
-                )
-
-        res = super()._execute(op, cr, sql_l[0], params)
-        if op == "create":
-            res = cr.execute(sql_l[1])
-        return res
+    def _get_inserted_function_name(self):
+        return "last_insert_id()"
