@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
 from odoo import api, fields, models
@@ -9,17 +10,21 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
     _name = "connector.extension.external.binding"
     _inherit = "external.binding"
     _description = "Connector Extension External Binding (abstract)"
+
     # by default we consider sync_date as the import one
 
+    # Deprecated remove on v17.0 migration
     @api.model
-    def import_data(self, backend_record=None):
-        return self.import_batch(backend_record=backend_record)
+    def import_data(self, backend_record):
+        return self.import_batch(backend_record)
 
+    # Deprecated remove on v17.0 migration
     @api.model
-    def export_data(self, backend_record=None):
+    def export_data(self, backend_record):
         """Prepare the batch export records to Channel"""
-        return self.export_batch(backend_record=backend_record)
+        return self.export_batch(backend_record)
 
+    # BATCH
     @api.model
     def import_batch(self, backend_record, domain=None, delayed=True, use_data=True):
         """Prepare the batch import of records from Backend"""
@@ -42,6 +47,7 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
             )
             return exporter.run(domain=domain)
 
+    # RECORDS
     @api.model
     def import_record(self, backend_record, external_id, sync_date, external_data=None):
         """Import record from Backend"""
@@ -52,19 +58,20 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
             return importer.run(external_id, sync_date, external_data=external_data)
 
     @api.model
-    def delete_record(self, backend_record, external_id):
-        """Export Odoo record"""
-        with backend_record.work_on(self._name) as work:
-            deleter = work.component(usage="record.direct.deleter")
-            return deleter.run(external_id)
-
-    @api.model
     def export_record(self, backend_record, relation):
         """Export Odoo record"""
         with backend_record.work_on(self._name) as work:
             exporter = work.component(usage="record.direct.exporter")
             return exporter.run(relation)
 
+    @api.model
+    def delete_record(self, backend_record, external_id):
+        """Export Odoo record"""
+        with backend_record.work_on(self._name) as work:
+            deleter = work.component(usage="record.direct.deleter")
+            return deleter.run(external_id)
+
+    # CHUNKS
     @api.model
     def import_chunk(
         self,
@@ -84,7 +91,7 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
             )
             return importer.run(domain, offset, chunk_size)
 
-    # existing binding synchronization
+    # RESYNC: existing binding synchronization
     def resync_import(self):
         self.env.user.company_id = self.company_id
         for record in self:
