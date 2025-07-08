@@ -1,6 +1,10 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
+from functools import partial
+
+import pymssql
 
 from odoo.addons.component.core import AbstractComponent
 
@@ -12,26 +16,24 @@ class MSSQLAdapterCRUD(AbstractComponent):
     _inherit = "base.backend.sql.adapter.crud"
 
     _sql_version = "select @@version"
+    _sql_schema = "select 1 from sys.schemas where name=%s"
 
-    # def _execute(self, op, cr, sql, params):
-    #     if not sql:
-    #         raise ValidationError(_("Empty SQL statement"))
-    #     sql_l = sql.split(";")
-    #     if op == "create":
-    #         if len(sql_l) > 2:
-    #             raise ValidationError(_("Unexpected SQL statement"))
-    #         if len(sql_l) == 2:
-    #             if not "last_insert_id()".lower() in sql_l[1].lower():
-    #                 raise ValidationError(
-    #                     _("Only last_insert_id() is allowed in insert statement.")
-    #                 )
-    #     else:
-    #         if len(sql_l) != 1:
-    #             raise ValidationError(
-    #                 _("Only one query is allowed on non insert SQL statements.")
-    #             )
-    #
-    #     res = super()._execute(op, cr, sql_l[0], params)
-    #     if op == "create":
-    #         res = cr.execute(sql_l[1])
-    #     return res
+    # TODO: Move to base.backend.sql.adapter.crud
+    def __init__(self, environment):
+        """
+        :param environment: current environment (backend, session, ...)
+        :type environment: :py:class:`connector.connector.ConnectorEnvironment`
+        """
+        super().__init__(environment)
+
+        self.schema = self.backend_record.db_schema
+        self.conn = partial(
+            pymssql.connect,
+            "%s:%i" % (self.backend_record.db_host, self.backend_record.db_port),
+            self.backend_record.db_user,
+            self.backend_record.db_password,
+            self.backend_record.db_name,
+        )
+
+    def _get_inserted_function_name(self):
+        return "scope_identity()"
