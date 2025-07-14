@@ -194,6 +194,7 @@ class ReportGS1Barcode(models.AbstractModel):
                         self.env["stock.move"]
                         .search(
                             [
+                                ("picking_id", "=", m.picking_id.id),
                                 ("purchase_line_id", "=", m.purchase_line_id.id),
                                 ("state", "=", "done"),
                             ]
