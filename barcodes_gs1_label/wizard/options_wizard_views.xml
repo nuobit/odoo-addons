@@ -11,27 +11,39 @@
                 <header />
                 <notebook>
                     <page string="General">
-                        <group>
-                            <field name="label_config_id" />
+                         <group col="2">
+                             <field name="label_config_id" />
+                         </group>
+                         <group col="4">
+                             <group colspan="2">
+                                <field name="start_row" />
+                                <field name="start_col" />
+                             </group>
+                             <group colspan="2">
+                                <field name="label_copies" />
+                            </group>
+                         </group>
+                        <group
+                            col="4"
+                            invisible="context.get('active_model') not in ('product.product', 'stock.lot')"
+                        >
+                            <group colspan="2">
+                                <field name="with_stock" />
+                            </group>
+                            <group colspan="2">
+                                <field
+                                    name="stock_location_ids"
+                                    widget="many2many_tags"
+                                    invisible="not with_stock"
+                                    required="with_stock"
+                                />
+                            </group>
                         </group>
-                        <group>
-                            <field name="start_row" />
-                            <field name="start_col" />
-                        </group>
-                        <group>
-                            <field name="label_copies" />
-                        </group>
-                        <group col="4">
-                            <field
-                                name="with_stock"
-                                invisible="context.get('active_model') in ('stock.picking', 'stock.quant')"
-                            />
-                            <field
-                                name="stock_location_ids"
-                                widget="many2many_tags"
-                                invisible="[(with_stock, '=', False), context.get('active_model') in ('stock.picking', 'stock.quant')]"
-                                required="[(with_stock, '=', True)]"
-                            />
+                        <group
+                            col="2"
+                            invisible="context.get('active_model') not in ('product.product', 'stock.lot')"
+                        >
+                            <field name="weight" />
                         </group>
                     </page>
                     <page string="Advanced">
