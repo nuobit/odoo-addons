@@ -3,7 +3,6 @@
 # Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-
 import requests.utils
 
 from odoo import _, api, models
@@ -40,6 +39,11 @@ class ReportGS1Barcode(models.AbstractModel):
             "10": (20, True),
             "21": (20, True),
             "3100": (6, False),
+            "3101": (6, False),
+            "3102": (6, False),
+            "3103": (6, False),
+            "3104": (6, False),
+            "3105": (6, False),
         }
 
     @api.model
@@ -85,11 +89,12 @@ class ReportGS1Barcode(models.AbstractModel):
 
     @api.model
     def _prepare_product_product_values(self, params):
-        model, ids, with_stock, stock_location_ids = (
+        model, ids, with_stock, stock_location_ids, weight = (
             params["model"],
             params["ids"],
             params["with_stock"],
             params["stock_location_ids"],
+            params["weight"],
         )
 
         docs = []
@@ -105,16 +110,23 @@ class ReportGS1Barcode(models.AbstractModel):
                         ("company_id", "=", self.env.company.id),
                     ]
                 )
-            docs += self._get_product_lot(doc, quants, with_stock)
+            docs += [
+                {
+                    **x,
+                    "weight": weight,
+                }
+                for x in self._get_product_lot(doc, quants, with_stock)
+            ]
         return docs
 
     @api.model
     def _prepare_stock_lot_values(self, params):
-        model, ids, with_stock, stock_location_ids = (
+        model, ids, with_stock, stock_location_ids, weight = (
             params["model"],
             params["ids"],
             params["with_stock"],
             params["stock_location_ids"],
+            params["weight"],
         )
         docs = []
         for doc in (
@@ -141,6 +153,7 @@ class ReportGS1Barcode(models.AbstractModel):
                         {
                             "product": doc.product_id,
                             "lot": doc,
+                            "weight": weight,
                         }
                     ] * int(q.quantity)
             else:
@@ -148,6 +161,7 @@ class ReportGS1Barcode(models.AbstractModel):
                     {
                         "product": doc.product_id,
                         "lot": doc,
+                        "weight": weight,
                     }
                 )
         return docs
@@ -285,6 +299,32 @@ class ReportGS1Barcode(models.AbstractModel):
         return docs
 
     @api.model
+    def _get_weight_ai31(self, weight):
+        max_ai31_length = 6
+        weight_rounded = round(weight, max_ai31_length)
+        f_str = str(weight_rounded).rstrip("0")
+        f_str_parts = f_str.split(".")
+        if len(f_str_parts) == 1:
+            whole_str, decimal_str = f_str_parts[0], "0"
+        else:
+            whole_str, decimal_str = f_str_parts
+        if decimal_str == "0":
+            decimal_str = ""
+        weight_flat_str = whole_str + decimal_str
+        if len(weight_flat_str) > max_ai31_length:
+            raise UserError(
+                _(
+                    "The weight specified '%(weight)g' is too large to be represented "
+                    "in GS1 standard. Maximum is 6 digits counting both the "
+                    "integer and decimal digits. Please correct it."
+                )
+                % {"weight": weight_rounded}
+            )
+        weight_ai = f"310{len(decimal_str)}"
+        weight_value = f"{weight_flat_str}".rjust(max_ai31_length, "0")
+        return weight_ai, weight_value
+
+    @api.model
     def _prepare_gs1_values(self, data):
         product, lot = data["product"], data["lot"]
         if lot and lot.product_id != product:
@@ -309,7 +349,8 @@ class ReportGS1Barcode(models.AbstractModel):
 
         weight = data.get("weight", 0)
         if weight:
-            res["3100"] = f"{int(weight)}".rjust(6, "0")
+            weight_ai, weight_value = self._get_weight_ai31(weight)
+            res[weight_ai] = weight_value
         return res
 
     def _get_gs1_barcode_string(self, gs1_barcode, barcode_type):
@@ -357,6 +398,7 @@ class ReportGS1Barcode(models.AbstractModel):
             "ids": data["ids"],
             "with_stock": data["with_stock"],
             "stock_location_ids": data["stock_location_ids"],
+            "weight": data["weight"],
         }
 
         # generate product data

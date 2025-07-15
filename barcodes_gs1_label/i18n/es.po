@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-20 11:46+0000\n"
-"PO-Revision-Date: 2025-06-20 11:46+0000\n"
+"POT-Creation-Date: 2025-07-15 11:33+0000\n"
+"PO-Revision-Date: 2025-07-15 11:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,8 +40,10 @@ msgid ""
 "All the lines must have the same UoM category in a picking to print labels. "
 "The line with the product: %(product)s has multiple lots with different "
 "units of measure"
-msgstr "Todas las líneas deben tener la misma categoría de UoM en un albarán para "
-"imprimir etiquetas. La línea con el producto: %(product)s tiene múltiples lotes con diferentes unidades de medida"
+msgstr ""
+"Todas las líneas deben tener la misma categoría de UoM en un albarán para "
+"imprimir etiquetas. La línea con el producto: %(product)s tiene múltiples "
+"lotes con diferentes unidades de medida"
 
 #. module: barcodes_gs1_label
 #: model:ir.ui.menu,name:barcodes_gs1_label.barcodes_gs1_label_options_menu
@@ -157,7 +159,8 @@ msgstr ""
 msgid ""
 "Incoherent data: the lot %(lot_name)s doesn't belong to the product "
 "%(product_name)s. Please report this issue to your administrator."
-msgstr "Datos incoherentes: el lote %(lot_name)s no pertenece al producto "
+msgstr ""
+"Datos incoherentes: el lote %(lot_name)s no pertenece al producto "
 "%(product_name)s. Por favor, informe de este problema a su administrador."
 
 #. module: barcodes_gs1_label
@@ -365,7 +368,8 @@ msgstr "El formato de papel '%(paper_format)s' no tiene un formato definido"
 #: code:addons/barcodes_gs1_label/models/options_format.py:0
 #, python-format
 msgid "The paperformat '%(paper_format)s' has no orientation defined"
-msgstr "El formato de papel '%(paper_format)s' no tiene una orientación definida"
+msgstr ""
+"El formato de papel '%(paper_format)s' no tiene una orientación definida"
 
 #. module: barcodes_gs1_label
 #. odoo-python
@@ -374,7 +378,8 @@ msgstr "El formato de papel '%(paper_format)s' no tiene una orientación definid
 msgid ""
 "The quantity of the product %(product)s in the picking line is not a "
 "multiple of the weight unit of measure %(uom_ratio)s. Please correct it."
-msgstr "La cantidad del producto %(product)s en la línea de traslado no es un "
+msgstr ""
+"La cantidad del producto %(product)s en la línea de traslado no es un "
 "múltiplo de la unidad de medida de peso %(uom_ratio)s. Por favor, corríjalo."
 
 #. module: barcodes_gs1_label
@@ -382,7 +387,22 @@ msgstr "La cantidad del producto %(product)s en la línea de traslado no es un "
 #: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
 #, python-format
 msgid "The value of GS1 AI %(key)s is too long (max %(length)s characters)"
-msgstr "El valor del AI GS1 %(key)s es demasiado largo (máximo %(length)s caracteres)"
+msgstr ""
+"El valor del AI GS1 %(key)s es demasiado largo (máximo %(length)s "
+"caracteres)"
+
+#. module: barcodes_gs1_label
+#. odoo-python
+#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
+#, python-format
+msgid ""
+"The weight specified '%(weight)g' is too large to be represented in GS1 "
+"standard. Maximum is 6 digits counting both the integer and decimal digits. "
+"Please correct it."
+msgstr ""
+"El peso especificado '%(weight)g' es demasiado grande para ser representado "
+"en el estándar GS1. El máximo es 6 dígitos contando tanto los dígitos "
+"enteros como los decimales. Por favor, corríjalo."
 
 #. module: barcodes_gs1_label
 #. odoo-python
@@ -402,6 +422,11 @@ msgstr "Traslado"
 #, python-format
 msgid "Unknown barcode type %s"
 msgstr "Tipo de código de barras desconocido %s"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__weight
+msgid "Weight (Kg)"
+msgstr "Peso (Kg)"
 
 #. module: barcodes_gs1_label
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__with_stock

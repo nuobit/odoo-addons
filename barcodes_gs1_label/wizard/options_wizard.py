@@ -28,6 +28,8 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     start_col = fields.Integer(string="Start column", default=1)
     with_stock = fields.Boolean(string="With stock only", default=True)
 
+    weight = fields.Float(string="Weight (Kg)", digits=(6, 6))
+
     label_copies = fields.Integer(string="Copies", default=1, required=True)
 
     def all_location_ids(self):
@@ -225,6 +227,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             "show_price": self.label_config_id.show_price,
             "show_price_currency": self.label_config_id.show_price_currency,
             "barcode_type": self.label_config_id.barcode_type,
+            "weight": self.weight,
             "layout": {
                 "container_top": int(padding_height_mm * mm_px_rate / 2),
                 "container_left": int(padding_width_mm * mm_px_rate / 2),
