@@ -313,7 +313,7 @@ class ReportGS1Barcode(models.AbstractModel):
         if len(weight_flat_str) > max_ai31_length:
             raise UserError(
                 _(
-                    "The weight specified '%(weight)g' is too large to be represented "
+                    "The weight specified '%(weight)s' is too large to be represented "
                     "in GS1 standard. Maximum is 6 digits counting both the "
                     "integer and decimal digits. Please correct it."
                 )
