@@ -302,14 +302,13 @@ class ReportGS1Barcode(models.AbstractModel):
     def _get_weight_ai31(self, weight):
         max_ai31_length = 6
         weight_rounded = round(weight, max_ai31_length)
-        f_str = str(weight_rounded).rstrip("0")
+        f_str = str(weight_rounded)
         f_str_parts = f_str.split(".")
+        whole_str = f_str_parts[0].lstrip("0")
         if len(f_str_parts) == 1:
-            whole_str, decimal_str = f_str_parts[0], "0"
-        else:
-            whole_str, decimal_str = f_str_parts
-        if decimal_str == "0":
             decimal_str = ""
+        else:
+            decimal_str = f_str_parts[1].rstrip("0")
         weight_flat_str = whole_str + decimal_str
         if len(weight_flat_str) > max_ai31_length:
             raise UserError(
