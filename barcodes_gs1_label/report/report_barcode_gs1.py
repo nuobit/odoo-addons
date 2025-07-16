@@ -317,7 +317,7 @@ class ReportGS1Barcode(models.AbstractModel):
                     "in GS1 standard. Maximum is 6 digits counting both the "
                     "integer and decimal digits. Please correct it."
                 )
-                % {"weight": weight_rounded}
+                % {"weight": weight}
             )
         weight_ai = f"310{len(decimal_str)}"
         weight_value = f"{weight_flat_str}".rjust(max_ai31_length, "0")
