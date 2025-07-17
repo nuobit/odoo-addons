@@ -1,0 +1,137 @@
+
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_pt_sale_order_spms
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-14 09:56+0000\n"
+"PO-Revision-Date: 2025-07-14 09:56+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "Beneficiary Number"
+msgstr "Número de Beneficiário"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "Context Code"
+msgstr "Código de Contexto"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__display_name
+msgid "Display Name"
+msgstr "Nome"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "End Date"
+msgstr ""
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line____last_update
+msgid "Last Modified on"
+msgstr "Última Modificação em"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "Prescription"
+msgstr "Prescrição"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "Prescription Type Code"
+msgstr ""
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.actions.act_window,name:l10n_pt_sale_order_spms.spms_sale_order_line_act_window
+msgid "SPMS Information"
+msgstr "Informação SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "SPMS Line"
+msgstr "Linha SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model,name:l10n_pt_sale_order_spms.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Linhas da Ordem de Vendas"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_beneficiary_number
+msgid "Spms Beneficiary Number"
+msgstr "Número de Beneficiário SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_context_code
+msgid "Spms Context Code"
+msgstr "Código de Contexto SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_end_date
+msgid "Spms End Date"
+msgstr "Data de Fim SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_prescription
+msgid "Spms Prescription"
+msgstr ""
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_prescription_type_code
+msgid "Spms Prescription Type Code"
+msgstr "Código de Tipo de Prescrição SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_start_date
+msgid "Spms Start Date"
+msgstr "Data de Início SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_suspension_reason_code
+msgid "Spms Suspension Reason Code"
+msgstr "Código de Motivo de Suspensão SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_treatment_area
+msgid "Spms Treatment Area"
+msgstr "Área de Tratamento SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model:ir.model.fields,field_description:l10n_pt_sale_order_spms.field_sale_order_line__spms_user_number
+msgid "Spms User Number"
+msgstr "Número de usuário SPMS"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "Start Date"
+msgstr "Fecha de Início"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "Suspension Reason Code"
+msgstr "Código de Motivo de Suspensão"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "Treatment Area"
+msgstr "Area de Tratamento"
+
+#. module: l10n_pt_sale_order_spms
+#: model_terms:ir.ui.view,arch_db:l10n_pt_sale_order_spms.spms_sale_order_line_form_view
+msgid "User Number"
+msgstr "Número de Utilizador"

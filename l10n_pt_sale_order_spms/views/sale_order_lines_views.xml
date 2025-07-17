@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="spms_sale_order_line_form_view" model="ir.ui.view">
+        <field name="name">sale.order.line.form.spms</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <form string="SPMS Line" create="0" edit="1">
+                <sheet>
+                    <group>
+                        <field name="spms_prescription" string="Prescription" />
+                        <field name="spms_user_number" string="User Number" />
+                        <field
+                            name="spms_beneficiary_number"
+                            string="Beneficiary Number"
+                        />
+                        <field name="spms_start_date" string="Start Date" />
+                        <field name="spms_end_date" string="End Date" />
+                        <field
+                            name="spms_suspension_reason_id"
+                            string="Suspension Reason Code"
+                        />
+                        <field name="spms_context_id" string="Context Code" />
+                        <field
+                            name="spms_prescription_type_id"
+                            string="Prescription Type Code"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spms_sale_order_line_act_window" model="ir.actions.act_window">
+        <field name="name">SPMS Information</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="spms_sale_order_line_form_view" />
+        <field name="target">new</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+</odoo>
