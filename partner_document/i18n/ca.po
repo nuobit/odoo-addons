@@ -40,6 +40,7 @@ msgstr "Classificació"
 
 #. module: partner_document
 #: model:ir.actions.act_window,name:partner_document.partner_classification_list_action
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__classification_ids
 #: model:ir.ui.menu,name:partner_document.partner_classification_menu
 msgid "Classifications"
 msgstr "Classificacions"

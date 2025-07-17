@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions SL (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -25,6 +25,13 @@ class PartnerDocumentType(models.Model):
     no_expiration = fields.Boolean(
         default=False,
         help="Check this if the document type does not require an expiration date.",
+    )
+    classification_ids = fields.Many2many(
+        comodel_name="partner.classification",
+        relation="partner_classification_document_type_rel",
+        column1="document_type_id",
+        column2="classification_id",
+        readonly=True,
     )
 
     @api.constrains("name")
