@@ -98,25 +98,29 @@ class ReportGS1Barcode(models.AbstractModel):
         )
 
         docs = []
-        for doc in self.env[model].browse(ids).sorted(lambda x: x.default_code or ""):
+        for product in (
+            self.env[model].browse(ids).sorted(lambda x: x.default_code or "")
+        ):
             quants = self.env["stock.quant"]
             if with_stock:
                 quants = self.env["stock.quant"].search(
                     [
-                        ("product_id", "=", doc.id),
+                        ("product_id", "=", product.id),
                         ("location_id.usage", "=", "internal"),
                         ("location_id", "in", stock_location_ids),
                         ("quantity", ">", 0),
                         ("company_id", "=", self.env.company.id),
                     ]
                 )
-            docs += [
-                {
-                    **x,
-                    "weight": weight,
-                }
-                for x in self._get_product_lot(doc, quants, with_stock)
-            ]
+            for pd in self._get_product_lot(product, quants, with_stock):
+                if weight > 0:
+                    pd.update(
+                        {
+                            "uom": product.uom_id,
+                            "qty": weight,
+                        }
+                    )
+                docs.append(pd)
         return docs
 
     @api.model
@@ -129,7 +133,7 @@ class ReportGS1Barcode(models.AbstractModel):
             params["weight"],
         )
         docs = []
-        for doc in (
+        for lot in (
             self.env[model]
             .browse(ids)
             .filtered(lambda x: x.product_id.tracking in ("lot", "serial"))
@@ -139,38 +143,37 @@ class ReportGS1Barcode(models.AbstractModel):
             if with_stock:
                 quants = self.env["stock.quant"].search(
                     [
-                        ("product_id", "=", doc.product_id.id),
+                        ("product_id", "=", lot.product_id.id),
                         ("location_id.usage", "=", "internal"),
                         ("location_id", "in", stock_location_ids),
-                        ("lot_id", "=", doc.id),
+                        ("lot_id", "=", lot.id),
                         ("quantity", ">", 0),
                         ("company_id", "=", self.env.company.id),
                     ]
                 )
-            if with_stock:
-                for q in quants.sorted(lambda x: x.lot_id.name or ""):
-                    docs += [
-                        {
-                            "product": doc.product_id,
-                            "lot": doc,
-                            "weight": weight,
-                        }
-                    ] * int(q.quantity)
-            else:
-                docs.append(
+            values = {
+                "product": lot.product_id,
+                "lot": lot,
+            }
+            if weight > 0:
+                values.update(
                     {
-                        "product": doc.product_id,
-                        "lot": doc,
-                        "weight": weight,
+                        "uom": lot.product_id.uom_id,
+                        "qty": weight,
                     }
                 )
+            if with_stock:
+                for q in quants.sorted(lambda x: x.lot_id.name or ""):
+                    docs += [values] * int(q.quantity)
+            else:
+                docs.append(values)
         return docs
 
     @api.model
     def _prepare_stock_quant_values(self, params):
         model, ids, with_stock = params["model"], params["ids"], params["with_stock"]
         docs = []
-        for doc in (
+        for quant in (
             self.env[model]
             .browse(ids)
             .sorted(lambda x: x.product_id.default_code or "")
@@ -179,14 +182,14 @@ class ReportGS1Barcode(models.AbstractModel):
             if with_stock:
                 quants = self.env["stock.quant"].search(
                     [
-                        ("id", "=", doc.id),
+                        ("id", "=", quant.id),
                         ("location_id.usage", "=", "internal"),
-                        ("location_id", "=", doc.location_id.id),
+                        ("location_id", "=", quant.location_id.id),
                         ("quantity", ">", 0),
                         ("company_id", "=", self.env.company.id),
                     ]
                 )
-            docs += self._get_product_lot(doc.product_id, quants, with_stock)
+            docs += self._get_product_lot(quant.product_id, quants, with_stock)
         return docs
 
     # flake8: noqa: C901
@@ -261,7 +264,7 @@ class ReportGS1Barcode(models.AbstractModel):
                 ml = ml_meta["line"]
                 if ml.quantity > 0:
                     expand_qty = 1
-                    weight_per_doc = ml.quantity * ml.product_id.weight
+                    qty_per_doc = ml.quantity * ml.product_id.weight
                     # compute po uom qty prorated for rhe current move line
                     if ml_meta["uom_po"].dynamic_ratio:
                         uom_po_ratio = ml_meta["uom_po_ratio"]
@@ -281,19 +284,20 @@ class ReportGS1Barcode(models.AbstractModel):
                         uom_po_qty = ml.quantity / uom_po_ratio
                         expand_qty = uom_po_qty
                         if ml.product_uom_category_id == weight_uom:
-                            weight_per_doc = uom_po_ratio
+                            qty_per_doc = uom_po_ratio
                     else:
                         if ml.product_uom_category_id == unit_uom:
                             expand_qty = ml.quantity
-                            weight_per_doc = ml.product_id.weight
+                            qty_per_doc = ml.product_id.weight
                         elif ml.product_uom_category_id == weight_uom:
-                            weight_per_doc = ml.quantity
+                            qty_per_doc = ml.quantity
 
                     docs += [
                         {
                             "product": ml.product_id,
                             "lot": ml.lot_id or None,
-                            "weight": weight_per_doc,
+                            "uom": ml.product_uom_id,
+                            "qty": qty_per_doc,
                         }
                     ] * int(expand_qty)
         return docs
@@ -346,10 +350,13 @@ class ReportGS1Barcode(models.AbstractModel):
                     res["10"] = lot.ref
                 res["21"] = lot.name
 
-        weight = data.get("weight", 0)
-        if weight:
-            weight_ai, weight_value = self._get_weight_ai31(weight)
-            res[weight_ai] = weight_value
+        uom = data.get("uom")
+        if uom:
+            if uom == self.env.ref("uom.product_uom_kgm"):
+                weight = data.get("qty", 0)
+                if weight:
+                    weight_ai, weight_value = self._get_weight_ai31(weight)
+                    res[weight_ai] = weight_value
         return res
 
     def _get_gs1_barcode_string(self, gs1_barcode, barcode_type):
@@ -416,11 +423,15 @@ class ReportGS1Barcode(models.AbstractModel):
             product, lot = doc["product"], doc["lot"]
             if barcode_type in ("gs1-128", "gs1-datamatrix"):
                 gs1_barcode = self._prepare_gs1_values(doc)
-                if not gs1_barcode:
-                    continue
-                barcode_string = self._get_gs1_barcode_string(gs1_barcode, barcode_type)
-                doc["barcode_values"] = gs1_barcode
-                doc["barcode_string"] = barcode_string
+                if gs1_barcode:
+                    barcode_string = self._get_gs1_barcode_string(
+                        gs1_barcode, barcode_type
+                    )
+                    doc["barcode_values"] = gs1_barcode
+                    doc["barcode_string"] = barcode_string
+                else:
+                    doc["barcode_values"] = None
+                    doc["barcode_string"] = None
             elif barcode_type == "ean13-code128":
                 doc["barcode_values"] = (
                     product.barcode or None,
