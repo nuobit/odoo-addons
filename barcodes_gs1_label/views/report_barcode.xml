@@ -67,7 +67,7 @@
     <!-- layout gs1datamatrix1 -->
     <template id="layout_gs1datamatrix1">
         <div class="bgp-gs1-datamatrix">
-            <div class="bgp-barcode">
+            <div t-if="barcode_values" class="bgp-barcode">
                 <div class="bgp-barcode-img">
                     <img
                         t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
@@ -89,7 +89,7 @@
     <!-- layout gs1code128 -->
     <template id="layout_gs1code128">
         <div class="bgp-gs1-128">
-            <div class="bgp-barcode">
+            <div t-if="barcode_values" class="bgp-barcode">
                 <div class="bgp-barcode-img">
                     <img
                         t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
