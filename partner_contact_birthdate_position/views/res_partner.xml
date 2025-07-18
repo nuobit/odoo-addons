@@ -22,6 +22,7 @@
                         class="pcbp_age_narrow"
                         attrs="{'invisible': [('birthdate_date', '=', False)]}"
                     />
+                    <span>years</span>
                 </div>
             </field>
         </field>
