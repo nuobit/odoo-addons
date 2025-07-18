@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-14 14:43+0000\n"
-"PO-Revision-Date: 2025-04-14 14:43+0000\n"
+"POT-Creation-Date: 2025-07-18 16:47+0000\n"
+"PO-Revision-Date: 2025-07-18 16:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,12 +25,16 @@ msgstr "Cancelar"
 #: code:addons/partner_document/models/partner_document_type.py:0
 #, python-format
 msgid "Cant 'uncheck 'No Expiration' due to docs without expiration date"
-msgstr "No se puede 'desmarcar' 'Sin caducidad' debido a documentos sin fecha de caducidad"
+msgstr ""
+"No se puede 'desmarcar' 'Sin caducidad' debido a documentos sin fecha de "
+"caducidad"
 
 #. module: partner_document
+#: model:ir.model.fields,help:partner_document.field_partner_document__no_expiration
 #: model:ir.model.fields,help:partner_document.field_partner_document_type__no_expiration
 msgid "Check this if the document type does not require an expiration date."
-msgstr "Marque esto si el tipo de documento no requiere una fecha de caducidad."
+msgstr ""
+"Marque esto si el tipo de documento no requiere una fecha de caducidad."
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_res_partner__classification_id
@@ -54,6 +58,11 @@ msgstr "Código"
 #: model:ir.model,name:partner_document.model_res_partner
 msgid "Contact"
 msgstr "Contacto"
+
+#. module: partner_document
+#: model_terms:ir.actions.act_window,help:partner_document.partner_document_type_action_partner
+msgid "Create the first Partner"
+msgstr "Crea el primer contacto"
 
 #. module: partner_document
 #: model_terms:ir.actions.act_window,help:partner_document.partner_classification_list_action
@@ -136,6 +145,11 @@ msgid "Document Type"
 msgstr "Tipo de documento"
 
 #. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
+msgid "Document Type Form"
+msgstr "Formulario de tipo de documento"
+
+#. module: partner_document
 #: model:ir.actions.act_window,name:partner_document.partner_document_template_list_action
 #: model:ir.ui.menu,name:partner_document.partner_document_template_menu
 msgid "Document templates"
@@ -157,19 +171,19 @@ msgstr "Documentos"
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__expiration_date
 msgid "Expiration Date"
-msgstr "Fecha de vencimiento"
+msgstr "Fecha de expiración"
 
 #. module: partner_document
 #. odoo-python
 #: code:addons/partner_document/models/partner_document.py:0
 #, python-format
-msgid "Expiration date is required for this document type."
-msgstr "La fecha de vencimiento es obligatoria para este tipo de documento."
+msgid "Expiration date is required for this file"
+msgstr "La fecha de expiración es obligatoria para este archivo"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__expired
 msgid "Expired"
-msgstr "Vencido"
+msgstr "Expirado"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__datas
@@ -178,12 +192,8 @@ msgid "File"
 msgstr "Archivo"
 
 #. module: partner_document
-#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__datas_fname
-msgid "File Name"
-msgstr "Nombre de archivo"
-
-#. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__datas_fname
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__datas_fname
 msgid "Filename"
 msgstr "Nombre de archivo"
 
@@ -245,7 +255,7 @@ msgstr "Actualizado por última vez el"
 #. module: partner_document
 #: model:res.groups,name:partner_document.partner_document_group_manager
 msgid "Manager"
-msgstr "Gerente"
+msgstr ""
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__mandatory_document_type_ids
@@ -265,7 +275,12 @@ msgstr "Nombre"
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__no_expiration
 msgid "No Expiration"
-msgstr "Sin caducidad"
+msgstr "No expira"
+
+#. module: partner_document
+#: model:ir.model.fields,help:partner_document.field_partner_document_type__partner_count
+msgid "Number of distinct partners with documents of this type."
+msgstr "Número de contactos distintos con documentos de este tipo."
 
 #. module: partner_document
 #. odoo-python
@@ -289,9 +304,10 @@ msgid "Only one file can set for the same language."
 msgstr "Solo se puede establecer un archivo para el mismo idioma."
 
 #. module: partner_document
+#: model:ir.actions.act_window,name:partner_document.partner_document_type_action_partner
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__partner_id
 msgid "Partner"
-msgstr "Socio"
+msgstr "Contacto"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__partner_class_mandatory_document_type_ids
@@ -305,9 +321,14 @@ msgid "Partner Classification"
 msgstr "Clasificación de contactos"
 
 #. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__partner_count
+msgid "Partner Count"
+msgstr "Número de contactos"
+
+#. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document
 msgid "Partner Document"
-msgstr "Documento del socio"
+msgstr "Documento del contacto"
 
 #. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document_template
@@ -327,34 +348,39 @@ msgstr "Tipo de documento de contacto"
 #. module: partner_document
 #: model:ir.module.category,description:partner_document.partner_document_security
 msgid "Partner Document security"
-msgstr "Seguridad de documento del socio"
+msgstr "Seguridad de documento del contacto"
 
 #. module: partner_document
 #: model:ir.ui.menu,name:partner_document.partner_document_menu
 msgid "Partner Documents"
-msgstr "Documentos del socio"
+msgstr "Documentos del contacto"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_template_view_form
-#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_view_form
 msgid "Partner Form"
-msgstr "Formulario de socio"
+msgstr "Formulario de contacto"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_classification_view_form
 msgid "Partner classification Form"
-msgstr "Formulario de clasificación del socio"
+msgstr "Formulario de clasificación del contacto"
 
 #. module: partner_document
 #: model:ir.module.category,name:partner_document.partner_document_security
 msgid "Partner document"
-msgstr "Documento del socio"
+msgstr "Documento del contacto"
 
 #. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document_expired_wizard
 msgid "Partner expired document wizard"
-msgstr "Asistente de documentos de socio vencidos"
+msgstr "Asistente de documentos de contacto expirados"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_tree
+msgid "Partner(s)"
+msgstr "Contacto(s)"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_template_view_form
@@ -378,7 +404,7 @@ msgstr "Buscar"
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
 #, python-format
 msgid "Search Expired Documents"
-msgstr "Buscar documentos vencidos"
+msgstr "Buscar documentos expirados"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__sequence
@@ -440,36 +466,17 @@ msgstr ""
 #. odoo-python
 #: code:addons/partner_document/models/partner_document.py:0
 #, python-format
-msgid "You can't change the expiration date of a validated document."
-msgstr "No puede cambiar la fecha de vencimiento de un documento validado."
-
-#. module: partner_document
-#. odoo-python
-#: code:addons/partner_document/models/partner_document.py:0
-#, python-format
-msgid ""
-"You can't delete %(document_type)s (%(classification)s) because it has a "
-"File"
-msgstr ""
-"No puede eliminar %(document_type)s (%(classification)s) porque tiene un "
-"archivo"
-
-#. module: partner_document
-#. odoo-python
-#: code:addons/partner_document/models/partner_document.py:0
-#, python-format
 msgid ""
 "You cannot delete %(document_type)s because it is required in "
 "(%(classification)s). If you want to delete it, you must delete the files of"
-" the rest of the document types of this classification"
+" the rest of the document types of this classification."
 msgstr ""
-"No puede eliminar %(document_type)s porque es obligatorio en "
-"(%(classification)s). Si desea eliminarlo, debe eliminar los archivos del "
-"resto de los tipos de documento de esta clasificación"
 
 #. module: partner_document
 #. odoo-python
 #: code:addons/partner_document/models/partner_document.py:0
 #, python-format
 msgid "You cannot set an expiration date for a 'No Expiration' document type."
-msgstr "No puede establecer una fecha de vencimiento para un tipo de documento 'Sin vencimiento'."
+msgstr ""
+"No puede establecer una fecha de expiración para un tipo de documento que 'No "
+"expira'."

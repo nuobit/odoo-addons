@@ -33,6 +33,16 @@ class PartnerDocumentType(models.Model):
         column2="classification_id",
         readonly=True,
     )
+    partner_count = fields.Integer(
+        compute="_compute_partner_count",
+        help="Number of distinct partners with documents of this type.",
+    )
+
+    def _compute_partner_count(self):
+        for record in self:
+            record.partner_count = self.env["res.partner"].search_count(
+                [("document_ids.document_type_id", "=", record.id)]
+            )
 
     @api.constrains("name")
     def _check_name(self):

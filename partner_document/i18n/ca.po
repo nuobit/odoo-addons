@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-14 14:42+0000\n"
-"PO-Revision-Date: 2025-04-14 14:42+0000\n"
+"POT-Creation-Date: 2025-07-18 16:46+0000\n"
+"PO-Revision-Date: 2025-07-18 16:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,9 +25,12 @@ msgstr "Cancel·la"
 #: code:addons/partner_document/models/partner_document_type.py:0
 #, python-format
 msgid "Cant 'uncheck 'No Expiration' due to docs without expiration date"
-msgstr "No es pot 'desmarcar' 'Sense data d'expiració' a causa de documents sense data d'expiració"
+msgstr ""
+"No es pot 'desmarcar' 'Sense data d'expiració' a causa de documents sense "
+"data d'expiració"
 
 #. module: partner_document
+#: model:ir.model.fields,help:partner_document.field_partner_document__no_expiration
 #: model:ir.model.fields,help:partner_document.field_partner_document_type__no_expiration
 msgid "Check this if the document type does not require an expiration date."
 msgstr "Marca això si el tipus de document no requereix una data d'expiració."
@@ -54,6 +57,11 @@ msgstr "Codi"
 #: model:ir.model,name:partner_document.model_res_partner
 msgid "Contact"
 msgstr "Contacte"
+
+#. module: partner_document
+#: model_terms:ir.actions.act_window,help:partner_document.partner_document_type_action_partner
+msgid "Create the first Partner"
+msgstr "Crea el primer contacte"
 
 #. module: partner_document
 #: model_terms:ir.actions.act_window,help:partner_document.partner_classification_list_action
@@ -136,6 +144,11 @@ msgid "Document Type"
 msgstr "Tipus de document"
 
 #. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
+msgid "Document Type Form"
+msgstr ""
+
+#. module: partner_document
 #: model:ir.actions.act_window,name:partner_document.partner_document_template_list_action
 #: model:ir.ui.menu,name:partner_document.partner_document_template_menu
 msgid "Document templates"
@@ -152,24 +165,24 @@ msgstr "Tipus de documents"
 #: model:ir.model.fields,field_description:partner_document.field_res_users__document_ids
 #: model_terms:ir.ui.view,arch_db:partner_document.view_partner_form
 msgid "Documents"
-msgstr ""
+msgstr "Documents"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__expiration_date
 msgid "Expiration Date"
-msgstr "Data de venciment"
+msgstr "Data d'expiració"
 
 #. module: partner_document
 #. odoo-python
 #: code:addons/partner_document/models/partner_document.py:0
 #, python-format
-msgid "Expiration date is required for this document type."
-msgstr "La data de venciment és obligatòria per a aquest tipus de document."
+msgid "Expiration date is required for this file"
+msgstr "La data d'expiració és necessària per a aquest fitxer"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__expired
 msgid "Expired"
-msgstr "Vençut"
+msgstr "Expirat"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__datas
@@ -178,12 +191,8 @@ msgid "File"
 msgstr "Fitxer"
 
 #. module: partner_document
-#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__datas_fname
-msgid "File Name"
-msgstr "Nom de fitxer"
-
-#. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__datas_fname
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_template_file__datas_fname
 msgid "Filename"
 msgstr "Nom de fitxer"
 
@@ -245,7 +254,7 @@ msgstr "Actualitzat per última vegada el"
 #. module: partner_document
 #: model:res.groups,name:partner_document.partner_document_group_manager
 msgid "Manager"
-msgstr "Gerent"
+msgstr ""
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__mandatory_document_type_ids
@@ -263,9 +272,10 @@ msgid "Name"
 msgstr "Nom"
 
 #. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document__no_expiration
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__no_expiration
 msgid "No Expiration"
-msgstr "Sense caducitat"
+msgstr "No expira"
 
 #. module: partner_document
 #. odoo-python
@@ -289,9 +299,10 @@ msgid "Only one file can set for the same language."
 msgstr "Només es pot establir un fitxer per al mateix idioma."
 
 #. module: partner_document
+#: model:ir.actions.act_window,name:partner_document.partner_document_type_action_partner
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__partner_id
 msgid "Partner"
-msgstr "Soci"
+msgstr "Contacte"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__partner_class_mandatory_document_type_ids
@@ -305,9 +316,14 @@ msgid "Partner Classification"
 msgstr "Classificació del soci"
 
 #. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_partner_document_type__partner_count
+msgid "Partner Count"
+msgstr "Nombre de contactes"
+
+#. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document
 msgid "Partner Document"
-msgstr "Document del soci"
+msgstr "Document del contacte"
 
 #. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document_template
@@ -317,44 +333,49 @@ msgstr "Plantilla de document del contacte"
 #. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document_template_file
 msgid "Partner Document Template File"
-msgstr "Fitxer de plantilla de document del soci"
+msgstr "Fitxer de plantilla de document del contacte"
 
 #. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document_type
 msgid "Partner Document Type"
-msgstr "Tipus de document del soci"
+msgstr "Tipus de document del contacte"
 
 #. module: partner_document
 #: model:ir.module.category,description:partner_document.partner_document_security
 msgid "Partner Document security"
-msgstr "Seguretat de document de soci"
+msgstr "Seguretat de document del contacte"
 
 #. module: partner_document
 #: model:ir.ui.menu,name:partner_document.partner_document_menu
 msgid "Partner Documents"
-msgstr "Documents del soci"
+msgstr "Documents del contacte"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_template_view_form
-#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_view_form
 msgid "Partner Form"
-msgstr "Formulari de soci"
+msgstr "Formulari del contacte"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_classification_view_form
 msgid "Partner classification Form"
-msgstr "Formulari de classificació de soci"
+msgstr "Formulari de classificació del contacte"
 
 #. module: partner_document
 #: model:ir.module.category,name:partner_document.partner_document_security
 msgid "Partner document"
-msgstr "Document del soci"
+msgstr "Document del contacte"
 
 #. module: partner_document
 #: model:ir.model,name:partner_document.model_partner_document_expired_wizard
 msgid "Partner expired document wizard"
-msgstr "Assistent de documents de soci vençuts"
+msgstr "Assistent de documents del contacte expirats"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_form
+#: model_terms:ir.ui.view,arch_db:partner_document.partner_document_type_view_tree
+msgid "Partner(s)"
+msgstr "Contacte(s)"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_template_view_form
@@ -378,7 +399,7 @@ msgstr "Cerca"
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
 #, python-format
 msgid "Search Expired Documents"
-msgstr "Cerca documents vençuts"
+msgstr "Cerca documents expirats"
 
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__sequence
@@ -438,35 +459,20 @@ msgstr ""
 #. odoo-python
 #: code:addons/partner_document/models/partner_document.py:0
 #, python-format
-msgid "You can't change the expiration date of a validated document."
-msgstr "No pots canviar la data de caducitat d'un document validat."
-
-#. module: partner_document
-#. odoo-python
-#: code:addons/partner_document/models/partner_document.py:0
-#, python-format
-msgid ""
-"You can't delete %(document_type)s (%(classification)s) because it has a "
-"File"
-msgstr ""
-"No pots suprimir %(document_type)s (%(classification)s) perquè té un fitxer"
-
-#. module: partner_document
-#. odoo-python
-#: code:addons/partner_document/models/partner_document.py:0
-#, python-format
 msgid ""
 "You cannot delete %(document_type)s because it is required in "
 "(%(classification)s). If you want to delete it, you must delete the files of"
-" the rest of the document types of this classification"
+" the rest of the document types of this classification."
 msgstr ""
-"No pots suprimir %(document_type)s perquè és obligatori a "
-"(%(classification)s). Si vols suprimir-lo, has d'eliminar els fitxers de la "
-"resta de tipus de document d'aquesta classificació"
+"No pots suprimir %(document_type)s perquè és necessari a "
+"(%(classification)s). Si vols suprimir-lo, has de suprimir els fitxers dels "
+"altres tipus de documents d'aquesta classificació."
 
 #. module: partner_document
 #. odoo-python
 #: code:addons/partner_document/models/partner_document.py:0
 #, python-format
 msgid "You cannot set an expiration date for a 'No Expiration' document type."
-msgstr "No pots establir una data de caducitat per a un tipus de document 'Sense caducitat'."
+msgstr ""
+"No pots establir una data d'epiració per a un tipus de document 'Sense "
+"expiració'."

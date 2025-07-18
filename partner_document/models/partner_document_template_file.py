@@ -14,7 +14,7 @@ class PartnerDocumentTemplateFile(models.Model):
     default = fields.Boolean()
     lang_id = fields.Many2one(comodel_name="res.lang", required=True)
     datas = fields.Binary(required=True)
-    datas_fname = fields.Char(string="File Name")
+    datas_fname = fields.Char(string="Filename")
 
     @api.constrains("default")
     def _check_default(self):
