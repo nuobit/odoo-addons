@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
+     Copyright 2025 NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="partner_contact_birthdate.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="birthdate_date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="age" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="website" position="before">
+                <label for="birthdate_date" />
+                <div class="o_row">
+                    <field name="birthdate_date" class="pcbp_birthdate_narrow" />
+                    <field
+                        name="age"
+                        class="pcbp_age_narrow"
+                        attrs="{'invisible': [('birthdate_date', '=', False)]}"
+                    />
+                </div>
+            </field>
+        </field>
+    </record>
+</odoo>
