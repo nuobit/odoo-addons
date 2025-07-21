@@ -2,7 +2,7 @@
 # Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import _, api, fields, models, re
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -46,13 +46,33 @@ class PartnerDocumentType(models.Model):
 
     @api.constrains("name")
     def _check_name(self):
-        for record in self:
-            if self.env[self._name].search_count(
-                [("id", "!=", record.id), ("name", "=ilike", record.name)]
-            ):
-                raise ValidationError(
-                    _("The name must be unique!"),
-                )
+        records = self.search([])
+        slugs = {}
+
+        for r in records:
+            name = r.name.lower().strip()
+            for pat, rep in self.get_name_normalization_rules():
+                name = name.replace(pat, rep)
+            name = re.sub(r"[\s_]+", "-", name)
+            name = re.sub(r"[^a-z0-9-]", "", name)
+            name = re.sub(r"-+", "-", name)
+            slugs[r.id] = name
+
+        for rec in self:
+            slug_actual = slugs[rec.id]
+            for other_id, slug_otro in slugs.items():
+                if other_id == rec.id:
+                    continue
+                if slug_actual == slug_otro:
+                    raise ValidationError(
+                        _("There is another document type with a similar name.")
+                    )
+
+    def get_name_normalization_rules(self):
+        return [
+            (" de ", " "),
+            ("ss", "s"),
+        ]
 
     @api.constrains("template_id")
     def _check_template_id(self):
