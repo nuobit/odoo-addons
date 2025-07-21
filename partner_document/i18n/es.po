@@ -422,6 +422,18 @@ msgstr "Plantilla"
 #. odoo-python
 #: code:addons/partner_document/models/partner_document_type.py:0
 #, python-format
+msgid ""
+"The document type name '%(name)s' is not unique. It has other %(others_num)i"
+" documents type with similar name in language '%(lang)s': %(others)s. Please"
+" choose a different name."
+msgstr "El nombre del tipo de documento '%(name)s' no es único. Tiene "
+"otros %(others_num)i tipos de documentos con un nombre similar en el idioma"
+" '%(lang)s': %(others)s. Por favor, elija un nombre diferente."
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document_type.py:0
+#, python-format
 msgid "The name must be unique!"
 msgstr "¡El nombre debe ser único!"
 

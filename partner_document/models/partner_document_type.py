@@ -1,6 +1,7 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import unicodedata
 
 from odoo import _, api, fields, models, re
 from odoo.exceptions import UserError, ValidationError
@@ -44,35 +45,69 @@ class PartnerDocumentType(models.Model):
                 [("document_ids.document_type_id", "=", record.id)]
             )
 
-    @api.constrains("name")
-    def _check_name(self):
-        records = self.search([])
-        slugs = {}
+    @api.model
+    def _normalize(self, s):
+        # heuristic normalization of a string to create a slug
+        # all lowercase and strip spaces
+        s = s.lower().strip()
+        # remove accents and diacritics, convert to ASCII
+        s = unicodedata.normalize("NFKD", s).encode("ASCII", "ignore").decode("ASCII")
+        # remove duplicated simbols or spaces
+        s = re.sub(r"(.)\1+", r"\1", s)
+        # special susbtitutions
+        s = s.replace(" de ", " ")
+        # remove spaces
+        s = s.replace(" ", "")
+        return s
 
-        for r in records:
-            name = r.name.lower().strip()
-            for pat, rep in self.get_name_normalization_rules():
-                name = name.replace(pat, rep)
-            name = re.sub(r"[\s_]+", "-", name)
-            name = re.sub(r"[^a-z0-9-]", "", name)
-            name = re.sub(r"-+", "-", name)
-            slugs[r.id] = name
+    @api.model
+    def _get_others_by_lang(self, langs):
+        all_doct_d = {}
+        for doct in self.with_context(active_test=False).search([]):
+            for lang in langs:
+                all_doct_d.setdefault(lang, {})
+                slug = self._normalize(doct.name)
+                all_doct_d[lang].setdefault(slug, self.env[self._name])
+                all_doct_d[lang][slug] |= doct
+        return all_doct_d
 
+    def _check_name_duplicated(self, name, lang, all_doct_d):
         for rec in self:
-            slug_actual = slugs[rec.id]
-            for other_id, slug_otro in slugs.items():
-                if other_id == rec.id:
-                    continue
-                if slug_actual == slug_otro:
+            slug = self._normalize(name)
+            if slug in all_doct_d:
+                others = all_doct_d[slug] - rec
+                if others:
+                    others_l = ["[%i] '%s'" % (x.id, x.name) for x in others]
                     raise ValidationError(
-                        _("There is another document type with a similar name.")
+                        _(
+                            "The document type name '%(name)s' is not unique. "
+                            "It has other %(others_num)i documents type with similar "
+                            "name in language '%(lang)s': %(others)s. Please choose a "
+                            "different name."
+                        )
+                        % {
+                            "name": name,
+                            "lang": lang,
+                            "others_num": len(others),
+                            "others": ", ".join(others_l),
+                        }
                     )
 
-    def get_name_normalization_rules(self):
-        return [
-            (" de ", " "),
-            ("ss", "s"),
-        ]
+    @api.constrains("name")
+    def _check_name(self):
+        all_doct_d = self._get_others_by_lang([self.env.lang])[self.env.lang]
+        self._check_name_duplicated(self.name, self.env.lang, all_doct_d)
+
+    def update_field_translations(self, field_name, translations):
+        # Check for name uniqueness across languages
+        if field_name == "name":
+            translations_other = dict(translations)
+            translations_other.pop(self.env.lang, None)
+            all_doct_lang_d = self._get_others_by_lang(translations_other.keys())
+            for lang, new_name in translations_other.items():
+                all_doct_d = all_doct_lang_d[lang]
+                self._check_name_duplicated(new_name, lang, all_doct_d)
+        return super().update_field_translations(field_name, translations)
 
     @api.constrains("template_id")
     def _check_template_id(self):
