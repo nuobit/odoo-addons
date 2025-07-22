@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_move_form_inherit_spms" model="ir.ui.view">
+    <field name="name">account.move.form.spms</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form" />
+    <field name="arch" type="xml">
+        <xpath expr="//sheet//field[@name='country_code']" position="after">
+            <group string="SPMS Info">
+                <field name="spms_prescription" string="Prescription" invisible="1" />
+                <field name="spms_user_number" string="User Number" invisible="1" />
+                <field
+                        name="spms_beneficiary_number"
+                        string="Beneficiary Number"
+                        invisible="1"
+                    />
+                <field name="spms_start_date" string="Start Date" invisible="1" />
+                <field name="spms_end_date" string="End Date" invisible="1" />
+                <field
+                        name="spms_suspension_reason_id"
+                        string="Suspension Reason Code"
+                        invisible="1"
+                    />
+                <field name="spms_context_id" string="Context Code" invisible="1" />
+                <field
+                        name="spms_prescription_type_id"
+                        string="Prescription Type Code"
+                        invisible="1"
+                    />
+            </group>
+        </xpath>
+    </field>
+</record>
+</odoo>
