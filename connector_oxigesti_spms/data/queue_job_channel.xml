@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="0">
+    <record id="oxigesti_spms_job_channel_import_batch" model="queue.job.channel">
+        <field name="name">oxigesti_spms_import_batch</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record id="oxigesti_spms_job_channel_import_record" model="queue.job.channel">
+        <field name="name">oxigesti_spms_import_record</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+
+    <record id="oxigesti_spms_job_channel_export_batch" model="queue.job.channel">
+        <field name="name">oxigesti_spms_export_batch</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record id="oxigesti_spms_job_channel_export_record" model="queue.job.channel">
+        <field name="name">oxigesti_spms_export_record</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+</odoo>

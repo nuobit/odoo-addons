@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_form_oxigesti_spms_backend" model="ir.ui.view">
+        <field name="name">oxigesti.spms.backend</field>
+        <field name="model">oxigesti.spms.backend</field>
+        <field name="arch" type="xml">
+            <form string="Oxigesti SPMS Backend">
+                <header>
+                    <button
+                        name="button_check_connection"
+                        type="object"
+                        class="oe_highlight"
+                        string="Check Connection"
+                        attrs="{'invisible':[('state', 'not in', ['draft'])]}"
+                    />
+                    <button
+                        name="button_reset_to_draft"
+                        type="object"
+                        string="Reset To draft Connection"
+                        attrs="{'invisible':[('state', 'in', ['draft'])]}"
+                    />
+                    <field name="state" widget="statusbar" readonly="1" />
+                </header>
+                <sheet>
+                    <h1>
+                        <field
+                            name="name"
+                            class="oe_inline"
+                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                        />
+                    </h1>
+                    <group>
+                        <group col="4">
+                            <field
+                                name="company_id"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="lang_ids"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                widget="many2many_tags"
+                            />
+                            <field
+                                name="tz"
+                                colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="db_name"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="db_user"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="db_password"
+                                password="True"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field
+                                name="db_host"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                            <field
+                                name="db_port"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="db_schema"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            />
+                        </group>
+                        <group>
+                            <field name="version" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="synchronizers" string="Synchronizers">
+                            <div class="oe_form_field">
+
+                            </div>
+                                <!-- Customers Buttons -->
+<!--                            <group string="Customers">-->
+                                <group string="Customers">
+                                    <div class="oe_center">
+                                        <label
+                                        string="Import Customers since"
+                                        class="oe_inline"
+                                        for="import_partner_since_date"
+                                    />
+                                        <field
+                                        name="import_partner_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                    </div>
+                                    <button
+                                    name="button_import_partner_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import Customers"
+                                />
+                                </group>
+                                <group>
+                                    <div>
+                                        <label
+                                        string="Export Customers since"
+                                        class="oe_inline"
+                                        for="export_partner_since_date"
+                                    />
+                                        <field
+                                        name="export_partner_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                    </div>
+                                    <button
+                                    name="button_export_partner_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export Customers"
+                                />
+                                </group>
+<!--                            </group>-->
+                                <!-- Products Buttons -->
+                            <group string="Products">
+                                <div>
+                                    <label
+                                        string="Import Products since"
+                                        class="oe_inline"
+                                        for="import_product_since_date"
+                                    />
+                                    <field
+                                        name="import_product_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_import_product_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import Products"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Export Products since"
+                                        class="oe_inline"
+                                        for="export_product_since_date"
+                                    />
+                                    <field
+                                        name="export_product_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_export_product_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export Products"
+                                />
+                            </group>
+                                <!-- Sale Order Buttons -->
+                            <group string="Sale Orders">
+                                <div>
+                                    <label
+                                        string="Import Sale Order since"
+                                        class="oe_inline"
+                                        for="import_sale_order_since_date"
+                                    />
+                                    <field
+                                        name="import_sale_order_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_import_sale_order_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import Sale Orders"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Export Sale Order since"
+                                        class="oe_inline"
+                                        for="export_sale_order_since_date"
+                                    />
+                                    <field
+                                        name="export_sale_order_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_export_sale_order_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export Sale Orders"
+                                />
+                            </group>
+                                <!-- SPMS Context Buttons -->
+                            <group string="SPMS Contexts">
+                                <div>
+                                    <label
+                                        string="Import SPMS Context since"
+                                        class="oe_inline"
+                                        for="import_spms_context_since_date"
+                                    />
+                                    <field
+                                        name="import_spms_context_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_import_spms_context_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import SPMS Contexts"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Export SPMS Context since"
+                                        class="oe_inline"
+                                        for="export_spms_context_since_date"
+                                    />
+                                    <field
+                                        name="export_spms_context_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_export_spms_context_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export SPMS Contexts"
+                                />
+                            </group>
+                                <!-- SPMS Lot Buttons -->
+                            <group string="SPMS Lots">
+                                <div>
+                                    <label
+                                        string="Import SPMS Lot since"
+                                        class="oe_inline"
+                                        for="import_spms_lot_since_date"
+                                    />
+                                    <field
+                                        name="import_spms_lot_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_import_spms_lot_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import SPMS Lot"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Export SPMS Lot since"
+                                        class="oe_inline"
+                                        for="export_spms_lot_since_date"
+                                    />
+                                    <field
+                                        name="export_spms_lot_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_export_spms_lot_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export SPMS Lot"
+                                />
+                            </group>
+                                <!-- SPMS Prescription Type Buttons -->
+                            <group string="SPMS Prescription Types">
+                                <div>
+                                    <label
+                                        string="Import SPMS Prescription Type since"
+                                        class="oe_inline"
+                                        for="import_spms_prescription_type_since_date"
+                                    />
+                                    <field
+                                        name="import_spms_prescription_type_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_import_spms_prescription_type_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import SPMS Prescription Type"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Export SPMS Prescription Type since"
+                                        class="oe_inline"
+                                        for="export_spms_prescription_type_since_date"
+                                    />
+                                    <field
+                                        name="export_spms_prescription_type_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_export_spms_prescription_type_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export SPMS Prescription Type"
+                                />
+                            </group>
+                                <!-- SPMS Suspension Reason Buttons -->
+                            <group string="SPMS Suspension Reasons">
+                                <div>
+                                    <label
+                                        string="Import SPMS Suspension Reason since"
+                                        class="oe_inline"
+                                        for="import_spms_suspension_reason_since_date"
+                                    />
+                                    <field
+                                        name="import_spms_suspension_reason_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_import_spms_suspension_reason_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import SPMS Suspension Reason"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        string="Export SPMS Suspension Reason since"
+                                        class="oe_inline"
+                                        for="export_spms_suspension_reason_since_date"
+                                    />
+                                    <field
+                                        name="export_spms_suspension_reason_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="button_export_spms_suspension_reason_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export SPMS Suspension Reason"
+                                />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_oxigesti_spms_backend" model="ir.ui.view">
+        <field name="name">oxigesti.spms.backend.tree</field>
+        <field name="model">oxigesti.spms.backend</field>
+        <field name="arch" type="xml">
+            <tree string="Oxigesti SPMS Backends">
+                <field name="name" />
+                <field name="db_user" />
+                <field name="db_host" />
+                <field name="db_port" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="oxigesti_spms_backend_action" model="ir.actions.act_window">
+        <field name="name">Oxigesti Backends</field>
+        <field name="res_model">oxigesti.spms.backend</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

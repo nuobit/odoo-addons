@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_product_only_form_view" model="ir.ui.view">
+        <field name="name">product.product.oxigesti.spms.connector.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page
+                    string="Connector Oxigesti SPMS"
+                    name="connector"
+                    groups="connector.group_connector_manager"
+                >
+                    <group string="Oxigesti SPMS Bindings">
+                        <field name="oxigesti_spms_bind_ids" colspan="2" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record
+        id="oxigesti_spms_product_product_variant_easy_edit_view"
+        model="ir.ui.view"
+    >
+        <field name="name">product.product.oxigesti.spms.variant.easy.edit.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="inside">
+                <notebook>
+                    <page
+                        string="Connector Oxigesti SPMS"
+                        name="connector"
+                        groups="connector.group_connector_manager"
+                    >
+                        <group string="Oxigesti SPMS Bindings">
+                            <field
+                                name="oxigesti_spms_bind_ids"
+                                colspan="2"
+                                nolabel="1"
+                            />
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="oxigesti_spms_product_product_view_form" model="ir.ui.view">
+        <field name="name">oxigesti.spms.product.product.form</field>
+        <field name="model">oxigesti.spms.product.product</field>
+        <field name="arch" type="xml">
+            <form string="Oxigesti SPMS Product">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="oxigesti_spms_id" readonly="True" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="oxigesti_spms_product_product_view_tree" model="ir.ui.view">
+        <field name="name">oxigesti.spms.product.product.tree</field>
+        <field name="model">oxigesti.spms.product.product</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="oxigesti_spms_id" />
+                <field name="sync_date" />
+<!--                <button-->
+<!--                    name="resync_export"-->
+<!--                    type="object"-->
+<!--                    string="Resynchronize"-->
+<!--                    icon="fa-refresh fa-lg"-->
+<!--                />-->
+            </tree>
+        </field>
+    </record>
+    <record id="oxigesti_spms_product_product_action" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">oxigesti.spms.product.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

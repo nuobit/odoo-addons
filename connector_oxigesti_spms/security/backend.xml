@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="1">
+    <record id="oxigesti_spms_backend_rule_company" model="ir.rule">
+        <field name="name">Connector SPMS oxigesti multi-company rule</field>
+        <field name="model_id" ref="model_oxigesti_spms_backend" />
+ <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>
