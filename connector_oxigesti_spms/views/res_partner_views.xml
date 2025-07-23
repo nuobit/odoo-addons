@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="res_partner_view_form_connector_oxigesti_spms" model="ir.ui.view">
+        <field name="name">res.partner.oxigesti.spms.connector.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page
+                    string="Connector Oxigesti SPMS"
+                    name="connector"
+                    groups="connector.group_connector_manager"
+                >
+                    <group string="Oxigesti SPMS Bindings">
+                        <field name="oxigesti_spms_bind_ids" colspan="2" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//h1//field[@name='name']" position="after">
+                <field name="oxigesti_spms_bind_ids" invisible="1" />
+            </xpath>
+            <xpath expr="//h1//field[@name='name']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('oxigesti_spms_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath
+                expr="/form/sheet/group//field[@name='street']"
+                position="attributes"
+            >
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('oxigesti_spms_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath
+                expr="/form/sheet/group//field[@name='street2']"
+                position="attributes"
+            >
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('oxigesti_spms_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/group//field[@name='zip']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('oxigesti_spms_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/group//field[@name='city']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('oxigesti_spms_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+            <xpath
+                expr="/form/sheet/group//field[@name='country_id']"
+                position="attributes"
+            >
+                <attribute name="attrs">{
+                    'readonly': ['|', '&amp;', ('type', '=', 'contact'), ('parent_id', '!=', False),
+                                 ('oxigesti_spms_bind_ids', '!=', [])]
+                }</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

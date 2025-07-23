@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="oxigesti_spms_menu_root"
+        parent="connector.menu_connector_root"
+        name="Oxigesti SPMS"
+        sequence="40"
+    />
+    <menuitem
+        id="oxigesti_spms_backend_menu_action"
+        parent="oxigesti_spms_menu_root"
+        name="Backends"
+        action="oxigesti_spms_backend_action"
+    />
+    <menuitem
+        id="oxigesti_spms_external_objects_menu"
+        parent="oxigesti_spms_menu_root"
+        name="External Objects"
+        sequence="100"
+    />
+    <menuitem
+        id="oxigesti_spms_customers_menu_action"
+        parent="oxigesti_spms_external_objects_menu"
+        name="External Customers"
+        action="oxigesti_spms_res_partner_action"
+    />
+    <menuitem
+        id="oxigesti_spms_products_menu_action"
+        parent="oxigesti_spms_external_objects_menu"
+        name="External Products"
+        action="oxigesti_spms_product_product_action"
+    />
+    <menuitem
+        id="oxigesti_spms_sale_order_menu_action"
+        parent="oxigesti_spms_external_objects_menu"
+        name="External Sale Orders"
+        action="oxigesti_spms_sale_order_action"
+    />
+    <menuitem
+        id="oxigesti_spms_spms_context_menu_action"
+        parent="oxigesti_spms_external_objects_menu"
+        name="External SPMS Context"
+        action="oxigesti_spms_spms_context_action"
+    />
+    <menuitem
+        id="oxigesti_spms_spms_lot_menu_action"
+        parent="oxigesti_spms_external_objects_menu"
+        name="External SPMS Lots"
+        action="oxigesti_spms_spms_lot_action"
+    />
+    <menuitem
+        id="oxigesti_spms_spms_prescription_type_menu_action"
+        parent="oxigesti_spms_external_objects_menu"
+        name="External SPMS Prescription Types"
+        action="oxigesti_spms_spms_prescription_type_action"
+    />
+    <menuitem
+        id="oxigesti_spms_spms_suspension_reason_menu_action"
+        parent="oxigesti_spms_external_objects_menu"
+        name="External SPMS Suspension Reasons"
+        action="oxigesti_spms_spms_suspension_reason_action"
+    />
+</odoo>

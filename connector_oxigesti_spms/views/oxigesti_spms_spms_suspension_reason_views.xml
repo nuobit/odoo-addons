@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="oxigesti_spms_spms_suspension_reason_view_form" model="ir.ui.view">
+        <field name="name">oxigesti.spms.spms.suspension.reason.form</field>
+        <field name="model">oxigesti.spms.spms.suspension.reason</field>
+        <field name="arch" type="xml">
+            <form string="Oxigesti SPMS Suspension Reason">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" />
+                    <field name="oxigesti_spms_id" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="oxigesti_spms_spms_suspension_reason_view_tree" model="ir.ui.view">
+        <field name="name">oxigesti.spms.spms.suspension.reason.tree</field>
+        <field name="model">oxigesti.spms.spms.suspension.reason</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="oxigesti_spms_id" />
+                <field name="sync_date" />
+                 <button
+                    name="resync_export"
+                    type="object"
+                    class="btn btn-info"
+                    help="Resynchronize the export of the SPMS Suspension Reason to Oxigesti SPMS."
+                    icon="fa-cloud-upload fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+    <record
+        id="oxigesti_spms_spms_suspension_reason_action"
+        model="ir.actions.act_window"
+    >
+        <field name="name">SPMS Suspension Reasons</field>
+        <field name="res_model">oxigesti.spms.spms.suspension.reason</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

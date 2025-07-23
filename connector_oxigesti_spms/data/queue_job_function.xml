@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="0">
+                                    <!-- Partners -->
+    <record
+        id="oxigesti_spms_res_partner_job_function_import_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_res_partner"
+        />
+        <field name="method">import_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_res_partner_job_function_import_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_res_partner"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_res_partner_job_function_export_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_res_partner"
+        />
+        <field name="method">export_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_res_partner_job_function_export_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_res_partner"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+                                    <!-- Products -->
+    <record
+        id="oxigesti_spms_product_product_job_function_import_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_product_product"
+        />
+        <field name="method">import_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_product_product_job_function_import_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_product_product"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_product_product_job_function_export_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_product_product"
+        />
+        <field name="method">export_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_product_product_job_function_export_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_product_product"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+                                    <!-- Sale Orders -->
+    <record
+        id="oxigesti_spms_sale_order_job_function_import_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_sale_order"
+        />
+        <field name="method">import_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_sale_order_job_function_import_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_sale_order"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_sale_order_job_function_export_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_sale_order"
+        />
+        <field name="method">export_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_sale_order_job_function_export_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_sale_order"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+                                    <!-- SPMS Context  -->
+    <record
+        id="oxigesti_spms_spms_context_job_function_import_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_context"
+        />
+        <field name="method">import_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_context_job_function_import_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_context"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_context_job_function_export_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_context"
+        />
+        <field name="method">export_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_context_job_function_export_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_context"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+                                <!-- SPMS Lot  -->
+    <record
+        id="oxigesti_spms_spms_lot_job_function_import_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_lot"
+        />
+        <field name="method">import_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_lot_job_function_import_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_lot"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+
+    <record
+        id="oxigesti_spms_spms_lot_job_function_export_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_lot"
+        />
+        <field name="method">export_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_lot_job_function_export_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_lot"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+                        <!-- SPMS Prescription Type  -->
+    <record
+        id="oxigesti_spms_spms_prescription_type_job_function_import_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_prescription_type"
+        />
+        <field name="method">import_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_prescription_type_job_function_import_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_prescription_type"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+
+    <record
+        id="oxigesti_spms_spms_prescription_type_job_function_export_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_prescription_type"
+        />
+        <field name="method">export_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_prescription_type_job_function_export_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_prescription_type"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+                            <!-- SPMS Suspension Reason  -->
+    <record
+        id="oxigesti_spms_spms_suspension_reason_job_function_import_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_suspension_reason"
+        />
+        <field name="method">import_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_suspension_reason_job_function_import_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_suspension_reason"
+        />
+        <field name="method">import_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_import_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+
+    <record
+        id="oxigesti_spms_spms_suspension_reason_job_function_export_batch"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_suspension_reason"
+        />
+        <field name="method">export_batch</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_batch"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+    <record
+        id="oxigesti_spms_spms_suspension_reason_job_function_export_record"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_oxigesti_spms.model_oxigesti_spms_spms_suspension_reason"
+        />
+        <field name="method">export_record</field>
+        <field
+            name="channel_id"
+            ref="connector_oxigesti_spms.oxigesti_spms_job_channel_export_record"
+        />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+    </record>
+
+</odoo>

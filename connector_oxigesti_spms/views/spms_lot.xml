@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="spms_lot_form_view" model="ir.ui.view">
+        <field name="name">spms.lot.oxigesti.spms.connector.form.view</field>
+        <field name="model">spms.lot</field>
+        <field name="inherit_id" ref="l10n_pt_spms.spms_lot_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet" position="inside">
+                <notebook>
+                    <page
+                        string="Connector Oxigesti SPMS"
+                        name="connector"
+                        groups="connector.group_connector_manager"
+                    >
+                    <group string="Oxigesti SPMS Bindings">
+                        <field name="oxigesti_spms_bind_ids" colspan="2" nolabel="1" />
+                    </group>
+                </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>
