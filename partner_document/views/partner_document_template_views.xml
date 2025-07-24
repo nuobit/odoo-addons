@@ -16,7 +16,11 @@
                     </div>
 
                     <group name="file_ids" string="Files">
-                        <div class="alert alert-info text-center" colspan="2">
+                        <div
+                            class="alert alert-info text-center"
+                            role="alert"
+                            colspan="2"
+                        >
                             Remember: There must be a default file for the template if none exists for the language.
                         </div>
                         <field name="file_ids" nolabel="1" colspan="2">
