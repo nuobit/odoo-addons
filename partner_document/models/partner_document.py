@@ -126,6 +126,19 @@ class PartnerDocument(models.Model):
                     )
                 )
 
+    @api.constrains("validated")
+    def _check_validated(self):
+        for rec in self:
+            if rec.validated and not rec.is_valid_document():
+                raise ValidationError(
+                    _(
+                        "You cannot validate a document that is not valid: "
+                        "'%(document_type)s'. Please ensure the file is "
+                        "uploaded and the expiration date is set correctly."
+                    )
+                    % {"document_type": rec.document_type_id.display_name}
+                )
+
     def write(self, vals):
         res = super().write(vals)
         self._validate_document()
@@ -160,19 +173,6 @@ class PartnerDocument(models.Model):
 
     def unlink(self):
         for rec in self:
-            # Temporarily disabled – raises error even without file
-            # if rec.datas:
-            #     raise ValidationError(
-            #         _(
-            #             "You can't delete %(document_type)s (%(classification)s) "
-            #             "because it has a File"
-            #         )
-            #         % {
-            #             "document_type": rec.document_type_id.display_name,
-            #             "classification": rec.partner_classification_id.display_name,
-            #         }
-            #     )
-
             if rec.partner_id.classification_id:
                 docs = self.env[self._name].search(
                     [

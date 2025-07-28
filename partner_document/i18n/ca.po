@@ -489,3 +489,14 @@ msgid "You cannot set an expiration date for a 'No Expiration' document type."
 msgstr ""
 "No pots establir una data d'epiració per a un tipus de document 'Sense "
 "expiració'."
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid ""
+"You cannot validate a document that is not valid: '%(document_type)s'. Please ensure the file is "
+"uploaded and the expiration date is set correctly."
+msgstr ""
+"No pots validar un document que no és vàlid: '%(document_type)s'. Si us plau, assegura't que el fitxer està "
+"pujat i que la data d'expiració està establerta correctament."
