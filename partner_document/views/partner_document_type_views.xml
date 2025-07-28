@@ -29,6 +29,7 @@
                             name="%(partner_document_type_action_partner)d"
                             type="action"
                             icon="fa-users"
+                            title="Partner(s)"
                             attrs="{'invisible': [('partner_count', '=', 0)]}"
                         >
                             <field
