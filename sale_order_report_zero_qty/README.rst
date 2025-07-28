@@ -22,7 +22,7 @@ Sale Order Report Zero Quantity
 
 |badge1| |badge2| |badge3|
 
-- Hide order lines with zero quantity in quotations.
+-  Hide order lines with zero quantity in quotations.
 
 **Table of contents**
 
@@ -50,9 +50,9 @@ Authors
 Contributors
 ------------
 
-- `NuoBiT <https://www.nuobit.com>`__:
+-  `NuoBiT <https://www.nuobit.com>`__:
 
-  - Bijaya Kumal bkumal@nuobit.com
+   -  Bijaya Kumal bkumal@nuobit.com
 
 Maintainers
 -----------
