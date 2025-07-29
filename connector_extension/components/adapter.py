@@ -247,3 +247,17 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                 raise Exception("Type '%s' not supported" % type(v))
             res.append((k, op, v))
         return res
+
+    def _check_uniq(self, data, id_fields):
+        uniq = set()
+        for rec in data:
+            id_t = tuple([rec[f] for f in id_fields])
+            if id_t in uniq:
+                raise ValidationError(
+                    _("Unexpected error: ID duplicated: %(ID_FIELDS)s - %(ID_T)s")
+                    % {
+                        "ID_FIELDS": id_fields,
+                        "ID_T": id_t,
+                    }
+                )
+            uniq.add(id_t)
