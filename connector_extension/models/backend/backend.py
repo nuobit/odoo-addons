@@ -1,11 +1,13 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import logging
 
 import pytz
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -32,6 +34,25 @@ class ConnectorBackend(models.AbstractModel):
             ("draft", "Draft"),
             ("validated", "Validated"),
         ]
+
+    name = fields.Char(
+        required=True,
+    )
+    company_id = fields.Many2one(
+        comodel_name="res.company",
+        index=True,
+        required=True,
+        default=lambda self: self.env.company,
+        string="Company",
+    )
+
+    lang_ids = fields.Many2many(
+        comodel_name="res.lang",
+        column1="backend_id",
+        column2="lang_id",
+        required=True,
+        string="Languages",
+    )
 
     # TODO: REVIEW: Create a template view to be inherited
     state = fields.Selection(
@@ -97,3 +118,27 @@ class ConnectorBackend(models.AbstractModel):
         datetime_local = datetime_utc.astimezone(local_tz)
         datetime_local_naive = datetime_local.replace(tzinfo=None)
         return datetime_local_naive
+
+    # Scheduler methods
+    @api.model
+    def _get_current_user_company(self):
+        if self.env.user.id == self.env.ref("base.user_root").id:
+            raise ValidationError(_("The cron user cannot be admin"))
+        if self.env.company != self.env.user.company_id:
+            raise ValidationError(
+                _(
+                    "The current company must be the same as the default company of the user. "
+                )
+            )
+        if self.env.company != self.env.user.company_ids:
+            raise ValidationError(
+                _("The current company must be one of the companies of the user. ")
+            )
+        return self.env.company
+
+    @api.model
+    def scheduler(self, function_name):
+        company_id = self._get_current_user_company()
+        domain = [("company_id", "=", company_id.id)]
+        func = getattr(self.search(domain), function_name)
+        return func()
