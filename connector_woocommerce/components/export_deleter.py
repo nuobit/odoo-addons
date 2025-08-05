@@ -8,24 +8,24 @@ from odoo.addons.component.core import AbstractComponent
 _logger = logging.getLogger(__name__)
 
 
-class WooCommerceRecordDirectDeleter(AbstractComponent):
+class WooCommerceRecordDirectExportDeleter(AbstractComponent):
     """Base Deleter for WooCommerce"""
 
-    _name = "woocommerce.record.direct.deleter"
+    _name = "woocommerce.record.direct.export.deleter"
     _inherit = [
-        "connector.extension.generic.record.direct.deleter",
+        "connector.extension.record.direct.export.deleter",
         "base.woocommerce.connector",
     ]
 
 
-class WooCommerceBatchDeleter(AbstractComponent):
+class WooCommerceBatchExportDeleter(AbstractComponent):
     """The role of a BatchDeleter is to delete for a list of
     items to delete, then it can either delete them directly or delay
     the delete of each item separately.
     """
 
-    _name = "woocommerce.batch.deleter"
+    _name = "woocommerce.batch.export.deleter"
     _inherit = [
-        "connector.extension.generic.batch.deleter",
+        "connector.extension.batch.export.deleter",
         "base.woocommerce.connector",
     ]
