@@ -16,9 +16,6 @@ class SapB1Backend(models.Model):
     _inherit = "connector.extension.backend"
     _description = "SAP B1 Backend"
 
-    name = fields.Char(
-        required=True,
-    )
     partner_ids = fields.One2many(
         string="partner",
         comodel_name="sapb1.backend.res.partner",
@@ -28,12 +25,6 @@ class SapB1Backend(models.Model):
         string="tax",
         comodel_name="sapb1.backend.account.tax",
         inverse_name="backend_id",
-    )
-    company_id = fields.Many2one(
-        comodel_name="res.company",
-        string="Company",
-        required=True,
-        ondelete="restrict",
     )
     user_id = fields.Many2one(
         comodel_name="res.users",
