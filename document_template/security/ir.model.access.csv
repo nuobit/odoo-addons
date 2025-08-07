@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+document_template_access_user,access.document.template.user,model_document_template,base.group_user,1,1,1,1
+document_template_file_access_user,access.document.template.file.user,model_document_template_file,base.group_user,1,1,1,1

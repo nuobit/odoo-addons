@@ -1,19 +1,25 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+
+"""
+Modelo para los archivos asociados a una plantilla de documento.
+"""
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
-class PartnerDocumentTemplateFile(models.Model):
-    _name = "partner.document.template.file"
-    _description = "Partner Document Template File"
+class DocumentTemplateFile(models.Model):
+    _name = "document.template.file"
+    _description = "Document Template File"
     _order = "default desc"
 
-    template_id = fields.Many2one(comodel_name="partner.document.template")
+    template_id = fields.Many2one(
+        comodel_name="document.template", required=True, string="Template"
+    )
     default = fields.Boolean()
-    lang_id = fields.Many2one(comodel_name="res.lang", required=True)
-    datas = fields.Binary(required=True)
+    lang_id = fields.Many2one(comodel_name="res.lang", required=True, string="Language")
+    datas = fields.Binary(required=True, string="File")
     datas_fname = fields.Char(string="Filename")
 
     @api.constrains("default")
