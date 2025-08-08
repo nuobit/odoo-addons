@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
 
-from odoo import _, api, fields, models
+from odoo import _, api, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -10,13 +10,6 @@ _logger = logging.getLogger(__name__)
 
 class WordPressBackend(models.Model):
     _inherit = "wordpress.backend"
-
-    lang_ids = fields.Many2many(
-        string="Languages for WPML",
-        comodel_name="res.lang",
-        column1="backend_id",
-        column2="lang_id",
-    )
 
     @api.constrains("lang_ids")
     def check_lang_ids(self):
