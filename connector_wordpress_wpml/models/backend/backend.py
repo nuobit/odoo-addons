@@ -11,17 +11,17 @@ _logger = logging.getLogger(__name__)
 class WordPressBackend(models.Model):
     _inherit = "wordpress.backend"
 
-    language_ids = fields.Many2many(
+    lang_ids = fields.Many2many(
         string="Languages for WPML",
         comodel_name="res.lang",
         column1="backend_id",
         column2="lang_id",
     )
 
-    @api.constrains("language_ids")
-    def check_language_ids(self):
+    @api.constrains("lang_ids")
+    def check_lang_ids(self):
         for rec in self:
-            for lang in rec.language_ids:
+            for lang in rec.lang_ids:
                 if not lang.wordpress_wpml_lang_code:
                     raise ValidationError(
                         _(

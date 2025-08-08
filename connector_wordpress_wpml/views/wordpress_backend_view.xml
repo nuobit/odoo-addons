@@ -11,7 +11,7 @@
         />
         <field name="arch" type="xml">
             <field name="test_database" position="before">
-                <field name="language_ids" widget="many2many_tags" />
+                <field name="lang_ids" widget="many2many_tags" />
             </field>
         </field>
     </record>
