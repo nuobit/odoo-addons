@@ -24,5 +24,4 @@
         "views/product_public_category.xml",
         "views/product_template.xml",
     ],
-    "installable": True,
 }
