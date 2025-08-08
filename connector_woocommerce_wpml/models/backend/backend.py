@@ -14,6 +14,8 @@ class WooCommerceBackend(models.Model):
     language_ids = fields.Many2many(
         string="Languages for WPML",
         comodel_name="res.lang",
+        column1="backend_id",
+        column2="lang_id",
         required=True,
     )
 
