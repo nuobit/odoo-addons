@@ -3,7 +3,7 @@
 
 {
     "name": "Connector WooCommerce WMPL",
-    "version": "14.0.0.1.2",
+    "version": "14.0.0.1.3",
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Connector",
