@@ -13,9 +13,6 @@ class WooCommerceBackend(models.Model):
     _inherit = "connector.extension.backend"
     _description = "WooCommerce Backend"
 
-    name = fields.Char(
-        required=True,
-    )
     url = fields.Char(
         help="WooCommerce URL",
         required=True,
@@ -26,12 +23,6 @@ class WooCommerceBackend(models.Model):
     )
     consumer_secret = fields.Char(
         required=True,
-    )
-    company_id = fields.Many2one(
-        comodel_name="res.company",
-        required=True,
-        default=lambda self: self.env.company,
-        ondelete="restrict",
     )
     payment_mode_ids = fields.One2many(
         comodel_name="woocommerce.backend.payment.mode",
