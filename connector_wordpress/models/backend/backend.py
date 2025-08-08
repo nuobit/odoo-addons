@@ -12,9 +12,6 @@ class WordPressBackend(models.Model):
     _inherit = "connector.extension.backend"
     _description = "WordPress Backend"
 
-    name = fields.Char(
-        required=True,
-    )
     url = fields.Char(
         help="WordPress URL",
         required=True,
@@ -25,12 +22,6 @@ class WordPressBackend(models.Model):
     )
     application_password = fields.Char(
         required=True,
-    )
-    company_id = fields.Many2one(
-        comodel_name="res.company",
-        required=True,
-        default=lambda self: self.env.company,
-        ondelete="restrict",
     )
     verify_ssl = fields.Boolean(
         default=True,
