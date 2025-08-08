@@ -12,7 +12,7 @@
         <field name="arch" type="xml">
             <page name="mappings" position="inside">
                 <group string="WPML Language mapping">
-                    <field name="language_ids" widget="many2many_tags" />
+                    <field name="lang_ids" widget="many2many_tags" />
                 </group>
             </page>
         </field>

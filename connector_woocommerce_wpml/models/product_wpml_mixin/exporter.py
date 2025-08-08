@@ -12,7 +12,7 @@ class WooCommerceProductWPMLMixinExporter(AbstractComponent):
 
     def wpml_run(self, relation, always=True, internal_fields=None):
         res = []
-        langs_to_export = self.backend_record.language_ids.mapped("code")
+        langs_to_export = self.backend_record.lang_ids.mapped("code")
         if not langs_to_export:
             raise ValidationError(
                 _(

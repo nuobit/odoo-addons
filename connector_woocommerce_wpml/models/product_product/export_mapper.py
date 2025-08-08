@@ -26,7 +26,7 @@ class WooCommerceProductProductExportMapper(Component):
     def translation_of(self, record):
         lang_code = record._context.get("lang")
         if lang_code:
-            source_lang_code = self.backend_record.language_ids[0].code
+            source_lang_code = self.backend_record.lang_ids[0].code
             if lang_code == source_lang_code:
                 # We don't need to set translation_of for the default lang
                 return {}
