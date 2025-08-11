@@ -1,11 +1,9 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import datetime
 import logging
 import random
-from decimal import Decimal
 
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -21,8 +19,6 @@ class SQLAdapterCRUD(AbstractComponent):
 
     _date_format = "%Y-%m-%d"
     _datetime_format = "%Y-%m-%dT%H:%M:%SZ"
-
-    _sql_insert_last_id = None
 
     def get_version(self):
         conn = self.conn()
@@ -55,63 +51,23 @@ class SQLAdapterCRUD(AbstractComponent):
                 "IntegrityError", _("The schema %s does not exist") % self.schema
             )
 
-    def _convert_value(self, v, to_backend=True):
-        if isinstance(v, datetime.datetime):
-            if to_backend:
-                func = self.backend_record.tz_to_local
-            else:
-                func = self.backend_record.tz_to_utc
-            return func(v)
-        elif isinstance(v, Decimal):
-            return float(v)
-        return v
-
     def _convert_dict(self, data, to_backend=True):
         if not isinstance(data, dict):
             raise ValidationError(_("Expected a dictionary, found %s") % data)
         for k, v in data.items():
-            new_value = self._convert_value(v, to_backend=to_backend)
-            # TODO: Refactor, do not use the value to determine if conversion is needed
-            if new_value != v or type(new_value) != type(v):
-                data[k] = new_value
+            if isinstance(v, datetime.datetime):
+                if to_backend:
+                    func = self.backend_record.tz_to_local
+                else:
+                    func = self.backend_record.tz_to_utc
+                data[k] = func(v)
         return data
 
     def _database_exception(self, exception_name):
-        raise
+        raise NotImplementedError
 
-    def _get_inserted_function_name(self):
-        raise NotImplementedError(
-            _(
-                "Method '_get_inserted_function_name' "
-                "must be implemented in a adapter subclass."
-            )
-        )
-
-    def _execute(self, op, cr, sql, params):
-        if not sql:
-            raise ValidationError(_("Empty SQL statement"))
-        sql_l = list(filter(None, [x.strip() for x in sql.split(";")]))
-
-        if op == "create":
-            inserted_function_name = self._get_inserted_function_name()
-            if len(sql_l) > 2:
-                raise ValidationError(_("Unexpected SQL statement"))
-            if len(sql_l) == 2:
-                if not inserted_function_name.lower() in sql_l[1].lower():
-                    raise ValidationError(
-                        _("Only %s is allowed in insert statement.")
-                        % inserted_function_name
-                    )
-        else:
-            if len(sql_l) != 1:
-                raise ValidationError(
-                    _("Only one query is allowed on non insert SQL statements.")
-                )
-
-        res = cr.execute(sql, params=params)
-        if op == "create":
-            res = cr.execute(sql_l[1])
-        return res
+    def _execute(self, op, cr, sql, params=None):
+        return cr.execute(sql, params=params)
 
     def _exec(self, op, *args, **kwargs):
         func = getattr(self, "_exec_%s" % op)
@@ -162,12 +118,11 @@ class SQLAdapterCRUD(AbstractComponent):
         conn = self.conn()
         cr = conn.cursor()
         self._execute("read", cr, sql, tuple(values))
+        # cr.execute(sql, tuple(values))
         headers = [desc[0] for desc in cr.description]
         res = []
         for row in cr:
-            row_d = dict(zip(headers, row))
-            row_d = self._convert_dict(row_d, to_backend=False)
-            res.append(row_d)
+            res.append(dict(zip(headers, row)))
         cr.close()
         conn.close()
 
@@ -177,9 +132,22 @@ class SQLAdapterCRUD(AbstractComponent):
             id_fields = self.binder_for().get_id_fields(in_field=False)
             if id_fields and set(id_fields).issubset(filter_keys_s):
                 self._check_uniq(res, id_fields)
-        # id_fields = self.binder_for().get_id_fields(in_field=False)
-        # self._check_uniq(res, id_fields)
+
         return res
+
+    def _check_uniq(self, data, id_fields):
+        uniq = set()
+        for rec in data:
+            id_t = tuple([rec[f] for f in id_fields])
+            if id_t in uniq:
+                raise ValidationError(
+                    _("Unexpected error: ID duplicated: %(ID_FIELDS)s - %(ID_T)s")
+                    % {
+                        "ID_FIELDS": id_fields,
+                        "ID_T": id_t,
+                    }
+                )
+            uniq.add(id_t)
 
     def search_read(self, domain=None):
         """Search records according to some criterias
@@ -323,19 +291,23 @@ class SQLAdapterCRUD(AbstractComponent):
             self._check_schema()
             params_dict["schema"] = self.schema
 
-        values_d = self._convert_dict(values_d, to_backend=True)
-
         # build the sql parts
-        fields, params = [], []
+        fields, params, phvalues = [], [], []
         for k, v in values_d.items():
             fields.append(k)
             params.append(v)
+            if v is None or isinstance(v, (str, datetime.date, datetime.datetime)):
+                phvalues.append("%s")
+            elif isinstance(v, (int, float)):
+                phvalues.append("%s")
+            else:
+                raise NotImplementedError("Type %s" % type(v))
 
         # build retvalues
         id_list = list(self.binder_for().id2dict(values_d, in_field=False))
         retvalues = id_list
         params_dict["fields"] = ", ".join(fields)
-        params_dict["phvalues"] = ", ".join(["%s"] * len(fields))
+        params_dict["phvalues"] = ", ".join(phvalues)
         params_dict["retvalues"] = ", ".join(retvalues)
 
         # prepare the sql with base structure
@@ -346,7 +318,9 @@ class SQLAdapterCRUD(AbstractComponent):
         try:
             conn = self.conn()
             cr = conn.cursor()
+            # self._execute(cr, sql, params)
             self._execute("create", cr, sql, tuple(params))
+            # cr.execute(sql, tuple(params))
             headers = [desc[0] for desc in cr.description]
             for row in cr:
                 res.append(dict(zip(headers, row)))
