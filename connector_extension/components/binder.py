@@ -112,22 +112,11 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             alt_field=alt_field,
         )
 
-    def dict2id(
-        self,
-        _dict,
-        in_field=True,
-        alt_field=False,
-        unwrap=False,
-        raise_on_not_found=False,
-    ):
+    def dict2id(self, _dict, in_field=True, alt_field=False, unwrap=False):
         """Giving a dict, return the values of the internal or external fields
         :param _dict: Dict (usually binder) to extract internal or external fields
         :param in_field: with True value, _internal_field defined in binder are used.
                         With this parameter False, _external_field will be used.
-        :param alt_field: with True value, alternative id fields defined in binder are used.
-        :param unwrap: if True, return the first value of the composite id
-        :param raise_on_not_found: if True, raise ValidationError if the id is not complete
-        :return: a list with the values of the internal or external fields
         """
         fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
         res = []
@@ -136,17 +125,6 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             if f_splitted[0] in _dict or _dict.get(f_splitted[0]) is not None:
                 val = _dict[f_splitted[0]]
             else:
-                if raise_on_not_found:
-                    raise Exception(
-                        _(
-                            "The external_id with fields %(fields)s "
-                            "has not found for record: %(record)s"
-                        )
-                        % {
-                            "fields": fields,
-                            "record": _dict,
-                        }
-                    )
                 return None
             if len(f_splitted) == 2:
                 if isinstance(val, models.BaseModel):
@@ -238,8 +216,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         bindings = bindings.with_context(**context)
         return bindings
 
-    # TODO: Deprecated in favor of generic binding.to_external
-    def to_external(self, binding, wrap=True):
+    def to_external(self, binding, wrap=True, binding_extra_vals=None):
         """Give the external ID for an Odoo binding ID
 
         :param binding: Odoo binding for which we want the external id
@@ -248,6 +225,8 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                      the external id of the binding
         :return: external ID of the record
         """
+        if not binding_extra_vals:
+            binding_extra_vals = {}
         if not wrap:
             binding = self.wrap_record(binding)
             if not binding:
