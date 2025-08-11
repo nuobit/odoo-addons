@@ -149,18 +149,7 @@ class ConnectorExtensionChildMapper(AbstractComponent):
             map_record = mapper.map_record(item, parent=parent)
             if self.skip_item(map_record):
                 continue
-            binder = self.binder_for()
-            external_id = binder.dict2id(item, in_field=False)
-            binding = binder.to_internal(external_id)
-
-            item_values = self.get_item_values(
-                map_record,
-                to_attr,
-                {
-                    **options,
-                    "binding": binding,
-                },
-            )
+            item_values = self.get_item_values(map_record, to_attr, options)
             if item_values:
                 self._child_bind(map_record, item_values)
                 mapped.append(item_values)

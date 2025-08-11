@@ -1,6 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
 import logging
@@ -129,7 +128,6 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         """
         return False
 
-    # TODO: Convert the mandatory parameters to a dictionary or optional parameters (kwargs)
     def _mapper_options(self, binding, sync_date):
         return {"binding": binding, "sync_date": sync_date}
 
@@ -260,19 +258,17 @@ class ConnectorExtensionGenericBatchImporter(AbstractComponent):
         else:
             sync_date = fields.Datetime.now()
             if use_data:
-                data = self.backend_adapter.search_read(domain)
+                data, len_items = self.backend_adapter.search_read(domain)
 
                 def _import_record(x):
                     return self._import_record(
-                        self.binder_for().dict2id(
-                            x, in_field=False, raise_on_not_found=True
-                        ),
+                        self.binder_for().dict2id(x, in_field=False),
                         sync_date,
                         external_data=x,
                     )
 
             else:
-                data = self.backend_adapter.search(domain)
+                data, len_items = self.backend_adapter.search(domain)
 
                 def _import_record(x):
                     return self._import_record(x, sync_date)
