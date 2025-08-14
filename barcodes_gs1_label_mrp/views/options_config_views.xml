@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="barcodes_gs1_label_options_config_view_form" model="ir.ui.view">
+        <field name="name">barcodes_gs1_label_options_config_view_form.inherit</field>
+        <field name="model">barcodes.gs1.label.options.config</field>
+        <field
+            name="inherit_id"
+            ref="barcodes_gs1_label.barcodes_gs1_label_options_config_view_form"
+        />
+        <field name="arch" type="xml">
+            <sheet position="inside">
+                <group>
+                    <group>
+                        <field name="allow_print_states" />
+                    </group>
+                </group>
+            </sheet>
+        </field>
+    </record>
+</odoo>
