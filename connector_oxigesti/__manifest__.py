@@ -10,6 +10,7 @@
     "category": "Connector",
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
+        # "product_template_variant_definition",
         "connector_common",
         "partner_review",
         "sale_order_service",
