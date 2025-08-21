@@ -8,12 +8,15 @@ from odoo import api, models
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    @api.onchange("product_id")
-    def product_id_change(self):
-        res = super().product_id_change()
-        if not self.product_id:
-            return res
+    def _prepare_description_values(self, product):
+        values = {
+            "display_name": product.display_name,
+        }
+        if product.description_sale:
+            values["description_sale"] = product.description_sale
+        return values
 
+    def _set_description(self):
         product = self.product_id.with_context(
             lang=self.order_id.partner_id.lang,
             partner=self.order_id.partner_id,
@@ -22,46 +25,14 @@ class SaleOrderLine(models.Model):
             pricelist=self.order_id.pricelist_id.id,
             uom=self.product_uom.id,
         )
+        values = self._prepare_description_values(product)
+        if values:
+            self.name = "\n".join(values.values())
 
-        buyer_id = product.buyer_ids.filtered(
-            lambda x: x.partner_id.id == self.order_id.partner_id.id
-        )
-        if buyer_id:
-            buyer = buyer_id.with_context(
-                lang=self.order_id.partner_id.lang,
-            )
-
-            if buyer.code:
-                code = buyer.code
-            else:
-                code = (
-                    product._context.get("display_default_code", True)
-                    and getattr(product, "default_code", False)
-                    or False
-                )
-
-            if buyer.name:
-                name = buyer.name
-            else:
-                name = product.name
-
-            name_l = []
-            if code:
-                name_l.append("[%s]" % code)
-            if name:
-                name_l.append(name)
-
-            if name_l:
-                name_l = [" ".join(name_l)]
-
-            if product.description_sale:
-                name_l.append(product.description_sale)
-
-            if name_l:
-                self.update(
-                    {
-                        "name": "\n".join(name_l),
-                    }
-                )
-
+    @api.onchange("product_id")
+    def product_id_change(self):
+        res = super().product_id_change()
+        if self.product_id:
+            if not self.env.context.get("no_set_description", False):
+                self._set_description()
         return res
