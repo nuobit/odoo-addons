@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_woocommerce_backend_delivery_type_provider_manager","woocommerce_backend_delivery_type_provider connector manager","model_woocommerce_backend_delivery_type_provider","connector.group_connector_manager",1,1,1,1
+"access_woocommerce_backend_delivery_type_provider_user","woocommerce_backend_delivery_type_provider connector user","model_woocommerce_backend_delivery_type_provider","base.group_user",1,0,0,0
