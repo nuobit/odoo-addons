@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="connector_product_template_view_form" model="ir.ui.view">
+        <field name="name">product.template.connector.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook" position="inside">
+                <page string="Connector WooCommerce" name="connector_woocommerce">
+                    <group string="WooCommerce Bindings">
+                        <field name="woocommerce_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record
+        id="website_sale_public_description_product_template_view_form"
+        model="ir.ui.view"
+    >
+        <field name="name">product.template.website.sale.public.description.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="website_sale.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='shop']/group/*[1]" position="before">
+                <field
+                    name="woocommerce_enabled"
+                    attrs="{'readonly': [('woocommerce_enabled', '=', True), ('woocommerce_bind_ids', '!=', [])]}"
+                />
+                <field name="woocommerce_bind_ids" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_search_view_website" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field
+            name="inherit_id"
+            ref="website_sale.product_template_search_view_website"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='published']" position="after">
+                <separator />
+                <filter
+                    string="Woocommerce Enabled"
+                    name="woocommerce_enabled"
+                    domain="[('woocommerce_enabled', '=', True)]"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
