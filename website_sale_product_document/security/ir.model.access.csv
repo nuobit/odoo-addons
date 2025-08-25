@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_product_template_document_user","product_template_document connector user","model_product_template_document","base.group_user",1,1,1,1
+"access_product_product_document_user","product_product_document connector user","model_product_product_document","base.group_user",1,1,1,1
