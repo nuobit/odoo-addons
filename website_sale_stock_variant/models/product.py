@@ -15,7 +15,6 @@ class ProductProduct(models.Model):
                 "Show inventory on website " "and prevent sales if not enough stock",
             ),
         ],
-        string="Inventory Availability",
         help="Adds an inventory availability status on the web product page.",
         default="never",
         compute="_compute_variant_inventory_availability",
