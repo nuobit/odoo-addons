@@ -63,7 +63,7 @@ msgid "Capital Asset Type name must be unique"
 msgstr "El nombre del tipo de bien de inversión debe ser único"
 
 #. module: l10n_es_account_capital_asset
-#: model:ir.model.constraint,message:l10n_es_account_capital_asset.constraint_l10n_es_account_capital_asset_type_unique_name
+#: model:ir.model.constraint,message:l10n_es_account_capital_asset.constraint_l10n_es_account_capital_asset_type_unique_period
 msgid "Capital Asset Type period must be unique"
 msgstr "El periodo del tipo de bien de inversión debe ser único"
 
