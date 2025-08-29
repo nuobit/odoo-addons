@@ -8,7 +8,10 @@
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
             <field name="inventory_availability" position="after">
-                <field name="variant_inventory_availability" />
+                <field
+                    name="variant_inventory_availability"
+                    string="Inventory Availability"
+                />
             </field>
             <field name="inventory_availability" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -29,7 +32,10 @@
                 expr="//page[@name='shop']/group[@name='shop']/group"
                 position="inside"
             >
-                <field name="variant_inventory_availability" />
+                <field
+                    name="variant_inventory_availability"
+                    string="Inventory Availability"
+                />
             </xpath>
         </field>
     </record>

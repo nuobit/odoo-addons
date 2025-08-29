@@ -24,6 +24,16 @@ msgstr ""
 
 #. module: website_sale_stock_variant
 #: model:ir.model.fields,field_description:website_sale_stock_variant.field_product_product__variant_inventory_availability
+msgid "Variant Inventory Availability"
+msgstr "Disponibilidad de la variante"
+
+#. module: website_sale_stock_variant
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_ambugest_product_product__inventory_availability
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_oxigesti_product_product__inventory_availability
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_product_product__inventory_availability
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_product_template__inventory_availability
+#: model_terms:ir.ui.view,arch_db:website_sale_stock_variant.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:website_sale_stock_variant.product_product_view_form_easy_inherit_website_sale
 msgid "Inventory Availability"
 msgstr "Disponibilidad"
 
