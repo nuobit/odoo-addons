@@ -5615,8 +5615,8 @@ msgid "eCommerce"
 msgstr ""
 
 #. module: connector_woocommerce
-#: model:ir.model,name:connector_woocommerce.model_product_attachment
-msgid "product.attachment"
+#: model:ir.model,name:connector_woocommerce.model_connector_woocommerce_product_attachment
+msgid "connector.woocommerce.product.attachment"
 msgstr ""
 
 #. module: connector_woocommerce

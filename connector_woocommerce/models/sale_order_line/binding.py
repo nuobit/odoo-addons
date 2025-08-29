@@ -9,6 +9,8 @@ class SaleOrderLineBinding(models.Model):
     _inherit = "woocommerce.binding"
     _inherits = {"sale.order.line": "odoo_id"}
 
+    _description = "Woocommerce Sale Order"
+
     odoo_id = fields.Many2one(
         comodel_name="sale.order.line",
         string="Order line",
