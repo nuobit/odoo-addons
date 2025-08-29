@@ -16,19 +16,9 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_sale_extra_fields
-#: model:ir.model.fields,field_description:website_sale_extra_fields.field_product_attachment__attachment_id
-msgid "Attachment"
-msgstr "Adjunto"
-
-#. module: website_sale_extra_fields
 #: model:ir.model.fields,field_description:website_sale_extra_fields.field_product_public_category__description
 msgid "Description"
 msgstr "Descripción"
-
-#. module: website_sale_extra_fields
-#: model:ir.model.fields,field_description:website_sale_extra_fields.field_product_product__product_variant_image_attachment_ids
-msgid "Product Variant Image Attachment"
-msgstr "Adjunto de imagen de variante de producto"
 
 #. module: website_sale_extra_fields
 #: model:ir.model.fields,field_description:website_sale_extra_fields.field_product_product__public_description
@@ -81,8 +71,3 @@ msgstr "Nombre del sitio web"
 #: model:ir.model,name:website_sale_extra_fields.model_product_public_category
 msgid "Website Product Category"
 msgstr "Categoría del Producto"
-
-#. module: website_sale_extra_fields
-#: model:ir.model,name:website_sale_extra_fields.model_product_attachment
-msgid "product.attachment"
-msgstr ""
