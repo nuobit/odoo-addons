@@ -71,8 +71,3 @@ msgstr "Nombre del sitio web"
 #: model:ir.model,name:website_sale_extra_fields.model_product_public_category
 msgid "Website Product Category"
 msgstr "Categoría del Producto"
-
-#. module: website_sale_extra_fields
-#: model_terms:ir.ui.view,arch_db:website_sale_extra_fields.product_public_category_form_view
-msgid "eCommerce"
-msgstr "Comercio electrónico"
