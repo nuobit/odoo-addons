@@ -7,11 +7,16 @@
         <field name="inherit_id" ref="website_sale.product_public_category_form_view" />
         <field name="arch" type="xml">
             <sheet position="inside">
-                <group string="Shop">
-                    <field name="description" />
-                    <field name="slug_name" string="Slug" />
-                </group>
-                <notebook />
+                <notebook>
+                    <page name="shop" string="eCommerce">
+                        <group name="shop">
+                            <group string="Shop">
+                                <field name="description" />
+                                <field name="slug_name" string="Slug" />
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
             </sheet>
         </field>
     </record>
