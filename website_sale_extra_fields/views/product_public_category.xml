@@ -6,10 +6,12 @@
         <field name="model">product.public.category</field>
         <field name="inherit_id" ref="website_sale.product_public_category_form_view" />
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']/.." position="inside">
+                 <field name="slug_name" string="Slug" />
+            </xpath>
             <sheet position="inside">
-                <group string="Shop">
+                <group>
                     <field name="description" />
-                    <field name="slug_name" string="Slug" />
                 </group>
                 <notebook />
             </sheet>
