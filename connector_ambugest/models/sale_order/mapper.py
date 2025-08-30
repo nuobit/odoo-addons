@@ -116,9 +116,9 @@ class SaleOrderImportMapper(Component):
                 year=record["Fecha_Servicio"].year,
                 month=record["Fecha_Servicio"].month,
                 day=record["Fecha_Servicio"].day,
-                hour=record["Hora_Servicio"].hour,
-                minute=record["Hora_Servicio"].minute,
-                second=record["Hora_Servicio"].second,
+                hour=(record["Hora_Servicio"] or record["Fecha_Servicio"]).hour,
+                minute=(record["Hora_Servicio"] or record["Fecha_Servicio"]).minute,
+                second=(record["Hora_Servicio"] or record["Fecha_Servicio"]).second,
             )
         )
         return {"service_date": service_datetime}
