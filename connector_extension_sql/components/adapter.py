@@ -108,7 +108,7 @@ class SQLAdapterCRUD(AbstractComponent):
                     _("Only one query is allowed on non insert SQL statements.")
                 )
 
-        res = cr.execute(sql, params=params)
+        res = cr.execute(sql_l[0], params=params)
         if op == "create":
             res = cr.execute(sql_l[1])
         return res
