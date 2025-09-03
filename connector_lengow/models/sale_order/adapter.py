@@ -66,7 +66,7 @@ class LengowSaleOrderTypeAdapter(Component):
         self._format_order_data(res)
         res = self._filter(res, common_domain)
         self._reorg_order_data(res)
-        return res, len(res)
+        return res
 
     def _format_order_data(self, values):
         conv_mapper = {
