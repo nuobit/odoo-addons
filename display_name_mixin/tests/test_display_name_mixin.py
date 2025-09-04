@@ -1,4 +1,4 @@
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.tests.common import TransactionCase
@@ -8,13 +8,7 @@ class TestDisplayNameMixin(TransactionCase):
     def test_display_name_mixin_single(self):
         # ARRANGE
         incl_fields = ["field1", "field2", "field3", "field4", "field5"]
-        transf = {
-            "field1": lambda x: "field1_value",
-            "field5": lambda x: "field5_value",
-            "field4": lambda x: "field4_value",
-            "field2": lambda x: "field2_value",
-            "field3": lambda x: "field3_value",
-        }
+        transf = {field: (lambda x, f=field: f"{f}_value") for field in incl_fields}
         struct = [
             " | ",
             "field1",
