@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="barcodes_gs1_label_options_format_view_form" model="ir.ui.view">
@@ -39,7 +39,7 @@
         <field name="name">barcodes_gs1_label_options_format_view_tree</field>
         <field name="model">barcodes.gs1.label.options.format</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="paperformat_id" />
                 <field name="sheet_width" />
@@ -49,13 +49,13 @@
                 <field name="page_cols_max" />
                 <field name="page_rows_max" />
                 <field name="page_max_labels" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="barcodes_gs1_label_options_format_action" model="ir.actions.act_window">
         <field name="name">Formats</field>
         <field name="res_model">barcodes.gs1.label.options.format</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>
