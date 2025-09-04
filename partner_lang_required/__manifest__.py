@@ -1,12 +1,12 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Partner language required",
-    "summary": "This module convert the lang partner "
+    "summary": "This module converts the lang partner "
     "attribute to required by adding a restriction to it",
-    "version": "17.0.0.0.0",
+    "version": "18.0.1.0.0",
     "category": "Partner",
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",

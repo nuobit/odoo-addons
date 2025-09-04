@@ -1,3 +1,3 @@
 - [NuoBiT](https://www.nuobit.com):
-  - Frank Cespedes \<fcespedes@nuobit.com\>
-  - Deniz Gallo \<dgallo@nuobit.com\>
+  - Frank Cespedes <fcespedes@nuobit.com>
+  - Deniz Gallo <dgallo@nuobit.com>
