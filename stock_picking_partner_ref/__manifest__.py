@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions SL (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions SL",
     "maintainers": ["eantones"],
     "category": "Warehouse",
-    "version": "17.0.0.0.0",
+    "version": "18.0.1.0.0",
     "license": "AGPL-3",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
