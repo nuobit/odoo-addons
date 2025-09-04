@@ -72,5 +72,4 @@
         />
         <field name="print_report_name">'Barcodes - %s' % (object.name, )</field>
     </record>
-
 </odoo>

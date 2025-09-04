@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="uom.product_uom_form_view" />
         <field name="arch" type="xml">
             <group name="uom_details" position="inside">
-               <field name="dynamic_ratio" />
+                <field name="dynamic_ratio" />
             </group>
         </field>
     </record>
@@ -19,7 +19,7 @@
         <field name="inherit_id" ref="uom.product_uom_categ_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='uom_ids']/tree" position="inside">
-               <field name="dynamic_ratio" />
+                <field name="dynamic_ratio" />
             </xpath>
         </field>
     </record>
