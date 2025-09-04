@@ -118,9 +118,9 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
                             barcode_type=barcode_data["barcode_type"],
                         )
                     )
-                barcode_data["barcode_values"] = barcode_data[
-                    "barcode_string"
-                ] = product_barcode
+                barcode_data["barcode_values"] = barcode_data["barcode_string"] = (
+                    product_barcode
+                )
             else:
                 raise ValidationError(
                     _("Barcode type [%s] not supported for this report")
