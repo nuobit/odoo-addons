@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-12 09:39+0000\n"
+"POT-Creation-Date: 2026-10-29 09:28+0000\n"
 "PO-Revision-Date: 2024-11-12 09:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -38,9 +38,40 @@ msgid "Barcode Label Template Configuration Field"
 msgstr "Campo de configuración de plantilla de etiqueta de código de barras"
 
 #. module: barcode_label_template
+#: model:ir.model,name:barcode_label_template.model_report_barcode_label_template_report_label_template
+msgid "Barcode Label Template Report"
+msgstr ""
+
+#. module: barcode_label_template
 #: model:ir.model,name:barcode_label_template.model_barcode_label_template_wizard
 msgid "Barcode Label Template Wizard"
 msgstr "Wizard de plantilla de etiqueta de código de barras"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__barcode_type
+msgid "Barcode Type"
+msgstr "Tipo de código de barras"
+
+#. module: barcode_label_template
+#. odoo-python
+#: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
+msgid ""
+"Barcode [{barcode}] of product [{product_name}] not valid for type "
+"[{barcode_type}]"
+msgstr ""
+"El código de barras [{barcode}] del producto [{product_name}] no es válido "
+"para el tipo [{barcode_type}]"
+
+#. module: barcode_label_template
+#. odoo-python
+#: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
+msgid "Barcode type [%s] not supported for this report"
+msgstr "Tipo de código de barras [%s] no soportado para este informe"
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_wizard_view_tree
+msgid "Cancel"
+msgstr "Cancelar"
 
 #. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__check_barcode_encoding
@@ -53,29 +84,14 @@ msgid "Check if the barcode encoding is correct"
 msgstr "Verificar si la codificación del código de barras es correcta"
 
 #. module: barcode_label_template
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__barcode_type
-msgid "Barcode Type"
-msgstr "Tipo de código de barras"
-
-#. module: barcode_label_template
-#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
-msgid "Size"
-msgstr "Tamaño"
-
-#. module: barcode_label_template
-#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_wizard_view_tree
-msgid "Cancel"
-msgstr "Cancelar"
-
-#. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__configuration_id
 msgid "Configuration"
 msgstr "Configuración"
 
 #. module: barcode_label_template
-#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
-msgid "Position"
-msgstr "Posición"
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__correction_ratio_pxmm
+msgid "Correction ratio px/mm"
+msgstr "Ratio de corrección px/mm"
 
 #. module: barcode_label_template
 #: model_terms:ir.actions.act_window,help:barcode_label_template.action_barcode_label_template_configuration_tree
@@ -109,29 +125,26 @@ msgstr "Predeterminado"
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__display_name
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__display_name
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__display_name
-#: model:ir.model.fields,field_description:barcode_label_template.field_ir_actions_report__display_name
-#: model:ir.model.fields,field_description:barcode_label_template.field_report_barcode_label_template_report_label_template__display_name
-#: model:ir.model.fields,field_description:barcode_label_template.field_stock_production_lot__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: barcode_label_template
+#. odoo-python
 #: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
-#, python-format
 msgid ""
-"Error in the barcode label template configuration while evaluating expression: field [%s] + target field [%s]\n"
+"Error in the barcode label template configuration while evaluating expression: field [%(field)s] + target field [%(target_field)s]\n"
 "ERROR:\n"
-"%s\n"
+"%(error)s\n"
 "\n"
-"Please check the expression in the field configurationand assign a valid expression. This expression is not valid.\n"
-"Expression: %s"
+"Please check the expression in the field configuration and assign a valid expression. This expression is not valid.\n"
+"Expression: %(expression)s"
 msgstr ""
-"Error en la configuración de la plantilla de etiqueta de código de barras al evaluar la expresión: campo [%s] + campo de referencia [%s]\n"
+"Error en la configuración de la plantilla de etiqueta de código de barras al evaluar la expresión: campo [%(field)s] + campo de referencia [%(target_field)s]\n"
 "ERROR:\n"
-"%s\n"
+"%(error)s\n"
 "\n"
 "Por favor, verifique la expresión en la configuración del campo y asigne una expresión válida. Esta expresión no es válida.\n"
-"Expresión: %s"
+"Expresión: %(expression)s"
 
 #. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__field_id
@@ -145,29 +158,27 @@ msgid "Field configuration"
 msgstr "Configuración de campo"
 
 #. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__height
+msgid "Height"
+msgstr "Altura"
+
+#. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__humanreadable
+msgid "Human readable"
+msgstr "Legible por humanos"
+
+#. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__id
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__id
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard__id
-#: model:ir.model.fields,field_description:barcode_label_template.field_ir_actions_report__id
-#: model:ir.model.fields,field_description:barcode_label_template.field_report_barcode_label_template_report_label_template__id
-#: model:ir.model.fields,field_description:barcode_label_template.field_stock_production_lot__id
 msgid "ID"
 msgstr ""
 
 #. module: barcode_label_template
-#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
-msgid "Indicate the starting point for drawing the barcode"
-msgstr "Indique el punto de inicio para dibujar el código de barras"
-
-#. module: barcode_label_template
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration____last_update
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field____last_update
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_wizard____last_update
-#: model:ir.model.fields,field_description:barcode_label_template.field_ir_actions_report____last_update
-#: model:ir.model.fields,field_description:barcode_label_template.field_report_barcode_label_template_report_label_template____last_update
-#: model:ir.model.fields,field_description:barcode_label_template.field_stock_production_lot____last_update
-msgid "Last Modified on"
-msgstr "Última modificación el"
+#. odoo-python
+#: code:addons/barcode_label_template/models/barcode_label_template_configuration.py:0
+msgid "Invalid dimension: '%s'"
+msgstr "Dimensión no válida: '%s'"
 
 #. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__write_uid
@@ -184,7 +195,7 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: barcode_label_template
-#: model:ir.model,name:barcode_label_template.model_stock_production_lot
+#: model:ir.model,name:barcode_label_template.model_stock_lot
 msgid "Lot/Serial"
 msgstr "Lote/Número de serie"
 
@@ -202,8 +213,8 @@ msgstr ""
 "de barras. ¡Vamos a crear una!"
 
 #. module: barcode_label_template
+#. odoo-python
 #: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
-#, python-format
 msgid "No template configuration selected"
 msgstr "No se ha seleccionado ninguna configuración de plantilla"
 
@@ -211,6 +222,11 @@ msgstr "No se ha seleccionado ninguna configuración de plantilla"
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__paperformat_id
 msgid "Paperformat"
 msgstr "Formato de papel"
+
+#. module: barcode_label_template
+#: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
+msgid "Position"
+msgstr "Posición"
 
 #. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__position_x
@@ -246,14 +262,24 @@ msgid "Report Action"
 msgstr "Acción de informe"
 
 #. module: barcode_label_template
+#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__resolution_ppi
+msgid "Resolution (ppi)"
+msgstr "Resolución (ppi)"
+
+#. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__sequence
 msgid "Sequence"
 msgstr "Secuencia"
 
 #. module: barcode_label_template
+#: model:ir.model.fields,help:barcode_label_template.field_barcode_label_template_configuration__humanreadable
+msgid "Show the human readable text"
+msgstr "Mostrar el texto legible por humanos"
+
+#. module: barcode_label_template
 #: model_terms:ir.ui.view,arch_db:barcode_label_template.barcode_label_template_configuration_view_form
-msgid "Specify the size of the barcode"
-msgstr "Especifique el tamaño del código de barras"
+msgid "Size"
+msgstr "Tamaño"
 
 #. module: barcode_label_template
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__target_field
@@ -276,8 +302,8 @@ msgid "Template Name"
 msgstr "Nombre de la plantilla"
 
 #. module: barcode_label_template
+#. odoo-python
 #: code:addons/barcode_label_template/models/barcode_label_template_configuration.py:0
-#, python-format
 msgid "There is already a default configuration"
 msgstr "Ya hay una configuración predeterminada"
 
@@ -286,58 +312,3 @@ msgstr "Ya hay una configuración predeterminada"
 #: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration_field__width
 msgid "Width"
 msgstr "Ancho"
-
-#. module: barcode_label_template
-#: model:ir.model,name:barcode_label_template.model_report_barcode_label_template_report_label_template
-msgid "report.barcode_label_template.report_label_template"
-msgstr ""
-
-#. module: barcode_label_template
-#. odoo-python
-#: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
-#, python-format
-msgid "Barcode type [%s] not supported for this report"
-msgstr "Tipo de código de barras [%s] no soportado para este informe"
-
-#. module: barcode_label_template
-#. odoo-python
-#: code:addons/barcode_label_template/models/report_barcode_label_template.py:0
-#, python-format
-msgid ""
-"Barcode {barcode} of product {product_name} not valid for type "
-"{barcode_type}"
-msgstr ""
-"El código de barras {barcode} del producto {product_name} no es válido para "
-"el tipo {barcode_type}"
-
-#. module: barcode_label_template
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__height
-msgid "Height"
-msgstr "Altura"
-
-#. module: barcode_label_template
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__humanreadable
-msgid "Human readable"
-msgstr "Legible por humanos"
-
-#. module: barcode_label_template
-#: model:ir.model.fields,help:barcode_label_template.field_barcode_label_template_configuration__humanreadable
-msgid "Show the human readable text"
-msgstr "Mostrar el texto legible por humanos"
-
-#. module: barcode_label_template
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__resolution_ppi
-msgid "Resolution (ppi)"
-msgstr "Resolución (ppi)"
-
-#. module: barcode_label_template
-#: model:ir.model.fields,field_description:barcode_label_template.field_barcode_label_template_configuration__correction_ratio_pxmm
-msgid "Correction ratio px/mm"
-msgstr "Ratio de corrección px/mm"
-
-#. module: barcode_label_template
-#. odoo-python
-#: code:addons/barcode_label_template/models/barcode_label_template_configuration.py:0
-#, python-format
-msgid "Invalid dimension: '%s'"
-msgstr "Dimensión no válida: '%s'"

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
-     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="barcode_label_template_configuration_view_tree" model="ir.ui.view">
         <field name="name">barcode.label.template.configuration.tree</field>
         <field name="model">barcode.label.template.configuration</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="default" />
                 <field name="name" />
                 <field name="template" filename="template_name" invisible="1" />
                 <field name="template_name" />
                 <field name="paperformat_id" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -64,7 +64,7 @@
                     </group>
                     <group string="Field configuration">
                         <field name="configuration_field_ids" nolabel="1" colspan="2">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="sequence" widget="handle" />
                                 <field
                                     name="field_id"
@@ -74,7 +74,7 @@
                                 <field name="position_x" />
                                 <field name="position_y" />
                                 <field name="width" />
-                            </tree>
+                            </list>
                         </field>
                     </group>
                 </sheet>
