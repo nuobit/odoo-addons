@@ -11,18 +11,18 @@
                 <header />
                 <notebook>
                     <page string="General">
-                         <group col="2">
-                             <field name="label_config_id" />
-                         </group>
-                         <group col="4">
-                             <group colspan="2">
+                        <group col="2">
+                            <field name="label_config_id" />
+                        </group>
+                        <group col="4">
+                            <group colspan="2">
                                 <field name="start_row" />
                                 <field name="start_col" />
-                             </group>
-                             <group colspan="2">
+                            </group>
+                            <group colspan="2">
                                 <field name="label_copies" />
                             </group>
-                         </group>
+                        </group>
                         <group
                             col="4"
                             invisible="context.get('active_model') not in ('product.product', 'stock.lot')"
@@ -111,5 +111,4 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-
 </odoo>
