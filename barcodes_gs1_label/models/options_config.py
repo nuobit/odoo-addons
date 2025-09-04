@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - <fcespedes@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -64,13 +65,18 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
     show_price = fields.Boolean(string="Show price")
     show_price_currency = fields.Boolean(string="Show currency")
 
-    def name_get(self):
-        res = []
+    @api.depends(
+        "name",
+        "barcode_type",
+        "format_id.paperformat_id.name",
+        "format_id.label_width",
+        "format_id.label_height",
+        "format_id.page_max_labels",
+    )
+    def _compute_display_name(self):
         for rec in self:
-            name = (
+            rec.display_name = (
                 f"{rec.name} - {rec.format_id.paperformat_id.name} "
                 f"({rec.format_id.label_width:g} x {rec.format_id.label_height:g} mm) "
                 f"[{rec.format_id.page_max_labels}] - {rec.barcode_type}"
             )
-            res.append((rec.id, name))
-        return res

@@ -1,6 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import requests.utils
@@ -192,9 +192,8 @@ class ReportGS1Barcode(models.AbstractModel):
             docs += self._get_product_lot(quant.product_id, quants, with_stock)
         return docs
 
-    # flake8: noqa: C901
     @api.model
-    def _prepare_stock_picking_values(self, params):
+    def _prepare_stock_picking_values(self, params):  # noqa: C901
         model, ids = params["model"], params["ids"]
         unit_uom = self.env.ref("uom.product_uom_categ_unit")
         weight_uom = self.env.ref("uom.product_uom_categ_kgm")
@@ -408,7 +407,7 @@ class ReportGS1Barcode(models.AbstractModel):
         }
 
         # generate product data
-        func_name = "_prepare_%s_values" % model.replace(".", "_")
+        func_name = f"_prepare_{model.replace('.', '_')}_values"
         func = getattr(self, func_name, None)
         if not func:
             raise UserError(
