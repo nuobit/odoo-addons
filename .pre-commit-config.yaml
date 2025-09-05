@@ -59,6 +59,11 @@ repos:
           - --keep-source-digest
           - --convert-fragments-to-markdown
       - id: oca-gen-external-dependencies
+      - id: oca-gen-addons-table
+        stages: [ manual ]
+      #- id: oca-gen-addon-icon
+      #  args:
+      #    - --addons-dir=.
   - repo: https://github.com/OCA/odoo-pre-commit-hooks
     rev: v0.0.33
     hooks:
