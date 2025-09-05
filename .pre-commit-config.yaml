@@ -60,7 +60,7 @@ repos:
           - --convert-fragments-to-markdown
       - id: oca-gen-external-dependencies
       - id: oca-gen-addons-table
-        stages: [ manual ]
+        stages: [manual]
       #- id: oca-gen-addon-icon
       #  args:
       #    - --addons-dir=.
