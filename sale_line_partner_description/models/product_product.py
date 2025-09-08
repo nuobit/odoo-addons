@@ -36,24 +36,9 @@ class Product(models.Model):
             buyers = self.env["product.buyerinfo"].search(domain)
             buyer_d = {}
             for buyer in buyers:
-                # build name
-                name_l = []
-                if buyer.code:
-                    bcode = buyer.code
-                else:
-                    bcode = buyer.product_id.default_code
-                if bcode:
-                    name_l.append("[%s]" % bcode)
-
-                if buyer.name:
-                    bname = buyer.name
-                else:
-                    bname = buyer.product_id.name
-                if bname:
-                    name_l.append(bname)
-
-                if name_l:
-                    buyer_d[buyer.product_id.id] = " ".join(name_l)
+                product_name = buyer.get_product_name()
+                if product_name:
+                    buyer_d[buyer.product_id.id] = product_name
 
             for i, elem in enumerate(res):
                 product_id = elem[0]
