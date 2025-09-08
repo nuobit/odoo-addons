@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -15,5 +15,5 @@ def migrate_existing_lost_leads(env):
         lead.action_set_lost()
 
     _logger.info(
-        "End: Successfully migrated %s CRM leads to the lost stage." % len(leads)
+        f"End: Successfully migrated {len(leads)} CRM leads to the lost stage."
     )
