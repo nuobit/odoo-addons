@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="hr_course_form_view" model="ir.ui.view">
         <field name="name">hr.course.form.duration</field>
@@ -5,6 +8,9 @@
         <field name="inherit_id" ref="hr_course.hr_course_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='category_id']/.." position="inside">
+                <field name="duration" widget="float_time" />
+            </xpath>
+            <xpath expr="//tree/field[@name='cost']" position="before">
                 <field name="duration" widget="float_time" />
             </xpath>
         </field>
