@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import re
@@ -20,7 +20,7 @@ def group_by_root(values):
             names_d[root].append((num, int(num)))
         else:
             if n in names_d:
-                raise UserError(_("Already exists") + " %s" % n)
+                raise UserError(_(f"{_('Already exists')} {n}"))
     return names_d
 
 
