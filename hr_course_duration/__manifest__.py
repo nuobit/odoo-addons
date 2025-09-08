@@ -12,5 +12,6 @@
     "depends": ["hr_course"],
     "data": [
         "views/hr_course_form_view.xml",
+        "views/hr_course_schedule_views.xml",
     ],
 }
