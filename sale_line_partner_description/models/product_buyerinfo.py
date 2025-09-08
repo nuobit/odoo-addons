@@ -34,6 +34,31 @@ class ProductBuyerInfo(models.Model):
         ),
     ]
 
+    def get_product_name(self):
+        self.ensure_one()
+        name_l = []
+        if self.code:
+            bcode = self.code
+        else:
+            if self.product_id.env.context.get("display_default_code", True):
+                bcode = self.product_id.default_code
+            else:
+                bcode = False
+        if bcode:
+            name_l.append("[%s]" % bcode)
+
+        if self.name:
+            bname = self.name
+        else:
+            bname = self.product_id.name
+        if bname:
+            name_l.append(bname)
+
+        if name_l:
+            return " ".join(name_l)
+        else:
+            return False
+
     def name_get(self):
         vals = []
         for record in self:
