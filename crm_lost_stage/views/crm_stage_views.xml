@@ -10,7 +10,7 @@
             </xpath>
         </field>
     </record>
-     <record id="crm_stage_tree" model="ir.ui.view">
+    <record id="crm_stage_tree" model="ir.ui.view">
         <field name="name">crm.stage.lost.tree</field>
         <field name="model">crm.stage</field>
         <field name="inherit_id" ref="crm.crm_stage_tree" />
