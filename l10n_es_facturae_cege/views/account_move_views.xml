@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Frank Cespedes <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_move_form" model="ir.ui.view">
@@ -9,7 +9,11 @@
         <field name="inherit_id" ref="l10n_es_aeat.view_move_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='facturae_end_date']/.." position="inside">
-                <field name="cege" attrs="{'invisible': [('facturae', '=', False)]}" />
+                <field
+                    name="cege"
+                    invisible="facturae == False"
+                    readonly="state != 'draft'"
+                />
             </xpath>
         </field>
     </record>
