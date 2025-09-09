@@ -13,7 +13,7 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import IDMissingInBackend
-from odoo.addons.queue_job.exception import NothingToDoJob, RetryableJobError
+from odoo.addons.queue_job.exception import FailedJobError, RetryableJobError
 
 _logger = logging.getLogger(__name__)
 
@@ -97,7 +97,7 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         if always or not binder.to_internal(external_id):
             try:
                 importer.run(external_id, sync_date, external_data=external_data)
-            except NothingToDoJob:
+            except FailedJobError:
                 _logger.info(
                     "Dependency import of %s(%s) has been ignored.",
                     binding_model._name,
