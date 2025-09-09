@@ -1,12 +1,13 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Connector Extension MySQL",
     "summary": "This module extends the connector extension module "
     "to add support for MySQL databases.",
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
