@@ -97,7 +97,7 @@ class SQLAdapterCRUD(AbstractComponent):
             if len(sql_l) > 2:
                 raise ValidationError(_("Unexpected SQL statement"))
             if len(sql_l) == 2:
-                if not inserted_function_name.lower() in sql_l[1].lower():
+                if inserted_function_name.lower() not in sql_l[1].lower():
                     raise ValidationError(
                         _("Only %s is allowed in insert statement.")
                         % inserted_function_name

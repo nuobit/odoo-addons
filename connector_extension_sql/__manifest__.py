@@ -10,6 +10,6 @@
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": ["connector_extension"],
 }
