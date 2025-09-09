@@ -7,7 +7,7 @@
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L.",
     "category": "Accounting & Finance",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": [
         "l10n_es_facturae",
