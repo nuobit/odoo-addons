@@ -1,6 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import datetime
 import logging
@@ -72,7 +72,7 @@ class SQLAdapterCRUD(AbstractComponent):
         for k, v in data.items():
             new_value = self._convert_value(v, to_backend=to_backend)
             # TODO: Refactor, do not use the value to determine if conversion is needed
-            if new_value != v or type(new_value) != type(v):
+            if new_value != v or type(new_value) is not type(v):
                 data[k] = new_value
         return data
 
@@ -114,7 +114,7 @@ class SQLAdapterCRUD(AbstractComponent):
         return res
 
     def _exec(self, op, *args, **kwargs):
-        func = getattr(self, "_exec_%s" % op)
+        func = getattr(self, f"_exec_{op}")
         return func(*args, **kwargs)
 
     # read/search
@@ -130,7 +130,7 @@ class SQLAdapterCRUD(AbstractComponent):
         values = []
         if domain or fields:
             # TODO: Is it really necessary?
-            sql_l = ["with t as (%s)" % sql]
+            sql_l = [f"with t as ({sql})"]
             fields_l = fields or ["*"]
             if fields:
                 if self._id:
@@ -149,8 +149,7 @@ class SQLAdapterCRUD(AbstractComponent):
                             operator = "is not"
                         else:
                             raise Exception(
-                                "Operator '%s' is not implemented on NULL values"
-                                % operator
+                                f"Operator {operator} is not implemented on NULL values"
                             )
                     where.append(f"{k} {operator} %s")
                     values.append(v)
