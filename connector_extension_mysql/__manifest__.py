@@ -10,7 +10,7 @@
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "external_dependencies": {
         "python": [
             "mysql-connector-python==8.0.31",
