@@ -6,7 +6,7 @@
     "name": "Connector Extension MSSQL",
     "summary": "This module extends the connector extension module to "
     "add support for Microsoft SQL databases.",
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
