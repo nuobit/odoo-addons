@@ -46,7 +46,7 @@ class SQLAdapterCRUD(AbstractComponent):
         headers = [desc[0] for desc in cr.description]
         res = []
         for row in cr:
-            res.append(dict(zip(headers, row)))
+            res.append(dict(zip(headers, row, strict=True)))
         cr.close()
         conn.close()
         # schema_exists = self._exec_sql(self._sql_schema, (self.schema,))
@@ -137,7 +137,7 @@ class SQLAdapterCRUD(AbstractComponent):
                     for f in self._id:
                         if f not in fields_l:
                             fields_l.append(f)
-            sql_l.append("select %s from t" % (", ".join(fields_l),))
+            sql_l.append(f"select {', '.join(fields_l)} from t")
 
             if domain:
                 where = []
@@ -152,9 +152,9 @@ class SQLAdapterCRUD(AbstractComponent):
                                 "Operator '%s' is not implemented on NULL values"
                                 % operator
                             )
-                    where.append("%s %s %%s" % (k, operator))
+                    where.append(f"{k} {operator} %s")
                     values.append(v)
-                sql_l.append("where %s" % (" and ".join(where),))
+                sql_l.append(f"where {' and '.join(where)}")
 
             sql = " ".join(sql_l)
 
@@ -165,7 +165,7 @@ class SQLAdapterCRUD(AbstractComponent):
         headers = [desc[0] for desc in cr.description]
         res = []
         for row in cr:
-            row_d = dict(zip(headers, row))
+            row_d = dict(zip(headers, row, strict=True))
             row_d = self._convert_dict(row_d, to_backend=False)
             res.append(row_d)
         cr.close()
@@ -282,8 +282,8 @@ class SQLAdapterCRUD(AbstractComponent):
         # get the set data
         qset_l = []
         for k, (k9, _v) in qset_map_d.items():
-            qset_l.append("%(field)s = %%(%(field9)s)s" % dict(field=k, field9=k9))
-        qset = "%s" % (", ".join(qset_l),)
+            qset_l.append(f"{k} = %({k9})s")
+        qset = f"{', '.join(qset_l)}"
         params_dict["qset"] = qset
 
         # prepare the sql with base strucrture
@@ -349,7 +349,7 @@ class SQLAdapterCRUD(AbstractComponent):
             self._execute("create", cr, sql, tuple(params))
             headers = [desc[0] for desc in cr.description]
             for row in cr:
-                res.append(dict(zip(headers, row)))
+                res.append(dict(zip(headers, row, strict=True)))
             conn.commit()
             cr.close()
             conn.close()
@@ -404,7 +404,7 @@ class SQLAdapterCRUD(AbstractComponent):
             sql = sql % dict(schema=self.schema)
 
         # get id fieldnames and values
-        params = dict(zip(self._id, _id))
+        params = dict(zip(self._id, _id, strict=True))
         params = self._convert_dict(params, to_backend=True)
 
         conn = self.conn()
