@@ -383,22 +383,21 @@ source or reinstalling the module with demo data disabled.
 
 ### Odoo Python Classes
 
-Use UpperCamelCase for code in api v8, underscore lowercase notation for old
-api.
+Use UpperCamelCase
 
 ```python
 class AccountInvoice(models.Model):
     ...
-
-class account_invoice(orm.Model):
-    ...
 ```
+
+If a class uses `_inherit`, its Python class name should be the same as the parent
+class it inherits from. For example, if you inherit from `account.move`
+(whose class is `AccountMove`), your class should also be named `AccountMove`.
 
 ### Variable names
 
 * Always give your variables a meaningful name. You may know what it's
   referring to now, but you won't in 2 months, and others don't either.
-  One-letter variables are acceptable only in lambda expressions and loop
   indices, or perhaps in pure maths expressions (and even there it doesn't hurt
   to use a real name).
 
