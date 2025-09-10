@@ -1,4 +1,4 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, models
@@ -36,7 +36,7 @@ class JournalLedgerReport(models.AbstractModel):
                 ]
             new_domain = []
             for criteria in domain:
-                if isinstance(criteria, (list, tuple)) and len(criteria) == 3:
+                if isinstance(criteria, (list | tuple)) and len(criteria) == 3:
                     if criteria[0] != "date":
                         new_domain.append(criteria)
                 else:
