@@ -22,18 +22,15 @@ msgstr "Contacte"
 
 #. module: partner_default_journal
 #: model:ir.model.fields,field_description:partner_default_journal.field_res_partner__purchase_journal_id
-#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner__sale_journal_id
 #: model:ir.model.fields,field_description:partner_default_journal.field_res_users__purchase_journal_id
-#: model:ir.model.fields,field_description:partner_default_journal.field_res_users__sale_journal_id
-msgid "Default journal"
-msgstr "Diari per defecte"
+msgid "Default Purchase journal"
+msgstr "Diari de compres per defecte"
 
 #. module: partner_default_journal
-#: model:ir.model.fields,field_description:partner_default_journal.field_account_move__display_name
-#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner__display_name
-#: model:ir.model.fields,field_description:partner_default_journal.field_sale_order__display_name
-msgid "Display Name"
-msgstr "Nom a mostrar"
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_partner__sale_journal_id
+#: model:ir.model.fields,field_description:partner_default_journal.field_res_users__sale_journal_id
+msgid "Default Sales journal"
+msgstr "Diari de vendes per defecte"
 
 #. module: partner_default_journal
 #: model:ir.model.fields,field_description:partner_default_journal.field_account_move__id

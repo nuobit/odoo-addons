@@ -1,4 +1,4 @@
-# Copyright  NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
@@ -7,7 +7,7 @@ from odoo import api, models
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         if "journal_id" not in vals and "partner_id" in vals and "move_type" in vals:
             partner_id = self.env["res.partner"].browse(vals["partner_id"])
