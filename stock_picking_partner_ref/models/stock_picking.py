@@ -8,4 +8,4 @@ from odoo import fields, models
 class Location(models.Model):
     _inherit = "stock.picking"
 
-    partner_ref = fields.Char(string="Partner Reference")
+    partner_ref = fields.Char(string="Partner References")
