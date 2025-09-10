@@ -1,11 +1,11 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Asset Financial Report Category",
     "summary": "This module adds the column 'Category' in the Asset Financial Report",
-    "version": "16.0.0.0.0",
+    "version": "18.0.1.0.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
