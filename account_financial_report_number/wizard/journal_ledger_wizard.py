@@ -16,7 +16,7 @@ class JournalLedgerReportWizard(models.TransientModel):
     number_to = fields.Char(string="To number", required=False)
 
     def _prepare_report_journal_ledger(self):
-        values = super(JournalLedgerReportWizard, self)._prepare_report_journal_ledger()
+        values = super()._prepare_report_journal_ledger()
         values.update(
             {
                 "number_from": self.number_from,

@@ -21,7 +21,7 @@ class JournalLedgerReport(models.AbstractModel):
     _inherit = "report.account_financial_report.journal_ledger"
 
     def _get_moves_domain(self, wizard, journal_ids):
-        domain = super(JournalLedgerReport, self)._get_moves_domain(wizard, journal_ids)
+        domain = super()._get_moves_domain(wizard, journal_ids)
         if wizard.filter_by_number:
             number_from, number_to = _get_number_interval(wizard)
             if not number_from and not number_to:
