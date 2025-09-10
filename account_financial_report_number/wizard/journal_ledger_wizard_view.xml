@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="journal_ledger_wizard" model="ir.ui.view">
@@ -12,16 +12,10 @@
                     <field name="filter_by_number" />
                 </group>
 
-                <separator
-                    string="Entry number"
-                    attrs="{'invisible': [('filter_by_number', '!=', True)]}"
-                />
-                <group attrs="{'invisible': [('filter_by_number', '!=', True)]}">
+                <separator string="Entry number" invisible="filter_by_number != True" />
+                <group invisible="filter_by_number != True">
                     <group>
-                        <field
-                            name="number_from"
-                            attrs="{'required': [('filter_by_number', '=', True)]}"
-                        />
+                        <field name="number_from" required="filter_by_number == True" />
                         <field name="number_to" />
                     </group>
                 </group>
@@ -31,8 +25,8 @@
                 expr="//group[group[field[@name='date_range_id']]]/preceding-sibling::separator[1]"
                 position="attributes"
             >
-                <attribute name="attrs">
-                    {'invisible': [('filter_by_number', '=', True)]}
+                <attribute name="invisible">
+                    filter_by_number == True
                 </attribute>
             </xpath>
 
@@ -40,20 +34,20 @@
                 expr="//group[group[field[@name='date_range_id']]]"
                 position="attributes"
             >
-                <attribute name="attrs">
-                    {'invisible': [('filter_by_number', '=', True)]}
+                <attribute name="invisible">
+                    filter_by_number == True
                 </attribute>
             </xpath>
 
             <field name="date_from" position="attributes">
-                <attribute name="attrs">
-                    {'required': [('filter_by_number', '!=', True)]}
+                <attribute name="required">
+                    filter_by_number != True
                 </attribute>
             </field>
 
             <field name="date_to" position="attributes">
-                <attribute name="attrs">
-                    {'required': [('filter_by_number', '!=', True)]}
+                <attribute name="required">
+                    filter_by_number != True
                 </attribute>
             </field>
         </field>
