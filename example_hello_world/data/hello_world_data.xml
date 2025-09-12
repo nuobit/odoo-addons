@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Demo data for Hello World module -->
+    <record id="hello_world_demo_1" model="hello.world">
+        <field name="name">World</field>
+        <field name="message">Hello, World! Welcome to Odoo development.</field>
+        <field name="priority">normal</field>
+        <field name="greeting_count">5</field>
+    </record>
+
+    <record id="hello_world_demo_2" model="hello.world">
+        <field name="name">Developers</field>
+        <field name="message">Hello, Developers! This is an example module.</field>
+        <field name="priority">high</field>
+        <field name="greeting_count">10</field>
+    </record>
+
+    <record id="hello_world_demo_3" model="hello.world">
+        <field name="name">NuoBiT</field>
+        <field name="message">Hello from NuoBiT Solutions SL!</field>
+        <field name="priority">high</field>
+        <field name="greeting_count">1</field>
+    </record>
+</odoo>

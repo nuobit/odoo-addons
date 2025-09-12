@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="hello_world_view_tree" model="ir.ui.view">
+        <field name="name">hello.world.tree</field>
+        <field name="model">hello.world</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="message"/>
+                <field name="priority" widget="priority"/>
+                <field name="greeting_count"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="hello_world_view_form" model="ir.ui.view">
+        <field name="name">hello.world.form</field>
+        <field name="model">hello.world</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_increment_count" string="Increment Count" type="object" class="oe_highlight"/>
+                    <button name="action_reset_count" string="Reset Count" type="object"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_increment_count" icon="fa-heart">
+                            <field name="greeting_count" widget="statinfo" string="Greetings"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="priority"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="display_name_custom"/>
+                            <field name="greeting_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Message" name="message">
+                            <field name="message"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="hello_world_view_search" model="ir.ui.view">
+        <field name="name">hello.world.search</field>
+        <field name="model">hello.world</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="message"/>
+                <separator/>
+                <filter string="High Priority" name="high_priority" domain="[('priority', '=', 'high')]"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Priority" name="group_priority" context="{'group_by': 'priority'}"/>
+                    <filter string="Status" name="group_active" context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="hello_world_action" model="ir.actions.act_window">
+        <field name="name">Hello World</field>
+        <field name="res_model">hello.world</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="hello_world_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Hello World record!
+            </p>
+            <p>
+                This is an example module showing basic Odoo development patterns.
+                Create records to see how the different fields and views work.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="hello_world_menu_root" name="Hello World" sequence="100"/>
+    <menuitem id="hello_world_menu" name="Greetings" parent="hello_world_menu_root" action="hello_world_action"/>
+</odoo>

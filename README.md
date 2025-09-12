@@ -17,7 +17,11 @@ Odoo Addons
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[example_hello_world](example_hello_world/) | 18.0.1.0.0 |  | Example module demonstrating basic Odoo structure
 
 [//]: # (end addons)
 
