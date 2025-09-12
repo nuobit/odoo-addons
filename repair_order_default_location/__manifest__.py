@@ -6,7 +6,7 @@
     "summary": "This module uses the header location as a default for the new components line",
     "version": "16.0.0.0.0",
     "author": "NuoBiT Solutions SL",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Repair",
     "license": "AGPL-3",
     "depends": [
