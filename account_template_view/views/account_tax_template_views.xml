@@ -4,86 +4,19 @@
      Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <record id="view_account_tax_template_form" model="ir.ui.view">
-        <field name="model">account.tax.template</field>
-        <field name="inherit_id" ref="account.view_account_tax_template_form" />
-        <field name="priority" eval="100" />
-        <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="amount_type" />
-                <field name="active" position="move" />
-            </field>
-            <field name="active" position="attributes">
-                <attribute name="widget">boolean_toggle</attribute>
-                <attribute name="groups" />
-            </field>
-            <field name="type_tax_use" position="after">
-                <field name="tax_scope" />
-                <label
-                    for="amount"
-                    attrs="{'invisible':[('amount_type','not in', ('fixed', 'percent', 'division'))]}"
-                />
-                <div
-                    attrs="{'invisible':[('amount_type','not in', ('fixed', 'percent', 'division'))]}"
-                >
-                    <field name="amount" class="oe_inline" />
-                    <span
-                        class="o_form_label oe_inline"
-                        attrs="{'invisible':[('amount_type','=','fixed')]}"
-                    >%</span>
-                </div>
-            </field>
-            <group name="tax_definitions" position="replace">
-                <div attrs="{'invisible': [('amount_type', '=', 'group')]}">
-                    <group string="Distribution for Invoices">
-                        <field
-                            name="invoice_repartition_line_ids"
-                            nolabel="1"
-                            colspan="2"
-                        />
-                    </group>
-                    <group string="Distribution for Credit Notes">
-                        <field
-                            name="refund_repartition_line_ids"
-                            nolabel="1"
-                            colspan="2"
-                        />
-                    </group>
-                </div>
-            </group>
-            <field name="description" position="after">
-                <field name="tax_group_id" />
-            </field>
-            <group name="price_definitions" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </group>
-            <group name="tax_configuration" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </group>
-            <group name="tax_configuration" position="after">
-                <group name="advanced_booleans" />
-            </group>
-            <group name="advanced_booleans" position="inside">
-                <field name="price_include" position="move" />
-                <field name="include_base_amount" position="move" />
-                <field name="tax_exigibility" position="move" />
-                <field name="cash_basis_transition_account_id" position="move" />
-            </group>
-        </field>
-    </record>
     <record id="tax_repartition_line_template_tree" model="ir.ui.view">
-        <field name="name">account.tax.repartition.line.template.tree</field>
-        <field name="model">account.tax.repartition.line.template</field>
+        <field name="name">account.tax.repartition.line.list</field>
+        <field name="model">account.tax.repartition.line</field>
         <field name="arch" type="xml">
-            <tree editable="bottom" create="1" delete="1">
+            <list editable="bottom" create="1" delete="1">
                 <field
                     name="factor_percent"
-                    attrs="{'invisible': [('repartition_type', '=', 'base')]}"
+                    invisible="1"
                 />
                 <field name="repartition_type" />
                 <field
                     name="account_id"
-                    attrs="{'invisible': [('repartition_type', '=', 'base')]}"
+                    invisible="repartition_type == 'base'"
                     options="{'no_create': True}"
                 />
                 <field
@@ -95,9 +28,9 @@
                 <field
                     name="use_in_tax_closing"
                     optional="hidden"
-                    attrs="{'invisible': [('repartition_type', '=', 'base')]}"
+                    invisible="repartition_type == 'base'"
                 />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

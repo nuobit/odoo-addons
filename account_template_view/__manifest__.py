@@ -4,7 +4,7 @@
 {
     "name": "Account Template View",
     "summary": "This module enables all fields on *Account Tax Templates* views",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
