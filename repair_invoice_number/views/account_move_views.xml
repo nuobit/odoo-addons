@@ -7,7 +7,10 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='ref']" position="after">
-                <field name="repair_order_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="repair_order_id" 
+                       attrs="{'readonly': [('state', '!=', 'draft')]}"
+                       context="{'default_partner_id': partner_id}"
+                       domain="[('partner_id', '=', partner_id)]"/>
                 <field name="repair_order_name" invisible="1"/>
             </xpath>
         </field>
@@ -21,6 +24,22 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="repair_order_name" string="Repair Order" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add repair order filter in invoice search view -->
+    <record id="view_account_move_filter_repair" model="ir.ui.view">
+        <field name="name">account.move.search.repair</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="repair_order_name" string="Repair Order"/>
+                <field name="repair_order_id" string="Repair Order"/>
+            </xpath>
+            <xpath expr="//group[@name='groupby']" position="inside">
+                <filter string="Repair Order" name="repair_order" context="{'group_by': 'repair_order_id'}"/>
             </xpath>
         </field>
     </record>

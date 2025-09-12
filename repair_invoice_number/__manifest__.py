@@ -14,6 +14,9 @@
     "data": [
         "views/account_move_views.xml",
     ],
+    "test": [
+        "tests/test_repair_invoice_number.py",
+    ],
     "installable": True,
     "auto_install": False,
 }
