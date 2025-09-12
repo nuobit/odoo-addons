@@ -7,7 +7,7 @@
     "summary": "Sending multiple invoices by email.",
     "category": "Accounting",
     "version": "16.0.1.0.0",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions SL",
     "depends": ["account"],

@@ -17,5 +17,5 @@
             'default_email_to':'{($object.email or \'\')|safe}',
         }"
         />
-     </record>
+    </record>
 </odoo>
