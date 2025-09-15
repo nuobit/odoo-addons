@@ -22,7 +22,8 @@ Product supplier search
 
 |badge1| |badge2| |badge3|
 
-Connector to get tracking info from ERTransit / Erhardt
+Search products by supplier reference on selection fields and tree
+product view
 
 **Table of contents**
 
@@ -50,11 +51,11 @@ Authors
 Contributors
 ------------
 
-- [NuoBiT](https://www.nuobit.com):
+- `NuoBiT <https://www.nuobit.com>`__:
 
-  - Kilian Niubo <kniubo@nuobit.com>
-  - Eric Antones <eantones@nuobit.com>
-  - Deniz Gallo <dgallo@nuobit.com>
+  - Kilian Niubo kniubo@nuobit.com
+  - Eric Antones eantones@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------

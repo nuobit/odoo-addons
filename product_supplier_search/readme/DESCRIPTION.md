@@ -1,1 +1,1 @@
-Connector to get tracking info from ERTransit / Erhardt
+Search products by supplier reference on selection fields and tree product view
