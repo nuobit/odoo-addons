@@ -49,7 +49,7 @@ class ProductProduct(models.Model):
                             product_codes_str = ", ".join(product_codes_l)
                             _id, name = p.name_get()[0]
                             products_name.append(
-                                (_id, "{{{}}} {}".format(product_codes_str, name))
+                                (_id, f"{{{product_codes_str}}} {name}")
                             )
                         else:
                             products_name += p.name_get()
