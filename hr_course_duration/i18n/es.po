@@ -18,13 +18,13 @@ msgstr ""
 #. module: hr_course_duration
 #: model:ir.model.fields,field_description:hr_course_duration.field_hr_course__duration
 #: model:ir.model.fields,field_description:hr_course_duration.field_hr_course_schedule__duration
+#: model:ir.model.fields,field_description:hr_course_duration.field_hr_course_attendee__duration
 msgid "Duration"
 msgstr "Duración"
 
 #. module: hr_course_duration
 #: model:ir.model.fields,help:hr_course_duration.field_hr_course__duration
 #: model:ir.model.fields,help:hr_course_duration.field_hr_course_schedule__duration
+#: model:ir.model.fields,help:hr_course_duration.field_hr_course_attendee__duration
 msgid "Duration in hours"
 msgstr "Duración en horas"
-
-
