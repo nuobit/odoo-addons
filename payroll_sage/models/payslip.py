@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -19,24 +20,26 @@ class Payslip(models.Model):
     month_to = fields.Integer(string="To month", required=True)
 
     labour_agreement_id = fields.Many2one(
-        "payroll.sage.labour.agreement",
+        comodel_name="payroll.sage.labour.agreement",
         string="Labour agreement",
         required=True,
         domain="[('end_date', '=', False)]",
     )
 
     company_id = fields.Many2one(
-        "res.company",
+        comodel_name="res.company",
         string="Company",
         required=True,
         readonly=True,
         default=lambda self: self.env["res.company"]._company_default_get(),
     )
 
-    journal_id = fields.Many2one("account.journal", string="Journal", required=True)
+    journal_id = fields.Many2one(
+        comodel_name="account.journal", string="Journal", required=True
+    )
 
     type = fields.Selection(
-        [("transfer", _("Transfer")), ("payroll", _("Payroll"))],
+        [("transfer", "Transfer"), ("payroll", "Payroll")],
         required=True,
     )
 
@@ -54,23 +57,29 @@ class Payslip(models.Model):
     note = fields.Text()
 
     payslip_line_ids = fields.One2many(
-        "payroll.sage.payslip.line", "payslip_id", string="Wage type lines", copy=True
+        comodel_name="payroll.sage.payslip.line",
+        inverse_name="payslip_id",
+        string="Wage type lines",
+        copy=True,
     )
 
     payslip_check_ids = fields.One2many(
-        "payroll.sage.payslip.check", "payslip_id", string="Checks", copy=True
+        comodel_name="payroll.sage.payslip.check",
+        inverse_name="payslip_id",
+        string="Checks",
+        copy=True,
     )
 
     payslip_wage_type_ids = fields.One2many(
-        "payroll.sage.payslip.wage.type",
-        "payslip_id",
+        comodel_name="payroll.sage.payslip.wage.type",
+        inverse_name="payslip_id",
         string="Wage types",
         copy=True,
         readonly=True,
     )
 
     move_id = fields.Many2one(
-        "account.move",
+        comodel_name="account.move",
         string="Journal Entry",
         readonly=True,
         index=True,
@@ -80,9 +89,9 @@ class Payslip(models.Model):
     )
     state = fields.Selection(
         [
-            ("draft", _("Draft")),
-            ("validated", _("Validated")),
-            ("posted", _("Posted")),
+            ("draft", "Draft"),
+            ("validated", "Validated"),
+            ("posted", "Posted"),
         ],
         string="Status",
         default="draft",
@@ -158,6 +167,7 @@ class Payslip(models.Model):
             if not rec.move_id:
                 # group and aggregate amounts per tag
                 items_d = {}
+                labour_agreement = rec.labour_agreement_id.error_balancing_account_id.id
                 for line in rec.payslip_line_ids:
                     wage_type_line = line.wage_type_line_id
                     if wage_type_line.total_historical_record in (
@@ -173,7 +183,7 @@ class Payslip(models.Model):
                             else 1
                         )
                         for tag in wage_type_line.wage_tag_ids.filtered(
-                            lambda x: x.type == rec.type
+                            lambda x, rec=rec: x.type == rec.type
                         ):
                             amount_tag = amount
                             if (
@@ -219,9 +229,9 @@ class Payslip(models.Model):
                         )
 
                     # description
-                    date_str = "%s/%s" % (
-                        rec.entry_date.strftime("%m"),
-                        rec.entry_date.strftime("%Y"),
+                    entry_date = rec.entry_date
+                    date_str = (
+                        f"{entry_date.strftime('%m')}/{entry_date.strftime('%Y')}"
                     )
                     description_l = [date_str]
                     if tag.description and tag.description.strip():
@@ -262,7 +272,7 @@ class Payslip(models.Model):
                     )
                     if diff != 0:
                         values = {
-                            "account_id": rec.labour_agreement_id.error_balancing_account_id.id,
+                            "account_id": labour_agreement,
                             "name": _("Temporary unbalanced journal item"),
                         }
                         if diff < 0:
@@ -297,8 +307,9 @@ class Payslip(models.Model):
                             [
                                 x.debit - x.credit
                                 for x in move.line_ids.filtered(
-                                    lambda x: x.account_id.id
-                                    != rec.labour_agreement_id.error_balancing_account_id.id
+                                    lambda x,
+                                    labour_agreement=labour_agreement: x.account_id.id
+                                    != labour_agreement
                                 )
                             ]
                         ),
@@ -338,16 +349,21 @@ class PayslipLine(models.Model):
     name = fields.Char("Description")
 
     wage_type_line_id = fields.Many2one(
-        "payroll.sage.labour.agreement.wage.type.line",
+        comodel_name="payroll.sage.labour.agreement.wage.type.line",
         string="Wage type line",
         required=True,
     )
-    employee_id = fields.Many2one("hr.employee", string="Employee", required=True)
+    employee_id = fields.Many2one(
+        comodel_name="hr.employee", string="Employee", required=True
+    )
 
     amount = fields.Float(required=True)
 
     payslip_id = fields.Many2one(
-        "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
+        comodel_name="payroll.sage.payslip",
+        string="Payslip",
+        required=True,
+        ondelete="cascade",
     )
 
 
@@ -357,12 +373,17 @@ class PayslipCheck(models.Model):
 
     name = fields.Char("Description")
 
-    employee_id = fields.Many2one("hr.employee", string="Employee", required=True)
+    employee_id = fields.Many2one(
+        comodel_name="hr.employee", string="Employee", required=True
+    )
 
     amount = fields.Float(required=True)
 
     payslip_id = fields.Many2one(
-        "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
+        comodel_name="payroll.sage.payslip",
+        string="Payslip",
+        required=True,
+        ondelete="cascade",
     )
 
 
@@ -373,7 +394,7 @@ class PayslipWageType(models.Model):
     name = fields.Char("Description")
 
     wage_type_line_id = fields.Many2one(
-        "payroll.sage.labour.agreement.wage.type.line",
+        comodel_name="payroll.sage.labour.agreement.wage.type.line",
         string="Wage type line",
         required=True,
     )
@@ -381,5 +402,8 @@ class PayslipWageType(models.Model):
     amount = fields.Float(required=True)
 
     payslip_id = fields.Many2one(
-        "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
+        comodel_name="payroll.sage.payslip",
+        string="Payslip",
+        required=True,
+        ondelete="cascade",
     )

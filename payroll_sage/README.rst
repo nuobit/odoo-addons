@@ -50,11 +50,11 @@ Authors
 Contributors
 ------------
 
-- [NuoBiT](https://www.nuobit.com):
+- `NuoBiT <https://www.nuobit.com>`__:
 
-  - Eric Antones <eantones@nuobit.com>
-  - Kilian Niubo <kniubo@nuobit.com>
-  - Deniz Gallo <dgallo@nuobit.com>
+  - Eric Antones eantones@nuobit.com
+  - Kilian Niubo kniubo@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------

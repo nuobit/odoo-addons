@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-09 11:31+0000\n"
 "PO-Revision-Date: 2021-12-09 11:31+0000\n"
@@ -28,19 +28,19 @@ msgstr "Agregar (AGG)"
 #. module: payroll_sage
 #: model:ir.model.constraint,message:payroll_sage.constraint_payroll_sage_wage_tag_wage_code_tag_uniq
 msgid "Already exists a Wage Tag with the same code"
-msgstr "Already exists a Wage Tag with the same code"
+msgstr "Ya existe una Etiqueta Salarial con el mismo código"
 
 #. module: payroll_sage
 #: model:ir.model.constraint,message:payroll_sage.constraint_payroll_sage_wage_tag_wage_tag_uniq
 msgid "Already exists a Wage Tag with the same parameters"
-msgstr "Already exists a Wage Tag with the same parameters"
+msgstr "Ya existe una Etiqueta Salarial con los mismos parámetros"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check__amount
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__amount
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__amount
 msgid "Amount"
-msgstr "Importe"
+msgstr "Cantidad"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__check_tag_ids
@@ -70,7 +70,7 @@ msgstr "Compañía"
 #. module: payroll_sage
 #: model_terms:ir.actions.act_window,help:payroll_sage.wage_tag_action_wage_type_line
 msgid "Create the first wage type line"
-msgstr "Create the first wage type line"
+msgstr "Crear la primera línea de tipo de salario"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__create_uid
@@ -78,6 +78,7 @@ msgstr "Create the first wage type line"
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__create_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check__create_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__create_uid
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_process__create_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__create_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__create_uid
 msgid "Created by"
@@ -89,29 +90,30 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__create_date
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check__create_date
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__create_date
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_process__create_date
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__create_date
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr "Creado el"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/wage_tag.py:0
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_wage_tag__credit_debit__credit
-#, python-format
 msgid "Credit"
-msgstr "Haber"
+msgstr "Crédito"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__credit_debit
 msgid "Credit/Debit"
-msgstr "Debe/Haber"
+msgstr "Crédito/Débito"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/wage_tag.py:0
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_wage_tag__credit_debit__debit
-#, python-format
 msgid "Debit"
-msgstr "Debe"
+msgstr "Débito"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__note
@@ -123,30 +125,64 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: payroll_sage
+#: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_labour_agreement_wage_type_line__total_historical_record__accrural
+msgid "Devengo"
+msgstr "Devengo"
+
+#. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__display_name
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__display_name
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__display_name
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check__display_name
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__display_name
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_process__display_name
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__display_name
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__display_name
+msgid "Display Name"
+msgstr "Nombre para mostrar"
+
+#. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__sequence
+msgid "Display order"
+msgstr "Orden de visualización"
+
+#. module: payroll_sage
+#. odoo-python
+#: code:addons/payroll_sage/models/payslip.py:0
+#: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_payslip__state__draft
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check__employee_id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__employee_id
 msgid "Employee"
 msgstr "Empleado"
 
 #. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__end_date
+msgid "End date"
+msgstr "Fecha de finalización"
+
+#. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__entry_date
 msgid "Entry date"
-msgstr "Fecha asiento"
+msgstr "Fecha de entrada"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__error_balancing_account_id
 msgid "Error balancing account"
-msgstr "Cuenta de descuadre"
+msgstr "Cuenta de balance de errores"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__month_from
 msgid "From month"
-msgstr "Desde mes"
+msgstr "Desde el mes"
 
 #. module: payroll_sage
 #: model:res.groups,name:payroll_sage.group_guest
 msgid "Guest"
-msgstr "Huésped"
+msgstr "Invitado"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__id
@@ -154,15 +190,16 @@ msgstr "Huésped"
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check__id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__id
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_process__id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr "ID"
 
 #. module: payroll_sage
 #: model:ir.model.fields,help:payroll_sage.field_payroll_sage_wage_tag__description
 msgid "If no description provided, the original will be used"
-msgstr "Si no se proporciona ninguna descripción se usará la original"
+msgstr "Si no se proporciona una descripción, se utilizará la original"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__journal_id
@@ -175,31 +212,18 @@ msgid "Journal Entry"
 msgstr "Asiento contable"
 
 #. module: payroll_sage
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__labour_agreement_id
-msgid "Labour agreeemnt"
-msgstr "Convenio laboral"
-
-#. module: payroll_sage
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__process_id
-#: model_terms:ir.ui.view,arch_db:payroll_sage.labour_agreement_view_form
-#: model_terms:ir.ui.view,arch_db:payroll_sage.labour_agreement_view_tree
-msgid "Process"
-msgstr "Proceso"
-
-#. module: payroll_sage
 #: model:ir.model,name:payroll_sage.model_payroll_sage_labour_agreement
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__labour_agreement_id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__labour_agreement_id
 #: model:ir.ui.menu,name:payroll_sage.labour_agreement_menu_action
 #: model_terms:ir.ui.view,arch_db:payroll_sage.labour_agreement_view_form
-#: model_terms:ir.ui.view,arch_db:payroll_sage.labour_agreement_view_tree
-#: model_terms:ir.ui.view,arch_db:payroll_sage.labour_agreement_wage_type_line_view_tree
 msgid "Labour agreement"
 msgstr "Convenio laboral"
 
 #. module: payroll_sage
 #: model:ir.model,name:payroll_sage.model_payroll_sage_labour_agreement_wage_type_line
 msgid "Labour agreement Wage type line"
-msgstr "Conceptos nómina"
+msgstr "Línea de tipo de salario del convenio laboral"
 
 #. module: payroll_sage
 #: model:ir.actions.act_window,name:payroll_sage.labour_agreement_action
@@ -207,26 +231,16 @@ msgid "Labour agreements"
 msgstr "Convenios laborales"
 
 #. module: payroll_sage
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement____last_update
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line____last_update
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip____last_update
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check____last_update
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line____last_update
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type____last_update
-#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag____last_update
-msgid "Last Modified on"
-msgstr "Última modificación en"
-
-#. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__write_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__write_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__write_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check__write_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__write_uid
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_process__write_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__write_uid
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__write_uid
 msgid "Last Updated by"
-msgstr "Última actualización de"
+msgstr "Última actualización por"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__write_date
@@ -234,25 +248,32 @@ msgstr "Última actualización de"
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__write_date
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_check__write_date
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__write_date
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_process__write_date
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__write_date
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__write_date
 msgid "Last Updated on"
-msgstr "Última actualización en"
+msgstr "Última actualización el"
 
 #. module: payroll_sage
 #: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_view_form
 msgid "Lines"
-msgstr "Lineas"
+msgstr "Líneas"
 
 #. module: payroll_sage
 #: model:ir.model.fields,help:payroll_sage.field_payroll_sage_payslip__move_id
 msgid "Link to the automatically generated Journal Items."
-msgstr "Enlace a los asientos generados automáticamente."
+msgstr "Enlace a los asientos contables generados automáticamente."
 
 #. module: payroll_sage
 #: model:res.groups,name:payroll_sage.group_manager
 msgid "Manager"
-msgstr "Responsable"
+msgstr "Gerente"
+
+#. module: payroll_sage
+#. odoo-python
+#: code:addons/payroll_sage/models/labour_agreement.py:0
+msgid "More than one language found for user language %s"
+msgstr "Se encontró más de un idioma para el idioma del usuario %s"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__name
@@ -268,9 +289,9 @@ msgid "Negative withholding (NWH)"
 msgstr "Retención negativa (NWH)"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/labour_agreement.py:0
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_labour_agreement_wage_type_line__total_historical_record__no
-#, python-format
 msgid "No"
 msgstr "No"
 
@@ -283,14 +304,14 @@ msgstr "Nota"
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__payment_date
 msgid "Payment date"
-msgstr "Fecha de cobro"
+msgstr "Fecha de pago"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/payslip.py:0
 #: code:addons/payroll_sage/models/wage_tag.py:0
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_payslip__type__payroll
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_wage_tag__type__payroll
-#, python-format
 msgid "Payroll"
 msgstr "Nómina"
 
@@ -302,14 +323,13 @@ msgstr "Nómina"
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__payslip_id
 #: model:ir.ui.menu,name:payroll_sage.payslip_menu_action
 #: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_view_form
-#: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_view_tree
 msgid "Payslip"
-msgstr "Nóminas"
+msgstr "Nómina"
 
 #. module: payroll_sage
 #: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_check_view_form
 msgid "Payslip Check"
-msgstr "Payslip Check"
+msgstr "Cheque de nómina"
 
 #. module: payroll_sage
 #: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_line_view_form
@@ -317,19 +337,25 @@ msgid "Payslip Line"
 msgstr "Línea de nómina"
 
 #. module: payroll_sage
+#: model:ir.model,name:payroll_sage.model_payroll_sage_payslip_process
+#: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_process_view_form
+msgid "Payslip Process"
+msgstr "Proceso de nómina"
+
+#. module: payroll_sage
 #: model:ir.model,name:payroll_sage.model_payroll_sage_payslip_check
 msgid "Payslip check"
-msgstr "Payslip check"
+msgstr "Cheque de nómina"
 
 #. module: payroll_sage
 #: model:ir.model,name:payroll_sage.model_payroll_sage_payslip_line
 msgid "Payslip line"
-msgstr "Payslip line"
+msgstr "Línea de nómina"
 
 #. module: payroll_sage
 #: model:ir.model,name:payroll_sage.model_payroll_sage_payslip_wage_type
 msgid "Payslip wage type"
-msgstr "Payslip wage type"
+msgstr "Tipo de salario de nómina"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__positive
@@ -339,14 +365,25 @@ msgstr "Positivo"
 #. module: payroll_sage
 #: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_view_form
 msgid "Post"
-msgstr "Contabilizar"
+msgstr "Publicar"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/payslip.py:0
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_payslip__state__posted
-#, python-format
 msgid "Posted"
-msgstr "Contabilizado"
+msgstr "Publicado"
+
+#. module: payroll_sage
+#: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__process_id
+msgid "Process"
+msgstr "Proceso"
+
+#. module: payroll_sage
+#: model:ir.actions.act_window,name:payroll_sage.payslip_process_action
+#: model:ir.ui.menu,name:payroll_sage.process_menu_action
+msgid "Processes"
+msgstr "Procesos"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__registration_date_cv
@@ -356,7 +393,7 @@ msgstr "Fecha de registro"
 #. module: payroll_sage
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_labour_agreement_wage_type_line__total_historical_record__withholding
 msgid "Retencion"
-msgstr "Retencion"
+msgstr "Retención"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__ss_tag_ids
@@ -364,27 +401,27 @@ msgid "S.S. Tags"
 msgstr "Etiquetas S.S."
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/payslip.py:0
-#, python-format
 msgid "S.S. Tags must be aggregated!"
-msgstr "S.S. Tags must be aggregated!"
+msgstr "¡Las etiquetas S.S. deben agregarse!"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__ss_cost
 msgid "S.S. cost"
-msgstr "Coste S.S."
+msgstr "Costo S.S."
 
 #. module: payroll_sage
 #: model:ir.module.category,name:payroll_sage.security
 #: model:ir.ui.menu,name:payroll_sage.menu_root
 #: model:ir.ui.menu,name:payroll_sage.menu_sage_payroll
 msgid "Sage payroll"
-msgstr "Nóminas Sage"
+msgstr "Nómina Sage"
 
 #. module: payroll_sage
 #: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_view_form
 msgid "Set to draft"
-msgstr "Establecer a borrador"
+msgstr "Establecer en borrador"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__short_name
@@ -402,33 +439,58 @@ msgid "Tags"
 msgstr "Etiquetas"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/payslip.py:0
-#, python-format
 msgid "Temporary unbalanced journal item"
-msgstr "Apunte temporal descuadrado"
+msgstr "Asiento contable temporal desequilibrado"
 
 #. module: payroll_sage
+#: model:ir.model.constraint,message:payroll_sage.constraint_payroll_sage_labour_agreement_comp_code_regd
+msgid "The code and Registration date must be unique for the same company!"
+msgstr ""
+"¡El código y la fecha de registro deben ser únicos para la misma compañía!"
+
+#. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/payslip.py:0
-#, python-format
 msgid "The entry is unbalanced and it cannot be posted!"
-msgstr "The entry is unbalanced and it cannot be posted!"
+msgstr "¡La entrada está desequilibrada y no se puede publicar!"
+
+#. module: payroll_sage
+#: model:ir.model.constraint,message:payroll_sage.constraint_payroll_sage_payslip_process_name_uniq
+msgid "The name must be unique!"
+msgstr "¡El nombre debe ser único!"
+
+#. module: payroll_sage
+#. odoo-python
+#: code:addons/payroll_sage/models/payslip_process.py:0
+msgid ""
+"There's another process with similar names New: %(new_name)s vs Existing: "
+"%(existing_name)s!"
+msgstr ""
+"¡Hay otro proceso con nombres similares Nuevo: %(new_name)s vs Existente: "
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__month_to
 msgid "To month"
-msgstr "Hasta mes"
+msgstr "Hasta el mes"
+
+#. module: payroll_sage
+#: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_view_form
+msgid "Total checks"
+msgstr "Total de cheques"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement_wage_type_line__total_historical_record
 msgid "Totalize in historical record"
-msgstr "Total ficha historica"
+msgstr "Totalizar en el registro histórico"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/payslip.py:0
 #: code:addons/payroll_sage/models/wage_tag.py:0
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_payslip__type__transfer
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_wage_tag__type__transfer
-#, python-format
 msgid "Transfer"
 msgstr "Transferencia"
 
@@ -441,7 +503,7 @@ msgstr "Tipo"
 #. module: payroll_sage
 #: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_view_form
 msgid "Unpost"
-msgstr "Descontabilizar"
+msgstr "Despublicar"
 
 #. module: payroll_sage
 #: model:res.groups,name:payroll_sage.group_user
@@ -454,9 +516,9 @@ msgid "Validate"
 msgstr "Validar"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/payslip.py:0
 #: model:ir.model.fields.selection,name:payroll_sage.selection__payroll_sage_payslip__state__validated
-#, python-format
 msgid "Validated"
 msgstr "Validado"
 
@@ -464,42 +526,35 @@ msgstr "Validado"
 #: model:ir.actions.act_window,name:payroll_sage.wage_tag_action
 #: model:ir.model,name:payroll_sage.model_payroll_sage_wage_tag
 #: model_terms:ir.ui.view,arch_db:payroll_sage.wage_tag_view_form
-#: model_terms:ir.ui.view,arch_db:payroll_sage.wage_tag_view_tree
 msgid "Wage Tag"
-msgstr "Etiquetas de concepto"
+msgstr "Etiqueta salarial"
 
 #. module: payroll_sage
 #: model:ir.ui.menu,name:payroll_sage.wage_tag_menu_action
 msgid "Wage tag"
-msgstr "Etiquetas"
-
-#. module: payroll_sage
-#: model:ir.actions.act_window,name:payroll_sage.payslip_process_action
-#: model:ir.ui.menu,name:payroll_sage.process_menu_action
-msgid "Processes"
-msgstr "Procesos"
+msgstr "Etiqueta salarial"
 
 #. module: payroll_sage
 #: model_terms:ir.ui.view,arch_db:payroll_sage.wage_tag_view_form
 msgid "Wage type"
-msgstr "Concepto nómina"
+msgstr "Tipo de salario"
 
 #. module: payroll_sage
 #: model:ir.actions.act_window,name:payroll_sage.wage_tag_action_wage_type_line
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_line__wage_type_line_id
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip_wage_type__wage_type_line_id
 msgid "Wage type line"
-msgstr "Linea de concepto de nómina"
+msgstr "Línea de tipo de salario"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_wage_tag__wage_type_line_count
 msgid "Wage type line(s)"
-msgstr "Lineas de concepto de nómina"
+msgstr "Línea(s) de tipo de salario"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__payslip_line_ids
 msgid "Wage type lines"
-msgstr "Lineas de concepto de nómina"
+msgstr "Líneas de tipo de salario"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_labour_agreement__wage_type_line_ids
@@ -507,7 +562,7 @@ msgstr "Lineas de concepto de nómina"
 #: model_terms:ir.ui.view,arch_db:payroll_sage.labour_agreement_view_form
 #: model_terms:ir.ui.view,arch_db:payroll_sage.payslip_view_form
 msgid "Wage types"
-msgstr "Conceptos nómina"
+msgstr "Tipos de salario"
 
 #. module: payroll_sage
 #: model:ir.model.fields,field_description:payroll_sage.field_payroll_sage_payslip__year
@@ -515,7 +570,7 @@ msgid "Year"
 msgstr "Año"
 
 #. module: payroll_sage
+#. odoo-python
 #: code:addons/payroll_sage/models/payslip.py:0
-#, python-format
 msgid "You cannot delete a payslip which is not draft,"
-msgstr "You cannot delete a payslip which is not draft,"
+msgstr "No se puede eliminar una nómina que no esté en borrador,"
