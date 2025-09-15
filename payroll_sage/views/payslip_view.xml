@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="payslip_view_form" model="ir.ui.view">
@@ -11,91 +12,66 @@
                     <button
                         name="action_paysplip_validate"
                         type="object"
-                        states="draft"
+                        invisible="state != 'draft'"
                         string="Validate"
                         class="oe_highlight"
                     />
                     <button
                         name="action_paysplip_post"
                         type="object"
-                        states="validated"
+                        invisible="state != 'validated'"
                         string="Post"
                         class="oe_highlight"
                     />
                     <button
                         name="action_paysplip_set_to_draft"
                         type="object"
-                        states="validated"
+                        invisible="state != 'validated'"
                         string="Set to draft"
                     />
                     <button
                         name="action_paysplip_unpost"
                         type="object"
-                        states="posted"
+                        invisible="state != 'posted'"
                         string="Unpost"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
                 <group col="4">
-                    <field
-                        name="name"
-                        attrs="{'readonly': [('state', '!=', 'draft')]}"
-                    />
+                    <field name="name" readonly="state != 'draft'" />
                     <field name="company_id" />
                 </group>
                 <group>
                     <group>
-                        <field
-                            name="labour_agreement_id"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
-                        />
-                        <field
-                            name="process_id"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
-                        />
+                        <field name="labour_agreement_id" readonly="state != 'draft'" />
+                        <field name="process_id" readonly="state != 'draft'" />
                     </group>
                     <group>
-                        <field
-                            name="year"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
-                        />
-                        <field
-                            name="month_from"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
-                        />
-                        <field
-                            name="month_to"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
-                        />
+                        <field name="year" readonly="state != 'draft'" />
+                        <field name="month_from" readonly="state != 'draft'" />
+                        <field name="month_to" readonly="state != 'draft'" />
                     </group>
                 </group>
                 <group col="4">
-                    <field
-                        name="type"
-                        colspan="2"
-                        attrs="{'readonly': [('state', '!=', 'draft')]}"
-                    />
+                    <field name="type" colspan="2" readonly="state != 'draft'" />
                     <field
                         name="ss_cost"
                         colspan="2"
-                        attrs="{'invisible': [('type', '!=', 'payroll')], 'required': [('type', '=', 'payroll')], 'readonly': [('state', '!=', 'draft')]}"
+                        readonly="state != 'draft'"
+                        invisible="type != 'payroll'"
+                        required="type == 'payroll'"
                     />
                     <field
                         name="payment_date"
                         colspan="2"
-                        attrs="{'invisible': [('type', '!=', 'transfer')], 'readonly': [('state', '!=', 'draft')]}"
+                        invisible="type != 'transfer'"
+                        readonly="state == 'draft'"
                     />
                 </group>
                 <group col="4">
-                    <field
-                        name="journal_id"
-                        attrs="{'readonly': [('state', '!=', 'draft')]}"
-                    />
+                    <field name="journal_id" readonly="state != 'draft'" />
                     <field name="move_id" />
-                    <field
-                        name="entry_date"
-                        attrs="{'readonly': [('state', '!=', 'draft')]}"
-                    />
+                    <field name="entry_date" readonly="state != 'draft'" />
                 </group>
                 <group>
                     <field name="note" />
@@ -105,42 +81,36 @@
                         <field
                             name="payslip_line_ids"
                             nolabel="1"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            readonly="state != 'draft'"
                         >
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="wage_type_line_id" />
                                 <field name="employee_id" />
                                 <field name="name" />
                                 <field name="amount" />
-                            </tree>
+                            </list>
                         </field>
                     </page>
-                    <page
-                        string="Checks"
-                        attrs="{'invisible': [('type', '!=', 'transfer')]}"
-                    >
+                    <page string="Checks" invisible="type != 'transfer'">
                         <field
                             name="payslip_check_ids"
                             nolabel="1"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            readonly="state != 'draft'"
                         >
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="employee_id" />
                                 <field name="name" />
                                 <field name="amount" sum="Total checks" />
-                            </tree>
+                            </list>
                         </field>
                     </page>
-                    <page
-                        string="Wage types"
-                        attrs="{'invisible': [('state', '=', 'draft')]}"
-                    >
+                    <page string="Wage types" invisible="state == 'draft'">
                         <field name="payslip_wage_type_ids" nolabel="1">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="wage_type_line_id" />
                                 <field name="name" />
                                 <field name="amount" />
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </notebook>
@@ -152,18 +122,18 @@
         <field name="name">payslip.tree</field>
         <field name="model">payroll.sage.payslip</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="entry_date" />
                 <field name="labour_agreement_id" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="payslip_action" model="ir.actions.act_window">
         <field name="name">Payslip</field>
         <field name="res_model">payroll.sage.payslip</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="payslip_line_view_form" model="ir.ui.view">

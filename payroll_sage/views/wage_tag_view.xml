@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions SLs - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions SLs - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SLs - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action wage_tag2wage_type_line smart button -->
@@ -58,7 +59,7 @@
         <field name="name">wage.tag.tree</field>
         <field name="model">payroll.sage.wage.tag</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="sequence" widget="handle" />
                 <field name="code" />
                 <field name="type" />
@@ -67,13 +68,13 @@
                 <field name="aggregate" />
                 <field name="negative_withholding" />
                 <field name="description" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="wage_tag_action" model="ir.actions.act_window">
         <field name="name">Wage Tag</field>
         <field name="res_model">payroll.sage.wage.tag</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

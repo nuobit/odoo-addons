@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -18,7 +19,7 @@ class PayslipProcess(models.Model):
         for ppt in self:
             others = self.env[self._name].search([("id", "!=", ppt.id)])
             similar = others.filtered(
-                lambda x: x.name.strip().lower() == ppt.name.strip().lower()
+                lambda x, ppt=ppt: x.name.strip().lower() == ppt.name.strip().lower()
             )
             if similar:
                 raise ValidationError(

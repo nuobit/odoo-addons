@@ -1,8 +1,9 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class WageTag(models.Model):
@@ -16,18 +17,18 @@ class WageTag(models.Model):
     code = fields.Integer(required=True, default=lambda self: self.default_code())
 
     type = fields.Selection(
-        [("transfer", _("Transfer")), ("payroll", _("Payroll"))],
+        [("transfer", "Transfer"), ("payroll", "Payroll")],
         required=True,
     )
 
     account_id = fields.Many2one(
-        "account.account",
+        comodel_name="account.account",
         string="Account",
         required=True,
         domain=[("deprecated", "=", False)],
     )
     credit_debit = fields.Selection(
-        [("credit", _("Credit")), ("debit", _("Debit"))],
+        [("credit", "Credit"), ("debit", "Debit")],
         string="Credit/Debit",
         required=True,
     )
@@ -41,7 +42,7 @@ class WageTag(models.Model):
     )
 
     company_id = fields.Many2one(
-        "res.company",
+        comodel_name="res.company",
         string="Company",
         required=True,
         readonly=True,
@@ -121,7 +122,7 @@ class WageTag(models.Model):
             if rec.negative_withholding:
                 fd2.append("NWH")
             if fd2:
-                fd1.append("[%s]" % ",".join(fd2))
+                fd1.append(f"[{','.join(fd2)}]")
 
             fd.append(" ".join(fd1))
             if rec.description:

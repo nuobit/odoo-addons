@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -19,7 +20,7 @@ class LabourAgreement(models.Model):
     end_date = fields.Date(string="End date")
 
     company_id = fields.Many2one(
-        "res.company",
+        comodel_name="res.company",
         string="Company",
         required=True,
         readonly=True,
@@ -44,14 +45,14 @@ class LabourAgreement(models.Model):
     )
 
     wage_type_line_ids = fields.One2many(
-        "payroll.sage.labour.agreement.wage.type.line",
-        "labour_agreement_id",
+        comodel_name="payroll.sage.labour.agreement.wage.type.line",
+        inverse_name="labour_agreement_id",
         string="Wage types",
         copy=True,
     )
 
     error_balancing_account_id = fields.Many2one(
-        "account.account",
+        comodel_name="account.account",
         string="Error balancing account",
         domain=[("deprecated", "=", False)],
     )
@@ -74,7 +75,7 @@ class LabourAgreement(models.Model):
         result = []
         for rec in self:
             date_str = rec.registration_date_cv.strftime(lang.date_format)
-            name = "%s - %s (%s)" % (rec.code, rec.name, date_str)
+            name = f"{rec.code} - {rec.name} ({date_str})"
             result.append((rec.id, name))
         return result
 
@@ -95,7 +96,7 @@ class LabourAgreementWageTypeLine(models.Model):
         selection=[
             ("accrural", "Devengo"),
             ("withholding", "Retencion"),
-            ("no", _("No")),
+            ("no", "No"),
         ],
     )
 
@@ -110,8 +111,8 @@ class LabourAgreementWageTypeLine(models.Model):
     note = fields.Text(string="Description")
 
     labour_agreement_id = fields.Many2one(
-        "payroll.sage.labour.agreement",
-        string="Labour agreeemnt",
+        comodel_name="payroll.sage.labour.agreement",
+        string="Labour agreement",
         ondelete="cascade",
         required=True,
     )
