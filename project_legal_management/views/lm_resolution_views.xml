@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright 2021 NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="lm_resolution_view_form" model="ir.ui.view">
@@ -26,16 +26,16 @@
         <field name="name">lm.resolution.view.tree</field>
         <field name="model">lm.resolution</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="parent_id" />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="lm_resolution_action" model="ir.actions.act_window">
         <field name="name">Resolutions</field>
         <field name="res_model">lm.resolution</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <menuitem
         id="lm_resolution_menu"
