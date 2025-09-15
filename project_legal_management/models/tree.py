@@ -1,6 +1,6 @@
-# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2021 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -16,6 +16,7 @@ class LMTreeMixin(models.AbstractModel):
         string="Full Name",
         compute="_compute_complete_name",
         search="_search_complete_name",
+        recursive=True,
     )
 
     def name_get(self):
@@ -45,7 +46,7 @@ class LMTreeMixin(models.AbstractModel):
     def _compute_complete_name(self):
         for rec in self:
             if rec.parent_id:
-                rec.complete_name = "%s / %s" % (rec.parent_id.complete_name, rec.name)
+                rec.complete_name = f"{rec.parent_id.complete_name} / {rec.name}"
             else:
                 rec.complete_name = rec.name
 
