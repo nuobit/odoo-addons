@@ -9,7 +9,7 @@
     "category": "Warehouse Management",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions SL",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock",
     ],

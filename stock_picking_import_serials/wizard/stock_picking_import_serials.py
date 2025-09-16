@@ -162,9 +162,9 @@ class StockPickingImportSerials(models.TransientModel):
                         _("The tracking number %s duplicated") % tracking_number
                     )
                 unique_tracking_numbers[default_code].add(tracking_number)
-            product_serial.setdefault(default_code, {})[
-                tracking_number
-            ] = self._prepare_additional_tracking_values(row[2:], company)
+            product_serial.setdefault(default_code, {})[tracking_number] = (
+                self._prepare_additional_tracking_values(row[2:], company)
+            )
         return product_serial
 
     def import_serials(self):  # noqa: C901
@@ -276,7 +276,9 @@ class StockPickingImportSerials(models.TransientModel):
                     tns_pending[:dmls_n],
                     tns_pending[dmls_n:],
                 )
-                for tracking_number, line in zip(tracking_numbers_paired, dmls_pending):
+                for tracking_number, line in zip(
+                    tracking_numbers_paired, dmls_pending, strict=False
+                ):
                     # qty_done is always 1 on serial
                     line.qty_done = 1
 
