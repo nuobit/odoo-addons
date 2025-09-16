@@ -102,7 +102,7 @@ class AccountMove(models.Model):
                 )
 
     def _accrual_reconcile(self, rec):
-        for l0, l1 in zip(self.invoice_line_ids, rec.line_ids):
+        for l0, l1 in zip(self.invoice_line_ids, rec.line_ids, strict=False):
             (l0 | l1).reconcile()
 
     def _prepare_lines(self):
@@ -136,7 +136,7 @@ class AccountMove(models.Model):
         )
 
     def _post(self, soft=True):
-        res = super(AccountMove, self)._post(soft=soft)
+        res = super()._post(soft=soft)
         for rec in self:
             if rec.move_type in ("out_invoice", "out_refund") and rec.accrual_date:
                 asset_lines = rec.invoice_line_ids.filtered(
