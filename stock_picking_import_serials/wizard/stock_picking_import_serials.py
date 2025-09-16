@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
@@ -12,13 +12,13 @@ from odoo import _, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 MAP_TYPES = {
-    xlrd.XL_CELL_TEXT: _("Text"),
-    xlrd.XL_CELL_NUMBER: _("Numeric"),
-    xlrd.XL_CELL_DATE: _("Date"),
-    xlrd.XL_CELL_BOOLEAN: _("Boolean"),
-    xlrd.XL_CELL_ERROR: _("Error"),
-    xlrd.XL_CELL_BLANK: _("Blank"),
-    xlrd.XL_CELL_EMPTY: _("Empty"),
+    xlrd.XL_CELL_TEXT: "Text",
+    xlrd.XL_CELL_NUMBER: "Numeric",
+    xlrd.XL_CELL_DATE: "Date",
+    xlrd.XL_CELL_BOOLEAN: "Boolean",
+    xlrd.XL_CELL_ERROR: "Error",
+    xlrd.XL_CELL_BLANK: "Blank",
+    xlrd.XL_CELL_EMPTY: "Empty",
 }
 
 
@@ -39,9 +39,9 @@ def _get_cell(sheet, row_index, col_index, ctype, nullable=False):
             ctype = MAP_TYPES[ctype]
         raise UserError(
             _(
-                "Wrong format in cell %(cellname)s. Expected %(ctype)s, found %(current_ctype)s"
-            )
-            % {"cellname": cellname, "ctype": ctype, "current_ctype": current_ctype}
+                "Wrong format in cell {cellname}. "
+                "Expected {ctype}, found {current_ctype}"
+            ).format(cellname=cellname, ctype=ctype, current_ctype=current_ctype)
         )
     return value
 
@@ -82,8 +82,8 @@ class StockPickingImportSerials(models.TransientModel):
 
     state = fields.Selection(
         [
-            ("params", _("Parameters")),
-            ("result", _("Result")),
+            ("params", "Parameters"),
+            ("result", "Result"),
         ],
         default="params",
         readonly=True,
@@ -200,7 +200,7 @@ class StockPickingImportSerials(models.TransientModel):
         else:
             raise UserError(_("Extension %s no supported") % ext)
 
-        sheet_data = getattr(self, "_get_product_serial_%s" % ext)(sheet)
+        sheet_data = getattr(self, f"_get_product_serial_{ext}")(sheet)
         if not sheet_data:
             raise UserError(_("There's no data in input file"))
 
@@ -231,7 +231,7 @@ class StockPickingImportSerials(models.TransientModel):
 
             # get lines of the picking lines
             product_moves = picking.move_ids.filtered(
-                lambda x: x.product_id.id == product.id
+                lambda x, product=product: x.product_id.id == product.id
             )
             if not product_moves:
                 raise UserError(_("There's no lines with product %s") % default_code)
@@ -246,7 +246,7 @@ class StockPickingImportSerials(models.TransientModel):
             # classify already imported and pending
             dmls_pending, tns_imported = self.env["stock.move.line"], []
             for dml in detail_move_lines.sorted(lambda x: (x.move_id.sequence, x.id)):
-                if dml.reserved_uom_qty != 1:
+                if dml.quantity_product_uom != 1:
                     raise UserError(
                         _("The line with the product %s must have quantity 1")
                         % default_code
@@ -280,7 +280,7 @@ class StockPickingImportSerials(models.TransientModel):
                     tracking_numbers_paired, dmls_pending, strict=False
                 ):
                     # qty_done is always 1 on serial
-                    line.qty_done = 1
+                    line.quantity = 1
 
                     # find/create lot
                     lot_id = self.env["stock.lot"].search(
@@ -324,7 +324,7 @@ class StockPickingImportSerials(models.TransientModel):
                 if tns_n > dmls_n:
                     msglog.add_msg(
                         "MoreSerialsThanLines",
-                        "%s -> %s" % (default_code, tracking_numbers_rest),
+                        f"{default_code} -> {tracking_numbers_rest}",
                     )
                 elif dmls_n > tns_n:
                     msglog.add_msg(
@@ -339,13 +339,10 @@ class StockPickingImportSerials(models.TransientModel):
             res_blocks = []
             for mtype, msgs in msglog.get_msgs().items():
                 res_blocks.append(
-                    "* %s\n%s"
-                    % (
-                        msglog.get_type_desc(mtype),
-                        "\n".join(["    > %s" % x for x in msgs]),
-                    )
+                    f"* {msglog.get_type_desc(mtype)}\n"
+                    + "\n".join([f"    > {x}" for x in msgs])
                 )
-            self.result = "%s\n\n%s" % (
+            self.result = "{}\n\n{}".format(
                 _("Finished successfully with warnings"),
                 "\n\n".join(res_blocks),
             )

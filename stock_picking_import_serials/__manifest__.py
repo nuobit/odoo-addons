@@ -1,11 +1,11 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Stock picking import serials",
     "summary": "Import serial numbers to a stock picking from spreadsheet file",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Warehouse Management",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions SL",
