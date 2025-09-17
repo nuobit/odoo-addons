@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
-     Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_move_form" model="ir.ui.view">
@@ -14,10 +14,8 @@
             >
                 <field
                     name="accrual_date"
-                    attrs="{
-                            'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))],
-                            'readonly': [('state', '!=', 'draft')],
-                        }"
+                    invisible="move_type not in ('out_invoice', 'out_refund')"
+                    readonly="state != 'draft'"
                 />
             </xpath>
             <div name="button_box" position="inside">
@@ -27,7 +25,7 @@
                     class="oe_stat_button"
                     icon="fa-bars"
                     name="action_journal_entry"
-                    attrs="{'invisible': [('accrual_move_id', '=', False)]}"
+                    invisible="accrual_move_id == False"
                 >
                     <div class="o_form_field o_stat_info">
                         <span>Accrual entry</span>
@@ -35,38 +33,37 @@
                 </button>
             </div>
             <xpath
-                expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']"
+                expr="//field[@name='invoice_line_ids']/list/field[@name='account_id']"
                 position="after"
             >
-                <field name="accrual_date" invisible="1" />
+                <field name="accrual_date" column_invisible="True" />
                 <field
                     name="accrual_account_id"
-                    domain="[('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id), ('is_off_balance', '=', False)]"
-                    attrs="{'readonly': [('accrual_date', '=', False)]}"
+                    domain="[('deprecated', '=', False), ('account_type', 'not in', ('receivable', 'payable')), ('company_ids', '=', parent.company_id), ('internal_group', '=', 'off')]"
+                    readonly="accrual_date == False"
                     optional="hide"
                     force_save="1"
                 />
             </xpath>
             <xpath
-                expr="//field[@name='line_ids']/tree/field[@name='account_id']"
+                expr="//field[@name='line_ids']/list/field[@name='account_id']"
                 position="after"
             >
-                <field name="accrual_date" invisible="1" />
+                <field name="accrual_date" column_invisible="True" />
                 <field
                     name="accrual_account_id"
-                    domain="[('deprecated', '=', False), ('company_id', '=', parent.company_id)]"
-                    attrs="{'readonly': [('accrual_date', '=', False)]}"
+                    domain="[('deprecated', '=', False), ('company_ids', '=', parent.company_id)]"
+                    readonly="accrual_date == False"
                     optional="hide"
                     force_save="1"
                 />
             </xpath>
             <xpath
-                expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']"
+                expr="//field[@name='invoice_line_ids']/list/field[@name='account_id']"
                 position="attributes"
             >
-                <attribute
-                    name="attrs"
-                >{'required': [('display_type', '=', False)], 'readonly': [('accrual_date', '!=', False)]}</attribute>
+                <attribute name="required">display_type == False</attribute>
+                <attribute name="readonly">accrual_date != False</attribute>
             </xpath>
         </field>
     </record>

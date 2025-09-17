@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -8,7 +9,7 @@ from odoo.exceptions import UserError, ValidationError
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    accrual_date = fields.Date(string="Accrual Date")
+    accrual_date = fields.Date()
     accrual_move_id = fields.Many2one(
         comodel_name="account.move",
         copy=False,
@@ -28,7 +29,10 @@ class AccountMove(models.Model):
                 accrual_account = rec.company_id.accrual_account_id
                 if rec.company_id and rec.accrual_date and not accrual_account:
                     raise UserError(
-                        _("Please set the accrual account in the invoicing settings.")
+                        _(
+                            "Please set the accrual"
+                            " account in the invoicing settings."
+                        )
                     )
                 rec.company_accrual_account_id = accrual_account
             else:
@@ -46,14 +50,17 @@ class AccountMove(models.Model):
                 accrual_journal = rec.company_id.accrual_journal_id
                 if rec.company_id and rec.accrual_date and not accrual_journal:
                     raise UserError(
-                        _("Please set the accrual journal in the invoicing settings.")
+                        _(
+                            "Please set the accrual "
+                            "journal in the invoicing settings."
+                        )
                     )
                 rec.company_accrual_journal_id = accrual_journal
             else:
                 rec.company_accrual_journal_id = False
 
     company_accrual_account_asset_type_id = fields.Many2one(
-        comodel_name="account.account.type",
+        comodel_name="account.account",
         compute="_compute_accrual_account_asset_type_id",
     )
 
@@ -67,7 +74,8 @@ class AccountMove(models.Model):
                 if rec.company_id and not accrual_account_asset_type:
                     raise UserError(
                         _(
-                            "Please set the account type for assets in the invoicing settings."
+                            "Please set the account "
+                            "type for assets in the invoicing settings."
                         )
                     )
                 rec.company_accrual_account_asset_type_id = accrual_account_asset_type
@@ -140,8 +148,8 @@ class AccountMove(models.Model):
         for rec in self:
             if rec.move_type in ("out_invoice", "out_refund") and rec.accrual_date:
                 asset_lines = rec.invoice_line_ids.filtered(
-                    lambda x: x.accrual_account_id.user_type_id
-                    == self.company_accrual_account_asset_type_id
+                    lambda x, rec=rec: x.accrual_account_id.account_type
+                    == rec.company_accrual_account_asset_type_id.account_type
                 )
                 if asset_lines:
                     raise UserError(
@@ -157,10 +165,11 @@ class AccountMove(models.Model):
         return res
 
     def button_draft(self):
-        super().button_draft()
+        res = super().button_draft()
         if self.accrual_move_id:
             super(AccountMove, self.accrual_move_id).button_draft()
             self.accrual_move_id.with_context(force_delete=True).unlink()
+        return res
 
     def action_journal_entry(self):
         self.ensure_one()
