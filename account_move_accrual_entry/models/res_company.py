@@ -1,6 +1,7 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 from odoo import fields, models
 
 
@@ -12,8 +13,8 @@ class Company(models.Model):
         domain=[
             ("reconcile", "=", True),
             ("deprecated", "=", False),
-            ("user_type_id.type", "not in", ("receivable", "payable")),
-            ("is_off_balance", "=", False),
+            ("account_type", "not in", ("receivable", "payable")),
+            ("internal_group", "!=", "off"),
         ],
     )
 
@@ -23,7 +24,9 @@ class Company(models.Model):
     )
 
     accrual_account_asset_type_id = fields.Many2one(
-        comodel_name="account.account.type",
-        default=lambda self: self.env.ref("account.data_account_type_fixed_assets"),
+        comodel_name="account.account",
+        default=lambda self: self.env["account.account"].search(
+            [("account_type", "=", "asset_fixed")], limit=1
+        ),
         domain=[("internal_group", "=", "asset")],
     )

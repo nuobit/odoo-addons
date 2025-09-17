@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import api, fields, models
 
@@ -24,9 +25,7 @@ class AccountMoveLine(models.Model):
                 if not line.accrual_account_id:
                     line.accrual_account_id = line.account_id
                 else:
-                    line.accrual_account_id = super(
-                        AccountMoveLine, line
-                    )._get_computed_account()
+                    line.accrual_account_id = line.move_id._get_computed_account()
                 line.account_id = line.move_id.company_accrual_account_id
             else:
                 line.accrual_account_id = False
