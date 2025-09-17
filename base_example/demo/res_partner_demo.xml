@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="res_partner_example_demo" model="res.partner">
+        <field name="name">Example Partner</field>
+        <field name="example_field">Example value</field>
+        <field name="is_company">True</field>
+    </record>
+
+</odoo>
