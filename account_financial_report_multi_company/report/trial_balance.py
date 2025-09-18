@@ -1,5 +1,5 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
@@ -54,7 +54,7 @@ class TrialBalanceReport(models.AbstractModel):
                 .search(
                     [
                         ("account_type", "=", "equity_unaffected"),
-                        ("company_id", "=", company_id),
+                        ("company_ids", "=", company_id),
                     ]
                 )
                 .id
@@ -77,4 +77,6 @@ class TrialBalanceReport(models.AbstractModel):
             total_amount.update(ta)
             accounts_data.update(ad)
             partners_data.extend(pd)
+        for account in accounts_data.values():
+            account["code"] = str(account["code"]) if account.get("code") else ""
         return total_amount, accounts_data, partners_data

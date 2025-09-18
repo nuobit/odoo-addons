@@ -1,11 +1,12 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
-# # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Account Financial Report Multi Company",
-    "summary": "This module allows to generate financial reports for multiple companies",
-    "version": "16.0.0.0.0",
+    "summary": "This module allows to generate"
+    " financial reports for multiple companies",
+    "version": "18.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Accounting",
