@@ -53,12 +53,12 @@
                         </li>
                         <li t-if="company.street or company.street2">
                             <span
-                                t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
-                            />
+                            t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
+                        />
                             -
                             <span
-                                t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
-                            />
+                            t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
+                        />
                         </li>
                         <li>
                             <t t-if="company.phone">
@@ -129,8 +129,8 @@
                                                             <span
                                                                 t-if="o.partner_id.country_id"
                                                             >(<span
-                                                                    t-field="o.partner_id.country_id"
-                                                                />)
+                                                                t-field="o.partner_id.country_id"
+                                                            />)
                                                             </span>
                                                         </div>
                                                     </div>
@@ -185,8 +185,8 @@
                                                     class="mt4"
                                                 >
                                                     <strong
-                                                        t-esc="o.company_id.country_id.vat_label or 'CIF'"
-                                                    />:
+                                                    t-esc="o.company_id.country_id.vat_label or 'CIF'"
+                                                />:
                                                     <span t-field="o.partner_id.vat" />
                                                 </div>
                                             </td>
@@ -481,9 +481,9 @@
                                 t-if="o.payment_mode_id.payment_method_id.code == 'customer_transfer' and o.payment_mode_id.payment_method_id.payment_type == 'inbound'"
                             >
                                 <t
-                                    t-set="bank_account_id"
-                                    t-value="o.partner_bank_id or o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids.sorted(lambda x: x.sequence)[0]"
-                                />
+                                t-set="bank_account_id"
+                                t-value="o.partner_bank_id or o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids.sorted(lambda x: x.sequence)[0]"
+                            />
                                 <strong t-field="bank_account_id.acc_number" />
                                 -
                                 <span t-field="bank_account_id.bank_id.display_name" />
