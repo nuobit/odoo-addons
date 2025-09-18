@@ -7,7 +7,7 @@
     "summary": "This module allows to generate financial reports for multiple companies",
     "version": "16.0.0.0.0",
     "author": "NuoBiT Solutions SL",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Accounting",
     "depends": ["account_financial_report"],
     "license": "AGPL-3",

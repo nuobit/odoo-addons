@@ -26,7 +26,7 @@ class TrialBalanceReport(models.AbstractModel):
         company_ids = data.get("company_ids", [])
         if company_ids:
             self = self.with_context(company_ids=company_ids)
-        return super(TrialBalanceReport, self)._get_report_values(docids, data)
+        return super()._get_report_values(docids, data)
 
     @api.model
     def _get_data(
