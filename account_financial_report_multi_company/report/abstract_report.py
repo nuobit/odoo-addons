@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models
@@ -11,5 +12,5 @@ class AccountFinancialAbstractReport(models.AbstractModel):
         accounts_data = super()._get_accounts_data(accounts_ids)
         accounts = self.env["account.account"].browse(accounts_ids)
         for account in accounts:
-            accounts_data[account.id]["company"] = account.company_id.name
+            accounts_data[account.id]["company"] = account.company_ids.name
         return accounts_data
