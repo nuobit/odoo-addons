@@ -253,6 +253,16 @@ msgstr "Nombre"
 #. odoo-python
 #: code:addons/account_invoice_report_service/models/account_move.py:0
 msgid ""
+"Not implemented case: The same invoice line %(line)s belongs to different "
+"orders %(orders)s"
+msgstr ""
+"Caso no implementado: La misma línea de factura %(line)s pertenece a "
+"diferentes pedidos %(orders)s"
+
+#. module: account_invoice_report_service
+#. odoo-python
+#: code:addons/account_invoice_report_service/models/account_move.py:0
+msgid ""
 "Not implemented case: The same invoice line belongs to different orders"
 msgstr ""
 "Caso no implementado: La misma línea de factura pertenece a diferentes "
