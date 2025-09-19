@@ -5,10 +5,10 @@ from odoo import api, fields, models
 
 
 def prorate_context(invoice):
-    return {
-        "date": invoice.date or fields.Date.context_today(invoice),
-        "company_id": invoice.company_id.id,
-    }
+    return (
+        fields.Date.to_string(invoice.date or fields.Date.context_today(invoice)),
+        invoice.company_id.id,
+    )
 
 
 class AccountMove(models.Model):
