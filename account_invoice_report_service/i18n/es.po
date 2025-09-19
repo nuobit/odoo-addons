@@ -302,6 +302,12 @@ msgstr ""
 "pedidos"
 
 #. module: account_invoice_report_service
+#: code:addons/account_invoice_report_service/models/account_invoice.py:0
+#, python-format
+msgid "Not implemented case: The same invoice line %(line)s belongs to different orders %(orders)s"
+msgstr "Caso no implementado: La misma línea de factura %(line)s pertenece a diferentes pedidos %(orders)s"
+
+#. module: account_invoice_report_service
 #: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order__date_order_tz
 msgid "Order Date TZ"
 msgstr "Fecha del pedido TZ"
