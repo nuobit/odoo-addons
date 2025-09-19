@@ -1,7 +1,7 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.translate import _
 
@@ -33,13 +33,19 @@ class AccountTaxRepartitionLine(models.Model):
 
         return prorate_ratio
 
-    @api.depends("factor_percent")
+    @api.depends_context("prorate")
     def _compute_factor(self):
         prorate = self.env.context.get("prorate")
+        if prorate:
+            date_str, company_id = prorate
+            prorate = (
+                fields.Date.to_date(date_str),
+                company_id,
+            )
         for record in self.filtered(
             lambda x: x.tax_id.prorate and prorate and x.factor_percent > 0
         ):
-            record.factor = record.get_prorrate_ratio(**prorate)
+            record.factor = record.get_prorrate_ratio(*prorate)
         super(
             AccountTaxRepartitionLine,
             self.filtered(
