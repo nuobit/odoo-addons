@@ -46,7 +46,6 @@ Authors
 -------
 
 * NuoBiT Solutions SL
-* Eric Antones
 
 Contributors
 ------------
@@ -55,6 +54,7 @@ Contributors
 
   - Eric Antones eantones@nuobit.com
   - Bijaya Kumal bkumal@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------
