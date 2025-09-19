@@ -25,23 +25,34 @@ class AccountMove(models.Model):
                 )
         return self.company_id.report_service_id.report_action(self)
 
-    def _group_by_order(self):
+    def _group_invoice_lines_by_order(self):
         order_d, no_order = {}, self.env["account.move.line"]
         for iline in self.invoice_line_ids:
-            if iline.sale_line_ids:
-                for oline in iline.sale_line_ids:
-                    order = oline.order_id
-                    if order not in order_d:
-                        order_d[order] = self.env["account.move.line"]
-                    order_d[order] |= iline
-            else:
+            orders = list(filter(None, iline._get_orders()))
+            if len(orders) == 1:
+                order = orders[0]
+                if order not in order_d:
+                    order_d[order] = self.env["account.move.line"]
+                order_d[order] |= iline
+            elif not orders:
                 no_order += iline
-
+            else:
+                raise ValidationError(
+                    _(
+                        "Not implemented case: "
+                        "The same invoice line %(line)s "
+                        "belongs to different orders %(orders)s"
+                    )
+                    % {
+                        "line": iline.name,
+                        "orders": ", ".join([x.name for x in orders]),
+                    }
+                )
         return order_d, no_order
 
     def get_service_lines_by_order(self):
         # group by order
-        order_d, no_order = self._group_by_order()
+        order_d, no_order = self._group_invoice_lines_by_order()
 
         # grouping by round trip code
         order_rt_date_l = []
@@ -89,7 +100,7 @@ class AccountMove(models.Model):
 
     def get_delivery_lines_by_order(self):
         # group by order
-        order_d, no_order = self._group_by_order()
+        order_d, no_order = self._group_invoice_lines_by_order()
 
         # sort and join with lines w/o orders
         order_sorted_l = []
@@ -113,6 +124,10 @@ class AccountMove(models.Model):
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
+
+    def _get_orders(self):
+        # we use a list to allow different types of orders, sale, repair, etc
+        return [x for x in self.sale_line_ids.order_id]
 
     def get_line_lots(self):
         return (
