@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -45,14 +44,15 @@ class SaleOrder(models.Model):
             self.sale_invoicing_exclude_never_invoice = False
 
     @api.depends("sale_invoicing_exclude_never_invoice")
-    def _get_invoice_status(self):
-        super()._get_invoice_status()
+    def _compute_invoice_status(self):
+        res = super()._compute_invoice_status()
         for order in self.filtered(
             lambda so: so.sale_invoicing_exclude_never_invoice
-            and so.state in ("sale", "done")
+            and so.state == "sale"
             and so.invoice_status == "to invoice"
         ):
             order.invoice_status = "no"
+        return res
 
     def _create_invoices(self, grouped=False, final=False, date=None):
         return super(
