@@ -10,7 +10,7 @@ class StockPicking(models.Model):
 
     def action_cancel(self):
         if not self.env.context.get("from_order"):
-            return super(StockPicking, self).action_cancel()
+            return super().action_cancel()
 
         qty_balances = {}
         moves_lines_done = (
@@ -39,7 +39,7 @@ class StockPicking(models.Model):
                     del qty_balances[line.location_dest_id.id]
 
         if qty_balances:
-            return super(StockPicking, self).action_cancel()
+            return super().action_cancel()
 
         self.mapped("move_lines").filtered(lambda x: x.state != "done")._action_cancel()
         self.write({"is_locked": True})
