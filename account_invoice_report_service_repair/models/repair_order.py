@@ -7,7 +7,9 @@ from odoo import fields, models
 class Repair(models.Model):
     _inherit = "repair.order"
 
-    date_order = fields.Datetime(related="move_id.date", readonly=True)
+    date_order = fields.Datetime(
+        related="move_id.date", compute_sudo=True, readonly=True
+    )
 
     client_order_ref = fields.Char(compute="_compute_client_order_ref")
 
