@@ -7,7 +7,7 @@
     "version": "14.0.1.0.0",
     "category": "Stock",
     "author": "NuoBiT Solutions",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": [
         "stock_move_location",
