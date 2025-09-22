@@ -11,5 +11,9 @@ class AccountMoveLine(models.Model):
     def _get_orders(self):
         # we use a list to allow different types of orders, sale, repair, etc
         return super()._get_orders() + [
-            x for x in self.repair_fee_ids.repair_id | self.repair_line_ids.repair_id
+            order
+            for order in (
+                self.sudo().repair_fee_ids.repair_id
+                | self.sudo().repair_line_ids.repair_id
+            )
         ]
