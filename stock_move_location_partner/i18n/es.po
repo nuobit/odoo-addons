@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-17 12:02+0000\n"
 "PO-Revision-Date: 2025-03-17 12:02+0000\n"
@@ -16,18 +16,41 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_move_location_partner
+#: model_terms:ir.ui.view,arch_db:stock_move_location_partner.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Los valores establecidos aquí son "
+"específicos de la empresa.\" groups=\"base.group_multi_company\"/>"
+
+#. module: stock_move_location_partner
 #: model:ir.model.fields,field_description:stock_move_location_partner.field_res_company__stock_move_location_partner_id
 #: model:ir.model.fields,field_description:stock_move_location_partner.field_res_config_settings__stock_move_location_partner_id
-#: model_terms:ir.ui.view,arch_db:stock_move_location_partner.res_config_settings_view_form
 msgid "Bulk Stock Move Partner"
-msgstr "Contacto para transferencias masivas"
+msgstr "Socio para movimientos masivos de stock"
+
+#. module: stock_move_location_partner
+#: model:ir.model,name:stock_move_location_partner.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: stock_move_location_partner
+#: model:ir.model,name:stock_move_location_partner.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configuración"
+
+#. module: stock_move_location_partner
+#: model:ir.model.fields,field_description:stock_move_location_partner.field_wiz_stock_move_location__stock_move_location_partner_id
+msgid "Contacto"
+msgstr "Contacto"
 
 #. module: stock_move_location_partner
 #: model_terms:ir.ui.view,arch_db:stock_move_location_partner.res_config_settings_view_form
 msgid "Partner to use on bulk stock moves"
-msgstr "Contacto para usar en las transferencias masivas"
+msgstr "Socio a utilizar en movimientos masivos de stock"
 
 #. module: stock_move_location_partner
-#: model_terms:ir.ui.view,arch_db:stock_move_location_partner.res_config_settings_view_form
-msgid "Select a partner"
-msgstr "Seleccionar un contacto"
+#: model:ir.model,name:stock_move_location_partner.model_wiz_stock_move_location
+msgid "Wizard move location"
+msgstr "Asistente de cambio de ubicación"
