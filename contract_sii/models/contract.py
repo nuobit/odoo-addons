@@ -75,21 +75,21 @@ class ContractContract(models.Model):
         if self.sii_registration_key:
             values["sii_registration_key"] = self.sii_registration_key.id
         if self.sii_registration_key_additional1:
-            values[
-                "sii_registration_key_additional1"
-            ] = self.sii_registration_key_additional1.id
+            values["sii_registration_key_additional1"] = (
+                self.sii_registration_key_additional1.id
+            )
         if self.sii_registration_key_additional2:
-            values[
-                "sii_registration_key_additional2"
-            ] = self.sii_registration_key_additional2.id
+            values["sii_registration_key_additional2"] = (
+                self.sii_registration_key_additional2.id
+            )
 
         if self.contract_type == "sale":
             if self.sii_property_location:
                 values["sii_property_location"] = self.sii_property_location
             if self.sii_property_cadastrial_code:
-                values[
-                    "sii_property_cadastrial_code"
-                ] = self.sii_property_cadastrial_code
+                values["sii_property_cadastrial_code"] = (
+                    self.sii_property_cadastrial_code
+                )
 
         if values:
             invoice_vals.update(values)
