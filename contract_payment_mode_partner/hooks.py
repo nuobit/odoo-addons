@@ -1,12 +1,9 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import SUPERUSER_ID, api
 
-
-def post_init_hook(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def post_init_hook(env):
     env.cr.execute(
         """
         with partner_payment_mode as (
@@ -15,13 +12,14 @@ def post_init_hook(cr, registry):
                      CASE WHEN f.name = 'supplier_payment_mode_id'
                      THEN 'purchase' else 'sale' end
                    ) as partner_type,
-                   p.company_id
-            from ir_property p, ir_model_fields f, res_partner rp, account_payment_mode pm
-            where p.fields_id = f.id and
+                   d.company_id
+            from ir_default d, ir_model_fields f,
+            res_partner rp, account_payment_mode pm
+            where d.field_id = f.id and
                   f.ttype = 'many2one' and
                   f.name IN ('customer_payment_mode_id', 'supplier_payment_mode_id') and
-                  p.res_id = 'res.partner,' || rp.id and
-                  p.value_reference = 'account.payment.mode,' || pm.id
+                  d.user_id = rp.id and
+                  d.json_value = 'account.payment.mode,' || pm.id
         )
         select c.id
         from contract_contract c, partner_payment_mode pm
