@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -69,7 +68,7 @@ class ContractContract(models.Model):
 
     def _prepare_invoice(self, date_invoice, journal=None):
         self.ensure_one()
-        invoice_vals, move_form = super()._prepare_invoice(date_invoice, journal)
+        invoice_vals = super()._prepare_invoice(date_invoice, journal)
 
         values = {}
         if self.sii_registration_key:
@@ -94,4 +93,4 @@ class ContractContract(models.Model):
         if values:
             invoice_vals.update(values)
 
-        return invoice_vals, move_form
+        return invoice_vals

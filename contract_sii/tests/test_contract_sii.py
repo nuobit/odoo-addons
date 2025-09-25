@@ -10,7 +10,7 @@ class TestContractSii(TestContractBase):
         cls.company_model = cls.env["res.company"]
         cls.contract_model = cls.env["contract.contract"]
         cls.aml_model = cls.env["account.move.line"]
-        cls.registration_keys_model = cls.env["aeat.sii.mapping.registration.keys"]
+        # cls.registration_keys_model = cls.env.["aeat.sii.mapping.registration.keys"]
         cls.env.company.write(
             {
                 "sii_enabled": True,
@@ -29,12 +29,15 @@ class TestContractSii(TestContractBase):
         contract_sale_form.pricelist_id = self.partner.property_product_pricelist
         contract_sale_form.recurring_interval = 1
         contract_sale_form.recurring_rule_type = "monthly"
-        sale_keys = self.registration_keys_model.search([("type", "=", "sale")])
-        contract_sale_form.sii_registration_key = sale_keys[0]
-        contract_sale_form.sii_registration_key_additional1 = sale_keys[0]
-        contract_sale_form.sii_registration_key_additional2 = sale_keys[0]
+        sale12_key = self.env.ref(
+            "l10n_es_aeat_sii_oca.aeat_sii_mapping_registration_keys_12"
+        )
+        contract_sale_form.sii_registration_key = sale12_key
+        contract_sale_form.sii_registration_key_additional1 = sale12_key
+        contract_sale_form.sii_registration_key_additional2 = sale12_key
         contract_sale_form.sii_property_cadastrial_code = "12345"
-        contract_sale_form.recurring_interval = 1
+        contract_sale_form.sii_property_location = "1"
+        contract_sale_form.line_recurrence = True
         line_form = contract_sale_form.contract_line_ids.new()
         line_form.product_id = self.product_1
         line_form.name = "Services from #START# to #END#"
@@ -85,15 +88,28 @@ class TestContractSii(TestContractBase):
                 is_contract=True, default_contract_type="purchase"
             )
         )
+
+        journal = self.env["account.journal"].create(
+            {
+                "name": "Test Purchase Journal",
+                "code": "TPJ",
+                "type": "purchase",
+                "company_id": self.env.company.id,
+            }
+        )
+
         contract_purchase_form.name = "Test Contract"
         contract_purchase_form.partner_id = self.partner
         contract_purchase_form.pricelist_id = self.partner.property_product_pricelist
-        sale_keys = self.registration_keys_model.search([("type", "=", "purchase")])
-        contract_purchase_form.sii_registration_key = sale_keys[0]
-        contract_purchase_form.sii_registration_key_additional1 = sale_keys[0]
-        contract_purchase_form.sii_registration_key_additional2 = sale_keys[0]
-        contract_purchase_form.sii_property_location = "1"
+        sale01_key = self.env.ref(
+            "l10n_es_aeat_sii_oca.aeat_sii_mapping_registration_keys_01"
+        )
+        contract_purchase_form.sii_registration_key = sale01_key
+        contract_purchase_form.sii_registration_key_additional1 = sale01_key
+        contract_purchase_form.sii_registration_key_additional2 = sale01_key
         contract_purchase_form.recurring_rule_type = "monthly"
+        contract_purchase_form.journal_id = journal
+        contract_purchase_form.line_recurrence = True
         line_form = contract_purchase_form.contract_line_ids.new()
         line_form.product_id = self.product_1
         line_form.name = "Services from #START# to #END#"
