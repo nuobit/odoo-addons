@@ -7,7 +7,7 @@
     "contract if it remains valid.",
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": ["contract_payment_mode"],
     "category": "Sales Management",
     "post_init_hook": "post_init_hook",
