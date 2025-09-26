@@ -35,6 +35,11 @@ class ResPartnerBinding(models.Model):
             "unique(ambugest_empresa, ambugest_codiup)",
             "Partner with same ID on Ambugest already exists.",
         ),
+        (
+            "uniq_odoo",
+            "unique(backend_id, odoo_id)",
+            "Only one Odoo Partner per Backend allowed.",
+        ),
     ]
 
     def import_customers_since(self, backend_record=None, since_date=None):
