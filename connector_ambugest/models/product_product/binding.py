@@ -38,11 +38,6 @@ class ProductProductBinding(models.Model):
             "unique(ambugest_id, ambugest_empresa)",
             "Product with same ID on Ambugest already exists.",
         ),
-        (
-            "uniq_odoo",
-            "unique(backend_id, odoo_id)",
-            "Only one Odoo Product per Backend allowed.",
-        ),
     ]
 
     def import_products_since(self, backend_record=None, since_date=None):
