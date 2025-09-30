@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-     Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+     Copyright NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="account_analytic_account_recurring_form_form" model="ir.ui.view">
-        <field name="name" />
+        <field name="name">account.analytic.account.recurring.form.form</field>
         <field name="model">contract.contract</field>
         <field name="inherit_id" ref="contract.contract_contract_form_view" />
         <field name="arch" type="xml">
             <xpath
-                expr="//field[@name='contract_line_fixed_ids']/tree/field[@name='price_subtotal']"
+                expr="//field[@name='contract_line_fixed_ids']/list/field[@name='price_subtotal']"
                 position="before"
             >
                 <field
@@ -21,7 +22,7 @@
                 />
             </xpath>
             <xpath
-                expr="//field[@name='contract_line_ids']/tree/field[@name='price_subtotal']"
+                expr="//field[@name='contract_line_ids']/list/field[@name='price_subtotal']"
                 position="before"
             >
                 <field
@@ -34,9 +35,9 @@
             </xpath>
         </field>
     </record>
-    <!-- TODO: Delete this view in migration to v13 or further migrations // In v14 its not delete-->
+
     <record id="contract_line_tree_view" model="ir.ui.view">
-        <field name="name">contract.line.tree.view</field>
+        <field name="name">contract.line.list.view</field>
         <field name="model">contract.line</field>
         <field name="inherit_id" ref="contract.contract_line_tree_view" />
         <field name="arch" type="xml">

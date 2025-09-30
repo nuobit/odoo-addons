@@ -1,3 +1,6 @@
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 from odoo.addons.contract.tests.test_contract import TestContractBase
 
 
@@ -23,10 +26,19 @@ class TestContractLine(TestContractBase):
                 "tax_exigibility": "on_invoice",
             }
         )
+        cls.journal = cls.env["account.journal"].create(
+            {
+                "name": "Test Journal",
+                "type": "purchase",
+                "company_id": cls.env.company.id,
+                "code": "TESTJ",
+            }
+        )
 
     def test_contract_line_tax_ids(self):
         for line in self.contract2.contract_line_ids:
             line.write({"tax_ids": [(6, 0, self.tax_customer.ids)]})
+        self.contract2.journal_id = self.journal.id
         self.contract2.recurring_create_invoice()
         for line in self.contract2.contract_line_ids:
             invoice_lines = self.aml_obj.search(
