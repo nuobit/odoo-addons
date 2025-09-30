@@ -8,7 +8,7 @@
     "version": "14.0.1.0.0",
     "category": "Product Management",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["product_unique_barcode", "product_multi_barcode"],
     "auto_install": True,
