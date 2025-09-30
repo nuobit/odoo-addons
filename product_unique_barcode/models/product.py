@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
@@ -29,7 +29,7 @@ class ProductProduct(models.Model):
 
                 if barcode:
                     raise ValidationError(
-                        _("Error! The Barcode %s already exists" % record.barcode)
+                        _("Error! The Barcode {} already exists").format(record.barcode)
                     )
 
     # replace current sql_constraint with a dummy one
