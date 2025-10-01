@@ -1,18 +1,19 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Repair Employee",
     "summary": "This module adds a comment field in the contract and "
     "propagates it to the comment field of the invoice",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Contract Management",
-    "author": "NuoBiT Solutions SL, Eric Antones",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["hr", "repair"],
     "data": [
-        "views/repair_views.xml",
+        "views/repair_order_views.xml",
     ],
 }
