@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_picking_form_ext" model="ir.ui.view">
+        <field name="model">stock.picking</field>
+        <field
+            name="inherit_id"
+            ref="l10n_pt_stock_vehicle_daily.view_picking_form_ext"
+        />
+        <field name="arch" type="xml">
+            <field name="l10n_pt_license_plate" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
