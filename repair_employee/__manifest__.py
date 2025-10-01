@@ -9,7 +9,7 @@
     "version": "16.0.1.0.0",
     "category": "Contract Management",
     "author": "NuoBiT Solutions SL, Eric Antones",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["hr", "repair"],
     "data": [
