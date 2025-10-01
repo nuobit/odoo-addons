@@ -1,4 +1,5 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -39,7 +40,7 @@ class ProductProduct(models.Model):
                 if product:
                     raise ValidationError(
                         _(
-                            "Error! The Default Code %s already exists. "
-                            "Check also the archived ones." % record.default_code
-                        )
+                            "Error! The Default Code {} already exists. "
+                            "Check also the archived ones."
+                        ).format(record.default_code)
                     )

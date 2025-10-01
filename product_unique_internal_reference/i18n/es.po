@@ -49,6 +49,8 @@ msgid ""
 "It has been possible to change the template Internal Reference existing a "
 "variant with the same one"
 msgstr ""
+"Ha sido posible cambiar la referencia interna de la plantilla existiendo una "
+"variante con la misma"
 
 #. module: product_unique_internal_reference
 #: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
@@ -57,6 +59,8 @@ msgid ""
 "It has been possible to create a product template on one company and another"
 " without company with the same Internal Reference"
 msgstr ""
+"Ha sido posible crear una plantilla de producto en una compañía y otra sin "
+"compañía con la misma referencia interna"
 
 #. module: product_unique_internal_reference
 #: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
@@ -65,6 +69,8 @@ msgid ""
 "It has been possible to create a product template when a variant of another "
 "template has the same Internal Reference"
 msgstr ""
+"Ha sido posible crear una plantilla de producto cuando una variante de otra "
+"plantilla tiene la misma referencia interna"
 
 #. module: product_unique_internal_reference
 #: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
@@ -74,6 +80,8 @@ msgid ""
 "It has been possible to create a product variant when a variant of another "
 "template has the same Internal Reference"
 msgstr ""
+"Ha sido posible crear una variante de producto cuando una variante de otra "
+"plantilla tiene la misma referencia interna"
 
 #. module: product_unique_internal_reference
 #: code:addons/product_unique_internal_reference/tests/test_product_unique_internal_reference.py:0
@@ -82,6 +90,8 @@ msgid ""
 "It has been possible to create two product templates with the same Internal "
 "Reference"
 msgstr ""
+"Ha sido posible crear dos plantillas de producto con la misma referencia "
+"interna"
 
 #. module: product_unique_internal_reference
 #: model:ir.model.fields,field_description:product_unique_internal_reference.field_product_product____last_update
@@ -108,3 +118,5 @@ msgid ""
 "The Internal References are not equal, this should have not raised an "
 "Exception"
 msgstr ""
+"Las referencias internas no son iguales, esto no debería haber lanzado una "
+"excepción"
