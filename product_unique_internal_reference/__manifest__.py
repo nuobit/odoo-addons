@@ -9,7 +9,7 @@
     "version": "16.0.1.0.0",
     "category": "Sales",
     "author": "NuoBiT Solutions SL",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": [
         "product",
