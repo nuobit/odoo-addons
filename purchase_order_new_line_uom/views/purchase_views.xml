@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="purchase_order_form" model="ir.ui.view">
@@ -9,21 +9,23 @@
         <field name="inherit_id" ref="purchase.purchase_order_form" />
         <field name="arch" type="xml">
             <xpath
-                expr="//field[@name='order_line']/tree/field[@name='invoice_lines']"
+                expr="//field[@name='order_line']/list/field[@name='invoice_lines']"
                 position="after"
             >
-                <field name="invoice_lines" invisible="1" widget="many2many_tags" />
-                <field name="move_ids" invisible="1" widget="many2many_tags" />
+                <field
+                    name="invoice_lines"
+                    column_invisible="1"
+                    widget="many2many_tags"
+                />
+                <field name="move_ids" column_invisible="1" widget="many2many_tags" />
             </xpath>
             <xpath
-                expr="//field[@name='order_line']/tree/field[@name='product_uom']"
+                expr="//field[@name='order_line']/list/field[@name='product_uom']"
                 position="attributes"
             >
-                <attribute name="attrs">{'readonly': [
-                    ('state', 'in', ('purchase', 'done', 'cancel')),
-                    '|', ('invoice_lines', '!=', []), ('move_ids', '!=', [])
-                    ], 'required': [('display_type', '=', False)]}
-                </attribute>
+                <attribute
+                    name="readonly"
+                >state in ('purchase', 'done', 'cancel') and (invoice_lines != [] or move_ids != []) or is_downpayment </attribute>
             </xpath>
         </field>
     </record>
