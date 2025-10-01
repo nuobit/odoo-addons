@@ -1,4 +1,5 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT 2025 - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -26,20 +27,20 @@ class ProductTemplate(models.Model):
                 )
                 # products inside the same template
                 products_inside = products_all.filtered(
-                    lambda p: p.product_tmpl_id == record
+                    lambda p, record=record: p.product_tmpl_id == record
                 )
                 # products outside the same template
                 products_outside = products_all - products_inside
                 if record.company_id:
                     products_outside = products_outside.filtered(
-                        lambda p: not p.product_tmpl_id.company_id
+                        lambda p, record=record: not p.product_tmpl_id.company_id
                         or p.product_tmpl_id.company_id == record.company_id
                     )
                 # check if the default code is used in other templates
                 if len(products_inside) > 1 or products_outside:
                     raise ValidationError(
                         _(
-                            "Error! The Default Code %s already exists. "
-                            "Check also the archived ones." % record.default_code
-                        )
+                            "Error! The Default Code {} already exists. "
+                            "Check also the archived ones."
+                        ).format(record.default_code)
                     )
