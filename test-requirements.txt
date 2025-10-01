@@ -1,0 +1,1 @@
+odoo-addon-product_unique_barcode@git+https://github.com/nuobit/odoo-addons.git@refs/pull/732/head#subdirectory=product_unique_barcode
