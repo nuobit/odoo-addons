@@ -9,9 +9,7 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     def _create_invoices(self, grouped=False, final=False, date=None):
-        invoices = super(SaleOrder, self)._create_invoices(
-            grouped=grouped, final=final, date=date
-        )
+        invoices = super()._create_invoices(grouped=grouped, final=final, date=date)
         if invoices:
             invoice_date = self.env.context.get("invoice_date")
             if invoice_date:
