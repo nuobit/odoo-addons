@@ -9,4 +9,4 @@ class StockMove(models.Model):
 
     @api.model
     def _prepare_merge_moves_distinct_fields(self):
-        return ["id", *super(StockMove, self)._prepare_merge_moves_distinct_fields()]
+        return ["id", *super()._prepare_merge_moves_distinct_fields()]

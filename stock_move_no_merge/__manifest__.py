@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Warehouse",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock",
     ],
