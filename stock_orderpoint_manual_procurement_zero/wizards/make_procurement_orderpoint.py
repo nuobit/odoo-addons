@@ -10,7 +10,7 @@ class MakeProcurementOrderpoint(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(MakeProcurementOrderpoint, self).default_get(fields)
+        res = super().default_get(fields)
         show_zeros = self.env.context.get("show_recommended_procure_zero", True)
         if not show_zeros:
             res["item_ids"] = list(filter(lambda x: x[2]["qty"] != 0, res["item_ids"]))
