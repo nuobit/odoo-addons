@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-21 10:04+0000\n"
 "PO-Revision-Date: 2021-12-21 10:04+0000\n"
@@ -18,17 +18,17 @@ msgstr ""
 #. module: stock_location_localization_text
 #: model:ir.model.fields,field_description:stock_location_localization_text.field_stock_location__posx
 msgid "Corridor (X)"
-msgstr ""
+msgstr "Pasillo (X)"
 
 #. module: stock_location_localization_text
 #: model:ir.model.fields,field_description:stock_location_localization_text.field_stock_location__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Mostrar nombre"
 
 #. module: stock_location_localization_text
 #: model:ir.model.fields,field_description:stock_location_localization_text.field_stock_location__posz
 msgid "Height (Z)"
-msgstr ""
+msgstr "Altura (Z)"
 
 #. module: stock_location_localization_text
 #: model:ir.model.fields,field_description:stock_location_localization_text.field_stock_location__id
@@ -38,19 +38,19 @@ msgstr ""
 #. module: stock_location_localization_text
 #: model:ir.model,name:stock_location_localization_text.model_stock_location
 msgid "Inventory Locations"
-msgstr ""
+msgstr "Ubicaciones de inventario"
 
 #. module: stock_location_localization_text
 #: model:ir.model.fields,field_description:stock_location_localization_text.field_stock_location____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Última modificación en"
 
 #. module: stock_location_localization_text
 #: model_terms:ir.ui.view,arch_db:stock_location_localization_text.view_location_form
 msgid "Localization"
-msgstr ""
+msgstr "Localización"
 
 #. module: stock_location_localization_text
 #: model:ir.model.fields,field_description:stock_location_localization_text.field_stock_location__posy
 msgid "Shelves (Y)"
-msgstr ""
+msgstr "Estanterías (Y)"
