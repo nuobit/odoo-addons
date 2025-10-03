@@ -16,7 +16,6 @@ class StockMove(models.Model):
 
 
 class StockMoveLine(models.Model):
-
     _inherit = "stock.move.line"
 
     @api.onchange("product_id", "product_uom_id", "move_id")
