@@ -1,7 +1,7 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Frank Cespedes <fcespedes@nuobit.com>
-# Eric Antones <eatones@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eatones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 
 from odoo import api, models
 
