@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* stock_inventory_required_lot_by_tracking
+# 	* stock_tracking_integrity
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-03 14:35+0000\n"
+"POT-Creation-Date: 2026-10-29 09:02+0000\n"
 "PO-Revision-Date: 2024-04-03 14:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,13 +16,52 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_tracking_integrity
-#: code:addons/stock_tracking_integrity/models/stock_move_line.py:0
-#, python-format
-msgid "The product %s with tracking '%s' only can have movements without a lot number."
-msgstr "El producto %s con seguimiento '%s' solo puede tener movimientos sin un número de lote."
+#: model:ir.model,name:stock_tracking_integrity.model_product_template
+msgid "Product"
+msgstr ""
 
 #. module: stock_tracking_integrity
+#: model:ir.model,name:stock_tracking_integrity.model_stock_move_line
+msgid "Product Moves (Stock Move Line)"
+msgstr ""
+
+#. module: stock_tracking_integrity
+#: model:ir.model,name:stock_tracking_integrity.model_stock_quant
+msgid "Quants"
+msgstr ""
+
+#. module: stock_tracking_integrity
+#. odoo-python
 #: code:addons/stock_tracking_integrity/models/stock_move_line.py:0
-#, python-format
-msgid "The product %s with tracking '%s' only can have movements with a lot number."
-msgstr "El producto %s con seguimiento '%s' solo puede tener movimientos con un número de lote."
+msgid ""
+"The product %(product_name)s with tracking '%(tracking)s' only can have "
+"movements with a lot number."
+msgstr ""
+"El producto %(product_name)s con seguimiento '%(tracking)s' solo puede tener"
+" movimientos con un número de lote."
+
+#. module: stock_tracking_integrity
+#. odoo-python
+#: code:addons/stock_tracking_integrity/models/stock_move_line.py:0
+msgid ""
+"The product %(product_name)s with tracking '%(tracking)s' only can have "
+"movements without a lot number."
+msgstr ""
+"El producto %(product_name)s con seguimiento '%(tracking)s' solo puede tener"
+" movimientos sin un número de lote."
+
+#. module: stock_tracking_integrity
+#. odoo-python
+#: code:addons/stock_tracking_integrity/models/stock_quant.py:0
+msgid ""
+"The product %(product_name)s with tracking '%(tracking)s' only can have "
+"quants with a lot number."
+msgstr ""
+
+#. module: stock_tracking_integrity
+#. odoo-python
+#: code:addons/stock_tracking_integrity/models/stock_quant.py:0
+msgid ""
+"The product %(product_name)s with tracking '%(tracking)s' only can have "
+"quants without a lot number."
+msgstr ""

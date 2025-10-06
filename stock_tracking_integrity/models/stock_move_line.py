@@ -1,7 +1,8 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Frank Cespedes <fcespedes@nuobit.com>
-# Eric Antones <eatones@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eatones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 
 from odoo import _, api, models
 from odoo.exceptions import ValidationError
@@ -21,16 +22,24 @@ class StockMoveLine(models.Model):
                 if not rec.lot_id and rec.product_id.tracking != "none":
                     raise ValidationError(
                         _(
-                            "The product %s with tracking '%s' only "
+                            "The product %(product_name)s with tracking "
+                            "'%(tracking)s' only "
                             "can have movements with a lot number."
                         )
-                        % (rec.product_id.display_name, tracking_label)
+                        % {
+                            "product_name": rec.product_id.display_name,
+                            "tracking": tracking_label,
+                        }
                     )
                 if rec.lot_id and rec.product_id.tracking == "none":
                     raise ValidationError(
                         _(
-                            "The product %s with tracking '%s' only "
+                            "The product %(product_name)s with tracking "
+                            "'%(tracking)s' only "
                             "can have movements without a lot number."
                         )
-                        % (rec.product_id.display_name, tracking_label)
+                        % {
+                            "product_name": rec.product_id.display_name,
+                            "tracking": tracking_label,
+                        }
                     )
