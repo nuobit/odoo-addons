@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, models
@@ -27,7 +28,7 @@ class StockQuant(models.Model):
         ):
             available_quantity = sum(
                 quant.lot_id.quant_ids.filtered(
-                    lambda x: float_compare(
+                    lambda x, quant=quant: float_compare(
                         x.quantity,
                         0,
                         precision_rounding=quant.product_uom_id.rounding,
@@ -39,7 +40,10 @@ class StockQuant(models.Model):
                 raise ValidationError(
                     _(
                         "The serial number has already been assigned: \n "
-                        "Product: %s, Serial Number: %s"
+                        "Product: %(product_name)s, Serial Number: %(serial_number)s"
                     )
-                    % (quant.product_id.display_name, quant.lot_id.name)
+                    % {
+                        "product_name": quant.product_id.display_name,
+                        "serial_number": quant.lot_id.name,
+                    }
                 )
