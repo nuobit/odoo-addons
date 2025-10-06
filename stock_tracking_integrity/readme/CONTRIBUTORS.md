@@ -1,0 +1,3 @@
+- [NuoBiT](https://www.nuobit.com):
+  - Frank Cespedes \<fcespedes@nuobit.com\>
+  - Eric Antones \<eatones@nuobit.com\>
