@@ -1,17 +1,17 @@
+# Copyright NuoBiT Solutions- Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
-
 
 from odoo import _, models
 from odoo.exceptions import AccessError
 
 
-class ProductionLot(models.Model):
-    _inherit = "stock.production.lot"
+class StockLot(models.Model):
+    _inherit = "stock.lot"
 
     def write(self, vals):
         if "name" in vals:
-            if not self.env.is_superuser() and not self.user_has_groups(
+            if not self.env.is_superuser() and not self.env.user.has_group(
                 "stock_restrict_lot_name.group_update_lot_name_field"
             ):
                 raise AccessError(
