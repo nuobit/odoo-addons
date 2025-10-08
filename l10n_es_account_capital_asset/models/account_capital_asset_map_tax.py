@@ -44,7 +44,7 @@ class AccountCapitalAssetMapTax(models.Model):
             .sudo()
             .get_param("l10n_es_account_capital_asset.capital_asset_threshold_amount")
         )
-        asset_price = self.env["account.asset"]._get_asset_unit_price(amount, quantity)
+        asset_price = amount
         result = taxes
         if asset_price >= float(threshold_capital_asset_amount):
             tax_map = self._get_taxes_mapping_from_tax_templates(company)
