@@ -11,8 +11,9 @@ from odoo.addons.account_asset_management.models.account_asset import READONLY_S
 class AccountAsset(models.Model):
     _inherit = "account.asset"
 
+    # TODO: rename to default_capital_asset_type_id
     profile_capital_asset_type_id = fields.Many2one(
-        string="Capital Asset Profile Type",
+        string="Default Capital Asset Type",
         related="profile_id.capital_asset_type_id",
     )
     capital_asset_type_id = fields.Many2one(
@@ -32,7 +33,7 @@ class AccountAsset(models.Model):
         for rec in self:
             if rec.company_id.l10n_es_capital_asset_enabled:
                 if (
-                    rec.tax_base_amount_unit >= threshold_capital_asset_amount
+                    rec.tax_base_amount >= threshold_capital_asset_amount
                     and not rec.capital_asset_type_id
                 ):
                     raise ValidationError(
@@ -43,7 +44,7 @@ class AccountAsset(models.Model):
                         % threshold_capital_asset_amount
                     )
                 if (
-                    rec.tax_base_amount_unit < threshold_capital_asset_amount
+                    rec.tax_base_amount < threshold_capital_asset_amount
                     and rec.capital_asset_type_id
                 ):
                     raise ValidationError(
@@ -62,7 +63,7 @@ class AccountAsset(models.Model):
         ):
             return
         for rec in self:
-            self.tax_ids.check_tax_base_amount(rec.tax_base_amount_unit)
+            self.tax_ids.check_tax_base_amount(rec.tax_base_amount)
 
     @api.constrains("profile_id", "capital_asset_type_id")
     def _check_capital_asset_type_integrity(self):

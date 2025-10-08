@@ -41,15 +41,15 @@ msgstr "L10n ES - Bienes de inversión activados"
 #. module: l10n_es_account_capital_asset
 #: model:ir.actions.act_window,name:l10n_es_account_capital_asset.capital_asset_type_action
 #: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__capital_asset_type_id
-#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_type_id
 #: model:ir.ui.menu,name:l10n_es_account_capital_asset.aeat_vat_special_prorrate_capital_asset_type_menu
 msgid "Capital Asset Type"
 msgstr "Tipo de bien de inversión"
 
 #. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_type_id
 #: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__profile_capital_asset_type_id
-msgid "Capital Asset Profile Type"
-msgstr "Tipo de bien de inversión de la categoria"
+msgid "Default Capital Asset Type"
+msgstr "Tipo de bien de inversión por defecto"
 
 #. module: l10n_es_account_capital_asset
 #: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0

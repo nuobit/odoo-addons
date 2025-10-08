@@ -8,8 +8,9 @@ from odoo import fields, models
 class AccountAssetProfile(models.Model):
     _inherit = "account.asset.profile"
 
+    # TODO: rename to default_capital_asset_type_id
     capital_asset_type_id = fields.Many2one(
-        string="Capital Asset Type",
+        string="Default Capital Asset Type",
         comodel_name="l10n.es.account.capital.asset.type",
         ondelete="restrict",
         required=True,
