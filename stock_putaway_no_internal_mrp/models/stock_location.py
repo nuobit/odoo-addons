@@ -9,4 +9,4 @@ class Location(models.Model):
     _inherit = "stock.location"
 
     def _excluded_picking_types(self):
-        return super(Location, self)._excluded_picking_types() + ["mrp_operation"]
+        return super()._excluded_picking_types() + ["mrp_operation"]

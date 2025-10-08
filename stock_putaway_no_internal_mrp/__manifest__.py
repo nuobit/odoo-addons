@@ -10,7 +10,7 @@
     "category": "Warehouse Management",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "mrp",
         "stock_putaway_no_internal",
