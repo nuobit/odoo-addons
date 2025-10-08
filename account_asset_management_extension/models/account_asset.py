@@ -6,7 +6,6 @@ import json
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import float_compare
 
 from odoo.addons.account_asset_management.models.account_asset import READONLY_STATES
 
@@ -39,33 +38,6 @@ class AccountAsset(models.Model):
     def _compute_tax_base_amount(self):
         for rec in self:
             rec.tax_base_amount = rec.purchase_value
-
-    tax_base_amount_unit = fields.Float(
-        string="Tax Base Amount Unit",
-        compute="_compute_tax_base_amount_unit",
-    )
-
-    @api.model
-    def _get_asset_unit_price(self, amount, quantity):
-        if not quantity:
-            amount = 0
-        elif abs(quantity) >= 1:
-            prec = self.env["decimal.precision"].precision_get(
-                "Product Unit of Measure"
-            )
-            if not float_compare(int(quantity), quantity, precision_digits=prec):
-                amount /= quantity
-        return amount
-
-    @api.depends("tax_base_amount", "quantity")
-    def _compute_tax_base_amount_unit(self):
-        for rec in self:
-            tax_base_amount = rec.tax_base_amount
-            if rec.quantity:
-                tax_base_amount = rec._get_asset_unit_price(
-                    rec.tax_base_amount, rec.quantity
-                )
-            rec.tax_base_amount_unit = tax_base_amount
 
     @api.constrains("quantity")
     def _check_quantity_on_asset(self):
