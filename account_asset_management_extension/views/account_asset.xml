@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="account_asset_view_form" model="ir.ui.view">
@@ -13,11 +14,17 @@
                 <page string="Other Information" name="other_information">
                     <group>
                         <group>
-                            <field name="invoice_ref" />
+                            <field
+                                name="invoice_ref"
+                                readonly="state in ['open', 'close', 'removed']"
+                            />
                             <field name="invoice_move_line_id" />
                         </group>
                         <group>
-                            <field name="invoice_date" />
+                            <field
+                                name="invoice_date"
+                                readonly="state in ['open', 'close', 'removed']"
+                            />
                             <field name="date_start" />
                         </group>
                     </group>
@@ -27,10 +34,18 @@
                                 name="tax_base_amount"
                                 widget="monetary"
                                 options="{'currency_field': 'company_currency_id'}"
+                                readonly="state in ['open', 'close', 'removed']"
                             />
-                            <field name="quantity" />
+                            <field
+                                name="quantity"
+                                readonly="state in ['open', 'close', 'removed']"
+                            />
                             <field name="json_tax_ids" invisible="1" />
-                            <field name="tax_ids" widget="many2many_tags" />
+                            <field
+                                name="tax_ids"
+                                widget="many2many_tags"
+                                readonly="state in ['open', 'close', 'removed']"
+                            />
                         </group>
                     </group>
                 </page>
