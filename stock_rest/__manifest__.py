@@ -8,7 +8,7 @@
     "category": "Stock",
     "version": "14.0.1.1.12",
     "license": "AGPL-3",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock_location_code",
         "base_rest",

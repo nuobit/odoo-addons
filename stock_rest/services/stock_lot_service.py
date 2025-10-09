@@ -23,10 +23,9 @@ class LotService(Component):
     def search(
         self, code=None, product_code=None, product_barcode=None, location_code=None
     ):
-
         # validate not implemented functonalities
         if (code, product_code, product_barcode) == (None, None, None):
-            raise IOError("The full lot list is not supported")
+            raise OSError("The full lot list is not supported")
 
         # get current user
         self._get_current_user()

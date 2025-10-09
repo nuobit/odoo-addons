@@ -17,13 +17,13 @@ class StockService(AbstractComponent):
             ]
         )
         if not user:
-            raise IOError("No user found with current id")
+            raise OSError("No user found with current id")
         elif len(user) > 1:
-            raise IOError("Detected more than one user with the same id")
+            raise OSError("Detected more than one user with the same id")
         return user
 
     def _get_current_company(self):
         company = self.env.company
         if not company:
-            raise IOError("Cannot get the company from the user")
+            raise OSError("Cannot get the company from the user")
         return company
