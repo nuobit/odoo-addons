@@ -1,5 +1,6 @@
 # Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _
@@ -58,7 +59,7 @@ class LotService(Component):
                    p.default_code as product_code,
                    sl.id as location_id, sl.code as location_code,
                    sum(coalesce(q.quantity, 0)) as quantity
-            from stock_production_lot l, stock_quant q, stock_location sl,
+            from stock_lot l, stock_quant q, stock_location sl,
                  product_product p, product_template t
             where q.lot_id = l.id and
                   q.location_id = sl.id and
@@ -78,7 +79,7 @@ class LotService(Component):
                    p.default_code as product_code,
                    null as location_id, null as location_code,
                    0 as quantity
-            from stock_production_lot l, product_product p, product_template t
+            from stock_lot l, product_product p, product_template t
             where l.product_id = p.id and
                   p.product_tmpl_id = t.id and
                   not exists (
@@ -87,7 +88,8 @@ class LotService(Component):
                     where q.lot_id = l.id and
                           q.location_id = sl.id
                           and (%(location_code)s is null or sl.code = %(location_code)s)
-                          and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                          and
+                          (%(location_usage)s is null or sl.usage = %(location_usage)s)
                   ) and
                   p.active and t.active and
                   t.tracking != 'none'
@@ -110,7 +112,7 @@ class LotService(Component):
             location_code,
             quantity,
         ) in self.env.cr.fetchall():
-            lot = self.env["stock.production.lot"].browse(lot_id)
+            lot = self.env["stock.lot"].browse(lot_id)
             lots.setdefault(lot, [])
             qty = round(quantity, dp.digits)
             if qty > 0:
