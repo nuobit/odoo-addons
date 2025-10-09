@@ -1,10 +1,9 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
-import json
-
-from odoo import models
+from odoo import Command, models
 
 
 class AccountMove(models.Model):
@@ -18,7 +17,7 @@ class AccountMove(models.Model):
                 "invoice_date": self.invoice_date,
                 "quantity": aml.quantity,
                 "tax_base_amount": aml.balance,
-                "json_tax_ids": json.dumps(aml.tax_ids.ids),
+                "tax_ids": [Command.set(aml.tax_ids.ids)],
             }
         )
         return vals

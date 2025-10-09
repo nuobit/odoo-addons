@@ -22,7 +22,7 @@ Account Asset Management Extension
 
 |badge1| |badge2| |badge3|
 
-- This module adds additional fields on assets.
+This module adds additional fields on assets.
 
 **Table of contents**
 
@@ -55,6 +55,7 @@ Contributors
   - Kilian Niubo kniubo@nuobit.com
   - Eric Antones eantones@nuobit.com
   - Bijaya Kumal bkumal@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------

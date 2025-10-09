@@ -1,32 +1,23 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
-import json
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
 
-from odoo.addons.account_asset_management.models.account_asset import READONLY_STATES
-
 
 class AccountAsset(models.Model):
     _inherit = "account.asset"
 
-    invoice_ref = fields.Char(
-        states=READONLY_STATES,
-    )
-    invoice_date = fields.Date(
-        states=READONLY_STATES,
-    )
+    invoice_ref = fields.Char()
+    invoice_date = fields.Date()
     quantity = fields.Float(
-        states=READONLY_STATES,
         required=True,
     )
     tax_base_amount = fields.Float(
-        states=READONLY_STATES,
         compute="_compute_tax_base_amount",
         readonly=False,
         store=True,
@@ -86,7 +77,8 @@ class AccountAsset(models.Model):
                 if rec.invoice_move_line_id.quantity != rec.quantity:
                     raise ValidationError(
                         _(
-                            "Quantity must be the same as the one in the invoice line: %s"
+                            "Quantity must be the same"
+                            " as the one in the invoice line: %s"
                         )
                         % rec.invoice_move_line_id.quantity
                     )
@@ -104,24 +96,9 @@ class AccountAsset(models.Model):
                         % rec.invoice_move_line_id.tax_ids.mapped("name")
                     )
 
-    # needed for bypassing the restriction on m2m fields on Form class. Remove it when supported
-    json_tax_ids = fields.Char(
-        store=False,
-    )
-
     tax_ids = fields.Many2many(
         comodel_name="account.tax",
-        compute="_compute_tax_ids",
-        store=True,
-        readonly=False,
-        states=READONLY_STATES,
     )
-
-    @api.depends("json_tax_ids")
-    def _compute_tax_ids(self):
-        for rec in self:
-            if rec.json_tax_ids:
-                rec.tax_ids = json.loads(rec.json_tax_ids)
 
     invoice_move_line_id = fields.Many2one(
         comodel_name="account.move.line",

@@ -1,1 +1,1 @@
-* This module adds additional fields on assets.
+This module adds additional fields on assets.

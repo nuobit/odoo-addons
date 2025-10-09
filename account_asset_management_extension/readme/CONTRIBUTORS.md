@@ -2,4 +2,5 @@
   - Kilian Niubo <kniubo@nuobit.com>
   - Eric Antones <eantones@nuobit.com>
   - Bijaya Kumal <bkumal@nuobit.com>
+  - Deniz Gallo <dgallo@nuobit.com>
 
