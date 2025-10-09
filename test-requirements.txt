@@ -1,0 +1,2 @@
+odoo-addon-stock_location_code@git+https://github.com/nuobit/odoo-addons.git@refs/pull/708/head#subdirectory=stock_location_code
+odoo-addon-stock_picking_partner_ref@git+https://github.com/nuobit/odoo-addons.git@refs/pull/638/head#subdirectory=stock_picking_partner_ref
