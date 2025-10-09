@@ -1,5 +1,6 @@
 # Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from operator import itemgetter
 
@@ -39,12 +40,10 @@ class ProductService(Component):
                 ]
             )
             if not location:
-                raise MissingError(
-                    _("The location '%s' does not exist" % location_code)
-                )
+                raise MissingError(_(f"The location '{location_code}' does not exist"))
             if len(location) > 1:
                 raise ValidationError(
-                    _("There's more than one location with code '%s'" % location_code)
+                    _(f"There's more than one location with code '{location_code}'")
                 )
             params["location_id"] = location.id
         else:
@@ -102,23 +101,9 @@ class ProductService(Component):
         #     ),
         # get data
         sql = """
-            with product_template_name_trl as (
-                select r.res_id as id, r.value as name
-                from ir_translation r
-                where r.type = 'model' and
-                      r.name = 'product.template,name' and
-                      (%(lang)s != 'en_US' and r.lang = %(lang)s)
-            ),
-            product_attribute_value_name_trl as (
-                select r.res_id as id, r.value as name
-                from ir_translation r
-                where r.type = 'model' and
-                      r.name = 'product.attribute.value,name' and
-                      (%(lang)s != 'en_US' and r.lang = %(lang)s)
-            ),
-            product_variant_base as (
+            with product_variant_base as (
                 select distinct c.product_product_id as product_id,
-                                a.id as attribute_id, av.id as attibute_value_id
+                                a.id as attribute_id, av.id as attribute_value_id
                 from product_variant_combination c,
                      product_template_attribute_value tav,
                      product_attribute_value av, product_attribute a
@@ -129,19 +114,28 @@ class ProductService(Component):
             ),
             product_variant as (
                 select pv.product_id,
-                       string_agg(coalesce(avr.name, av.name),
+                       string_agg(
+                           case
+                               when av.name::text like '{%%' then
+                                    coalesce(
+                                        av.name ->> %(lang)s,
+                                        av.name ->> 'en_US',
+                                        av.name::text
+                                    )
+                               else av.name::text
+                           end,
                            ' ' order by a."sequence") as attribute_name
-                from product_variant_base pv, product_attribute a,
+                from product_variant_base pv,
+                     product_attribute a,
                      product_attribute_value av
-                        left join product_attribute_value_name_trl avr on avr.id = av.id
                 where pv.attribute_id = a.id and
-                      pv.attibute_value_id = av.id
+                      pv.attribute_value_id = av.id
                 group by pv.product_id
             ),
             product_lot_location as (
                 select q.location_id, q.lot_id, l.name as lot_name, q.product_id,
                        sum(coalesce(q.quantity, 0)) as quantity
-                from stock_quant q, stock_location sl, stock_production_lot l,
+                from stock_quant q, stock_location sl, stock_lot l,
                      product_product p, product_template t
                 where q.lot_id = l.id and
                       q.location_id = sl.id and
@@ -155,9 +149,10 @@ class ProductService(Component):
                       and (%(location_usage)s is null or sl.usage = %(location_usage)s)
                 group by q.location_id, q.lot_id, l.name, q.product_id
                 union all
-                select null as location_id, l.id as lot_id, l.name as lot_name, l.product_id,
+                select null
+                as location_id, l.id as lot_id, l.name as lot_name, l.product_id,
                        0 as quantity
-                from stock_production_lot l, product_product p, product_template t
+                from stock_lot l, product_product p, product_template t
                 where l.product_id = p.id and
                       p.product_tmpl_id = t.id and
                       p.active and t.active and
@@ -167,8 +162,12 @@ class ProductService(Component):
                          from stock_quant q, stock_location sl
                          where q.lot_id = l.id and
                                q.location_id = sl.id
-                               and (%(location_id)s is null or q.location_id = %(location_id)s)
-                               and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                               and (%(location_id)s
+                               is null or
+                               q.location_id = %(location_id)s)
+                               and (%(location_usage)s
+                               is null or
+                               sl.usage = %(location_usage)s)
                       )
                       and (t.company_id is null or t.company_id = %(company_id)s)
                       and (%(product_id)s is null or l.product_id = %(product_id)s)
@@ -199,23 +198,32 @@ class ProductService(Component):
                          from stock_quant q, stock_location sl
                          where q.product_id = p.id and
                                q.location_id = sl.id
-                               and (%(location_id)s is null or q.location_id = %(location_id)s)
-                               and (%(location_usage)s is null or sl.usage = %(location_usage)s)
+                               and (%(location_id)s
+                                is null or q.location_id = %(location_id)s)
+                               and (%(location_usage)s
+                                is null or sl.usage = %(location_usage)s)
                       )
                       and (t.company_id is null or t.company_id = %(company_id)s)
                       and (%(product_id)s is null or p.id = %(product_id)s)
             )
             select pll.location_id, pll.lot_id, pll.lot_name, pll.product_id,
                    p.default_code as product_code,
-                   coalesce(tr.name, t.name) ||
+                   case
+                       when t.name::text like '{%%' then
+                            coalesce(
+                                t.name ->> %(lang)s,
+                                t.name ->> 'en_US',
+                                t.name::text
+                            )
+                       else t.name::text
+                   end ||
                        coalesce(' - ' || pv.attribute_name, '') as product_name,
                    p.barcode as product_barcode, t.tracking as product_tracking,
                    t.categ_id, c.name as categ_name, pll.quantity
             from product_lot_location pll
                      left join product_variant pv on pv.product_id = pll.product_id,
                  product_product p,
-                 product_template t
-                    left join product_template_name_trl tr on t.id = tr.id,
+                 product_template t,
                  product_category c
             where pll.product_id = p.id and
                   p.product_tmpl_id = t.id and
@@ -281,7 +289,8 @@ class ProductService(Component):
                         "category_id": product["categ_id"],
                         "category_name": product["categ_name"],
                         "lot_type": product["tracking"],
-                        # # "asset_category_id": product.sudo().asset_category_id.id or None,
+                        # # "asset_category_id":
+                        #   product.sudo().asset_category_id.id or None,
                         # # "asset_category_name": product.sudo().asset_category_id.name
                         # # or None,
                         "lots": lots,

@@ -1,5 +1,6 @@
 # Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _
@@ -75,7 +76,7 @@ class InventoryService(Component):
                 raise ValidationError(
                     _("The product does not need a serial/lot number")
                 )
-            lot = self.env["stock.production.lot"].search(
+            lot = self.env["stock.lot"].search(
                 [
                     ("company_id", "=", company.id),
                     ("product_id", "=", product.id),
@@ -89,7 +90,7 @@ class InventoryService(Component):
             if not lot:
                 if not kwargs["create_lot"]:
                     raise ValidationError(_("Lot/serial not found: %s") % lot_code)
-                lot = self.env["stock.production.lot"].create(
+                lot = self.env["stock.lot"].create(
                     {
                         "product_id": product.id,
                         "name": lot_code,
@@ -98,26 +99,31 @@ class InventoryService(Component):
                 )
 
         # Inventory
-        line_values = {
-            "location_id": location.id,
+        quant_values = {
             "product_id": product.id,
-            "product_uom_id": product.uom_id.id,
-            "product_qty": kwargs["quantity"],
+            "quantity": kwargs["quantity"],
+            "location_id": location.id,
         }
         if lot:
-            line_values["prod_lot_id"] = lot.id
+            quant_values["lot_id"] = lot.id
 
+        stock_quant = self.env["stock.quant"].create(quant_values)
+
+        # Create inventory values
         inventory_values = {
-            "line_ids": [(0, 0, line_values)],
+            "product_selection": "manual",
+            "location_ids": [(4, location.id)],
+            "product_ids": [(4, product.id)],
+            "stock_quant_ids": [(4, stock_quant.id)],
         }
 
         # create inventory
         inventory = self.env["stock.inventory"].create(inventory_values)
 
         # Validate Picking
-        inventory.action_start()
+        inventory.action_state_to_in_progress()
         if kwargs["validate"]:
-            inventory.action_validate()
+            inventory.action_state_to_done()
         return {"inventory_id": inventory.id}
 
     def _validator_create(self):

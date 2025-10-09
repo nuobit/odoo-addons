@@ -1,5 +1,6 @@
 # Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright 2021 NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _
@@ -103,7 +104,7 @@ class OperationService(Component):
         if moves:
             picking_values.update(
                 {
-                    "move_lines": [(0, False, v) for v in moves],
+                    "move_ids": [(0, False, v) for v in moves],
                 }
             )
 
@@ -114,7 +115,7 @@ class OperationService(Component):
         picking_id = self.env["stock.picking"].create(picking_values)
 
         # Create move_lines
-        for move in picking_id.move_lines:
+        for move in picking_id.move_ids:
             product_id = move.product_id
             uom_id = move.product_uom
             move_lines = []
@@ -123,7 +124,7 @@ class OperationService(Component):
                     "product_id": product_id.id,
                     "location_id": src_location_id.id,
                     "location_dest_id": dst_location_id.id,
-                    "qty_done": ml["quantity"],
+                    "quantity": ml["quantity"],
                     "product_uom_id": uom_id.id,
                     "picking_id": picking_id.id,
                 }

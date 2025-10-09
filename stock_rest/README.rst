@@ -47,17 +47,17 @@ Credits
 Authors
 -------
 
-* NuoBiT Solutions
-* S.L.
+* NuoBiT Solutions SL
 
 Contributors
 ------------
 
 - `NuoBiT <https://www.nuobit.com>`__:
 
-  - Eric Antones <eantones@nuobit.com>
-  - Kilian Niubo <kniubo@nuobit.com>
-  - Bijaya Kumal <bkumal@nuobit.com>
+  - Eric Antones eantones@nuobit.com
+  - Kilian Niubo kniubo@nuobit.com
+  - Bijaya Kumal bkumal@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------
