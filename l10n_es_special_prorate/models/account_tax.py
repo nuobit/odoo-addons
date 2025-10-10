@@ -7,6 +7,13 @@ from odoo.exceptions import ValidationError
 from . import account_tax_mixin
 
 
+def prorate_context(obj, date, company_id):
+    return (
+        fields.Date.to_string(fields.Date.context_today(obj, date)),
+        company_id,
+    )
+
+
 class AccountTax(models.Model):
     _inherit = "account.tax"
 
@@ -46,7 +53,7 @@ class AccountTax(models.Model):
                         )
                     context = {}
                     if rec.prorate:
-                        context = dict(prorate={"date": date, "company_id": company_id})
+                        context = dict(prorate=prorate_context(rec, date, company_id))
                     value += (
                         rec.amount
                         * non_deductible_rep_line.with_context(**context).factor
