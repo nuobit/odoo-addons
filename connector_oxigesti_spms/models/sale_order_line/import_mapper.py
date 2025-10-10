@@ -43,8 +43,8 @@ class OxigestiSpmsSaleOrderLineImporterMapper(Component):
         external_id = record["LinhaDispensa_Sistema"]
         product = binder.to_internal(external_id, unwrap=True)
         assert product, (
-            "product_id %s should have been imported in "
-            "SaleOrderImporter._import_dependencies" % (external_id,)
+            f"product_id {external_id} should have been imported in "
+            f"SaleOrderImporter._import_dependencies"
         )
         # TODO: Move this to upper class
         binding = self.options["binding"]
@@ -69,8 +69,8 @@ class OxigestiSpmsSaleOrderLineImporterMapper(Component):
             return {"spms_suspension_reason_id": None}
         suspension_reason = binder.to_internal(external_id, unwrap=True)
         assert suspension_reason, (
-            "spms_suspension_reason_id %s should have been imported in "
-            "SaleOrderImporter._import_dependencies" % (external_id,)
+            f"spms_suspension_reason_id {external_id} should have been imported in "
+            f"SaleOrderImporter._import_dependencies"
         )
         return {"spms_suspension_reason_id": suspension_reason.id}
 
@@ -81,8 +81,8 @@ class OxigestiSpmsSaleOrderLineImporterMapper(Component):
         external_id = record["TipoPrescricao"]
         prescription_type = binder.to_internal(external_id, unwrap=True)
         assert prescription_type, (
-            "spms_prescription_type_id %s should have been imported in "
-            "SaleOrderImporter._import_dependencies" % (external_id,)
+            f"spms_prescription_type_id {external_id} should have been imported in "
+            f"SaleOrderImporter._import_dependencies"
         )
         return {"spms_prescription_type_id": prescription_type.id}
 
@@ -93,8 +93,8 @@ class OxigestiSpmsSaleOrderLineImporterMapper(Component):
         external_id = record["LinhaDispensa_Contexto"]
         context = binder.to_internal(external_id, unwrap=True)
         assert context, (
-            "spms_context_id %s should have been imported in "
-            "SaleOrderImporter._import_dependencies" % (external_id,)
+            f"spms_context_id {external_id} should have been imported in "
+            f"SaleOrderImporter._import_dependencies"
         )
         return {"spms_context_id": context.id}
 

@@ -386,22 +386,22 @@
     </record>
 
     <record id="view_tree_oxigesti_spms_backend" model="ir.ui.view">
-        <field name="name">oxigesti.spms.backend.tree</field>
+        <field name="name">oxigesti.spms.backend.list</field>
         <field name="model">oxigesti.spms.backend</field>
         <field name="arch" type="xml">
-            <tree string="Oxigesti SPMS Backends">
+            <list string="Oxigesti SPMS Backends">
                 <field name="name" />
                 <field name="db_user" />
                 <field name="db_host" />
                 <field name="db_port" />
                 <field name="state" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="oxigesti_spms_backend_action" model="ir.actions.act_window">
         <field name="name">Oxigesti Backends</field>
         <field name="res_model">oxigesti.spms.backend</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

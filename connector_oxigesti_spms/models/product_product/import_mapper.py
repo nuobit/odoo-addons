@@ -41,7 +41,7 @@ class OxigestiSpmsProductProductImporterMapper(Component):
         external_id = record["Lote"]
         lot = binder.to_internal(external_id, unwrap=True)
         assert lot, (
-            "spms_lot_id %s should have been imported in "
-            "SaleOrderImporter._import_dependencies" % (external_id,)
+            f"spms_lot_id {external_id} should have been imported in "
+            f"SaleOrderImporter._import_dependencies"
         )
         return {"spms_lot_id": lot.id}

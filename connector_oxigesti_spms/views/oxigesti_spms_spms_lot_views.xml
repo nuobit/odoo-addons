@@ -18,10 +18,10 @@
     </record>
 
     <record id="oxigesti_spms_spms_lot_view_tree" model="ir.ui.view">
-        <field name="name">oxigesti.spms.spms.lot.tree</field>
+        <field name="name">oxigesti.spms.spms.lot.list</field>
         <field name="model">oxigesti.spms.spms.lot</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <list editable="bottom">
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="oxigesti_spms_id" />
@@ -33,12 +33,12 @@
                     help="Resynchronize the export of the SPMS Lot to Oxigesti SPMS."
                     icon="fa-cloud-upload fa-lg"
                 />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="oxigesti_spms_spms_lot_action" model="ir.actions.act_window">
         <field name="name">SPMS Lot</field>
         <field name="res_model">oxigesti.spms.spms.lot</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

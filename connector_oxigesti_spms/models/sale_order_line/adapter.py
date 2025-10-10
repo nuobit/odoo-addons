@@ -25,8 +25,11 @@ class SaleOrderLineAdapter(Component):
             f."MotivoSuspensao", m."Codigo" AS "CodigoMotivoSuspensao",
             f."FacturaId"
             FROM dbo.Odoo_SPMS_Facturas_Dispensas f
-                    INNER JOIN dbo.Odoo_SPMS_Contextos c ON f."LinhaDispensa_Contexto" = c."Id"
-                    INNER JOIN dbo.Odoo_SPMS_TipoPrescricao p ON f."TipoPrescricao"  = p."Id"
-                    LEFT JOIN dbo.Odoo_SPMS_MotivoSuspensao m ON f."MotivoSuspensao" = m."Id"
+                    INNER JOIN dbo.Odoo_SPMS_Contextos c
+                    ON f."LinhaDispensa_Contexto" = c."Id"
+                    INNER JOIN dbo.Odoo_SPMS_TipoPrescricao p
+                    ON f."TipoPrescricao"  = p."Id"
+                    LEFT JOIN dbo.Odoo_SPMS_MotivoSuspensao m
+                    ON f."MotivoSuspensao" = m."Id"
 
             """

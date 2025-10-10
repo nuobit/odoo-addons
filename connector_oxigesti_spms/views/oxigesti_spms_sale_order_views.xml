@@ -17,10 +17,10 @@
         </field>
     </record>
     <record id="oxigesti_spms_sale_order_view_tree" model="ir.ui.view">
-        <field name="name">oxigesti.spms.sale.order.view.tree</field>
+        <field name="name">oxigesti.spms.sale.order.view.list</field>
         <field name="model">oxigesti.spms.sale.order</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <list editable="bottom">
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="oxigesti_spms_id" />
@@ -32,12 +32,12 @@
                     help="Resynchronize the export of the Sale Orders to Oxigesti SPMS."
                     icon="fa-cloud-upload fa-lg"
                 />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="oxigesti_spms_sale_order_action" model="ir.actions.act_window">
         <field name="name">Orders</field>
         <field name="res_model">oxigesti.spms.sale.order</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>
