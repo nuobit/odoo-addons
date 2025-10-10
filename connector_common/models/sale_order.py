@@ -15,7 +15,6 @@ class SaleOrder(models.Model):
         return True
 
     def action_cancel(self):
-        for rec in self:
-            super(SaleOrder, rec).action_cancel()
-            self._event("on_cancel_order").notify(rec)
-        return True
+        res = super().action_cancel()
+        self._event("on_cancel_order").notify(self)
+        return res
