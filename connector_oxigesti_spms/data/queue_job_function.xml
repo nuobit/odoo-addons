@@ -2,7 +2,7 @@
 <!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo noupdate="0">
-                                    <!-- Partners -->
+    <!-- Partners -->
     <record
         id="oxigesti_spms_res_partner_job_function_import_batch"
         model="queue.job.function"
@@ -67,7 +67,7 @@
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
 
-                                    <!-- Products -->
+    <!-- Products -->
     <record
         id="oxigesti_spms_product_product_job_function_import_batch"
         model="queue.job.function"
@@ -132,7 +132,7 @@
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
 
-                                    <!-- Sale Orders -->
+    <!-- Sale Orders -->
     <record
         id="oxigesti_spms_sale_order_job_function_import_batch"
         model="queue.job.function"
@@ -197,7 +197,7 @@
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
 
-                                    <!-- SPMS Context  -->
+    <!-- SPMS Context  -->
     <record
         id="oxigesti_spms_spms_context_job_function_import_batch"
         model="queue.job.function"
@@ -262,7 +262,7 @@
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
 
-                                <!-- SPMS Lot  -->
+    <!-- SPMS Lot  -->
     <record
         id="oxigesti_spms_spms_lot_job_function_import_batch"
         model="queue.job.function"
@@ -294,7 +294,6 @@
         />
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
-
 
     <record
         id="oxigesti_spms_spms_lot_job_function_export_batch"
@@ -328,7 +327,7 @@
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
 
-                        <!-- SPMS Prescription Type  -->
+    <!-- SPMS Prescription Type  -->
     <record
         id="oxigesti_spms_spms_prescription_type_job_function_import_batch"
         model="queue.job.function"
@@ -360,7 +359,6 @@
         />
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
-
 
     <record
         id="oxigesti_spms_spms_prescription_type_job_function_export_batch"
@@ -394,7 +392,7 @@
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
 
-                            <!-- SPMS Suspension Reason  -->
+    <!-- SPMS Suspension Reason  -->
     <record
         id="oxigesti_spms_spms_suspension_reason_job_function_import_batch"
         model="queue.job.function"
@@ -427,7 +425,6 @@
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
 
-
     <record
         id="oxigesti_spms_spms_suspension_reason_job_function_export_batch"
         model="queue.job.function"
@@ -459,5 +456,4 @@
         />
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
-
 </odoo>

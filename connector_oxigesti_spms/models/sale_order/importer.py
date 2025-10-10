@@ -24,7 +24,6 @@ class OxigestiSPMSSaleOrderRecordDirectImporter(Component):
     _apply_on = "oxigesti.spms.sale.order"
 
     def _import_dependencies(self, external_data, sync_date):
-
         # Partners
         external_partner_id = external_data["UnidadeLocalSalude"]
         self._import_dependency(

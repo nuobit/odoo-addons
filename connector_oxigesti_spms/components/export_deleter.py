@@ -2,7 +2,6 @@ from odoo.addons.component.core import AbstractComponent
 
 
 class ConnectorExtensionRecordDirectExportDeleter(AbstractComponent):
-
     _name = "oxigesti.spms.generic.record.direct.export.deleter"
     _inherit = [
         "connector.extension.record.direct.export.deleter",
@@ -11,7 +10,6 @@ class ConnectorExtensionRecordDirectExportDeleter(AbstractComponent):
 
 
 class ConnectorExtensionBatchExportDeleter(AbstractComponent):
-
     _name = "oxigesti.spms.generic.batch.export.deleter"
     _inherit = [
         "connector.extension.batch.export.deleter",
@@ -20,7 +18,6 @@ class ConnectorExtensionBatchExportDeleter(AbstractComponent):
 
 
 class ConnectorExtensionBatchtDirectExportDeleter(AbstractComponent):
-
     _name = "oxigesti.spms.generic.batch.direct.export.deleter"
     _inherit = [
         "connector.extension.batch.direct.export.deleter",
@@ -29,7 +26,6 @@ class ConnectorExtensionBatchtDirectExportDeleter(AbstractComponent):
 
 
 class ConnectorExtensionBatchDelayedExportDeleter(AbstractComponent):
-
     _name = "oxigesti.spms.generic.batch.delayed.export.deleter"
     _inherit = [
         "connector.extension.batch.export.deleter",

@@ -42,7 +42,6 @@ class OxigestiSpmsSaleOrderImporterMapper(Component):
     @changed_by("partner_id")
     @mapping
     def partner_id(self, record):
-
         binder = self.binder_for("oxigesti.spms.res.partner")
         external_id = record["UnidadeLocalSalude"]
 

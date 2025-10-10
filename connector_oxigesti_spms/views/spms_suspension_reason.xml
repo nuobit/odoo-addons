@@ -16,10 +16,14 @@
                         name="connector"
                         groups="connector.group_connector_manager"
                     >
-                    <group string="Oxigesti SPMS Bindings">
-                        <field name="oxigesti_spms_bind_ids" colspan="2" nolabel="1" />
-                    </group>
-                </page>
+                        <group string="Oxigesti SPMS Bindings">
+                            <field
+                                name="oxigesti_spms_bind_ids"
+                                colspan="2"
+                                nolabel="1"
+                            />
+                        </group>
+                    </page>
                 </notebook>
             </xpath>
         </field>

@@ -65,7 +65,6 @@
                                 password="True"
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
-
                         </group>
                     </group>
                     <group>
@@ -91,10 +90,8 @@
                     </group>
                     <notebook>
                         <page name="synchronizers" string="Synchronizers">
-                            <div class="oe_form_field">
-
-                            </div>
-                                <!-- Sale Order Buttons -->
+                            <div class="oe_form_field" />
+                            <!-- Sale Order Buttons -->
                             <group string="Sale Orders">
                                 <div>
                                     <label
@@ -217,7 +214,7 @@
                                     string="Export Products"
                                 />
                             </group>
-                                <!-- SPMS Context Buttons -->
+                            <!-- SPMS Context Buttons -->
                             <group string="SPMS Contexts">
                                 <div>
                                     <label
@@ -258,7 +255,7 @@
                                     string="Export SPMS Contexts"
                                 />
                             </group>
-                                <!-- SPMS Lot Buttons -->
+                            <!-- SPMS Lot Buttons -->
                             <group string="SPMS Lots">
                                 <div>
                                     <label
@@ -299,7 +296,7 @@
                                     string="Export SPMS Lot"
                                 />
                             </group>
-                                <!-- SPMS Prescription Type Buttons -->
+                            <!-- SPMS Prescription Type Buttons -->
                             <group string="SPMS Prescription Types">
                                 <div>
                                     <label
@@ -340,7 +337,7 @@
                                     string="Export SPMS Prescription Type"
                                 />
                             </group>
-                                <!-- SPMS Suspension Reason Buttons -->
+                            <!-- SPMS Suspension Reason Buttons -->
                             <group string="SPMS Suspension Reasons">
                                 <div>
                                     <label

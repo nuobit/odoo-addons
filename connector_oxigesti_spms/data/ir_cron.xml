@@ -2,7 +2,7 @@
 <!-- Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo noupdate="1">
-                        <!-- CUSTOMER -->
+    <!-- CUSTOMER -->
     <record model="ir.cron" id="cron_connector_oxigesti_spms_import_customer">
         <field name="name">Oxigesti SPMS Import Customers</field>
         <field name="active" eval="True" />
@@ -33,7 +33,7 @@
         <field name="code">model.scheduler("action_export_partner_since")</field>
     </record>
 
-                        <!-- PRODUCTS -->
+    <!-- PRODUCTS -->
     <record model="ir.cron" id="cron_connector_oxigesti_spms_import_product">
         <field name="name">Oxigesti SPMS Import Products</field>
         <field name="active" eval="True" />
@@ -64,7 +64,7 @@
         <field name="code">model.scheduler("action_export_product_since")</field>
     </record>
 
-                            <!-- SALE ORDER -->
+    <!-- SALE ORDER -->
     <record model="ir.cron" id="cron_connector_oxigesti_spms_import_sale_order">
         <field name="name">Oxigesti SPMS Import Sale Orders</field>
         <field name="active" eval="True" />
@@ -95,7 +95,7 @@
         <field name="code">model.scheduler("action_export_sale_order_since")</field>
     </record>
 
-                                <!-- SPMS CONTEXT -->
+    <!-- SPMS CONTEXT -->
     <record model="ir.cron" id="cron_connector_oxigesti_spms_import_spms_context">
         <field name="name">Oxigesti SPMS Import SPMS Context</field>
         <field name="active" eval="True" />
@@ -126,7 +126,7 @@
         <field name="code">model.scheduler("action_export_spms_context_since")</field>
     </record>
 
-                                <!-- SPMS LOT -->
+    <!-- SPMS LOT -->
     <record model="ir.cron" id="cron_connector_oxigesti_spms_import_spms_lot">
         <field name="name">Oxigesti SPMS Import SPMS Lot</field>
         <field name="active" eval="True" />
@@ -156,7 +156,7 @@
         <field name="model_id" ref="model_oxigesti_spms_backend" />
         <field name="code">model.scheduler("action_export_spms_lot_since")</field>
     </record>
-                        <!-- SPMS PRESCRIPTION TYPE -->
+    <!-- SPMS PRESCRIPTION TYPE -->
     <record
         model="ir.cron"
         id="cron_connector_oxigesti_spms_import_spms_prescription_type"
@@ -197,9 +197,9 @@
         >model.scheduler("action_export_spms_prescription_type_since")</field>
     </record>
 
-                                <!-- SPMS SUSPENSION REASON -->
+    <!-- SPMS SUSPENSION REASON -->
 
-                        <!-- SPMS SUSPENSION REASON -->
+    <!-- SPMS SUSPENSION REASON -->
     <record
         model="ir.cron"
         id="cron_connector_oxigesti_spms_import_spms_suspension_reason"

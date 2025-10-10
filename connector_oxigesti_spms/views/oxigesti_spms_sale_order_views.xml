@@ -25,7 +25,7 @@
                 <field name="odoo_id" />
                 <field name="oxigesti_spms_id" />
                 <field name="sync_date" />
-                 <button
+                <button
                     name="resync_export"
                     type="object"
                     class="btn btn-info"
