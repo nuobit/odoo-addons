@@ -1,17 +1,11 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import datetime
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 from . import account_tax_mixin
-
-
-def prorate_context(obj, date, company_id):
-    return (
-        fields.Date.to_string(fields.Date.context_today(obj, date)),
-        company_id,
-    )
 
 
 class AccountTax(models.Model):
@@ -29,7 +23,27 @@ class AccountTax(models.Model):
     def _check_prorate(self):
         account_tax_mixin.check_prorate(self)
 
-    def get_non_deductible_percent(self, date, company_id, is_refund):
+    @api.model
+    def prorate_context(self, record, date, company):
+        if not date:
+            date_norm = fields.Date.context_today(record)
+        else:
+            if isinstance(date, datetime.date):
+                date_norm = date
+            elif isinstance(date, datetime.datetime):
+                date_norm = fields.Date.context_today(record, date)
+            else:
+                raise ValidationError(
+                    _("Invalid date format '%s' for prorate context") % date
+                )
+        return {
+            "prorate": (
+                fields.Date.to_string(date_norm),
+                company.id,
+            )
+        }
+
+    def get_non_deductible_percent(self, date, company, is_refund):
         repartition_field = (
             is_refund
             and "refund_repartition_line_ids"
@@ -53,7 +67,7 @@ class AccountTax(models.Model):
                         )
                     context = {}
                     if rec.prorate:
-                        context = dict(prorate=prorate_context(rec, date, company_id))
+                        context = self.prorate_context(rec, date, company)
                     value += (
                         rec.amount
                         * non_deductible_rep_line.with_context(**context).factor
@@ -61,7 +75,7 @@ class AccountTax(models.Model):
             elif rec.amount_type == "group":
                 for tax_child in rec.children_tax_ids:
                     value += tax_child.get_non_deductible_percent(
-                        date, company_id, is_refund
+                        date, company, is_refund
                     )
             else:
                 raise NotImplementedError(
