@@ -1,14 +1,7 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
-
-
-def prorate_context(invoice):
-    return (
-        fields.Date.to_string(invoice.date or fields.Date.context_today(invoice)),
-        invoice.company_id.id,
-    )
+from odoo import api, models
 
 
 class AccountMove(models.Model):
@@ -17,7 +10,9 @@ class AccountMove(models.Model):
     def _recompute_tax_lines(
         self, recompute_tax_base_amount=False, tax_rep_lines_to_recompute=None
     ):
-        self = self.with_context(prorate=prorate_context(self))
+        self = self.with_context(
+            **self.env["account.tax"].prorate_context(self, self.date, self.company_id)
+        )
         return super(AccountMove, self)._recompute_tax_lines(
             recompute_tax_base_amount=recompute_tax_base_amount,
             tax_rep_lines_to_recompute=tax_rep_lines_to_recompute,
@@ -46,7 +41,11 @@ class AccountMoveLine(models.Model):
         move_type,
     ):
         if taxes and self.move_id:
-            taxes = taxes.with_context(prorate=prorate_context(self.move_id))
+            taxes = taxes.with_context(
+                **self.env["account.tax"].prorate_context(
+                    self.move_id, self.move_id.date, self.move_id.company_id
+                )
+            )
         return super()._get_price_total_and_subtotal_model(
             price_unit, quantity, discount, currency, product, partner, taxes, move_type
         )
