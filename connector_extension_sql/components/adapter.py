@@ -186,6 +186,8 @@ class SQLAdapterCRUD(AbstractComponent):
 
         :rtype: list
         """
+        if self.backend_record.state != "validated":
+            return []
         _logger.debug("method search_read, sql %s, domain %s", self._sql_read, domain)
         if not domain:
             domain = []
@@ -199,6 +201,8 @@ class SQLAdapterCRUD(AbstractComponent):
 
         :rtype: list
         """
+        if self.backend_record.state != "validated":
+            return []
         _logger.debug("method search, sql %s, domain %s", self._sql_read, domain)
         if not domain:
             domain = []
@@ -215,6 +219,8 @@ class SQLAdapterCRUD(AbstractComponent):
 
         :rtype: dict
         """
+        if self.backend_record.state != "validated":
+            return {}
         _logger.debug(
             "method read, sql %s id %s, attributes %s", self._sql_read, _id, attributes
         )
@@ -231,6 +237,8 @@ class SQLAdapterCRUD(AbstractComponent):
     # write
     # pylint: disable=W8106
     def write(self, _id, values_d):
+        if self.backend_record.state != "validated":
+            return 0
         return self._exec("write", _id, values_d)
 
     def _check_write_result(self, conn, cr, id_d):
@@ -308,6 +316,8 @@ class SQLAdapterCRUD(AbstractComponent):
     # create
     # pylint: disable=W8106
     def create(self, values_d):
+        if self.backend_record.state != "validated":
+            return {}
         return self._exec("create", values_d)
 
     def _exec_create(self, values_d):  # pylint: disable=W8106
@@ -389,6 +399,8 @@ class SQLAdapterCRUD(AbstractComponent):
 
     # delete
     def delete(self, _id):
+        if self.backend_record.state != "validated":
+            return 0
         return self._exec("delete", _id)
 
     def _exec_delete(self, _id):
