@@ -26,7 +26,7 @@ class AccountMoveLine(models.Model):
         value = self.balance
         tax_non_deductible_percent = self.tax_ids.get_non_deductible_percent(
             self.move_id.date or self.move_id.invoice_date,
-            self.move_id.company_id.id or self.env.company.id,
+            self.move_id.company_id or self.env.company,
             self.move_id.move_type in ("out_refund", "in_refund"),
         )
         if tax_non_deductible_percent:
