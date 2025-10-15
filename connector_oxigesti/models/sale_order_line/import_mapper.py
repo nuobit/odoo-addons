@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -46,8 +47,8 @@ class SaleOrderLineImportMapper(Component):
         )
         if not binding:
             raise AssertionError(
-                "Product %s should have been exported in "
-                "SaleOrderLineExporter._sync_dependencies" % (oxigesti_articulo,)
+                f"Product {oxigesti_articulo} should have been exported in "
+                f"SaleOrderLineExporter._sync_dependencies"
             )
         if len(binding) > 1:
             raise AssertionError(

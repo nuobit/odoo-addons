@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 """
@@ -61,10 +62,10 @@ class BinderComposite(AbstractComponent):
             if err.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
                     "A database error caused the failure of the job:\n"
-                    "%s\n\n"
+                    f"{err}\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
-                    "the same record. The job will be retried later." % err
-                )
+                    "the same record. The job will be retried later."
+                ) from err
             else:
                 raise
 
@@ -82,14 +83,14 @@ class BinderComposite(AbstractComponent):
 
         if self._is_binding(relation):
             raise Exception(
-                "The source object %s must not be a binding" % relation.model._name
+                f"The source object {relation.model._name} must not be a binding"
             )
 
         if not set(self._odoo_extra_fields).issubset(set(binding_extra_vals.keys())):
             raise Exception(
-                "If _odoo_extra_fields are defined %s, "
-                "you must specify the correpsonding binding_extra_vals %s"
-                % (self._odoo_extra_fields, binding_extra_vals)
+                f"If _odoo_extra_fields are defined {self._odoo_extra_fields}, "
+                f"you must specify the "
+                f"correpsonding binding_extra_vals {binding_extra_vals}"
             )
         domain = [
             (self._odoo_field, "=", relation.id),
@@ -160,8 +161,8 @@ class BinderComposite(AbstractComponent):
 
         if not self._is_binding(binding):
             raise Exception(
-                "Expected binding '%s' and found regular model '%s'"
-                % (self.model._name, relation._name)
+                "Expected binding '{self.model._name}' ç"
+                "and found regular model '{relation._name}'"
             )
 
         return binding
@@ -233,12 +234,7 @@ class BinderComposite(AbstractComponent):
         """
         # Prevent False, None, or "", but not 0
         assert (external_id or external_id == 0) and binding, (
-            "external_id or binding missing, "
-            "got: %s, %s"
-            % (
-                external_id,
-                binding,
-            )
+            f"external_id or binding missing, " f"got: {external_id}, {binding}"
         )
         # avoid to trigger the export when we modify the `external_id`
         now_fmt = fields.Datetime.now()

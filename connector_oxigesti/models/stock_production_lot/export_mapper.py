@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -22,13 +23,13 @@ class StockProductionLotExportMapper(Component):
         binder = self.binder_for("oxigesti.product.product")
         external_id = binder.to_external(product_id, wrap=True)
         assert external_id, (
-            "%s: There's no bond between Odoo product and "
+            f"{record}: There's no bond between Odoo product and "
             "Oxigesti product, so the Oxigesti ID cannot be obtained. "
             "At this stage, the Oxigesti product should have been linked via "
             "ProductProduct._export_dependencies. "
-            "If not, then this product %s (%s) with code '%s' "
-            "does not exist in Oxigesti."
-            % (record, product_id, product_id.display_name, product_id.default_code)
+            f"If not, then this product {product_id} "
+            f"({product_id.display_name}) with code "
+            f"'{product_id.default_code}' does not exist in Oxigesti."
         )
         adapter = self.component(usage="backend.adapter")
         return adapter.id2dict(external_id)

@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import json
@@ -35,10 +36,11 @@ class SaleOrderImporter(Component):
             if order.name != odoo_num_alb:
                 raise ValidationError(
                     _(
-                        "Inconsistent state: The Odoo sale order number on Oxigesti '%s' "
-                        "is different than the one it's been trying to update on Odoo '%s'"
+                        f"Inconsistent state: The Odoo sale "
+                        f"order number on Oxigesti '{odoo_num_alb}' "
+                        f"is different than the one it's been "
+                        f"trying to update on Odoo '{order.name}'"
                     )
-                    % (odoo_num_alb, order.name)
                 )
             if order.state != "draft":
                 state_option = dict(
@@ -47,8 +49,9 @@ class SaleOrderImporter(Component):
                     .get("selection")
                 )
                 return _(
-                    "The Order %s is already imported and is in state '%s' "
-                    "-> Update not allowed" % (order.name, state_option[order.state])
+                    f"The Order {order.name} is already "
+                    f"imported and is in state '{state_option[order.state]}' "
+                    f"-> Update not allowed"
                 )
         else:
             if odoo_num_alb:
@@ -148,23 +151,24 @@ class SaleOrderImporter(Component):
             for order_line_id in stock_order_lines:
                 if len(order_line_id.move_ids) > 1:
                     raise AssertionError(
-                        "The order line '%s' has more than one move lines. "
-                        "It should be exactly 1. " % (order_line_id,)
+                        f"The order line '{order_line_id}' "
+                        f"has more than one move lines. "
+                        f"It should be exactly 1."
                     )
                 move_id = order_line_id.move_ids
                 if move_id.move_line_ids:
                     raise AssertionError(
-                        "The movement '%s' already has lines. "
-                        "It should be empty before inserting the new data" % (move_id,)
+                        f"The movement '{move_id}' already has lines. "
+                        f"It should be empty before inserting the new data"
                     )
                 if not picking_id:
                     picking_id = move_id.picking_id
                 else:
                     if picking_id != move_id.picking_id:
                         raise AssertionError(
-                            "Unexpected error! The same order contains lines "
-                            "belonging to a different picking '%s' and '%s'"
-                            % (picking_id.name, move_id.picking_id.name)
+                            f"Unexpected error! The same order contains lines "
+                            f"belonging to a different picking '{picking_id.name}"
+                            f"' and '{move_id.picking_id.name}'"
                         )
                 move_line_id_d = {
                     "product_id": move_id.product_id.id,
@@ -182,7 +186,7 @@ class SaleOrderImporter(Component):
                     tracking_name = "999"
 
                 if tracking_name:
-                    Lot = self.env["stock.production.lot"]
+                    Lot = self.env["stock.lot"]
                     lot_id = Lot.search(
                         [
                             ("company_id", "=", self.backend_record.company_id.id),

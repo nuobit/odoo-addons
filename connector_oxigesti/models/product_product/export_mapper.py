@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -37,10 +38,11 @@ class ProductProductExportMapper(Component):
         if default_code:
             if record.default_code != record.default_code.strip():
                 raise AssertionError(
-                    "The Odoo product with Name '%s' has Internal reference "
-                    " with leading or trailing spaces '%s'. "
-                    "Please remove these spaces and requeue the job."
-                    % (record.name, record.default_code)
+                    f"The Odoo product with Name "
+                    f"'{record.name}' has Internal reference "
+                    f" with leading or trailing "
+                    f"spaces '{record.default_code}'. "
+                    f"Please remove these spaces and requeue the job."
                 )
         else:
             raise AssertionError(
@@ -68,12 +70,12 @@ class ProductProductExportMapper(Component):
         binder = self.binder_for("oxigesti.product.category")
         external_id = binder.to_external(category, wrap=True)
         assert external_id, (
-            "%s: There's no bond between Odoo category and "
-            "Oxigesti category, so the Oxigesti ID cannot be obtained. "
-            "At this stage, the Oxigesti category should have been linked via "
-            "ProductCategory._export_dependencies. "
-            "If not, then this category %s (%s) does not exist in Oxigesti."
-            % (category, category, category.display_name)
+            f"{category}: There's no bond between Odoo category and "
+            f"Oxigesti category, so the Oxigesti ID cannot be obtained. "
+            f"At this stage, the Oxigesti category should have been linked via "
+            f"ProductCategory._export_dependencies. "
+            f"If not, then this category {category}"
+            f" {category.display_name} does not exist in Oxigesti."
         )
 
         return {"Categoria": external_id[0]}

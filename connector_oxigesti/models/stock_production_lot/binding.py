@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -7,10 +8,10 @@ from odoo.exceptions import ValidationError
 
 
 class StockProductionLot(models.Model):
-    _inherit = "stock.production.lot"
+    _inherit = "stock.lot"
 
     oxigesti_bind_ids = fields.One2many(
-        comodel_name="oxigesti.stock.production.lot",
+        comodel_name="oxigesti.stock.lot",
         inverse_name="odoo_id",
         string="Oxigesti Bindings",
     )
@@ -22,7 +23,7 @@ class StockProductionLot(models.Model):
         for rec in self:
             rec.oxigesti_readonly = bool(
                 rec.sudo().oxigesti_bind_ids.filtered(
-                    lambda x: x.backend_id.company_id == rec.company_id
+                    lambda x, rec=rec: x.backend_id.company_id == rec.company_id
                 )
             )
 
@@ -63,11 +64,11 @@ class StockProductionLot(models.Model):
 class StockProductionLotBinding(models.Model):
     _name = "oxigesti.stock.production.lot"
     _inherit = "oxigesti.binding"
-    _inherits = {"stock.production.lot": "odoo_id"}
+    _inherits = {"stock.lot": "odoo_id"}
     _description = "Stock production lot binding"
 
     odoo_id = fields.Many2one(
-        comodel_name="stock.production.lot",
+        comodel_name="stock.lot",
         string="Stock Production Lot",
         required=True,
         ondelete="cascade",
@@ -84,10 +85,7 @@ class StockProductionLotBinding(models.Model):
         if since_date:
             domain += [("oxigesti_write_date", ">", since_date)]
         lot_ids = (
-            self.env["stock.production.lot"]
-            .with_context(active_test=False)
-            .search(domain)
-            .ids
+            self.env["stock.lot"].with_context(active_test=False).search(domain).ids
         )
         for ck in chunks(lot_ids, 500):
             ck_domain = [("id", "in", ck)]

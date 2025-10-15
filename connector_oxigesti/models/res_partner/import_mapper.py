@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -75,8 +76,8 @@ class ResPartnerImportMapper(Component):
             if partner:
                 if len(partner) > 1:
                     raise Exception(
-                        "There's more than one existing partner "
-                        "with the same Internal reference %s" % reference
+                        f"There's more than one existing partner "
+                        f"with the same Internal reference {reference}"
                     )
 
                 # check if exists another binding with the same partner
@@ -89,11 +90,15 @@ class ResPartnerImportMapper(Component):
                 if other_binding:
                     raise Exception(
                         _(
-                            "Already exists a binding with the partner: '%s' "
-                            "but with another external id: '%s'.\n"
+                            "Already exists a binding with "
+                            "the partner: '%(partner_name)s' "
+                            "but with another external id: '%(external_id)s'.\n"
                             "This could be caused by "
                             "a duplicated external reference on the backend"
                         )
-                        % (partner.name, other_binding.external_id_display)
+                        % {
+                            "partner_name": partner.name,
+                            "external_id": other_binding.external_id_display,
+                        }
                     )
                 return {"odoo_id": (partner.id, False, {"to_review": True})}

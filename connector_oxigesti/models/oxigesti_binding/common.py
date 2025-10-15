@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import hashlib
@@ -10,7 +11,7 @@ from odoo.exceptions import ValidationError
 
 
 def idhash(external_id):
-    if not isinstance(external_id, (tuple, list)):
+    if not isinstance(external_id, (tuple | list)):
         raise ValidationError(_("external id must be list or tuple"))
     external_id_hash = hashlib.sha256()
     for e in external_id:
@@ -23,7 +24,7 @@ def idhash(external_id):
         elif e is None:
             pass
         else:
-            raise Exception("Unexpected type for a key: type %s" % type(e))
+            raise Exception(f"Unexpected type for a key: type {type(e)}")
 
         external_id_hash.update(e9.encode("utf8"))
 
@@ -104,36 +105,39 @@ class OxigestiBinding(models.AbstractModel):
                 if external_id_hash == other_computed_external_id_hash:
                     raise ValidationError(
                         _(
-                            "Already exists another record %s with the s"
-                            "ame external_id %s (%s)%s.\n"
+                            "Already exists another record %(record)s with the same "
+                            "external_id %(external_id)s (%(hash)s)%(status)s.\n"
                             "If the existing record is and old record, "
                             "please remove its binding and try again."
                         )
-                        % (
-                            other.odoo_id,
-                            rec.external_id,
-                            external_id_hash,
-                            not active and " but archived" or "",
-                        )
+                        % {
+                            "record": other.odoo_id,
+                            "external_id": rec.external_id,
+                            "hash": external_id_hash,
+                            "status": not active and " but archived" or "",
+                        }
                     )
                 else:
                     raise ValidationError(
                         _(
-                            "Exists another record %s with the same external_id %s (%s)%s "
-                            "on binding but different ID fields values %s.\n"
+                            "Exists another record %(record)s with the same "
+                            "external_id %(external_id)s (%(hash)s)%(status)s "
+                            "on binding but different "
+                            "ID fields values %(computed_id)s.\n"
                             "This error occurs because the ID fields values were "
-                            "changed on the other record after it was linked to the backend.\n"
+                            "changed on the other record after it "
+                            "was linked to the backend.\n"
                             "You cannot change the values on ID fields "
                             "if the record has bindings. Please remove "
                             "the binding on the other record and try again."
                         )
-                        % (
-                            other.odoo_id,
-                            rec.external_id,
-                            external_id_hash,
-                            not active and " but archived" or "",
-                            other_computed_external_id,
-                        )
+                        % {
+                            "record": other.odoo_id,
+                            "external_id": rec.external_id,
+                            "hash": external_id_hash,
+                            "status": " but archived" if not active else "",
+                            "computed_id": other_computed_external_id,
+                        }
                     )
 
             rec.external_id_hash = external_id_hash

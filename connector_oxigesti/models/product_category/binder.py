@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -15,7 +16,7 @@ class ProductCategoryBinder(Component):
 
     def _get_external_id(self, binding):
         if not self._is_binding(binding):
-            raise Exception("The source object %s must be a binding" % binding._name)
+            raise Exception(f"The source object {binding._name} must be a binding")
 
         adapter = self.component(
             usage="backend.adapter", model_name="oxigesti.product.category"

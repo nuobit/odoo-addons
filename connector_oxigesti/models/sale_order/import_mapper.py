@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -127,8 +128,8 @@ class SaleOrderImportMapper(Component):
         binder = self.binder_for("oxigesti.res.partner")
         partner = binder.to_internal(external_id, unwrap=True)
         assert partner, (
-            "partner_id %s should have been imported in "
-            "SaleOrderImporter._import_dependencies" % (external_id,)
+            f"partner_id {external_id} should have been imported in "
+            f"SaleOrderImporter._import_dependencies"
         )
 
         return {"partner_id": partner.id}

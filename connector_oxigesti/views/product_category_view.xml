@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_category_view_form_connector_oxigesti" model="ir.ui.view">
@@ -34,10 +35,10 @@
     </record>
 
     <record id="oxigesti_product_category_view_tree" model="ir.ui.view">
-        <field name="name">oxigesti.product.category.tree</field>
+        <field name="name">oxigesti.product.category.list</field>
         <field name="model">oxigesti.product.category</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="external_id_display" readonly="True" />
@@ -48,13 +49,13 @@
                     string="Resynchronize"
                     icon="fa-refresh fa-lg"
                 />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="oxigesti_product_category_action" model="ir.actions.act_window">
         <field name="name">Product Categories</field>
         <field name="res_model">oxigesti.product.category</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

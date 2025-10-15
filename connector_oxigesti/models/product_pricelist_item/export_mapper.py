@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -25,13 +26,13 @@ class ProductPricelistItemExportMapper(Component):
         binder = self.binder_for("oxigesti.product.product")
         external_id = binder.to_external(product_id, wrap=True)
         assert external_id, (
-            "%s: There's no bond between Odoo product and "
+            f"{record}: There's no bond between Odoo product and "
             "Oxigesti product, so the Oxigesti ID cannot be obtained. "
             "At this stage, the Oxigesti product should have been linked via "
             "ProductProduct._export_dependencies. "
-            "If not, then this product %s (%s) with code '%s' "
+            f"If not, then this product {product_id.display_name} "
+            f"({product_id.default_code}) with code '%s' "
             "does not exist in Oxigesti."
-            % (record, product_id, product_id.display_name, product_id.default_code)
         )
 
         return {"CodigoArticulo": external_id[0]}
@@ -45,18 +46,18 @@ class ProductPricelistItemExportMapper(Component):
         if not external_id:
             display_name_l = []
             if partner_id.ref:
-                display_name_l.append("[%s]" % partner_id.ref)
+                display_name_l.append(f"[{partner_id.ref}]")
             if partner_id.name:
                 display_name_l.append(partner_id.name)
             display_name = " ".join(display_name_l)
             raise AssertionError(
-                "%s: There's no bond between Odoo partner and "
-                "Oxigesti partner so the Oxigesti ID cannot be obtained. "
-                "At this stage, the Oxigesti partner should have been linked via "
-                "ResPartner._import_dependencies. "
-                "If not, then this partner %s (%s) with code '%s' "
-                "does not exist in Oxigesti."
-                % (record, partner_id, display_name, partner_id.ref)
+                f"{record}: There's no bond between Odoo partner and "
+                f"Oxigesti partner so the Oxigesti ID cannot be obtained. "
+                f"At this stage, the Oxigesti partner should have been linked via "
+                f"ResPartner._import_dependencies. "
+                f"If not, then this partner {partner_id} "
+                f"({display_name}) with code '{partner_id.ref}' "
+                f"does not exist in Oxigesti."
             )
 
         return {"Codigo_Mutua": external_id[0]}

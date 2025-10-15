@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -92,7 +93,12 @@ class OxigestiImporter(AbstractComponent):
         # this one knows how to speak to Oxigesti
         backend_adapter = self.component(usage="backend.adapter")
 
-        lock_name = f"import({self.backend_record._name}, {self.backend_record.id}, {self.work.model_name}, {external_id})"
+        lock_name = (
+            f"import({self.backend_record._name}, "
+            f"{self.backend_record.id}, "
+            f"{self.work.model_name}, "
+            f"{external_id})"
+        )
 
         # read external data from Oxigesti
         self.external_data = backend_adapter.read(external_id)
@@ -136,7 +142,7 @@ class OxigestiImporter(AbstractComponent):
             odoo_link_field = self.binder._odoo_field
             values = internal_data.values(for_create=True)
             if odoo_link_field in values:
-                if isinstance(values[odoo_link_field], (tuple, list)):
+                if isinstance(values[odoo_link_field], (tuple | list)):
                     odoo_id, overwrite, add_fields = values[odoo_link_field]
                     if not overwrite:
                         values = internal_data.values()

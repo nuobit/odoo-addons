@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import _
 
@@ -40,7 +41,8 @@ class ResPartnerImportMapper(Component):
     #     if not binding:
     #         raise AssertionError(
     #             "Product %s should have been exported in "
-    #             "StockProductionLotImporter._import_dependencies" % (oxigesti_articulo,)
+    #             "StockProductionLotImporter._import_dependencies"
+    #             % (oxigesti_articulo,)
     #         )
     #     if len(binding) > 1:
     #         raise AssertionError(
@@ -94,7 +96,7 @@ class ResPartnerImportMapper(Component):
             if not product:
                 return
             stock_production_lot = (
-                self.env["stock.production.lot"]
+                self.env["stock.lot"]
                 .with_context(active_test=False)
                 .search(
                     [
@@ -115,11 +117,14 @@ class ResPartnerImportMapper(Component):
                 if other_binding:
                     raise Exception(
                         _(
-                            "Already exists a binding with the Lot: '%s' "
-                            "but with another external id: '%s'.\n"
+                            "Already exists a binding with the Lot: '%(lot_name)s' "
+                            "but with another external id: '%(external_id)s'.\n"
                             "This could be caused by "
                             "a duplicated external reference on the backend"
                         )
-                        % (stock_production_lot.name, other_binding.external_id_display)
+                        % {
+                            "lot_name": stock_production_lot.name,
+                            "external_id": other_binding.external_id_display,
+                        }
                     )
                 return {"odoo_id": stock_production_lot.id}
