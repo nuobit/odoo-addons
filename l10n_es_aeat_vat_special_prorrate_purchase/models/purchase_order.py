@@ -2,14 +2,7 @@
 # Copyright 2025 NuoBiT - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
-
-
-def prorate_context(order):
-    return (
-        fields.Date.to_string(fields.Date.context_today(order, order.date_order)),
-        order.company_id.id,
-    )
+from odoo import api, models
 
 
 class PurchaseOrder(models.Model):
@@ -19,7 +12,12 @@ class PurchaseOrder(models.Model):
     def _amount_all(self):
         for rec in self:
             super(
-                PurchaseOrder, rec.with_context(prorate=prorate_context(rec))
+                PurchaseOrder,
+                rec.with_context(
+                    **self.env["account.tax"].prorate_context(
+                        rec, rec.date_order, rec.company_id
+                    )
+                ),
             )._amount_all()
 
 
@@ -31,5 +29,9 @@ class PurchaseOrderLine(models.Model):
         for rec in self:
             super(
                 PurchaseOrderLine,
-                rec.with_context(prorate=prorate_context(rec.order_id)),
+                rec.with_context(
+                    **self.env["account.tax"].prorate_context(
+                        rec.order_id, rec.order_id.date_order, rec.order_id.company_id
+                    )
+                ),
             )._compute_amount()
