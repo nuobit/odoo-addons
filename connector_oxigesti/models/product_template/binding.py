@@ -33,7 +33,7 @@ class ProductTemplate(models.Model):
                                 "template that has variants binded to oxigesti"
                             )
                         )
-        return super(ProductTemplate, self).write(vals)
+        return super().write(vals)
 
     def unlink(self):
         to_remove = {}
@@ -42,7 +42,7 @@ class ProductTemplate(models.Model):
                 (binding.backend_id.id, binding._name, binding.external_id)
                 for binding in record.product_variant_ids.mapped("oxigesti_bind_ids")
             ]
-        result = super(ProductTemplate, self).unlink()
+        result = super().unlink()
         for bindings_data in to_remove.values():
             self._event("on_record_post_unlink").notify(bindings_data)
         return result

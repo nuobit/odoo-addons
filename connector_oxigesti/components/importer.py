@@ -92,12 +92,7 @@ class OxigestiImporter(AbstractComponent):
         # this one knows how to speak to Oxigesti
         backend_adapter = self.component(usage="backend.adapter")
 
-        lock_name = "import({}, {}, {}, {})".format(
-            self.backend_record._name,
-            self.backend_record.id,
-            self.work.model_name,
-            external_id,
-        )
+        lock_name = f"import({self.backend_record._name}, {self.backend_record.id}, {self.work.model_name}, {external_id})"
 
         # read external data from Oxigesti
         self.external_data = backend_adapter.read(external_id)

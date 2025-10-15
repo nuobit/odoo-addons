@@ -18,7 +18,6 @@
         action="oxigesti_backend_action"
     />
 
-
     <!-- TODO: Implement security strategy groups="odoo_base.group_oc_manager" -->
     <menuitem
         id="oxigesti_external_objects_menu"

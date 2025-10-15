@@ -140,7 +140,6 @@ class SaleOrderImporter(Component):
             lambda x: x.move_ids
         )
         if stock_order_lines:
-
             binder = self.binder_for("oxigesti.sale.order.line")
             adapter = self.component(
                 usage="backend.adapter", model_name="oxigesti.sale.order.line"

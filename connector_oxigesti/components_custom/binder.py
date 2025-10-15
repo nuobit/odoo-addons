@@ -11,6 +11,7 @@ Odoo ID, how to find the Odoo ID for an external ID and how to
 create the binding between them.
 
 """
+
 import json
 from contextlib import contextmanager
 
@@ -231,11 +232,13 @@ class BinderComposite(AbstractComponent):
         :type binding: int
         """
         # Prevent False, None, or "", but not 0
-        assert (
-            external_id or external_id == 0
-        ) and binding, "external_id or binding missing, " "got: %s, %s" % (
-            external_id,
-            binding,
+        assert (external_id or external_id == 0) and binding, (
+            "external_id or binding missing, "
+            "got: %s, %s"
+            % (
+                external_id,
+                binding,
+            )
         )
         # avoid to trigger the export when we modify the `external_id`
         now_fmt = fields.Datetime.now()

@@ -22,7 +22,7 @@ class ProductCategory(models.Model):
                 (binding.backend_id.id, binding._name, binding.external_id)
                 for binding in record.oxigesti_bind_ids
             ]
-        result = super(ProductCategory, self).unlink()
+        result = super().unlink()
         for bindings_data in to_remove.values():
             self._event("on_record_post_unlink").notify(bindings_data)
         return result

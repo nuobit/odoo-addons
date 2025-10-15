@@ -28,7 +28,7 @@ class OxigestiExporter(AbstractComponent):
         skip = self._must_skip(binding)
         if skip:
             return skip
-        return super(OxigestiExporter, self).run(binding, *args, **kwargs)
+        return super().run(binding, *args, **kwargs)
 
     def _import_dependency(
         self, external_id, binding_model, importer=None, always=False
