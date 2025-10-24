@@ -8,6 +8,8 @@ from functools import partial
 
 from requests.exceptions import (
     ConnectionError as RequestConnectionError,
+)
+from requests.exceptions import (
     HTTPError,
     RequestException,
 )
@@ -245,7 +247,7 @@ class GenericAdapter(AbstractComponent):
             "method read, sql %s id %s, attributes %s", self._sql, _id, attributes
         )
 
-        id_d = dict(zip(self._id, _id))
+        id_d = dict(zip(self._id, _id, strict=False))
 
         res = self._exec_query(filters=id_d)
 

@@ -23,8 +23,6 @@ class PayrollSageLabourAgreementAdapter(Component):
                   c.CodigoConvenio = n.CodigoConvenio and
                   c.FechaRegistroCV = n.FechaRegistroCV
             )
-     """ % {
-        "sql_convenios": GenericAdapter._sql_convenios
-    }
+     """ % {"sql_convenios": GenericAdapter._sql_convenios}
 
     _id = ("CodigoEmpresa", "CodigoConvenio", "FechaRegistroCV")
