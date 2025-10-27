@@ -15,13 +15,13 @@
                         type="object"
                         class="oe_highlight"
                         string="Check Connection"
-                        attrs="{'invisible':[('state', 'not in', ['draft'])]}"
+                        invisible="state not in ['draft']"
                     />
                     <button
                         name="button_reset_to_draft"
                         type="object"
                         string="Reset To draft Connection"
-                        attrs="{'invisible':[('state', 'in', ['draft'])]}"
+                        invisible="state in ['draft']"
                     />
                     <field name="state" widget="statusbar" readonly="1" />
                 </header>
@@ -31,69 +31,47 @@
                         name="web_ribbon"
                         title="Archived"
                         bg_color="bg-danger"
-                        attrs="{'invisible': [('active', '=', True)]}"
+                        invisible="active == True"
                     />
                     <field name="active" invisible="1" />
                     <h1>
                         <field
                             name="name"
                             class="oe_inline"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            readonly="state != 'draft'"
                         />
                     </h1>
                     <group>
-                        <field
-                            name="company_id"
-                            attrs="{'readonly': [('state', '!=', 'draft')]}"
-                        />
+                        <field name="company_id" readonly="state != 'draft'" />
                     </group>
                     <group>
                         <group col="4">
-                            <field
-                                name="server"
-                                colspan="4"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="port"
-                                colspan="4"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="database"
-                                colspan="4"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
-                            <field
-                                name="schema"
-                                colspan="4"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
+                            <field name="server" readonly="state != 'draft'" />
+                            <field name="port" readonly="state != 'draft'" />
+                            <field name="database" readonly="state != 'draft'" />
+                            <field name="schema" readonly="state != 'draft'" />
                         </group>
                         <group col="4">
                             <field
                                 name="username"
                                 colspan="4"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                readonly="state != 'draft'"
                             />
                             <field
                                 name="password"
                                 password="True"
                                 colspan="4"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                readonly="state != 'draft'"
                             />
                         </group>
                         <group>
-                            <field
-                                name="sage_company_id"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"
-                            />
+                            <field name="sage_company_id" readonly="state != 'draft'" />
                         </group>
                     </group>
                     <group>
-                        <field name="version" colspan="4" />
+                        <field name="version" />
                     </group>
-                    <notebook attrs="{'invisible':[('state', 'in', ['draft'])]}">
+                    <notebook invisible="state in ['draft']">
                         <page name="import" string="Imports">
                             <p class="oe_grey oe_inline">
                                 By clicking on the buttons,
@@ -236,10 +214,10 @@
     </record>
 
     <record id="sage_sage_backend_view_tree" model="ir.ui.view">
-        <field name="name">sage.backend.tree</field>
+        <field name="name">sage.backend.list</field>
         <field name="model">sage.backend</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="company_id" />
                 <field name="server" />
@@ -247,13 +225,13 @@
                 <field name="database" />
                 <field name="schema" />
                 <field name="sage_company_id" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="sage_backend_action" model="ir.actions.act_window">
         <field name="name">Sage Backends</field>
         <field name="res_model">sage.backend</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

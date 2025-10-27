@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -26,18 +27,18 @@ class SageBackend(models.Model):
             ("production", "In Production"),
         ]
 
-    name = fields.Char("Name", required=True)
+    name = fields.Char(required=True)
 
-    server = fields.Char("Server", required=True)
-    port = fields.Integer("Port", required=True)
+    server = fields.Char(required=True)
+    port = fields.Integer(required=True)
 
-    database = fields.Char("Database", required=True)
-    schema = fields.Char("Schema", required=True)
+    database = fields.Char(required=True)
+    schema = fields.Char(required=True)
 
-    version = fields.Text("Version", readonly=True)
+    version = fields.Text(readonly=True)
 
-    username = fields.Char("Username", required=True)
-    password = fields.Char("Password", required=True)
+    username = fields.Char(required=True)
+    password = fields.Char(required=True)
 
     company_id = fields.Many2one(
         comodel_name="res.company",
@@ -51,13 +52,13 @@ class SageBackend(models.Model):
 
     sage_company_id = fields.Integer("Sage company ID", required=True)
 
-    active = fields.Boolean(string="Active", default=True)
-    state = fields.Selection(selection="_select_state", string="State", default="draft")
+    active = fields.Boolean(default=True)
+    state = fields.Selection(selection="_select_state", default="draft")
 
     import_employees_since_date = fields.Datetime("Import employees since")
     import_employees_default_account_payable_id = fields.Many2one(
         comodel_name="account.account",
-        domain="[('company_id', '=', company_id)]",
+        domain="[('company_ids', '=', company_id)]",
         string="Defaul account payable",
     )
 
@@ -79,7 +80,7 @@ class SageBackend(models.Model):
         (
             "company_uniq",
             "unique(company_id)",
-            _("Already exists another backend associated to the same company!"),
+            "Already exists another backend associated to the same company!",
         ),
     ]
 

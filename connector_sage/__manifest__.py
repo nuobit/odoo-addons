@@ -4,8 +4,8 @@
 
 {
     "name": "Sage-Odoo connector",
-    "version": "14.0.1.0.6",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "version": "18.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/NuoBiT/odoo-addons",
@@ -34,6 +34,4 @@
         "security/connector_sage.xml",
         "security/ir.model.access.csv",
     ],
-    "installable": True,
-    "application": True,
 }
