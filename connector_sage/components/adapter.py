@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -41,25 +42,35 @@ def api_handle_errors(message=""):
     try:
         yield
     except NetworkRetryableError as err:
-        raise exceptions.UserError(_("{}Network Error:\n\n{}").format(message, err))
+        raise exceptions.UserError(
+            _("%(message)sNetwork Error:\n\n%(error)s")
+            % {"message": message, "error": err}
+        ) from err
     except (HTTPError, RequestException, RequestConnectionError) as err:
         raise exceptions.UserError(
-            _("{}API / Network Error:\n\n{}").format(message, err)
-        )
+            _("%(message)sAPI / Network Error:\n\n%(error)s")
+            % {"message": message, "error": err}
+        ) from err
     except pymssql.OperationalError as err:
         raise exceptions.UserError(
-            _("{}DB operational Error:\n\n{}").format(message, err)
-        )
+            _("%(message)sDB operational Error:\n\n%(error)s")
+            % {"message": message, "error": err}
+        ) from err
     except pymssql.IntegrityError as err:
         raise exceptions.UserError(
-            _("{}DB integrity Error:\n\n{}").format(message, err)
-        )
+            _("%(message)sDB integrity Error:\n\n%(error)s")
+            % {"message": message, "error": err}
+        ) from err
     except pymssql.InternalError as err:
-        raise exceptions.UserError(_("{}DB internal Error:\n\n{}").format(message, err))
+        raise exceptions.UserError(
+            _("%(message)sDB internal Error:\n\n%(error)s")
+            % {"message": message, "error": err}
+        ) from err
     except pymssql.InterfaceError as err:
         raise exceptions.UserError(
-            _("{}DB interface Error:\n\n{}").format(message, err)
-        )
+            _("%(message)sDB interface Error:\n\n%(error)s")
+            % {"message": message, "error": err}
+        ) from err
 
 
 class SageCRUDAdapter(AbstractComponent):
@@ -164,14 +175,14 @@ class GenericAdapter(AbstractComponent):
             "select 1 from sys.schemas where name=%s", (self.schema,)
         )
         if not schema_exists:
-            raise pymssql.InternalError("The schema %s does not exist" % self.schema)
+            raise pymssql.InternalError(f"The schema {self.schema} does not exist")
 
         # prepare the sql and execute
         sql = self._sql % dict(schema=self.schema)
 
         values = []
         if filters or fields:
-            sql_l = ["with t as (%s)" % sql]
+            sql_l = [f"with t as ({sql})"]
 
             fields_l = fields or ["*"]
             if fields:
@@ -180,28 +191,28 @@ class GenericAdapter(AbstractComponent):
                         if f not in fields_l:
                             fields_l.append(f)
 
-            sql_l.append("select %s from t" % (", ".join(fields_l),))
+            sql_l.append(f"select {', '.join(fields_l)} from t")
 
             if filters:
                 where = []
                 for k, v in filters.items():
-                    if isinstance(v, (tuple, list)):
+                    if isinstance(v, (tuple | list)):
                         op, pars = v
                         if op == "=":
-                            where.append("%s = %%s" % k)
+                            where.append(f"{k} = %s")
                             values.append(pars)
                         elif op == "in":
-                            where.append("%s in %%s" % k)
+                            where.append(f"{k} in %s")
                             values.append(pars)
                         elif op == "between":
-                            where.append("%s between %%s and %%s" % k)
+                            where.append(f"{k} between %s and %s")
                             values += list(pars)
                         else:
-                            raise Exception("Operator %s not implemented" % op)
+                            raise Exception(f"Operator {op} not implemented")
                     else:
-                        where.append("%s = %%s" % k)
+                        where.append(f"{k} = %s")
                         values.append(v)
-                sql_l.append("where %s" % (" and ".join(where),))
+                sql_l.append(f"where {' and '.join(where)}")
 
             sql = " ".join(sql_l)
 
@@ -218,7 +229,7 @@ class GenericAdapter(AbstractComponent):
             id_t = tuple([rec[f] for f in self._id])
             if id_t in uniq:
                 raise pymssql.IntegrityError(
-                    "Unexpected error: ID duplicated: %s - %s" % (self._id, id_t)
+                    f"Unexpected error: ID duplicated: {self._id} - {id_t}"
                 )
             uniq.add(id_t)
 
@@ -253,7 +264,9 @@ class GenericAdapter(AbstractComponent):
 
         if len(res) > 1:
             raise pymssql.IntegrityError(
-                "Unexpected error: Returned more the one rows:\n%s" % ("\n".join(res),)
+                "Unexpected error: Returned more than one rows:\n{}".format(
+                    "\n".join(res)
+                )
             )
 
         return res and res[0] or []

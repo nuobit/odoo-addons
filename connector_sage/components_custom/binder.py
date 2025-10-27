@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 """
@@ -91,14 +92,9 @@ class SageBinderComposite(AbstractComponent):
         :type binding: int
         """
         # Prevent False, None, or "", but not 0
-        assert (external_id or external_id == 0) and binding, (
-            "external_id or binding missing, "
-            "got: %s, %s"
-            % (
-                external_id,
-                binding,
-            )
-        )
+        assert (
+            external_id or external_id == 0
+        ) and binding, f"external_id or binding missing, got: {external_id}, {binding}"
         # avoid to trigger the export when we modify the `external_id`
         now_fmt = fields.Datetime.now()
         if isinstance(binding, models.BaseModel):

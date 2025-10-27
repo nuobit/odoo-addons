@@ -1,9 +1,10 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import re
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.components.mapper import mapping, only_create
 
 
 class HrEmployeeImportMapper(Component):
@@ -73,14 +74,15 @@ class HrEmployeeImportMapper(Component):
         if record["Email1"] != record["Email2"]:
             return {"notes": record["Email2"]}
 
+    @only_create
     @mapping
-    def address_home_id(self, record):
+    def work_contact_id(self, record):
         external_id = (record["CodigoEmpresa"], record["CodigoEmpleado"])
 
         binder = self.binder_for("sage.res.partner")
         partner = binder.to_internal(external_id, unwrap=True)
         assert partner, (
-            "customer_id %s should have been imported in "
-            "HrEmployeeImporter._import_dependencies" % external_id
+            f"customer_id {external_id} should have been imported in "
+            "HrEmployeeImporter._import_dependencies"
         )
-        return {"address_home_id": partner.id}
+        return {"work_contact_id": partner.id}

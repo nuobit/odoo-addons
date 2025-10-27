@@ -6,21 +6,18 @@
         <field name="name">payslip.line.form.inherit.connector.sage</field>
         <field name="model">payroll.sage.payslip.line</field>
         <field name="inherit_id" ref="payroll_sage.payslip_line_view_form" />
-        <field
-            name="groups_id"
-            eval="[(4, ref('connector.group_connector_manager'))]"
-        />
         <field name="arch" type="xml">
             <xpath expr="//group" position="after">
                 <group
                     string="Payroll Sage Bindings"
-                    attrs="{'invisible': [('payslip_type', '!=', 'payroll')]}"
+                    invisible="payslip_type != 'payroll'"
+                    groups="connector.group_connector_manager"
                 >
                     <field name="sage_payroll_bind_ids" nolabel="1" />
                 </group>
                 <group
                     string="Transfer Sage Bindings"
-                    attrs="{'invisible': [('payslip_type', '!=', 'transfer')]}"
+                    invisible="payslip_type != 'transfer'"
                 >
                     <field name="sage_transfer_bind_ids" nolabel="1" />
                 </group>
@@ -54,10 +51,10 @@
     </record>
 
     <record id="sage_payslip_line_payroll_view_tree" model="ir.ui.view">
-        <field name="name">sage.payslip.line.payroll.tree</field>
+        <field name="name">sage.payslip.line.payroll.list</field>
         <field name="model">sage.payroll.sage.payslip.line.payroll</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="sage_codigo_empresa" readonly="True" />
@@ -75,7 +72,7 @@
                     string="Resynchronize"
                     icon="fa-refresh fa-lg"
                 />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -103,10 +100,10 @@
     </record>
 
     <record id="sage_payslip_line_transfer_view_tree" model="ir.ui.view">
-        <field name="name">sage.payslip.line.transfer.tree</field>
+        <field name="name">sage.payslip.line.transfer.list</field>
         <field name="model">sage.payroll.sage.payslip.line.transfer</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="sage_codigo_empresa" readonly="True" />
@@ -125,7 +122,7 @@
                     string="Resynchronize"
                     icon="fa-refresh fa-lg"
                 />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

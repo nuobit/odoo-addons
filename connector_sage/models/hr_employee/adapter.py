@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -10,11 +11,13 @@ class HrEmployeeAdapter(Component):
     _inherit = "sage.adapter"
     _apply_on = "sage.hr.employee"
 
-    _sql = """select e.CodigoEmpresa, e.CodigoEmpleado, e.SiglaNacion, e.Dni, e.FechaAlta,
+    _sql = """select e.CodigoEmpresa, e.CodigoEmpleado,
+                     e.SiglaNacion, e.Dni, e.FechaAlta,
                      e.IdEmpleado, p.RazonSocialEmpleado,
-                     p.NombreEmpleado, p.PrimerApellidoEmpleado, p.SegundoApellidoEmpleado,
-                     p.NumeroHijos, p.Sexo, p.EstadoCivil, p.FechaNacimiento, p.Profesion,
-                     p.Email1, p.Email2
+                     p.NombreEmpleado, p.PrimerApellidoEmpleado,
+                     p.SegundoApellidoEmpleado,
+                     p.NumeroHijos, p.Sexo, p.EstadoCivil, p.FechaNacimiento,
+                     p.Profesion, p.Email1, p.Email2
               from  %(schema)s.empleadonomina e, %(schema)s.personas p
               where e.SiglaNacion = p.SiglaNacion and
                     e.Dni = p.Dni and
