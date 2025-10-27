@@ -40,8 +40,8 @@ class PayslipLineImportMapper(AbstractComponent):
         wage_type_line = binder.to_internal(external_id, unwrap=True)
 
         assert wage_type_line, (
-            "wage_type_line_id %s should have been imported in "
-            "PayrollSageLabourAgreementImporter._import_dependencies" % external_id
+            f"wage_type_line_id {external_id} should have been imported in "
+            "PayrollSageLabourAgreementImporter._import_dependencies"
         )
 
         return {"wage_type_line_id": wage_type_line.id}
@@ -54,8 +54,8 @@ class PayslipLineImportMapper(AbstractComponent):
         employee = binder.to_internal(external_id, unwrap=True)
 
         assert employee, (
-            "employee_id %s should have been imported in "
-            "HrEmployeeImporter._import_dependencies" % external_id
+            f"employee_id {external_id} should have been imported in "
+            "HrEmployeeImporter._import_dependencies"
         )
 
         return {"employee_id": employee.id}

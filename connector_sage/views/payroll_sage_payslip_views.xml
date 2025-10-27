@@ -11,9 +11,9 @@
                 <button
                     name="action_paysplip_import"
                     type="object"
-                    states="validated"
                     string="Import"
                     class="oe_highlight"
+                    invisible="state != 'validated'"
                 />
             </button>
         </field>
