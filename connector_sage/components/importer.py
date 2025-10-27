@@ -8,7 +8,7 @@ from odoo import _
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import IDMissingInBackend
-from odoo.addons.queue_job.exception import NothingToDoJob
+from odoo.addons.queue_job.exception import FailedJobError
 
 _logger = logging.getLogger(__name__)
 
@@ -73,7 +73,7 @@ class SageImporter(AbstractComponent):
                 )
             try:
                 importer.run(external_id)
-            except NothingToDoJob:
+            except FailedJobError:
                 _logger.info(
                     "Dependency import of %s(%s) has been ignored.",
                     binding_model._name,

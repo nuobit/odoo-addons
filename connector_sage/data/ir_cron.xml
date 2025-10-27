@@ -9,8 +9,6 @@
         <!--field name="user_id" ref="< not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_import_employees()</field>
     </record>
@@ -24,8 +22,6 @@
         <!--field name="user_id" ref="< not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_import_labour_agreements()</field>
     </record>
