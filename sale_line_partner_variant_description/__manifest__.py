@@ -11,7 +11,7 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
-        "sale_order_line_variant_description",
+        "sale_order_line_variant_description_extension",
         "sale_line_partner_description",
     ],
     "auto_install": True,
