@@ -4,6 +4,7 @@
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.osv import expression
 from odoo.tools.translate import _
 
 
@@ -34,30 +35,19 @@ class ProductBuyerInfo(models.Model):
         ),
     ]
 
-    def get_product_name(self):
-        self.ensure_one()
-        name_l = []
-        if self.code:
-            bcode = self.code
-        else:
-            if self.product_id.env.context.get("display_default_code", True):
-                bcode = self.product_id.default_code
-            else:
-                bcode = False
-        if bcode:
-            name_l.append("[%s]" % bcode)
-
-        if self.name:
-            bname = self.name
-        else:
-            bname = self.product_id.name
-        if bname:
-            name_l.append(bname)
-
-        if name_l:
-            return " ".join(name_l)
-        else:
-            return False
+    @api.model
+    def search_by_partner(self, partner_id, domain):
+        partner_domain = [("partner_id", "=", partner_id)]
+        parent = self.env["res.partner"].browse(partner_id).parent_id
+        if parent:
+            partner_domain = expression.OR(
+                [
+                    partner_domain,
+                    [("partner_id", "=", parent.id)],
+                ]
+            )
+        domain = expression.AND([partner_domain, domain])
+        return self.env["product.buyerinfo"].search(domain)
 
     def name_get(self):
         vals = []
