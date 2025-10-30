@@ -1,49 +1,70 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
-# Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models
+import re
+
+from odoo import _, api, models
+from odoo.exceptions import ValidationError
 
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    # # TODO: Move to a mixin or sale_order_line_description_base class
-    # def _update_context_sale_partner(self):
-    #     if "default_description_sale" in self.env.context:
-    #         ctx = dict(partner_id=False, seller_id=False)
-    #         partner_id = self.env.context.get("partner_id")
-    #         if "sale_partner_id" in self.env.context:
-    #             sale_partner_id = self.env.context.get("sale_partner_id")
-    #             if not sale_partner_id:
-    #                 raise ValidationError(
-    #                     _(
-    #                         "sale_partner_id cannot be False, it should be "
-    #                         "either set or absent"
-    #                     )
-    #                 )
-    #             if partner_id:
-    #                 raise ValidationError(
-    #                     _("Cannot have both partner_id and sale_partner_id in context")
-    #                 )
-    #         else:
-    #             if partner_id:
-    #                 ctx["sale_partner_id"] = partner_id
-    #         self = self.with_context(**ctx)
-    #     return self
-
-    # def name_get(self):
-    #     if "default_description_sale" in self.env.context:
-    #         self = self.with_context(**self._context_sale_partner())
-    #     res = super(ProductProduct, self).name_get()
-    #     if "default_description_sale" in self.env.context:
-    #         res = self._name_get_variant_description_sale(res)
-    #         res = self._name_get_buyers(res)
-    #     return res
+    @api.model
+    def _extract_part(self, part, name):
+        m = re.match(r"^(·*)\n(%s)(.*)$" % re.escape(part), name, re.DOTALL)
+        if m:
+            desc = m.group(2)
+            rest = m.group(1) + m.group(3)
+        else:
+            raise ValidationError(_("Unexpected format in product name: %s") % name)
+        return desc, rest
 
     def get_product_multiline_description_sale(self):
         name = super().get_product_multiline_description_sale()
-        name = self._update_name_variant(name)
-        name = self._update_name_buyer(name)
+        # extract description parts
+        m = re.match(r"^(\[[^]]+\]) ([^\n]+)(\n.*)?$", name)
+        if m:
+            code, desc, rest = m.groups()
+        else:
+            m = re.match(r"^([^\n]+)(\n.*)?$", name)
+            if m:
+                code, desc, rest = (None, *m.groups())
+            else:
+                raise ValidationError(_("Unexpected format in product name: %s") % name)
+
+        # build the new description line
+        name_l = []
+        ref_part_l = []
+        if code:
+            ref_part_l.append(code)
+
+        cand_desc = None
+        if rest:
+            if self.variant_description_sale:
+                cand_desc, rest = self._extract_part(
+                    self.variant_description_sale, rest
+                )
+            else:
+                if self.description_sale:
+                    cand_desc, rest = self._extract_part(self.description_sale, rest)
+
+        buyer = self._get_buyer_data().get(self.id)
+        if not buyer or not buyer.name:
+            if cand_desc:
+                ref_part_l.append(cand_desc)
+            else:
+                ref_part_l.append(desc)
+        else:
+            ref_part_l.append(desc)
+
+        if ref_part_l:
+            name_l.append(" ".join(ref_part_l))
+
+        if rest:
+            name_l.append(rest)
+
+        if name_l:
+            name = "".join(name_l)
+
         return name
