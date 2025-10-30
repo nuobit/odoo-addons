@@ -10,6 +10,5 @@
     "license": "AGPL-3",
     "depends": [
         "sale_order_line_variant_description",
-        "product_sale_uniline_description",
     ],
 }
