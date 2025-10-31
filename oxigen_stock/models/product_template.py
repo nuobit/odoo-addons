@@ -1,4 +1,5 @@
 # Copyright 2022 ForgeFlow S.L.
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
 from odoo import _, api, fields, models
@@ -24,10 +25,11 @@ class ProductTemplate(models.Model):
                 if has_moves:
                     raise ValidationError(
                         _(
-                            "This product has been used in at least one inventory movement. "
-                            "It is not advised to change the Product Type since it can lead "
-                            "to inconsistencies. A better solution could be to archive the "
-                            "product and create a new one instead.",
+                            "This product has been used in at least one "
+                            "inventory movement. It is not advised to change"
+                            " the Product Type since it can lead to "
+                            "inconsistencies. A better solution could be to"
+                            " archive the product and create a new one instead.",
                         )
                     )
 
@@ -45,9 +47,9 @@ class ProductTemplate(models.Model):
             if has_moves:
                 raise ValidationError(
                     _(
-                        "This product has been used in at least one inventory movement. "
-                        "It is not advised to change the Tracking type since it can lead "
-                        "to inconsistencies. A better solution could be to archive the "
-                        "product and create a new one instead.",
+                        "This product has been used in at least one inventory "
+                        "movement. It is not advised to change the Tracking type "
+                        "since it can lead to inconsistencies. A better solution "
+                        "could be to archive the product and create a new one instead.",
                     )
                 )

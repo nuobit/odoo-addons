@@ -1,4 +1,5 @@
 # Copyright 2022 ForgeFlow S.L.
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
 from odoo import api, models
@@ -9,9 +10,10 @@ class Picking(models.Model):
 
     @api.depends("state", "move_lines", "move_ids_without_package")
     def _compute_show_mark_as_todo(self):
-        super()._compute_show_mark_as_todo()
+        res = super()._compute_show_mark_as_todo()
         for rec in self.filtered(
             lambda r: (r.move_lines or r.move_ids_without_package)
             and r.state == "draft"
         ):
             rec.show_mark_as_todo = True
+        return res

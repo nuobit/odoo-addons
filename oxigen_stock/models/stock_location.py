@@ -1,4 +1,5 @@
 # Copyright 2022 ForgeFlow S.L.
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
 from odoo import _, api, fields, models
@@ -16,9 +17,8 @@ class StockLocation(models.Model):
         """Forms complete name of location from parent location to child location."""
         for location in self:
             if location.location_id.complete_name:
-                location.complete_name = "%s/%s" % (
-                    location.location_id.complete_name,
-                    location.name,
+                location.complete_name = (
+                    f"{location.location_id.complete_name}" f"/{location.name}"
                 )
             else:
                 location.complete_name = location.name

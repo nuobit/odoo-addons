@@ -1,4 +1,5 @@
 # Copyright 2022 ForgeFlow S.L.
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
 from odoo import _, fields, models
@@ -17,17 +18,17 @@ class OxigenInventory(models.Model):
             return super().action_validate()
         self.ensure_one()
         inventory_lines = self.line_ids.filtered(
-            lambda l: l.product_id.tracking in ["lot", "serial"]
-            and not l.prod_lot_id
-            and l.theoretical_qty != l.product_qty
+            lambda line: line.product_id.tracking in ["lot", "serial"]
+            and not line.prod_lot_id
+            and line.theoretical_qty != line.product_qty
         )
         lines = self.line_ids.filtered(
-            lambda l: float_compare(
-                l.product_qty, 1, precision_rounding=l.product_uom_id.rounding
+            lambda line: float_compare(
+                line.product_qty, 1, precision_rounding=line.product_uom_id.rounding
             )
             > 0
-            and l.product_id.tracking == "serial"
-            and l.prod_lot_id
+            and line.product_id.tracking == "serial"
+            and line.prod_lot_id
         )
         if inventory_lines and not lines:
             wiz_lines = [
