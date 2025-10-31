@@ -7,7 +7,7 @@
     "description when creating a lot from a picking",
     "version": "14.0.1.0.2",
     "author": "ForgeFlow",
-    "website": "https://github.com/oxigensalud/odoo-addons",
+    "website": "https://github.com/OCA/oxigen.odo-adodns",
     "category": "Warehouse",
     "depends": ["stock", "product_expiry"],
     "installable": True,

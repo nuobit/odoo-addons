@@ -8,7 +8,7 @@ class StockOrderpoint(models.Model):
     _inherit = "stock.warehouse.orderpoint"
 
     def _get_product_context(self):
-        res = super(StockOrderpoint, self)._get_product_context()
+        res = super()._get_product_context()
         # We want to consider all incoming/outgoing moves.
         res.pop("to_date")
         return res
