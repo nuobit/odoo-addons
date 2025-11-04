@@ -12,18 +12,19 @@ class ProductProduct(models.Model):
 
     def get_product_multiline_description_sale(self):
         name = super().get_product_multiline_description_sale()
-        if self.variant_description_sale:
-            if self.description_sale:
-                name = name.replace(
-                    self.description_sale, self.variant_description_sale
-                )
-            else:
-                m = re.match(
-                    r"^(%s)(.*)$" % re.escape(self.display_name), name, re.DOTALL
-                )
-                if not m:
-                    raise ValidationError(
-                        _("Unexpected format in product name: %s") % name
+        if name:
+            if self.variant_description_sale:
+                if self.description_sale:
+                    name = name.replace(
+                        self.description_sale, self.variant_description_sale
                     )
-                name = f"{m.group(1)}\n{self.variant_description_sale}{m.group(2)}"
+                else:
+                    m = re.match(
+                        r"^(%s)(.*)$" % re.escape(self.display_name), name, re.DOTALL
+                    )
+                    if not m:
+                        raise ValidationError(
+                            _("Unexpected format in product name: %s") % name
+                        )
+                    name = f"{m.group(1)}\n{self.variant_description_sale}{m.group(2)}"
         return name
