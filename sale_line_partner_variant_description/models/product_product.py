@@ -22,49 +22,54 @@ class ProductProduct(models.Model):
 
     def get_product_multiline_description_sale(self):
         name = super().get_product_multiline_description_sale()
-        # extract description parts
-        m = re.match(r"^(\[[^]]+\]) ([^\n]+)(\n.*)?$", name)
-        if m:
-            code, desc, rest = m.groups()
-        else:
-            m = re.match(r"^([^\n]+)(\n.*)?$", name)
+        if name:
+            # extract description parts
+            m = re.match(r"^(\[[^]]+\]) ([^\n]+)(\n.*)?$", name)
             if m:
-                code, desc, rest = (None, *m.groups())
+                code, desc, rest = m.groups()
             else:
-                raise ValidationError(_("Unexpected format in product name: %s") % name)
+                m = re.match(r"^([^\n]+)(\n.*)?$", name)
+                if m:
+                    code, desc, rest = (None, *m.groups())
+                else:
+                    raise ValidationError(
+                        _("Unexpected format in product name: %s") % name
+                    )
 
-        # build the new description line
-        name_l = []
-        ref_part_l = []
-        if code:
-            ref_part_l.append(code)
+            # build the new description line
+            name_l = []
+            ref_part_l = []
+            if code:
+                ref_part_l.append(code)
 
-        cand_desc = None
-        if rest:
-            if self.variant_description_sale:
-                cand_desc, rest = self._extract_part(
-                    self.variant_description_sale, rest
-                )
-            else:
-                if self.description_sale:
-                    cand_desc, rest = self._extract_part(self.description_sale, rest)
+            cand_desc = None
+            if rest:
+                if self.variant_description_sale:
+                    cand_desc, rest = self._extract_part(
+                        self.variant_description_sale, rest
+                    )
+                else:
+                    if self.description_sale:
+                        cand_desc, rest = self._extract_part(
+                            self.description_sale, rest
+                        )
 
-        buyer = self._get_buyer_data().get(self.id)
-        if not buyer or not buyer.name:
-            if cand_desc:
-                ref_part_l.append(cand_desc)
+            buyer = self._get_buyer_data().get(self.id)
+            if not buyer or not buyer.name:
+                if cand_desc:
+                    ref_part_l.append(cand_desc)
+                else:
+                    ref_part_l.append(desc)
             else:
                 ref_part_l.append(desc)
-        else:
-            ref_part_l.append(desc)
 
-        if ref_part_l:
-            name_l.append(" ".join(ref_part_l))
+            if ref_part_l:
+                name_l.append(" ".join(ref_part_l))
 
-        if rest:
-            name_l.append(rest)
+            if rest:
+                name_l.append(rest)
 
-        if name_l:
-            name = "".join(name_l)
+            if name_l:
+                name = "".join(name_l)
 
         return name
