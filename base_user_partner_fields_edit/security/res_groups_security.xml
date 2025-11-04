@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="group_user_partner_fields_edit" model="res.groups">
+        <field
+            name="name"
+        >Allow editing partner-only fields on user-linked partners</field>
+        <field name="category_id" ref="base.module_category_hidden" />
+    </record>
+</odoo>
