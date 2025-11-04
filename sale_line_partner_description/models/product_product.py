@@ -51,7 +51,7 @@ class ProductProduct(models.Model):
         if buyer_d:
             res = []
             for product_id, name in pairs:
-                if product_id in buyer_d:
+                if name and product_id in buyer_d:
                     buyer = buyer_d[product_id]
                     if buyer.code:
                         m = re.match(r"^\[[^]]+\] (.+)$", name)
