@@ -24,11 +24,11 @@ class ProductProduct(models.Model):
         name = super().get_product_multiline_description_sale()
         if name:
             # extract description parts
-            m = re.match(r"^(\[[^]]+\]) ([^\n]+)(\n.*)?$", name)
+            m = re.match(r"^(\[[^]]+\]) ([^\n]+)(\n.*)?$", name, re.DOTALL)
             if m:
                 code, desc, rest = m.groups()
             else:
-                m = re.match(r"^([^\n]+)(\n.*)?$", name)
+                m = re.match(r"^([^\n]+)(\n.*)?$", name, re.DOTALL)
                 if m:
                     code, desc, rest = (None, *m.groups())
                 else:
