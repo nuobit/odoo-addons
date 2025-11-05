@@ -1,5 +1,5 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -43,7 +43,7 @@ class QualityTreeMixin(models.AbstractModel):
     def _compute_complete_name(self):
         for rec in self:
             if rec.parent_id:
-                rec.complete_name = "%s / %s" % (rec.parent_id.complete_name, rec.name)
+                rec.complete_name = f"{rec.parent_id.complete_name} / {rec.name}"
             else:
                 rec.complete_name = rec.name
 
@@ -115,7 +115,7 @@ class QualityTreeMixin(models.AbstractModel):
         node_ids = []
         for node in self.env[self._name].search([]):
             level = node._get_level()
-            if safe_eval("%s %s %s" % (level, map_op(operator), value)):
+            if safe_eval(f"{level} {map_op(operator)} {value}"):
                 node_ids.append((node.id, level))
         return [("id", "in", node_ids)]
 
