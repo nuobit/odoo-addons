@@ -1,13 +1,14 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 MAP_LEVELS = {
-    "type": (0, _("Type")),
-    "criticality": (1, _("Criticality")),
-    "description": (2, _("Description")),
+    "type": (0, "Type"),
+    "criticality": (1, "Criticality"),
+    "description": (2, "Description"),
 }
 MAP_LEVELS_ORD = {v[0]: (k, v[1]) for k, v in MAP_LEVELS.items()}
 LEVELS = [
@@ -102,7 +103,8 @@ class QualityPartnerClassification(models.Model):
                 if not rec.document_type_ids:
                     raise ValidationError(
                         _(
-                            "You must provide a document types for the level type selected"
+                            "You must provide a document"
+                            " types for the level type selected"
                         )
                     )
 

@@ -1,5 +1,6 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import api, fields, models
 
@@ -26,7 +27,9 @@ class QualityPartnerDocument(models.Model):
     document_type_id = fields.Many2one(
         comodel_name="quality.partner.document.type",
         required=True,
-        domain="[('id', 'in', partner_quality_classification_id.document_type_ids.ids)]",
+        domain="[("
+        "'id', 'in', partner_quality_classification_id.document_type_ids.ids"
+        ")]",
         ondelete="restrict",
     )
 
