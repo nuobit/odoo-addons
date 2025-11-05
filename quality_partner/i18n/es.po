@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-24 08:52+0000\n"
 "PO-Revision-Date: 2022-01-24 08:52+0000\n"
@@ -147,7 +147,7 @@ msgstr "ID"
 #: code:addons/quality_partner/models/res_partner.py:0
 #, python-format
 msgid "If there's documents submitted, the classification can not be null"
-msgstr ""
+msgstr "Si hay documentos enviados, la clasificación no puede ser nula"
 
 #. module: quality_partner
 #: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification____last_update
@@ -191,7 +191,7 @@ msgstr "Responsable"
 #. module: quality_partner
 #: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification__mandatory_document_type_ids
 msgid "Mandatory document types"
-msgstr ""
+msgstr "Tipos de documento obligatorios"
 
 #. module: quality_partner
 #: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification__name
@@ -205,13 +205,13 @@ msgstr "Nombre"
 #: code:addons/quality_partner/models/res_partner.py:0
 #, python-format
 msgid "Not all mandatory document types are submitted"
-msgstr ""
+msgstr "No se han enviado todos los tipos de documentos obligatorios"
 
 #. module: quality_partner
 #: code:addons/quality_partner/models/tree.py:0
 #, python-format
 msgid "Operator %s not implemented"
-msgstr ""
+msgstr "Operador %s no implementado"
 
 #. module: quality_partner
 #: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification__parent_id
@@ -226,12 +226,12 @@ msgstr "Empresa"
 #. module: quality_partner
 #: model:ir.model.fields,field_description:quality_partner.field_quality_partner_document__partner_class_mandatory_document_type_ids
 msgid "Partner Class Mandatory Document Type"
-msgstr ""
+msgstr "Tipo de documento obligatorio de la clase de empresa"
 
 #. module: quality_partner
 #: model:ir.module.category,description:quality_partner.quality_partner_security
 msgid "Partner Quality security"
-msgstr ""
+msgstr "Seguridad de calidad de empresas"
 
 #. module: quality_partner
 #: model:ir.module.category,name:quality_partner.quality_partner_security
@@ -247,38 +247,38 @@ msgstr "Calidad"
 #. module: quality_partner
 #: model:ir.model,name:quality_partner.model_quality_partner_classification
 msgid "Quality Partner Classification"
-msgstr ""
+msgstr "clasificación de calidad de socios"
 
 #. module: quality_partner
 #: model:ir.model,name:quality_partner.model_quality_partner_document
 msgid "Quality Partner Document"
-msgstr ""
+msgstr "Documento de socio de calidad"
 
 #. module: quality_partner
 #: model:ir.model,name:quality_partner.model_quality_partner_document_type
 msgid "Quality Partner Document Type"
-msgstr ""
+msgstr "Tipo de documento de socio de calidad"
 
 #. module: quality_partner
 #: model:ir.model,name:quality_partner.model_quality_tree_mixin
 msgid "Quality Tree Mixin"
-msgstr ""
+msgstr "Mezcla de árbol de calidad"
 
 #. module: quality_partner
 #: model_terms:ir.ui.view,arch_db:quality_partner.quality_partner_document_type_view_form
 #: model_terms:ir.ui.view,arch_db:quality_partner.quality_partner_document_view_form
 msgid "Quality partner Form"
-msgstr ""
+msgstr "Formulario de socio de calidad"
 
 #. module: quality_partner
 #: model_terms:ir.ui.view,arch_db:quality_partner.quality_partner_classification_view_form
 msgid "Quality partner classification Form"
-msgstr ""
+msgstr "Formulario de clasificación de socio de calidad"
 
 #. module: quality_partner
 #: model_terms:ir.ui.view,arch_db:quality_partner.quality_partner_classification_view_tree
 msgid "Quality partner classification Tree"
-msgstr ""
+msgstr "Árbol de clasificación de socio de calidad"
 
 #. module: quality_partner
 #: model:ir.model.fields,field_description:quality_partner.field_quality_partner_classification__sequence
@@ -295,7 +295,7 @@ msgstr "Clasificación del proveedor"
 #: code:addons/quality_partner/models/quality_partner_classification.py:0
 #, python-format
 msgid "The parent cannot be the same as current record"
-msgstr ""
+msgstr "El padre no puede ser el mismo que el registro actual"
 
 #. module: quality_partner
 #: code:addons/quality_partner/models/res_partner.py:0
@@ -303,7 +303,7 @@ msgstr ""
 msgid ""
 "There're documents submitted that are not mandatory for the classification "
 "selected"
-msgstr ""
+msgstr "Hay documentos enviados que no son obligatorios para la clasificación seleccionada"
 
 #. module: quality_partner
 #: code:addons/quality_partner/models/quality_partner_classification.py:0
@@ -323,17 +323,17 @@ msgstr "Usuario"
 msgid ""
 "Wrong inheritance, the level type selected it's not compatible with the "
 "selected parent"
-msgstr ""
+msgstr "Herencia incorrecta, el tipo de nivel seleccionado no es compatible con el padre seleccionado"
 
 #. module: quality_partner
 #: code:addons/quality_partner/models/quality_partner_document_type.py:0
 #: code:addons/quality_partner/models/quality_partner_document_type.py:0
 #, python-format
 msgid "You are trying to delete a record that is still referenced!"
-msgstr ""
+msgstr "Estás intentando eliminar un registro que todavía está referenciado!"
 
 #. module: quality_partner
 #: code:addons/quality_partner/models/quality_partner_classification.py:0
 #, python-format
 msgid "You must provide a document types for the level type selected"
-msgstr ""
+msgstr "Debes proporcionar tipos de documento para el tipo de nivel seleccionado"

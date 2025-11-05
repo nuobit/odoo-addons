@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-     Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_partner_form" model="ir.ui.view">
@@ -14,7 +15,7 @@
             <xpath expr="//notebook" position="inside">
                 <page
                     string="Quality"
-                    attrs="{'invisible': [('supplier_rank', '&lt;=', 0), ('is_company', '=', True)]}"
+                    invisible="supplier_rank &lt;= 0 and is_company"
                     groups="quality_partner.quality_partner_group_guest"
                 >
                     <notebook>
@@ -22,7 +23,7 @@
                             <group>
                                 <field
                                     name="quality_classification_id"
-                                    attrs="{'required': [('quality_document_ids', '!=', [])]}"
+                                    required="not quality_document_ids"
                                 />
                             </group>
                             <group string="Documents">

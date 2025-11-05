@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="quality_partner_document_view_form" model="ir.ui.view">
@@ -40,15 +40,15 @@
     </record>
 
     <record id="quality_partner_document_view_tree" model="ir.ui.view">
-        <field name="name">quality.partner.document.view.tree</field>
+        <field name="name">quality.partner.document.view.list</field>
         <field name="model">quality.partner.document</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="document_type_id" />
                 <field name="date" />
                 <field name="datas_fname" />
                 <field name="description" />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>
