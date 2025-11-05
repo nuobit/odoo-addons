@@ -31,4 +31,4 @@ class QualityPartnerDocumentType(models.Model):
             raise UserError(
                 _("You are trying to delete a record that is still referenced!")
             )
-        return super(QualityPartnerDocumentType, self).unlink()
+        return super().unlink()
