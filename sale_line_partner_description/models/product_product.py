@@ -54,11 +54,11 @@ class ProductProduct(models.Model):
                 if name and product_id in buyer_d:
                     buyer = buyer_d[product_id]
                     if buyer.code:
-                        m = re.match(r"^\[[^]]+\] (.+)$", name)
+                        m = re.match(r"^\[[^]]+\] (.+)$", name, re.DOTALL)
                         if m:
                             name = f"[{buyer.code}] {m.group(1)}"
                     if buyer.name:
-                        m = re.match(r"^(\[[^]]+\]) .+$", name)
+                        m = re.match(r"^(\[[^]]+\]) .+$", name, re.DOTALL)
                         if m:
                             name = f"{m.group(1)} {buyer.name}"
                         else:
