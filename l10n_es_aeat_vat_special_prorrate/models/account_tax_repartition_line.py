@@ -43,12 +43,14 @@ class AccountTaxRepartitionLine(models.Model):
                 company_id,
             )
         for record in self.filtered(
-            lambda x: x.tax_id.prorate and prorate and x.factor_percent > 0
+            lambda x: x.tax_id.prorate and prorate and x.factor_percent == 100.0
         ):
             record.factor = record.get_prorrate_ratio(*prorate)
         super(
             AccountTaxRepartitionLine,
             self.filtered(
-                lambda x: not x.tax_id.prorate or not prorate or x.factor_percent <= 0
+                lambda x: not x.tax_id.prorate
+                or not prorate
+                or x.factor_percent != 100.0
             ),
         )._compute_factor()

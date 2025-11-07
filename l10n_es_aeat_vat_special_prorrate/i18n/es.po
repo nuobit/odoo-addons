@@ -178,6 +178,16 @@ msgid "Recompute"
 msgstr "Recalcular"
 
 #. module: l10n_es_aeat_vat_special_prorrate
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/account_tax.py:0
+#, python-format
+msgid ""
+"Runtime error: Prorate tax '%s' has %i %s repartition lines instead of "
+"expected 2. This may indicate data corruption or constraint bypass."
+msgstr "Error de ejecución: El impuesto de prorrata '%s' tiene %i líneas de reparto de %s en "
+"lugar de las 2 esperadas. Esto puede indicar corrupción de datos o elusión de "
+"restricciones."
+
+#. module: l10n_es_aeat_vat_special_prorrate
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
 msgid "Set to Temporary"
 msgstr "Establecer a provisional"
