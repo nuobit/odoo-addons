@@ -8,7 +8,7 @@
     "en las facturas de la AEAT",
     "version": "14.0.1.0.6",
     "category": "Accounting",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
