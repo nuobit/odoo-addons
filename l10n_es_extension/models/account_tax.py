@@ -1,6 +1,6 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -12,6 +12,7 @@ class AccountTax(models.Model):
     _inherit = "account.tax"
 
     def check_duplicated_vat_taxes(self):
+        # taxes_group = self.env["account.tax.group"].search([("is_vat", "=", True)])
         if len(self.filtered(lambda x: x.tax_group_id.is_vat)) > 1:
             raise ValidationError(
                 _("More than one VAT tax found: %s. Please review the taxes.")
