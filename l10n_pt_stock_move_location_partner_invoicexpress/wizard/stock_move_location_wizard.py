@@ -11,16 +11,16 @@ class StockMoveLocationWizard(models.TransientModel):
 
     def _create_picking(self):
         picking = super()._create_picking()
+        if self.picking_type_id.invoicexpress_doc_type:
+            raise ValidationError(
+                _(
+                    "The InvoiceExpress Doc Type is defined in the Operation type. "
+                    "It was expected to be blank, please remove it."
+                )
+            )
         if (
-            picking.partner_id.country_id.code == "PT"
+            self.picking_type_id.company_id.country_id.code == "PT"
             and self.picking_type_id.company_id.has_invoicexpress
         ):
-            if self.picking_type_id.invoicexpress_doc_type:
-                raise ValidationError(
-                    _(
-                        "The InvoiceExpress Doc Type is defined in the Operation type. "
-                        "It was expected to be blank, please remove it."
-                    )
-                )
             picking.invoicexpress_doc_type = "transport"
         return picking
