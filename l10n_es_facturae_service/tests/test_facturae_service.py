@@ -1,8 +1,12 @@
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 from odoo import fields
 from odoo.tests import Form, common
 
 
-class TestFacturaeService(common.SavepointCase):
+class TestFacturaeService(common.TransactionCase):
     def test_facturae_data(self):
         sale_order_form = Form(self.env["sale.order"])
         sale_order_form.partner_id = self.env.ref("base.res_partner_1")
