@@ -23,23 +23,20 @@ def check_prorate(self):
                 raise ValidationError(
                     _("On prorate taxes it's only supported 'purchase' type")
                 )
-            invoice_tax_positive_repartition_lines = (
-                tax.invoice_repartition_line_ids.filtered(
-                    lambda x: x.repartition_type == "tax" and x.factor_percent > 0
+            all_repartition_lines = [
+                ("invoice", tax.invoice_repartition_line_ids),
+                ("refund", tax.refund_repartition_line_ids),
+            ]
+            for rltype, rlines in all_repartition_lines:
+                valid_rlines = rlines.filtered(
+                    lambda x: x.repartition_type == "tax" and x.factor_percent == 100.0
                 )
-            )
-            refund_tax_positive_repartition_lines = (
-                tax.refund_repartition_line_ids.filtered(
-                    lambda x: x.repartition_type == "tax" and x.factor_percent > 0
-                )
-            )
-            if (
-                len(invoice_tax_positive_repartition_lines) != 2
-                or len(refund_tax_positive_repartition_lines) != 2
-            ):
-                raise ValidationError(
-                    _(
-                        "On prorate taxes it's only supported "
-                        "two tax repartition lines"
+                if len(valid_rlines) != 2:
+                    raise ValidationError(
+                        _(
+                            "Prorate tax '%s' requires exactly two 100%% positive tax "
+                            "repartition lines (found %i). Please check the configuration "
+                            "of the %s repartition lines of this tax."
+                        )
+                        % (tax.name, len(valid_rlines), rltype)
                     )
-                )
