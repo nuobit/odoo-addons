@@ -6,7 +6,7 @@
         <field name="model">account.asset</field>
         <field
             name="inherit_id"
-            ref="account_asset_management.account_asset_view_form"
+            ref="l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.account_asset_view_form"
         />
         <field name="arch" type="xml">
             <tree
