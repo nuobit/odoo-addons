@@ -54,6 +54,19 @@ msgid "Prorate"
 msgstr "Prorrata"
 
 #. module: l10n_es_special_prorate
+#: code:addons/l10n_es_special_prorate/models/account_tax_mixin.py:0
+#, python-format
+msgid ""
+"Prorate tax '%s' requires exactly two 100%% positive tax repartition lines "
+"(found %i). Please check the configuration of the %s repartition lines of "
+"this tax."
+msgstr ""
+"El impuesto de prorrata '%s' requiere exactamente dos líneas de "
+"reparto de impuestos positivas al 100%% (se han encontrado %i). "
+"Por favor, compruebe la configuración de las líneas de reparto %s "
+"de este impuesto."
+
+#. module: l10n_es_special_prorate
 #: model:ir.model,name:l10n_es_special_prorate.model_account_tax
 msgid "Tax"
 msgstr "Impuesto"
