@@ -50,16 +50,15 @@ Credits
 Authors
 -------
 
-* NuoBiT Solutions
-* S.L.
+* NuoBiT Solutions SL
 
 Contributors
 ------------
 
-- [NuoBiT](https://www.nuobit.com)
+- `NuoBiT <https://www.nuobit.com>`__:
 
-  - Deniz Gallo <dgallo@nuobit.com>
-  - Eric Antones <eantones@nuobit.com>
+  - Deniz Gallo dgallo@nuobit.com
+  - Eric Antones eantones@nuobit.com
 
 Maintainers
 -----------

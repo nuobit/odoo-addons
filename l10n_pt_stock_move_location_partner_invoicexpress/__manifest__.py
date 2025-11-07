@@ -5,9 +5,9 @@
     "name": "Stock Move Location InvoiceXpress",
     "summary": "This module assigns the InvoiceXpress "
     "document type from Portugal to the picking.",
-    "version": "14.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Stock",
-    "author": "NuoBiT Solutions, S.L.",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": [
