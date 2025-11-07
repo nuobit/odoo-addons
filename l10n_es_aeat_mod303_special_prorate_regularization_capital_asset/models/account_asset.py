@@ -18,6 +18,7 @@ class AccountAsset(models.Model):
         comodel_name="capital.asset.prorate.regularization",
         inverse_name="asset_id",
         string="Active Asset Prorate Regularization",
+        groups="l10n_es_aeat.group_account_aeat",
         domain=[
             "|",
             ("mod303_id", "=", False),
