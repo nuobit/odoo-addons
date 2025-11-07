@@ -19,6 +19,7 @@
                     string="Capital Asset Prorate Regularizations"
                     name="capital_asset_prorate_regularizations"
                     attrs="{'invisible': ['|', ('prorate_tax_id', '=', False),('capital_asset_type_id','=',False)]}"
+                    groups="l10n_es_aeat.group_account_aeat"
                 >
                     <group>
                         <field
