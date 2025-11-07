@@ -29,26 +29,32 @@ class AccountTax(models.Model):
             handle_price_include=handle_price_include,
         )
         # group repartition lines by tax
+        # Sort the taxes so that those without account_id come last. This is
+        # to have an Odoo like behavior when no rounding errors occur.
+        sorted_taxes = sorted(
+            res["taxes"], key=lambda x: x["account_id"] in (None, False)
+        )
         rlines_by_tax = {}
-        for tax in sorted(
-            res["taxes"], key=lambda x: x["account_id"] or 0, reverse=True
-        ):
+        for tax in sorted_taxes:
             rline = self.env["account.tax.repartition.line"].browse(
                 tax["tax_repartition_line_id"]
             )
             if rline and rline.tax_id.prorate:
-                if rline.repartition_type == "tax" and rline.factor_percent > 0:
-                    rlines_by_tax.setdefault(rline.tax_id, []).append(tax)
+                rline_type = "invoice" if rline.invoice_tax_id else "refund"
+                if rline.repartition_type == "tax" and rline.factor_percent == 100.0:
+                    rlines_by_tax.setdefault((rline_type, rline.tax_id), []).append(tax)
         # round the prorate pairs for each tax
-        for tax, prorate_taxes in rlines_by_tax.items():
+        for (rltype, tax), prorate_taxes in rlines_by_tax.items():
+            # Defensive check: constraint on account.tax should guarantee exactly 2 with
+            # 100% but protect against data corruption since we're gonna index this list.
             if len(prorate_taxes) != 2:
                 raise ValidationError(
                     _(
-                        "Prorate tax '%s' requires exactly two positive tax repartition "
-                        "lines (found %s). On prorate taxes it's only supported two "
-                        "positive tax repartition lines"
+                        "Runtime error: Prorate tax '%s' has %i %s repartition "
+                        "lines instead of expected 2. This may indicate data "
+                        "corruption or constraint bypass."
                     )
-                    % (tax.name, len(prorate_taxes))
+                    % (tax.name, len(prorate_taxes), rltype)
                 )
             base_tax_amount = sum(x["amount"] for x in prorate_taxes)
             prorate_taxes[0]["amount"] = currency.round(prorate_taxes[0]["amount"])
