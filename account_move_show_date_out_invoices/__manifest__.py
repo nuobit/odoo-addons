@@ -3,8 +3,8 @@
 
 {
     "name": "Account Move Show Date Out Invoice",
-    "version": "14.0.1.0.0",
-    "author": "NuoBiT Solutions, S.L.",
+    "version": "18.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Accounting",
     "website": "https://github.com/NuoBiT/odoo-addons",
@@ -14,5 +14,4 @@
     "data": [
         "views/account_move_views.xml",
     ],
-    "installable": True,
 }

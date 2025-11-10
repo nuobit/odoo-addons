@@ -12,12 +12,10 @@
                 expr="//group[@id='header_right_group']/field[@name='date']"
                 position="attributes"
             >
-                <attribute name="attrs">
-                    {
-                        'readonly': ['|', (('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))),
-                                     ('state', '!=', 'draft')]
-                    }
+                <attribute name="readonly">
+                    move_type in ('out_invoice', 'out_refund', 'out_receipt') or state != 'draft'
                 </attribute>
+                <attribute name="invisible">False</attribute>
                 <attribute name="force_save">1</attribute>
             </xpath>
         </field>
