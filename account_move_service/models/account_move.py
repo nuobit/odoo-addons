@@ -153,4 +153,4 @@ class AccountMove(models.Model):
                     invoice_lines = self.prepare_invoice_service(vals)
                     vals["invoice_line_ids"] = invoice_lines
 
-        return super(AccountMove, self).create(vals_list)
+        return super().create(vals_list)

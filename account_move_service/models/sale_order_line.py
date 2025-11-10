@@ -62,18 +62,18 @@ class SaleOrderLine(models.Model):
                     else:
                         actual_qty = 0.0
                     if invoice_line.move_id.state != "cancel":
-                        invoice_line_qty_invoiced[
-                            invoice_line.id
-                        ] += rec.product_uom._compute_quantity(
-                            actual_qty, invoice_line.product_uom_id
+                        invoice_line_qty_invoiced[invoice_line.id] += (
+                            rec.product_uom._compute_quantity(
+                                actual_qty, invoice_line.product_uom_id
+                            )
                         )
                         qty_to_invoice -= actual_qty
                         qty_invoiced += actual_qty
                     elif invoice_line.move_id.move_type == "out_refund":
-                        invoice_line_qty_invoiced[
-                            invoice_line.id
-                        ] -= rec.product_uom._compute_quantity(
-                            actual_qty, invoice_line.product_uom_id
+                        invoice_line_qty_invoiced[invoice_line.id] -= (
+                            rec.product_uom._compute_quantity(
+                                actual_qty, invoice_line.product_uom_id
+                            )
                         )
                         qty_to_invoice += actual_qty
                         qty_invoiced -= actual_qty

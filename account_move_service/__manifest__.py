@@ -6,7 +6,7 @@
     "summary": "Module to allow grouping service billing in account moves",
     "version": "14.0.1.0.1",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Sales/Accounting",
     "license": "AGPL-3",
     "depends": ["sale_order_service"],
