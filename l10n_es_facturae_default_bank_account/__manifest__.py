@@ -7,7 +7,7 @@
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Banking addons",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "summary": "This module allows to define a default Factura-E "
     "bank account per partner.",
     "depends": [
