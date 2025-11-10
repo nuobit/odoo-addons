@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -7,29 +8,27 @@ from odoo import api, fields, models
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
-    @api.model
-    def _get_price_total_and_subtotal_model(
-        self,
-        price_unit,
-        quantity,
-        discount,
-        currency,
-        product,
-        partner,
-        taxes,
-        move_type,
-    ):
-        res = super()._get_price_total_and_subtotal_model(
-            price_unit, quantity, discount, currency, product, partner, taxes, move_type
-        )
-        if (
-            self.move_id.partner_id.service_intermediary
-            and self.sale_line_ids
-            and self.price_subtotal
-            and self.price_total
-        ):
-            res["price_subtotal"] = self.price_subtotal
-            res["price_total"] = self.price_total
-        return res
-
     service_group = fields.Boolean()
+
+    @api.depends("quantity", "discount", "price_unit", "tax_ids", "currency_id")
+    def _compute_totals(self):
+        service_lines = self.filtered(
+            lambda line: line.move_id.partner_id.service_intermediary
+            and line.sale_line_ids
+            and line.price_subtotal
+            and line.price_total
+        )
+        stored_values = {
+            line.id: {
+                "price_subtotal": line.price_subtotal,
+                "price_total": line.price_total,
+            }
+            for line in service_lines
+        }
+        super()._compute_totals()
+        for line in service_lines:
+            if line.id in stored_values:
+                line.price_subtotal = stored_values[line.id]["price_subtotal"]
+                line.price_total = stored_values[line.id]["price_total"]
+
+        return True

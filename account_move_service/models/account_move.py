@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, models
@@ -123,9 +124,12 @@ class AccountMove(models.Model):
             if line_data[f_cons] != line.get(f_cons):
                 raise ValidationError(
                     _(
-                        "The field '%s' must have the same value for all "
-                        "order lines" % f_name
+                        "The field '%(field)s' must have"
+                        " the same value for all order lines"
                     )
+                    % {
+                        "field": f_name,
+                    }
                 )
 
     def prepare_invoice_service(self, vals):
