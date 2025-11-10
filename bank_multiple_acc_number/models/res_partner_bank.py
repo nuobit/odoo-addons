@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
@@ -32,9 +32,13 @@ class ResPartnerBank(models.Model):
                     _(
                         "Account number must be unique for "
                         "partners with a different VAT number. "
-                        "Review the account number for partners: %s"
-                        % ", ".join([_partner_name(p) for p in partner_bank.partner_id])
+                        "Review the account number for partners: %(partners)s"
                     )
+                    % {
+                        "partners": ", ".join(
+                            [_partner_name(p) for p in partner_bank.partner_id]
+                        ),
+                    }
                 )
 
     _sql_constraints = [
