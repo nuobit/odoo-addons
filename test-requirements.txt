@@ -1,0 +1,1 @@
+odoo-addon-sale_order_service@git+https://github.com/nuobit/odoo-addons.git@refs/pull/704/head#subdirectory=sale_order_service
