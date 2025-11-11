@@ -4,7 +4,11 @@
 
 {
     "name": "Sale line product variant description by partner",
-    "summary": "This is a glue module to add a variant description",
+    "summary": "This module replaces the default product description "
+    "on sale order lines with the product’s sales description. "
+    "As a result, no product description will appear on a sale "
+    "order line unless the product has a customer-specific sales "
+    "description.",
     "version": "14.0.1.0.0",
     "category": "Sales",
     "author": "NuoBiT Solutions, S.L.",
@@ -14,5 +18,4 @@
         "sale_order_line_variant_description_extension",
         "sale_line_partner_description",
     ],
-    "auto_install": True,
 }
