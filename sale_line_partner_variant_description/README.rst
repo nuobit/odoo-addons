@@ -22,7 +22,9 @@ Sale line product variant description by partner
 
 |badge1| |badge2| |badge3|
 
-This is a glue module to add a variant description
+This module replaces the default product description on sale order lines with the product’s sales description.
+As a result, no product description will appear on a sale order line unless the product has a customer-specific
+sales description.
 
 **Table of contents**
 
