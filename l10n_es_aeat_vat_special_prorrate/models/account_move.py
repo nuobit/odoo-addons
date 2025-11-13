@@ -46,6 +46,8 @@ class AccountMoveLine(models.Model):
                     self.move_id, self.move_id.date, self.move_id.company_id
                 )
             )
+        if not currency:
+            currency = self.currency_id or self.move_id.currency_id
         return super()._get_price_total_and_subtotal_model(
             price_unit, quantity, discount, currency, product, partner, taxes, move_type
         )
