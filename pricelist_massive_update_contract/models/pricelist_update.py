@@ -1,4 +1,7 @@
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
+
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
@@ -52,4 +55,6 @@ class PriceListUpdate(models.Model):
                     line.price_unit = line.price_unit * (1 + record.percentage / 100)
                 if contract_lines:
                     record.state = "processed"
+            else:
+                record.state = "draft"
         return res
