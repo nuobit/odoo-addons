@@ -21,6 +21,7 @@ class PriceListUpdate(models.Model):
                 & price_list_tags
             )
 
+        res = None
         for record in self:
             if not record.update_pricelists and not record.update_contracts:
                 raise ValidationError(
@@ -30,7 +31,7 @@ class PriceListUpdate(models.Model):
                     )
                 )
             if record.update_pricelists:
-                super().update_price_list_price()
+                res = super().update_price_list_price()
             if record.update_contracts:
                 all_contract_lines = self.env["contract.line"].search(
                     [
@@ -43,9 +44,12 @@ class PriceListUpdate(models.Model):
                     ]
                 )
                 contract_lines = all_contract_lines.filtered(
-                    lambda x: has_price_list_tags(x, record.price_list_tag_ids)
+                    lambda x, tag_ids=record.price_list_tag_ids: has_price_list_tags(
+                        x, tag_ids
+                    )
                 )
                 for line in contract_lines:
                     line.price_unit = line.price_unit * (1 + record.percentage / 100)
                 if contract_lines:
                     record.state = "processed"
+        return res

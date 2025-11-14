@@ -3,22 +3,22 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="price_list_update_view_tree" model="ir.ui.view">
-        <field name="name">price_list_tags_view_tree_contract</field>
+        <field name="name">>pricelist.update.view.list</field>
         <field name="model">pricelist.update</field>
         <field
             name="inherit_id"
             ref="pricelist_massive_update.price_list_update_view_tree"
         />
         <field name="arch" type="xml">
-            <tree position="inside">
+            <list position="inside">
                 <field name="update_pricelists" />
                 <field name="update_contracts" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="price_list_update_view_form" model="ir.ui.view">
-        <field name="name">price_update_tags_view_form_contract</field>
+        <field name="name">pricelist.update.view.form</field>
         <field name="model">pricelist.update</field>
         <field
             name="inherit_id"
@@ -30,11 +30,11 @@
                     <group>
                         <field
                             name="update_pricelists"
-                            attrs="{'readonly': [('state','=','processed')]}"
+                            readonly="state == 'processed'"
                         />
                         <field
                             name="update_contracts"
-                            attrs="{'readonly': [('state','=','processed')]}"
+                            readonly="state == 'processed'"
                         />
                     </group>
                 </group>
