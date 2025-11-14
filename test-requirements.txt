@@ -1,0 +1,1 @@
+odoo-addon-pricelist_massive_update@git+https://github.com/oxigensalud/odoo-community-addons.git@refs/pull/22/head#subdirectory=pricelist_massive_update
