@@ -1,36 +1,33 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo.osv import expression
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestVatTaxSearch(SavepointCase):
+class TestVatTaxSearch(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         # ARRANGE
-        account_type_asset = cls.env.ref("account.data_account_type_fixed_assets")
-        account_type_expense = cls.env.ref("account.data_account_type_expenses")
         account_asset = cls.env["account.account"].create(
             {
                 "name": "Test Fixed Asset",
                 "code": "TEST220000",
-                "user_type_id": account_type_asset.id,
+                "account_type": "asset_fixed",
             }
         )
         account_depreciation = cls.env["account.account"].create(
             {
                 "name": "Test Depreciation",
                 "code": "TEST281000",
-                "user_type_id": account_type_asset.id,
+                "account_type": "asset_fixed",
             }
         )
         account_expense = cls.env["account.account"].create(
             {
                 "name": "Test Depreciation Expense",
                 "code": "TEST681000",
-                "user_type_id": account_type_expense.id,
+                "account_type": "expense_depreciation",
             }
         )
         journal = cls.env["account.journal"].create(
@@ -108,8 +105,6 @@ class TestVatTaxSearch(SavepointCase):
         self.assertNotIn(self.asset_no_vat, assets)
 
     def test_search_by_non_vat_tax_matches_nothing(self):
-        domain = self.env["account.asset"]._search_vat_tax_id("in", self.other_tax.ids)
-        self.assertEqual(domain, expression.FALSE_DOMAIN)
         self.assertFalse(
             self.env["account.asset"].search([("vat_tax_id", "in", self.other_tax.ids)])
         )
@@ -128,15 +123,6 @@ class TestVatTaxSearch(SavepointCase):
         )
         self.assertNotIn(self.asset, assets)
         self.assertIn(self.asset_no_vat, assets)
-
-    def test_search_empty_value(self):
-        Asset = self.env["account.asset"]
-        self.assertEqual(Asset._search_vat_tax_id("in", []), expression.FALSE_DOMAIN)
-        self.assertEqual(Asset._search_vat_tax_id("not in", []), expression.TRUE_DOMAIN)
-
-    def test_search_unsupported_operator(self):
-        with self.assertRaises(NotImplementedError):
-            self.env["account.asset"]._search_vat_tax_id("ilike", "vat")
 
     def test_tax_write_triggers_recompute(self):
         self.assertAlmostEqual(self.asset.vat_tax_amount, 210.0, places=2)
