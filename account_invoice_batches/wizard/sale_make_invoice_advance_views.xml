@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_sale_advance_payment_inv" model="ir.ui.view">
@@ -15,7 +15,7 @@
                     type="object"
                     context="{'open_batch': True}"
                     class="btn-primary"
-                    attrs="{'invisible': [('invoice_batch_create','=', False)]}"
+                    invisible="not invoice_batch_create"
                 />
             </xpath>
             <xpath expr="//footer" position="before">
