@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="hr_course_attendee_form_view" model="ir.ui.view">
@@ -14,7 +15,7 @@
     </record>
 
     <record id="hr_course_attendee_tree_employee_view" model="ir.ui.view">
-        <field name="name">hr.course.attendee.tree.inherit.duration</field>
+        <field name="name">hr.course.attendee.list.inherit.duration</field>
         <field name="model">hr.course.attendee</field>
         <field
             name="inherit_id"

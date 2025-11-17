@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="hr_course_form_view" model="ir.ui.view">
@@ -10,7 +11,7 @@
             <xpath expr="//field[@name='category_id']/.." position="inside">
                 <field name="duration" widget="float_time" />
             </xpath>
-            <xpath expr="//tree/field[@name='cost']" position="before">
+            <xpath expr="//list/field[@name='cost']" position="before">
                 <field name="duration" widget="float_time" />
             </xpath>
         </field>
