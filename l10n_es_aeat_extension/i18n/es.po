@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-12 10:24+0000\n"
+"POT-Creation-Date: 2026-10-29 09:13+0000\n"
 "PO-Revision-Date: 2025-03-12 10:24+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -15,9 +15,28 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. module: l10n_es_aeat_extension
+#: model:ir.model,name:l10n_es_aeat_extension.model_l10n_es_aeat_map_tax
+msgid "AEAT tax mapping"
+msgstr ""
 
 #. module: l10n_es_aeat_extension
+#: model:ir.model,name:l10n_es_aeat_extension.model_l10n_es_aeat_map_tax_line
+msgid "AEAT tax mapping line"
+msgstr ""
+
+#. module: l10n_es_aeat_extension
+#: model:ir.model.fields,field_description:l10n_es_aeat_extension.field_l10n_es_aeat_map_tax_line__map_parent_id
+msgid "Map Parent"
+msgstr ""
+
+#. module: l10n_es_aeat_extension
+#: model:ir.model.fields,field_description:l10n_es_aeat_extension.field_l10n_es_aeat_map_tax__map_line_ids
+msgid "Map lines"
+msgstr ""
+
+#. module: l10n_es_aeat_extension
+#. odoo-python
 #: code:addons/l10n_es_aeat_extension/models/l10n_es_aeat_map_tax.py:0
-#, python-format
 msgid "Start date or end date is not defined."
 msgstr "No se ha definido la fecha de inicio o fecha de fin."
