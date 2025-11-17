@@ -1,1 +1,1 @@
-* This module extends account menu
+This module extends account menu
