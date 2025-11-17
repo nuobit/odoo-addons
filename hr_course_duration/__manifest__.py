@@ -7,7 +7,7 @@
     "summary": "This module adds a duration field in courses",
     "version": "14.0.0.0.0",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["hr_course"],
     "data": [
