@@ -32,7 +32,7 @@ class AccountMove(models.Model):
 
     @api.onchange("partner_id", "company_id")
     def _onchange_partner_id(self):
-        res = super(AccountMove, self)._onchange_partner_id()
+        res = super()._onchange_partner_id()
         if self.partner_id.invoice_batch_sending_method:
             self.invoice_batch_sending_method = (
                 self.partner_id.invoice_batch_sending_method

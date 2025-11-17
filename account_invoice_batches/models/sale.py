@@ -9,9 +9,7 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     def _create_invoices(self, grouped=False, final=False, date=None):
-        moves = super(SaleOrder, self)._create_invoices(
-            grouped=grouped, final=final, date=date
-        )
+        moves = super()._create_invoices(grouped=grouped, final=final, date=date)
         if moves:
             batch_id = self.env.context.get("batch_id")
             if batch_id:
@@ -20,12 +18,12 @@ class SaleOrder(models.Model):
                         "invoice_batch_id": batch_id,
                     }
                     if move.partner_id.invoice_batch_sending_method:
-                        values[
-                            "invoice_batch_sending_method"
-                        ] = move.partner_id.invoice_batch_sending_method
+                        values["invoice_batch_sending_method"] = (
+                            move.partner_id.invoice_batch_sending_method
+                        )
                     if move.partner_id.invoice_batch_email_partner_id:
-                        values[
-                            "invoice_batch_email_partner_id"
-                        ] = move.partner_id.invoice_batch_email_partner_id.id
+                        values["invoice_batch_email_partner_id"] = (
+                            move.partner_id.invoice_batch_email_partner_id.id
+                        )
                     move.write(values)
         return moves

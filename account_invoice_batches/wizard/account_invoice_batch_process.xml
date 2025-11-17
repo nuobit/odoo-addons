@@ -59,5 +59,4 @@
         <field name="binding_model_id" ref="model_account_invoice_batch" />
         <field name="binding_view_types">list</field>
     </record>
-
 </odoo>

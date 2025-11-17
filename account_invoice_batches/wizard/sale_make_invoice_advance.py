@@ -14,9 +14,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
     in_background = fields.Boolean(string="In background", default=False)
 
     def _create_invoice(self, order, so_line, amount):
-        invoice = super(SaleAdvancePaymentInv, self)._create_invoice(
-            order, so_line, amount
-        )
+        invoice = super()._create_invoice(order, so_line, amount)
         if invoice:
             batch_id = self.env.context.get("batch_id")
             if batch_id:
@@ -24,13 +22,13 @@ class SaleAdvancePaymentInv(models.TransientModel):
                     "invoice_batch_id": batch_id,
                 }
                 if invoice.partner_id.invoice_batch_sending_method:
-                    values[
-                        "invoice_batch_sending_method"
-                    ] = invoice.partner_id.invoice_batch_sending_method
+                    values["invoice_batch_sending_method"] = (
+                        invoice.partner_id.invoice_batch_sending_method
+                    )
                 if invoice.partner_id.invoice_batch_email_partner_id:
-                    values[
-                        "invoice_batch_email_partner_id"
-                    ] = invoice.partner_id.invoice_batch_email_partner_id.id
+                    values["invoice_batch_email_partner_id"] = (
+                        invoice.partner_id.invoice_batch_email_partner_id.id
+                    )
 
                 invoice.write(values)
 
@@ -45,11 +43,11 @@ class SaleAdvancePaymentInv(models.TransientModel):
                 }
             )
         self = self.with_context(**context)
-        return super(SaleAdvancePaymentInv, self).create_invoices()
+        return super().create_invoices()
 
     def create_invoices(self):
         if not self.in_background and not self.invoice_batch_create:
-            return super(SaleAdvancePaymentInv, self).create_invoices()
+            return super().create_invoices()
 
         invoice_batch = None
         if self.invoice_batch_create:
@@ -78,7 +76,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
         else:
             if invoice_batch:
                 self = self.with_context(batch_id=invoice_batch.id)
-            res = super(SaleAdvancePaymentInv, self).create_invoices()
+            res = super().create_invoices()
 
             invoices = self.env["account.move"].search(
                 [("invoice_batch_id", "=", invoice_batch.id)]
