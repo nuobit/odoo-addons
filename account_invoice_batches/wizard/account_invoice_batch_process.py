@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
@@ -25,12 +25,13 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         company = active_objects.mapped("company_id")
 
         if model not in ("account.invoice.batch", "account.move"):
-            raise UserError(_("Unexpected model '%s'" % model))
+            raise UserError(_("Unexpected model '%s'") % model)
 
         if len(company) > 1:
             raise UserError(
                 _(
-                    "More than one company found. The data selected must be of the same company"
+                    "More than one company found. "
+                    "The data selected must be of the same company"
                 )
             )
 
@@ -81,10 +82,10 @@ class AccountInvoiceBatchProcess(models.TransientModel):
     def send_email(self, move_id):
         inv = self.env["account.move"].browse(move_id)
         if not inv.is_move_sent:
-            inv.with_context(lang=inv.partner_id.lang).message_post_with_template(
-                self.invoice_batch_sending_email_template_id.id,
+            inv.with_context(lang=inv.partner_id.lang).message_mail_with_source(
+                source_ref=self.invoice_batch_sending_email_template_id,
                 message_type="comment",
-                composition_mode="mass_mail",
+                auto_commit=True,
             )
             inv.is_move_sent = True
 
@@ -147,7 +148,7 @@ class AccountInvoiceBatchProcess(models.TransientModel):
             )
             invoices_pdf = self.prepare_invoices(invoices)
         else:
-            raise UserError(_("Unexpected model '%s'" % model))
+            raise UserError(_("Unexpected model '%s'") % model)
 
         if invoices_pdf:
             if not self.company_id.report_service_id:

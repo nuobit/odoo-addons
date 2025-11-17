@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from ast import literal_eval
@@ -12,7 +12,7 @@ class AccountInvoiceBatch(models.Model):
     _description = "Account Invoice Batch"
     _order = "date desc"
 
-    date = fields.Datetime(string="Date", required=True)
+    date = fields.Datetime(required=True)
 
     name = fields.Char(string="Description")
 
@@ -32,7 +32,7 @@ class AccountInvoiceBatch(models.Model):
         string="Invoices",
     )
 
-    invoice_count = fields.Integer(compute="_compute_invoice_count", string="Invoices")
+    invoice_count = fields.Integer(compute="_compute_invoice_count")
 
     @api.depends("invoice_ids")
     def _compute_invoice_count(self):
@@ -48,7 +48,7 @@ class AccountInvoiceBatch(models.Model):
     )
 
     draft_invoice_count = fields.Integer(
-        compute="_compute_draft_invoice_count", string="Draft"
+        compute="_compute_draft_invoice_count", string="Draft Count"
     )
 
     @api.depends("draft_invoice_ids")
@@ -64,7 +64,7 @@ class AccountInvoiceBatch(models.Model):
         string="Unsent",
     )
     unsent_invoice_count = fields.Integer(
-        compute="_compute_unsent_invoice_count", string="Unsent"
+        compute="_compute_unsent_invoice_count", string="Unsent Count"
     )
 
     @api.depends("unsent_invoice_ids")
@@ -80,14 +80,15 @@ class AccountInvoiceBatch(models.Model):
         string="Sent",
     )
     sent_invoice_count = fields.Integer(
-        compute="_compute_sent_invoice_count", string="Sent"
+        compute="_compute_sent_invoice_count", string="Sent Count"
     )
 
     def _compute_sent_invoice_count(self):
         for rec in self:
             rec.sent_invoice_count = len(rec.sent_invoice_ids)
 
-    def name_get(self):
+    @api.depends("date", "name")
+    def _compute_display_name(self):
         lang = self.env["res.lang"].search([("code", "=", self.env.lang)])
         datetime_format = " ".join(
             filter(
@@ -98,16 +99,19 @@ class AccountInvoiceBatch(models.Model):
                 ),
             )
         )
-        res = []
         for rec in self:
-            datetime_str = fields.Datetime.context_timestamp(rec, rec.date).strftime(
-                datetime_format
+            if rec.date:
+                datetime_str = fields.Datetime.context_timestamp(
+                    rec, rec.date
+                ).strftime(datetime_format)
+            else:
+                datetime_str = ""
+            rec.display_name = " ".join(
+                filter(
+                    None,
+                    map(lambda x: x and x.strip() or None, [datetime_str, rec.name]),
+                )
             )
-            value = filter(
-                None, map(lambda x: x and x.strip() or None, [datetime_str, rec.name])
-            )
-            res.append((rec.id, " ".join(value)))
-        return res
 
     def account_invoice_batch_invoice_action(
         self, domain=None, context=None, name=None

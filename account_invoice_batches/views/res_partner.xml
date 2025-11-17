@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <!---->
 <odoo>
@@ -15,8 +15,8 @@
                     <field
                         name="invoice_batch_email_partner_id"
                         options="{'no_create': True, 'no_create_edit':True}"
-                        attrs="{'invisible': [('invoice_batch_sending_method', '!=', 'email')],
-                               'required': [('invoice_batch_sending_method', '=', 'email')]}"
+                        invisible="invoice_batch_sending_method != 'email'"
+                        required="invoice_batch_sending_method == 'email'"
                     />
                 </group>
                 <newline />

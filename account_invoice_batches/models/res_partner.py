@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -19,7 +19,7 @@ class ResPartner(models.Model):
     )
     invoice_batch_email_partner_id = fields.Many2one(
         comodel_name="res.partner",
-        domain="[('id', 'child_of', active_id), ('email', '!=', False)]",
+        domain="[('id', 'child_of', parent_id), ('email', '!=', False)]",
         ondelete="restrict",
         string="Invoice Batch Contact",
         tracking=True,
