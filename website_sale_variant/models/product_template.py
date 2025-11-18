@@ -8,13 +8,14 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     is_published = fields.Boolean(
+        string="Product published",
         compute="_compute_template_is_published",
         inverse="_inverse_template_is_published",
         store=True,
         readonly=False,
     )
     button_is_published = fields.Boolean(
-        string="Button Is Published",
+        string="Button product published",
         related="is_published",
     )
 

@@ -19,10 +19,7 @@
                     >
                         <group name="shop">
                             <group string="Shop">
-                                <field
-                                    name="variant_is_published"
-                                    string="Is Published"
-                                />
+                                <field name="variant_is_published" string="Published" />
                             </group>
                         </group>
                     </page>
@@ -78,7 +75,7 @@
                 expr="//page[@name='shop']/group[@name='shop']/group/field[@name='is_published']"
                 position="after"
             >
-                <field name="variant_is_published" string="Is Published" />
+                <field name="variant_is_published" string="Published" />
             </xpath>
         </field>
     </record>
@@ -91,11 +88,7 @@
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="is_published" position="after">
-                <field
-                    name="variant_is_published"
-                    string="Is Published"
-                    optional="hide"
-                />
+                <field name="variant_is_published" string="Published" optional="hide" />
             </field>
         </field>
     </record>
@@ -110,7 +103,7 @@
             <xpath expr="//filter[@name='published']" position="after">
                 <filter
                     name="variant_is_published"
-                    string="Is Published"
+                    string="Published"
                     domain="[('variant_is_published', '=', True)]"
                 />
             </xpath>

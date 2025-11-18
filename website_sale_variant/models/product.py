@@ -8,6 +8,7 @@ class ProductProduct(models.Model):
     _inherit = "product.product"
 
     variant_is_published = fields.Boolean(
+        string="Variant published",
         help="Indicates if this specific variant is published on the website",
         compute="_compute_variant_is_published",
         store=True,

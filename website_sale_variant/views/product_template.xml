@@ -23,7 +23,7 @@
                 />
             </xpath>
             <field name="website_sequence" position="before">
-                <field name="is_published" />
+                <field name="is_published" string="Published" />
             </field>
         </field>
     </record>
