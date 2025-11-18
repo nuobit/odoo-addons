@@ -208,7 +208,7 @@ class WooCommerceProductTemplateExportMapper(Component):
                     % (record.id, record.display_name)
                 )
             tax_class = self.backend_record.tax_class_ids.filtered(
-                lambda x: record["taxes_id"] == x.account_tax
+                lambda x: record["taxes_id"] == x.account_tax_id
             )
             if not tax_class:
                 raise ValidationError(
