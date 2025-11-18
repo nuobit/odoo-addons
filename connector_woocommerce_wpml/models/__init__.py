@@ -1,5 +1,6 @@
 from . import product_wpml_mixin
 from . import backend
+from . import binding
 from . import product_attribute_value
 from . import product_product
 from . import product_public_category
