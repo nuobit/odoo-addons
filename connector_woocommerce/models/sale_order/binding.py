@@ -19,9 +19,11 @@ class WooCommerceSaleOrder(models.Model):
     woocommerce_idsaleorder = fields.Integer(
         string="WooCommerce ID Sale Order",
         readonly=True,
+        required=True,
     )
     woocommerce_status = fields.Char(
         readonly=True,
+        required=True,
     )
     woocommerce_order_line_ids = fields.One2many(
         string="WooCommerce Order Line ids",
