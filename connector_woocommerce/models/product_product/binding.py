@@ -19,10 +19,12 @@ class WooCommerceProductProduct(models.Model):
     woocommerce_idproduct = fields.Integer(
         string="WooCommerce ID Product",
         readonly=True,
+        required=True,
     )
     woocommerce_idparent = fields.Integer(
         string="WooCommerce ID Parent",
         readonly=True,
+        required=True,
     )
     _sql_constraints = [
         (

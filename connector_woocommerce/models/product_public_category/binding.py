@@ -19,6 +19,7 @@ class WooCommerceProductPublicCategory(models.Model):
     woocommerce_idpubliccategory = fields.Integer(
         string="WooCommerce ID Public Category",
         readonly=True,
+        required=True,
     )
 
     _sql_constraints = [

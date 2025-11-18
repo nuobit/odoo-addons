@@ -19,14 +19,17 @@ class WooCommerceResPartner(models.Model):
     woocommerce_idrespartner = fields.Integer(
         string="WooCommerce ID Res Partner",
         readonly=True,
+        required=True,
     )
     woocommerce_address_type = fields.Char(
         string="WooCommerce Type",
         readonly=True,
+        required=True,
     )
     woocommerce_address_hash = fields.Char(
-        string="Address Hash",
+        string="WooCommerce Address Hash",
         readonly=True,
+        required=True,
     )
 
     _sql_constraints = [
