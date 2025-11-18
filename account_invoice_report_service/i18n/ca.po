@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-16 13:59+0000\n"
+"POT-Creation-Date: 2026-10-29 09:23+0000\n"
 "PO-Revision-Date: 2024-09-16 13:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,13 +22,10 @@ msgid "(object._get_report_base_filename())"
 msgstr ""
 
 #. module: account_invoice_report_service
-#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.res_config_settings_view_form
-msgid ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
-"specific.\" groups=\"base.group_multi_company\"/>"
-msgstr ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Els valors establerts aquí són "
-"específics de l'empresa.\" groups=\"base.group_multi_company\"/>"
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
+#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
+msgid "<span> on </span>"
+msgstr "<span> sobre </span>"
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -96,12 +93,6 @@ msgstr "<span>Anada i tornada</span>"
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "<span>from invoice date</span>"
 msgstr "<span>data factura</span>"
-
-#. module: account_invoice_report_service
-#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
-#: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
-msgid "<span>on</span>"
-msgstr "<span>sobre</span>"
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
@@ -221,31 +212,9 @@ msgid "Discount"
 msgstr "Descompte"
 
 #. module: account_invoice_report_service
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move__display_name
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move_line__display_name
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery__display_name
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service__display_name
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company__display_name
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order__display_name
-msgid "Display Name"
-msgstr "Nom a mostrar"
-
-#. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
 msgid "Document no."
 msgstr "Núm document"
-
-#. module: account_invoice_report_service
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move__id
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move_line__id
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery__id
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service__id
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company__id
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_config_settings__id
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order__id
-msgid "ID"
-msgstr ""
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
@@ -255,11 +224,10 @@ msgstr "DNI"
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.res_config_settings_view_form
 msgid ""
-"If empty, you're gonna need to select a template on batch processing\n"
-"                                dialog."
+"If empty, you're gonna need to select a template on batch processing dialog."
 msgstr ""
-"Si està buit, hauràs de seleccionar una plantilla en el diàleg de processament\n"
-"                                per lots."
+"Si està buit, hauràs de seleccionar una plantilla en el diàleg de "
+"processament per lots."
 
 #. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_delivery_document
@@ -277,24 +245,13 @@ msgid "Journal Item"
 msgstr "Anotació comptable"
 
 #. module: account_invoice_report_service
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move____last_update
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_account_move_line____last_update
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_delivery____last_update
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_report_account_invoice_report_service_report_invoice_service____last_update
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_company____last_update
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:account_invoice_report_service.field_sale_order____last_update
-msgid "Last Modified on"
-msgstr "Última modificació el "
-
-#. module: account_invoice_report_service
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_service.report_invoice_service_document
 msgid "Name"
 msgstr "Nom"
 
 #. module: account_invoice_report_service
-#: code:addons/account_invoice_report_service/models/account_invoice.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_invoice_report_service/models/account_move.py:0
 msgid ""
 "Not implemented case: The same invoice line belongs to different orders"
 msgstr ""
@@ -412,8 +369,8 @@ msgid "Tel."
 msgstr ""
 
 #. module: account_invoice_report_service
-#: code:addons/account_invoice_report_service/models/account_invoice.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_invoice_report_service/models/account_move.py:0
 msgid "There's no report defined on invoice company"
 msgstr "No hi ha cap informe definit a la companyia de la factura"
 

@@ -1,11 +1,12 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Service invoice report",
     "summary": """Service invoice report""",
-    "version": "17.0.1.0.0",
+    "version": "18.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Accounting",
@@ -19,7 +20,6 @@
         "views/report_invoice_delivery.xml",
         "views/account_invoice_views.xml",
     ],
-    "installable": True,
     "assets": {
         "web.report_assets_common": [
             "account_invoice_report_service/static/src/scss/report_invoice_service_styles.scss",

@@ -23,6 +23,25 @@
     @include ris-basetable-mixin;
 }
 
+// table, th, td, div {
+//     border: none !important;
+// }
+
+tr {
+    border-color: white;
+}
+
+th {
+    text-align: left;
+}
+
+th.text-right {
+    text-align: right !important;
+}
+td.text-right {
+    text-align: right !important;
+}
+
 .ris-table-1 {
     @include ris-basetable-mixin;
     margin-bottom: 5px;
