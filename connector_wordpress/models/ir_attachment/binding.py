@@ -19,10 +19,12 @@ class WordPressIrAttachment(models.Model):
     wordpress_idattachment = fields.Integer(
         string="ID Attachment",
         readonly=True,
+        required=True,
     )
     wordpress_source_url = fields.Char(
         string="Source URL",
         readonly=True,
+        required=True,
     )
 
     _sql_constraints = [
