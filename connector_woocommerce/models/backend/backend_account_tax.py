@@ -17,12 +17,13 @@ class WooCommerceBackendAccountTax(models.Model):
         required=True,
         ondelete="cascade",
     )
-    woocommerce_tax_rate_id = fields.Integer(
-        string="WooCommerce Tax Rate ID",
+
+    account_tax_id = fields.Many2one(
+        comodel_name="account.tax",
         required=True,
     )
-    account_tax = fields.Many2one(
-        comodel_name="account.tax",
+    woocommerce_tax_rate_id = fields.Integer(
+        string="WooCommerce Tax Rate ID",
         required=True,
     )
 

@@ -254,7 +254,7 @@
                             <group string="Order Tax">
                                 <field name="tax_map_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="account_tax" />
+                                        <field name="account_tax_id" />
                                         <field name="woocommerce_tax_rate_id" />
                                     </tree>
                                 </field>
@@ -262,7 +262,7 @@
                             <group string="Product tax">
                                 <field name="tax_class_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="account_tax" />
+                                        <field name="account_tax_id" />
                                         <field name="woocommerce_tax_class" />
                                     </tree>
                                 </field>
