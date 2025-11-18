@@ -17,7 +17,7 @@ class WooCommerceBackendTaxClass(models.Model):
         required=True,
         ondelete="cascade",
     )
-    account_tax = fields.Many2one(
+    account_tax_id = fields.Many2one(
         comodel_name="account.tax",
         required=True,
     )
@@ -28,7 +28,7 @@ class WooCommerceBackendTaxClass(models.Model):
     _sql_constraints = [
         (
             "tax_map_uniq",
-            "unique(backend_id, woocommerce_tax_class)",
-            "A binding already exists with the same (backend, woocommerce_tax_rate_id) ID.",
+            "unique(backend_id, account_tax_id)",
+            "A binding already exists with the same (backend, account_tax_id) ID.",
         ),
     ]
