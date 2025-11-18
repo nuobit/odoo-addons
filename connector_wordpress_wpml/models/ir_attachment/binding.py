@@ -12,17 +12,18 @@ class WordPressIrAttachment(models.Model):
         required=True,
     )
 
+    # we overwrite the db constraints, so they must have exactly the same name
+    # as the parent inherited
     _sql_constraints = [
         (
             "internal_uniq",
             "unique(backend_id, wordpress_lang, odoo_id)",
-            "A binding already exists with the same Internal (Odoo) ID.",
+            "A binding already exists with the same Internal ID (odoo_id)",
         ),
         (
             "external_uniq",
-            "unique(backend_id, wordpress_ir_attachment,"
-            "wordpress_irattachment, wordpress_lang)",
-            "A binding already exists with the same External (irAttachment) ID.",
+            "unique(backend_id, wordpress_lang, wordpress_idattachment)",
+            "A binding already exists with the same External ID (idAttachment)",
         ),
     ]
 
