@@ -269,6 +269,16 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                 }
             )
 
+    def _prepare_binding_export_values(self, relation_id, external_data):
+        external_id = self.dict2id(external_data, in_field=False)
+        return {
+            self._backend_field: self.backend_record.id,
+            self._odoo_field: relation_id,
+            self._sync_date_field: fields.Datetime.now(),
+            **self.id2dict(external_id, in_field=True),
+            **self._additional_external_binding_fields(external_data),
+        }
+
     def bind_export(self, external_data, relation):
         """Create the link between an external ID and an Odoo ID
 
@@ -289,17 +299,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         else:
             relation_id = relation
 
-        external_id = self.dict2id(external_data, in_field=False)
         with self._retry_unique_violation():
-            binding = self.model.with_context(connector_no_export=True).create(
-                {
-                    self._backend_field: self.backend_record.id,
-                    self._odoo_field: relation_id,
-                    self._sync_date_field: fields.Datetime.now(),
-                    **self.id2dict(external_id, in_field=True),
-                    **self._additional_external_binding_fields(external_data),
-                }
-            )
+            values = self._prepare_binding_export_values(relation_id, external_data)
+            binding = self.model.with_context(connector_no_export=True).create(values)
             # Eager commit to avoid having 2 jobs
             # exporting at the same time. The constraint
             # will pop if an other job already created
