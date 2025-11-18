@@ -123,6 +123,11 @@ def slugify(value):
 
 
 def trim_domain(domain):
+    """
+    Takes an Odoo-style domain (a Python list of clauses) and returns a new domain where
+    any string values in the third position of 3‑element clauses have leading/trailing
+    whitespace removed.
+    """
     trimmed_domain = []
     for d in domain:
         if isinstance(d, (list, tuple)):
