@@ -24,3 +24,11 @@ class WordPressIrAttachment(models.Model):
         string="Source URL",
         readonly=True,
     )
+
+    _sql_constraints = [
+        (
+            "external_uniq",
+            "unique(backend_id, wordpress_idattachment)",
+            "A binding already exists with the same External ID (idAttachment)",
+        ),
+    ]
