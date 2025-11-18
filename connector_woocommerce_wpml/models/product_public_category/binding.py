@@ -14,7 +14,7 @@ class WooCommerceProductPublicCategory(models.Model):
 
     _sql_constraints = [
         (
-            "woocommerce_internal_uniq",
+            "internal_uniq",
             "unique(backend_id, woocommerce_lang, odoo_id)",
             "A binding already exists with the same Internal (Odoo) ID.",
         ),
