@@ -19,6 +19,7 @@ class WooCommerceProductAttribute(models.Model):
     woocommerce_idattribute = fields.Integer(
         string="WooCommerce ID Attribute",
         readonly=True,
+        required=True,
     )
 
     _sql_constraints = [

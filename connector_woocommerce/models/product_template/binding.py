@@ -19,6 +19,7 @@ class WooCommerceProductTemplate(models.Model):
     woocommerce_idproduct = fields.Integer(
         string="WooCommerce ID Product",
         readonly=True,
+        required=True,
     )
 
     _sql_constraints = [
