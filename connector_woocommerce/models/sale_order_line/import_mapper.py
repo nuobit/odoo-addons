@@ -85,7 +85,7 @@ class SaleOrderLineImportMapper(Component):
                             _("Tax rate %s not found in backend mapping.") % tax["id"]
                         )
                     else:
-                        taxes.append(tax_map.account_tax.id)
+                        taxes.append(tax_map.account_tax_id.id)
             if taxes:
                 return {"tax_id": [(6, 0, taxes)]}
 
