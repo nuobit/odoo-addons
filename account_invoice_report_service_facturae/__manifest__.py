@@ -7,7 +7,7 @@
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Invoicing Management",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "summary": "This module makes facturae to use the service invoice "
     "reports defined on invoice services.",
     "depends": [

@@ -11,7 +11,7 @@ class AccountMove(models.Model):
     _inherit = "account.move"
 
     def _get_facturae_move_attachments(self):
-        result = super(AccountMove, self)._get_facturae_move_attachments()
+        result = super()._get_facturae_move_attachments()
         if (
             self.partner_id.attach_invoice_as_annex
             and self.company_id.report_service_id
