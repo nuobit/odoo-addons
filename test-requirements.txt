@@ -1,0 +1,4 @@
+odoo-addon-account_invoice_batches@git+https://github.com/nuobit/odoo-addons.git@refs/pull/784/head#subdirectory=account_invoice_batches
+odoo-addon-account_move_accrual_entry@git+https://github.com/nuobit/odoo-addons.git@refs/pull/697/head#subdirectory=account_move_accrual_entry
+odoo-addon-account_invoice_report_service@git+https://github.com/nuobit/odoo-addons.git@refs/pull/705/head#subdirectory=account_invoice_report_service
+odoo-addon-sale_order_service@git+https://github.com/nuobit/odoo-addons.git@refs/pull/704/head#subdirectory=sale_order_service
