@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
@@ -18,7 +19,7 @@ class AccountMove(models.Model):
             for r in result:
                 if r["description"] == _("Invoice %s") % self.name:
                     action = self.company_id.report_service_id
-                    content, content_type = action._render(self.ids)
+                    content, content_type = action._render(action, self.ids)
                     r.update(
                         {
                             "data": base64.b64encode(content),
