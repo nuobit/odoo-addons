@@ -5,7 +5,7 @@
     "name": "Account Facturae Attach Existing Attachment",
     "summary": "This module adds the existing attachments in account move to Facturae.",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "depends": ["l10n_es_facturae"],
