@@ -1,5 +1,7 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import base64
 import re
 import xml.etree.ElementTree as ET
 
@@ -24,7 +26,9 @@ class AccountMove(models.Model):
 
     def get_format_types_facturaevx(self):
         xsd_file_path = get_module_resource(
-            "l10n_es_facturae", "data", "Facturaev%s.xsd" % self.get_facturae_version()
+            "l10n_es_facturae",
+            "data",
+            f"Facturaev{self.get_facturae_version()}.xsd",
         )
         tree = ET.parse(xsd_file_path)
         root = tree.getroot()
@@ -52,7 +56,8 @@ class AccountMove(models.Model):
                 [("res_id", "in", self.ids), ("res_model", "=", self._name)]
             )
             existing_checksums = {
-                self.env["ir.attachment"]._compute_checksum(r["data"]) for r in result
+                self.env["ir.attachment"]._compute_checksum(base64.b64decode(r["data"]))
+                for r in result
             }
             for attachment in move_attachments:
                 checksum = self.env["ir.attachment"]._compute_checksum(attachment.datas)
