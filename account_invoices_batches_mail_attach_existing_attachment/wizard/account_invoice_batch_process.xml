@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Frank Cespedes <fcespedes@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="account_invoice_batch_process_view_form" model="ir.ui.view">
@@ -15,9 +15,9 @@
                 <field name="invoice_batch_sending_email_attachments" />
             </field>
             <field name="invoice_batch_sending_email_template_id" position="attributes">
-                <attribute name="attrs">
-                    {'invisible': [('invoice_batch_sending_email', '=', False),
-                                   ('invoice_batch_sending_email_attachments', '=', False)]}</attribute>
+                <attribute
+                    name="invisible"
+                >invoice_batch_sending_email == False and invoice_batch_sending_email_attachments == False</attribute>
             </field>
         </field>
     </record>
