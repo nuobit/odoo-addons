@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models
@@ -7,8 +8,10 @@ from odoo import models
 class MailTemplate(models.Model):
     _inherit = "mail.template"
 
-    def generate_email(self, res_ids, fields):
-        res = super().generate_email(res_ids, fields)
+    def _generate_template(self, res_ids, render_fields, find_or_create_partners=False):
+        res = super()._generate_template(
+            res_ids, render_fields, find_or_create_partners=find_or_create_partners
+        )
 
         if not self.env.context.get("skip_account_mail_attachments", False):
             multi_mode = True
