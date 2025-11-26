@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -22,8 +23,5 @@ class LotService(Component):
         for data in clasified_lots.values():
             lot_ids += data[min(data.keys())]
         if lot_ids:
-            lots = {
-                lot: lots[lot]
-                for lot in self.env["stock.production.lot"].browse(lot_ids)
-            }
+            lots = {lot: lots[lot] for lot in self.env["stock.lot"].browse(lot_ids)}
         return super()._filter_lots(lots)
