@@ -8,7 +8,7 @@
     "category": "Stock",
     "version": "14.0.1.0.1",
     "license": "AGPL-3",
-    "website": "https://github.com/oxigensalud/odoo-addons",
+    "website": "https://github.com/OCA/oxigen.odo-adodns",
     "depends": [
         "stock_rest",
         "oxigen_stock_alternate_lot",
