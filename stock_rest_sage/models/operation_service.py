@@ -1,4 +1,5 @@
-# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _
@@ -43,7 +44,10 @@ class OperationService(Component):
                 employees.mapped("sage_codigo_empleado")
             )
             if employee_diff:
-                raise ValidationError(_("Employees %s are not found" % employee_diff))
+                raise ValidationError(
+                    _("Employees %(employees)s are not found")
+                    % {"employees": employee_diff}
+                )
 
         if employees:
             res.update(
