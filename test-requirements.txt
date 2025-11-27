@@ -1,0 +1,4 @@
+odoo-addon-stock_location_code@git+https://github.com/nuobit/odoo-addons.git@refs/pull/708/head#subdirectory=stock_location_code
+odoo-addon-stock_picking_partner_ref@git+https://github.com/nuobit/odoo-addons.git@refs/pull/638/head#subdirectory=stock_picking_partner_ref
+odoo-addon-stock_rest@git+https://github.com/nuobit/odoo-addons.git@refs/pull/753/head#subdirectory=stock_rest
+odoo-addon-oxigen_stock_alternate_lot@git+https://github.com/oxigensalud/odoo-addons.git@refs/pull/170/head#subdirectory=oxigen_stock_alternate_lot
