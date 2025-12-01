@@ -24,7 +24,7 @@ def chunks(lst, n):
 class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
-    def _render_qweb_pdf(self, res_ids=None, data=None):
+    def _render_qweb_pdf(self, report_ref, res_ids=None, data=None):
         if res_ids is not None and not isinstance(res_ids, list):
             res_ids = [res_ids]
         ir_config = self.env["ir.config_parameter"].sudo()
@@ -39,7 +39,7 @@ class IrActionsReport(models.Model):
             or len(res_ids) <= chunk_threshold
             or len(res_ids) <= chunk_size
         ):
-            pdf_content, _ = super()._render_qweb_pdf(res_ids=res_ids, data=data)
+            pdf_content, _ = super()._render_qweb_pdf(report_ref=report_ref, res_ids=res_ids, data=data)
         else:
             chunk_count = ceil(len(res_ids) / chunk_size)
             _logger.info(
@@ -49,14 +49,12 @@ class IrActionsReport(models.Model):
             pdf_merger = PdfFileMerger()
             for i, res_ids_chunk in enumerate(chunks(res_ids, chunk_size), 1):
                 _logger.info("Processing chunk %i of %i..." % (i, chunk_count))
-                pdf_content_chunk, _ = super()._render_qweb_pdf(
-                    res_ids=res_ids_chunk, data=data
-                )
+                pdf_content_chunk, _ = super()._render_qweb_pdf(report_ref=report_ref, res_ids=res_ids, data=data)
 
                 pdf_mem_file_chunk = io.BytesIO()
                 pdf_mem_file_chunk.write(pdf_content_chunk)
                 pdf_chunk = PdfFileReader(pdf_mem_file_chunk)
-                pdf_merger.append(pdf_chunk, import_bookmarks=False)
+                pdf_merger.append(pdf_chunk, import_outline=False)
                 pdf_mem_file_chunk.close()
 
             if pdf_merger:
