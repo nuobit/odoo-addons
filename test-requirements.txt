@@ -1,0 +1,1 @@
+odoo-addon-sale_line_partner_description@git+https://github.com/nuobit/odoo-addons.git@refs/pull/738/head#subdirectory=sale_line_partner_description
