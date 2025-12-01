@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-     Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <template id="report_assets_common" inherit_id="web.report_assets_common">
-        <xpath expr="." position="inside">
-            <link
-                href="/stock_picking_report_delivery_note/static/src/scss/stock_picking_report_delivery_note.scss"
-                rel="stylesheet"
-                type="text/scss"
-            />
-        </xpath>
-    </template>
-
     <template id="stock_picking_report_delivery_note_external_layout">
         <t t-if="not o and doc">
             <t t-set="o" t-value="doc" />
@@ -35,7 +25,7 @@
                         <img
                             t-if="company.logo"
                             class="img-responsive"
-                            t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"
+                            t-att-src="image_data_uri(company.logo)"
                         />
                     </div>
                 </div>
@@ -92,17 +82,22 @@
             <div class="page">
                 <table
                     class="table table-condensed sprdn-table3"
-                    style="font-size: 14px;"
+                    style="font-size: 14px;border: white;"
                 >
                     <thead>
-                        <tr>
+                        <tr style="border: white;">
                             <th>
-                                <table class="sprdn-table-1">
+                                <table
+                                    class="sprdn-table-1"
+                                    style="border: 2px #bbbbbb;border-left: white;border-right: white;padding: 10px;"
+                                >
                                     <tbody>
-                                        <tr>
+                                        <tr style="">
                                             <td width="60%" />
                                             <td class="customer_address" width="40%">
-                                                <div>
+                                                <div
+                                                    style="margin-bottom: 10px;margin-top: 10px;"
+                                                >
                                                     <div>
                                                         <t
                                                             t-set="partner"
@@ -139,9 +134,9 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr style="border-bottom: white;">
                                             <td colspan="2">
-                                                <h3>
+                                                <h3 style="margin-top: 10px;">
                                                     <span t-if="o.state == 'done'">
                                                         <span>Delivery note</span>
                                                     </span>
@@ -217,24 +212,35 @@
                                 </table>
                             </th>
                         </tr>
-                        <tr>
+                        <tr style="border: white;">
                             <th>
                                 <table class="sprdn-table0">
                                     <thead>
-                                        <tr>
-                                            <th width="15%">Ref./Ref.cli.</th>
-                                            <th width="50%">Description</th>
+                                        <tr
+                                            style="border: 2px #bbbbbb;;border-left: white;border-right: white;"
+                                        >
+                                            <th
+                                                width="15%"
+                                                style="padding: 8px;"
+                                            >Ref./Ref.cli.</th>
+                                            <th
+                                                width="50%"
+                                                style="padding: 8px;"
+                                            >Description</th>
                                             <th
                                                 width="13%"
                                                 class="text-right"
+                                                style="padding: 8px;"
                                             >Quantity</th>
                                             <th
                                                 width="12%"
                                                 class="text-right"
+                                                style="padding: 8px;"
                                             >Unit Price</th>
                                             <th
                                                 width="10%"
                                                 class="text-right"
+                                                style="padding: 8px;"
                                             >Amount</th>
                                         </tr>
                                     </thead>
@@ -246,7 +252,10 @@
                         <tr>
                             <td>
                                 <table class="sprdn-table2">
-                                    <tbody name="sprdn_document_tbody">
+                                    <tbody
+                                        name="sprdn_document_tbody"
+                                        style="border-left: white;border-right: white;"
+                                    >
                                         <t
                                             t-set="grouped_moves"
                                             t-value="o.get_delivery_note_moves()"
@@ -271,7 +280,7 @@
                             t-set="tax_amount_by_group"
                             t-value="list(filter(lambda x: x[1], o._get_tax_amount_by_group()))"
                         />
-                        <div class="col-4 ml-auto">
+                        <div class="col-4 offset-8">
                             <table
                                 class="table table-condensed"
                                 style="min-width: 250px;max-width: 400px;"
@@ -279,7 +288,7 @@
                                 <t t-if="tax_amount_by_group">
                                     <tr
                                         class="border-black"
-                                        style="border-bottom:1px solid #dddddd;"
+                                        style="border-bottom:1px solid #bbbbbb;"
                                     >
                                         <td>
                                             <strong>Subtotal</strong>
@@ -330,7 +339,7 @@
                                         </tr>
                                     </t>
                                 </t>
-                                <tr class="border-black">
+                                <tr style="border: white;border-top:2px solid #000000;">
                                     <td>
                                         <strong>Total</strong>
                                     </td>
@@ -366,20 +375,28 @@
         </t>
     </template>
     <template id="sprdn_document_body">
-        <t name="move_lines" t-foreach="gm" t-as="l">
-            <tr>
+        <t name="move_ids" t-foreach="gm" t-as="l">
+            <tr
+                style="border: 2px #bbbbbb;border-left: white;border-right: white;margin"
+            >
                 <t t-set="line_amounts" t-value="l._get_amounts()" />
                 <t
                     t-set="l_default_codes"
                     t-value="filter(None, list(l.get_product_codes()))"
                 />
-                <td width="15%">
+                <td
+                    width="15%"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
                     <t t-foreach="l_default_codes" t-as="lc">
                         <div t-esc="lc" />
                     </t>
                 </td>
                 <t t-set="l_name" t-value="l.get_splited_line_description()" />
-                <td width="50%">
+                <td
+                    width="50%"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
                     <t t-foreach="l_name.split('\n')" t-as="ln">
                         <div t-esc="ln" />
                     </t>
@@ -394,18 +411,30 @@
                         <span t-esc="', '.join(lots)" />
                     </div>
                 </td>
-                <td width="13%" class="text-right">
-                    <span t-field="l.quantity_done" />
+                <td
+                    width="13%"
+                    class="text-right"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
+                    <span t-field="l.quantity" />
                     <span
                         class="units"
                         t-field="l.product_uom"
                         groups="uom.group_uom"
                     />
                 </td>
-                <td width="12%" class="text-right">
+                <td
+                    width="12%"
+                    class="text-right"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
                     <span t-if="l.sale_line_id" t-field="l.sale_price_unit" />
                 </td>
-                <td width="10%" class="text-right">
+                <td
+                    width="10%"
+                    class="text-right"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
                     <t t-if="l.sale_line_id">
                         <span
                             t-esc="line_amounts['subtotal']"
