@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import re
@@ -51,7 +50,7 @@ class StockMove(models.Model):
         taxes = self.sale_line_id.tax_id.compute_all(
             self.sale_price_unit,
             self.sale_line_id.order_id.currency_id,
-            self.quantity_done,
+            self.quantity,
             product=self.product_id,
             partner=self.picking_id.partner_id,
         )
@@ -68,13 +67,11 @@ class StockMove(models.Model):
                 qty = {"assigned": line.product_qty, "done": line.qty_done}
                 if line.state in qty:
                     lots.append(
-                        "%s (%s %s)"
-                        % (
-                            line.lot_id.name,
-                            str(qty[line.state]),
-                            line.product_uom_id.name,
-                        )
+                        f"{line.lot_id.name} "
+                        f"({qty[line.state]} "
+                        f"{line.product_uom_id.name})",
                     )
+
             return lots
         return None
 
