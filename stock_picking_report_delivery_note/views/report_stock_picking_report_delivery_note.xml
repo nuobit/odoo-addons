@@ -57,12 +57,12 @@
                     </li>
                     <li t-if="company.street or company.street2">
                         <span
-                            t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
-                        />
+                        t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
+                    />
                         -
                         <span
-                            t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
-                        />
+                        t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
+                    />
                     </li>
                     <li>
                         <t t-if="company.phone">
@@ -131,8 +131,8 @@
                                                             <span
                                                                 t-if="o.partner_id.country_id"
                                                             >(<span
-                                                                    t-field="o.partner_id.country_id"
-                                                                />)
+                                                                t-field="o.partner_id.country_id"
+                                                            />)
                                                             </span>
                                                         </div>
                                                     </div>
