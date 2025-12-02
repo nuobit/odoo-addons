@@ -17,7 +17,7 @@ class WooCommerceSaleOrderAdapter(Component):
         return meta_data_fields
 
     def _manage_error_codes(
-        self, res_data, res, resource, raise_on_error=True, **kwargs
+        self, op, res_data, res, resource, *args, raise_on_error=True, **kwargs
     ):
         if not res.ok:
             if res.status_code == 400:
@@ -39,5 +39,5 @@ class WooCommerceSaleOrderAdapter(Component):
                         return error_message
 
         return super()._manage_error_codes(
-            res_data, res, resource, raise_on_error, **kwargs
+            op, res_data, res, resource, *args, raise_on_error=raise_on_error, **kwargs
         )
