@@ -1,6 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+import re
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
@@ -29,6 +29,11 @@ class HrEmployeeImportMapper(Component):
 
     @mapping
     def identification_id(self, record):
+        nif_pattern = self.backend_record.employees_exclude_nif_pattern
+        if nif_pattern:
+            m = re.match(nif_pattern, record["Dni"])
+            if m:
+                return {"identification_id": record["Dni"]}
         parts = [part for part in (record["SiglaNacion"], record["Dni"]) if part]
         return {"identification_id": "".join(parts).strip().upper()}
 

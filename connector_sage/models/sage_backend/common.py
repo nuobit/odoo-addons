@@ -75,6 +75,11 @@ class SageBackend(models.Model):
         domain=[("type", "=", "transfer")],
     )
 
+    employees_exclude_nif_pattern = fields.Char(
+        string="Employees NIF exclude pattern",
+        help="Regular expression pattern to exclude NIF imports.",
+    )
+
     _sql_constraints = [
         (
             "company_uniq",
