@@ -3,7 +3,8 @@
 # Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ConnectorExtensionExternalBinding(models.AbstractModel):
@@ -14,7 +15,7 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
     # by default we consider sync_date as the import one
 
     # BINDER METHODS
-    def to_external(self):
+    def to_external(self, ensure_one=False):
         external_ids = []
         for rec in self:
             with rec.backend_id.work_on(self._name) as work:
@@ -22,6 +23,14 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
             external_ids.append(
                 binder.dict2id(rec, in_field=True, raise_on_not_found=True, unwrap=True)
             )
+        if ensure_one and external_ids:
+            if len(external_ids) > 1:
+                raise ValidationError(
+                    _(
+                        "If ensure_one is set only one record can be converted to external id."
+                    )
+                )
+            return external_ids[0]
         return external_ids
 
     # LAUNCHERS

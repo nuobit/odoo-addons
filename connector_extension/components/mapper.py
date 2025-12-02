@@ -115,20 +115,24 @@ class ConnectorExtensionMapper(AbstractComponent):
                 if len(definition.changed_by) > 1:
                     raise ValidationError(_("Changed by can only be one field"))
                 values = meth(map_record.source)
-                if len(values) != 1:
-                    raise ValidationError(
-                        _(
-                            "Return values of a mapper must be unique "
-                            "if it has changed by decorator"
-                        )
-                    )
-                from_attr, to_attr = list(mapping_changed_by)[0], list(values.keys())[0]
-                if to_attr in fields:
-                    if to_attr in result:
+                if values:
+                    if len(values) != 1:
                         raise ValidationError(
-                            _("Field '%s' mapping defined twice") % to_attr
+                            _(
+                                "Return values of a mapper must be unique "
+                                "if it has changed by decorator"
+                            )
                         )
-                    result[to_attr] = from_attr
+                    from_attr, to_attr = (
+                        list(mapping_changed_by)[0],
+                        list(values.keys())[0],
+                    )
+                    if to_attr in fields:
+                        if to_attr in result:
+                            raise ValidationError(
+                                _("Field '%s' mapping defined twice") % to_attr
+                            )
+                        result[to_attr] = from_attr
         for from_attr, to_attr, _model_name in self.children:
             if to_attr in fields:
                 if to_attr in result:

@@ -77,11 +77,13 @@ class ConnectorBackend(models.AbstractModel):
     chunk_size = fields.Integer(
         string="Chunk Size",
         default=-1,
+        required=True,
         help="This field is used to define the chunk size to import from the backend.",
     )
     page_size = fields.Integer(
         string="Page Size",
-        default=-1,
+        required=True,
+        default=10,
         help="This field is used in order to define the "
         "number of records imported at the same time.",
     )
