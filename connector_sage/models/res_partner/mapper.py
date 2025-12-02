@@ -1,6 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+import re
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
@@ -95,5 +95,10 @@ class ResPartnerImportMapper(Component):
     @only_create
     @mapping
     def euvat(self, record):
+        nif_pattern = self.backend_record.employees_exclude_nif_pattern
+        if nif_pattern:
+            m = re.match(nif_pattern, record["Dni"])
+            if m:
+                return {"vat": None}
         parts = [part for part in (record["SiglaNacion"], record["Dni"]) if part]
         return {"vat": "".join(parts).strip().upper()}
