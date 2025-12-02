@@ -39,7 +39,9 @@ class IrActionsReport(models.Model):
             or len(res_ids) <= chunk_threshold
             or len(res_ids) <= chunk_size
         ):
-            pdf_content, _ = super()._render_qweb_pdf(report_ref=report_ref, res_ids=res_ids, data=data)
+            pdf_content, _ = super()._render_qweb_pdf(
+                report_ref=report_ref, res_ids=res_ids, data=data
+            )
         else:
             chunk_count = ceil(len(res_ids) / chunk_size)
             _logger.info(
@@ -47,9 +49,11 @@ class IrActionsReport(models.Model):
                 "documents each" % (chunk_count, chunk_size)
             )
             pdf_merger = PdfFileMerger()
-            for i, res_ids_chunk in enumerate(chunks(res_ids, chunk_size), 1):
+            for i, _res_ids_chunk in enumerate(chunks(res_ids, chunk_size), 1):
                 _logger.info("Processing chunk %i of %i..." % (i, chunk_count))
-                pdf_content_chunk, _ = super()._render_qweb_pdf(report_ref=report_ref, res_ids=res_ids, data=data)
+                pdf_content_chunk, _ = super()._render_qweb_pdf(
+                    report_ref=report_ref, res_ids=res_ids, data=data
+                )
 
                 pdf_mem_file_chunk = io.BytesIO()
                 pdf_mem_file_chunk.write(pdf_content_chunk)
