@@ -24,7 +24,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         return func(resource, *args, **kwargs)
 
     def _manage_error_codes(
-        self, res_data, res, resource, raise_on_error=True, **kwargs
+        self, op, res_data, res, resource, *args, raise_on_error=True, **kwargs
     ):
         if not res.ok:
             error_message = None
@@ -57,7 +57,9 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         try:
             res = func(url, *args, **kwargs)
             res_data = res.json()
-            res_data = self._manage_error_codes(res_data, res, resource, **kwargs)
+            res_data = self._manage_error_codes(
+                op, res_data, res, resource, *args, **kwargs
+            )
             result = {
                 "ok": res.ok,
                 "status_code": res.status_code,
