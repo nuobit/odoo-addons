@@ -17,6 +17,7 @@ class SaleOrderLineBinding(models.Model):
         required=True,
         ondelete="cascade",
     )
+    # TODO: put this on a importer and compute this on the mapper maybe
     backend_id = fields.Many2one(
         related="woocommerce_order_id.backend_id",
         string="Backend",
@@ -24,17 +25,18 @@ class SaleOrderLineBinding(models.Model):
         store=True,
         required=False,
     )
+    woocommerce_order_line_id = fields.Integer(
+        string="WooCommerce Order Line ID",
+        required=True,
+    )
+    # woocommerce_sale_order_id = fields.Integer()
+
     woocommerce_order_id = fields.Many2one(
         comodel_name="woocommerce.sale.order",
         string="WooCommerce Order",
         required=True,
         ondelete="cascade",
         index=True,
-    )
-    woocommerce_sale_order_id = fields.Integer()
-    woocommerce_order_line_id = fields.Integer(
-        string="WooCommerce Order Line ID",
-        required=True,
     )
 
     _sql_constraints = [

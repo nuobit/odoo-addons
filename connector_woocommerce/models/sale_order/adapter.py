@@ -45,6 +45,7 @@ class WooCommerceSaleOrderAdapter(Component):
             value["billing"]["hash"] = list2hash(
                 value["billing"].get(x) for x in hash_fields
             )
+            value["billing"]["customer_id"] = value["customer_id"]
 
     def _get_shipping(self, value, hash_fields):
         if value.get("shipping"):
@@ -55,6 +56,7 @@ class WooCommerceSaleOrderAdapter(Component):
             value["shipping"]["hash"] = list2hash(
                 value["shipping"].get(x) for x in hash_fields
             )
+            value["shipping"]["customer_id"] = value["customer_id"]
         else:
             value["shipping"] = None
 
@@ -115,10 +117,7 @@ class WooCommerceSaleOrderAdapter(Component):
 
     def search_read(self, domain=None, offset=0, limit=None):
         self._convert_format_domain(domain)
-        if limit:
-            res = self._exec("get", "orders", domain=domain, offset=offset, limit=limit)
-        else:
-            res = self._exec("get", "orders", domain=domain, offset=offset)
+        res = self._exec("get", "orders", domain=domain, offset=offset, limit=limit)
         self._reorg_order_data(res)
         return res, len(res)
 

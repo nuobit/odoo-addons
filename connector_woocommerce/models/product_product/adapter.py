@@ -43,7 +43,7 @@ class WooCommerceProductProductAdapter(Component):
         self._prepare_data(data)
         return self._exec(
             "put",
-            "products/%s/variations/%s" % (external_id[0], external_id[1]),
+            "products/%s/variations/%s" % tuple(external_id),
             data=data,
         )
 
@@ -52,12 +52,9 @@ class WooCommerceProductProductAdapter(Component):
         external_id_fields = binder.get_id_fields(in_field=False)
         _, common_domain = self._extract_domain_clauses(domain, external_id_fields)
         domain_dict = self._domain_to_normalized_dict(domain)
-        external_id_values = binder.dict2id2dict(domain_dict, in_field=False)
-        if external_id_values:
-            url = "products/%s/variations/%s" % (
-                external_id_values["parent_id"],
-                external_id_values["id"],
-            )
+        external_id = binder.dict2id(domain_dict, in_field=False)
+        if external_id:
+            url = "products/%s/variations/%s" % tuple(external_id)
             res = self._exec("get", url, domain=common_domain)
         else:
             # if "id" in domain_dict and "parent_id" in domain_dict:
@@ -67,17 +64,20 @@ class WooCommerceProductProductAdapter(Component):
             #     )
             #     res = self._exec("get", url, domain=common_domain)
             # if "sku" in domain_dict:
-            url = "products"
-            domain.append(("parent_id", "!=", 0))
-            res = self._exec("get", url, domain=domain)
+            res = self._exec(
+                "get",
+                "products",
+                domain=[
+                    *domain,
+                    ("parent_id", "!=", 0),
+                ],
+            )
             # else:
             #     raise ValidationError(_("Params required"))
         return res
 
     def _get_search_fields(self):
-        res = super()._get_search_fields()
-        res.extend(["sku", "parent"])
-        return res
+        return super()._get_search_fields() + ["sku", "parent"]
 
     def _format_product_product(self, data):
         conv_mapper = {

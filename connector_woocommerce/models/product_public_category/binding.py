@@ -37,6 +37,31 @@ class WooCommerceProductPublicCategory(models.Model):
     def export_product_public_category_since(
         self, backend_record=None, since_date=None
     ):
+        # with backend_record.work_on(self._name) as work:
+        #     adapter = work.component(usage="backend.adapter")
+        # url = "products/categories"
+        # # domain=[('name', '=', 'Ventilació mecànica'), ('lang', '=', 'ca')]
+        # # domain = [('id', '=', 3081), ('lang', '=', 'ca')]
+        # domain = [
+        #     #("id", "in", [2946, 2949, 2937, 2955, 3051, 2943, 2967, 2964]),
+        #     ("lang", "=", "ca"),
+        # ]
+        # # values = adapter.get_total_items(url, domain)
+        # # values = adapter._exec("get", url, offset=3, limit=11)
+        # pairs = [(13, 10)]
+        # for offset, limit in pairs:
+        #     values = adapter._exec(
+        #         "get", url, domain=domain, offset=offset, limit=limit, count=False
+        #     )
+        #     if isinstance(values, list):
+        #         for v in values:
+        #             # print(">", v)
+        #             print(">", v["id"])
+        #         print("--->", len(values))
+        #     else:
+        #         print(">>>", values)
+        # exit()
+
         domain = self._get_base_domain()
         if since_date:
             domain += [
