@@ -23,10 +23,10 @@ class WooCommerceProductWPMLMixinBinder(AbstractComponent):
             ]
         return domain
 
-    def wpml_additional_external_binding_fields(self, external_data):
+    def wpml_additional_external_binding_fields(self, external_data, relation):
         # TODO: this additional fields probably should be
         #  included in binding as m2o to res lang on upper binder
         return {
-            **super()._additional_external_binding_fields(external_data),
+            **super()._additional_external_binding_fields(external_data, relation),
             "woocommerce_lang": external_data["lang"],
         }

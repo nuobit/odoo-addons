@@ -24,8 +24,9 @@ class WooCommerceProductWPMLMixinAdapter(AbstractComponent):
         real_domain, common_domain = super()._extract_domain_clauses(
             domain, search_fields
         )
-        lang_clause_exists = any(clause[0] == "lang" for clause in common_domain)
-        for clause in domain:
-            if "lang" in clause[0] and not lang_clause_exists:
-                common_domain.append(clause)
+        # TODO: does the following code needed???
+        # lang_clause_exists = any(clause[0] == "lang" for clause in common_domain)
+        # for clause in domain:
+        #     if "lang" in clause[0] and not lang_clause_exists:
+        #         common_domain.append(clause)
         return real_domain, common_domain

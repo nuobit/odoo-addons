@@ -11,38 +11,39 @@ class WooCommerceProductTemplateAdapter(Component):
         "woocommerce.product.wpml.mixin.adapter",
     ]
 
-    def create(self, data):
-        if data.get("type") == "simple" and data.get("translation_of"):
-            sku = data.pop("sku")
-        res = super().create(data)
-        if data.get("type") == "simple" and data.get("translation_of"):
-            if res and isinstance(res, dict):
-                external_id = res.get("id")
-                if external_id:
-                    sku = self._normalize_simple_sku(sku)
-                    url_l = ["products", str(external_id)]
-                    self._exec("put", "/".join(url_l), data={"sku": sku})
-        return res
+    # TODO: do we really need this next 2 methods???
+    # def create(self, data):
+    #     if data.get("type") == "simple" and data.get("translation_of"):
+    #         sku = data.pop("sku")
+    #     res = super().create(data)
+    #     if data.get("type") == "simple" and data.get("translation_of"):
+    #         if res and isinstance(res, dict):
+    #             external_id = res.get("id")
+    #             if external_id:
+    #                 sku = self._normalize_simple_sku(sku)
+    #                 url = "products/%i" % external_id
+    #                 self._exec("put", url, data={"sku": sku})
+    #     return res
 
-    def write(self, external_id, data):  # pylint: disable=W8106
-        old_sku = None
-        if data.get("type") == "simple":
-            if data.get("translation_of"):
-                data.pop("sku")
-            else:
-                old_sku = data.pop("sku")
-                if isinstance(old_sku, list):
-                    old_sku = old_sku[0]
-        res = super().write(external_id, data)
-        if old_sku and res["data"].get("sku") != old_sku:
-            data["sku"] = old_sku
-            # This conversion is to "revert" first conversion done on prepare_data
-            if isinstance(data["regular_price"], str):
-                data["regular_price"] = float(data["regular_price"])
-            if isinstance(data["sale_price"], str):
-                data["sale_price"] = float(data["sale_price"])
-            res = super().write(external_id, data)
-        return res
+    # def write(self, external_id, data):  # pylint: disable=W8106
+    #     old_sku = None
+    #     if data.get("type") == "simple":
+    #         if data.get("translation_of"):
+    #             data.pop("sku")
+    #         else:
+    #             old_sku = data.pop("sku")
+    #             if isinstance(old_sku, list):
+    #                 old_sku = old_sku[0]
+    #     res = super().write(external_id, data)
+    #     if old_sku and res["data"].get("sku") != old_sku:
+    #         data["sku"] = old_sku
+    #         # This conversion is to "revert" first conversion done on prepare_data
+    #         if isinstance(data["regular_price"], str):
+    #             data["regular_price"] = float(data["regular_price"])
+    #         if isinstance(data["sale_price"], str):
+    #             data["sale_price"] = float(data["sale_price"])
+    #         res = super().write(external_id, data)
+    #     return res
 
     # TODO: REVIEW: can we return this in better way?
     def _get_search_fields(self):
