@@ -41,6 +41,7 @@ class HrEmployeeBinding(models.Model):
         """Prepare the import of employees modified on Sage"""
         filters = {
             "CodigoEmpresa": backend_record.sage_company_id,
+            "CodigoEmpleado": 3,
         }
         now_fmt = fields.Datetime.now()
         self.env["sage.hr.employee"].import_batch(

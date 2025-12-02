@@ -229,6 +229,13 @@
                                 />
                             </group>
                         </page>
+                        <page name="misc" string="Miscellaneous">
+                            <group>
+                                <group>
+                                    <field name="employees_exclude_nif_pattern" />
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
