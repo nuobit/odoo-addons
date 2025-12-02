@@ -4,7 +4,7 @@
 
 import datetime
 
-from odoo import _
+from odoo import _, api
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
@@ -52,6 +52,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
     def _prepare_results(self, result):
         return result
 
+    @api.model
     def _filter(self, values, domain=None):  # noqa: C901
         # TODO support for domains with 'or' clauses
         # TODO refactor and optimize
@@ -198,6 +199,9 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                 raise ValidationError(_("Operator %s not supported") % op)
 
         return res
+
+    def _normalized_dict_to_domain(self, normalized_dict):
+        return [(k, "=", v) for k, v in normalized_dict.items()]
 
     def _extract_domain_clauses(self, domain, fields):
         if not isinstance(fields, (tuple, list)):
