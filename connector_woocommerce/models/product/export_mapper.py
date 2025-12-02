@@ -11,8 +11,8 @@ class WooCommerceProductExportMapper(AbstractComponent):
     def _prepare_url(self, binding, document):
         return binding.wordpress_source_url
 
-    def _get_lang(self, document):
-        return self.backend_record.language_id.code
+    def _get_lang_doc(self, obj):
+        return obj.with_context(lang=self.backend_record.language_id.code)
 
     def _prepare_document_description(self, documents):
         document_description = []
@@ -21,6 +21,7 @@ class WooCommerceProductExportMapper(AbstractComponent):
                 "wordpress.ir.attachment"
             ) as work:
                 binder = work.component(usage="binder")
+                documents = self._get_lang_doc(documents)
                 for document in documents:
                     external_id = binder.get_external_dict_ids(
                         document.attachment_id, check_external_id=False
@@ -31,9 +32,10 @@ class WooCommerceProductExportMapper(AbstractComponent):
                             "<p><a href=%s target='_blank'>%s</a></p>"
                             % (
                                 self._prepare_url(binding, document),
-                                document.with_context(
-                                    lang=self._get_lang(document)
-                                ).name,
+                                # document.with_context(
+                                #     lang=self._get_lang(document)
+                                # ).name,
+                                document.name,
                             )
                         )
                     else:

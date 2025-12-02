@@ -55,6 +55,8 @@ class WooCommerceProductTemplateAdapter(Component):
             if "sku" in domain_dict:
                 skus = domain_dict["sku"]
             if skus and len(skus) > 1:
+                # TODO: check if sku has one element and pass the domain with the
+                # skus converted to string instead on the python list
                 skus = ",".join([f"{sku}" for sku in skus if sku])
             if skus:
                 products = self._exec("get", "products", domain=domain)
@@ -72,9 +74,7 @@ class WooCommerceProductTemplateAdapter(Component):
         return res
 
     def _get_search_fields(self):
-        res = super()._get_search_fields()
-        res.extend(["sku"])
-        return res
+        return super()._get_search_fields() + ["sku"]
 
     def _format_product_template(self, data):
         conv_mapper = {
@@ -83,10 +83,13 @@ class WooCommerceProductTemplateAdapter(Component):
         }
         self._convert_format(data, conv_mapper)
 
+    # TODO: do we really need this
     def _normalize_simple_sku(self, sku):
         if isinstance(sku, list):
             if len(sku) > 1:
                 raise ValidationError(_("Simple products can only have one variant"))
+            elif not sku:
+                raise ValidationError(_("Simple products must have a SKU"))
             else:
                 sku = sku[0]
         return sku

@@ -30,7 +30,7 @@ class WooCommerceProductAttributeValue(models.Model):
     _sql_constraints = [
         (
             "external_uniq",
-            "unique(backend_id, woocommerce_idattribute, woocommerce_idattributevalue)",
+            "unique(backend_id, woocommerce_idattributevalue)",
             "A binding already exists with the same External (idAttributevalue) ID.",
         ),
     ]
@@ -42,6 +42,19 @@ class WooCommerceProductAttributeValue(models.Model):
     def export_product_attribute_value_since(
         self, backend_record=None, since_date=None
     ):
+        # with backend_record.work_on(self._name) as work:
+        #     adapter = work.component(usage="backend.adapter")
+        # url = "products/attributes/95/terms"
+        # values = adapter._exec("get", url, offset=3, limit=11)
+        # for v in values:
+        #     print(">", v)
+        # print("--->", len(values))
+        # exit()
+
+        # domain += [("attribute_id", "=", 7)]
+        # self.export_batch(backend_record, domain=domain, delayed=False)
+        # self.with_delay().export_batch(backend_record, domain=domain)
+
         domain = self._get_base_domain()
         if since_date:
             domain += [

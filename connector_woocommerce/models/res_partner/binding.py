@@ -16,10 +16,11 @@ class WooCommerceResPartner(models.Model):
         required=True,
         ondelete="cascade",
     )
+    # TODO: DELETE
     woocommerce_idrespartner = fields.Integer(
         string="WooCommerce ID Res Partner",
         readonly=True,
-        required=True,
+        # required=True,
     )
     woocommerce_address_type = fields.Char(
         string="WooCommerce Type",
@@ -35,7 +36,7 @@ class WooCommerceResPartner(models.Model):
     _sql_constraints = [
         (
             "external_uniq",
-            "unique(backend_id, woocommerce_idrespartner)",
-            "A binding already exists with the same External (idResPartner) ID.",
+            "unique(backend_id, woocommerce_address_type, woocommerce_address_hash)",
+            "A binding already exists with the same hash) ID.",
         ),
     ]

@@ -71,15 +71,17 @@ class ProductTemplate(models.Model):
     slug_name = fields.Char(
         translate=True,
     )
-    is_published = fields.Boolean(
-        compute="_compute_template_is_published",
-        inverse="_inverse_template_is_published",
-        store=True,
-        readonly=False,
-    )
-    button_is_published = fields.Boolean(
-        related="is_published",
-    )
+    # is_published = fields.Boolean(
+    #     string="Product published",
+    #     compute="_compute_template_is_published",
+    #     inverse="_inverse_template_is_published",
+    #     store=True,
+    #     readonly=False,
+    # )
+    # button_is_published = fields.Boolean(
+    #     string="Button product published",
+    #     related="is_published",
+    # )
     woocommerce_enabled = fields.Boolean(
         compute="_compute_woocommerce_enabled",
         store=True,
