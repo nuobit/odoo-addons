@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_warehouse_orderpoint_form" model="ir.ui.view">
@@ -8,10 +8,7 @@
         <field name="model">stock.warehouse.orderpoint</field>
         <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form" />
         <field name="arch" type="xml">
-            <xpath
-                expr="//field[@name='json_lead_days_popover']/../.."
-                position="inside"
-            >
+            <xpath expr="//field[@name='product_min_qty']/../.." position="inside">
                 <field name="sync_template_id" />
             </xpath>
         </field>
@@ -22,25 +19,25 @@
         <field name="model">stock.warehouse.orderpoint</field>
         <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable" />
         <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
+            <xpath expr="//list" position="inside">
                 <field name="sync_template_id" />
             </xpath>
         </field>
     </record>
 
-    <record id="view_warehouse_orderpoint_tree_editable_config" model="ir.ui.view">
-        <field name="name">stock.warehouse.orderpoint.tree.editable.config</field>
-        <field name="model">stock.warehouse.orderpoint</field>
-        <field
-            name="inherit_id"
-            ref="stock.view_warehouse_orderpoint_tree_editable_config"
-        />
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
-                <field name="sync_template_id" />
-            </xpath>
-        </field>
-    </record>
+    <!--    <record id="view_warehouse_orderpoint_tree_editable_config" model="ir.ui.view">-->
+    <!--        <field name="name">stock.warehouse.orderpoint.tree.editable.config</field>-->
+    <!--        <field name="model">stock.warehouse.orderpoint</field>-->
+    <!--        <field-->
+    <!--            name="inherit_id"-->
+    <!--            ref="stock.view_warehouse_orderpoint_tree_editable_config"-->
+    <!--        />-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//list" position="inside">-->
+    <!--                <field name="sync_template_id" />-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
 
     <record id="warehouse_orderpoint_search" model="ir.ui.view">
         <field name="name">stock.warehouse.orderpoint.search</field>

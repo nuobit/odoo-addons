@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from dateutil import relativedelta
@@ -7,7 +7,7 @@ from dateutil import relativedelta
 from odoo import _, fields, models
 
 
-class OrderpointSyncTemplate(models.Model):
+class StockWarehouseOrderpointSyncTemplate(models.Model):
     """Defines Minimum stock rules."""
 
     _name = "stock.warehouse.orderpoint.sync.template"
@@ -15,13 +15,15 @@ class OrderpointSyncTemplate(models.Model):
 
     name = fields.Char(copy=False, required=True)
     active = fields.Boolean(
-        "Active",
         default=True,
         help="If the active field is set to False, "
         "it will allow you to hide the orderpoint without removing it.",
     )
     warehouse_id = fields.Many2one(
-        "stock.warehouse", "Warehouse", ondelete="cascade", required=True
+        comodel_name="stock.warehouse",
+        string="Warehouse",
+        ondelete="cascade",
+        required=True,
     )
     location_ids = fields.Many2many(
         string="Locations",
@@ -33,7 +35,7 @@ class OrderpointSyncTemplate(models.Model):
     )
     route_ids = fields.Many2many(
         string="Routes",
-        comodel_name="stock.location.route",
+        comodel_name="stock.route",
         relation="stock_warehouse_orderpoint_sync_template_route_rel",
         column1="template_id",
         column2="route_id",
@@ -41,16 +43,16 @@ class OrderpointSyncTemplate(models.Model):
     )
 
     group_id = fields.Many2one(
-        "procurement.group",
-        "Procurement Group",
+        comodel_name="procurement.group",
+        string="Procurement Group",
         copy=False,
         help="Moves created through this orderpoint will be put in this "
         "procurement group. If none is given, the moves generated "
         "by procurement rules will be grouped into one big picking.",
     )
     company_id = fields.Many2one(
-        "res.company",
-        "Company",
+        comodel_name="res.company",
+        string="Company",
         required=True,
         readonly=True,
         default=lambda self: self.env.company,
@@ -85,15 +87,75 @@ class OrderpointSyncTemplate(models.Model):
             )
 
     def create_orderpoints(self):  # noqa: C901
+        def create_orderpoint(record, location_id, p):
+            self.env["stock.warehouse.orderpoint"].create(
+                {
+                    "company_id": record.company_id.id,
+                    "location_id": location_id,
+                    "warehouse_id": record.warehouse_id.id,
+                    "group_id": record.group_id.id,
+                    "product_id": p.product_id.id,
+                    "product_min_qty": p.product_min_qty,
+                    "product_max_qty": p.product_max_qty,
+                    "qty_multiple": p.qty_multiple,
+                    "sync_template_line_id": p.id,
+                }
+            )
+
+        def update_orderpoint(op, p, location_id):
+            changed = False
+            # Company
+            if op.company_id.id != p.sync_template_id.company_id.id:
+                op.company_id = p.sync_template_id.company_id.id
+                changed = True
+            # Warehouse
+            if op.warehouse_id.id != p.sync_template_id.warehouse_id.id:
+                op.warehouse_id = p.sync_template_id.warehouse_id.id
+                changed = True
+            # Location
+            if op.location_id.id != location_id:
+                op.location_id = location_id
+                changed = True
+            # Product
+            if op.product_id.id != p.product_id.id:
+                op.product_id = p.product_id.id
+                changed = True
+            # Logistics
+            if op.product_min_qty != p.product_min_qty:
+                op.product_min_qty = p.product_min_qty
+                changed = True
+            if op.product_max_qty != p.product_max_qty:
+                op.product_max_qty = p.product_max_qty
+                changed = True
+            if op.qty_multiple != p.qty_multiple:
+                op.qty_multiple = p.qty_multiple
+                changed = True
+            if op.sync_template_line_id.id != p.id:
+                op.sync_template_line_id = p.id
+                changed = True
+
+            lead_days, _ = op.rule_ids._get_lead_days(op.product_id)
+            lead_days = lead_days["total_delay"]
+            lead_days_date = fields.Date.today() + relativedelta.relativedelta(
+                days=lead_days
+            )
+            if op.lead_days_date != lead_days_date:
+                op.lead_days_date = lead_days_date
+                changed = True
+
+            return changed
+
+        def delete_orderpoint(op):
+            op.unlink()
+
         def generate_orderpoint(record, lc):
             created, updated, deleted = 0, 0, 0
             child_ids = self.env["stock.location"].search(
                 [("company_id", "=", record.company_id.id), ("location_id", "=", lc.id)]
             )
+
             if not child_ids:
-                # generate reordering rules for the location and for every product
                 for p in record.line_ids:
-                    ######
                     tmp_location_ids = set(record.location_ids.mapped("id"))
 
                     to_update = {}
@@ -117,73 +179,19 @@ class OrderpointSyncTemplate(models.Model):
                     # mark to create
                     to_create = tmp_location_ids
 
-                    #####
-                    # update
+                    # Update
                     for location_id, op in to_update.items():
-                        changed = False
-                        # company
-                        if op.company_id.id != record.company_id.id:
-                            op.company_id = record.company_id.id
-                            changed = True
-                        # warehouse
-                        if op.warehouse_id.id != record.warehouse_id.id:
-                            op.warehouse_id = record.warehouse_id.id
-                            changed = True
-                        # location
-                        if op.location_id.id != location_id:
-                            op.location_id = location_id
-                            changed = True
-                        # product
-                        if op.product_id.id != p.product_id.id:
-                            op.product_id = p.product_id.id
-                            changed = True
-
-                        # logistics
-                        if op.product_min_qty != p.product_min_qty:
-                            op.product_min_qty = p.product_min_qty
-                            changed = True
-                        if op.product_max_qty != p.product_max_qty:
-                            op.product_max_qty = p.product_max_qty
-                            changed = True
-                        if op.qty_multiple != p.qty_multiple:
-                            op.qty_multiple = p.qty_multiple
-                            changed = True
-                        lead_days, dummy = op.rule_ids._get_lead_days(op.product_id)
-                        lead_days_date = (
-                            fields.Date.today()
-                            + relativedelta.relativedelta(days=lead_days)
-                        )
-                        if op.lead_days_date != lead_days_date:
-                            op.lead_days_date = lead_days_date
-                            changed = True
-
-                        if changed:
+                        if update_orderpoint(op, p, location_id):
                             updated += 1
 
-                    # delete
+                    # Delete
                     for op in to_delete:
-                        op.unlink()
+                        delete_orderpoint(op)
                         deleted += 1
 
-                    # create
+                    # Create
                     for location_id in to_create:
-                        # self.env['stock.warehouse.orderpoint'].create({
-                        p.orderpoint_ids = [
-                            (
-                                0,
-                                False,
-                                {
-                                    "company_id": record.company_id.id,
-                                    "location_id": location_id,
-                                    "warehouse_id": record.warehouse_id.id,
-                                    "group_id": record.group_id,
-                                    "product_id": p.product_id.id,
-                                    "product_min_qty": p.product_min_qty,
-                                    "product_max_qty": p.product_max_qty,
-                                    "qty_multiple": p.qty_multiple,
-                                },
-                            )
-                        ]
+                        create_orderpoint(record, location_id, p)
                         created += 1
             else:
                 for c in child_ids:
@@ -195,7 +203,7 @@ class OrderpointSyncTemplate(models.Model):
             return created, updated, deleted
 
         for rec in self:
-            # orderpoints
+            # Orderpoints
             created, updated, deleted = 0, 0, 0
             for loc in rec.location_ids:
                 crt, upd, dele = generate_orderpoint(rec, loc)
@@ -203,7 +211,7 @@ class OrderpointSyncTemplate(models.Model):
                 updated += upd
                 deleted += dele
 
-            # routes
+            # Routes
             radded, pupdated = 0, 0
             if rec.route_ids:
                 for line in rec.line_ids:
@@ -219,9 +227,17 @@ class OrderpointSyncTemplate(models.Model):
 
             rec.last_update = fields.Datetime.now()
             rec.status = _(
-                "Orderpoints: Created: %i, Updated: %i, Deleted: %i | "
-                "Product routes: Routes added: %i, Products updated: %i"
-            ) % (created, updated, deleted, radded, pupdated)
+                "Orderpoints: Created: %(created)s, "
+                "Updated: %(updated)s, Deleted: %(deleted)s | "
+                "Product routes: Routes added: %(radded)s, "
+                "Products updated: %(pupdated)s"
+            ) % {
+                "created": created,
+                "updated": updated,
+                "deleted": deleted,
+                "radded": radded,
+                "pupdated": pupdated,
+            }
 
     _sql_constraints = [
         (
@@ -232,47 +248,50 @@ class OrderpointSyncTemplate(models.Model):
     ]
 
 
-class OrderpointSyncTemplateLine(models.Model):
+class StockWarehouseOrderpointSyncTemplateLine(models.Model):
     _name = "stock.warehouse.orderpoint.sync.template.line"
     _description = "Minimum Inventory Rule sync template lines"
 
     product_id = fields.Many2one(
-        "product.product",
-        "Product",
-        domain=[("type", "=", "product")],
+        comodel_name="product.product",
+        string="Product",
+        domain=[("is_storable", "=", True)],
         ondelete="cascade",
         required=True,
     )
 
     product_uom = fields.Many2one(
-        "uom.uom",
-        "Product Unit of Measure",
+        comodel_name="uom.uom",
+        string="Product Unit of Measure",
         related="product_id.uom_id",
         readonly=True,
         required=True,
-        default=lambda self: self._context.get("product_uom", False),
     )
 
     product_min_qty = fields.Float(
         "Minimum Quantity",
         digits="Product Unit of Measure",
         required=True,
-        help="When the virtual stock goes below the Min Quantity specified for this field,"
-        " Odoo generates a procurement to bring the forecasted quantity to the Max Quantity.",
+        help="When the virtual stock goes below the "
+        "Min Quantity specified for this field,"
+        " Odoo generates a procurement to bring the "
+        "forecasted quantity to the Max Quantity.",
     )
     product_max_qty = fields.Float(
         "Maximum Quantity",
         digits="Product Unit of Measure",
         required=True,
-        help="When the virtual stock goes below the Min Quantity, Odoo generates a procurement"
-        " to bring the forecasted quantity to the Quantity specified as Max Quantity.",
+        help="When the virtual stock goes below "
+        "the Min Quantity, Odoo generates a procurement"
+        " to bring the forecasted quantity to the Quantity "
+        "specified as Max Quantity.",
     )
     qty_multiple = fields.Float(
-        "Qty Multiple",
         digits="Product Unit of Measure",
         default=1,
         required=True,
-        help="The procurement quantity will be rounded up to this multiple. If it is 0, "
+        help="The procurement quantity will "
+        "be rounded up to this multiple. If it is 0, "
         "the exact quantity will be used.",
     )
 
