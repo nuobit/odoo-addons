@@ -17,14 +17,9 @@ class WordPressIrAttachment(models.Model):
     _sql_constraints = [
         (
             "internal_uniq",
-            "unique(backend_id, wordpress_lang, odoo_id)",
+            "unique(backend_id, odoo_id, wordpress_lang)",
             "A binding already exists with the same Internal ID (odoo_id)",
-        ),
-        (
-            "external_uniq",
-            "unique(backend_id, wordpress_lang, wordpress_idattachment)",
-            "A binding already exists with the same External ID (idAttachment)",
-        ),
+        )
     ]
 
     def _prepare_relation(self, relation, record):
