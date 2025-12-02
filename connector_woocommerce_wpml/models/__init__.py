@@ -1,3 +1,4 @@
+from . import product
 from . import product_wpml_mixin
 from . import backend
 from . import binding
