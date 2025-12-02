@@ -1,8 +1,9 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import changed_by, mapping
+from odoo.addons.connector.components.mapper import changed_by, mapping, only_create
 from odoo.addons.connector_extension.components.mapper import required
 
 
@@ -29,14 +30,14 @@ class WooCommerceProductAttributeValueExportMapper(Component):
         }
 
     @required("parent_id")
-    @changed_by("attribute_id")
+    @only_create
     @mapping
     def parent_id(self, record):
         binder = self.binder_for("woocommerce.product.attribute")
         values = binder.get_external_dict_ids(record.attribute_id)
         return {"parent_id": values["id"] or None}
 
-    @changed_by("attribute_id")
+    @changed_by("parent_name")
     @mapping
     def parent_name(self, record):
         return {

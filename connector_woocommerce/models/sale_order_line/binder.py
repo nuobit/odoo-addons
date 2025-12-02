@@ -13,7 +13,7 @@ class SaleOrderLineBinder(Component):
     external_id = ["id", "order_id"]
     internal_id = [
         "woocommerce_order_line_id",
-        "woocommerce_sale_order_id",
+        # "woocommerce_sale_order_id",
     ]
     # internal_alt_id = ["product_id", "price_unit", "product_uom_qty", "order_id"]
 

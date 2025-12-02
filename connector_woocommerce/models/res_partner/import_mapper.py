@@ -1,5 +1,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+from odoo import _
+from odoo.exceptions import ValidationError
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 
@@ -12,7 +15,7 @@ class WooCommerceResPartnerImportMapper(Component):
 
     @mapping
     def name(self, record):
-        return {"name": record.get("first_name") + " " + record.get("last_name")}
+        return {"name": record["name"]}
 
     @mapping
     def parent_id(self, record):
@@ -32,12 +35,16 @@ class WooCommerceResPartnerImportMapper(Component):
 
     @mapping
     def type(self, record):
-        address_type = record.get("type")
+        address_type = record["type"]
         if address_type == "billing":
             return {"type": "invoice"}
         elif address_type == "shipping":
             return {"type": "delivery"}
-        return {"type": record.get("type")}
+        else:
+            raise ValidationError(
+                _("Unknown address type '%s' for partner import." % address_type)
+            )
+        # return {"type": record.get("type")}
 
     @mapping
     def hash(self, record):
