@@ -29,7 +29,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         return func(resource, *args, **kwargs)
 
     def _manage_error_codes(
-        self, res_data, res, resource, raise_on_error=True, **kwargs
+        self, op, res_data, res, resource, *args, raise_on_error=True, **kwargs
     ):
         if not res.ok:
             error_message = None
@@ -41,27 +41,27 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                         "If it's the case, try to remove the binding of the %s."
                         % (res_data.get("message"), resource, self.model._name)
                     )
-                elif res_data.get("code") == "woocommerce_rest_term_invalid":
-                    error_message = _(
-                        "Error: '%s'. Probably the %s has been "
-                        "removed from Woocommerce. "
-                        "If it's the case, try to remove the binding of the %s."
-                        % (res_data.get("message"), resource, self.model._name)
-                    )
-                elif (
-                    res_data.get("code")
-                    == "woocommerce_rest_product_variation_invalid_parent"
-                ):
-                    error_message = _(
-                        "Error: '%s'. Probably the product in %s "
-                        "has been removed from Woocommerce. "
-                        "If it's the case, try to remove the binding of the "
-                        "woocommerce.product.template"
-                        % (
-                            res_data.get("message"),
-                            resource,
-                        )
-                    )
+                # elif res_data.get("code") == "woocommerce_rest_term_invalid":
+                #     error_message = _(
+                #         "Error: '%s'. Probably the %s has been "
+                #         "removed from Woocommerce. "
+                #         "If it's the case, try to remove the binding of the %s."
+                #         % (res_data.get("message"), resource, self.model._name)
+                #     )
+                # elif (
+                #     res_data.get("code")
+                #     == "woocommerce_rest_product_variation_invalid_parent"
+                # ):
+                #     error_message = _(
+                #         "Error: '%s'. Probably the product in %s "
+                #         "has been removed from Woocommerce. "
+                #         "If it's the case, try to remove the binding of the "
+                #         "woocommerce.product.template"
+                #         % (
+                #             res_data.get("message"),
+                #             resource,
+                #         )
+                #     )
             elif res.status_code == 400:
                 if res_data.get("code") == "term_exists":
                     error_message = _(
@@ -70,21 +70,24 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                         % (
                             res_data["message"],
                             resource,
-                            res_data["res_data"]["resource_id"],
+                            res_data["data"]["resource_id"],
                             kwargs["data"],
                         )
                     )
-                elif res_data.get("code") in [
-                    "woocommerce_rest_product_variation_invalid_id",
-                    "woocommerce_rest_product_invalid_id",
-                ]:
-                    error_message = _(
-                        "Error: '%s'. Probably the %s has been removed from Woocommerce. "
-                        "If it's the case, try to remove the binding of the %s."
-                        % (res_data.get("message"), resource, self.model._name)
-                    )
+                # elif res_data.get("code") in [
+                #     "woocommerce_rest_product_variation_invalid_id",
+                #     "woocommerce_rest_product_invalid_id",
+                # ]:
+                #     error_message = _(
+                #         "Error: '%s'. Probably the %s has been removed from Woocommerce. "
+                #         "If it's the case, try to remove the binding of the %s."
+                #         % (res_data.get("message"), resource, self.model._name)
+                #     )
             if not error_message:
-                error_message = _("Error: %s, Resource: %s" % (res_data, resource))
+                error_message = _(
+                    "Error: %s -> Op: %s, Resource: %s, Args: %s, KWArgs: %s"
+                    % (res_data, op, resource, args, kwargs)
+                )
             if raise_on_error:
                 raise ValidationError(error_message)
             return error_message
@@ -98,21 +101,92 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             total_items = int(headers.get("X-WP-Total"))
         return total_items
 
-    def _exec_wcapi_call(self, op, resource, *args, **kwargs):
+    def _exec_wcapi_call(self, op, resource, *args, **kwargs):  # noqa: C901
         func = getattr(self.wcapi, op)
         try:
-            res = func(resource, *args, **kwargs)
-            res_data = res.json()
-            if "data" in res_data:
-                res_data["res_data"] = res_data.pop("data")
-            res_data = self._manage_error_codes(res_data, res, resource, **kwargs)
-            total_items = self._get_res_total_items(res)
+            response = func(resource, *args, **kwargs)
+            res_data = response.json()
             result = {
-                "ok": res.ok,
-                "status_code": res.status_code,
-                "total_items": total_items,
-                "data": res_data,
+                "data": None,
+                "total_items": 0,
+                "total_pages": 0,
+                "next": None,
+                "prev": None,
             }
+            if not response.ok:
+                # These are the cases where a not found should be an empty result
+                # instead of an error, we need to bypass the standard REST behaviour
+                # and make it look like more like an SQL whre if the parameters are wrong
+                # it just returns no value
+                if op == "get":
+                    if response.status_code != 404 or res_data["code"] not in (
+                        "woocommerce_rest_product_invalid_id",
+                        "woocommerce_rest_product_variation_invalid_id",
+                        "woocommerce_rest_product_variation_invalid_parent",
+                        "woocommerce_rest_term_invalid",
+                    ):
+                        self._manage_error_codes(
+                            op, res_data, response, resource, *args, **kwargs
+                        )
+                    result["data"] = []
+                else:
+                    self._manage_error_codes(
+                        op, res_data, response, resource, *args, **kwargs
+                    )
+                    result["data"] = {}
+            else:
+                # check if the response is a singleton or a list
+                if isinstance(res_data, dict):
+                    singleton = True
+                elif isinstance(res_data, list):
+                    singleton = False
+                else:
+                    raise ValidationError(
+                        _("Unexpected response from WooCommerce: %s") % res_data
+                    )
+                # check consistency between headers and response type
+                multi_headers = ["X-WP-Total", "X-WP-TotalPages"]
+                if singleton:
+                    for header in multi_headers:
+                        if header in response.headers:
+                            raise ValidationError(
+                                _(
+                                    "The '%s' header should not be present in "
+                                    "singleton responses: %s"
+                                )
+                                % (header, res_data)
+                            )
+                    for link in response.links.keys():
+                        if link in ["next", "prev", "first", "last"]:
+                            raise ValidationError(
+                                _(
+                                    "The '%s' link should not be present in singleton "
+                                    "responses: %s"
+                                )
+                                % (link, res_data)
+                            )
+                else:
+                    for header in multi_headers:
+                        if header not in response.headers:
+                            raise ValidationError(
+                                _("The '%s' header is missing in multi responses: %s")
+                                % (header, res_data)
+                            )
+                if singleton:
+                    if op == "get":
+                        result["data"] = [res_data]
+                    else:
+                        result["data"] = res_data
+                    result["total_items"] = 1
+                    result["total_pages"] = 1
+                else:
+                    result["data"] = res_data
+                    result["total_items"] = int(response.headers["X-WP-Total"])
+                    result["total_pages"] = int(response.headers["X-WP-TotalPages"])
+                    if "next" in response.links:
+                        result["next"] = response.links["next"]["url"]
+                    if "prev" in response.links:
+                        result["prev"] = response.links["prev"]["url"]
         except RequestConnectionError as e:
             raise RetryableJobError(_("Error connecting to WooCommerce: %s") % e) from e
         except json.decoder.JSONDecodeError as e:
@@ -126,10 +200,10 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                     e,
                     args,
                     kwargs,
-                    res.url,
-                    res.request.headers,
-                    res.request.method,
-                    res.text and res.text[:100] + " ...",
+                    response.url,
+                    response.request.headers,
+                    response.request.method,
+                    response.text and response.text[:100] + " ...",
                 )
             ) from e
         return result
@@ -157,29 +231,57 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         domain = []
         if "domain" in kwargs:
             domain = kwargs.pop("domain")
+
         search_fields = self._get_search_fields()
         real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
-        params = self._domain_to_normalized_dict(real_domain)
-        if "limit" in kwargs:
-            limit = kwargs.pop("limit")
-        else:
+
+        limit = kwargs.pop("limit", None)
+        if limit is None:
             limit = self.get_total_items(resource, domain)
-        params["offset"] = (
-            kwargs.pop("offset") if "offset" in kwargs and "offset" not in params else 0
-        )
-        page_size = self.backend_record.page_size
-        params["per_page"] = page_size if page_size > 0 else 100
-        data = []
-        while len(data) < limit:
-            if page_size > limit - len(data):
-                params["per_page"] = limit - len(data)
-            res = self._exec_wcapi_call("get", resource, params=params, *args, **kwargs)
-            # WooCommerce returns a dict if the response is a single item
-            if not isinstance(res["data"], list):
-                res["data"] = [res["data"]]
-            data += res["data"]
-            params["offset"] += len(res["data"])
-        return self._filter(data, common_domain)
+
+        all_data = []
+        if limit > 0:
+            params = self._domain_to_normalized_dict(real_domain)
+            offset = kwargs.pop("offset", 0) or 0
+            params["offset"] = offset if offset >= 0 else 0
+            page_size = self.backend_record.page_size
+            params["per_page"] = limit if page_size < 0 else page_size
+            count = 0
+            end = False
+            while not end:
+                if limit is not None:
+                    if count + page_size > limit:
+                        diff = limit - count
+                        if diff <= 0:
+                            raise ValidationError(
+                                _(
+                                    "Unexpected error in pagination diff: %s, count: %s, "
+                                    "page_size: %s, limit: %s, params: %s"
+                                )
+                                % (
+                                    diff,
+                                    count,
+                                    page_size,
+                                    limit,
+                                    params,
+                                )
+                            )
+                        params["per_page"] = diff
+                        end = True
+                res = self._exec_wcapi_call(
+                    "get", resource, params=params, *args, **kwargs
+                )
+                all_data += res["data"]
+                if params["per_page"] != len(res["data"]):
+                    raise ValidationError(
+                        _(
+                            "Unexpected error in pagination. The number of items "
+                            "retrieved is different than the number aked."
+                        )
+                    )
+                count += len(res["data"])
+                params["offset"] += len(res["data"])
+        return self._filter(all_data, common_domain)
 
     def _exec_post(self, resource, *args, **kwargs):
         res = self._exec_wcapi_call(
@@ -208,5 +310,5 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         system_status = self._exec("get", "system_status")
         version = False
         if system_status:
-            version = system_status["data"].get("environment").get("version")
+            version = system_status["data"].get("environment", {}).get("version")
         return version
