@@ -42,8 +42,7 @@
                 <t t-foreach="l_name.split('\n')" t-as="ln">
                     <div t-esc="ln" />
                 </t>
-                <td width="13%" class="text-right">
-                </td>
+                <td width="13%" class="text-right" />
                 <td width="12%" class="text-right">
                     <span
                         t-if="move_lines[0].sale_line_id"
@@ -87,11 +86,8 @@
                     t-value="l.get_splited_line_component_description()"
                 />
                 <td width="50%">
-
                     <t t-foreach="l_name.split('\n')" t-as="ln">
-
                         <div class="padding-left">
-
                             <span t-esc="ln" />
                         </div>
                     </t>
@@ -114,10 +110,8 @@
                         groups="uom.group_uom"
                     />
                 </td>
-                <td width="12%" class="text-right">
-                </td>
-                <td width="10%" class="text-right">
-                </td>
+                <td width="12%" class="text-right" />
+                <td width="10%" class="text-right" />
             </tr>
         </t>
     </template>

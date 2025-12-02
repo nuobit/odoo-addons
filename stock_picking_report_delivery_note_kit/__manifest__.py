@@ -5,7 +5,7 @@
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Warehouse",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock_whole_kit_constraint",
         "stock_picking_report_delivery_note",
