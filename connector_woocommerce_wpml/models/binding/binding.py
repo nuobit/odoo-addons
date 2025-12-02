@@ -18,7 +18,7 @@ class WoocommerceWPMLBindingMixin(models.AbstractModel):
     _sql_constraints = [
         (
             "internal_uniq",
-            "unique(backend_id, woocommerce_lang)",
+            "unique(backend_id, odoo_id, woocommerce_lang)",
             "A binding already exists with the same language, "
             "hence with the same Internal (Odoo) ID.",
         ),

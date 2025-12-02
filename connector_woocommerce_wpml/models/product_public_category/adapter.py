@@ -14,7 +14,7 @@ class WooCommerceProductPublicCategoryAdapter(Component):
     ]
 
     def _manage_error_codes(
-        self, res_data, res, resource, raise_on_error=True, **kwargs
+        self, op, res_data, res, resource, *args, raise_on_error=True, **kwargs
     ):
         if res.status_code == 500:
             if res_data.get("code") == "duplicate_term_slug":
@@ -38,7 +38,7 @@ class WooCommerceProductPublicCategoryAdapter(Component):
                     return error_message
 
         return super()._manage_error_codes(
-            res_data, res, resource, raise_on_error=True, **kwargs
+            op, res_data, res, resource, *args, raise_on_error=raise_on_error, **kwargs
         )
 
     def _get_search_fields(self):

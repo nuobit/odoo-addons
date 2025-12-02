@@ -11,28 +11,29 @@ class WooCommerceProductProductAdapter(Component):
         "woocommerce.product.wpml.mixin.adapter",
     ]
 
-    def create(self, data):
-        if data.get("translation_of"):
-            sku = data.pop("sku")
-        res = super().create(data)
-        if data.get("translation_of"):
-            if res and isinstance(res, dict):
-                external_id = res.get("id")
-                parent_id = res.get("parent_id")
-                if external_id:
-                    url_l = "products/%s/variations/%s" % (parent_id, external_id)
-                    self._exec("put", url_l, data={"sku": sku})
-        return res
+    # TODO AQUI: do we need this 2 next methods
+    # def create(self, data):
+    #     if data.get("translation_of"):
+    #         sku = data.pop("sku")
+    #     res = super().create(data)
+    #     if data.get("translation_of"):
+    #         if res and isinstance(res, dict):
+    #             external_id = res.get("id")
+    #             parent_id = res.get("parent_id")
+    #             if external_id:
+    #                 url_l = "products/%s/variations/%s" % (parent_id, external_id)
+    #                 self._exec("put", url_l, data={"sku": sku})
+    #     return res
 
-    def write(self, external_id, data):  # pylint: disable=W8106
-        old_sku = None
-        if data.get("sku"):
-            old_sku = data.pop("sku")
-        res = super().write(external_id, data)
-        if old_sku and res.get("data").get("sku") != old_sku:
-            data["sku"] = old_sku
-            res = super().write(external_id, data)
-        return res
+    # def write(self, external_id, data):  # pylint: disable=W8106
+    #     old_sku = None
+    #     if data.get("sku"):
+    #         old_sku = data.pop("sku")
+    #     res = super().write(external_id, data)
+    #     if old_sku and res.get("data").get("sku") != old_sku:
+    #         data["sku"] = old_sku
+    #         res = super().write(external_id, data)
+    #     return res
 
     # TODO: REVIEW: can we return this in better way?
     def _get_search_fields(self):
