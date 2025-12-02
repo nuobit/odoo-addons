@@ -8,6 +8,7 @@ class WooCommerceProductTemplate(models.Model):
     _name = "woocommerce.product.template"
     _inherit = "woocommerce.binding"
     _inherits = {"product.template": "odoo_id"}
+    _order = "backend_id, odoo_id, woocommerce_idproduct"
     _description = "WooCommerce Product template Binding"
 
     odoo_id = fields.Many2one(

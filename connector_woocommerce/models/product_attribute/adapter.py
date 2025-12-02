@@ -5,7 +5,7 @@ from odoo.addons.component.core import Component
 
 
 class WooCommerceProductAttributeAdapter(Component):
-    _name = "cwoocommerce.product.attribute.adapter"
+    _name = "woocommerce.product.attribute.adapter"
     _inherit = "connector.woocommerce.adapter"
 
     _apply_on = "woocommerce.product.attribute"

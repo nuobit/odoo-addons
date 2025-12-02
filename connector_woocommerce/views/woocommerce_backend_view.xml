@@ -80,24 +80,24 @@
                                 executed as soon
                                 as possible.
                             </p>
-                            <group>
+                                                        <group>
                                 <div>
                                     <label
-                                        string="Export Products Since"
+                                        string="Import Sale Orders Since"
                                         class="oe_inline"
-                                        for="export_products_since_date"
+                                        for="import_sale_order_since_date"
                                     />
                                     <field
-                                        name="export_products_since_date"
+                                        name="import_sale_order_since_date"
                                         class="oe_inline"
                                         nolabel="1"
                                     />
                                 </div>
                                 <button
-                                    name="export_products_since"
+                                    name="import_sale_orders_since"
                                     type="object"
                                     class="oe_highlight"
-                                    string="Export in background"
+                                    string="Import in background"
                                 />
                             </group>
                             <group>
@@ -123,26 +123,6 @@
                             <group>
                                 <div>
                                     <label
-                                        string="Import Sale Orders Since"
-                                        class="oe_inline"
-                                        for="import_sale_order_since_date"
-                                    />
-                                    <field
-                                        name="import_sale_order_since_date"
-                                        class="oe_inline"
-                                        nolabel="1"
-                                    />
-                                </div>
-                                <button
-                                    name="import_sale_orders_since"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Import in background"
-                                />
-                            </group>
-                            <group>
-                                <div>
-                                    <label
                                         string="Export Product Template Since"
                                         class="oe_inline"
                                         for="export_product_tmpl_since_date"
@@ -155,6 +135,26 @@
                                 </div>
                                 <button
                                     name="export_product_tmpl_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Export in background"
+                                />
+                            </group>
+                                                        <group>
+                                <div>
+                                    <label
+                                        string="Export Products Since"
+                                        class="oe_inline"
+                                        for="export_products_since_date"
+                                    />
+                                    <field
+                                        name="export_products_since_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="export_products_since"
                                     type="object"
                                     class="oe_highlight"
                                     string="Export in background"

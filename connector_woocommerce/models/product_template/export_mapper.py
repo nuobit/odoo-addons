@@ -33,6 +33,14 @@ class WooCommerceProductTemplateExportMapper(Component):
             raise ValidationError(
                 _("You must define a default code for the product %s") % record.name
             )
+        elif len(default_codes) > 1:
+            raise ValidationError(
+                _(
+                    "Multiple default codes found for the product %s. "
+                    "Please ensure that all variants have the same default code."
+                    % record.name
+                )
+            )
         return {"sku": default_codes or None}
 
     @mapping
@@ -56,7 +64,6 @@ class WooCommerceProductTemplateExportMapper(Component):
             }
         else:
             if record.inventory_availability == "always":
-                manage_stock = True
                 qty = sum(
                     self.env["stock.quant"]
                     .search(
@@ -72,7 +79,7 @@ class WooCommerceProductTemplateExportMapper(Component):
                     .mapped("available_quantity")
                 )
                 stock = {
-                    "manage_stock": manage_stock,
+                    "manage_stock": True,
                     "stock_quantity": int(qty),
                     "stock_status": "instock"
                     if record.product_variant_id.qty_available > 0

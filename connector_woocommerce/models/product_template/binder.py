@@ -25,3 +25,8 @@ class WooCommerceProductTemplateBinder(Component):
     @property
     def internal_alt_id(self):
         return ["default_code"]
+
+    # def _additional_external_binding_fields(self, external_data, relation):
+    #     return {
+    #         **super()._additional_external_binding_fields(external_data, relation),
+    #     }

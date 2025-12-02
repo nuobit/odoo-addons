@@ -12,5 +12,12 @@ class WooCommerceResPartnerBinder(Component):
 
     external_id = ["type", "hash"]
     internal_id = ["woocommerce_address_type", "woocommerce_address_hash"]
+
     external_alt_id = ["email", "hash", "type"]
     internal_alt_id = ["address_hash", "type"]
+
+    # def _additional_external_binding_fields(self, external_data, relation):
+    #     a=1
+    #     return super()._additional_external_binding_fields(
+    #         external_data, relation
+    #     )
