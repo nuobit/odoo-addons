@@ -21,11 +21,18 @@ class WooCommerceProductWPMLMixinExporter(AbstractComponent):
                 )
                 % self.backend_record.name
             )
-        for lang in langs_to_export:
+        langs_first_default = sorted(
+            langs_to_export,
+            key=lambda lang: (lang != self.backend_record.language_id.code, lang),
+        )
+        first_lang = True
+        for lang in langs_first_default:
             result = super().run(
-                relation.with_context(lang=lang),
+                relation.with_context(lang=lang, first_lang=first_lang),
                 always=always,
                 internal_fields=internal_fields,
             )
             res.append(result)
+            if first_lang:
+                first_lang = False
         return res

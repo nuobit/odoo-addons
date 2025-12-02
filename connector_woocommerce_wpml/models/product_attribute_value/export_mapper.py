@@ -20,18 +20,18 @@ class WooCommerceProductAttributeValueExportMapper(Component):
                 dict_name["name"] = record.name
         return dict_name
 
-    @required("parent_id")
-    @changed_by("attribute_id")
-    @mapping
-    def parent_id(self, record):
-        parent_dict = super().parent_id(record)
-        if "parent_id" in parent_dict:
-            parent_dict["parent_id"] = parent_dict["parent_id"]
-        binder = self.binder_for("woocommerce.product.attribute")
-        values = binder.get_external_dict_ids(record.attribute_id)
-        return {"parent_id": values["id"] or None}
+    # @required("parent_id")
+    # @changed_by("attribute_id")
+    # @mapping
+    # def parent_id(self, record):
+    #     parent_dict = super().parent_id(record)
+    #     if "parent_id" in parent_dict:
+    #         parent_dict["parent_id"] = parent_dict["parent_id"]
+    #     binder = self.binder_for("woocommerce.product.attribute")
+    #     values = binder.get_external_dict_ids(record.attribute_id)
+    #     return {"parent_id": values["id"] or None}
 
-    @changed_by("attribute_id")
+    @changed_by("parent_name")
     @mapping
     def parent_name(self, record):
         dict_name = super().parent_name(record)
@@ -53,16 +53,24 @@ class WooCommerceProductAttributeValueExportMapper(Component):
     @only_create
     @mapping
     def translation_of(self, record):
-        lang_code = record._context.get("lang")
-        if lang_code:
+        odoo_lang_code = record._context.get("lang")
+        if odoo_lang_code:
+            wpml_lang_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
+                odoo_lang_code
+            )
+            default_woml_lang_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
+                self.backend_record.language_id.code
+            )
             other_binding_backend = record.woocommerce_bind_ids.filtered(
                 lambda x: x.backend_id == self.backend_record
-                and x.woocommerce_lang
-                != self.env["res.lang"]._get_wpml_code_from_iso_code(
-                    record._context.get("lang")
+                and x.woocommerce_lang != wpml_lang_code
+            ).sorted(
+                lambda x: (
+                    x.woocommerce_lang != default_woml_lang_code,
+                    x.woocommerce_lang,
                 )
             )
             translation_of = None
-            for obb in other_binding_backend:
-                translation_of = obb.woocommerce_idattributevalue
+            if other_binding_backend:
+                translation_of = other_binding_backend[0].woocommerce_idattributevalue
             return {"translation_of": translation_of}
