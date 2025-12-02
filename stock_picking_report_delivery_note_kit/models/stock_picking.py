@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -10,7 +11,7 @@ class Picking(models.Model):
 
     def get_delivery_note_moves(self):
         moves_by_product = {}
-        for move in self.move_lines:
+        for move in self.move_ids:
             if move.bom_line_id and move.bom_line_id.bom_id.type == "phantom":
                 if move.sale_line_id:
                     product = move.sale_line_id.product_id
