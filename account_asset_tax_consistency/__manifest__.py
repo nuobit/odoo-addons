@@ -1,10 +1,11 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Bijaya Kumal <bkumal@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Account Asset Tax Consistency",
-    "version": "16.0.1.0.1",
+    "version": "18.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Invoicing Management",
@@ -16,6 +17,5 @@
     ],
     "data": [
         "views/account_tax_views.xml",
-        "views/account_tax_template_views.xml",
     ],
 }
