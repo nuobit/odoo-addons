@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Invoicing Management",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "summary": "This module checks the consistency of taxes when an asset is created."
     "reports defined on invoice services.",
     "depends": [
