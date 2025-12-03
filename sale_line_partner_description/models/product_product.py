@@ -80,8 +80,10 @@ class ProductProduct(models.Model):
     def _name_search(
         self, name, args=None, operator="ilike", limit=100, name_get_uid=None
     ):
-        partner_id = self.env.context.get("partner_id")
-        res = super(ProductProduct, self.with_context(partner_id=False))._name_search(
+        if "default_description_sale" in self.env.context:
+            partner_id = self.env.context.get("partner_id")
+            self = self.with_context(partner_id=False)
+        res = super(ProductProduct, self)._name_search(
             name, args=args, operator=operator, limit=limit, name_get_uid=name_get_uid
         )
         if "default_description_sale" in self.env.context:
