@@ -9,7 +9,7 @@
             <xpath expr="//field[@name='description']/.." position="inside">
                 <field
                     name="apply_to_asset"
-                    attrs="{'invisible': ['|', ('amount_type', '!=', 'percent'), ('type_tax_use', '!=', 'purchase')]}"
+                    invisible="amount_type != 'percent' or type_tax_use != 'purchase'"
                 />
             </xpath>
         </field>

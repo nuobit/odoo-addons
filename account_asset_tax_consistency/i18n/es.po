@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-18 10:08+0000\n"
+"POT-Creation-Date: 2026-10-29 09:13+0000\n"
 "PO-Revision-Date: 2023-01-18 10:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,14 +17,8 @@ msgstr ""
 
 #. module: account_asset_tax_consistency
 #: model:ir.model.fields.selection,name:account_asset_tax_consistency.selection__account_tax__apply_to_asset__always
-#: model:ir.model.fields.selection,name:account_asset_tax_consistency.selection__account_tax_template__apply_to_asset__always
 msgid "Always"
 msgstr "Siempre"
-
-#. module: account_asset_tax_consistency
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_tax_template__apply_to_asset
-msgid "Apply to Asset"
-msgstr "Aplicar al activo"
 
 #. module: account_asset_tax_consistency
 #: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_tax__apply_to_asset
@@ -37,32 +31,17 @@ msgid "Asset"
 msgstr "Activo"
 
 #. module: account_asset_tax_consistency
+#. odoo-python
 #: code:addons/account_asset_tax_consistency/models/account_tax.py:0
-#, python-format
 msgid ""
 "Defined taxes %s are not applicable with assets. Please enter the taxes "
 "accordingly."
-msgstr "Los impuestos definidos %s no son aplicables a los activos. Por favor, introduzca los impuestos correspondientes."
-
-#. module: account_asset_tax_consistency
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_asset__display_name
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_move_line__display_name
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_tax__display_name
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_tax_template__display_name
-msgid "Display Name"
-msgstr "Nombre mostrado"
-
-#. module: account_asset_tax_consistency
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_asset__id
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_move_line__id
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_tax__id
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_tax_template__id
-msgid "ID"
 msgstr ""
+"Los impuestos definidos %s no son aplicables a los activos. Por favor, "
+"introduzca los impuestos correspondientes."
 
 #. module: account_asset_tax_consistency
 #: model:ir.model.fields.selection,name:account_asset_tax_consistency.selection__account_tax__apply_to_asset__ignore
-#: model:ir.model.fields.selection,name:account_asset_tax_consistency.selection__account_tax_template__apply_to_asset__ignore
 msgid "Ignore"
 msgstr "Ignorar"
 
@@ -72,16 +51,7 @@ msgid "Journal Item"
 msgstr "Apunte contable"
 
 #. module: account_asset_tax_consistency
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_asset____last_update
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_move_line____last_update
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_tax____last_update
-#: model:ir.model.fields,field_description:account_asset_tax_consistency.field_account_tax_template____last_update
-msgid "Last Modified on"
-msgstr "Última modificación"
-
-#. module: account_asset_tax_consistency
 #: model:ir.model.fields.selection,name:account_asset_tax_consistency.selection__account_tax__apply_to_asset__never
-#: model:ir.model.fields.selection,name:account_asset_tax_consistency.selection__account_tax_template__apply_to_asset__never
 msgid "Never"
 msgstr "Nunca"
 
@@ -89,8 +59,3 @@ msgstr "Nunca"
 #: model:ir.model,name:account_asset_tax_consistency.model_account_tax
 msgid "Tax"
 msgstr "Impuesto"
-
-#. module: account_asset_tax_consistency
-#: model:ir.model,name:account_asset_tax_consistency.model_account_tax_template
-msgid "Templates for Taxes"
-msgstr "Plantilla de impuestos"

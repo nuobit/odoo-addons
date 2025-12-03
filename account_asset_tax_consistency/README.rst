@@ -54,6 +54,7 @@ Contributors
 
   - Kilian Niubo kniubo@nuobit.com
   - Bijaya Kumal bkumal@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------
