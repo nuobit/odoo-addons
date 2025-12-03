@@ -90,14 +90,11 @@
         >
             <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
             <div class="page">
-                <table
-                    class="table table-condensed sprdn-table3"
-                    style="font-size: 14px;"
-                >
+                <table class="table table-condensed sprdn-table3">
                     <thead>
                         <tr>
-                            <th>
-                                <table class="sprdn-table-1">
+                            <th colspan="5">
+                                <table class="sprdn-table1">
                                     <tbody>
                                         <tr>
                                             <td width="60%" />
@@ -145,16 +142,14 @@
                                                     <span t-if="o.state == 'done'">
                                                         <span>Delivery note</span>
                                                     </span>
-                                                    <span t-if="o.state == 'draft'">
+                                                    <span t-elif="o.state == 'draft'">
                                                         <span>Draft delivery note</span>
                                                     </span>
-                                                    <span t-if="o.state == 'cancel'">
+                                                    <span t-elif="o.state == 'cancel'">
                                                         <span
                                                         >Cancelled delivery note</span>
                                                     </span>
-                                                    <span
-                                                        t-if="o.state not in ('done', 'draft', 'cancel')"
-                                                    >
+                                                    <span t-else="">
                                                         <span
                                                         >Pending delivery note</span>
                                                     </span>
@@ -164,103 +159,74 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                <div
-                                                    class="row mt16 mb16"
-                                                    id="informations"
-                                                >
-                                                    <div t-if="o.origin" class="col-2">
-                                                        <strong>Origin</strong>
-                                                        <p t-field="o.origin" />
-                                                    </div>
-                                                    <div
-                                                        t-if="o.date_done"
-                                                        class="col-2"
-                                                    >
-                                                        <strong
-                                                        >Delivery note date</strong>
-                                                        <p
-                                                            t-field="o.date_done"
-                                                            t-options="{'widget': 'date'}"
-                                                        />
-                                                    </div>
-                                                    <div
-                                                        t-if="o.sale_id.client_order_ref"
-                                                        class="col-3"
-                                                    >
-                                                        <strong
-                                                        >Customer reference</strong>
-                                                        <p
-                                                            t-field="o.sale_id.client_order_ref"
-                                                        />
-                                                    </div>
-                                                    <div
-                                                        t-if="o.partner_id.ref"
-                                                        class="col-2"
-                                                    >
-                                                        <strong>Customer code</strong>
-                                                        <p t-field="o.partner_id.ref" />
-                                                    </div>
-                                                    <div
-                                                        name="payment_term"
-                                                        t-if="o.sale_id.payment_term_id"
-                                                        class="col-3"
-                                                    >
-                                                        <strong>Payment terms</strong>
-                                                        <p
-                                                            t-field="o.sale_id.payment_term_id"
-                                                        />
-                                                    </div>
-                                                </div>
+                                                <table class="sprdn-info-table">
+                                                    <tr>
+                                                        <td t-if="o.origin">
+                                                            <strong>Origin</strong>
+                                                            <p t-field="o.origin" />
+                                                        </td>
+                                                        <td t-if="o.date_done">
+                                                            <strong
+                                                            >Delivery note date</strong>
+                                                            <p
+                                                                t-field="o.date_done"
+                                                                t-options="{'widget': 'date'}"
+                                                            />
+                                                        </td>
+                                                        <td
+                                                            t-if="o.sale_id.client_order_ref"
+                                                        >
+                                                            <strong
+                                                            >Customer reference</strong>
+                                                            <p
+                                                                t-field="o.sale_id.client_order_ref"
+                                                            />
+                                                        </td>
+                                                        <td t-if="o.partner_id.ref">
+                                                            <strong
+                                                            >Customer code</strong>
+                                                            <p
+                                                                t-field="o.partner_id.ref"
+                                                            />
+                                                        </td>
+
+                                                        <td
+                                                            t-if="o.sale_id.payment_term_id"
+                                                            name="payment_term"
+                                                        >
+                                                            <strong
+                                                            >Payment terms</strong>
+                                                            <p
+                                                                t-field="o.sale_id.payment_term_id"
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                </table>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </th>
                         </tr>
-                        <tr>
-                            <th>
-                                <table class="sprdn-table0">
-                                    <thead>
-                                        <tr>
-                                            <th width="15%">Ref./Ref.cli.</th>
-                                            <th width="50%">Description</th>
-                                            <th
-                                                width="13%"
-                                                class="text-right"
-                                            >Quantity</th>
-                                            <th
-                                                width="12%"
-                                                class="text-right"
-                                            >Unit Price</th>
-                                            <th
-                                                width="10%"
-                                                class="text-right"
-                                            >Amount</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </th>
+                        <tr class="grid-header">
+                            <th width="15%" class="text-left">Ref./Ref.cli.</th>
+                            <th width="50%" class="text-left">Description</th>
+                            <th width="13%" class="text-right">Quantity</th>
+                            <th width="12%" class="text-right">Unit Price</th>
+                            <th width="10%" class="text-right">Amount</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <table class="sprdn-table2">
-                                    <tbody name="sprdn_document_tbody">
-                                        <t
-                                            t-set="grouped_moves"
-                                            t-value="o.get_delivery_note_moves()"
-                                        />
-                                        <t t-foreach="grouped_moves" t-as="gm">
-                                            <t
-                                                t-call="stock_picking_report_delivery_note.sprdn_document_body"
-                                                class="report_stock"
-                                            />
-                                        </t>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
+                    <tbody name="sprdn_document_tbody">
+                        <t
+                            t-set="grouped_moves"
+                            t-value="o.get_delivery_note_moves()"
+                        />
+                        <t t-foreach="grouped_moves" t-as="gm">
+                            <t
+                                t-call="stock_picking_report_delivery_note.sprdn_document_body"
+                                class="report_stock"
+                            />
+                        </t>
                     </tbody>
                 </table>
 
