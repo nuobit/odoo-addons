@@ -127,9 +127,9 @@ class AccountMove(models.Model):
     def _get_sii_invoice_dict_in(self, cancel=False):
         inv_dict = super()._get_sii_invoice_dict_in(cancel=cancel)
         if not cancel:
-            inv_dict["FacturaRecibida"][
-                "CuotaDeducible"
-            ] = self._get_sii_in_taxes_deductible()
+            inv_dict["FacturaRecibida"]["CuotaDeducible"] = (
+                self._get_sii_in_taxes_deductible()
+            )
             if "06" in (
                 self.sii_registration_key.code,
                 self.sii_registration_key_additional1.code,
