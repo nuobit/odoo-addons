@@ -4,7 +4,8 @@
 <odoo>
     <!-- IVA soportado (bienes corrientes) -->
     <record id="account_tax_template_p_priva4_bc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 4% IVA soportado (bienes corrientes)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -61,7 +62,8 @@
     </record>
 
     <record id="account_tax_template_p_priva10_bc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 10% IVA soportado (bienes corrientes)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -118,7 +120,8 @@
     </record>
 
     <record id="account_tax_template_p_priva21_bc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 21% IVA soportado (bienes corrientes)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -176,7 +179,8 @@
 
     <!-- IVA soportado (bienes de inversión) -->
     <record id="account_tax_template_p_priva4_bi" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 4% IVA soportado (bienes de inversión)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -233,7 +237,8 @@
     </record>
 
     <record id="account_tax_template_p_priva10_bi" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 10% IVA soportado (bienes de inversión)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -290,7 +295,8 @@
     </record>
 
     <record id="account_tax_template_p_priva21_bi" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 21% IVA soportado (bienes de inversión)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -348,7 +354,8 @@
 
     <!-- IVA soportado (servicios corrientes) -->
     <record id="account_tax_template_p_priva4_sc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 4% IVA soportado (servicios corrientes)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -405,7 +412,8 @@
     </record>
 
     <record id="account_tax_template_p_priva5_sc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 5% IVA soportado (servicios corrientes)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -462,7 +470,8 @@
     </record>
 
     <record id="account_tax_template_p_priva10_sc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 10% IVA soportado (servicios corrientes)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -519,7 +528,8 @@
     </record>
 
     <record id="account_tax_template_p_priva21_sc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata 21% IVA soportado (servicios corrientes)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -578,7 +588,8 @@
     <!-- Adquisiciones Intracomunitarias (bienes corrientes) -->
     <record id="account_tax_template_p_priva4_ic_bc" model="account.tax.template">
         <field name="amount" eval="4" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -652,7 +663,8 @@
 
     <record id="account_tax_template_p_priva10_ic_bc" model="account.tax.template">
         <field name="amount" eval="10" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -726,7 +738,8 @@
 
     <record id="account_tax_template_p_priva21_ic_bc" model="account.tax.template">
         <field name="amount" eval="21" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -801,7 +814,8 @@
     <!-- Adquisiciones Intracomunitarias (bienes de inversión) -->
     <record id="account_tax_template_p_priva4_ic_bi" model="account.tax.template">
         <field name="amount" eval="4" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -875,7 +889,8 @@
 
     <record id="account_tax_template_p_priva10_ic_bi" model="account.tax.template">
         <field name="amount" eval="10" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -949,7 +964,8 @@
 
     <record id="account_tax_template_p_priva21_ic_bi" model="account.tax.template">
         <field name="amount" eval="21" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -1024,7 +1040,8 @@
     <!-- Adquisiciones Intracomunitarias (servicios corrientes) -->
     <record id="account_tax_template_p_priva4_sp_in" model="account.tax.template">
         <field name="amount" eval="4" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -1098,7 +1115,8 @@
 
     <record id="account_tax_template_p_priva10_sp_in" model="account.tax.template">
         <field name="amount" eval="10" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -1172,7 +1190,8 @@
 
     <record id="account_tax_template_p_priva21_sp_in" model="account.tax.template">
         <field name="amount" eval="21" />
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
@@ -1246,7 +1265,8 @@
 
     <!-- IVA Importaciones (bienes corrientes) -->
     <record id="account_tax_template_p_priva4_ibc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata IVA 4% Importaciones bienes corrientes</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -1303,7 +1323,8 @@
     </record>
 
     <record id="account_tax_template_p_priva10_ibc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata IVA 10% Importaciones bienes corrientes</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -1360,7 +1381,8 @@
     </record>
 
     <record id="account_tax_template_p_priva21_ibc" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata IVA 21% Importaciones bienes corrientes</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -1418,7 +1440,8 @@
 
     <!-- IVA Importaciones (bienes de inversión) -->
     <record id="account_tax_template_p_priva4_ibi" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata IVA 4% Importaciones bienes de inversión</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -1475,7 +1498,8 @@
     </record>
 
     <record id="account_tax_template_p_priva10_ibi" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata IVA 10% Importaciones bienes de inversión</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
@@ -1532,7 +1556,8 @@
     </record>
 
     <record id="account_tax_template_p_priva21_ibi" model="account.tax.template">
-        <field name="description" /> <!-- for resetting the value on existing DBs -->
+        <field name="description" />
+        <!-- for resetting the value on existing DBs -->
         <field name="type_tax_use">purchase</field>
         <field name="name">Prorrata IVA 21% Importaciones bienes de inversión</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
