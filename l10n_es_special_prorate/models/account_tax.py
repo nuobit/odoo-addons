@@ -1,17 +1,16 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import datetime
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-from . import account_tax_mixin
-
 
 class AccountTax(models.Model):
     _inherit = "account.tax"
 
-    prorate = fields.Boolean(string="Prorate")
+    prorate = fields.Boolean()
 
     @api.constrains(
         "prorate",
@@ -21,7 +20,44 @@ class AccountTax(models.Model):
         "refund_repartition_line_ids",
     )
     def _check_prorate(self):
-        account_tax_mixin.check_prorate(self)
+        for tax in self:
+            if tax.prorate:
+                if tax.amount_type != "percent":
+                    raise ValidationError(
+                        _(
+                            "On prorate taxes it's only supported "
+                            "'percent' as a amount type"
+                        )
+                    )
+                if tax.type_tax_use != "purchase":
+                    raise ValidationError(
+                        _("On prorate taxes it's only supported 'purchase' type")
+                    )
+                all_repartition_lines = [
+                    ("invoice", tax.invoice_repartition_line_ids),
+                    ("refund", tax.refund_repartition_line_ids),
+                ]
+                for rltype, rlines in all_repartition_lines:
+                    valid_rlines = rlines.filtered(
+                        lambda x: x.repartition_type == "tax"
+                        and x.factor_percent == 100.0
+                    )
+                    if len(valid_rlines) != 2:
+                        raise ValidationError(
+                            _(
+                                "Prorate tax '%(tax_name)s' requires exactly "
+                                "two 100%% positive tax "
+                                "repartition lines (found %(found_count)i). "
+                                "Please check the configuration "
+                                "of the %(repartition_type)s repartition "
+                                "lines of this tax."
+                            )
+                            % {
+                                "tax_name": tax.name,
+                                "found_count": len(valid_rlines),
+                                "repartition_type": rltype,
+                            }
+                        )
 
     @api.model
     def prorate_context(self, record, date, company):
@@ -79,6 +115,7 @@ class AccountTax(models.Model):
                     )
             else:
                 raise NotImplementedError(
-                    "Tax type '%s' not suported yet" % rec.amount_type
+                    _("Tax type '%(amount_type)s' not supported yet")
+                    % {"amount_type": rec.amount_type}
                 )
         return value
