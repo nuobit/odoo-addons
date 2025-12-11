@@ -28,7 +28,7 @@ class AccountMoveLine(models.Model):
         sum_tax_amount = 0.0
 
         for line in self.move_id.line_ids.filtered(
-            lambda x: not x.display_type and not x.exclude_from_invoice_tab
+            lambda x: x.display_type == "product"
         ):
             for line_tax in line.tax_ids.filtered(lambda t: t == tax and t.amount >= 0):
                 tax_amount = tax.get_tax_amount(

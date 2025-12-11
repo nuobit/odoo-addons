@@ -10,10 +10,10 @@
         <xpath expr="//InvoiceLine/TaxesOutputs//TaxAmount" position="replace">
             <TaxAmount>
                 <TotalAmount
-                    t-esc="('%.2f' if version == '3_2' else '%.8f') % (line_sign * (line._get_facturae_tax_line_info(line_tax)))"
+                    t-out="('%.2f' if version == '3_2' else '%.8f') % (sign * (line._get_facturae_tax_line_info(line_tax)))"
                 />
                 <EquivalentInEuros
-                    t-esc="'%.2f' % (line_sign * (line._get_facturae_tax_line_info(line_tax) * euro_rate / currency_rate))"
+                    t-out="'%.2f' % (sign * (line._get_facturae_tax_line_info(line_tax) * euro_rate / currency_rate))"
                 />
             </TaxAmount>
         </xpath>
