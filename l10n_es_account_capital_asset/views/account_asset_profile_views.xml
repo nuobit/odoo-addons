@@ -9,8 +9,10 @@
             ref="account_asset_management.account_asset_profile_view_form"
         />
         <field name="arch" type="xml">
+            <field name="asset_product_item" position="after">
+                <field name="capital_asset_set" />
+            </field>
             <field name="company_id" position="after">
-
                 <field
                     name="capital_asset_type_id"
                     options="{'no_create': True, 'no_open': True}"

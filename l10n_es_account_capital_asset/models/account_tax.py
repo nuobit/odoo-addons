@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 class AccountTax(models.Model):
     _inherit = "account.tax"
 
-    def check_tax_base_amount(self, tax_base_amount):
+    def check_tax_base_amount(self, asset):
         threshold_amount = float(
             self.env["ir.config_parameter"]
             .sudo()
@@ -22,14 +22,38 @@ class AccountTax(models.Model):
             )
             taxes = rec.filtered(lambda x: x in bi_dest_taxes)
             if rec.company_id.l10n_es_capital_asset_enabled:
-                if tax_base_amount >= threshold_amount and not taxes:
+                if (
+                    not asset.profile_id.asset_product_item
+                    and asset.profile_id.capital_asset_set
+                ):
+                    tax_base_amount_unit = asset.tax_base_amount_unit
+                else:
+                    tax_base_amount_unit = asset.tax_base_amount
+                if tax_base_amount_unit >= threshold_amount and not taxes:
                     raise ValidationError(
                         _(
-                            "Capital Asset don't have Capital Asset tax."
-                            " Please, review the taxes."
+                            "The asset of type ‘%s’ has an unit amount %.2f€ greater than "
+                            "%.2f€, so it is considered a capital asset, but the selected "
+                            "taxes are not of a capital asset type. Please update the taxes "
+                            "accordingly or define the asset type as a set of assets."
+                        )
+                        % (
+                            asset.profile_id.name,
+                            tax_base_amount_unit,
+                            threshold_amount,
                         )
                     )
-                if tax_base_amount < threshold_amount and taxes:
+                elif tax_base_amount_unit < threshold_amount and taxes:
                     raise ValidationError(
-                        _("Asset have Capital Asset tax. Please, review the taxes")
+                        _(
+                            "The asset of type ‘%s’ has a unit amount %.2f€ lower than %.2f€, "
+                            "so it is not considered a capital asset, "
+                            "but capital asset taxes are selected. Please update the taxes "
+                            "accordingly or define the asset type as a set of assets."
+                        )
+                        % (
+                            asset.profile_id.name,
+                            tax_base_amount_unit,
+                            threshold_amount,
+                        )
                     )
