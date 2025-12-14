@@ -21,13 +21,6 @@ msgstr ""
 msgid "Account Capital Asset Tax Map"
 msgstr "Bienes de inversión - Mapeo de impuestos"
 
-
-#. module: l10n_es_account_capital_asset
-#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
-#, python-format
-msgid "Asset have Capital Asset tax. Please, review the taxes"
-msgstr "El activo tiene impuestos de bien de inversión. Por favor, revise los impuestos"
-
 #. module: l10n_es_account_capital_asset
 #: model_terms:ir.ui.view,arch_db:l10n_es_account_capital_asset.view_company_aeat_form
 msgid "Capital Asset"
@@ -46,6 +39,27 @@ msgid "Capital Asset Type"
 msgstr "Tipo de bien de inversión"
 
 #. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_set
+msgid "Capital Asset Set"
+msgstr "Conjunto de bienes de inversión"
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,help:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_set
+msgid "Indicates that this profile is used for a set of capital assets."
+msgstr "Indica que este perfil se utiliza para un conjunto de bienes de inversión."
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_asset_profile.py:0
+#, python-format
+msgid ""
+"A profile for a set of capital assets is not compatible with the 'Product "
+"per Asset' option. You cannot have both enabled. Please, select only one of "
+"them."
+msgstr "Un perfil para un conjunto de bienes de inversión no es compatible "
+"con la opción 'Producto por activo'. No puede tener ambos habilitados. "
+"Por favor, seleccione solo uno de ellos."
+
+#. module: l10n_es_account_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_type_id
 #: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__profile_capital_asset_type_id
 msgid "Default Capital Asset Type"
@@ -54,8 +68,26 @@ msgstr "Tipo de bien de inversión por defecto"
 #. module: l10n_es_account_capital_asset
 #: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
 #, python-format
-msgid "Capital Asset don't have Capital Asset tax. Please, review the taxes"
-msgstr "El bien de inversión no tiene impuestos de bien de inversión. Por favor, revise los impuestos"
+msgid "The asset of type ‘%s’ has an unit amount %.2f€ greater than %.2f€, "
+"so it is considered a capital asset, but the selected taxes "
+"are not of a capital asset type. Please update the taxes "
+"accordingly or define the asset type as a set of assets."
+msgstr "El activo de tipo ‘%s’ tiene un importe unitario %.2f€ mayor que %.2f€, "
+"por lo que se considera un bien de inversión, pero los impuestos seleccionados "
+"no son de tipo bien de inversión. Por favor, actualice los impuestos "
+"o defina el tipo de activo como un conjunto de activos."
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+#, python-format
+msgid "The asset of type ‘%s’ has a unit amount %.2f€ lower than %.2f€, "
+"so it is not considered a capital asset, "
+"but capital asset taxes are selected. Please update the taxes "
+"accordingly or define the asset type as a set of assets."
+msgstr "El activo de tipo ‘%s’ tiene un importe unitario %.2f€ menor que %.2f€, "
+"por lo que no se considera un bien de inversión, "
+"pero se han seleccionado impuestos de bienes de inversión. Por favor, actualice los impuestos "
+"o defina el tipo de activo como un conjunto de activos."
 
 #. module: l10n_es_account_capital_asset
 #: model:ir.model.constraint,message:l10n_es_account_capital_asset.constraint_l10n_es_account_capital_asset_type_unique_name
