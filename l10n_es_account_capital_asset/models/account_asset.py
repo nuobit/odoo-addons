@@ -63,7 +63,7 @@ class AccountAsset(models.Model):
         ):
             return
         for rec in self:
-            self.tax_ids.check_tax_base_amount(rec.tax_base_amount)
+            self.tax_ids.check_tax_base_amount(rec)
 
     @api.constrains("profile_id", "capital_asset_type_id")
     def _check_capital_asset_type_integrity(self):
