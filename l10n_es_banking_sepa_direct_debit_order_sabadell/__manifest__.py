@@ -8,7 +8,7 @@
     "version": "14.0.1.0.2",
     "author": "NuoBiT Solutions, S.L.",
     "category": "Accounting & Finance",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["account_banking_sepa_direct_debit"],
     "data": [
