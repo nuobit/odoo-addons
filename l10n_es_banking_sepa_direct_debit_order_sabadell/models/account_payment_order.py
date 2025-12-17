@@ -1,4 +1,4 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from lxml import etree
 
@@ -73,7 +73,8 @@ class AccountPaymentOrder(models.Model):
                         if len(pstl_adr_l) > 1:
                             raise ValidationError(
                                 _(
-                                    "Internal error: Expected one 'PstlAdr' tag, found %i"
+                                    "Internal error: Expected "
+                                    "one 'PstlAdr' tag, found %i"
                                 )
                                 % len(pstl_adr_l)
                             )
