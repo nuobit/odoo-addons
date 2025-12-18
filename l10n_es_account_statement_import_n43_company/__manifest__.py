@@ -7,7 +7,7 @@
     "summary": "This module only allows to get partners from the current company",
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Accounting & Finance",
     "license": "AGPL-3",
     "depends": [
