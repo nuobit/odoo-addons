@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -32,7 +31,7 @@ class AccountBankStatementImport(models.TransientModel):
                     lang = self.env["res.lang"].search([("code", "=", self.env.lang)])
                     bs_display_name = [bs.date.strftime(lang.date_format)]
                     if bs.name:
-                        bs_display_name.append("(%s)" % bs.name)
+                        bs_display_name.append(f"({bs.name})")
                     raise ValidationError(
                         _("Imported file overlaps with existing Bank statement: %s")
                         % " ".join(bs_display_name)
