@@ -8,7 +8,7 @@
     " checking overlapping dates",
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Accounting & Finance",
     "license": "AGPL-3",
     "depends": [
