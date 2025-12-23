@@ -12,10 +12,7 @@ from odoo.addons.connector_extension.common import tools
 class WooCommerceProductProductExportMapper(Component):
     _inherit = "woocommerce.product.product.export.mapper"
 
-    # TODO: REMOVE THIS COMMENT: we need lang on write because woocommerce
-    #  can't be write name with id as a external_id, we need name+lang.
-    # TODO: REMOVE THIS LANG FROM MAPPER!!
-    # @only_create
+    # TODO: Make this only_create???
     @changed_by("lang")
     @mapping
     def lang(self, record):
@@ -26,29 +23,7 @@ class WooCommerceProductProductExportMapper(Component):
         wc_lang = self.env["res.lang"]._get_wpml_code_from_iso_code(odoo_lang)
         return {"lang": wc_lang}
 
-    # @only_create
-    # @mapping
-    # def translation_of(self, record):
-    #     lang_code = record._context.get("lang")
-    #     if lang_code:
-    #         source_lang_code = self.backend_record.lang_ids[0].code
-    #         if lang_code == source_lang_code:
-    #             # We don't need to set translation_of for the default lang
-    #             return {}
-    #         else:
-    #             wpml_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
-    #                 source_lang_code
-    #             )
-    #             master_binding_backend = record.woocommerce_bind_ids.filtered(
-    #                 lambda x: x.backend_id == self.backend_record
-    #                 and x.woocommerce_lang == wpml_code
-    #             )
-    #             translation_of = None
-    #             if master_binding_backend:
-    #                 translation_of = master_binding_backend.woocommerce_idproduct
-    #             return {"translation_of": translation_of}
-
-    # TDOO: Make this only_create
+    # TODO: Make this only_create???
     @mapping
     def translation_of(self, record):
         binding = self.options["binding"] if self.options else None
@@ -95,21 +70,6 @@ class WooCommerceProductProductExportMapper(Component):
 
                 return {"translation_of": master_binding.woocommerce_idproduct}
 
-    def _get_product_description(self, record):
-        res = False
-        odoo_lang = record._context.get("lang")
-        if not odoo_lang:
-            raise ValidationError(_("Language must be always set"))
-        if odoo_lang == self.backend_record.language_id.code:
-            res = super()._get_product_description(record)
-        else:
-            # We don't need check backend_record lang
-            # because record already has lang on context
-            description = record.variant_public_description
-            if description:
-                res = tools.color_rgb2hex(description)
-        return res
-
     @changed_by("default_code")
     @mapping
     def sku(self, record):
@@ -148,6 +108,21 @@ class WooCommerceProductProductExportMapper(Component):
                             )
                         )
                     return super().sku(record)
+
+    def _get_product_description(self, record):
+        res = False
+        odoo_lang = record._context.get("lang")
+        if not odoo_lang:
+            raise ValidationError(_("Language must be always set"))
+        if odoo_lang == self.backend_record.language_id.code:
+            res = super()._get_product_description(record)
+        else:
+            # We don't need check backend_record lang
+            # because record already has lang on context
+            description = record.variant_public_description
+            if description:
+                res = tools.color_rgb2hex(description)
+        return res
 
     # @mapping
     # def attributes(self, record):
