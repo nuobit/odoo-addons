@@ -21,5 +21,11 @@ class WooCommerceProductPublicCategoryBinder(AbstractComponent):
     def _additional_external_binding_fields(self, external_data, relation):
         return self.wpml_additional_external_binding_fields(external_data, relation)
 
+    def wpml_additional_external_binding_fields(self, external_data, relation):
+        return {
+            **super().wpml_additional_external_binding_fields(external_data, relation),
+            "woocommerce_master_lang": relation._context["first_lang"],
+        }
+
     # def unwrap_binding(self, binding):
     #     return self.wpml_unwrap_binding(binding)

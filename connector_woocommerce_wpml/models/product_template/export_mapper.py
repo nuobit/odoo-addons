@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -11,15 +12,18 @@ from odoo.addons.connector_extension.common import tools
 class WooCommerceProductTemplateExportMapper(Component):
     _inherit = "woocommerce.product.template.export.mapper"
 
+    # TODO: Make this only_create???
     @changed_by("lang")
     @mapping
     def lang(self, record):
         # TODO: unify this code. Probably do a function in res lang
-        lang = self.env["res.lang"]._get_wpml_code_from_iso_code(
-            record._context.get("lang")
-        )
-        return {"lang": lang}
+        odoo_lang = record._context.get("lang")
+        if not odoo_lang:
+            raise ValidationError(_("Language must be always set"))
+        wc_lang = self.env["res.lang"]._get_wpml_code_from_iso_code(odoo_lang)
+        return {"lang": wc_lang}
 
+    # TODO: Make this only_create???
     @mapping
     def translation_of(self, record):
         binding = self.options["binding"]
@@ -71,7 +75,6 @@ class WooCommerceProductTemplateExportMapper(Component):
     @changed_by("default_code")
     @mapping
     def sku(self, record):
-
         binding = self.options["binding"] if self.options else None
         if binding:
             if binding.woocommerce_master_lang:
