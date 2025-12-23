@@ -17,3 +17,12 @@ class WooCommerceProductAttributeValueBinder(Component):
 
     def get_binding_domain(self, record):
         return self.wpml_get_binding_domain(record)
+
+    def _additional_external_binding_fields(self, external_data, relation):
+        return self.wpml_additional_external_binding_fields(external_data, relation)
+
+    def wpml_additional_external_binding_fields(self, external_data, relation):
+        return {
+            **super().wpml_additional_external_binding_fields(external_data, relation),
+            "woocommerce_master_lang": relation._context["first_lang"],
+        }
