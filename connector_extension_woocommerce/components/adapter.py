@@ -93,25 +93,46 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             return error_message
         return res_data
 
-    # TODO: remove this total items and use the res.headers instead
-    def _get_res_total_items(self, res):
-        headers = res.headers
-        total_items = headers.get("X-WP-Total") or 0
-        if total_items:
-            total_items = int(headers.get("X-WP-Total"))
-        return total_items
+    # # TODO: remove this total items and use the res.headers instead
+    # def _get_res_total_items(self, res):
+    #     headers = res.headers
+    #     total_items = headers.get("X-WP-Total") or 0
+    #     if total_items:
+    #         total_items = int(headers.get("X-WP-Total"))
+    #     return total_items
 
+    # TODO: Remove *args and *kwargs and put params=None
+    #       Check other methods than get to see if it'll work for them too
     def _exec_wcapi_call(self, op, resource, *args, **kwargs):  # noqa: C901
+        if self.backend_record.enable_call_logging:
+            _logger.info(
+                "WooCommerce API Call - OP: %s, Resource: %s, Args: %s, KWArgs: %s",
+                op,
+                resource,
+                args,
+                kwargs,
+            )
+
+        params = kwargs.get("params", {})
+        if {"page", "offset"}.issubset(params):
+            raise ValidationError(
+                _(
+                    "The 'offset' and 'page' parameters are incompatible "
+                    "in WooCommerce API calls. Please, use only one of them."
+                )
+            )
+
         func = getattr(self.wcapi, op)
         try:
             response = func(resource, *args, **kwargs)
             res_data = response.json()
             result = {
                 "data": None,
+                "returned_items": 0,
                 "total_items": 0,
                 "total_pages": 0,
-                "next": None,
-                "prev": None,
+                # "next": None,
+                # "prev": None,
             }
             if not response.ok:
                 # These are the cases where a not found should be an empty result
@@ -156,15 +177,15 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                                 )
                                 % (header, res_data)
                             )
-                    for link in response.links.keys():
-                        if link in ["next", "prev", "first", "last"]:
-                            raise ValidationError(
-                                _(
-                                    "The '%s' link should not be present in singleton "
-                                    "responses: %s"
-                                )
-                                % (link, res_data)
-                            )
+                    # for link in response.links.keys():
+                    #     if link in ["next", "prev", "first", "last"]:
+                    #         raise ValidationError(
+                    #             _(
+                    #                 "The '%s' link should not be present in singleton "
+                    #                 "responses: %s"
+                    #             )
+                    #             % (link, res_data)
+                    #         )
                 else:
                     for header in multi_headers:
                         if header not in response.headers:
@@ -180,13 +201,20 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                     result["total_items"] = 1
                     result["total_pages"] = 1
                 else:
-                    result["data"] = res_data
-                    result["total_items"] = int(response.headers["X-WP-Total"])
-                    result["total_pages"] = int(response.headers["X-WP-TotalPages"])
-                    if "next" in response.links:
-                        result["next"] = response.links["next"]["url"]
-                    if "prev" in response.links:
-                        result["prev"] = response.links["prev"]["url"]
+                    if op == "get":
+                        result["data"] = res_data
+                        result["total_items"] = int(response.headers["X-WP-Total"])
+                        result["total_pages"] = int(response.headers["X-WP-TotalPages"])
+                        # if "next" in response.links:
+                        #     result["next"] = response.links["next"]["url"]
+                        # if "prev" in response.links:
+                        #     result["prev"] = response.links["prev"]["url"]
+                    else:
+                        raise ValidationError(
+                            _("Unexpected multi-response for operation '%s': %s")
+                            % (op, res_data)
+                        )
+                result["returned_items"] = len(result["data"])
         except RequestConnectionError as e:
             raise RetryableJobError(_("Error connecting to WooCommerce: %s") % e) from e
         except json.decoder.JSONDecodeError as e:
@@ -206,82 +234,181 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                     response.text and response.text[:100] + " ...",
                 )
             ) from e
+
+        if self.backend_record.enable_call_logging:
+            result_debug = dict(result)
+            result_debug.pop("data")
+            _logger.info("WooCommerce API Response: %s", result_debug)
         return result
 
-    def get_total_items(self, resource, domain=None):
-        filters_values = self._get_search_fields()
-        real_domain, common_domain = self._extract_domain_clauses(
-            domain, filters_values
-        )
-        params = self._domain_to_normalized_dict(real_domain)
-        params["per_page"] = 1
-        result = self._exec_wcapi_call("get", resource, params=params)
-        return result["total_items"]
+    # def get_total_items(self, resource, domain=None):
+    #     filters_values = self._get_search_fields()
+    #     real_domain, common_domain = self._extract_domain_clauses(
+    #         domain, filters_values
+    #     )
+    #     params = self._domain_to_normalized_dict(real_domain)
+    #     if not common_domain:
+    #         params["per_page"] = 1
+    #     result = self._exec_wcapi_call("get", resource, params=params)
+    #
+    #     if not common_domain:
+    #         return result["total_items"]
+    #     else:
+    #         # TODO: bnioe sta be, perque el _exec_wcapi_call no retorna sempre tot!!!
+    #          # cal unsa fucnio intermitja
+    #         return len(self._filter(result['data'], common_domain))
 
     def _get_search_fields(self):
-        return ["modified_after", "offset", "per_page", "page"]
+        return ["modified_after"]  # , "offset", "per_page", "page"]
 
-    def _exec_get(self, resource, *args, **kwargs):
+    # TODO: User API params search and search_fields to find for some fields like
+    #       name, etc. This is a ilike contain %name% search so we need _filter
+    #       as well but on a lot less records
+    def _exec_get(
+        self, resource, domain=None, offset=0, limit=None, count=False
+    ):  # noqa: C901
         if resource == "system_status":
-            return self._exec_wcapi_call("get", resource, *args, **kwargs)
+            return self._exec_wcapi_call("get", resource)  # , *args, **kwargs)
         # WooCommerce has the parameter next on the response headers
         # to get the next page but we can't use it because if we use
         # the offset, the next page will have the same items as the first page.
         # It looks like a bug in WooCommerce API.
-        domain = []
-        if "domain" in kwargs:
-            domain = kwargs.pop("domain")
+        # So the 'page' parameter is incompatible with 'offset' parameter.
+        # If 'offset' and 'page' are used at the same this, only 'offset'
+        # will be taken into account and the 'page' will be ignored.
 
+        # get the domain
+        if domain is None:
+            domain = []
         search_fields = self._get_search_fields()
         real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
 
-        limit = kwargs.pop("limit", None)
-        if limit is None:
-            limit = self.get_total_items(resource, domain)
+        # get the api call parameters
+        params = self._domain_to_normalized_dict(real_domain)
+        # per_page (records per page)
+        if "per_page" in params:
+            raise ValidationError(
+                _(
+                    "The 'per_page' parameter is managed automatically "
+                    "in WooCommerce API calls. Do not use it "
+                    "in the domain."
+                )
+            )
+        page_size = self.backend_record.page_size
+        if page_size > 0:
+            params["per_page"] = page_size
+        if count:
+            params["_fields"] = "id"  # only need the ids to count
 
         all_data = []
-        if limit > 0:
-            params = self._domain_to_normalized_dict(real_domain)
-            offset = kwargs.pop("offset", 0) or 0
-            params["offset"] = offset if offset >= 0 else 0
-            page_size = self.backend_record.page_size
-            params["per_page"] = limit if page_size < 0 else page_size
-            count = 0
-            end = False
-            while not end:
-                if limit is not None:
-                    if count + page_size > limit:
-                        diff = limit - count
-                        if diff <= 0:
-                            raise ValidationError(
-                                _(
-                                    "Unexpected error in pagination diff: %s, count: %s, "
-                                    "page_size: %s, limit: %s, params: %s"
-                                )
-                                % (
-                                    diff,
-                                    count,
-                                    page_size,
-                                    limit,
-                                    params,
-                                )
-                            )
-                        params["per_page"] = diff
-                        end = True
+        counter = 0
+        if offset <= 0:
+            page = 1
+            while True:
                 res = self._exec_wcapi_call(
-                    "get", resource, params=params, *args, **kwargs
+                    "get",
+                    resource,
+                    params={
+                        **params,
+                        "page": page,
+                    },
                 )
-                all_data += res["data"]
-                if params["per_page"] != len(res["data"]):
-                    raise ValidationError(
-                        _(
-                            "Unexpected error in pagination. The number of items "
-                            "retrieved is different than the number aked."
-                        )
-                    )
-                count += len(res["data"])
-                params["offset"] += len(res["data"])
-        return self._filter(all_data, common_domain)
+                if res["returned_items"] == 0:
+                    break
+                data = self._filter(res["data"], common_domain)
+                data_count = len(data)
+                if limit is not None:
+                    if limit < 0:
+                        limit = 0
+                    if (counter + data_count) >= limit:
+                        diff = limit - counter
+                        all_data += data[:diff]
+                        counter += diff
+                        break
+                counter += data_count
+                if not count:
+                    all_data += data
+                page += 1
+        else:
+            cur_offset = offset
+            while True:
+                res = self._exec_wcapi_call(
+                    "get",
+                    resource,
+                    params={
+                        **params,
+                        "offset": cur_offset,
+                    },
+                )
+                if res["returned_items"] == 0:
+                    break
+                data = self._filter(res["data"], common_domain)
+                data_count = len(data)
+                if limit is not None:
+                    if limit < 0:
+                        limit = 0
+                    if (counter + data_count) >= limit:
+                        diff = limit - counter
+                        all_data += data[:diff]
+                        counter += diff
+                        break
+                counter += data_count
+                if not count:
+                    all_data += data
+                cur_offset += res["returned_items"]
+
+        if count:
+            return counter
+        else:
+            return all_data
+
+        # limit = kwargs.pop("limit", None)
+        # if limit is None:
+        #     limit = self.get_total_items(resource, domain)
+        #
+        # all_data = []
+        # if limit > 0:
+        #     params = self._domain_to_normalized_dict(real_domain)
+        #     offset = kwargs.pop("offset", 0) or 0
+        #     params["offset"] = offset if offset >= 0 else 0
+        #     page_size = self.backend_record.page_size
+        #     params["per_page"] = limit if page_size < 0 else page_size
+        #     count = 0
+        #     end = False
+        #     while not end:
+        #         if limit is not None:
+        #             if count + page_size > limit:
+        #                 diff = limit - count
+        #                 if diff <= 0:
+        #                     raise ValidationError(
+        #                         _(
+        #                             "Unexpected error in pagination diff: %s, count: %s, "
+        #                             "page_size: %s, limit: %s, params: %s"
+        #                         )
+        #                         % (
+        #                             diff,
+        #                             count,
+        #                             page_size,
+        #                             limit,
+        #                             params,
+        #                         )
+        #                     )
+        #                 params["per_page"] = diff
+        #                 end = True
+        #         res = self._exec_wcapi_call(
+        #             "get", resource, params=params, *args, **kwargs
+        #         )
+        #         all_data += res["data"]
+        #         if params["per_page"] != len(res["data"]):
+        #             raise ValidationError(
+        #                 _(
+        #                     "Unexpected error in pagination. The number of items "
+        #                     "retrieved is different than the number aked."
+        #                 )
+        #             )
+        #         count += len(res["data"])
+        #         params["offset"] += len(res["data"])
+        # return self._filter(all_data, common_domain)
 
     def _exec_post(self, resource, *args, **kwargs):
         res = self._exec_wcapi_call(
