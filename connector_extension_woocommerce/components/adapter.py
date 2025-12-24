@@ -113,6 +113,13 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                 kwargs,
             )
 
+        # WooCommerce has the parameter next on the response headers
+        # to get the next page but we can't use it because if we use
+        # the offset, the next page will have the same items as the first page.
+        # It looks like a bug in WooCommerce API.
+        # So the 'page' parameter is incompatible with 'offset' parameter.
+        # If 'offset' and 'page' are used at the same this, only 'offset'
+        # will be taken into account and the 'page' will be ignored.
         params = kwargs.get("params", {})
         if {"page", "offset"}.issubset(params):
             raise ValidationError(
@@ -264,19 +271,9 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
     # TODO: User API params search and search_fields to find for some fields like
     #       name, etc. This is a ilike contain %name% search so we need _filter
     #       as well but on a lot less records
-    def _exec_get(
-        self, resource, domain=None, offset=0, limit=None, count=False
-    ):  # noqa: C901
+    def _exec_get(self, resource, domain=None, offset=0, limit=None, count=False):
         if resource == "system_status":
             return self._exec_wcapi_call("get", resource)  # , *args, **kwargs)
-        # WooCommerce has the parameter next on the response headers
-        # to get the next page but we can't use it because if we use
-        # the offset, the next page will have the same items as the first page.
-        # It looks like a bug in WooCommerce API.
-        # So the 'page' parameter is incompatible with 'offset' parameter.
-        # If 'offset' and 'page' are used at the same this, only 'offset'
-        # will be taken into account and the 'page' will be ignored.
-
         # get the domain
         if domain is None:
             domain = []
@@ -297,118 +294,46 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         page_size = self.backend_record.page_size
         if page_size > 0:
             params["per_page"] = page_size
+        if offset < 0:
+            offset = 0
         if count:
             params["_fields"] = "id"  # only need the ids to count
 
+        seen_ids = set()
         all_data = []
         counter = 0
-        if offset <= 0:
-            page = 1
-            while True:
-                res = self._exec_wcapi_call(
-                    "get",
-                    resource,
-                    params={
-                        **params,
-                        "page": page,
-                    },
-                )
-                if res["returned_items"] == 0:
+        while True:
+            res = self._exec_wcapi_call(
+                "get",
+                resource,
+                params={
+                    **params,
+                    "offset": offset,
+                },
+            )
+            if res["returned_items"] == 0:
+                break
+            data = [d for d in res["data"] if d["id"] not in seen_ids]
+            seen_ids |= {d["id"] for d in data}
+            data = self._filter(data, *common_domain)
+            data_count = len(data)
+            if limit is not None:
+                if limit < 0:
+                    limit = 0
+                if (counter + data_count) >= limit:
+                    diff = limit - counter
+                    all_data += data[:diff]
+                    counter += diff
                     break
-                data = self._filter(res["data"], common_domain)
-                data_count = len(data)
-                if limit is not None:
-                    if limit < 0:
-                        limit = 0
-                    if (counter + data_count) >= limit:
-                        diff = limit - counter
-                        all_data += data[:diff]
-                        counter += diff
-                        break
-                counter += data_count
-                if not count:
-                    all_data += data
-                page += 1
-        else:
-            cur_offset = offset
-            while True:
-                res = self._exec_wcapi_call(
-                    "get",
-                    resource,
-                    params={
-                        **params,
-                        "offset": cur_offset,
-                    },
-                )
-                if res["returned_items"] == 0:
-                    break
-                data = self._filter(res["data"], common_domain)
-                data_count = len(data)
-                if limit is not None:
-                    if limit < 0:
-                        limit = 0
-                    if (counter + data_count) >= limit:
-                        diff = limit - counter
-                        all_data += data[:diff]
-                        counter += diff
-                        break
-                counter += data_count
-                if not count:
-                    all_data += data
-                cur_offset += res["returned_items"]
+            counter += data_count
+            if not count:
+                all_data += data
+            offset += res["returned_items"]
 
         if count:
             return counter
         else:
             return all_data
-
-        # limit = kwargs.pop("limit", None)
-        # if limit is None:
-        #     limit = self.get_total_items(resource, domain)
-        #
-        # all_data = []
-        # if limit > 0:
-        #     params = self._domain_to_normalized_dict(real_domain)
-        #     offset = kwargs.pop("offset", 0) or 0
-        #     params["offset"] = offset if offset >= 0 else 0
-        #     page_size = self.backend_record.page_size
-        #     params["per_page"] = limit if page_size < 0 else page_size
-        #     count = 0
-        #     end = False
-        #     while not end:
-        #         if limit is not None:
-        #             if count + page_size > limit:
-        #                 diff = limit - count
-        #                 if diff <= 0:
-        #                     raise ValidationError(
-        #                         _(
-        #                             "Unexpected error in pagination diff: %s, count: %s, "
-        #                             "page_size: %s, limit: %s, params: %s"
-        #                         )
-        #                         % (
-        #                             diff,
-        #                             count,
-        #                             page_size,
-        #                             limit,
-        #                             params,
-        #                         )
-        #                     )
-        #                 params["per_page"] = diff
-        #                 end = True
-        #         res = self._exec_wcapi_call(
-        #             "get", resource, params=params, *args, **kwargs
-        #         )
-        #         all_data += res["data"]
-        #         if params["per_page"] != len(res["data"]):
-        #             raise ValidationError(
-        #                 _(
-        #                     "Unexpected error in pagination. The number of items "
-        #                     "retrieved is different than the number aked."
-        #                 )
-        #             )
-        #         count += len(res["data"])
-        #         params["offset"] += len(res["data"])
-        # return self._filter(all_data, common_domain)
 
     def _exec_post(self, resource, *args, **kwargs):
         res = self._exec_wcapi_call(
