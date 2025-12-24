@@ -95,6 +95,12 @@ class ConnectorBackend(models.AbstractModel):
         "before(negative)/after(positive) the last one",
     )
 
+    enable_call_logging = fields.Boolean(
+        string="Enable Call Logging",
+        default=False,
+        help="Enable logging of calls to the external system",
+    )
+
     def _check_connection(self):
         self.ensure_one()
         with self.work_on(self._name) as work:
