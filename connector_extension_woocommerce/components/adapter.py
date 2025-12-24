@@ -1,4 +1,4 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html)
 
@@ -106,7 +106,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
     def _exec_wcapi_call(self, op, resource, *args, **kwargs):  # noqa: C901
         if self.backend_record.enable_call_logging:
             _logger.info(
-                "WooCommerce API Call - OP: %s, Resource: %s, Args: %s, KWArgs: %s",
+                "WooCommerce API Call (_exec_wcapi_call) - OP: %s, "
+                "Resource: %s, Args: %s, KWArgs: %s",
                 op,
                 resource,
                 args,
@@ -244,8 +245,10 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
 
         if self.backend_record.enable_call_logging:
             result_debug = dict(result)
-            result_debug.pop("data")
-            _logger.info("WooCommerce API Response: %s", result_debug)
+            result_debug["data"] = "..."
+            _logger.info(
+                "WooCommerce API Response (_exec_wcapi_call) - Result: %s", result_debug
+            )
         return result
 
     # def get_total_items(self, resource, domain=None):
@@ -271,12 +274,27 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
     # TODO: User API params search and search_fields to find for some fields like
     #       name, etc. This is a ilike contain %name% search so we need _filter
     #       as well but on a lot less records
-    def _exec_get(self, resource, domain=None, offset=0, limit=None, count=False):
+    def _exec_get(
+        self,
+        resource,
+        domain=None,
+        offset=0,
+        limit=None,
+        count=False,
+    ):
+        # flake8: noqa: C901
         if resource == "system_status":
             return self._exec_wcapi_call("get", resource)  # , *args, **kwargs)
-        # get the domain
+        # prepare parameters
         if domain is None:
             domain = []
+        if limit is not None:
+            if limit < 0:
+                limit = 0
+        if offset < 0:
+            offset = 0
+
+        # get domains
         search_fields = self._get_search_fields()
         real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
 
@@ -294,42 +312,68 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         page_size = self.backend_record.page_size
         if page_size > 0:
             params["per_page"] = page_size
-        if offset < 0:
-            offset = 0
         if count:
             params["_fields"] = "id"  # only need the ids to count
 
         seen_ids = set()
         all_data = []
         counter = 0
+        page = 1
+        api_calls = 0
         while True:
             res = self._exec_wcapi_call(
                 "get",
                 resource,
                 params={
                     **params,
-                    "offset": offset,
+                    "page": page,
                 },
             )
+            api_calls += 1
             if res["returned_items"] == 0:
                 break
             data = [d for d in res["data"] if d["id"] not in seen_ids]
+            data = self._filter(data, common_domain)
             seen_ids |= {d["id"] for d in data}
-            data = self._filter(data, *common_domain)
+
+            # compute offset
+            if data and offset > 0:
+                data_count = len(data)
+                if offset < data_count:
+                    data = data[offset:]
+                    offset = 0
+                else:
+                    data = []
+                    offset -= data_count
+
             data_count = len(data)
-            if limit is not None:
-                if limit < 0:
-                    limit = 0
-                if (counter + data_count) >= limit:
-                    diff = limit - counter
-                    all_data += data[:diff]
-                    counter += diff
-                    break
+
+            # compute limit
+            if limit is not None and (counter + data_count) >= limit:
+                diff = limit - counter
+                all_data += data[:diff]
+                counter += diff
+                break
             counter += data_count
             if not count:
                 all_data += data
-            offset += res["returned_items"]
+            if page >= res["total_pages"]:
+                break
+            page += 1
 
+        if self.backend_record.enable_call_logging:
+            _logger.info(
+                "WooCommerce API Response (_exec_get) - OP: %s, Resource: %s, Domain: %s, "
+                "Offset: %s, Limit: %s, Count: %s, Params: %s, API Calls: %s",
+                "GET",
+                resource,
+                domain,
+                offset,
+                limit,
+                count,
+                params,
+                api_calls,
+            )
         if count:
             return counter
         else:
