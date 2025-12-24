@@ -80,7 +80,7 @@
                                 executed as soon
                                 as possible.
                             </p>
-                                                        <group>
+                            <group>
                                 <div>
                                     <label
                                         string="Import Sale Orders Since"
@@ -140,7 +140,7 @@
                                     string="Export in background"
                                 />
                             </group>
-                                                        <group>
+                            <group>
                                 <div>
                                     <label
                                         string="Export Products Since"
@@ -275,23 +275,30 @@
                         </page>
                         <page name="other_info" string="Other Info">
                             <group>
-                                <field name="verify_ssl" />
-                                <field name="chunk_size" />
-                                <field name="page_size" />
-                                <field name="language_id" />
-                                <field
-                                    name="stock_location_ids"
-                                    widget="many2many_tags"
-                                />
-                                <field name="discount_pricelist_id" />
-                                <field name="use_main_product_image" />
+                                <group>
+                                    <field
+                                        name="stock_location_ids"
+                                        widget="many2many_tags"
+                                    />
+                                    <field name="discount_pricelist_id" />
+                                    <field name="client_order_ref_prefix" />
+                                    <field name="language_id" />
+                                    <field name="use_main_product_image" />
+                                </group>
+                                <group>
+                                    <field name="verify_ssl" />
+                                    <field name="chunk_size" />
+                                    <field name="page_size" />
+                                    <field
+                                        name="wordpress_backend_id"
+                                        options="{'no_create': True}"
+                                    />
+                                </group>
                             </group>
                             <group>
-                                <field
-                                    name="wordpress_backend_id"
-                                    options="{'no_create': True}"
-                                />
-                                <field name="client_order_ref_prefix" />
+                                <group>
+                                    <field name="enable_call_logging" />
+                                </group>
                             </group>
                         </page>
                     </notebook>
