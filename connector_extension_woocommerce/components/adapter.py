@@ -406,5 +406,10 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         system_status = self._exec("get", "system_status")
         version = False
         if system_status:
-            version = system_status["data"].get("environment", {}).get("version")
+            if system_status.get("returned_items", 0) != 1:
+                raise ValidationError(
+                    _("Unexpected response from WooCommerce system_status: %s")
+                    % system_status
+                )
+            version = system_status["data"][0].get("environment", {}).get("version")
         return version
