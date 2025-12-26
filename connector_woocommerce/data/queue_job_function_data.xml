@@ -14,10 +14,7 @@
             ref="connector_woocommerce.model_woocommerce_product_product"
         />
         <field name="method">export_batch</field>
-        <field
-            name="channel_id"
-            ref="connector_woocommerce.woocommerce_export_record"
-        />
+        <field name="channel_id" ref="connector_woocommerce.woocommerce_export_batch" />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
 
