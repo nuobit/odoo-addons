@@ -95,7 +95,7 @@
     </record>
 
     <!--   Export Product Attribute-->
-        <record
+    <record
         id="woocommerce_product_attribute_export_batch_job_function"
         model="queue.job.function"
     >
@@ -125,6 +125,19 @@
     </record>
 
     <!--   Export Product Attribute Value-->
+    <record
+        id="woocommerce_product_attribute_value_export_batch_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_woocommerce.model_woocommerce_product_attribute_value"
+        />
+        <field name="method">export_batch</field>
+        <field name="channel_id" ref="connector_woocommerce.woocommerce_export_batch" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+
     <record
         id="woocommerce_product_attribute_value_export_record_job_function"
         model="queue.job.function"
@@ -166,15 +179,6 @@
         />
         <field name="method">import_batch</field>
         <field name="channel_id" ref="connector_woocommerce.woocommerce_import_batch" />
-        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
-    </record>
-    <record id="woocommerce_sale_order_import_chunk" model="queue.job.function">
-        <field
-            name="model_id"
-            ref="connector_woocommerce.model_woocommerce_sale_order"
-        />
-        <field name="method">import_chunk</field>
-        <field name="channel_id" ref="connector_woocommerce.woocommerce_import_chunk" />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
 
