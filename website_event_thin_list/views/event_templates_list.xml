@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template id="events_thin_list" inherit_id="website_event.events_list">
+        <xpath expr="//t[@t-set='opt_index_sidebar']" position="after">
+            <t
+                t-set="opt_events_list_thin"
+                t-value="is_view_active('website_event_thin_list.opt_events_list_thin')"
+            />
+        </xpath>
+
+        <xpath expr="//div[@t-foreach='event_ids']" position="attributes">
+            <attribute name="t-if">not opt_events_list_thin</attribute>
+        </xpath>
+
+        <xpath expr="//div[@t-foreach='event_ids']" position="after">
+            <div
+                t-foreach="event_ids"
+                t-as="event"
+                t-if="opt_events_list_thin"
+                class="col-12 mb-4"
+            >
+                <a
+                    t-cache="event if not editable else None"
+                    t-attf-href="/event/#{ slug(event) }/#{(not event.menu_id) and 'register'}"
+                    class="text-decoration-none"
+                >
+                    <article
+                        class="d-flex align-items-center py-2 border-bottom bg-white rounded shadow-sm mb-2 o_event_thinlist_card"
+                        itemscope="itemscope"
+                        itemtype="http://schema.org/Event"
+                    >
+                        <div class="flex-shrink-0 me-3 o_event_thinlist_imgwrap">
+                            <div class="d-block h-100 w-100">
+                                <t t-call="website.record_cover" name="image_container">
+                                    <t t-set="_record" t-value="event" />
+                                </t>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 me-3 o_event_thinlist_content">
+                            <!-- Title -->
+                            <h6
+                                class="mb-1 text-truncate fw-bold o_event_thinlist_title"
+                            >
+                                <span t-field="event.name" itemprop="name" />
+                            </h6>
+                            <!-- Start Date & Time -->
+                            <div
+                                class="small text-muted mb-1 o_event_thinlist_datetime"
+                                itemprop="startDate"
+                                t-att-datetime="event.date_begin"
+                            >
+                                <span
+                                    t-out="event.date_begin"
+                                    t-options="{'widget': 'datetime', 'tz_name': event.date_tz, 'date_only': 'true', 'format': 'long'}"
+                                /> -
+                                <span
+                                    t-out="event.date_begin"
+                                    t-options="{'widget': 'datetime', 'tz_name': event.date_tz, 'time_only': 'true', 'format': 'short'}"
+                                />
+                            </div>
+                            <!-- Location -->
+                            <div
+                                class="small text-muted text-truncate o_event_thinlist_location"
+                                itemprop="location"
+                                t-out="event.address_id"
+                                t-options="{'widget': 'contact', 'fields': ['city'], 'no_marker': 'true'}"
+                            />
+                        </div>
+                        <div
+                            class="d-flex align-items-center flex-shrink-0 o_event_thinlist_actions"
+                        >
+                            <!-- Tickets remaining -->
+                            <div t-if="event.event_ticket_ids" class="text-center me-3">
+                                <t t-set="seats_max_shown" t-value="False" />
+                                <t t-foreach="event.event_ticket_ids" t-as="ticket">
+                                    <t
+                                        t-if="not seats_max_shown and ticket.seats_max is not False"
+                                    >
+                                        <div
+                                            class="fw-bold text-primary o_event_thinlist_seats"
+                                        >
+                                            <t t-esc="ticket.seats_max" />
+                                        </div>
+                                        <div
+                                            class="text-muted o_event_thinlist_available"
+                                        >Available</div>
+                                        <t t-set="seats_max_shown" t-value="True" />
+                                    </t>
+                                </t>
+                            </div>
+                            <!-- Reserve button -->
+                            <button
+                                class="btn btn-primary btn-sm me-3 o_event_thinlist_button"
+                            >Reserve</button>
+                        </div>
+                    </article>
+                </a>
+            </div>
+        </xpath>
+
+        <xpath expr="//main/*[1]" position="before">
+            <div
+                t-if="not opt_events_list_thin and event.event_ticket_ids"
+                class="float-end text-end mb-1"
+                style="min-width:120px;"
+            >
+                <t t-set="seats_max_shown" t-value="False" />
+                <t t-foreach="event.event_ticket_ids" t-as="ticket">
+                    <t t-if="not seats_max_shown and ticket.seats_max is not False">
+                        <div
+                            class="d-flex flex-column align-items-center justify-content-center w-100"
+                        >
+                            <span
+                                class="fw-bold display-6 text-primary"
+                                style="font-size:2rem;line-height:1;"
+                            >
+                                <t t-esc="ticket.seats_max" />
+                            </span>
+                            <div
+                                class="text-muted small mt-1 w-100 text-center"
+                            >Tickets remaining</div>
+                        </div>
+                        <t t-set="seats_max_shown" t-value="True" />
+                    </t>
+                </t>
+            </div>
+        </xpath>
+
+        <xpath expr="//main/*[last()]" position="after">
+            <div
+                t-if="not opt_events_list_thin"
+                class="d-flex justify-content-end align-items-center mt-2"
+                style="padding-right:16px;"
+            >
+                <span class="btn btn-primary">Reserve</span>
+            </div>
+        </xpath>
+    </template>
+
+    <template
+        id="opt_events_list_thin"
+        inherit_id="website_event.events_list"
+        active="False"
+        name="Layout • Thin List"
+    />
+</odoo>
