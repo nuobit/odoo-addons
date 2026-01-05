@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="external_layout_invoice_service"
+        inherit_id="account_invoice_report_service.external_layout_invoice_service"
+    >
+        <xpath expr="//img[@t-if='company.logo']/.." position="after">
+            <div class="col-6 text-right">
+                <img
+                    t-if="company.additional_logo"
+                    class="img-responsive"
+                    style="height:80px; width:auto;"
+                    t-att-src="'data:image/png;base64,%s' % to_text(company.additional_logo)"
+                />
+            </div>
+        </xpath>
+    </template>
+</odoo>
