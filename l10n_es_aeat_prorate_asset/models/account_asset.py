@@ -152,9 +152,9 @@ class AccountAsset(models.Model):
         "temp_prorate_percent",
         "final_prorate_percent",
     )
-    def _check_move_line(self):
+    def _check_prorate_percent(self):
         for rec in self:
-            if rec.date_start:
+            if rec.prorate_tax_id and rec.date_start:
                 percentage_line = rec.env["aeat.map.special.prorrate.year"].get_by_ukey(
                     rec.company_id.id, rec.date_start.year
                 )
