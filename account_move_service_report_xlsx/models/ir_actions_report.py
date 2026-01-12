@@ -13,12 +13,12 @@ class ReportAction(models.Model):
     def _render_xlsx(self, docids, data):
         context = data.get("context", {})
         if not context or not context.get("sale_service_report", False):
-            return super(ReportAction, self)._render_xlsx(docids, data)
+            return super()._render_xlsx(docids, data)
 
         invoice = self.env["account.move"].browse(docids)
         attachment = self.retrieve_attachment(invoice)
         if not attachment:
-            xlsx = super(ReportAction, self)._render_xlsx(docids, data)
+            xlsx = super()._render_xlsx(docids, data)
             attachment = self.env["ir.attachment"].create(
                 {
                     "name": safe_eval(self.attachment, {"object": invoice}),
