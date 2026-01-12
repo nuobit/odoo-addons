@@ -7,7 +7,7 @@
     "from the invoice.",
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Sales/Accounting",
     "license": "AGPL-3",
     "depends": ["account_move_service", "report_xlsx"],
