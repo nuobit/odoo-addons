@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
@@ -35,13 +36,15 @@ class ResPartnerServiceReportConfigType(models.Model):
     def _check_product_ids(self):
         for rec in self:
             duplicate = rec.config_id.type_ids.filtered(
-                lambda x: x.id != rec.id and bool(x.product_ids & rec.product_ids)
+                lambda x, rec=rec: x.id != rec.id
+                and bool(x.product_ids & rec.product_ids)
             )
             if duplicate:
                 product_names = ", ".join(duplicate.mapped("product_ids.name"))
                 raise ValidationError(
                     _(
-                        "The following products are duplicated in the same configuration: %s"
+                        "The following products are "
+                        "duplicated in the same configuration: %s"
                     )
                     % product_names
                 )

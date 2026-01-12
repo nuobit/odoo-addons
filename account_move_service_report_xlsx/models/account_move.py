@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -39,7 +40,8 @@ class AccountMove(models.Model):
                     "product_id"
                 )
                 wrong_products = invoice_products.filtered(
-                    lambda p: p not in allowed_products
+                    lambda p, allowed_products=allowed_products: p
+                    not in allowed_products
                 )
                 if wrong_products:
                     inconsistent_product_names = "\n-".join(
