@@ -1,4 +1,4 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import base64
 
@@ -10,15 +10,15 @@ class ReportAction(models.Model):
     _inherit = "ir.actions.report"
 
     @api.model
-    def _render_xlsx(self, docids, data):
+    def _render_xlsx(self, report_ref, docids, data):
         context = data.get("context", {})
         if not context or not context.get("sale_service_report", False):
-            return super()._render_xlsx(docids, data)
+            return super()._render_xlsx(report_ref, docids, data)
 
         invoice = self.env["account.move"].browse(docids)
         attachment = self.retrieve_attachment(invoice)
         if not attachment:
-            xlsx = super()._render_xlsx(docids, data)
+            xlsx = super()._render_xlsx(report_ref, docids, data)
             attachment = self.env["ir.attachment"].create(
                 {
                     "name": safe_eval(self.attachment, {"object": invoice}),

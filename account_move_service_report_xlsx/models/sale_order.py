@@ -1,4 +1,4 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, models
@@ -20,14 +20,25 @@ class SaleOrder(models.Model):
             typology_name = rec.get_service_typology_name()
             if not typology_name:
                 orders[rec.name] = _(
-                    "The combination of Service Key ('%s') and Transfer Reason ('%s') "
+                    "The combination of Service Key ('%(service_key)s') "
+                    "and Transfer Reason ('%(transfer_reason)s') "
                     "is not found in the Service Report Configuration. Please go to "
                     "the partner and set the correct service report configuration."
-                ) % (rec.service_key, rec.service_transfer_reason)
+                ) % {
+                    "service_key": rec.service_key,
+                    "transfer_reason": rec.service_transfer_reason,
+                }
         if orders:
             raise ValidationError(
-                _("Errors have been found in the following orders:\n%s")
-                % "\n".join([_("%s: %s") % (k, v) for k, v in orders.items()])
+                _("Errors have been found in the following orders:\n%(orders)s")
+                % {
+                    "orders": "\n".join(
+                        [
+                            _("%(order)s: %(error)s") % {"order": k, "error": v}
+                            for k, v in orders.items()
+                        ]
+                    ),
+                }
             )
 
     def get_service_typology_name(self):
@@ -66,9 +77,9 @@ class SaleOrder(models.Model):
             if rec.partner_id.service_intermediary:
                 products = rec.get_service_type_products(svc_type)
                 price_subtotal += sum(
-                    rec.order_line.filtered(lambda x: x.product_id in products).mapped(
-                        "price_subtotal"
-                    )
+                    rec.order_line.filtered(
+                        lambda x, products=products: x.product_id in products
+                    ).mapped("price_subtotal")
                 )
         return price_subtotal
 
@@ -105,7 +116,8 @@ class SaleOrder(models.Model):
                     service_products = rec.get_service_type_products("service")
                     price_subtotal += sum(
                         rec.order_line.filtered(
-                            lambda x: x.product_id in service_products
+                            lambda x, service_products=service_products: x.product_id
+                            in service_products
                         ).mapped("price_subtotal")
                     )
         return price_subtotal

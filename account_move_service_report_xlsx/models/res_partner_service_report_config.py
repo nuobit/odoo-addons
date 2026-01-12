@@ -1,4 +1,4 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import fields, models
 
@@ -14,7 +14,7 @@ class ResPartnerServiceReportConfig(models.Model):
         required=True,
         readonly=True,
     )
-    provider_code = fields.Char(string="Provider Code", required=True)
+    provider_code = fields.Char(required=True)
     name = fields.Char(string="Service Report Configuration Name", required=True)
     typology_ids = fields.One2many(
         comodel_name="res.partner.service.report.config.typology",

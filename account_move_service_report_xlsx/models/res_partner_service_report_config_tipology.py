@@ -1,5 +1,7 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -21,13 +23,14 @@ class ResPartnerServiceReportConfigTypology(models.Model):
     def _check_key_transfer_reason(self):
         for rec in self:
             duplicate = self.config_id.typology_ids.filtered(
-                lambda x: x.id != rec.id
+                lambda x, rec=rec: x.id != rec.id
                 and x.key == rec.key
                 and x.transfer_reason == rec.transfer_reason
             )
             if duplicate:
                 raise ValidationError(
                     _(
-                        "Key and Transfer Reason must be unique in the same configuration."
+                        "Key and Transfer Reason must "
+                        "be unique in the same configuration."
                     )
                 )
