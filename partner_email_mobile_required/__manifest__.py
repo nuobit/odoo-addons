@@ -10,6 +10,7 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": ["contacts"],
-    "data": [],
-    "installable": True,
+    "data": [
+        "security/res_partner_security.xml",
+    ],
 }
