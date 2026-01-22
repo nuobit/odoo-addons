@@ -11,5 +11,4 @@
     "category": "Stock",
     "depends": ["delivery_mrw"],
     "license": "AGPL-3",
-    "data": ["wizards/stock_immediate_transfer_views.xml"],
 }
