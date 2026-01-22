@@ -6,7 +6,7 @@
     "summary": "Customizations for Oxigen in MRW deliveries",
     "version": "14.0.1.0.0",
     "author": "ForgeFlow",
-    "website": "https://github.com/oxigensalud/odoo-addons",
+    "website": "https://github.com/OCA/oxigen.odo-adodns",
     "category": "Stock",
     "depends": ["delivery_mrw"],
     "installable": True,
