@@ -15,6 +15,6 @@ class StockImmediateTransfer(models.TransientModel):
         return True
 
     def process(self):
-        super(
+        return super(
             StockImmediateTransfer, self.with_context(skip_mrw_immediate_wizard=True)
         ).process()
