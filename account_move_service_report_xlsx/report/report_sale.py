@@ -27,9 +27,7 @@ class AbstractReportXslx(models.AbstractModel):
             _("RETURN (€)"): [lambda x: x.get_service_return_price_subtotal(True)],
             _("ADDITIONAL (concept)"): [lambda x: x.get_service_additional_concept()],
             _("ADDITIONAL (€)"): [lambda x: x.get_service_type_subtotal("additional")],
-            _("Total by service (€)"): [
-                lambda x: x.get_service_total_by("auth_number")
-            ],
+            _("Total by service (€)"): [lambda x: x.get_service_total_by("id")],
             _(""): [lambda x: x._get_empty_column()],
             _("Patient (name and surname)"): ["insured_name"],
             _("Invoice Number"): invoice + ["name"],
