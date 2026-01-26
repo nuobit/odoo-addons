@@ -9,7 +9,7 @@
     "tracking numbers other than serial numbers in barcode scanning sessions.",
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Stock",
     "depends": ["stock_barcodes"],
     "license": "AGPL-3",
