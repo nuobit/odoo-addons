@@ -31,7 +31,8 @@ class PickingType(models.Model):
                 ):
                     raise ValidationError(
                         _(
-                            "Only one picking type can be regularization in a warehouse %s."
+                            "Only one picking type can be regularization "
+                            "in a warehouse %(warehouse)s.",
+                            warehouse=rec.warehouse_id.name,
                         )
-                        % rec.warehouse_id.name,
                     )

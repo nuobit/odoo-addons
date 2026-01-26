@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, models
@@ -16,7 +17,7 @@ class Picking(models.Model):
             "product_id": move_line.product_id.id,
             "origin": self.name,
             "product_uom_id": move_line.product_id.uom_id.id,
-            "qty_done": quant.quantity,
+            "quantity": quant.quantity,
             "location_id": quant.location_id.id,
             "location_dest_id": move_line.location_id.id,
             "lot_id": move_line.lot_id.id,
@@ -30,7 +31,7 @@ class Picking(models.Model):
             "product_id": move_line.product_id.id,
             "product_uom": move_line.product_id.uom_id.id,
             "product_uom_qty": quant.quantity,
-            "quantity_done": quant.quantity,
+            "quantity": quant.quantity,
             "location_id": quant.location_id.id,
             "location_dest_id": move_line.location_id.id,
         }
@@ -42,7 +43,7 @@ class Picking(models.Model):
             "location_dest_id": move_line.location_id.id,
             "origin": move_line.picking_id.name,
             "company_id": move_line.company_id.id,
-            "move_lines": [
+            "move_ids": [
                 (
                     0,
                     0,
@@ -51,32 +52,36 @@ class Picking(models.Model):
             ],
         }
 
-    def _prepare_relocation_inventory_line_values(self, move_line):
-        return {
-            "location_id": move_line.location_id.id,
-            "product_id": move_line.product_id.id,
-            "product_uom_id": move_line.product_id.uom_id.id,
-            "product_qty": 1,
-            "prod_lot_id": move_line.lot_id.id,
-            "company_id": self.company_id.id,
-        }
-
-    def _prepare_relocation_inventory_values(self, move_line):
-        return {
-            "name": "Regularization by relocation",
-            "product_ids": [(6, 0, move_line.product_id.ids)],
-            "location_ids": [(6, 0, move_line.location_id.ids)],
-            "exhausted": True,
-            "line_ids": [
-                (
-                    0,
-                    0,
-                    self._prepare_relocation_inventory_line_values(move_line),
-                )
+    def _create_inventory_adjustment(self, move_line):
+        quant = self.env["stock.quant"].search(
+            [
+                ("location_id", "=", move_line.location_id.id),
+                ("product_id", "=", move_line.product_id.id),
+                ("lot_id", "=", move_line.lot_id.id),
+                ("company_id", "=", self.company_id.id),
             ],
-        }
+            limit=1,
+        )
+
+        if not quant:
+            quant = self.env["stock.quant"].create(
+                {
+                    "location_id": move_line.location_id.id,
+                    "product_id": move_line.product_id.id,
+                    "lot_id": move_line.lot_id.id,
+                    "company_id": self.company_id.id,
+                    "quantity": 0,
+                }
+            )
+
+        quant.inventory_quantity_set = True
+        quant.inventory_quantity = 1
+        quant.with_context(
+            inventory_mode=True, relocation_origin=self.name
+        ).action_apply_inventory()
 
     def button_validate(self):
+        res = super().button_validate()
         if (
             self.picking_type_code != "incoming"
             and not self.picking_type_id.barcode_option_group_id.allow_negative_quant
@@ -87,33 +92,33 @@ class Picking(models.Model):
                 and x.lot_id
             ):
                 quants = move_line.lot_id.quant_ids.filtered(
-                    lambda q: float_compare(
+                    lambda q, ml=move_line: float_compare(
                         q.quantity,
                         0,
-                        precision_rounding=move_line.product_id.uom_id.rounding,
+                        precision_rounding=ml.product_id.uom_id.rounding,
                     )
                     > 0
                 )
                 if len(quants) > 1:
                     raise ValidationError(
                         _(
-                            "S/N %s is found in more than one location."
-                            % move_line.lot_id.name
+                            "S/N %(name)s is found in more than one location.",
+                            name=move_line.lot_id.name,
                         )
                     )
                 if quants:
                     qty_available = quants.filtered(
-                        lambda x: x.location_id == move_line.location_id
+                        lambda x, ml=move_line: x.location_id == ml.location_id
                     ).quantity
                     if (
                         float_compare(
-                            move_line.qty_done,
+                            move_line.quantity,
                             qty_available,
                             precision_rounding=move_line.product_id.uom_id.rounding,
                         )
                         > 0
                     ):
-                        warehouse = move_line.location_id.get_warehouse()
+                        warehouse = move_line.location_id.warehouse_id
                         picking_type = (
                             self.env["stock.picking.type"]
                             .search(
@@ -130,15 +135,16 @@ class Picking(models.Model):
                             raise ValidationError(
                                 _(
                                     "More than one regularization picking "
-                                    "type for the same warehouse %s"
-                                    % move_line.location_id.name
+                                    "type for the same warehouse %(warehouse)s",
+                                    warehouse=move_line.location_id.name,
                                 )
                             )
                         if not picking_type:
                             raise ValidationError(
                                 _(
-                                    "No regularization picking type for location %s"
-                                    % move_line.location_id.name
+                                    "No regularization picking "
+                                    "type for location %(location)s",
+                                    location=move_line.location_id.name,
                                 )
                             )
                         new_picking = self.env["stock.picking"].create(
@@ -147,7 +153,7 @@ class Picking(models.Model):
                             )
                         )
                         new_picking.with_context(relocation=self.name).action_confirm()
-                        for move in new_picking.move_lines:
+                        for move in new_picking.move_ids:
                             move.move_line_ids.write(
                                 self._prepare_relocation_move_line_values(
                                     move_line, new_picking, quants
@@ -155,11 +161,5 @@ class Picking(models.Model):
                             )
                         new_picking.button_validate()
                 else:
-                    inventory = self.env["stock.inventory"].create(
-                        self._prepare_relocation_inventory_values(move_line)
-                    )
-                    inventory._action_start()
-                    inventory.with_context(
-                        relocation_origin=self.name
-                    ).action_validate()
-        return super().button_validate()
+                    self._create_inventory_adjustment(move_line)
+        return res
