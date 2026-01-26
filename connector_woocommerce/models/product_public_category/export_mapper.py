@@ -4,7 +4,7 @@ from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import changed_by, mapping, only_create
+from odoo.addons.connector.components.mapper import changed_by, mapping
 
 
 class WooCommerceProductPublicCategoryExportMapper(Component):
@@ -44,13 +44,9 @@ class WooCommerceProductPublicCategoryExportMapper(Component):
             or None
         }
 
-    # TODO: TEMPORARY DISABLED ON WRITE UNTIL WE HAD a MYSQL CONNECTION AND
-    #       DO THIS WITH THE API WPML RESTRICTIONS
-    # TODO: We shoud do this differently, is not a good hook
     def _get_slug_name(self, record):
         return record.with_context(lang=self.backend_record.language_id.code).slug_name
 
-    @only_create
     @mapping
     def slug(self, record):
         slug = self._get_slug_name(record)
