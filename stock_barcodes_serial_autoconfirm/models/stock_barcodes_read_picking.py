@@ -9,7 +9,7 @@ class WizStockBarcodesRead(models.AbstractModel):
 
     @api.depends("option_group_id", "product_id")
     def _compute_is_manual_qty(self):
-        super()._compute_is_manual_qty()
+        res = super()._compute_is_manual_qty()
         for rec in self:
             if (
                 not rec.is_manual_confirm
@@ -17,8 +17,10 @@ class WizStockBarcodesRead(models.AbstractModel):
                 and rec.product_id.tracking != "serial"
             ):
                 rec.is_manual_confirm = True
+        return res
 
     def set_product_qty(self):
-        super().set_product_qty()
+        res = super().set_product_qty()
         if self.product_id and self.product_id.tracking == "serial":
             self.product_qty = 1
+        return res
