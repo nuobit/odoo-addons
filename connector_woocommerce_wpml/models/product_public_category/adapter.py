@@ -44,6 +44,22 @@ class WooCommerceProductPublicCategoryAdapter(Component):
     def _get_search_fields(self):
         return self.wpml_get_search_fields()
 
+    # def _get_search_fields(self):
+    #     res_new = []
+    #     res = self.wpml_get_search_fields()
+    #     # Workaround for a WooCommerce API bug: the API sometimes fails to filter by
+    #     # language. This is another bug in the WPML API. Because of this, we cannot
+    #     # rely on server-side filtering. There is no other option but to fetch all
+    #     # records and filter them locally (inefficient, but reliable). If the WPML
+    #     # WooCommerce API is fixed in the future, we can keep the language as a
+    #     # search field and perform server-side filtering instead of removing it here.
+    #     # With the version 1.0.3 of the WooCommerce plugin this should not be necessary
+    #     # https://github.com/nuobit/woocommerce-wpml-api-rest-extension
+    #     for f in res:
+    #         if f != "lang":
+    #             res_new.append(f)
+    #     return res_new
+
     def _domain_to_normalized_dict(self, real_domain):
         return self.wpml_domain_to_normalized_dict(real_domain)
 

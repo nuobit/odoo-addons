@@ -1,4 +1,14 @@
-On WPML setup, select the option Language name added as a parameter.
-If it's already set, modify:
+Required WooCommerce Plugin
+===========================
 
-* WPML > Languages > Language URL format, select the option "Language name added as a parameter" and save the changes.
+This module requires the **WooCommerce WPML API REST Extension** plugin to function properly.
+
+Plugin URL: https://github.com/nuobit/woocommerce-wpml-api-rest-extension
+
+This plugin is necessary to work around several bugs in the WPML REST API related to:
+
+* Language parameter handling
+* Retrieving language-specific product data
+* Setting and updating content per language
+
+Without this extension, the connector will not be able to properly synchronize multilingual content between Odoo and WooCommerce.
