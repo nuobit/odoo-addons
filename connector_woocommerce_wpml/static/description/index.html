@@ -378,26 +378,34 @@ ul.auto-toc {
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><a class="reference internal" href="#configuration" id="toc-entry-1">Configuration</a></li>
-<li><a class="reference internal" href="#known-issues-roadmap" id="toc-entry-2">Known issues / Roadmap</a></li>
-<li><a class="reference internal" href="#bug-tracker" id="toc-entry-3">Bug Tracker</a></li>
-<li><a class="reference internal" href="#credits" id="toc-entry-4">Credits</a><ul>
-<li><a class="reference internal" href="#authors" id="toc-entry-5">Authors</a></li>
-<li><a class="reference internal" href="#contributors" id="toc-entry-6">Contributors</a></li>
-<li><a class="reference internal" href="#maintainers" id="toc-entry-7">Maintainers</a></li>
+<li><a class="reference internal" href="#required-woocommerce-plugin" id="toc-entry-2">Required WooCommerce Plugin</a></li>
+<li><a class="reference internal" href="#known-issues-roadmap" id="toc-entry-3">Known issues / Roadmap</a></li>
+<li><a class="reference internal" href="#bug-tracker" id="toc-entry-4">Bug Tracker</a></li>
+<li><a class="reference internal" href="#credits" id="toc-entry-5">Credits</a><ul>
+<li><a class="reference internal" href="#authors" id="toc-entry-6">Authors</a></li>
+<li><a class="reference internal" href="#contributors" id="toc-entry-7">Contributors</a></li>
+<li><a class="reference internal" href="#maintainers" id="toc-entry-8">Maintainers</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="configuration">
 <h1><a class="toc-backref" href="#toc-entry-1">Configuration</a></h1>
-<p>On WPML setup, select the option Language name added as a parameter.
-If it’s already set, modify:</p>
+</div>
+<div class="section" id="required-woocommerce-plugin">
+<h1><a class="toc-backref" href="#toc-entry-2">Required WooCommerce Plugin</a></h1>
+<p>This module requires the <strong>WooCommerce WPML API REST Extension</strong> plugin to function properly.</p>
+<p>Plugin URL: <a class="reference external" href="https://github.com/nuobit/woocommerce-wpml-api-rest-extension">https://github.com/nuobit/woocommerce-wpml-api-rest-extension</a></p>
+<p>This plugin is necessary to work around several bugs in the WPML REST API related to:</p>
 <ul class="simple">
-<li>WPML &gt; Languages &gt; Language URL format, select the option “Language name added as a parameter” and save the changes.</li>
+<li>Language parameter handling</li>
+<li>Retrieving language-specific product data</li>
+<li>Setting and updating content per language</li>
 </ul>
+<p>Without this extension, the connector will not be able to properly synchronize multilingual content between Odoo and WooCommerce.</p>
 </div>
 <div class="section" id="known-issues-roadmap">
-<h1><a class="toc-backref" href="#toc-entry-2">Known issues / Roadmap</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-3">Known issues / Roadmap</a></h1>
 <p>For a better maintenance, we can try to use a mixin component to define the common methods and properties.</p>
 <blockquote>
 <ul class="simple">
@@ -407,7 +415,7 @@ If it’s already set, modify:</p>
 </blockquote>
 </div>
 <div class="section" id="bug-tracker">
-<h1><a class="toc-backref" href="#toc-entry-3">Bug Tracker</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-4">Bug Tracker</a></h1>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/NuoBiT/odoo-addons/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
@@ -415,16 +423,16 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
-<h1><a class="toc-backref" href="#toc-entry-4">Credits</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-5">Credits</a></h1>
 <div class="section" id="authors">
-<h2><a class="toc-backref" href="#toc-entry-5">Authors</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-6">Authors</a></h2>
 <ul class="simple">
 <li>NuoBiT Solutions</li>
 <li>S.L.</li>
 </ul>
 </div>
 <div class="section" id="contributors">
-<h2><a class="toc-backref" href="#toc-entry-6">Contributors</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-7">Contributors</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="https://www.nuobit.com">NuoBiT</a>:<ul>
 <li>Kilian Niubo &lt;<a class="reference external" href="mailto:kniubo&#64;nuobit.com">kniubo&#64;nuobit.com</a>&gt;</li>
@@ -433,7 +441,7 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 </ul>
 </div>
 <div class="section" id="maintainers">
-<h2><a class="toc-backref" href="#toc-entry-7">Maintainers</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-8">Maintainers</a></h2>
 <p>This module is part of the <a class="reference external" href="https://github.com/NuoBiT/odoo-addons/tree/14.0/connector_woocommerce_wpml">NuoBiT/odoo-addons</a> project on GitHub.</p>
 <p>You are welcome to contribute.</p>
 </div>
