@@ -9,7 +9,7 @@
     "product from the barcodes module.",
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Extra Tools",
     "depends": ["stock_barcodes"],
     "data": ["views/stock_picking_type_views.xml"],

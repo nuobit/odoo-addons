@@ -11,7 +11,7 @@ class WizStockBarcodesReadPicking(models.TransientModel):
     def check_done_conditions(self):
         if self.product_id.tracking == "serial":
             self = self.with_context(force_create_move=True)
-        return super(WizStockBarcodesReadPicking, self).check_done_conditions()
+        return super().check_done_conditions()
 
     def _prepare_move_line_values(self, candidate_move, available_qty):
         vals = super()._prepare_move_line_values(candidate_move, available_qty)
