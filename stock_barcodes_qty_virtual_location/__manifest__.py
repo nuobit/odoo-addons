@@ -7,7 +7,7 @@
     " allow the calculation of the available quantity of products in virtual locations.",
     "version": "14.0.1.0.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Extra Tools",
     "depends": ["stock_barcodes"],
     "installable": True,
