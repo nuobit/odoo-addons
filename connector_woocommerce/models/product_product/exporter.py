@@ -49,14 +49,14 @@ class WooCommerceProductProductExporter(Component):
                 "woocommerce.product.template",
                 always=True,
             )
-        for line in relation.product_tmpl_id.attribute_line_ids:
+        for attr_line in relation.product_tmpl_id.attribute_line_ids:
             self._export_dependency(
-                line.attribute_id,
+                attr_line.attribute_id,
                 "woocommerce.product.attribute",
             )
-            for value in line.value_ids:
+            for attr_value in attr_line.value_ids:
                 self._export_dependency(
-                    value,
+                    attr_value,
                     "woocommerce.product.attribute.value",
                 )
         # TODO: Duplicated code?

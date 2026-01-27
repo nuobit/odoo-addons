@@ -49,12 +49,12 @@ class WooCommerceProductProduct(models.Model):
     #  the export_data function?
     def export_products_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
-        # domain = [("product_tmpl_id", "=", 64877)]
-        # domain = [('id', '=', 64753)]
         if since_date:
             domain.append(
                 ("woocommerce_write_date", ">", fields.Datetime.to_string(since_date))
             )
         self.with_delay().export_batch(backend_record, domain=domain)
-        # self.export_batch(backend_record, domain=domain)
+        # domain = [("product_tmpl_id", "=", 64877)]
+        # domain = [('id', '=', 64753)]
+        # self.export_batch(backend_record, domain=domain, delayed=False)
         return True
