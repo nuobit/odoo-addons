@@ -202,26 +202,22 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                                 % (header, res_data)
                             )
                 if singleton:
-                    if op == "get":
-                        result["data"] = [res_data]
-                    else:
-                        result["data"] = res_data
+                    result["data"] = [res_data]
                     result["total_items"] = 1
                     result["total_pages"] = 1
                 else:
-                    if op == "get":
-                        result["data"] = res_data
-                        result["total_items"] = int(response.headers["X-WP-Total"])
-                        result["total_pages"] = int(response.headers["X-WP-TotalPages"])
-                        # if "next" in response.links:
-                        #     result["next"] = response.links["next"]["url"]
-                        # if "prev" in response.links:
-                        #     result["prev"] = response.links["prev"]["url"]
-                    else:
+                    if op != "get":
                         raise ValidationError(
                             _("Unexpected multi-response for operation '%s': %s")
                             % (op, res_data)
                         )
+                    result["data"] = res_data
+                    result["total_items"] = int(response.headers["X-WP-Total"])
+                    result["total_pages"] = int(response.headers["X-WP-TotalPages"])
+                    # if "next" in response.links:
+                    #     result["next"] = response.links["next"]["url"]
+                    # if "prev" in response.links:
+                    #     result["prev"] = response.links["prev"]["url"]
                 result["returned_items"] = len(result["data"])
         except RequestConnectionError as e:
             raise RetryableJobError(_("Error connecting to WooCommerce: %s") % e) from e
@@ -386,18 +382,33 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             *args,
             **kwargs,
         )
-        return res["data"]
+        if res["total_items"] != 1:
+            raise ValidationError(
+                _("Unexpected response from WooCommerce POST %s: %s") % (resource, res)
+            )
+        return res["data"][0]
 
     def _exec_put(self, resource, *args, **kwargs):
-        return self._exec_wcapi_call("put", resource, *args, **kwargs)
+        res = self._exec_wcapi_call("put", resource, *args, **kwargs)
+        if res["total_items"] != 1:
+            raise ValidationError(
+                _("Unexpected response from WooCommerce PUT %s: %s") % (resource, res)
+            )
+        return res["data"][0]
 
     def _exec_delete(self, resource, *args, **kwargs):
-        return self._exec_wcapi_call(
+        res = self._exec_wcapi_call(
             "delete",
             resource,
             *args,
             **kwargs,
         )
+        if res["total_items"] != 1:
+            raise ValidationError(
+                _("Unexpected response from WooCommerce DELETE %s: %s")
+                % (resource, res)
+            )
+        return res["data"][0]
 
     def _exec_options(self, resource, *args, **kwargs):
         raise NotImplementedError()
