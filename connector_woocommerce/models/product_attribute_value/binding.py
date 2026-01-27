@@ -51,7 +51,8 @@ class WooCommerceProductAttributeValue(models.Model):
         # print("--->", len(values))
         # exit()
 
-        # domain += [("attribute_id", "=", 7)]
+        # domain = [("attribute_id", "=", 27)]
+        # domain = [("id", "=", 292)]
         # self.export_batch(backend_record, domain=domain, delayed=False)
         # self.with_delay().export_batch(backend_record, domain=domain)
 
