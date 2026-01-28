@@ -65,7 +65,11 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             elif res.status_code == 400:
                 if res_data.get("code") == "term_exists":
                     error_message = _(
-                        "Error: '%s'. Probably repeated record already exists in Woocommerce.\n"
+                        "Error: '%s'. Probably repeated record already exists in Woocommerce. "
+                        "If you don't see it from the interface probably the database is dirty "
+                        "and you should check the database directly. It means that there's "
+                        "terms (value attributes) in table wp_term_taxonomy with a"
+                        "non-existent taxonomy (attribute).\n"
                         "Please, review the data in %s/%s and compare it with %s"
                         % (
                             res_data["message"],
