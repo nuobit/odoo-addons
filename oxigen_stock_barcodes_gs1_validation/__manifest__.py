@@ -9,6 +9,6 @@
     "category": "Extra tools",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/oxigensalud/odoo-addons",
+    "website": "https://github.com/OCA/oxigen.odo-adodns",
     "depends": ["oxigen_stock_barcodes_gs1"],
 }

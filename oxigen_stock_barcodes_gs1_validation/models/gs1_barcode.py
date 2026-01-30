@@ -10,7 +10,7 @@ class GS1Barcode(models.Model):
     _inherit = "gs1_barcode"
 
     def decode(self, barcode):
-        res = super(GS1Barcode, self).decode(barcode)
+        res = super().decode(barcode)
         if len(res) == 1:
             ai, value = list(res.items())[0]
             record = True
