@@ -51,16 +51,16 @@ Credits
 Authors
 -------
 
-* NuoBiT Solutions
-* S.L.
+* NuoBiT Solutions SL
 
 Contributors
 ------------
 
 - `NuoBiT Solutions S.L. <https://www.nuobit.com>`__:
 
-  - Frank Cespedes <fcespedes@nuobit.com>
-  - Eric Antones <eantones@nuobit.com>
+  - Frank Cespedes fcespedes@nuobit.com
+  - Eric Antones eantones@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------
