@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_product_view_form_easy_inherit_website_sale" model="ir.ui.view">
@@ -12,11 +13,7 @@
             <sheet position="inside">
                 <field name="sale_ok" invisible="1" />
                 <notebook>
-                    <page
-                        name="shop"
-                        string="eCommerce"
-                        attrs="{'invisible': [('sale_ok','=',False)]}"
-                    >
+                    <page name="shop" string="eCommerce" invisible="sale_ok == False">
                         <group name="shop">
                             <group string="Shop">
                                 <field
@@ -69,13 +66,13 @@
                 </group>
             </group>
             <xpath
-                expr="//page[@name='shop']/group[@name='shop']/group/field[@name='is_published']"
+                expr="//group[@name='extra_info']/field[@name='is_published']"
                 position="attributes"
             >
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath
-                expr="//page[@name='shop']/group[@name='shop']/group/field[@name='is_published']"
+                expr="//group[@name='extra_info']/field[@name='is_published']"
                 position="after"
             >
                 <field name="variant_is_published" string="Is Published" />
