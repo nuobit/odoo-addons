@@ -14,4 +14,4 @@ class ProductTemplate(models.Model):
             default = {}
         if "attribute_line_ids" not in default:
             default["attribute_line_ids"] = False
-        return super(ProductTemplate, self).copy(default=default)
+        return super().copy(default=default)
