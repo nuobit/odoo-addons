@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.connector.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <field name="inventory_availability" position="after">
+                <field
+                    name="variant_inventory_availability"
+                    string="Inventory Availability"
+                />
+            </field>
+            <field name="inventory_availability" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_product_view_form_easy_inherit_website_sale" model="ir.ui.view">
+        <field name="name">website.sale.stock.variant.view.form.easy.inherit
+        </field>
+        <field name="model">product.product</field>
+        <field
+            name="inherit_id"
+            ref="website_sale_variant.product_product_view_form_easy_inherit_website_sale"
+        />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//page[@name='shop']/group[@name='shop']/group"
+                position="inside"
+            >
+                <field
+                    name="variant_inventory_availability"
+                    string="Inventory Availability"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

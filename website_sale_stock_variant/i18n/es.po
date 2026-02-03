@@ -1,0 +1,49 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_sale_stock_variant
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-28 12:35+0000\n"
+"PO-Revision-Date: 2025-08-28 12:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_sale_stock_variant
+#: model:ir.model.fields,help:website_sale_stock_variant.field_product_product__variant_inventory_availability
+msgid "Adds an inventory availability status on the web product page."
+msgstr ""
+"Añade un estado de disponibilidad en inventario en la página web del "
+"producto."
+
+#. module: website_sale_stock_variant
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_product_product__variant_inventory_availability
+msgid "Variant Inventory Availability"
+msgstr "Disponibilidad de la variante"
+
+#. module: website_sale_stock_variant
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_ambugest_product_product__inventory_availability
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_oxigesti_product_product__inventory_availability
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_product_product__inventory_availability
+#: model:ir.model.fields,field_description:website_sale_stock_variant.field_product_template__inventory_availability
+#: model_terms:ir.ui.view,arch_db:website_sale_stock_variant.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:website_sale_stock_variant.product_product_view_form_easy_inherit_website_sale
+msgid "Inventory Availability"
+msgstr "Disponibilidad"
+
+#. module: website_sale_stock_variant
+#: model:ir.model.fields.selection,name:website_sale_stock_variant.selection__product_product__variant_inventory_availability__never
+msgid "Sell regardless of inventory"
+msgstr "Vender independientemente del inventario"
+
+#. module: website_sale_stock_variant
+#: model:ir.model.fields.selection,name:website_sale_stock_variant.selection__product_product__variant_inventory_availability__always
+msgid "Show inventory on website and prevent sales if not enough stock"
+msgstr "Muestra el inventario en el sitio web e impide las ventas si no hay "
+"stock suficiente"

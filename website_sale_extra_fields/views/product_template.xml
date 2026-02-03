@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field
+            name="inherit_id"
+            ref="website_sale_variant.product_template_form_view"
+        />
+        <field name="arch" type="xml">
+            <field name="website_sequence" position="before">
+                <field name="website_name" />
+            </field>
+            <field name="website_ribbon_id" position="after">
+                <field name="slug_name" string="Slug" />
+                <field name="public_description" widget="html" />
+                <field name="public_short_description" />
+            </field>
+        </field>
+    </record>
+</odoo>

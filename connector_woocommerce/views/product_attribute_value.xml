@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="woocommerce_product_attribute_value_view_form" model="ir.ui.view">
+        <field name="name">woocommerce.product.attribute.value.view.form</field>
+        <field name="model">woocommerce.product.attribute.value</field>
+        <field name="arch" type="xml">
+            <form string="WooCommerce Product Attribute Value">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="woocommerce_idattribute" readonly="True" />
+                    <field name="woocommerce_idattributevalue" readonly="True" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="woocommerce_product_attribute_value_view_tree" model="ir.ui.view">
+        <field name="name">woocommerce.product.attribute.value.view.tree</field>
+        <field name="model">woocommerce.product.attribute.value</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="woocommerce_idattribute" readonly="True" />
+                <field name="woocommerce_idattributevalue" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync_export"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+    <record
+        id="woocommerce_product_attribute_value_action"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Product Attribute Value</field>
+        <field name="res_model">woocommerce.product.attribute.value</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
