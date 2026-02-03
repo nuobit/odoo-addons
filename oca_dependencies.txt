@@ -1,0 +1,12 @@
+account-invoicing
+account-financial-tools
+brand
+connector
+contract
+l10n-spain
+product-pack
+project
+queue
+rest-framework
+stock-logistics-barcode
+stock-logistics-warehouse
