@@ -1,4 +1,4 @@
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -8,6 +8,13 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     inventory_availability = fields.Selection(
+        selection=[
+            ("never", "Sell regardless of inventory"),
+            (
+                "always",
+                "Show inventory on website and prevent sales if not enough stock",
+            ),
+        ],
         compute="_compute_inventory_availability",
         inverse="_inverse_inventory_availability",
         store=True,
