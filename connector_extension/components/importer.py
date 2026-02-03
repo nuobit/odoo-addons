@@ -136,12 +136,7 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
     def run(self, external_id, sync_date, external_data=None, external_fields=None):
         if not external_data:
             external_data = {}
-        lock_name = "import({}, {}, {}, {})".format(
-            self.backend_record._name,
-            self.backend_record.id,
-            self.work.model_name,
-            external_id,
-        )
+        lock_name = f"import({self.backend_record._name}, {self.backend_record.id}, {self.work.model_name}, {external_id})"
         # Keep a lock on this import until the transaction is committed
         # The lock is kept since we have detected that the informations
         # will be updated into Odoo

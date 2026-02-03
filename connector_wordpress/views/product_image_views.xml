@@ -6,10 +6,14 @@
         <field name="inherit_id" ref="website_sale.view_product_image_form" />
         <field name="arch" type="xml">
             <field name="video_url" position="after">
-                <label for="title" string="Tittle" /><br />
-                <field name="title" /><br />
-                <label for="alternate_text" string="Alternate text" /><br />
-                <field name="alternate_text" /><br />
+                <label for="title" string="Tittle" />
+                <br />
+                <field name="title" />
+                <br />
+                <label for="alternate_text" string="Alternate text" />
+                <br />
+                <field name="alternate_text" />
+                <br />
             </field>
         </field>
     </record>

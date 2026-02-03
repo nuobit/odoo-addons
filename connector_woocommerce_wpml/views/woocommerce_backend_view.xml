@@ -10,8 +10,8 @@
             ref="connector_woocommerce.woocommerce_backend_view_form"
         />
         <field name="arch" type="xml">
-             <field name="company_id" position="after">
-                 <field
+            <field name="company_id" position="after">
+                <field
                     name="lang_ids"
                     widget="many2many_tags"
                     attrs="{'readonly': [('state', '!=', 'draft')]}"

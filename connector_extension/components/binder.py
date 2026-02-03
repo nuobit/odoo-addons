@@ -12,6 +12,7 @@ Odoo ID, how to find the Odoo ID for an external ID and how to
 create the binding between them.
 
 """
+
 import hashlib
 import logging
 from contextlib import contextmanager
@@ -95,7 +96,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             if not isinstance(_id, (tuple, list)):
                 _id = [_id]
             fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
-            return dict(zip(fields, _id))
+            return dict(zip(fields, _id, strict=False))
         else:
             return None
 
@@ -294,11 +295,13 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         :param external_id: external id to bind
         :param relation: Odoo record to bind
         """
-        assert (
-            external_data and relation
-        ), "external_data or relation missing, " "got: %s, %s" % (
-            external_data,
-            relation,
+        assert external_data and relation, (
+            "external_data or relation missing, "
+            "got: %s, %s"
+            % (
+                external_data,
+                relation,
+            )
         )
         with self._retry_unique_violation():
             values = self._prepare_binding_export_values(relation, external_data)

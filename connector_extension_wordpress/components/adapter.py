@@ -20,7 +20,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
     _inherit = "connector.extension.adapter.crud"
 
     def _exec(self, op, resource, *args, **kwargs):
-        func = getattr(self, "_exec_%s" % op)
+        func = getattr(self, f"_exec_{op}")
         return func(resource, *args, **kwargs)
 
     def _manage_error_codes(
@@ -31,21 +31,21 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             if res.status_code == 404:
                 if res_data.get("code") == "rest_post_invalid_id":
                     error_message = _(
-                        "Error: '%s'. Probably the %s has been "
+                        "Error: '{}'. Probably the {} has been "
                         "removed from WordPress. "
-                        "If it's the case, try to remove the binding of the %s."
-                        % (res_data.get("message"), resource, self.model._name)
+                        "If it's the case, try to remove the binding of the {}."
+                    ).format(
+                        res_data.get("message"), resource, self.model._name
                     )
             elif res.status_code == 500:
                 if res_data.get("code") == "rest_upload_sideload_error":
                     error_message = _(
-                        "Error: '%s'. Probably the image or document "
+                        "Error: '{}'. Probably the image or document "
                         "is uploaded with bad format. "
-                        "Please, review on database: %s"
-                        % (res_data["message"], kwargs["headers"])
-                    )
+                        "Please, review on database: {}"
+                    ).format(res_data["message"], kwargs["headers"])
             if not error_message:
-                error_message = _("Error: %s, Resource: %s" % (res_data, resource))
+                error_message = _(f"Error: {res_data}, Resource: {resource}")
             if raise_on_error:
                 raise ValidationError(error_message)
             return error_message
@@ -112,13 +112,13 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             return self._exec_wp_call(
                 "get",
                 resource,
+                *args,
                 auth=(
                     self.backend_record.username,
                     self.backend_record.application_password,
                 ),
                 verify=self.backend_record.verify_ssl,
-                *args,
-                **kwargs
+                **kwargs,
             )
         # WooCommerce has the parameter next on the response headers
         # to get the next page but we can't use it because if we use
@@ -146,14 +146,14 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             res = self._exec_wp_call(
                 "get",
                 resource,
+                *args,
                 params=params,
                 auth=(
                     self.backend_record.username,
                     self.backend_record.application_password,
                 ),
                 verify=self.backend_record.verify_ssl,
-                *args,
-                **kwargs
+                **kwargs,
             )
             # WooCommerce returns a dict if the response is a single item
             if not isinstance(res["data"], list):
@@ -193,13 +193,13 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         res = self._exec_wp_call(
             "put",
             resource,
+            *args,
             data=data,
             params=data_aux,
             headers=headers,
             auth=auth,
             verify=self.backend_record.verify_ssl,
-            *args,
-            **kwargs
+            **kwargs,
         )
         return res["data"]
 
@@ -212,6 +212,6 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
     def get_version(self):
         settings = self._exec("get", "settings")
         if settings and settings[0].get("title"):
-            return "Wordpress '%s' connected" % settings[0].get("title")
+            return "Wordpress '{}' connected".format(settings[0].get("title"))
         else:
             raise ValidationError(_("Wordpress not connected"))

@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="website_sale.product_public_category_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']/.." position="inside">
-                 <field name="slug_name" string="Slug" />
+                <field name="slug_name" string="Slug" />
             </xpath>
             <sheet position="inside">
                 <group>

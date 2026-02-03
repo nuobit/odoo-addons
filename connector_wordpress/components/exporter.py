@@ -19,11 +19,9 @@ class WordPressRecordDirectExporter(AbstractComponent):
     ]
 
     def _get_lock_name(self, relation):
-        lock_name = "export_record({}, {}, {}, {})".format(
-            self.backend_record._name,
-            self.backend_record.id,
-            relation._name,
-            relation.checksum,
+        lock_name = (
+            f"export_record({self.backend_record._name}, "
+            f"{self.backend_record.id}, {relation._name}, {relation.checksum})"
         )
         return lock_name
 

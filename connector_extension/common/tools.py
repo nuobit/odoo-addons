@@ -149,7 +149,7 @@ def color_rgb2hex(data):
     def conv_rgb(match):
         rgb_hex_l = []
         groups = match.groups()
-        for value, percent in zip(groups[0::2], groups[1::2]):
+        for value, percent in zip(groups[0::2], groups[1::2], strict=False):
             if percent:
                 hex_value = round(float(value) * 255 / 100)
             else:

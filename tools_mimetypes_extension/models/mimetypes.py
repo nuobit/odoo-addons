@@ -32,9 +32,11 @@ _mimetype_file_extension = {
     "application/vnd.oasis.opendocument.presentation": ".odp",
     "application/vnd.oasis.opendocument.spreadsheet": ".ods",
     "application/vnd.oasis.opendocument.text": ".odt",
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",
+    "application/vnd.openxmlformats-officedocument"
+    ".presentationml.presentation": ".pptx",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+    "application/vnd.openxmlformats-officedocument"
+    ".wordprocessingml.document": ".docx",
     "application/vnd.rar": ".rar",
     "application/vnd.wap.wmlc": ".wmlc",
     "application/x-7z-compressed": ".7z",
@@ -430,7 +432,7 @@ _mimetype_file_extension = {
 
 def guess_extension(mimetype):
     if mimetype not in _mimetype_file_extension:
-        raise ValidationError(_("Mimetype %s is not mapped." % mimetype))
+        raise ValidationError(_(f"Mimetype {mimetype} is not mapped."))
     return _mimetype_file_extension[mimetype]
 
 
