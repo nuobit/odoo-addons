@@ -1,0 +1,1 @@
+odoo-addon-website_sale_variant@git+https://github.com/nuobit/odoo-addons.git@refs/pull/824/head#subdirectory=website_sale_variant
