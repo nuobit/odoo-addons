@@ -5,9 +5,9 @@ from odoo.addons.component.core import Component
 
 
 class WooCommerceProductAttributeValueBatchDirectExporter(Component):
-    """Export the WooCommerce Product Attibute Value.
+    """Export the WooCommerce Product Attribute Value.
 
-    For every Product Attibute Value in the list, execute inmediately.
+    For every Product Attribute Value in the list, execute immediately.
     """
 
     _name = "woocommerce.product.attribute.value.batch.direct.exporter"
@@ -17,9 +17,9 @@ class WooCommerceProductAttributeValueBatchDirectExporter(Component):
 
 
 class WooCommerceProductAttributeValueBatchDelayedExporter(Component):
-    """Export the WooCommerce Product Attibute Value.
+    """Export the WooCommerce Product Attribute Value.
 
-    For every Product Attibute Value in the list, a delayed job is created.
+    For every Product Attribute Value in the list, a delayed job is created.
     """
 
     _name = "woocommerce.product.attribute.value.batch.delayed.exporter"

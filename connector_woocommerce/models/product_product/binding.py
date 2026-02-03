@@ -9,7 +9,7 @@ class WooCommerceProductProduct(models.Model):
     _inherit = "woocommerce.binding"
     _inherits = {"product.product": "odoo_id"}
     _order = (
-        "backend_id, product_tmpl_id, woocommerce_idparent," "woocommerce_idproduct"
+        "backend_id, product_tmpl_id, woocommerce_idparent, woocommerce_idproduct"
     )
     _description = "WooCommerce Product product Binding"
 
