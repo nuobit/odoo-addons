@@ -5,7 +5,7 @@
 {
     'name': 'Account Template Menu',
     'summary': "This module adds menu entries *Account Chart Templates*, *Account Templates*, "
-               "*Account Tax Templates* and *Account Fiscal Pôsition Templates* under "
+               "*Account Tax Templates* and *Account Fiscal Position Templates* under "
                "*Accounting > Configuration > Accounting*, because these menu entries "
                "doesn't exists in the official *account* module of Odoo 11.",
     'version': '11.0.1.0.0',
