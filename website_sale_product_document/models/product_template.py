@@ -10,5 +10,4 @@ class ProductTemplate(models.Model):
     document_ids = fields.One2many(
         comodel_name="product.template.document",
         inverse_name="template_id",
-        string="Documents",
     )

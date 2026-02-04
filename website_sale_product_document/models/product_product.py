@@ -10,5 +10,4 @@ class ProductProduct(models.Model):
     document_ids = fields.One2many(
         comodel_name="product.product.document",
         inverse_name="product_id",
-        string="Documents",
     )
