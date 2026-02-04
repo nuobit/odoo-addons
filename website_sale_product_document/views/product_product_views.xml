@@ -10,15 +10,15 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='shop']" position="inside">
-                <group name="product_variant_document" string="Documents">
+            <xpath expr="//group[@name='ecom_description']" position="after">
+                <group name="product_variant_document" string="Documents" colspan="4">
                     <field name="document_ids" nolabel="1">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="sequence" widget="handle" />
                             <field name="name" />
                             <field name="datas" filename="datas_fname" />
                             <field name="datas_fname" />
-                        </tree>
+                        </list>
                     </field>
                 </group>
             </xpath>
@@ -43,12 +43,12 @@
             <xpath expr="//page[@name='shop']" position="inside">
                 <group name="product_template_document" string="Documents">
                     <field name="document_ids" nolabel="1">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="sequence" widget="handle" />
                             <field name="name" />
                             <field name="datas" filename="datas_fname" />
                             <field name="datas_fname" />
-                        </tree>
+                        </list>
                     </field>
                 </group>
             </xpath>
