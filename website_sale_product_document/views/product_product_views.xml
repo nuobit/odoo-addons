@@ -52,9 +52,9 @@
                     </field>
                 </group>
             </xpath>
-<!--            <group name="product_template_document" position="before">-->
-<!--                <group name="product_variant_images" position="move" />-->
-<!--            </group>-->
+            <!--            <group name="product_template_document" position="before">-->
+            <!--                <group name="product_variant_images" position="move" />-->
+            <!--            </group>-->
         </field>
     </record>
 </odoo>
