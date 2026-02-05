@@ -1,0 +1,1 @@
+odoo-addon-l10n_pt_stock_vehicle_daily@git+https://github.com/OCA/l10n-portugal.git@refs/pull/153/head#subdirectory=l10n_pt_stock_vehicle_daily
