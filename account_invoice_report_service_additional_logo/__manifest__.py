@@ -8,7 +8,7 @@
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Accounting",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": ["account_invoice_report_service", "company_additional_logo"],
     "data": [
         "views/report_invoice_service.xml",
