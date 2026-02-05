@@ -16,4 +16,4 @@ class Partner(models.Model):
             user_shared_fields = set(vals.keys()) - partner_fields_in_vals
             if not user_shared_fields:
                 self = self.with_context(partner_only_fields=True)
-        return super(Partner, self).write(vals)
+        return super().write(vals)
