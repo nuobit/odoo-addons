@@ -7,7 +7,7 @@
     "category": "Website/Website",
     "summary": "Adds a thin list layout option for website events",
     "author": "NuoBiT Solutions SL",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": [
         "website_event",

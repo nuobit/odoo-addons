@@ -52,13 +52,13 @@
                                 t-att-datetime="event.date_begin"
                             >
                                 <span
-                                    t-out="event.date_begin"
-                                    t-options="{'widget': 'datetime', 'tz_name': event.date_tz, 'date_only': 'true', 'format': 'long'}"
-                                /> -
+                                t-out="event.date_begin"
+                                t-options="{'widget': 'datetime', 'tz_name': event.date_tz, 'date_only': 'true', 'format': 'long'}"
+                            /> -
                                 <span
-                                    t-out="event.date_begin"
-                                    t-options="{'widget': 'datetime', 'tz_name': event.date_tz, 'time_only': 'true', 'format': 'short'}"
-                                />
+                                t-out="event.date_begin"
+                                t-options="{'widget': 'datetime', 'tz_name': event.date_tz, 'time_only': 'true', 'format': 'short'}"
+                            />
                             </div>
                             <!-- Location -->
                             <div

@@ -1,0 +1,2 @@
+- \[NuoBiT\](<https://www.nuobit.com>):
+  - Bijaya Kumal \<bkumal@nuobit.com\>
