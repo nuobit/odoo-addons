@@ -50,9 +50,10 @@ Authors
 Contributors
 ------------
 
-- [NuoBiT](https://www.nuobit.com):
+- `NuoBiT <https://www.nuobit.com>`__:
 
-  - Bijaya Kumal <bkumal@nuobit.com>
+  - Bijaya Kumal bkumal@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------

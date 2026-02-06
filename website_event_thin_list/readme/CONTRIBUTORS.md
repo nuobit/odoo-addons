@@ -1,2 +1,3 @@
-- \[NuoBiT\](<https://www.nuobit.com>):
-  - Bijaya Kumal \<bkumal@nuobit.com\>
+- [NuoBiT](https://www.nuobit.com):
+  - Bijaya Kumal <bkumal@nuobit.com>
+  - Deniz Gallo <dgallo@nuobit.com>
