@@ -80,17 +80,11 @@
         >
             <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
             <div class="page">
-                <table
-                    class="table table-condensed sprdn-table3"
-                    style="font-size: 14px;border: white;"
-                >
+                <table class="table table-condensed sprdn-table3 table-borderless">
                     <thead>
-                        <tr style="border: white;">
+                        <tr>
                             <th>
-                                <table
-                                    class="sprdn-table-1"
-                                    style="border: 2px #bbbbbb;border-left: white;border-right: white;padding: 10px;"
-                                >
+                                <table class="sprdn-table-1">
                                     <tbody>
                                         <tr style="">
                                             <td width="60%" />
@@ -134,7 +128,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr style="border-bottom: white;">
+                                        <tr>
                                             <td colspan="2">
                                                 <h3 style="margin-top: 10px;">
                                                     <span t-if="o.state == 'done'">
@@ -212,13 +206,11 @@
                                 </table>
                             </th>
                         </tr>
-                        <tr style="border: white;">
+                        <tr>
                             <th>
                                 <table class="sprdn-table0">
                                     <thead>
-                                        <tr
-                                            style="border: 2px #bbbbbb;;border-left: white;border-right: white;"
-                                        >
+                                        <tr>
                                             <th
                                                 width="15%"
                                                 style="padding: 8px;"
@@ -252,10 +244,7 @@
                         <tr>
                             <td>
                                 <table class="sprdn-table2">
-                                    <tbody
-                                        name="sprdn_document_tbody"
-                                        style="border-left: white;border-right: white;"
-                                    >
+                                    <tbody name="sprdn_document_tbody">
                                         <t
                                             t-set="grouped_moves"
                                             t-value="o.get_delivery_note_moves()"
@@ -377,7 +366,7 @@
     <template id="sprdn_document_body">
         <t name="move_ids" t-foreach="gm" t-as="l">
             <tr
-                style="border: 2px #bbbbbb;border-left: white;border-right: white;margin"
+                style="border-top: 2px #bbbbbb;border-left: white;border-right: white;margin"
             >
                 <t t-set="line_amounts" t-value="l._get_amounts()" />
                 <t
