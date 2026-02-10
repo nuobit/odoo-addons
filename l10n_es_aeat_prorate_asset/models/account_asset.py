@@ -1,13 +1,11 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.osv import expression
-
-from odoo.addons.account_asset_management.models.account_asset import READONLY_STATES
 
 
 class AccountAsset(models.Model):
@@ -16,7 +14,7 @@ class AccountAsset(models.Model):
     map_special_prorate_year_id = fields.Many2one(
         comodel_name="aeat.map.special.prorrate.year",
         compute="_compute_map_special_prorate_year_id",
-        search="_search_map_special_prorate_year_id",
+        store=True,
     )
 
     @api.depends("company_id", "date_start")
@@ -140,7 +138,6 @@ class AccountAsset(models.Model):
         compute="_compute_temp_prorate_percent",
         store=True,
         readonly=False,
-        states=READONLY_STATES,
     )
 
     @api.depends("map_special_prorate_year_id.tax_percentage")
@@ -160,7 +157,6 @@ class AccountAsset(models.Model):
         compute="_compute_final_prorate_percent",
         store=True,
         readonly=False,
-        states=READONLY_STATES,
     )
 
     @api.depends("map_special_prorate_year_id.tax_final_percentage")
@@ -208,11 +204,14 @@ class AccountAsset(models.Model):
                 ):
                     raise ValidationError(
                         _(
-                            "It's not possible to modify the temporary or final prorate "
-                            "if already exists value in this years. Temp: %s, Final: %s"
-                            % (
-                                percentage_line.tax_percentage,
-                                percentage_line.tax_final_percentage,
-                            )
+                            "It's not possible to modify the temporary or"
+                            " final prorate if already exists value in "
+                            "this years. "
+                            "Temp: %(tax_percentage)s "
+                            "Final: %(tax_final)s"
                         )
+                        % {
+                            "tax_percentage": percentage_line.tax_percentage,
+                            "tax_final": percentage_line.tax_final_percentage,
+                        }
                     )

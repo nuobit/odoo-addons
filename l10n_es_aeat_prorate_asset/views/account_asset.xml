@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="account_asset_view_form" model="ir.ui.view">
@@ -13,7 +13,7 @@
                 <page
                     string="Prorate"
                     name="prorate"
-                    attrs="{'invisible': [('prorate_tax_id', '=', False)]}"
+                    invisible="prorate_tax_id == False"
                 >
                     <group>
                         <field name="prorate_tax_id" />
@@ -25,7 +25,10 @@
                     </group>
                     <group>
                         <group>
-                            <field name="temp_prorate_percent" />
+                            <field
+                                name="temp_prorate_percent"
+                                readonly="state in ['open', 'close', 'removed']"
+                            />
                             <field
                                 name="temp_deductible_tax_amount"
                                 widget="monetary"
@@ -38,7 +41,10 @@
                             />
                         </group>
                         <group>
-                            <field name="final_prorate_percent" />
+                            <field
+                                name="final_prorate_percent"
+                                readonly="state in ['open', 'close', 'removed']"
+                            />
                             <field
                                 name="final_deductible_tax_amount"
                                 widget="monetary"
