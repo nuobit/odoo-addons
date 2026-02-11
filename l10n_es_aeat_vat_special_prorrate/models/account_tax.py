@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models
@@ -45,16 +46,22 @@ class AccountTax(models.Model):
                     rlines_by_tax.setdefault((rline_type, rline.tax_id), []).append(tax)
         # round the prorate pairs for each tax
         for (rltype, tax), prorate_taxes in rlines_by_tax.items():
-            # Defensive check: constraint on account.tax should guarantee exactly 2 with
-            # 100% but protect against data corruption since we're gonna index this list.
+            # Defensive check: constraint on account.tax should guarantee exactly
+            # 2 with 100% but protect against data corruption since we're gonna
+            # index this list.
             if len(prorate_taxes) != 2:
                 raise ValidationError(
                     _(
-                        "Runtime error: Prorate tax '%s' has %i %s repartition "
-                        "lines instead of expected 2. This may indicate data "
-                        "corruption or constraint bypass."
+                        "Runtime error: Prorate tax '%(tax_name)s' "
+                        "has %(lines_count)i %(rltype)s repartition "
+                        "lines instead of expected 2. This may indicate "
+                        "data corruption or constraint bypass."
                     )
-                    % (tax.name, len(prorate_taxes), rltype)
+                    % {
+                        "tax_name": tax.name,
+                        "lines_count": len(prorate_taxes),
+                        "rltype": rltype,
+                    }
                 )
             base_tax_amount = sum(x["amount"] for x in prorate_taxes)
             prorate_taxes[0]["amount"] = currency.round(prorate_taxes[0]["amount"])

@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import math
 
@@ -27,7 +28,7 @@ class MapSpecialProrateYear(models.Model):
         )
         return last and last.year + 1 or fields.Date.context_today(self).year
 
-    year = fields.Integer(string="Year", default=_default_year, required=True)
+    year = fields.Integer(default=_default_year, required=True)
     tax_percentage = fields.Float(string="Temporary %", required=True)
 
     map_prorrate_next_year_id = fields.Many2one(
@@ -44,13 +45,13 @@ class MapSpecialProrateYear(models.Model):
         related="map_prorrate_next_year_id.tax_percentage",
     )
 
-    tax_final_percentage_aux = fields.Float(string="Final tax %", readonly=True)
+    tax_final_percentage_aux = fields.Float(string="Final tax % (aux)", readonly=True)
 
     state = fields.Selection(
         selection=[
-            ("temporary", _("Temporary")),
-            ("finale", _("Finale")),
-            ("closed", _("Closed")),
+            ("temporary", "Temporary"),
+            ("finale", "Finale"),
+            ("closed", "Closed"),
         ],
         readonly=True,
         default="temporary",
@@ -82,16 +83,14 @@ class MapSpecialProrateYear(models.Model):
             ]
         )
 
-    @api.depends("year", "tax_percentage")
-    def name_get(self):
-        result = []
+    @api.depends("year", "tax_percentage", "tax_final_percentage")
+    def _compute_display_name(self):
         for rec in self:
             percents = [rec.tax_percentage]
             if rec.tax_final_percentage:
                 percents.append(rec.tax_final_percentage)
-            name_l = ["%g" % round(x, 2) for x in percents]
-            result.append((rec.id, "%i: %s" % (rec.year, " -> ".join(name_l))))
-        return result
+            name_l = [f"{round(x, 2):g}" for x in percents]
+            rec.display_name = "%i: %s" % (rec.year, " -> ".join(name_l))
 
     @api.constrains("map_prorrate_next_year_id", "year")
     def _check_map_prorate_next_year(self):
@@ -128,49 +127,57 @@ class MapSpecialProrateYear(models.Model):
             map_prorate_previous_year_id = rec.get_previous()
             if map_prorate_previous_year_id.state == "temporary":
                 map_prorate_previous_year_id.map_prorrate_next_year_id = False
-            super(MapSpecialProrateYear, rec).unlink()
+            return super(MapSpecialProrateYear, rec).unlink()
 
     def _compute_prorate_percent(self):
         self.ensure_one()
-        date_from = "%s-01-01" % self.year
-        date_to = "%s-12-31" % self.year
+        date_from = f"{self.year}-01-01"
+        date_to = f"{self.year}-12-31"
 
-        mod303 = self.env["l10n.es.aeat.mod303.report"].new({})
+        mod303 = self.env["l10n.es.aeat.mod303.report"].new(
+            {"company_id": self.company_id.id}
+        )
 
-        # Get base amount for taxed operations
-        affected_taxes = [
-            "l10n_es.account_tax_template_s_iva4b",
-            "l10n_es.account_tax_template_s_iva4s",
-            "l10n_es.account_tax_template_s_iva10b",
-            "l10n_es.account_tax_template_s_iva10s",
-            "l10n_es.account_tax_template_s_iva21b",
-            "l10n_es.account_tax_template_s_iva21s",
-            "l10n_es.account_tax_template_s_iva21isp",
-        ]
         MapLine = self.env["l10n.es.aeat.map.tax.line"]
+        MapLineTax = self.env["l10n.es.aeat.map.tax.line.tax"]
+
+        def _get_tax_xmlid_ids(xmlid_names):
+            return MapLineTax.search([("name", "in", xmlid_names)])
+
+        taxed_names = [
+            "account_tax_template_s_iva4b",
+            "account_tax_template_s_iva4s",
+            "account_tax_template_s_iva10b",
+            "account_tax_template_s_iva10s",
+            "account_tax_template_s_iva21b",
+            "account_tax_template_s_iva21s",
+            "account_tax_template_s_iva21isp",
+        ]
         mapline_vals = {
             "move_type": "all",
             "field_type": "base",
             "sum_type": "both",
             "exigible_type": "yes",
-            "tax_ids": [(4, self.env.ref(x).id) for x in affected_taxes],
+            "tax_xmlid_ids": _get_tax_xmlid_ids(taxed_names),
         }
         map_line = MapLine.new(mapline_vals)
         move_lines = mod303._get_tax_lines(date_from, date_to, map_line)
-        taxed = sum(move_lines.mapped("credit")) - sum(move_lines.mapped("debit"))
+        taxed = -sum(move_lines.mapped("balance"))
+
         # Get base amount of exempt operations
-        mapline_vals["tax_ids"] = [
-            (4, self.env.ref("l10n_es.account_tax_template_s_iva0").id),
-            (4, self.env.ref("l10n_es.account_tax_template_s_iva0_ns").id),
+        exempt_names = [
+            "account_tax_template_s_iva0",
+            "account_tax_template_s_iva0_ns",
         ]
+        mapline_vals["tax_xmlid_ids"] = _get_tax_xmlid_ids(exempt_names)
         map_line = MapLine.new(mapline_vals)
         move_lines = mod303._get_tax_lines(date_from, date_to, map_line)
-        exempt = sum(move_lines.mapped("credit")) - sum(move_lines.mapped("debit"))
+        exempt = -sum(move_lines.mapped("balance"))
+
         if not taxed and not exempt:
             raise UserError(_("No taxable or exempt operations found"))
-        # compute prorate percentage performing ceiling operation
-        vat_prorate_percent = math.ceil(taxed / (taxed + exempt) * 100)
-        return vat_prorate_percent
+        # Compute prorate percentage performing ceiling operation
+        return math.ceil(taxed / (taxed + exempt) * 100)
 
     def compute_prorate(self):
         self.ensure_one()
@@ -184,7 +191,8 @@ class MapSpecialProrateYear(models.Model):
         if prorate_map_previous_year and prorate_map_previous_year.state != "closed":
             raise ValidationError(
                 _(
-                    "The prorate of previous year must be closed before compute the new one"
+                    "The prorate of previous year must be "
+                    "closed before compute the new one"
                 )
             )
 
