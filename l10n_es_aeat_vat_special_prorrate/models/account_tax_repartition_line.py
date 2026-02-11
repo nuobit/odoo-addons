@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -46,7 +47,7 @@ class AccountTaxRepartitionLine(models.Model):
             lambda x: x.tax_id.prorate and prorate and x.factor_percent == 100.0
         ):
             record.factor = record.get_prorrate_ratio(*prorate)
-        super(
+        return super(
             AccountTaxRepartitionLine,
             self.filtered(
                 lambda x: not x.tax_id.prorate
