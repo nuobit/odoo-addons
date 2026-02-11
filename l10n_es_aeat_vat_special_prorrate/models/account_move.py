@@ -13,7 +13,7 @@ class AccountMove(models.Model):
         self = self.with_context(
             **self.env["account.tax"].prorate_context(self, self.date, self.company_id)
         )
-        return super(AccountMove, self)._recompute_tax_lines(
+        return super()._recompute_tax_lines(
             recompute_tax_base_amount=recompute_tax_base_amount,
             tax_rep_lines_to_recompute=tax_rep_lines_to_recompute,
         )
