@@ -1,4 +1,5 @@
-# Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBit Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import re
@@ -12,7 +13,11 @@ class ProductProduct(models.Model):
 
     @api.model
     def _extract_part(self, part, name):
-        m = re.match(r"^(.*)\n(%s)(.*)$" % re.escape(part), name, re.DOTALL)
+        m = re.match(
+            rf"^(.*)\n({re.escape(part)})(.*)$",
+            name,
+            re.DOTALL,
+        )
         if m:
             desc = m.group(2)
             rest = m.group(1) + m.group(3)
@@ -54,7 +59,7 @@ class ProductProduct(models.Model):
                             self.description_sale, rest
                         )
 
-            buyer = self._get_buyer_data().get(self.id)
+            buyer = self._get_buyer_for_partner(self.env.context.get("partner_id"))
             if not buyer or not buyer.name:
                 if cand_desc:
                     ref_part_l.append(cand_desc)
