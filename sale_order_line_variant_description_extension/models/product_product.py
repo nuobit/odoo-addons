@@ -1,4 +1,5 @@
-# Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBit Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import re
@@ -20,7 +21,9 @@ class ProductProduct(models.Model):
                     )
                 else:
                     m = re.match(
-                        r"^(%s)(.*)$" % re.escape(self.display_name), name, re.DOTALL
+                        rf"^({re.escape(self.display_name)})(.*)$",
+                        name,
+                        re.DOTALL,
                     )
                     if not m:
                         raise ValidationError(
