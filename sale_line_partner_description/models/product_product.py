@@ -71,7 +71,7 @@ class ProductProduct(models.Model):
     def name_get(self):
         """Override name_get to include buyer code in the product name."""
         self = self._clear_context_suppliers()
-        res = super(ProductProduct, self).name_get()
+        res = super().name_get()
         if "default_description_sale" in self.env.context:
             res = self._name_get_buyers(res)
         return res
@@ -83,7 +83,7 @@ class ProductProduct(models.Model):
         if "default_description_sale" in self.env.context:
             partner_id = self.env.context.get("partner_id")
             self = self.with_context(partner_id=False)
-        res = super(ProductProduct, self)._name_search(
+        res = super()._name_search(
             name, args=args, operator=operator, limit=limit, name_get_uid=name_get_uid
         )
         if "default_description_sale" in self.env.context:
