@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright 2025 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     Copyright 2026 NuoBit Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_normal_form_view" model="ir.ui.view">
@@ -10,15 +10,16 @@
             <page name="sales" position="inside">
                 <group string="Product names by customer">
                     <field name="buyer_ids" nolabel="1">
-                        <tree editable="bottom">
-                            <field name="product_id" invisible="1" />
+                        <list editable="bottom">
+                            <field name="product_id" column_invisible="1" />
                             <field
                                 name="partner_id"
                                 context="{'res_partner_search_mode': 'customer'}"
                             />
                             <field name="code" />
                             <field name="name" />
-                        </tree>
+                            <field name="display_name" />
+                        </list>
                     </field>
                 </group>
             </page>

@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBit Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -49,20 +49,17 @@ class ProductBuyerInfo(models.Model):
         domain = expression.AND([partner_domain, domain])
         return self.env["product.buyerinfo"].search(domain)
 
-    def name_get(self):
-        vals = []
+    @api.depends("partner_id", "product_id", "code", "name")
+    def _compute_display_name(self):
         for record in self:
-            key_name = "%s - %s" % (
-                record.partner_id.display_name,
-                record.product_id.display_name,
+            key_name = (
+                f"{record.partner_id.display_name} - {record.product_id.display_name}"
             )
-            data_name_l = ["[%s]" % record.code or ""]
+            data_name_l = [f"[{record.code}]" if record.code else ""]
             if record.name:
                 data_name_l.append(record.name)
 
-            vals.append((record.id, "%s: %s" % (key_name, " ".join(data_name_l))))
-
-        return vals
+            record.display_name = "{}: {}".format(key_name, " ".join(data_name_l))
 
     @api.constrains("code", "name")
     def _check_code_name(self):

@@ -1,4 +1,5 @@
 # Copyright 2025 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBit Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import re
 
@@ -13,90 +14,97 @@ class ProductProduct(models.Model):
         comodel_name="product.buyerinfo", inverse_name="product_id", string="Customers"
     )
 
-    def _clear_context_suppliers(self):
-        """
-        Clear context keys that would make name_get use suppliers
-        instead of sale order partner.
-        :return: self with updated context
-        """
-        # We cannot use self.env.context.get('partner') here because is
-        # product_id_change who sets the 'partner' in context and not
-        # always this method is executed triggered by that onchange.
-        if "default_description_sale" in self.env.context:
-            ctx = dict(partner_id=False, seller_id=False)
-            partner = self.env.context.get("partner")
-            if not partner:
-                partner_id = self.env.context.get("partner_id")
-                if partner_id:
-                    partner = self.env["res.partner"].browse(partner_id)
-                    ctx["partner"] = partner
-            self = self.with_context(**ctx)
-        return self
+    def _get_buyer_for_partner(self, partner):
+        self.ensure_one()
+        if not partner:
+            return self.env["product.buyerinfo"]
 
-    def _get_buyer_data(self):
-        buyer_d = {}
-        partner = self.env.context.get("partner")
-        if partner:
-            buyers = self.env["product.buyerinfo"].search_by_partner(
-                partner.id,
-                [
-                    ("product_id", "in", self.ids),
-                ],
-            )
-            buyer_d = {b.product_id.id: b for b in buyers}
-        return buyer_d
+        buyers = self.env["product.buyerinfo"].search_by_partner(
+            partner.id,
+            [("product_id", "=", self.id)],
+        )
+        return buyers
 
-    def _name_get_buyers(self, pairs):
-        buyer_d = self._get_buyer_data()
-        if buyer_d:
-            res = []
-            for product_id, name in pairs:
-                if name and product_id in buyer_d:
-                    buyer = buyer_d[product_id]
-                    if buyer.code:
-                        m = re.match(r"^\[[^]]+\] (.+)$", name, re.DOTALL)
-                        if m:
-                            name = f"[{buyer.code}] {m.group(1)}"
-                    if buyer.name:
-                        m = re.match(r"^(\[[^]]+\]) .+$", name, re.DOTALL)
-                        if m:
-                            name = f"{m.group(1)} {buyer.name}"
-                        else:
-                            name = buyer.name
-                res.append((product_id, name))
-        else:
-            res = pairs
-        return res
+    def get_product_multiline_description_sale(self):
+        partner_id = self.env.context.get("partner_id")
+        partner = self.env["res.partner"].browse(partner_id) if partner_id else None
+        if not partner:
+            sale_line_id = self.env.context.get("sale_line_id")
+            if sale_line_id:
+                sale_line = self.env["sale.order.line"].browse(sale_line_id)
+                partner = sale_line.order_partner_id
 
-    def name_get(self):
-        """Override name_get to include buyer code in the product name."""
-        self = self._clear_context_suppliers()
-        res = super().name_get()
-        if "default_description_sale" in self.env.context:
-            res = self._name_get_buyers(res)
-        return res
+        buyer = self._get_buyer_for_partner(partner)
+
+        if buyer and (buyer.code or buyer.name):
+            name = self.display_name
+
+            if buyer.code:
+                m = re.match(r"^\[[^]]+\] (.+)$", name, re.DOTALL)
+                if m:
+                    name = f"[{buyer.code}] {m.group(1)}"
+                else:
+                    name = f"[{buyer.code}] {name}"
+
+            if buyer.name:
+                m = re.match(r"^(\[[^]]+\]) .+$", name, re.DOTALL)
+                if m:
+                    name = f"{m.group(1)} {buyer.name}"
+                else:
+                    name = buyer.name
+            if self.description_sale:
+                name += "\n" + self.description_sale
+
+            return name
+        return super().get_product_multiline_description_sale()
 
     @api.model
-    def _name_search(
-        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
-    ):
-        if "default_description_sale" in self.env.context:
-            partner_id = self.env.context.get("partner_id")
-            self = self.with_context(partner_id=False)
-        res = super()._name_search(
-            name, args=args, operator=operator, limit=limit, name_get_uid=name_get_uid
-        )
-        if "default_description_sale" in self.env.context:
-            if partner_id:
-                domain = [
-                    ("code", operator, name),
+    def _search_display_name(self, operator, value):
+        domain = super()._search_display_name(operator, value)
+
+        partner_id = self.env.context.get("partner_id")
+        if not partner_id:
+            sale_line_id = self.env.context.get("sale_line_id")
+            if sale_line_id:
+                sale_line = self.env["sale.order.line"].browse(sale_line_id)
+                partner_id = sale_line.order_partner_id.id
+
+        if not partner_id or not value:
+            return domain
+
+        buyer_domain = [
+            ("partner_id", "=", partner_id),
+            "|",
+            ("code", operator, value),
+            ("name", operator, value),
+        ]
+
+        if operator in expression.NEGATIVE_TERM_OPERATORS:
+            return expression.AND(
+                [
+                    domain,
+                    [
+                        (
+                            "id",
+                            "not in",
+                            self.env["product.buyerinfo"]
+                            ._search(buyer_domain)
+                            .subselect("product_id"),
+                        )
+                    ],
                 ]
-                res_l = list(res)
-                if res_l:
-                    domain = expression.AND([domain, [("product_id", "not in", res_l)]])
-                buyers = self.env["product.buyerinfo"].search_by_partner(
-                    partner_id, domain
-                )
-                if buyers:
-                    res = res_l + buyers.product_id.ids
-        return res
+            )
+        return expression.OR(
+            [
+                domain,
+                [
+                    (
+                        "id",
+                        "in",
+                        self.env["product.buyerinfo"]
+                        ._search(buyer_domain)
+                        .subselect("product_id"),
+                    )
+                ],
+            ]
+        )
