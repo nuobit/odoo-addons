@@ -97,14 +97,6 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             return error_message
         return res_data
 
-    # # TODO: remove this total items and use the res.headers instead
-    # def _get_res_total_items(self, res):
-    #     headers = res.headers
-    #     total_items = headers.get("X-WP-Total") or 0
-    #     if total_items:
-    #         total_items = int(headers.get("X-WP-Total"))
-    #     return total_items
-
     # TODO: Remove *args and *kwargs and put params=None
     #       Check other methods than get to see if it'll work for them too
     def _exec_wcapi_call(self, op, resource, *args, **kwargs):  # noqa: C901
@@ -123,7 +115,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         # the offset, the next page will have the same items as the first page.
         # It looks like a bug in WooCommerce API.
         # So the 'page' parameter is incompatible with 'offset' parameter.
-        # If 'offset' and 'page' are used at the same this, only 'offset'
+        # If 'offset' and 'page' are used at the same time, only 'offset'
         # will be taken into account and the 'page' will be ignored.
         params = kwargs.get("params", {})
         if {"page", "offset"}.issubset(params):
@@ -251,22 +243,20 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             )
         return result
 
-    # def get_total_items(self, resource, domain=None):
-    #     filters_values = self._get_search_fields()
-    #     real_domain, common_domain = self._extract_domain_clauses(
-    #         domain, filters_values
-    #     )
-    #     params = self._domain_to_normalized_dict(real_domain)
-    #     if not common_domain:
-    #         params["per_page"] = 1
-    #     result = self._exec_wcapi_call("get", resource, params=params)
-    #
-    #     if not common_domain:
-    #         return result["total_items"]
-    #     else:
-    #         # TODO: bnioe sta be, perque el _exec_wcapi_call no retorna sempre tot!!!
-    #          # cal unsa fucnio intermitja
-    #         return len(self._filter(result['data'], common_domain))
+    def get_total_items(self, resource, domain=None):
+        """
+        Get the total count of items matching the given domain.
+
+        This method leverages the optimized _exec_get count mode which:
+        - Makes only 1 API call when no local filtering is needed
+        - Extracts count from X-WP-Total header
+        - Minimizes data transfer (per_page=1, _fields=id)
+
+        :param resource: WooCommerce API endpoint (e.g., "products", "orders")
+        :param domain: Filter conditions (Odoo-style domain)
+        :return: Total count of matching items (integer)
+        """
+        return self._exec_get(resource, domain=domain, count=True)
 
     def _get_search_fields(self):
         return ["modified_after"]  # , "offset", "per_page", "page"]
@@ -282,6 +272,26 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         limit=None,
         count=False,
     ):
+        """
+        Execute GET operation with pagination, filtering, and optional counting.
+
+        WooCommerce API Bug: 'offset' and 'page' parameters are incompatible.
+        Large offsets require multiple API calls (offset=1000 → ~100 calls).
+        Prefer date filters like ('modified_after', '>=', '2026-01-01').
+
+        Domain filtering: API-supported fields (api_domain) are sent to WooCommerce,
+        unsupported fields (local_domain) are filtered locally after fetch.
+
+        Count optimization: When count=True and no local filtering needed,
+        makes 1 API call with per_page=1 and extracts count from headers.
+
+        :param resource: WooCommerce endpoint (e.g., "products", "orders")
+        :param domain: Odoo-style domain filters
+        :param offset: Records to skip (simulated via pagination)
+        :param limit: Max records to return
+        :param count: If True, return count; if False, return data
+        :return: list[dict] or int
+        """
         # flake8: noqa: C901
         if resource == "system_status":
             return self._exec_wcapi_call("get", resource)  # , *args, **kwargs)
@@ -295,11 +305,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             offset = 0
 
         # get domains
+        # Separate domain into:
+        # - api_domain: Domain clauses supported natively by WooCommerce API
+        # - local_domain: Domain clauses that must be applied locally in Odoo after fetching
         search_fields = self._get_search_fields()
-        real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
+        api_domain, local_domain = self._extract_domain_clauses(domain, search_fields)
 
         # get the api call parameters
-        params = self._domain_to_normalized_dict(real_domain)
+        params = self._domain_to_normalized_dict(api_domain)
         # per_page (records per page)
         if "per_page" in params:
             raise ValidationError(
@@ -313,8 +326,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         if page_size > 0:
             params["per_page"] = page_size
         if count:
+            # Optimization: If no local filtering, only fetch 1 record to minimize data transfer
+            # We only need the total count from headers (X-WP-Total)
+            if not local_domain:
+                params["per_page"] = 1
             params["_fields"] = "id"  # only need the ids to count
 
+        # Deduplication protection: WooCommerce API may return duplicate IDs
+        # in some edge cases (e.g., when items are modified during pagination)
         seen_ids = set()
         all_data = []
         counter = 0
@@ -330,29 +349,41 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                 },
             )
             api_calls += 1
+
+            # Optimization: If counting with no local filtering, use total from API headers
+            if count and not local_domain:
+                counter = res["total_items"]
+                break
+
             if res["returned_items"] == 0:
                 break
             data = [d for d in res["data"] if d["id"] not in seen_ids]
-            data = self._filter(data, common_domain)
+            data = self._filter(data, local_domain)
             seen_ids |= {d["id"] for d in data}
 
-            # compute offset
+            # Compute offset (simulate offset by discarding records from early pages)
+            # This is necessary because WooCommerce's offset parameter is incompatible with page parameter
             if data and offset > 0:
                 data_count = len(data)
                 if offset < data_count:
+                    # We've reached the page containing the offset position
+                    # Keep only records after the offset
                     data = data[offset:]
-                    offset = 0
+                    offset = 0  # Reset offset since we've consumed it
                 else:
+                    # This entire page is before the offset position
+                    # Discard all records and reduce offset by page size
                     data = []
                     offset -= data_count
 
             data_count = len(data)
 
-            # compute limit
+            # Compute limit (stop when we've collected enough records)
             if limit is not None and (counter + data_count) >= limit:
-                diff = limit - counter
-                all_data += data[:diff]
-                counter += diff
+                # We have more records than needed, take only what's required
+                remaining_items = limit - counter
+                all_data += data[:remaining_items]
+                counter += remaining_items
                 break
             counter += data_count
             if not count:
