@@ -14,27 +14,27 @@ class ProductProduct(models.Model):
         comodel_name="product.buyerinfo", inverse_name="product_id", string="Customers"
     )
 
-    def _get_buyer_for_partner(self, partner):
+    def _get_buyer_for_partner(self, partner_id):
         self.ensure_one()
-        if not partner:
+        if not partner_id:
             return self.env["product.buyerinfo"]
 
         buyers = self.env["product.buyerinfo"].search_by_partner(
-            partner.id,
+            partner_id,
             [("product_id", "=", self.id)],
         )
         return buyers
 
     def get_product_multiline_description_sale(self):
         partner_id = self.env.context.get("partner_id")
-        partner = self.env["res.partner"].browse(partner_id) if partner_id else None
-        if not partner:
+        # partner = self.env["res.partner"].browse(partner_id) if partner_id else None
+        if not partner_id:
             sale_line_id = self.env.context.get("sale_line_id")
             if sale_line_id:
                 sale_line = self.env["sale.order.line"].browse(sale_line_id)
-                partner = sale_line.order_partner_id
+                partner_id = sale_line.order_partner_id
 
-        buyer = self._get_buyer_for_partner(partner)
+        buyer = self._get_buyer_for_partner(partner_id)
 
         if buyer and (buyer.code or buyer.name):
             name = self.display_name
