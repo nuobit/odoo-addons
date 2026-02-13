@@ -15,14 +15,10 @@
         <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
             <field name="default_code" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'invisible': [('has_variants', '=', True)]}</attribute>
+                <attribute name="invisible">has_variants == True</attribute>
             </field>
             <button name='%(product.product_variant_action)d' position="attributes">
-                <attribute
-                    name="attrs"
-                >{'invisible': [('has_variants', '=', False)]}</attribute>
+                <attribute name="invisible">has_variants == False</attribute>
             </button>
         </field>
     </record>
