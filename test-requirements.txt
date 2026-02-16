@@ -1,0 +1,1 @@
+odoo-addon-product_template_variant_definition@git+https://github.com/nuobit/odoo-addons.git@refs/pull/840/head#subdirectory=product_template_variant_definition
