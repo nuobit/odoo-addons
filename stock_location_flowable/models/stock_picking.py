@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -183,9 +184,11 @@ class StockPicking(models.Model):
                 production._onchange_location_dest()
                 production.action_confirm()
                 if location_dest.flowable_create_lots:
-                    lot = rec.env["stock.production.lot"].create(
+                    producing_lot = rec.env["stock.production.lot"].create(
                         rec._prepare_lot_values(product, location_dest, qty_done)
                     )
+                else:
+                    producing_lot = lot
                 vals = []
                 for move_line in component_quant:
                     vals.append(
@@ -198,7 +201,7 @@ class StockPicking(models.Model):
                         )
                     )
                 production.move_raw_ids.move_line_ids = vals
-                production.lot_producing_id = lot
+                production.lot_producing_id = producing_lot
                 production.action_assign()
                 production.qty_producing = quantity_to_prod
         return res
