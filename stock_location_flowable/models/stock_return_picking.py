@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, models
@@ -16,11 +17,15 @@ class ReturnPicking(models.TransientModel):
                 and x.product_id in rec.product_return_moves.product_id
             )
             if move_line:
+                details = ", ".join(
+                    _("%s (%s)") % (ml.product_id.name, ml.location_dest_id.name)
+                    for ml in move_line
+                )
                 raise UserError(
                     _(
-                        "You cannot return the product %s because it"
-                        " comes from a flowable location %s."
+                        "You cannot return the following products because"
+                        " they come from a flowable location: %s"
                     )
-                    % (move_line.product_id.name, move_line.location_dest_id.name)
+                    % details
                 )
         return res
