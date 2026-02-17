@@ -40,7 +40,6 @@
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi')),
             ]"
         />
-
     </record>
 
     <record
@@ -82,7 +81,6 @@
             ]"
         />
     </record>
-
 
     <record
         id="l10n_es_aeat_mod303.aeat_mod303_2024_10_map_line_28"
@@ -176,7 +174,6 @@
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibc')),
             ]"
         />
-
     </record>
 
     <record
@@ -191,7 +188,6 @@
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibi'))
             ]"
         />
-
     </record>
 
     <record
@@ -206,7 +202,6 @@
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ibi'))
             ]"
         />
-
     </record>
 
     <record
@@ -269,7 +264,6 @@
                 (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi'))
             ]"
         />
-
     </record>
 
     <record
