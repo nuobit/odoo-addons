@@ -1,4 +1,5 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -32,5 +33,22 @@ class TestStockPickingType(TestCommon):
 
         # ASSERT
         msg_error = "Only one picking type can be flowable in a warehouse %s."
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
+
+    def test_non_mrp_picking_type_cannot_be_flowable(self):
+        """
+        Test that setting flowable_operation on a non-mrp_operation picking type
+        raises a ValidationError.
+
+        PRE:    - An incoming picking type
+        ACT:    - Set flowable_operation to True
+        POST:   - ValidationError is raised
+        """
+        # ACT & ASSERT
+        with self.assertRaises(ValidationError) as error:
+            self.picking_type_incoming_1.flowable_operation = True
+
+        msg_error = "Only manufacturing picking types can be flowable."
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
