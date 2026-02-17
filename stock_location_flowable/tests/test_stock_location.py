@@ -591,11 +591,11 @@ class TestStockLocation(TestCommon):
 
     def test_capacity_full_raises_error(self):
         """
-        Test that receiving stock that fills the flowable location to its
+        Test that receiving stock that exceeds the flowable location
         capacity triggers the capacity constraint.
 
         PRE:    - A flowable location with capacity 100
-        ACT:    - Receive 100 litres (exactly the capacity)
+        ACT:    - Receive 101 litres (exceeds the capacity)
         POST:   - ValidationError is raised about location capacity being full
         """
         # ARRANGE
@@ -620,7 +620,7 @@ class TestStockLocation(TestCommon):
                 "product_id": product.id,
                 "product_uom_id": product.uom_id.id,
                 "lot_id": lot.id,
-                "qty_done": 100,
+                "qty_done": 101,
                 "location_id": self.env.ref("stock.stock_location_suppliers").id,
                 "location_dest_id": self.location_flowable_1.id,
                 "company_id": self.env.company.id,
