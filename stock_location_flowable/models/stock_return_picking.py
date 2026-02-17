@@ -10,7 +10,6 @@ class ReturnPicking(models.TransientModel):
     _inherit = "stock.return.picking"
 
     def _create_returns(self):
-        res = super()._create_returns()
         for rec in self:
             move_line = rec.picking_id.move_line_ids_without_package.filtered(
                 lambda x: x.location_dest_id.flowable_storage
@@ -28,4 +27,4 @@ class ReturnPicking(models.TransientModel):
                     )
                     % details
                 )
-        return res
+        return super()._create_returns()
