@@ -95,7 +95,7 @@ class Location(models.Model):
     def _check_flowable_capacity_occupied(self):
         for rec in self:
             if rec.usage != "view" and rec.flowable_storage:
-                if rec.flowable_capacity_occupied >= rec.flowable_capacity:
+                if rec.flowable_capacity_occupied > rec.flowable_capacity:
                     raise ValidationError(_("Location capacity is full"))
 
     @api.constrains("flowable_storage")
