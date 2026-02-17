@@ -1,0 +1,95 @@
+# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+import logging
+
+from odoo.exceptions import UserError
+
+from .test_common import TestCommon
+
+_logger = logging.getLogger(__name__)
+
+
+class TestStockReturnPicking(TestCommon):
+    @classmethod
+    def setUpClass(cls):
+        super(TestStockReturnPicking, cls).setUpClass()
+
+    def test_return_from_flowable_location_raises_error(self):
+        """
+        Test that returning a product that was delivered to a flowable
+        location is blocked.
+
+        PRE:    - A completed incoming picking to a flowable location
+        ACT:    - Attempt to create a return for that picking
+        POST:   - UserError is raised
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-RETURN-LOT",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.location_flowable_1.id,
+            }
+        )
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot.id,
+                "qty_done": 50,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.location_flowable_1.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        picking.button_validate()
+
+        # Complete the mixing MO so we have a done picking
+        production = self.env["mrp.production"].search(
+            [
+                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
+                ("location_dest_id", "=", self.location_flowable_1.id),
+            ],
+            order="id desc",
+            limit=1,
+        )
+        if production:
+            production.button_mark_done()
+
+        # ACT
+        return_wizard = (
+            self.env["stock.return.picking"]
+            .with_context(
+                active_id=picking.id,
+                active_model="stock.picking",
+            )
+            .create(
+                {
+                    "picking_id": picking.id,
+                    "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                }
+            )
+        )
+        return_wizard._onchange_picking_id()
+
+        with self.assertRaises(UserError) as error:
+            return_wizard._create_returns()
+
+        # ASSERT
+        msg_error = (
+            "You cannot return the following products because"
+            " they come from a flowable location: %s"
+        )
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)

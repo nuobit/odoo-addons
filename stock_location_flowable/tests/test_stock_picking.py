@@ -1,4 +1,5 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -335,3 +336,260 @@ class TestStockPicking(TestCommon):
 
         # ACT & ASSERT
         self.incoming_picking.button_validate()
+
+    def test_action_view_mrp_production_single(self):
+        """
+        Test that action_view_mrp_production returns a form view when there
+        is exactly one production linked to the picking.
+
+        PRE:    - A picking with one flowable production
+        ACT:    - Call action_view_mrp_production
+        POST:   - Action opens the form view with the production res_id
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_1 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-ACTION-LOT",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": self.incoming_picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_1.id,
+                "qty_done": 10,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.incoming_picking.location_dest_id.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        self.incoming_picking.button_validate()
+
+        # ACT
+        action = self.incoming_picking.action_view_mrp_production()
+
+        # ASSERT
+        self.assertEqual(action["res_model"], "mrp.production")
+        self.assertEqual(
+            action["res_id"],
+            self.incoming_picking.flowable_production_ids[0].id,
+        )
+
+    def test_action_view_mrp_production_multiple(self):
+        """
+        Test that action_view_mrp_production returns a list view when there
+        are multiple productions linked to the picking.
+
+        PRE:    - A picking with multiple flowable productions
+        ACT:    - Call action_view_mrp_production
+        POST:   - Action opens a list filtered by production ids
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_1 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-MULTI-LOT",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": self.incoming_picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_1.id,
+                "qty_done": 10,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.incoming_picking.location_dest_id.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        self.incoming_picking.button_validate()
+
+        # Create a second production manually linked to the same picking
+        self.env["mrp.production"].create(
+            {
+                "product_id": self.product_flowable_1.id,
+                "product_qty": 5,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "picking_type_id": self.picking_type_mrp_operation_1.id,
+                "location_src_id": self.location_flowable_1.id,
+                "location_dest_id": self.location_flowable_1.id,
+                "picking_id": self.incoming_picking.id,
+            }
+        )
+
+        # ACT
+        action = self.incoming_picking.action_view_mrp_production()
+
+        # ASSERT
+        self.assertIn("domain", action)
+        self.assertEqual(
+            action["domain"],
+            [("id", "in", self.incoming_picking.flowable_production_ids.ids)],
+        )
+
+    def test_mrp_operation_type_without_sequence_raises_error(self):
+        """
+        Test that a flowable mrp_operation picking type without a sequence
+        raises an error during picking validation.
+
+        PRE:    - A flowable mrp_operation picking type without sequence_id
+        ACT:    - Validate a picking to a flowable location
+        POST:   - UserError is raised about missing sequence
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+        self.picking_type_mrp_operation_1.sequence_id = False
+
+        lot_1 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-NOSEQ-LOT",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": self.incoming_picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_1.id,
+                "qty_done": 10,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.incoming_picking.location_dest_id.id,
+                "company_id": self.env.company.id,
+            }
+        )
+
+        # ACT & ASSERT
+        with self.assertRaises(UserError) as error:
+            self.incoming_picking.button_validate()
+
+        msg_error = (
+            "Not found sequence in manufacturing picking type %s"
+            " for flowable location %s"
+        )
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
+
+    def test_non_lot_tracked_product_at_flowable_location(self):
+        """
+        Test that receiving a product whose tracking was changed from 'lot'
+        to 'none' after being added to the flowable allowed products raises
+        an error during picking validation.
+
+        PRE:    - A product added to flowable allowed products with tracking=lot
+                - Product tracking changed to 'none' afterwards
+        ACT:    - Validate an incoming picking with that product
+        POST:   - UserError about product tracking
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        product_nolot = self.env["product.product"].create(
+            {
+                "name": "ProductNoLot",
+                "type": "product",
+                "uom_id": self.env.ref("uom.product_uom_litre").id,
+                "uom_po_id": self.env.ref("uom.product_uom_litre").id,
+                "tracking": "lot",
+            }
+        )
+        self.location_flowable_1.write(
+            {"flowable_allowed_product_ids": [(4, product_nolot.id)]}
+        )
+        # Change tracking after adding to allowed products (bypasses location constraint)
+        product_nolot.tracking = "none"
+
+        lot = self.env["stock.production.lot"].create(
+            {"name": "TEST-NOLOT", "product_id": product_nolot.id}
+        )
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.location_flowable_1.id,
+            }
+        )
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": product_nolot.id,
+                "product_uom_id": product_nolot.uom_id.id,
+                "lot_id": lot.id,
+                "qty_done": 10,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.location_flowable_1.id,
+                "company_id": self.env.company.id,
+            }
+        )
+
+        # ACT & ASSERT
+        with self.assertRaises(UserError) as error:
+            picking.button_validate()
+
+        msg_error = "Product %s must be tracked by lot"
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
+
+    def test_auto_lot_creation_with_sequence(self):
+        """
+        Test that receiving stock at a flowable location with
+        flowable_create_lots=True auto-creates a lot from the sequence.
+
+        PRE:    - location_flowable_2 has flowable_create_lots=True and
+                  flowable_sequence_id set
+        ACT:    - Validate an incoming picking to location_flowable_2
+        POST:   - The auto-created production has a lot_producing_id
+                  different from the incoming lot
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+        product = self.location_flowable_2.flowable_allowed_product_ids[0]
+
+        lot = self.env["stock.production.lot"].create(
+            {"name": "TEST-AUTOLOT", "product_id": product.id}
+        )
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.location_flowable_2.id,
+            }
+        )
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": product.id,
+                "product_uom_id": product.uom_id.id,
+                "lot_id": lot.id,
+                "qty_done": 50,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.location_flowable_2.id,
+                "company_id": self.env.company.id,
+            }
+        )
+
+        # ACT
+        picking.button_validate()
+
+        production = self.env["mrp.production"].search(
+            [
+                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
+                ("location_dest_id", "=", self.location_flowable_2.id),
+            ],
+            order="id desc",
+            limit=1,
+        )
+
+        # ASSERT
+        self.assertTrue(production.lot_producing_id)
+        self.assertNotEqual(production.lot_producing_id, lot)
