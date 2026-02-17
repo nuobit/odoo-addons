@@ -1,4 +1,4 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -101,6 +101,14 @@ class TestCommon(common.SavepointCase):
             }
         )
 
+        cls.flowable_sequence = cls.env["ir.sequence"].create(
+            {
+                "name": "Test Flowable Sequence",
+                "code": "test.flowable.sequence",
+                "company_id": cls.env.company.id,
+            }
+        )
+
         cls.location_flowable_2 = cls.env["stock.location"].create(
             {
                 "name": "LocationFlowable2",
@@ -111,7 +119,7 @@ class TestCommon(common.SavepointCase):
                 "flowable_uom_id": cls.env.ref("uom.product_uom_litre").id,
                 "flowable_allowed_product_ids": [(4, cls.product_flowable_1.id)],
                 "flowable_create_lots": True,
-                "flowable_sequence_id": cls.env.ref("stock.sequence_tracking").id,
+                "flowable_sequence_id": cls.flowable_sequence.id,
             }
         )
 
