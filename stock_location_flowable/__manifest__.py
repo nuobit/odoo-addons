@@ -9,7 +9,7 @@
     "author": "NuoBiT Solutions",
     "website": "https://github.com/nuobit/odoo-addons",
     "category": "Stock",
-    "depends": ["mrp"],
+    "depends": ["mrp", "uom_rounding_coherence"],
     "license": "AGPL-3",
     "data": [
         "views/stock_location_views.xml",
