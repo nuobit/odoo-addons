@@ -59,6 +59,8 @@ class TestStockPicking(TestCommon):
                 at a flowable location
         """
         # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
         moves1 = self.env["stock.move"].create(
             {
                 "name": self.product_flowable_1.name,
@@ -139,6 +141,8 @@ class TestStockPicking(TestCommon):
 
     def test_only_allowed_product_in_incoming_picking(self):
         # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
         product_zanahoria = self.env["product.product"].create(
             {
                 "name": "Zanahoria",
@@ -193,6 +197,8 @@ class TestStockPicking(TestCommon):
 
     def test_different_uom_allowed_product_in_incoming_picking(self):
         # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
         product_zanahoria = self.env["product.product"].create(
             {
                 "name": "Zanahoria",
@@ -301,10 +307,62 @@ class TestStockPicking(TestCommon):
             self.incoming_picking.button_validate()
 
         # ASSERT
-        msg_error = (
-            "Not found manufacturing picking type for flowable"
-            " location %s to do flowable mixing in %s"
+        msg_error = "Not found flowable manufacturing picking type in warehouse %s"
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
+
+    def test_more_than_one_manufacturing_picking_type_incoming_picking(self):
+        """
+        Test that having more than one flowable manufacturing picking type
+        in the same warehouse raises an error during picking validation.
+
+        PRE:    - Two flowable mrp_operation picking types in the same warehouse
+                  (second one created bypassing the ORM constraint via SQL)
+        ACT:    - Validate a picking to a flowable location
+        POST:   - UserError is raised about duplicate picking types
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+        picking_type_mrp_operation_2 = self.env["stock.picking.type"].create(
+            {
+                "name": "Production2",
+                "sequence_code": "SEQ-MRP2",
+                "code": "mrp_operation",
+                "warehouse_id": self.picking_type_mrp_operation_1.warehouse_id.id,
+            }
         )
+        # Bypass the ORM constraint to simulate data inconsistency
+        self.env.cr.execute(
+            "UPDATE stock_picking_type SET flowable_operation = TRUE WHERE id = %s",
+            (picking_type_mrp_operation_2.id,),
+        )
+        picking_type_mrp_operation_2.invalidate_cache()
+
+        lot_1 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-DUP-LOT",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": self.incoming_picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_1.id,
+                "qty_done": 10,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": self.incoming_picking.location_dest_id.id,
+                "company_id": self.env.company.id,
+            }
+        )
+
+        # ACT & ASSERT
+        with self.assertRaises(UserError) as error:
+            self.incoming_picking.button_validate()
+
+        msg_error = "More than one flowable manufacturing picking type in warehouse %s"
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
@@ -473,10 +531,7 @@ class TestStockPicking(TestCommon):
         with self.assertRaises(UserError) as error:
             self.incoming_picking.button_validate()
 
-        msg_error = (
-            "Not found sequence in manufacturing picking type %s"
-            " for flowable location %s"
-        )
+        msg_error = "Not found sequence in flowable manufacturing picking type %s"
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 

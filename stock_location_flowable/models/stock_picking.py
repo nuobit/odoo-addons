@@ -101,21 +101,65 @@ class StockPicking(models.Model):
     def _action_done(self):
         res = super()._action_done()
         for rec in self:
-            lines = {}
-            for line in rec.move_line_ids_without_package:
-                if line.location_dest_id.flowable_storage:
-                    key = (line.product_id, line.location_dest_id, line.lot_id)
-                    lines[key] = lines.get(key, 0) + line.qty_done
-                    if any(k[1] == line.location_dest_id and k != key for k in lines):
-                        raise UserError(
-                            _(
-                                "You can only receive one product at location %s"
-                                " because a manufacturing order must be generated"
-                                " and the location will be blocked. Create a "
-                                "partial delivery for this product %s."
-                            )
-                            % (line.location_dest_id.name, line.product_id.name)
+            flowable_lines = rec.move_line_ids_without_package.filtered(
+                lambda x: x.location_dest_id.flowable_storage
+            )
+            if not flowable_lines:
+                continue
+
+            # checks before creating manufacturing orders
+            mrp_operation_type = rec.env["stock.picking.type"].search(
+                [
+                    ("warehouse_id", "=", rec.picking_type_id.warehouse_id.id),
+                    ("code", "=", "mrp_operation"),
+                    ("flowable_operation", "=", True),
+                ]
+            )
+            if not mrp_operation_type:
+                raise UserError(
+                    _(
+                        "Not found flowable manufacturing picking type"
+                        " in warehouse %s"
+                    )
+                    % rec.picking_type_id.warehouse_id.name
+                )
+            elif len(mrp_operation_type) > 1:
+                raise UserError(
+                    _(
+                        "More than one flowable manufacturing picking type"
+                        " in warehouse %s"
+                    )
+                    % rec.picking_type_id.warehouse_id.name
+                )
+            else:
+                if not mrp_operation_type.sequence_id:
+                    raise UserError(
+                        _(
+                            "Not found sequence in flowable manufacturing"
+                            " picking type %s"
                         )
+                        % mrp_operation_type.display_name
+                    )
+
+            # group move lines by product, destination location and lot to check if
+            # there are multiple products for the same location and to sum the
+            # quantity to produce
+            lines = {}
+            for line in flowable_lines:
+                key = (line.product_id, line.location_dest_id, line.lot_id)
+                lines[key] = lines.get(key, 0) + line.qty_done
+                if any(k[1] == line.location_dest_id and k != key for k in lines):
+                    raise UserError(
+                        _(
+                            "You can only receive one product at location %s"
+                            " because a manufacturing order must be generated"
+                            " and the location will be blocked. Create a "
+                            "partial delivery for this product %s."
+                        )
+                        % (line.location_dest_id.name, line.product_id.name)
+                    )
+
+            # create manufacturing orders
             for (product, location_dest, lot), qty_done in lines.items():
                 if product not in location_dest.flowable_allowed_product_ids:
                     raise UserError(
@@ -133,37 +177,6 @@ class StockPicking(models.Model):
                 if product.tracking != "lot":
                     raise UserError(
                         _("Product %s must be tracked by lot") % product.name
-                    )
-                mrp_operation_type = rec.env["stock.picking.type"].search(
-                    [
-                        ("warehouse_id", "=", rec.picking_type_id.warehouse_id.id),
-                        ("code", "=", "mrp_operation"),
-                        ("flowable_operation", "=", True),
-                    ]
-                )
-                if not mrp_operation_type:
-                    raise UserError(
-                        _(
-                            "Not found manufacturing picking type for flowable"
-                            " location %s to do flowable mixing in %s"
-                        )
-                        % (location_dest.name, rec.picking_type_id.warehouse_id.name)
-                    )
-                if len(mrp_operation_type) > 1:
-                    raise UserError(
-                        _(
-                            "More than one manufacturing code in picking type for"
-                            " flowable location %s"
-                        )
-                        % location_dest.name
-                    )
-                if not mrp_operation_type.sequence_id:
-                    raise UserError(
-                        _(
-                            "Not found sequence in manufacturing picking type %s"
-                            " for flowable location %s"
-                        )
-                        % (mrp_operation_type.display_name, location_dest.name)
                     )
                 component_quant = rec.env["stock.quant"].search(
                     [
