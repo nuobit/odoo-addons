@@ -10,21 +10,21 @@ class ReturnPicking(models.TransientModel):
     _inherit = "stock.return.picking"
 
     def _create_returns(self):
-        for rec in self:
-            move_line = rec.picking_id.move_line_ids_without_package.filtered(
-                lambda x: x.location_dest_id.flowable_storage
-                and x.product_id in rec.product_return_moves.product_id
+        self.ensure_one()
+        move_line = self.picking_id.move_line_ids_without_package.filtered(
+            lambda x: x.location_dest_id.flowable_storage
+            and x.product_id in self.product_return_moves.product_id
+        )
+        if move_line:
+            details = ", ".join(
+                _("%s (%s)") % (ml.product_id.name, ml.location_dest_id.name)
+                for ml in move_line
             )
-            if move_line:
-                details = ", ".join(
-                    _("%s (%s)") % (ml.product_id.name, ml.location_dest_id.name)
-                    for ml in move_line
+            raise UserError(
+                _(
+                    "You cannot return the following products because"
+                    " they come from a flowable location: %s"
                 )
-                raise UserError(
-                    _(
-                        "You cannot return the following products because"
-                        " they come from a flowable location: %s"
-                    )
-                    % details
-                )
+                % details
+            )
         return super()._create_returns()
