@@ -16,48 +16,87 @@ class AccountTax(models.Model):
         "prorate",
         "amount_type",
         "type_tax_use",
-        "invoice_repartition_line_ids",
-        "refund_repartition_line_ids",
+        "repartition_line_ids",
     )
     def _check_prorate(self):
         for tax in self:
-            if tax.prorate:
-                if tax.amount_type != "percent":
+            if not tax.prorate:
+                continue
+            if tax.amount_type != "percent":
+                raise ValidationError(
+                    _(
+                        "On prorate taxes it's only supported "
+                        "'percent' as a amount type"
+                    )
+                )
+            if tax.type_tax_use != "purchase":
+                raise ValidationError(
+                    _("On prorate taxes it's only supported 'purchase' type")
+                )
+            for doc_type in ("invoice", "refund"):
+                rlines = tax.repartition_line_ids.filtered(
+                    lambda x, dt=doc_type: x.document_type == dt
+                    and x.repartition_type == "tax"
+                    and x.factor_percent == 100.0
+                )
+                if len(rlines) != 2:
                     raise ValidationError(
                         _(
-                            "On prorate taxes it's only supported "
-                            "'percent' as a amount type"
+                            "Prorate tax '%(tax_name)s' requires exactly "
+                            "two 100%% positive tax "
+                            "repartition lines (found %(found_count)i). "
+                            "Please check the configuration "
+                            "of the %(repartition_type)s repartition "
+                            "lines of this tax.",
+                            tax_name=tax.name,
+                            found_count=len(rlines),
+                            repartition_type=doc_type,
                         )
                     )
-                if tax.type_tax_use != "purchase":
-                    raise ValidationError(
-                        _("On prorate taxes it's only supported 'purchase' type")
+
+    @api.constrains(
+        "invoice_repartition_line_ids",
+        "refund_repartition_line_ids",
+        "repartition_line_ids",
+    )
+    def _validate_repartition_lines(self):
+        non_prorate = self.filtered(lambda r: not r.prorate)
+        if non_prorate:
+            super(AccountTax, non_prorate)._validate_repartition_lines()
+        prorate = self.filtered("prorate")
+        for record in prorate:
+            invoice_reps = record.repartition_line_ids.filtered(
+                lambda ln: ln.document_type == "invoice"
+            ).sorted(lambda ln: (ln.sequence, ln.id))
+            refund_reps = record.repartition_line_ids.filtered(
+                lambda ln: ln.document_type == "refund"
+            ).sorted(lambda ln: (ln.sequence, ln.id))
+            if (
+                record.amount_type == "group"
+                and not invoice_reps
+                and not refund_reps
+            ):
+                continue
+            record._check_repartition_lines(invoice_reps)
+            record._check_repartition_lines(refund_reps)
+            if len(invoice_reps) != len(refund_reps):
+                raise ValidationError(
+                    _(
+                        "Invoice and credit note distribution "
+                        "should have the same number of lines."
                     )
-                all_repartition_lines = [
-                    ("invoice", tax.invoice_repartition_line_ids),
-                    ("refund", tax.refund_repartition_line_ids),
-                ]
-                for rltype, rlines in all_repartition_lines:
-                    valid_rlines = rlines.filtered(
-                        lambda x: x.repartition_type == "tax"
-                        and x.factor_percent == 100.0
+                )
+            if not invoice_reps.filtered(
+                lambda x: x.repartition_type == "tax"
+            ) or not refund_reps.filtered(
+                lambda x: x.repartition_type == "tax"
+            ):
+                raise ValidationError(
+                    _(
+                        "Invoice and credit note repartition should "
+                        "have at least one tax repartition line."
                     )
-                    if len(valid_rlines) != 2:
-                        raise ValidationError(
-                            _(
-                                "Prorate tax '%(tax_name)s' requires exactly "
-                                "two 100%% positive tax "
-                                "repartition lines (found %(found_count)i). "
-                                "Please check the configuration "
-                                "of the %(repartition_type)s repartition "
-                                "lines of this tax."
-                            )
-                            % {
-                                "tax_name": tax.name,
-                                "found_count": len(valid_rlines),
-                                "repartition_type": rltype,
-                            }
-                        )
+                )
 
     @api.model
     def prorate_context(self, record, date, company):
@@ -70,7 +109,8 @@ class AccountTax(models.Model):
                 date_norm = fields.Date.context_today(record, date)
             else:
                 raise ValidationError(
-                    _("Invalid date format '%s' for prorate context") % date
+                    _("Invalid date format '%(date)s' for prorate context",
+                        date=date)
                 )
         return {
             "prorate": (
@@ -115,7 +155,9 @@ class AccountTax(models.Model):
                     )
             else:
                 raise NotImplementedError(
-                    _("Tax type '%(amount_type)s' not supported yet")
-                    % {"amount_type": rec.amount_type}
+                    _(
+                        "Tax type '%(amount_type)s' not supported yet",
+                        amount_type=rec.amount_type,
+                    )
                 )
         return value
