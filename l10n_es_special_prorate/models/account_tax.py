@@ -1,5 +1,5 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import datetime
 
@@ -71,11 +71,7 @@ class AccountTax(models.Model):
             refund_reps = record.repartition_line_ids.filtered(
                 lambda ln: ln.document_type == "refund"
             ).sorted(lambda ln: (ln.sequence, ln.id))
-            if (
-                record.amount_type == "group"
-                and not invoice_reps
-                and not refund_reps
-            ):
+            if record.amount_type == "group" and not invoice_reps and not refund_reps:
                 continue
             record._check_repartition_lines(invoice_reps)
             record._check_repartition_lines(refund_reps)
@@ -88,15 +84,14 @@ class AccountTax(models.Model):
                 )
             if not invoice_reps.filtered(
                 lambda x: x.repartition_type == "tax"
-            ) or not refund_reps.filtered(
-                lambda x: x.repartition_type == "tax"
-            ):
+            ) or not refund_reps.filtered(lambda x: x.repartition_type == "tax"):
                 raise ValidationError(
                     _(
                         "Invoice and credit note repartition should "
                         "have at least one tax repartition line."
                     )
                 )
+        return None
 
     @api.model
     def prorate_context(self, record, date, company):
@@ -109,8 +104,7 @@ class AccountTax(models.Model):
                 date_norm = fields.Date.context_today(record, date)
             else:
                 raise ValidationError(
-                    _("Invalid date format '%(date)s' for prorate context",
-                        date=date)
+                    _("Invalid date format '%(date)s' for prorate context", date=date)
                 )
         return {
             "prorate": (
