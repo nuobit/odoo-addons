@@ -1,0 +1,3 @@
+odoo-addon-l10n_es_special_prorate@git+https://github.com/nuobit/odoo-addons.git@refs/pull/800/head#subdirectory=l10n_es_special_prorate
+odoo-addon-l10n_es_aeat_vat_special_prorrate@git+https://github.com/nuobit/odoo-addons.git@refs/pull/835/head#subdirectory=l10n_es_aeat_vat_special_prorrate
+odoo-addon-l10n_es_aeat_mod303_special_prorate_regularization@git+https://github.com/nuobit/odoo-addons.git@refs/pull/846/head#subdirectory=l10n_es_aeat_mod303_special_prorate_regularization
