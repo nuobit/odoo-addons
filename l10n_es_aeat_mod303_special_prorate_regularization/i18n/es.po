@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-29 09:16+0000\n"
-"PO-Revision-Date: 2022-11-29 09:16+0000\n"
+"PO-Revision-Date: 2026-02-26 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,39 +26,16 @@ msgid "AEAT report base module"
 msgstr "Módulo base para declaraciones AEAT"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__display_name
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report__display_name
-msgid "Display Name"
-msgstr "Nombre a mostrar"
-
-#. module: l10n_es_aeat_mod303_special_prorate_regularization
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report__id
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report__id
-msgid "ID"
-msgstr "Identificador"
-
-#. module: l10n_es_aeat_mod303_special_prorate_regularization
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_mod303_report____last_update
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report____last_update
-msgid "Last Modified on"
-msgstr "Última modificación en"
-
-#. module: l10n_es_aeat_mod303_special_prorate_regularization
-#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization/models/mod303.py:0
-#, python-format
-msgid "Prorate not found in company %s in the year %s"
-msgstr "No se ha encontrado la prorata en la compañia %s en el año %s."
-
-#. module: l10n_es_aeat_mod303_special_prorate_regularization
-#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization/models/mod303.py:0
-#, python-format
-msgid "Prorrate year is not closed"
-msgstr "El año de la prorrata no esta cerrado"
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization.field_l10n_es_aeat_report__prorate_year_id
+msgid "Prorate Year"
+msgstr "Año de prorrata"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization/models/mod303.py:0
 #, python-format
 msgid ""
-"The year: %s of the model 303 and the year of date start and date end (%s, "
-"%s) must be the same."
-msgstr "El año %s del modelo 303 y los años de la fecha de inicio y de la finalización (%s, %s) deben ser el mismo. "
+"The year: %(year)s of the model 303 and the year of date start and date end "
+"(%(date_start)s, %(date_end)s) must be the same."
+msgstr ""
+"El año %(year)s del modelo 303 y los años de la fecha de inicio y de la "
+"finalización (%(date_start)s, %(date_end)s) deben ser el mismo."
