@@ -81,6 +81,16 @@ msgid "Capacity must be greater than capacity occupied %s"
 msgstr "La capacitat ha de ser superior a la capacitat ocupada %s"
 
 #. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Initial reception at flowable location '%s' for product '%s': expected 1 "
+"positive quant (empty tank) but found %d."
+msgstr ""
+"Recepció inicial a la ubicació fluida '%s' per al producte '%s': s'esperava "
+"1 quant positiu (tanc buit) però se n'han trobat %d."
+
+#. module: stock_location_flowable
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
 msgid "Create Lots"
 msgstr "Crear Lots"
@@ -194,6 +204,26 @@ msgstr "Ordres de producció"
 msgid "More than one flowable manufacturing picking type in warehouse %s"
 msgstr ""
 "Més d'un tipus d'operació de fabricació fluida al magatzem %s"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Mixing reception at flowable location '%s' for product '%s': expected 2 "
+"positive quants but found %d."
+msgstr ""
+"Recepció de barreja a la ubicació fluida '%s' per al producte '%s': "
+"s'esperaven 2 quants positius però se n'han trobat %d."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Mixing reception at flowable location '%s' for product '%s': expected "
+"exactly 1 quant for the received lot '%s' but found %d."
+msgstr ""
+"Recepció de barreja a la ubicació fluida '%s' per al producte '%s': "
+"s'esperava exactament 1 quant per al lot rebut '%s' però se n'han trobat %d."
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
