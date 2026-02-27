@@ -6,7 +6,7 @@
     "summary": "Customizations that allow organizing, controlling, and"
     " mixing bulk liquid and solid products in a location",
     "version": "14.0.1.0.1",
-    "author": "NuoBiT Solutions",
+    "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
     "category": "Stock",
     "depends": ["mrp", "uom_rounding_coherence"],
