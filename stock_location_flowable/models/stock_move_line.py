@@ -28,11 +28,14 @@ class StockMoveLine(models.Model):
                 ):
                     locations_to_check |= rec.location_id
                 for location in locations_to_check:
-                    if rec.state == "done":
-                        production = rec.move_id.production_id
-                    else:
-                        production = rec.move_id.raw_material_production_id
-                    if production and location.flowable_production_id != production:
+                    production = (
+                        rec.move_id.raw_material_production_id
+                        or rec.move_id.production_id
+                    )
+                    if (
+                        location.flowable_production_id
+                        and location.flowable_production_id != production
+                    ):
                         raise ValidationError(
                             _(
                                 "The location %s is blocked. Probably you need to"
