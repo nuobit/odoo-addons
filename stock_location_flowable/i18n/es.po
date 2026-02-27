@@ -41,6 +41,27 @@ msgid "Capacity"
 msgstr "Capacidad"
 
 #. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"Cannot fully reserve flowable location '%s' because there are other "
+"reserved quantities. All stock must be available before merging.\n"
+"\n"
+"The following operations have reservations that must be unreserved "
+"first:\n"
+"\n"
+"%s"
+msgstr ""
+"No se puede reservar completamente la ubicación fluida '%s' porque hay "
+"otras cantidades reservadas. Todo el stock debe estar disponible antes "
+"de la mezcla.\n"
+"\n"
+"Las siguientes operaciones tienen reservas que deben ser liberadas "
+"primero:\n"
+"\n"
+"%s"
+
+#. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_location.py:0
 #, python-format
 msgid "Capacity must be greater than 0"
@@ -130,6 +151,16 @@ msgstr "ID"
 #: model:ir.model,name:stock_location_flowable.model_stock_location
 msgid "Inventory Locations"
 msgstr "Ubicaciones de inventario"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"Move '%s' (id=%s) at flowable location '%s' has reserved quantities but no "
+"picking or production associated"
+msgstr ""
+"El movimiento '%s' (id=%s) en la ubicación fluida '%s' tiene cantidades "
+"reservadas pero no tiene albarán ni producción asociada"
 
 #. module: stock_location_flowable
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_blocked_popover
