@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="310" viewBox="0 0 1000 310">
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  </style>
+  <defs>
+    <marker id="ta" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555"/></marker>
+  </defs>
+  <rect width="1000" height="310" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="500" y="28" text-anchor="middle" fill="#4ecca3" font-size="18" font-weight="bold">Scenario 1: First PO Reception — Happy Path</text>
+  <text x="500" y="50" text-anchor="middle" fill="#888" font-size="12">One PO received at an available tank. MO auto-created, location blocked, MO completes, location freed.</text>
+  <text x="500" y="68" text-anchor="middle" fill="#888" font-size="11">Everything works correctly. No bugs involved.</text>
+
+  <!-- Timeline -->
+  <line x1="40" y1="170" x2="960" y2="170" stroke="#555" stroke-width="2" marker-end="url(#ta)"/>
+
+  <!-- Events -->
+  <circle cx="120" cy="170" r="5" fill="#3a86ff"/>
+  <circle cx="320" cy="170" r="5" fill="#3a86ff"/>
+  <circle cx="540" cy="170" r="5" fill="#f5a623"/>
+  <circle cx="760" cy="170" r="5" fill="#4ecca3"/>
+
+  <line x1="120" y1="143" x2="120" y2="165" stroke="#3a86ff" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="320" y1="128" x2="320" y2="165" stroke="#3a86ff" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="540" y1="143" x2="540" y2="165" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="760" y1="133" x2="760" y2="165" stroke="#4ecca3" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <rect x="45" y="95" width="150" height="45" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
+  <text x="120" y="115" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">PO #1 Confirmed</text>
+  <text x="120" y="132" text-anchor="middle" fill="#888" font-size="9">creates reception picking</text>
+
+  <rect x="215" y="90" width="210" height="35" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="2"/>
+  <text x="320" y="112" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">Reception #1 Validated</text>
+  <text x="320" y="140" text-anchor="middle" fill="#4ecca3" font-size="10">MO created, location BLOCKED</text>
+
+  <rect x="455" y="100" width="170" height="40" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="540" y="117" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">MO #1 Processing</text>
+  <text x="540" y="133" text-anchor="middle" fill="#888" font-size="9">mixing / consuming</text>
+
+  <rect x="670" y="90" width="180" height="40" rx="8" fill="#0f3460" stroke="#4ecca3" stroke-width="2"/>
+  <text x="760" y="110" text-anchor="middle" fill="#4ecca3" font-size="11" font-weight="bold">MO #1 Done</text>
+  <text x="760" y="127" text-anchor="middle" fill="#888" font-size="9">location UNBLOCKED</text>
+
+  <!-- State bar -->
+  <rect x="40" y="188" width="280" height="22" rx="5" fill="#4ecca3" fill-opacity="0.1" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="180" y="204" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">AVAILABLE</text>
+  <rect x="320" y="188" width="440" height="22" rx="5" fill="#e94560" fill-opacity="0.15" stroke="#e94560" stroke-width="2"/>
+  <text x="540" y="204" text-anchor="middle" fill="#e94560" font-size="9" font-weight="bold">BLOCKED (MO #1)</text>
+  <rect x="760" y="188" width="200" height="22" rx="5" fill="#4ecca3" fill-opacity="0.1" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="860" y="204" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">AVAILABLE</text>
+  <text x="500" y="230" text-anchor="middle" fill="#666" font-size="9">TANK LOCATION STATE</text>
+
+  <!-- Note -->
+  <text x="500" y="265" text-anchor="middle" fill="#888" font-size="10">Blocking is set inside stock.move.write() when production.action_assign() changes the MO's raw move state.</text>
+  <text x="500" y="282" text-anchor="middle" fill="#888" font-size="10">Unblocking is set inside stock.move.write() when the MO's raw move goes to "done".</text>
+  <text x="500" y="299" text-anchor="middle" fill="#555" font-size="10">A reception never reserves — it delivers stock from a virtual supplier location to the tank.</text>
+</svg>
