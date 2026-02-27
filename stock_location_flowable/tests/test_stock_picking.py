@@ -648,3 +648,266 @@ class TestStockPicking(TestCommon):
         # ASSERT
         self.assertTrue(production.lot_producing_id)
         self.assertNotEqual(production.lot_producing_id, lot)
+
+    def _create_incoming_picking(self, location, product, lot, qty):
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": location.id,
+            }
+        )
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": product.id,
+                "product_uom_id": product.uom_id.id,
+                "lot_id": lot.id,
+                "qty_done": qty,
+                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_dest_id": location.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        return picking
+
+    def test_reception_blocks_flowable_location(self):
+        """
+        Test that validating a reception to a flowable location blocks it
+        and creates a manufacturing order linked to the location.
+
+        PRE:    - A flowable location with no active production
+        ACT:    - Validate an incoming picking to that location
+        POST:   - The location is blocked (flowable_blocked is True)
+                - A manufacturing order is linked to the location
+                - The MO is linked back to the picking
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+        self.assertFalse(self.location_flowable_1.flowable_blocked)
+
+        lot = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-BLOCK-LOT",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+        picking = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot, 10
+        )
+
+        # ACT
+        picking.button_validate()
+
+        # ASSERT
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+        production = self.location_flowable_1.flowable_production_id
+        self.assertTrue(production)
+        self.assertEqual(production.picking_id, picking)
+
+    def test_second_reception_to_blocked_location_rejected(self):
+        """
+        Test that a second reception to a blocked flowable location
+        is rejected.
+
+        PRE:    - A flowable location blocked by a first reception
+                - A second incoming picking prepared before the location
+                  was blocked
+        ACT:    - Try to validate the second incoming picking
+        POST:   - An error is raised about the location being blocked
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_1 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-BLOCK-LOT1",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+        first_picking = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot_1, 10
+        )
+
+        lot_2 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-BLOCK-LOT2",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+        second_picking = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot_2, 10
+        )
+
+        first_picking.button_validate()
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+
+        # ACT & ASSERT
+        with self.assertRaises(Exception):
+            second_picking.button_validate()
+
+    def test_reception_after_mo_completed_succeeds(self):
+        """
+        Test the full cycle: reception blocks the location, completing
+        the MO unblocks it, and a new reception succeeds.
+
+        PRE:    - A flowable location with no active production
+        ACT:    - Validate a first reception (location gets blocked)
+                - Complete the resulting MO (location gets unblocked)
+                - Validate a second reception
+        POST:   - The location is unblocked after completing the MO
+                - The second reception succeeds and creates a new MO
+                - The location is blocked again by the new MO
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_1 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-CYCLE-LOT1",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+        first_picking = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot_1, 10
+        )
+
+        # ACT 1 - First reception blocks the location
+        first_picking.button_validate()
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+        first_production = self.location_flowable_1.flowable_production_id
+
+        # ACT 2 - Complete the MO, location gets unblocked
+        first_production.button_mark_done()
+        self.assertFalse(self.location_flowable_1.flowable_blocked)
+
+        # ACT 3 - Second reception succeeds and blocks again
+        lot_2 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-CYCLE-LOT2",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+        second_picking = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot_2, 5
+        )
+        second_picking.button_validate()
+
+        # ASSERT
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+        second_production = self.location_flowable_1.flowable_production_id
+        self.assertTrue(second_production)
+        self.assertNotEqual(first_production, second_production)
+        self.assertEqual(second_production.picking_id, second_picking)
+
+    def test_blocking_is_per_location(self):
+        """
+        Test that blocking one flowable location does not affect another.
+
+        PRE:    - Two flowable locations with no active production
+        ACT:    - Validate a reception to location 1 (blocks it)
+                - Validate a reception to location 2
+        POST:   - Location 1 is blocked
+                - Location 2 reception succeeds and blocks location 2
+                  independently
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_1 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-PERLOC-LOT1",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+        picking_1 = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot_1, 10
+        )
+
+        lot_2 = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-PERLOC-LOT2",
+                "product_id": self.product_flowable_1.id,
+            }
+        )
+        picking_2 = self._create_incoming_picking(
+            self.location_flowable_2, self.product_flowable_1, lot_2, 10
+        )
+
+        # ACT
+        picking_1.button_validate()
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+        self.assertFalse(self.location_flowable_2.flowable_blocked)
+
+        picking_2.button_validate()
+
+        # ASSERT
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+        self.assertTrue(self.location_flowable_2.flowable_blocked)
+        self.assertNotEqual(
+            self.location_flowable_1.flowable_production_id,
+            self.location_flowable_2.flowable_production_id,
+        )
+
+    def test_auto_lot_location_also_gets_blocked(self):
+        """
+        Test that a flowable location with flowable_create_lots=True
+        also gets blocked after a reception.
+
+        PRE:    - location_flowable_2 has flowable_create_lots=True
+        ACT:    - Validate a reception to location_flowable_2
+        POST:   - The location is blocked
+                - The MO uses an auto-generated lot (different from the
+                  incoming lot)
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+        product = self.location_flowable_2.flowable_allowed_product_ids[0]
+
+        lot = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-AUTOLOT-BLOCK",
+                "product_id": product.id,
+            }
+        )
+        picking = self._create_incoming_picking(
+            self.location_flowable_2, product, lot, 50
+        )
+
+        # ACT
+        picking.button_validate()
+
+        # ASSERT
+        self.assertTrue(self.location_flowable_2.flowable_blocked)
+        production = self.location_flowable_2.flowable_production_id
+        self.assertTrue(production)
+        self.assertNotEqual(production.lot_producing_id, lot)
+
+    def test_non_flowable_location_not_affected(self):
+        """
+        Test that receiving stock at a non-flowable location does not
+        trigger any blocking or MO creation.
+
+        PRE:    - A regular (non-flowable) internal location
+        ACT:    - Validate an incoming picking to that location
+        POST:   - No flowable_production_id is set
+                - No MO is created for the picking
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        product = self.product_flowable_1
+        lot = self.env["stock.production.lot"].create(
+            {
+                "name": "TEST-NONFLOW-LOT",
+                "product_id": product.id,
+            }
+        )
+        picking = self._create_incoming_picking(self.location_1, product, lot, 10)
+
+        # ACT
+        picking.button_validate()
+
+        # ASSERT
+        self.assertFalse(self.location_1.flowable_storage)
+        self.assertFalse(picking.flowable_production_ids)
