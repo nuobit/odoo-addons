@@ -16,10 +16,12 @@ class StockMove(models.Model):
     def write(self, vals):
         for rec in self:
             production = rec.raw_material_production_id
+            if not production.picking_type_id.flowable_operation:
+                continue
             new_state = vals.get("state")
+            # Guard: block all modifications during active mixing
             if (
-                production.picking_type_id.flowable_operation
-                and production.picking_id
+                production.picking_id
                 and production.state == "to_close"
                 and new_state != "done"
             ):
@@ -29,15 +31,18 @@ class StockMove(models.Model):
                         " The mixing is in progress."
                     )
                 )
-            elif (
-                new_state in ("confirmed", "assigned", "partially_available")
-                and vals.get("move_line_ids", rec.move_line_ids)
-                and production.picking_type_id.flowable_operation
-                and production.location_dest_id.flowable_storage
-                and not production.location_dest_id.flowable_blocked
-            ):
-                production.location_dest_id.flowable_production_id = production
-            elif production.location_dest_id.flowable_production_id == production:
-                if new_state in ("cancel", "done"):
+            if not new_state:
+                continue
+            # Block location when MO raw materials are fully reserved
+            if new_state == "assigned":
+                if (
+                    vals.get("move_line_ids", rec.move_line_ids)
+                    and production.location_dest_id.flowable_storage
+                    and not production.location_dest_id.flowable_blocked
+                ):
+                    production.location_dest_id.flowable_production_id = production
+            # Unblock location when MO raw materials are done or cancelled
+            elif new_state in ("cancel", "done"):
+                if production.location_dest_id.flowable_production_id == production:
                     production.location_dest_id.flowable_production_id = False
         return super().write(vals)
