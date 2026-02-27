@@ -14,6 +14,8 @@ class TestCommon(common.SavepointCase):
     def setUpClass(cls):
         super(TestCommon, cls).setUpClass()
 
+        cls.supplier_location = cls.env.ref("stock.stock_location_suppliers")
+
         cls.picking_type_incoming_1 = cls.env["stock.picking.type"].create(
             {
                 "name": "Receipt1",
@@ -145,7 +147,7 @@ class TestCommon(common.SavepointCase):
                 "product_uom_id": cls.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
                 "qty_done": 10,
-                "location_id": cls.env.ref("stock.stock_location_suppliers").id,
+                "location_id": cls.supplier_location.id,
                 "location_dest_id": cls.incoming_picking.location_dest_id.id,
                 "company_id": cls.env.company.id,
             }
@@ -166,7 +168,7 @@ class TestCommon(common.SavepointCase):
                 "product_uom_id": cls.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
                 "qty_done": 10,
-                "location_id": cls.env.ref("stock.stock_location_suppliers").id,
+                "location_id": cls.supplier_location.id,
                 "location_dest_id": cls.outgoing_picking.location_dest_id.id,
                 "company_id": cls.env.company.id,
             }
@@ -206,3 +208,119 @@ class TestCommon(common.SavepointCase):
         escaped_parts = [re.escape(part) for part in parts]
         regex_pattern = ".*".join(escaped_parts)
         return regex_pattern
+
+    def _create_lot(self, product, name):
+        return self.env["stock.production.lot"].create(
+            {
+                "name": name,
+                "product_id": product.id,
+            }
+        )
+
+    def _receive_stock(self, location, product, lot, qty, picking_type=None):
+        """Create and validate an incoming picking to any location."""
+        if picking_type is None:
+            picking_type = self.picking_type_incoming_1
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": picking_type.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": location.id,
+            }
+        )
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": product.id,
+                "product_uom_id": product.uom_id.id,
+                "lot_id": lot.id,
+                "qty_done": qty,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": location.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        picking.button_validate()
+        return picking
+
+    def _create_incoming_picking(self, location, product, lot, qty, picking_type=None):
+        """Create an incoming picking WITHOUT validating it."""
+        if picking_type is None:
+            picking_type = self.picking_type_incoming_1
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": picking_type.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": location.id,
+            }
+        )
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": product.id,
+                "product_uom_id": product.uom_id.id,
+                "lot_id": lot.id,
+                "qty_done": qty,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": location.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        return picking
+
+    def _find_flowable_production(self, location, picking_type=None):
+        if picking_type is None:
+            picking_type = self.picking_type_mrp_operation_1
+        return self.env["mrp.production"].search(
+            [
+                ("picking_type_id", "=", picking_type.id),
+                ("location_dest_id", "=", location.id),
+            ],
+            order="id desc",
+            limit=1,
+        )
+
+    def _get_location_quants(self, location, product):
+        return self.env["stock.quant"].search(
+            [
+                ("location_id", "=", location.id),
+                ("product_id", "=", product.id),
+            ]
+        )
+
+    def _get_positive_quantity(self, location, product):
+        quants = self._get_location_quants(location, product)
+        return sum(quants.filtered(lambda q: q.quantity > 0).mapped("quantity"))
+
+    def _seed_flowable_location(
+        self, location, product, lot, qty, picking_type=None, mrp_picking_type=None
+    ):
+        """Receive initial stock and complete the resulting MO."""
+        picking = self._receive_stock(
+            location, product, lot, qty, picking_type=picking_type
+        )
+        production = self._find_flowable_production(
+            location, picking_type=mrp_picking_type
+        )
+        if production:
+            production.button_mark_done()
+        return picking
+
+    def _create_inventory_adjustment(self, location, product, lot, qty):
+        """Create and validate a simple inventory adjustment (1 lot)."""
+        inventory = self.env["stock.inventory"].create(
+            {"name": f"Adjust {product.name} at {location.name}"}
+        )
+        inventory.action_start()
+        self.env["stock.inventory.line"].create(
+            {
+                "inventory_id": inventory.id,
+                "product_id": product.id,
+                "product_uom_id": product.uom_id.id,
+                "location_id": location.id,
+                "prod_lot_id": lot.id,
+                "product_qty": qty,
+            }
+        )
+        inventory.action_validate()
+        return inventory

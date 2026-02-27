@@ -27,45 +27,10 @@ class TestStockReturnPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-RETURN-LOT",
-                "product_id": self.product_flowable_1.id,
-            }
+        lot = self._create_lot(self.product_flowable_1, "TEST-RETURN-LOT")
+        picking = self._seed_flowable_location(
+            self.location_flowable_1, self.product_flowable_1, lot, 50
         )
-
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": self.product_flowable_1.id,
-                "product_uom_id": self.product_flowable_1.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": 50,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-                "company_id": self.env.company.id,
-            }
-        )
-        picking.button_validate()
-
-        # Complete the mixing MO so we have a done picking
-        production = self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", self.location_flowable_1.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
-        if production:
-            production.button_mark_done()
 
         # ACT
         return_wizard = (
@@ -77,7 +42,7 @@ class TestStockReturnPicking(TestCommon):
             .create(
                 {
                     "picking_id": picking.id,
-                    "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                    "location_id": self.supplier_location.id,
                 }
             )
         )
@@ -104,17 +69,12 @@ class TestStockReturnPicking(TestCommon):
         POST:   - Return picking is created successfully
         """
         # ARRANGE
-        lot = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-RETURN-NOFLO",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot = self._create_lot(self.product_flowable_1, "TEST-RETURN-NOFLO")
 
         picking = self.env["stock.picking"].create(
             {
                 "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": self.location_1.id,
             }
         )
@@ -125,7 +85,7 @@ class TestStockReturnPicking(TestCommon):
                 "product_uom_qty": 50,
                 "product_uom": self.product_flowable_1.uom_id.id,
                 "picking_id": picking.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": self.location_1.id,
             }
         )
@@ -149,7 +109,7 @@ class TestStockReturnPicking(TestCommon):
             .create(
                 {
                     "picking_id": picking.id,
-                    "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                    "location_id": self.supplier_location.id,
                 }
             )
         )

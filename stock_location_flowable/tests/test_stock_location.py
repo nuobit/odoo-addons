@@ -387,43 +387,11 @@ class TestStockLocation(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         product = self.location_flowable_1.flowable_allowed_product_ids[0]
 
-        lot = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-CAP-LOT",
-                "product_id": product.id,
-            }
-        )
-
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": 100,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-                "company_id": self.env.company.id,
-            }
-        )
-        picking.button_validate()
+        lot = self._create_lot(product, "TEST-CAP-LOT")
+        self._receive_stock(self.location_flowable_1, product, lot, 100)
 
         # ACT
-        production = self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", self.location_flowable_1.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
+        production = self._find_flowable_production(self.location_flowable_1)
         production.button_mark_done()
 
         # ASSERT
@@ -536,42 +504,8 @@ class TestStockLocation(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         product = self.location_flowable_1.flowable_allowed_product_ids[0]
 
-        lot = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-REMOVE-LOT",
-                "product_id": product.id,
-            }
-        )
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": 50,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-                "company_id": self.env.company.id,
-            }
-        )
-        picking.button_validate()
-
-        production = self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", self.location_flowable_1.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
-        production.button_mark_done()
+        lot = self._create_lot(product, "TEST-REMOVE-LOT")
+        self._seed_flowable_location(self.location_flowable_1, product, lot, 50)
 
         # ACT & ASSERT
         with self.assertRaises(UserError) as error:
@@ -604,27 +538,9 @@ class TestStockLocation(TestCommon):
         self.location_flowable_1.write({"flowable_capacity": 100})
         product = self.location_flowable_1.flowable_allowed_product_ids[0]
 
-        lot = self.env["stock.production.lot"].create(
-            {"name": "TEST-FULL-LOT", "product_id": product.id}
-        )
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": 101,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-                "company_id": self.env.company.id,
-            }
+        lot = self._create_lot(product, "TEST-FULL-LOT")
+        picking = self._create_incoming_picking(
+            self.location_flowable_1, product, lot, 101
         )
 
         # ACT & ASSERT
@@ -648,39 +564,8 @@ class TestStockLocation(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         product = self.location_flowable_1.flowable_allowed_product_ids[0]
 
-        lot = self.env["stock.production.lot"].create(
-            {"name": "TEST-REDUCECAP-LOT", "product_id": product.id}
-        )
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": 100,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-                "company_id": self.env.company.id,
-            }
-        )
-        picking.button_validate()
-
-        production = self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", self.location_flowable_1.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
-        production.button_mark_done()
+        lot = self._create_lot(product, "TEST-REDUCECAP-LOT")
+        self._seed_flowable_location(self.location_flowable_1, product, lot, 100)
 
         # ACT & ASSERT
         with self.assertRaises(ValidationError):
@@ -699,39 +584,8 @@ class TestStockLocation(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         product = self.location_flowable_1.flowable_allowed_product_ids[0]
 
-        lot = self.env["stock.production.lot"].create(
-            {"name": "TEST-UOM-LOT", "product_id": product.id}
-        )
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": 50,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-                "company_id": self.env.company.id,
-            }
-        )
-        picking.button_validate()
-
-        production = self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", self.location_flowable_1.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
-        production.button_mark_done()
+        lot = self._create_lot(product, "TEST-UOM-LOT")
+        self._seed_flowable_location(self.location_flowable_1, product, lot, 50)
 
         # Create a new product with units UoM to make the change valid
         # for the allowed products constraint, isolating _check_flowable_uom_id
@@ -772,36 +626,11 @@ class TestStockLocation(TestCommon):
         # ARRANGE — add two lots via inventory adjustments
         product = self.location_flowable_1.flowable_allowed_product_ids[0]
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {"name": "UNMIXED-LOT-1", "product_id": product.id}
-        )
-        lot_2 = self.env["stock.production.lot"].create(
-            {"name": "UNMIXED-LOT-2", "product_id": product.id}
-        )
+        lot_1 = self._create_lot(product, "UNMIXED-LOT-1")
+        lot_2 = self._create_lot(product, "UNMIXED-LOT-2")
 
-        inventory = self.env["stock.inventory"].create({"name": "Add unmixed stock"})
-        inventory.action_start()
-        self.env["stock.inventory.line"].create(
-            [
-                {
-                    "inventory_id": inventory.id,
-                    "product_id": product.id,
-                    "product_uom_id": product.uom_id.id,
-                    "location_id": self.location_1.id,
-                    "prod_lot_id": lot_1.id,
-                    "product_qty": 50,
-                },
-                {
-                    "inventory_id": inventory.id,
-                    "product_id": product.id,
-                    "product_uom_id": product.uom_id.id,
-                    "location_id": self.location_1.id,
-                    "prod_lot_id": lot_2.id,
-                    "product_qty": 30,
-                },
-            ]
-        )
-        inventory.action_validate()
+        self._create_inventory_adjustment(self.location_1, product, lot_1, 50)
+        self._create_inventory_adjustment(self.location_1, product, lot_2, 30)
 
         # ACT & ASSERT
         with self.assertRaises(UserError) as error:
@@ -833,24 +662,8 @@ class TestStockLocation(TestCommon):
         # ARRANGE — add stock via inventory adjustment
         product = self.location_flowable_1.flowable_allowed_product_ids[0]
 
-        lot = self.env["stock.production.lot"].create(
-            {"name": "NONFLO-LOT", "product_id": product.id}
-        )
-        inventory = self.env["stock.inventory"].create(
-            {"name": "Add stock to non-flowable"}
-        )
-        inventory.action_start()
-        self.env["stock.inventory.line"].create(
-            {
-                "inventory_id": inventory.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "location_id": self.location_1.id,
-                "prod_lot_id": lot.id,
-                "product_qty": 200,
-            }
-        )
-        inventory.action_validate()
+        lot = self._create_lot(product, "NONFLO-LOT")
+        self._create_inventory_adjustment(self.location_1, product, lot, 200)
 
         # ACT & ASSERT
         self.location_1.invalidate_cache()

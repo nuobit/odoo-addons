@@ -87,19 +87,9 @@ class TestStockPicking(TestCommon):
 
         self.incoming_picking.action_confirm()
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST LMP-0001",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST LMP-0001")
 
-        lot_ch4 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST LMP-0002",
-                "product_id": self.product_flowable_2.id,
-            }
-        )
+        lot_ch4 = self._create_lot(self.product_flowable_2, "TEST LMP-0002")
 
         self.incoming_picking.move_line_ids = self.env["stock.move.line"].create(
             {
@@ -167,12 +157,7 @@ class TestStockPicking(TestCommon):
 
         self.incoming_picking.action_confirm()
 
-        lot_zanahoria = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST COD-0001",
-                "product_id": product_zanahoria.id,
-            }
-        )
+        lot_zanahoria = self._create_lot(product_zanahoria, "TEST COD-0001")
 
         self.incoming_picking.move_line_ids = self.env["stock.move.line"].create(
             {
@@ -234,12 +219,7 @@ class TestStockPicking(TestCommon):
 
         self.incoming_picking.action_confirm()
 
-        lot_zanahoria = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST COD-0001",
-                "product_id": product_zanahoria.id,
-            }
-        )
+        lot_zanahoria = self._create_lot(product_zanahoria, "TEST COD-0001")
 
         self.incoming_picking.move_line_ids = self.env["stock.move.line"].create(
             {
@@ -281,12 +261,7 @@ class TestStockPicking(TestCommon):
 
         self.incoming_picking.action_confirm()
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST LMP-0001",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST LMP-0001")
 
         self.incoming_picking.move_line_ids = self.env["stock.move.line"].create(
             {
@@ -338,12 +313,7 @@ class TestStockPicking(TestCommon):
         )
         picking_type_mrp_operation_2.invalidate_cache()
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-DUP-LOT",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST-DUP-LOT")
 
         self.env["stock.move.line"].create(
             {
@@ -352,7 +322,7 @@ class TestStockPicking(TestCommon):
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
                 "qty_done": 10,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
             }
@@ -370,12 +340,7 @@ class TestStockPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST LMP-0001",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST LMP-0001")
 
         self.env["stock.move.line"].create(
             {
@@ -384,7 +349,7 @@ class TestStockPicking(TestCommon):
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
                 "qty_done": 10,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
             }
@@ -407,12 +372,7 @@ class TestStockPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-ACTION-LOT",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST-ACTION-LOT")
 
         self.env["stock.move.line"].create(
             {
@@ -421,7 +381,7 @@ class TestStockPicking(TestCommon):
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
                 "qty_done": 10,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
             }
@@ -450,12 +410,7 @@ class TestStockPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-MULTI-LOT",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST-MULTI-LOT")
 
         self.env["stock.move.line"].create(
             {
@@ -464,7 +419,7 @@ class TestStockPicking(TestCommon):
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
                 "qty_done": 10,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
             }
@@ -507,12 +462,7 @@ class TestStockPicking(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         self.picking_type_mrp_operation_1.sequence_id = False
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-NOSEQ-LOT",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST-NOSEQ-LOT")
 
         self.env["stock.move.line"].create(
             {
@@ -521,7 +471,7 @@ class TestStockPicking(TestCommon):
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
                 "qty_done": 10,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
             }
@@ -564,27 +514,9 @@ class TestStockPicking(TestCommon):
         # Change tracking after adding to allowed products (bypasses location constraint)
         product_nolot.tracking = "none"
 
-        lot = self.env["stock.production.lot"].create(
-            {"name": "TEST-NOLOT", "product_id": product_nolot.id}
-        )
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product_nolot.id,
-                "product_uom_id": product_nolot.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": 10,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-                "company_id": self.env.company.id,
-            }
+        lot = self._create_lot(product_nolot, "TEST-NOLOT")
+        picking = self._create_incoming_picking(
+            self.location_flowable_1, product_nolot, lot, 10
         )
 
         # ACT & ASSERT
@@ -610,66 +542,19 @@ class TestStockPicking(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         product = self.location_flowable_2.flowable_allowed_product_ids[0]
 
-        lot = self.env["stock.production.lot"].create(
-            {"name": "TEST-AUTOLOT", "product_id": product.id}
-        )
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_2.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": 50,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_2.id,
-                "company_id": self.env.company.id,
-            }
+        lot = self._create_lot(product, "TEST-AUTOLOT")
+        picking = self._create_incoming_picking(
+            self.location_flowable_2, product, lot, 50
         )
 
         # ACT
         picking.button_validate()
 
-        production = self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", self.location_flowable_2.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
+        production = self._find_flowable_production(self.location_flowable_2)
 
         # ASSERT
         self.assertTrue(production.lot_producing_id)
         self.assertNotEqual(production.lot_producing_id, lot)
-
-    def _create_incoming_picking(self, location, product, lot, qty):
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": location.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": qty,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": location.id,
-                "company_id": self.env.company.id,
-            }
-        )
-        return picking
 
     def test_reception_blocks_flowable_location(self):
         """
@@ -686,12 +571,7 @@ class TestStockPicking(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         self.assertFalse(self.location_flowable_1.flowable_blocked)
 
-        lot = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-BLOCK-LOT",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot = self._create_lot(self.product_flowable_1, "TEST-BLOCK-LOT")
         picking = self._create_incoming_picking(
             self.location_flowable_1, self.product_flowable_1, lot, 10
         )
@@ -719,22 +599,12 @@ class TestStockPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-BLOCK-LOT1",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST-BLOCK-LOT1")
         first_picking = self._create_incoming_picking(
             self.location_flowable_1, self.product_flowable_1, lot_1, 10
         )
 
-        lot_2 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-BLOCK-LOT2",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_2 = self._create_lot(self.product_flowable_1, "TEST-BLOCK-LOT2")
         second_picking = self._create_incoming_picking(
             self.location_flowable_1, self.product_flowable_1, lot_2, 10
         )
@@ -762,12 +632,7 @@ class TestStockPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-CYCLE-LOT1",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST-CYCLE-LOT1")
         first_picking = self._create_incoming_picking(
             self.location_flowable_1, self.product_flowable_1, lot_1, 10
         )
@@ -782,12 +647,7 @@ class TestStockPicking(TestCommon):
         self.assertFalse(self.location_flowable_1.flowable_blocked)
 
         # ACT 3 - Second reception succeeds and blocks again
-        lot_2 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-CYCLE-LOT2",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_2 = self._create_lot(self.product_flowable_1, "TEST-CYCLE-LOT2")
         second_picking = self._create_incoming_picking(
             self.location_flowable_1, self.product_flowable_1, lot_2, 5
         )
@@ -814,22 +674,12 @@ class TestStockPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-PERLOC-LOT1",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_1 = self._create_lot(self.product_flowable_1, "TEST-PERLOC-LOT1")
         picking_1 = self._create_incoming_picking(
             self.location_flowable_1, self.product_flowable_1, lot_1, 10
         )
 
-        lot_2 = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-PERLOC-LOT2",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_2 = self._create_lot(self.product_flowable_1, "TEST-PERLOC-LOT2")
         picking_2 = self._create_incoming_picking(
             self.location_flowable_2, self.product_flowable_1, lot_2, 10
         )
@@ -864,12 +714,7 @@ class TestStockPicking(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         product = self.location_flowable_2.flowable_allowed_product_ids[0]
 
-        lot = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-AUTOLOT-BLOCK",
-                "product_id": product.id,
-            }
-        )
+        lot = self._create_lot(product, "TEST-AUTOLOT-BLOCK")
         picking = self._create_incoming_picking(
             self.location_flowable_2, product, lot, 50
         )
@@ -897,12 +742,7 @@ class TestStockPicking(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
 
         product = self.product_flowable_1
-        lot = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-NONFLOW-LOT",
-                "product_id": product.id,
-            }
-        )
+        lot = self._create_lot(product, "TEST-NONFLOW-LOT")
         picking = self._create_incoming_picking(self.location_1, product, lot, 10)
 
         # ACT

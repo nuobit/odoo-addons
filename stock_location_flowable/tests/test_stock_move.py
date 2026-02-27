@@ -32,14 +32,7 @@ class TestStockMove(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         self.incoming_picking.button_validate()
 
-        production = self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", self.location_flowable_1.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
+        production = self._find_flowable_production(self.location_flowable_1)
         self.assertTrue(production.picking_id)
         self.assertEqual(production.state, "to_close")
 
