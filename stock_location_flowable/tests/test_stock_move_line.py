@@ -55,30 +55,9 @@ class TestStockMoveLine(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_2 = self.env["stock.production.lot"].create(
-            {
-                "name": "Lot2",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
-        second_picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": second_picking.id,
-                "product_id": self.product_flowable_1.id,
-                "product_uom_id": self.product_flowable_1.uom_id.id,
-                "lot_id": lot_2.id,
-                "qty_done": 10,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": self.location_flowable_1.id,
-                "company_id": self.env.company.id,
-            }
+        lot_2 = self._create_lot(self.product_flowable_1, "Lot2")
+        second_picking = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot_2, 10
         )
 
         # Block the location by validating the first reception
@@ -109,12 +88,7 @@ class TestStockMoveLine(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_2 = self.env["stock.production.lot"].create(
-            {
-                "name": "LotInternal",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_2 = self._create_lot(self.product_flowable_1, "LotInternal")
         transfer_picking = self.env["stock.picking"].create(
             {
                 "picking_type_id": self.picking_type_internal_1.id,
