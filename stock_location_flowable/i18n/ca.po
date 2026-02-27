@@ -1,0 +1,58 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_location_flowable
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-27 11:13+0000\n"
+"PO-Revision-Date: 2023-11-27 11:13+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"Cannot fully reserve the mixing order at flowable location '%s'. Raw "
+"materials are in state '%s'."
+msgstr ""
+"No es pot reservar completament l'ordre de barreja a la ubicació fluida "
+"'%s'. Les matèries primeres estan en estat '%s'."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"Cannot merge at flowable location '%s' because there are reserved "
+"quantities. After the merge, the current lot(s) will have 0 stock and these "
+"reservations will become invalid.\n"
+"\n"
+"The following operations must be unreserved or completed first:\n"
+"\n"
+"%s"
+msgstr ""
+"No es pot barrejar a la ubicació fluida '%s' perquè hi ha quantitats "
+"reservades. Després de la barreja, els lots actuals tindran 0 estoc i "
+"aquestes reserves seran invàlides.\n"
+"\n"
+"Les següents operacions s'han d'alliberar o completar primer:\n"
+"\n"
+"%s"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid "Unknown origin (move %s)"
+msgstr "Origen desconegut (moviment %s)"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid "no lot"
+msgstr "sense lot"
