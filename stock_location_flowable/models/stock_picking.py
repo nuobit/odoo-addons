@@ -99,7 +99,10 @@ class StockPicking(models.Model):
         return super().button_validate()
 
     def _action_done(self):
-        res = super()._action_done()
+        res = super(
+            StockPicking,
+            self.with_context(flowable_skip_trigger_assign=True),
+        )._action_done()
         for rec in self:
             flowable_lines = rec.move_line_ids_without_package.filtered(
                 lambda x: x.location_dest_id.flowable_storage

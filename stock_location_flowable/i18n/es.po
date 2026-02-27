@@ -35,6 +35,36 @@ msgid "Blocked"
 msgstr "Bloqueado"
 
 #. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"Cannot fully reserve the mixing order at flowable location '%s'. Raw "
+"materials are in state '%s'."
+msgstr ""
+"No se puede reservar completamente la orden de mezcla en la ubicación fluida "
+"'%s'. Las materias primas están en estado '%s'."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"Cannot merge at flowable location '%s' because there are reserved "
+"quantities. After the merge, the current lot(s) will have 0 stock and these "
+"reservations will become invalid.\n"
+"\n"
+"The following operations must be unreserved or completed first:\n"
+"\n"
+"%s"
+msgstr ""
+"No se puede mezclar en la ubicación fluida '%s' porque hay cantidades "
+"reservadas. Después de la mezcla, los lotes actuales tendrán 0 stock y "
+"estas reservas serán inválidas.\n"
+"\n"
+"Las siguientes operaciones deben ser liberadas o completadas primero:\n"
+"\n"
+"%s"
+
+#. module: stock_location_flowable
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_capacity
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
 msgid "Capacity"
@@ -293,6 +323,12 @@ msgid "Unit of Measure"
 msgstr "Unidad de Medida"
 
 #. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid "Unknown origin (move %s)"
+msgstr "Origen desconocido (movimiento %s)"
+
+#. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
 #, python-format
 msgid "You can only receive one product at location %s because a manufacturing "
@@ -370,3 +406,9 @@ msgstr "Debes seleccionar una unidad de medida."
 #, python-format
 msgid "You must select products"
 msgstr "Debes seleccionar productos."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid "no lot"
+msgstr "sin lote"

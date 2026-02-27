@@ -8,6 +8,11 @@ from odoo.exceptions import UserError
 class StockMove(models.Model):
     _inherit = "stock.move"
 
+    def _trigger_assign(self):
+        if self.env.context.get("flowable_skip_trigger_assign"):
+            return
+        return super()._trigger_assign()
+
     def write(self, vals):
         for rec in self:
             production = rec.raw_material_production_id
