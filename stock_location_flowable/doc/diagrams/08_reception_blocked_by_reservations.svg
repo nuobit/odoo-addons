@@ -8,9 +8,9 @@
   <rect width="1000" height="420" fill="#1a1a2e"/>
 
   <!-- Title -->
-  <text x="500" y="28" text-anchor="middle" fill="#f5a623" font-size="18" font-weight="bold">Scenario 8 — Reception Blocked: Outgoing Transfers Have Reserved Quantities</text>
-  <text x="500" y="50" text-anchor="middle" fill="#888" font-size="12">Tank has stock. Internal transfers reserved part of it. A new PO reception tries to deliver to the same tank.</text>
-  <text x="500" y="68" text-anchor="middle" fill="#f5a623" font-size="12">The check detects reserved quantities and shows the user which operations must be unreserved.</text>
+  <text x="500" y="28" text-anchor="middle" fill="#f5a623" font-size="18" font-weight="bold">Scenario 8 — Reception Rolled Back: action_assign Fails Due to Reservations</text>
+  <text x="500" y="50" text-anchor="middle" fill="#888" font-size="12">Tank has stock. Internal transfers reserved part of it. PO reception validates, MO created.</text>
+  <text x="500" y="68" text-anchor="middle" fill="#f5a623" font-size="12">action_assign() can't fully reserve → post-check raises UserError → entire transaction rolls back.</text>
 
   <!-- Timeline -->
   <line x1="40" y1="195" x2="960" y2="195" stroke="#555" stroke-width="2" marker-end="url(#ta)"/>
@@ -27,7 +27,7 @@
   <line x1="750" y1="148" x2="750" y2="190" stroke="#3a86ff" stroke-width="1" stroke-dasharray="3,3"/>
   <line x1="900" y1="120" x2="900" y2="190" stroke="#e94560" stroke-width="1" stroke-dasharray="3,3"/>
 
-  <!-- Event 1: Previous PO received, MO done, tank has leftover stock -->
+  <!-- Event 1: Previous MO done -->
   <rect x="25" y="100" width="150" height="45" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
   <text x="100" y="118" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">Previous MO Done</text>
   <text x="100" y="137" text-anchor="middle" fill="#888" font-size="9">tank has stock, unblocked</text>
@@ -48,26 +48,26 @@
 
   <!-- Event 4: New PO -->
   <rect x="680" y="100" width="140" height="45" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
-  <text x="750" y="118" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">New PO Confirmed</text>
-  <text x="750" y="137" text-anchor="middle" fill="#888" font-size="9">creates reception</text>
+  <text x="750" y="118" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">New PO Reception</text>
+  <text x="750" y="137" text-anchor="middle" fill="#888" font-size="9">validates, MO created</text>
 
-  <!-- Event 5: Reception REJECTED by check -->
+  <!-- Event 5: action_assign fails, post-check rolls back -->
   <rect x="810" y="82" width="180" height="35" rx="8" fill="#3a1020" stroke="#e94560" stroke-width="2.5"/>
-  <text x="900" y="105" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">Reception REJECTED</text>
+  <text x="900" y="105" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">ROLLED BACK</text>
   <rect x="815" y="120" width="170" height="52" rx="6" fill="#e94560" fill-opacity="0.1" stroke="#e94560" stroke-width="1"/>
-  <text x="900" y="136" text-anchor="middle" fill="#e94560" font-size="9" font-weight="bold">UserError:</text>
+  <text x="900" y="136" text-anchor="middle" fill="#e94560" font-size="9" font-weight="bold">action_assign partial →</text>
   <text x="900" y="149" text-anchor="middle" fill="#ff8a8a" font-size="8">- 6,949 kg (INT/00277)</text>
   <text x="900" y="161" text-anchor="middle" fill="#ff8a8a" font-size="8">- 3,500 kg (INT/19640)</text>
   <text x="900" y="208" text-anchor="middle" fill="#e94560" font-size="18" font-weight="bold">X</text>
 
   <!-- State bar -->
   <rect x="40" y="220" width="960" height="22" rx="5" fill="#4ecca3" fill-opacity="0.1" stroke="#4ecca3" stroke-width="1.5"/>
-  <text x="520" y="236" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">AVAILABLE (not blocked) — but has 10,449 kg reserved by outgoing transfers</text>
-  <text x="500" y="260" text-anchor="middle" fill="#666" font-size="9">TANK LOCATION STATE</text>
+  <text x="520" y="236" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">AVAILABLE (not blocked) — has 10,449 kg reserved by outgoing transfers</text>
+  <text x="500" y="260" text-anchor="middle" fill="#666" font-size="9">TANK LOCATION STATE (unchanged — transaction rolled back)</text>
 
   <!-- Quant visualization -->
   <rect x="60" y="278" width="880" height="95" rx="8" fill="#0f3460" fill-opacity="0.3" stroke="#f5a623" stroke-width="1"/>
-  <text x="500" y="298" text-anchor="middle" fill="#f5a623" font-size="12" font-weight="bold">Tank quant state at time of reception attempt</text>
+  <text x="500" y="298" text-anchor="middle" fill="#f5a623" font-size="12" font-weight="bold">Tank quant state at time of action_assign</text>
 
   <rect x="100" y="310" width="400" height="24" rx="4" fill="#4ecca3" fill-opacity="0.2" stroke="#4ecca3" stroke-width="1"/>
   <text x="300" y="326" text-anchor="middle" fill="#4ecca3" font-size="10">22,000 kg available</text>
@@ -78,8 +78,8 @@
   <rect x="670" y="310" width="120" height="24" rx="4" fill="#f5a623" fill-opacity="0.3" stroke="#f5a623" stroke-width="1.5"/>
   <text x="730" y="326" text-anchor="middle" fill="#f5a623" font-size="10">3,500 kg (INT/19640)</text>
 
-  <text x="500" y="356" text-anchor="middle" fill="#888" font-size="10">quantity_to_prod would be 32,449 — but only 22,000 available for action_assign</text>
-  <text x="500" y="370" text-anchor="middle" fill="#e94560" font-size="10">Without the check: action_assign partially fails → location never blocked → Bug #2</text>
+  <text x="500" y="356" text-anchor="middle" fill="#888" font-size="10">quantity_to_prod = 32,449 — but action_assign can only reserve 22,000 (available)</text>
+  <text x="500" y="370" text-anchor="middle" fill="#e94560" font-size="10">Post-check detects partial reservation → UserError → entire _action_done() rolls back</text>
 
   <!-- Bottom note -->
   <rect x="200" y="390" width="600" height="20" rx="4" fill="#0f3460" fill-opacity="0.4" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
