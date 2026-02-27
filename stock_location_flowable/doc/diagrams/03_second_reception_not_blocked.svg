@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="390" viewBox="0 0 1000 390">
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  </style>
+  <defs>
+    <marker id="ta" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555"/></marker>
+  </defs>
+  <rect width="1000" height="390" fill="#1a1a2e"/>
+
+  <!-- Title with Bug #2 -->
+  <text x="500" y="28" text-anchor="middle" fill="#f5a623" font-size="18" font-weight="bold">Scenario 3 — Bug #2: Second PO Reception — Location Not Blocked</text>
+  <text x="500" y="50" text-anchor="middle" fill="#888" font-size="12">First reception's production.action_assign() failed → location was never blocked. Second PO goes through.</text>
+  <text x="500" y="68" text-anchor="middle" fill="#f5a623" font-size="12">Two active MOs on the same tank. This is an example case.</text>
+
+  <!-- Timeline -->
+  <line x1="40" y1="185" x2="960" y2="185" stroke="#555" stroke-width="2" marker-end="url(#ta)"/>
+
+  <circle cx="100" cy="185" r="5" fill="#3a86ff"/>
+  <circle cx="280" cy="185" r="5" fill="#f5a623"/>
+  <circle cx="530" cy="185" r="5" fill="#3a86ff"/>
+  <circle cx="750" cy="185" r="5" fill="#e94560"/>
+
+  <line x1="100" y1="148" x2="100" y2="180" stroke="#3a86ff" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="280" y1="128" x2="280" y2="180" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="530" y1="148" x2="530" y2="180" stroke="#3a86ff" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="750" y1="120" x2="750" y2="180" stroke="#e94560" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- Event 1: PO #1 -->
+  <rect x="30" y="100" width="140" height="45" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
+  <text x="100" y="118" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">PO #1 Confirmed</text>
+  <text x="100" y="137" text-anchor="middle" fill="#888" font-size="9">creates reception #1</text>
+
+  <!-- Event 2: Reception #1 → NOT BLOCKED -->
+  <rect x="175" y="90" width="210" height="35" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="2"/>
+  <text x="280" y="112" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">Reception #1 Validated</text>
+  <rect x="200" y="128" width="160" height="18" rx="4" fill="#f5a623" fill-opacity="0.25" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="280" y="141" text-anchor="middle" fill="#f5a623" font-size="9" font-weight="bold">MO created, NOT BLOCKED</text>
+
+  <!-- Time gap -->
+  <text x="405" y="177" text-anchor="middle" fill="#666" font-size="9" font-style="italic">45 days pass</text>
+  <text x="405" y="189" text-anchor="middle" fill="#666" font-size="8" font-style="italic">MO #1 never completed</text>
+
+  <!-- Event 3: PO #2 -->
+  <rect x="460" y="100" width="140" height="45" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
+  <text x="530" y="118" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">PO #2 Confirmed</text>
+  <text x="530" y="137" text-anchor="middle" fill="#888" font-size="9">creates reception #2</text>
+
+  <!-- Event 4: Reception #2 GOES THROUGH -->
+  <rect x="640" y="85" width="220" height="32" rx="8" fill="#3a1020" stroke="#e94560" stroke-width="2.5"/>
+  <text x="750" y="107" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">Reception #2 GOES THROUGH!</text>
+  <rect x="655" y="120" width="190" height="38" rx="6" fill="#e94560" fill-opacity="0.1" stroke="#e94560" stroke-width="1"/>
+  <text x="750" y="136" text-anchor="middle" fill="#e94560" font-size="9">constraint passes (nothing to check)</text>
+  <text x="750" y="151" text-anchor="middle" fill="#e94560" font-size="9" font-weight="bold">MO #2 created — TWO MOs!</text>
+
+  <text x="750" y="198" text-anchor="middle" fill="#e94560" font-size="16" font-weight="bold">!!</text>
+
+  <!-- State bar -->
+  <rect x="40" y="205" width="240" height="22" rx="5" fill="#4ecca3" fill-opacity="0.1" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="160" y="221" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">AVAILABLE</text>
+  <rect x="280" y="205" width="680" height="22" rx="5" fill="#f5a623" fill-opacity="0.1" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="620" y="221" text-anchor="middle" fill="#f5a623" font-size="9" font-weight="bold">SHOULD BE BLOCKED — but isn't (flowable_production_id = NULL)</text>
+  <text x="500" y="248" text-anchor="middle" fill="#666" font-size="9">TANK LOCATION STATE</text>
+
+  <!-- Bug #2 explanation -->
+  <rect x="60" y="265" width="880" height="75" rx="8" fill="#0f3460" fill-opacity="0.3" stroke="#f5a623" stroke-width="1"/>
+  <text x="500" y="285" text-anchor="middle" fill="#f5a623" font-size="12" font-weight="bold">Bug #2: blocking depends on production.action_assign() success inside picking._action_done()</text>
+  <text x="500" y="305" text-anchor="middle" fill="#ccc" font-size="10">Blocking is set inside stock.move.write() only when action_assign changes the raw move state.</text>
+  <text x="500" y="320" text-anchor="middle" fill="#ccc" font-size="10">If reservation fails → state doesn't change → write() not triggered → flowable_production_id stays NULL.</text>
+  <text x="500" y="335" text-anchor="middle" fill="#ccc" font-size="10">The constraint has nothing to enforce — flowable_blocked is False.</text>
+
+  <!-- Example case -->
+  <rect x="170" y="352" width="660" height="22" rx="4" fill="#0f3460" fill-opacity="0.4" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="500" y="368" text-anchor="middle" fill="#888" font-size="10">Example: Tank-A — PO/001 (2025-01-15) + PO/002 (2025-03-01) — MO 001 + MO 002</text>
+</svg>

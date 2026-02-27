@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="340" viewBox="0 0 1000 340">
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  </style>
+  <defs>
+    <marker id="ta" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555"/></marker>
+  </defs>
+  <rect width="1000" height="340" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="500" y="28" text-anchor="middle" fill="#4ecca3" font-size="18" font-weight="bold">Scenario 4: MO Completion — Location Unblocked</text>
+  <text x="500" y="50" text-anchor="middle" fill="#888" font-size="12">A PO was received, MO was created, tank is blocked. When the MO completes, the tank is unblocked for the next reception.</text>
+
+  <!-- Timeline -->
+  <line x1="40" y1="185" x2="960" y2="185" stroke="#555" stroke-width="2" marker-end="url(#ta)"/>
+  <text x="975" y="189" fill="#555" font-size="10">time</text>
+
+  <!-- Event markers -->
+  <circle cx="130" cy="185" r="5" fill="#3a86ff"/>
+  <circle cx="370" cy="185" r="5" fill="#f5a623"/>
+  <circle cx="620" cy="185" r="5" fill="#4ecca3"/>
+  <circle cx="860" cy="185" r="5" fill="#4ecca3"/>
+
+  <!-- Connector lines -->
+  <line x1="130" y1="148" x2="130" y2="180" stroke="#3a86ff" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="370" y1="148" x2="370" y2="180" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="620" y1="128" x2="620" y2="180" stroke="#4ecca3" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="860" y1="148" x2="860" y2="180" stroke="#4ecca3" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- Event 1: PO received + MO created -->
+  <rect x="40" y="95" width="180" height="50" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
+  <text x="130" y="115" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">PO Received</text>
+  <text x="130" y="133" text-anchor="middle" fill="#888" font-size="9">MO created, tank BLOCKED</text>
+
+  <!-- Event 2: MO processing -->
+  <rect x="280" y="100" width="180" height="45" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="370" y="120" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">MO Processing</text>
+  <text x="370" y="136" text-anchor="middle" fill="#888" font-size="9">mixing / consuming stock</text>
+
+  <!-- Event 3: MO done -->
+  <rect x="510" y="80" width="220" height="65" rx="8" fill="#0f3460" stroke="#4ecca3" stroke-width="2"/>
+  <text x="620" y="100" text-anchor="middle" fill="#4ecca3" font-size="12" font-weight="bold">MO Marked as Done</text>
+  <text x="620" y="118" text-anchor="middle" fill="#ccc" font-size="10">raw move state → "done"</text>
+  <text x="620" y="134" text-anchor="middle" fill="#ccc" font-size="10">stock.move.write() clears</text>
+  <text x="620" y="147" text-anchor="middle" fill="#4ecca3" font-size="10">flowable_production_id = NULL</text>
+
+  <!-- Event 4: Ready for next -->
+  <rect x="775" y="100" width="170" height="45" rx="8" fill="#0f3460" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="860" y="120" text-anchor="middle" fill="#4ecca3" font-size="11" font-weight="bold">Ready for Next PO</text>
+  <text x="860" y="136" text-anchor="middle" fill="#888" font-size="9">tank available again</text>
+
+  <!-- Location state bar -->
+  <rect x="40" y="203" width="90" height="25" rx="5" fill="#4ecca3" fill-opacity="0.1" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="85" y="220" text-anchor="middle" fill="#4ecca3" font-size="9">AVAIL</text>
+
+  <rect x="130" y="203" width="490" height="25" rx="5" fill="#e94560" fill-opacity="0.15" stroke="#e94560" stroke-width="2"/>
+  <text x="375" y="220" text-anchor="middle" fill="#e94560" font-size="10" font-weight="bold">BLOCKED (MO active)</text>
+
+  <rect x="620" y="203" width="340" height="25" rx="5" fill="#4ecca3" fill-opacity="0.1" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="790" y="220" text-anchor="middle" fill="#4ecca3" font-size="10" font-weight="bold">AVAILABLE</text>
+
+  <text x="500" y="250" text-anchor="middle" fill="#888" font-size="10">TANK LOCATION STATE</text>
+
+  <!-- Mechanism note -->
+  <rect x="150" y="270" width="700" height="40" rx="8" fill="#0f3460" fill-opacity="0.3" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="500" y="290" text-anchor="middle" fill="#888" font-size="10" font-weight="bold">Mechanism: stock.move.write() override detects raw move going to "done" or "cancel"</text>
+  <text x="500" y="305" text-anchor="middle" fill="#888" font-size="10">→ clears production.location_dest_id.flowable_production_id (the flowable location)</text>
+</svg>
