@@ -199,14 +199,9 @@ msgstr "Ordenes de producción"
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
 #, python-format
-msgid "More than one manufacturing code in picking type for flowable location %s"
-msgstr "Más de un código de fabricación en el tipo de operación para la ubicación fluida %s"
-
-#. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid "Not found sequence in manufacturing picking type %s for flowable location %s"
-msgstr "Secuencia no encontrada en el tipo de operación de fabricación %s para la ubicación fluida %s"
+msgid "More than one flowable manufacturing picking type in warehouse %s"
+msgstr ""
+"Más de un tipo de operación de fabricación fluida en el almacén %s"
 
 #. module: stock_location_flowable
 #: model_terms:ir.actions.act_window,help:stock_location_flowable.action_picking_tree_blocked
@@ -216,15 +211,27 @@ msgstr "No se encontró ninguna transferencia. ¡Creemos uno!"
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
 #, python-format
-msgid "Not found manufacturing picking type for flowable location %s to do flowable"
-" mixing in %s"
-msgstr "No se encontró el tipo de operación de producción para la ubicación fluida"
-" %s para realizar la mezcla fluida en %s"
+msgid "Not found flowable manufacturing picking type in warehouse %s"
+msgstr ""
+"No se encontró el tipo de operación de fabricación fluida en el almacén %s"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid "Not found sequence in flowable manufacturing picking type %s"
+msgstr ""
+"No se encontró secuencia en el tipo de operación de fabricación fluida %s"
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_picking_type.py:0
 #, python-format
-msgid "Only one picking type can be flowable in a warehouse %s.."
+msgid "Only manufacturing picking types can be flowable."
+msgstr "Solo los tipos de operación de fabricación pueden ser fluidos."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking_type.py:0
+#, python-format
+msgid "Only one picking type can be flowable in a warehouse %s."
 msgstr "Sólo un tipo de operación puede ser fluido en el almacén %s."
 
 #. module: stock_location_flowable
@@ -236,12 +243,6 @@ msgstr "Albarán"
 #: model:ir.model,name:stock_location_flowable.model_stock_picking_type
 msgid "Picking Type"
 msgstr "Tipo de albarán"
-
-#. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid "The allowed products %s cannot have different Unit of Measure than flowable location %s"
-msgstr "Los productos permitidos %s no pueden tener una unidad de medida diferente a la ubicación fluida %s"
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
@@ -281,12 +282,24 @@ msgid "Stock Move"
 msgstr "Movimiento de inventario"
 
 #. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid ""
+"The allowed products %s cannot have different Unit of Measure than flowable "
+"location %s"
+msgstr ""
+"Los productos permitidos %s no pueden tener una unidad de medida diferente a "
+"la ubicación fluida %s"
+
+#. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_move_line.py:0
 #, python-format
-msgid "The location %s is blocked. Probably you need to review the pending "
+msgid ""
+"The location %s is blocked. Probably you need to review the pending "
 "manufacturing orders related to this location"
-msgstr "La ubicación %s está bloqueada. Probablemente necesites revisar las"
-" órdenes de producción pendientes relacionadas con esta ubicación"
+msgstr ""
+"La ubicación %s está bloqueada. Probablemente necesites revisar las "
+"órdenes de producción pendientes relacionadas con esta ubicación"
 
 #. module: stock_location_flowable
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
@@ -296,16 +309,20 @@ msgstr "La ubicación está bloqueada."
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_location.py:0
 #, python-format
-msgid "The product %s is measured in %s. You can only assign products that have the"
-" allowed unit of measure"
-msgstr "El producto %s se mide en %s. Sólo puedes asignar productos que tengan la"
-" unidad de medida permitida"
+msgid ""
+"The product %s is measured in %s. You can only assign products that have the "
+"allowed unit of measure"
+msgstr ""
+"El producto %s se mide en %s. Sólo puedes asignar productos que tengan la "
+"unidad de medida permitida"
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_location.py:0
 #, python-format
-msgid "This location is blocked because it has a manufacturing order assigned."
-msgstr "Esta ubicación está bloqueada porque tiene una orden de producción asignada."
+msgid ""
+"This location is blocked because it has a manufacturing order assigned."
+msgstr ""
+"Esta ubicación está bloqueada porque tiene una orden de producción asignada."
 
 #. module: stock_location_flowable
 #: model:ir.model,name:stock_location_flowable.model_stock_picking
@@ -331,32 +348,51 @@ msgstr "Origen desconocido (movimiento %s)"
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
 #, python-format
-msgid "You can only receive one product at location %s because a manufacturing "
+msgid ""
+"You can only receive one product at location %s because a manufacturing "
 "order must be generated and the location will be blocked. Create a partial "
 "delivery for this product %s."
-msgstr "Solo puedes recibir un producto en la ubicación %s porque se debe generar"
-" una orden de producción y la ubicación será bloqueada. Crea una entrega parcial"
-" para este producto %s."
+msgstr ""
+"Solo puedes recibir un producto en la ubicación %s porque se debe generar "
+"una orden de producción y la ubicación será bloqueada. Crea una entrega "
+"parcial para este producto %s."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"You cannot cancel a production with a picking associated. The mixing is in "
+"progress."
+msgstr ""
+"No se puede cancelar una producción que tenga un albarán asociado. La mezcla "
+"está en curso."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid ""
+"You cannot convert this location into a flowable location because there are "
+"products with different units of measure."
+msgstr ""
+"No puedes convertir esta ubicación en una ubicación fluida porque hay "
+"productos con diferentes unidades de medida."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_location.py:0
+#, python-format
+msgid ""
+"You cannot convert this location into a flowable location because there are "
+"unmixed products."
+msgstr ""
+"No puedes convertir esta ubicación en una ubicación fluida porque hay "
+"productos sin mezclar."
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_location.py:0
 #, python-format
 msgid "You cannot disable flowable storage from a blocked location."
-msgstr "No puedes deshabilitar el almacenamiento fluido de una ubicación bloqueada"
-
-#. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/mrp_production.py:0
-#, python-format
-msgid "You cannot cancel a production with a picking associated. The mixing is in progress."
-msgstr "No se puede cancelar una producción que tenga un albarán asociado. La mezcla está en curso."
-
-#. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
-msgid "You cannot convert this location into a flowable location because there are "
-"unmixed products or products with different units of measure."
-msgstr "No puedes convertir esta ubicación en una ubicación fluida porque hay "
-"productos sin mezclar o productos con diferentes unidades de medida."
+msgstr ""
+"No puedes deshabilitar el almacenamiento fluido de una ubicación bloqueada"
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_quant.py:0
@@ -366,22 +402,42 @@ msgstr "No se puede tener más de un lote en la misma ubicación."
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"You cannot modify a mix production with a picking associated. The mixing is "
+"in progress."
+msgstr ""
+"No se puede modificar una producción de mezcla que tenga un albarán "
+"asociado. La mezcla está en curso."
+
+#. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_move.py:0
 #, python-format
-msgid "You cannot modify a mix production with a picking associated. The mixing is in progress."
-msgstr "No se puede modificar una producción de mezcla que tenga un albarán asociado. La mezcla está en curso."
+msgid ""
+"You cannot modify a production with a picking associated. The mixing is in "
+"progress."
+msgstr ""
+"No se puede modificar una producción que tenga un albarán asociado. La "
+"mezcla está en curso."
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_location.py:0
 #, python-format
-msgid "You cannot remove a product that is currently stored in this location."
-msgstr "No puedes eliminar un producto que esté actualmente almacenado en esta ubicación."
+msgid ""
+"You cannot remove a product that is currently stored in this location."
+msgstr ""
+"No puedes eliminar un producto que esté actualmente almacenado en esta "
+"ubicación."
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_return_picking.py:0
 #, python-format
-msgid "You cannot return the product %s because it comes from a flowable location %s."
-msgstr "No puedes devolver el producto %s porque proviene de una ubicación fluida %s."
+msgid ""
+"You cannot return the following products because they come from a flowable "
+"location: %s"
+msgstr ""
+"No puedes devolver los siguientes productos porque provienen de una "
+"ubicación fluida: %s"
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_location.py:0
