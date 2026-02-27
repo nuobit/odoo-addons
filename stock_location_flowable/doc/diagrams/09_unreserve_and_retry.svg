@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420">
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  </style>
+  <defs>
+    <marker id="ta" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555"/></marker>
+  </defs>
+  <rect width="1000" height="420" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="500" y="28" text-anchor="middle" fill="#4ecca3" font-size="18" font-weight="bold">Scenario 9 — User Unreserves Outgoing Operations, Retries Reception</text>
+  <text x="500" y="50" text-anchor="middle" fill="#888" font-size="12">After Scenario 8: user goes to the listed operations, unreserves them, and retries the reception.</text>
+  <text x="500" y="68" text-anchor="middle" fill="#4ecca3" font-size="12">All quants now available. action_assign() succeeds, post-check passes, location blocked.</text>
+
+  <!-- Timeline -->
+  <line x1="40" y1="195" x2="960" y2="195" stroke="#555" stroke-width="2" marker-end="url(#ta)"/>
+
+  <circle cx="120" cy="195" r="5" fill="#e94560"/>
+  <circle cx="310" cy="195" r="5" fill="#f5a623"/>
+  <circle cx="500" cy="195" r="5" fill="#f5a623"/>
+  <circle cx="680" cy="195" r="5" fill="#4ecca3"/>
+  <circle cx="900" cy="195" r="5" fill="#4ecca3"/>
+
+  <line x1="120" y1="130" x2="120" y2="190" stroke="#e94560" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="310" y1="130" x2="310" y2="190" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="500" y1="130" x2="500" y2="190" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="680" y1="113" x2="680" y2="190" stroke="#4ecca3" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="900" y1="148" x2="900" y2="190" stroke="#4ecca3" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- Event 1: Reception rolled back (from Scenario 8) -->
+  <rect x="35" y="90" width="170" height="37" rx="8" fill="#3a1020" stroke="#e94560" stroke-width="2"/>
+  <text x="120" y="108" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">Reception ROLLED BACK</text>
+  <text x="120" y="123" text-anchor="middle" fill="#ff8a8a" font-size="9">partial reservation detected</text>
+
+  <!-- Event 2: User unreserves transfer 1 -->
+  <rect x="215" y="90" width="190" height="37" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="2"/>
+  <text x="310" y="108" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">Unreserve INT/00001</text>
+  <text x="310" y="123" text-anchor="middle" fill="#888" font-size="9">user unreserves manually</text>
+
+  <!-- Event 3: User unreserves transfer 2 -->
+  <rect x="405" y="90" width="190" height="37" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="2"/>
+  <text x="500" y="108" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">Unreserve INT/00002</text>
+  <text x="500" y="123" text-anchor="middle" fill="#888" font-size="9">user unreserves manually</text>
+
+  <!-- Event 4: Retry reception — succeeds -->
+  <rect x="600" y="78" width="160" height="32" rx="8" fill="#0f3460" stroke="#4ecca3" stroke-width="2"/>
+  <text x="680" y="99" text-anchor="middle" fill="#4ecca3" font-size="11" font-weight="bold">Retry Reception</text>
+  <rect x="608" y="113" width="145" height="32" rx="5" fill="#4ecca3" fill-opacity="0.25" stroke="#4ecca3" stroke-width="2"/>
+  <text x="680" y="128" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">action_assign OK</text>
+  <text x="680" y="141" text-anchor="middle" fill="#4ecca3" font-size="9">post-check passes, BLOCKED</text>
+
+  <!-- Event 5: MO processing -->
+  <rect x="830" y="105" width="140" height="40" rx="8" fill="#0f3460" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="900" y="122" text-anchor="middle" fill="#4ecca3" font-size="10" font-weight="bold">MO Processing</text>
+  <text x="900" y="139" text-anchor="middle" fill="#888" font-size="9">fully reserved</text>
+
+  <!-- State bar: segment 1 — has reservations -->
+  <rect x="40" y="220" width="460" height="22" rx="5" fill="#f5a623" fill-opacity="0.15" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="270" y="236" text-anchor="middle" fill="#f5a623" font-size="9" font-weight="bold">HAS RESERVATIONS — action_assign would fail</text>
+
+  <!-- State bar: segment 2 — all available -->
+  <rect x="500" y="220" width="180" height="22" rx="5" fill="#4ecca3" fill-opacity="0.1" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="590" y="236" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">ALL AVAILABLE</text>
+
+  <!-- State bar: segment 3 — blocked -->
+  <rect x="680" y="220" width="280" height="22" rx="5" fill="#e94560" fill-opacity="0.15" stroke="#e94560" stroke-width="2"/>
+  <text x="820" y="236" text-anchor="middle" fill="#e94560" font-size="9" font-weight="bold">BLOCKED (MO)</text>
+
+  <text x="500" y="260" text-anchor="middle" fill="#666" font-size="9">TANK LOCATION STATE</text>
+
+  <!-- Step-by-step explanation -->
+  <rect x="60" y="278" width="880" height="105" rx="8" fill="#0f3460" fill-opacity="0.3" stroke="#4ecca3" stroke-width="1"/>
+  <text x="500" y="298" text-anchor="middle" fill="#4ecca3" font-size="12" font-weight="bold">User workflow after the error</text>
+
+  <text x="80" y="318" fill="#ccc" font-size="11">1. Read the error message — it lists each operation and reserved quantity</text>
+  <text x="80" y="336" fill="#ccc" font-size="11">2. Go to each listed picking/operation → click "Unreserve" to release the quants</text>
+  <text x="80" y="354" fill="#ccc" font-size="11">3. Return to the reception picking → click "Validate" again</text>
+  <text x="80" y="372" fill="#ccc" font-size="11">4. action_assign() succeeds → post-check passes → location BLOCKED</text>
+
+  <!-- Bottom note -->
+  <rect x="150" y="393" width="700" height="20" rx="4" fill="#0f3460" fill-opacity="0.4" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="500" y="407" text-anchor="middle" fill="#888" font-size="10">Old lot reservations become obsolete after the merge — the new lot replaces them all</text>
+</svg>

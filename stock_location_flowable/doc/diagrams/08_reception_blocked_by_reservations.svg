@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420">
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  </style>
+  <defs>
+    <marker id="ta" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#555"/></marker>
+  </defs>
+  <rect width="1000" height="420" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="500" y="28" text-anchor="middle" fill="#f5a623" font-size="18" font-weight="bold">Scenario 8 — Reception Rolled Back: action_assign Fails Due to Reservations</text>
+  <text x="500" y="50" text-anchor="middle" fill="#888" font-size="12">Tank has stock. Internal transfers reserved part of it. PO reception validates, MO created.</text>
+  <text x="500" y="68" text-anchor="middle" fill="#f5a623" font-size="12">action_assign() can't fully reserve → post-check raises UserError → entire transaction rolls back.</text>
+
+  <!-- Timeline -->
+  <line x1="40" y1="195" x2="960" y2="195" stroke="#555" stroke-width="2" marker-end="url(#ta)"/>
+
+  <circle cx="100" cy="195" r="5" fill="#3a86ff"/>
+  <circle cx="300" cy="195" r="5" fill="#4ecca3"/>
+  <circle cx="520" cy="195" r="5" fill="#f5a623"/>
+  <circle cx="750" cy="195" r="5" fill="#3a86ff"/>
+  <circle cx="900" cy="195" r="5" fill="#e94560"/>
+
+  <line x1="100" y1="148" x2="100" y2="190" stroke="#3a86ff" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="300" y1="120" x2="300" y2="190" stroke="#4ecca3" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="520" y1="120" x2="520" y2="190" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="750" y1="148" x2="750" y2="190" stroke="#3a86ff" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="900" y1="120" x2="900" y2="190" stroke="#e94560" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- Event 1: Previous MO done -->
+  <rect x="25" y="100" width="150" height="45" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
+  <text x="100" y="118" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">Previous MO Done</text>
+  <text x="100" y="137" text-anchor="middle" fill="#888" font-size="9">tank has stock, unblocked</text>
+
+  <!-- Event 2: Internal transfers reserve some quants -->
+  <rect x="195" y="88" width="210" height="30" rx="8" fill="#0f3460" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="300" y="108" text-anchor="middle" fill="#4ecca3" font-size="11" font-weight="bold">Internal Transfer Created</text>
+  <rect x="210" y="120" width="180" height="32" rx="5" fill="#f5a623" fill-opacity="0.15" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="300" y="136" text-anchor="middle" fill="#f5a623" font-size="9" font-weight="bold">reserves 6,949 kg from tank</text>
+  <text x="300" y="149" text-anchor="middle" fill="#888" font-size="8">WH/INT/00001</text>
+
+  <!-- Event 3: Another transfer reserves more -->
+  <rect x="420" y="88" width="200" height="30" rx="8" fill="#0f3460" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="520" y="108" text-anchor="middle" fill="#4ecca3" font-size="11" font-weight="bold">Another Transfer Created</text>
+  <rect x="435" y="120" width="170" height="32" rx="5" fill="#f5a623" fill-opacity="0.15" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="520" y="136" text-anchor="middle" fill="#f5a623" font-size="9" font-weight="bold">reserves 3,500 kg from tank</text>
+  <text x="520" y="149" text-anchor="middle" fill="#888" font-size="8">WH/INT/00002</text>
+
+  <!-- Event 4: New PO -->
+  <rect x="680" y="100" width="140" height="45" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
+  <text x="750" y="118" text-anchor="middle" fill="#3a86ff" font-size="11" font-weight="bold">New PO Reception</text>
+  <text x="750" y="137" text-anchor="middle" fill="#888" font-size="9">validates, MO created</text>
+
+  <!-- Event 5: action_assign fails, post-check rolls back -->
+  <rect x="810" y="82" width="180" height="35" rx="8" fill="#3a1020" stroke="#e94560" stroke-width="2.5"/>
+  <text x="900" y="105" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">ROLLED BACK</text>
+  <rect x="815" y="120" width="170" height="52" rx="6" fill="#e94560" fill-opacity="0.1" stroke="#e94560" stroke-width="1"/>
+  <text x="900" y="136" text-anchor="middle" fill="#e94560" font-size="9" font-weight="bold">action_assign partial →</text>
+  <text x="900" y="149" text-anchor="middle" fill="#ff8a8a" font-size="8">- 6,949 kg (INT/00001)</text>
+  <text x="900" y="161" text-anchor="middle" fill="#ff8a8a" font-size="8">- 3,500 kg (INT/00002)</text>
+  <text x="900" y="208" text-anchor="middle" fill="#e94560" font-size="18" font-weight="bold">X</text>
+
+  <!-- State bar -->
+  <rect x="40" y="220" width="960" height="22" rx="5" fill="#4ecca3" fill-opacity="0.1" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="520" y="236" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">AVAILABLE (not blocked) — has 10,449 kg reserved by outgoing transfers</text>
+  <text x="500" y="260" text-anchor="middle" fill="#666" font-size="9">TANK LOCATION STATE (unchanged — transaction rolled back)</text>
+
+  <!-- Quant visualization -->
+  <rect x="60" y="278" width="880" height="95" rx="8" fill="#0f3460" fill-opacity="0.3" stroke="#f5a623" stroke-width="1"/>
+  <text x="500" y="298" text-anchor="middle" fill="#f5a623" font-size="12" font-weight="bold">Tank quant state at time of action_assign</text>
+
+  <rect x="100" y="310" width="400" height="24" rx="4" fill="#4ecca3" fill-opacity="0.2" stroke="#4ecca3" stroke-width="1"/>
+  <text x="300" y="326" text-anchor="middle" fill="#4ecca3" font-size="10">22,000 kg available</text>
+
+  <rect x="500" y="310" width="170" height="24" rx="4" fill="#f5a623" fill-opacity="0.3" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="585" y="326" text-anchor="middle" fill="#f5a623" font-size="10">6,949 kg (INT/00001)</text>
+
+  <rect x="670" y="310" width="120" height="24" rx="4" fill="#f5a623" fill-opacity="0.3" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="730" y="326" text-anchor="middle" fill="#f5a623" font-size="10">3,500 kg (INT/00002)</text>
+
+  <text x="500" y="356" text-anchor="middle" fill="#888" font-size="10">quantity_to_prod = 32,449 — but action_assign can only reserve 22,000 (available)</text>
+  <text x="500" y="370" text-anchor="middle" fill="#e94560" font-size="10">Post-check detects partial reservation → UserError → entire _action_done() rolls back</text>
+
+  <!-- Bottom note -->
+  <rect x="200" y="390" width="600" height="20" rx="4" fill="#0f3460" fill-opacity="0.4" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="500" y="404" text-anchor="middle" fill="#888" font-size="10">User must unreserve INT/00001 and INT/00002 first — see Scenario 9</text>
+</svg>
