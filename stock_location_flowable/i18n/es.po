@@ -88,6 +88,16 @@ msgid "Count Picking Blocked"
 msgstr "Conteo de Albarán Bloqueado"
 
 #. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Initial reception at flowable location '%s' for product '%s': expected 1 "
+"positive quant (empty tank) but found %d."
+msgstr ""
+"Recepción inicial en la ubicación fluida '%s' para el producto '%s': se "
+"esperaba 1 quant positivo (tanque vacío) pero se encontraron %d."
+
+#. module: stock_location_flowable
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__create_lots
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
 msgid "Create Lots"
@@ -207,6 +217,27 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:stock_location_flowable.action_picking_tree_blocked
 msgid "No transfer found. Let's create one!"
 msgstr "No se encontró ninguna transferencia. ¡Creemos uno!"
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Mixing reception at flowable location '%s' for product '%s': expected 2 "
+"positive quants but found %d."
+msgstr ""
+"Recepción de mezcla en la ubicación fluida '%s' para el producto '%s': se "
+"esperaban 2 quants positivos pero se encontraron %d."
+
+#. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Mixing reception at flowable location '%s' for product '%s': expected "
+"exactly 1 quant for the received lot '%s' but found %d."
+msgstr ""
+"Recepción de mezcla en la ubicación fluida '%s' para el producto '%s': se "
+"esperaba exactamente 1 quant para el lote recibido '%s' pero se encontraron "
+"%d."
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/stock_picking.py:0

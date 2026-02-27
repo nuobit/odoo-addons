@@ -189,6 +189,9 @@ class StockPicking(models.Model):
                         ("company_id", "=", rec.company_id.id),
                     ]
                 )
+                rec._check_flowable_quant_count(
+                    component_quant, location_dest, product, lot
+                )
                 quantity_to_prod = sum(component_quant.mapped("quantity"))
                 production = rec.env["mrp.production"].create(
                     rec._prepare_production_values(
@@ -221,3 +224,36 @@ class StockPicking(models.Model):
                 production.action_assign()
                 production.qty_producing = quantity_to_prod
         return res
+
+    def _check_flowable_quant_count(self, quants, location, product, lot):
+        is_initial = all(q.lot_id == lot for q in quants)
+        if is_initial:
+            if len(quants) != 1:
+                raise UserError(
+                    _(
+                        "Initial reception at flowable location '%s'"
+                        " for product '%s': expected 1 positive quant"
+                        " (empty tank) but found %d."
+                    )
+                    % (location.name, product.name, len(quants))
+                )
+        else:
+            if len(quants) != 2:
+                raise UserError(
+                    _(
+                        "Mixing reception at flowable location '%s'"
+                        " for product '%s': expected 2 positive quants"
+                        " but found %d."
+                    )
+                    % (location.name, product.name, len(quants))
+                )
+            received = quants.filtered(lambda q: q.lot_id == lot)
+            if len(received) != 1:
+                raise UserError(
+                    _(
+                        "Mixing reception at flowable location '%s'"
+                        " for product '%s': expected exactly 1 quant"
+                        " for the received lot '%s' but found %d."
+                    )
+                    % (location.name, product.name, lot.name, len(received))
+                )
