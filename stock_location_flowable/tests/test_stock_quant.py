@@ -28,38 +28,13 @@ class TestStockQuant(TestCommon):
         POST:   - ValidationError is raised about duplicate lots
         """
         # ARRANGE — first lot via inventory adjustment
-        lot_1 = self.env["stock.production.lot"].create(
-            {
-                "name": "QUANT-LOT-1",
-                "product_id": self.product_flowable_1.id,
-            }
+        lot_1 = self._create_lot(self.product_flowable_1, "QUANT-LOT-1")
+        self._create_inventory_adjustment(
+            self.location_flowable_1, self.product_flowable_1, lot_1, 100
         )
-
-        inventory_1 = self.env["stock.inventory"].create(
-            {
-                "name": "Add first lot",
-            }
-        )
-        inventory_1.action_start()
-        self.env["stock.inventory.line"].create(
-            {
-                "inventory_id": inventory_1.id,
-                "product_id": self.product_flowable_1.id,
-                "product_uom_id": self.product_flowable_1.uom_id.id,
-                "location_id": self.location_flowable_1.id,
-                "prod_lot_id": lot_1.id,
-                "product_qty": 100,
-            }
-        )
-        inventory_1.action_validate()
 
         # ACT — second lot via inventory adjustment
-        lot_2 = self.env["stock.production.lot"].create(
-            {
-                "name": "QUANT-LOT-2",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_2 = self._create_lot(self.product_flowable_1, "QUANT-LOT-2")
 
         inventory_2 = self.env["stock.inventory"].create(
             {

@@ -5,7 +5,6 @@
 import logging
 
 from odoo.exceptions import UserError, ValidationError
-from odoo.tests import common
 from odoo.tools import float_compare, float_round
 
 from .test_common import TestCommon
@@ -45,71 +44,6 @@ class TestMrpProduction(TestCommon):
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
-    def _create_flowable_picking_and_validate(self, location, product, lot, qty):
-        """Helper to create and validate an incoming picking to a flowable location."""
-        return self._receive_stock_at_location(location, product, lot, qty)
-
-    def _receive_stock_at_location(
-        self, location, product, lot, qty, picking_type=None
-    ):
-        """Helper to create and validate an incoming picking to any location."""
-        if picking_type is None:
-            picking_type = self.picking_type_incoming_1
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": picking_type.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": location.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": qty,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
-                "location_dest_id": location.id,
-                "company_id": self.env.company.id,
-            }
-        )
-        picking.button_validate()
-        return picking
-
-    def _find_flowable_production(self, location):
-        """Helper to find the latest flowable MO for a location."""
-        return self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", location.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
-
-    def _get_location_quants(self, location, product):
-        """Helper to get all quants at a location for a product."""
-        return self.env["stock.quant"].search(
-            [
-                ("location_id", "=", location.id),
-                ("product_id", "=", product.id),
-            ]
-        )
-
-    def _seed_flowable_location(self, location, product, lot, qty):
-        """Receive initial stock at a flowable location and complete the resulting MO.
-
-        This simulates how a user would put initial stock into a flowable
-        location: receiving via an incoming picking, which triggers the
-        creation of a mixing MO, and then completing that MO so the
-        location is unblocked and ready for the actual test.
-        """
-        self._receive_stock_at_location(location, product, lot, qty)
-        production = self._find_flowable_production(location)
-        if production:
-            production.button_mark_done()
-
     def test_flowable_mixing_produces_single_positive_quant(self):
         """
         Test that after completing a mixing MO, the flowable location has
@@ -123,25 +57,15 @@ class TestMrpProduction(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_initial = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-INITIAL-LOT",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_initial = self._create_lot(self.product_flowable_1, "TEST-INITIAL-LOT")
         self._seed_flowable_location(
             self.location_flowable_1, self.product_flowable_1, lot_initial, 100
         )
 
-        lot_new = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-NEW-LOT",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_new = self._create_lot(self.product_flowable_1, "TEST-NEW-LOT")
 
         # ACT
-        self._create_flowable_picking_and_validate(
+        self._receive_stock(
             self.location_flowable_1, self.product_flowable_1, lot_new, 50
         )
         production = self._find_flowable_production(self.location_flowable_1)
@@ -173,15 +97,10 @@ class TestMrpProduction(TestCommon):
         quantities = [50, 30, 45, 25, 20]
 
         for i, qty in enumerate(quantities):
-            lot = self.env["stock.production.lot"].create(
-                {
-                    "name": f"TEST-MULTI-LOT-{i}",
-                    "product_id": self.product_flowable_1.id,
-                }
-            )
+            lot = self._create_lot(self.product_flowable_1, f"TEST-MULTI-LOT-{i}")
 
             # ACT
-            self._create_flowable_picking_and_validate(
+            self._receive_stock(
                 self.location_flowable_1, self.product_flowable_1, lot, qty
             )
             production = self._find_flowable_production(self.location_flowable_1)
@@ -216,25 +135,15 @@ class TestMrpProduction(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_initial = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-EXACT-ZERO-OLD",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_initial = self._create_lot(self.product_flowable_1, "TEST-EXACT-ZERO-OLD")
         self._seed_flowable_location(
             self.location_flowable_1, self.product_flowable_1, lot_initial, 100
         )
 
-        lot_new = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-EXACT-ZERO-NEW",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_new = self._create_lot(self.product_flowable_1, "TEST-EXACT-ZERO-NEW")
 
         # ACT
-        self._create_flowable_picking_and_validate(
+        self._receive_stock(
             self.location_flowable_1, self.product_flowable_1, lot_new, 50
         )
         production = self._find_flowable_production(self.location_flowable_1)
@@ -268,25 +177,15 @@ class TestMrpProduction(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_initial = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-FRAC-INITIAL",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_initial = self._create_lot(self.product_flowable_1, "TEST-FRAC-INITIAL")
         self._seed_flowable_location(
             self.location_flowable_1, self.product_flowable_1, lot_initial, 33.333
         )
 
-        lot_new = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-FRAC-NEW",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_new = self._create_lot(self.product_flowable_1, "TEST-FRAC-NEW")
 
         # ACT
-        self._create_flowable_picking_and_validate(
+        self._receive_stock(
             self.location_flowable_1, self.product_flowable_1, lot_new, 16.667
         )
         production = self._find_flowable_production(self.location_flowable_1)
@@ -312,36 +211,19 @@ class TestMrpProduction(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        lot_initial = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-NONFLO-INITIAL",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_initial = self._create_lot(self.product_flowable_1, "TEST-NONFLO-INITIAL")
         self._seed_flowable_location(
             self.location_flowable_1, self.product_flowable_1, lot_initial, 100
         )
 
         # Stock at non-flowable location
-        lot_other = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-NONFLO-OTHER",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
-        self._receive_stock_at_location(
-            self.location_1, self.product_flowable_1, lot_other, 200
-        )
+        lot_other = self._create_lot(self.product_flowable_1, "TEST-NONFLO-OTHER")
+        self._receive_stock(self.location_1, self.product_flowable_1, lot_other, 200)
 
-        lot_new = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-NONFLO-NEW",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_new = self._create_lot(self.product_flowable_1, "TEST-NONFLO-NEW")
 
         # ACT
-        self._create_flowable_picking_and_validate(
+        self._receive_stock(
             self.location_flowable_1, self.product_flowable_1, lot_new, 50
         )
         production = self._find_flowable_production(self.location_flowable_1)
@@ -375,25 +257,15 @@ class TestMrpProduction(TestCommon):
         self.picking_type_mrp_operation_1.flowable_operation = True
         rounding = self.product_flowable_1.uom_id.rounding
 
-        lot_initial = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-ROUND-INITIAL",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_initial = self._create_lot(self.product_flowable_1, "TEST-ROUND-INITIAL")
         self._seed_flowable_location(
             self.location_flowable_1, self.product_flowable_1, lot_initial, 100
         )
 
-        lot_new = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-ROUND-NEW",
-                "product_id": self.product_flowable_1.id,
-            }
-        )
+        lot_new = self._create_lot(self.product_flowable_1, "TEST-ROUND-NEW")
 
         # ACT
-        self._create_flowable_picking_and_validate(
+        self._receive_stock(
             self.location_flowable_1, self.product_flowable_1, lot_new, 50
         )
         production = self._find_flowable_production(self.location_flowable_1)
@@ -473,12 +345,7 @@ class TestMrpProduction(TestCommon):
             kg_delivery_1 / 1.141, precision_rounding=rounding
         )  # 576.626
 
-        lot_initial = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-O2-INITIAL",
-                "product_id": product_o2.id,
-            }
-        )
+        lot_initial = self._create_lot(product_o2, "TEST-O2-INITIAL")
         self.picking_type_mrp_operation_1.flowable_operation = True
 
         self._seed_flowable_location(
@@ -491,18 +358,13 @@ class TestMrpProduction(TestCommon):
             kg_delivery_2 / 1.141, precision_rounding=rounding
         )  # 511.139
 
-        lot_new = self.env["stock.production.lot"].create(
-            {
-                "name": "TEST-O2-NEW",
-                "product_id": product_o2.id,
-            }
-        )
+        lot_new = self._create_lot(product_o2, "TEST-O2-NEW")
 
         # ACT: Receive at the cistern
         picking = self.env["stock.picking"].create(
             {
                 "picking_type_id": self.picking_type_incoming_1.id,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": location_cistern.id,
             }
         )
@@ -513,7 +375,7 @@ class TestMrpProduction(TestCommon):
                 "product_uom_id": uom_litro_o2.id,
                 "lot_id": lot_new.id,
                 "qty_done": litres_2,
-                "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                "location_id": self.supplier_location.id,
                 "location_dest_id": location_cistern.id,
                 "company_id": self.env.company.id,
             }
@@ -521,14 +383,7 @@ class TestMrpProduction(TestCommon):
         picking.button_validate()
 
         # Find and complete the mixing MO
-        production = self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp_operation_1.id),
-                ("location_dest_id", "=", location_cistern.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
+        production = self._find_flowable_production(location_cistern)
         self.assertTrue(production, "Mixing MO should have been created")
         production.button_mark_done()
 
@@ -622,17 +477,12 @@ class TestMrpProduction(TestCommon):
         for i, kg in enumerate(kg_deliveries):
             litres = float_round(kg / 1.141, precision_rounding=rounding)
 
-            lot = self.env["stock.production.lot"].create(
-                {
-                    "name": f"TEST-O2-MULTI-{i}",
-                    "product_id": product_o2.id,
-                }
-            )
+            lot = self._create_lot(product_o2, f"TEST-O2-MULTI-{i}")
 
             picking = self.env["stock.picking"].create(
                 {
                     "picking_type_id": self.picking_type_incoming_1.id,
-                    "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                    "location_id": self.supplier_location.id,
                     "location_dest_id": location_cistern.id,
                 }
             )
@@ -643,25 +493,14 @@ class TestMrpProduction(TestCommon):
                     "product_uom_id": uom_litro_o2.id,
                     "lot_id": lot.id,
                     "qty_done": litres,
-                    "location_id": self.env.ref("stock.stock_location_suppliers").id,
+                    "location_id": self.supplier_location.id,
                     "location_dest_id": location_cistern.id,
                     "company_id": self.env.company.id,
                 }
             )
             picking.button_validate()
 
-            production = self.env["mrp.production"].search(
-                [
-                    (
-                        "picking_type_id",
-                        "=",
-                        self.picking_type_mrp_operation_1.id,
-                    ),
-                    ("location_dest_id", "=", location_cistern.id),
-                ],
-                order="id desc",
-                limit=1,
-            )
+            production = self._find_flowable_production(location_cistern)
             self.assertTrue(
                 production, f"Mixing MO should be created on delivery {i + 1}"
             )
@@ -832,32 +671,10 @@ class TestMrpProduction(TestCommon):
         self.assertTrue(production)
 
 
-class TestFlowableBlockingWithReservations(common.SavepointCase):
+class TestFlowableBlockingWithReservations(TestCommon):
     @classmethod
     def setUpClass(cls):
         super(TestFlowableBlockingWithReservations, cls).setUpClass()
-
-        cls.picking_type_incoming = cls.env["stock.picking.type"].create(
-            {
-                "name": "TestReceipt",
-                "sequence_code": "SEQ-TEST-IN",
-                "code": "incoming",
-                "default_location_dest_id": cls.env.ref(
-                    "stock.stock_location_locations_partner"
-                ).id,
-            }
-        )
-
-        cls.picking_type_outgoing = cls.env["stock.picking.type"].create(
-            {
-                "name": "TestDelivery",
-                "sequence_code": "SEQ-TEST-OUT",
-                "code": "outgoing",
-                "default_location_src_id": cls.env.ref(
-                    "stock.stock_location_locations_partner"
-                ).id,
-            }
-        )
 
         cls.picking_type_mrp = cls.env["stock.picking.type"].create(
             {
@@ -865,16 +682,6 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
                 "sequence_code": "SEQ-TEST-MRP",
                 "code": "mrp_operation",
                 "flowable_operation": True,
-            }
-        )
-
-        cls.product = cls.env["product.product"].create(
-            {
-                "name": "TestOxygen",
-                "type": "product",
-                "uom_id": cls.env.ref("uom.product_uom_litre").id,
-                "uom_po_id": cls.env.ref("uom.product_uom_litre").id,
-                "tracking": "lot",
             }
         )
 
@@ -886,63 +693,9 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
                 "flowable_storage": True,
                 "flowable_capacity": 15000,
                 "flowable_uom_id": cls.env.ref("uom.product_uom_litre").id,
-                "flowable_allowed_product_ids": [(4, cls.product.id)],
+                "flowable_allowed_product_ids": [(4, cls.product_flowable_1.id)],
             }
         )
-
-        cls.supplier_location = cls.env.ref("stock.stock_location_suppliers")
-        cls.customer_location = cls.env.ref("stock.stock_location_customers")
-
-    def _receive_stock(self, location, product, lot, qty):
-        picking = self.env["stock.picking"].create(
-            {
-                "picking_type_id": self.picking_type_incoming.id,
-                "location_id": self.supplier_location.id,
-                "location_dest_id": location.id,
-            }
-        )
-        self.env["stock.move.line"].create(
-            {
-                "picking_id": picking.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "lot_id": lot.id,
-                "qty_done": qty,
-                "location_id": self.supplier_location.id,
-                "location_dest_id": location.id,
-                "company_id": self.env.company.id,
-            }
-        )
-        picking.button_validate()
-        return picking
-
-    def _find_flowable_production(self, location):
-        return self.env["mrp.production"].search(
-            [
-                ("picking_type_id", "=", self.picking_type_mrp.id),
-                ("location_dest_id", "=", location.id),
-            ],
-            order="id desc",
-            limit=1,
-        )
-
-    def _get_location_quants(self, location, product):
-        return self.env["stock.quant"].search(
-            [
-                ("location_id", "=", location.id),
-                ("product_id", "=", product.id),
-            ]
-        )
-
-    def _get_positive_quantity(self, location, product):
-        quants = self._get_location_quants(location, product)
-        return sum(quants.filtered(lambda q: q.quantity > 0).mapped("quantity"))
-
-    def _seed_flowable_location(self, location, product, lot, qty):
-        self._receive_stock(location, product, lot, qty)
-        production = self._find_flowable_production(location)
-        if production:
-            production.button_mark_done()
 
     def _create_sale_picking(
         self,
@@ -953,11 +706,12 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
         reserve=True,
         unreserve=False,
     ):
+        customer_location = self.env.ref("stock.stock_location_customers")
         picking = self.env["stock.picking"].create(
             {
-                "picking_type_id": self.picking_type_outgoing.id,
+                "picking_type_id": self.picking_type_outgoing_1.id,
                 "location_id": location.id,
-                "location_dest_id": self.customer_location.id,
+                "location_dest_id": customer_location.id,
             }
         )
         self.env["stock.move"].create(
@@ -968,7 +722,7 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
                 "product_uom": product.uom_id.id,
                 "product_uom_qty": qty,
                 "location_id": location.id,
-                "location_dest_id": self.customer_location.id,
+                "location_dest_id": customer_location.id,
             }
         )
         picking.action_confirm()
@@ -999,28 +753,30 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
                   (the only ones with active reservations)
         """
         # ARRANGE
-        lot_x1 = self.env["stock.production.lot"].create(
-            {
-                "name": "X1",
-                "product_id": self.product.id,
-            }
+        lot_x1 = self._create_lot(self.product_flowable_1, "X1")
+        self._seed_flowable_location(
+            self.location_fl1,
+            self.product_flowable_1,
+            lot_x1,
+            7000,
+            mrp_picking_type=self.picking_type_mrp,
         )
-        self._seed_flowable_location(self.location_fl1, self.product, lot_x1, 7000)
         self.assertEqual(
-            self._get_positive_quantity(self.location_fl1, self.product), 7000
+            self._get_positive_quantity(self.location_fl1, self.product_flowable_1),
+            7000,
         )
         self.assertFalse(self.location_fl1.flowable_blocked)
 
         # Sale 1: 100 L of X1, confirmed + reserved (assigned)
         sale_picking_1 = self._create_sale_picking(
-            self.location_fl1, self.product, "Sale 1 - X1 100L", 100
+            self.location_fl1, self.product_flowable_1, "Sale 1 - X1 100L", 100
         )
         self.assertEqual(sale_picking_1.state, "assigned")
 
         # Sale 2: 200 L of X1, confirmed only (not reserved)
         sale_picking_2 = self._create_sale_picking(
             self.location_fl1,
-            self.product,
+            self.product_flowable_1,
             "Sale 2 - X1 200L",
             200,
             reserve=False,
@@ -1032,7 +788,7 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
             {
                 "name": "Adjust +1000L on X1",
                 "location_ids": [(4, self.location_fl1.id)],
-                "product_ids": [(4, self.product.id)],
+                "product_ids": [(4, self.product_flowable_1.id)],
             }
         )
         inventory.action_start()
@@ -1042,25 +798,23 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
         inv_line[0].product_qty = inv_line[0].product_qty + 1000
         inventory.action_validate()
         self.assertEqual(
-            self._get_positive_quantity(self.location_fl1, self.product), 8000
+            self._get_positive_quantity(self.location_fl1, self.product_flowable_1),
+            8000,
         )
 
         # Sale 3: 600 L of X1, confirmed + reserved (assigned)
         sale_picking_3 = self._create_sale_picking(
-            self.location_fl1, self.product, "Sale 3 - X1 600L", 600
+            self.location_fl1, self.product_flowable_1, "Sale 3 - X1 600L", 600
         )
         self.assertEqual(sale_picking_3.state, "assigned")
         self.assertFalse(self.location_fl1.flowable_blocked)
 
         # ACT
-        lot_p1 = self.env["stock.production.lot"].create(
-            {
-                "name": "P1",
-                "product_id": self.product.id,
-            }
-        )
+        lot_p1 = self._create_lot(self.product_flowable_1, "P1")
         with self.assertRaises(UserError) as error:
-            self._receive_stock(self.location_fl1, self.product, lot_p1, 5000)
+            self._receive_stock(
+                self.location_fl1, self.product_flowable_1, lot_p1, 5000
+            )
 
         # ASSERT
         # Only Sales 1 and 3 appear in the error (the ones with active
@@ -1073,10 +827,10 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
             " become invalid.\n\n"
             "The following operations must be unreserved"
             " or completed first:\n\n"
-            "  - TestOxygen: 100.0 L (lot X1)"
-            " - %s (TestDelivery)\n"
-            "  - TestOxygen: 600.0 L (lot X1)"
-            " - %s (TestDelivery)"
+            "  - ProductFlowable1: 100.0 L (lot X1)"
+            " - %s (Delivery1)\n"
+            "  - ProductFlowable1: 600.0 L (lot X1)"
+            " - %s (Delivery1)"
         ) % (sale_picking_1.name, sale_picking_3.name)
         self.assertEqual(str(error.exception), expected_msg)
 
@@ -1100,22 +854,24 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
                 - A mixing MO is created and FL1 is blocked
         """
         # ARRANGE
-        lot_x1 = self.env["stock.production.lot"].create(
-            {
-                "name": "X1",
-                "product_id": self.product.id,
-            }
+        lot_x1 = self._create_lot(self.product_flowable_1, "X1")
+        self._seed_flowable_location(
+            self.location_fl1,
+            self.product_flowable_1,
+            lot_x1,
+            7000,
+            mrp_picking_type=self.picking_type_mrp,
         )
-        self._seed_flowable_location(self.location_fl1, self.product, lot_x1, 7000)
         self.assertEqual(
-            self._get_positive_quantity(self.location_fl1, self.product), 7000
+            self._get_positive_quantity(self.location_fl1, self.product_flowable_1),
+            7000,
         )
         self.assertFalse(self.location_fl1.flowable_blocked)
 
         # Sale 1: 100 L of X1, reserved then unreserved
         sale_picking_1 = self._create_sale_picking(
             self.location_fl1,
-            self.product,
+            self.product_flowable_1,
             "Sale 1 - X1 100L",
             100,
             unreserve=True,
@@ -1125,7 +881,7 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
         # Sale 2: 200 L of X1, reserved then unreserved
         sale_picking_2 = self._create_sale_picking(
             self.location_fl1,
-            self.product,
+            self.product_flowable_1,
             "Sale 2 - X1 200L",
             200,
             unreserve=True,
@@ -1137,7 +893,7 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
             {
                 "name": "Adjust +1000L on X1",
                 "location_ids": [(4, self.location_fl1.id)],
-                "product_ids": [(4, self.product.id)],
+                "product_ids": [(4, self.product_flowable_1.id)],
             }
         )
         inventory.action_start()
@@ -1147,13 +903,14 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
         inv_line[0].product_qty = inv_line[0].product_qty + 1000
         inventory.action_validate()
         self.assertEqual(
-            self._get_positive_quantity(self.location_fl1, self.product), 8000
+            self._get_positive_quantity(self.location_fl1, self.product_flowable_1),
+            8000,
         )
 
         # Sale 3: 600 L of X1, reserved then unreserved
         sale_picking_3 = self._create_sale_picking(
             self.location_fl1,
-            self.product,
+            self.product_flowable_1,
             "Sale 3 - X1 600L",
             600,
             unreserve=True,
@@ -1161,21 +918,18 @@ class TestFlowableBlockingWithReservations(common.SavepointCase):
         self.assertEqual(sale_picking_3.state, "confirmed")
 
         # Verify no reserved quantities remain at FL1
-        quants = self._get_location_quants(self.location_fl1, self.product)
+        quants = self._get_location_quants(self.location_fl1, self.product_flowable_1)
         self.assertFalse(any(q.reserved_quantity > 0 for q in quants))
         self.assertFalse(self.location_fl1.flowable_blocked)
 
         # ACT
-        lot_p1 = self.env["stock.production.lot"].create(
-            {
-                "name": "P1",
-                "product_id": self.product.id,
-            }
-        )
-        self._receive_stock(self.location_fl1, self.product, lot_p1, 5000)
+        lot_p1 = self._create_lot(self.product_flowable_1, "P1")
+        self._receive_stock(self.location_fl1, self.product_flowable_1, lot_p1, 5000)
 
         # ASSERT
-        production = self._find_flowable_production(self.location_fl1)
+        production = self._find_flowable_production(
+            self.location_fl1, picking_type=self.picking_type_mrp
+        )
         self.assertTrue(production, "A mixing MO should have been created")
         self.assertTrue(
             self.location_fl1.flowable_blocked,
