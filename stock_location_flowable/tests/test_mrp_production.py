@@ -671,6 +671,136 @@ class TestMrpProduction(TestCommon):
         self.assertTrue(production)
 
 
+class TestFlowableReservationConflictFromProduction(TestCommon):
+    @classmethod
+    def setUpClass(cls):
+        super(TestFlowableReservationConflictFromProduction, cls).setUpClass()
+
+        cls.picking_type_mrp = cls.env["stock.picking.type"].create(
+            {
+                "name": "TestFlowableProd",
+                "sequence_code": "SEQ-FLPROD",
+                "code": "mrp_operation",
+                "flowable_operation": True,
+            }
+        )
+
+        cls.location_fl = cls.env["stock.location"].create(
+            {
+                "name": "FLRes",
+                "usage": "internal",
+                "location_id": cls.env.ref("stock.stock_location_locations_partner").id,
+                "flowable_storage": True,
+                "flowable_capacity": 5000,
+                "flowable_uom_id": cls.env.ref("uom.product_uom_litre").id,
+                "flowable_allowed_product_ids": [(4, cls.product_flowable_1.id)],
+            }
+        )
+
+    def test_reservation_conflict_from_production_move(self):
+        """
+        Test that receiving stock at a flowable location is rejected when
+        a regular (non-flowable) MO has reserved stock from that location.
+
+        This covers the `elif move.raw_material_production_id` branch in
+        _check_flowable_reservation (moves that belong to another MO,
+        not to a picking).
+
+        PRE:    - Flowable location FLRes with 500 L of lot A (seeded)
+                - A finished product with a BoM consuming 100 L of the
+                  flowable product
+                - A regular MO confirmed + assigned (reserves 100 L)
+        ACT:    - Receive 200 L of lot B at FLRes
+        POST:   - UserError is raised mentioning the regular MO
+        """
+        # ARRANGE — seed the flowable location
+        lot_a = self._create_lot(self.product_flowable_1, "RES-LOT-A")
+        self._seed_flowable_location(
+            self.location_fl,
+            self.product_flowable_1,
+            lot_a,
+            500,
+            mrp_picking_type=self.picking_type_mrp,
+        )
+        self.assertFalse(self.location_fl.flowable_blocked)
+
+        # Create a finished product with a BoM
+        finished_product = self.env["product.product"].create(
+            {
+                "name": "Finished Product",
+                "type": "product",
+                "uom_id": self.env.ref("uom.product_uom_unit").id,
+                "uom_po_id": self.env.ref("uom.product_uom_unit").id,
+            }
+        )
+        bom = self.env["mrp.bom"].create(
+            {
+                "product_tmpl_id": finished_product.product_tmpl_id.id,
+                "product_qty": 1,
+                "bom_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "product_id": self.product_flowable_1.id,
+                            "product_qty": 100,
+                        },
+                    )
+                ],
+            }
+        )
+
+        # Create a regular MO sourcing directly from the flowable location
+        regular_picking_type = self.env["stock.picking.type"].search(
+            [
+                ("warehouse_id", "=", self.picking_type_incoming_1.warehouse_id.id),
+                ("code", "=", "mrp_operation"),
+                ("flowable_operation", "=", False),
+            ],
+            limit=1,
+        )
+        if not regular_picking_type:
+            regular_picking_type = self.env["stock.picking.type"].create(
+                {
+                    "name": "RegularProduction",
+                    "sequence_code": "SEQ-REGPROD",
+                    "code": "mrp_operation",
+                }
+            )
+        regular_mo = self.env["mrp.production"].create(
+            {
+                "product_id": finished_product.id,
+                "bom_id": bom.id,
+                "product_qty": 1,
+                "product_uom_id": finished_product.uom_id.id,
+                "picking_type_id": regular_picking_type.id,
+                "location_src_id": self.location_fl.id,
+                "location_dest_id": self.location_fl.location_id.id,
+            }
+        )
+        # Populate raw and finished moves from the BoM
+        self.env["stock.move"].create(regular_mo._get_moves_raw_values())
+        self.env["stock.move"].create(regular_mo._get_moves_finished_values())
+        regular_mo.action_confirm()
+        regular_mo.action_assign()
+
+        # Verify the regular MO reserved stock at the flowable location
+        raw_move = regular_mo.move_raw_ids
+        self.assertGreater(
+            raw_move.reserved_availability,
+            0,
+            "Regular MO should have reserved stock from the flowable location",
+        )
+
+        # ACT — receive new stock at the flowable location
+        lot_b = self._create_lot(self.product_flowable_1, "RES-LOT-B")
+        with self.assertRaises(UserError) as error:
+            self._receive_stock(self.location_fl, self.product_flowable_1, lot_b, 200)
+
+        # ASSERT — error should mention the regular MO
+        self.assertIn(regular_mo.name, str(error.exception))
+
+
 class TestFlowableBlockingWithReservations(TestCommon):
     @classmethod
     def setUpClass(cls):

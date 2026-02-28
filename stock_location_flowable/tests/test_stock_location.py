@@ -650,6 +650,78 @@ class TestStockLocation(TestCommon):
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
+    def test_reduce_capacity_below_occupied_via_config(self):
+        """
+        Test that reducing a flowable location's capacity below the occupied
+        amount via configuration raises a specific error about capacity
+        vs occupied.
+
+        PRE:    - A flowable location with stock (occupied ~100 L)
+        ACT:    - Try to reduce capacity to 50 (below occupied)
+        POST:   - ValidationError "Capacity must be greater than capacity
+                  occupied" is raised
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+        product = self.location_flowable_1.flowable_allowed_product_ids[0]
+
+        lot = self._create_lot(product, "TEST-CAPCFG-LOT")
+        self._seed_flowable_location(self.location_flowable_1, product, lot, 100)
+
+        # Verify occupied amount is set
+        self.location_flowable_1.invalidate_cache()
+        self.assertGreater(self.location_flowable_1.flowable_capacity_occupied, 0)
+
+        # ACT & ASSERT
+        with self.assertRaises(ValidationError) as error:
+            self.location_flowable_1.write({"flowable_capacity": 50})
+
+        msg_error = "Capacity must be greater than capacity occupied"
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
+
+    def test_convert_location_with_incompatible_uom_stock(self):
+        """
+        Test that enabling flowable_storage on a location that has stock
+        with a UoM different from the specified flowable_uom_id is blocked.
+
+        PRE:    - A non-flowable location with stock of a product using
+                  Litres as UoM
+        ACT:    - Try to enable flowable_storage with flowable_uom_id set
+                  to Units (different from the product's Litres)
+        POST:   - UserError about products with different units of measure
+        """
+        # ARRANGE — stock the non-flowable location with a Litres product
+        product_litre = self.env["product.product"].create(
+            {
+                "name": "Test Product Litres UoM",
+                "type": "product",
+                "uom_id": self.uom_litre.id,
+                "uom_po_id": self.uom_litre.id,
+                "tracking": "lot",
+            }
+        )
+        lot = self._create_lot(product_litre, "INCOMPAT-UOM-LOT")
+        self._create_inventory_adjustment(self.location_1, product_litre, lot, 50)
+
+        # ACT & ASSERT — try to enable flowable with Units UoM
+        with self.assertRaises(UserError) as error:
+            self.location_1.write(
+                {
+                    "flowable_storage": True,
+                    "flowable_capacity": 1000,
+                    "flowable_uom_id": self.uom_unit.id,
+                    "flowable_allowed_product_ids": [(4, product_litre.id)],
+                }
+            )
+
+        msg_error = (
+            "You cannot convert this location into a flowable location"
+            " because there are products with different units of measure."
+        )
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
+
     def test_capacity_occupied_zero_for_non_flowable_location(self):
         """
         Test that a non-flowable location always has

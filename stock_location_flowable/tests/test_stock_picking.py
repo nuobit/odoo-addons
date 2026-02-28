@@ -751,3 +751,56 @@ class TestStockPicking(TestCommon):
         # ASSERT
         self.assertFalse(self.location_1.flowable_storage)
         self.assertFalse(picking.flowable_production_ids)
+
+    def test_mixing_reception_with_rounding_residual_rejected(self):
+        """
+        Test that receiving stock at a flowable location is rejected when
+        there are 3 positive quants instead of the expected 2 for a mixing
+        scenario.
+
+        This reproduces the rounding residual scenario (like the MO 00310
+        incident): a tiny residual from a previous UoM rounding issue
+        creates an extra quant, making the location state inconsistent.
+
+        PRE:    - Flowable location with lot A (100 L) from completed MO
+                - Inventory adjustment adds 0.01 L of lot B (rounding
+                  residual)
+                - Location now has 2 quants: A (100 L) + B (0.01 L)
+        ACT:    - Receive lot C (50 L) at the flowable location
+        POST:   - After _action_done, there are 3 positive quants
+                - UserError "expected 2 positive quants but found 3"
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        # Seed the flowable location with lot A
+        lot_a = self._create_lot(self.product_flowable_1, "RESIDUAL-LOT-A")
+        self._seed_flowable_location(
+            self.location_flowable_1, self.product_flowable_1, lot_a, 100
+        )
+
+        # Add a rounding residual via inventory adjustment (lot B, 0.01 L)
+        lot_b = self._create_lot(self.product_flowable_1, "RESIDUAL-LOT-B")
+        self._create_inventory_adjustment(
+            self.location_flowable_1, self.product_flowable_1, lot_b, 0.01
+        )
+
+        # Verify we have 2 positive quants now
+        quants = self._get_location_quants(
+            self.location_flowable_1, self.product_flowable_1
+        )
+        positive_quants = quants.filtered(lambda q: q.quantity > 0)
+        self.assertEqual(
+            len(positive_quants), 2, "Should have 2 quants (lot A + residual lot B)"
+        )
+
+        # ACT — receive lot C, which creates a 3rd quant
+        lot_c = self._create_lot(self.product_flowable_1, "RESIDUAL-LOT-C")
+        with self.assertRaises(UserError) as error:
+            self._receive_stock(
+                self.location_flowable_1, self.product_flowable_1, lot_c, 50
+            )
+
+        # ASSERT
+        msg_error = "expected 2 positive quants but found 3"
+        self.assertIn(msg_error, str(error.exception))
