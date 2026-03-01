@@ -802,3 +802,92 @@ class TestStockPicking(TestCommon):
         # ASSERT
         msg_error = "expected 2 positive quants but found 3"
         self.assertIn(msg_error, str(error.exception))
+
+    def test_multiple_lines_same_product_aggregated_into_one_mo(self):
+        """
+        Test that multiple move lines with the same product, lot, and
+        destination are aggregated into a single manufacturing order.
+
+        This reproduces the scenario where a PO has N lines of the same
+        product: each line creates a separate stock move on the picking,
+        but when all move lines target the same flowable tank with the same
+        lot, the flowable code must merge them into one MO.
+
+        PRE:    - A flowable location seeded with 100 L of lot A (MO completed)
+                - An incoming picking with 3 move lines of the same product,
+                  same lot B, same destination (simulating 3 PO lines)
+        ACT:    - Validate the picking
+        POST:   - Only 1 MO is created (not 3)
+                - The MO has 2 raw move lines: one for lot A (existing stock)
+                  and one for lot B (sum of the 3 reception lines)
+                - The MO quantity equals existing stock + total received
+                - The location is blocked by that single MO
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        # Seed the tank with 100 L of lot A and complete the initial MO
+        lot_a = self._create_lot(self.product_flowable_1, "TEST-AGGR-LOT-A")
+        self._seed_flowable_location(
+            self.location_flowable_1, self.product_flowable_1, lot_a, 100
+        )
+        self.assertFalse(self.location_flowable_1.flowable_blocked)
+
+        # Create a picking with 3 move lines of the same product, lot B, same tank
+        lot_b = self._create_lot(self.product_flowable_1, "TEST-AGGR-LOT-B")
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+            }
+        )
+
+        line_qtys = [10, 20, 30]
+        for qty in line_qtys:
+            self.env["stock.move.line"].create(
+                {
+                    "picking_id": picking.id,
+                    "product_id": self.product_flowable_1.id,
+                    "product_uom_id": self.product_flowable_1.uom_id.id,
+                    "lot_id": lot_b.id,
+                    "qty_done": qty,
+                    "location_id": self.supplier_location.id,
+                    "location_dest_id": self.location_flowable_1.id,
+                    "company_id": self.env.company.id,
+                }
+            )
+
+        # ACT
+        picking.button_validate()
+
+        # ASSERT — only 1 MO created
+        productions = picking.flowable_production_ids
+        self.assertEqual(
+            len(productions),
+            1,
+            "Multiple lines of the same product/lot/dest should produce exactly 1 MO",
+        )
+
+        # The MO quantity should equal existing stock + total received
+        total_received = sum(line_qtys)
+        self.assertEqual(productions.product_qty, 100 + total_received)
+
+        # The MO raw move should have exactly 2 move lines:
+        # one for lot A (existing 100 L) and one for lot B (received 60 L)
+        raw_move_lines = productions.move_raw_ids.move_line_ids
+        self.assertEqual(
+            len(raw_move_lines),
+            2,
+            "MO should have 2 raw move lines: existing lot + received lot",
+        )
+        lot_a_line = raw_move_lines.filtered(lambda ml: ml.lot_id == lot_a)
+        lot_b_line = raw_move_lines.filtered(lambda ml: ml.lot_id == lot_b)
+        self.assertEqual(len(lot_a_line), 1)
+        self.assertEqual(len(lot_b_line), 1)
+        self.assertEqual(lot_a_line.qty_done, 100)
+        self.assertEqual(lot_b_line.qty_done, total_received)
+
+        # The location should be blocked by that MO
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+        self.assertEqual(self.location_flowable_1.flowable_production_id, productions)
