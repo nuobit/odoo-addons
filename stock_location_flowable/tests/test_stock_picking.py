@@ -133,9 +133,9 @@ class TestStockPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        product_zanahoria = self.env["product.product"].create(
+        product_bolts = self.env["product.product"].create(
             {
-                "name": "Zanahoria",
+                "name": "Steel Bolts",
                 "type": "product",
                 "uom_id": self.env.ref("uom.product_uom_unit").id,
                 "uom_po_id": self.env.ref("uom.product_uom_unit").id,
@@ -145,10 +145,10 @@ class TestStockPicking(TestCommon):
 
         moves1 = self.env["stock.move"].create(
             {
-                "name": product_zanahoria.name,
-                "product_id": product_zanahoria.id,
+                "name": product_bolts.name,
+                "product_id": product_bolts.id,
                 "product_uom_qty": 5,
-                "product_uom": product_zanahoria.uom_id.id,
+                "product_uom": product_bolts.uom_id.id,
                 "picking_id": self.incoming_picking.id,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
@@ -157,14 +157,14 @@ class TestStockPicking(TestCommon):
 
         self.incoming_picking.action_confirm()
 
-        lot_zanahoria = self._create_lot(product_zanahoria, "TEST COD-0001")
+        lot_bolts = self._create_lot(product_bolts, "TEST COD-0001")
 
         self.incoming_picking.move_line_ids = self.env["stock.move.line"].create(
             {
                 "move_id": moves1.id,
-                "product_id": product_zanahoria.id,
-                "product_uom_id": product_zanahoria.uom_id.id,
-                "lot_id": lot_zanahoria.id,
+                "product_id": product_bolts.id,
+                "product_uom_id": product_bolts.uom_id.id,
+                "lot_id": lot_bolts.id,
                 "qty_done": 5,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
@@ -184,9 +184,9 @@ class TestStockPicking(TestCommon):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        product_zanahoria = self.env["product.product"].create(
+        product_he = self.env["product.product"].create(
             {
-                "name": "Zanahoria",
+                "name": "Liquid He",
                 "type": "product",
                 "uom_id": self.env.ref("uom.product_uom_litre").id,
                 "uom_po_id": self.env.ref("uom.product_uom_litre").id,
@@ -194,11 +194,9 @@ class TestStockPicking(TestCommon):
             }
         )
 
-        self.location_flowable_1.flowable_allowed_product_ids = [
-            (4, product_zanahoria.id)
-        ]
+        self.location_flowable_1.flowable_allowed_product_ids = [(4, product_he.id)]
 
-        product_zanahoria.write(
+        product_he.write(
             {
                 "uom_id": self.env.ref("uom.product_uom_unit").id,
                 "uom_po_id": self.env.ref("uom.product_uom_unit").id,
@@ -207,10 +205,10 @@ class TestStockPicking(TestCommon):
 
         moves1 = self.env["stock.move"].create(
             {
-                "name": product_zanahoria.name,
-                "product_id": product_zanahoria.id,
+                "name": product_he.name,
+                "product_id": product_he.id,
                 "product_uom_qty": 5,
-                "product_uom": product_zanahoria.uom_id.id,
+                "product_uom": product_he.uom_id.id,
                 "picking_id": self.incoming_picking.id,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
@@ -219,14 +217,14 @@ class TestStockPicking(TestCommon):
 
         self.incoming_picking.action_confirm()
 
-        lot_zanahoria = self._create_lot(product_zanahoria, "TEST COD-0001")
+        lot_he = self._create_lot(product_he, "TEST COD-0001")
 
         self.incoming_picking.move_line_ids = self.env["stock.move.line"].create(
             {
                 "move_id": moves1.id,
-                "product_id": product_zanahoria.id,
-                "product_uom_id": product_zanahoria.uom_id.id,
-                "lot_id": lot_zanahoria.id,
+                "product_id": product_he.id,
+                "product_uom_id": product_he.uom_id.id,
+                "lot_id": lot_he.id,
                 "qty_done": 5,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
@@ -501,7 +499,7 @@ class TestStockPicking(TestCommon):
 
         product_nolot = self.env["product.product"].create(
             {
-                "name": "ProductNoLot",
+                "name": "Liquid H2",
                 "type": "product",
                 "uom_id": self.env.ref("uom.product_uom_litre").id,
                 "uom_po_id": self.env.ref("uom.product_uom_litre").id,

@@ -62,7 +62,7 @@ class TestCommon(common.SavepointCase):
 
         cls.product_flowable_1 = cls.env["product.product"].create(
             {
-                "name": "ProductFlowable1",
+                "name": "Liquid O2",
                 "type": "product",
                 "uom_id": cls.env.ref("uom.product_uom_litre").id,
                 "uom_po_id": cls.env.ref("uom.product_uom_litre").id,
@@ -72,7 +72,7 @@ class TestCommon(common.SavepointCase):
 
         cls.product_flowable_2 = cls.env["product.product"].create(
             {
-                "name": "ProductFlowable2",
+                "name": "Liquid N2",
                 "type": "product",
                 "uom_id": cls.env.ref("uom.product_uom_litre").id,
                 "uom_po_id": cls.env.ref("uom.product_uom_litre").id,
@@ -82,7 +82,7 @@ class TestCommon(common.SavepointCase):
 
         cls.location_1 = cls.env["stock.location"].create(
             {
-                "name": "Location1",
+                "name": "Warehouse Shelf",
                 "usage": "internal",
                 "location_id": cls.env.ref("stock.stock_location_locations_partner").id,
             }
@@ -90,7 +90,7 @@ class TestCommon(common.SavepointCase):
 
         cls.location_flowable_1 = cls.env["stock.location"].create(
             {
-                "name": "LocationFlowable1",
+                "name": "O2 Tank 1",
                 "usage": "internal",
                 "location_id": cls.env.ref("stock.stock_location_locations_partner").id,
                 "flowable_storage": True,
@@ -113,7 +113,7 @@ class TestCommon(common.SavepointCase):
 
         cls.location_flowable_2 = cls.env["stock.location"].create(
             {
-                "name": "LocationFlowable2",
+                "name": "O2 Tank 2",
                 "usage": "internal",
                 "location_id": cls.env.ref("stock.stock_location_locations_partner").id,
                 "flowable_storage": True,
