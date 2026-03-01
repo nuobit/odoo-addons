@@ -380,13 +380,15 @@ msgstr "Origen desconocido (movimiento %s)"
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
 #, python-format
 msgid ""
-"You can only receive one product at location %s because a manufacturing "
-"order must be generated and the location will be blocked. Create a partial "
-"delivery for this product %s."
+"Cannot receive multiple product/lot combinations (%s) at flowable location "
+"'%s' in the same receipt. Each combination generates a separate mixing order "
+"and the location is blocked after the first one. Create a backorder to "
+"receive them in separate steps."
 msgstr ""
-"Solo puedes recibir un producto en la ubicación %s porque se debe generar "
-"una orden de producción y la ubicación será bloqueada. Crea una entrega "
-"parcial para este producto %s."
+"No se pueden recibir múltiples combinaciones de producto/lote (%s) en la "
+"ubicación de fluidos '%s' en el mismo albarán. Cada combinación genera una "
+"orden de mezcla separada y la ubicación queda bloqueada después de la "
+"primera. Cree un albarán parcial para recibirlos en pasos separados."
 
 #. module: stock_location_flowable
 #: code:addons/stock_location_flowable/models/mrp_production.py:0

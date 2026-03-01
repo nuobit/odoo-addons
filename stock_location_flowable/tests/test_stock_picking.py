@@ -121,10 +121,12 @@ class TestStockPicking(TestCommon):
 
         # ASSERT
         msg_error = (
-            "You can only receive one product at location %s"
-            " because a manufacturing order must be generated"
-            " and the location will be blocked. Create a "
-            "partial delivery for this product %s."
+            "Cannot receive multiple product/lot combinations"
+            " (%s) at flowable location '%s' in the same"
+            " receipt. Each combination generates a separate"
+            " mixing order and the location is blocked after"
+            " the first one. Create a backorder to receive"
+            " them in separate steps."
         )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
