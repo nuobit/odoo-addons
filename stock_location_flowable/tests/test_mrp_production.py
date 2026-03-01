@@ -641,6 +641,80 @@ class TestMrpProduction(TestCommon):
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
+    def test_post_production_quant_check_create_lots_false(self):
+        """
+        Test that the defensive post-production quant check passes when
+        create_lots=False (incoming lot becomes the producing lot).
+
+        PRE:    - Flowable location (create_lots=False) seeded with lot A
+        ACT:    - Receive lot B, complete the mixing MO
+        POST:   - No error is raised (all non-producing lots have 0 stock)
+                - Only the producing lot has positive stock
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_a = self._create_lot(self.product_flowable_1, "POST-CHECK-A")
+        self._seed_flowable_location(
+            self.location_flowable_1, self.product_flowable_1, lot_a, 100
+        )
+
+        lot_b = self._create_lot(self.product_flowable_1, "POST-CHECK-B")
+
+        # ACT
+        self._receive_stock(
+            self.location_flowable_1, self.product_flowable_1, lot_b, 50
+        )
+        production = self._find_flowable_production(self.location_flowable_1)
+        # button_mark_done triggers _check_flowable_post_production_quants
+        production.button_mark_done()
+
+        # ASSERT — producing lot is the incoming lot (create_lots=False)
+        self.assertEqual(production.lot_producing_id, lot_b)
+        quants = self._get_location_quants(
+            self.location_flowable_1, self.product_flowable_1
+        )
+        positive_quants = quants.filtered(lambda q: q.quantity > 0)
+        self.assertEqual(len(positive_quants), 1)
+        self.assertEqual(positive_quants.lot_id, lot_b)
+
+    def test_post_production_quant_check_create_lots_true(self):
+        """
+        Test that the defensive post-production quant check passes when
+        create_lots=True (auto-generated lot becomes the producing lot).
+
+        PRE:    - Flowable location (create_lots=True) seeded with lot A
+        ACT:    - Receive lot B, complete the mixing MO
+        POST:   - No error is raised
+                - Only the auto-generated producing lot has positive stock
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_a = self._create_lot(self.product_flowable_1, "POST-CHECK-AUTO-A")
+        self._seed_flowable_location(
+            self.location_flowable_2, self.product_flowable_1, lot_a, 100
+        )
+
+        lot_b = self._create_lot(self.product_flowable_1, "POST-CHECK-AUTO-B")
+
+        # ACT
+        self._receive_stock(
+            self.location_flowable_2, self.product_flowable_1, lot_b, 50
+        )
+        production = self._find_flowable_production(self.location_flowable_2)
+        production.button_mark_done()
+
+        # ASSERT — producing lot is auto-generated (different from both A and B)
+        self.assertNotEqual(production.lot_producing_id, lot_a)
+        self.assertNotEqual(production.lot_producing_id, lot_b)
+        quants = self._get_location_quants(
+            self.location_flowable_2, self.product_flowable_1
+        )
+        positive_quants = quants.filtered(lambda q: q.quantity > 0)
+        self.assertEqual(len(positive_quants), 1)
+        self.assertEqual(positive_quants.lot_id, production.lot_producing_id)
+
     def test_production_without_bom_allowed_for_flowable(self):
         """
         Test that a flowable production can be created without a Bill of
