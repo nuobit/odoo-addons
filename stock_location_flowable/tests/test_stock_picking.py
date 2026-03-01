@@ -131,6 +131,59 @@ class TestStockPicking(TestCommon):
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
+    def test_same_product_different_lots_same_location_rejected(self):
+        """
+        Test that receiving the same product with different lots at
+        the same flowable location in one receipt is rejected.
+
+        PRE:    - A picking with 2 move lines of the same product but
+                  different lots, both targeting the same flowable location
+        ACT:    - Try to validate the picking
+        POST:   - UserError is raised about multiple product/lot combinations
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_a = self._create_lot(self.product_flowable_1, "TEST-DIFFLOT-A")
+        lot_b = self._create_lot(self.product_flowable_1, "TEST-DIFFLOT-B")
+
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+            }
+        )
+
+        for lot, qty in [(lot_a, 10), (lot_b, 20)]:
+            self.env["stock.move.line"].create(
+                {
+                    "picking_id": picking.id,
+                    "product_id": self.product_flowable_1.id,
+                    "product_uom_id": self.product_flowable_1.uom_id.id,
+                    "lot_id": lot.id,
+                    "qty_done": qty,
+                    "location_id": self.supplier_location.id,
+                    "location_dest_id": self.location_flowable_1.id,
+                    "company_id": self.env.company.id,
+                }
+            )
+
+        # ACT & ASSERT
+        with self.assertRaises(UserError) as error:
+            picking.button_validate()
+
+        msg_error = (
+            "Cannot receive multiple product/lot combinations"
+            " (%s) at flowable location '%s' in the same"
+            " receipt. Each combination generates a separate"
+            " mixing order and the location is blocked after"
+            " the first one. Create a backorder to receive"
+            " them in separate steps."
+        )
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
+
     def test_only_allowed_product_in_incoming_picking(self):
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
@@ -893,3 +946,358 @@ class TestStockPicking(TestCommon):
         # The location should be blocked by that MO
         self.assertTrue(self.location_flowable_1.flowable_blocked)
         self.assertEqual(self.location_flowable_1.flowable_production_id, productions)
+
+    def test_backorder_cascade_three_lots(self):
+        """
+        Test the backorder cascade: 3 lots to the same flowable location,
+        processed one at a time via backorders.
+
+        PRE:    - 3 sequential receptions each with 1 lot, where each creates
+                  a backorder for the remaining
+        ACT:    - Receive lot 0, validate → MO → complete → unblocked
+                - Receive lot 1, validate → MO → complete → unblocked
+                - Receive lot 2, validate → MO → complete → unblocked
+        POST:   - 3 MOs created total, all completed, location unblocked at end
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lots = [
+            self._create_lot(self.product_flowable_1, f"CASCADE-LOT-{i}")
+            for i in range(3)
+        ]
+        qtys = [100, 200, 150]
+
+        completed_productions = self.env["mrp.production"]
+
+        for step, (lot, qty) in enumerate(zip(lots, qtys)):
+            picking = self._create_incoming_picking(
+                self.location_flowable_1, self.product_flowable_1, lot, qty
+            )
+            picking.button_validate()
+
+            production = self._find_flowable_production(self.location_flowable_1)
+            self.assertTrue(production, f"MO should be created at step {step}")
+            production.button_mark_done()
+            completed_productions |= production
+
+        # ASSERT
+        self.assertEqual(len(completed_productions), 3)
+        self.assertTrue(all(p.state == "done" for p in completed_productions))
+        self.assertFalse(self.location_flowable_1.flowable_blocked)
+
+    def test_backorder_remaining_lines_still_rejected(self):
+        """
+        Test that a backorder with 2 remaining flowable lines to the same
+        location is rejected by the pre-check.
+
+        PRE:    - A picking with 2 move lines of different lots, same product,
+                  same flowable location
+                - First line validated (creates backorder with 1 remaining)
+                  and MO completed
+        ACT:    - Add a second line to the backorder and try to validate both
+        POST:   - UserError about multiple product/lot combinations
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_0 = self._create_lot(self.product_flowable_1, "BKORD-LOT-0")
+        lot_1 = self._create_lot(self.product_flowable_1, "BKORD-LOT-1")
+        lot_2 = self._create_lot(self.product_flowable_1, "BKORD-LOT-2")
+
+        # First reception — seed the location
+        self._seed_flowable_location(
+            self.location_flowable_1, self.product_flowable_1, lot_0, 100
+        )
+        self.assertFalse(self.location_flowable_1.flowable_blocked)
+
+        # Create a picking with 2 move lines of different lots
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+            }
+        )
+        for lot, qty in [(lot_1, 200), (lot_2, 150)]:
+            self.env["stock.move.line"].create(
+                {
+                    "picking_id": picking.id,
+                    "product_id": self.product_flowable_1.id,
+                    "product_uom_id": self.product_flowable_1.uom_id.id,
+                    "lot_id": lot.id,
+                    "qty_done": qty,
+                    "location_id": self.supplier_location.id,
+                    "location_dest_id": self.location_flowable_1.id,
+                    "company_id": self.env.company.id,
+                }
+            )
+
+        # ACT & ASSERT — pre-check rejects both lines at the same location
+        with self.assertRaises(UserError) as error:
+            picking.button_validate()
+
+        msg_error = (
+            "Cannot receive multiple product/lot combinations"
+            " (%s) at flowable location '%s' in the same"
+            " receipt."
+        )
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
+
+    def test_backorder_validation_while_location_blocked(self):
+        """
+        Test that validating a second reception while the location is still
+        blocked by an in-progress MO is rejected.
+
+        Simulates 2 deliveries arriving at the warehouse: both pickings are
+        prepared before the first is validated. After validating the first
+        (which blocks the location), validating the second should fail.
+
+        PRE:    - Two incoming pickings prepared for the same flowable location
+        ACT:    - Validate the first picking (blocks the location)
+                - Try to validate the second picking
+        POST:   - Error about the location being blocked
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_1 = self._create_lot(self.product_flowable_1, "BLOCKED-BO-LOT-1")
+        lot_2 = self._create_lot(self.product_flowable_1, "BLOCKED-BO-LOT-2")
+
+        # Both pickings are prepared before any validation
+        picking_1 = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot_1, 100
+        )
+        picking_2 = self._create_incoming_picking(
+            self.location_flowable_1, self.product_flowable_1, lot_2, 200
+        )
+
+        # First reception — blocks the location
+        picking_1.button_validate()
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+
+        # ACT & ASSERT — second reception rejected while location is blocked
+        with self.assertRaises(Exception):
+            picking_2.button_validate()
+
+    def test_mixed_flowable_and_non_flowable_lines(self):
+        """
+        Test that a picking with both flowable and non-flowable destination
+        lines validates correctly: the flowable line creates an MO, the
+        non-flowable line goes through normally.
+
+        PRE:    - A picking with one line to a flowable location and another
+                  line to a non-flowable location
+        ACT:    - Validate the picking
+        POST:   - The flowable location is blocked with an MO
+                - The non-flowable location has stock (no MO)
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_flow = self._create_lot(self.product_flowable_1, "MIXED-FLOW-LOT")
+        lot_nonflow = self._create_lot(self.product_flowable_1, "MIXED-NONFLOW-LOT")
+
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+            }
+        )
+        # Line 1 → flowable location
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_flow.id,
+                "qty_done": 50,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        # Line 2 → non-flowable location
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_nonflow.id,
+                "qty_done": 30,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_1.id,
+                "company_id": self.env.company.id,
+            }
+        )
+
+        # ACT
+        picking.button_validate()
+
+        # ASSERT
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+        production = self._find_flowable_production(self.location_flowable_1)
+        self.assertTrue(production)
+
+        # Non-flowable location has stock, no MO
+        nonflow_quant = self.env["stock.quant"].search(
+            [
+                ("location_id", "=", self.location_1.id),
+                ("product_id", "=", self.product_flowable_1.id),
+                ("lot_id", "=", lot_nonflow.id),
+            ]
+        )
+        self.assertEqual(nonflow_quant.quantity, 30)
+
+    def test_same_product_different_lots_different_locations_succeeds(self):
+        """
+        Test that receiving the same product with different lots at different
+        flowable locations in one receipt succeeds (no conflict).
+
+        PRE:    - A picking with 2 lines: lot A → location_flowable_1,
+                  lot B → location_flowable_2
+        ACT:    - Validate the picking
+        POST:   - Both locations are blocked with separate MOs
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_a = self._create_lot(self.product_flowable_1, "DIFFLOC-LOT-A")
+        lot_b = self._create_lot(self.product_flowable_1, "DIFFLOC-LOT-B")
+
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+            }
+        )
+        # Line 1 → location_flowable_1
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_a.id,
+                "qty_done": 50,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        # Line 2 → location_flowable_2
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_b.id,
+                "qty_done": 50,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_2.id,
+                "company_id": self.env.company.id,
+            }
+        )
+
+        # ACT
+        picking.button_validate()
+
+        # ASSERT — both locations are blocked independently
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+        self.assertTrue(self.location_flowable_2.flowable_blocked)
+        self.assertNotEqual(
+            self.location_flowable_1.flowable_production_id,
+            self.location_flowable_2.flowable_production_id,
+        )
+
+    def test_zero_qty_done_flowable_lines_ignored(self):
+        """
+        Test that move lines with qty_done=0 at a flowable location are
+        ignored and don't create MOs or trigger conflicts.
+
+        PRE:    - A picking with 2 lines to a flowable location: one with
+                  qty_done=50 and another with qty_done=0
+        ACT:    - Validate the picking
+        POST:   - Only 1 MO is created (for the non-zero line)
+                - No pre-check error about multiple combinations
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_a = self._create_lot(self.product_flowable_1, "ZERO-QTY-LOT-A")
+        lot_b = self._create_lot(self.product_flowable_1, "ZERO-QTY-LOT-B")
+
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.picking_type_incoming_1.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+            }
+        )
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_a.id,
+                "qty_done": 50,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+                "company_id": self.env.company.id,
+            }
+        )
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": picking.id,
+                "product_id": self.product_flowable_1.id,
+                "product_uom_id": self.product_flowable_1.uom_id.id,
+                "lot_id": lot_b.id,
+                "qty_done": 0,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.location_flowable_1.id,
+                "company_id": self.env.company.id,
+            }
+        )
+
+        # ACT
+        picking.button_validate()
+
+        # ASSERT
+        productions = picking.flowable_production_ids
+        self.assertEqual(len(productions), 1)
+        self.assertTrue(self.location_flowable_1.flowable_blocked)
+
+    def test_create_lots_true_topup_same_incoming_lot(self):
+        """
+        Test top-up at a create_lots=True location where the incoming lot
+        is the same as the existing lot. The auto-generated producing lot
+        should still be different from the incoming lot.
+
+        PRE:    - Flowable location (create_lots=True) seeded with lot A
+        ACT:    - Receive lot A again (top-up with same lot)
+        POST:   - MO is created with an auto-generated producing lot
+                - The producing lot is different from lot A
+        """
+        # ARRANGE
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        lot_a = self._create_lot(self.product_flowable_1, "TOPUP-SAME-LOT")
+        self._seed_flowable_location(
+            self.location_flowable_2, self.product_flowable_1, lot_a, 100
+        )
+
+        # ACT — receive lot A again at the same location
+        self._receive_stock(
+            self.location_flowable_2, self.product_flowable_1, lot_a, 50
+        )
+
+        # ASSERT
+        production = self._find_flowable_production(self.location_flowable_2)
+        self.assertTrue(production)
+        self.assertNotEqual(
+            production.lot_producing_id,
+            lot_a,
+            "Auto-generated lot should differ from the incoming lot",
+        )
