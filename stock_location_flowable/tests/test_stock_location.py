@@ -19,7 +19,7 @@ class TestStockLocation(TestCommon):
         cls.uom_unit = cls.env.ref("uom.product_uom_unit")
         cls.product_flowable_1 = cls.env["product.product"].create(
             {
-                "name": "Test CO2 1",
+                "name": "Liquid CO2",
                 "type": "product",
                 "uom_id": cls.uom_litre.id,
                 "uom_po_id": cls.uom_litre.id,
@@ -27,13 +27,13 @@ class TestStockLocation(TestCommon):
         )
         cls.warehouse_bcn = cls.env["stock.warehouse"].create(
             {
-                "name": "Test Barcelona",
+                "name": "Warehouse Barcelona",
                 "code": "BCN",
             }
         )
         cls.location_flowable_bcn_1 = cls.env["stock.location"].create(
             {
-                "name": "Test Flowable bcn 1",
+                "name": "O2 Tank 5",
                 "location_id": cls.warehouse_bcn.lot_stock_id.id,
             }
         )
@@ -205,7 +205,7 @@ class TestStockLocation(TestCommon):
         # ARRANGE
         product_flowable_2 = self.env["product.product"].create(
             {
-                "name": "Test CO2 2",
+                "name": "CO2 Cylinder",
                 "type": "product",
                 "uom_id": self.uom_unit.id,
                 "uom_po_id": self.uom_unit.id,
@@ -250,7 +250,7 @@ class TestStockLocation(TestCommon):
         # ARRANGE
         product_flowable_2 = self.env["product.product"].create(
             {
-                "name": "Test CO2 2",
+                "name": "CO2 Cylinder",
                 "type": "product",
                 "uom_id": self.uom_unit.id,
                 "uom_po_id": self.uom_unit.id,
@@ -591,7 +591,7 @@ class TestStockLocation(TestCommon):
         # for the allowed products constraint, isolating _check_flowable_uom_id
         product_unit = self.env["product.product"].create(
             {
-                "name": "Test Product Units",
+                "name": "Ar Cylinder",
                 "type": "product",
                 "uom_id": self.uom_unit.id,
                 "uom_po_id": self.uom_unit.id,
@@ -694,7 +694,7 @@ class TestStockLocation(TestCommon):
         # ARRANGE — stock the non-flowable location with a Litres product
         product_litre = self.env["product.product"].create(
             {
-                "name": "Test Product Litres UoM",
+                "name": "Liquid Ar",
                 "type": "product",
                 "uom_id": self.uom_litre.id,
                 "uom_po_id": self.uom_litre.id,

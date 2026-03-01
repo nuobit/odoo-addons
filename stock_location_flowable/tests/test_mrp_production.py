@@ -301,10 +301,10 @@ class TestMrpProduction(TestCommon):
         dp.digits = 5
 
         # Custom UoM with fine rounding (like customer's Litro O2)
-        uom_category_o2 = self.env["uom.category"].create({"name": "Test Volumen O2"})
+        uom_category_o2 = self.env["uom.category"].create({"name": "Liquid O2"})
         uom_litro_o2 = self.env["uom.uom"].create(
             {
-                "name": "Test Litro O2",
+                "name": "Litre O2",
                 "category_id": uom_category_o2.id,
                 "uom_type": "reference",
                 "rounding": 0.001,
@@ -314,7 +314,7 @@ class TestMrpProduction(TestCommon):
 
         product_o2 = self.env["product.product"].create(
             {
-                "name": "Test Oxigeno Liquido",
+                "name": "Liquid O2",
                 "type": "product",
                 "uom_id": uom_litro_o2.id,
                 "uom_po_id": uom_litro_o2.id,
@@ -324,7 +324,7 @@ class TestMrpProduction(TestCommon):
 
         location_cistern = self.env["stock.location"].create(
             {
-                "name": "Test Cisterna O2",
+                "name": "O2 Tank 6",
                 "usage": "internal",
                 "location_id": self.env.ref(
                     "stock.stock_location_locations_partner"
@@ -432,12 +432,10 @@ class TestMrpProduction(TestCommon):
 
         self.picking_type_mrp_operation_1.flowable_operation = True
 
-        uom_category_o2 = self.env["uom.category"].create(
-            {"name": "Test Volumen O2 Multi"}
-        )
+        uom_category_o2 = self.env["uom.category"].create({"name": "Liquid O2"})
         uom_litro_o2 = self.env["uom.uom"].create(
             {
-                "name": "Test Litro O2 Multi",
+                "name": "Litre O2",
                 "category_id": uom_category_o2.id,
                 "uom_type": "reference",
                 "rounding": 0.001,
@@ -447,7 +445,7 @@ class TestMrpProduction(TestCommon):
 
         product_o2 = self.env["product.product"].create(
             {
-                "name": "Test Oxigeno Multi",
+                "name": "Liquid O2",
                 "type": "product",
                 "uom_id": uom_litro_o2.id,
                 "uom_po_id": uom_litro_o2.id,
@@ -457,7 +455,7 @@ class TestMrpProduction(TestCommon):
 
         location_cistern = self.env["stock.location"].create(
             {
-                "name": "Test Cisterna O2 Multi",
+                "name": "O2 Tank 6",
                 "usage": "internal",
                 "location_id": self.env.ref(
                     "stock.stock_location_locations_partner"
@@ -685,9 +683,9 @@ class TestFlowableReservationConflictFromProduction(TestCommon):
             }
         )
 
-        cls.location_fl = cls.env["stock.location"].create(
+        cls.location_flowable_3 = cls.env["stock.location"].create(
             {
-                "name": "FLRes",
+                "name": "O2 Tank 3",
                 "usage": "internal",
                 "location_id": cls.env.ref("stock.stock_location_locations_partner").id,
                 "flowable_storage": True,
@@ -706,23 +704,23 @@ class TestFlowableReservationConflictFromProduction(TestCommon):
         _check_flowable_reservation (moves that belong to another MO,
         not to a picking).
 
-        PRE:    - Flowable location FLRes with 500 L of lot A (seeded)
+        PRE:    - Flowable location 'O2 Tank 3' with 500 L of lot A (seeded)
                 - A finished product with a BoM consuming 100 L of the
                   flowable product
                 - A regular MO confirmed + assigned (reserves 100 L)
-        ACT:    - Receive 200 L of lot B at FLRes
+        ACT:    - Receive 200 L of lot B at 'O2 Tank 3'
         POST:   - UserError is raised mentioning the regular MO
         """
         # ARRANGE — seed the flowable location
         lot_a = self._create_lot(self.product_flowable_1, "RES-LOT-A")
         self._seed_flowable_location(
-            self.location_fl,
+            self.location_flowable_3,
             self.product_flowable_1,
             lot_a,
             500,
             mrp_picking_type=self.picking_type_mrp,
         )
-        self.assertFalse(self.location_fl.flowable_blocked)
+        self.assertFalse(self.location_flowable_3.flowable_blocked)
 
         # Create a finished product with a BoM
         finished_product = self.env["product.product"].create(
@@ -774,8 +772,8 @@ class TestFlowableReservationConflictFromProduction(TestCommon):
                 "product_qty": 1,
                 "product_uom_id": finished_product.uom_id.id,
                 "picking_type_id": regular_picking_type.id,
-                "location_src_id": self.location_fl.id,
-                "location_dest_id": self.location_fl.location_id.id,
+                "location_src_id": self.location_flowable_3.id,
+                "location_dest_id": self.location_flowable_3.location_id.id,
             }
         )
         # Populate raw and finished moves from the BoM
@@ -795,7 +793,9 @@ class TestFlowableReservationConflictFromProduction(TestCommon):
         # ACT — receive new stock at the flowable location
         lot_b = self._create_lot(self.product_flowable_1, "RES-LOT-B")
         with self.assertRaises(UserError) as error:
-            self._receive_stock(self.location_fl, self.product_flowable_1, lot_b, 200)
+            self._receive_stock(
+                self.location_flowable_3, self.product_flowable_1, lot_b, 200
+            )
 
         # ASSERT — error should mention the regular MO
         self.assertIn(regular_mo.name, str(error.exception))
@@ -815,9 +815,9 @@ class TestFlowableBlockingWithReservations(TestCommon):
             }
         )
 
-        cls.location_fl1 = cls.env["stock.location"].create(
+        cls.location_flowable_4 = cls.env["stock.location"].create(
             {
-                "name": "FL1",
+                "name": "O2 Tank 4",
                 "usage": "internal",
                 "location_id": cls.env.ref("stock.stock_location_locations_partner").id,
                 "flowable_storage": True,
@@ -872,40 +872,42 @@ class TestFlowableBlockingWithReservations(TestCommon):
         confirmed (not reserved). The mixing MO cannot fully reserve
         because Sales 1 and 3 hold reservations on the stock.
 
-        PRE:    - Flowable location FL1 (capacity 15000 L), initially empty
+        PRE:    - Flowable location 'O2 Tank 4' (capacity 15000 L), initially empty
                 - Receive 7000 L of lot X1 via reception + MO (seed)
                 - Sale 1: 100 L of X1 confirmed + reserved (assigned)
                 - Sale 2: 200 L of X1 confirmed only (not reserved)
                 - Inventory adjustment: +1000 L on lot X1
                 - Sale 3: 600 L of X1 confirmed + reserved (assigned)
-        ACT:    - Receive 5000 L of lot P1 at FL1
+        ACT:    - Receive 5000 L of lot P1 at 'O2 Tank 4'
         POST:   - UserError is raised mentioning Sales 1 and 3
                   (the only ones with active reservations)
         """
         # ARRANGE
         lot_x1 = self._create_lot(self.product_flowable_1, "X1")
         self._seed_flowable_location(
-            self.location_fl1,
+            self.location_flowable_4,
             self.product_flowable_1,
             lot_x1,
             7000,
             mrp_picking_type=self.picking_type_mrp,
         )
         self.assertEqual(
-            self._get_positive_quantity(self.location_fl1, self.product_flowable_1),
+            self._get_positive_quantity(
+                self.location_flowable_4, self.product_flowable_1
+            ),
             7000,
         )
-        self.assertFalse(self.location_fl1.flowable_blocked)
+        self.assertFalse(self.location_flowable_4.flowable_blocked)
 
         # Sale 1: 100 L of X1, confirmed + reserved (assigned)
         sale_picking_1 = self._create_sale_picking(
-            self.location_fl1, self.product_flowable_1, "Sale 1 - X1 100L", 100
+            self.location_flowable_4, self.product_flowable_1, "Sale 1 - X1 100L", 100
         )
         self.assertEqual(sale_picking_1.state, "assigned")
 
         # Sale 2: 200 L of X1, confirmed only (not reserved)
         sale_picking_2 = self._create_sale_picking(
-            self.location_fl1,
+            self.location_flowable_4,
             self.product_flowable_1,
             "Sale 2 - X1 200L",
             200,
@@ -917,49 +919,51 @@ class TestFlowableBlockingWithReservations(TestCommon):
         inventory = self.env["stock.inventory"].create(
             {
                 "name": "Adjust +1000L on X1",
-                "location_ids": [(4, self.location_fl1.id)],
+                "location_ids": [(4, self.location_flowable_4.id)],
                 "product_ids": [(4, self.product_flowable_1.id)],
             }
         )
         inventory.action_start()
         inv_line = inventory.line_ids.filtered(
-            lambda l: l.location_id == self.location_fl1
+            lambda l: l.location_id == self.location_flowable_4
         )
         inv_line[0].product_qty = inv_line[0].product_qty + 1000
         inventory.action_validate()
         self.assertEqual(
-            self._get_positive_quantity(self.location_fl1, self.product_flowable_1),
+            self._get_positive_quantity(
+                self.location_flowable_4, self.product_flowable_1
+            ),
             8000,
         )
 
         # Sale 3: 600 L of X1, confirmed + reserved (assigned)
         sale_picking_3 = self._create_sale_picking(
-            self.location_fl1, self.product_flowable_1, "Sale 3 - X1 600L", 600
+            self.location_flowable_4, self.product_flowable_1, "Sale 3 - X1 600L", 600
         )
         self.assertEqual(sale_picking_3.state, "assigned")
-        self.assertFalse(self.location_fl1.flowable_blocked)
+        self.assertFalse(self.location_flowable_4.flowable_blocked)
 
         # ACT
         lot_p1 = self._create_lot(self.product_flowable_1, "P1")
         with self.assertRaises(UserError) as error:
             self._receive_stock(
-                self.location_fl1, self.product_flowable_1, lot_p1, 5000
+                self.location_flowable_4, self.product_flowable_1, lot_p1, 5000
             )
 
         # ASSERT
         # Only Sales 1 and 3 appear in the error (the ones with active
         # reservations). Sale 2 is only confirmed, not reserved.
         expected_msg = (
-            "Cannot merge at flowable location 'FL1'"
+            "Cannot merge at flowable location 'O2 Tank 4'"
             " because there are reserved quantities."
             " After the merge, the current lot(s) will"
             " have 0 stock and these reservations will"
             " become invalid.\n\n"
             "The following operations must be unreserved"
             " or completed first:\n\n"
-            "  - ProductFlowable1: 100.0 L (lot X1)"
+            "  - Liquid O2: 100.0 L (lot X1)"
             " - %s (Delivery1)\n"
-            "  - ProductFlowable1: 600.0 L (lot X1)"
+            "  - Liquid O2: 600.0 L (lot X1)"
             " - %s (Delivery1)"
         ) % (sale_picking_1.name, sale_picking_3.name)
         self.assertEqual(str(error.exception), expected_msg)
@@ -973,34 +977,36 @@ class TestFlowableBlockingWithReservations(TestCommon):
         unreserved sales stay confirmed. The mixing MO fully reserves
         all stock and succeeds.
 
-        PRE:    - Flowable location FL1 (capacity 15000 L), initially empty
+        PRE:    - Flowable location 'O2 Tank 4' (capacity 15000 L), initially empty
                 - Receive 7000 L of lot X1 via reception + MO (seed)
                 - Sale 1: 100 L of X1 reserved then unreserved
                 - Sale 2: 200 L of X1 reserved then unreserved
                 - Inventory adjustment: +1000 L on lot X1
                 - Sale 3: 600 L of X1 reserved then unreserved
-        ACT:    - Receive 5000 L of lot P1 at FL1
+        ACT:    - Receive 5000 L of lot P1 at 'O2 Tank 4'
         POST:   - No error is raised
-                - A mixing MO is created and FL1 is blocked
+                - A mixing MO is created and 'O2 Tank 4' is blocked
         """
         # ARRANGE
         lot_x1 = self._create_lot(self.product_flowable_1, "X1")
         self._seed_flowable_location(
-            self.location_fl1,
+            self.location_flowable_4,
             self.product_flowable_1,
             lot_x1,
             7000,
             mrp_picking_type=self.picking_type_mrp,
         )
         self.assertEqual(
-            self._get_positive_quantity(self.location_fl1, self.product_flowable_1),
+            self._get_positive_quantity(
+                self.location_flowable_4, self.product_flowable_1
+            ),
             7000,
         )
-        self.assertFalse(self.location_fl1.flowable_blocked)
+        self.assertFalse(self.location_flowable_4.flowable_blocked)
 
         # Sale 1: 100 L of X1, reserved then unreserved
         sale_picking_1 = self._create_sale_picking(
-            self.location_fl1,
+            self.location_flowable_4,
             self.product_flowable_1,
             "Sale 1 - X1 100L",
             100,
@@ -1010,7 +1016,7 @@ class TestFlowableBlockingWithReservations(TestCommon):
 
         # Sale 2: 200 L of X1, reserved then unreserved
         sale_picking_2 = self._create_sale_picking(
-            self.location_fl1,
+            self.location_flowable_4,
             self.product_flowable_1,
             "Sale 2 - X1 200L",
             200,
@@ -1022,24 +1028,26 @@ class TestFlowableBlockingWithReservations(TestCommon):
         inventory = self.env["stock.inventory"].create(
             {
                 "name": "Adjust +1000L on X1",
-                "location_ids": [(4, self.location_fl1.id)],
+                "location_ids": [(4, self.location_flowable_4.id)],
                 "product_ids": [(4, self.product_flowable_1.id)],
             }
         )
         inventory.action_start()
         inv_line = inventory.line_ids.filtered(
-            lambda l: l.location_id == self.location_fl1
+            lambda l: l.location_id == self.location_flowable_4
         )
         inv_line[0].product_qty = inv_line[0].product_qty + 1000
         inventory.action_validate()
         self.assertEqual(
-            self._get_positive_quantity(self.location_fl1, self.product_flowable_1),
+            self._get_positive_quantity(
+                self.location_flowable_4, self.product_flowable_1
+            ),
             8000,
         )
 
         # Sale 3: 600 L of X1, reserved then unreserved
         sale_picking_3 = self._create_sale_picking(
-            self.location_fl1,
+            self.location_flowable_4,
             self.product_flowable_1,
             "Sale 3 - X1 600L",
             600,
@@ -1047,21 +1055,25 @@ class TestFlowableBlockingWithReservations(TestCommon):
         )
         self.assertEqual(sale_picking_3.state, "confirmed")
 
-        # Verify no reserved quantities remain at FL1
-        quants = self._get_location_quants(self.location_fl1, self.product_flowable_1)
+        # Verify no reserved quantities remain at 'O2 Tank 4'
+        quants = self._get_location_quants(
+            self.location_flowable_4, self.product_flowable_1
+        )
         self.assertFalse(any(q.reserved_quantity > 0 for q in quants))
-        self.assertFalse(self.location_fl1.flowable_blocked)
+        self.assertFalse(self.location_flowable_4.flowable_blocked)
 
         # ACT
         lot_p1 = self._create_lot(self.product_flowable_1, "P1")
-        self._receive_stock(self.location_fl1, self.product_flowable_1, lot_p1, 5000)
+        self._receive_stock(
+            self.location_flowable_4, self.product_flowable_1, lot_p1, 5000
+        )
 
         # ASSERT
         production = self._find_flowable_production(
-            self.location_fl1, picking_type=self.picking_type_mrp
+            self.location_flowable_4, picking_type=self.picking_type_mrp
         )
         self.assertTrue(production, "A mixing MO should have been created")
         self.assertTrue(
-            self.location_fl1.flowable_blocked,
-            "FL1 should be blocked after reception triggers a mixing MO",
+            self.location_flowable_4.flowable_blocked,
+            "'O2 Tank 4' should be blocked after reception triggers a mixing MO",
         )
