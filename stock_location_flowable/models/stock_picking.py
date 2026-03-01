@@ -144,22 +144,31 @@ class StockPicking(models.Model):
                         % mrp_operation_type.display_name
                     )
 
-            # group move lines by product, destination location and lot to check if
-            # there are multiple products for the same location and to sum the
-            # quantity to produce
+            # Group move lines by (product, dest location, lot) and check for
+            # conflicts. The blocking mechanism would catch this too (the first
+            # MO blocks the location, the second hits the constraint), but
+            # that error references a phantom MO created in the same rolled-back
+            # transaction. Pre-checking here gives an actionable message.
             lines = {}
             for line in flowable_lines:
                 key = (line.product_id, line.location_dest_id, line.lot_id)
                 lines[key] = lines.get(key, 0) + line.qty_done
-                if any(k[1] == line.location_dest_id and k != key for k in lines):
+                existing = [k for k in lines if k[1] == line.location_dest_id]
+                if len(existing) > 1:
+                    details = ", ".join(
+                        "%s (%s)" % (k[0].name, k[2].name) if k[2] else k[0].name
+                        for k in existing
+                    )
                     raise UserError(
                         _(
-                            "You can only receive one product at location %s"
-                            " because a manufacturing order must be generated"
-                            " and the location will be blocked. Create a "
-                            "partial delivery for this product %s."
+                            "Cannot receive multiple product/lot combinations"
+                            " (%s) at flowable location '%s' in the same"
+                            " receipt. Each combination generates a separate"
+                            " mixing order and the location is blocked after"
+                            " the first one. Create a backorder to receive"
+                            " them in separate steps."
                         )
-                        % (line.location_dest_id.name, line.product_id.name)
+                        % (details, line.location_dest_id.name)
                     )
 
             # create manufacturing orders
