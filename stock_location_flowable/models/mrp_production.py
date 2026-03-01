@@ -4,6 +4,7 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_is_zero
 
 
 class MrpProduction(models.Model):
@@ -56,6 +57,48 @@ class MrpProduction(models.Model):
                     )
                 )
         return super().write(vals)
+
+    def button_mark_done(self):
+        res = super().button_mark_done()
+        for rec in self:
+            if rec.picking_type_id.flowable_operation and rec.state == "done":
+                rec._check_flowable_post_production_quants()
+        return res
+
+    def _check_flowable_post_production_quants(self):
+        """Defensive check — should not be necessary under normal operation
+        and might be removed in the future. After completing a mixing order,
+        all raw-material lots at the flowable location must have 0 stock —
+        only the producing lot should remain. Rounding residuals or manual
+        inventory adjustments could leave non-zero leftovers that silently
+        corrupt stock. Fail loudly so the issue is caught immediately."""
+        self.ensure_one()
+        location = self.location_src_id
+        rounding = self.product_uom_id.rounding
+        quants = self.env["stock.quant"].search(
+            [
+                ("product_id", "=", self.product_id.id),
+                ("location_id", "=", location.id),
+                ("lot_id", "!=", self.lot_producing_id.id),
+                ("company_id", "=", self.company_id.id),
+            ]
+        )
+        for quant in quants:
+            if not float_is_zero(quant.quantity, precision_rounding=rounding):
+                raise ValidationError(
+                    _(
+                        "After completing the mixing order '%s' at"
+                        " flowable location '%s', lot '%s' still has"
+                        " %s %s of stock. Expected 0 after merging"
+                        " all raw materials into lot '%s'.",
+                        self.name,
+                        location.name,
+                        quant.lot_id.name,
+                        quant.quantity,
+                        self.product_uom_id.name,
+                        self.lot_producing_id.name,
+                    )
+                )
 
     def action_assign(self):
         res = super().action_assign()
