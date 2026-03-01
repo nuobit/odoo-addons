@@ -65,6 +65,18 @@ msgstr ""
 "%s"
 
 #. module: stock_location_flowable
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+#, python-format
+msgid ""
+"After completing the mixing order '%s' at flowable location '%s', lot '%s' "
+"still has %s %s of stock. Expected 0 after merging all raw materials into "
+"lot '%s'."
+msgstr ""
+"Después de completar la orden de mezcla '%s' en la ubicación fluida '%s', el "
+"lote '%s' todavía tiene %s %s de stock. Se esperaba 0 después de mezclar "
+"todas las materias primas en el lote '%s'."
+
+#. module: stock_location_flowable
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_capacity
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
 msgid "Capacity"
