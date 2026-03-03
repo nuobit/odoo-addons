@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -10,12 +11,8 @@ class AssetProrateRegularization(models.Model):
     _name = "capital.asset.prorate.regularization"
     _description = "Capital Asset Prorate Regularization"
 
-    year = fields.Integer(
-        string="Year",
-    )
-    amount = fields.Float(
-        string="Amount",
-    )
+    year = fields.Integer()
+    amount = fields.Float()
     asset_id = fields.Many2one(
         comodel_name="account.asset",
         string="Asset",
@@ -44,9 +41,9 @@ class AssetProrateRegularization(models.Model):
                 raise ValidationError(
                     _(
                         "There's another capital capital asset prorate regularization "
-                        "with the same year: %s and asset: {%i} %s"
+                        "with the same year: %(year)s and asset: %(asset)s"
                     )
-                    % (rec.year, rec.asset_id, rec.asset_id.name)
+                    % {"year": rec.year, "asset": rec.asset_id.name}
                 )
 
     def _get_by_year(self, mod303):
@@ -56,22 +53,28 @@ class AssetProrateRegularization(models.Model):
                 raise ValidationError(
                     _(
                         "This asset have a prorate regularization"
-                        " line this year: %s, but it's not related"
+                        " line this year: %(year)s, but it's not related"
                         " with a model 303. Please, review prorate"
-                        " regularizations of capital asset: %s"
+                        " regularizations of capital asset: %(asset)s"
                     )
-                    % (mod303.year, self.mapped("asset_id.name"))
+                    % {
+                        "year": mod303.year,
+                        "asset": self.mapped("asset_id.name"),
+                    }
                 )
             elif asset_regularization_line.mod303_id != mod303:
                 raise ValidationError(
                     _(
                         "This asset have a prorate regularization"
-                        " line this year: %s,"
+                        " line this year: %(year)s,"
                         " but related with another model 303. "
                         "Please, review prorate regularizations "
-                        "of capital asset: %s"
+                        "of capital asset: %(asset)s"
                     )
-                    % (mod303.year, self.mapped("asset_id.name"))
+                    % {
+                        "year": mod303.year,
+                        "asset": self.mapped("asset_id.name"),
+                    }
                 )
         return asset_regularization_line
 
@@ -87,4 +90,4 @@ class AssetProrateRegularization(models.Model):
                         "if it's linked with a model 303."
                     )
                 )
-        super().unlink()
+        return super().unlink()
