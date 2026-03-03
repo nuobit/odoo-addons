@@ -8,13 +8,13 @@
         <field name="inherit_id" ref="account.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <div data-key="capital_assets" position="after">
-                  <div class="row mt16">
-                      <label
+                <div class="row mt16">
+                    <label
                         for="capital_asset_prorate_max_diff"
                         class="col-md-3 o_light_label"
                     />
-                <field name="capital_asset_prorate_max_diff" />
-                  </div>
+                    <field name="capital_asset_prorate_max_diff" />
+                </div>
             </div>
         </field>
     </record>
