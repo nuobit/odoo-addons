@@ -87,4 +87,4 @@ class AssetProrateRegularization(models.Model):
                         "if it's linked with a model 303."
                     )
                 )
-        super(AssetProrateRegularization, self).unlink()
+        super().unlink()
