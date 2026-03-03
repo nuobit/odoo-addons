@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="account_asset_view_form" model="ir.ui.view">
@@ -11,14 +12,14 @@
         <field name="arch" type="xml">
             <form position="inside">
                 <field name="capital_asset_type_id" invisible="1" />
-                <field name="profile_capital_asset_type_id" invisible="1" />
+                <field name="default_capital_asset_type_id" invisible="1" />
                 <field name="prorate_tax_id" invisible="1" />
             </form>
             <notebook position="inside">
                 <page
                     string="Capital Asset Prorate Regularizations"
                     name="capital_asset_prorate_regularizations"
-                    attrs="{'invisible': ['|', ('prorate_tax_id', '=', False),('capital_asset_type_id','=',False)]}"
+                    invisible="prorate_tax_id == False or capital_asset_type_id == False"
                     groups="l10n_es_aeat.group_account_aeat"
                 >
                     <group>
@@ -26,7 +27,7 @@
                             name="active_capital_asset_prorate_regularization_ids"
                             nolabel="1"
                         >
-                            <tree
+                            <list
                                 name="active_capital_asset_prorate_regularization_ids"
                                 editable="bottom"
                             >
@@ -34,7 +35,7 @@
                                 <field name="amount" />
                                 <field name="prorate_percent" />
                                 <field name="mod303_id" />
-                            </tree>
+                            </list>
                         </field>
                     </group>
                 </page>

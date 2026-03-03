@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_l10n_es_aeat_mod303_report_form" model="ir.ui.view">
@@ -15,17 +16,17 @@
                 <group
                     string="Capital Assets Regularization Parameters"
                     name="regularization_capital_assets_parameters"
-                    attrs="{'invisible': [('period_type', 'not in', ('4T', '12'))]}"
+                    invisible="period_type not in ('4T', '12')"
                 >
                     <field
                         name="counterpart_capital_assets_receivable_account_id"
                         string="Counterpart Account Receivable"
-                        attrs="{'required': [('period_type', 'in', ('4T', '12'))]}"
+                        required="period_type in ('4T', '12')"
                     />
                     <field
                         name="counterpart_capital_assets_payable_account_id"
                         string="Counterpart Account Payable"
-                        attrs="{'required': [('period_type', 'in', ('4T', '12'))]}"
+                        required="period_type in ('4T', '12')"
                     />
                 </group>
             </group>
@@ -34,7 +35,8 @@
                     name="field_43"
                     widget="monetary"
                     options="{'currency_field': 'currency_id'}"
-                    attrs="{'invisible': [('period_type', 'not in', ('4T', '12'))]}"
+                    invisible="period_type not in ('4T', '12')"
+                    readonly="0"
                 />
             </field>
         </field>
