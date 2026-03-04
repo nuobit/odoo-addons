@@ -1,5 +1,6 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -19,7 +20,7 @@ class L10nEsAeatMod303Report(models.AbstractModel):
         for rec in self:
             rec.prorate_asset_lines_to_send = (
                 rec.capital_asset_prorate_regularization_line_ids.filtered(
-                    lambda x: x.sii_state not in ["sent"]
+                    lambda x: x.aeat_state not in ["sent"]
                 )
             )
 
@@ -32,7 +33,7 @@ class L10nEsAeatMod303Report(models.AbstractModel):
         for rec in self:
             rec.prorate_asset_lines_to_cancel = (
                 rec.capital_asset_prorate_regularization_line_ids.filtered(
-                    lambda x: x.sii_state not in ["cancelled", "not_sent"]
+                    lambda x: x.aeat_state not in ["cancelled", "not_sent"]
                 )
             )
 
@@ -57,14 +58,18 @@ class L10nEsAeatMod303Report(models.AbstractModel):
                 line.cancel_asset_sii()
 
     def button_unpost(self):
+        res = super().button_unpost()
         if self.prorate_asset_lines_to_cancel:
             raise ValidationError(
                 _(
-                    "Exist prorate lines in year: %s in assets %s with "
+                    "Exist prorate lines in year: "
+                    "%(year)s in assets %(assets)s with "
                     "capital asset prorate lines. "
-                    "Please send the cancellation to the sii before canceling the 303 model."
+                    "Please send the cancellation to the "
+                    "sii before canceling the 303 model.",
+                    year=self.year,
+                    assets=self.prorate_asset_lines_to_cancel,
                 )
-                % (self.year, self.prorate_asset_lines_to_cancel)
             )
         self.cancel_sii()
-        super().button_unpost()
+        return res

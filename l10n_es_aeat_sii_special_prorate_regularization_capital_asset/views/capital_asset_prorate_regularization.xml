@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="capital_asset_prorate_regularization_view_form" model="ir.ui.view">
@@ -21,14 +22,14 @@
                     <notebook>
                         <page name="page_sii_result_general" string="General">
                             <group>
-                                <field name="sii_state" />
+                                <field name="aeat_state" />
                                 <field
-                                    name="sii_send_failed"
-                                    attrs="{'invisible': [('sii_send_failed', '=', False)]}"
+                                    name="aeat_send_failed"
+                                    invisible="not aeat_send_failed"
                                 />
                                 <field
-                                    name="sii_send_error"
-                                    attrs="{'invisible': [('sii_send_failed', '=', False)]}"
+                                    name="aeat_send_error"
+                                    invisible="not aeat_send_failed"
                                 />
                                 <field name="sii_csv" />
                             </group>
@@ -39,13 +40,13 @@
                             groups="base.group_no_one"
                         >
                             <group>
-                                <label for="sii_header_sent" />
+                                <label for="aeat_header_sent" />
                             </group>
-                            <field name="sii_header_sent" />
+                            <field name="aeat_header_sent" />
                             <group>
-                                <label for="sii_content_sent" />
+                                <label for="aeat_content_sent" />
                             </group>
-                            <field name="sii_content_sent" />
+                            <field name="aeat_content_sent" />
                             <group>
                                 <label for="sii_return" />
                             </group>

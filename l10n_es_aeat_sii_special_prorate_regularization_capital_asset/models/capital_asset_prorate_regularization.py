@@ -1,5 +1,6 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import json
@@ -11,11 +12,8 @@ from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import ValidationError
 from odoo.modules.registry import Registry
 
-from odoo.addons.l10n_es_aeat_sii_oca.models.account_move import (
-    SII_STATES,
-    SII_VERSION,
-    round_by_keys,
-)
+from odoo.addons.l10n_es_aeat.models.aeat_mixin import AEAT_STATES, round_by_keys
+from odoo.addons.l10n_es_aeat_sii_oca.models.sii_mixin import SII_STATES, SII_VERSION
 
 _logger = logging.getLogger(__name__)
 try:
@@ -34,14 +32,14 @@ except ImportError:
 class AssetProrateRegularization(models.Model):
     _inherit = "capital.asset.prorate.regularization"
 
-    sii_state = fields.Selection(
-        selection=SII_STATES,
-        string="SII send state",
+    aeat_state = fields.Selection(
+        selection=AEAT_STATES + SII_STATES,
+        string="AEAT send state",
         default="not_sent",
         readonly=True,
         copy=False,
-        help="Indicates the state of this invoice in relation with the "
-        "presentation at the SII",
+        help="Indicates the state of this document in relation with the "
+        "presentation at the AEAT",
     )
     sii_csv = fields.Char(
         string="SII CSV",
@@ -53,25 +51,25 @@ class AssetProrateRegularization(models.Model):
         copy=False,
         readonly=True,
     )
-    sii_header_sent = fields.Text(
-        string="SII last header sent",
+    aeat_header_sent = fields.Text(
+        string="AEAT last header sent",
         copy=False,
         readonly=True,
     )
-    sii_content_sent = fields.Text(
-        string="SII last content sent",
+    aeat_content_sent = fields.Text(
+        string="AEAT last content sent",
         copy=False,
         readonly=True,
     )
-    sii_send_error = fields.Text(
-        string="SII Send Error",
+    aeat_send_error = fields.Text(
+        string="AEAT Send Error",
         copy=False,
         readonly=True,
     )
-    sii_send_failed = fields.Boolean(
-        string="SII send failed",
+    aeat_send_failed = fields.Boolean(
+        string="AEAT send failed",
         copy=False,
-        help="Indicates that the last attempt to communicate this invoice to "
+        help="Indicates that the last attempt to communicate this document to "
         "the SII has failed. See SII return for details",
     )
 
@@ -125,9 +123,9 @@ class AssetProrateRegularization(models.Model):
         self.sudo()._cancel_asset_to_sii()
 
     def _process_asset_for_sii_send(self):
-        """Process invoices for sending to the SII. Adds general checks from
-        configuration parameters and invoice availability for SII. If the
-        invoice is to be sent the decides the send method: direct send or
+        """Process documents for sending to the SII. Adds general checks from
+        configuration parameters and document availability for SII. If the
+        document is to be sent the decides the send method: direct send or
         via connector depending on 'Use connector' configuration"""
         # TODO: descomentar
         queue_obj = self.env["queue.job"].sudo()
@@ -141,7 +139,7 @@ class AssetProrateRegularization(models.Model):
                 new_delay = (
                     asset_line.sudo()
                     .with_context(company_id=company.id)
-                    .with_delay(eta=eta if not asset_line.sii_send_failed else False)
+                    .with_delay(eta=eta if not asset_line.aeat_send_failed else False)
                     .confirm_one_capital_asset_prorate_line()
                 )
                 job = queue_obj.search([("uuid", "=", new_delay.uuid)], limit=1)
@@ -155,7 +153,8 @@ class AssetProrateRegularization(models.Model):
         ):
             raise ValidationError(
                 _(
-                    "Please, post capital asset prorate regularization move before send "
+                    "Please, post capital asset prorate"
+                    " regularization move before send "
                     "capital asset prorate regularization to SII"
                 )
             )
@@ -163,26 +162,26 @@ class AssetProrateRegularization(models.Model):
             self._process_asset_for_sii_send()
 
     def _send_asset_to_sii(self):
-        serv = self._connect_sii("capital_asset")
-        if self.sii_state == "not_sent":
+        serv = self._connect_aeat("capital_asset")
+        if self.aeat_state == "not_sent":
             tipo_comunicacion = "A0"
         else:
             tipo_comunicacion = "A1"
-        header = self._get_sii_header(tipo_comunicacion)
+        header = self._get_aeat_header(tipo_comunicacion)
         asset_line_vals = {
-            "sii_header_sent": json.dumps(header, indent=4),
+            "aeat_header_sent": json.dumps(header, indent=4),
         }
         try:
             asset_dict = self._get_sii_asset_dict()
-            asset_line_vals["sii_content_sent"] = json.dumps(asset_dict, indent=4)
+            asset_line_vals["aeat_content_sent"] = json.dumps(asset_dict, indent=4)
             res = serv.SuministroLRBienesInversion(header, asset_dict)
             res_line = res["RespuestaLinea"][0]
             if res["EstadoEnvio"] == "Correcto":
                 asset_line_vals.update(
                     {
-                        "sii_state": "sent",
+                        "aeat_state": "sent",
                         "sii_csv": res["CSV"],
-                        "sii_send_failed": False,
+                        "aeat_send_failed": False,
                     }
                 )
             elif (
@@ -191,15 +190,15 @@ class AssetProrateRegularization(models.Model):
             ):
                 asset_line_vals.update(
                     {
-                        "sii_state": "sent_w_errors",
+                        "aeat_state": "sent_w_errors",
                         "sii_csv": res["CSV"],
-                        "sii_send_failed": True,
+                        "aeat_send_failed": True,
                     }
                 )
             else:
-                asset_line_vals["sii_send_failed"] = True
+                asset_line_vals["aeat_send_failed"] = True
             if (
-                "sii_state" in asset_line_vals
+                "aeat_state" in asset_line_vals
                 and not self.sii_account_registration_date
             ):
                 asset_line_vals["sii_account_registration_date"] = (
@@ -212,7 +211,7 @@ class AssetProrateRegularization(models.Model):
                     str(res_line["CodigoErrorRegistro"]),
                     str(res_line["DescripcionErrorRegistro"])[:60],
                 )
-            asset_line_vals["sii_send_error"] = send_error
+            asset_line_vals["aeat_send_error"] = send_error
             self.write(asset_line_vals)
 
         except Exception as fault:
@@ -221,8 +220,8 @@ class AssetProrateRegularization(models.Model):
             asset_line = env["capital.asset.prorate.regularization"].browse(self.id)
             asset_line_vals.update(
                 {
-                    "sii_send_failed": True,
-                    "sii_send_error": repr(fault)[:60],
+                    "aeat_send_failed": True,
+                    "aeat_send_error": repr(fault)[:60],
                     "sii_return": repr(fault),
                 }
             )
@@ -250,11 +249,11 @@ class AssetProrateRegularization(models.Model):
                     asset_line.sudo().asset_prorate_line_job_ids |= job
 
     def _cancel_asset_to_sii(self):
-        serv = self._connect_sii("capital_asset")
-        header = self._get_sii_header(cancellation=True)
+        serv = self._connect_aeat("capital_asset")
+        header = self._get_aeat_header(cancellation=True)
         asset_line_vals = {
-            "sii_send_failed": True,
-            "sii_send_error": False,
+            "aeat_send_failed": True,
+            "aeat_send_error": False,
         }
         try:
             asset_dict = self._get_cancel_sii_asset_dict()
@@ -263,15 +262,15 @@ class AssetProrateRegularization(models.Model):
             if res["EstadoEnvio"] == "Correcto":
                 asset_line_vals.update(
                     {
-                        "sii_state": "cancelled",
+                        "aeat_state": "cancelled",
                         "sii_csv": res["CSV"],
-                        "sii_send_failed": False,
+                        "aeat_send_failed": False,
                     }
                 )
             res_line = res["RespuestaLinea"][0]
 
             if res_line["CodigoErrorRegistro"]:
-                asset_line_vals["sii_send_error"] = "{} | {}".format(
+                asset_line_vals["aeat_send_error"] = "{} | {}".format(
                     str(res_line["CodigoErrorRegistro"]),
                     str(res_line["DescripcionErrorRegistro"])[:60],
                 )
@@ -282,8 +281,8 @@ class AssetProrateRegularization(models.Model):
             asset_line = env["capital.asset.prorate.regularization"].browse(self.id)
             asset_line_vals.update(
                 {
-                    "sii_send_failed": True,
-                    "sii_send_error": repr(fault)[:60],
+                    "aeat_send_failed": True,
+                    "aeat_send_error": repr(fault)[:60],
                     "sii_return": repr(fault),
                 }
             )
@@ -294,7 +293,7 @@ class AssetProrateRegularization(models.Model):
 
     def _get_cancel_sii_asset_dict(self):
         self.ensure_one()
-        self._sii_check_exceptions()
+        self._aeat_check_exceptions()
         return self._get_sii_asset_dict(cancel=True)
 
     def _cancel_asset_jobs(self):
@@ -306,27 +305,27 @@ class AssetProrateRegularization(models.Model):
                 queue.unlink()
         return job_started
 
-    def _connect_sii(self, mapping_key):
+    def _connect_aeat(self, mapping_key):
         self.ensure_one()
         public_crt, private_key = self.env["l10n.es.aeat.certificate"].get_certificates(
             company=self.asset_id.company_id
         )
-        params = self._connect_params_sii(mapping_key)
+        params = self._connect_params_aeat(mapping_key)
         session = Session()
         session.cert = (public_crt, private_key)
         transport = Transport(session=session)
         history = HistoryPlugin()
         client = Client(wsdl=params["wsdl"], transport=transport, plugins=[history])
-        return self._bind_sii(client, params["port_name"], params["address"])
+        return self._bind_service(client, params["port_name"], params["address"])
 
-    def _bind_sii(self, client, port_name, address=None):
+    def _bind_service(self, client, port_name, address=None):
         self.ensure_one()
         service = client._get_service("siiService")
         port = client._get_port(service, port_name)
         address = address or port.binding_options["address"]
         return client.create_service(port.binding.name, address)
 
-    def _connect_params_sii(self, mapping_key):
+    def _connect_params_aeat(self, mapping_key):
         self.ensure_one()
         agency = self.asset_id.company_id.tax_agency_id
         if not agency:
@@ -337,11 +336,11 @@ class AssetProrateRegularization(models.Model):
             agency = self.env.ref("l10n_es_aeat.aeat_tax_agency_spain")
         return agency._connect_params_sii(mapping_key, self.asset_id.company_id)
 
-    def _get_sii_header(self, tipo_comunicacion=False, cancellation=False):
+    def _get_aeat_header(self, tipo_comunicacion=False, cancellation=False):
         """Builds SII send header
 
         :param tipo_comunicacion String 'A0': new reg, 'A1': modification
-        :param cancellation Bool True when the communitacion es for invoice
+        :param cancellation Bool True when the communication is for document
             cancellation
         :return Dict with header data depending on cancellation
         """
@@ -364,7 +363,7 @@ class AssetProrateRegularization(models.Model):
 
     def _get_sii_identifier(self):
         """Get the SII structure for a partner identifier depending on the
-        conditions of the invoice.
+        conditions of the document.
         """
         self.ensure_one()
         gen_type = self._get_sii_gen_type()
@@ -372,7 +371,7 @@ class AssetProrateRegularization(models.Model):
             country_code,
             identifier_type,
             identifier,
-        ) = self._sii_get_partner()._parse_aeat_vat_info()
+        ) = self._aeat_get_partner()._parse_aeat_vat_info()
         # Limpiar alfanum
         if identifier:
             identifier = "".join(e for e in identifier if e.isalnum()).upper()
@@ -380,7 +379,7 @@ class AssetProrateRegularization(models.Model):
             identifier = "NO_DISPONIBLE"
             identifier_type = "06"
         if gen_type == 1:
-            if "1117" in (self.sii_send_error or ""):
+            if "1117" in (self.aeat_send_error or ""):
                 return {
                     "IDOtro": {
                         "CodigoPais": country_code,
@@ -457,8 +456,11 @@ class AssetProrateRegularization(models.Model):
                 # OPCIONALES
                 "RegularizacionAnualDeduccion": self.amount,
                 # "IdentificacionEntrega": None,
-                # RegularizacionDeduccionEfectuada is used when asset is sold. Not implemented
-                # "RegularizacionDeduccionEfectuada": self.asset_id.final_deductible_tax_amount,
+                # RegularizacionDeduccionEfectuada is used when asset
+                # is sold. Not implemented¡
+                # "RegularizacionDeduccionEfectuada": (
+                #   self.asset_id.final_deductible_tax_amount
+                #   ),
                 # "RefExterna": (self.asset_id.invoice_ref or "")[0:60],
                 # "NumRegistroAcuerdoFacturacion": None,
                 # "EntidadSucedida": {
@@ -469,7 +471,7 @@ class AssetProrateRegularization(models.Model):
         return body
 
     def _get_sii_asset_dict(self, cancel=False):
-        self._sii_check_exceptions()
+        self._aeat_check_exceptions()
         asset_dict = self._get_sii_body(cancel)
         round_by_keys(
             asset_dict,
@@ -493,37 +495,37 @@ class AssetProrateRegularization(models.Model):
             if asset_invoice.fiscal_position_id != partner_fiscal_position:
                 raise ValidationError(
                     _(
-                        "The fiscal position of the partner and of the invoice is different."
-                        "Please review asset: {%i} %s"
+                        "The fiscal position of the "
+                        "partner and of the invoice is different. "
+                        "Please review asset: %(asset_id)i %(asset_name)s",
+                        asset_id=self.asset_id.id,
+                        asset_name=self.asset_id.name,
                     )
-                    % (self.asset_id.id, self.asset_id.name)
                 )
 
-    def _get_sii_country_code(self):
+    def _get_aeat_country_code(self):
         self.ensure_one()
-        return self._sii_get_partner()._parse_aeat_vat_info()[0]
+        return self._aeat_get_partner()._parse_aeat_vat_info()[0]
 
-    def _sii_get_partner(self):
+    def _aeat_get_partner(self):
         return self.asset_id.partner_id
 
-    def _is_sii_simplified_invoice(self):
-        """Inheritable method to allow control when an
-        invoice are simplified or normal"""
-        partner = self._sii_get_partner()
-        is_simplified = partner.sii_simplified_invoice
-        return is_simplified
+    def _is_aeat_simplified_invoice(self):
+        """Inheritable method to allow control when a
+        document is simplified or normal"""
+        partner = self._aeat_get_partner()
+        return partner.aeat_simplified_invoice
 
-    def _sii_check_exceptions(self):
-        """Inheritable method for exceptions control when sending SII invoices."""
+    def _aeat_check_exceptions(self):
+        """Inheritable method for exceptions control when sending SII documents."""
         self.ensure_one()
         self._check_fiscal_position()
         gen_type = self._get_sii_gen_type()
-        # invoice_move_line
-        partner = self._sii_get_partner()
-        country_code = self._get_sii_country_code()
+        partner = self._aeat_get_partner()
+        country_code = self._get_aeat_country_code()
         if (gen_type != 3 or country_code == "ES") and not partner.vat:
             raise exceptions.UserError(_("The partner has not a VAT configured."))
-        if not self.asset_id.company_id.chart_template_id:
+        if not self.asset_id.company_id.chart_template:
             raise exceptions.UserError(
                 _("You have to select what account chart template use this company.")
             )
@@ -531,12 +533,13 @@ class AssetProrateRegularization(models.Model):
             raise exceptions.UserError(_("This company doesn't have SII enabled."))
 
     def unlink(self):
+        res = super().unlink()
         for rec in self:
-            if rec.sii_state != "not_sent":
+            if rec.aeat_state != "not_sent":
                 raise ValidationError(
                     _(
                         "You can't delete a capital asset prorate "
                         "regularization line if it has been previously sent"
                     )
                 )
-        super().unlink()
+        return res

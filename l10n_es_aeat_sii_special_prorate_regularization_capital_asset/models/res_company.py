@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from datetime import datetime, timedelta
@@ -32,7 +33,8 @@ class ResCompany(models.Model):
         string="Delay time",
     )
 
-    # TODO: This code is like _get_sii_eta. Refactor and fix bugs in fixed mode and make an a PR
+    # TODO: This code is like _get_sii_eta.
+    # Refactor and fix bugs in fixed mode and make an a PR
     def _get_sii_eta_capital_assets(self):
         if self.capital_asset_send_mode == "fixed":
             tz = self.env.context.get("tz", self.env.user.partner_id.tz)

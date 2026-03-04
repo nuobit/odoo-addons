@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+<!-- Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_l10n_es_aeat_mod303_report_form" model="ir.ui.view">
@@ -18,7 +19,7 @@
                     string="Send field 43 to SII"
                     help="Send capital assets prorate regularization to SII"
                     name="send_sii"
-                    attrs="{'invisible': ['|',('prorate_asset_lines_to_send','=',[]), ('state','!=','posted')]}"
+                    invisible="not prorate_asset_lines_to_send or state != 'posted'"
                     groups="l10n_es_aeat.group_account_aeat"
                 />
                 <button
@@ -26,7 +27,7 @@
                     string="Cancel field 43 to SII"
                     help="Cancel capital assets prorate regularization SII"
                     name="cancel_sii"
-                    attrs="{'invisible': [('prorate_asset_lines_to_cancel','=',[])]}"
+                    invisible="not prorate_asset_lines_to_send"
                     groups="l10n_es_aeat.group_account_aeat"
                 />
             </button>
