@@ -1,5 +1,6 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -16,7 +17,11 @@ class L10nEsAeatMod303Report(models.AbstractModel):
         asset_ids = self.env["account.asset"].search(
             [
                 ("invoice_move_line_id", "=", False),
-                ("prorate_tax_id", "in", self.get_taxes_from_map(map_line).ids),
+                (
+                    "prorate_tax_id",
+                    "in",
+                    map_line.get_taxes_for_company(self.company_id).ids,
+                ),
             ]
         )
         tax_line_vals["asset_ids"] = [(6, 0, asset_ids.ids)]
