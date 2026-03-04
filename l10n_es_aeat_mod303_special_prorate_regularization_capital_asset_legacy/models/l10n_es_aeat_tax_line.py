@@ -1,5 +1,6 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import fields, models
@@ -16,6 +17,7 @@ class L10nEsAeatTaxLine(models.Model):
         string="Model 303",
         comodel_name="l10n.es.aeat.mod303.report",
         compute="_compute_mod303_id",
+        store=True,
     )
     mod303_period_type = fields.Selection(related="mod303_id.period_type")
 
