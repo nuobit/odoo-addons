@@ -22,7 +22,7 @@ try:
     from zeep import Client
     from zeep.plugins import HistoryPlugin
     from zeep.transports import Transport
-except (ImportError, IOError) as err:
+except (OSError, ImportError) as err:
     _logger.debug(err)
 
 try:
@@ -202,9 +202,9 @@ class AssetProrateRegularization(models.Model):
                 "sii_state" in asset_line_vals
                 and not self.sii_account_registration_date
             ):
-                asset_line_vals[
-                    "sii_account_registration_date"
-                ] = self._get_account_registration_date()
+                asset_line_vals["sii_account_registration_date"] = (
+                    self._get_account_registration_date()
+                )
             asset_line_vals["sii_return"] = res
             send_error = False
             if res_line["CodigoErrorRegistro"]:
@@ -539,4 +539,4 @@ class AssetProrateRegularization(models.Model):
                         "regularization line if it has been previously sent"
                     )
                 )
-        super(AssetProrateRegularization, self).unlink()
+        super().unlink()
