@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -11,7 +12,7 @@ _logger = logging.getLogger(__name__)
 class AssetProrateRegularization(models.Model):
     _inherit = "capital.asset.prorate.regularization"
 
-    def _connect_sii(self, mapping_key):
+    def _connect_aeat(self, mapping_key):
         class SiiMock:
             _res = {
                 "EstadoEnvio": "Correcto",
@@ -37,8 +38,8 @@ class AssetProrateRegularization(models.Model):
                     asset_dict,
                 )
                 if self.asset_line:
-                    self.asset_line.sii_header_sent = False
-                    self.asset_line.sii_content_sent = False
+                    self.asset_line.aeat_header_sent = False
+                    self.asset_line.aeat_content_sent = False
                 return self._res
 
         return SiiMock(asset_line=self)
