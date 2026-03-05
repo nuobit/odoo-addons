@@ -1,0 +1,48 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_picking_signature
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: stock_picking_signature
+#: model:ir.model.fields,field_description:stock_picking_signature.field_stock_picking__require_signature
+#: model:ir.model.fields,field_description:stock_picking_signature.field_stock_picking_type__require_signature
+msgid "Require Signature"
+msgstr "Requerir signatura"
+
+#. module: stock_picking_signature
+#: model:ir.model.fields,help:stock_picking_signature.field_stock_picking_type__require_signature
+msgid "If enabled, a signature will be required to validate transfers of this operation type."
+msgstr "Si s'activa, es requerirà una signatura per validar les transferències d'aquest tipus d'operació."
+
+#. module: stock_picking_signature
+#: model:ir.model.fields,field_description:stock_picking_signature.field_stock_picking__signed_by
+msgid "Signed By"
+msgstr "Signat per"
+
+#. module: stock_picking_signature
+#: model:ir.model.fields,field_description:stock_picking_signature.field_stock_picking__signed_on
+msgid "Signed On"
+msgstr "Signat el"
+
+#. module: stock_picking_signature
+#: model_terms:ir.ui.view,arch_db:stock_picking_signature.report_picking
+#: model_terms:ir.ui.view,arch_db:stock_picking_signature.view_picking_form
+msgid "Signature"
+msgstr "Signatura"
+
+#. module: stock_picking_signature
+#: code:addons/stock_picking_signature/models/stock_picking.py:0
+#, python-format
+msgid "The following transfers require a signature before validation:\n%s"
+msgstr "Les transferències següents requereixen una signatura abans de la validació:\n%s"

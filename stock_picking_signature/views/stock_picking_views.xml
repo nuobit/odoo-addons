@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.signature</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <!-- Make require_signature available in the form -->
+            <xpath expr="//field[@name='picking_type_code']" position="after">
+                <field name="require_signature" invisible="1" />
+            </xpath>
+            <!-- Override highlighted signature widget (shown when state = done):
+                 Change from outgoing-only to require_signature-based -->
+            <xpath
+                expr="//header/widget[@name='signature'][@highlight]"
+                position="attributes"
+            >
+                <attribute name="attrs">
+                    {
+                        'invisible': ['|', '|',
+                            ('id', '=', False),
+                            ('require_signature', '=', False),
+                            ('state', '!=', 'done')
+                        ]
+                    }
+                </attribute>
+            </xpath>
+            <!-- Override non-highlighted signature widget (shown before done):
+                 Change from outgoing-only to require_signature-based,
+                 allow signing from confirmed/assigned states -->
+            <xpath
+                expr="//header/widget[@name='signature'][not(@highlight)]"
+                position="attributes"
+            >
+                <attribute name="attrs">
+                    {
+                        'invisible': ['|', '|',
+                            ('id', '=', False),
+                            ('require_signature', '=', False),
+                            ('state', 'not in', ['confirmed', 'assigned'])
+                        ]
+                    }
+                </attribute>
+            </xpath>
+            <!-- Add Signature notebook tab -->
+            <xpath expr="//page[@name='note']" position="after">
+                <page
+                    string="Signature"
+                    name="signature"
+                    attrs="{
+                        'invisible': [
+                            ('require_signature', '=', False),
+                            ('signed_by', '=', False),
+                            ('signature', '=', False),
+                            ('signed_on', '=', False)
+                        ]
+                    }"
+                >
+                    <group>
+                        <field name="signed_by" />
+                        <field name="signed_on" />
+                        <field name="signature" widget="image" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

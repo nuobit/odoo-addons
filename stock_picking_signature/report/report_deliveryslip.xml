@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template id="report_delivery_document" inherit_id="stock.report_delivery_document">
+        <xpath
+            expr="//div[@name='signature']//p[@t-field='o.partner_id.name']"
+            position="attributes"
+        >
+            <attribute name="t-if">not o.signed_by</attribute>
+        </xpath>
+        <xpath
+            expr="//div[@name='signature']//p[@t-field='o.partner_id.name']"
+            position="after"
+        >
+            <p t-if="o.signed_by" t-field="o.signed_by" />
+        </xpath>
+    </template>
+</odoo>

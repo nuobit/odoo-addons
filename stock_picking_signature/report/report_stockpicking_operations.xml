@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template id="report_picking" inherit_id="stock.report_picking">
+        <xpath expr="//p[@t-field='o.note']" position="after">
+            <div t-if="o.signature" class="mt32 ml64 mr4" name="signature">
+                <div class="offset-8">
+                    <strong>Signature</strong>
+                </div>
+                <div class="offset-8">
+                    <img
+                        t-att-src="image_data_uri(o.signature)"
+                        style="max-height: 4cm; max-width: 8cm;"
+                    />
+                </div>
+                <div class="offset-8 text-center">
+                    <p t-if="o.signed_by" t-field="o.signed_by" />
+                    <p t-else="" t-field="o.partner_id.name" />
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
