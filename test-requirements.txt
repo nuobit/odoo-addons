@@ -1,0 +1,12 @@
+odoo-addon-l10n_es_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/769/head#subdirectory=l10n_es_extension
+odoo-addon-account_asset_management_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/754/head#subdirectory=account_asset_management_extension
+odoo-addon-l10n_es_asset_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/780/head#subdirectory=l10n_es_asset_extension
+odoo-addon-l10n_es_account_capital_asset@git+https://github.com/nuobit/odoo-addons.git@refs/pull/814/head#subdirectory=l10n_es_account_capital_asset
+odoo-addon-l10n_es_special_prorate@git+https://github.com/nuobit/odoo-addons.git@refs/pull/800/head#subdirectory=l10n_es_special_prorate
+odoo-addon-l10n_es_aeat_mod303_special_prorate_regularization@git+https://github.com/nuobit/odoo-addons.git@refs/pull/846/head#subdirectory=l10n_es_aeat_mod303_special_prorate_regularization
+odoo-addon-l10n_es_aeat_prorate_asset@git+https://github.com/nuobit/odoo-addons.git@refs/pull/834/head#subdirectory=l10n_es_aeat_prorate_asset
+odoo-addon-l10n_es_aeat_vat_special_prorrate@git+https://github.com/nuobit/odoo-addons.git@refs/pull/835/head#subdirectory=l10n_es_aeat_vat_special_prorrate
+odoo-addon-l10n_es_aeat_mod303_special_prorate_regularization_capital_asset@git+https://github.com/nuobit/odoo-addons.git@refs/pull/851/head#subdirectory=l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+odoo-addon-account_asset_transfer_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/763/head#subdirectory=account_asset_transfer_extension
+odoo-addon-l10n_es_aeat_sii_oca_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/801/head#subdirectory=l10n_es_aeat_sii_oca_extension
+odoo-addon-l10n_es_aeat_sii_special_prorate_regularization_capital_asset@git+https://github.com/nuobit/odoo-addons.git@refs/pull/855/head#subdirectory=l10n_es_aeat_sii_special_prorate_regularization_capital_asset
