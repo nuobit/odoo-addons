@@ -22,7 +22,7 @@ Partner Contact Birthdate Position
 
 |badge1| |badge2| |badge3|
 
--  This module moves birthdate and age fields in partner form
+- This module moves birthdate and age fields in partner form
 
 **Table of contents**
 
@@ -50,10 +50,10 @@ Authors
 Contributors
 ------------
 
--  `NuoBiT <https://www.nuobit.com>`__:
+- `NuoBiT <https://www.nuobit.com>`__:
 
-   -  Bijaya Kumal bkumal@nuobit.com
-   -  Eric Antones eantones@nuobit.com
+  - Bijaya Kumal bkumal@nuobit.com
+  - Eric Antones eantones@nuobit.com
 
 Maintainers
 -----------
