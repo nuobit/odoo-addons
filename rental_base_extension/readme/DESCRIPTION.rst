@@ -16,3 +16,9 @@ When creating a rental order, the product dropdown on order lines only shows
 rental service products (i.e. products linked to a rented physical product
 via ``rented_product_id``). This prevents users from accidentally selecting
 non-rental products on rental orders.
+
+Catalan and Spanish translations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Provides Catalan and Spanish translations for ``rental_base``, which does not
+ship with these languages.

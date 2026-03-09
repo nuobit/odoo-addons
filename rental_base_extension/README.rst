@@ -45,6 +45,12 @@ rental service products (i.e. products linked to a rented physical product
 via ``rented_product_id``). This prevents users from accidentally selecting
 non-rental products on rental orders.
 
+Catalan and Spanish translations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Provides Catalan and Spanish translations for ``rental_base``, which does not
+ship with these languages.
+
 .. IMPORTANT::
    This is an alpha version, the data model and design can change at any time without warning.
    Only for development or testing purpose, do not use in production.

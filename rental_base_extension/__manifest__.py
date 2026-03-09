@@ -3,7 +3,8 @@
 
 {
     "name": "Rental Base Extension",
-    "summary": "Improves rental orders with menu visibility" " and product filtering.",
+    "summary": "Improves rental orders with menu visibility,"
+    " product filtering and translations.",
     "version": "16.0.1.0.0",
     "development_status": "Alpha",
     "category": "Rental",
