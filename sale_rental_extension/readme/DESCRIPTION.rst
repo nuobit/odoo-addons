@@ -5,3 +5,4 @@ This module extends ``sale_rental`` to improve the rental positions experience:
 * Configurable signature terms for rental delivery orders
   (Settings → Rental → Signature)
 * Custom signature dialog with "Confirm & Sign" button on rental pickings
+* Catalan and Spanish translations

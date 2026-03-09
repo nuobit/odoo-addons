@@ -1,0 +1,714 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale_rental
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-09 11:00+0000\n"
+"PO-Revision-Date: 2026-03-09 11:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: sale_rental
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__in_state
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__out_state
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__sell_state
+msgid ""
+"* New: When the stock move is created and not yet confirmed.\n"
+"* Waiting Another Move: This state can be seen when a move is waiting for another one, for example in a chained flow.\n"
+"* Waiting Availability: This state is reached when the procurement resolution is not straight forward. It may need the scheduler to run, a component to be manufactured...\n"
+"* Available: When products are reserved, it is set to 'Available'.\n"
+"* Done: When the shipment is processed, the state is 'Done'."
+msgstr ""
+"* Nuevo: Cuando el movimiento de stock se crea y aún no se ha confirmado.\n"
+"* Esperando otro movimiento: Este estado se ve cuando un movimiento espera a otro, por ejemplo en un flujo encadenado.\n"
+"* Esperando disponibilidad: Se alcanza este estado cuando la resolución del aprovisionamiento no es directa. Puede necesitar la ejecución del planificador, un componente a fabricar...\n"
+"* Disponible: Cuando los productos están reservados, se establece a 'Disponible'.\n"
+"* Hecho: Cuando el envío se procesa, el estado es 'Hecho'."
+
+#. module: sale_rental
+#: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__in
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Back In"
+msgstr "Devuelto"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__can_sell_rental
+msgid "Can Sell from Rental"
+msgstr "Se puede vender desde el alquiler"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#, python-format
+msgid "Can't find any generic 'Rent' route."
+msgstr "No se puede encontrar ninguna ruta genérica de 'Alquiler'."
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#, python-format
+msgid "Can't find any generic 'Sell Rented Product' route."
+msgstr "No se puede encontrar ninguna ruta genérica de 'Vender producto alquilado'."
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.create_rental_product_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: sale_rental
+#: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__cancel
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid "Cannot sell the rental {} because it has not been delivered"
+msgstr "No se puede vender el alquiler {} porque no se ha entregado"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__copy_image
+msgid "Copy Product Image"
+msgstr "Copiar imagen del producto"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.create_rental_product_form
+msgid "Create"
+msgstr "Crear"
+
+#. module: sale_rental
+#: model:ir.actions.act_window,name:sale_rental.create_rental_product_action
+#: model_terms:ir.ui.view,arch_db:sale_rental.create_rental_product_form
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_template_only_form_view
+msgid "Create Rental Service"
+msgstr "Crear servicio de alquiler"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_create_rental_product
+msgid "Create the Rental Service Product"
+msgstr "Crear el producto de servicio de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__create_uid
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__create_date
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__partner_id
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__default_code
+msgid "Default Code"
+msgstr "Código por defecto"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
+msgid "Delivery"
+msgstr "Entrega"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_picking_id
+msgid "Delivery Order"
+msgstr "Orden de entrega"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__display_name
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__end_date
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
+msgid "End Date"
+msgstr "Fecha de fin"
+
+#. module: sale_rental
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__end_date
+msgid ""
+"End Date of the Rental (extensions included),         taking into account "
+"all the extensions sold to the customer."
+msgstr ""
+"Fecha de fin del alquiler (extensiones incluidas), teniendo en cuenta todas "
+"las extensiones vendidas al cliente."
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__id
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__id
+msgid "ID"
+msgstr "ID"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_state
+msgid "In Move State"
+msgstr "Estado del movimiento de entrada"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_move_id
+msgid "Incoming Move"
+msgstr "Movimiento de entrada"
+
+#. module: sale_rental
+#: model:ir.model.fields,help:sale_rental.field_sale_order_line__rental_qty
+#: model:ir.model.fields,help:sale_rental.field_sale_rental__rental_qty
+msgid "Indicate the number of items that will be rented."
+msgstr "Indica el número de artículos que se alquilarán."
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product____last_update
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__write_uid
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__write_date
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid ""
+"Missing 'Rental to Extend' on the sale order line with rental service {}"
+msgstr ""
+"Falta 'Alquiler a extender' en la línea de pedido de venta con servicio de alquiler {}"
+
+#. module: sale_rental
+#: model:ir.model.fields.selection,name:sale_rental.selection__sale_order_line__rental_type__new_rental
+msgid "New Rental"
+msgstr "Nuevo alquiler"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid "Not enough stock !"
+msgstr "¡No hay suficiente stock!"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid ""
+"On the 'new rental' sale order line with product '{}', we should have a "
+"rental service product !"
+msgstr ""
+"En la línea de pedido de venta de 'nuevo alquiler' con producto '{}', "
+"¡debería haber un producto de servicio de alquiler!"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid ""
+"On the sale order line with product %(name)s you are trying to sell a rented"
+" product with a quantity (%(uom_qty)s) that is different from the rented "
+"quantity (%(rental_qty)s). This is not supported."
+msgstr ""
+"En la línea de pedido de venta con producto %(name)s está intentando vender "
+"un producto alquilado con una cantidad (%(uom_qty)s) diferente de la "
+"cantidad alquilada (%(rental_qty)s). Esto no es compatible."
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid ""
+"On the sale order line with product '%(name)s' the Product Quantity "
+"(%(uom_qty)s) should be the number of days (%(days)s) multiplied by the "
+"Rental Quantity (%(rental_qty)s)."
+msgstr ""
+"En la línea de pedido de venta con producto '%(name)s' la cantidad de "
+"producto (%(uom_qty)s) debería ser el número de días (%(days)s) multiplicado "
+"por la cantidad de alquiler (%(rental_qty)s)."
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid ""
+"On the sale order line with rental service %(name)s, you are trying to "
+"extend a rental with a rental quantity %(qty)s that is different from the "
+"quantity of the original rental %(rental_qty)s. This is not supported."
+msgstr ""
+"En la línea de pedido de venta con servicio de alquiler %(name)s, está "
+"intentando extender un alquiler con una cantidad de alquiler %(qty)s "
+"diferente de la cantidad del alquiler original %(rental_qty)s. Esto no es "
+"compatible."
+
+#. module: sale_rental
+#: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__ordered
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Ordered"
+msgstr "Reservado"
+
+#. module: sale_rental
+#: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__out
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Out"
+msgstr "Entregado"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_state
+msgid "Out Move State"
+msgstr "Estado del movimiento de salida"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__out_move_id
+msgid "Outgoing Move"
+msgstr "Movimiento de salida"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_view_location_id
+msgid "Parent Rental"
+msgstr "Alquiler padre"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_product_template
+msgid "Product"
+msgstr "Producto"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__categ_id
+msgid "Product Category"
+msgstr "Categoría de producto"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_product_product
+msgid "Product Variant"
+msgstr "Variante de producto"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__hw_product_id
+msgid "Product to Rent"
+msgstr "Producto a alquilar"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_stock_quant
+msgid "Quants"
+msgstr "Quants"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/wizard/create_rental_product.py:0
+#, python-format
+msgid "RENT-{}"
+msgstr "ALQ-{}"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__in_picking_id
+msgid "Receipt"
+msgstr "Recepción"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_product_product__rental_service_ids
+msgid "Related Rental Services"
+msgstr "Servicios de alquiler relacionados"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_product_product__rented_product_id
+msgid "Related Rented Product"
+msgstr "Producto alquilado relacionado"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#: model:stock.route,name:sale_rental.route_warehouse0_rental
+#, python-format
+msgid "Rent"
+msgstr "Alquilar"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#: model:ir.model,name:sale_rental.model_sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_template_only_form_view
+#: model_terms:ir.ui.view,arch_db:sale_rental.view_warehouse
+#, python-format
+msgid "Rental"
+msgstr "Alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_allowed
+msgid "Rental Allowed"
+msgstr "Alquiler permitido"
+
+#. module: sale_rental
+#: model:ir.model.fields.selection,name:sale_rental.selection__sale_order_line__rental_type__rental_extension
+msgid "Rental Extension"
+msgstr "Extensión de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__extension_order_line_ids
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Rental Extensions"
+msgstr "Extensiones de alquiler"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_in_location_id
+#, python-format
+msgid "Rental In"
+msgstr "Entrada de alquiler"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_out_location_id
+#, python-format
+msgid "Rental Out"
+msgstr "Salida de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__sale_price_per_day
+msgid "Rental Price per Day"
+msgstr "Precio de alquiler por día"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental_qty
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_qty
+msgid "Rental Quantity"
+msgstr "Cantidad de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__rental_route_id
+msgid "Rental Route"
+msgstr "Ruta de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_order_id
+msgid "Rental SO"
+msgstr "Pedido de venta de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_order_line_id
+msgid "Rental SO Line"
+msgstr "Línea de pedido de venta de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rental_product_id
+msgid "Rental Service"
+msgstr "Servicio de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_create_rental_product__name
+msgid "Rental Service Name"
+msgstr "Nombre del servicio de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_product_product__rental_service_tmpl_ids
+#: model:ir.model.fields,field_description:sale_rental.field_product_template__rental_service_tmpl_ids
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:sale_rental.product_template_only_form_view
+msgid "Rental Services"
+msgstr "Servicios de alquiler"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__rental_type
+msgid "Rental Type"
+msgstr "Tipo de alquiler"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/wizard/create_rental_product.py:0
+#, python-format
+msgid "Rental of a {}"
+msgstr "Alquiler de un {}"
+
+#. module: sale_rental
+#: model:product.template,name:sale_rental.rent_product_product_25_product_template
+msgid "Rental of one Acoustic Bloc Screens"
+msgstr "Alquiler de un panel acústico"
+
+#. module: sale_rental
+#: model:product.template,name:sale_rental.rent_product_product_20_product_template
+msgid "Rental of one Flipover"
+msgstr "Alquiler de un rotafolios"
+
+#. module: sale_rental
+#: model:product.template,name:sale_rental.rent_consu_delivery_01_product_template
+msgid "Rental of one Three-Seat Sofa"
+msgstr "Alquiler de un sofá de tres plazas"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__extension_rental_id
+msgid "Rental to Extend"
+msgstr "Alquiler a extender"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_order_line__sell_rental_id
+msgid "Rental to Sell"
+msgstr "Alquiler a vender"
+
+#. module: sale_rental
+#: model:ir.actions.act_window,name:sale_rental.sale_rental_action
+#: model:ir.ui.menu,name:sale_rental.sale_rental_menu
+msgid "Rentals"
+msgstr "Alquileres"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_product_product__rented_product_tmpl_id
+#: model:ir.model.fields,field_description:sale_rental.field_product_template__rented_product_tmpl_id
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__rented_product_id
+msgid "Rented Product"
+msgstr "Producto alquilado"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
+msgid "Return"
+msgstr "Devolución"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de venta"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Sales Rentals"
+msgstr "Alquileres de ventas"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Search Rentals"
+msgstr "Buscar alquileres"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_picking_id
+msgid "Sell Delivery Order"
+msgstr "Orden de entrega de venta"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_state
+msgid "Sell Move State"
+msgstr "Estado del movimiento de venta"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_order_line_ids
+#: model:stock.route,name:sale_rental.route_warehouse0_sell_rented_product
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+#, python-format
+msgid "Sell Rented Product"
+msgstr "Vender producto alquilado"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_stock_warehouse__sell_rented_product_route_id
+msgid "Sell Rented Product Route"
+msgstr "Ruta de vender producto alquilado"
+
+#. module: sale_rental
+#: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__sell_progress
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Sell in progress"
+msgstr "Venta en curso"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__sell_move_id
+msgid "Selling Move"
+msgstr "Movimiento de venta"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Selling Order Line"
+msgstr "Línea de pedido de venta"
+
+#. module: sale_rental
+#: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__sold
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Sold"
+msgstr "Vendido"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__start_date
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#. module: sale_rental
+#: model:ir.model.fields,field_description:sale_rental.field_sale_rental__state
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_search
+msgid "State"
+msgstr "Estado"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_stock_rule
+msgid "Stock Rule"
+msgstr "Regla de stock"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#, python-format
+msgid "The Rental Input stock location is not set on the warehouse {}"
+msgstr "La ubicación de stock de entrada de alquiler no está configurada en el almacén {}"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/stock_warehouse.py:0
+#, python-format
+msgid "The Rental Output stock location is not set on the warehouse {}"
+msgstr "La ubicación de stock de salida de alquiler no está configurada en el almacén {}"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid ""
+"The Rental Service of the Rental Extension you just selected is '{}' and "
+"it's not the same as the Product currently selected in this Sale Order Line."
+msgstr ""
+"El servicio de alquiler de la extensión de alquiler que acaba de seleccionar "
+"es '{}' y no es el mismo que el producto seleccionado actualmente en esta "
+"línea de pedido de venta."
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/product.py:0
+#, python-format
+msgid "The rental product '{}' must be of type 'Service'."
+msgstr "El producto de alquiler '{}' debe ser de tipo 'Servicio'."
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/product.py:0
+#, python-format
+msgid ""
+"The rental product '{}' must have the option 'Must Have Start and End Dates'"
+" checked."
+msgstr ""
+"El producto de alquiler '{}' debe tener la opción 'Debe tener fechas de "
+"inicio y fin' activada."
+
+#. module: sale_rental
+#: model:ir.model.constraint,message:sale_rental.constraint_sale_order_line_rental_qty_positive
+msgid "The rental quantity must be positive or null."
+msgstr "La cantidad de alquiler debe ser positiva o cero."
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/product.py:0
+#, python-format
+msgid "The unit of measure of the rental product '{}' must be 'Day'."
+msgstr "La unidad de medida del producto de alquiler '{}' debe ser 'Día'."
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Total"
+msgstr "Total"
+
+#. module: sale_rental
+#: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
+msgid "Unit of Measure"
+msgstr "Unidad de medida"
+
+#. module: sale_rental
+#: model:ir.model,name:sale_rental.model_stock_warehouse
+msgid "Warehouse"
+msgstr "Almacén"
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/wizard/create_rental_product.py:0
+#, python-format
+msgid "Wrong active_model. Should never happen."
+msgstr "active_model incorrecto. No debería ocurrir nunca."
+
+#. module: sale_rental
+#. odoo-python
+#: code:addons/sale_rental/models/sale_order.py:0
+#, python-format
+msgid ""
+"You want to rent %(rental_qty).2f  %(uom_name)s but you only have "
+"%(available_qty).2f %(uom_name)s currently available on the  stock location "
+"'%(rental_name)s' ! Make sure that you get some units back in the mean time "
+"or re-supply the stock location '%(rental_name)s'."
+msgstr ""
+"Quiere alquilar %(rental_qty).2f %(uom_name)s pero solo tiene "
+"%(available_qty).2f %(uom_name)s disponibles actualmente en la ubicación de "
+"stock '%(rental_name)s'. Asegúrese de recuperar algunas unidades mientras "
+"tanto o reaprovisione la ubicación de stock '%(rental_name)s'."
+
+#. module: sale_rental_extension
+#. odoo-javascript
+#: code:addons/sale_rental_extension/static/src/js/signature_widget.js:0
+#, python-format
+msgid "Delivery Signature"
+msgstr "Firma de entrega"
+
+#. module: sale_rental_extension
+#. odoo-javascript
+#: code:addons/sale_rental_extension/static/src/xml/signature_dialog.xml:0
+#, python-format
+msgid "Confirm & Sign"
+msgstr "Confirmar y firmar"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_res_company__rental_signature_terms
+#: model:ir.model.fields,field_description:sale_rental_extension.field_res_config_settings__rental_signature_terms
+msgid "Rental Signature Terms"
+msgstr "Condiciones de firma de alquiler"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.res_config_settings_view_form
+msgid "Signature"
+msgstr "Firma"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.res_config_settings_view_form
+msgid ""
+"Terms shown in the signature dialog when signing a rental delivery order. "
+"Leave empty to use the default text."
+msgstr ""
+"Condiciones mostradas en el diálogo de firma al firmar un albarán de alquiler. "
+"Dejar vacío para utilizar el texto por defecto."

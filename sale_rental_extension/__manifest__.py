@@ -4,7 +4,7 @@
 {
     "name": "Sale Rental Extension",
     "summary": "Adds kanban view, calendar, configurable signature terms"
-    " and filters for rental positions.",
+    " and translations for rental positions.",
     "version": "16.0.1.0.0",
     "development_status": "Alpha",
     "category": "Rental",
