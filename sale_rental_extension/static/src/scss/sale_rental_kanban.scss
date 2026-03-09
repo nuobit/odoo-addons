@@ -1,0 +1,9 @@
+// Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+// License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
+// Prevent the image zoom popup from capturing mouse events.
+// Without this, hovering over a small thumbnail causes flickering:
+// mouse enters popup → leaves thumbnail → popup closes → loop.
+.o_popover:has(.o_image_zoom) {
+    pointer-events: none;
+}
