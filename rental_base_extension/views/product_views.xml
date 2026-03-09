@@ -16,23 +16,50 @@
         </field>
     </record>
 
-    <!-- Only show 'Create Rental Service' button when 'Can be Rented' is enabled -->
+    <!-- product.product: reorganize rental fields into a Rentals section -->
     <record id="product_normal_form_view" model="ir.ui.view">
         <field name="name">product.product.form.inherit.rental_base_extension</field>
         <field name="model">product.product</field>
         <field name="inherit_id" ref="sale_rental.product_normal_form_view" />
         <field name="arch" type="xml">
+            <!-- Hide original rental elements in the sale group -->
+            <label for="rented_product_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="rented_product_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <label for="rental_service_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="rental_service_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
             <button
                 name="%(sale_rental.create_rental_product_action)d"
                 position="attributes"
             >
-                <attribute name="attrs">
-                    {'invisible': ['|', ('type', '=', 'service'), ('rental', '=', False)]}
-                </attribute>
+                <attribute name="invisible">1</attribute>
             </button>
+            <!-- Add new Rentals section -->
+            <group name="sale" position="after">
+                <group
+                    name="rental"
+                    string="Rentals"
+                    attrs="{'invisible': ['|', ('type', '=', 'service'), ('rental', '=', False)]}"
+                >
+                    <field name="rental_service_ids" nolabel="1" />
+                    <button
+                        type="action"
+                        name="%(sale_rental.create_rental_product_action)d"
+                        string="Create Rental Service"
+                    />
+                </group>
+            </group>
         </field>
     </record>
 
+    <!-- product.template: reorganize rental fields into a Rentals section -->
     <record id="product_template_only_form_view" model="ir.ui.view">
         <field
             name="name"
@@ -40,14 +67,40 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="sale_rental.product_template_only_form_view" />
         <field name="arch" type="xml">
+            <!-- Hide original rental elements in the sale group -->
+            <label for="rented_product_tmpl_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="rented_product_tmpl_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <label for="rental_service_tmpl_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="rental_service_tmpl_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
             <button
                 name="%(sale_rental.create_rental_product_action)d"
                 position="attributes"
             >
-                <attribute name="attrs">
-                    {'invisible': ['|', '|', ('type', '=', 'service'), ('product_variant_count', '&gt;', 1), ('rental', '=', False)]}
-                </attribute>
+                <attribute name="invisible">1</attribute>
             </button>
+            <!-- Add new Rentals section -->
+            <group name="sale" position="after">
+                <group
+                    name="rental"
+                    string="Rentals"
+                    attrs="{'invisible': ['|', '|', ('type', '=', 'service'), ('product_variant_count', '&gt;', 1), ('rental', '=', False)]}"
+                >
+                    <field name="rental_service_tmpl_ids" nolabel="1" />
+                    <button
+                        type="action"
+                        name="%(sale_rental.create_rental_product_action)d"
+                        string="Create Rental Service"
+                    />
+                </group>
+            </group>
         </field>
     </record>
 </odoo>
