@@ -121,6 +121,13 @@
                     domain="['|', ('start_date', '=', context_today().strftime('%Y-%m-%d')), ('end_date', '=', context_today().strftime('%Y-%m-%d'))]"
                 />
             </filter>
+            <filter name="end_date_groupby" position="after">
+                <filter
+                    name="rented_product_groupby"
+                    string="Rented Product"
+                    context="{'group_by': 'rented_product_id'}"
+                />
+            </filter>
             <search position="inside">
                 <searchpanel>
                     <field name="state" icon="fa-tag" select="one" />
