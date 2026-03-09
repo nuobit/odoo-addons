@@ -15,4 +15,39 @@
             </field>
         </field>
     </record>
+
+    <!-- Only show 'Create Rental Service' button when 'Can be Rented' is enabled -->
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.rental_base_extension</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="sale_rental.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <button
+                name="%(sale_rental.create_rental_product_action)d"
+                position="attributes"
+            >
+                <attribute name="attrs">
+                    {'invisible': ['|', ('type', '=', 'service'), ('rental', '=', False)]}
+                </attribute>
+            </button>
+        </field>
+    </record>
+
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field
+            name="name"
+        >product.template.only.form.inherit.rental_base_extension</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="sale_rental.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <button
+                name="%(sale_rental.create_rental_product_action)d"
+                position="attributes"
+            >
+                <attribute name="attrs">
+                    {'invisible': ['|', '|', ('type', '=', 'service'), ('product_variant_count', '&gt;', 1), ('rental', '=', False)]}
+                </attribute>
+            </button>
+        </field>
+    </record>
 </odoo>
