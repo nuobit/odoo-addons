@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- Hide 'Can be Rented' checkbox on service products -->
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.rental_base_extension</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="rental_base.product_template_form_view" />
+        <field name="arch" type="xml">
+            <field name="rental" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('type', '=', 'service')]}
+                </attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

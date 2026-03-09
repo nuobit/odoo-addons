@@ -15,6 +15,7 @@
         "rental_base",
     ],
     "data": [
+        "views/product_views.xml",
         "views/sale_views.xml",
     ],
 }
