@@ -476,6 +476,9 @@ msgstr "Pressupostos"
 #. module: rental_base
 #: model:ir.model.fields,field_description:rental_base.field_sale_order_line__rental
 #: model_terms:ir.ui.view,arch_db:rental_base.res_config_settings_view_form
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
 msgid "Rental"
 msgstr "Lloguer"
 
@@ -523,6 +526,9 @@ msgstr "Temps de lloguer"
 
 #. module: rental_base
 #: model:ir.ui.menu,name:rental_base.menu_rental_root
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
 msgid "Rentals"
 msgstr "Lloguers"
 
@@ -639,3 +645,9 @@ msgid ""
 "confirmed order."
 msgstr ""
 "No teniu permís per canviar la 'data d'inici' a una línia de comanda d'una comanda confirmada."
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
+msgid "Create Rental Service"
+msgstr "Crear servei de lloguer"
