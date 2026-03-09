@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- Move Rental Positions to top-level menu and make it visible -->
+    <record id="rental_base.menu_rental_positions" model="ir.ui.menu">
+        <field name="parent_id" ref="rental_base.menu_rental_root" />
+        <field name="sequence">1</field>
+        <field
+            name="groups_id"
+            eval="[(6, 0, [ref('sales_team.group_sale_salesman')])]"
+        />
+    </record>
+</odoo>
