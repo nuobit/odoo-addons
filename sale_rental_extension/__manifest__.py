@@ -3,7 +3,8 @@
 
 {
     "name": "Sale Rental Extension",
-    "summary": "Adds kanban view, calendar and filters for rental positions.",
+    "summary": "Adds kanban view, calendar, configurable signature terms"
+    " and filters for rental positions.",
     "version": "16.0.1.0.0",
     "development_status": "Alpha",
     "category": "Rental",
@@ -14,11 +15,15 @@
         "sale_rental",
     ],
     "data": [
+        "views/res_config_settings_views.xml",
         "views/sale_rental_views.xml",
+        "views/stock_picking_views.xml",
     ],
     "assets": {
         "web.assets_backend": [
+            "sale_rental_extension/static/src/js/signature_widget.js",
             "sale_rental_extension/static/src/scss/sale_rental_kanban.scss",
+            "sale_rental_extension/static/src/xml/signature_dialog.xml",
         ],
     },
 }
