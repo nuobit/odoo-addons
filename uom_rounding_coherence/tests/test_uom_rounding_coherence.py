@@ -1,11 +1,12 @@
-# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL- Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo  <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.exceptions import ValidationError
-from odoo.tests import SavepointCase
+from odoo.tests import TransactionCase
 
 
-class TestUomRoundingCoherence(SavepointCase):
+class TestUomRoundingCoherence(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -183,7 +184,8 @@ class TestUomRoundingCoherence(SavepointCase):
         PRE:    - A reference UoM exists with rounding 0.001
         ACT:    - Create a bigger UoM with factor=1/12 (dozen) and rounding=0.00001
         POST:   - The UoM is created without error because
-                  effective rounding (0.00001 / 0.08333 ≈ 0.00012) <= ref rounding (0.001)
+                  effective rounding
+                  (0.00001 / 0.08333 ≈ 0.00012) <= ref rounding (0.001)
         """
         # ARRANGE & ACT
         self.env["uom.uom"].create(
@@ -250,7 +252,7 @@ class TestUomRoundingCoherence(SavepointCase):
         self.env.cr.execute(
             "UPDATE uom_uom SET active = FALSE WHERE id = %s", (ref.id,)
         )
-        self.env["uom.uom"].invalidate_cache()
+        self.env["uom.uom"].invalidate_model()
         # ACT & ASSERT
         with self.assertRaises(ValidationError):
             non_ref.write({"rounding": 0.0001})
@@ -296,7 +298,7 @@ class TestUomRoundingCoherence(SavepointCase):
             "UPDATE uom_uom SET uom_type = 'reference', factor = 1.0 WHERE id = %s",
             (to_corrupt.id,),
         )
-        self.env["uom.uom"].invalidate_cache()
+        self.env["uom.uom"].invalidate_model()
         # ACT & ASSERT
         with self.assertRaises(ValidationError):
             another.write({"rounding": 0.0001})
