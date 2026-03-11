@@ -1,7 +1,3 @@
-.. image:: https://odoo-community.org/readme-banner-image
-   :target: https://odoo-community.org/get-involved?utm_source=readme
-   :alt: Odoo Community Association
-
 ======================
 UoM Rounding Coherence
 ======================
@@ -17,43 +13,36 @@ UoM Rounding Coherence
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github
-    :target: https://github.com/NuoBiT/odoo-addons/tree/14.0/uom_rounding_coherence
+    :target: https://github.com/NuoBiT/odoo-addons/tree/18.0/uom_rounding_coherence
     :alt: NuoBiT/odoo-addons
 
 |badge1| |badge2| |badge3|
 
-This module adds validation to ensure that Unit of Measure (UoM) rounding
-precision is coherent with the conversion ratio to the reference unit,
-preventing precision loss during conversions.
+This module adds validation to ensure that Unit of Measure (UoM)
+rounding precision is coherent with the conversion ratio to the
+reference unit, preventing precision loss during conversions.
 
-When converting quantities between UoMs in the same category, a non-reference
-UoM whose rounding is too coarse relative to its conversion factor will lose
-precision beyond the reference UoM's rounding.
+When converting quantities between UoMs in the same category, a
+non-reference UoM whose rounding is too coarse relative to its
+conversion factor will lose precision beyond the reference UoM's
+rounding.
 
 **Example Problem:**
 
-If the reference UoM has rounding 0.001 and a secondary UoM with ratio 1.141
-has rounding 0.01, each conversion can introduce up to ±0.004 error in
-reference units — enough to accumulate visible discrepancies over multiple
-transactions.
+If the reference UoM has rounding 0.001 and a secondary UoM with ratio
+1.141 has rounding 0.01, each conversion can introduce up to ±0.004
+error in reference units — enough to accumulate visible discrepancies
+over multiple transactions.
 
 **The Validation:**
 
-The module performs two checks:
-
-1. **Conversion ratio coherence**: the UoM's rounding step, converted to
-   reference units (rounding / factor), must not exceed the reference UoM's
-   rounding. This prevents precision loss during conversions.
-
-2. **Stock quant coherence**: when changing a UoM's rounding, the module checks
-   that all existing stock quant quantities for products using that UoM fit
-   within the new rounding. This prevents making the rounding coarser than the
-   data allows (e.g., changing from 0.001 to 0.01 when quants with 3 decimals
-   already exist in stock).
+The module checks that converting the UoM's rounding step to reference
+units (rounding / factor) does not exceed the reference UoM's rounding.
+This ensures data consistency and prevents precision-related errors.
 
 **Table of contents**
 
@@ -63,32 +52,30 @@ The module performs two checks:
 Configuration
 =============
 
-No configuration is needed. The module automatically validates UoM rounding
-coherence when you create or modify UoMs.
-
+No configuration is needed. The module automatically validates UoM
+rounding coherence when you create or modify UoMs.
 
 Usage
 =====
 
 When creating or modifying Units of Measure:
 
-#. Go to *Inventory > Configuration > UoM Categories*
-#. Create or edit a UoM
-#. If the rounding precision is too coarse for the conversion ratio,
-   the system will show a validation error
-#. The error message will indicate:
+1. Go to *Inventory > Configuration > UoM Categories*
+2. Create or edit a UoM
+3. If the rounding precision is too coarse for the conversion ratio, the
+   system will show a validation error
+4. The error message will indicate:
 
-   * The UoM with the problem
-   * Its current rounding value
-   * The conversion factor
-   * The effective rounding in reference units
-   * The reference unit and its rounding
+   - The UoM with the problem
+   - Its current rounding value
+   - The conversion factor
+   - The effective rounding in reference units
+   - The reference unit and its rounding
 
-#. To fix the error, either:
+5. To fix the error, either:
 
-   * Decrease the rounding of the problematic UoM, or
-   * Increase the rounding of the reference UoM (if appropriate)
-
+   - Decrease the rounding of the problematic UoM, or
+   - Increase the rounding of the reference UoM (if appropriate)
 
 Bug Tracker
 ===========
@@ -96,7 +83,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/NuoBiT/odoo-addons/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/NuoBiT/odoo-addons/issues/new?body=module:%20uom_rounding_coherence%0Aversion:%2014.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/NuoBiT/odoo-addons/issues/new?body=module:%20uom_rounding_coherence%0Aversion:%2018.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -104,22 +91,21 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * NuoBiT Solutions
 * S.L.
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* `NuoBiT <https://www.nuobit.com>`__:
+- `NuoBiT <https://www.nuobit.com>`__:
 
-  * Eric Antones <eantones@nuobit.com>
-
+  - Eric Antones <eantones@nuobit.com>
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
-This module is part of the `NuoBiT/odoo-addons <https://github.com/NuoBiT/odoo-addons/tree/14.0/uom_rounding_coherence>`_ project on GitHub.
+This module is part of the `NuoBiT/odoo-addons <https://github.com/NuoBiT/odoo-addons/tree/18.0/uom_rounding_coherence>`_ project on GitHub.
 
 You are welcome to contribute.

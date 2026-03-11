@@ -8,7 +8,7 @@ from odoo.tests import SavepointCase
 class TestUomRoundingCoherence(SavepointCase):
     @classmethod
     def setUpClass(cls):
-        super(TestUomRoundingCoherence, cls).setUpClass()
+        super().setUpClass()
         cls.category = cls.env["uom.category"].create(
             {"name": "Test Coherence Category"}
         )
