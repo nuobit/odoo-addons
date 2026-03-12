@@ -1,0 +1,110 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_extension_sql
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-12 08:18+0000\n"
+"PO-Revision-Date: 2026-03-12 08:18+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid ""
+"%s\n"
+"This can be caused by a Microsoft SQL Server missbehaviour where a field belonging to a PK or UK cannot have trailing spaces.If it has any then a fake IntegrityViolation can be thrown. Please check that there's no other record on the database with the same key fields but with/without trailing spaces, then fix it and try again."
+msgstr ""
+"%s\n"
+"Esto puede ser causado por un comportamiento errático de Microsoft SQL Server donde un campo perteneciente a una PK o UK no puede tener espacios al final. Si tiene alguno, entonces se puede lanzar una falsa Violación de Integridad. Por favor, revise que no haya otro registro en la base de datos con los mismos campos clave pero con/sin espacios al final, luego arréglelo y vuelva a intentarlo."
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "Empty SQL statement"
+msgstr "Sentencia SQL vacía"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "Expected a dictionary, found %s"
+msgstr "Se esperaba un diccionario, se encontró %s"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid ""
+"Impossible to delete external record with ID '%s': Register not found on "
+"Backend"
+msgstr ""
+"Imposible eliminar el registro externo con ID '%s': Registro no encontrado en "
+"el Backend"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid ""
+"Method '_get_inserted_function_name' must be implemented in a adapter "
+"subclass."
+msgstr ""
+"El método '_get_inserted_function_name' debe ser implementado en una subclase de adaptador."
+
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "Only %s is allowed in insert statement."
+msgstr "Solo se permite %s en la sentencia de inserción."
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "Only one query is allowed on non insert SQL statements."
+msgstr "Solo se permite una consulta en sentencias SQL que no sean de inserción."
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "The schema %s does not exist"
+msgstr "El esquema %s no existe"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "Unexpected SQL statement"
+msgstr "Sentencia SQL inesperada"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "Unexpected error: Returned more the one row with ID: %s"
+msgstr "Error inesperado: Se devolvió más de una fila con ID: %s"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid ""
+"Unexpected error: Returned more the one rows:\n"
+"%s"
+msgstr ""
+"Error inesperado: Se devolvieron más de una fila:\n"
+"%s"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "Unexpected!! Nothing created: %s"
+msgstr "¡Inesperado! Nada creado: %s"
+
+#. module: connector_extension_sql
+#. odoo-python
+#: code:addons/connector_extension_sql/components/adapter.py:0
+msgid "Unexpected!!: Returned more the one row: %(row)s -  %(values)s"
+msgstr "¡Inesperado!: Se devolvió más de una fila: %(row)s -  %(values)s"
