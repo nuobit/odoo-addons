@@ -18,4 +18,4 @@ msgstr ""
 #. module: account_invoice_mass_email
 #: model:ir.actions.act_window,name:account_invoice_mass_email.action_send_mass_email_invoice
 msgid "Send invoices by e-mail"
-msgstr "Enviar por e-mail"
+msgstr "Enviar facturas por e-mail"
