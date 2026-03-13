@@ -1,0 +1,27 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* oxigen_stock_barcodes_gs1_validation
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-13 11:19+0000\n"
+"PO-Revision-Date: 2026-03-13 11:19+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: oxigen_stock_barcodes_gs1_validation
+#. odoo-python
+#: code:addons/oxigen_stock_barcodes_gs1_validation/wizards/stock_barcodes_read.py:0
+msgid "GS1 Barcode not found: AI(%(ai)s) - %(value)s"
+msgstr "Código de barras GS1 no encontrado: AI(%(ai)s) - %(value)s"
+
+#. module: oxigen_stock_barcodes_gs1_validation
+#: model:ir.model,name:oxigen_stock_barcodes_gs1_validation.model_wiz_stock_barcodes_read
+msgid "Wizard to read barcode"
+msgstr "Asistente para leer código de barras"
