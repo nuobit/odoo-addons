@@ -253,6 +253,17 @@ msgstr "Cuando un activo tiene activos nuevos, el estado debe ser transferido."
 #: code:addons/account_asset_transfer_extension/models/account_move.py:0
 #, python-format
 msgid ""
+"You cannot unpost this entry because it is a transfer move (%s) linked to "
+"transferred assets. Use the 'Revert Transfer' action instead."
+msgstr ""
+"No se puede desasentar este apunte porque es un movimiento de transferencia "
+"(%s) vinculado a activos transferidos. Use la acción 'Revertir "
+"transferencia' en su lugar."
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_move.py:0
+#, python-format
+msgid ""
 "You can't modify or delete a journal item on journal entries with "
 "transferred assets"
 msgstr "No se puede modificar o eliminar un asiento en los asientos con activos transferidos."
