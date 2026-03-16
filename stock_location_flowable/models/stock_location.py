@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL- Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -7,7 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import json
 
 
-class Location(models.Model):
+class StockLocation(models.Model):
     _inherit = "stock.location"
 
     flowable_storage = fields.Boolean()
@@ -85,7 +86,8 @@ class Location(models.Model):
         for rec in self:
             if rec.flowable_storage:
                 if rec.quant_ids.filtered(
-                    lambda x: x.product_uom_id != rec.flowable_uom_id and x.quantity > 0
+                    lambda x, rec=rec: x.product_uom_id != rec.flowable_uom_id
+                    and x.quantity > 0
                 ):
                     raise ValidationError(
                         _("You have stock movements with different unit of measure")
@@ -145,23 +147,27 @@ class Location(models.Model):
                     if product.uom_id != rec.flowable_uom_id:
                         raise ValidationError(
                             _(
-                                "The product %s is measured in %s. You can only assign"
+                                "The product %(product)s is measured in %(uom)s."
+                                " You can only assign"
                                 " products that have the allowed unit of measure"
                             )
-                            % (product.name, product.uom_id.name)
+                            % {
+                                "product": product.name,
+                                "uom": product.uom_id.name,
+                            }
                         )
 
     @api.depends("name", "location_id.complete_name", "usage", "flowable_blocked")
     def _compute_complete_name(self):
         for rec in self:
             if rec.flowable_storage and rec.flowable_blocked:
-                rec.complete_name = "%s/%s [%s]" % (
+                rec.complete_name = "{}/{} [{}]".format(
                     rec.location_id.complete_name,
                     rec.name,
                     _("Blocked"),
                 )
             else:
-                super(Location, rec)._compute_complete_name()
+                return super(StockLocation, rec)._compute_complete_name()
 
     def name_get(self):
         res = []
@@ -183,13 +189,15 @@ class Location(models.Model):
             if vals.get("flowable_storage"):
                 for product in rec.quant_ids.product_id:
                     product_quant = rec.quant_ids.filtered(
-                        lambda x: x.quantity > 0 and x.product_id == product
+                        lambda x, product=product: x.quantity > 0
+                        and x.product_id == product
                     )
                     if len(product_quant) > 1:
                         raise UserError(
                             _(
-                                "You cannot convert this location into a flowable location"
-                                " because there are unmixed products."
+                                "You cannot convert this location into"
+                                " a flowable location because there"
+                                " are unmixed products."
                             )
                         )
                     if product.uom_id.id != vals.get(
@@ -197,9 +205,10 @@ class Location(models.Model):
                     ):
                         raise UserError(
                             _(
-                                "You cannot convert this location into a flowable location"
-                                " because there are products with different units of"
-                                " measure."
+                                "You cannot convert this location into"
+                                " a flowable location because there"
+                                " are products with different units"
+                                " of measure."
                             )
                         )
             elif not vals.get("flowable_storage", True):
@@ -211,14 +220,15 @@ class Location(models.Model):
                         "flowable_uom_id": False,
                     }
                 )
-            res &= super(Location, rec).write(vals)
+            res &= super(StockLocation, rec).write(vals)
             if rec.flowable_storage:
                 removed_product_ids = set(old_allowed_products.ids) - set(
                     rec.flowable_allowed_product_ids.ids
                 )
                 for product_id in removed_product_ids:
                     if rec.quant_ids.filtered(
-                        lambda x: x.product_id.id == product_id and x.quantity > 0
+                        lambda x, pid=product_id: x.product_id.id == pid
+                        and x.quantity > 0
                     ):
                         raise UserError(
                             _(

@@ -1,4 +1,5 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -30,6 +31,9 @@ class PickingType(models.Model):
                     > 1
                 ):
                     raise ValidationError(
-                        _("Only one picking type can be flowable in a warehouse %s.")
-                        % rec.warehouse_id.name,
+                        _(
+                            "Only one picking type can be flowable "
+                            "in a warehouse %(warehouse_name)s."
+                        )
+                        % {"warehouse_name": rec.warehouse_id.name}
                     )

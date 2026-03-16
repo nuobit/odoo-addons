@@ -1,4 +1,5 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, models
@@ -17,7 +18,7 @@ class StockQuant(models.Model):
                     if (
                         len(
                             rec.product_id.stock_quant_ids.filtered(
-                                lambda x: float_compare(
+                                lambda x, rec=rec: float_compare(
                                     x.quantity,
                                     0,
                                     precision_rounding=rec.product_uom_id.rounding,

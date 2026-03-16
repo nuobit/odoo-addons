@@ -1,4 +1,5 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -9,7 +10,7 @@ from odoo.tests import common
 _logger = logging.getLogger(__name__)
 
 
-class TestCommon(common.SavepointCase):
+class TestCommon(common.TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -32,6 +33,7 @@ class TestCommon(common.SavepointCase):
                 "name": "Delivery1",
                 "sequence_code": "SEQ-OUT",
                 "code": "outgoing",
+                "reservation_method": "manual",
                 "default_location_src_id": cls.env.ref(
                     "stock.stock_location_locations_partner"
                 ).id,
@@ -57,13 +59,15 @@ class TestCommon(common.SavepointCase):
                 "name": "Production1",
                 "sequence_code": "SEQ-MRP",
                 "code": "mrp_operation",
+                "flowable_operation": False,
             }
         )
 
         cls.product_flowable_1 = cls.env["product.product"].create(
             {
                 "name": "Liquid O2",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": cls.env.ref("uom.product_uom_litre").id,
                 "uom_po_id": cls.env.ref("uom.product_uom_litre").id,
                 "tracking": "lot",
@@ -73,7 +77,8 @@ class TestCommon(common.SavepointCase):
         cls.product_flowable_2 = cls.env["product.product"].create(
             {
                 "name": "Liquid N2",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": cls.env.ref("uom.product_uom_litre").id,
                 "uom_po_id": cls.env.ref("uom.product_uom_litre").id,
                 "tracking": "lot",
@@ -121,11 +126,13 @@ class TestCommon(common.SavepointCase):
                 "flowable_uom_id": cls.env.ref("uom.product_uom_litre").id,
                 "flowable_allowed_product_ids": [(4, cls.product_flowable_1.id)],
                 "flowable_create_lots": True,
-                "flowable_sequence_id": cls.flowable_sequence.id,
+                "flowable_sequence_id": cls.env.ref(
+                    "stock.sequence_production_lots"
+                ).id,
             }
         )
 
-        lot_1 = cls.env["stock.production.lot"].create(
+        lot_1 = cls.env["stock.lot"].create(
             {
                 "name": "Lot1",
                 "product_id": cls.product_flowable_1.id,
@@ -146,7 +153,7 @@ class TestCommon(common.SavepointCase):
                 "product_id": cls.product_flowable_1.id,
                 "product_uom_id": cls.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": cls.supplier_location.id,
                 "location_dest_id": cls.incoming_picking.location_dest_id.id,
                 "company_id": cls.env.company.id,
@@ -167,7 +174,7 @@ class TestCommon(common.SavepointCase):
                 "product_id": cls.product_flowable_1.id,
                 "product_uom_id": cls.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": cls.supplier_location.id,
                 "location_dest_id": cls.outgoing_picking.location_dest_id.id,
                 "company_id": cls.env.company.id,
@@ -188,8 +195,8 @@ class TestCommon(common.SavepointCase):
                 "product_id": cls.product_flowable_1.id,
                 "product_uom_id": cls.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
-                "location_id": cls.env.ref("stock.stock_location_inter_wh").id,
+                "quantity": 10,
+                "location_id": cls.env.ref("stock.stock_location_inter_company").id,
                 "location_dest_id": cls.internal_picking.location_dest_id.id,
                 "company_id": cls.env.company.id,
             }
@@ -204,13 +211,12 @@ class TestCommon(common.SavepointCase):
         )
 
     def get_error_message_regex(self, str1):
-        parts = str1.split("%s")
-        escaped_parts = [re.escape(part) for part in parts]
-        regex_pattern = ".*".join(escaped_parts)
-        return regex_pattern
+        str1_esc = re.escape(str1)
+        str1_esc = re.sub(r"(%\\\([^)]+\\\)s|%s)", ".*", str1_esc)
+        return str1_esc
 
     def _create_lot(self, product, name):
-        return self.env["stock.production.lot"].create(
+        return self.env["stock.lot"].create(
             {
                 "name": name,
                 "product_id": product.id,
@@ -234,7 +240,7 @@ class TestCommon(common.SavepointCase):
                 "product_id": product.id,
                 "product_uom_id": product.uom_id.id,
                 "lot_id": lot.id,
-                "qty_done": qty,
+                "quantity": qty,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": location.id,
                 "company_id": self.env.company.id,
@@ -260,7 +266,7 @@ class TestCommon(common.SavepointCase):
                 "product_id": product.id,
                 "product_uom_id": product.uom_id.id,
                 "lot_id": lot.id,
-                "qty_done": qty,
+                "quantity": qty,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": location.id,
                 "company_id": self.env.company.id,
@@ -308,19 +314,17 @@ class TestCommon(common.SavepointCase):
 
     def _create_inventory_adjustment(self, location, product, lot, qty):
         """Create and validate a simple inventory adjustment (1 lot)."""
-        inventory = self.env["stock.inventory"].create(
-            {"name": f"Adjust {product.name} at {location.name}"}
+        quant = (
+            self.env["stock.quant"]
+            .with_context(inventory_mode=True)
+            .create(
+                {
+                    "product_id": product.id,
+                    "location_id": location.id,
+                    "lot_id": lot.id,
+                    "inventory_quantity": qty,
+                }
+            )
         )
-        inventory.action_start()
-        self.env["stock.inventory.line"].create(
-            {
-                "inventory_id": inventory.id,
-                "product_id": product.id,
-                "product_uom_id": product.uom_id.id,
-                "location_id": location.id,
-                "prod_lot_id": lot.id,
-                "product_qty": qty,
-            }
-        )
-        inventory.action_validate()
-        return inventory
+        quant.action_apply_inventory()
+        return quant

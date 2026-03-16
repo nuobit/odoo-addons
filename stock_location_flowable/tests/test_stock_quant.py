@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -36,26 +37,16 @@ class TestStockQuant(TestCommon):
         # ACT — second lot via inventory adjustment
         lot_2 = self._create_lot(self.product_flowable_1, "QUANT-LOT-2")
 
-        inventory_2 = self.env["stock.inventory"].create(
-            {
-                "name": "Add second lot",
-            }
-        )
-        inventory_2.action_start()
-        self.env["stock.inventory.line"].create(
-            {
-                "inventory_id": inventory_2.id,
-                "product_id": self.product_flowable_1.id,
-                "product_uom_id": self.product_flowable_1.uom_id.id,
-                "location_id": self.location_flowable_1.id,
-                "prod_lot_id": lot_2.id,
-                "product_qty": 50,
-            }
-        )
-
         # ASSERT
         with self.assertRaises(ValidationError) as error:
-            inventory_2.action_validate()
+            self.env["stock.quant"].with_context(inventory_mode=True).create(
+                {
+                    "product_id": self.product_flowable_1.id,
+                    "location_id": self.location_flowable_1.id,
+                    "lot_id": lot_2.id,
+                    "inventory_quantity": 50,
+                }
+            ).action_apply_inventory()
 
         msg_error = "You cannot have more than one lot in the same location."
         msg_error = self.get_error_message_regex(msg_error)
