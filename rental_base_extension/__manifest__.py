@@ -3,8 +3,8 @@
 
 {
     "name": "Rental Base Extension",
-    "summary": "Improves rental orders with menu visibility,"
-    " product filtering and translations.",
+    "summary": "Improves rental product form with checkbox visibility,"
+    " rental sections and translations.",
     "version": "16.0.1.0.0",
     "development_status": "Alpha",
     "category": "Rental",
@@ -16,6 +16,5 @@
     ],
     "data": [
         "views/product_views.xml",
-        "views/sale_views.xml",
     ],
 }
