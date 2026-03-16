@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class TestStockMove(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockMove, cls).setUpClass()
+        super().setUpClass()
 
     def test_modify_in_progress_flowable_move_raises_error(self):
         """

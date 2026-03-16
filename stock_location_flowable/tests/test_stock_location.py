@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 class TestStockLocation(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockLocation, cls).setUpClass()
+        super().setUpClass()
         cls.uom_litre = cls.env.ref("uom.product_uom_litre")
         cls.uom_unit = cls.env.ref("uom.product_uom_unit")
         cls.product_flowable_1 = cls.env["product.product"].create(

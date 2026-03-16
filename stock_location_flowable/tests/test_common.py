@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 class TestCommon(common.SavepointCase):
     @classmethod
     def setUpClass(cls):
-        super(TestCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.supplier_location = cls.env.ref("stock.stock_location_suppliers")
 

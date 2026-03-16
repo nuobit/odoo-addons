@@ -7,7 +7,7 @@
     " mixing bulk liquid and solid products in a location",
     "version": "14.0.1.0.1",
     "author": "NuoBiT Solutions, S.L.",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Stock",
     "depends": ["mrp", "uom_rounding_coherence"],
     "license": "AGPL-3",
