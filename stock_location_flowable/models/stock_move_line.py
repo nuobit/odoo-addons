@@ -1,4 +1,5 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -38,9 +39,10 @@ class StockMoveLine(models.Model):
                     ):
                         raise ValidationError(
                             _(
-                                "The location %s is blocked. Probably you need to"
-                                " review the pending manufacturing orders related"
+                                "The location %(location)s is blocked."
+                                " Probably you need to review the pending"
+                                " manufacturing orders related"
                                 " to this location"
                             )
-                            % location.name
+                            % {"location": location.name}
                         )

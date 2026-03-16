@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -36,7 +37,7 @@ class TestStockMoveLine(TestCommon):
             self.outgoing_picking.button_validate()
 
         msg_error = (
-            "The location %s is blocked. Probably you need to review"
+            "The location %(location)s is blocked. Probably you need to review"
             " the pending manufacturing orders related to this location"
         )
         msg_error = self.get_error_message_regex(msg_error)
@@ -69,7 +70,7 @@ class TestStockMoveLine(TestCommon):
             second_picking.button_validate()
 
         msg_error = (
-            "The location %s is blocked. Probably you need to review"
+            "The location %(location)s is blocked. Probably you need to review"
             " the pending manufacturing orders related to this location"
         )
         msg_error = self.get_error_message_regex(msg_error)
@@ -102,7 +103,7 @@ class TestStockMoveLine(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_2.id,
-                "qty_done": 5,
+                "quantity": 5,
                 "location_id": self.location_flowable_1.id,
                 "location_dest_id": self.location_1.id,
                 "company_id": self.env.company.id,
@@ -118,7 +119,7 @@ class TestStockMoveLine(TestCommon):
             transfer_picking.button_validate()
 
         msg_error = (
-            "The location %s is blocked. Probably you need to review"
+            "The location %(location)s is blocked. Probably you need to review"
             " the pending manufacturing orders related to this location"
         )
         msg_error = self.get_error_message_regex(msg_error)

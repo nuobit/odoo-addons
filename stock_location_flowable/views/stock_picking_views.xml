@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_picking_form" model="ir.ui.view">
@@ -14,7 +15,7 @@
                     icon="fa-wrench"
                     string="Manufacturing Orders"
                     type="object"
-                    attrs="{'invisible': [('flowable_production_ids', '=', [])]}"
+                    invisible="not flowable_production_ids"
                     groups="stock.group_stock_user"
                 />
             </xpath>

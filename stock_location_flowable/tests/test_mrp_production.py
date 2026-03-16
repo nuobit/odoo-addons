@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL- Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -38,7 +39,7 @@ class TestMrpProduction(TestCommon):
 
         # ASSERT
         msg_error = (
-            "The location %s is blocked. Probably you need to review"
+            "The location %(location)s is blocked. Probably you need to review"
             " the pending manufacturing orders related to this location"
         )
         msg_error = self.get_error_message_regex(msg_error)
@@ -315,7 +316,8 @@ class TestMrpProduction(TestCommon):
         product_o2 = self.env["product.product"].create(
             {
                 "name": "Liquid O2",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": uom_litro_o2.id,
                 "uom_po_id": uom_litro_o2.id,
                 "tracking": "lot",
@@ -334,7 +336,9 @@ class TestMrpProduction(TestCommon):
                 "flowable_uom_id": uom_litro_o2.id,
                 "flowable_allowed_product_ids": [(4, product_o2.id)],
                 "flowable_create_lots": True,
-                "flowable_sequence_id": self.env.ref("stock.sequence_tracking").id,
+                "flowable_sequence_id": self.env.ref(
+                    "stock.sequence_production_lots"
+                ).id,
             }
         )
 
@@ -374,7 +378,7 @@ class TestMrpProduction(TestCommon):
                 "product_id": product_o2.id,
                 "product_uom_id": uom_litro_o2.id,
                 "lot_id": lot_new.id,
-                "qty_done": litres_2,
+                "quantity": litres_2,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": location_cistern.id,
                 "company_id": self.env.company.id,
@@ -446,7 +450,8 @@ class TestMrpProduction(TestCommon):
         product_o2 = self.env["product.product"].create(
             {
                 "name": "Liquid O2",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": uom_litro_o2.id,
                 "uom_po_id": uom_litro_o2.id,
                 "tracking": "lot",
@@ -465,7 +470,9 @@ class TestMrpProduction(TestCommon):
                 "flowable_uom_id": uom_litro_o2.id,
                 "flowable_allowed_product_ids": [(4, product_o2.id)],
                 "flowable_create_lots": True,
-                "flowable_sequence_id": self.env.ref("stock.sequence_tracking").id,
+                "flowable_sequence_id": self.env.ref(
+                    "stock.sequence_production_lots"
+                ).id,
             }
         )
 
@@ -490,7 +497,7 @@ class TestMrpProduction(TestCommon):
                     "product_id": product_o2.id,
                     "product_uom_id": uom_litro_o2.id,
                     "lot_id": lot.id,
-                    "qty_done": litres,
+                    "quantity": litres,
                     "location_id": self.supplier_location.id,
                     "location_dest_id": location_cistern.id,
                     "company_id": self.env.company.id,
@@ -800,7 +807,8 @@ class TestFlowableReservationConflictFromProduction(TestCommon):
         finished_product = self.env["product.product"].create(
             {
                 "name": "Finished Product",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": self.env.ref("uom.product_uom_unit").id,
                 "uom_po_id": self.env.ref("uom.product_uom_unit").id,
             }
@@ -850,18 +858,16 @@ class TestFlowableReservationConflictFromProduction(TestCommon):
                 "location_dest_id": self.location_flowable_3.location_id.id,
             }
         )
-        # Populate raw and finished moves from the BoM
-        self.env["stock.move"].create(regular_mo._get_moves_raw_values())
-        self.env["stock.move"].create(regular_mo._get_moves_finished_values())
         regular_mo.action_confirm()
         regular_mo.action_assign()
 
         # Verify the regular MO reserved stock at the flowable location
-        raw_move = regular_mo.move_raw_ids
-        self.assertGreater(
-            raw_move.reserved_availability,
-            0,
-            "Regular MO should have reserved stock from the flowable location",
+        raw_moves = regular_mo.move_raw_ids.filtered(
+            lambda m: m.product_id == self.product_flowable_1
+        )
+        self.assertTrue(
+            all(m.state == "assigned" for m in raw_moves),
+            "Regular MO raw moves should be fully assigned (reserved)",
         )
 
         # ACT — receive new stock at the flowable location
@@ -990,19 +996,18 @@ class TestFlowableBlockingWithReservations(TestCommon):
         self.assertEqual(sale_picking_2.state, "confirmed")
 
         # Inventory adjustment: +1000 L on lot X1
-        inventory = self.env["stock.inventory"].create(
-            {
-                "name": "Adjust +1000L on X1",
-                "location_ids": [(4, self.location_flowable_4.id)],
-                "product_ids": [(4, self.product_flowable_1.id)],
-            }
+        existing_quant = self.env["stock.quant"].search(
+            [
+                ("product_id", "=", self.product_flowable_1.id),
+                ("location_id", "=", self.location_flowable_4.id),
+                ("lot_id", "=", lot_x1.id),
+            ],
+            limit=1,
         )
-        inventory.action_start()
-        inv_line = inventory.line_ids.filtered(
-            lambda l: l.location_id == self.location_flowable_4
+        existing_quant.with_context(inventory_mode=True).write(
+            {"inventory_quantity": existing_quant.quantity + 1000}
         )
-        inv_line[0].product_qty = inv_line[0].product_qty + 1000
-        inventory.action_validate()
+        existing_quant.action_apply_inventory()
         self.assertEqual(
             self._get_positive_quantity(
                 self.location_flowable_4, self.product_flowable_1
@@ -1036,10 +1041,10 @@ class TestFlowableBlockingWithReservations(TestCommon):
             "The following operations must be unreserved"
             " or completed first:\n\n"
             "  - Liquid O2: 100.0 L (lot X1)"
-            " - %s (Delivery1)\n"
+            f" - {sale_picking_1.name} (Delivery1)\n"
             "  - Liquid O2: 600.0 L (lot X1)"
-            " - %s (Delivery1)"
-        ) % (sale_picking_1.name, sale_picking_3.name)
+            f" - {sale_picking_3.name} (Delivery1)"
+        )
         self.assertEqual(str(error.exception), expected_msg)
 
     def test_flowable_merge_succeeds_with_unreserved_operations(self):
@@ -1047,8 +1052,7 @@ class TestFlowableBlockingWithReservations(TestCommon):
         Test that receiving stock at a flowable location succeeds when
         all sales have been unreserved before the reception.
 
-        _trigger_assign is bypassed for flowable receptions, so the
-        unreserved sales stay confirmed. The mixing MO fully reserves
+        The unreserved sales stay confirmed. The mixing MO fully reserves
         all stock and succeeds.
 
         PRE:    - Flowable location 'O2 Tank 4' (capacity 15000 L), initially empty
@@ -1099,19 +1103,18 @@ class TestFlowableBlockingWithReservations(TestCommon):
         self.assertEqual(sale_picking_2.state, "confirmed")
 
         # Inventory adjustment: +1000 L on lot X1
-        inventory = self.env["stock.inventory"].create(
-            {
-                "name": "Adjust +1000L on X1",
-                "location_ids": [(4, self.location_flowable_4.id)],
-                "product_ids": [(4, self.product_flowable_1.id)],
-            }
+        existing_quant = self.env["stock.quant"].search(
+            [
+                ("product_id", "=", self.product_flowable_1.id),
+                ("location_id", "=", self.location_flowable_4.id),
+                ("lot_id", "=", lot_x1.id),
+            ],
+            limit=1,
         )
-        inventory.action_start()
-        inv_line = inventory.line_ids.filtered(
-            lambda l: l.location_id == self.location_flowable_4
+        existing_quant.with_context(inventory_mode=True).write(
+            {"inventory_quantity": existing_quant.quantity + 1000}
         )
-        inv_line[0].product_qty = inv_line[0].product_qty + 1000
-        inventory.action_validate()
+        existing_quant.action_apply_inventory()
         self.assertEqual(
             self._get_positive_quantity(
                 self.location_flowable_4, self.product_flowable_1

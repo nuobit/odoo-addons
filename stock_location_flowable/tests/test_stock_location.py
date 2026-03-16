@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL- Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -20,21 +21,16 @@ class TestStockLocation(TestCommon):
         cls.product_flowable_1 = cls.env["product.product"].create(
             {
                 "name": "Liquid CO2",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": cls.uom_litre.id,
                 "uom_po_id": cls.uom_litre.id,
-            }
-        )
-        cls.warehouse_bcn = cls.env["stock.warehouse"].create(
-            {
-                "name": "Warehouse Barcelona",
-                "code": "BCN",
             }
         )
         cls.location_flowable_bcn_1 = cls.env["stock.location"].create(
             {
                 "name": "O2 Tank 5",
-                "location_id": cls.warehouse_bcn.lot_stock_id.id,
+                "location_id": cls.env.ref("stock.stock_location_locations_partner").id,
             }
         )
 
@@ -206,7 +202,8 @@ class TestStockLocation(TestCommon):
         product_flowable_2 = self.env["product.product"].create(
             {
                 "name": "CO2 Cylinder",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": self.uom_unit.id,
                 "uom_po_id": self.uom_unit.id,
                 "tracking": "lot",
@@ -226,7 +223,7 @@ class TestStockLocation(TestCommon):
 
         # ASSERT
         msg_error = (
-            "The product %s is measured in %s. You can only assign"
+            "The product %(product)s is measured in %(uom)s. You can only assign"
             " products that have the allowed unit of measure"
         )
         msg_error = self.get_error_message_regex(msg_error)
@@ -244,14 +241,15 @@ class TestStockLocation(TestCommon):
                 - 'flowable_allowed_product_ids' contains products with the current
                 'flowable_uom_id'
         ACT:    - Attempt to change 'flowable_uom_id' to a different unit of measure
-        POST:   - ValidationError is raised stating that only products with the allowed unit
-                of measure can be assigned
+        POST:   - ValidationError is raised stating that only products
+                with the allowed unit of measure can be assigned
         """
         # ARRANGE
         product_flowable_2 = self.env["product.product"].create(
             {
                 "name": "CO2 Cylinder",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": self.uom_unit.id,
                 "uom_po_id": self.uom_unit.id,
                 "tracking": "lot",
@@ -277,7 +275,7 @@ class TestStockLocation(TestCommon):
 
         # ASSERT
         msg_error = (
-            "The product %s is measured in %s. You can only assign"
+            "The product %(product)s is measured in %(uom)s. You can only assign"
             " products that have the allowed unit of measure"
         )
         msg_error = self.get_error_message_regex(msg_error)
@@ -395,7 +393,7 @@ class TestStockLocation(TestCommon):
         production.button_mark_done()
 
         # ASSERT
-        self.location_flowable_1.invalidate_cache()
+        self.location_flowable_1.invalidate_recordset()
         self.assertGreater(self.location_flowable_1.flowable_capacity_occupied, 0)
 
     def test_flowable_percentage_occupied(self):
@@ -518,7 +516,7 @@ class TestStockLocation(TestCommon):
             )
 
         msg_error = (
-            "You cannot remove a product that is currently" " stored in this location."
+            "You cannot remove a product that is currently stored in this location."
         )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
@@ -592,7 +590,8 @@ class TestStockLocation(TestCommon):
         product_unit = self.env["product.product"].create(
             {
                 "name": "Ar Cylinder",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": self.uom_unit.id,
                 "uom_po_id": self.uom_unit.id,
                 "tracking": "lot",
@@ -669,7 +668,7 @@ class TestStockLocation(TestCommon):
         self._seed_flowable_location(self.location_flowable_1, product, lot, 100)
 
         # Verify occupied amount is set
-        self.location_flowable_1.invalidate_cache()
+        self.location_flowable_1.invalidate_recordset()
         self.assertGreater(self.location_flowable_1.flowable_capacity_occupied, 0)
 
         # ACT & ASSERT
@@ -695,7 +694,8 @@ class TestStockLocation(TestCommon):
         product_litre = self.env["product.product"].create(
             {
                 "name": "Liquid Ar",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": self.uom_litre.id,
                 "uom_po_id": self.uom_litre.id,
                 "tracking": "lot",
@@ -738,5 +738,5 @@ class TestStockLocation(TestCommon):
         self._create_inventory_adjustment(self.location_1, product, lot, 200)
 
         # ACT & ASSERT
-        self.location_1.invalidate_cache()
+        self.location_1.invalidate_recordset()
         self.assertEqual(self.location_1.flowable_capacity_occupied, 0)

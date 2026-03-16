@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 from .test_common import TestCommon
 
@@ -18,15 +18,16 @@ class TestStockMove(TestCommon):
     def test_modify_in_progress_flowable_move_raises_error(self):
         """
         Test that cancelling a flowable production with a picking triggers
-        the stock.move write guard, which prevents state changes on raw
-        moves of an in-progress mixing.
+        a ValidationError from the state constraint, preventing the
+        cancellation of an in-progress mixing.
 
-        When a user clicks "Cancel" on the MO, the cancel flow attempts to
-        change the raw moves' state, and the write override blocks it.
+        When a user clicks "Cancel" on the MO, the cancel flow changes
+        the raw moves' state, and the computed state field triggers
+        the @api.constrains check which blocks it.
 
         PRE:    - A flowable MO in to_close state with a picking
         ACT:    - Cancel the production (user action)
-        POST:   - UserError is raised about mixing in progress
+        POST:   - ValidationError is raised about mixing in progress
         """
         # ARRANGE
         self.picking_type_mrp_operation_1.flowable_operation = True
@@ -37,11 +38,11 @@ class TestStockMove(TestCommon):
         self.assertEqual(production.state, "to_close")
 
         # ACT & ASSERT
-        with self.assertRaises(UserError) as error:
+        with self.assertRaises(ValidationError) as error:
             production.action_cancel()
 
         msg_error = (
-            "You cannot modify a production with a picking associated."
+            "You cannot cancel a production with a picking associated."
             " The mixing is in progress."
         )
         msg_error = self.get_error_message_regex(msg_error)

@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -42,14 +43,12 @@ class TestStockReturnPicking(TestCommon):
             .create(
                 {
                     "picking_id": picking.id,
-                    "location_id": self.supplier_location.id,
                 }
             )
         )
-        return_wizard._onchange_picking_id()
 
         with self.assertRaises(UserError) as error:
-            return_wizard._create_returns()
+            return_wizard._create_return()
 
         # ASSERT
         msg_error = (
@@ -93,7 +92,7 @@ class TestStockReturnPicking(TestCommon):
         picking.action_assign()
         move.move_line_ids.write(
             {
-                "qty_done": 50,
+                "quantity": 50,
                 "lot_id": lot.id,
             }
         )
@@ -109,17 +108,15 @@ class TestStockReturnPicking(TestCommon):
             .create(
                 {
                     "picking_id": picking.id,
-                    "location_id": self.supplier_location.id,
                 }
             )
         )
-        return_wizard._onchange_picking_id()
-        new_picking_id, pick_type_id = return_wizard._create_returns()
+        return_wizard.product_return_moves.quantity = 50
+        new_picking = return_wizard._create_return()
 
         # ASSERT
-        self.assertTrue(new_picking_id)
-        return_picking = self.env["stock.picking"].browse(new_picking_id)
-        self.assertEqual(return_picking.state, "assigned")
+        self.assertTrue(new_picking)
+        self.assertEqual(new_picking.state, "assigned")
 
     def test_return_from_mixed_flowable_non_flowable_picking(self):
         """
@@ -179,7 +176,7 @@ class TestStockReturnPicking(TestCommon):
         ]:
             ml = move.move_line_ids
             if ml:
-                ml.write({"lot_id": lot.id, "qty_done": qty})
+                ml.write({"lot_id": lot.id, "quantity": qty})
             else:
                 self.env["stock.move.line"].create(
                     {
@@ -188,7 +185,7 @@ class TestStockReturnPicking(TestCommon):
                         "product_id": self.product_flowable_1.id,
                         "product_uom_id": self.product_flowable_1.uom_id.id,
                         "lot_id": lot.id,
-                        "qty_done": qty,
+                        "quantity": qty,
                         "location_id": self.supplier_location.id,
                         "location_dest_id": move.location_dest_id.id,
                         "company_id": self.env.company.id,
@@ -212,15 +209,13 @@ class TestStockReturnPicking(TestCommon):
             .create(
                 {
                     "picking_id": picking.id,
-                    "location_id": self.supplier_location.id,
                 }
             )
         )
-        return_wizard._onchange_picking_id()
 
         # ASSERT — error mentions the flowable product
         with self.assertRaises(UserError) as error:
-            return_wizard._create_returns()
+            return_wizard._create_return()
 
         msg_error = (
             "You cannot return the following products because"

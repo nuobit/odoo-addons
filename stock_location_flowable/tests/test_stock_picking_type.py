@@ -32,7 +32,10 @@ class TestStockPickingType(TestCommon):
             )
 
         # ASSERT
-        msg_error = "Only one picking type can be flowable in a warehouse %s."
+        msg_error = (
+            "Only one picking type can be flowable"
+            " in a warehouse %(warehouse_name)s."
+        )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 

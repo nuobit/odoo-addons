@@ -1,8 +1,8 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, models
-from odoo.exceptions import UserError
+from odoo import models
 
 
 class StockMove(models.Model):
@@ -19,18 +19,6 @@ class StockMove(models.Model):
             if not production.picking_type_id.flowable_operation:
                 continue
             new_state = vals.get("state")
-            # Guard: block all modifications during active mixing
-            if (
-                production.picking_id
-                and production.state == "to_close"
-                and new_state != "done"
-            ):
-                raise UserError(
-                    _(
-                        "You cannot modify a production with a picking associated."
-                        " The mixing is in progress."
-                    )
-                )
             if not new_state:
                 continue
             # Block location when MO raw materials are fully reserved

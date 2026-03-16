@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL- Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -97,7 +98,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 5,
+                "quantity": 5,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
             }
@@ -109,7 +110,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_2.id,
                 "product_uom_id": self.product_flowable_2.uom_id.id,
                 "lot_id": lot_ch4.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
             }
@@ -122,7 +123,8 @@ class TestStockPicking(TestCommon):
         # ASSERT
         msg_error = (
             "Cannot receive multiple product/lot combinations"
-            " (%s) at flowable location '%s' in the same"
+            " (%(details)s) at flowable location '%(location)s'"
+            " in the same"
             " receipt. Each combination generates a separate"
             " mixing order and the location is blocked after"
             " the first one. Create a backorder to receive"
@@ -162,7 +164,7 @@ class TestStockPicking(TestCommon):
                     "product_id": self.product_flowable_1.id,
                     "product_uom_id": self.product_flowable_1.uom_id.id,
                     "lot_id": lot.id,
-                    "qty_done": qty,
+                    "quantity": qty,
                     "location_id": self.supplier_location.id,
                     "location_dest_id": self.location_flowable_1.id,
                     "company_id": self.env.company.id,
@@ -175,7 +177,8 @@ class TestStockPicking(TestCommon):
 
         msg_error = (
             "Cannot receive multiple product/lot combinations"
-            " (%s) at flowable location '%s' in the same"
+            " (%(details)s) at flowable location '%(location)s'"
+            " in the same"
             " receipt. Each combination generates a separate"
             " mixing order and the location is blocked after"
             " the first one. Create a backorder to receive"
@@ -191,7 +194,8 @@ class TestStockPicking(TestCommon):
         product_bolts = self.env["product.product"].create(
             {
                 "name": "Steel Bolts",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": self.env.ref("uom.product_uom_unit").id,
                 "uom_po_id": self.env.ref("uom.product_uom_unit").id,
                 "tracking": "lot",
@@ -220,7 +224,7 @@ class TestStockPicking(TestCommon):
                 "product_id": product_bolts.id,
                 "product_uom_id": product_bolts.uom_id.id,
                 "lot_id": lot_bolts.id,
-                "qty_done": 5,
+                "quantity": 5,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
             }
@@ -231,7 +235,9 @@ class TestStockPicking(TestCommon):
             self.incoming_picking.button_validate()
 
         # ASSERT
-        msg_error = "Product %s not allowed in flowable location %s"
+        msg_error = (
+            "Product %(product)s not allowed" " in flowable location %(location)s"
+        )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
@@ -242,7 +248,8 @@ class TestStockPicking(TestCommon):
         product_he = self.env["product.product"].create(
             {
                 "name": "Liquid He",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": self.env.ref("uom.product_uom_litre").id,
                 "uom_po_id": self.env.ref("uom.product_uom_litre").id,
                 "tracking": "lot",
@@ -280,7 +287,7 @@ class TestStockPicking(TestCommon):
                 "product_id": product_he.id,
                 "product_uom_id": product_he.uom_id.id,
                 "lot_id": lot_he.id,
-                "qty_done": 5,
+                "quantity": 5,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
             }
@@ -292,8 +299,9 @@ class TestStockPicking(TestCommon):
 
         # ASSERT
         msg_error = (
-            "The allowed products %s cannot have different Unit of Measure"
-            " than flowable location %s"
+            "The allowed products %(product)s cannot have"
+            " different Unit of Measure than"
+            " flowable location %(location)s"
         )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
@@ -322,7 +330,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": self.incoming_picking.location_id.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
             }
@@ -335,7 +343,10 @@ class TestStockPicking(TestCommon):
             self.incoming_picking.button_validate()
 
         # ASSERT
-        msg_error = "Not found flowable manufacturing picking type in warehouse %s"
+        msg_error = (
+            "Not found flowable manufacturing picking type"
+            " in warehouse %(warehouse)s"
+        )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
@@ -364,7 +375,7 @@ class TestStockPicking(TestCommon):
             "UPDATE stock_picking_type SET flowable_operation = TRUE WHERE id = %s",
             (picking_type_mrp_operation_2.id,),
         )
-        picking_type_mrp_operation_2.invalidate_cache()
+        picking_type_mrp_operation_2.invalidate_recordset()
 
         lot_1 = self._create_lot(self.product_flowable_1, "TEST-DUP-LOT")
 
@@ -374,7 +385,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
@@ -385,7 +396,10 @@ class TestStockPicking(TestCommon):
         with self.assertRaises(UserError) as error:
             self.incoming_picking.button_validate()
 
-        msg_error = "More than one flowable manufacturing picking type in warehouse %s"
+        msg_error = (
+            "More than one flowable manufacturing picking type"
+            " in warehouse %(warehouse)s"
+        )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
@@ -401,7 +415,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
@@ -433,7 +447,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
@@ -471,7 +485,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
@@ -523,7 +537,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_1.id,
-                "qty_done": 10,
+                "quantity": 10,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.incoming_picking.location_dest_id.id,
                 "company_id": self.env.company.id,
@@ -534,7 +548,10 @@ class TestStockPicking(TestCommon):
         with self.assertRaises(UserError) as error:
             self.incoming_picking.button_validate()
 
-        msg_error = "Not found sequence in flowable manufacturing picking type %s"
+        msg_error = (
+            "Not found sequence in flowable manufacturing"
+            " picking type %(picking_type)s"
+        )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
@@ -555,7 +572,8 @@ class TestStockPicking(TestCommon):
         product_nolot = self.env["product.product"].create(
             {
                 "name": "Liquid H2",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": self.env.ref("uom.product_uom_litre").id,
                 "uom_po_id": self.env.ref("uom.product_uom_litre").id,
                 "tracking": "lot",
@@ -564,7 +582,8 @@ class TestStockPicking(TestCommon):
         self.location_flowable_1.write(
             {"flowable_allowed_product_ids": [(4, product_nolot.id)]}
         )
-        # Change tracking after adding to allowed products (bypasses location constraint)
+        # Change tracking after adding to allowed products
+        # (bypasses location constraint)
         product_nolot.tracking = "none"
 
         lot = self._create_lot(product_nolot, "TEST-NOLOT")
@@ -576,7 +595,7 @@ class TestStockPicking(TestCommon):
         with self.assertRaises(UserError) as error:
             picking.button_validate()
 
-        msg_error = "Product %s must be tracked by lot"
+        msg_error = "Product %(product)s must be tracked by lot"
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
 
@@ -666,7 +685,7 @@ class TestStockPicking(TestCommon):
         self.assertTrue(self.location_flowable_1.flowable_blocked)
 
         # ACT & ASSERT
-        with self.assertRaises(Exception):
+        with self.assertRaises(UserError):
             second_picking.button_validate()
 
     def test_reception_after_mo_completed_succeeds(self):
@@ -906,7 +925,7 @@ class TestStockPicking(TestCommon):
                     "product_id": self.product_flowable_1.id,
                     "product_uom_id": self.product_flowable_1.uom_id.id,
                     "lot_id": lot_b.id,
-                    "qty_done": qty,
+                    "quantity": qty,
                     "location_id": self.supplier_location.id,
                     "location_dest_id": self.location_flowable_1.id,
                     "company_id": self.env.company.id,
@@ -940,8 +959,8 @@ class TestStockPicking(TestCommon):
         lot_b_line = raw_move_lines.filtered(lambda ml: ml.lot_id == lot_b)
         self.assertEqual(len(lot_a_line), 1)
         self.assertEqual(len(lot_b_line), 1)
-        self.assertEqual(lot_a_line.qty_done, 100)
-        self.assertEqual(lot_b_line.qty_done, total_received)
+        self.assertEqual(lot_a_line.quantity, 100)
+        self.assertEqual(lot_b_line.quantity, total_received)
 
         # The location should be blocked by that MO
         self.assertTrue(self.location_flowable_1.flowable_blocked)
@@ -1026,7 +1045,7 @@ class TestStockPicking(TestCommon):
                     "product_id": self.product_flowable_1.id,
                     "product_uom_id": self.product_flowable_1.uom_id.id,
                     "lot_id": lot.id,
-                    "qty_done": qty,
+                    "quantity": qty,
                     "location_id": self.supplier_location.id,
                     "location_dest_id": self.location_flowable_1.id,
                     "company_id": self.env.company.id,
@@ -1039,8 +1058,12 @@ class TestStockPicking(TestCommon):
 
         msg_error = (
             "Cannot receive multiple product/lot combinations"
-            " (%s) at flowable location '%s' in the same"
-            " receipt."
+            " (%(details)s) at flowable location '%(location)s'"
+            " in the same"
+            " receipt. Each combination generates a separate"
+            " mixing order and the location is blocked after"
+            " the first one. Create a backorder to receive"
+            " them in separate steps."
         )
         msg_error = self.get_error_message_regex(msg_error)
         self.assertRegex(error.exception.args[0], msg_error)
@@ -1078,7 +1101,7 @@ class TestStockPicking(TestCommon):
         self.assertTrue(self.location_flowable_1.flowable_blocked)
 
         # ACT & ASSERT — second reception rejected while location is blocked
-        with self.assertRaises(Exception):
+        with self.assertRaises(UserError):
             picking_2.button_validate()
 
     def test_mixed_flowable_and_non_flowable_lines(self):
@@ -1113,7 +1136,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_flow.id,
-                "qty_done": 50,
+                "quantity": 50,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.location_flowable_1.id,
                 "company_id": self.env.company.id,
@@ -1126,7 +1149,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_nonflow.id,
-                "qty_done": 30,
+                "quantity": 30,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.location_1.id,
                 "company_id": self.env.company.id,
@@ -1181,7 +1204,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_a.id,
-                "qty_done": 50,
+                "quantity": 50,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.location_flowable_1.id,
                 "company_id": self.env.company.id,
@@ -1194,7 +1217,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_b.id,
-                "qty_done": 50,
+                "quantity": 50,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.location_flowable_2.id,
                 "company_id": self.env.company.id,
@@ -1214,11 +1237,11 @@ class TestStockPicking(TestCommon):
 
     def test_zero_qty_done_flowable_lines_ignored(self):
         """
-        Test that move lines with qty_done=0 at a flowable location are
+        Test that move lines with quantity=0 at a flowable location are
         ignored and don't create MOs or trigger conflicts.
 
         PRE:    - A picking with 2 lines to a flowable location: one with
-                  qty_done=50 and another with qty_done=0
+                  quantity=50 and another with quantity=0
         ACT:    - Validate the picking
         POST:   - Only 1 MO is created (for the non-zero line)
                 - No pre-check error about multiple combinations
@@ -1242,7 +1265,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_a.id,
-                "qty_done": 50,
+                "quantity": 50,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.location_flowable_1.id,
                 "company_id": self.env.company.id,
@@ -1254,7 +1277,7 @@ class TestStockPicking(TestCommon):
                 "product_id": self.product_flowable_1.id,
                 "product_uom_id": self.product_flowable_1.uom_id.id,
                 "lot_id": lot_b.id,
-                "qty_done": 0,
+                "quantity": 0,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.location_flowable_1.id,
                 "company_id": self.env.company.id,

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="mrp_production_view_form" model="ir.ui.view">
@@ -11,22 +12,19 @@
                 <field name="production_blocked" invisible="1" />
             </xpath>
             <xpath expr="//field[@name='lot_producing_id']" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'readonly': [('production_blocked', '=', True)]}</attribute>
+                <attribute name="readonly">production_blocked</attribute>
             </xpath>
-            <xpath expr="//button[@name='button_scrap']" position="before">
+            <xpath expr="//button[@name='action_see_move_scrap']" position="before">
                 <field name="production_flowable" invisible="1" />
             </xpath>
-            <xpath expr="//button[@name='button_scrap']" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'invisible': [('production_flowable', '=', True)]}</attribute>
+            <xpath expr="//button[@name='action_see_move_scrap']" position="attributes">
+                <attribute name="invisible">production_flowable</attribute>
             </xpath>
-            <xpath expr="//button[@name='button_unbuild']" position="attributes">
-                <attribute
-                    name="attrs"
-                >{'invisible': [('production_flowable', '=', True)]}</attribute>
+            <xpath
+                expr="//button[@name='action_view_mrp_production_unbuilds']"
+                position="attributes"
+            >
+                <attribute name="invisible">production_flowable</attribute>
             </xpath>
         </field>
     </record>

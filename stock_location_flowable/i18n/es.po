@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-27 11:13+0000\n"
+"POT-Creation-Date: 2026-10-29 09:18+0000\n"
 "PO-Revision-Date: 2023-11-27 11:13+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,8 +16,27 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_location_flowable
+#. odoo-python
+#: code:addons/stock_location_flowable/models/stock_return_picking.py:0
+msgid "%(product)s (%(location)s)"
+msgstr ""
+
+#. module: stock_location_flowable
+#. odoo-python
+#: code:addons/stock_location_flowable/models/mrp_production.py:0
+msgid ""
+"After completing the mixing order '%(order)s' at flowable location "
+"'%(location)s', lot '%(lot)s' still has %(qty)s %(uom)s of stock. Expected 0"
+" after merging all raw materials into lot '%(producing_lot)s'."
+msgstr ""
+"Después de completar la orden de mezcla '%(order)s' en la ubicación fluida "
+"'%(location)s', el lote '%(lot)s' todavía tiene %(qty)s %(uom)s de stock. Se"
+" esperaba 0 después de mezclar todas las materias primas en el lote "
+"'%(producing_lot)s'."
+
+#. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "All allowed products must be tracked by lot"
 msgstr "Todos los productos permitidos deben ser rastreados por lote."
 
@@ -27,54 +46,51 @@ msgid "Allowed Products"
 msgstr "Productos Permitidos"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#: model:ir.actions.act_window,name:stock_location_flowable.action_picking_tree_blocked
-#: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_picking_type_kanban
-#, python-format
 msgid "Blocked"
 msgstr "Bloqueado"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/mrp_production.py:0
-#, python-format
 msgid ""
-"Cannot fully reserve the mixing order at flowable location '%s'. Raw "
-"materials are in state '%s'."
+"Cannot fully reserve the mixing order at flowable location '%(location)s'. "
+"Raw materials are in state '%(states)s'."
 msgstr ""
-"No se puede reservar completamente la orden de mezcla en la ubicación fluida "
-"'%s'. Las materias primas están en estado '%s'."
+"No se puede reservar completamente la orden de mezcla en la ubicación fluida"
+" '%(location)s'. Las materias primas están en estado '%(states)s'."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/mrp_production.py:0
-#, python-format
 msgid ""
-"Cannot merge at flowable location '%s' because there are reserved "
-"quantities. After the merge, the current lot(s) will have 0 stock and these "
-"reservations will become invalid.\n"
+"Cannot merge at flowable location '%(location)s' because there are reserved quantities. After the merge, the current lot(s) will have 0 stock and these reservations will become invalid.\n"
 "\n"
 "The following operations must be unreserved or completed first:\n"
 "\n"
-"%s"
+"%(details)s"
 msgstr ""
-"No se puede mezclar en la ubicación fluida '%s' porque hay cantidades "
-"reservadas. Después de la mezcla, los lotes actuales tendrán 0 stock y "
-"estas reservas serán inválidas.\n"
+"No se puede mezclar en la ubicación fluida '%(location)s' porque hay cantidades reservadas. Después de la mezcla, los lotes actuales tendrán 0 stock y estas reservas serán inválidas.\n"
 "\n"
 "Las siguientes operaciones deben ser liberadas o completadas primero:\n"
 "\n"
-"%s"
+"%(details)s"
 
 #. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/mrp_production.py:0
-#, python-format
+#. odoo-python
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
 msgid ""
-"After completing the mixing order '%s' at flowable location '%s', lot '%s' "
-"still has %s %s of stock. Expected 0 after merging all raw materials into "
-"lot '%s'."
+"Cannot receive multiple product/lot combinations (%(details)s) at flowable "
+"location '%(location)s' in the same receipt. Each combination generates a "
+"separate mixing order and the location is blocked after the first one. "
+"Create a backorder to receive them in separate steps."
 msgstr ""
-"Después de completar la orden de mezcla '%s' en la ubicación fluida '%s', el "
-"lote '%s' todavía tiene %s %s de stock. Se esperaba 0 después de mezclar "
-"todas las materias primas en el lote '%s'."
+"No se pueden recibir múltiples combinaciones de producto/lote (%(details)s) "
+"en la ubicación de fluidos '%(location)s' en el mismo albarán. Cada "
+"combinación genera una orden de mezcla separada y la ubicación queda "
+"bloqueada después de la primera. Cree un albarán parcial para recibirlos en "
+"pasos separados."
 
 #. module: stock_location_flowable
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_capacity
@@ -83,48 +99,21 @@ msgid "Capacity"
 msgstr "Capacidad"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "Capacity must be greater than 0"
 msgstr "La capacidad debe ser mayor que 0."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "Capacity must be greater than capacity occupied %s"
 msgstr "La capacidad debe ser mayor que la capacidad ocupada %s"
 
 #. module: stock_location_flowable
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type__count_picking_blocked
-msgid "Count Picking Blocked"
-msgstr "Conteo de Albarán Bloqueado"
-
-#. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid ""
-"Initial reception at flowable location '%s' for product '%s': expected 1 "
-"positive quant (empty tank) but found %d."
-msgstr ""
-"Recepción inicial en la ubicación fluida '%s' para el producto '%s': se "
-"esperaba 1 quant positivo (tanque vacío) pero se encontraron %d."
-
-#. module: stock_location_flowable
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__create_lots
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
 msgid "Create Lots"
 msgstr "Crear Lotes"
-
-#. module: stock_location_flowable
-#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production__display_name
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__display_name
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move__display_name
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move_line__display_name
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking__display_name
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type__display_name
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_return_picking__display_name
-msgid "Display Name"
-msgstr "Nombre mostrado"
 
 #. module: stock_location_flowable
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
@@ -137,13 +126,23 @@ msgid "Flowable"
 msgstr "Fluido"
 
 #. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_blocked
+msgid "Flowable Blocked"
+msgstr ""
+
+#. module: stock_location_flowable
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_capacity_occupied
 msgid "Flowable Capacity Occupied"
 msgstr "Capacidad Fluida Ocupada"
 
 #. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_create_lots
+msgid "Flowable Create Lots"
+msgstr ""
+
+#. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "Flowable Location Warning"
 msgstr "Advertencia de Ubicación Fluido"
 
@@ -168,15 +167,15 @@ msgid "Flowable Storage"
 msgstr "Almacenamiento de Fluido"
 
 #. module: stock_location_flowable
-#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production__id
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__id
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move__id
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move_line__id
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking__id
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type__id
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_return_picking__id
-msgid "ID"
-msgstr "ID"
+#. odoo-python
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+msgid ""
+"Initial reception at flowable location '%(location)s' for product "
+"'%(product)s': expected 1 positive quant (empty tank) but found %(count)d."
+msgstr ""
+"Recepción inicial en la ubicación fluida '%(location)s' para el producto "
+"'%(product)s': se esperaba 1 quant positivo (tanque vacío) pero se "
+"encontraron %(count)d."
 
 #. module: stock_location_flowable
 #: model:ir.model,name:stock_location_flowable.model_stock_location
@@ -189,93 +188,88 @@ msgid "JSON data for the popover widget"
 msgstr "Datos JSON para el widget emergente"
 
 #. module: stock_location_flowable
-#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production____last_update
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location____last_update
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move____last_update
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move_line____last_update
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking____last_update
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type____last_update
-#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_return_picking____last_update
-msgid "Last Modified on"
-msgstr "Última modificación el"
-
-#. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "Location capacity is full"
 msgstr "La capacidad de la ubicación está llena"
 
 #. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_mrp_production
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
 msgid "Manufacturing Order"
 msgstr "Orden de producción"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking__flowable_production_ids
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.view_picking_form
-#, python-format
 msgid "Manufacturing Orders"
 msgstr "Ordenes de producción"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid "More than one flowable manufacturing picking type in warehouse %s"
-msgstr ""
-"Más de un tipo de operación de fabricación fluida en el almacén %s"
-
-#. module: stock_location_flowable
-#: model_terms:ir.actions.act_window,help:stock_location_flowable.action_picking_tree_blocked
-msgid "No transfer found. Let's create one!"
-msgstr "No se encontró ninguna transferencia. ¡Creemos uno!"
-
-#. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
 msgid ""
-"Mixing reception at flowable location '%s' for product '%s': expected 2 "
-"positive quants but found %d."
+"Mixing reception at flowable location '%(location)s' for product "
+"'%(product)s': expected 2 positive quants but found %(count)d."
 msgstr ""
-"Recepción de mezcla en la ubicación fluida '%s' para el producto '%s': se "
-"esperaban 2 quants positivos pero se encontraron %d."
+"Recepción de mezcla en la ubicación fluida '%(location)s' para el producto "
+"'%(product)s': se esperaban 2 quants positivos pero se encontraron "
+"%(count)d."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
 msgid ""
-"Mixing reception at flowable location '%s' for product '%s': expected "
-"exactly 1 quant for the received lot '%s' but found %d."
+"Mixing reception at flowable location '%(location)s' for product "
+"'%(product)s': expected exactly 1 quant for the received lot '%(lot)s' but "
+"found %(count)d."
 msgstr ""
-"Recepción de mezcla en la ubicación fluida '%s' para el producto '%s': se "
-"esperaba exactamente 1 quant para el lote recibido '%s' pero se encontraron "
-"%d."
+"Recepción de mezcla en la ubicación fluida '%(location)s' para el producto "
+"'%(product)s': se esperaba exactamente 1 quant para el lote recibido "
+"'%(lot)s' pero se encontraron %(count)d."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid "Not found flowable manufacturing picking type in warehouse %s"
+msgid ""
+"More than one flowable manufacturing picking type in warehouse %(warehouse)s"
 msgstr ""
-"No se encontró el tipo de operación de fabricación fluida en el almacén %s"
+"Más de un tipo de operación de fabricación fluida en el almacén "
+"%(warehouse)s"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid "Not found sequence in flowable manufacturing picking type %s"
+msgid ""
+"Not found flowable manufacturing picking type in warehouse %(warehouse)s"
 msgstr ""
-"No se encontró secuencia en el tipo de operación de fabricación fluida %s"
+"No se encontró el tipo de operación de fabricación fluida en el almacén "
+"%(warehouse)s"
 
 #. module: stock_location_flowable
+#. odoo-python
+#: code:addons/stock_location_flowable/models/stock_picking.py:0
+msgid ""
+"Not found sequence in flowable manufacturing picking type %(picking_type)s"
+msgstr ""
+"No se encontró secuencia en el tipo de operación de fabricación fluida "
+"%(picking_type)s"
+
+#. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking_type.py:0
-#, python-format
 msgid "Only manufacturing picking types can be flowable."
 msgstr "Solo los tipos de operación de fabricación pueden ser fluidos."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking_type.py:0
-#, python-format
-msgid "Only one picking type can be flowable in a warehouse %s."
-msgstr "Sólo un tipo de operación puede ser fluido en el almacén %s."
+msgid ""
+"Only one picking type can be flowable in a warehouse %(warehouse_name)s."
+msgstr ""
+"Sólo un tipo de operación puede ser fluido en el almacén %(warehouse_name)s."
 
 #. module: stock_location_flowable
 #: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production__picking_id
@@ -288,16 +282,16 @@ msgid "Picking Type"
 msgstr "Tipo de albarán"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid "Product %s must be tracked by lot"
-msgstr "El producto %s debe ser rastreado por lote"
+msgid "Product %(product)s must be tracked by lot"
+msgstr "El producto %(product)s debe ser rastreado por lote"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid "Product %s not allowed in flowable location %s"
-msgstr "Producto %s no permitido en ubicación fluida %s"
+msgid "Product %(product)s not allowed in flowable location %(location)s"
+msgstr "Producto %(product)s no permitido en ubicación fluida %(location)s"
 
 #. module: stock_location_flowable
 #: model:ir.model,name:stock_location_flowable.model_stock_move_line
@@ -305,9 +299,20 @@ msgid "Product Moves (Stock Move Line)"
 msgstr "Movimientos de Producto (Stock Move Line)"
 
 #. module: stock_location_flowable
-#: model:ir.model,name:stock_location_flowable.model_mrp_production
-msgid "Production Order"
-msgstr "Orden de producción"
+#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production__production_blocked
+#: model:ir.model.fields,field_description:stock_location_flowable.field_stock_move_line__raw_production_blocked
+msgid "Production Blocked"
+msgstr ""
+
+#. module: stock_location_flowable
+#: model:ir.model.fields,field_description:stock_location_flowable.field_mrp_production__production_flowable
+msgid "Production Flowable"
+msgstr ""
+
+#. module: stock_location_flowable
+#: model:ir.model,name:stock_location_flowable.model_stock_quant
+msgid "Quants"
+msgstr ""
 
 #. module: stock_location_flowable
 #: model:ir.model,name:stock_location_flowable.model_stock_return_picking
@@ -325,24 +330,24 @@ msgid "Stock Move"
 msgstr "Movimiento de inventario"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
 msgid ""
-"The allowed products %s cannot have different Unit of Measure than flowable "
-"location %s"
+"The allowed products %(product)s cannot have different Unit of Measure than "
+"flowable location %(location)s"
 msgstr ""
-"Los productos permitidos %s no pueden tener una unidad de medida diferente a "
-"la ubicación fluida %s"
+"Los productos permitidos %(product)s no pueden tener una unidad de medida "
+"diferente a la ubicación fluida %(location)s"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_move_line.py:0
-#, python-format
 msgid ""
-"The location %s is blocked. Probably you need to review the pending "
-"manufacturing orders related to this location"
+"The location %(location)s is blocked. Probably you need to review the "
+"pending manufacturing orders related to this location"
 msgstr ""
-"La ubicación %s está bloqueada. Probablemente necesites revisar las "
-"órdenes de producción pendientes relacionadas con esta ubicación"
+"La ubicación %(location)s está bloqueada. Probablemente necesites revisar "
+"las órdenes de producción pendientes relacionadas con esta ubicación"
 
 #. module: stock_location_flowable
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
@@ -350,18 +355,18 @@ msgid "The location is blocked"
 msgstr "La ubicación está bloqueada."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid ""
-"The product %s is measured in %s. You can only assign products that have the "
-"allowed unit of measure"
+"The product %(product)s is measured in %(uom)s. You can only assign products"
+" that have the allowed unit of measure"
 msgstr ""
-"El producto %s se mide en %s. Sólo puedes asignar productos que tengan la "
-"unidad de medida permitida"
+"El producto %(product)s se mide en %(uom)s. Sólo puedes asignar productos "
+"que tengan la unidad de medida permitida"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid ""
 "This location is blocked because it has a manufacturing order assigned."
 msgstr ""
@@ -373,48 +378,29 @@ msgid "Transfer"
 msgstr "Albarán"
 
 #. module: stock_location_flowable
-#: model_terms:ir.actions.act_window,help:stock_location_flowable.action_picking_tree_blocked
-msgid "Transfers allow you to move products from one location to another."
-msgstr "Las transferencias le permiten mover productos de un lugar a otro."
-
-#. module: stock_location_flowable
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_location__flowable_uom_id
 msgid "Unit of Measure"
 msgstr "Unidad de Medida"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/mrp_production.py:0
-#, python-format
 msgid "Unknown origin (move %s)"
 msgstr "Origen desconocido (movimiento %s)"
 
 #. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/stock_picking.py:0
-#, python-format
-msgid ""
-"Cannot receive multiple product/lot combinations (%s) at flowable location "
-"'%s' in the same receipt. Each combination generates a separate mixing order "
-"and the location is blocked after the first one. Create a backorder to "
-"receive them in separate steps."
-msgstr ""
-"No se pueden recibir múltiples combinaciones de producto/lote (%s) en la "
-"ubicación de fluidos '%s' en el mismo albarán. Cada combinación genera una "
-"orden de mezcla separada y la ubicación queda bloqueada después de la "
-"primera. Cree un albarán parcial para recibirlos en pasos separados."
-
-#. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/mrp_production.py:0
-#, python-format
 msgid ""
 "You cannot cancel a production with a picking associated. The mixing is in "
 "progress."
 msgstr ""
-"No se puede cancelar una producción que tenga un albarán asociado. La mezcla "
-"está en curso."
+"No se puede cancelar una producción que tenga un albarán asociado. La mezcla"
+" está en curso."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid ""
 "You cannot convert this location into a flowable location because there are "
 "products with different units of measure."
@@ -423,8 +409,8 @@ msgstr ""
 "productos con diferentes unidades de medida."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid ""
 "You cannot convert this location into a flowable location because there are "
 "unmixed products."
@@ -433,21 +419,21 @@ msgstr ""
 "productos sin mezclar."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "You cannot disable flowable storage from a blocked location."
 msgstr ""
 "No puedes deshabilitar el almacenamiento fluido de una ubicación bloqueada"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_quant.py:0
-#, python-format
 msgid "You cannot have more than one lot in the same location."
 msgstr "No se puede tener más de un lote en la misma ubicación."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/mrp_production.py:0
-#, python-format
 msgid ""
 "You cannot modify a mix production with a picking associated. The mixing is "
 "in progress."
@@ -456,27 +442,16 @@ msgstr ""
 "asociado. La mezcla está en curso."
 
 #. module: stock_location_flowable
-#: code:addons/stock_location_flowable/models/stock_move.py:0
-#, python-format
-msgid ""
-"You cannot modify a production with a picking associated. The mixing is in "
-"progress."
-msgstr ""
-"No se puede modificar una producción que tenga un albarán asociado. La "
-"mezcla está en curso."
-
-#. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
-msgid ""
-"You cannot remove a product that is currently stored in this location."
+msgid "You cannot remove a product that is currently stored in this location."
 msgstr ""
 "No puedes eliminar un producto que esté actualmente almacenado en esta "
 "ubicación."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_return_picking.py:0
-#, python-format
 msgid ""
 "You cannot return the following products because they come from a flowable "
 "location: %s"
@@ -485,31 +460,31 @@ msgstr ""
 "ubicación fluida: %s"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "You have stock movements with different unit of measure"
 msgstr "Tienes movimientos de stock con diferente unidad de medida"
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "You must select a sequence"
 msgstr "Debes seleccionar una secuencia."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "You must select a unit of measure"
 msgstr "Debes seleccionar una unidad de medida."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/stock_location.py:0
-#, python-format
 msgid "You must select products"
 msgstr "Debes seleccionar productos."
 
 #. module: stock_location_flowable
+#. odoo-python
 #: code:addons/stock_location_flowable/models/mrp_production.py:0
-#, python-format
 msgid "no lot"
 msgstr "sin lote"

@@ -1,5 +1,5 @@
-# Copyright NuoBiT - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -25,12 +25,6 @@ class MrpProduction(models.Model):
                     [("flowable_production_id", "=", rec.id)]
                 )
             )
-
-    @api.constrains("product_id", "move_raw_ids", "location_dest_id")
-    def _check_production_lines(self):
-        for rec in self:
-            if not rec.picking_type_id.flowable_operation:
-                super(MrpProduction, rec)._check_production_lines()
 
     @api.constrains("state")
     def _check_flowable_blocked(self):
@@ -87,17 +81,19 @@ class MrpProduction(models.Model):
             if not float_is_zero(quant.quantity, precision_rounding=rounding):
                 raise ValidationError(
                     _(
-                        "After completing the mixing order '%s' at"
-                        " flowable location '%s', lot '%s' still has"
-                        " %s %s of stock. Expected 0 after merging"
-                        " all raw materials into lot '%s'.",
-                        self.name,
-                        location.name,
-                        quant.lot_id.name,
-                        quant.quantity,
-                        self.product_uom_id.name,
-                        self.lot_producing_id.name,
+                        "After completing the mixing order '%(order)s' at"
+                        " flowable location '%(location)s', lot '%(lot)s' still has"
+                        " %(qty)s %(uom)s of stock. Expected 0 after merging"
+                        " all raw materials into lot '%(producing_lot)s'."
                     )
+                    % {
+                        "order": self.name,
+                        "location": location.name,
+                        "lot": quant.lot_id.name,
+                        "qty": quant.quantity,
+                        "uom": self.product_uom_id.name,
+                        "producing_lot": self.lot_producing_id.name,
+                    }
                 )
 
     def action_assign(self):
@@ -119,7 +115,7 @@ class MrpProduction(models.Model):
         reserved_move_lines = self.env["stock.move.line"].search(
             [
                 ("location_id", "=", location.id),
-                ("product_uom_qty", ">", 0),
+                ("quantity_product_uom", ">", 0),
                 ("state", "not in", ("done", "cancel", "draft")),
                 ("move_id.raw_material_production_id", "!=", self.id),
             ]
@@ -129,22 +125,21 @@ class MrpProduction(models.Model):
             for ml in reserved_move_lines:
                 move = ml.move_id
                 if move.picking_id:
-                    origin = "%s (%s)" % (
-                        move.picking_id.name,
-                        move.picking_id.picking_type_id.name,
+                    origin = (
+                        f"{move.picking_id.name}"
+                        f" ({move.picking_id.picking_type_id.name})"
                     )
                 elif move.raw_material_production_id:
-                    origin = "%s (%s)" % (
-                        move.raw_material_production_id.name,
-                        move.raw_material_production_id.picking_type_id.name,
+                    origin = (
+                        f"{move.raw_material_production_id.name}"
+                        f" ({move.raw_material_production_id.picking_type_id.name})"
                     )
                 else:
                     origin = _("Unknown origin (move %s)", move.id)
                 details.append(
-                    "  - %s: %s %s (lot %s) - %s"
-                    % (
+                    "  - {}: {} {} (lot {}) - {}".format(
                         ml.product_id.display_name,
-                        ml.product_uom_qty,
+                        ml.quantity_product_uom,
                         ml.product_uom_id.name,
                         ml.lot_id.name or _("no lot"),
                         origin,
@@ -152,23 +147,27 @@ class MrpProduction(models.Model):
                 )
             raise UserError(
                 _(
-                    "Cannot merge at flowable location '%s'"
+                    "Cannot merge at flowable location '%(location)s'"
                     " because there are reserved quantities."
                     " After the merge, the current lot(s) will"
                     " have 0 stock and these reservations will"
                     " become invalid.\n\n"
                     "The following operations must be unreserved"
-                    " or completed first:\n\n%s",
-                    location.name,
-                    "\n".join(details),
+                    " or completed first:\n\n%(details)s"
                 )
+                % {
+                    "location": location.name,
+                    "details": "\n".join(details),
+                }
             )
         raise UserError(
             _(
                 "Cannot fully reserve the mixing order at"
-                " flowable location '%s'. Raw materials are"
-                " in state '%s'.",
-                location.name,
-                ", ".join(self.move_raw_ids.mapped("state")),
+                " flowable location '%(location)s'. Raw materials are"
+                " in state '%(states)s'."
             )
+            % {
+                "location": location.name,
+                "states": ", ".join(self.move_raw_ids.mapped("state")),
+            }
         )
