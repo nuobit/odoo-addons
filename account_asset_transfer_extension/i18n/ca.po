@@ -6,14 +6,162 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-16 12:00+0000\n"
-"PO-Revision-Date: 2026-03-16 12:00+0000\n"
+"POT-Creation-Date: 2022-12-23 16:15+0000\n"
+"PO-Revision-Date: 2022-12-23 16:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "> Journal entries to remove: %s"
+msgstr "> Assentaments comptables a eliminar: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "> New assets to remove: %s"
+msgstr "> Actius nous a eliminar: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "> Transferred assets to restore: %s"
+msgstr "> Actius transferits a restaurar: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "Active Model not defined"
+msgstr "El model actiu no ha estat definit"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__date_transfer
+msgid "Asset Transfer Date"
+msgstr "Data de la transferència de l'actiu"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__from_asset_ids
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+msgid "From Assets"
+msgstr "Actius origen"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_asset.py:0
+#, python-format
+msgid "More than one move with the same to_asset found"
+msgstr "S'ha trobat més d'un moviment amb el mateix actiu de destinació"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "No assets selected"
+msgstr "No hi ha actius seleccionats"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "Nothing to revert"
+msgstr "Res a revertir"
+
+#. module: account_asset_transfer_extension
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+msgid "Revert Transfer"
+msgstr "Revertir transferència"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_asset.py:0
+#, python-format
+msgid "Revert Transfer AUC to Asset"
+msgstr "Revertir transferència AUC de l'actiu"
+
+#. module: account_asset_transfer_extension
+#: model:ir.actions.server,name:account_asset_transfer_extension.action_asset_transfer_revert_from_list
+msgid "Revert Transfer Asset"
+msgstr "Revertir transferència d'actiu"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model,name:account_asset_transfer_extension.model_account_asset_transfer_revert
+msgid "Revert Transferred Asset"
+msgstr "Revertir actius transferits"
+
+#. module: account_asset_transfer_extension
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
+msgid "Tansfer Assets?"
+msgstr "Transferir actius?"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "The journal entry %s has lines without asset"
+msgstr "L'assentament comptable %s té línies sense actius"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "The journal entry assets has inconsistencies with de from/to assets"
+msgstr ""
+"Els actius de l'assentament comptable tenen inconsistències amb els actius "
+"d'origen i destinació"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "The next actions will be taken: "
+msgstr "Es realitzaran les accions següents: "
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__to_asset_ids
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+msgid "To Assets"
+msgstr "Actius nous"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__transfer_move_id
+msgid "Transfer Move id"
+msgstr "Moviment de transferència"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields.selection,name:account_asset_transfer_extension.selection__account_asset__state__transferred
+msgid "Transferred"
+msgstr "Transferit"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
+#, python-format
+msgid "Unexpected number of init entries found on deprecation line"
+msgstr "Nombre inesperat d'entrades inicials trobades a la línia d'amortització"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__warning_message
+msgid "Warning Message"
+msgstr "Missatge d'avís"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_asset.py:0
+#, python-format
+msgid ""
+"When asset has from_asset_ids, state must be open, close or removed. Please,"
+" review asset: %s"
+msgstr ""
+"Quan l'actiu té actius d'origen, l'estat ha de ser en execució, tancat o "
+"eliminat. Si us plau, reviseu l'actiu: %s"
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_asset.py:0
+#, python-format
+msgid ""
+"When asset has to_asset_ids, state must be transferred. Please, review "
+"asset: %s"
+msgstr ""
+"Quan l'actiu té actius nous, l'estat ha de ser transferit. Si us plau, "
+"reviseu l'actiu: %s"
 
 #. module: account_asset_transfer_extension
 #: code:addons/account_asset_transfer_extension/models/account_asset_line.py:0
@@ -25,3 +173,13 @@ msgstr ""
 "No es pot desassentar aquest apunt perquè és un moviment de transferència "
 "(%s) vinculat a actius transferits. Utilitzeu l'acció 'Revertir "
 "transferència'."
+
+#. module: account_asset_transfer_extension
+#: code:addons/account_asset_transfer_extension/models/account_move.py:0
+#, python-format
+msgid ""
+"You can't modify or delete a journal item on journal entries with "
+"transferred assets"
+msgstr ""
+"No es pot modificar o eliminar un apunt comptable en assentaments amb "
+"actius transferits."
