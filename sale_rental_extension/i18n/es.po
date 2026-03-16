@@ -64,7 +64,9 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: sale_rental
+#. module: sale_rental_extension
 #: model:ir.model.fields.selection,name:sale_rental.selection__sale_rental__state__cancel
+#: model:ir.model.fields.selection,name:sale_rental_extension.selection__sale_order__rental_status__cancel
 msgid "Cancelled"
 msgstr "Cancelado"
 
@@ -497,8 +499,10 @@ msgid "Rented Product"
 msgstr "Producto alquilado"
 
 #. module: sale_rental
+#. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
+#: model:ir.ui.menu,name:sale_rental_extension.menu_rental_today_return
 msgid "Return"
 msgstr "Devolución"
 
@@ -712,3 +716,142 @@ msgid ""
 msgstr ""
 "Condiciones mostradas en el diálogo de firma al firmar un albarán de alquiler. "
 "Dejar vacío para utilizar el texto por defecto."
+
+#. module: sale_rental_extension
+#: model:ir.model.fields.selection,name:sale_rental_extension.selection__sale_order__rental_status__draft
+msgid "Quotation"
+msgstr "Presupuesto"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields.selection,name:sale_rental_extension.selection__sale_order__rental_status__sent
+msgid "Quotation Sent"
+msgstr "Presupuesto enviado"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields.selection,name:sale_rental_extension.selection__sale_order__rental_status__pickup
+msgid "Reserved"
+msgstr "Reservado"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields.selection,name:sale_rental_extension.selection__sale_order__rental_status__return
+msgid "Pickedup"
+msgstr "Recogida"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields.selection,name:sale_rental_extension.selection__sale_order__rental_status__returned
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
+msgid "Returned"
+msgstr "Devuelto"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
+msgid "Booked"
+msgstr "Reservado"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
+msgid "Late Pickup"
+msgstr "Recogida con retraso"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
+msgid "Picked-up"
+msgstr "Recogida"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
+msgid "Late Return"
+msgstr "Devolución con retraso"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "To Pickup"
+msgstr "Por recoger"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "To Return"
+msgstr "Por devolver"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order__rental_duration
+msgid "Duration"
+msgstr "Duración"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order__rental_status
+msgid "Rental Status"
+msgstr "Estado de alquiler"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
+msgid "Rental Period"
+msgstr "Periodo de alquiler"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
+msgid "Update Times"
+msgstr "Actualizar fechas"
+
+#. module: sale_rental_extension
+#: model:ir.actions.act_window,name:sale_rental_extension.rental_order_action
+msgid "Rental Orders"
+msgstr "Órdenes de alquiler"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "Search Rental Orders"
+msgstr "Buscar órdenes de alquiler"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "My Orders"
+msgstr "Mis pedidos"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+#: model:ir.ui.menu,name:sale_rental_extension.menu_rental_today
+msgid "To Do Today"
+msgstr "Hoy"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "Late"
+msgstr "Retrasado"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "Pickup Date"
+msgstr "Fecha de recogida"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "Return Date"
+msgstr "Fecha de devolución"
+
+#. module: sale_rental_extension
+#: model:ir.actions.act_window,name:sale_rental_extension.rental_order_today_pickup_action
+msgid "Pickups Today"
+msgstr "Recogidas hoy"
+
+#. module: sale_rental_extension
+#: model:ir.actions.act_window,name:sale_rental_extension.rental_order_today_return_action
+msgid "Returns Today"
+msgstr "Devoluciones hoy"
+
+#. module: sale_rental_extension
+#: model:ir.ui.menu,name:sale_rental_extension.menu_rental_order_group
+#: model:ir.ui.menu,name:sale_rental_extension.menu_rental_orders
+msgid "Orders"
+msgstr "Pedidos"
+
+#. module: sale_rental_extension
+#: model:ir.ui.menu,name:sale_rental_extension.menu_rental_today_pickup
+msgid "Pickup"
+msgstr "Recogida"
+
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_action
+msgid "Create a new rental order!"
+msgstr "¡Crea una nueva orden de alquiler!"

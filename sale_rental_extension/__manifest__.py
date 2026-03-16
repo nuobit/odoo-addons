@@ -3,8 +3,8 @@
 
 {
     "name": "Sale Rental Extension",
-    "summary": "Adds kanban view, calendar, configurable signature terms"
-    " and translations for rental positions.",
+    "summary": "Dedicated rental views, rental status tracking,"
+    " kanban, calendar, configurable signature terms and translations.",
     "version": "16.0.1.0.0",
     "development_status": "Alpha",
     "category": "Rental",
@@ -15,6 +15,7 @@
         "sale_rental",
     ],
     "data": [
+        "views/sale_order_rental_views.xml",
         "views/res_config_settings_views.xml",
         "views/sale_rental_views.xml",
         "views/stock_picking_views.xml",
