@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 class TestStockPicking(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockPicking, cls).setUpClass()
+        super().setUpClass()
 
         cls.incoming_picking = cls.env["stock.picking"].create(
             {
@@ -970,7 +970,7 @@ class TestStockPicking(TestCommon):
 
         completed_productions = self.env["mrp.production"]
 
-        for step, (lot, qty) in enumerate(zip(lots, qtys)):
+        for step, (lot, qty) in enumerate(zip(lots, qtys, strict=False)):
             picking = self._create_incoming_picking(
                 self.location_flowable_1, self.product_flowable_1, lot, qty
             )

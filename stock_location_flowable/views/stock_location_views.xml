@@ -26,8 +26,7 @@
                     type="object"
                     attrs="{'invisible': [('flowable_production_id', '=', False)]}"
                     groups="stock.group_stock_user"
-                >
-                </button>
+                />
             </xpath>
             <xpath expr="//group" position="after">
                 <group name="flowable" string="Flowable">

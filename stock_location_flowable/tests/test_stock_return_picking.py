@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class TestStockReturnPicking(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockReturnPicking, cls).setUpClass()
+        super().setUpClass()
 
     def test_return_from_flowable_location_raises_error(self):
         """

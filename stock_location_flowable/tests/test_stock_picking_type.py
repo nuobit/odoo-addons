@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 class TestStockPickingType(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockPickingType, cls).setUpClass()
+        super().setUpClass()
 
     def test_unique_flowable_operation_picking_type(self):
         # ARRANGE

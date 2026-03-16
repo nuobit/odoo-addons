@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 class TestMrpProduction(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestMrpProduction, cls).setUpClass()
+        super().setUpClass()
 
     def test_blocked_flowable_mrp_operation(self):
         # ARRANGE
@@ -746,7 +746,7 @@ class TestMrpProduction(TestCommon):
 class TestFlowableReservationConflictFromProduction(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestFlowableReservationConflictFromProduction, cls).setUpClass()
+        super().setUpClass()
 
         cls.picking_type_mrp = cls.env["stock.picking.type"].create(
             {
@@ -878,7 +878,7 @@ class TestFlowableReservationConflictFromProduction(TestCommon):
 class TestFlowableBlockingWithReservations(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestFlowableBlockingWithReservations, cls).setUpClass()
+        super().setUpClass()
 
         cls.picking_type_mrp = cls.env["stock.picking.type"].create(
             {

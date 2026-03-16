@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class TestStockQuant(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockQuant, cls).setUpClass()
+        super().setUpClass()
 
     def test_unique_lot_constraint_at_flowable_location(self):
         """

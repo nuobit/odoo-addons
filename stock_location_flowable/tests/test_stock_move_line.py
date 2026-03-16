@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class TestStockMoveLine(TestCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockMoveLine, cls).setUpClass()
+        super().setUpClass()
 
     def test_blocked_location_rejects_unrelated_production_done(self):
         """
