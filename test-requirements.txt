@@ -1,0 +1,1 @@
+odoo-addon-uom_rounding_coherence@git+https://github.com/nuobit/odoo-addons.git@refs/pull/859/head#subdirectory=uom_rounding_coherence
