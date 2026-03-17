@@ -507,7 +507,7 @@ msgstr "Producto alquilado"
 #: model:ir.ui.menu,name:sale_rental_extension.menu_rental_today_return
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
 msgid "Return"
-msgstr "Devolución"
+msgstr "Retorno"
 
 #. module: sale_rental
 #: model:ir.model,name:sale_rental.model_sale_order
@@ -766,7 +766,7 @@ msgstr "Recogida"
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
 msgid "Late Return"
-msgstr "Devolución con retraso"
+msgstr "Retorno con retraso"
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
@@ -833,7 +833,7 @@ msgstr "Fecha de recogida"
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
 msgid "Return Date"
-msgstr "Fecha de devolución"
+msgstr "Fecha de retorno"
 
 #. module: sale_rental_extension
 #: model:ir.actions.act_window,name:sale_rental_extension.rental_order_today_pickup_action
@@ -875,7 +875,7 @@ msgstr "Recogida:"
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_kanban
 msgid "Return:"
-msgstr "Devolución:"
+msgstr "Retorno:"
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_view_kanban
@@ -925,7 +925,7 @@ msgstr "Albarán de recogida"
 #. module: sale_rental_extension
 #: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order__return_picking_id
 msgid "Return Picking"
-msgstr "Albarán de devolución"
+msgstr "Albarán de retorno"
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
