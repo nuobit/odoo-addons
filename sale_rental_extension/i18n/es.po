@@ -486,8 +486,10 @@ msgid "Rental to Sell"
 msgstr "Alquiler a vender"
 
 #. module: sale_rental
+#. module: sale_rental_extension
 #: model:ir.actions.act_window,name:sale_rental.sale_rental_action
 #: model:ir.ui.menu,name:sale_rental.sale_rental_menu
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
 msgid "Rentals"
 msgstr "Alquileres"
 
@@ -719,11 +721,13 @@ msgstr ""
 
 #. module: sale_rental_extension
 #: model:ir.model.fields.selection,name:sale_rental_extension.selection__sale_order__rental_status__draft
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
 msgid "Quotation"
 msgstr "Presupuesto"
 
 #. module: sale_rental_extension
 #: model:ir.model.fields.selection,name:sale_rental_extension.selection__sale_order__rental_status__sent
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
 msgid "Quotation Sent"
 msgstr "Presupuesto enviado"
 
@@ -816,8 +820,9 @@ msgstr "Hoy"
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_kanban
 msgid "Late"
-msgstr "Retrasado"
+msgstr "Retraso"
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
@@ -855,3 +860,14 @@ msgstr "Recogida"
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_action
 msgid "Create a new rental order!"
 msgstr "¡Crea una nueva orden de alquiler!"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_kanban
+msgid "Pickup:"
+msgstr "Recogida:"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_kanban
+msgid "Return:"
+msgstr "Devolución:"
+

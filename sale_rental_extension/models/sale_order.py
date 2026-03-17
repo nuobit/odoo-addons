@@ -3,6 +3,15 @@
 
 from odoo import api, fields, models
 
+RENTAL_STATUS = [
+    ("draft", "Quotation"),
+    ("sent", "Quotation Sent"),
+    ("pickup", "Reserved"),
+    ("return", "Pickedup"),
+    ("returned", "Returned"),
+    ("cancel", "Cancelled"),
+]
+
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
@@ -16,14 +25,7 @@ class SaleOrder(models.Model):
         store=True,
     )
     rental_status = fields.Selection(
-        selection=[
-            ("draft", "Quotation"),
-            ("sent", "Quotation Sent"),
-            ("pickup", "Reserved"),
-            ("return", "Pickedup"),
-            ("returned", "Returned"),
-            ("cancel", "Cancelled"),
-        ],
+        selection=RENTAL_STATUS,
         compute="_compute_rental_status",
         store=True,
     )
@@ -53,32 +55,21 @@ class SaleOrder(models.Model):
     )
     def _compute_rental_status(self):
         for order in self:
+            order.next_action_date = False
             if not order.is_rental_order:
                 order.rental_status = False
-                order.next_action_date = False
-                continue
-            if order.state == "cancel":
-                order.rental_status = "cancel"
-                order.next_action_date = False
-                continue
-            if order.state == "draft":
-                order.rental_status = "draft"
-                order.next_action_date = False
-                continue
-            if order.state == "sent":
-                order.rental_status = "sent"
-                order.next_action_date = False
-                continue
-            rental_states = order.rental_ids.mapped("state")
-            if any(s == "ordered" for s in rental_states):
-                order.rental_status = "pickup"
-                order.next_action_date = order.default_start_date
-            elif any(s in ("out", "sell_progress") for s in rental_states):
-                order.rental_status = "return"
-                order.next_action_date = order.default_end_date
-            else:
-                order.rental_status = "returned"
-                order.next_action_date = False
+            elif order.state in ("draft", "sent", "cancel"):
+                order.rental_status = order.state
+            elif order.state in ("sale", "done"):
+                rental_states = order.rental_ids.mapped("state")
+                if any(s == "ordered" for s in rental_states):
+                    order.rental_status = "pickup"
+                    order.next_action_date = order.default_start_date
+                elif any(s in ("out", "sell_progress") for s in rental_states):
+                    order.rental_status = "return"
+                    order.next_action_date = order.default_end_date
+                else:
+                    order.rental_status = "returned"
 
     @api.depends("default_start_date", "default_end_date")
     def _compute_rental_duration(self):

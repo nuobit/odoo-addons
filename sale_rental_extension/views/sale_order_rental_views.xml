@@ -49,28 +49,25 @@
                 />
             </xpath>
 
-            <!-- Rental status badges at top-right (Enterprise-style raw divs) -->
+            <!-- Rental status badge at top-right (pure state, no late mix) -->
             <xpath expr="//div[@name='button_box']" position="after">
                 <div
-                    class="badge rounded-pill text-bg-success float-end fs-6 border-0"
-                    attrs="{'invisible': ['|', ('is_rental_order', '=', False), '|', ('rental_status', '!=', 'pickup'), ('is_late', '=', True)]}"
-                >Booked</div>
-                <div
-                    class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
-                    attrs="{'invisible': ['|', ('is_rental_order', '=', False), '|', ('rental_status', '!=', 'pickup'), ('is_late', '=', False)]}"
-                >Late Pickup</div>
+                    class="badge rounded-pill text-bg-info float-end fs-6 border-0"
+                    attrs="{'invisible': ['|', ('is_rental_order', '=', False), ('rental_status', '!=', 'pickup')]}"
+                >Reserved</div>
                 <div
                     class="badge rounded-pill text-bg-warning float-end fs-6 border-0"
-                    attrs="{'invisible': ['|', ('is_rental_order', '=', False), '|', ('rental_status', '!=', 'return'), ('is_late', '=', True)]}"
+                    attrs="{'invisible': ['|', ('is_rental_order', '=', False), ('rental_status', '!=', 'return')]}"
                 >Picked-up</div>
                 <div
-                    class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
-                    attrs="{'invisible': ['|', ('is_rental_order', '=', False), '|', ('rental_status', '!=', 'return'), ('is_late', '=', False)]}"
-                >Late Return</div>
-                <div
-                    class="badge rounded-pill text-bg-secondary float-end fs-6 border-0"
+                    class="badge rounded-pill text-bg-success float-end fs-6 border-0"
                     attrs="{'invisible': ['|', ('is_rental_order', '=', False), ('rental_status', '!=', 'returned')]}"
                 >Returned</div>
+                <!-- Late indicator (separate from state) -->
+                <div
+                    class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
+                    attrs="{'invisible': ['|', ('is_rental_order', '=', False), ('is_late', '=', False)]}"
+                >Late</div>
             </xpath>
 
             <!-- Rental period and duration -->
@@ -162,10 +159,11 @@
                 <field
                     name="rental_status"
                     widget="badge"
-                    decoration-info="rental_status == 'draft'"
-                    decoration-primary="rental_status == 'sent'"
-                    decoration-success="rental_status == 'pickup'"
+                    decoration-muted="rental_status in ('draft', 'sent')"
+                    decoration-info="rental_status == 'pickup'"
                     decoration-warning="rental_status == 'return'"
+                    decoration-success="rental_status == 'returned'"
+                    decoration-danger="rental_status == 'cancel'"
                 />
                 <field name="state" invisible="1" />
                 <field name="currency_id" invisible="1" />
@@ -216,12 +214,16 @@
                                             t-attf-class="#{record.is_late.raw_value ? 'text-danger' : 'text-muted'}"
                                         >
                                             <t t-if="record.is_late.raw_value">
-                                                <i class="fa fa-warning" /> Late </t>
+                                                <i
+                                                    class="fa fa-warning me-1"
+                                                    title="Late"
+                                                />
+                                            </t>
                                             <t
                                                 t-if="record.rental_status.raw_value == 'pickup'"
                                             >Pickup: </t>
                                             <t
-                                                t-elif="record.rental_status.raw_value == 'return'"
+                                                t-if="record.rental_status.raw_value == 'return'"
                                             >Return: </t>
                                             <t t-out="record.next_action_date.value" />
                                         </span>
@@ -229,17 +231,20 @@
                                 </div>
                                 <!-- Bottom: Status badge + Customer photo -->
                                 <div class="o_kanban_record_bottom">
-                                    <div class="oe_kanban_bottom_left">
+                                    <div
+                                        class="oe_kanban_bottom_left"
+                                        style="font-size: 1.5rem;"
+                                    >
                                         <field
                                             name="rental_status"
                                             widget="label_selection"
                                             options="{'classes': {
-                                                'draft': 'info',
-                                                'sent': 'primary',
-                                                'pickup': 'success',
+                                                'draft': 'light',
+                                                'sent': 'light',
+                                                'pickup': 'info',
                                                 'return': 'warning',
-                                                'returned': 'default',
-                                                'cancel': 'default'
+                                                'returned': 'success',
+                                                'cancel': 'danger'
                                             }}"
                                         />
                                     </div>
@@ -265,6 +270,29 @@
                     </t>
                 </templates>
             </kanban>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Dedicated Rental Calendar View                               -->
+    <!-- ============================================================ -->
+    <record id="rental_order_view_calendar" model="ir.ui.view">
+        <field name="name">sale.order.calendar.rental</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <calendar
+                string="Rental Orders"
+                date_start="default_start_date"
+                date_stop="default_end_date"
+                color="rental_status"
+                mode="month"
+                quick_add="false"
+            >
+                <field name="partner_id" />
+                <field name="name" />
+                <field name="rental_status" />
+                <field name="amount_total" widget="monetary" />
+            </calendar>
         </field>
     </record>
 
@@ -401,6 +429,12 @@
         <field name="sequence">3</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="rental_order_form_view" />
+        <field name="act_window_id" ref="rental_order_action" />
+    </record>
+    <record id="rental_order_action_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence">4</field>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="rental_order_view_calendar" />
         <field name="act_window_id" ref="rental_order_action" />
     </record>
 
