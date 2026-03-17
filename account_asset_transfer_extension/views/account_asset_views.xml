@@ -1,6 +1,6 @@
 <odoo>
-    <record model="ir.ui.view" id="account_asset_view_form">
-        <field name="name">account.asset.form</field>
+    <record model="ir.ui.view" id="account_asset_view_form_transfer_ext">
+        <field name="name">account.asset.form.transfer.ext</field>
         <field name="model">account.asset</field>
         <field
             name="inherit_id"
@@ -10,7 +10,7 @@
             <button name="set_to_draft" position="after">
                 <button
                     name="revert_transfer"
-                    states="transferred"
+                    invisible="state != 'transferred'"
                     string="Revert Transfer"
                     class="oe_highlight"
                     type="object"
@@ -21,11 +21,11 @@
                 <page
                     name="from_assets"
                     string="From Assets"
-                    attrs="{'invisible': [('from_asset_ids','=',[])]}"
+                    invisible="not from_asset_ids"
                 >
                     <group>
                         <field name="from_asset_ids" nolabel="1">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="name" />
                                 <field name="code" />
                                 <field name="date_start" />
@@ -33,17 +33,13 @@
                                 <field name="company_id" invisible="1" />
                                 <field name="profile_id" />
                                 <field name="state" />
-                            </tree>
+                            </list>
                         </field>
                     </group>
                 </page>
-                <page
-                    name="to_assets"
-                    string="To Assets"
-                    attrs="{'invisible': [('to_asset_ids','=',[])]}"
-                >
+                <page name="to_assets" string="To Assets" invisible="not to_asset_ids">
                     <field name="to_asset_ids" nolabel="1">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="name" />
                             <field name="code" />
                             <field name="date_start" />
@@ -51,7 +47,7 @@
                             <field name="company_id" invisible="1" />
                             <field name="profile_id" />
                             <field name="state" />
-                        </tree>
+                        </list>
                     </field>
                 </page>
             </notebook>

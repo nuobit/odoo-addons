@@ -1,5 +1,5 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import models
@@ -15,7 +15,7 @@ class AccountAssetTransfer(models.TransientModel):
             if line.asset_id in self.from_asset_ids:
                 line.asset_id.write(
                     {
-                        "transfer_move_id": move,
+                        "transfer_move_id": move.id,
                         "state": "transferred",
                         "date_remove": False,
                         "date_transfer": self.date_transfer,

@@ -3,7 +3,7 @@
         <field name="name">account.asset.transfer.revert.form</field>
         <field name="model">account.asset.transfer.revert</field>
         <field name="arch" type="xml">
-            <form string="Tansfer Assets?">
+            <form string="Transfer Assets?">
                 <group>
                     <field name="warning_message" nolabel="1" />
                 </group>

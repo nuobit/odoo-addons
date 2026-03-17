@@ -1,6 +1,7 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
@@ -18,7 +19,7 @@ class AccountAsset(models.Model):
     def _compute_from_asset_ids(self):
         for rec in self:
             move_lines = rec.account_move_line_ids.filtered(
-                lambda x: x.move_id != rec.transfer_move_id
+                lambda x, rec=rec: x.move_id != rec.transfer_move_id
             )
             move = move_lines.move_id.filtered(
                 lambda x: x in x.line_ids.asset_id.transfer_move_id
@@ -28,7 +29,7 @@ class AccountAsset(models.Model):
                     _("More than one move with the same to_asset found")
                 )
             rec.from_asset_ids = move.line_ids.asset_id.filtered(
-                lambda x: x.transfer_move_id == move
+                lambda x, move=move: x.transfer_move_id == move
             )
 
     to_asset_ids = fields.Many2many(
@@ -41,7 +42,7 @@ class AccountAsset(models.Model):
         for rec in self:
             if rec.transfer_move_id:
                 rec.to_asset_ids = rec.transfer_move_id.line_ids.asset_id.filtered(
-                    lambda x: not x.transfer_move_id
+                    lambda x, rec=rec: not x.transfer_move_id
                     or x.transfer_move_id != rec.transfer_move_id
                 )
             else:
@@ -94,7 +95,8 @@ class AccountAsset(models.Model):
             if rec.from_asset_ids and rec.state not in ["open", "close", "removed"]:
                 raise ValidationError(
                     _(
-                        "When asset has from_asset_ids, state must be open, close or removed. "
+                        "When asset has from_asset_ids, "
+                        "state must be open, close or removed. "
                         "Please, review asset: %s"
                     )
                     % rec.name
