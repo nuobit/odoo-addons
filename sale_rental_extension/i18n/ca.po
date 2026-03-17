@@ -505,6 +505,7 @@ msgstr "Producte llogat"
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_form
 #: model_terms:ir.ui.view,arch_db:sale_rental.sale_rental_tree
 #: model:ir.ui.menu,name:sale_rental_extension.menu_rental_today_return
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
 msgid "Return"
 msgstr "Retorn"
 
@@ -852,6 +853,7 @@ msgstr "Comandes"
 
 #. module: sale_rental_extension
 #: model:ir.ui.menu,name:sale_rental_extension.menu_rental_today_pickup
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
 msgid "Pickup"
 msgstr "Recollida"
 
