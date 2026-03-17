@@ -855,6 +855,10 @@ msgstr "Comandes"
 msgid "Pickup"
 msgstr "Recollida"
 
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_form_view
+msgid "Qty"
+msgstr "Qtat"
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_action
