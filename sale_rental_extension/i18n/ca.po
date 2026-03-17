@@ -875,3 +875,69 @@ msgstr "Recollida:"
 msgid "Return:"
 msgstr "Retorn:"
 
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_view_kanban
+msgid "<i class=\"fa fa-calendar me-1\" title=\"Rental period\"/>"
+msgstr "<i class=\"fa fa-calendar me-1\" title=\"Període de lloguer\"/>"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_kanban
+msgid "<i class=\"fa fa-warning me-1\" title=\"Late\"/>"
+msgstr "<i class=\"fa fa-warning me-1\" title=\"Endarrerit\"/>"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_view_kanban
+msgid "<span class=\"mx-1\">→</span>"
+msgstr "<span class=\"mx-1\">→</span>"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order__is_late
+msgid "Is Late"
+msgstr "Endarrerit"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order__is_rental_order
+msgid "Is Rental Order"
+msgstr "És comanda de lloguer"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_stock_picking__is_rental_picking
+msgid "Is Rental Picking"
+msgstr "És albarà de lloguer"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order__next_action_date
+msgid "Next Action Date"
+msgstr "Data propera acció"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "Order"
+msgstr "Comanda"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order__pickup_picking_id
+msgid "Pickup Picking"
+msgstr "Albarà de recollida"
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order__return_picking_id
+msgid "Return Picking"
+msgstr "Albarà de retorn"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "Salesperson"
+msgstr "Comercial"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
+msgid "Status"
+msgstr "Estat"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_search
+msgid "Today"
+msgstr "Avui"
+
+

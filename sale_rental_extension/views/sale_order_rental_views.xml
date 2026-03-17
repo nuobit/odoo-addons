@@ -46,14 +46,8 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <!-- Update Times button -->
+            <!-- Pickup / Return / Update Times buttons -->
             <xpath expr="//button[@name='action_confirm']" position="after">
-                <button
-                    name="%(rental_base.action_update_sale_line_date)d"
-                    string="Update Times"
-                    type="action"
-                    attrs="{'invisible': [('state', 'in', ['draft', 'sent'])]}"
-                />
                 <button
                     name="action_open_pickup_picking"
                     string="Pickup"
@@ -69,6 +63,12 @@
                     class="btn-primary"
                     icon="fa-undo"
                     attrs="{'invisible': ['|', ('rental_status', '!=', 'return'), ('return_picking_id', '=', False)]}"
+                />
+                <button
+                    name="%(rental_base.action_update_sale_line_date)d"
+                    string="Update Times"
+                    type="action"
+                    attrs="{'invisible': [('state', 'in', ['draft', 'sent'])]}"
                 />
             </xpath>
 
