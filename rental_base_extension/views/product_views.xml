@@ -13,7 +13,7 @@
                 position="attributes"
             >
                 <attribute name="attrs">
-                    {'invisible': [('type', '=', 'kkkkservice')]}
+                    {'invisible': [('type', '=', 'service')]}
                 </attribute>
             </xpath>
         </field>
