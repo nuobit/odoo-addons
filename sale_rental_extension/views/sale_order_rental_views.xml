@@ -39,6 +39,11 @@
                 <field name="is_late" invisible="1" />
             </xpath>
 
+            <!-- Hide type_id (always rental in this view) -->
+            <xpath expr="//field[@name='type_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
             <!-- Update Times button -->
             <xpath expr="//button[@name='action_confirm']" position="after">
                 <button
@@ -95,9 +100,20 @@
                 <field name="rental_duration" string="Duration" />
             </xpath>
 
-            <!-- Filter product_id to only show rental products -->
+            <!-- Filter product_id to only show rental products (both form and tree) -->
             <xpath
-                expr="//field[@name='order_line']//field[@name='product_id']"
+                expr="//field[@name='order_line']//form//field[@name='product_id']"
+                position="attributes"
+            >
+                <attribute name="domain">
+                    [('sale_ok', '=', True),
+                     ('rented_product_id', '!=', False),
+                     '|', ('company_id', '=', False),
+                          ('company_id', '=', parent.company_id)]
+                </attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']//tree//field[@name='product_id']"
                 position="attributes"
             >
                 <attribute name="domain">
@@ -403,10 +419,14 @@
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="rental_order_view_search" />
-        <field name="context">{
-            'in_rental_app': 1,
-            'search_default_from_rental': 1,
-        }</field>
+        <field
+            name="context"
+            eval="{
+                'in_rental_app': 1,
+                'search_default_from_rental': 1,
+                'default_type_id': ref('rental_base.rental_sale_type'),
+            }"
+        />
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new rental order!
@@ -445,11 +465,15 @@
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('is_rental_order', '=', True)]</field>
         <field name="search_view_id" ref="rental_order_view_search" />
-        <field name="context">{
-            'in_rental_app': 1,
-            'search_default_filter_today': 1,
-            'search_default_filter_to_pickup': 1,
-        }</field>
+        <field
+            name="context"
+            eval="{
+                'in_rental_app': 1,
+                'search_default_filter_today': 1,
+                'search_default_filter_to_pickup': 1,
+                'default_type_id': ref('rental_base.rental_sale_type'),
+            }"
+        />
     </record>
     <record
         id="rental_order_today_pickup_action_view_tree"
@@ -486,11 +510,15 @@
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('is_rental_order', '=', True)]</field>
         <field name="search_view_id" ref="rental_order_view_search" />
-        <field name="context">{
-            'in_rental_app': 1,
-            'search_default_filter_today': 1,
-            'search_default_filter_to_return': 1,
-        }</field>
+        <field
+            name="context"
+            eval="{
+                'in_rental_app': 1,
+                'search_default_filter_today': 1,
+                'search_default_filter_to_return': 1,
+                'default_type_id': ref('rental_base.rental_sale_type'),
+            }"
+        />
     </record>
     <record
         id="rental_order_today_return_action_view_tree"

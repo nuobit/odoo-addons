@@ -41,10 +41,14 @@ class SaleOrder(models.Model):
         compute="_compute_rental_duration",
     )
 
-    @api.depends("order_line.rental")
+    def _get_rental_type(self):
+        return self.env.ref("rental_base.rental_sale_type", raise_if_not_found=False)
+
+    @api.depends("type_id")
     def _compute_is_rental_order(self):
+        rental_type = self._get_rental_type()
         for order in self:
-            order.is_rental_order = any(line.rental for line in order.order_line)
+            order.is_rental_order = bool(rental_type and order.type_id == rental_type)
 
     @api.depends(
         "state",
@@ -62,7 +66,7 @@ class SaleOrder(models.Model):
                 order.rental_status = order.state
             elif order.state in ("sale", "done"):
                 rental_states = order.rental_ids.mapped("state")
-                if any(s == "ordered" for s in rental_states):
+                if not rental_states or any(s == "ordered" for s in rental_states):
                     order.rental_status = "pickup"
                     order.next_action_date = order.default_start_date
                 elif any(s in ("out", "sell_progress") for s in rental_states):
