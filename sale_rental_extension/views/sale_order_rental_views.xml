@@ -118,7 +118,7 @@
                 <field name="rental_duration" string="Duration" />
             </xpath>
 
-            <!-- Filter product_id to only show rental products (both form and tree) -->
+            <!-- Filter product_id to only show rental products -->
             <xpath
                 expr="//field[@name='order_line']//form//field[@name='product_id']"
                 position="attributes"
@@ -141,31 +141,55 @@
                           ('company_id', '=', parent.company_id)]
                 </attribute>
             </xpath>
-
-            <!-- Make order lines editable inline (no popup) -->
-            <xpath expr="//field[@name='order_line']" position="attributes">
-                <attribute name="mode">tree</attribute>
-            </xpath>
-            <!--xpath expr="//field[@name='order_line']//tree" position="attributes">
-                <attribute name="editable">bottom</attribute>
-            </xpath-->
-
-            <!-- Hide standard product_uom_qty when rental (rental_qty replaces it) -->
+            <!-- Also filter product_template_id (used by sol_product_many2one widget) -->
             <xpath
-                expr="//field[@name='order_line']//field[@name='product_uom_qty']"
+                expr="//field[@name='order_line']//tree//field[@name='product_template_id']"
                 position="attributes"
             >
-                <attribute name="attrs">
-                    {'invisible': [('rental', '=', True)]}
+                <attribute name="domain">
+                    [('sale_ok', '=', True),
+                     ('rented_product_tmpl_id', '!=', False),
+                     '|', ('company_id', '=', False),
+                          ('company_id', '=', parent.company_id)]
                 </attribute>
+            </xpath>
+
+            <!-- Add invisible rental fields to tree for onchange support -->
+            <xpath
+                expr="//field[@name='order_line']//tree//field[@name='product_id']"
+                position="after"
+            >
+                <field name="rental" invisible="1" />
+                <field name="can_sell_rental" invisible="1" />
+                <field name="rental_type" invisible="1" />
+            </xpath>
+
+            <!-- Replace product_uom_qty with rental_qty in the same position -->
+            <xpath
+                expr="//field[@name='order_line']//tree//field[@name='product_uom_qty']"
+                position="before"
+            >
+                <field name="rental_qty" string="Qty" />
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']//tree//field[@name='product_uom_qty']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
             </xpath>
             <xpath
                 expr="//field[@name='order_line']//label[@for='product_uom_qty']"
                 position="attributes"
             >
-                <attribute name="attrs">
-                    {'invisible': [('rental', '=', True)]}
-                </attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Make order lines editable inline (no popup) -->
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="mode">tree</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree" position="attributes">
+                <attribute name="editable">bottom</attribute>
             </xpath>
         </field>
     </record>
