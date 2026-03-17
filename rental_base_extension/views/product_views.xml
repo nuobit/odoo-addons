@@ -13,7 +13,7 @@
                 position="attributes"
             >
                 <attribute name="attrs">
-                    {'invisible': [('type', '=', 'service')]}
+                    {'invisible': [('type', '=', 'kkkkservice')]}
                 </attribute>
             </xpath>
         </field>
@@ -49,14 +49,14 @@
                 <group
                     name="rental_service"
                     string="Rental"
-                    attrs="{'invisible': ['|', ('type', '!=', 'service'), ('rental', '=', False)]}"
+                    attrs="{'invisible': ['|', ('type', '!=', 'service'), ('rental', '!=', False)]}"
                 >
                     <field name="rented_product_id" />
                 </group>
                 <group
                     name="rental"
                     string="Rentals"
-                    attrs="{'invisible': ['|', ('type', '=', 'service'), ('rental', '=', False)]}"
+                    attrs="{'invisible': [('type', '=', 'service')]}"
                 >
                     <field name="rental_service_ids" nolabel="1" colspan="2" />
                     <button
@@ -101,14 +101,14 @@
                 <group
                     name="rental_service"
                     string="Rental"
-                    attrs="{'invisible': ['|', ('type', '!=', 'service'), ('rental', '=', False)]}"
+                    attrs="{'invisible': ['|', ('type', '!=', 'service'), ('rental', '!=', False)]}"
                 >
                     <field name="rented_product_tmpl_id" />
                 </group>
                 <group
                     name="rental"
                     string="Rentals"
-                    attrs="{'invisible': ['|', '|', ('type', '=', 'service'), ('product_variant_count', '&gt;', 1), ('rental', '=', False)]}"
+                    attrs="{'invisible': ['|', ('type', '=', 'service'), ('product_variant_count', '&gt;', 1)]}"
                 >
                     <field name="rental_service_tmpl_ids" nolabel="1" colspan="2" />
                     <button
