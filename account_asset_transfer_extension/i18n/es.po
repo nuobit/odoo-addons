@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-23 16:15+0000\n"
+"POT-Creation-Date: 2026-10-29 09:02+0000\n"
 "PO-Revision-Date: 2022-12-23 16:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,26 +16,26 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "> Journal entries to remove: %s"
 msgstr "> Apuntes contables a eliminar: %s"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "> New assets to remove: %s"
 msgstr "> Nuevos activos a eliminar: %s"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "> Transferred assets to restore: %s"
 msgstr "> Activos transferidos a restaurar: %s"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "Active Model not defined"
 msgstr "El modelo activo no ha sido definido"
 
@@ -48,6 +48,11 @@ msgstr "Activo"
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__date_transfer
 msgid "Asset Transfer Date"
 msgstr "Fecha de la transferencia del activo"
+
+#. module: account_asset_transfer_extension
+#: model:ir.model,name:account_asset_transfer_extension.model_account_asset_line
+msgid "Asset depreciation table line"
+msgstr ""
 
 #. module: account_asset_transfer_extension
 #: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
@@ -65,26 +70,18 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: account_asset_transfer_extension
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__display_name
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer__display_name
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__display_name
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move__display_name
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move_line__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: account_asset_transfer_extension
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__from_asset_ids
-#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form_transfer_ext
 msgid "From Assets"
 msgstr "Activos origen"
 
 #. module: account_asset_transfer_extension
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__id
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer__id
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__id
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move__id
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move_line__id
 msgid "ID"
 msgstr "ID"
 
@@ -99,15 +96,6 @@ msgid "Journal Item"
 msgstr "Apunte contable"
 
 #. module: account_asset_transfer_extension
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset____last_update
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer____last_update
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert____last_update
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move____last_update
-#: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_move_line____last_update
-msgid "Last Modified on"
-msgstr "Última modificación"
-
-#. module: account_asset_transfer_extension
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -115,36 +103,35 @@ msgstr ""
 #. module: account_asset_transfer_extension
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Última actualización el"
 
 #. module: account_asset_transfer_extension
+#. odoo-python
 #: code:addons/account_asset_transfer_extension/models/account_asset.py:0
-#, python-format
 msgid "More than one move with the same to_asset found"
 msgstr "Mas de un movimiento con el mismo activo de destino encontrado"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "No assets selected"
 msgstr "No hay activos seleccionados"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "Nothing to revert"
 msgstr "Nada a revertir"
 
 #. module: account_asset_transfer_extension
 #: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
-#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form_transfer_ext
 msgid "Revert Transfer"
 msgstr "Revertir transferencia"
 
 #. module: account_asset_transfer_extension
+#. odoo-python
 #: code:addons/account_asset_transfer_extension/models/account_asset.py:0
-#, python-format
 msgid "Revert Transfer AUC to Asset"
 msgstr "Revertir transferencia AUC del activo"
 
@@ -164,31 +151,28 @@ msgid "Status"
 msgstr "Estado"
 
 #. module: account_asset_transfer_extension
-#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
-msgid "Tansfer Assets?"
-msgstr "Transferir activos?"
-
-#. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "The journal entry %s has lines without asset"
 msgstr "El asiento contable %s tiene líneas sin activos"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "The journal entry assets has inconsistencies with de from/to assets"
-msgstr "Los activos del asiento contable tienen inconsistencias con el origen y destino de los activos"
+msgstr ""
+"Los activos del asiento contable tienen inconsistencias con el origen y "
+"destino de los activos"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "The next actions will be taken: "
 msgstr "Se realizaran las siguientes acciones: "
 
 #. module: account_asset_transfer_extension
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__to_asset_ids
-#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_view_form_transfer_ext
 msgid "To Assets"
 msgstr "Activos nuevos"
 
@@ -196,6 +180,11 @@ msgstr "Activos nuevos"
 #: model:ir.model,name:account_asset_transfer_extension.model_account_asset_transfer
 msgid "Transfer Asset"
 msgstr "Transferir Activo"
+
+#. module: account_asset_transfer_extension
+#: model_terms:ir.ui.view,arch_db:account_asset_transfer_extension.account_asset_transfer_revert_view_form
+msgid "Transfer Assets?"
+msgstr "Transferir activos?"
 
 #. module: account_asset_transfer_extension
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset__transfer_move_id
@@ -208,10 +197,11 @@ msgid "Transferred"
 msgstr "Transferido"
 
 #. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/wizard/account_asset_transfer_revert.py:0
-#, python-format
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/wizards/account_asset_transfer_revert.py:0
 msgid "Unexpected number of init entries found on deprecation line"
-msgstr "Número inesperado de entradas init encontradas en la línea de desaprobación"
+msgstr ""
+"Número inesperado de entradas init encontradas en la línea de desaprobación"
 
 #. module: account_asset_transfer_extension
 #: model:ir.model.fields,field_description:account_asset_transfer_extension.field_account_asset_transfer_revert__warning_message
@@ -232,26 +222,38 @@ msgstr ""
 "Cuando se generan los asientos de eliminación, el activo pasa a estado 'Eliminado'."
 
 #. module: account_asset_transfer_extension
+#. odoo-python
 #: code:addons/account_asset_transfer_extension/models/account_asset.py:0
-#, python-format
 msgid ""
 "When asset has from_asset_ids, state must be open, close or removed. Please,"
 " review asset: %s"
-msgstr "Cuando los activos tienen activos de origen el estado debe ser en ejecucion, cerrar o eliminado."
-"Por favor, revise el activo: %s"
+msgstr ""
+"Cuando los activos tienen activos de origen el estado debe ser en ejecucion,"
+" cerrar o eliminado.Por favor, revise el activo: %s"
 
 #. module: account_asset_transfer_extension
+#. odoo-python
 #: code:addons/account_asset_transfer_extension/models/account_asset.py:0
-#, python-format
 msgid ""
 "When asset has to_asset_ids, state must be transferred. Please, review "
 "asset: %s"
-msgstr "Cuando un activo tiene activos nuevos, el estado debe ser transferido."
-"Por favor, revise el activo: %s"
+msgstr ""
+"Cuando un activo tiene activos nuevos, el estado debe ser transferido.Por "
+"favor, revise el activo: %s"
 
 #. module: account_asset_transfer_extension
+#. odoo-python
 #: code:addons/account_asset_transfer_extension/models/account_move.py:0
-#, python-format
+msgid ""
+"You can't modify or delete a journal item on journal entries with "
+"transferred assets"
+msgstr ""
+"No se puede modificar o eliminar un asiento en los asientos con activos "
+"transferidos."
+
+#. module: account_asset_transfer_extension
+#. odoo-python
+#: code:addons/account_asset_transfer_extension/models/account_asset_line.py:0
 msgid ""
 "You cannot unpost this entry because it is a transfer move (%s) linked to "
 "transferred assets. Use the 'Revert Transfer' action instead."
@@ -259,11 +261,3 @@ msgstr ""
 "No se puede desasentar este apunte porque es un movimiento de transferencia "
 "(%s) vinculado a activos transferidos. Use la acción 'Revertir "
 "transferencia' en su lugar."
-
-#. module: account_asset_transfer_extension
-#: code:addons/account_asset_transfer_extension/models/account_move.py:0
-#, python-format
-msgid ""
-"You can't modify or delete a journal item on journal entries with "
-"transferred assets"
-msgstr "No se puede modificar o eliminar un asiento en los asientos con activos transferidos."

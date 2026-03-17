@@ -1,6 +1,7 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -84,7 +85,8 @@ class AccountAssetTransfer(models.TransientModel):
             if set(move.line_ids.asset_id.ids) != set((from_assets | to_assets).ids):
                 raise ValidationError(
                     _(
-                        "The journal entry assets has inconsistencies with de from/to assets"
+                        "The journal entry assets has "
+                        "inconsistencies with de from/to assets"
                     )
                 )
             move.button_draft()
