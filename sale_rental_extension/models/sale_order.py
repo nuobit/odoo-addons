@@ -40,6 +40,14 @@ class SaleOrder(models.Model):
         string="Duration",
         compute="_compute_rental_duration",
     )
+    pickup_picking_id = fields.Many2one(
+        comodel_name="stock.picking",
+        compute="_compute_rental_picking_ids",
+    )
+    return_picking_id = fields.Many2one(
+        comodel_name="stock.picking",
+        compute="_compute_rental_picking_ids",
+    )
 
     def _get_rental_type(self):
         return self.env.ref("rental_base.rental_sale_type", raise_if_not_found=False)
@@ -84,6 +92,38 @@ class SaleOrder(models.Model):
                 ).days + 1
             else:
                 order.rental_duration = 0
+
+    @api.depends(
+        "rental_ids.out_move_id.picking_id", "rental_ids.in_move_id.picking_id"
+    )
+    def _compute_rental_picking_ids(self):
+        for order in self:
+            order.pickup_picking_id = order.rental_ids.mapped("out_move_id.picking_id")[
+                :1
+            ]
+            order.return_picking_id = order.rental_ids.mapped("in_move_id.picking_id")[
+                :1
+            ]
+
+    def action_open_pickup_picking(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "stock.picking",
+            "res_id": self.pickup_picking_id.id,
+            "view_mode": "form",
+            "views": [(False, "form")],
+        }
+
+    def action_open_return_picking(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "stock.picking",
+            "res_id": self.return_picking_id.id,
+            "view_mode": "form",
+            "views": [(False, "form")],
+        }
 
     @api.depends("next_action_date")
     def _compute_is_late(self):

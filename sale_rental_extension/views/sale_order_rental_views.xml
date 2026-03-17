@@ -37,6 +37,8 @@
                 <field name="is_rental_order" invisible="1" />
                 <field name="rental_status" invisible="1" />
                 <field name="is_late" invisible="1" />
+                <field name="pickup_picking_id" invisible="1" />
+                <field name="return_picking_id" invisible="1" />
             </xpath>
 
             <!-- Hide type_id (always rental in this view) -->
@@ -51,6 +53,22 @@
                     string="Update Times"
                     type="action"
                     attrs="{'invisible': [('state', 'in', ['draft', 'sent'])]}"
+                />
+                <button
+                    name="action_open_pickup_picking"
+                    string="Pickup"
+                    type="object"
+                    class="btn-primary"
+                    icon="fa-truck"
+                    attrs="{'invisible': ['|', ('rental_status', '!=', 'pickup'), ('pickup_picking_id', '=', False)]}"
+                />
+                <button
+                    name="action_open_return_picking"
+                    string="Return"
+                    type="object"
+                    class="btn-primary"
+                    icon="fa-undo"
+                    attrs="{'invisible': ['|', ('rental_status', '!=', 'return'), ('return_picking_id', '=', False)]}"
                 />
             </xpath>
 
@@ -128,9 +146,9 @@
             <xpath expr="//field[@name='order_line']" position="attributes">
                 <attribute name="mode">tree</attribute>
             </xpath>
-            <xpath expr="//field[@name='order_line']//tree" position="attributes">
+            <!--xpath expr="//field[@name='order_line']//tree" position="attributes">
                 <attribute name="editable">bottom</attribute>
-            </xpath>
+            </xpath-->
 
             <!-- Hide standard product_uom_qty when rental (rental_qty replaces it) -->
             <xpath
