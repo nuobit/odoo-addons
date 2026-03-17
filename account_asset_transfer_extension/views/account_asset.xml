@@ -53,7 +53,6 @@
                             <field name="state" />
                         </tree>
                     </field>
-
                 </page>
             </notebook>
             <field name="state" position="attributes">

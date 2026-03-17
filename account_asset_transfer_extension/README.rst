@@ -17,18 +17,23 @@ Account Asset Transfer Extension
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github
-    :target: https://github.com/NuoBiT/odoo-addons/tree/14.0/account_asset_transfer_extension
+    :target: https://github.com/NuoBiT/odoo-addons/tree/18.0/account_asset_transfer_extension
     :alt: NuoBiT/odoo-addons
 
 |badge1| |badge2| |badge3|
 
 This module extends the OCA ``account_asset_transfer`` module adding:
 
-* A "Transferred" state on assets to track which assets have been transferred via the AUC (Assets Under Construction) transfer wizard.
-* Fields ``transfer_move_id`` and ``date_transfer`` to link transferred assets to their transfer journal entry.
-* Computed fields ``from_asset_ids`` and ``to_asset_ids`` to navigate between source and destination assets.
-* A "Revert Transfer" wizard to undo AUC transfers, restoring assets to their original state.
-* Protection against accidental deletion of transfer journal entries (CURS moves) when unposting depreciation lines.
+- A "Transferred" state on assets to track which assets have been
+  transferred via the AUC (Assets Under Construction) transfer wizard.
+- Fields ``transfer_move_id`` and ``date_transfer`` to link transferred
+  assets to their transfer journal entry.
+- Computed fields ``from_asset_ids`` and ``to_asset_ids`` to navigate
+  between source and destination assets.
+- A "Revert Transfer" wizard to undo AUC transfers, restoring assets to
+  their original state.
+- Protection against accidental deletion of transfer journal entries
+  (CURS moves) when unposting depreciation lines.
 
 **Table of contents**
 
@@ -41,7 +46,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/NuoBiT/odoo-addons/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/NuoBiT/odoo-addons/issues/new?body=module:%20account_asset_transfer_extension%0Aversion:%2014.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/NuoBiT/odoo-addons/issues/new?body=module:%20account_asset_transfer_extension%0Aversion:%2018.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -49,22 +54,22 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * NuoBiT Solutions
 * S.L.
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* `NuoBiT <https://www.nuobit.com>`__:
+- `NuoBiT <https://www.nuobit.com>`__:
 
-  * Kilian Niubo <kniubo@nuobit.com>
-  * Eric Antones <eantones@nuobit.com>
+  - Kilian Niubo <kniubo@nuobit.com>
+  - Eric Antones <eantones@nuobit.com>
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
-This module is part of the `NuoBiT/odoo-addons <https://github.com/NuoBiT/odoo-addons/tree/14.0/account_asset_transfer_extension>`_ project on GitHub.
+This module is part of the `NuoBiT/odoo-addons <https://github.com/NuoBiT/odoo-addons/tree/18.0/account_asset_transfer_extension>`_ project on GitHub.
 
 You are welcome to contribute.

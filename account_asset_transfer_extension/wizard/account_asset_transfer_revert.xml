@@ -1,5 +1,4 @@
 <odoo>
-
     <record id="account_asset_transfer_revert_view_form" model="ir.ui.view">
         <field name="name">account.asset.transfer.revert.form</field>
         <field name="model">account.asset.transfer.revert</field>
@@ -36,5 +35,4 @@
                 action = records.revert_transfer()
         </field>
     </record>
-
 </odoo>
