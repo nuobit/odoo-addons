@@ -4,26 +4,265 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-22 00:00+0000\n"
+"POT-Creation-Date: 2026-10-29 09:13+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
 #. module: l10n_es_account_capital_asset
-#: code:addons/l10n_es_account_capital_asset/models/account_move.py:0
-#, python-format
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_asset_profile.py:0
 msgid ""
-"The asset profile '%s' requires a default capital asset type because the "
-"invoice line amount is equal to or greater than %s. Please configure the "
-"asset profile before posting the invoice."
+"A profile for a set of capital assets is not compatible with the 'Product "
+"per Asset' option. You cannot have both enabled. Please, select only one of "
+"them."
 msgstr ""
-"El perfil d'actiu '%s' requereix un tipus de be d'inversio per defecte "
-"perque l'import de la linia de factura es igual o superior a %s. Configureu "
-"el perfil d'actiu abans de publicar la factura."
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.actions.act_window,name:l10n_es_account_capital_asset.account_capital_asset_action
+#: model:ir.ui.menu,name:l10n_es_account_capital_asset.account_tax_map_amount
+msgid "Account Capital Asset Tax Map"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_account_asset
+msgid "Asset"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_account_asset_profile
+msgid "Asset profile"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_account_capital_asset.view_company_aeat_form
+msgid "Capital Asset"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_l10n_es_account_capital_asset_map_tax
+msgid "Capital Asset Map Tax"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_res_config_settings__capital_asset_threshold_amount
+msgid "Capital Asset Threshold Amount"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.actions.act_window,name:l10n_es_account_capital_asset.capital_asset_type_action
+#: model:ir.model,name:l10n_es_account_capital_asset.model_l10n_es_account_capital_asset_type
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__capital_asset_type_id
+#: model:ir.ui.menu,name:l10n_es_account_capital_asset.aeat_vat_special_prorrate_capital_asset_type_menu
+msgid "Capital Asset Type"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.constraint,message:l10n_es_account_capital_asset.constraint_l10n_es_account_capital_asset_type_unique_name
+msgid "Capital Asset Type name must be unique"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.constraint,message:l10n_es_account_capital_asset.constraint_l10n_es_account_capital_asset_type_unique_period
+msgid "Capital Asset Type period must be unique"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_account_capital_asset.res_config_settings_view_form
+msgid "Capital Assets"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_set
+msgid "Capital asset set"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+msgid ""
+"Capital asset type must be the same as the one defined in the asset "
+"category."
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__company_id
+msgid "Company"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__create_uid
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__create_date
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__default_capital_asset_type_id
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__default_capital_asset_type_id
+msgid "Default Capital Asset Type"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__display_name
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__id
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+msgid ""
+"If Tax Base Amount is greater than %s, capital asset type must be defined."
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
+msgid ""
+"If Tax Base Amount is less than %s, this asset is not considered as a "
+"capital asset so capital asset type mustn't be defined"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,help:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_set
+msgid "Indicates that this profile is used for a set of capital assets."
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_account_move
+msgid "Journal Entry"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_account_move_line
+msgid "Journal Item"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_res_company__l10n_es_capital_asset_enabled
+msgid "L10n ES Capital Asset Enabled"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__write_uid
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__write_date
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,help:l10n_es_account_capital_asset.field_res_config_settings__capital_asset_threshold_amount
+msgid "Minimum amount to consider the asset as a capital asset"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__name
+msgid "Name"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:l10n.es.account.capital.asset.type,name:l10n_es_account_capital_asset.account_capital_asset_type_data_normal
+msgid "Normal"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_type__period
+msgid "Period (years)"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_capital_asset_type.py:0
+msgid "Period must be greater than 0."
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__tax_dest_id
+msgid "Replacement Tax"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model,name:l10n_es_account_capital_asset.model_account_tax
+msgid "Tax"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_l10n_es_account_capital_asset_map_tax__tax_src_id
+msgid "Tax Source"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#: model:l10n.es.account.capital.asset.type,name:l10n_es_account_capital_asset.account_capital_asset_type_data_land_or_buildings
+msgid "Terrenos o Edificaciones"
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_tax.py:0
+msgid ""
+"The asset of type '%(asset_type)s' has a unit amount %(unit_amount).2f€ "
+"greater than %(threshold).2f€, so it is considered a capital asset, but the "
+"selected taxes are not of a capital asset type. Please update the taxes "
+"accordingly or define the asset type as a set of assets."
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_tax.py:0
+msgid ""
+"The asset of type '%(asset_type)s' has a unit amount %(unit_amount).2f€ "
+"lower than %(threshold).2f€, so it is not considered a capital asset, but "
+"capital asset taxes are selected. Please update the taxes accordingly or "
+"define the asset type as a set of assets."
+msgstr ""
+
+#. module: l10n_es_account_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_move.py:0
+msgid ""
+"The asset profile '%(profile)s' requires a default capital asset type "
+"because the invoice line amount is equal to or greater than %(amount)s. "
+"Please configure the asset profile before posting the invoice."
+msgstr ""
+"El perfil d'actiu '%(profile)s' requereix un tipus de be d'inversio per "
+"defecte perque l'import de la linia de factura es igual o superior a "
+"%(amount)s. Configureu el perfil d'actiu abans de publicar la factura."
+
+#. module: l10n_es_account_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_account_capital_asset/models/account_capital_asset_type.py:0
+msgid "years"
+msgstr ""

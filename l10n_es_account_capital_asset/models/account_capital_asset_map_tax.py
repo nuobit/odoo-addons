@@ -1,5 +1,6 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -9,22 +10,26 @@ class AccountCapitalAssetMapTax(models.Model):
     _name = "l10n.es.account.capital.asset.map.tax"
     _description = "Capital Asset Map Tax"
 
+    company_id = fields.Many2one(
+        comodel_name="res.company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
     tax_src_id = fields.Many2one(
-        "account.tax.template", string="Tax Source", required=True
+        comodel_name="account.tax",
+        string="Tax Source",
+        required=True,
+        check_company=True,
     )
     tax_dest_id = fields.Many2one(
-        "account.tax.template", string="Replacement Tax", required=True
+        comodel_name="account.tax",
+        string="Replacement Tax",
+        required=True,
+        check_company=True,
     )
 
-    # TODO: Refactor to do this function more efficient or do it with ormcache
-    # @ormcache("tax_template", "company","tax_src_id","tax_dest_id")
-    def _get_taxes_mapping_from_tax_templates(self, company):
-        return {
-            company.get_taxes_from_templates(
-                x.tax_src_id
-            ): company.get_taxes_from_templates(x.tax_dest_id)
-            for x in self.search([])
-        }
+    def _get_taxes_mapping(self):
+        return {mapping.tax_src_id: mapping.tax_dest_id for mapping in self.search([])}
 
     @api.model
     def map_tax(self, taxes, company, asset_profile, amount, quantity):
@@ -47,8 +52,8 @@ class AccountCapitalAssetMapTax(models.Model):
         asset_price = amount
         result = taxes
         if asset_price >= float(threshold_capital_asset_amount):
-            tax_map = self._get_taxes_mapping_from_tax_templates(company)
+            tax_map = self._get_taxes_mapping()
             result = self.env["account.tax"]
             for tax in taxes:
-                result |= tax_map[tax._origin] if tax._origin in tax_map else tax
+                result |= tax_map.get(tax._origin, tax)
         return result
