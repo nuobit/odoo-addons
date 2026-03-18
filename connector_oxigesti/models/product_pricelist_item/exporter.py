@@ -2,7 +2,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-
 from odoo.addons.component.core import Component
 
 
@@ -32,18 +31,37 @@ class ProductPricelistItemBatchExporter(Component):
                 since_date = value
             else:
                 domain.append(e)
+
+        partner_ids = self.env["res.partner"].search(domain).ids
+        chunk_size = self.backend_record.chunk_size
+        if chunk_size <= 0:
+            chunk_size = len(partner_ids)
+        for index in range(0, len(partner_ids), chunk_size):
+            chunk_ids = partner_ids[index : index + chunk_size]
+            chunk_domain = [("id", "in", chunk_ids)]
+            self._export_chunk(chunk_domain, since_date=since_date)
+
+
+class ProductPricelistItemChunkExporter(Component):
+    _name = "oxigesti.product.pricelist.item.chunk.delayed.exporter"
+    _inherit = "oxigesti.chunk.delayed.exporter"
+
+    _apply_on = "oxigesti.product.pricelist.item"
+
+    def run(self, domain, since_date=None):
+        """Run the synchronization"""
         partner_adapter = self.component(
             usage="backend.adapter", model_name="oxigesti.res.partner"
         )
         partner_binder = self.binder_for("oxigesti.res.partner")
         binder = self.binder_for(self.model._name)
-        for p in self.env["res.partner"].search(domain):
+        for p in self.env["res.partner"].with_context(active_test=False).search(domain):
             partner_external_id = partner_binder.to_external(p, wrap=True)
             for pl in p.property_product_pricelist.item_ids.filtered(
                 lambda x: (
                     not since_date
-                    or x.write_date > since_date
-                    or p.write_date > since_date
+                    or x.oxigesti_write_date > since_date
+                    or p.oxigesti_pricelist_write_date > since_date
                 )
                 and p.customer_rank >= p.supplier_rank
                 and x.applied_on == "1_product"
@@ -68,11 +86,23 @@ class ProductPricelistItemBatchExporter(Component):
                         binding.odoo_id = pl
                 binding = binder.wrap_binding(
                     pl,
-                    binding_extra_vals={
-                        "odoo_partner_id": p.id,
-                    },
+                    binding_extra_vals={"odoo_partner_id": p.id},
                 )
+                binding.deprecated = binding.is_deprecated()
                 self._export_record(binding)
+            if not since_date or p.oxigesti_pricelist_write_date > since_date:
+                oxigesti_pricelist = (
+                    self.env["oxigesti.product.pricelist.item"]
+                    .search(
+                        [
+                            ("odoo_partner_id", "=", p.id),
+                        ]
+                    )
+                    .filtered(lambda x: x.is_deprecated() and not x.deprecated)
+                )
+                for pl in oxigesti_pricelist:
+                    pl.deprecated = True
+                    self._export_record(pl)
 
 
 class ProductPricelistItemExporter(Component):

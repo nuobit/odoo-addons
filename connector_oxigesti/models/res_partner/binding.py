@@ -14,6 +14,25 @@ class ResPartner(models.Model):
         string="Oxigesti Bindings",
     )
 
+    @api.model
+    def _get_dependent_fields_oxigesti_pricelist_write_date(self):
+        return {"property_product_pricelist", "active"}
+
+    oxigesti_pricelist_write_date = fields.Datetime(
+        default=fields.Datetime.now,
+        required=True,
+    )
+
+    def write(self, vals):
+        if self._get_dependent_fields_oxigesti_pricelist_write_date() & set(
+            vals.keys()
+        ):
+            for field in self._get_dependent_fields_oxigesti_pricelist_write_date():
+                if field in vals and vals[field] != self[field]:
+                    vals["oxigesti_pricelist_write_date"] = fields.Datetime.now()
+                    break
+        return super().write(vals)
+
 
 class ResPartnerBinding(models.Model):
     _name = "oxigesti.res.partner"
