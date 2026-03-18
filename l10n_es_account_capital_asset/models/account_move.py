@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -20,16 +21,18 @@ class AccountMove(models.Model):
                 )
             )
             if aml.balance >= threshold_amount:
-                capital_asset_type = aml.asset_profile_id.capital_asset_type_id
+                capital_asset_type = aml.asset_profile_id.default_capital_asset_type_id
                 if not capital_asset_type:
                     raise UserError(
                         _(
-                            "The asset profile '%s' requires a default capital asset "
-                            "type because the invoice line amount is equal to or "
-                            "greater than %s. Please configure the asset profile "
-                            "before posting the invoice."
+                            "The asset profile '%(profile)s' requires a default "
+                            "capital asset type because the invoice line amount "
+                            "is equal to or greater than %(amount)s. Please "
+                            "configure the asset profile before posting the "
+                            "invoice.",
+                            profile=aml.asset_profile_id.display_name,
+                            amount=threshold_amount,
                         )
-                        % (aml.asset_profile_id.display_name, threshold_amount)
                     )
-                vals["capital_asset_type_id"] = capital_asset_type
+                vals["capital_asset_type_id"] = capital_asset_type.id
         return vals

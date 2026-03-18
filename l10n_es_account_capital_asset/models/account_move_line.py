@@ -1,5 +1,6 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -9,40 +10,38 @@ from odoo import api, models
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
-    @api.onchange("product_id")
-    def _onchange_product_id(self):
-        super()._onchange_product_id()
+    @api.onchange(
+        "product_id",
+        "product_uom_id",
+        "account_id",
+        "tax_ids",
+        "asset_profile_id",
+        "price_subtotal",
+        "quantity",
+    )
+    def _onchange_recompute_mapped_taxes(self):
         self.compute_mapped_taxes()
 
-    @api.onchange("product_uom_id")
-    def _onchange_uom_id(self):
-        super()._onchange_uom_id()
+    def _compute_tax_ids(self):
+        res = super()._compute_tax_ids()
         self.compute_mapped_taxes()
+        return res
 
-    @api.onchange("account_id")
-    def _onchange_account_id(self):
-        super()._onchange_uom_id()
+    def _inverse_account_id(self):
+        res = super()._inverse_account_id()
         self.compute_mapped_taxes()
-
-    @api.onchange("tax_ids")
-    def _onchange_tax_ids(self):
-        self.compute_mapped_taxes()
-
-    @api.onchange("asset_profile_id")
-    def _onchange_asset_profile_id(self):
-        super()._onchange_asset_profile_id()
-        self.compute_mapped_taxes()
-
-    @api.onchange("price_subtotal", "quantity")
-    def _onchange_subtotal_quantity_id(self):
-        self.compute_mapped_taxes()
+        return res
 
     def compute_mapped_taxes(self):
-        if self.tax_ids:
-            self.tax_ids = self.env["l10n.es.account.capital.asset.map.tax"].map_tax(
-                self.tax_ids,
-                self.company_id,
-                self.asset_profile_id,
-                self.balance,
-                self.quantity,
-            )
+        for line in self:
+            if line.tax_ids:
+                line.tax_ids = line.env[
+                    "l10n.es.account.capital.asset.map.tax"
+                ].map_tax(
+                    line.tax_ids,
+                    line.company_id,
+                    line.asset_profile_id,
+                    line.balance,
+                    line.quantity,
+                )
+        return self

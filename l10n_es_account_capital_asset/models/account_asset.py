@@ -1,26 +1,23 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-from odoo.addons.account_asset_management.models.account_asset import READONLY_STATES
-
 
 class AccountAsset(models.Model):
     _inherit = "account.asset"
 
-    # TODO: rename to default_capital_asset_type_id
-    profile_capital_asset_type_id = fields.Many2one(
+    default_capital_asset_type_id = fields.Many2one(
         string="Default Capital Asset Type",
-        related="profile_id.capital_asset_type_id",
+        related="profile_id.default_capital_asset_type_id",
     )
     capital_asset_type_id = fields.Many2one(
         comodel_name="l10n.es.account.capital.asset.type",
         ondelete="restrict",
-        states=READONLY_STATES,
-        domain="[('id', '=', profile_capital_asset_type_id)]",
+        domain="[('id', '=', default_capital_asset_type_id)]",
     )
 
     @api.constrains("capital_asset_type_id", "company_id", "tax_base_amount")
@@ -63,13 +60,14 @@ class AccountAsset(models.Model):
         ):
             return
         for rec in self:
-            self.tax_ids.check_tax_base_amount(rec)
+            rec.tax_ids.check_tax_base_amount(rec)
 
     @api.constrains("profile_id", "capital_asset_type_id")
     def _check_capital_asset_type_integrity(self):
         if (
             self.capital_asset_type_id
-            and self.profile_id.capital_asset_type_id != self.capital_asset_type_id
+            and self.profile_id.default_capital_asset_type_id
+            != self.capital_asset_type_id
         ):
             raise ValidationError(
                 _(

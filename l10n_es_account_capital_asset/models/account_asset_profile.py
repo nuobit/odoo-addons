@@ -1,5 +1,6 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -9,8 +10,7 @@ from odoo.exceptions import ValidationError
 class AccountAssetProfile(models.Model):
     _inherit = "account.asset.profile"
 
-    # TODO: rename to default_capital_asset_type_id
-    capital_asset_type_id = fields.Many2one(
+    default_capital_asset_type_id = fields.Many2one(
         string="Default Capital Asset Type",
         comodel_name="l10n.es.account.capital.asset.type",
         ondelete="restrict",

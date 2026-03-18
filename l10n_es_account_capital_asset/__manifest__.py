@@ -1,13 +1,14 @@
-# Copyright NuoBiT - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Account Capital Asset",
     "summary": "This module adds mapping for capital assets taxes, capital assets"
     " category types and threshold amount on res_config",
-    "version": "14.0.1.0.7",
+    "version": "18.0.1.0.1",
     "category": "Accounting",
-    "author": "NuoBiT Solutions, S.L.",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": [
@@ -15,6 +16,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "security/l10n_es_account_capital_asset_map_tax_security.xml",
         "data/account_capital_asset_type_data.xml",
         "data/ir_config_parameter.xml",
         "views/account_asset.xml",

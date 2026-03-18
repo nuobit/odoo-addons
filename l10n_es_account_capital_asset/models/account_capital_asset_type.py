@@ -1,4 +1,5 @@
-# Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -9,7 +10,7 @@ class CapitalAssetType(models.Model):
     _name = "l10n.es.account.capital.asset.type"
     _description = "Capital Asset Type"
 
-    name = fields.Char(string="Name", required=True, translate=True)
+    name = fields.Char(required=True, translate=True)
     period = fields.Integer(string="Period (years)", required=True)
 
     _sql_constraints = [
@@ -25,8 +26,10 @@ class CapitalAssetType(models.Model):
         ),
     ]
 
-    def name_get(self):
-        return [(rec.id, "%s (%i years)" % (rec.name, rec.period)) for rec in self]
+    @api.depends("name", "period")
+    def _compute_display_name(self):
+        for rec in self:
+            rec.display_name = f"{rec.name} ({rec.period} {_('years')})"
 
     @api.constrains("period")
     def _check_period(self):

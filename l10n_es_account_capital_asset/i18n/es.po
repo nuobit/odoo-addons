@@ -16,8 +16,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_es_account_capital_asset
-#: model:ir.actions.act_window,name:l10n_es_account_capital_asset.account_capital_asset_action
-#: model:ir.ui.menu,name:l10n_es_account_capital_asset.account_tax_map_amount
+#: model:ir.actions.act_window,name:l10n_es_account_capital_asset.l10n_es_account_capital_asset_map_tax_action
+#: model:ir.ui.menu,name:l10n_es_account_capital_asset.l10n_es_account_capital_asset_map_tax_menu
 msgid "Account Capital Asset Tax Map"
 msgstr "Bienes de inversión - Mapeo de impuestos"
 
@@ -28,8 +28,14 @@ msgstr "Bien de inversión"
 
 #. module: l10n_es_account_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_res_company__l10n_es_capital_asset_enabled
-msgid "L10n ES - Capital Asset Enabled"
+msgid "L10n ES Capital Asset Enabled"
 msgstr "L10n ES - Bienes de inversión activados"
+
+#. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_capital_asset_type.py:0
+#, python-format
+msgid "years"
+msgstr "años"
 
 #. module: l10n_es_account_capital_asset
 #: model:ir.actions.act_window,name:l10n_es_account_capital_asset.capital_asset_type_action
@@ -60,8 +66,8 @@ msgstr "Un perfil para un conjunto de bienes de inversión no es compatible "
 "Por favor, seleccione solo uno de ellos."
 
 #. module: l10n_es_account_capital_asset
-#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__capital_asset_type_id
-#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__profile_capital_asset_type_id
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset_profile__default_capital_asset_type_id
+#: model:ir.model.fields,field_description:l10n_es_account_capital_asset.field_account_asset__default_capital_asset_type_id
 msgid "Default Capital Asset Type"
 msgstr "Tipo de bien de inversión por defecto"
 
@@ -69,12 +75,14 @@ msgstr "Tipo de bien de inversión por defecto"
 #: code:addons/l10n_es_account_capital_asset/models/account_move.py:0
 #, python-format
 msgid ""
-"The asset profile '%s' requires a default capital asset type because the "
-"invoice line amount is equal to or greater than %s. Please configure the "
+"The asset profile '%(profile)s' requires a default capital asset type "
+"because the invoice line amount is equal to or greater than %(amount)s. "
+"Please configure the "
 "asset profile before posting the invoice."
 msgstr ""
-"El perfil de activo '%s' requiere un tipo de bien de inversión por defecto "
-"porque el importe de la línea de factura es igual o superior a %s. Configure "
+"El perfil de activo '%(profile)s' requiere un tipo de bien de inversión "
+"por defecto porque el importe de la línea de factura es igual o superior a "
+"%(amount)s. Configure "
 "el perfil de activo antes de publicar la factura."
 
 #. module: l10n_es_account_capital_asset
