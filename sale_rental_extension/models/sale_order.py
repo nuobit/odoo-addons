@@ -211,6 +211,7 @@ class SaleOrderLine(models.Model):
                 ):
                     moves_to_update |= rental.in_move_id
                 if moves_to_update:
+                    moves_to_update.move_line_ids.write({"qty_done": 0})
                     moves_to_update.write({"product_uom_qty": line.rental_qty})
 
         return res
