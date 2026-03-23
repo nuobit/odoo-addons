@@ -137,4 +137,13 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    rental_qty = fields.Float(default=1.0)
+    @api.onchange("product_id", "rental_qty")
+    def rental_product_id_change(self):
+        res = super().rental_product_id_change()
+        if (
+            self.product_id.rented_product_id
+            and self.rental_type == "new_rental"
+            and not self.rental_qty
+        ):
+            self.rental_qty = 1
+        return res
