@@ -12,7 +12,7 @@
                 <field name="is_signed" invisible="1" />
                 <field name="rental_require_signature_validation" invisible="1" />
             </field>
-            <!-- Hide Validate (highlighted) when rental + require signature -->
+            <!-- Hide Validate (highlighted) when rental outgoing + require signature -->
             <xpath
                 expr="//button[@name='button_validate'][hasclass('oe_highlight')]"
                 position="attributes"
@@ -22,13 +22,14 @@
                         '|', '|',
                         ('state', 'in', ('waiting', 'confirmed')),
                         ('show_validate', '=', False),
-                        '&amp;',
+                        '&amp;', '&amp;',
                         ('is_rental_picking', '=', True),
                         ('rental_require_signature_validation', '=', True),
+                        ('picking_type_code', '=', 'outgoing'),
                     ],
                 }</attribute>
             </xpath>
-            <!-- Hide Validate (non-highlighted) when rental + require signature -->
+            <!-- Hide Validate (non-highlighted) when rental outgoing + require signature -->
             <xpath
                 expr="//button[@name='button_validate'][hasclass('o_btn_validate')]"
                 position="attributes"
@@ -38,9 +39,10 @@
                         '|', '|',
                         ('state', 'not in', ('waiting', 'confirmed')),
                         ('show_validate', '=', False),
-                        '&amp;',
+                        '&amp;', '&amp;',
                         ('is_rental_picking', '=', True),
                         ('rental_require_signature_validation', '=', True),
+                        ('picking_type_code', '=', 'outgoing'),
                     ],
                 }</attribute>
             </xpath>
