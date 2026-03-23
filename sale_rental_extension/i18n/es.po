@@ -928,6 +928,28 @@ msgid "Return Picking"
 msgstr "Albarán de retorno"
 
 #. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_res_company__rental_require_signature_validation
+#: model:ir.model.fields,field_description:sale_rental_extension.field_res_config_settings__rental_require_signature_validation
+#: model:ir.model.fields,field_description:sale_rental_extension.field_stock_picking__rental_require_signature_validation
+msgid "Rental Require Signature Validation"
+msgstr "Requerir firma para validar alquiler"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.res_config_settings_view_form
+msgid "Require Signature to Validate Delivery"
+msgstr "Requerir firma para validar la entrega"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.res_config_settings_view_form
+msgid "When enabled, rental delivery orders can only be validated by signing. The Validate button is replaced by the Sign button."
+msgstr "Si se activa, las entregas de alquiler solo se pueden validar con firma. El botón Validar se sustituye por el botón Firmar."
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.view_picking_form
+msgid "Sign"
+msgstr "Firmar"
+
+#. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.rental_order_view_search
 msgid "Salesperson"
 msgstr "Comercial"

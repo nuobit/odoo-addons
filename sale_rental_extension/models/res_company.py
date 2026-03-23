@@ -7,6 +7,8 @@ from odoo import fields, models
 class ResCompany(models.Model):
     _inherit = "res.company"
 
+    rental_require_signature_validation = fields.Boolean()
+
     rental_signature_terms = fields.Html(
         translate=True,
     )

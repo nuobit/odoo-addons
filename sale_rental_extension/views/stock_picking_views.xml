@@ -9,7 +9,98 @@
         <field name="arch" type="xml">
             <field name="origin" position="after">
                 <field name="is_rental_picking" invisible="1" />
+                <field name="is_signed" invisible="1" />
+                <field name="rental_require_signature_validation" invisible="1" />
             </field>
+            <!-- Hide Validate (highlighted) when rental + require signature -->
+            <xpath
+                expr="//button[@name='button_validate'][hasclass('oe_highlight')]"
+                position="attributes"
+            >
+                <attribute name="attrs">{
+                    'invisible': [
+                        '|', '|',
+                        ('state', 'in', ('waiting', 'confirmed')),
+                        ('show_validate', '=', False),
+                        '&amp;',
+                        ('is_rental_picking', '=', True),
+                        ('rental_require_signature_validation', '=', True),
+                    ],
+                }</attribute>
+            </xpath>
+            <!-- Hide Validate (non-highlighted) when rental + require signature -->
+            <xpath
+                expr="//button[@name='button_validate'][hasclass('o_btn_validate')]"
+                position="attributes"
+            >
+                <attribute name="attrs">{
+                    'invisible': [
+                        '|', '|',
+                        ('state', 'not in', ('waiting', 'confirmed')),
+                        ('show_validate', '=', False),
+                        '&amp;',
+                        ('is_rental_picking', '=', True),
+                        ('rental_require_signature_validation', '=', True),
+                    ],
+                }</attribute>
+            </xpath>
+            <!-- Hide Sign (highlighted, state=done) when rental + require signature + already signed -->
+            <xpath expr="//widget[@name='signature'][@highlight]" position="attributes">
+                <attribute name="attrs">{
+                    'invisible': [
+                        '|', '|', '|',
+                        ('id', '=', False),
+                        ('picking_type_code', '!=', 'outgoing'),
+                        ('state', '!=', 'done'),
+                        '&amp;', '&amp;',
+                        ('is_rental_picking', '=', True),
+                        ('rental_require_signature_validation', '=', True),
+                        ('is_signed', '=', True),
+                    ],
+                }</attribute>
+            </xpath>
+            <!-- Hide Sign (non-highlighted, state!=done) when rental + require signature -->
+            <xpath
+                expr="//widget[@name='signature'][not(@highlight)]"
+                position="attributes"
+            >
+                <attribute name="attrs">{
+                    'invisible': [
+                        '|', '|', '|',
+                        ('id', '=', False),
+                        ('picking_type_code', '!=', 'outgoing'),
+                        ('state', '=', 'done'),
+                        '&amp;',
+                        ('is_rental_picking', '=', True),
+                        ('rental_require_signature_validation', '=', True),
+                    ],
+                }</attribute>
+            </xpath>
+            <!-- Add new highlighted Sign widget for rental auto-validate
+                 (placed before Validate so it takes its position when Validate is hidden) -->
+            <xpath
+                expr="//button[@name='button_validate'][hasclass('oe_highlight')]"
+                position="before"
+            >
+                <widget
+                    name="signature"
+                    string="Sign"
+                    highlight="1"
+                    attrs="{
+                        'invisible': [
+                            '|', '|', '|', '|', '|',
+                            ('id', '=', False),
+                            ('picking_type_code', '!=', 'outgoing'),
+                            ('state', '=', 'done'),
+                            ('is_rental_picking', '=', False),
+                            ('rental_require_signature_validation', '=', False),
+                            ('show_validate', '=', False),
+                        ],
+                    }"
+                    full_name="partner_id"
+                    groups="stock.group_stock_sign_delivery"
+                />
+            </xpath>
         </field>
     </record>
 </odoo>
