@@ -707,6 +707,12 @@ msgid "Rental Signature Terms"
 msgstr "Condiciones de firma de alquiler"
 
 #. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.report_delivery_document_rental_signature_terms
+msgid "Conditions"
+msgstr "Condiciones"
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.report_delivery_document_rental_signature_terms
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.res_config_settings_view_form
 msgid "Signature"
 msgstr "Firma"

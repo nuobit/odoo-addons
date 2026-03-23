@@ -5,7 +5,7 @@
     "name": "Sale Rental Extension",
     "summary": "Dedicated rental views, rental status tracking,"
     " kanban, calendar, configurable signature terms and translations.",
-    "version": "16.0.1.3.0",
+    "version": "16.0.1.4.0",
     "development_status": "Alpha",
     "category": "Rental",
     "author": "NuoBiT Solutions SL",
@@ -15,6 +15,7 @@
         "sale_rental",
     ],
     "data": [
+        "report/report_deliveryslip.xml",
         "views/sale_order_rental_views.xml",
         "views/res_config_settings_views.xml",
         "views/sale_rental_views.xml",
