@@ -22,7 +22,7 @@ Web Report Styling
 
 |badge1| |badge2| |badge3|
 
-- Custom styles for reports in the web module.
+Custom styles for reports in the web module.
 
 **Table of contents**
 
@@ -45,15 +45,15 @@ Credits
 Authors
 -------
 
-* NuoBiT Solutions
-* S.L.
+* NuoBiT Solutions SL
 
 Contributors
 ------------
 
-- ``NuoBiT <https://www.nuobit.com>``\ \_:
+- `NuoBiT <https://www.nuobit.com>`__:
 
   - Bijaya Kumal bkumal@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------
