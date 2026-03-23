@@ -4,10 +4,10 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <template id="report_picking" inherit_id="stock.report_picking">
-        <xpath expr="//t[@t-as='ml']" position="attributes">
-            <attribute name="t-foreach">
-                move.move_line_ids.location_sorted()
-            </attribute>
+        <xpath expr="//tr[@t-as='ml']" position="attributes">
+            <attribute
+                name="t-foreach"
+            >o.move_line_ids_without_package.location_sorted()</attribute>
         </xpath>
     </template>
 </odoo>
