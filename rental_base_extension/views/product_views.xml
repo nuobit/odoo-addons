@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- Hide 'Can be Rented' checkbox on service products -->
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.rental_base_extension</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="rental_base.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//div[@name='options']/div[field[@name='rental']]"
+                position="attributes"
+            >
+                <attribute name="attrs">
+                    {'invisible': [('type', '=', 'service')]}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- product.product: reorganize rental fields into a Rentals section -->
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.rental_base_extension</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="sale_rental.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <!-- Hide original rental elements in the sale group -->
+            <label for="rented_product_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="rented_product_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <label for="rental_service_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="rental_service_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <button
+                name="%(sale_rental.create_rental_product_action)d"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </button>
+            <!-- Add new Rental/Rentals sections -->
+            <group name="sale" position="after">
+                <group
+                    name="rental_service"
+                    string="Rental"
+                    attrs="{'invisible': ['|', ('type', '!=', 'service'), ('rental', '!=', False)]}"
+                >
+                    <field name="rented_product_id" />
+                </group>
+                <group
+                    name="rental"
+                    string="Rentals"
+                    attrs="{'invisible': [('type', '=', 'service')]}"
+                >
+                    <field name="rental_service_ids" nolabel="1" colspan="2" />
+                    <button
+                        type="action"
+                        name="%(sale_rental.create_rental_product_action)d"
+                        string="Create Rental Service"
+                    />
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <!-- product.template: reorganize rental fields into a Rentals section -->
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field
+            name="name"
+        >product.template.only.form.inherit.rental_base_extension</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="sale_rental.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <!-- Hide original rental elements in the sale group -->
+            <label for="rented_product_tmpl_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="rented_product_tmpl_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <label for="rental_service_tmpl_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="rental_service_tmpl_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <button
+                name="%(sale_rental.create_rental_product_action)d"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </button>
+            <!-- Add new Rental/Rentals sections -->
+            <group name="sale" position="after">
+                <group
+                    name="rental_service"
+                    string="Rental"
+                    attrs="{'invisible': ['|', ('type', '!=', 'service'), ('rental', '!=', False)]}"
+                >
+                    <field name="rented_product_tmpl_id" />
+                </group>
+                <group
+                    name="rental"
+                    string="Rentals"
+                    attrs="{'invisible': ['|', ('type', '=', 'service'), ('product_variant_count', '&gt;', 1)]}"
+                >
+                    <field name="rental_service_tmpl_ids" nolabel="1" colspan="2" />
+                    <button
+                        type="action"
+                        name="%(sale_rental.create_rental_product_action)d"
+                        string="Create Rental Service"
+                    />
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<templates xml:space="preserve">
+
+    <t
+        t-name="sale_rental_extension.SignatureDialog"
+        t-inherit="web.SignatureDialog"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//div[hasclass('mt16')]" position="replace">
+            <div
+                t-if="props.rentalTerms"
+                class="mt16 small"
+                t-out="props.rentalTerms"
+            />
+            <div
+                t-else=""
+                class="mt16 small"
+            >By clicking Adopt &amp; Sign, I agree that the chosen signature/initials will be a valid electronic representation of my hand-written signature/initials for all purposes when it is used on documents, including legally binding contracts.</div>
+        </xpath>
+        <xpath expr="//button[hasclass('btn-primary')]" position="replace">
+            <button
+                t-if="props.isRental"
+                class="btn btn-primary"
+                t-att-disabled="signature.isSignatureEmpty"
+                t-on-click="onClickConfirm"
+            >Confirm &amp; Sign</button>
+            <button
+                t-else=""
+                class="btn btn-primary"
+                t-att-disabled="signature.isSignatureEmpty"
+                t-on-click="onClickConfirm"
+            >Adopt &amp; Sign</button>
+        </xpath>
+    </t>
+
+</templates>
