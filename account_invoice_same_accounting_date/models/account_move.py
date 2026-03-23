@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models
@@ -8,7 +8,7 @@ from odoo import models
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    def _get_accounting_date(self, invoice_date, has_tax):
+    def _get_accounting_date(self, invoice_date, has_tax, lock_dates=None):
         # For purchase documents, we want the same behavior as sale documents
         # in super: apply the tax lock date check and return invoice_date
         # (instead of max(invoice_date, today) which is the purchase default).
@@ -20,7 +20,7 @@ class AccountMove(models.Model):
         # only and does not affect any other use of is_sale_document().
         if self.is_purchase_document(include_receipts=True) and invoice_date:
             self = self.with_context(_force_invoice_accounting_date=True)
-        return super(AccountMove, self)._get_accounting_date(invoice_date, has_tax)
+        return super()._get_accounting_date(invoice_date, has_tax, lock_dates=lock_dates)
 
     def is_sale_document(self, include_receipts=False):
         if self._context.get("_force_invoice_accounting_date"):
