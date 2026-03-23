@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="report_delivery_document_rental_signature_terms"
+        inherit_id="stock.report_delivery_document"
+    >
+        <xpath expr="//div[@name='signature']" position="attributes">
+            <attribute
+                name="t-if"
+            >o.signature and not (o.is_rental_picking and o.company_id.rental_signature_terms)</attribute>
+        </xpath>
+        <xpath expr="//div[@name='signature']" position="after">
+            <div
+                t-if="o.signature and o.is_rental_picking and o.company_id.rental_signature_terms"
+                class="mt32"
+            >
+                <div class="row">
+                    <div class="col-8">
+                        <strong>Conditions</strong>
+                        <div
+                            class="small mt4"
+                            t-out="o.company_id.rental_signature_terms"
+                        />
+                    </div>
+                    <div class="col-4 text-center">
+                        <strong>Signature</strong>
+                        <div>
+                            <img
+                                t-att-src="image_data_uri(o.signature)"
+                                style="max-height: 4cm; max-width: 8cm;"
+                            />
+                        </div>
+                        <p t-field="o.partner_id.name" />
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

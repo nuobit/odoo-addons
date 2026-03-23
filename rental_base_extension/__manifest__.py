@@ -3,9 +3,9 @@
 
 {
     "name": "Rental Base Extension",
-    "summary": "Improves rental product form with checkbox visibility,"
-    " rental sections and translations.",
-    "version": "16.0.1.0.0",
+    "summary": "Dedicated rental views, rental status tracking,"
+    " kanban, calendar, configurable signature terms and translations.",
+    "version": "16.0.2.0.0",
     "development_status": "Alpha",
     "category": "Rental",
     "author": "NuoBiT Solutions SL",
@@ -15,6 +15,17 @@
         "rental_base",
     ],
     "data": [
+        "report/report_deliveryslip.xml",
         "views/product_views.xml",
+        "views/sale_order_views.xml",
+        "views/res_config_settings_views.xml",
+        "views/stock_picking_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "rental_base_extension/static/src/js/signature_widget.js",
+            "rental_base_extension/static/src/scss/rental_kanban.scss",
+            "rental_base_extension/static/src/xml/signature_dialog.xml",
+        ],
+    },
 }
