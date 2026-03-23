@@ -375,21 +375,38 @@ ul.auto-toc {
 !! source digest: sha256:09ab96bf14c0b83294c077459048e953907a79975688866d7ca219537c451e41
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Alpha" src="https://img.shields.io/badge/maturity-Alpha-red.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/license-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/nuobit/odoo-addons/tree/16.0/rental_base_extension"><img alt="nuobit/odoo-addons" src="https://img.shields.io/badge/github-nuobit%2Fodoo--addons-lightgray.png?logo=github" /></a></p>
-<p>This module extends <tt class="docutils literal">rental_base</tt> to improve the rental order experience
-with better menu visibility and product filtering.</p>
+<p>This module extends <tt class="docutils literal">rental_base</tt> to provide a complete rental order
+management experience.</p>
+<div class="section" id="dedicated-rental-views">
+<h2>Dedicated rental views</h2>
+<p>Replaces the default sale order views with dedicated rental-specific views:
+form, tree, kanban, calendar and search. The form view hides non-rental fields
+and adds rental period, duration and status badges. Actions set the rental sale
+type by default.</p>
+</div>
+<div class="section" id="rental-status-tracking">
+<h2>Rental status tracking</h2>
+<p>Adds computed <tt class="docutils literal">rental_status</tt> on sale orders based on the state of the
+underlying <tt class="docutils literal">sale.rental</tt> records: draft, pickup, return, returned and cancel.
+A “late” indicator warns when the next action date has passed.</p>
+</div>
 <div class="section" id="rental-positions-menu">
 <h2>Rental Positions menu</h2>
-<p>The <tt class="docutils literal">rental_base</tt> module places the Rental Positions screen (the <tt class="docutils literal">sale.rental</tt>
-list) under Configuration and restricts it to debug mode. This module moves it
-to the top level of the Rentals menu as the first entry, visible to all sales
-users, since it is the primary screen for tracking rental status.</p>
+<p>The <tt class="docutils literal">rental_base</tt> module places the Rental Positions screen under
+Configuration and restricts it to debug mode. This module moves it to the
+top level of the Rentals menu as the first entry, visible to all sales users.</p>
 </div>
 <div class="section" id="product-filter-on-rental-order-lines">
 <h2>Product filter on rental order lines</h2>
-<p>When creating a rental order, the product dropdown on order lines only shows
-rental service products (i.e. products linked to a rented physical product
-via <tt class="docutils literal">rented_product_id</tt>). This prevents users from accidentally selecting
-non-rental products on rental orders.</p>
+<p>When creating a rental order, the product dropdown only shows rental service
+products, preventing users from accidentally selecting non-rental products.</p>
+</div>
+<div class="section" id="signature-and-delivery">
+<h2>Signature and delivery</h2>
+<p>Configurable signature terms for rental delivery orders (Settings → Rental →
+Signature). When enabled, the Validate button is replaced by a Sign button
+that auto-validates on signature. The signed conditions appear on the delivery
+slip PDF.</p>
 </div>
 <div class="section" id="catalan-and-spanish-translations">
 <h2>Catalan and Spanish translations</h2>

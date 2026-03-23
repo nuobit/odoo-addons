@@ -4,7 +4,7 @@
 <templates xml:space="preserve">
 
     <t
-        t-name="sale_rental_extension.SignatureDialog"
+        t-name="rental_base_extension.SignatureDialog"
         t-inherit="web.SignatureDialog"
         t-inherit-mode="extension"
         owl="1"

@@ -6,7 +6,7 @@ import {SignatureDialog} from "@web/core/signature/signature_dialog";
 import {SignatureWidget} from "@web/views/widgets/signature/signature";
 import {patch} from "web.utils";
 
-patch(SignatureWidget.prototype, "sale_rental_extension.SignatureWidget", {
+patch(SignatureWidget.prototype, "rental_base_extension.SignatureWidget", {
     async onClickSignature() {
         const {record} = this.props;
         const isRental =
@@ -56,7 +56,7 @@ patch(SignatureWidget.prototype, "sale_rental_extension.SignatureWidget", {
     },
 });
 
-patch(SignatureDialog.prototype, "sale_rental_extension.SignatureDialog", {
+patch(SignatureDialog.prototype, "rental_base_extension.SignatureDialog", {
     setup() {
         this._super(...arguments);
         if (this.props.isRental) {

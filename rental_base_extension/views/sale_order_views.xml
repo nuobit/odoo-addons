@@ -25,8 +25,8 @@
     <!-- ============================================================ -->
     <!-- Dedicated Rental Form View (mode=primary)                    -->
     <!-- ============================================================ -->
-    <record id="rental_order_form_view" model="ir.ui.view">
-        <field name="name">sale.order.form.rental</field>
+    <record id="sale_order_view_form_rental" model="ir.ui.view">
+        <field name="name">sale.order.view.form.rental</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="mode">primary</field>
@@ -197,8 +197,8 @@
     <!-- ============================================================ -->
     <!-- Dedicated Rental Tree View                                   -->
     <!-- ============================================================ -->
-    <record id="rental_order_view_tree" model="ir.ui.view">
-        <field name="name">sale.order.tree.rental</field>
+    <record id="sale_order_view_tree_rental" model="ir.ui.view">
+        <field name="name">sale.order.view.tree.rental</field>
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <tree decoration-muted="rental_status == 'cancel'">
@@ -232,8 +232,8 @@
     <!-- ============================================================ -->
     <!-- Dedicated Rental Kanban View                                 -->
     <!-- ============================================================ -->
-    <record id="rental_order_view_kanban" model="ir.ui.view">
-        <field name="name">sale.order.kanban.rental</field>
+    <record id="sale_order_view_kanban_rental" model="ir.ui.view">
+        <field name="name">sale.order.view.kanban.rental</field>
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <kanban quick_create="false" class="o_kanban_mobile align-content-start">
@@ -334,8 +334,8 @@
     <!-- ============================================================ -->
     <!-- Dedicated Rental Calendar View                               -->
     <!-- ============================================================ -->
-    <record id="rental_order_view_calendar" model="ir.ui.view">
-        <field name="name">sale.order.calendar.rental</field>
+    <record id="sale_order_view_calendar_rental" model="ir.ui.view">
+        <field name="name">sale.order.view.calendar.rental</field>
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <calendar
@@ -357,8 +357,8 @@
     <!-- ============================================================ -->
     <!-- Dedicated Rental Search View                                 -->
     <!-- ============================================================ -->
-    <record id="rental_order_view_search" model="ir.ui.view">
-        <field name="name">sale.order.search.rental</field>
+    <record id="sale_order_view_search_rental" model="ir.ui.view">
+        <field name="name">sale.order.view.search.rental</field>
         <field name="model">sale.order</field>
         <field name="priority">100</field>
         <field name="arch" type="xml">
@@ -456,11 +456,11 @@
     <!-- ============================================================ -->
     <!-- Actions                                                      -->
     <!-- ============================================================ -->
-    <record id="rental_order_action" model="ir.actions.act_window">
+    <record id="sale_order_action_rental" model="ir.actions.act_window">
         <field name="name">Rental Orders</field>
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
-        <field name="search_view_id" ref="rental_order_view_search" />
+        <field name="search_view_id" ref="sale_order_view_search_rental" />
         <field
             name="context"
             eval="{
@@ -475,38 +475,44 @@
             </p>
         </field>
     </record>
-    <record id="rental_order_action_view_kanban" model="ir.actions.act_window.view">
+    <record
+        id="sale_order_action_rental_view_kanban"
+        model="ir.actions.act_window.view"
+    >
         <field name="sequence">1</field>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="rental_order_view_kanban" />
-        <field name="act_window_id" ref="rental_order_action" />
+        <field name="view_id" ref="sale_order_view_kanban_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental" />
     </record>
-    <record id="rental_order_action_view_tree" model="ir.actions.act_window.view">
+    <record id="sale_order_action_rental_view_tree" model="ir.actions.act_window.view">
         <field name="sequence">2</field>
         <field name="view_mode">tree</field>
-        <field name="view_id" ref="rental_order_view_tree" />
-        <field name="act_window_id" ref="rental_order_action" />
+        <field name="view_id" ref="sale_order_view_tree_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental" />
     </record>
-    <record id="rental_order_action_view_form" model="ir.actions.act_window.view">
+    <record id="sale_order_action_rental_view_form" model="ir.actions.act_window.view">
         <field name="sequence">3</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="rental_order_form_view" />
-        <field name="act_window_id" ref="rental_order_action" />
+        <field name="view_id" ref="sale_order_view_form_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental" />
     </record>
-    <record id="rental_order_action_view_calendar" model="ir.actions.act_window.view">
+    <record
+        id="sale_order_action_rental_view_calendar"
+        model="ir.actions.act_window.view"
+    >
         <field name="sequence">4</field>
         <field name="view_mode">calendar</field>
-        <field name="view_id" ref="rental_order_view_calendar" />
-        <field name="act_window_id" ref="rental_order_action" />
+        <field name="view_id" ref="sale_order_view_calendar_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental" />
     </record>
 
     <!-- Today: Pickups -->
-    <record id="rental_order_today_pickup_action" model="ir.actions.act_window">
+    <record id="sale_order_action_rental_today_pickup" model="ir.actions.act_window">
         <field name="name">Pickups Today</field>
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('is_rental_order', '=', True)]</field>
-        <field name="search_view_id" ref="rental_order_view_search" />
+        <field name="search_view_id" ref="sale_order_view_search_rental" />
         <field
             name="context"
             eval="{
@@ -518,40 +524,40 @@
         />
     </record>
     <record
-        id="rental_order_today_pickup_action_view_tree"
+        id="sale_order_action_rental_today_pickup_view_tree"
         model="ir.actions.act_window.view"
     >
         <field name="sequence">1</field>
         <field name="view_mode">tree</field>
-        <field name="view_id" ref="rental_order_view_tree" />
-        <field name="act_window_id" ref="rental_order_today_pickup_action" />
+        <field name="view_id" ref="sale_order_view_tree_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental_today_pickup" />
     </record>
     <record
-        id="rental_order_today_pickup_action_view_kanban"
+        id="sale_order_action_rental_today_pickup_view_kanban"
         model="ir.actions.act_window.view"
     >
         <field name="sequence">2</field>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="rental_order_view_kanban" />
-        <field name="act_window_id" ref="rental_order_today_pickup_action" />
+        <field name="view_id" ref="sale_order_view_kanban_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental_today_pickup" />
     </record>
     <record
-        id="rental_order_today_pickup_action_view_form"
+        id="sale_order_action_rental_today_pickup_view_form"
         model="ir.actions.act_window.view"
     >
         <field name="sequence">3</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="rental_order_form_view" />
-        <field name="act_window_id" ref="rental_order_today_pickup_action" />
+        <field name="view_id" ref="sale_order_view_form_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental_today_pickup" />
     </record>
 
     <!-- Today: Returns -->
-    <record id="rental_order_today_return_action" model="ir.actions.act_window">
+    <record id="sale_order_action_rental_today_return" model="ir.actions.act_window">
         <field name="name">Returns Today</field>
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('is_rental_order', '=', True)]</field>
-        <field name="search_view_id" ref="rental_order_view_search" />
+        <field name="search_view_id" ref="sale_order_view_search_rental" />
         <field
             name="context"
             eval="{
@@ -563,31 +569,31 @@
         />
     </record>
     <record
-        id="rental_order_today_return_action_view_tree"
+        id="sale_order_action_rental_today_return_view_tree"
         model="ir.actions.act_window.view"
     >
         <field name="sequence">1</field>
         <field name="view_mode">tree</field>
-        <field name="view_id" ref="rental_order_view_tree" />
-        <field name="act_window_id" ref="rental_order_today_return_action" />
+        <field name="view_id" ref="sale_order_view_tree_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental_today_return" />
     </record>
     <record
-        id="rental_order_today_return_action_view_kanban"
+        id="sale_order_action_rental_today_return_view_kanban"
         model="ir.actions.act_window.view"
     >
         <field name="sequence">2</field>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="rental_order_view_kanban" />
-        <field name="act_window_id" ref="rental_order_today_return_action" />
+        <field name="view_id" ref="sale_order_view_kanban_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental_today_return" />
     </record>
     <record
-        id="rental_order_today_return_action_view_form"
+        id="sale_order_action_rental_today_return_view_form"
         model="ir.actions.act_window.view"
     >
         <field name="sequence">3</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="rental_order_form_view" />
-        <field name="act_window_id" ref="rental_order_today_return_action" />
+        <field name="view_id" ref="sale_order_view_form_rental" />
+        <field name="act_window_id" ref="sale_order_action_rental_today_return" />
     </record>
 
     <!-- ============================================================ -->
@@ -596,7 +602,7 @@
 
     <!-- Orders submenu group -->
     <menuitem
-        id="menu_rental_order_group"
+        id="sale_order_menu_rental"
         name="Orders"
         parent="rental_base.menu_rental_root"
         sequence="2"
@@ -604,10 +610,10 @@
 
     <!-- Orders > Orders -->
     <menuitem
-        id="menu_rental_orders"
+        id="sale_order_menu_rental_orders"
         name="Orders"
-        parent="menu_rental_order_group"
-        action="rental_order_action"
+        parent="sale_order_menu_rental"
+        action="sale_order_action_rental"
         sequence="1"
     />
 
@@ -628,27 +634,27 @@
 
     <!-- Orders > To Do Today -->
     <menuitem
-        id="menu_rental_today"
+        id="sale_order_menu_rental_today"
         name="To Do Today"
-        parent="menu_rental_order_group"
+        parent="sale_order_menu_rental"
         sequence="3"
     />
 
     <!-- Orders > To Do Today > Pickup -->
     <menuitem
-        id="menu_rental_today_pickup"
+        id="sale_order_menu_rental_today_pickup"
         name="Pickup"
-        parent="menu_rental_today"
-        action="rental_order_today_pickup_action"
+        parent="sale_order_menu_rental_today"
+        action="sale_order_action_rental_today_pickup"
         sequence="1"
     />
 
     <!-- Orders > To Do Today > Return -->
     <menuitem
-        id="menu_rental_today_return"
+        id="sale_order_menu_rental_today_return"
         name="Return"
-        parent="menu_rental_today"
-        action="rental_order_today_return_action"
+        parent="sale_order_menu_rental_today"
+        action="sale_order_action_rental_today_return"
         sequence="2"
     />
 
