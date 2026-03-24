@@ -10,11 +10,10 @@ msgstr ""
 "PO-Revision-Date: 2026-03-24 15:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: \n"
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
@@ -22,13 +21,11 @@ msgid ""
 "<i class=\"fa fa-long-arrow-right mx-1\" aria-label=\"Arrow icon\" "
 "title=\"Arrow\"/>"
 msgstr ""
-"<i class=\"fa fa-long-arrow-right mx-1\" aria-label=\"Icona de fletxa\" "
-"title=\"Fletxa\"/>"
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_kanban_rental
 msgid "<i class=\"fa fa-warning me-1\" title=\"Late\"/>"
-msgstr "<i class=\"fa fa-warning me-1\" title=\"Endarrerit\"/>"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.res_config_settings_view_form
@@ -36,25 +33,23 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 msgstr ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Els valors configurats aquí "
-"són específics de la companyia.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.report_delivery_document_rental_signature_terms
 msgid "<strong>Conditions</strong>"
-msgstr "<strong>Condicions</strong>"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.report_delivery_document_rental_signature_terms
 msgid "<strong>Signature</strong>"
-msgstr "<strong>Signatura</strong>"
+msgstr ""
 
 #. module: rental_base_extension
 #. odoo-javascript
 #: code:addons/rental_base_extension/static/src/xml/signature_dialog.xml:0
 #, python-format
 msgid "Adopt & Sign"
-msgstr "Adopta i signa"
+msgstr ""
 
 #. module: rental_base_extension
 #. odoo-javascript
@@ -66,192 +61,276 @@ msgid ""
 " all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
-"En fer clic a Adopta i signa, accepto que la signatura/inicials escollides "
-"seran una representació electrònica vàlida de la meva signatura/inicials "
-"manuscrites per a tots els propòsits quan s'utilitzi en documents, inclosos "
-"contractes legalment vinculants."
+
+#. module: rental_base_extension
+#: model:ir.model.fields.selection,name:rental_base_extension.selection__sale_order__rental_status__cancel
+msgid "Cancelled"
+msgstr ""
+
+#. module: rental_base_extension
+#: model:ir.model,name:rental_base_extension.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: rental_base_extension
+#: model:ir.model,name:rental_base_extension.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
 
 #. module: rental_base_extension
 #. odoo-javascript
 #: code:addons/rental_base_extension/static/src/xml/signature_dialog.xml:0
 #, python-format
 msgid "Confirm & Sign"
-msgstr "Confirma i signa"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
+msgid "Create Rental Service"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.actions.act_window,help:rental_base_extension.sale_order_action_rental
 msgid "Create a new rental order!"
-msgstr "Creeu una nova comanda de lloguer!"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
+msgid "Customer"
+msgstr ""
 
 #. module: rental_base_extension
 #. odoo-javascript
 #: code:addons/rental_base_extension/static/src/js/signature_widget.js:0
 #, python-format
 msgid "Delivery Signature"
-msgstr "Signatura de lliurament"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__rental_duration
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
 msgid "Duration"
-msgstr "Durada"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
+msgid "Group By"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__is_late
 msgid "Is Late"
-msgstr "Està endarrerit"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__is_rental_order
 msgid "Is Rental Order"
-msgstr "És comanda de lloguer"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_stock_picking__is_rental_picking
 msgid "Is Rental Picking"
-msgstr "És albarà de lloguer"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
 msgid "Late"
-msgstr "Endarrerit"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
 msgid "My Orders"
-msgstr "Les meves comandes"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__next_action_date
 msgid "Next Action Date"
-msgstr "Data de la propera acció"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
+msgid "Order"
+msgstr ""
+
+#. module: rental_base_extension
+#: model:ir.ui.menu,name:rental_base_extension.sale_order_menu_rental
+#: model:ir.ui.menu,name:rental_base_extension.sale_order_menu_rental_orders
+msgid "Orders"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
 msgid "Picked-up"
-msgstr "Recollit"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields.selection,name:rental_base_extension.selection__sale_order__rental_status__return
 msgid "Pickedup"
-msgstr "Recollit"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.ui.menu,name:rental_base_extension.sale_order_menu_rental_today_pickup
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
 msgid "Pickup"
-msgstr "Recollida"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
 msgid "Pickup Date"
-msgstr "Data de recollida"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__pickup_picking_id
 msgid "Pickup Picking"
-msgstr "Albarà de recollida"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_kanban_rental
 msgid "Pickup:"
-msgstr "Recollida:"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.actions.act_window,name:rental_base_extension.sale_order_action_rental_today_pickup
 msgid "Pickups Today"
-msgstr "Recollides d'avui"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
+msgid "Product"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
 msgid "Qty"
-msgstr "Quant."
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields.selection,name:rental_base_extension.selection__sale_order__rental_status__draft
 msgid "Quotation"
-msgstr "Pressupost"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields.selection,name:rental_base_extension.selection__sale_order__rental_status__sent
 msgid "Quotation Sent"
-msgstr "Pressupost enviat"
+msgstr ""
+
+#. module: rental_base_extension
+#: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__rental_ids
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
+msgid "Rental"
+msgstr ""
+
+#. module: rental_base_extension
+#: model:ir.actions.act_window,name:rental_base_extension.sale_order_action_rental
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_calendar_rental
+msgid "Rental Orders"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
 msgid "Rental Period"
-msgstr "Període de lloguer"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_res_company__rental_require_signature_validation
 #: model:ir.model.fields,field_description:rental_base_extension.field_res_config_settings__rental_require_signature_validation
 #: model:ir.model.fields,field_description:rental_base_extension.field_stock_picking__rental_require_signature_validation
 msgid "Rental Require Signature Validation"
-msgstr "Lloguer requereix validació amb signatura"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_res_company__rental_signature_terms
 #: model:ir.model.fields,field_description:rental_base_extension.field_res_config_settings__rental_signature_terms
 msgid "Rental Signature Terms"
-msgstr "Condicions de signatura de lloguer"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__rental_status
 msgid "Rental Status"
-msgstr "Estat del lloguer"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_normal_form_view
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
+msgid "Rentals"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.res_config_settings_view_form
 msgid "Require Signature to Validate Delivery"
-msgstr "Requerir signatura per validar el lliurament"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields.selection,name:rental_base_extension.selection__sale_order__rental_status__pickup
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
 msgid "Reserved"
-msgstr "Reservat"
+msgstr ""
+
+#. module: rental_base_extension
+#: model:ir.ui.menu,name:rental_base_extension.sale_order_menu_rental_today_return
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
+msgid "Return"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
 msgid "Return Date"
-msgstr "Data de retorn"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__return_picking_id
 msgid "Return Picking"
-msgstr "Albarà de retorn"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_kanban_rental
 msgid "Return:"
-msgstr "Retorn:"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.model.fields.selection,name:rental_base_extension.selection__sale_order__rental_status__returned
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
 msgid "Returned"
-msgstr "Retornat"
+msgstr ""
 
 #. module: rental_base_extension
 #: model:ir.actions.act_window,name:rental_base_extension.sale_order_action_rental_today_return
 msgid "Returns Today"
-msgstr "Retorns d'avui"
+msgstr ""
+
+#. module: rental_base_extension
+#: model:ir.model,name:rental_base_extension.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
+msgid "Salesperson"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
 msgid "Search Rental Orders"
-msgstr "Cerca comandes de lloguer"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.view_picking_form
 msgid "Sign"
-msgstr "Signar"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.res_config_settings_view_form
 msgid "Signature"
-msgstr "Signatura"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
+msgid "Status"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.res_config_settings_view_form
@@ -259,24 +338,37 @@ msgid ""
 "Terms shown in the signature dialog when signing a rental delivery order. "
 "Leave empty to use the default text."
 msgstr ""
-"Condicions mostrades al diàleg de signatura en signar un albarà de lloguer. "
-"Deixeu buit per utilitzar el text per defecte."
 
 #. module: rental_base_extension
 #: model:ir.ui.menu,name:rental_base_extension.sale_order_menu_rental_today
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
 msgid "To Do Today"
-msgstr "Per fer avui"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
 msgid "To Pickup"
-msgstr "Per recollir"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_search_rental
 msgid "To Return"
-msgstr "Per retornar"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_tree_rental
+msgid "Total"
+msgstr ""
+
+#. module: rental_base_extension
+#: model:ir.model,name:rental_base_extension.model_stock_picking
+msgid "Transfer"
+msgstr ""
+
+#. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.sale_order_view_form_rental
+msgid "Update Times"
+msgstr ""
 
 #. module: rental_base_extension
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.res_config_settings_view_form
@@ -284,5 +376,3 @@ msgid ""
 "When enabled, rental delivery orders can only be validated by signing. The "
 "Validate button is replaced by the Sign button."
 msgstr ""
-"Quan està activat, els albarans de lloguer només es poden validar signant. "
-"El botó Validar se substitueix pel botó Signar."
