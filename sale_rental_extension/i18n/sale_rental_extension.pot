@@ -10,21 +10,20 @@ msgstr ""
 "PO-Revision-Date: 2026-03-24 15:46+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: \n"
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_view_kanban
 msgid "<i class=\"fa fa-calendar me-1\" title=\"Rental period\"/>"
-msgstr "<i class=\"fa fa-calendar me-1\" title=\"Período de alquiler\"/>"
+msgstr ""
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_view_kanban
 msgid "<span class=\"mx-1\">→</span>"
-msgstr "<span class=\"mx-1\">→</span>"
+msgstr ""
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_view_kanban
@@ -33,18 +32,40 @@ msgid ""
 "                                            ud.\n"
 "                                        </span>"
 msgstr ""
-"<span class=\"text-muted ms-1\">\n"
-"                                            ud.\n"
-"                                        </span>"
 
 #. module: sale_rental_extension
 #. odoo-python
 #: code:addons/sale_rental_extension/models/sale_order_line.py:0
 #, python-format
 msgid "Cannot change rental quantity after pickup for product '%s'."
-msgstr "No se puede cambiar la cantidad de alquiler después de la recogida para el producto '%s'."
+msgstr ""
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,help:sale_rental_extension.field_sale_order_line__rental_qty
+msgid "Indicate the number of items that will be rented."
+msgstr ""
+
+#. module: sale_rental_extension
+#: model:ir.model.fields,field_description:sale_rental_extension.field_sale_order_line__rental_qty
+msgid "Rental Quantity"
+msgstr ""
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_view_calendar
+msgid "Rentals"
+msgstr ""
+
+#. module: sale_rental_extension
+#: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_search
+msgid "Rented Product"
+msgstr ""
+
+#. module: sale_rental_extension
+#: model:ir.model,name:sale_rental_extension.model_sale_order_line
+msgid "Sales Order Line"
+msgstr ""
 
 #. module: sale_rental_extension
 #: model_terms:ir.ui.view,arch_db:sale_rental_extension.sale_rental_search
 msgid "Today"
-msgstr "Hoy"
+msgstr ""
