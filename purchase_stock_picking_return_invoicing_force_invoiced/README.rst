@@ -51,6 +51,7 @@ Credits
 Authors
 -------
 
+* NuoBiT Solutions SL
 * Eficent
 
 Contributors
@@ -63,7 +64,8 @@ Contributors
 - NuoBiT Solutions S.L.
   <`http://www.nuobit.com\\> <http://www.nuobit.com\>>`__:
 
-  - Eric Antones <eantones@nuobit.com>
+  - Eric Antones eantones@nuobit.com
+  - Deniz Gallo eantones@nuobit.com
 
 Maintainers
 -----------
