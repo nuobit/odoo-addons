@@ -3,7 +3,7 @@
 
 {
     "name": "Website Sale Extra Fields",
-    "version": "14.0.0.1.0",
+    "version": "14.0.0.1.1",
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Website",
@@ -16,4 +16,5 @@
         "views/product_template.xml",
         "views/product_product.xml",
     ],
+    "pre_init_hook": "pre_init_hook",
 }
