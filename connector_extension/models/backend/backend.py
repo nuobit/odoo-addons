@@ -3,6 +3,7 @@
 # Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import logging
+from contextlib import contextmanager
 
 import pytz
 
@@ -44,6 +45,13 @@ class ConnectorBackend(models.AbstractModel):
         required=True,
         default=lambda self: self.env.company,
         string="Company",
+    )
+    user_id = fields.Many2one(
+        comodel_name="res.users",
+        string="User",
+        help="User used as the default responsible for records created by "
+        "this backend. If set, all operations (imports, exports, jobs) "
+        "will run under this user context.",
     )
 
     lang_ids = fields.Many2many(
@@ -125,6 +133,14 @@ class ConnectorBackend(models.AbstractModel):
         datetime_local = datetime_utc.astimezone(local_tz)
         datetime_local_naive = datetime_local.replace(tzinfo=None)
         return datetime_local_naive
+
+    @contextmanager
+    def work_on(self, model_name, **kwargs):
+        backend = self
+        if self.user_id:
+            backend = self.with_user(self.user_id)
+        with super(ConnectorBackend, backend).work_on(model_name, **kwargs) as work:
+            yield work
 
     # Scheduler methods
     @api.model
