@@ -49,8 +49,9 @@ class WooCommerceProductTemplate(models.Model):
         return True
 
     def resync_export(self):
-        super().resync_export()
+        res = super().resync_export()
         for rec in self:
             rec.product_variant_ids.woocommerce_bind_ids.filtered(
                 lambda x: x.backend_id == self.backend_id
             ).resync_export()
+        return res

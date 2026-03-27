@@ -33,7 +33,7 @@
             <xpath expr="//group[@name='shop']/group/*[1]" position="before">
                 <field
                     name="woocommerce_enabled"
-                    attrs="{'readonly': [('woocommerce_enabled', '=', True), ('woocommerce_bind_ids', '!=', [])]}"
+                    readonly="woocommerce_enabled == True or woocommerce_bind_ids != []"
                 />
                 <field name="woocommerce_bind_ids" invisible="1" />
             </xpath>

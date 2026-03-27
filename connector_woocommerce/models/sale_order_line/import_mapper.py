@@ -1,5 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -66,8 +68,8 @@ class SaleOrderLineImportMapper(Component):
             product_tmpl = binder.to_internal(external_id, unwrap=True)
             product_odoo = product_tmpl.product_variant_id
         assert product_odoo, (
-            "product_id %s should have been imported in "
-            "SaleOrderImporter._import_dependencies" % (external_id,)
+            f"product_id {external_id} should have been imported in "
+            "SaleOrderImporter._import_dependencies"
         )
         return {"product_id": product_odoo.id}
 
@@ -78,7 +80,7 @@ class SaleOrderLineImportMapper(Component):
             for tax in record.get("taxes"):
                 if tax["total"]:
                     tax_map = self.backend_record.tax_map_ids.filtered(
-                        lambda x: tax["id"] == int(x.woocommerce_tax_rate_id)
+                        lambda x, tax=tax: tax["id"] == int(x.woocommerce_tax_rate_id)
                     )
                     if not tax_map:
                         raise ValidationError(

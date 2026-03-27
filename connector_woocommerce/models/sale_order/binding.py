@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -47,7 +48,8 @@ class WooCommerceSaleOrder(models.Model):
     def import_sale_orders_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
         # TODO: El extract_domain_clauses don't accept 'in operator,
-        #  to use get_total_items in status on-hold and processing we have to do two imports.
+        #  to use get_total_items in status on-hold and
+        #  processing we have to do two imports.
         #  We have to find a better way to join this domains.
         domain += [("status", "=", "on-hold,processing")]
         # domain += [("status", "=", "on-hold")]
