@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record
@@ -37,10 +38,10 @@
         </field>
     </record>
     <record id="woocommerce_product_public_category_view_tree" model="ir.ui.view">
-        <field name="name">woocommerce.product.public.category.view.tree</field>
+        <field name="name">woocommerce.product.public.category.view.list</field>
         <field name="model">woocommerce.product.public.category</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="woocommerce_idpubliccategory" readonly="True" />
@@ -51,7 +52,7 @@
                     string="Resynchronize"
                     icon="fa-refresh fa-lg"
                 />
-            </tree>
+            </list>
         </field>
     </record>
     <record
@@ -60,6 +61,6 @@
     >
         <field name="name">Product Public Category</field>
         <field name="res_model">woocommerce.product.public.category</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

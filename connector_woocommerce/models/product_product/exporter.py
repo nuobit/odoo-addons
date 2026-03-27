@@ -36,7 +36,8 @@ class WooCommerceProductProductExporter(Component):
     _apply_on = "woocommerce.product.product"
 
     def _export_dependencies(self, relation):
-        # In the case of a woocommerce simple product (Product template with one variant)
+        # In the case of a woocommerce simple product
+        # (Product template with one variant)
         # we need to export the dependencies of the product template because
         # it's the product template that will be exported instead of product product
         if relation.env.context.get("export_wo_acc_p"):

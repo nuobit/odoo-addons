@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import AbstractComponent
@@ -29,14 +30,15 @@ class WooCommerceProductExportMapper(AbstractComponent):
                     if external_id:
                         binding = binder.wrap_record(document.attachment_id)
                         document_description.append(
-                            "<p><a href=%s target='_blank'>%s</a></p>"
-                            % (
-                                self._prepare_url(binding, document),
-                                # document.with_context(
-                                #     lang=self._get_lang(document)
-                                # ).name,
-                                document.name,
-                            )
+                            f"<p><a href={self._prepare_url(binding, document)}"
+                            f" target='_blank'>{document.name}</a></p>"
+                            # % (
+                            #     self._prepare_url(binding, document),
+                            #     # document.with_context(
+                            #     #     lang=self._get_lang(document)
+                            #     # ).name,
+                            #     document.name,
+                            # )
                         )
                     else:
                         if (
@@ -44,10 +46,10 @@ class WooCommerceProductExportMapper(AbstractComponent):
                             and self.backend_record.wordpress_backend_id
                         ):
                             assert external_id, (
-                                "Unexpected error on %s:"
+                                f"Unexpected error on {document.product_id._name}:"
                                 "The backend id cannot be obtained."
                                 "At this stage, the backend record should "
                                 "have been already linked via "
-                                "._export_dependencies. " % document.product_id._name
+                                "._export_dependencies. "
                             )
         return "\n".join(document_description) or None
