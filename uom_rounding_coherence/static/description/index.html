@@ -387,9 +387,17 @@ has rounding 0.01, each conversion can introduce up to ±0.004 error in
 reference units — enough to accumulate visible discrepancies over multiple
 transactions.</p>
 <p><strong>The Validation:</strong></p>
-<p>The module checks that converting the UoM’s rounding step to reference units
-(rounding / factor) does not exceed the reference UoM’s rounding. This ensures
-data consistency and prevents precision-related errors.</p>
+<p>The module performs two checks:</p>
+<ol class="arabic simple">
+<li><strong>Conversion ratio coherence</strong>: the UoM’s rounding step, converted to
+reference units (rounding / factor), must not exceed the reference UoM’s
+rounding. This prevents precision loss during conversions.</li>
+<li><strong>Stock quant coherence</strong>: when changing a UoM’s rounding, the module checks
+that all existing stock quant quantities for products using that UoM fit
+within the new rounding. This prevents making the rounding coarser than the
+data allows (e.g., changing from 0.001 to 0.01 when quants with 3 decimals
+already exist in stock).</li>
+</ol>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">

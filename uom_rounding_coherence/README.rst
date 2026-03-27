@@ -43,10 +43,17 @@ transactions.
 
 **The Validation:**
 
-The module checks that converting the UoM's rounding step to reference units
-(rounding / factor) does not exceed the reference UoM's rounding. This ensures
-data consistency and prevents precision-related errors.
+The module performs two checks:
 
+1. **Conversion ratio coherence**: the UoM's rounding step, converted to
+   reference units (rounding / factor), must not exceed the reference UoM's
+   rounding. This prevents precision loss during conversions.
+
+2. **Stock quant coherence**: when changing a UoM's rounding, the module checks
+   that all existing stock quant quantities for products using that UoM fit
+   within the new rounding. This prevents making the rounding coarser than the
+   data allows (e.g., changing from 0.001 to 0.01 when quants with 3 decimals
+   already exist in stock).
 
 **Table of contents**
 
