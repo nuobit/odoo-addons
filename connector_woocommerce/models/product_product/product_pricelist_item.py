@@ -36,14 +36,14 @@ class PricelistItem(models.Model):
         for values in vals_list:
             if self._dependent_field_product_woocommerce_write_date() & values.keys():
                 self._update_woocommerce_write_date_by_pricelist(values)
-        return super(PricelistItem, self).create(vals_list)
+        return super().create(vals_list)
 
     def write(self, values):
         if self._dependent_field_product_woocommerce_write_date() & values.keys():
             self._update_woocommerce_write_date_by_pricelist(values)
-        return super(PricelistItem, self).write(values)
+        return super().write(values)
 
     def unlink(self):
         for rec in self:
             rec._update_woocommerce_write_date_by_pricelist({})
-        return super(PricelistItem, self).unlink()
+        return super().unlink()
