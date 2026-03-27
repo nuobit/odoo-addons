@@ -129,7 +129,7 @@
         <field name="state">code</field>
         <field name="code">model._scheduler_export_product_attribute_value()</field>
     </record>
-        <record
+    <record
         id="ir_cron_woocommerce_export_attachment"
         model="ir.cron"
         forcecreate="True"
