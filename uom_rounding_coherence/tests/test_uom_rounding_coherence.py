@@ -300,3 +300,102 @@ class TestUomRoundingCoherence(SavepointCase):
         # ACT & ASSERT
         with self.assertRaises(ValidationError):
             another.write({"rounding": 0.0001})
+
+    def _create_product_with_uom(self, name, uom):
+        """Create a storable product via SQL to avoid NOT NULL issues
+        from optional modules (sale, purchase) adding required columns."""
+        self.env.cr.execute(
+            """
+            INSERT INTO product_template
+                (name, type, uom_id, uom_po_id, categ_id, active,
+                 sale_ok, purchase_ok, list_price, tracking,
+                 sale_line_warn, purchase_line_warn,
+                 create_uid, write_uid, create_date, write_date)
+            VALUES
+                (%s, 'product', %s, %s, 1, true,
+                 false, false, 0, 'none',
+                 'no-message', 'no-message',
+                 1, 1, now() at time zone 'UTC', now() at time zone 'UTC')
+            RETURNING id
+            """,
+            (name, uom.id, uom.id),
+        )
+        tmpl_id = self.env.cr.fetchone()[0]
+        self.env.cr.execute(
+            """
+            INSERT INTO product_product
+                (product_tmpl_id, active, default_code,
+                 create_uid, write_uid, create_date, write_date)
+            VALUES
+                (%s, true, NULL, 1, 1,
+                 now() at time zone 'UTC', now() at time zone 'UTC')
+            RETURNING id
+            """,
+            (tmpl_id,),
+        )
+        product_id = self.env.cr.fetchone()[0]
+        return self.env["product.product"].browse(product_id)
+
+    def test_coarser_rounding_blocked_by_existing_quants(self):
+        """
+        PRE:    - A product exists with a UoM that has rounding=0.001
+                - A stock quant exists with quantity=5825.949 (3 decimals)
+        ACT:    - Change the UoM rounding to 0.01 (2 decimals)
+        POST:   - ValidationError is raised because the quant value 5825.949
+                  has more decimals than the new rounding allows
+        """
+        # ARRANGE
+        category = self.env["uom.category"].create(
+            {"name": "Test Quant Coherence Category"}
+        )
+        uom = self.env["uom.uom"].create(
+            {
+                "name": "Quant Test Unit",
+                "category_id": category.id,
+                "uom_type": "reference",
+                "rounding": 0.001,
+            }
+        )
+        product = self._create_product_with_uom("Quant Test Product", uom)
+        location = self.env.ref("stock.stock_location_stock")
+        self.env["stock.quant"].create(
+            {
+                "product_id": product.id,
+                "location_id": location.id,
+                "quantity": 5825.949,
+            }
+        )
+        # ACT & ASSERT
+        with self.assertRaises(ValidationError):
+            uom.write({"rounding": 0.01})
+
+    def test_finer_rounding_allowed_with_existing_quants(self):
+        """
+        PRE:    - A product exists with a UoM that has rounding=0.01
+                - A stock quant exists with quantity=5825.95 (2 decimals)
+        ACT:    - Change the UoM rounding to 0.001 (3 decimals)
+        POST:   - No error is raised because 5825.95 fits within 0.001
+        """
+        # ARRANGE
+        category = self.env["uom.category"].create(
+            {"name": "Test Finer Rounding Category"}
+        )
+        uom = self.env["uom.uom"].create(
+            {
+                "name": "Finer Test Unit",
+                "category_id": category.id,
+                "uom_type": "reference",
+                "rounding": 0.01,
+            }
+        )
+        product = self._create_product_with_uom("Finer Test Product", uom)
+        location = self.env.ref("stock.stock_location_stock")
+        self.env["stock.quant"].create(
+            {
+                "product_id": product.id,
+                "location_id": location.id,
+                "quantity": 5825.95,
+            }
+        )
+        # ACT — should not raise
+        uom.write({"rounding": 0.001})

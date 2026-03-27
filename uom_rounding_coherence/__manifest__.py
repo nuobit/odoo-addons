@@ -5,11 +5,11 @@
     "name": "UoM Rounding Coherence",
     "summary": "Validates that UoM rounding precision is coherent"
     " with the conversion ratio to prevent precision loss",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.1.0",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
     "category": "Product",
-    "depends": ["uom"],
+    "depends": ["stock"],
     "license": "AGPL-3",
     "installable": True,
 }
