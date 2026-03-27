@@ -1,5 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -48,13 +50,16 @@ class WooCommerceSaleOrderImportMapper(Component):
             external_id = binder.dict2id(record["billing"], in_field=False)
             partner = binder.to_internal(external_id, unwrap=True)
             assert partner, (
-                "partner_id %s should have been imported in "
-                "SaleOrderImporter._import_dependencies" % external_id
+                f"partner_id {external_id} should have been imported in "
+                "SaleOrderImporter._import_dependencies"
             )
             if not partner.active:
                 raise ValidationError(
-                    _("The partner %s, with id:%s is archived, please, enable it")
-                    % (partner.name, partner.id)
+                    _(
+                        "The partner %(partner)s, with id:%(id)s"
+                        " is archived, please, enable it"
+                    )
+                    % {"partner": partner.name, "id": partner.id}
                 )
             partner_return = {"partner_invoice_id": partner.id}
             if partner.parent_id:
@@ -70,8 +75,8 @@ class WooCommerceSaleOrderImportMapper(Component):
             external_id = binder.dict2id(record["shipping"], in_field=False)
             partner = binder.to_internal(external_id, unwrap=True)
             assert partner, (
-                "partner_shipping_id %s should have been imported in "
-                "SaleOrderImporter._import_dependencies" % external_id
+                f"partner_shipping_id {external_id} should have been imported in "
+                "SaleOrderImporter._import_dependencies"
             )
             return {"partner_shipping_id": partner.id}
 

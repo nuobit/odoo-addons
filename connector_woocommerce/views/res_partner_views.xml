@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="connector_res_partner_view_form" model="ir.ui.view">
@@ -35,10 +36,10 @@
         </field>
     </record>
     <record id="woocommerce_partner_view_tree" model="ir.ui.view">
-        <field name="name">woocommerce.partner.view.tree</field>
+        <field name="name">woocommerce.partner.view.list</field>
         <field name="model">woocommerce.res.partner</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="name" />
@@ -50,12 +51,12 @@
                     string="Resynchronize"
                     icon="fa-refresh fa-lg"
                 />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="woocommerce_partner_action" model="ir.actions.act_window">
         <field name="name">Partner</field>
         <field name="res_model">woocommerce.res.partner</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -17,9 +18,9 @@ class WooCommerceProductProductAdapter(Component):
 
     def read(self, external_id):  # pylint: disable=W8106
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        url = "products/%s/variations/%s" % (
-            external_id_values["parent_id"],
-            external_id_values["id"],
+        url = (
+            f"products/{external_id_values['parent_id']}"
+            f"/variations/{external_id_values['id']}"
         )
         res = self._exec("get", url, limit=1)
         self._reorg_product_data(res)
@@ -34,7 +35,7 @@ class WooCommerceProductProductAdapter(Component):
         self._prepare_data(data)
         url_l = ["products"]
         parent = data.pop("parent_id")
-        url_l.append("%s/variations" % parent)
+        url_l.append(f"{parent}/variations")
         res = self._exec("post", "/".join(url_l), data=data)
         res["parent_id"] = parent
         return res
@@ -43,7 +44,7 @@ class WooCommerceProductProductAdapter(Component):
         self._prepare_data(data)
         return self._exec(
             "put",
-            "products/%s/variations/%s" % tuple(external_id),
+            f"products/{tuple(external_id)}/variations/{tuple(external_id)}",
             data=data,
         )
 
@@ -54,7 +55,7 @@ class WooCommerceProductProductAdapter(Component):
         domain_dict = self._domain_to_normalized_dict(domain)
         external_id = binder.dict2id(domain_dict, in_field=False)
         if external_id:
-            url = "products/%s/variations/%s" % tuple(external_id)
+            url = f"products/{tuple(external_id)}/variations/{tuple(external_id)}"
             res = self._exec("get", url, domain=common_domain)
         else:
             # if "id" in domain_dict and "parent_id" in domain_dict:

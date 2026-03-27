@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -17,7 +18,7 @@ class WooCommerceProductTemplateAdapter(Component):
 
     def read(self, external_id):  # pylint: disable=W8106
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        url = "products/%s" % external_id_values["id"]
+        url = f"products/{external_id_values['id']}"
         res = self._exec("get", url, limit=1)
         self._reorg_product_data(res)
         if len(res) > 1:
@@ -47,7 +48,7 @@ class WooCommerceProductTemplateAdapter(Component):
         __, common_domain = self._extract_domain_clauses(domain, id_fields)
         template_id = binder.dict2id(domain_dict, in_field=False, unwrap=True)
         if template_id:
-            url = "products/%s" % template_id
+            url = f"products/{template_id}"
             res = self._exec("get", url, domain=common_domain)
         else:
             res = []

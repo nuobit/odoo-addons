@@ -1,5 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -56,10 +58,14 @@ class WooCommerceSaleOrderImporter(Component):
             if not name:
                 raise ValidationError(
                     _(
-                        "Cannot create the parent partner for %s: %s because neither "
+                        "Cannot create the parent partner "
+                        "for %(dir)s: %(value)s because neither "
                         "company nor name is set."
                     )
-                    % (dir_type, value)
+                    % {
+                        "dir": dir_type,
+                        "value": value,
+                    }
                 )
             parent = self.env["res.partner"].create(
                 {
@@ -108,7 +114,8 @@ class WooCommerceSaleOrderImporter(Component):
                 if product["id"] == 0:
                     raise ValidationError(
                         _(
-                            "The product '%s' in the order has been deleted on WooCommerce. "
+                            "The product '%s' in the order "
+                            "has been deleted on WooCommerce. "
                             "This order cannot be imported."
                         )
                         % product["name"]
@@ -118,7 +125,8 @@ class WooCommerceSaleOrderImporter(Component):
                 if product["id"] == 0 and product["parent_id"] == 0:
                     raise ValidationError(
                         _(
-                            "The product '%s' in the order has been deleted on WooCommerce. "
+                            "The product '%s' in the order "
+                            "has been deleted on WooCommerce. "
                             "This order cannot be imported."
                         )
                         % product["name"]
@@ -153,10 +161,8 @@ class WooCommerceSaleOrderImporter(Component):
         res = super()._must_skip(binding)
         if binding:
             return _(
-                "The Order %s is already imported "
-                "-> Update not allowed"
-                % self.binder_for().unwrap_binding(binding).display_name
-            )
+                "The Order {} is already imported " "-> Update not allowed"
+            ).format(binding.woocommerce_id)
         return res
 
 

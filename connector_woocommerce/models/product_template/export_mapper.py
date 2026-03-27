@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -35,11 +36,11 @@ class WooCommerceProductTemplateExportMapper(Component):
             )
         elif len(default_codes) > 1:
             raise ValidationError(
+                # format
                 _(
-                    "Multiple default codes found for the product %s. "
+                    "Multiple default codes found for the product {}."
                     "Please ensure that all variants have the same default code."
-                    % record.name
-                )
+                ).format(record.name)
             )
         return {"sku": default_codes or None}
 
@@ -89,10 +90,15 @@ class WooCommerceProductTemplateExportMapper(Component):
             else:
                 raise ValidationError(
                     _(
-                        "The inventory availability '%s' is not supported by WooCommerce. "
-                        "Review product template {%s}%s."
+                        "The inventory availability '%(inv)s' "
+                        "is not supported by WooCommerce. "
+                        "Review product template {%(rec)s}%(name)s."
                     )
-                    % (record.inventory_availability, record.id, record.display_name)
+                    % {
+                        "inv": record.inventory_availability,
+                        "rec": record.id,
+                        "name": record.display_name,
+                    }
                 )
         return stock
 
@@ -210,9 +216,12 @@ class WooCommerceProductTemplateExportMapper(Component):
                 raise ValidationError(
                     _(
                         "Only one tax is allowed per product. "
-                        "Please review taxes in product {%s} %s"
+                        "Please review taxes in product {%(id)s} %(name)s"
                     )
-                    % (record.id, record.display_name)
+                    % {
+                        "id": record.id,
+                        "name": record.display_name,
+                    }
                 )
             tax_class = self.backend_record.tax_class_ids.filtered(
                 lambda x: record["taxes_id"] == x.account_tax_id
@@ -281,11 +290,11 @@ class WooCommerceProductTemplateExportMapper(Component):
                     else:
                         if not self.backend_record.wordpress_backend_id.test_database:
                             assert external_id, (
-                                "Unexpected error on %s:"
+                                f"Unexpected error on {record._name}:"
                                 "The backend id cannot be obtained."
                                 "At this stage, the backend record should "
                                 "have been already linked via "
-                                "._export_dependencies. " % record._name
+                                "._export_dependencies. "
                             )
                 if img_list:
                     return {"images": img_list}

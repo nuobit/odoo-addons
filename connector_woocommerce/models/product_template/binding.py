@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -52,8 +53,9 @@ class WooCommerceProductTemplate(models.Model):
         return True
 
     def resync_export(self):
-        super().resync_export()
+        res = super().resync_export()
         for rec in self:
             rec.product_variant_ids.woocommerce_bind_ids.filtered(
                 lambda x: x.backend_id == self.backend_id
             ).resync_export()
+        return res

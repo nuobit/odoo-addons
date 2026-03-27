@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -14,7 +15,7 @@ class WooCommerceProductAttributeValueAdapter(Component):
 
     def read(self, external_id):  # pylint: disable=W8106
         external_id = self.binder_for().id2dict(external_id, in_field=False)
-        url = "products/attributes/%s/terms/%s" % tuple(external_id)
+        url = f"products/attributes/{tuple(external_id)}/terms/{tuple(external_id)}"
         values = self._exec("get", url)
         return values
 
@@ -53,7 +54,7 @@ class WooCommerceProductAttributeValueAdapter(Component):
 
             attribute_values = []
             for attribute_id in attribute_ids:
-                url = "products/attributes/%s/terms" % attribute_id
+                url = f"products/attributes/{attribute_id}/terms"
                 values = self._exec("get", url, domain=real_domain)
                 for value in values:
                     value["parent_id"] = attribute_id
@@ -69,7 +70,7 @@ class WooCommerceProductAttributeValueAdapter(Component):
             )
         res = self._exec(
             "post",
-            "products/attributes/%s/terms" % data["parent_id"],
+            f"products/attributes/{data['parent_id']}/terms",
             data=data,
         )
         if res:
@@ -79,7 +80,7 @@ class WooCommerceProductAttributeValueAdapter(Component):
     def write(self, external_id, data):  # pylint: disable=W8106
         return self._exec(
             "put",
-            "products/attributes/%s/terms/%s" % tuple(external_id),
+            f"products/attributes/{tuple(external_id)}/terms/{tuple(external_id)}",
             data=data,
         )
 

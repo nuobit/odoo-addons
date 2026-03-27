@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="connector_sale_order_view_form" model="ir.ui.view">
@@ -17,7 +18,7 @@
                     name="web_ribbon"
                     title="WooCommerce"
                     bg_color="bg-info"
-                    attrs="{'invisible': [('is_woocommerce', '!=', True)]}"
+                    invisible="is_woocommerce != True"
                 />
             </div>
             <xpath expr="/form/sheet/notebook" position="inside">
@@ -45,16 +46,16 @@
         </field>
     </record>
     <record id="woocommerce_sale_order_view_tree" model="ir.ui.view">
-        <field name="name">woocommerce.sale.order.view.tree</field>
+        <field name="name">woocommerce.sale.order.view.list</field>
         <field name="model">woocommerce.sale.order</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="woocommerce_idsaleorder" readonly="True" />
                 <field name="woocommerce_status" readonly="True" />
                 <field name="sync_date" />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="woocommerce_sale_order_view_filter" model="ir.ui.view">
@@ -75,6 +76,6 @@
     <record id="woocommerce_sale_order_action" model="ir.actions.act_window">
         <field name="name">Services</field>
         <field name="res_model">woocommerce.sale.order</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

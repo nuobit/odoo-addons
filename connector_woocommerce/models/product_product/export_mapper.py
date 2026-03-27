@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -39,8 +40,14 @@ class WooCommerceProductProductExportMapper(Component):
         # but it's necessary in e-commerce
         if not record.default_code:
             raise ValidationError(
-                _("You must define an internal reference for the product {%s}'%s'")
-                % (record.id, record.display_name)
+                _(
+                    "You must define an internal reference "
+                    "for the product {%(rec)s}'%(name)s'"
+                )
+                % {
+                    "rec": record.id,
+                    "name": record.display_name,
+                }
             )
         return {"sku": record.default_code}
 
@@ -85,14 +92,15 @@ class WooCommerceProductProductExportMapper(Component):
         else:
             raise ValidationError(
                 _(
-                    "The inventory availability '%s' is not supported by WooCommerce. "
-                    "Review product variant {%s}%s."
+                    "The inventory availability '%(inv)s' "
+                    "is not supported by WooCommerce. "
+                    "Review product variant {%(rec)s}%(name)s."
                 )
-                % (
-                    record.variant_inventory_availability,
-                    record.id,
-                    record.display_name,
-                )
+                % {
+                    "inv": record.variant_inventory_availability,
+                    "rec": record.id,
+                    "name": record.display_name,
+                }
             )
         return stock
 
