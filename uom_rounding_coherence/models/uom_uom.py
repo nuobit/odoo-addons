@@ -1,12 +1,67 @@
 # Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import math
+
 from odoo import _, api, models, tools
 from odoo.exceptions import ValidationError
 
 
 class UoM(models.Model):
     _inherit = "uom.uom"
+
+    @api.constrains("rounding")
+    def _check_rounding_stock_quant_coherence(self):
+        """Block rounding changes that would invalidate existing stock data.
+
+        When making UoM rounding coarser (e.g. 0.001 -> 0.01), any
+        stock quant whose quantity has more decimal places than the new
+        rounding allows would become invalid and block stock operations.
+        """
+        for uom in self:
+            max_decimals = (
+                0 if uom.rounding >= 1 else -math.floor(math.log10(uom.rounding))
+            )
+            threshold = uom.rounding / 100.0
+            self.env.cr.execute(
+                """
+                SELECT sq.quantity AS value, sl.complete_name AS detail
+                FROM stock_quant sq
+                JOIN product_product pp ON pp.id = sq.product_id
+                JOIN product_template pt ON pt.id = pp.product_tmpl_id
+                JOIN stock_location sl ON sl.id = sq.location_id
+                WHERE pt.uom_id = %(uom_id)s
+                  AND ABS(sq.quantity) > 0.0000001
+                  AND ABS(sq.quantity - ROUND(sq.quantity::numeric, %(dec)s))
+                      > %(threshold)s
+                ORDER BY ABS(sq.quantity - ROUND(sq.quantity::numeric, %(dec)s)) DESC
+                LIMIT 5
+                """,
+                {
+                    "uom_id": uom.id,
+                    "dec": max_decimals,
+                    "threshold": threshold,
+                },
+            )
+            bad_quants = self.env.cr.dictfetchall()
+            if bad_quants:
+                examples = "\n".join(
+                    "  - %s at %s" % (q["value"], q["detail"]) for q in bad_quants
+                )
+                raise ValidationError(
+                    _(
+                        "Cannot set rounding to %(rounding)s for '%(uom)s': "
+                        "there are stock quantities with more decimal places "
+                        "than the new rounding allows.\n\n"
+                        "Examples:\n%(examples)s\n\n"
+                        "Fix the stock data first or use a finer rounding."
+                    )
+                    % {
+                        "rounding": uom.rounding,
+                        "uom": uom.name,
+                        "examples": examples,
+                    }
+                )
 
     @api.constrains("rounding", "factor", "uom_type", "category_id")
     def _check_rounding_factor_coherence(self):
