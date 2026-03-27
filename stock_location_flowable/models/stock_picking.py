@@ -38,18 +38,53 @@ class StockPicking(models.Model):
             "product_uom_id": product.uom_id.id,
         }
 
-    def _prepare_production_move_line_values(self, move_line, product, location_dest):
+    def _set_production_qty_done(self, production, component_quants):
+        """Set qty_done on the reservation lines created by action_assign.
+
+        After action_confirm + action_assign, the MO raw move has one
+        reservation line per lot with product_uom_qty set (reserved
+        quantity) and qty_done = 0. This method fills in qty_done by
+        matching each quant to its reservation line by lot_id.
+
+        We also update location_dest_id to the virtual production
+        location, because the raw move's location_dest_id points to
+        the flowable location itself (both source and dest are the
+        same for a mixing MO). The move lines need to consume stock
+        to the virtual production location for correct stock
+        accounting when the MO is completed.
+
+        Why not create the move lines manually with both product_uom_qty
+        and qty_done from the start? Because product_uom_qty must be
+        backed by an actual quant reservation (reserved_quantity on the
+        quant record). The standard way to achieve this is through
+        action_assign, which calls _action_assign -> _update_reserved_quantity
+        to both reserve the quant and create the move line atomically.
+
+        The previous approach created move lines with qty_done first,
+        then called action_assign expecting Odoo to merge the reservation
+        into those existing lines. This merge relies on a UoM round-trip
+        check in _update_reserved_quantity: the quantity is converted
+        through the UoM and back, and if the result differs (due to UoM
+        rounding), a NEW line is created instead of updating the existing
+        one. This produced two lines for the same lot (one with only
+        product_uom_qty and one with only qty_done) which made the MO
+        impossible to complete ("cannot unreserve more products than you
+        have in stock").
+        """
         self.ensure_one()
-        return {
-            "lot_id": move_line.lot_id.id,
-            "product_id": product.id,
-            "qty_done": move_line.quantity,
-            "product_uom_id": product.uom_id.id,
-            "location_id": location_dest.id,
-            "location_dest_id": product.with_company(
-                self.company_id
-            ).property_stock_production.id,
-        }
+        production_location = production.product_id.with_company(
+            self.company_id
+        ).property_stock_production
+        ml_by_lot = {ml.lot_id: ml for ml in production.move_raw_ids.move_line_ids}
+        for quant in component_quants:
+            ml = ml_by_lot.get(quant.lot_id)
+            if ml:
+                ml.write(
+                    {
+                        "qty_done": quant.quantity,
+                        "location_dest_id": production_location.id,
+                    }
+                )
 
     def _prepare_production_move_values(
         self, product, location_dest, quantity_to_prod, mrp_operation_type
@@ -217,20 +252,9 @@ class StockPicking(models.Model):
                     )
                 else:
                     producing_lot = lot
-                vals = []
-                for move_line in component_quant:
-                    vals.append(
-                        (
-                            0,
-                            0,
-                            rec._prepare_production_move_line_values(
-                                move_line, product, location_dest
-                            ),
-                        )
-                    )
-                production.move_raw_ids.move_line_ids = vals
                 production.lot_producing_id = producing_lot
                 production.action_assign()
+                rec._set_production_qty_done(production, component_quant)
                 production.qty_producing = quantity_to_prod
         return res
 
