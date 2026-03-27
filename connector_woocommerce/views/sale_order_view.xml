@@ -13,7 +13,7 @@
         <field name="arch" type="xml">
             <div name="button_box" position="before">
                 <field name="is_woocommerce" invisible="1" />
-                 <widget
+                <widget
                     name="web_ribbon"
                     title="WooCommerce"
                     bg_color="bg-info"

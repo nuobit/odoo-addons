@@ -52,7 +52,6 @@
                             />
                         </group>
                         <group>
-
                             <field name="version" />
                             <field
                                 name="consumer_secret"
