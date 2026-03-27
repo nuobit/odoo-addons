@@ -1,5 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -105,7 +107,7 @@ class WooCommerceSaleOrderAdapter(Component):
 
     def read(self, external_id):  # pylint: disable=W8106
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        url = "orders/%s" % (external_id_values["id"])
+        url = f"orders/{external_id_values['id']}"
         res = self._exec("get", url, limit=1)
         self._reorg_order_data(res)
         if len(res) > 1:

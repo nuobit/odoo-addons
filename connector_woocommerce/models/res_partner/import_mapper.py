@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -42,7 +43,7 @@ class WooCommerceResPartnerImportMapper(Component):
             return {"type": "delivery"}
         else:
             raise ValidationError(
-                _("Unknown address type '%s' for partner import." % address_type)
+                _("Unknown address type '{}' for partner import.").format(address_type)
             )
         # return {"type": record.get("type")}
 

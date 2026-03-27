@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -30,11 +31,15 @@ class ProductPublicCategory(models.Model):
         if children_with_bindings:
             raise ValidationError(
                 _(
-                    "Not supported: It's not possible delete a category '%s' with "
+                    "Not supported: It's not possible delete"
+                    " a category '%(name)s' with "
                     "WooCommerce bindings if it has children with WooCommerce "
-                    "bindings. Delete first the children %s"
+                    "bindings. Delete first the children %(children)s"
                 )
-                % (categories_with_bindings.name, children_with_bindings.mapped("name"))
+                % {
+                    "name": categories_with_bindings.name,
+                    "children": ", ".join(children_with_bindings.mapped("name")),
+                }
             )
         return super(
             ProductPublicCategory,

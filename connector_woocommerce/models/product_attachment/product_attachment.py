@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -12,9 +13,7 @@ class ConnectorWoocommerceProductAttachment(models.TransientModel):
 
     _description = "Connector Woocommerce Product Attachment"
 
-    sequence = fields.Integer(
-        string="Sequence",
-    )
+    sequence = fields.Integer()
 
     attachment_id = fields.Many2one(
         comodel_name="ir.attachment",

@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -17,7 +18,7 @@ class WooCommerceProductPublicCategoryAdapter(Component):
         if self.env.context.get("resync_exported_dependencies"):
             return {}
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        url = "products/categories/%s" % external_id_values["id"]
+        url = f"products/categories/{external_id_values['id']}"
         return self._exec("put", url, data=data)
 
     def search_read(self, domain=None):
@@ -30,5 +31,5 @@ class WooCommerceProductPublicCategoryAdapter(Component):
 
     def delete(self, external_id):
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        url = "products/categories/%s" % external_id_values["id"]
+        url = f"products/categories/{external_id_values['id']}"
         return self._exec("delete", url, params={"force": "1"})
