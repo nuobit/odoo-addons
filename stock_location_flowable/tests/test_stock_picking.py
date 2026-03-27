@@ -1301,3 +1301,113 @@ class TestStockPicking(TestCommon):
             lot_a,
             "Auto-generated lot should differ from the incoming lot",
         )
+
+    def test_mixing_mo_move_lines_not_split_by_lot(self):
+        """
+        Test that mixing MO move lines have both product_uom_qty and
+        qty_done on the same line for each lot, even when the quant
+        quantities have more decimal precision than the UoM rounding.
+
+        The bug: Odoo's _update_reserved_quantity uses a UoM round-trip
+        check. When quant qty (e.g. 200.395) has more decimals than
+        UoM rounding (e.g. 0.01), the round-trip fails and a NEW
+        reservation line is created instead of updating the existing one.
+        This leaves two lines per lot: one with product_uom_qty only
+        and one with qty_done only.
+
+        PRE:    - Product with a UoM whose rounding is 0.01 (coarser
+                  than the quantities used)
+                - Flowable location seeded with lot A at 200.395 units
+        ACT:    - Receive lot B at 100.43 units (triggers mixing MO)
+        POST:   - The MO raw move has exactly one line per lot
+                - Each line has both product_uom_qty > 0 and qty_done > 0
+                - The MO can be completed without errors
+        """
+        # ARRANGE — custom UoM with coarse rounding to trigger the bug
+        self.picking_type_mrp_operation_1.flowable_operation = True
+
+        # The roundtrip check in _update_reserved_quantity uses
+        # decimal.precision for float_compare. When precision >= 3
+        # and UoM rounding is 0.01, a quantity of 200.395 survives
+        # the float_compare but not the UoM roundtrip → mismatch.
+        dp = self.env.ref("product.decimal_product_uom")
+        original_digits = dp.digits
+        dp.digits = 6
+
+        uom_category = self.env["uom.category"].create({"name": "Test Coarse Volume"})
+        coarse_uom = self.env["uom.uom"].create(
+            {
+                "name": "Test Litre (coarse)",
+                "category_id": uom_category.id,
+                "uom_type": "reference",
+                "rounding": 0.01,
+            }
+        )
+        coarse_product = self.env["product.product"].create(
+            {
+                "name": "Liquid CO2 coarse",
+                "type": "product",
+                "uom_id": coarse_uom.id,
+                "uom_po_id": coarse_uom.id,
+                "tracking": "lot",
+            }
+        )
+        self.location_flowable_1.write(
+            {
+                "flowable_uom_id": coarse_uom.id,
+                "flowable_allowed_product_ids": [(6, 0, [coarse_product.id])],
+            }
+        )
+
+        lot_a = self._create_lot(coarse_product, "SPLIT-LOT-A")
+        self._seed_flowable_location(
+            self.location_flowable_1, coarse_product, lot_a, 200
+        )
+
+        # Simulate a quant whose quantity has more decimal precision
+        # than the UoM rounding (0.01). This happens in production when
+        # the UoM rounding is tightened after quants already exist.
+        quant_a = self.env["stock.quant"].search(
+            [
+                ("lot_id", "=", lot_a.id),
+                ("location_id", "=", self.location_flowable_1.id),
+            ]
+        )
+        quant_a.sudo().write({"quantity": 200.395})
+
+        lot_b = self._create_lot(coarse_product, "SPLIT-LOT-B")
+
+        # ACT — receive lot B (triggers mixing MO)
+        self._receive_stock(self.location_flowable_1, coarse_product, lot_b, 100)
+
+        production = self._find_flowable_production(self.location_flowable_1)
+        self.assertTrue(production, "Mixing MO should have been created")
+        self.assertEqual(production.state, "to_close")
+
+        raw_move = production.move_raw_ids
+        self.assertEqual(len(raw_move), 1, "Should have exactly one raw move")
+
+        # ASSERT — each lot has exactly one line with both reservation and qty_done
+        for lot in (lot_a, lot_b):
+            lot_lines = raw_move.move_line_ids.filtered(
+                lambda ml, lt=lot: ml.lot_id == lt
+            )
+            self.assertEqual(
+                len(lot_lines),
+                1,
+                "Lot %s should have exactly one move line, got %d"
+                % (lot.name, len(lot_lines)),
+            )
+            self.assertGreater(
+                lot_lines.product_uom_qty,
+                0,
+                "Lot %s line must have product_uom_qty > 0" % lot.name,
+            )
+            self.assertGreater(
+                lot_lines.qty_done,
+                0,
+                "Lot %s line must have qty_done > 0" % lot.name,
+            )
+
+        # CLEANUP
+        dp.digits = original_digits
