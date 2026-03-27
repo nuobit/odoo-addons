@@ -19,6 +19,26 @@ msgstr ""
 #: code:addons/uom_rounding_coherence/models/uom_uom.py:0
 #, python-format
 msgid ""
+"Cannot set rounding to %(rounding)s for '%(uom)s': there are stock "
+"quantities with more decimal places than the new rounding allows.\n"
+"\n"
+"Examples:\n"
+"%(examples)s\n"
+"\n"
+"Fix the stock data first or use a finer rounding."
+msgstr ""
+"No es pot establir l'arrodoniment a %(rounding)s per a '%(uom)s': hi ha "
+"quantitats d'estoc amb més decimals dels que permet el nou arrodoniment.\n"
+"\n"
+"Exemples:\n"
+"%(examples)s\n"
+"\n"
+"Corregiu les dades d'estoc primer o utilitzeu un arrodoniment més fi."
+
+#. module: uom_rounding_coherence
+#: code:addons/uom_rounding_coherence/models/uom_uom.py:0
+#, python-format
+msgid ""
 "Cannot validate rounding coherence for category '%(category)s': expected "
 "exactly one active reference unit of measure but found %(count)s."
 msgstr ""
