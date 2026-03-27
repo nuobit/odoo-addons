@@ -1,5 +1,6 @@
 # Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html)
 
 import json
@@ -25,7 +26,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
     def _exec(self, op, resource, *args, **kwargs):
         if kwargs.get("domain"):
             kwargs["domain"] = trim_domain(kwargs["domain"])
-        func = getattr(self, "_exec_%s" % op)
+        func = getattr(self, f"_exec_{op}")
         return func(resource, *args, **kwargs)
 
     def _manage_error_codes(
@@ -36,11 +37,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             if res.status_code == 404:
                 if res_data.get("code") == "rest_no_route":
                     error_message = _(
-                        "Error: '%s'. Probably the %s has been"
+                        "Error: '%(message)s'. Probably the %(resource)s has been"
                         " removed from Woocommerce. "
-                        "If it's the case, try to remove the binding of the %s."
-                        % (res_data.get("message"), resource, self.model._name)
-                    )
+                        "If it's the case, try to remove the binding of the %(model)s."
+                    ) % {
+                        "message": res_data.get("message"),
+                        "resource": resource,
+                        "model": self.model._name,
+                    }
                 # elif res_data.get("code") == "woocommerce_rest_term_invalid":
                 #     error_message = _(
                 #         "Error: '%s'. Probably the %s has been "
@@ -65,33 +69,42 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             elif res.status_code == 400:
                 if res_data.get("code") == "term_exists":
                     error_message = _(
-                        "Error: '%s'. Probably repeated record already exists in Woocommerce. "
-                        "If you don't see it from the interface probably the database is dirty "
-                        "and you should check the database directly. It means that there's "
-                        "terms (value attributes) in table wp_term_taxonomy with a"
-                        "non-existent taxonomy (attribute).\n"
-                        "Please, review the data in %s/%s and compare it with %s"
-                        % (
-                            res_data["message"],
-                            resource,
-                            res_data["data"]["resource_id"],
-                            kwargs["data"],
-                        )
-                    )
+                        "Error: '%(message)s'. Probably repeated record already "
+                        "exists in Woocommerce. "
+                        "If you don't see it from the interface probably the database"
+                        " is dirty and you should check the database directly. It means"
+                        " that there's terms (value attributes) in table "
+                        "wp_term_taxonomy with a non-existent taxonomy (attribute).\n"
+                        "Please, review the data in %(resource)s/%(resource_id)s "
+                        "and compare it with %(data)s"
+                    ) % {
+                        "message": res_data["message"],
+                        "resource": resource,
+                        "resource_id": res_data["data"]["resource_id"],
+                        "data": kwargs["data"],
+                    }
                 # elif res_data.get("code") in [
                 #     "woocommerce_rest_product_variation_invalid_id",
                 #     "woocommerce_rest_product_invalid_id",
                 # ]:
                 #     error_message = _(
-                #         "Error: '%s'. Probably the %s has been removed from Woocommerce. "
+                #         "Error: '%s'. Probably the %s has been
+                #         removed from Woocommerce. "
                 #         "If it's the case, try to remove the binding of the %s."
                 #         % (res_data.get("message"), resource, self.model._name)
                 #     )
             if not error_message:
                 error_message = _(
-                    "Error: %s -> Op: %s, Resource: %s, Args: %s, KWArgs: %s"
-                    % (res_data, op, resource, args, kwargs)
-                )
+                    "Error: %(data)s -> Op: %(op)s, Resource: %(resource)s, "
+                    "Args: %(args)s, KWArgs: %(kwargs)s"
+                ) % {
+                    "data": res_data,
+                    "op": op,
+                    "resource": resource,
+                    "args": args,
+                    "kwargs": kwargs,
+                }
+
             if raise_on_error:
                 raise ValidationError(error_message)
             return error_message
@@ -141,8 +154,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             if not response.ok:
                 # These are the cases where a not found should be an empty result
                 # instead of an error, we need to bypass the standard REST behaviour
-                # and make it look like more like an SQL whre if the parameters are wrong
-                # it just returns no value
+                # and make it look like more like an SQL whre if the parameters are
+                # wrong it just returns no value
                 if op == "get":
                     if response.status_code != 404 or res_data["code"] not in (
                         "woocommerce_rest_product_invalid_id",
@@ -176,16 +189,20 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                         if header in response.headers:
                             raise ValidationError(
                                 _(
-                                    "The '%s' header should not be present in "
-                                    "singleton responses: %s"
+                                    "The '%(header)s' header should not be present in "
+                                    "singleton responses: %(response)s"
                                 )
-                                % (header, res_data)
+                                % {
+                                    "header": header,
+                                    "response": res_data,
+                                }
                             )
                     # for link in response.links.keys():
                     #     if link in ["next", "prev", "first", "last"]:
                     #         raise ValidationError(
                     #             _(
-                    #                 "The '%s' link should not be present in singleton "
+                    #                 "The '%s' link should not be
+                    #                 present in singleton "
                     #                 "responses: %s"
                     #             )
                     #             % (link, res_data)
@@ -194,8 +211,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                     for header in multi_headers:
                         if header not in response.headers:
                             raise ValidationError(
-                                _("The '%s' header is missing in multi responses: %s")
-                                % (header, res_data)
+                                _(
+                                    "The '%(header)s' header is missing"
+                                    " in multi responses: %(response)s"
+                                )
+                                % {
+                                    "header": header,
+                                    "response": res_data,
+                                }
                             )
                 if singleton:
                     result["data"] = [res_data]
@@ -204,8 +227,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                 else:
                     if op != "get":
                         raise ValidationError(
-                            _("Unexpected multi-response for operation '%s': %s")
-                            % (op, res_data)
+                            _(
+                                "Unexpected multi-response for "
+                                "operation '%(op)s': %(response)s"
+                            )
+                            % {
+                                "op": op,
+                                "response": res_data,
+                            }
                         )
                     result["data"] = res_data
                     result["total_items"] = int(response.headers["X-WP-Total"])
@@ -221,18 +250,18 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             raise ValidationError(
                 _(
                     "Error decoding json WooCommerce response: "
-                    "%s\nArgs:%s\nKwargs:%s\n"
-                    "URL:%s\nHeaders:%s\nMethod:%s\nBody:%s"
+                    "%(error)s\nArgs:%(args)s\nKwargs:%(kwargs)s\n"
+                    "URL:%(url)s\nHeaders:%(headers)s\nMethod:%(method)s\nBody:%(body)s"
                 )
-                % (
-                    e,
-                    args,
-                    kwargs,
-                    response.url,
-                    response.request.headers,
-                    response.request.method,
-                    response.text and response.text[:100] + " ...",
-                )
+                % {
+                    "error": e,
+                    "args": args,
+                    "kwargs": kwargs,
+                    "url": response.url,
+                    "headers": response.request.headers,
+                    "method": response.request.method,
+                    "body": response.text and response.text[:100] + " ...",
+                }
             ) from e
 
         if self.backend_record.enable_call_logging:
@@ -307,7 +336,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         # get domains
         # Separate domain into:
         # - api_domain: Domain clauses supported natively by WooCommerce API
-        # - local_domain: Domain clauses that must be applied locally in Odoo after fetching
+        # - local_domain: Domain clauses that must be applied locally in
+        # Odoo after fetching
         search_fields = self._get_search_fields()
         api_domain, local_domain = self._extract_domain_clauses(domain, search_fields)
 
@@ -326,7 +356,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         if page_size > 0:
             params["per_page"] = page_size
         if count:
-            # Optimization: If no local filtering, only fetch 1 record to minimize data transfer
+            # Optimization: If no local filtering, only fetch 1 record
+            # to minimize data transfer
             # We only need the total count from headers (X-WP-Total)
             if not local_domain:
                 params["per_page"] = 1
@@ -350,7 +381,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             )
             api_calls += 1
 
-            # Optimization: If counting with no local filtering, use total from API headers
+            # Optimization: If counting with no local filtering,
+            # use total from API headers
             if count and not local_domain:
                 counter = res["total_items"]
                 break
@@ -362,7 +394,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             seen_ids |= {d["id"] for d in data}
 
             # Compute offset (simulate offset by discarding records from early pages)
-            # This is necessary because WooCommerce's offset parameter is incompatible with page parameter
+            # This is necessary because WooCommerce's offset
+            # parameter is incompatible with page parameter
             if data and offset > 0:
                 data_count = len(data)
                 if offset < data_count:
@@ -394,7 +427,8 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
 
         if self.backend_record.enable_call_logging:
             _logger.info(
-                "WooCommerce API Response (_exec_get) - OP: %s, Resource: %s, Domain: %s, "
+                "WooCommerce API Response (_exec_get) "
+                "- OP: %s, Resource: %s, Domain: %s, "
                 "Offset: %s, Limit: %s, Count: %s, Params: %s, API Calls: %s",
                 "GET",
                 resource,
@@ -419,7 +453,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         )
         if res["total_items"] != 1:
             raise ValidationError(
-                _("Unexpected response from WooCommerce POST %s: %s") % (resource, res)
+                _(
+                    "Unexpected response from WooCommerce "
+                    "POST %(resource)s: (response))s"
+                )
+                % {
+                    "resource": resource,
+                    "response": res,
+                }
             )
         return res["data"][0]
 
@@ -427,7 +468,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         res = self._exec_wcapi_call("put", resource, *args, **kwargs)
         if res["total_items"] != 1:
             raise ValidationError(
-                _("Unexpected response from WooCommerce PUT %s: %s") % (resource, res)
+                _(
+                    "Unexpected response from WooCommerce "
+                    "PUT %(resource)s: %(response)s"
+                )
+                % {
+                    "resource": resource,
+                    "response": res,
+                }
             )
         return res["data"][0]
 
@@ -440,8 +488,14 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         )
         if res["total_items"] != 1:
             raise ValidationError(
-                _("Unexpected response from WooCommerce DELETE %s: %s")
-                % (resource, res)
+                _(
+                    "Unexpected response from WooCommerce "
+                    "DELETE %(resource)s: %(response)s"
+                )
+                % {
+                    "resource": resource,
+                    "response": res,
+                }
             )
         return res["data"][0]
 
