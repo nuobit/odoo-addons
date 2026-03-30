@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-22 12:54+0000\n"
+"POT-Creation-Date: 2026-10-29 09:28+0000\n"
 "PO-Revision-Date: 2024-10-22 12:54+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,49 +16,50 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: connector_extension_wordpress
+#. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
-#, python-format
 msgid "Error connecting to WordPress: %s"
 msgstr "Error al conectar con WordPress: %s"
 
 #. module: connector_extension_wordpress
+#. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
-#, python-format
 msgid ""
-"Error decoding json WordPress response: %s\n"
-"%s"
+"Error decoding json WordPress response: %(message)s\n"
+"%(response)s"
 msgstr ""
-"Error al decodificar la respuesta json de WordPress: %s\n"
-"%s"
+"Error al decodificar la respuesta json de WordPress: %(message)s\n"
+"%(response)s"
 
 #. module: connector_extension_wordpress
+#. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
-#, python-format
-msgid "Error: %s, Resource: %s"
-msgstr "Error: %s, Recurso: %s"
+msgid "Error: %(message)s, Resource: %(resource)s"
+msgstr "Error: %(message)s, Recurso: %(resource)s"
 
 #. module: connector_extension_wordpress
+#. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
-#, python-format
 msgid ""
-"Error: '%s'. Probably the %s has been removed from WordPress. If it's the "
-"case, try to remove the binding of the %s."
+"Error: '%(message)s'. Probably the %(resource)s has been removed from "
+"WordPress. If it's the case, try to remove the binding of the %(model)s."
 msgstr ""
-"Error: '%s'. Probablemente el %s ha sido eliminado de WordPress. Si es el "
-"caso, intente eliminar la vinculación del %s."
+"Error: '%(message)s'. Probablemente el %(resource)s ha sido eliminado de "
+"WordPress. Si es el caso, intente eliminar la vinculación del %(model)s."
 
 #. module: connector_extension_wordpress
+#. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
-#, python-format
 msgid ""
-"Error: '%s'. Probably the image or document is uploaded with bad format. "
-"Please, review on database: %s"
+"Error: '%(message)s'. Probably the image or document is uploaded with bad "
+"format. Please, review on database: %(resource)s"
 msgstr ""
-"Error: '%s'. Probablemente la imagen o el documento se ha subido con un "
-"formato incorrecto. Por favor, revise en la base de datos: %s"
+"Error: '%(message)s'. Probablemente la imagen o el documento se ha subido "
+"con un formato incorrecto. Por favor, revise en la base de datos: "
+"%(resource)s"
 
 #. module: connector_extension_wordpress
+#. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
-#, python-format
 msgid "Wordpress not connected"
 msgstr "WordPress no conectado"
