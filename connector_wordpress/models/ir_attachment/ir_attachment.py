@@ -17,6 +17,8 @@ class IrAttachment(models.Model):
     # TODO:REVIEW: We can move this method to another module
     def _get_seo_meta_data(self):
         self.ensure_one()
+        if not self.res_model or not self.res_id:
+            return {}
         model_obj = self.env[self.res_model].browse(self.res_id)
         if hasattr(model_obj, "_get_seo_meta_data"):
             meta_data = model_obj._get_seo_meta_data()
