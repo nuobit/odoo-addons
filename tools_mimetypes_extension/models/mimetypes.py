@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -32,7 +33,7 @@ _mimetype_file_extension = {
     "application/vnd.oasis.opendocument.presentation": ".odp",
     "application/vnd.oasis.opendocument.spreadsheet": ".ods",
     "application/vnd.oasis.opendocument.text": ".odt",
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",  # noqa: E501
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
     "application/vnd.rar": ".rar",
@@ -430,7 +431,12 @@ _mimetype_file_extension = {
 
 def guess_extension(mimetype):
     if mimetype not in _mimetype_file_extension:
-        raise ValidationError(_("Mimetype %s is not mapped." % mimetype))
+        raise ValidationError(
+            _("Mimetype %(mimetype)s is not mapped.")
+            % {
+                "mimetype": mimetype,
+            }
+        )
     return _mimetype_file_extension[mimetype]
 
 
