@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import datetime
 import hashlib
@@ -21,7 +22,9 @@ def list2hash(_list):
         elif e is None:
             e9 = ""
         else:
-            raise Exception("Unexpected type for a key: type %s" % type(e))
+            raise Exception("Unexpected type for a key: type %(type)s") % {
+                "type": type(e),
+            }
         _hash.update(e9.encode("utf8"))
     return _hash.hexdigest()
 
@@ -49,10 +52,11 @@ def domain_to_normalized_dict(self, domain):
                 raise ValidationError(_("Duplicated field %s") % field)
             res[field] = self._normalize_value(not value)
         elif op == "in":
-            if not isinstance(value, (tuple, list)):
+            if not isinstance(value, (tuple | list)):
                 raise ValidationError(
                     _(
-                        "Operator '%(OPERATOR)s' only supports tuples or lists, not %(TYPES)s"
+                        "Operator '%(OPERATOR)s' only supports"
+                        " tuples or lists, not %(TYPES)s"
                     )
                     % {
                         "OPERATOR": op,
@@ -63,13 +67,17 @@ def domain_to_normalized_dict(self, domain):
                 raise ValidationError(_("Duplicated field %s") % field)
             res[field] = self._normalize_value(value)
         elif op in (">", ">=", "<", "<="):
-            if not isinstance(value, (datetime.date, datetime.datetime, int)):
+            if not isinstance(value, (datetime.date | datetime.datetime | int)):
                 raise ValidationError(
-                    _("Type {} not supported for operator {}").format(type(value), op)
+                    _("Type %(type)s not supported for operator %(operator)s")
+                    % {
+                        "type": type(value),
+                        "operator": op,
+                    }
                 )
             if op in (">", "<"):
                 adj = 1
-                if isinstance(value, (datetime.date, datetime.datetime)):
+                if isinstance(value, (datetime.date | datetime.datetime)):
                     adj = datetime.timedelta(days=adj)
                 if op == "<":
                     op, value = "<=", value - adj

@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -17,7 +18,7 @@ class WordPressIrAttachment(Component):
         # TODO: REVIEW: Check external_id_values, external_id and
         #  external_id_values["id] nullability
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        return self._exec("get", "media/%s" % external_id_values["id"])
+        return self._exec("get", f"media/{external_id_values['id']}")
 
     def search_read(self, domain=None):
         binder = self.binder_for()
@@ -26,11 +27,11 @@ class WordPressIrAttachment(Component):
         _, common_domain = self._extract_domain_clauses(domain, external_id_fields)
         external_id_values = binder.dict2id2dict(domain_dict, in_field=False)
         if external_id_values:
-            url = "media/%s" % external_id_values["id"]
+            url = f"media/{external_id_values['id']}"
         else:
             url = "media"
         return self._exec("get", url, domain=common_domain)
 
     def write(self, external_id, data):  # pylint: disable=W8106
         external_id_values = self.binder_for().id2dict(external_id, in_field=False)
-        return self._exec("put", "media/%s" % external_id_values["id"], data=data)
+        return self._exec("put", f"media/{external_id_values['id']}", data=data)

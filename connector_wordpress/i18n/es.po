@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-16 09:55+0000\n"
+"POT-Creation-Date: 2026-10-29 09:28+0000\n"
 "PO-Revision-Date: 2024-10-16 09:55+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,6 +20,11 @@ msgstr ""
 #: model:ir.model.constraint,message:connector_wordpress.constraint_wordpress_ir_attachment_internal_uniq
 msgid "A binding already exists with the same External (odoo_id) ID."
 msgstr "Existe un enlace con el mismo ID externo (odoo_id)."
+
+#. module: connector_wordpress
+#: model:ir.model.constraint,message:connector_wordpress.constraint_wordpress_ir_attachment_external_uniq
+msgid "A binding already exists with the same External ID (idAttachment)"
+msgstr ""
 
 #. module: connector_wordpress
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__access_token
@@ -116,24 +121,26 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: connector_wordpress
-#: model:ir.model.fields,field_description:connector_wordpress.field_ir_attachment__display_name
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_document__display_name
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_image__display_name
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_product__display_name
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_template__display_name
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__display_name
-#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_binding__display_name
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/common/tools.py:0
-#: code:addons/connector_wordpress/models/common/tools.py:0
-#: code:addons/connector_wordpress/models/common/tools.py:0
-#, python-format
 msgid "Duplicated field %s"
 msgstr "Campo duplicado %s"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__enable_call_logging
+msgid "Enable Call Logging"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__enable_call_logging
+msgid "Enable logging of calls to the external system"
+msgstr ""
 
 #. module: connector_wordpress
 #: model:ir.ui.menu,name:connector_wordpress.wordpress_external_objects_menu
@@ -156,13 +163,7 @@ msgid "File Size"
 msgstr "Tamaño del archivo"
 
 #. module: connector_wordpress
-#: model:ir.model.fields,field_description:connector_wordpress.field_ir_attachment__id
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_document__id
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_image__id
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_product__id
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_template__id
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__id
-#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_binding__id
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__id
 msgid "ID"
 msgstr ""
@@ -179,9 +180,9 @@ msgid ""
 "check allow to avoid the error of not finding the image and don't raise an "
 "error."
 msgstr ""
-"Si se está utilizando una base de datos de prueba, las rutas de los "
-"adjuntos pueden estar vacías. Esta comprobación permite evitar el error de "
-"no encontrar la imagen y no generar un error."
+"Si se está utilizando una base de datos de prueba, las rutas de los adjuntos"
+" pueden estar vacías. Esta comprobación permite evitar el error de no "
+"encontrar la imagen y no generar un error."
 
 #. module: connector_wordpress
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__image_height
@@ -219,22 +220,15 @@ msgid "Key"
 msgstr "Clave"
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/common/tools.py:0
-#, python-format
 msgid "Key %s already exists"
 msgstr "La clave %s ya existe"
 
 #. module: connector_wordpress
-#: model:ir.model.fields,field_description:connector_wordpress.field_ir_attachment____last_update
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_document____last_update
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_image____last_update
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_product____last_update
-#: model:ir.model.fields,field_description:connector_wordpress.field_product_template____last_update
-#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend____last_update
-#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_binding____last_update
-#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment____last_update
-msgid "Last Modified on"
-msgstr "Última modificación el"
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__lang_ids
+msgid "Languages"
+msgstr ""
 
 #. module: connector_wordpress
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__write_uid
@@ -269,8 +263,8 @@ msgstr ""
 "la última"
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/common/tools.py:0
-#, python-format
 msgid "Multiple values found for '%s'"
 msgstr "Se encontraron varios valores para '%s'"
 
@@ -281,20 +275,20 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/common/tools.py:0
-#, python-format
 msgid "Not equal operation not supported for non boolean fields"
 msgstr "Operación no igual no soportada para campos no booleanos"
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/common/tools.py:0
-#, python-format
 msgid "Operator %s not supported"
 msgstr "Operador %s no soportado"
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/common/tools.py:0
-#, python-format
 msgid "Operator '%(OPERATOR)s' only supports tuples or lists, not %(TYPES)s"
 msgstr "Operador '%(OPERATOR)s' solo soporta tuplas o listas, no %(TYPES)s"
 
@@ -309,7 +303,7 @@ msgid "Page Size"
 msgstr "Tamaño de página"
 
 #. module: connector_wordpress
-#: model:ir.model,name:connector_wordpress.model_product_product
+#: model:ir.model,name:connector_wordpress.model_product_template
 msgid "Product"
 msgstr "Producto"
 
@@ -324,9 +318,9 @@ msgid "Product Image"
 msgstr "Imagen del producto"
 
 #. module: connector_wordpress
-#: model:ir.model,name:connector_wordpress.model_product_template
-msgid "Product Template"
-msgstr "Plantilla de producto"
+#: model:ir.model,name:connector_wordpress.model_product_product
+msgid "Product Variant"
+msgstr ""
 
 #. module: connector_wordpress
 #: model_terms:ir.ui.view,arch_db:connector_wordpress.wordpress_backend_view_form
@@ -359,6 +353,11 @@ msgid "Resynchronize"
 msgstr "Resincronizar"
 
 #. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__server_tz
+msgid "Server Timezone"
+msgstr ""
+
+#. module: connector_wordpress
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__wordpress_source_url
 msgid "Source URL"
 msgstr "URL de origen"
@@ -379,28 +378,31 @@ msgid "Sync Offset"
 msgstr ""
 
 #. module: connector_wordpress
-#: model:ir.model.fields,help:connector_wordpress.field_wordpress_ir_attachment__key
-msgid ""
-"Technical field used to resolve multiple attachments in a multi-website "
-"environment."
-msgstr ""
-"Campo técnico usado para resolver múltiples adjuntos en un entorno multi-"
-"sitio web."
-
-#. module: connector_wordpress
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__test_database
 msgid "Test Database"
 msgstr "Testear base de datos"
 
 #. module: connector_wordpress
-#: model:ir.model.fields,help:connector_wordpress.field_wordpress_ir_attachment__res_model
-msgid "The database object this attachment will be attached to."
-msgstr "La base de datos del objeto al que se adjuntará este adjunto."
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__tz
+msgid ""
+"The timezone of the business data in the external system. All imported "
+"datetime values are assumed to be in this timezone and will be converted to "
+"UTC for storage in Odoo. On export, Odoo UTC values are converted back to "
+"this timezone."
+msgstr ""
+"La zona horaria de los datos de negocio en el sistema externo. Se supone que"
+" todas las fechas y horas importadas están en esta zona horaria y se "
+"convierten a UTC para guardarlas en Odoo. Al exportar, los valores UTC de "
+"Odoo se vuelven a convertir a esta zona horaria."
 
 #. module: connector_wordpress
-#: model:ir.model.fields,help:connector_wordpress.field_wordpress_ir_attachment__res_id
-msgid "The record id this is attached to."
-msgstr "El ID de registro al que está adjunto."
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__server_tz
+msgid ""
+"The timezone of the external system's server. Used for technical timestamps "
+"managed by the server itself (e.g. modification dates, audit trails) which "
+"may differ from the business data timezone when the server is hosted in a "
+"different region."
+msgstr ""
 
 #. module: connector_wordpress
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__theme_template_id
@@ -415,11 +417,6 @@ msgid ""
 msgstr ""
 "Este campo se usa para definir el número de registros importados al mismo "
 "tiempo."
-
-#. module: connector_wordpress
-#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__tz
-msgid "This field is used to define in which timezone the backend will work."
-msgstr "Este campo se usa para definir en qué zona horaria trabajará el backend."
 
 #. module: connector_wordpress
 #: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__chunk_size
@@ -449,15 +446,28 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/common/tools.py:0
-#, python-format
-msgid "Type {} not supported for operator {}"
-msgstr "Tipo {} no soportado para el operador {}"
+msgid "Type %(type)s not supported for operator %(operator)s"
+msgstr "Tipo %(type)s no soportado para el operador %(operator)s"
 
 #. module: connector_wordpress
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__url
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__url
 msgid "Url"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__user_id
+msgid "User"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__user_id
+msgid ""
+"User used as the default responsible for records created by this backend. If"
+" set, all operations (imports, exports, jobs) will run under this user "
+"context."
 msgstr ""
 
 #. module: connector_wordpress
@@ -481,13 +491,13 @@ msgid "Version"
 msgstr ""
 
 #. module: connector_wordpress
-#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__website_id
-msgid "Website"
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__voice_ids
+msgid "Voice"
 msgstr ""
 
 #. module: connector_wordpress
-#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__website_url
-msgid "Website URL"
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__website_id
+msgid "Website"
 msgstr ""
 
 #. module: connector_wordpress
@@ -515,7 +525,9 @@ msgstr ""
 
 #. module: connector_wordpress
 #: model:ir.model.fields,field_description:connector_wordpress.field_ir_attachment__wordpress_bind_ids
-#: model:ir.model.fields,field_description:connector_wordpress.field_mrp_document__wordpress_bind_ids
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_document__wordpress_bind_ids
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_product_document__wordpress_bind_ids
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_template_document__wordpress_bind_ids
 #: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__wordpress_bind_ids
 msgid "WordPress Bindings"
 msgstr ""
@@ -541,8 +553,8 @@ msgid "WordPress Username"
 msgstr "WordPress Nombre de usuario"
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/common/tools.py:0
-#, python-format
 msgid "Wrong domain clause format %s"
 msgstr "Incorrecto formato de cláusula de dominio %s"
 
@@ -556,7 +568,7 @@ msgstr ""
 "internet a su archivo."
 
 #. module: connector_wordpress
+#. odoo-python
 #: code:addons/connector_wordpress/models/ir_attachment/ir_attachment.py:0
-#, python-format
 msgid "it should always return a dictionary"
 msgstr "debería siempre devolver un diccionario"
