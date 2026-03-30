@@ -7,10 +7,6 @@
         <field name="name">connector.sale.order.form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
-        <field
-            name="groups_id"
-            eval="[(4, ref('connector.group_connector_manager'))]"
-        />
         <field name="arch" type="xml">
             <div name="button_box" position="before">
                 <field name="is_woocommerce" invisible="1" />
@@ -19,10 +15,15 @@
                     title="WooCommerce"
                     bg_color="bg-info"
                     invisible="is_woocommerce != True"
+                    groups="connector.group_connector_manager"
                 />
             </div>
             <xpath expr="/form/sheet/notebook" position="inside">
-                <page string="Connector WooCommerce" name="connector_woocommerce">
+                <page
+                    string="Connector WooCommerce"
+                    name="connector_woocommerce"
+                    groups="connector.group_connector_manager"
+                >
                     <group string="WooCommerce Bindings">
                         <field name="woocommerce_bind_ids" nolabel="1" />
                     </group>

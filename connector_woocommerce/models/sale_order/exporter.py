@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -11,7 +12,7 @@ class WooCommerceSaleOrdertBatchDirectExporter(Component):
     """
 
     _name = "woocommerce.sale.order.batch.direct.exporter"
-    _inherit = "connector.extension.generic.batch.direct.exporter"
+    _inherit = "connector.extension.batch.direct.exporter"
 
     _apply_on = "woocommerce.sale.order"
 
@@ -23,7 +24,7 @@ class WooCommerceSaleOrderBatchDelayedExporter(Component):
     """
 
     _name = "woocommerce.sale.order.batch.delayed.exporter"
-    _inherit = "connector.extension.generic.batch.delayed.exporter"
+    _inherit = "connector.extension.batch.delayed.exporter"
 
     _apply_on = "woocommerce.sale.order"
 

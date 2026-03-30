@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -11,7 +12,7 @@ class WooCommerceResPartnerBatchDirectImporter(Component):
     """
 
     _name = "woocommerce.res.partner.batch.direct.importer"
-    _inherit = "connector.extension.generic.batch.direct.importer"
+    _inherit = "connector.extension.batch.direct.importer"
 
     _apply_on = "woocommerce.res.partner"
 
@@ -23,7 +24,7 @@ class WooCommerceResPartnerBatchDelayedImporter(Component):
     """
 
     _name = "woocommerce.res.partner.batch.delayed.importer"
-    _inherit = "connector.extension.generic.batch.delayed.importer"
+    _inherit = "connector.extension.batch.delayed.importer"
 
     _apply_on = "woocommerce.res.partner"
 
