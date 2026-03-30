@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
 import json
@@ -20,7 +21,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
     _inherit = "connector.extension.adapter.crud"
 
     def _exec(self, op, resource, *args, **kwargs):
-        func = getattr(self, "_exec_%s" % op)
+        func = getattr(self, f"_exec_{op}")
         return func(resource, *args, **kwargs)
 
     def _manage_error_codes(
@@ -31,21 +32,29 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             if res.status_code == 404:
                 if res_data.get("code") == "rest_post_invalid_id":
                     error_message = _(
-                        "Error: '%s'. Probably the %s has been "
+                        "Error: '%(message)s'. Probably the %(resource)s has been "
                         "removed from WordPress. "
-                        "If it's the case, try to remove the binding of the %s."
-                        % (res_data.get("message"), resource, self.model._name)
-                    )
+                        "If it's the case, try to remove the binding of the %(model)s."
+                    ) % {
+                        "message": res_data.get("message"),
+                        "resource": resource,
+                        "model": self.model._name,
+                    }
             elif res.status_code == 500:
                 if res_data.get("code") == "rest_upload_sideload_error":
                     error_message = _(
-                        "Error: '%s'. Probably the image or document "
+                        "Error: '%(message)s'. Probably the image or document "
                         "is uploaded with bad format. "
-                        "Please, review on database: %s"
-                        % (res_data["message"], kwargs["headers"])
-                    )
+                        "Please, review on database: %(resource)s"
+                    ) % {
+                        "message": res_data["message"],
+                        "resource": kwargs["headers"],
+                    }
             if not error_message:
-                error_message = _("Error: %s, Resource: %s" % (res_data, resource))
+                error_message = _("Error: %(message)s, Resource: %(resource)s") % {
+                    "message": res_data,
+                    "resource": resource,
+                }
             if raise_on_error:
                 raise ValidationError(error_message)
             return error_message
@@ -70,7 +79,11 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             raise RetryableJobError(_("Error connecting to WordPress: %s") % e) from e
         except json.JSONDecodeError as e:
             raise ValidationError(
-                _("Error decoding json WordPress response: %s\n%s") % (e, res.text)
+                _("Error decoding json WordPress response: %(message)s\n%(response)s")
+                % {
+                    "message": e,
+                    "response": res.text if res else _("No response"),
+                }
             ) from e
         return result
 
@@ -112,12 +125,12 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             return self._exec_wp_call(
                 "get",
                 resource,
+                *args,
                 auth=(
                     self.backend_record.username,
                     self.backend_record.application_password,
                 ),
                 verify=self.backend_record.verify_ssl,
-                *args,
                 **kwargs,
             )
         # WooCommerce has the parameter next on the response headers
@@ -146,13 +159,13 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             res = self._exec_wp_call(
                 "get",
                 resource,
+                *args,
                 params=params,
                 auth=(
                     self.backend_record.username,
                     self.backend_record.application_password,
                 ),
                 verify=self.backend_record.verify_ssl,
-                *args,
                 **kwargs,
             )
             # WooCommerce returns a dict if the response is a single item
@@ -193,12 +206,12 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         res = self._exec_wp_call(
             "put",
             resource,
+            *args,
             data=data,
             params=data_aux,
             headers=headers,
             auth=auth,
             verify=self.backend_record.verify_ssl,
-            *args,
             **kwargs,
         )
         return res["data"]
@@ -212,6 +225,6 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
     def get_version(self):
         settings = self._exec("get", "settings")
         if settings and settings[0].get("title"):
-            return "Wordpress '%s' connected" % settings[0].get("title")
+            return "Wordpress '{}' connected".format(settings[0].get("title"))
         else:
             raise ValidationError(_("Wordpress not connected"))
