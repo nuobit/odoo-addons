@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from pathlib import Path
@@ -13,7 +14,7 @@ class WordPressIrAttachmentBatchDirectExporter(Component):
     """
 
     _name = "wordpress.ir.attachment.batch.direct.exporter"
-    _inherit = "connector.extension.generic.batch.direct.exporter"
+    _inherit = "connector.extension.batch.direct.exporter"
 
     _apply_on = "wordpress.ir.attachment"
 
@@ -25,7 +26,7 @@ class WordPressIrAttachmentBatchDelayedExporter(Component):
     """
 
     _name = "wordpress.ir.attachment.batch.delayed.exporter"
-    _inherit = "connector.extension.generic.batch.delayed.exporter"
+    _inherit = "connector.extension.batch.delayed.exporter"
 
     _apply_on = "wordpress.ir.attachment"
 
@@ -44,7 +45,7 @@ class WordPressIrAttachmentExporter(Component):
         return res
 
     def _get_sql_lock(self, record):
-        return "SELECT checksum FROM %s WHERE CHECKSUM = '%s' FOR UPDATE NOWAIT" % (
-            record._table,
-            record.sudo().checksum,
+        return (
+            f"SELECT checksum FROM {record._table} WHERE "
+            f"CHECKSUM = '{record.sudo().checksum}' FOR UPDATE NOWAIT"
         )
