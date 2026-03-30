@@ -118,7 +118,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 ),
                 verify=self.backend_record.verify_ssl,
                 *args,
-                **kwargs
+                **kwargs,
             )
         # WooCommerce has the parameter next on the response headers
         # to get the next page but we can't use it because if we use
@@ -153,7 +153,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 ),
                 verify=self.backend_record.verify_ssl,
                 *args,
-                **kwargs
+                **kwargs,
             )
             # WooCommerce returns a dict if the response is a single item
             if not isinstance(res["data"], list):
@@ -199,7 +199,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             auth=auth,
             verify=self.backend_record.verify_ssl,
             *args,
-            **kwargs
+            **kwargs,
         )
         return res["data"]
 
