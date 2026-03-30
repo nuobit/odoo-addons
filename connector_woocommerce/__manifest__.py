@@ -16,6 +16,7 @@
         ],
     },
     "depends": [
+        "account_payment_mode",
         "connector_extension_woocommerce",
         "connector_wordpress",
         "sale_stock",

@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 import logging
@@ -14,7 +15,7 @@ class WooCommerceRecordDirectExporter(AbstractComponent):
 
     _name = "woocommerce.record.direct.exporter"
     _inherit = [
-        "connector.extension.generic.record.direct.exporter",
+        "connector.extension.record.direct.exporter",
         "base.woocommerce.connector",
     ]
 
@@ -27,6 +28,6 @@ class WooCommerceBatchExporter(AbstractComponent):
 
     _name = "woocommerce.batch.exporter"
     _inherit = [
-        "connector.extension.generic.batch.exporter",
+        "connector.extension.batch.exporter",
         "base.woocommerce.connector",
     ]
