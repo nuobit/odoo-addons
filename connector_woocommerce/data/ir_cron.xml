@@ -14,8 +14,6 @@
         <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_export_product_tmpl()</field>
     </record>
@@ -29,8 +27,6 @@
         <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_export_products()</field>
     </record>
@@ -48,8 +44,6 @@
         <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_export_sale_orders()</field>
     </record>
@@ -67,8 +61,6 @@
         <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_import_sale_orders()</field>
     </record>
@@ -86,8 +78,6 @@
         <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_export_product_public_category()</field>
     </record>
@@ -105,8 +95,6 @@
         <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_export_product_attribute()</field>
     </record>
@@ -124,8 +112,6 @@
         <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_export_product_attribute_value()</field>
     </record>
@@ -142,8 +128,6 @@
         <!--field name="user_id" ref="<not base.user_root>"/-->
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False" />
         <field name="state">code</field>
         <field name="code">model._scheduler_export_product_attachment()</field>
     </record>
