@@ -36,7 +36,7 @@ class ProductTemplate(models.Model):
     @api.depends(
         "is_published",
         "name",
-        "lst_price",
+        "list_price",
         "active",
         "qty_available",
         "image_1920",
