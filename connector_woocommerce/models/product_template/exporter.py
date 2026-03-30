@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -12,7 +13,7 @@ class WooCommerceProductTemplateBatchDirectExporter(Component):
     """
 
     _name = "woocommerce.product.template.batch.direct.exporter"
-    _inherit = "connector.extension.generic.batch.direct.exporter"
+    _inherit = "connector.extension.batch.direct.exporter"
 
     _apply_on = "woocommerce.product.template"
 
@@ -24,7 +25,7 @@ class WooCommerceProductTemplateBatchDelayedExporter(Component):
     """
 
     _name = "woocommerce.product.template.batch.delayed.exporter"
-    _inherit = "connector.extension.generic.batch.delayed.exporter"
+    _inherit = "connector.extension.batch.delayed.exporter"
 
     _apply_on = "woocommerce.product.template"
 
