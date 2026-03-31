@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
 import datetime
@@ -16,6 +17,8 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
 
     _date_format = "%Y-%m-%d"
     _datetime_format = "%Y-%m-%dT%H:%M:%SZ"
+
+    _usage = "adapter"
 
     def _prepare_field_type(self, field_data):
         default_values = {}
@@ -90,21 +93,21 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                     if record[k] in v:
                         break
                 elif op == "in":
-                    if not isinstance(v, (tuple, list)):
+                    if not isinstance(v, (tuple | list)):
                         raise ValidationError(
                             _("The value %s should be a list or tuple") % v
                         )
                     if record[k] not in v:
                         break
                 elif op == "not in":
-                    if not isinstance(v, (tuple, list)):
+                    if not isinstance(v, (tuple | list)):
                         raise ValidationError(
                             _("The value %s should be a list or tuple") % v
                         )
                     if record[k] in v:
                         break
                 else:
-                    raise NotImplementedError("Operator '%s' not supported" % op)
+                    raise NotImplementedError(f"Operator {op} not supported")
             else:
                 values_filtered.append(record)
         return values_filtered
@@ -131,7 +134,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
             value = value.strftime(self._datetime_format)
         elif isinstance(value, datetime.date):
             value = value.strftime(self._date_format)
-        elif isinstance(value, (int, str, list, tuple, bool)):
+        elif isinstance(value, (int | str | list | tuple | bool)):
             pass
         elif value is None:
             pass
@@ -162,7 +165,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                     raise ValidationError(_("Duplicated field %s") % field)
                 res[field] = self._normalize_value(not value)
             elif op == "in":
-                if not isinstance(value, (tuple, list)):
+                if not isinstance(value, (tuple | list)):
                     raise ValidationError(
                         _(
                             "Operator '%(OPERATOR)s' only supports tuples or lists, "
@@ -177,7 +180,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                     raise ValidationError(_("Duplicated field %s") % field)
                 res[field] = self._normalize_value(value)
             elif op in (">", ">=", "<", "<="):
-                if not isinstance(value, (datetime.date, datetime.datetime, int)):
+                if not isinstance(value, (datetime.date | datetime.datetime | int)):
                     raise ValidationError(
                         _("Type %(TYPE)s not supported for operator %(OPERATOR)s")
                         % {
@@ -187,7 +190,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                     )
                 if op in (">", "<"):
                     adj = 1
-                    if isinstance(value, (datetime.date, datetime.datetime)):
+                    if isinstance(value, (datetime.date | datetime.datetime)):
                         adj = datetime.timedelta(days=adj)
                     if op == "<":
                         op, value = "<=", value - adj
@@ -204,7 +207,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
         return [(k, "=", v) for k, v in normalized_dict.items()]
 
     def _extract_domain_clauses(self, domain, fields):
-        if not isinstance(fields, (tuple, list)):
+        if not isinstance(fields, (tuple | list)):
             fields = [fields]
         extracted, rest = [], []
         for clause in domain:
@@ -220,7 +223,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
         if isinstance(elem, dict):
             for k, v in elem.items():
                 current_path = f"{path}/{k}"
-                if isinstance(v, (tuple, list, set, dict)):
+                if isinstance(v, (tuple | list | set | dict)):
                     if isinstance(v, dict):
                         if current_path in mapper:
                             v2 = {}
@@ -234,7 +237,7 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                 else:
                     if current_path in mapper:
                         elem[k] = mapper[current_path](v)
-        elif isinstance(elem, (tuple, list, set)):
+        elif isinstance(elem, (tuple | list | set)):
             for ch in elem:
                 self._convert_format(ch, mapper, path)
 
@@ -245,10 +248,10 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                 v = v.strftime(self._datetime_format)
             elif isinstance(v, datetime.date):
                 v = v.strftime(self._date_format)
-            elif isinstance(v, (int, str, list, tuple, bool)):
+            elif isinstance(v, (int | str | list | tuple | bool)):
                 pass
             else:
-                raise Exception("Type '%s' not supported" % type(v))
+                raise Exception(f"Type {type(v)} not supported")
             res.append((k, op, v))
         return res
 

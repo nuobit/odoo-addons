@@ -1,6 +1,8 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
+
 import logging
 from contextlib import contextmanager
 
@@ -14,11 +16,11 @@ from odoo.addons.connector.exception import RetryableJobError
 _logger = logging.getLogger(__name__)
 
 
-class ConnectorExtensionGenericDirectExporter(AbstractComponent):
+class ConnectorExtensionDirectExporter(AbstractComponent):
     """Generic Synchronizer for exporting data from Odoo to a backend"""
 
-    _name = "connector.extension.generic.record.direct.exporter"
-    _inherit = "base.exporter"
+    _name = "connector.extension.record.direct.exporter"
+    _inherit = ["base.exporter", "connector.extension.synchronizer"]
 
     _usage = "record.direct.exporter"
 
@@ -81,7 +83,7 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
         """Can do several actions after exporting a record on the backend"""
 
     def _get_sql_lock(self, record):
-        return "SELECT id FROM %s WHERE ID = %%s FOR UPDATE NOWAIT" % record._table
+        return f"SELECT id FROM {record._table} WHERE ID = %s FOR UPDATE NOWAIT"
 
     def _lock(self, record):
         """Lock the binding record.
@@ -110,9 +112,9 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
                 record.id,
             )
             raise RetryableJobError(
-                "A concurrent job is already exporting the same record "
-                "(%s with id %s). The job will be retried later."
-                % (self.model._name, record.id)
+                f"A concurrent job is already exporting the same record "
+                f"({self.model._name} with id {record.id}). "
+                f"The job will be retried later."
             ) from e
 
     def _has_to_skip(self, relation):
@@ -143,10 +145,10 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
         except psycopg2.IntegrityError as err:
             if err.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
-                    "A database error caused the failure of the job:\n"
-                    "%s\n\n"
+                    f"A database error caused the failure of the job:\n"
+                    f"{err}\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
-                    "the same record. The job will be retried later." % err
+                    "the same record. The job will be retried later."
                 ) from err
             else:
                 raise
@@ -261,11 +263,11 @@ class ConnectorExtensionGenericDirectExporter(AbstractComponent):
         return self.backend_adapter.write(external_id, data)
 
 
-class ConnectorExtensionGenericBatchExporter(AbstractComponent):
+class ConnectorExtensionBatchExporter(AbstractComponent):
     """Generic Synchronizer for importing data from backend to Odoo"""
 
-    _name = "connector.extension.generic.batch.exporter"
-    _inherit = "base.exporter"
+    _name = "connector.extension.batch.exporter"
+    _inherit = ["base.exporter", "connector.extension.synchronizer"]
 
     _usage = "batch.exporter"
 
@@ -290,8 +292,8 @@ class ConnectorExtensionGenericBatchExporter(AbstractComponent):
 class ConnectorExtensionBatchDirectExporter(AbstractComponent):
     """Import the records directly, without delaying the jobs."""
 
-    _name = "connector.extension.generic.batch.direct.exporter"
-    _inherit = "connector.extension.generic.batch.exporter"
+    _name = "connector.extension.batch.direct.exporter"
+    _inherit = "connector.extension.batch.exporter"
 
     _usage = "batch.direct.exporter"
 
@@ -303,8 +305,8 @@ class ConnectorExtensionBatchDirectExporter(AbstractComponent):
 class ConnectorExtensionBatchDelayedExporter(AbstractComponent):
     """Delay import of the records"""
 
-    _name = "connector.extension.generic.batch.delayed.exporter"
-    _inherit = "connector.extension.generic.batch.exporter"
+    _name = "connector.extension.batch.delayed.exporter"
+    _inherit = "connector.extension.batch.exporter"
 
     _usage = "batch.delayed.exporter"
 

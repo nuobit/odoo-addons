@@ -27,7 +27,8 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
             if len(external_ids) > 1:
                 raise ValidationError(
                     _(
-                        "If ensure_one is set only one record can be converted to external id."
+                        "If ensure_one is set only one record"
+                        " can be converted to external id."
                     )
                 )
             return external_ids[0]

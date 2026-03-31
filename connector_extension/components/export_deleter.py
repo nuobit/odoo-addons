@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import logging
 
@@ -12,7 +13,7 @@ class ConnectorExtensionDirectExportDeleter(AbstractComponent):
     """Generic Synchronizer for delete data from Odoo to a backend"""
 
     _name = "connector.extension.record.direct.export.deleter"
-    _inherit = "base.deleter"
+    _inherit = ["base.deleter", "connector.extension.synchronizer"]
 
     _usage = "record.direct.export.deleter"
 
@@ -31,7 +32,7 @@ class ConnectorExtensionBatchExportDeleter(AbstractComponent):
     """Generic Synchronizer for importing data from backend to Odoo"""
 
     _name = "connector.extension.batch.export.deleter"
-    _inherit = "base.deleter"
+    _inherit = ["base.importer", "connector.extension.synchronizer"]
 
     def _delete_record(self, external_id):
         """Delete a record directly or delay the delete of the record.

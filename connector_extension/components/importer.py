@@ -1,6 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
 import logging
@@ -13,16 +13,16 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import IDMissingInBackend
-from odoo.addons.queue_job.exception import NothingToDoJob, RetryableJobError
+from odoo.addons.queue_job.exception import FailedJobError, RetryableJobError
 
 _logger = logging.getLogger(__name__)
 
 
-class ConnectorExtensionGenericDirectImporter(AbstractComponent):
+class ConnectorExtensionDirectImporter(AbstractComponent):
     """Generic Synchronizer for importing data from backend to Odoo"""
 
-    _name = "connector.extension.generic.record.direct.importer"
-    _inherit = "base.importer"
+    _name = "connector.extension.record.direct.importer"
+    _inherit = ["base.exporter", "connector.extension.synchronizer"]
 
     _usage = "record.direct.importer"
 
@@ -47,10 +47,10 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         except psycopg2.IntegrityError as e:
             if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
-                    "A database error caused the failure of the job:\n"
-                    "%s\n\n"
+                    f"A database error caused the failure of the job:\n"
+                    f"{e}\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
-                    "the same record. The job will be retried later." % e
+                    "the same record. The job will be retried later."
                 ) from e
             else:
                 raise
@@ -97,7 +97,7 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         if always or not binder.to_internal(external_id):
             try:
                 importer.run(external_id, sync_date, external_data=external_data)
-            except NothingToDoJob:
+            except FailedJobError:
                 _logger.info(
                     "Dependency import of %s(%s) has been ignored.",
                     binding_model._name,
@@ -129,14 +129,18 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         """
         return False
 
-    # TODO: Convert the mandatory parameters to a dictionary or optional parameters (kwargs)
+    # TODO: Convert the mandatory parameters to a dictionary
+    #  or optional parameters (kwargs)
     def _mapper_options(self, binding, sync_date):
         return {"binding": binding, "sync_date": sync_date}
 
     def run(self, external_id, sync_date, external_data=None, external_fields=None):
         if not external_data:
             external_data = {}
-        lock_name = f"import({self.backend_record._name}, {self.backend_record.id}, {self.work.model_name}, {external_id})"
+        lock_name = (
+            f"import({self.backend_record._name}, {self.backend_record.id},"
+            f" {self.work.model_name}, {external_id})"
+        )
         # Keep a lock on this import until the transaction is committed
         # The lock is kept since we have detected that the informations
         # will be updated into Odoo
@@ -228,11 +232,11 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         return self.model.with_context(connector_no_export=True).create(data)
 
 
-class ConnectorExtensionGenericBatchImporter(AbstractComponent):
+class ConnectorExtensionBatchImporter(AbstractComponent):
     """Generic Synchronizer for importing data from backend to Odoo"""
 
-    _name = "connector.extension.generic.batch.importer"
-    _inherit = "base.importer"
+    _name = "connector.extension.batch.importer"
+    _inherit = ["base.importer", "connector.extension.synchronizer"]
 
     _usage = "batch.importer"
 
@@ -292,8 +296,8 @@ class ConnectorExtensionGenericBatchImporter(AbstractComponent):
 class ConnectorExtensionBatchDirectImporter(AbstractComponent):
     """Import the records directly, without delaying the jobs."""
 
-    _name = "connector.extension.generic.batch.direct.importer"
-    _inherit = "connector.extension.generic.batch.importer"
+    _name = "connector.extension.batch.direct.importer"
+    _inherit = "connector.extension.batch.importer"
 
     _usage = "batch.direct.importer"
 
@@ -315,8 +319,8 @@ class ConnectorExtensionBatchDirectImporter(AbstractComponent):
 class ConnectorExtensionBatchDelayedImporter(AbstractComponent):
     """Delay import of the records"""
 
-    _name = "connector.extension.generic.batch.delayed.importer"
-    _inherit = "connector.extension.generic.batch.importer"
+    _name = "connector.extension.batch.delayed.importer"
+    _inherit = "connector.extension.batch.importer"
 
     _usage = "batch.delayed.importer"
 
@@ -340,14 +344,14 @@ class ConnectorExtensionBatchDelayedImporter(AbstractComponent):
         )
 
 
-class ConnectorExtensionGenericChunkImporter(AbstractComponent):
+class ConnectorExtensionChunkImporter(AbstractComponent):
     """The role of a ChunkImporter is to search for a list of
     items to import, then it can either import them directly or delay
     the import of each item separately.
     """
 
-    _name = "connector.extension.generic.chunk.importer"
-    _inherit = "base.importer"
+    _name = "connector.extension.chunk.importer"
+    _inherit = ["base.importer", "connector.extension.synchronizer"]
 
     def run(self, domain, offset, chunk_size):
         """Run the synchronization"""
@@ -377,8 +381,8 @@ class ConnectorExtensionGenericChunkImporter(AbstractComponent):
 class ConnectorExtensionChunkDirectImporter(AbstractComponent):
     """Import the records directly, without delaying the jobs."""
 
-    _name = "connector.extension.generic.chunk.direct.importer"
-    _inherit = "connector.extension.generic.chunk.importer"
+    _name = "connector.extension.chunk.direct.importer"
+    _inherit = "connector.extension.chunk.importer"
 
     _usage = "chunk.direct.importer"
 
@@ -397,8 +401,8 @@ class ConnectorExtensionChunkDirectImporter(AbstractComponent):
 class ConnectorExtensionChunkDelayedImporter(AbstractComponent):
     """Delay import of the records"""
 
-    _name = "connector.extension.generic.chunk.delayed.importer"
-    _inherit = "connector.extension.generic.chunk.importer"
+    _name = "connector.extension.chunk.delayed.importer"
+    _inherit = "connector.extension.chunk.importer"
 
     _usage = "chunk.delayed.importer"
 

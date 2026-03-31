@@ -1,5 +1,6 @@
 from . import adapter
 from . import binder
+from . import synchronizer
 from . import export_deleter
 from . import exporter
 from . import importer
