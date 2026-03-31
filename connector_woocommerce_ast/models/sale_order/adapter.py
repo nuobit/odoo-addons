@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 import re
 
@@ -28,11 +29,14 @@ class WooCommerceSaleOrderAdapter(Component):
                     and res_data["code"] == "rest_invalid_param"
                 ):
                     error_message = _(
-                        "Error: '%s'. Probably the state %s is not defined on Woocommerce. "
+                        "Error: '%(message)s'. Probably the state "
+                        "%(status)s is not defined on Woocommerce. "
                         "Configure states in Woocommerce Advanced "
                         "Shippment Tracking (AST) settings."
-                        % (res_data["message"], kwargs["data"]["status"])
-                    )
+                    ) % {
+                        "message": res_data["message"],
+                        "status": kwargs["data"]["status"],
+                    }
                     if raise_on_error:
                         raise ValidationError(error_message)
                     else:

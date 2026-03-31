@@ -63,4 +63,4 @@ class SaleOrder(models.Model):
 
     @api.depends("picking_ids.delivery_state", "order_line.move_ids.state")
     def _compute_woocommerce_order_state(self):
-        super()._compute_woocommerce_order_state()
+        return super()._compute_woocommerce_order_state()
