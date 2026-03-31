@@ -9,7 +9,7 @@
     "author": "NuoBiT Solutions SL",
     "license": "LGPL-3",
     "category": "Connector",
-    "website": "https://github.com/nuobit/odoo-addons",
+    "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": ["connector"],
     # The dependency on queue_context is necessary so that
     # when a job calls another job, the company is not lost

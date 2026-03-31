@@ -47,7 +47,7 @@ class Base(models.AbstractModel):
                 bindings = record[binding_field]
                 for binding in bindings:
                     to_remove.append(self._dict_binding_data(binding))
-        result = super(Base, self).unlink()
+        result = super().unlink()
         for bindings_data in to_remove:
             self._event("on_record_after_unlink").notify(bindings_data)
         return result
