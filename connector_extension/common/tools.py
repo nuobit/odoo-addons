@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import datetime
 import hashlib
@@ -22,7 +23,7 @@ def list2hash(_list):
         elif e is None:
             e9 = ""
         else:
-            raise Exception("Unexpected type for a key: type %s" % type(e))
+            raise Exception(f"Unexpected type for a key: type {type(e)}")
         _hash.update(e9.encode("utf8"))
     return _hash.hexdigest()
 
@@ -50,10 +51,11 @@ def domain_to_normalized_dict(self, domain):
                 raise ValidationError(_("Duplicated field %s") % field)
             res[field] = self._normalize_value(not value)
         elif op == "in":
-            if not isinstance(value, (tuple, list)):
+            if not isinstance(value, (tuple | list)):
                 raise ValidationError(
                     _(
-                        "Operator '%(OPERATOR)s' only supports tuples or lists, not %(TYPES)s"
+                        "Operator '%(OPERATOR)s' only supports "
+                        "tuples or lists, not %(TYPES)s"
                     )
                     % {
                         "OPERATOR": op,
@@ -64,14 +66,14 @@ def domain_to_normalized_dict(self, domain):
                 raise ValidationError(_("Duplicated field %s") % field)
             res[field] = self._normalize_value(value)
         elif op in (">", ">=", "<", "<="):
-            if not isinstance(value, (datetime.date, datetime.datetime, int)):
+            if not isinstance(value, (datetime.date | datetime.datetime | int)):
                 raise ValidationError(
-                    _("Type %(type)s not supported for operator %(op)s")
-                    % dict(type=value, op=op)
+                    _("Type %(value_type)s not supported for operator %(operator)s")
+                    % {"value_type": type(value), "operator": op}
                 )
             if op in (">", "<"):
                 adj = 1
-                if isinstance(value, (datetime.date, datetime.datetime)):
+                if isinstance(value, (datetime.date | datetime.datetime)):
                     adj = datetime.timedelta(days=adj)
                 if op == "<":
                     op, value = "<=", value - adj
@@ -131,10 +133,10 @@ def trim_domain(domain):
     """
     trimmed_domain = []
     for d in domain:
-        if isinstance(d, (list, tuple)):
+        if isinstance(d, (list | tuple)):
             if len(d) == 3 and isinstance(d[2], str):
                 trimmed_domain.append((d[0], d[1], d[2].strip()))
-            elif len(d) == 3 and isinstance(d[2], (list, tuple)):
+            elif len(d) == 3 and isinstance(d[2], (list | tuple)):
                 trimmed_value = [
                     value.strip() if isinstance(value, str) else value for value in d[2]
                 ]
@@ -142,7 +144,7 @@ def trim_domain(domain):
             else:
                 trimmed_domain.append(d)
         else:
-            raise Exception("Unexpected domain format: %s" % d)
+            raise Exception(f"Unexpected domain format: {d}")
     return trimmed_domain
 
 
@@ -150,7 +152,7 @@ def color_rgb2hex(data):
     def conv_rgb(match):
         rgb_hex_l = []
         groups = match.groups()
-        for value, percent in zip(groups[0::2], groups[1::2], strict=False):
+        for value, percent in zip(groups[0::2], groups[1::2], strict=True):
             if percent:
                 hex_value = round(float(value) * 255 / 100)
             else:

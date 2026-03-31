@@ -1,6 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import logging
 
@@ -36,7 +36,6 @@ class ConnectorBackend(models.AbstractModel):
         ]
 
     name = fields.Char(
-        string="Name",
         required=True,
     )
     company_id = fields.Many2one(
@@ -75,13 +74,11 @@ class ConnectorBackend(models.AbstractModel):
     )
 
     chunk_size = fields.Integer(
-        string="Chunk Size",
         default=-1,
         required=True,
         help="This field is used to define the chunk size to import from the backend.",
     )
     page_size = fields.Integer(
-        string="Page Size",
         required=True,
         default=10,
         help="This field is used in order to define the "
@@ -96,7 +93,6 @@ class ConnectorBackend(models.AbstractModel):
     )
 
     enable_call_logging = fields.Boolean(
-        string="Enable Call Logging",
         default=False,
         help="Enable logging of calls to the external system",
     )
@@ -104,7 +100,7 @@ class ConnectorBackend(models.AbstractModel):
     def _check_connection(self):
         self.ensure_one()
         with self.work_on(self._name) as work:
-            component = work.component(usage="backend.adapter")
+            component = work.component(usage="adapter")
             self.version = component.get_version()
 
     def button_check_connection(self):
@@ -138,7 +134,8 @@ class ConnectorBackend(models.AbstractModel):
         if self.env.company != self.env.user.company_id:
             raise ValidationError(
                 _(
-                    "The current company must be the same as the default company of the user. "
+                    "The current company must be the same "
+                    "as the default company of the user. "
                 )
             )
         if self.env.company != self.env.user.company_ids:

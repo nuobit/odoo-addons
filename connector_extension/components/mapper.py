@@ -1,5 +1,6 @@
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 import collections
 import logging
@@ -74,8 +75,8 @@ class ConnectorExtensionMapper(AbstractComponent):
                     continue
                 if not isinstance(values, dict):
                     raise ValueError(
-                        "%s: invalid return value for the "
-                        "mapping method %s" % (values, meth)
+                        f"{values}: invalid return value for "
+                        f"the mapping method {meth}"
                     )
                 if not self.options.get("ignore_required_fields"):
                     for field_required in getattr(meth, "required", []):
@@ -304,10 +305,10 @@ class ConnectorExtensionExportMapper(AbstractComponent):
 
     def check_external_id(self, external_id, relation):
         assert external_id, (
-            "Unexpected error on %s:"
-            "The backend id cannot be obtained."
+            f"Unexpected error on {relation._name}: "
+            "The backend id cannot be obtained. "
             "At this stage, the backend record should have been already linked via "
-            "._export_dependencies. " % relation._name
+            "._export_dependencies."
         )
 
 

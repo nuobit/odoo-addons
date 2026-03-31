@@ -1,11 +1,12 @@
-# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
-# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
 {
     "name": "Connector Extension",
     "summary": "This module extends the connector module",
-    "version": "16.0.1.0.2",
+    "version": "18.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "license": "LGPL-3",
     "category": "Connector",
