@@ -44,7 +44,7 @@ class SaleOrder(models.Model):
 
     @api.depends("picking_ids.delivery_state")
     def _compute_woocommerce_order_state(self):
-        super()._compute_woocommerce_order_state()
+        return super()._compute_woocommerce_order_state()
 
     def _get_woocommerce_tracking_picking(self):
         """The shipment whose carrier gives the export delay and the tracking:
