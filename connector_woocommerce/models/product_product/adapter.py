@@ -42,9 +42,11 @@ class WooCommerceProductProductAdapter(Component):
 
     def write(self, external_id, data):  # pylint: disable=W8106
         self._prepare_data(data)
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
         return self._exec(
             "put",
-            f"products/{tuple(external_id)}/variations/{tuple(external_id)}",
+            f"products/{external_id_values['parent_id']}"
+            f"/variations/{external_id_values['id']}",
             data=data,
         )
 
@@ -55,7 +57,11 @@ class WooCommerceProductProductAdapter(Component):
         domain_dict = self._domain_to_normalized_dict(domain)
         external_id = binder.dict2id(domain_dict, in_field=False)
         if external_id:
-            url = f"products/{tuple(external_id)}/variations/{tuple(external_id)}"
+            external_id_values = binder.id2dict(external_id, in_field=False)
+            url = (
+                f"products/{external_id_values['parent_id']}"
+                f"/variations/{external_id_values['id']}"
+            )
             res = self._exec("get", url, domain=common_domain)
         else:
             # if "id" in domain_dict and "parent_id" in domain_dict:
