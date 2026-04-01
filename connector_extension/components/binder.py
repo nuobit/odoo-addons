@@ -18,7 +18,6 @@ from contextlib import contextmanager
 
 import psycopg2
 
-import odoo
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.osv import expression
@@ -308,13 +307,6 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         with self._retry_unique_violation():
             values = self._prepare_binding_export_values(relation_id, external_data)
             binding = self.model.with_context(connector_no_export=True).create(values)
-            # Eager commit to avoid having 2 jobs
-            # exporting at the same time. The constraint
-            # will pop if an other job already created
-            # the same binding. It will be caught and
-            # raise a RetryableJobError.
-            if not odoo.tools.config["test_enable"]:
-                self.env.cr.commit()  # pylint: disable=E8102
             return binding
 
     def _additional_external_binding_fields(self, external_data):
