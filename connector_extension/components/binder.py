@@ -280,7 +280,6 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                     **self.id2dict(external_id, in_field=True),
                 }
             )
-        self.env.cr.commit()  # pylint: disable=E8102
 
     def _prepare_binding_export_values(self, relation, external_data):
         external_id = self.dict2id(external_data, in_field=False)
@@ -478,8 +477,6 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         :param relation: odoo object, not a binding and without binding
         :return: binding
         """
-        export_mapper = self.component(usage="export.mapper")
-        mapper_external_data = export_mapper.map_record(relation)
         ext_alt_id = getattr(self, self._external_alt_field, None)
         if not ext_alt_id:
             id_values = {}
@@ -487,6 +484,8 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             if isinstance(ext_alt_id, str):
                 ext_alt_id = [ext_alt_id]
 
+            export_mapper = self.component(usage="export.mapper")
+            mapper_external_data = export_mapper.map_record(relation)
             id_fields = mapper_external_data._mapper.get_target_fields(
                 mapper_external_data, fields=ext_alt_id
             )
@@ -537,7 +536,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                     import_mapper_exists = False
                 if not import_mapper_exists:
                     binding = self.bind_export(record, relation)
-                    binding[self._sync_date_field] = fields.Datetime.now()
+                    # binding[self._sync_date_field] = fields.Datetime.now()
             if not binding:
                 raise InvalidDataError(
                     f"The binding with external id {external_id} "
@@ -563,9 +562,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         external_id = self.to_external(relation, wrap=False)
         if check_external_id:
             assert external_id, (
-                f"Unexpected error on {relation._name}:"
-                "The backend id cannot be obtained."
-                "At this stage, the backend record should have "
+                f"Error on {relation._name}:"
+                "The external id cannot be obtained."
+                "At this stage, the external record should have "
                 "been already linked via "
                 "._export_dependencies. "
             )
