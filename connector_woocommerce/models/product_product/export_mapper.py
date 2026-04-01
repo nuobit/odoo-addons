@@ -29,7 +29,7 @@ class WooCommerceProductProductExportMapper(Component):
         pricelist = self.backend_record.discount_pricelist_id
         if pricelist:
             return {
-                "sale_price": pricelist.price_get(record.id, 1)[pricelist.id],
+                "sale_price": pricelist._get_product_price(record, 1),
             }
         return {"sale_price": None}
 

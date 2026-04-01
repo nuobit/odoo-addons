@@ -33,7 +33,7 @@ class WooCommerceProductAttributeValueAdapter(Component):
         else:
             if "parent_id" not in domain_dict:
                 attribute_adapter = self.component(
-                    usage="backend.adapter", model_name="woocommerce.product.attribute"
+                    usage="adapter", model_name="woocommerce.product.attribute"
                 )
                 attributes = attribute_adapter.search_read([])
                 if "parent_name" in domain_dict:
