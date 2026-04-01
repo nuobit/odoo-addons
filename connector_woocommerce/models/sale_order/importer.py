@@ -162,7 +162,7 @@ class WooCommerceSaleOrderImporter(Component):
         if binding:
             return _(
                 "The Order {} is already imported " "-> Update not allowed"
-            ).format(binding.woocommerce_id)
+            ).format(binding.woocommerce_idsaleorder)
         return res
 
 
