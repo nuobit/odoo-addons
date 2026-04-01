@@ -79,7 +79,21 @@ class ConnectorBackend(models.AbstractModel):
         string="Timezone",
         required=True,
         default=lambda self: self._context.get("tz") or self.env.user.tz or "UTC",
-        help="This field is used to define in which timezone the backend will work.",
+        help="The timezone of the business data in the external system. "
+        "All imported datetime values are assumed to be in this timezone "
+        "and will be converted to UTC for storage in Odoo. "
+        "On export, Odoo UTC values are converted back to this timezone.",
+    )
+    server_tz = fields.Selection(
+        _tz_get,
+        string="Server Timezone",
+        required=True,
+        default=lambda self: self._context.get("tz") or self.env.user.tz or "UTC",
+        help="The timezone of the external system's server. "
+        "Used for technical timestamps managed by the server itself "
+        "(e.g. modification dates, audit trails) which may differ from "
+        "the business data timezone when the server is hosted in a "
+        "different region.",
     )
 
     chunk_size = fields.Integer(
@@ -117,18 +131,27 @@ class ConnectorBackend(models.AbstractModel):
         self.ensure_one()
         self.write({"state": "draft", "version": False})
 
-    def tz_to_utc(self, datetime_local_naive):
-        datetime_local = pytz.timezone(self.tz).localize(datetime_local_naive)
-        datetime_utc = datetime_local.astimezone(pytz.utc)
-        datetime_utc_naive = datetime_utc.replace(tzinfo=None)
-        return datetime_utc_naive
+    @staticmethod
+    def _convert_tz(dt_naive, from_tz, to_tz):
+        dt = pytz.timezone(from_tz).localize(dt_naive)
+        dt = dt.astimezone(pytz.timezone(to_tz))
+        return dt.replace(tzinfo=None)
 
+    def tz_to_utc(self, datetime_local_naive):
+        return self._convert_tz(datetime_local_naive, self.tz, "UTC")
+
+    def utc_to_local(self, datetime_utc_naive):
+        return self._convert_tz(datetime_utc_naive, "UTC", self.tz)
+
+    # Deprecated: use utc_to_local instead
     def tz_to_local(self, datetime_utc_naive):
-        local_tz = pytz.timezone(self.tz)
-        datetime_utc = pytz.utc.localize(datetime_utc_naive)
-        datetime_local = datetime_utc.astimezone(local_tz)
-        datetime_local_naive = datetime_local.replace(tzinfo=None)
-        return datetime_local_naive
+        return self.utc_to_local(datetime_utc_naive)
+
+    def server_tz_to_utc(self, datetime_server_naive):
+        return self._convert_tz(datetime_server_naive, self.server_tz, "UTC")
+
+    def utc_to_server_tz(self, datetime_utc_naive):
+        return self._convert_tz(datetime_utc_naive, "UTC", self.server_tz)
 
     @contextmanager
     def work_on(self, model_name, **kwargs):
