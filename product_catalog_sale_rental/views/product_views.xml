@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="product_view_search_catalog" model="ir.ui.view">
+        <field name="name">product.view.search.catalog.rental</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product_catalog.product_view_search_catalog" />
+        <field name="arch" type="xml">
+            <filter name="favorites" position="before">
+                <filter
+                    string="Rental Products"
+                    name="rental_products"
+                    domain="[('rented_product_id', '!=', False)]"
+                />
+                <separator />
+            </filter>
+        </field>
+    </record>
+</odoo>
