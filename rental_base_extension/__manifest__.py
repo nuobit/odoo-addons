@@ -11,6 +11,7 @@
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
+    "post_init_hook": "post_init_hook",
     "depends": [
         "rental_base",
     ],
