@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Acción principal para plantillas -->
+    <record id="document_template_action" model="ir.actions.act_window">
+        <field name="name">Document Templates</field>
+        <field name="res_model">document.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- Acción para archivos -->
+    <record id="document_template_file_action" model="ir.actions.act_window">
+        <field name="name">Template Files</field>
+        <field name="res_model">document.template.file</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- Menú raíz -->
+    <menuitem
+        id="document_template_menu_root"
+        name="Document Templates"
+        sequence="10"
+    />
+    <!-- Menú para plantillas -->
+    <menuitem
+        id="document_template_menu_templates"
+        name="Templates"
+        parent="document_template_menu_root"
+        action="document_template_action"
+    />
+    <!-- Menú para archivos -->
+    <menuitem
+        id="document_template_menu_files"
+        name="Files"
+        parent="document_template_menu_root"
+        action="document_template_file_action"
+    />
+</odoo>
