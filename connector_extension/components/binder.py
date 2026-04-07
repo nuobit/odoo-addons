@@ -96,7 +96,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             if not isinstance(_id, (tuple | list)):
                 _id = [_id]
             fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
-            return dict(zip(fields, _id, strict=True))
+            return dict(zip(fields, _id, strict=False))
         else:
             return None
 
