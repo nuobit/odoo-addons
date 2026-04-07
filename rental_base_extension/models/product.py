@@ -26,14 +26,14 @@ class ProductTemplate(models.Model):
                 "uom_id": day_uom.id,
                 "uom_po_id": day_uom.id,
                 "list_price": 1.0,
-                "name": _("Rental of %s") % variant_ctx.display_name,
+                "name": _("Rental of a {}").format(variant_ctx.display_name),
                 "rented_product_id": variant.id,
                 "must_have_dates": True,
                 "categ_id": self.categ_id.id,
                 "invoice_policy": "order",
             }
             if variant.default_code:
-                vals["default_code"] = _("RENT-%s") % variant.default_code
+                vals["default_code"] = _("RENT-{}").format(variant.default_code)
             created_products |= self.env["product.product"].create(vals)
         return {
             "type": "ir.actions.act_window",

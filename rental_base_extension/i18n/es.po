@@ -57,6 +57,12 @@ msgid "Adopt & Sign"
 msgstr "Adoptar y firmar"
 
 #. module: rental_base_extension
+#: code:addons/rental_base_extension/models/product.py:0
+#, python-format
+msgid "All variants already have a rental service."
+msgstr "Todas las variantes ya tienen un servicio de alquiler."
+
+#. module: rental_base_extension
 #. odoo-javascript
 #: code:addons/rental_base_extension/static/src/xml/signature_dialog.xml:0
 #, python-format
@@ -79,9 +85,20 @@ msgid "Confirm & Sign"
 msgstr "Confirmar y firmar"
 
 #. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
+msgid "Create Rental Services"
+msgstr "Crear servicios de alquiler"
+
+#. module: rental_base_extension
 #: model_terms:ir.actions.act_window,help:rental_base_extension.sale_order_action_rental
 msgid "Create a new rental order!"
 msgstr "¡Cree un nuevo pedido de alquiler!"
+
+#. module: rental_base_extension
+#: code:addons/rental_base_extension/models/product.py:0
+#, python-format
+msgid "Created Rental Services"
+msgstr "Servicios de alquiler creados"
 
 #. module: rental_base_extension
 #. odoo-javascript
