@@ -1,0 +1,8 @@
+odoo-addon-website_sale_stock_variant@git+https://github.com/nuobit/odoo-addons.git@refs/pull/825/head#subdirectory=website_sale_stock_variant
+odoo-addon-website_sale_extra_fields@git+https://github.com/nuobit/odoo-addons.git@refs/pull/826/head#subdirectory=website_sale_extra_fields
+odoo-addon-connector_wordpress@git+https://github.com/nuobit/odoo-addons.git@refs/pull/876/head#subdirectory=connector_wordpress
+odoo-addon-connector_extension_woocommerce@git+https://github.com/nuobit/odoo-addons.git@refs/pull/875/head#subdirectory=connector_extension_woocommerce
+odoo-addon-tools_mimetypes_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/878/head#subdirectory=tools_mimetypes_extension
+odoo-addon-website_sale_variant@git+https://github.com/nuobit/odoo-addons.git@refs/pull/824/head#subdirectory=website_sale_variant
+odoo-addon-website_sale_product_document@git+https://github.com/nuobit/odoo-addons.git@refs/pull/827/head#subdirectory=website_sale_product_document
+odoo-addon-connector_extension_wordpress@git+https://github.com/nuobit/odoo-addons.git@refs/pull/877/head#subdirectory=connector_extension_wordpress
