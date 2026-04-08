@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -34,7 +35,8 @@ class WooCommerceProductProduct(models.Model):
     def _check_woocommerce_master_lang(self):
         for rec in self:
             master_bindings = rec.odoo_id.woocommerce_bind_ids.filtered(
-                lambda x: x.backend_id == rec.backend_id and x.woocommerce_master_lang
+                lambda x, rec=rec: x.backend_id == rec.backend_id
+                and x.woocommerce_master_lang
             )
             if len(master_bindings) != 1:
                 raise ValidationError(

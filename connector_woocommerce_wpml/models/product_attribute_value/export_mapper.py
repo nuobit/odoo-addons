@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import _
@@ -31,9 +32,10 @@ class WooCommerceProductAttributeValueExportMapper(Component):
     #         wpml_lang_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
     #             odoo_lang_code
     #         )
-    #         default_woml_lang_code = self.env["res.lang"]._get_wpml_code_from_iso_code(
+    #         default_woml_lang_code = (
+    #           self.env["res.lang"]._get_wpml_code_from_iso_code(
     #             self.backend_record.language_id.code
-    #         )
+    #         ))
     #         other_binding_backend = record.woocommerce_bind_ids.filtered(
     #             lambda x: x.backend_id == self.backend_record
     #             and x.woocommerce_lang != wpml_lang_code

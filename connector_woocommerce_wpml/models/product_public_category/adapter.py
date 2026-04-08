@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -19,19 +20,19 @@ class WooCommerceProductPublicCategoryAdapter(Component):
         if res.status_code == 500:
             if res_data.get("code") == "duplicate_term_slug":
                 error_message = _(
-                    "Error: '%s'. "
+                    "Error: '%(message)s'. "
                     "WPML plugin allows set the same slug for different "
                     "languages on FrontEnd but this can't be done via API. "
                     "Probably we need a solution in plugin code, it can't "
                     "be solved in Odoo without a workaround modifying raw data. "
-                    "Review the slug of the category '%s' in lang [%s] and try again."
+                    "Review the slug of the category '%(name)s' in lang [%(lang)s]"
+                    " and try again."
                     ""
-                    % (
-                        res_data["message"],
-                        kwargs["data"].get("name"),
-                        kwargs["data"].get("lang"),
-                    )
-                )
+                ) % {
+                    "message": res_data["message"],
+                    "name": kwargs["data"].get("name"),
+                    "lang": kwargs["data"].get("lang"),
+                }
                 if raise_on_error:
                     raise ValidationError(error_message)
                 else:
@@ -53,7 +54,8 @@ class WooCommerceProductPublicCategoryAdapter(Component):
     #     # records and filter them locally (inefficient, but reliable). If the WPML
     #     # WooCommerce API is fixed in the future, we can keep the language as a
     #     # search field and perform server-side filtering instead of removing it here.
-    #     # With the version 1.0.3 of the WooCommerce plugin this should not be necessary
+    #     # With the version 1.0.3 of the WooCommerce plugin this should not be
+    #     necessary
     #     # https://github.com/nuobit/woocommerce-wpml-api-rest-extension
     #     for f in res:
     #         if f != "lang":
