@@ -23,7 +23,7 @@ class WordPressIrAttachment(models.Model):
     ]
 
     def _prepare_relation(self, relation, record):
-        super()._prepare_relation(relation, record)
+        res = super()._prepare_relation(relation, record)
         context = relation.env.context.copy()
         iso_lang = self.env["res.lang"]._get_iso_code_from_wpml_code(
             record.wordpress_lang
@@ -31,3 +31,4 @@ class WordPressIrAttachment(models.Model):
         if iso_lang:
             context.update({"lang": iso_lang, "resync_export": True})
         relation.env.context = context
+        return res
