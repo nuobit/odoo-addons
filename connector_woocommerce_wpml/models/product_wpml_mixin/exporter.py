@@ -8,7 +8,7 @@ from odoo.addons.component.core import AbstractComponent
 
 class WooCommerceProductWPMLMixinExporter(AbstractComponent):
     _name = "woocommerce.product.wpml.mixin.record.direct.exporter"
-    _inherit = "connector.extension.generic.record.direct.exporter"
+    _inherit = "connector.extension.record.direct.exporter"
 
     def wpml_run(self, relation, always=True, internal_fields=None):
         res = []

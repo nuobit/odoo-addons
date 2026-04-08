@@ -6,7 +6,7 @@ from odoo.addons.component.core import AbstractComponent
 
 class WooCommerceProductWPMLMixinBinder(AbstractComponent):
     _name = "woocommerce.product.wpml.mixin.binder"
-    _inherit = "connector.extension.generic.binder"
+    _inherit = "connector.extension.binder"
 
     def wpml_get_binding_domain(self, record):
         domain = super().get_binding_domain(record)
