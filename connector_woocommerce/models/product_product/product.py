@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -94,7 +95,7 @@ class ProductProduct(models.Model):
                         0,
                         0,
                         {
-                            "attachment_id": doc.attachment_id.id,
+                            "attachment_id": doc.ir_attachment_id.id,
                             "sequence": doc.sequence,
                         },
                     )
