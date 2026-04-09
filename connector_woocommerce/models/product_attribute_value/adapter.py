@@ -14,8 +14,11 @@ class WooCommerceProductAttributeValueAdapter(Component):
     _apply_on = "woocommerce.product.attribute.value"
 
     def read(self, external_id):  # pylint: disable=W8106
-        external_id = self.binder_for().id2dict(external_id, in_field=False)
-        url = f"products/attributes/{tuple(external_id)}/terms/{tuple(external_id)}"
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        url = (
+            f"products/attributes/{external_id_values['parent_id']}"
+            f"/terms/{external_id_values['id']}"
+        )
         values = self._exec("get", url)
         return values
 
@@ -78,9 +81,11 @@ class WooCommerceProductAttributeValueAdapter(Component):
         return res
 
     def write(self, external_id, data):  # pylint: disable=W8106
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
         return self._exec(
             "put",
-            f"products/attributes/{tuple(external_id)}/terms/{tuple(external_id)}",
+            f"products/attributes/{external_id_values['parent_id']}"
+            f"/terms/{external_id_values['id']}",
             data=data,
         )
 
