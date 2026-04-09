@@ -105,7 +105,7 @@ class ProductProduct(models.Model):
                         0,
                         0,
                         {
-                            "attachment_id": doc.attachment_id.id,
+                            "attachment_id": doc.ir_attachment_id.id,
                             "sequence": doc.sequence,
                         },
                     )
