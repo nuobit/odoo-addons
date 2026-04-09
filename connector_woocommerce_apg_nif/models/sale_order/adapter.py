@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -18,11 +19,11 @@ class WooCommerceSaleOrderAdapter(Component):
             for item in value["meta_data"]:
                 if item["key"] == "_billing_nif":
                     value["billing"]["nif"] = item["value"]
-        super()._get_billing(value, hash_fields)
+        return super()._get_billing(value, hash_fields)
 
     def _get_shipping(self, value, hash_fields):
         if value.get("shipping"):
             for item in value["meta_data"]:
                 if item["key"] == "_shipping_nif":
                     value["shipping"]["nif"] = item["value"]
-        super()._get_shipping(value, hash_fields)
+        return super()._get_shipping(value, hash_fields)
