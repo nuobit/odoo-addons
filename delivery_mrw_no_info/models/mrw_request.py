@@ -15,6 +15,11 @@ _original_get_tracking_states = MRWRequest._get_tracking_states
 
 def _get_tracking_states(self, vals):
     response = _original_get_tracking_states(self, vals)
+    if response is None or response["Seguimiento"] is None:
+        response = {
+            "MensajeSeguimiento": "",
+            "Seguimiento": {"Abonado": []},
+        }
     if response["MensajeSeguimiento"] != "Busqueda correcta por Número de Albarán.":
         response["MensajeSeguimiento"] = "Busqueda correcta por Número de Albarán."
         date = datetime.datetime.now(pytz.timezone("Europe/Madrid"))
