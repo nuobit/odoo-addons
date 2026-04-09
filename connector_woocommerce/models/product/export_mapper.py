@@ -25,10 +25,10 @@ class WooCommerceProductExportMapper(AbstractComponent):
                 documents = self._get_lang_doc(documents)
                 for document in documents:
                     external_id = binder.get_external_dict_ids(
-                        document.attachment_id, check_external_id=False
+                        document.ir_attachment_id, check_external_id=False
                     )
                     if external_id:
-                        binding = binder.wrap_record(document.attachment_id)
+                        binding = binder.wrap_record(document.ir_attachment_id)
                         document_description.append(
                             f"<p><a href={self._prepare_url(binding, document)}"
                             f" target='_blank'>{document.name}</a></p>"
