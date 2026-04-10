@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -18,7 +19,7 @@ class StockPicking(models.Model):
         woocommerce_stock_picking_state = super()._get_woocommerce_stock_picking_state()
         if (
             woocommerce_stock_picking_state == "done"
-            and self.delivery_state == "shipping_recorded_in_carrier"
+            and self.delivery_state == "customer_delivered"
         ):
             woocommerce_stock_picking_state = "delivered"
         return woocommerce_stock_picking_state
