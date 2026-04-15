@@ -121,7 +121,7 @@ class WooCommerceSaleOrderAdapter(Component):
         self._convert_format_domain(domain)
         res = self._exec("get", "orders", domain=domain, offset=offset, limit=limit)
         self._reorg_order_data(res)
-        return res, len(res)
+        return res
 
     def write(self, external_id, data):  # pylint: disable=W8106
         self._prepare_data(data)
