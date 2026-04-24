@@ -64,6 +64,24 @@ def api_handle_errors(message=""):
         )
 
 
+@contextmanager
+def mssql_connection_retryable():
+    """Re-raise transient MSSQL connection errors as NetworkRetryableError.
+
+    Without this, a MSSQL restart or network blip while an export job is
+    running raises ``pymssql.OperationalError`` / ``InterfaceError``, which
+    queue_job does not recognize as retryable — the job moves straight to
+    ``failed`` on its first attempt and the per-backend ``since_date``
+    cursor has already advanced past it, making the missing record
+    invisible to subsequent cron cycles. Wrapping as
+    ``NetworkRetryableError`` lets the configured ``retry_pattern`` apply.
+    """
+    try:
+        yield
+    except (pymssql.OperationalError, pymssql.InterfaceError) as err:
+        raise NetworkRetryableError("MSSQL connection error: %s" % err) from err
+
+
 class CRUDAdapter(AbstractComponent):
     """External Records Adapter for Oxigesti"""
 
@@ -157,14 +175,15 @@ class GenericAdapter(AbstractComponent):
         # Convert params
         params = self._convert_dict(params, to_backend=True)
         # Execute sql
-        conn = self.conn()
-        cr = conn.cursor(as_dict=as_dict)
-        cr.execute(sql, params)
-        res = cr.fetchall()
-        if commit:
-            conn.commit()
-        cr.close()
-        conn.close()
+        with mssql_connection_retryable():
+            conn = self.conn()
+            cr = conn.cursor(as_dict=as_dict)
+            cr.execute(sql, params)
+            res = cr.fetchall()
+            if commit:
+                conn.commit()
+            cr.close()
+            conn.close()
         # Convert result
         if as_dict:
             for r in res:
@@ -313,26 +332,27 @@ class GenericAdapter(AbstractComponent):
             params[k9] = v
         params = self._convert_dict(params, to_backend=True)
 
-        conn = self.conn()
-        cr = conn.cursor()
-        cr.execute(sql, params)  # pylint: disable=E8103
-        count = cr.rowcount
-        if count == 0:
-            raise Exception(
-                _(
-                    "Impossible to update external record with ID '%s': "
-                    "Register not found on Backend"
+        with mssql_connection_retryable():
+            conn = self.conn()
+            cr = conn.cursor()
+            cr.execute(sql, params)  # pylint: disable=E8103
+            count = cr.rowcount
+            if count == 0:
+                raise Exception(
+                    _(
+                        "Impossible to update external record with ID '%s': "
+                        "Register not found on Backend"
+                    )
+                    % (id_d,)
                 )
-                % (id_d,)
-            )
-        elif count > 1:
-            conn.rollback()
-            raise pymssql.IntegrityError(
-                "Unexpected error: Returned more the one row with ID: %s" % (id_d,)
-            )
-        conn.commit()
-        cr.close()
-        conn.close()
+            elif count > 1:
+                conn.rollback()
+                raise pymssql.IntegrityError(
+                    "Unexpected error: Returned more the one row with ID: %s" % (id_d,)
+                )
+            conn.commit()
+            cr.close()
+            conn.close()
 
         return count
 
@@ -428,26 +448,28 @@ class GenericAdapter(AbstractComponent):
         params = dict(zip(self._id, _id))
         params = self._convert_dict(params, to_backend=True)
 
-        conn = self.conn()
-        cr = conn.cursor()
-        cr.execute(sql, params)  # pylint: disable=E8103
-        count = cr.rowcount
-        if count == 0:
-            raise Exception(
-                _(
-                    "Impossible to delete external record with ID '%s': "
-                    "Register not found on Backend"
+        with mssql_connection_retryable():
+            conn = self.conn()
+            cr = conn.cursor()
+            cr.execute(sql, params)  # pylint: disable=E8103
+            count = cr.rowcount
+            if count == 0:
+                raise Exception(
+                    _(
+                        "Impossible to delete external record with ID '%s': "
+                        "Register not found on Backend"
+                    )
+                    % (params,)
                 )
-                % (params,)
-            )
-        elif count > 1:
-            conn.rollback()
-            raise pymssql.IntegrityError(
-                "Unexpected error: Returned more the one row with ID: %s" % (params,)
-            )
-        conn.commit()
-        cr.close()
-        conn.close()
+            elif count > 1:
+                conn.rollback()
+                raise pymssql.IntegrityError(
+                    "Unexpected error: Returned more the one row with ID: %s"
+                    % (params,)
+                )
+            conn.commit()
+            cr.close()
+            conn.close()
 
         return count
 
