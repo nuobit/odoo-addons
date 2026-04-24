@@ -17,4 +17,60 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
         <field name="channel_id" ref="connector_sapb1.channel_sapb1" />
         <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
     </record>
+    <!--
+        Allow commit on export_record for sapb1 binding models.
+        bind_export does cr.commit() to persist the binding immediately after
+        the SAP HTTP call succeeds (avoids duplicate addresses on retry). Since
+        queue_job 16.0.2.13.2 (OCA/queue#892), _prevent_commit raises RuntimeError
+        unless allow_commit=True — which runs perform() with a separate DB cursor,
+        so the commit does not release the queue_job row-lock.
+        See: https://github.com/OCA/queue/wiki/Upgrade-warning:-commits-inside-jobs
+    -->
+    <record
+        id="sapb1_binding_method_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_sapb1.model_sapb1_binding" />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_sapb1.channel_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="sapb1_res_partner_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_sapb1.model_sapb1_res_partner" />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_sapb1.channel_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record id="sapb1_sale_order_export_record_job_function" model="queue.job.function">
+        <field name="model_id" ref="connector_sapb1.model_sapb1_sale_order" />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_sapb1.channel_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="sapb1_sale_order_line_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_sapb1.model_sapb1_sale_order_line" />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_sapb1.channel_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="sapb1_product_product_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_sapb1.model_sapb1_product_product" />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_sapb1.channel_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 20, 10: 30, 15: 120}" />
+        <field name="allow_commit" eval="True" />
+    </record>
 </odoo>
