@@ -9,6 +9,15 @@ from odoo.exceptions import ValidationError
 
 from ...common.tools import idhash
 
+# Max attempts for a job before it transitions to ``state='failed'``.
+# Combined with ``retry_pattern`` on every queue.job.function of this
+# connector (``{1: 10, 5: 30, 10: 60, 15: 300}``) this yields a retry
+# window of ~33 minutes — enough to cover transient MSSQL restarts,
+# VPN blips and short planned maintenance on the Oxigesti server
+# without spamming it. OCA queue_job default is 5 which clipped the
+# progression at the first bucket (10s × 4 ≈ 40s).
+MAX_RETRIES_NETWORK = 20
+
 
 class OxigestiBinding(models.AbstractModel):
     _name = "oxigesti.binding"
@@ -16,6 +25,26 @@ class OxigestiBinding(models.AbstractModel):
     _description = "oxigesti Binding (abstract)"
 
     active = fields.Boolean(default=True)
+
+    def with_delay(
+        self,
+        priority=None,
+        eta=None,
+        max_retries=None,
+        description=None,
+        channel=None,
+        identity_key=None,
+    ):
+        if max_retries is None:
+            max_retries = MAX_RETRIES_NETWORK
+        return super().with_delay(
+            priority=priority,
+            eta=eta,
+            max_retries=max_retries,
+            description=description,
+            channel=channel,
+            identity_key=identity_key,
+        )
 
     backend_id = fields.Many2one(
         comodel_name="oxigesti.backend",
