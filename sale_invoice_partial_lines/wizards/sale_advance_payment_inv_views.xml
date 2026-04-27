@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="view_sale_advance_payment_inv" model="ir.ui.view">
+        <field name="name">sale.advance.payment.inv.form.invoice.partial.lines</field>
+        <field name="model">sale.advance.payment.inv</field>
+        <field name="inherit_id" ref="sale.view_sale_advance_payment_inv" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='advance_payment_method']" position="after">
+                <field
+                    name="only_selected_lines"
+                    attrs="{'invisible': [('advance_payment_method', '!=', 'delivered')]}"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

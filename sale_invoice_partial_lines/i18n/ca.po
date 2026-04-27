@@ -1,0 +1,77 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale_invoice_partial_lines
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-04-27 14:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_invoice_partial_lines
+#: model:ir.model.fields,help:sale_invoice_partial_lines.field_sale_order_line__selected
+msgid ""
+"Mark this line for batch operations (invoicing, grouping, exporting, etc.)."
+msgstr ""
+"Marca aquesta línia per a operacions per lots (facturació, agrupació, "
+"exportació, etc.)."
+
+#. module: sale_invoice_partial_lines
+#. odoo-python
+#: code:addons/sale_invoice_partial_lines/wizards/sale_advance_payment_inv.py:0
+#, python-format
+msgid ""
+"No selected order lines are ready to invoice. Tick the 'Selected' checkbox on "
+"invoiceable lines before creating the invoice."
+msgstr ""
+"No hi ha cap línia seleccionada a punt per facturar. Marca la casella "
+"'Seleccionada' a les línies facturables abans de crear la factura."
+
+#. module: sale_invoice_partial_lines
+#: model:ir.model.fields,help:sale_invoice_partial_lines.field_sale_order__selected_lines_count
+msgid "Number of selected order lines (sections and notes excluded)."
+msgstr "Nombre de línies de comanda seleccionades (sense seccions ni notes)."
+
+#. module: sale_invoice_partial_lines
+#: model:ir.model.fields,field_description:sale_invoice_partial_lines.field_sale_advance_payment_inv__only_selected_lines
+msgid "Only selected lines"
+msgstr "Només línies seleccionades"
+
+#. module: sale_invoice_partial_lines
+#: model:ir.model.fields,field_description:sale_invoice_partial_lines.field_sale_order_line__selected
+msgid "Selected"
+msgstr "Seleccionada"
+
+#. module: sale_invoice_partial_lines
+#: model:ir.model.fields,field_description:sale_invoice_partial_lines.field_sale_order__selected_lines_count
+msgid "Selected lines"
+msgstr "Línies seleccionades"
+
+#. module: sale_invoice_partial_lines
+#: model:ir.model.fields,field_description:sale_invoice_partial_lines.field_sale_order__selected_lines_amount
+msgid "Subtotal of selected lines"
+msgstr "Subtotal de les línies seleccionades"
+
+#. module: sale_invoice_partial_lines
+#: model:ir.model.fields,help:sale_invoice_partial_lines.field_sale_order__selected_lines_amount
+msgid "Sum of the untaxed subtotal of the selected order lines."
+msgstr ""
+"Suma del subtotal sense impostos de les línies de comanda seleccionades."
+
+#. module: sale_invoice_partial_lines
+#: model:ir.model.fields,help:sale_invoice_partial_lines.field_sale_advance_payment_inv__only_selected_lines
+msgid ""
+"When set, the invoice will include only the order lines flagged as "
+"'Selected'. After the invoice is created, the flag is reset on every line "
+"that was just invoiced."
+msgstr ""
+"Quan està activat, la factura inclourà només les línies marcades com a "
+"'Seleccionada'. Després de crear la factura, l'indicador es restableix a "
+"cada línia facturada."

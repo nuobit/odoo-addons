@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form.invoice.partial.lines</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='product_id']"
+                position="before"
+            >
+                <field
+                    name="selected"
+                    string="✓"
+                    width="30px"
+                    attrs="{
+                        'column_invisible': [('parent.state', 'not in', ('sale', 'done'))],
+                        'readonly': [('display_type', '!=', False)],
+                    }"
+                />
+            </xpath>
+            <xpath
+                expr="//page[@name='order_lines']/field[@name='order_line']"
+                position="after"
+            >
+                <group
+                    attrs="{'invisible': [('selected_lines_count', '=', 0)]}"
+                    class="oe_subtotal_footer oe_right"
+                >
+                    <field name="selected_lines_count" />
+                    <field name="selected_lines_amount" widget="monetary" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
