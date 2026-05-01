@@ -31,6 +31,12 @@ class WooCommerceBackendDeliveryTypeProvider(models.Model):
         string="WooCommerce provider name",
         required=True,
     )
+    use_tracking_number = fields.Boolean(
+        string="Use tracking number",
+        default=False,
+        help="Export tracking information for this provider and delay the "
+        "WooCommerce status export until the picking has a tracking number.",
+    )
 
     _sql_constraints = [
         (
