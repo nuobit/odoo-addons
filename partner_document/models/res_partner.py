@@ -30,6 +30,9 @@ class ResPartner(models.Model):
     remain_files = fields.Boolean(
         compute="_compute_remain_files",
     )
+    document_count = fields.Integer(
+        compute="_compute_document_count",
+    )
 
     def _get_valid_document(self, doc_type):
         return self.document_ids.filtered(
@@ -44,6 +47,19 @@ class ResPartner(models.Model):
                 if not self._get_valid_document(doc_type):
                     rec.remain_files = True
                     break
+
+    @api.depends("document_ids")
+    def _compute_document_count(self):
+        for rec in self:
+            rec.document_count = len(rec.document_ids)
+
+    def action_view_partner_documents(self):
+        self.ensure_one()
+        action = self.env["ir.actions.act_window"]._for_xml_id(
+            "partner_document.action_partner_document_partner"
+        )
+        action["res_id"] = self.id
+        return action
 
     @api.depends("classification_id", "classification_id.document_type_ids")
     def _compute_document_ids(self):

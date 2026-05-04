@@ -38,11 +38,74 @@
         <field name="name">partner.document.view.tree</field>
         <field name="model">partner.document</field>
         <field name="arch" type="xml">
-            <tree>
-                                <field name="document_type_id" />
-                <field name="datas_fname" />
+            <tree editable="bottom" decoration-danger="expired">
+                <field name="partner_class_mandatory_document_type_ids" invisible="1" />
+                <field name="no_expiration" invisible="1" />
+                <field
+                    name="document_type_id"
+                    options="{'no_create': True, 'no_create_edit': True}"
+                />
                 <field name="description" />
+                <field name="partner_classification_id" />
+                <field name="datas" filename="datas_fname" />
+                <field name="datas_fname" invisible="1" />
+                <field
+                    name="expiration_date"
+                    attrs="{'readonly': [('no_expiration', '=', True)]}"
+                />
+                <field name="expired" invisible="1" />
+                <field name="validated" />
             </tree>
         </field>
+    </record>
+
+    <record id="view_partner_documents_form" model="ir.ui.view">
+        <field name="name">res.partner.documents.form</field>
+        <field name="model">res.partner</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form string="Documents">
+                <sheet>
+                    <group>
+                        <field name="classification_id" />
+                    </group>
+                    <field name="document_ids">
+                        <tree
+                            create="false"
+                            editable="bottom"
+                            decoration-danger="expired"
+                        >
+                            <field
+                                name="partner_class_mandatory_document_type_ids"
+                                invisible="1"
+                            />
+                            <field name="no_expiration" invisible="1" />
+                            <field
+                                name="document_type_id"
+                                options="{'no_create': True, 'no_create_edit': True}"
+                            />
+                            <field name="description" />
+                            <field name="partner_classification_id" />
+                            <field name="datas" filename="datas_fname" />
+                            <field name="datas_fname" invisible="1" />
+                            <field
+                                name="expiration_date"
+                                attrs="{'readonly': [('no_expiration', '=', True)]}"
+                            />
+                            <field name="expired" invisible="1" />
+                            <field name="validated" />
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_partner_document_partner" model="ir.actions.act_window">
+        <field name="name">Documents</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_partner_documents_form" />
+        <field name="target">current</field>
     </record>
 </odoo>
