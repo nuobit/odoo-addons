@@ -138,6 +138,12 @@ msgid "Display Name"
 msgstr "Nombre para mostrar"
 
 #. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_res_partner__document_count
+#: model:ir.model.fields,field_description:partner_document.field_res_users__document_count
+msgid "Document Count"
+msgstr "Contador de documentos"
+
+#. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_partner_classification__document_type_ids
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__document_type_id
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_expired_wizard__document_type_ids

@@ -12,40 +12,17 @@
         <!--            eval="[(6, False, [ref('partner_document.partner_document_group_guest')])]"-->
         <!--        />-->
         <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority">0</field>
         <field name="arch" type="xml">
-            <xpath expr="//notebook" position="inside">
-                <page string="Documents">
-                    <group>
-                        <field name="classification_id" />
-                    </group>
-                    <field name="document_ids">
-                        <tree
-                            create="false"
-                            editable="bottom"
-                            decoration-danger="expired"
-                        >
-                            <field
-                                name="partner_class_mandatory_document_type_ids"
-                                invisible="1"
-                            />
-                            <field name="no_expiration" invisible="1" />
-                            <field
-                                name="document_type_id"
-                                options="{'no_create': True, 'no_create_edit': True}"
-                            />
-                            <field name="description" />
-                            <field name="partner_classification_id" />
-                            <field name="datas" filename="datas_fname" />
-                            <field name="datas_fname" invisible="1" />
-                            <field
-                                name="expiration_date"
-                                attrs="{'readonly': [('no_expiration', '=', True)]}"
-                            />
-                            <field name="expired" invisible="1" />
-                            <field name="validated" />
-                        </tree>
-                    </field>
-                </page>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_partner_documents"
+                    icon="fa-folder-open"
+                >
+                    <field name="document_count" widget="statinfo" string="Documents" />
+                </button>
             </xpath>
         </field>
     </record>
