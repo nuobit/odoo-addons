@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.exception import RetryableJobError
 
 
 class WooCommerceSaleOrderExportMapper(Component):
@@ -59,6 +60,12 @@ class WooCommerceSaleOrderExportMapper(Component):
                                     ),
                                 ) from e
                     else:
-                        result.pop("status")
+                        raise RetryableJobError(
+                            _(
+                                "Carrier %s requires a tracking number but "
+                                "picking %s has none yet. Retrying."
+                            )
+                            % (picking.carrier_id.name, picking.name),
+                        )
 
         return result
