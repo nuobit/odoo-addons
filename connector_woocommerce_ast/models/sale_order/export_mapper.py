@@ -1,6 +1,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import requests
+
 from odoo import _
 from odoo.exceptions import ValidationError
 
@@ -37,6 +39,25 @@ class WooCommerceSaleOrderExportMapper(Component):
                                 "tracking_number": picking.carrier_tracking_ref,
                             }
                         ]
+                        if backend_carrier.url:
+                            check_url = backend_carrier.url.format(
+                                tracking_ref=picking.carrier_tracking_ref
+                            )
+                            try:
+                                response = requests.get(check_url, timeout=10)
+                                response.raise_for_status()
+                            except requests.RequestException as e:
+                                raise RetryableJobError(
+                                    _(
+                                        "Tracking %s is not yet publicly "
+                                        "available at %s: %s. Retrying."
+                                    )
+                                    % (
+                                        picking.carrier_tracking_ref,
+                                        check_url,
+                                        e,
+                                    ),
+                                ) from e
                     else:
                         result.pop("status")
 

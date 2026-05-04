@@ -37,6 +37,14 @@ class WooCommerceBackendDeliveryTypeProvider(models.Model):
         help="Export tracking information for this provider and delay the "
         "WooCommerce status export until the picking has a tracking number.",
     )
+    url = fields.Char(
+        string="Tracking URL",
+        help="Public tracking URL template for this provider. Use "
+        "'{tracking_ref}' as placeholder. If set, the WooCommerce status "
+        "export waits until this URL responds OK for the picking's tracking "
+        "number, to avoid sending the customer email before the carrier has "
+        "indexed the tracking on its public site.",
+    )
 
     _sql_constraints = [
         (
