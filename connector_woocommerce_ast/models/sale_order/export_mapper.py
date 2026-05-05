@@ -67,5 +67,10 @@ class WooCommerceSaleOrderExportMapper(Component):
                             )
                             % (picking.carrier_id.name, picking.name),
                         )
-
+                else:
+                    result["_wc_shipment_tracking_items"] = [
+                        {
+                            "tracking_provider": backend_carrier.woocommerce_provider,
+                        }
+                    ]
         return result
