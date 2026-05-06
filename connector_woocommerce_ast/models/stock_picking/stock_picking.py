@@ -32,3 +32,12 @@ class StockPicking(models.Model):
                     "on_compute_woocommerce_order_state"
                 ).notify(rec.sale_id, fields={"woocommerce_ast_fields"})
         return res
+
+    def _action_done(self):
+        res = super()._action_done()
+        for rec in self:
+            if rec.state == "done":
+                self.env["sale.order"]._event(
+                    "on_compute_woocommerce_order_state"
+                ).notify(rec.sale_id, fields={"woocommerce_ast_fields"})
+        return res

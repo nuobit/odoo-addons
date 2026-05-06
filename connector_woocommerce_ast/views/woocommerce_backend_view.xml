@@ -16,6 +16,7 @@
                         <field name="delivery_type" />
                         <field name="woocommerce_provider" />
                         <field name="use_tracking_number" />
+                        <field name="url" />
                     </tree>
                 </field>
             </group>

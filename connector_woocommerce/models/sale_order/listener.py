@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
+from odoo.addons.queue_job.job import identity_exact
 
 
 class WooCommerceSaleOrderListener(Component):
@@ -33,4 +34,6 @@ class WooCommerceSaleOrderListener(Component):
                         ("id", "in", records.ids),
                     ]
                     for backend in backends:
-                        Order.export_batch(backend, domain=domain, delayed=False)
+                        Order.with_delay(
+                            identity_key=identity_exact,
+                        ).export_batch(backend, domain=domain)
