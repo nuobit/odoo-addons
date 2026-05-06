@@ -54,7 +54,11 @@ class WooCommerceSaleOrderExportMapper(Component):
                                 tracking_ref=picking.carrier_tracking_ref
                             )
                             try:
-                                response = requests.get(check_url, timeout=10)
+                                response = requests.get(
+                                    check_url,
+                                    timeout=10,
+                                    verify=self.backend_record.verify_ssl,
+                                )
                                 response.raise_for_status()
                             except requests.RequestException as e:
                                 if self._is_last_retry():
