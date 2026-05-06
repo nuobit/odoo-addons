@@ -14,6 +14,15 @@ from odoo.addons.connector.exception import RetryableJobError
 class WooCommerceSaleOrderExportMapper(Component):
     _inherit = "woocommerce.sale.order.export.mapper"
 
+    def _is_last_retry(self):
+        job_uuid = self.env.context.get("job_uuid")
+        if not job_uuid:
+            return False
+        job = self.env["queue.job"].sudo().search([("uuid", "=", job_uuid)])
+        if not job or not job.max_retries:
+            return False
+        return (job.retry + 1) >= job.max_retries
+
     @mapping
     def status(self, record):
         result = super().status(record)
@@ -48,25 +57,29 @@ class WooCommerceSaleOrderExportMapper(Component):
                                 response = requests.get(check_url, timeout=10)
                                 response.raise_for_status()
                             except requests.RequestException as e:
-                                raise RetryableJobError(
-                                    _(
-                                        "Tracking %s is not yet publicly "
-                                        "available at %s: %s. Retrying."
-                                    )
-                                    % (
-                                        picking.carrier_tracking_ref,
-                                        check_url,
-                                        e,
-                                    ),
-                                ) from e
+                                if self._is_last_retry():
+                                    result.pop("_wc_shipment_tracking_items", None)
+                                else:
+                                    raise RetryableJobError(
+                                        _(
+                                            "Tracking %s is not yet publicly "
+                                            "available at %s: %s. Retrying."
+                                        )
+                                        % (
+                                            picking.carrier_tracking_ref,
+                                            check_url,
+                                            e,
+                                        ),
+                                    ) from e
                     else:
-                        raise RetryableJobError(
-                            _(
-                                "Carrier %s requires a tracking number but "
-                                "picking %s has none yet. Retrying."
+                        if not self._is_last_retry():
+                            raise RetryableJobError(
+                                _(
+                                    "Carrier %s requires a tracking number but "
+                                    "picking %s has none yet. Retrying."
+                                )
+                                % (picking.carrier_id.name, picking.name),
                             )
-                            % (picking.carrier_id.name, picking.name),
-                        )
                 else:
                     result["_wc_shipment_tracking_items"] = [
                         {
