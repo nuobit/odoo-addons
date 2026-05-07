@@ -13,31 +13,32 @@ class WooCommerceSaleOrderExportMapper(Component):
 
     @mapping
     def status(self, record):
-        result = super().status(record)
         if record.woocommerce_order_state == "partial_shipped":
-            result["status"] = "partial-shipped"
+            return {"status": "partial-shipped"}
         elif record.woocommerce_order_state == "delivered":
-            result["status"] = "delivered"
+            return {"status": "delivered"}
+        else:
+            return super().status(record)
 
+    @mapping
+    def shipment_tracking(self, record):
+        tracking = {}
         picking = record.picking_ids.filtered(
             lambda p: p.state == "done" and p.carrier_id
-        ).sorted(key=lambda p: p.id)[-1:]
+        ).sorted(key=lambda p: p.id,)[-1:]
         if picking:
-            backend_carrier = self.backend_record.carrier_provider_ids.filtered(
+            carrier = self.backend_record.carrier_provider_ids.filtered(
                 lambda x: picking.carrier_id.delivery_type == x.delivery_type
             )
-            if backend_carrier:
-                if len(backend_carrier) > 1:
-                    raise ValidationError(_("Carrier is duplicated"))
-                if backend_carrier.use_tracking_number:
-                    if picking.carrier_tracking_ref:
-                        result["_wc_shipment_tracking_items"] = [
-                            {
-                                "tracking_provider": backend_carrier.woocommerce_provider,
-                                "tracking_number": picking.carrier_tracking_ref,
-                            }
-                        ]
-                    else:
-                        result.pop("status")
-
-        return result
+            if not carrier:
+                raise ValidationError(
+                    _("carrier is not defined on backend for carrier %s")
+                    % picking.carrier_id.name
+                )
+            elif len(carrier) > 1:
+                raise ValidationError(_("Carrier is duplicated"))
+            tracking["tracking_provider"] = carrier.woocommerce_provider
+            if picking.carrier_tracking_ref:
+                tracking["tracking_number"] = picking.carrier_tracking_ref
+        if tracking:
+            return {"_wc_shipment_tracking_items": [tracking]}

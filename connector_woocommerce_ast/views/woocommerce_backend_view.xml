@@ -15,7 +15,6 @@
                     <tree editable="bottom">
                         <field name="delivery_type" />
                         <field name="woocommerce_provider" />
-                        <field name="use_tracking_number" />
                     </tree>
                 </field>
             </group>
