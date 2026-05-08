@@ -43,6 +43,10 @@ class WooCommerceBackend(models.Model):
         comodel_name="product.product",
     )
 
+    def _get_export_eta(self, record):
+        self.ensure_one()
+        return 0
+
     page_size = fields.Integer(
         help="Number of records to fetch at a time. Max: 100",
     )
