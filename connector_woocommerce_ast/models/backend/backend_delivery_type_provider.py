@@ -2,7 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -31,6 +32,25 @@ class WooCommerceBackendDeliveryTypeProvider(models.Model):
         string="WooCommerce provider name",
         required=True,
     )
+    use_tracking_number = fields.Boolean(
+        string="Use tracking number",
+        default=False,
+        help="Export tracking information for this provider and delay the "
+        "WooCommerce status export until the picking has a tracking number.",
+    )
+    tracking_export_delay = fields.Integer(
+        string="Tracking export delay (seconds)",
+        default=0,
+        help="Per-carrier override of the backend tracking_export_delay. "
+        "If set to a positive value, this delay is used for this carrier "
+        "instead of the backend default.",
+    )
+
+    @api.constrains("tracking_export_delay")
+    def _check_tracking_export_delay(self):
+        for rec in self:
+            if rec.tracking_export_delay < 0:
+                raise ValidationError(_("Tracking export delay must be 0 or positive."))
 
     _sql_constraints = [
         (

@@ -33,4 +33,7 @@ class WooCommerceSaleOrderListener(Component):
                         ("id", "in", records.ids),
                     ]
                     for backend in backends:
-                        Order.export_batch(backend, domain=domain, delayed=False)
+                        eta = backend._get_export_eta(rec)
+                        Order.with_delay(eta=eta).export_batch(
+                            backend, domain=domain, delayed=False
+                        )
