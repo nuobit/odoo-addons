@@ -37,8 +37,9 @@ class WooCommerceSaleOrderExportMapper(Component):
                 )
             elif len(carrier) > 1:
                 raise ValidationError(_("Carrier is duplicated"))
-            tracking["tracking_provider"] = carrier.woocommerce_provider
-            if picking.carrier_tracking_ref:
-                tracking["tracking_number"] = picking.carrier_tracking_ref
+            if not (carrier.use_tracking_number and not picking.carrier_tracking_ref):
+                tracking["tracking_provider"] = carrier.woocommerce_provider
+                if picking.carrier_tracking_ref:
+                    tracking["tracking_number"] = picking.carrier_tracking_ref
         if tracking:
             return {"_wc_shipment_tracking_items": [tracking]}
