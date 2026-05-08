@@ -36,6 +36,11 @@ class SaleOrder(models.Model):
             ("cancel", "Cancel"),
         ],
     )
+    done_picking_count = fields.Integer(
+        compute="_compute_woocommerce_order_state",
+        store=True,
+        default=0,
+    )
 
     def _get_woocommerce_order_state(self, picking_states):
         self.ensure_one()
@@ -65,8 +70,13 @@ class SaleOrder(models.Model):
                 woocommerce_order_state = rec._get_woocommerce_order_state(
                     picking_states
                 )
-                if woocommerce_order_state != rec.woocommerce_order_state:
+                new_count = len(rec.picking_ids.filtered(lambda p: p.state == "done"))
+                if (
+                    woocommerce_order_state != rec.woocommerce_order_state
+                    or new_count != rec.done_picking_count
+                ):
                     rec.woocommerce_order_state = woocommerce_order_state
+                    rec.done_picking_count = new_count
                     self._event("on_compute_woocommerce_order_state").notify(
                         rec, fields={"woocommerce_order_state"}
                     )
