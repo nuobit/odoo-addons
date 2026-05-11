@@ -27,6 +27,23 @@ class ResPartner(models.Model):
         store=True,
         readonly=False,
     )
+    remain_files = fields.Boolean(
+        compute="_compute_remain_files",
+    )
+
+    def _get_valid_document(self, doc_type):
+        return self.document_ids.filtered(
+            lambda x: x.document_type_id == doc_type and x.is_valid_document()
+        )
+
+    @api.depends("document_ids", "classification_id")
+    def _compute_remain_files(self):
+        for rec in self:
+            rec.remain_files = False
+            for doc_type in rec.classification_id.document_type_ids:
+                if not self._get_valid_document(doc_type):
+                    rec.remain_files = True
+                    break
 
     @api.depends("classification_id", "classification_id.document_type_ids")
     def _compute_document_ids(self):

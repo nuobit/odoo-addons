@@ -5,7 +5,7 @@
 {
     "name": "Partner Document",
     "summary": "This module adds the logic to classify and evaluate the partner performance",
-    "version": "16.0.1.0.2",
+    "version": "16.0.1.0.3",
     "category": "Website",
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",

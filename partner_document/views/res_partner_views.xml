@@ -54,8 +54,12 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_tree" />
         <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="remain_files" invisible="1" />
+            </xpath>
             <xpath expr="//tree" position="attributes">
                 <attribute name="js_class">button_expired_documents_tree</attribute>
+                <attribute name="decoration-danger">remain_files == True</attribute>
             </xpath>
         </field>
     </record>
