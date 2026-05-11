@@ -387,6 +387,12 @@ msgstr ""
 " ha cap per a l'idioma."
 
 #. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_res_partner__remain_files
+#: model:ir.model.fields,field_description:partner_document.field_res_users__remain_files
+msgid "Remain Files"
+msgstr "Arxius pendents"
+
+#. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
 msgid "Search"
 msgstr "Cerca"
