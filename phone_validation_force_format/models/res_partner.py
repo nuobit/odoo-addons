@@ -16,9 +16,13 @@ class Partner(models.Model):
             return vals
 
         if values.get("phone"):
-            vals["phone"] = phone_format(values["phone"], False, False)
+            vals["phone"] = phone_format(
+                values["phone"], False, False, raise_exception=False
+            )
         if values.get("mobile"):
-            vals["mobile"] = phone_format(values["mobile"], False, False)
+            vals["mobile"] = phone_format(
+                values["mobile"], False, False, raise_exception=False
+            )
         return vals
 
     def write(self, values):
