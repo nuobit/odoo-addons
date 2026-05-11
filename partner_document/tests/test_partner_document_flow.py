@@ -49,15 +49,28 @@ class TestPartnerDocumentFlow(TransactionCase):
                 partner_form.lastname = "Test"
             else:
                 partner_form.name = name
-            partner_form.classification_id = classification
-        return partner_form.save()
+        partner = partner_form.save()
+        with self._open_partner_documents_form(partner) as documents_form:
+            documents_form.classification_id = classification
+        return documents_form.save()
+
+    def _open_partner_documents_form(self, partner):
+        action = partner.action_view_partner_documents()
+        view_id = action.get("view_id")
+        if isinstance(view_id, (list, tuple)):
+            view_id = view_id[0]
+        if not view_id:
+            view_id = next(
+                view[0] for view in action.get("views", []) if view[1] == "form"
+            )
+        return Form(partner, view=self.env["ir.ui.view"].browse(view_id))
 
     def _edit_partner_document(self, document, edit):
         partner = self._reload_partner_form(document.partner_id)
         document = partner.document_ids.filtered(lambda doc: doc.id == document.id)
         self.assertEqual(len(document), 1)
         document_index = partner.document_ids.ids.index(document.id)
-        with Form(partner) as partner_form:
+        with self._open_partner_documents_form(partner) as partner_form:
             with partner_form.document_ids.edit(document_index) as document_form:
                 edit(document_form, document)
         partner = partner_form.save()
@@ -138,7 +151,7 @@ class TestPartnerDocumentFlow(TransactionCase):
         )
         self._upload_document(passport)
 
-        with Form(partner) as partner_form:
+        with self._open_partner_documents_form(partner) as partner_form:
             partner_form.classification_id = self.license_classification
         partner = partner_form.save()
 
@@ -166,7 +179,7 @@ class TestPartnerDocumentFlow(TransactionCase):
             self.diver_classification,
         )
 
-        with Form(partner) as partner_form:
+        with self._open_partner_documents_form(partner) as partner_form:
             partner_form.classification_id = self.license_classification
         partner = partner_form.save()
 
