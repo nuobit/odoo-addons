@@ -5,7 +5,7 @@
     "name": "Phone Numbers Validation Force Format",
     "summary": "Automatically formats phone numbers on partners using "
     "phone_validation, even on create and write operations.",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "category": "Partner",
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",
