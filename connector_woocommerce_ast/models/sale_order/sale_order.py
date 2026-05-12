@@ -43,9 +43,14 @@ class SaleOrder(models.Model):
             )
             if not all(
                 float_compare(
-                    line.qty_delivered, line.product_uom_qty, precision_digits=precision
+                    line.qty_delivered,
+                    line.product_uom_qty
+                    - sum(
+                        m.product_uom_qty for m in line.move_ids if m.state == "cancel"
+                    ),
+                    precision_digits=precision,
                 )
-                == 0
+                >= 0
                 for line in self.order_line.filtered(
                     lambda x: x.product_id.product_tmpl_id.service_policy
                     != "ordered_timesheet"
@@ -56,6 +61,6 @@ class SaleOrder(models.Model):
                 woocommerce_order_state = "delivered"
         return woocommerce_order_state
 
-    @api.depends("picking_ids.delivery_state")
+    @api.depends("picking_ids.delivery_state", "order_line.move_ids.state")
     def _compute_woocommerce_order_state(self):
         super()._compute_woocommerce_order_state()
