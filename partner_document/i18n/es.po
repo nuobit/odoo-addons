@@ -420,6 +420,7 @@ msgstr "Archivos pendientes"
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_res_company__partner_document_request_data_template_id
 #: model:ir.model.fields,field_description:partner_document.field_res_config_settings__partner_document_request_data_template_id
+#: model_terms:ir.ui.view,arch_db:partner_document.res_config_settings_view_form
 msgid "Request Data Email Template"
 msgstr "Plantilla de correo de solicitud de datos"
 
@@ -427,11 +428,6 @@ msgstr "Plantilla de correo de solicitud de datos"
 #: model_terms:ir.ui.view,arch_db:partner_document.view_partner_documents_form
 msgid "Request data"
 msgstr "Solicitar datos"
-
-#. module: partner_document
-#: model_terms:ir.ui.view,arch_db:partner_document.res_config_settings_view_form
-msgid "Request data email template"
-msgstr "Plantilla de correo de solicitud de datos"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form

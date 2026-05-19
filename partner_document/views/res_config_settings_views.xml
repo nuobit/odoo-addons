@@ -15,9 +15,11 @@
                     id="partner_document_request_data"
                 >
                     <div class="o_setting_right_pane">
-                        <span class="o_form_label">
-                            Request data email template
-                        </span>
+                        <label
+                            for="partner_document_request_data_template_id"
+                            string="Request Data Email Template"
+                            class="o_form_label"
+                        />
                         <span
                             class="fa fa-lg fa-building-o"
                             title="Values set here are company-specific."
@@ -26,8 +28,7 @@
                             role="img"
                         />
                         <div class="text-muted">
-                            Template used by the request data button in the contact
-                            documents view.
+                            Template used by the request data button in the contact documents view.
                         </div>
                         <div class="content-group">
                             <div class="mt8">

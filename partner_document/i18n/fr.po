@@ -33,6 +33,7 @@ msgstr "Configurez le modèle d'e-mail de demande de données dans les paramètr
 #. module: partner_document
 #: model:ir.model.fields,field_description:partner_document.field_res_company__partner_document_request_data_template_id
 #: model:ir.model.fields,field_description:partner_document.field_res_config_settings__partner_document_request_data_template_id
+#: model_terms:ir.ui.view,arch_db:partner_document.res_config_settings_view_form
 msgid "Request Data Email Template"
 msgstr "Modèle d'e-mail de demande de données"
 
@@ -40,11 +41,6 @@ msgstr "Modèle d'e-mail de demande de données"
 #: model_terms:ir.ui.view,arch_db:partner_document.view_partner_documents_form
 msgid "Request data"
 msgstr "Demander les données"
-
-#. module: partner_document
-#: model_terms:ir.ui.view,arch_db:partner_document.res_config_settings_view_form
-msgid "Request data email template"
-msgstr "Modèle d'e-mail de demande de données"
 
 #. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.res_config_settings_view_form
