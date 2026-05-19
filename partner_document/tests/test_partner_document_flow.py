@@ -139,6 +139,11 @@ class TestPartnerDocumentFlow(TransactionCase):
         self.assertTrue(document.validated)
         self.assertEqual(document.validated_by_id, self.env.user)
 
+        with self.assertRaises(ValidationError):
+            document.write({"validated": False})
+        self.assertTrue(document.validated)
+        self.assertEqual(document.validated_by_id, self.env.user)
+
         def extend_expiration(document_form, __):
             document_form.expiration_date = fields.Date.add(
                 fields.Date.today(),

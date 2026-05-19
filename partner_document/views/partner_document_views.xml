@@ -54,7 +54,11 @@
                     attrs="{'readonly': [('no_expiration', '=', True)]}"
                 />
                 <field name="expired" invisible="1" />
-                <field name="validated" />
+                <field
+                    name="validated"
+                    attrs="{'readonly': [('validated', '=', True)]}"
+                    force_save="1"
+                />
                 <field name="validated_by_id" widget="many2one_avatar_user" />
             </tree>
         </field>
@@ -95,7 +99,11 @@
                                 attrs="{'readonly': [('no_expiration', '=', True)]}"
                             />
                             <field name="expired" invisible="1" />
-                            <field name="validated" />
+                            <field
+                                name="validated"
+                                attrs="{'readonly': [('validated', '=', True)]}"
+                                force_save="1"
+                            />
                             <field
                                 name="validated_by_id"
                                 widget="many2one_avatar_user"
