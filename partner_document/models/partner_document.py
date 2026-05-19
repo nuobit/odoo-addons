@@ -46,6 +46,7 @@ class PartnerDocument(models.Model):
         comodel_name="partner.document.type",
         required=True,
         ondelete="restrict",
+        tracking=True,
     )
 
     @api.onchange("partner_classification_id")
@@ -60,15 +61,18 @@ class PartnerDocument(models.Model):
     datas = fields.Binary(
         string="File",
         attachment=True,
+        tracking=True,
     )
     datas_fname = fields.Char(
         string="Filename",
+        tracking=True,
     )
 
     expiration_date = fields.Date(
         compute="_compute_expiration_date",
         store=True,
         readonly=False,
+        tracking=True,
     )
 
     @api.depends("datas")
@@ -77,7 +81,7 @@ class PartnerDocument(models.Model):
             if not rec.datas:
                 rec.expiration_date = False
 
-    description = fields.Text()
+    description = fields.Text(tracking=True)
 
     expired = fields.Boolean(
         compute="_compute_expired",
