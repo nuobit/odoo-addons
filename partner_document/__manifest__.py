@@ -26,6 +26,7 @@
         "web.assets_backend": [
             "partner_document/static/src/js/kanban_res_partner_button.js",
             "partner_document/static/src/js/list_res_partner_button.js",
+            "partner_document/static/src/scss/styles.scss",
             "partner_document/static/src/xml/kanban_res_partner_button.xml",
             "partner_document/static/src/xml/list_res_partner_button.xml",
         ],
