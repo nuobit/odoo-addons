@@ -470,6 +470,13 @@ msgstr "Validat per"
 
 #. module: partner_document
 #. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid "Validated documents cannot be manually unvalidated. Change the file or expiration date to reset validation."
+msgstr "No es pot treure manualment la validació dels documents validats. Canvia el fitxer o la data d'expiració per reiniciar la validació."
+
+#. module: partner_document
+#. odoo-python
 #: code:addons/partner_document/models/partner_document_type.py:0
 #: code:addons/partner_document/models/partner_document_type.py:0
 #, python-format

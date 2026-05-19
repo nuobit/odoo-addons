@@ -475,6 +475,13 @@ msgstr "Validado por"
 
 #. module: partner_document
 #. odoo-python
+#: code:addons/partner_document/models/partner_document.py:0
+#, python-format
+msgid "Validated documents cannot be manually unvalidated. Change the file or expiration date to reset validation."
+msgstr "No se puede quitar manualmente la validación de documentos validados. Cambie el archivo o la fecha de expiración para reiniciar la validación."
+
+#. module: partner_document
+#. odoo-python
 #: code:addons/partner_document/models/partner_document_type.py:0
 #: code:addons/partner_document/models/partner_document_type.py:0
 #, python-format

@@ -153,7 +153,22 @@ class PartnerDocument(models.Model):
             vals["validated_by_id"] = self.env.user.id if vals["validated"] else False
         return vals
 
+    def _check_validated_deactivation(self, vals):
+        if "validated" not in vals or vals["validated"]:
+            return
+        if not any(self.mapped("validated")):
+            return
+        if {"datas", "expiration_date"} & set(vals):
+            return
+        raise ValidationError(
+            _(
+                "Validated documents cannot be manually unvalidated. "
+                "Change the file or expiration date to reset validation."
+            )
+        )
+
     def write(self, vals):
+        self._check_validated_deactivation(vals)
         vals = self._prepare_validated_by_values(vals)
         res = super().write(vals)
         self._validate_document()
