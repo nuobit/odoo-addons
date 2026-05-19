@@ -137,9 +137,25 @@ class TestPartnerDocumentFlow(TransactionCase):
         self._upload_document(document)
         document = self._validate_document(document)
         self.assertTrue(document.validated)
+        self.assertEqual(document.validated_by_id, self.env.user)
+
+        def extend_expiration(document_form, __):
+            document_form.expiration_date = fields.Date.add(
+                fields.Date.today(),
+                days=60,
+            )
+
+        document = self._edit_partner_document(document, extend_expiration)
+        self.assertFalse(document.validated)
+        self.assertFalse(document.validated_by_id)
+
+        document = self._validate_document(document)
+        self.assertTrue(document.validated)
+        self.assertEqual(document.validated_by_id, self.env.user)
 
         self._upload_document(document, filename="new-passport.pdf")
         self.assertFalse(document.validated)
+        self.assertFalse(document.validated_by_id)
 
     def test_user_can_change_classification_without_losing_uploaded_documents(self):
         partner = self._create_partner(
