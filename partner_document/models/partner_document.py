@@ -99,12 +99,20 @@ class PartnerDocument(models.Model):
         default=False,
         tracking=True,
     )
+    validated_by_id = fields.Many2one(
+        comodel_name="res.users",
+        string="Validated by",
+        readonly=True,
+        copy=False,
+        tracking=True,
+    )
 
     @api.depends("datas", "expiration_date")
     def _compute_validated(self):
         for rec in self:
             if rec.validated:
                 rec.validated = False
+                rec.validated_by_id = False
 
     no_expiration = fields.Boolean(related="document_type_id.no_expiration")
 
@@ -139,7 +147,14 @@ class PartnerDocument(models.Model):
                     % {"document_type": rec.document_type_id.display_name}
                 )
 
+    def _prepare_validated_by_values(self, vals):
+        if "validated" in vals:
+            vals = dict(vals)
+            vals["validated_by_id"] = self.env.user.id if vals["validated"] else False
+        return vals
+
     def write(self, vals):
+        vals = self._prepare_validated_by_values(vals)
         res = super().write(vals)
         self._validate_document()
         return res
@@ -166,8 +181,9 @@ class PartnerDocument(models.Model):
                 )
 
     @api.model_create_multi
-    def create(self, vals):
-        res = super().create(vals)
+    def create(self, vals_list):
+        vals_list = [self._prepare_validated_by_values(vals) for vals in vals_list]
+        res = super().create(vals_list)
         res._validate_document()
         return res
 

@@ -55,6 +55,7 @@
                 />
                 <field name="expired" invisible="1" />
                 <field name="validated" />
+                <field name="validated_by_id" widget="many2one_avatar_user" />
             </tree>
         </field>
     </record>
@@ -95,6 +96,10 @@
                             />
                             <field name="expired" invisible="1" />
                             <field name="validated" />
+                            <field
+                                name="validated_by_id"
+                                widget="many2one_avatar_user"
+                            />
                         </tree>
                     </field>
                 </sheet>
