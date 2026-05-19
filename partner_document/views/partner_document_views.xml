@@ -72,6 +72,7 @@
                     <field name="document_ids">
                         <tree
                             create="false"
+                            delete="false"
                             editable="bottom"
                             decoration-danger="expired"
                         >
