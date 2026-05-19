@@ -43,6 +43,7 @@
                 <field name="no_expiration" invisible="1" />
                 <field
                     name="document_type_id"
+                    readonly="1"
                     options="{'no_create': True, 'no_create_edit': True}"
                 />
                 <field name="description" />
@@ -88,6 +89,7 @@
                             <field name="no_expiration" invisible="1" />
                             <field
                                 name="document_type_id"
+                                readonly="1"
                                 options="{'no_create': True, 'no_create_edit': True}"
                             />
                             <field name="description" />
