@@ -1,7 +1,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class ResPartner(models.Model):
@@ -60,6 +61,42 @@ class ResPartner(models.Model):
         )
         action["res_id"] = self.id
         return action
+
+    def _get_request_data_template(self):
+        self.ensure_one()
+        company = self.company_id or self.env.company
+        template = company.partner_document_request_data_template_id
+        if not template:
+            raise UserError(
+                _(
+                    "Configure the request data email template in General Settings, "
+                    "Contacts section."
+                )
+            )
+        return template
+
+    def action_request_data(self):
+        self.ensure_one()
+        template = self._get_request_data_template()
+        return {
+            "name": _("Compose Email"),
+            "type": "ir.actions.act_window",
+            "res_model": "mail.compose.message",
+            "view_mode": "form",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": {
+                "default_model": self._name,
+                "default_res_id": self.id,
+                "default_use_template": True,
+                "default_template_id": template.id,
+                "default_composition_mode": "comment",
+                "default_partner_ids": self.ids,
+                "default_email_to": self.email or False,
+                "force_email": True,
+            },
+        }
 
     @api.depends("classification_id", "classification_id.document_type_ids")
     def _compute_document_ids(self):

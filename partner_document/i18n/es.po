@@ -16,6 +16,20 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/res_partner.py:0
+#, python-format
+msgid "Compose Email"
+msgstr "Redactar correo"
+
+#. module: partner_document
+#. odoo-python
+#: code:addons/partner_document/models/res_partner.py:0
+#, python-format
+msgid "Configure the request data email template in General Settings, Contacts section."
+msgstr "Configure la plantilla de correo de solicitud de datos en los ajustes generales, apartado Contactos."
+
+#. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
 msgid "Cancel"
 msgstr "Cancelar"
@@ -404,6 +418,22 @@ msgid "Remain Files"
 msgstr "Archivos pendientes"
 
 #. module: partner_document
+#: model:ir.model.fields,field_description:partner_document.field_res_company__partner_document_request_data_template_id
+#: model:ir.model.fields,field_description:partner_document.field_res_config_settings__partner_document_request_data_template_id
+msgid "Request Data Email Template"
+msgstr "Plantilla de correo de solicitud de datos"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.view_partner_documents_form
+msgid "Request data"
+msgstr "Solicitar datos"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.res_config_settings_view_form
+msgid "Request data email template"
+msgstr "Plantilla de correo de solicitud de datos"
+
+#. module: partner_document
 #: model_terms:ir.ui.view,arch_db:partner_document.partner_document_expired_wizard_view_form
 msgid "Search"
 msgstr "Buscar"
@@ -429,6 +459,11 @@ msgstr "Secuencia"
 #: model:ir.model.fields,field_description:partner_document.field_partner_document_type__template_id
 msgid "Template"
 msgstr "Plantilla"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.res_config_settings_view_form
+msgid "Template used by the request data button in the contact documents view."
+msgstr "Plantilla utilizada por el botón de solicitud de datos en la vista de documentos del contacto."
 
 #. module: partner_document
 #. odoo-python
@@ -472,6 +507,11 @@ msgstr "Validado"
 #: model:ir.model.fields,field_description:partner_document.field_partner_document__validated_by_id
 msgid "Validated by"
 msgstr "Validado por"
+
+#. module: partner_document
+#: model_terms:ir.ui.view,arch_db:partner_document.res_config_settings_view_form
+msgid "Values set here are company-specific."
+msgstr "Los valores definidos aquí son específicos de la compañía."
 
 #. module: partner_document
 #. odoo-python

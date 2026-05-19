@@ -4,7 +4,7 @@
 import base64
 
 from odoo import fields
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import Form, TransactionCase
 
 
@@ -42,17 +42,29 @@ class TestPartnerDocumentFlow(TransactionCase):
                 classification_form.document_type_ids.add(document_type)
         return classification_form.save()
 
-    def _create_partner(self, name, classification):
+    def _create_partner(self, name, classification, email=False):
         with Form(self.env["res.partner"]) as partner_form:
             if "firstname" in self.env["res.partner"]._fields:
                 partner_form.firstname = name
                 partner_form.lastname = "Test"
             else:
                 partner_form.name = name
+            if email:
+                partner_form.email = email
         partner = partner_form.save()
         with self._open_partner_documents_form(partner) as documents_form:
             documents_form.classification_id = classification
         return documents_form.save()
+
+    def _create_request_data_template(self):
+        return self.env["mail.template"].create(
+            {
+                "name": "Document Flow Request Data Template",
+                "model_id": self.env["ir.model"]._get_id("res.partner"),
+                "subject": "Documents",
+                "body_html": "<p>Documents</p>",
+            }
+        )
 
     def _open_partner_documents_form(self, partner):
         action = partner.action_view_partner_documents()
@@ -216,3 +228,51 @@ class TestPartnerDocumentFlow(TransactionCase):
             self.non_expiring_type.id,
             partner.document_ids.document_type_id.ids,
         )
+
+    def test_partner_documents_view_has_request_data_button(self):
+        view = self.env.ref("partner_document.view_partner_documents_form")
+        arch = view.get_combined_arch()
+        self.assertIn('name="action_request_data"', arch)
+        self.assertIn('string="Request data"', arch)
+
+    def test_config_settings_view_has_request_data_template(self):
+        view = self.env.ref("base_setup.res_config_settings_view_form")
+        arch = view.get_combined_arch()
+        self.assertIn("partner_document_request_data_template_id", arch)
+
+    def test_action_request_data_opens_mail_composer(self):
+        partner = self._create_partner(
+            "Document Flow Request Data",
+            self.diver_classification,
+            email="document.flow.request.data@example.com",
+        )
+        template = self._create_request_data_template()
+        self.env.company.partner_document_request_data_template_id = template
+
+        action = partner.action_request_data()
+
+        self.assertEqual(action["type"], "ir.actions.act_window")
+        self.assertEqual(action["res_model"], "mail.compose.message")
+        self.assertEqual(action["view_mode"], "form")
+        self.assertEqual(action["views"], [(False, "form")])
+        self.assertFalse(action["view_id"])
+        self.assertEqual(action["target"], "new")
+        context = action["context"]
+        self.assertEqual(context["default_model"], "res.partner")
+        self.assertEqual(context["default_res_id"], partner.id)
+        self.assertTrue(context["default_use_template"])
+        self.assertEqual(context["default_template_id"], template.id)
+        self.assertEqual(context["default_composition_mode"], "comment")
+        self.assertEqual(context["default_partner_ids"], partner.ids)
+        self.assertEqual(context["default_email_to"], partner.email)
+        self.assertTrue(context["force_email"])
+
+    def test_action_request_data_requires_template(self):
+        partner = self._create_partner(
+            "Document Flow Request Data Without Template",
+            self.diver_classification,
+        )
+        self.env.company.partner_document_request_data_template_id = False
+
+        with self.assertRaises(UserError):
+            partner.action_request_data()

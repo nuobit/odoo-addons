@@ -92,6 +92,14 @@
         <field name="priority">100</field>
         <field name="arch" type="xml">
             <form string="Documents">
+                <header>
+                    <button
+                        name="action_request_data"
+                        type="object"
+                        string="Request data"
+                        class="btn-primary"
+                    />
+                </header>
                 <sheet>
                     <group>
                         <field name="classification_id" />

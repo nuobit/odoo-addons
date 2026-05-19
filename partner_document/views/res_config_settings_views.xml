@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field
+            name="name"
+        >res.config.settings.view.form.inherit.partner.document</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='contacts_setting_container']" position="inside">
+                <div
+                    class="col-xs-12 col-md-6 o_setting_box"
+                    id="partner_document_request_data"
+                >
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">
+                            Request data email template
+                        </span>
+                        <span
+                            class="fa fa-lg fa-building-o"
+                            title="Values set here are company-specific."
+                            aria-label="Values set here are company-specific."
+                            groups="base.group_multi_company"
+                            role="img"
+                        />
+                        <div class="text-muted">
+                            Template used by the request data button in the contact
+                            documents view.
+                        </div>
+                        <div class="content-group">
+                            <div class="mt8">
+                                <field
+                                    name="partner_document_request_data_template_id"
+                                    class="oe_inline"
+                                    options="{'no_create': True}"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
