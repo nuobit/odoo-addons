@@ -127,6 +127,21 @@ class PartnerDocument(models.Model):
             or (self.expiration_date and self.expiration_date >= fields.Date.today())
         )
 
+    def action_show_document_chatter(self):
+        self.ensure_one()
+        view = self.env.ref("partner_document.partner_document_chatter_view_form")
+        return {
+            "name": _("Chatter"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "partner.document",
+            "views": [(view.id, "form")],
+            "view_id": view.id,
+            "target": "new",
+            "res_id": self.id,
+            "context": dict(self.env.context),
+        }
+
     @api.constrains("expiration_date", "document_type_id")
     def _check_expiration_date_by_type(self):
         for rec in self:
