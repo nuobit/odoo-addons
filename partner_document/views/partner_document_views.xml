@@ -44,6 +44,7 @@
                 <field
                     name="document_type_id"
                     readonly="1"
+                    force_save="1"
                     options="{'no_create': True, 'no_create_edit': True}"
                 />
                 <field name="description" />
@@ -110,6 +111,7 @@
                             <field
                                 name="document_type_id"
                                 readonly="1"
+                                force_save="1"
                                 options="{'no_create': True, 'no_create_edit': True}"
                             />
                             <field name="description" />
