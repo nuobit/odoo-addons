@@ -8,8 +8,8 @@ from odoo import fields, models
 class L10nEsAeatTaxLine(models.Model):
     _inherit = "l10n.es.aeat.tax.line"
 
-    asset_ids = fields.Many2many(
-        string="Assets",
+    legacy_asset_ids = fields.Many2many(
+        string="Legacy Assets",
         comodel_name="account.asset",
     )
     mod303_id = fields.Many2one(
@@ -32,5 +32,5 @@ class L10nEsAeatTaxLine(models.Model):
             .sudo()
             .read()[0]
         )
-        action_dict["domain"] = [("id", "in", self.asset_ids.ids)]
+        action_dict["domain"] = [("id", "in", self.legacy_asset_ids.ids)]
         return action_dict
