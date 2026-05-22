@@ -2,7 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
-from odoo import models
+from odoo import _, models
+from odoo.exceptions import UserError
 
 
 class AccountMove(models.Model):
@@ -19,7 +20,16 @@ class AccountMove(models.Model):
                 )
             )
             if aml.balance >= threshold_amount:
-                vals[
-                    "capital_asset_type_id"
-                ] = aml.asset_profile_id.capital_asset_type_id
+                capital_asset_type = aml.asset_profile_id.capital_asset_type_id
+                if not capital_asset_type:
+                    raise UserError(
+                        _(
+                            "The asset profile '%s' requires a default capital asset "
+                            "type because the invoice line amount is equal to or "
+                            "greater than %s. Please configure the asset profile "
+                            "before posting the invoice."
+                        )
+                        % (aml.asset_profile_id.display_name, threshold_amount)
+                    )
+                vals["capital_asset_type_id"] = capital_asset_type
         return vals

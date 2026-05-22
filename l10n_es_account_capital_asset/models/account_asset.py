@@ -23,7 +23,7 @@ class AccountAsset(models.Model):
         domain="[('id', '=', profile_capital_asset_type_id)]",
     )
 
-    @api.constrains("capital_asset_type_id", "company_id")
+    @api.constrains("capital_asset_type_id", "company_id", "tax_base_amount")
     def _check_amount_type(self):
         threshold_capital_asset_amount = float(
             self.env["ir.config_parameter"]
