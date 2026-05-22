@@ -66,6 +66,18 @@ msgid "Default Capital Asset Type"
 msgstr "Tipo de bien de inversión por defecto"
 
 #. module: l10n_es_account_capital_asset
+#: code:addons/l10n_es_account_capital_asset/models/account_move.py:0
+#, python-format
+msgid ""
+"The asset profile '%s' requires a default capital asset type because the "
+"invoice line amount is equal to or greater than %s. Please configure the "
+"asset profile before posting the invoice."
+msgstr ""
+"El perfil de activo '%s' requiere un tipo de bien de inversión por defecto "
+"porque el importe de la línea de factura es igual o superior a %s. Configure "
+"el perfil de activo antes de publicar la factura."
+
+#. module: l10n_es_account_capital_asset
 #: code:addons/l10n_es_account_capital_asset/models/account_asset.py:0
 #, python-format
 msgid "The asset of type ‘%s’ has an unit amount %.2f€ greater than %.2f€, "

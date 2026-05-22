@@ -14,7 +14,6 @@ class AccountAssetProfile(models.Model):
         string="Default Capital Asset Type",
         comodel_name="l10n.es.account.capital.asset.type",
         ondelete="restrict",
-        required=True,
     )
 
     capital_asset_set = fields.Boolean(
