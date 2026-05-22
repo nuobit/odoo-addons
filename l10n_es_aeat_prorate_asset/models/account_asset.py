@@ -5,6 +5,7 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.osv import expression
 
 from odoo.addons.account_asset_management.models.account_asset import READONLY_STATES
 
@@ -15,9 +16,10 @@ class AccountAsset(models.Model):
     map_special_prorate_year_id = fields.Many2one(
         comodel_name="aeat.map.special.prorrate.year",
         compute="_compute_map_special_prorate_year_id",
+        search="_search_map_special_prorate_year_id",
     )
 
-    @api.depends("date_start")
+    @api.depends("company_id", "date_start")
     def _compute_map_special_prorate_year_id(self):
         for rec in self:
             if rec.date_start:
@@ -26,6 +28,48 @@ class AccountAsset(models.Model):
                 ].get_by_ukey(rec.company_id.id, rec.date_start.year)
             else:
                 rec.map_special_prorate_year_id = False
+
+    @api.model
+    def _get_map_special_prorate_year_domain(self, prorate_maps):
+        domains = []
+        for prorate_map in prorate_maps:
+            domains.append(
+                [
+                    ("company_id", "=", prorate_map.company_id.id),
+                    ("date_start", ">=", "%s-01-01" % prorate_map.year),
+                    ("date_start", "<=", "%s-12-31" % prorate_map.year),
+                ]
+            )
+        return expression.OR(domains) if domains else expression.FALSE_DOMAIN
+
+    @api.model
+    def _search_map_special_prorate_year_id(self, operator, value):
+        if operator not in ("=", "!=", "in", "not in"):
+            raise NotImplementedError(
+                _("Unsupported operator %s for map special prorate year search")
+                % operator
+            )
+
+        MapSpecialProrateYear = self.env["aeat.map.special.prorrate.year"]
+        is_negative = operator in ("!=", "not in")
+
+        if operator in ("=", "!=") and not value:
+            domain = self._get_map_special_prorate_year_domain(
+                MapSpecialProrateYear.search([])
+            )
+            return domain if is_negative else [expression.NOT_OPERATOR] + domain
+
+        value_ids = value.ids if hasattr(value, "ids") else value
+        if isinstance(value_ids, int):
+            value_ids = [value_ids]
+
+        if not value_ids:
+            return expression.TRUE_DOMAIN if is_negative else expression.FALSE_DOMAIN
+
+        domain = self._get_map_special_prorate_year_domain(
+            MapSpecialProrateYear.browse(value_ids).exists()
+        )
+        return [expression.NOT_OPERATOR] + domain if is_negative else domain
 
     def _compute_prorate_amounts(self, percent, is_deductible=True):
         self.ensure_one()
