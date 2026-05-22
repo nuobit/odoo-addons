@@ -17,3 +17,8 @@ class AccountTaxTemplate(models.Model):
         required=True,
         default="ignore",
     )
+
+    def _get_tax_vals(self, company, tax_template_to_tax):
+        vals = super()._get_tax_vals(company, tax_template_to_tax)
+        vals["apply_to_asset"] = self.apply_to_asset
+        return vals
